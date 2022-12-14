@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  css: ['/assets/main.css'],
+  css: ['/assets/main.css', 'vuetify/lib/styles/main.css'],
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
@@ -38,7 +38,7 @@ export default defineNuxtConfig({
     shim: false
   },
   build: {
-    transpile: ['']
+    transpile: ['vuetify']
   },
   ssr: true,
   content: {
