@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify']
   },
-  ssr: true,
+  ssr: false,
   content: {
     // Nuxt content options
     highlight: {
