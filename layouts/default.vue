@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <slot />
-  </div>
+ <div>
+  <slot />
+ </div>
 </template>
 
-<script>
-
+<script setup>
+const links = [
+  'Dashboard',
+  'Messages',
+  'Profile',
+  'Updates',
+]
 </script>
 
 <style>
