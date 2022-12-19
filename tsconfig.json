@@ -6,6 +6,7 @@
     "src/**/*",
     "src/**/*.vue"
   ],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "es6" //above es6 like ES2015,ES2018 ...
   }
