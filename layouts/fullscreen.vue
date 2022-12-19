@@ -12,7 +12,7 @@
                 </button>
             </template>
         </NuxtErrorBoundary>
-        <button @click="ce" class="p-14 bg-red-100">testing</button>
+        <!-- <button @click="ce" class="p-14 bg-red-100">testing</button> -->
     </div>
 </template>
 
