@@ -7,7 +7,7 @@
     "extends": [
         "plugin:vue/vue3-recommended",
         "@nuxtjs/eslint-config-typescript",
-        "eslint:recommended"
+        "prettier"
     ],
     "parser": "vue-eslint-parser",
     "parserOptions": {
@@ -22,7 +22,13 @@
     "rules": {
         "vue/multi-word-component-names": 0,
         "no-global-assign": [0, {"exceptions": ["Object"]}],
+        "import/no-unresolved": "off",
         "no-undefined": [0],
         "no-new": 0
+    },
+    "settings": {
+        "import/ignore": [
+            "vue"
+        ]
     }
 }
