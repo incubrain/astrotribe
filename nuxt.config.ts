@@ -25,16 +25,37 @@ export default defineNuxtConfig({
     forward: ['dataLayer.push'],
   },
   runtimeConfig: {
-    // The private keys which are only available within server-side
-    apiSecret: '123',
     // Keys within public, will be also exposed to the client-side
     public: {
-      apiBase: '/api'
-    }
+      SUPABASE_URL: process.env.SUPABASE_URL,
+      SUPABASE_KEY: process.env.SUPABASE_KEY,
+    },
+    // The private keys which are only available within server-side
+    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
   },
   typescript: {
     shim: false
   },
+  // For @nuxt/image-edge
+  // image: {
+  //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
+  //   presets: {
+  //     cover: {
+  //       modifiers: {
+  //         format: "jpg",
+  //         quality: 80,
+  //         sizes: "sm:100vw md:50vw lg:800px",
+  //       },
+  //     },
+  //     card: {
+  //       modifiers: {
+  //         format: "jpg",
+  //         quality: 70,
+  //         sizes: "sm:100vw md:40vw lg:300px",
+  //       },
+  //     },
+  //   },
+  // },
   build: {
     transpile: ['vuetify']
   },
