@@ -6,9 +6,9 @@
 
 <p align="center" ><a href="https://astrotribe.onrender.com/">The Website</a></p>
 
-## [Testing relative function](composables\useAuth.ts#L17)
+## [Testing relative function](composables/useAuth.ts#L17)
 
-## [Testing relative file](pages\login.vue)
+## [Testing relative file](pages/login.vue)
 
 &nbsp;  
 &nbsp;
