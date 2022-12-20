@@ -6,15 +6,14 @@ const publicBucket = 'public-media'
 const privateBucket = 'private-media'
 
 
-const userFolder = async (userId: string, isPublic: boolean) => {
+const folder = async (userId: string, isPublic: boolean) => {
     const folder = isPublic ? publicBucket : privateBucket
 
     const { data, error } = await client.storage
-        .from('avatars')
-        .list(`${folder}/${userId}/`, {
+        .from(`${folder}`)
+        .list(`${userId}/`, {
             limit: 100,
             offset: 0,
-            sortBy: { column: 'name', order: 'asc' },
         })
 
     return {
@@ -22,16 +21,12 @@ const userFolder = async (userId: string, isPublic: boolean) => {
         error,
     }
 }
-const userAvatar = async (userId: string, isPublic: boolean) => {
+const avatar = async (userId: string, isPublic: boolean) => {
     const folder = isPublic ? publicBucket : privateBucket
 
     const { data, error } = await client.storage
-        .from('avatars')
-        .list(`${folder}/${userId}/`, {
-            limit: 100,
-            offset: 0,
-            sortBy: { column: 'name', order: 'asc' },
-        })
+        .from(`${folder}`)
+        .download(`${userId}/avatar.png`)
 
     return {
         data,
@@ -39,7 +34,7 @@ const userAvatar = async (userId: string, isPublic: boolean) => {
     }
 }
 
-export default {
-    userFolder,
-    userAvatar,
+export {
+    folder,
+    avatar,
 }

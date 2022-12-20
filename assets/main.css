@@ -1,3 +1,5 @@
+@import 'cropperjs/dist/cropper.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,4 +54,9 @@
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50%;
 }
