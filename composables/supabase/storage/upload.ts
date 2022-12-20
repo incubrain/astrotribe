@@ -2,13 +2,15 @@ import publicClient from '../publicClient'
 
 const client = publicClient()
 
-const userSingle = async (event: Event, userId: string, isPublic: boolean) => {
-    console.log('zzz', event)
-    const avatarFile = event.target?.files[0]
+const publicBucket = 'public-media'
+const privateBucket = 'private-media'
+
+const single = async (file: File, userId: string, isPublic: boolean) => {
+    console.log('zzz', file)
     const folder = isPublic ? publicBucket : privateBucket
     const { data, error } = await client.storage
-        .from('avatars')
-        .upload(`${folder}/${userId}/avatar.png`, avatarFile, {
+        .from(`${folder}`)
+        .upload(`/${userId}/avatar.png`, file, {
             cacheControl: '3600',
             upsert: false,
         })
@@ -19,6 +21,6 @@ const userSingle = async (event: Event, userId: string, isPublic: boolean) => {
     }
 }
 
-export default {
-    userSingle,
+export {
+    single,
 }

@@ -1,9 +1,14 @@
-import upload from './supabase/storage/upload'
-import download from './supabase/storage/download'
+import { single } from './supabase/storage/upload'
+import { folder, avatar} from './supabase/storage/download'
 
 export default function useStorage() {
     return {
-        upload,
-        download,
+        upload: {
+            single,
+        },
+        download: {
+            folder,
+            avatar
+        },
     }
 }

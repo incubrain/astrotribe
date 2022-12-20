@@ -1,7 +1,10 @@
-import table from './supabase/realtime/table'
+import { single, data } from './supabase/realtime/table'
 
 export default function useRealtime() {
     return {
-        table,
+        table: {
+            single,
+        },
+        store: computed(() => data.value)
     }
 }

@@ -1,26 +1,44 @@
 <template>
-    <div class="example-avatar bg-white p-12">
-        <div
-            v-show="upload && upload.dropActive"
-            class="drop-active p-16 bg-green-200 w-100 h64"
-        >
-            <h3>Drop files to upload</h3>
+    <div class="example-avatar bg-white p-12 w-full h-full">
+        <div v-show="imageSrc" class="my-2 w-64 h-64 object-fill mx-auto">
+            <img class="block max-w-full" ref="img" :src="imageSrc" />
         </div>
-        <div class="avatar-upload" v-show="!edit">
-            <div class="text-center p-2">
-                <label for="avatar">
-                    <img
-                        :src="
-                            files?.length
-                                ? files[0].url
-                                : 'https://www.gravatar.com/avatar/default?s=200&r=pg&d=mm'
-                        "
-                        class="rounded-full"
-                    />
-                    <h4 class="pt-2">or<br />Drop files anywhere to upload</h4>
-                </label>
-            </div>
-            <div class="text-center p-2">
+        <div class="flex justify-center content-end mt-2">
+            <button
+                v-if="!imageSrc"
+                class="btn btn-blue w-32 mx-2"
+                @click="imageInput.click()"
+            >
+                New Image
+            </button>
+            <button
+                v-else
+                class="btn btn-blue w-32 mx-2"
+                @click="handleImageCropped"
+            >
+                Update
+            </button>
+            <button
+                button
+                v-if="imageSrc"
+                class="btn btn-gray w-32 mx-2"
+                @click="fileCleared"
+            >
+                Cancel
+            </button>
+            <input
+                type="file"
+                ref="imageInput"
+                accept=".jpg,.jpeg,.png"
+                @change="fileChanged"
+                :style="{ display: 'none' }"
+            />
+        </div>
+        <div v-if="selectedFile" class="my-2 align-baseline text-center">
+            <span>Selected File: </span>
+            <span>{{ selectedFile.name }}</span>
+        </div>
+        <!-- <div class="text-center p-2">
                 <file-upload
                     extensions="gif,jpg,jpeg,png,webp"
                     accept="image/png,image/gif,image/jpeg,image/webp"
@@ -35,11 +53,11 @@
                 >
                     Upload avatar
                 </file-upload>
-            </div>
-        </div>
+            </div> -->
 
-        <div class="avatar-edit" v-show="files?.length && edit">
-            <div class="avatar-edit-image" v-if="files?.length">
+        <!-- <div class="avatar-edit" v-if="files?.length && edit">
+            <p>{{ files }}</p>
+            <div class="avatar-edit-image">
                 <img ref="editImage" :src="files[0].url" />
             </div>
             <div class="text-center p-4 bg-gray-300">
@@ -58,106 +76,79 @@
                     Save
                 </button>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script setup>
 import Cropper from 'cropperjs'
-import * as FileUpload from 'vue-upload-component'
 
-const { getUser } = useData()
-const { uploadFile } = useStorage()
+const { upload } = useStorage()
 
-const user = await getUser()
-
-const files = ref([])
-const upload = ref({})
-const edit = ref(false)
-const editImage = ref()
-const crop = ref(false)
+const imageInput = ref(null) // template ref for file input
+const selectedFile = ref(null)
+const imageSrc = ref(null)
+const img = ref(null)
+const fileReader = new FileReader()
+let cropper = null
+fileReader.onload = (event) => {
+    imageSrc.value = event.target.result
+}
+const handleImageCropped = () => {
+    cropper
+        .getCroppedCanvas({
+            width: 256,
+            height: 256,
+        })
+        .toBlob((blob) => {
+            console.log(blob)
+            upload.single(blob, '9465747a-47a0-46ac-93a7-5151e62b8eff', true)
+        }, 'image/jpeg')
+    selectedFile.value = null
+}
+const fileChanged = (e) => {
+    const files = e.target.files || e.dataTransfer.files
+    if (files.length) {
+        selectedFile.value = files[0]
+    }
+}
+const fileCleared = (_) => {
+    selectedFile.value = null
+}
 
 onMounted(() => {
-    watch(
-        () => edit.value,
-        (value) => {
-            if (value) {
-                nextTick(() => {
-                    if (!editImage.value) {
-                        return
-                    }
-                    let cropNew = new Cropper(editImage.value, {
-                        aspectRatio: 1 / 1,
-                        viewMode: 1,
-                    })
-                    crop.value = cropNew
-                })
-            } else {
-                if (crop.value) {
-                    crop.value.destroy()
-                    crop.value = false
-                }
-            }
-        }
-    )
+    cropper = new Cropper(img.value, {
+        aspectRatio: 1,
+        minCropBoxWidth: 256,
+        minCropBoxHeight: 256,
+        viewMode: 3,
+        dragMode: 'move',
+        background: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+    })
 })
-
-function editSave() {
-    edit.value = false
-
-    let oldFile = files.value[0]
-
-    let binStr = atob(
-        crop.value.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1]
-    )
-    let arr = new Uint8Array(binStr.length)
-    for (let i = 0; i < binStr.length; i++) {
-        arr[i] = binStr.charCodeAt(i)
+onUnmounted(() => {
+    cropper.destroy()
+})
+watchEffect(() => {
+    if (selectedFile.value) {
+        fileReader.readAsDataURL(selectedFile.value)
+    } else {
+        imageSrc.value = null
     }
-
-    let file = new File([arr], oldFile.name, { type: oldFile.type })
-
-    uploadFile(file, user.id, true)
-
-    // upload.value.update(oldFile.id, {
-    //   file,
-    //   type: file.type,
-    //   size: file.size,
-    //   active: true,
-    // })
-}
-
-function alert(message) {
-    alert(message)
-}
-
-function inputFile(newFile, oldFile) {
-    if (newFile && !oldFile) {
-        nextTick(() => {
-            edit.value = true
-        })
-    }
-    if (!newFile && oldFile) {
-        edit.value = false
-    }
-}
-
-function inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-            alert('Your choice is not a picture')
-            return prevent()
+})
+watch(
+    imageSrc,
+    () => {
+        if (imageSrc.value) {
+            cropper.replace(imageSrc.value)
         }
+    },
+    {
+        flush: 'post', // watch runs after component updates
     }
-
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-        newFile.url = ''
-        let URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-            newFile.url = URL.createObjectURL(newFile.file)
-        }
-    }
-}
+)
 </script>
 
 <style scoped>
