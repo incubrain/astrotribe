@@ -1,16 +1,11 @@
 <template>
     <div
-        id="space"
-        class="space h-full w-full flex justify-center items-center"
+    class="space h-full w-full flex justify-center items-center flex-col max-w-full max-h-full relative p-10 overflow-hidden"
     >
-        <div id="stars"></div>
-        <div class="ship">
-            <div class="ship-rotate">
-                <div class="fuselage"></div>
-                <div class="pod"></div>
-            </div>
+        <div id="space" class="h-[250vh] w-[250vw] animate-spin-slow bg-black absolute">
+            <div class="star animate-glitter"/>
         </div>
-        <div class="ship-shadow"></div>
+        <img class="ship" src="/rocket.png">
         <div class="mars">
             <div class="tentacle"></div>
             <div class="flag">
@@ -23,9 +18,9 @@
                 <div class="crater3"></div>
             </div>
         </div>
-        <div class="relative w-full pt-[300px] text-center">
-            <h1 class="text-[7vw]">AstroTribe</h1>
-            <h2 class="text-[2vw] arriving-soon">Arriving Soon!</h2>
+        <div class="relative w-full pt-20 text-center">
+            <h1 class="text-[8vh] pt-[5vh] lg:text-[12vh] lg:pt-0">AstroTribe</h1>
+            <h2 class="text-[3vh] lg:text-[4vh] arriving-soon">Arriving Soon!</h2>
         </div>
     </div>
 </template>
@@ -33,7 +28,7 @@
 <script setup lang="ts">
 
 onMounted(() => {
-    let limit = 1001
+    let limit = 500
     const space = document.getElementById('space')
 
     const stars = {
@@ -53,7 +48,7 @@ onMounted(() => {
                 let star = stars.createStar()
                 star.style.top = `${stars.rand() * 100}%`
                 star.style.left = `${stars.rand() * 100}%`
-                star.style.animationDelay = `${stars.rand() * 8}s`
+                star.style.animation = `glitter 8s ease-in ${stars.rand() * 8}s infinite`
                 space.appendChild(star)
             }
         },
@@ -75,7 +70,7 @@ onMounted(() => {
     --mars: #ff5f40;
     --alien: #1aae1e;
     --gray: #aaa;
-    --timing: 12s;
+    --timing: 22s;
     --curve1: cubic-bezier(0.455, 0.03, 0.615, 0.555);
     --curve2: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
@@ -84,22 +79,9 @@ onMounted(() => {
     font-family: 'Mansalva', cursive;
 }
 
-.space {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    overflow: hidden;
-}
-
 .mars {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: relative;
     z-index: 2;
-    /* animation: planet-bump var(--timing) var(--curve2) infinite; */
 }
 .tentacle {
     position: absolute;
@@ -164,7 +146,6 @@ onMounted(() => {
     height: 10px;
     width: 60px;
     background: rgba(0, 0, 0, 0.2);
-    background: var(--space-shadow);
     border-radius: 100%;
 }
 
@@ -225,66 +206,14 @@ onMounted(() => {
 .ship {
     position: absolute;
     right: 50%;
-    top: 50%;
+    top: calc(50% - 10vh);
     margin-top: -55px;
     margin-right: -55px;
-    height: 22px;
+    height: 38px;
     background: rgba(0, 0, 0, 0.1);
     transform-origin: 0% 100% 0;
     z-index: 1;
     animation: ship var(--timing) var(--curve2) infinite;
-}
-.ship-rotate {
-    position: absolute;
-    height: 22px;
-    transform: rotate(-110deg);
-    animation: ship-rotate var(--timing) var(--curve2) infinite;
-}
-
-.pod {
-    position: absolute;
-    top: 0;
-    left: -8px;
-    height: 16px;
-    width: 16px;
-    background: var(--ship);
-    border-radius: 100% 0 100% 0;
-    transform: rotate(-45deg);
-}
-
-.fuselage {
-    position: absolute;
-    top: 14px;
-    left: -6px;
-    height: 8px;
-    width: 12px;
-    background: var(--ship);
-    border-radius: 100% 100% 0 0;
-}
-
-.fuselage:after {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: 100%;
-    width: 0;
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 6px solid red;
-}
-
-.ship-shadow {
-    position: absolute;
-    right: 10%;
-    top: 50%;
-    margin-right: -28px;
-    margin-top: 83px;
-    height: 4px;
-    width: 16px;
-    background: var(--space-shadow);
-    border-radius: 100%;
-    animation: ship-shadow var(--timing) var(--curve2) infinite;
 }
 
 @keyframes small-tentacle {
@@ -326,79 +255,30 @@ onMounted(() => {
         top: -10%;
         margin-top: -55px;
         margin-right: -55px;
+        transform: rotate(-120deg);
     }
     40% {
-        right: 50%;
-        top: 50%;
+        right: 52%;
+        top: calc(50% + 10px);
+        transform: rotate(-50deg);
     }
     79.5% {
-        margin-top: -55px;
-        margin-right: -55px;
+        margin-top: -20px;
+        right: 50%;
+        margin-right: -75px;
+        top: calc(50% - 12vh - 75px);
+        transform: rotate(47deg);
     }
     84% {
-        margin-top: -20px;
+        margin-top: 0;
         margin-right: 0px;
+        /* top: calc(50% - 12vh - 55px); */
+        right: calc(50% - 14px);
+        transform: rotate(20deg);
     }
     100% {
-        right: 50%;
-        top: 50%;
-        margin-top: 0px;
-        margin-right: 0px;
-    }
-}
-
-@keyframes ship-rotate {
-    0% {
-        transform: rotate(-110deg);
-    }
-    20% {
-        transform: rotate(-110deg);
-    }
-    34% {
-        transform: rotate(47deg);
-    }
-    79% {
-        transform: rotate(47deg);
-    }
-    100% {
-        transform: rotate(47deg);
-    }
-}
-
-@keyframes ship-shadow {
-    0% {
-        right: -10%;
-        transform: scale(1.4, 1);
-        opacity: 0.3;
-    }
-    40% {
-        right: 50%;
-        transform: scale(0.75, 1);
-        opacity: 1;
-    }
-    100% {
-        right: 50%;
-    }
-}
-
-@keyframes planet-bump {
-    0% {
-        margin-left: 0;
-    }
-    39% {
-        margin-left: 0;
-    }
-    40% {
-        margin-left: -1px;
-    }
-    40.5% {
-        margin-left: 1px;
-    }
-    41% {
-        margin-left: 0;
-    }
-    100% {
-        margin-left: 0;
+        /* margin-top: 0px; */
+        transform: rotate(0deg);
     }
 }
 
@@ -441,75 +321,11 @@ onMounted(() => {
     }
 }
 
-/* space background */
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes glitter {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    25% {
-        transform: scale(1.6);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    75% {
-        transform: scale(1.6);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-}
-
-html,
-body {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    background: #000;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: none;
-    box-sizing: border-box;
-}
-
-#space {
-    position: absolute;
-    height: 400vh;
-    width: 400vw;
-    left: -150vw;
-    top: -150vh;
-    overflow: hidden;
-    background: #000;
-    transform-origin: 50% 50%;
-    animation: spin 500s linear 0s infinite normal;
-}
-
 .star {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    background: #999;
+    width: 2px;
+    height: 2px;
+    background: rgb(242, 202, 202);
     opacity: 0;
-    animation: glitter 8s ease-in 0s infinite normal;
 }
 </style>
