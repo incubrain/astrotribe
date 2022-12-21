@@ -10,23 +10,28 @@
             </div>
             <div class="col-start-2 col-span-2 w-full gap-4 md:gap-8">
                 <NavTop />
-                <NuxtErrorBoundary @error="someErrorLogger">
-                    <!-- You use the default slot to render your content -->
-                    <slot />
+                <slot />
+                <!-- <NuxtErrorBoundary @error="someErrorLogger">
+                    You use the default slot to render your content
                     <template #error="{ error }">
                         You can display the error locally here.
                         <button @click="error = null">
                             This will clear the error.
                         </button>
                     </template>
-                </NuxtErrorBoundary>
-                <Footer />
+                </NuxtErrorBoundary> -->
+                <!-- <Footer /> -->
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+const { initiatePublicClient } = useClient()
+initiatePublicClient()
+
+const { event } = useEventHandler()
+event.auth
 
 </script>
 

@@ -4,7 +4,8 @@
         class="min-h-[50px] flex items-center lg:items-stretch justify-end lg:justify-between bg-white shadow relative z-0"
     >
         <div class="hidden lg:flex w-full pr-6">
-            <div class="w-1/2 h-full hidden lg:flex items-center pl-6 pr-24">
+            <!-- searchbar -->
+            <!-- <div class="w-1/2 h-full hidden lg:flex items-center pl-6 pr-24">
                 <div class="relative w-full">
                     <div
                         class="text-gray-500 absolute ml-4 inset-0 m-auto w-4 h-4"
@@ -32,6 +33,9 @@
                         placeholder="Search"
                     />
                 </div>
+            </div> -->
+            <div class="w-1/2 hidden lg:flex">
+                <!-- <p> user info: {{ profile }}</p> -->
             </div>
             <div class="w-1/2 hidden lg:flex">
                 <div class="w-full flex items-center pl-8 justify-end">
@@ -86,6 +90,7 @@
                             />
                         </svg>
                     </div>
+                    <!-- avatar dropdown -->
                     <div
                         class="flex items-center relative cursor-pointer"
                         @click="dropdownHandler($event)"
@@ -151,7 +156,7 @@
                                         </svg>
                                         <button
                                             @click="logout()"
-                                            v-if="profile !== undefined"
+                                            v-if="currentSession !== null"
                                         >
                                             Logout
                                         </button>
@@ -175,7 +180,7 @@
                                 ></div>
                             </div>
                         </div>
-                        <p class="text-gray-800 text-sm mx-3">Username</p>
+                        <p class="text-gray-800 text-sm mx-3">{{ currentSession ? 'Authenticated' : 'No Auth' }}</p>
                         <div class="cursor-pointer text-gray-600">
                             <svg
                                 aria-haspopup="true"
@@ -203,7 +208,7 @@
             @click="dropdownHandler($event)"
         >
             <ul
-                v-if="profile !== undefined"
+                v-if="currentSession !== null"
                 class="p-2 w-40 border-r bg-white absolute rounded right-0 shadow mt-12 hidden"
             >
                 <li
@@ -219,7 +224,7 @@
                     <div class="flex items-center">
                         <button
                             @click="logout()"
-                            v-if="profile !== undefined"
+                            v-if="currentSession !== null"
                         >
                             Logout
                         </button>
@@ -258,11 +263,15 @@
 </template>
 
 <script setup>
-const { user } = useData()
-const { logout } = useAuth()
+const profile = ref({
+    email: 'empty',
+})
 
-const profile = await user.current()
+const { logout, session } = useAuth()
 
+const { error, session: currentSession } = await session.getCurrent()
+if (error) throw createError('error getting user session')
+console.log('currentSession', currentSession)
 
 function dropdownHandler(event) {
     let single = event.currentTarget.getElementsByTagName('ul')[0]

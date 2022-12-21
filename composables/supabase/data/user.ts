@@ -19,16 +19,16 @@ const byId = async (userId: string) => {
 
 const current = async (userId: string) => {
     // Check app state
-    console.log('fire')
-    if (userData.value.auth) return
+    // console.log('fire')
+    // if (userData.value.auth) return
 
-    console.log('fire2')
-    // check local storage, if logged out return
-    const localAuth = JSON.parse(window.localStorage.getItem('authUser') || '')
-    if (localAuth) return console.log('local auth', localAuth)
-    console.log('fire3')
+    // console.log('fire2')
+    // // check local storage, if logged out return
+    // const localAuth = JSON.parse(window.localStorage.getItem('authUser') || '')
+    // if (localAuth) return console.log('local auth', localAuth)
+    // console.log('fire3')
 
-    console.log('test client', client)
+    // console.log('test client', client)
 
     // if nothing stored, get data
     const {
@@ -67,7 +67,9 @@ const many = async () => {
     }
 }
 
-export default {
+
+
+export {
     current,
     many,
     byId,

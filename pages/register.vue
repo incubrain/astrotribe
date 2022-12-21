@@ -216,7 +216,7 @@
                     </div>
                     <div class="mt-8">
                         <button
-                            @click="registerWithEmail(email, password)"
+                            @click="handleRegister(email, password)"
                             role="button"
                             class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
                         >
@@ -306,8 +306,8 @@ const email = ref()
 
 const { register } = useAuth()
 
-const registerWithEmail = async (email, password) => {
-    const { data, error } = await register.withEmail(email, password)
+const handleRegister = async (email, password) => {
+    const { data, error } = await register.registerWithEmail(email, password)
     if (error) throw createError({ error, message: 'something went wrong' })
     // updateUserState(data.user)
     navigateTo('/')
