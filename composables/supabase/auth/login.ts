@@ -1,8 +1,10 @@
-import publicClient from '../publicClient'
+import useClient from '../../useClient'
 
-const withEmail = async (email: string, password: string) => {
-    const client = publicClient()
-    const { data, error } = await client.auth.signInWithPassword({
+
+const loginWithEmail = async (email: string, password: string) => {
+    const { client } = useClient()
+    console.log('login', client.public, email, password)
+    const { data, error } = await client.public.auth.signInWithPassword({
         email,
         password,
     })
@@ -13,6 +15,6 @@ const withEmail = async (email: string, password: string) => {
     }
 }
 
-export default {
-    withEmail,
+export {
+    loginWithEmail,
 }

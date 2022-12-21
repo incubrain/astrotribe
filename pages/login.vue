@@ -216,7 +216,7 @@
                     </div>
                     <div class="mt-8">
                         <button
-                            @click="loginWithEmail(email, password)"
+                            @click="handleLogin(email, password)"
                             role="button"
                             class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
                         >
@@ -302,9 +302,6 @@
                 </div>
             </div>
         </div>
-        <button @click="createE" class="bg-gray-400 px-12 py-4">
-            create error
-        </button>
         <!-- <FeedbackAlert /> -->
     </body>
 </template>
@@ -314,16 +311,14 @@ const show = ref(true)
 const password = ref()
 const email = ref()
 
-const createE = () => {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
-}
+const router = useRouter()
 const { login } = useAuth()
 
-const loginWithEmail = async (email, password) => {
-    const { data, error } = await login.withEmail(email, password)
+const handleLogin = async (email, password) => {
+    const { data, error } = await login.loginWithEmail(email, password)
     if (error) throw createError({ error, message: 'something went wrong' })
     // updateUserState(data.user)
-    navigateTo('/')
+    router.push('/')
 }
 
 definePageMeta({

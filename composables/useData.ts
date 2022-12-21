@@ -1,7 +1,11 @@
-import user from './supabase/data/user'
+import { current, many, byId } from './supabase/data/user'
 
 export default function useData() {
     return {
-        user,
+        user: {
+            current,
+            many,
+            byId,
+        }
     }
 }
