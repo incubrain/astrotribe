@@ -1,8 +1,8 @@
-<h1 align="center" style="margin-top: 0px;">Astrotribe</h1>
+<h1 align="center" style="margin-top: 0px;">AstroTribe</h1>
 <!-- <p align="center" style="margin-bottom: 0px !important;">
   <img width="200" src="https://github.com/Drew-Macgibbon/design-portfolio/blob/main/public/readme/doom-logo.png" align="center">
 </p> -->
-<p align="center" >The Astrotribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
+<p align="center" >The AstroTribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
 
 <p align="center" ><a href="https://astrotribe.onrender.com/">The Website</a></p>
 
