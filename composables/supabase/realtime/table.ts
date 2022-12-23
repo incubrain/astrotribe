@@ -8,7 +8,7 @@ const single = () => {
     channel.on(
         'postgres_changes',
         {
-            event: '*',
+            Pt: '*',
             schema: 'public',
             table: 'posts',
         },
