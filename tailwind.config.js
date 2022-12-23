@@ -19,6 +19,22 @@ module.exports = {
     ],
     mode: 'jit',
     theme: {
+        screens: {
+            sm: '640px',
+            // => @media (min-width: 640px) { ... }
+
+            md: '768px',
+            // => @media (min-width: 768px) { ... }
+
+            lg: '1024px',
+            // => @media (min-width: 1024px) { ... }
+
+            xl: '1280px',
+            // => @media (min-width: 1280px) { ... }
+
+            '2xl': '1536px',
+            // => @media (min-width: 1536px) { ... }
+        },
         extend: {
             textColor: {
                 skin: {
@@ -44,7 +60,8 @@ module.exports = {
             },
             animation: {
                 'spin-slow': 'spin 300s linear infinite',
-                'glitter': 'glitter 8s ease-in 0s infinite',
+                glitter: 'glitter 8s ease-in 0s infinite',
+                loadin: 'loadin 350ms ease-in-out 100ms forwards'
             },
             keyframes: {
                 glitter: {
@@ -65,6 +82,17 @@ module.exports = {
                         opacity: 1,
                     },
                     '100%': { transform: 'scale(0.8)', opacity: 0 },
+                },
+                'loadin': {
+                    '0%': {
+                        transform: 'scale(0.1)',
+                    },
+                    '80%': { 
+                        transform: 'scale(1.15)',
+                    },
+                    '100%': { 
+                        transform: 'scale(1)',
+                    },
                 },
             },
             fontFamily: {

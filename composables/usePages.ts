@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 interface Page {
     id: number
     name: string
-    current: boolean
     icon: string
     slug: string
     children?: Page[]
@@ -13,34 +12,31 @@ const pages = ref([
     {
         id: 0,
         name: 'News',
-        current: true,
         slug: '/news',
         icon: 'bi:newspaper',
         children: [
-            { id: 1, name: 'New', current: false, slug: '/', icon: 'bi:newspaper' },
-            { id: 2, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
+            { id: 1, name: 'Newsfeed', slug: '/', icon: 'bi:newspaper' },
+            { id: 2, name: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' },
         ],
     },
     {
         id: 1,
         name: 'Events',
-        current: false,
         slug: '/events',
         icon: 'material-symbols:event',
         children: [
-            { id: 10, name: 'New', current: false, slug: '/', icon: 'material-symbols:event' },
-            { id: 11, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
+            { id: 10, name: 'Upcoming', slug: '/', icon: 'material-symbols:event' },
+            { id: 11, name: 'Popular', slug: '/popular', icon: 'ph:fire-simple-bold' },
         ],
     },
     {
         id: 2,
         name: 'Users',
-        current: false,
         slug: '/users',
         icon: 'fa-solid:user-astronaut',
         children: [
-            { id: 20, name: 'All', current: false, slug: '/', icon: 'fa-solid:user-astronaut' },
-            { id: 21, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
+            { id: 20, name: 'All', slug: '/', icon: 'fa-solid:user-astronaut' },
+            { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
         ],
     },
 ] as Page[])

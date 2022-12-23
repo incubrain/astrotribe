@@ -16,4 +16,6 @@
 
 <script setup lang="ts">
 
+definePageMeta({ name: 'Upcoming' })
+
 </script>

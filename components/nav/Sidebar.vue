@@ -2,18 +2,17 @@
   <!-- Sidebar starts -->
   <!-- Remove class [ hidden ] and replace [ sm:block ] with [ block ] -->
   <div
-    class="w-full absolute sm:relative h-full flex-col justify-between hidden sm:flex pb-12"
+    class="w-full hidden md:relative h-full flex-col md:flex pb-6 border-r border-gray-300"
   >
-    <div class="px-12">
-      <div class="h-16 w-full flex items-center">
-
-      </div>
-      <ul class="mt-12">
+    <p class="text-gray-700 text-sm px-6 w-full py-2 bg-white mb-6 border-b-[1px] border-gray-300 leading-[23px]">Space for all</p>
+    <div class="px-6">
+      <ul>
         <li
         v-for="page in pages"
         :key="page.id"
-          class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6"
-        >
+          class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6 rounded-lg transition-all duration-300"
+          :style="route.path === page.slug ? { background: '#fff', padding: '5px' } : { background: 'none' }"
+          >
           <div class="flex items-center">
             <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center">
               <Icon :name="page.icon" size="23px" class="mr-4"/>
@@ -25,7 +24,7 @@
     </div>
   </div>
   <div
-    class="w-64 absolute z-40 bg-white shadow md:h-full flex-col justify-between sm:hidden pb-12 transition duration-150 ease-in-out"
+    class="w-64 z-40 bg-white shadow md:h-full flex-col justify-between hidden pb-12 transition duration-150 ease-in-out"
     ref="mobileNav"
   >
     <div
@@ -59,7 +58,7 @@
     </div>
     <div
       id="closeSideBar"
-      class="hidden h-10 w-10 bg-indigo-700 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white"
+      class="hidden h-10 w-10 bg-indigo-700 absolute right-0 mt-16 -mr-10 items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white"
       @click="sidebarHandler(false)"
     >
       <svg
@@ -113,6 +112,8 @@
 <script setup lang="ts">
 
 const { pages } = usePages()
+const route = useRoute()
+
 
 const mobileNav = ref()
 

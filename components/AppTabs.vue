@@ -1,15 +1,12 @@
 <template>
-    <ul class="flex border-b border-gray-100 mb-6">
+    <ul class="flex border-b-[1px] border-gray-300">
         <li class="flex-1"
             v-for="tab in currentTabs"
             :key="tab.id">
-            <NuxtLink class="relative block p-4" :to="`/${parentRoute[1] + tab.slug}`">
-                <span
-                    class="absolute inset-x-0 -bottom-px h-px w-full bg-gray-300"
-                ></span>
-
-                <div class="flex items-center justify-center text-gray-900">
-                    <Icon :name="tab.icon" size="24px"/>
+            <NuxtLink class="relative block py-2 transition-all duration-300" :to="`/${parentRoute[1] + tab.slug}`" 
+                :style="route.name === tab.name ? { background: '#fff' } : { background: 'none' }">
+                <div class="flex items-center justify-center text-gray-900" >
+                    <Icon :name="tab.icon" size="23px"/>
                     <span class="ml-3 text-sm font-medium">
                         {{ tab.name }}
                     </span>
@@ -24,9 +21,12 @@
 const route = useRoute()
 const { tabs } = usePages()
 
+
 const parentRoute = computed(() => route.path.split('/'))
 const currentTabs = computed(() => tabs(parentRoute.value[1])?.children)
 
+
+console.log(route.name, currentTabs.value)
 
 </script>
 
