@@ -1,9 +1,9 @@
 <template>
     <article
-        class="rounded-lg p-1.5 text-center flex items-center relative flex-col bg-gradient-to-tr from-purple-500 to-cyan-200 overflow-hidden"
+        class="rounded-lg p-1 text-center flex items-center relative flex-col bg-gradient-to-tl from-white via-white to-purple-600 overflow-hidden"
     >
         <div
-            class="bg-gray-800 w-full flex items-center flex-col rounded-lg h-full p-8 gap-4 justify-between"
+            class="bg-white w-full flex items-center flex-col rounded-lg h-full p-8 gap-4 justify-between"
         >
             <div>
                 <img
