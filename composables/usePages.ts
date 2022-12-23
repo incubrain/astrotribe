@@ -4,6 +4,7 @@ interface Page {
     id: number
     name: string
     current: boolean
+    icon: string
     slug: string
     children?: Page[]
 }
@@ -14,9 +15,10 @@ const pages = ref([
         name: 'News',
         current: true,
         slug: '/news',
+        icon: 'bi:newspaper',
         children: [
-            { id: 1, name: 'New', current: false, slug: '/' },
-            { id: 2, name: 'Discover', current: false, slug: '/discover' },
+            { id: 1, name: 'New', current: false, slug: '/', icon: 'bi:newspaper' },
+            { id: 2, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
         ],
     },
     {
@@ -24,9 +26,10 @@ const pages = ref([
         name: 'Events',
         current: false,
         slug: '/events',
+        icon: 'material-symbols:event',
         children: [
-            { id: 10, name: 'New', current: false, slug: '/' },
-            { id: 11, name: 'Discover', current: false, slug: '/discover' },
+            { id: 10, name: 'New', current: false, slug: '/', icon: 'material-symbols:event' },
+            { id: 11, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
         ],
     },
     {
@@ -34,9 +37,10 @@ const pages = ref([
         name: 'Users',
         current: false,
         slug: '/users',
+        icon: 'fa-solid:user-astronaut',
         children: [
-            { id: 20, name: 'All', current: false, slug: '/' },
-            { id: 21, name: 'Nearby', current: false, slug: '/nearby' },
+            { id: 20, name: 'All', current: false, slug: '/', icon: 'fa-solid:user-astronaut' },
+            { id: 21, name: 'Discover', current: false, slug: '/discover', icon: 'ri:compass-discover-line' },
         ],
     },
 ] as Page[])

@@ -12,11 +12,12 @@
         <li
         v-for="page in pages"
         :key="page.id"
-          class="flex w-full justify-between text-indigo-700 cursor-pointer items-center mb-6"
+          class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6"
         >
           <div class="flex items-center">
-            <NuxtLink :to="page.slug">
-              <span class="text-sm font-semibold">{{  page.name  }}</span>
+            <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center">
+              <Icon :name="page.icon" size="23px" class="mr-4"/>
+              <span class="text-sm font-normal leading-none">{{  page.name  }}</span>
             </NuxtLink>
           </div>
         </li>

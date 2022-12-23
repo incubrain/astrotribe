@@ -22,7 +22,7 @@
                 <span class="text-sm text-black font-thin">Documentary</span>
             </section>
             <div
-                class="flex flex-wrap gap-4 justify-left items-center text-black p-4"
+                class="flex flex-wrap gap-4 justify-left items-center text-black p-6"
             >
                 <ul class="flex flex-row">
                     <li class="-mr-4 p-1.5 bg-white rounded-full">
@@ -41,16 +41,16 @@
                 <span>+ 146 going</span>
             </div>
         </article>
-        <div class="flex flex-row justify-between w-full h-[40px] text-black px-4">
-            <div class="flex flex-row">
-                <button>i</button>
-                <span>847</span>
+        <div class="flex flex-row justify-between items-center w-full h-[40px] text-black px-4 gap-4">
+            <div class="flex flex-row gap-2 justify-center items-center">
+                <span class="leading-none">847</span>
+                <Icon name="bx:upvote" size="24px"/>
             </div>
-            <div class="flex flex-row">
-                <button>i</button>
-                <span>37</span>
+            <div class="flex flex-row justify-center gap-2 items-center">
+                <span class="leading-none">37</span>
+                <Icon name="ion:share-social-outline" size="24px"/>
             </div>
-            <button class="bg-red-100 h-full w-1/2 rounded-lg">rsvp</button>
+            <button class="bg-gray-100 h-full w-1/2 rounded-lg">rsvp</button>
         </div>
     </div>
 </template>

@@ -3,6 +3,7 @@
         grid-cols-[minmax(160px,1fr)]
         md:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)]
         lg:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)]
+        xl:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)]
         rounded-md shadow-sm gap-6
     ">
         <CardUser2 />
