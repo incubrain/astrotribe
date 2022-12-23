@@ -1,5 +1,7 @@
 <template>
-    <div class="grid grid-rows-4 w-full rounded-md shadow-sm overflow-hidden hover:text-red-700 relative">
+    <div class="grid grid-rows-4 rounded-md shadow-sm overflow-hidden
+        animate-loadin scale-0
+    ">
         <img src="/cover.jpg" class=" row-start-1 row-span-3 col-span-1 col-start-1 object-cover object-top shadow-lg h-[360px]">
         <div class=" text-black row-start-3 row-span-2 w-full col-span-1 col-start-1 relative
         transition-all duration-500 ease-in-out">

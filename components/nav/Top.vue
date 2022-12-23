@@ -1,11 +1,11 @@
 <template>
     <!-- Navigation starts -->
     <nav
-        class="min-h-[80px] flex items-center lg:items-stretch justify-end lg:justify-between bg-white shadow relative z-0"
+        class="min-h-[80px] flex items-center lg:items-stretch w-full justify-end lg:justify-between bg-white shadow relative z-0"
     >
-        <div class="hidden lg:grid lg:grid-cols-[minmax(160px,280px)_minmax(680px,90%)_minmax(160px,400px)] w-full gap-12 items-center">
+        <div class="lg:grid lg:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center">
             <!-- logo -->
-            <div class="h-full flex items-center col-start-1 col-span-1 pl-12">
+            <div class="h-full flex items-center col-start-1 col-span-1 pl-6">
                 <h1 class="text-2xl font-bold">AstroTribe</h1>
             </div>
             <!-- searchbar -->
@@ -38,7 +38,7 @@
                     />
                 </div>
             </div>
-            <div class="col-start-3 col-span-1 pr-12">
+            <div class="col-start-3 col-span-1 pr-6">
                 <div class="w-full flex items-center justify-end">
                     <!-- avatar dropdown -->
                     <div
