@@ -5,39 +5,40 @@
     >
         <div class="lg:grid lg:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center">
             <!-- logo -->
-            <div class="h-full flex items-center col-start-1 col-span-1 pl-6">
+            <div class="h-full flex items-center pl-6">
                 <h1 class="text-2xl font-bold">AstroTribe</h1>
-            </div>
-            <!-- searchbar -->
-            <div class="w-full h-[40px] hidden lg:flex items-center col-start-2 col-span-1">
-                <div class="relative w-full">
-                    <div
-                        class="text-gray-500 absolute ml-4 inset-0 m-auto w-4 h-4"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-tabler icon-tabler-search"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                <!-- <div class="w-full h-[40px] hidden lg:flex items-center">
+                    <div class="relative w-full">
+                        <div
+                            class="text-gray-500 absolute ml-4 inset-0 m-auto w-4 h-4"
                         >
-                            <path stroke="none" d="M0 0h24v24H0z" />
-                            <circle cx="10" cy="10" r="7" />
-                            <line x1="21" y1="21" x2="15" y2="15" />
-                        </svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-search"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <circle cx="10" cy="10" r="7" />
+                                <line x1="21" y1="21" x2="15" y2="15" />
+                            </svg>
+                        </div>
+                        <input
+                            class="border focus:outline-none focus:border-indigo-700 rounded w-full h-[40px] text-sm text-gray-500 bg-gray-100 pl-12 py-2 border-none"
+                            type="text"
+                            placeholder="Search"
+                        />
                     </div>
-                    <input
-                        class="border focus:outline-none focus:border-indigo-700 rounded w-full h-[40px] text-sm text-gray-500 bg-gray-100 pl-12 py-2 border-none"
-                        type="text"
-                        placeholder="Search"
-                    />
-                </div>
+                </div> -->
             </div>
+            <!-- tabs -->
+            <AppTabs class="h-full flex" />
             <div class="col-start-3 col-span-1 pr-6">
                 <div class="w-full flex items-center justify-end">
                     <!-- avatar dropdown -->

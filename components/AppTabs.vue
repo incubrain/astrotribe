@@ -1,10 +1,12 @@
 <template>
-    <ul class="flex border-b-[1px] border-gray-300">
-        <li class="flex-1"
+    <ul>
+        <li class="flex flex-1 transition-all duration-300 mb-[-1px] items-center"
             v-for="tab in currentTabs"
+            :style="route.name === tab.name ? { 'border-bottom': '1px solid blue' } : { 'border-bottom': 'none'  }"
             :key="tab.id">
-            <NuxtLink class="relative block py-2 transition-all duration-300" :to="`/${parentRoute[1] + tab.slug}`" 
-                :style="route.name === tab.name ? { background: '#fff' } : { background: 'none' }">
+            <NuxtLink class="relative block py-2 rounded-lg w-full" :to="`/${parentRoute[1] + tab.slug}`" 
+                :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none'  }"
+                >
                 <div class="flex items-center justify-center text-gray-900" >
                     <Icon :name="tab.icon" size="23px"/>
                     <span class="ml-3 text-sm font-medium">

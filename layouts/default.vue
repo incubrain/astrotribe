@@ -12,7 +12,6 @@
                 <NavSidebar class="left-0 top-20 sticky h-[50px] bg-red-50" />
             </div>
             <div class="col-start-2 col-span-1 row-span-1 row-start-2 w-full h-full">
-                <AppTabs />
                 <div class="p-6">
                     <slot />
                 </div>
