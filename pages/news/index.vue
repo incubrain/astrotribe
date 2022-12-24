@@ -7,12 +7,6 @@
         rounded-md shadow-sm gap-6
     ">
         <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
-        <CardPost />
     </div>
 </template>
 
