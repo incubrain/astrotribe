@@ -61,7 +61,8 @@ module.exports = {
             animation: {
                 'spin-slow': 'spin 300s linear infinite',
                 glitter: 'glitter 8s ease-in 0s infinite',
-                loadin: 'loadin 350ms ease-in-out 100ms forwards'
+                'swipe-in': 'loadin 250ms ease-in-out 0s forwards',
+                'pop-in': 'pop-in 250ms ease-in-out 0s forwards'
             },
             keyframes: {
                 glitter: {
@@ -74,7 +75,7 @@ module.exports = {
                         opacity: 1,
                     },
                     '50%': {
-                        transform: 'scale(0.8)',
+                        tranwidsform: 'scale(0.8)',
                         opacity: 0,
                     },
                     '75%': {
@@ -85,10 +86,18 @@ module.exports = {
                 },
                 'loadin': {
                     '0%': {
-                        transform: 'scale(0.1)',
+                        transform: 'scaleX(0)',
                     },
-                    '80%': { 
-                        transform: 'scale(1.15)',
+                    '100%': { 
+                        transform: 'scaleX(1)',
+                    },
+                },
+                'pop-in': {
+                    '0%': {
+                        transform: 'scale(0.9)',
+                    },
+                    '50%': { 
+                        transform: 'scale(1.1)',
                     },
                     '100%': { 
                         transform: 'scale(1)',
