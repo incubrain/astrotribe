@@ -4,7 +4,9 @@
 </p> -->
 <p align="center" >The Astrotribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
 
-<p align="center" ><a href="https://astrotribe.onrender.com/">The Website</a></p>
+<p align="center">
+  <a href="https://astrotribe.onrender.com/">Live site</a> --- |  .  | --- <a href="https://astrotribe-dev.onrender.com">Dev site</a>
+</p>
 
 ## [Testing relative function](composables/useAuth.ts#L17)
 
