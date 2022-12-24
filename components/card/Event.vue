@@ -1,5 +1,7 @@
 <template>
-    <div class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-between">
+    <div class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-between
+    animate-swipe-in scale-x-0 origin-left
+    ">
         <div class="user-block">
             <div class="photo">
                 <img src="/avatar.png" />

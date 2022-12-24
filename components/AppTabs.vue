@@ -4,7 +4,7 @@
             v-for="tab in currentTabs"
             :style="route.name === tab.name ? { 'border-bottom': '1px solid blue' } : { 'border-bottom': 'none'  }"
             :key="tab.id">
-            <NuxtLink class="relative block py-2 rounded-lg w-full" :to="`/${parentRoute[1] + tab.slug}`" 
+            <NuxtLink class="relative block py-2 rounded-lg w-full transition-all duration-300 animate-pop-in scale-90" :to="`/${parentRoute[1] + tab.slug}`" 
                 :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none'  }"
                 >
                 <div class="flex items-center justify-center text-gray-900" >

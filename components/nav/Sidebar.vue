@@ -11,7 +11,7 @@
         v-for="page in pages"
         :key="page.id"
           class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6 rounded-lg transition-all duration-300"
-          :style="route.path === page.slug ? { background: '#fff', padding: '5px' } : { background: 'none' }"
+          :style="route.path.split('/')[1] === page.slug.split('/')[1] ? { background: '#fff', padding: '5px' } : { background: 'none' }"
           >
           <div class="flex items-center">
             <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center">

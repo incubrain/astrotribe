@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-rows-4 rounded-md shadow-sm overflow-hidden
-        animate-loadin scale-0
+        animate-swipe-in scale-x-0 origin-left
     ">
         <img src="/cover.jpg" class=" row-start-1 row-span-3 col-span-1 col-start-1 object-cover object-top shadow-lg h-[360px]">
         <div class=" text-black row-start-3 row-span-2 w-full col-span-1 col-start-1 relative
