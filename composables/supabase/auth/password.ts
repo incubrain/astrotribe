@@ -1,15 +1,15 @@
-import useClient from '../../useClient'
+import publicClient from '../publicClient'
 
 const url = 'http://localhost:3000/'
 
 const showResetForm = reactive(false)
 
 const requestResetEmail = async (email: string) => {
-    const { client } = useClient()
-    const { data, error } = await client.public.auth.resetPasswordForEmail(email, {
+    const client = publicClient()
+    const { data, error } = await client.auth.resetPasswordForEmail(email, {
         redirectTo: `${url}reset-password`,
     })
-    
+
     return {
         data,
         error,
@@ -17,8 +17,8 @@ const requestResetEmail = async (email: string) => {
 }
 
 const update = async (newPassword: string) => {
-    const { client } = useClient()
-    const { data, error } = await client.public.auth.updateUser({
+    const client = publicClient()
+    const { data, error } = await client.auth.updateUser({
         password: newPassword,
     })
 

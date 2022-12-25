@@ -1,9 +1,8 @@
-import useClient from '../../useClient'
-
+import publicClient from '../publicClient'
 
 const registerWithEmail = async (email: string, password: string) => {
-    const { client } = useClient()
-    const { data, error } = await client.public.auth.signUp({ email, password })
+    const client = publicClient()
+    const { data, error } = await client.auth.signUp({ email, password })
 
     return {
         data,
@@ -11,6 +10,4 @@ const registerWithEmail = async (email: string, password: string) => {
     }
 }
 
-export {
-    registerWithEmail,
-}
+export { registerWithEmail }

@@ -31,8 +31,6 @@
 </template>
 
 <script setup>
-const { initiatePublicClient } = useClient()
-initiatePublicClient()
 
 const { event } = useEventHandler()
 event.auth
