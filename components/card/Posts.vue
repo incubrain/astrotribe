@@ -13,7 +13,8 @@
                 shadow-lg mx-auto text-white font-bold
                 before:content-['Category']
                 group-hover:before:content-['Read_more']
-                "></button>
+                "
+                @click="myUndefinedFunction()"></button>
             <h1 class="text-2xl font-semibold pb-4"> {{ post.title }}</h1>
             <p class="text-sm h-[0px] group-hover:h-[100px] overflow-hidden transition-all duration-500 ease-in-out"
             > {{ post.body }}</p>
