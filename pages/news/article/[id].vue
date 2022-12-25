@@ -25,30 +25,9 @@
 
 <script setup lang="ts">
 
-const posts = [
-    {
-        id: 0, 
-        title: 'Test post', 
-        body: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Man`,  
-        featuredImage: '/cover.jpg', 
-        published: '24th December 2022' 
-    },
-    {
-        id: 1, 
-        title: 'Test post 2', 
-        body: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Man`,  
-        featuredImage: '/cover.jpg', 
-        published: '24th December 2022' 
-    }
-]
+const store = usePostsStore()
 
 const route = useRoute()
-const path = computed(() => route.path)
-const post = posts[Number(route.path.split('/').at(-1))] || null
+const post = store.postById(Number(route.path.split('/').at(-1))) || null
 
-// watch(
-//     () => route.path,
-//     () => getProject(),
-//     { deep: true }
-// )
 </script>

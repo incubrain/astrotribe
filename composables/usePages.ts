@@ -41,14 +41,8 @@ const pages = ref([
     },
 ] as Page[])
 
-const currentPage = ref('Home')
-
 export default function usePages() {
     return {
-        currentPage: computed(() => currentPage.value),
-        setPage: (newPage: string) => {
-            currentPage.value = newPage
-        },
         pages: computed(() => pages.value),
         tabs: (currentPage: string) =>
             pages.value.find((p) => p.name.toLocaleLowerCase() === currentPage),
