@@ -5,7 +5,7 @@
     class="grid grid-rows-4 rounded-md shadow-sm overflow-hidden
         animate-swipe-in scale-x-0 origin-left group
     ">
-        <img src="/cover.jpg" class=" row-start-1 row-span-3 col-span-1 col-start-1 object-cover object-top shadow-lg h-[360px]">
+        <img src="/cover.jpg" class=" row-start-1 row-span-3 col-span-1 col-start-1 object-cover object-top shadow-lg h-[320px]">
         <div class=" text-black row-start-3 row-span-2 w-full col-span-1 col-start-1 relative
         transition-all duration-500 ease-in-out">
         <div class="p-8 absolute bottom-0 bg-white w-full">
@@ -17,7 +17,7 @@
             <h1 class="text-2xl font-semibold pb-4"> {{ post.title }}</h1>
             <p class="text-sm h-[0px] group-hover:h-[100px] overflow-hidden transition-all duration-500 ease-in-out"
             > {{ post.body }}</p>
-            <p class="text-sm mt-4"> {{ post.publisheAt }}</p>
+            <!-- <p class="text-sm mt-4"> {{ post.publisheAt }}</p> -->
         </div>
         </div>
     </div></template>

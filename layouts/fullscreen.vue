@@ -17,9 +17,6 @@
 </template>
 
 <script setup>
-// const isEvent = ref(false)
-const { initiatePublicClient } = useClient()
-initiatePublicClient()
 
 const { event } = useEventHandler()
 event.auth

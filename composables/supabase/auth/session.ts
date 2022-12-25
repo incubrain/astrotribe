@@ -1,10 +1,12 @@
-import useClient from '../../useClient'
-
+import publicClient from '../publicClient'
 
 const getCurrent = async () => {
-    const { client } = useClient()
-    const { data: { session }, error } = await client.public.auth.getSession()
-    
+    const client = publicClient()
+    const {
+        data: { session },
+        error,
+    } = await client.auth.getSession()
+
     return {
         session,
         error,
@@ -12,8 +14,8 @@ const getCurrent = async () => {
 }
 
 const refresh = async () => {
-    const { client } = useClient()
-    const { data, error } = await client.public.auth.refreshSession()
+    const client = publicClient()
+    const { data, error } = await client.auth.refreshSession()
     const { session, user } = data
 
     return {
@@ -22,7 +24,4 @@ const refresh = async () => {
     }
 }
 
-export {
-    getCurrent,
-    refresh,
-}
+export { getCurrent, refresh }

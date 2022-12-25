@@ -1,9 +1,8 @@
-import useClient from '../../useClient'
-
+import publicClient from '../publicClient'
 
 const logout = async () => {
-    const { client } = useClient()
-    const { error } = await client.public.auth.signOut()
+    const client = publicClient()
+    const { error } = await client.auth.signOut()
 
     // removes session cookie
 
@@ -16,7 +15,4 @@ const logout = async () => {
     }
 }
 
-
-export {
-    logout,
-}
+export { logout }

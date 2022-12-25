@@ -6,7 +6,7 @@
         2xl:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)]
         rounded-md shadow-sm gap-6
     ">
-        <CardPost />
+        <CardPosts />
     </div>
 </template>
 

@@ -1,10 +1,10 @@
-import useClient from './useClient'
+import publicClient from './supabase/publicClient'
 import useAuth from './useAuth'
 
 export default function useEventHandler() {
     const router = useRouter()
     const route = useRoute()
-    const { client } = useClient()
+    const client = publicClient()
 
     const { password, showResetForm } = useAuth()
 
@@ -12,7 +12,7 @@ export default function useEventHandler() {
 
     return {
         event: {
-            auth: client.public.auth.onAuthStateChange((event, session) => {
+            auth: client.auth.onAuthStateChange((event, session) => {
                 if (event == 'SIGNED_OUT') {
                     console.log('SIGNED_OUT')
                     router.push('/login')
