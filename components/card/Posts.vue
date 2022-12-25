@@ -9,12 +9,14 @@
         <div class=" text-black row-start-3 row-span-2 w-full col-span-1 col-start-1 relative
         transition-all duration-500 ease-in-out">
         <div class="p-8 absolute bottom-0 bg-white w-full">
-            <button class="h-[40px] px-8 bg-[#440439] rounded-md absolute top-[-20px] left-0 right-0 w-[80%]
-                shadow-lg mx-auto text-white font-bold
-                before:content-['Category']
-                group-hover:before:content-['Read_more']
-                "
-                @click="myUndefinedFunction()"></button>
+            <NuxtLink :to="`/news/article/${post.id}`">
+                <button class="h-[40px] px-8 bg-[#440439] rounded-md absolute top-[-20px] left-0 right-0 w-[80%]
+                    shadow-lg mx-auto text-white font-bold
+                    before:content-['Category']
+                    group-hover:before:content-['Read_more']
+                    "
+                ></button>
+            </NuxtLink>
             <h1 class="text-2xl font-semibold pb-4"> {{ post.title }}</h1>
             <p class="text-sm h-[0px] group-hover:h-[100px] overflow-hidden transition-all duration-500 ease-in-out"
             > {{ post.body }}</p>

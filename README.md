@@ -28,6 +28,7 @@
     -   [@nuxtjs/color-mode:](https://color-mode.nuxtjs.org/) easy light/dark mode
     -   [@nuxtjs/partytown:](https://github.com/nuxt-modules/partytown) extract blocking JS to a separate thread
 -   TypeScript
+-   [Sentry:](https://sentry.io/organizations/ml-tech/projects/astrotribe/?project=4504389151621120) For error tracking
 -   Node
     -   Trpc
     -   Zod - Data Validation
