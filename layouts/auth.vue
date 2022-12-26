@@ -1,13 +1,19 @@
 <template>
     <div
-        class="bg-gray-200 text-white flex flex-col w-full h-[100vh] justify-center items-center overflow-hidden scrollbar-hidden"
+        class="bg-gray-200 text-white flex flex-col w-full h-[100vh] justify-center items-center
+        overflow-hidden scrollbar-hidden"
         :style="{
-            backgroundImage: `url(${data.nasaImg.url})`,
+            backgroundImage: `url(${data.nasaImg.hdurl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
         }"
     >
+    <div class="absolute top-10 right-10 cursor-pointer p-6 rounded-full bg-[#00000040] backdrop-blur-md"
+        @click="isVisible = !isVisible">
+        <Icon name="ic:baseline-remove-red-eye" size="23px"/>
+    </div>
         <div
+            v-show="isVisible"
             class="max-w-[780px] h-[80vh] flex flex-col justify-center items-center overflow-hidden"
         >
             <nav
@@ -27,8 +33,8 @@
             <slot class="animate-swipe-in scale-x-0 origin-left overflow-hidden" />
         </div>
         <div
-            class="group bg-[#000000d8]  lg:bg-[#00000028] p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] 
-            transition-all duration-300"
+        class="group bg-[#000000d8]  lg:bg-[#00000040] p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] 
+            transition-all duration-300 backdrop-blur-md"
         >
             <h1 class="text-xl font-semibold pb-2">{{ data.nasaImg.title }}</h1>
             <p
@@ -55,6 +61,9 @@
 </template>
 
 <script setup>
+
+const isVisible = ref(true)
+
 const { event } = useEventHandler()
 event.auth
 
