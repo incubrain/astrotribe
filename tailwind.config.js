@@ -62,6 +62,7 @@ module.exports = {
                 'spin-slow': 'spin 300s linear infinite',
                 glitter: 'glitter 8s ease-in 0s infinite',
                 'swipe-in': 'loadin 250ms ease-in-out 0s forwards',
+                'swipe-down': 'scaleY 350ms ease-in-out 0s forwards',
                 'pop-in': 'pop-in 250ms ease-in-out 0s forwards'
             },
             keyframes: {
@@ -90,6 +91,14 @@ module.exports = {
                     },
                     '100%': { 
                         transform: 'scaleX(1)',
+                    },
+                },
+                'scaleY': {
+                    '0%': {
+                        transform: 'scaleY(0)',
+                    },
+                    '100%': { 
+                        transform: 'scaleY(1)',
                     },
                 },
                 'pop-in': {
