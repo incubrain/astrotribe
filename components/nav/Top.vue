@@ -114,7 +114,7 @@
                                             Logout
                                         </button>
                                         <button
-                                            @click="navigateTo('/login')"
+                                            @click="navigateTo('/auth/login')"
                                             v-else
                                         >
                                             Login

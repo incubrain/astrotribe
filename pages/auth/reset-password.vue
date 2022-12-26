@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-full h-full p-20 text-black gap-4 justify-center items-center"
+        class="w-full h-full p-20 text-black gap-4 justify-center items-center bg-indigo-50 animate-swipe-down scale-y-0 origin-top"
     >
         <p>reset value: {{ showForm }}</p>
         <form v-if="showForm">
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import publicClient from '../composables/supabase/publicClient'
+import publicClient from '../../composables/supabase/publicClient'
 const client = publicClient()
 const router = useRouter()
 
@@ -47,7 +47,7 @@ const newPass = ref({
 })
 
 const { password, showResetForm } = useAuth()
-0
+
 watch(() => showResetForm.value, () => showForm.value = showResetForm.value)
 
 const updatePassword = async () => {
@@ -57,6 +57,10 @@ const updatePassword = async () => {
         console.log('data retunred', data)
     }
 }
+
+definePageMeta({
+    layout: 'auth',
+})  
 </script>
 
 <style scoped></style>
