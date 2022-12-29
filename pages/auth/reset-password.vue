@@ -34,10 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import publicClient from '../../composables/supabase/publicClient'
-const client = publicClient()
-const router = useRouter()
-
 
 const email = ref()
 const showForm = ref(false)
