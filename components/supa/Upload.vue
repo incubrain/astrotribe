@@ -1,7 +1,7 @@
 <template>
-    <div class="example-avatar bg-white p-12 w-full h-full">
+    <div class="example-avatar flex justify-center items-center w-full h-full">
         <div v-show="imageSrc" class="my-2 w-64 h-64 object-fill mx-auto">
-            <img class="block max-w-full" ref="img" :src="imageSrc" />
+            <img class="block max-w-full" ref="img" :src="imageSrc">
         </div>
         <div class="flex justify-center content-end mt-2">
             <button
