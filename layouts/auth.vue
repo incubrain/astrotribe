@@ -67,9 +67,9 @@ const isVisible = ref(true)
 const { event } = useEventHandler()
 event.auth
 
-const { data } = await useFetch('/api/nasa/iotd')
+const { data, error } = await useFetch('/api/iotd')
 
-console.log('data', data)
+console.log('spazz', data, error)
 </script>
 
 <style>
