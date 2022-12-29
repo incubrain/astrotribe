@@ -9,16 +9,27 @@ export default defineNuxtConfig({
             // ],
             script: [
                 // Insert your Google Tag Manager Script here
-                { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+                // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
             ],
         },
     },
     css: ['/assets/main.css', 'vuetify/lib/styles/main.css'],
+    generate: {
+        dir: 'output',
+        subFolders: true,
+    },
     imports: {
         dirs: ['stores'],
     },
+    // routeRules: {
+    //     '/auth/**': { swr: 1200 },
+    // },
+    formkit: {
+        configFile: './formkit.config.ts',
+    },
     modules: [
         '@nuxtjs/tailwindcss',
+        '@formkit/nuxt',
         '@nuxt/content',
         '@nuxtjs/partytown',
         '@nuxtjs/color-mode',
@@ -46,6 +57,14 @@ export default defineNuxtConfig({
     typescript: {
         shim: false,
     },
+    log: {
+        level: 'debug',
+        //  possible values are debug, info, warn, error, and fatal.
+        format: 'common',
+        // possible values are tiny, short, common, combined, and json
+        destination: '/server/log/nuxt.log',
+    },
+    preset: 'render-com',
     // For @nuxt/image-edge
     // image: {
     //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
@@ -74,7 +93,7 @@ export default defineNuxtConfig({
         // Nuxt content options
         highlight: {
             // Theme used in all color schemes.
-            theme: {
+            theme: {    
                 // Default theme (same as single string)
                 default: 'github-dark',
                 // Theme used if `html.dark`
