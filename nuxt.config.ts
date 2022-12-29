@@ -64,7 +64,9 @@ export default defineNuxtConfig({
         // possible values are tiny, short, common, combined, and json
         destination: '/server/log/nuxt.log',
     },
-    preset: 'render-com',
+    nitro: {
+        preset: 'render-com',
+    },
     // For @nuxt/image-edge
     // image: {
     //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
