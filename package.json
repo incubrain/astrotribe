@@ -47,5 +47,8 @@
     "cypress": "^11.0.0",
     "vue-upload-component": "^3.1.6",
     "vuetify": "^3.0.5"
+  },
+  "engines": {
+    "node": "v16.14.2"
   }
 }
