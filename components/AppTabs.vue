@@ -8,7 +8,7 @@
                 :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none'  }"
                 >
                 <div class="flex items-center justify-center text-gray-900" >
-                    <Icon :name="tab.icon" size="23px"/>
+                    <Icon :name="tab.icon" size="20px"/>
                     <span class="ml-3 text-sm font-medium">
                         {{ tab.name }}
                     </span>
