@@ -1,7 +1,7 @@
 <template>
     <!-- Navigation starts -->
     <nav
-        class="min-h-[80px] flex items-center lg:items-stretch w-full justify-end lg:justify-between bg-white shadow relative z-0"
+        class="min-h-[60px] flex items-center lg:items-stretch w-full justify-end lg:justify-between bg-white shadow relative z-0"
     >
         <div class="lg:grid lg:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center">
             <!-- logo -->

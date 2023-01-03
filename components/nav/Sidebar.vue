@@ -1,22 +1,26 @@
 <template>
-  <!-- Sidebar starts -->
-  <!-- Remove class [ hidden ] and replace [ sm:block ] with [ block ] -->
   <div
     class="w-full hidden md:relative h-full flex-col md:flex pb-6 border-r border-gray-300"
   >
-    <p class="text-gray-700 text-sm px-6 w-full py-2 bg-white mb-6 border-b-[1px] border-gray-300 leading-[23px]">Space for all</p>
-    <div class="px-6">
+    <div class="flex pl-4 pt-4">
       <ul>
         <li
         v-for="page in pages"
         :key="page.id"
           class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6 rounded-lg transition-all duration-300"
-          :style="route.path.split('/')[1] === page.slug.split('/')[1] ? { background: '#fff', padding: '5px' } : { background: 'none' }"
           >
           <div class="flex items-center">
             <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center">
-              <Icon :name="page.icon" size="23px" class="mr-4"/>
-              <span class="text-sm font-normal leading-none">{{  page.name  }}</span>
+              <div
+              class="rounded-full"
+                :style="route.path.split('/')[1] === page.slug.split('/')[1] ? { background: '#fff', padding: '6px', 'margin-left': '-6px'} : { background: 'none' }"
+              >
+                <Icon :name="page.icon"
+                  size="23px"
+                />
+              </div>
+              <span
+                  class="ml-6 text-sm font-normal leading-none">{{  page.name  }}</span>
             </NuxtLink>
           </div>
         </li>
