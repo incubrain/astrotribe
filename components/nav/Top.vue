@@ -1,13 +1,13 @@
 <template>
     <!-- Navigation starts -->
     <nav
-        class="min-h-[60px] flex items-center lg:items-stretch w-full justify-end lg:justify-between bg-white shadow relative z-0"
+        class="min-h-[60px] flex items-center md:items-stretch w-full justify-end md:justify-between bg-white shadow relative z-0"
     >
-        <div class="lg:grid lg:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center">
+        <div class="md:grid md:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center flex space-between">
             <!-- logo -->
             <div class="h-full flex items-center pl-6">
                 <h1 class="text-2xl font-bold">AstroTribe</h1>
-                <!-- <div class="w-full h-[40px] hidden lg:flex items-center">
+                <!-- <div class="w-full h-[40px] hidden md:flex items-center">
                     <div class="relative w-full">
                         <div
                             class="text-gray-500 absolute ml-4 inset-0 m-auto w-4 h-4"
@@ -38,8 +38,8 @@
                 </div> -->
             </div>
             <!-- tabs -->
-            <AppTabs class="h-full flex" />
-            <div class="col-start-3 col-span-1 pr-6">
+            <AppTabs class="hidden h-full md:flex" />
+            <div class="md:col-start-3 md:col-span-1 pr-6 flex w-full">
                 <div class="w-full flex items-center justify-end">
                     <!-- avatar dropdown -->
                     <div
@@ -77,9 +77,11 @@
                                                 d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
                                             />
                                         </svg>
-                                        <span class="text-sm ml-2"
-                                            >My Profile</span
-                                        >
+                                        <NuxtLink
+                                            to="/account/profile"
+                                            class="text-sm ml-2 text-gray-600 hover:text-indigo-700 cursor-pointer items-center">
+                                            My Profile
+                                        </NuxtLink>
                                     </div>
                                 </li>
                                 <li

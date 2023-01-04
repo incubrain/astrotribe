@@ -3,7 +3,7 @@
         class="h-[calc(100vh-60px)] max-h-[calc(100vh-60px)] flex flex-row relative"
     >
         <div
-            class="h-full border-r-[1px] border-gray-300 bg-[#E5E7EB] overflow-y-scroll w-[360px]"
+            class="hidden md:flex h-full border-r-[1px] border-gray-300 bg-[#E5E7EB] overflow-y-scroll w-[360px]"
         >
             <!-- this is the left bar -->
             <div class="flex flex-col text-[#000] text-sm cursor-pointer">
