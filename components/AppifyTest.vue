@@ -18,7 +18,7 @@
         "
     >
         <div
-            class="max-w-[620px] mx-auto py-20 text-black relative"
+            class="max-w-[90%] lg:max-w-[620px] mx-auto py-20 text-black relative"
             v-show="store.news.length"
         >
             <div

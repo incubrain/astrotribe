@@ -1,17 +1,18 @@
 <template>
     <div class="bg-gray-200 text-white flex flex-col w-full h-full">
         <div
-            class="grid grid-cols-[60px_minmax(90%,100%)] w-full h-full"
+            class="w-full h-full
+            lg:grid-cols-[60px_minmax(90%,100%)] lg:grid "
         >
-            <div class="col-start-1 col-span-2 w-full gap-4 md:gap-8 relative z-10">
+            <div class="lg:col-start-1 lg:col-span-2 w-full gap-4 md:gap-8 relative z-10">
                 <NavTop />
             </div>
             <div
-                class="col-start-1 col-span-1 row-start-2 row-span-1 flex w-full h-full relative overflow-hidden"
+                class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full relative overflow-hidden"
             >
                 <NavSidebar class="left-0 top-20 sticky h-[50px] bg-red-50" />
             </div>
-            <div class="col-start-2 col-span-1 row-span-1 row-start-2 w-full h-[calc(100vh-60px)]">
+            <div class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-60px)]">
                 <div>
                     <slot />
                 </div>

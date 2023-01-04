@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full hidden md:relative h-full flex-col md:flex pb-6 border-r border-gray-300"
+    class="w-full hidden md:relative h-full flex-col lg:flex pb-6 border-r border-gray-300"
   >
     <div class="flex pl-4 pt-4">
       <ul>
