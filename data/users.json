@@ -1,0 +1,188 @@
+{
+    "users": [
+        {
+
+            "name": "Vipul Vijay Khiradi",
+            "overall_rating": 4.0,
+            "events_worked": 2,
+            "avatar": "vipul-khiradi.jpg",
+            "location": [{
+                "type": "home",
+                "country": "India",
+                "state": "Maharastra",
+                "district": "Ajmer Daudane",
+                "town": "Nashik"
+            }],
+            "skills": [
+                {
+                    "name": "Astronomy",
+                    "rating": 4
+                },
+                {
+                    "name": "Telescope",
+                    "rating": 4
+                },
+                {
+                    "name": "Stargazing",
+                    "rating": 3
+                },
+                {
+                    "name": "Communication",
+                    "rating": 4
+                }
+            ],
+            "languages": [
+                {
+                    "name": "English",
+                    "rating": 3
+                },
+                {
+                    "name": "Marathi",
+                    "rating": 4
+                },
+                {
+                    "name": "Hindi",
+                    "rating": 4
+                }
+            ]
+        },
+        {
+            "name": "Sagar Laxman Bodhare",
+            "overall_rating": 3.5,
+            "events_worked": 2,
+            "avatar": "./users/avatars/sagar-laxman-bodhare.jpg",
+            "location": [{
+                "type": "home",
+                "country": "India",
+                "state": "Maharastra",
+                "district": "Ajmer Daudane",
+                "town": "Nashik"
+            }],
+            "skills": [
+                {
+                    "name": "Astronomy",
+                    "rating": 4
+                },
+                {
+                    "name": "Telescope",
+                    "rating": 4
+                },
+                {
+                    "name": "Stargazing",
+                    "rating": 3
+                },
+                {
+                    "name": "Communication",
+                    "rating": 3
+                }
+            ],
+            "languages": [
+                {
+                    "name": "English",
+                    "rating": 3
+                },
+                {
+                    "name": "Marathi",
+                    "rating": 4
+                },
+                {
+                    "name": "Hindi",
+                    "rating": 4
+                }
+            ]
+        },
+        {
+            "name": "Vaibhav Chaure",
+            "overall_rating": 4,
+            "events_worked": 2,
+            "avatar": "./users/avatars/vaibhav-chaure.jpg",
+            "location": [{
+                "type": "home",
+                "country": "India",
+                "state": "Maharastra",
+                "district": "Ajmer Daudane",
+                "town": "Nashik"
+            }],
+            "skills": [
+                {
+                    "name": "Astronomy",
+                    "rating": 4
+                },
+                {
+                    "name": "Telescope",
+                    "rating": 4
+                },
+                {
+                    "name": "Stargazing",
+                    "rating": 3
+                },
+                {
+                    "name": "Communication",
+                    "rating": 4
+                }
+            ],
+            "languages": [
+                {
+                    "name": "English",
+                    "rating": 3
+                },
+                {
+                    "name": "Marathi",
+                    "rating": 4
+                },
+                {
+                    "name": "Hindi",
+                    "rating": 4
+                }
+            ]
+        },
+        {
+            "name": "Neel Bhavdu Shewale",
+            "overall_rating": 3.5,
+            "events_worked": 2,
+            "avatar": "./users/avatars/neel-bhavdu-shewale.jpg",
+            "location": [{
+                "type": "home",
+                "country": "India",
+                "state": "Maharastra",
+                "district": "Ajmer Daudane",
+                "town": "Nashik"
+            }],
+            "skills": [
+                {
+                    "name": "Astronomy",
+                    "rating": 4
+                },
+                {
+                    "name": "Telescope",
+                    "rating": 4
+                },
+                {
+                    "name": "Stargazing",
+                    "rating": 3
+                },
+                {
+                    "name": "Communication",
+                    "rating": 3
+                }
+            ],
+            "languages": [
+                {
+                    "name": "English",
+                    "rating": 3
+                },
+                {
+                    "name": "Marathi",
+                    "rating": 4
+                },
+                {
+                    "name": "Hindi",
+                    "rating": 4
+                }
+            ]
+        }        
+    ]
+}
+
+
+
