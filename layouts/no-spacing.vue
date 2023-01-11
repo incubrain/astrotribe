@@ -12,7 +12,7 @@
             >
                 <NavSidebar class="left-0 top-20 sticky h-[50px] bg-red-50" />
             </div>
-            <div class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-60px)]">
+            <div class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-60px)] overflow-y-scroll pb-20 relative">
                 <div>
                     <slot />
                 </div>

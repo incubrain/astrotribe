@@ -45,6 +45,16 @@
 
 }
 
+@layer components {
+  .card {
+    @apply p-12 rounded-lg bg-white text-black;
+  }
+}
+
+html {
+  @apply scrollbar-hidden;
+}
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
