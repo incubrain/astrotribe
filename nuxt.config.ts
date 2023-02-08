@@ -1,5 +1,7 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import { fileURLToPath } from 'url'
+
 export default defineNuxtConfig({
     app: {
         layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -90,6 +92,9 @@ export default defineNuxtConfig({
     build: {
         transpile: ['vuetify'],
     },
+    // alias: {
+    //     '@data': "/assets/data",
+    // },
     ssr: false,
     content: {
         // Nuxt content options

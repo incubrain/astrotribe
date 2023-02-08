@@ -1,17 +1,18 @@
 <template>
-    <div
-        class="min-h-full grid 
-        max-w-[1240px] mx-auto 
-        grid-cols-[minmax(160px,1fr)]
-        lg:grid-cols-[minmax(140px,.4fr)_minmax(600px,4fr)_minmax(140px,0.4fr)]"
-    >
-     </div>
+    <HomeHero />
+    <div class="max-w-[1240px] mx-auto flex flex-col gap-32 py-32">
+        <HomeFeatures />
+        <HomeWorld />
+        <!-- <HomeTrusted /> -->
+        <HomeTestimonial />
+    </div>
 </template>
 
 <script setup lang="ts">
-
-definePageMeta({ name: 'Home' })
-
+definePageMeta({
+    name: 'Home',
+    layout: 'home',
+})
 </script>
 
 <style scoped></style>

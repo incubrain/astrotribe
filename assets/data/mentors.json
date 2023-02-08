@@ -1,0 +1,68 @@
+[
+    {
+    "id": 1,
+    "name": "Ruchira Hanumant Huchgol",
+    "profession": "Aerospace Engineer",
+    "avatar": "ruchira-huchgol.jpg",
+    "dob": "6/7/2001",
+    "location": [{
+        "type": "home",
+        "country": "India",
+        "state": "Maharastra",
+        "district": "Ajmer Daudane",
+        "town": "Nashik"
+    }],
+    "introduction": "Alumni from Mars Settlement and Exploration Program 22 as well as Mars Science and Engineering Program 22 from MarsU.USA. Program lead for the Lonar Analog Expedition Program 22 a low fidelity educational analog mission. Winner of Multidisciplinary Design thinking competition for Sustainable Lunar Village by Moon village association and APOSA. Participant of the first Mars Analogue Site Expedition. Analog Astronaut from habitat Marte mission 89. Co-Founder of Astrocapsule.",
+    "hashtags": [
+    "#ScienceCommuicator",
+    "#WomenInSpace",
+    "#AeroRucha"
+    ],
+    "socials": [
+        { "name": "linkedin", "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/" }
+    ],
+    "quote": "Astronomy is useful because it raises us above ourselves; it is useful because it is grand; It shows us how small is man's body, how great his mind, since his intelligence can embrace the whole of this dazzling immensity,     where his body is only an obscure point, and enjoy its silent harmony. - Henri Poincare, Physicist",
+    "associated_companies": "Operations Manager -AstronEra , Cofounder -AstroCapsule",
+    "interests": [
+    "Aerospace Engineering",
+    "Astrobiology",
+    "Observational Astronomy",
+    "Science Communicatio"
+    ],
+    "awards": "Co-Founder at https://www.astrocapsule.in/",
+    "information": "A space enthusiast who believes integration of technical and non technical aspects will help us achieve human space exploration faster."
+    },
+    {
+        "id": 2,
+        "name": "Ruchira The Second",
+        "profession": "Aerospace Engineer",
+        "avatar": "ruchira-huchgol.jpg",
+        "dob": "6/7/2001",
+        "location": [{
+            "type": "home",
+            "country": "India",
+            "state": "Maharastra",
+            "district": "Ajmer Daudane",
+            "town": "Nashik"
+            }],
+        "introduction": "Alumni from Mars Settlement and Exploration Program 22 as well as Mars Science and Engineering Program 22 from MarsU.USA. Program lead for the Lonar Analog Expedition Program 22 a low fidelity educational analog mission. Winner of Multidisciplinary Design thinking competition for Sustainable Lunar Village by Moon village association and APOSA. Participant of the first Mars Analogue Site Expedition. Analog Astronaut from habitat Marte mission 89. Co-Founder of Astrocapsule.",
+        "hashtags": [
+        "#ScienceCommuicator",
+        "#WomenInSpace",
+        "#AeroRucha"
+        ],
+        "socials": [
+            { "name": "linkedin", "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/" }
+        ],
+        "quote": "Astronomy is useful because it raises us above ourselves; it is useful because it is grand; It shows us how small is man's body, how great his mind, since his intelligence can embrace the whole of this dazzling immensity,     where his body is only an obscure point, and enjoy its silent harmony. - Henri Poincare, Physicist",
+        "associated_companies": "Operations Manager -AstronEra , Cofounder -AstroCapsule",
+        "interests": [
+        "Aerospace Engineering",
+        "Astrobiology",
+        "Observational Astronomy",
+        "Science Communicatio"
+        ],
+        "awards": "Co-Founder at https://www.astrocapsule.in/",
+        "information": "A space enthusiast who believes integration of technical and non technical aspects will help us achieve human space exploration faster."
+        }
+]

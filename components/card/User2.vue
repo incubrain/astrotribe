@@ -45,14 +45,6 @@
     transition: 0.15s ease;
 }
 
-.btn-primary {
-    border-radius: 99em;
-    background-color: #3772ff;
-    background-image: linear-gradient(135deg, #5587ff, #3772ff);
-    color: #fff;
-    padding: 0 1.375em;
-}
-
 .btn-primary:hover,
 .btn-primary:focus {
     background-size: 150%;

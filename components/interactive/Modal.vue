@@ -3,14 +3,16 @@
         class="py-12 bg-gray-900 bg-opacity-30 transition duration-150 ease-in-out z-10 fixed top-0 right-0 bottom-0 left-0 hidden"
         id="modal"
     >
-        <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
+        <div 
+            role="alert" 
+            :class="fullscreen ? 'relative z-50 mx-auto w-11/12 md:w-2/3' : 'relative z-50 mx-auto w-11/12 w-full'">
             <div
-                class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400"
+                class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400 h-[80vh] overflow-y-scroll"
             >
                 
                 <div class="flex flex-col justify-start w-full">
                     <slot />
-                    <div>
+                    <div v-if="buttonsVisible">
                         <button
                             class="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm"
                         >
@@ -49,18 +51,29 @@
             </div>
         </div>
     </div>
-    <div class="w-full flex justify-center py-12" id="button">
+    <div class="py-12 absolute hidden justify-center items-center w-full h-full group-hover:flex" id="button">
         <button
             class="focus:outline-none mx-auto transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
             @click="modalHandler(true)"
         >
-            Open Modal
+            {{ modalTitle }}
         </button>
     </div>
 </template>
 
 <script setup lang="ts">
 
+interface Props {
+    buttonsVisible: boolean,
+    fullscreen: boolean,
+    modalTitle: string
+}
+
+withDefaults(defineProps<Props>(), {
+    buttonsVisible: true,
+    fullscreen: false,
+    modalTitle: 'hello',
+})
 
 function fadeOut(el) {
     el.style.opacity = 1
