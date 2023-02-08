@@ -10,7 +10,7 @@
           class="flex w-full justify-between text-gray-700 cursor-pointer items-center mb-6 rounded-lg transition-all duration-300"
           >
           <div class="flex items-center">
-            <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center">
+            <NuxtLink :to="page.slug" class="flex flex-row items-center justify-center group">
               <div
               class="rounded-full"
                 :style="route.path.split('/')[1] === page.slug.split('/')[1] ? { background: '#fff', padding: '6px', 'margin-left': '-6px'} : { background: 'none' }"
@@ -20,7 +20,7 @@
                 />
               </div>
               <span
-                  class="ml-6 text-sm font-normal leading-none">{{  page.name  }}</span>
+                  class="ml-6 text-sm font-normal px-4 py-2 leading-none group-hover:bg-[#fff] group-hover:rounded-lg transition-all">{{  page.name  }}</span>
             </NuxtLink>
           </div>
         </li>

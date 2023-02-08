@@ -8,9 +8,10 @@
                 <NavTop />
             </div>
             <div
-                class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full relative overflow-hidden"
+                class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full relative overflow-hidden bg-[#E5E7EB]
+                hover:w-[165px] hover:overflow-visible z-50 transition-all"
             >
-                <NavSidebar class="left-0 top-20 sticky h-[50px] bg-red-50" />
+                <NavSidebar class="left-0 top-20 sticky h-[50px]" />
             </div>
             <div class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-60px)] overflow-y-scroll pb-20 relative">
                 <div>
