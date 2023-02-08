@@ -1,19 +1,22 @@
 <template>
-    <div class="example-avatar flex justify-center items-center w-full h-full">
-        <div v-show="imageSrc" class="my-2 w-64 h-64 object-fill mx-auto">
-            <img class="block max-w-full" ref="img" :src="imageSrc">
+    <div class="example-avatar flex flex-col gap-4 justify-center items-center w-full h-full">
+        <div v-show="imageSrc" class="my-4 w-1/2 aspect-ratio object-fill mx-auto border-4 border-stone-700 rounded-full">
+            <img :src="destination" class="block w-full rounded-full ">
         </div>
-        <div class="flex justify-center content-end mt-2">
+        <div v-show="imageSrc" class="my-2 w-1/2 aspect-ratio object-fill mx-auto">
+            <img class="block w-full aspect-auto max-w-full pb-4" ref="img" :src="imageSrc">
+        </div>
+        <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
             <button
                 v-if="!imageSrc"
-                class="btn btn-blue w-32 mx-2"
+                class="w-64 mx-4 h-64 bg-[#E5E7EB] rounded-full hover:bg-[#d5d5d5]"
                 @click="imageInput.click()"
             >
-                New Image
+                <slot />
             </button>
             <button
                 v-else
-                class="btn btn-blue w-32 mx-2"
+                class="btn-primary w-32 mx-2"
                 @click="handleImageCropped"
             >
                 Update
@@ -21,7 +24,7 @@
             <button
                 button
                 v-if="imageSrc"
-                class="btn btn-gray w-32 mx-2"
+                class="btn-primary w-32 mx-2"
                 @click="fileCleared"
             >
                 Cancel
@@ -30,53 +33,11 @@
                 type="file"
                 ref="imageInput"
                 accept=".jpg,.jpeg,.png"
+                class="py-4"
                 @change="fileChanged"
                 :style="{ display: 'none' }"
             />
         </div>
-        <div v-if="selectedFile" class="my-2 align-baseline text-center">
-            <span>Selected File: </span>
-            <span>{{ selectedFile.name }}</span>
-        </div>
-        <!-- <div class="text-center p-2">
-                <file-upload
-                    extensions="gif,jpg,jpeg,png,webp"
-                    accept="image/png,image/gif,image/jpeg,image/webp"
-                    name="avatar"
-                    class="px-12 py 4 bg-slate-200"
-                    post-action="/upload/post"
-                    :drop="!edit"
-                    v-model="files"
-                    @input-filter="inputFilter"
-                    @input-file="inputFile"
-                    ref="upload"
-                >
-                    Upload avatar
-                </file-upload>
-            </div> -->
-
-        <!-- <div class="avatar-edit" v-if="files?.length && edit">
-            <p>{{ files }}</p>
-            <div class="avatar-edit-image">
-                <img ref="editImage" :src="files[0].url" />
-            </div>
-            <div class="text-center p-4 bg-gray-300">
-                <button
-                    type="button"
-                    class="bg-blue-100 px-12 py-4 rounded-md shadow-md"
-                    @click.prevent="upload.clear"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    class="bg-gray-100 px-12 py-4 rounded-md shadow-md"
-                    @click="editSave"
-                >
-                    Save
-                </button>
-            </div>
-        </div> -->
     </div>
 </template>
 
@@ -89,16 +50,18 @@ const imageInput = ref(null) // template ref for file input
 const selectedFile = ref(null)
 const imageSrc = ref(null)
 const img = ref(null)
+const cropper = ref({})
+const destination = ref(null)
+
 const fileReader = new FileReader()
-let cropper = null
 fileReader.onload = (event) => {
     imageSrc.value = event.target.result
 }
 const handleImageCropped = () => {
-    cropper
+    cropper.value
         .getCroppedCanvas({
-            width: 256,
-            height: 256,
+            width: 180,
+            height: 180,
         })
         .toBlob((blob) => {
             console.log(blob)
@@ -117,19 +80,35 @@ const fileCleared = (_) => {
 }
 
 onMounted(() => {
-    cropper = new Cropper(img.value, {
+        cropper.value = new Cropper(img.value, {
         aspectRatio: 1,
-        minCropBoxWidth: 256,
-        minCropBoxHeight: 256,
+        zoomable: true,
+        zoomOnWheel: true,
+        minCropBoxWidth: 180,
+        minCropBoxHeight: 180,
         viewMode: 3,
-        dragMode: 'move',
+        dragMode: 'crop',
         background: false,
         cropBoxMovable: true,
         cropBoxResizable: true,
+        preview: '.preview',
+        crop() {
+            console.log(cropper.value.getCroppedCanvas())
+            const canvas = cropper.value.getCroppedCanvas()
+            destination.value = canvas.toDataURL('image/jpeg')
+            // Crop
+            // console.log(crop.baseURI)
+
+            // Round
+            // const roundedImage = document.createElement('img')
+            // roundedImage.src = crop.baseURI
+            // result.innerHTML = '';
+            // result.appendChild(roundedImage)
+        },
     })
 })
 onUnmounted(() => {
-    cropper.destroy()
+    cropper.value.destroy()
 })
 watchEffect(() => {
     if (selectedFile.value) {
@@ -142,7 +121,7 @@ watch(
     imageSrc,
     () => {
         if (imageSrc.value) {
-            cropper.replace(imageSrc.value)
+            cropper.value.replace(imageSrc.value)
         }
     },
     {
@@ -152,6 +131,14 @@ watch(
 </script>
 
 <style scoped>
+
+.preview {
+    border: 5px solid #292929;
+    overflow: hidden;
+    width: 50px; 
+    height: 50px;
+}
+
 .example-avatar .avatar-upload .rounded-circle {
     width: 200px;
     height: 200px;
