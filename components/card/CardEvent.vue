@@ -10,6 +10,10 @@
                 <h3>Drew MacGibbon <em>hosting</em></h3>
                 <span class="date">10 October 2020, 09:15 am</span>
             </section>
+            <h3 class="mt-3 flex justify-center items-center">
+                <Icon name="uil:location-point" size="20px" class="mr-2" />
+                Hilton Resort
+            </h3>
         </div>
         <article>
             <figure>
@@ -17,13 +21,13 @@
             </figure>
             <section class="article-info">
                 <div class="date">
-                    <span class="day">14</span>
+                    <span class="day">10</span>
                     <span class="month">Oct</span>
                 </div>
                 <h2>Come gaze at some stars</h2>
                 <span class="text-sm text-black font-thin">Documentary</span>
             </section>
-            <div
+            <!-- <div
                 class="flex flex-wrap gap-4 justify-left items-center text-black p-6"
             >
                 <ul class="flex flex-row">
@@ -41,9 +45,9 @@
                     </li>
                 </ul>
                 <span>+ 146 going</span>
-            </div>
+            </div> -->
         </article>
-        <div class="flex flex-row justify-between items-center w-full h-[40px] text-black px-4 gap-4">
+        <!-- <div class="flex flex-row justify-end items-center w-full h-[40px] text-black px-4 gap-4">
             <div class="flex flex-row gap-2 justify-center items-center">
                 <span class="leading-none">847</span>
                 <Icon name="bx:upvote" size="24px"/>
@@ -53,7 +57,7 @@
                 <Icon name="ion:share-social-outline" size="24px"/>
             </div>
             <button class="bg-gray-100 h-full w-1/2 rounded-lg">rsvp</button>
-        </div>
+        </div> -->
     </div>
 </template>
 
