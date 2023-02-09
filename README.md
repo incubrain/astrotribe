@@ -31,7 +31,7 @@
 -   TypeScript
 -   [Sentry:](https://sentry.io/organizations/ml-tech/projects/astrotribe/?project=4504389151621120) For error tracking
 -   Node
-    -   Trpc
+    -   TRPC - For API types and validation
     -   Zod - Data Validation
 -   [Eslint:]()
     -   [@nuxtjs/eslint-config-typescript]()

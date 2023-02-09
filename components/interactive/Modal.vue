@@ -1,6 +1,6 @@
 <template>
     <div
-        class="py-12 bg-gray-900 bg-opacity-30 transition duration-150 ease-in-out z-10 fixed top-0 right-0 bottom-0 left-0 hidden"
+        class="py-12 bg-gray-900 bg-opacity-30 transition duration-150 ease-in-out z-50 fixed top-0 right-0 bottom-0 left-0 hidden"
         id="modal"
     >
         <div 

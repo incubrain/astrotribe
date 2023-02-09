@@ -1,5 +1,4 @@
 <template>
-    <button @click="change(!visible)" class="absolute bg-black text-white top-10 z-30">toggle</button>
     <ProfileUser v-if="visible"/>
     <ProfileMentor v-else />
 </template>
@@ -15,7 +14,6 @@ function change(v) {
 
 definePageMeta({
     name: 'Profile',
-    layout: 'no-spacing',
 })
 
 </script>

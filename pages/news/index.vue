@@ -88,6 +88,5 @@
 <script setup lang="ts">
 definePageMeta({
     name: 'Newsfeed',
-    layout: 'no-spacing',
 })
 </script>
