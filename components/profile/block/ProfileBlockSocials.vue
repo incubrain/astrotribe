@@ -1,5 +1,5 @@
 <template>
-    <div class="card flex flex-col gap-2 items-center">
+    <div class="card flex flex-col gap-2">
         <h1 class="text-2xl pb-4 font-semibold">Connect</h1>
         <span
             v-for="social in socials"

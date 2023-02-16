@@ -34,35 +34,38 @@
     },
     {
         "id": 2,
-        "name": "Ruchira The Second",
-        "profession": "Aerospace Engineer",
-        "avatar": "ruchira-huchgol.jpg",
-        "dob": "6/7/2001",
+        "name": "Arianna Cortesi",
+        "profession": "Astrophysics",
+        "avatar": "arianna-cortesi.jpg",
+        "dob": "2/16/1982",
         "location": [{
             "type": "home",
-            "country": "India",
-            "state": "Maharastra",
-            "district": "Ajmer Daudane",
-            "town": "Nashik"
+            "country": "Brazil",
+            "state": "Rio de Janeiro",
+            "district": "Ajmer Dauda",
+            "town": "Rio de Janeiro"
             }],
-        "introduction": "Alumni from Mars Settlement and Exploration Program 22 as well as Mars Science and Engineering Program 22 from MarsU.USA. Program lead for the Lonar Analog Expedition Program 22 a low fidelity educational analog mission. Winner of Multidisciplinary Design thinking competition for Sustainable Lunar Village by Moon village association and APOSA. Participant of the first Mars Analogue Site Expedition. Analog Astronaut from habitat Marte mission 89. Co-Founder of Astrocapsule.",
+        "introduction": "I am an Italian astronomer working at the Federal University of Rio de Janeiro (UFRJ, Brazil). I research galaxy formation and evolution, with a special focus in lenticular galaxies. I also partecipate to several outreach projects, focused in inclusion, to promote peace and justice, in collaboration with indigenous communities, afrobrasilian cultural center and social projects in favelas (slums) of Rio de Janeiro.  I am part of the Brazilian NOC.",
         "hashtags": [
-        "#ScienceCommuicator",
-        "#WomenInSpace",
-        "#AeroRucha"
+        "#Astronomer",
+        "#Educator",
+        "#Science",
+        "#ArtMusic"
         ],
         "socials": [
-            { "name": "linkedin", "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/" }
+            { "name": "linkedin", "url": "https://www.linkedin.com/in/arianna-cortesi-6b470963/?originalSubdomain=it" },
+            { "name": "instagram", "url": "https://www.instagram.com/arioeira/?hl=en" },
+            { "name": "facebook", "url": "https://www.facebook.com/arianna.cortesi.18" }
         ],
-        "quote": "Astronomy is useful because it raises us above ourselves; it is useful because it is grand; It shows us how small is man's body, how great his mind, since his intelligence can embrace the whole of this dazzling immensity,     where his body is only an obscure point, and enjoy its silent harmony. - Henri Poincare, Physicist",
-        "associated_companies": "Operations Manager -AstronEra , Cofounder -AstroCapsule",
+        "quote": "Above us only Sky (John Lennon)",
+        "associated_companies": "Observatory of Valongo, UFRJ",
         "interests": [
-        "Aerospace Engineering",
-        "Astrobiology",
-        "Observational Astronomy",
-        "Science Communicatio"
+            "Galaxy Evolution",
+            "Lenticular Galaxies",
+            "Globular Clusters",
+            "Planetary Nebulae"
         ],
-        "awards": "Co-Founder at https://www.astrocapsule.in/",
-        "information": "A space enthusiast who believes integration of technical and non technical aspects will help us achieve human space exploration faster."
+        "awards": "I recently became a professor at the Institute of Physics of UFRJ, with my collaborators we have been awarded three OAD projects and one OAO project. ",
+        "information": "I  collaborate with the social project Ninho das Aguias (PPG, RJ, BR). In collaboration with Claudio Barbosa, we are developing the project PPG astro club, an astronomical club in the favela of Cantagalo, Pavão e Pavãosinho (PPG)."
         }
 ]
