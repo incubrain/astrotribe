@@ -53,7 +53,7 @@
                         class="flex items-center relative cursor-pointer"
                         @click="dropdownHandler($event)"
                     >
-                        <p class="text-gray-800 text-sm mx-3">{{ currentSession ? 'Authenticated' : 'No Auth' }}</p>
+                        <p class="text-gray-800 text-sm mx-3">{{ currentSession ? 'Authenticated' : 'Drew MacGibbon' }}</p>
 
                         <div class="rounded-md">
                             <ul

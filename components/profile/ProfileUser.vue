@@ -9,7 +9,7 @@
             <div
                 class="lg:col-start-2 absolute bottom-0 right-0 bg-[#343434] py-2 px-4 rounded-t-lg flex flex-col justify-center"
             >
-                <h3 class="text-[22px] pb-1"> AstroGuide Rating</h3>
+                <h3 class="text-[22px] pb-1">AstroGuide Rating</h3>
                 <AppStars
                     :rating="user.guide.overall_rating"
                     :starSize="26"

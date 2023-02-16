@@ -1,5 +1,7 @@
 <template>
-    <CommonCoverImg />
+    <CommonCoverImg
+        url="/observatorio-do-valongo.jpg"
+    />
     <div
         class="min-h-full grid grid-cols-[minmax(160px,1fr)] lg:grid-cols-[minmax(140px,.4fr)_minmax(600px,4fr)_minmax(140px,0.4fr)] lg:max-w-[1240px] mx-auto max-w-[95%]"
     >
@@ -13,8 +15,8 @@
         <div
             class="bg-white w-full h-[200px] relative lg:col-start-2 row-span-1 row-start-2 py-[140px] px-12 rounded-b-lg"
         >
-            <ProfileBlockAvatar :avatar="mentor.avatar" />
-            <ProfileBlockInfo :user="mentor" />
+            <ProfileBlockAvatar :avatar="mentor.avatar" type="mentor" />
+            <ProfileBlockInfo :user="mentor" type="mentor"/>
         </div>
         <div
             class="w-full relative grid grid-cols-1 lg:grid-cols-3 mt-6 gap-6 row-start-3 row-span-1 lg:col-start-2"
@@ -39,7 +41,7 @@
 import mentors from '../../assets/data/mentors.json'
 import ProfileBlockMentorBadge from './block/ProfileBlockMentorBadge.vue'
 
-const mentor = mentors[0]
+const mentor = mentors[1]
 </script>
 
 <style scoped></style>

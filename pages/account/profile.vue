@@ -1,6 +1,6 @@
 <template>
-    <ProfileUser v-if="visible"/>
-    <ProfileMentor v-else />
+    <!-- <ProfileUser v-if="visible"/> -->
+    <ProfileMentor />
 </template>
 
 <script setup lang="ts">

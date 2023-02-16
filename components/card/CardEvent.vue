@@ -1,7 +1,7 @@
 <template>
-    <div class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-between
-    animate-swipe-in scale-x-0 origin-left
-    ">
+    <div
+        class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-between animate-swipe-in scale-x-0 origin-left"
+    >
         <div class="user-block">
             <div class="photo">
                 <img src="/avatar.png" />
@@ -10,14 +10,14 @@
                 <h3>Drew MacGibbon <em>hosting</em></h3>
                 <span class="date">10 October 2020, 09:15 am</span>
             </section>
-            <h3 class="mt-3 flex justify-center items-center">
-                <Icon name="uil:location-point" size="20px" class="mr-2" />
-                Hilton Resort
-            </h3>
         </div>
+        <h3 class="pb-4 pl-4 flex items-center">
+            <Icon name="uil:location-point" size="20px" class="mr-2" />
+            Hilton Resort
+        </h3>
         <article>
             <figure>
-                <img src="/cover.jpg" />
+                <img src="/cover1.jpg" />
             </figure>
             <section class="article-info">
                 <div class="date">
