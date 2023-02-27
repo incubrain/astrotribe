@@ -3,19 +3,17 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "supabase:login": "npx supabase login",
+    "supabase:types": "npx supabase gen types typescript --db-url postgres://postgres:[password]@db.idsifamzvzlpgnmlnldw.supabase.co:6543/postgres > ./types/schema.d.ts --debug",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "storybook": "storybook",
     "lint": "eslint . --ext .ts,.js,.vue",
-    "lint:fix": "eslint . --ext .ts,.js,.vue --fix",
-    "story:dev": "histoire dev",
-    "story:build": "histoire build",
-    "story:preview": "histoire preview"
+    "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },
   "devDependencies": {
     "@formkit/nuxt": "^1.0.0-beta.12",
-    "@histoire/plugin-nuxt": "^0.11.9",
     "@nuxt/content": "^2.2.2",
     "@nuxtjs/color-mode": "^3.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
@@ -35,7 +33,6 @@
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.8.0",
-    "histoire": "^0.11.9",
     "nuxt": "^3.0.0",
     "nuxt-icon": "^0.1.8",
     "pubnub": "^7.2.2",
