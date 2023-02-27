@@ -10,7 +10,7 @@ export default function useData() {
         news: {
             many: manyNews,
         },
-        user: {
+        users: {
             current,
             many,
             byId,

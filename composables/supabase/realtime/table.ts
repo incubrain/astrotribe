@@ -31,5 +31,3 @@ const single = () => {
 }
 
 export { single, data }
-
-// Supabase client setup

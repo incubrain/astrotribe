@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     },
     css: ['/assets/main.css', 'vuetify/lib/styles/main.css'],
     generate: {
-        dir: 'output',
+        // dir: 'output',
         subFolders: true,
     },
     imports: {
@@ -100,7 +100,7 @@ export default defineNuxtConfig({
         // Nuxt content options
         highlight: {
             // Theme used in all color schemes.
-            theme: {    
+            theme: {
                 // Default theme (same as single string)
                 default: 'github-dark',
                 // Theme used if `html.dark`
