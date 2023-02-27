@@ -44,25 +44,25 @@ const current = async (userId: string) => {
 
 const many = async () => {
     // Check app state
+    // if (!userData.value.auth) return
+    
+    // console.log('fire2')
+    // // check local storage, if logged out return
+    // const localAuth = JSON.parse(window.localStorage.getItem('authUser') || '')
+    // if (localAuth) return console.log('local auth', localAuth)
+    // console.log('fire3')
+    
+    // console.log('test client', client)
     console.log('fire')
-    if (userData.value.auth) return
-
-    console.log('fire2')
-    // check local storage, if logged out return
-    const localAuth = JSON.parse(window.localStorage.getItem('authUser') || '')
-    if (localAuth) return console.log('local auth', localAuth)
-    console.log('fire3')
-
-    console.log('test client', client)
-
+    
     // if nothing stored, get data
     const {
-        data: { user },
+        data,
         error,
-    } = await client.auth.getUser()
-
+    } = await client.from('users').select('*')
+    
     return {
-        user,
+        data,
         error,
     }
 }

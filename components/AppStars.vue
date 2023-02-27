@@ -44,9 +44,6 @@ interface Props {
 withDefaults(defineProps<Props>(), {
     rating: 0,
     starSize: 24,
-    title: 'hello',
-    directionCol: true,
-    titleSize: 24,
 })
 </script>
 

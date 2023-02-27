@@ -42,8 +42,6 @@
 -   Tailwind 3
     -   [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
     -   [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
--   [Historie:](https://histoire.dev/) For developing components in isolation (Storybook alternative)
-    -   [@histoire/plugin-nuxt](https://github.com/histoire-dev/histoire/tree/main/packages/histoire-plugin-nuxt)
 
 ## Housekeeping
 
