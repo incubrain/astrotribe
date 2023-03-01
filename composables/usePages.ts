@@ -39,6 +39,16 @@ const pages = ref([
             { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
         ],
     },
+    {
+        id: 3,
+        name: 'Venues',
+        slug: '/venues',
+        icon: 'tabler:building-church',
+        // children: [
+        //     { id: 20, name: 'All', slug: '/', icon: 'tabler:building-church' },
+        //     { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'tabler:building-church' },
+        // ],
+    },
 ] as Page[])
 
 export default function usePages() {

@@ -1,5 +1,4 @@
-const manyNews = async () => {
-
+const newsMany = async () => {
     const { data, error } = await useFetch(
         'https://api.apify.com/v2/datasets/COV7EwyQwXmPQ7L26/items?token=apify_api_MjUrrfNI1stDZPOaVaCEncNGJweJfs1XebKA'
     )
@@ -12,4 +11,4 @@ const manyNews = async () => {
     }
 }
 
-export { manyNews }
+export { newsMany }

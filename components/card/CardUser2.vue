@@ -12,14 +12,16 @@
                     class="rounded-full h-20 aspect-square object-cover object-top"
                 />
                 <div class="flex flex-col gap-2 align-start">
-                    <h2 class="text-lg font-semibold">{{ name }}</h2>
-                    <small class="text-xs font-light">@{{ username }}</small>
+                    <h2 class="text-lg font-semibold">{{ props.user.given_name }} {{ props.user.surname }}</h2>
+                    <small class="text-xs font-light">@{{ props.user.username }}, online: {{ lastSeen }}</small>
                 </div>
             </div>
             <div class="flex flex-col align-start h-full justify-between">
                 <Icon name="simple-line-icons:user-follow" size="26px" />
                 <!-- <Icon name="simple-line-icons:user-unfollow" size="26px" /> -->
-                <Icon name="carbon:user-profile" size="26px" />
+                <NuxtLink :to="`/profile/${props.user.id}`">
+                    <Icon name="carbon:user-profile" size="26px" />
+                </NuxtLink>
             </div>
         </div>
     </article>
@@ -28,14 +30,32 @@
 <script setup lang="ts">
 
 interface Props {
-    name: string
-    username: string
+    user: {
+        id: number
+        given_name: string
+        surname: string
+        username: string
+        featured_image: string
+        last_seen: string
+        user_roles: string[]
+    }
 }
 
-withDefaults(defineProps<Props>(), {
-    name: 'bob',
-    username: 'billy',
+const props = withDefaults(defineProps<Props>(), {
+    user: () => ({
+        id: 0,
+        given_name: '',
+        surname: '',
+        username: '',
+        featured_image: '',
+        last_seen: '',
+        user_roles: [],
+    }),
 })
+
+const h = useHelpers()
+
+const lastSeen = h.time.lastSeen(props.user.last_seen)
 
 </script>
 

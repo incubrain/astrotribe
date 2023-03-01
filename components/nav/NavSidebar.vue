@@ -37,20 +37,6 @@
 const { pages } = usePages()
 const route = useRoute()
 
-
-const mobileNav = ref()
-
-function mobileNavHandler() {
-    mobileNav.value.style.transform = "translateX(-260px)"
-    if (this.$data.moved) {
-        mobileNav.value.style.transform = "translateX(0px)"
-        this.$data.moved = false
-    } else {
-        mobileNav.value.style.transform = "translateX(-260px)"
-        this.$data.moved = true
-    }
-}
-
 </script>
 
 <style scoped>
