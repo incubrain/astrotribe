@@ -128,6 +128,7 @@ export interface Database {
           country: string | null
           created_at: string | null
           id: number
+          lat_long: string | null
           state_province: string | null
         }
         Insert: {
@@ -136,6 +137,7 @@ export interface Database {
           country?: string | null
           created_at?: string | null
           id?: number
+          lat_long?: string | null
           state_province?: string | null
         }
         Update: {
@@ -144,7 +146,51 @@ export interface Database {
           country?: string | null
           created_at?: string | null
           id?: number
+          lat_long?: string | null
           state_province?: string | null
+        }
+      }
+      post_categories: {
+        Row: {
+          category_id: number
+          created_at: string | null
+          id: number
+          post_id: number
+        }
+        Insert: {
+          category_id: number
+          created_at?: string | null
+          id?: number
+          post_id: number
+        }
+        Update: {
+          category_id?: number
+          created_at?: string | null
+          id?: number
+          post_id?: number
+        }
+      }
+      post_reactions: {
+        Row: {
+          created_at: string | null
+          id: number
+          post_id: number
+          reaction_type_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          post_id: number
+          reaction_type_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          post_id?: number
+          reaction_type_id?: number
+          user_id?: string
         }
       }
       posts: {
@@ -191,29 +237,6 @@ export interface Database {
           created_at?: string | null
           id?: number
           title?: string
-        }
-      }
-      reactions: {
-        Row: {
-          created_at: string | null
-          id: number
-          post_id: number
-          reaction_type_id: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          post_id: number
-          reaction_type_id: number
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          post_id?: number
-          reaction_type_id?: number
-          user_id?: string
         }
       }
       reviews: {
@@ -366,7 +389,6 @@ export interface Database {
           id: number
           last_seen: string | null
           location_id: number | null
-          role_id: number | null
           surname: string
           updated_at: string | null
           username: string | null
@@ -380,7 +402,6 @@ export interface Database {
           id?: number
           last_seen?: string | null
           location_id?: number | null
-          role_id?: number | null
           surname: string
           updated_at?: string | null
           username?: string | null
@@ -394,7 +415,6 @@ export interface Database {
           id?: number
           last_seen?: string | null
           location_id?: number | null
-          role_id?: number | null
           surname?: string
           updated_at?: string | null
           username?: string | null

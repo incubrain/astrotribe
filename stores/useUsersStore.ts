@@ -1,69 +1,114 @@
-import * as z from 'zod'
 import useData from '../composables/useData'
+import * as util from './utilities'
+import { appState } from './appState'
 
-const UserSchema = z.object({
-    id: z.number(),
-    email: z.string().nullable(),
-    given_name: z.string().nullable(),
-    surname: z.string().nullable(),
-    username: z.string().nullable(),
-    dob: z.number(),
-    gender_id: z.number(),
-    location_id: z.number(),
-    role_id: z.number(),
-    created_at: z.date(),
-    updated_at: z.date(),
-    last_seen: z.date(),
-})
+export const useUsersStore = defineStore('users', () => {
+    const globalState = appState()
 
-export const useUsersStore = defineStore('users', {
-    //...
-    state: () => {
-        return {
-            users: [] as typeof UserSchema[],
-        }
-    },
-    actions: {
-        async storageCheck(dataType: string) {
-            const Schema = UserSchema
-            // if in state, return state
-            if (this[dataType].length) return this[dataType]
-            // if in localStorage, update state
-            const localStore = localStorage.getItem(dataType)
-            console.log(`${dataType} local storage check `)
-            if (!localStore) return false
+    async function getUsers() {
+        console.log('testing', globalState.users)
+        const dataType = 'users'
+        // check appState
+        if (globalState[dataType].length) return globalState[dataType]
+        console.log('userzz2')
+        // check localStorage
+        globalState[dataType] = util.checkLocalStorage({ dataType })
+        if (globalState[dataType].length) return globalState[dataType]
+        console.log('userzz3')
+        // if not stored get them from database
+        const { data, error } = await useData().users.many()
+        if (error) throw createError(error)
+        // validate data, then store in localStorage
+        globalState[dataType] = await util.checkDataValidity({
+            data,
+            dataType,
+            schema: 'UserBasic',
+        })
+        console.log('userzz5', globalState[dataType])
+        if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    }
 
-            try {
-                const parsedStore = JSON.parse(localStore)
-                const data = Schema.parse(parsedStore[1])
-                console.log(`${dataType} local data is valid: `, data)
-                this[dataType] = parsedStore
-                return parsedStore
-            } catch (error) {
-                createError(`Error validating ${dataType} local data: `, error)
-                return false
-            }
-        },
-        async getUsers() {
-            // check if posts are in localStorage or state
-            let users = await this.storageCheck('users')
-            console.log('localStorage users', users)
-            if (!users) {
-                const { data, error } = await useData().users.many()
-                console.log('get users from supabase', data)
-                if (error) throw createError(error)
-                this.users = data
-                localStorage.setItem('users', JSON.stringify(data))
-            }
-        },
-    },
-    getters: {
-        userById: (state) => {
-            return (id: number) => state.users.find(user => user.id === id)
-        }
-    },
+    async function getSingleUser({ userId }: { userId: number }) {
+        console.log('testing', globalState.users)
+        const dataType = 'user'
+        // check appState
+        if (globalState[dataType].length) return globalState[dataType]
+        console.log('userzz2')
+        // check localStorage
+        globalState[dataType] = util.checkLocalStorage({ dataType })
+        if (globalState[dataType].length) return globalState[dataType]
+        console.log('userzz3')
+        // if not stored get them from database
+        const { data, error } = await useData().users.single({ userId })
+        console.log('userzz4', data, error)
+        if (error) throw createError(error)
+        // validate data, then store in localStorage
+        globalState[dataType] = await util.checkDataValidity({
+            data,
+            dataType,
+            schema: 'User',
+        })
+        console.log('userzz5', globalState[dataType])
+        if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    }
+
+    async function getUserFollowers({ userId }: { userId: number }) {
+        const dataType = 'followers'
+        console.log('followersFollowed1', dataType, userId)
+        // check state
+        if (globalState[dataType].length) return globalState[dataType]
+        // check localStorage
+        globalState[dataType] = util.checkLocalStorage({ dataType })
+        if (globalState[dataType].length) return globalState[dataType]
+        // if not stored get them from database
+        const { data, error } = await useData().users.followers({ userId })
+        if (error) throw createError(error)
+        // validate data, then store in localStorage
+        globalState[dataType] = await util.checkDataValidity({
+            data,
+            dataType,
+            schema: 'Follower',
+        })
+        console.log('userzz', globalState[dataType])
+        if (!globalState[dataType])
+            throw createError(`Error validating ${dataType} data`)
+    }
+
+    async function getUserFollowed({ userId }: { userId: number }) {
+        const dataType = 'followed'
+        console.log('followersFollowed1', dataType, userId)
+        // check state
+        if (globalState[dataType]) return globalState[dataType]
+        // check localStorage
+        globalState[dataType] = util.checkLocalStorage({ dataType })
+        if (globalState[dataType]) return globalState[dataType]
+        // if not stored get them from database
+        const { data, error } = await useData().users.followed({ userId })
+        if (error) throw createError(error)
+        // validate data, then store in localStorage
+        globalState[dataType] = await util.checkDataValidity({
+            data,
+            dataType,
+            schema: 'Follower',
+        })
+        console.log('userzz', globalState[dataType])
+        if (!globalState[dataType])
+            throw createError(`Error validating ${dataType} data`)
+    }
+
+    const userById = () => {
+        return (id: number) => globalState.users.find((user) => user.id === id)
+    }
+
+    return {
+        getUsers,
+        getSingleUser,
+        getUserFollowers,
+        getUserFollowed,
+        userById,
+    }
 })
 
 if (import.meta.hot) {
-    import.meta.hot.accept(acceptHMRUpdate(useUsersStore, import.meta.hot))
+    import.meta.hot.accept(acceptHMRUpdate(usePostsStore, import.meta.hot))
 }

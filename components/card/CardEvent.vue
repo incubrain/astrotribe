@@ -7,25 +7,42 @@
                 <img src="/avatar.png" />
             </div>
             <section class="user-info">
-                <h3>Drew MacGibbon <em>hosting</em></h3>
-                <span class="date">10 October 2020, 09:15 am</span>
+                <h3>
+                    <span
+                        v-for="host in props.hosts"
+                        :key="host.id"
+                    >
+                        {{ host.given_name }},
+                    </span>
+                    <em>hosting</em>
+                </h3>
+                <span class="date">{{ time.day }} {{ time.month }}, {{ time.time }} {{ time.ampm }}</span>
             </section>
         </div>
-        <h3 class="pb-4 pl-4 flex items-center">
-            <Icon name="uil:location-point" size="20px" class="mr-2" />
-            Hilton Resort
-        </h3>
+        <div class="pb-4 pl-4 flex items-center gap-4">
+            <div class="bg-gray-100 rounded-full p-2" >
+                <Icon name="uil:location-point" size="24px" />
+            </div>
+            <div class="flex flex-col">
+                <h3> {{ props.venue.name }}</h3>
+                <p>
+                    {{ props.venue.location.country }},
+                    {{ props.venue.location.state_province }}, 
+                    {{ props.venue.location.city }}
+                </p>
+            </div>
+        </div>
         <article>
             <figure>
                 <img src="/cover1.jpg" />
             </figure>
             <section class="article-info">
-                <div class="date">
-                    <span class="day">10</span>
-                    <span class="month">Oct</span>
+                <div class="date flex-col justify-center items-center">
+                    <span class="day">{{ time.month }}</span>
+                    <span class="month text-center">{{ time.day }}</span>
                 </div>
-                <h2>Come gaze at some stars</h2>
-                <span class="text-sm text-black font-thin">Documentary</span>
+                <h2>{{ props.title }}</h2>
+                <span class="text-sm text-black font-thin"> {{ props.description }}</span>
             </section>
             <!-- <div
                 class="flex flex-wrap gap-4 justify-left items-center text-black p-6"
@@ -61,7 +78,55 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const h = useHelpers()
+
+interface Props {
+    title: string
+    description: string
+    date: string
+    hosts: [{
+        id: number
+        given_name: string
+        featured_image: string
+    }],
+    venue: {
+        name: string
+        location: {
+            country: string
+            state_province: string
+            city: string
+        }
+    }
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    title: 'bob',
+    description: 'billy will be looking at the stars',
+    date: '12/10/22',
+    venue: () => {
+        return {
+            name: 'Error getting venue',
+            location: {
+                country: 'N/A',
+                state_province: 'N/A',
+                city: 'N/A',
+            },
+        }
+    },
+    hosts: () => [
+        {
+            id: 0,
+            given_name: 'Error getting host',
+            featured_image: '/avatar.png',
+        },
+    ]
+})
+
+const time = h.time.format(props.date)
+
+</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');

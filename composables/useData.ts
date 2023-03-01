@@ -1,19 +1,35 @@
-import { current, many, byId } from './supabase/data/user'
-import { manyPosts } from './supabase/data/posts'
-import { manyNews } from './supabase/data/news'
+import { userSingle, UsersMany, userById, userFollowers, userFollowed } from './supabase/get/users'
+import { eventsMany, eventById } from './supabase/get/events'
+import { venuesMany, venueById } from './supabase/get/venues'
+import { postsMany } from './supabase/get/posts'
+import { newsMany } from './supabase/get/news'
 
 export default function useData() {
     return {
         posts: {
-            many: manyPosts,
+            many: postsMany,
+            // byCategory: postsByCategory,
         },
         news: {
-            many: manyNews,
+            many: newsMany,
         },
         users: {
-            current,
-            many,
-            byId,
-        }
+            single: userSingle,
+            many: UsersMany,
+            byId: userById,
+            // byRole: userByRole,
+            // connections: UserConnections,
+            followers: userFollowers,
+            followed: userFollowed,
+        },
+        events: {
+            many: eventsMany,
+            byId: eventById,
+            // byHost: eventsByHost,
+        },
+        venues: {
+            many: venuesMany,
+            byId: venueById,
+        },
     }
 }
