@@ -3,6 +3,7 @@ import { eventsMany, eventById } from './supabase/get/events'
 import { venuesMany, venueById } from './supabase/get/venues'
 import { postsMany } from './supabase/get/posts'
 import { newsMany } from './supabase/get/news'
+import * as image from './supabase/get/publicImage'
 
 export default function useData() {
     return {
@@ -12,6 +13,10 @@ export default function useData() {
         },
         news: {
             many: newsMany,
+        },
+        images: {
+            avatar: image.profileSingle,
+            cover: image.profileSingle,
         },
         users: {
             single: userSingle,
