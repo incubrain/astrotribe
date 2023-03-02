@@ -58,6 +58,7 @@ export default defineNuxtConfig({
     },
     typescript: {
         shim: false,
+        typeCheck: true,
     },
     log: {
         level: 'debug',
