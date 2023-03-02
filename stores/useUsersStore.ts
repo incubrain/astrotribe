@@ -28,6 +28,21 @@ export const useUsersStore = defineStore('users', () => {
         if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
     }
 
+    async function getAvatar({ userId, type, fileName }: { userId: number, type: string, fileName: string }) {
+        console.log('testing', type, userId, fileName)
+        // if not stored get them from database
+        const { data, error } = await useData().images.avatar({ userId, type, fileName })
+        if (error) throw createError(error)
+        // validate data, then store in localStorage
+        globalState[dataType] = await util.checkDataValidity({
+            data,
+            dataType,
+            schema: 'UserBasic',
+        })
+        console.log('userzz5', globalState[dataType])
+        if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    }
+
     async function getSingleUser({ userId }: { userId: number }) {
         console.log('testing', globalState.users)
         const dataType = 'user'

@@ -65,8 +65,8 @@ const handleImageCropped = () => {
         })
         .toBlob((blob) => {
             console.log(blob)
-            upload.single(blob, '9465747a-47a0-46ac-93a7-5151e62b8eff', true)
-        }, 'image/jpeg')
+            upload.avatar({ file: blob, userId, type: 'avatar' }) // !todo auth user, get id
+        }, 'image/png')
     selectedFile.value = null
 }
 const fileChanged = (e) => {

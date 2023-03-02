@@ -8,7 +8,7 @@
         >
             <div class="flex gap-2 justify-center items-center">
                 <img
-                    src="https://assets.codepen.io/285131/neongirl.jpg"
+                    src="https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/1/avatar/upwork.png"
                     class="rounded-full h-20 aspect-square object-cover object-top"
                 />
                 <div class="flex flex-col gap-2 align-start">
