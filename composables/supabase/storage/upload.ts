@@ -1,17 +1,24 @@
+import { v4 as uuidv4 } from 'uuid'
 import publicClient from '../publicClient'
+
 
 const client = publicClient()
 
-const userSingle = async (event: Event, userId: string, isPublic: boolean) => {
-    console.log('zzz', event)
-    const avatarFile = event.target?.files[0]
-    const folder = isPublic ? publicBucket : privateBucket
+const publicBucket = 'profile-public'
+// const privateBucket = 'profile-private'
+
+const profileSingle = async ({file, userId, type }: { file: File, userId: number, type: string}) => {
+    const myUUID = uuidv4()
+    console.log('uploadFile', file, userId)
     const { data, error } = await client.storage
-        .from('avatars')
-        .upload(`${folder}/${userId}/avatar.png`, avatarFile, {
-            cacheControl: '3600',
-            upsert: false,
-        })
+    .from(publicBucket)
+    .upload(`${userId}/${type}/${myUUID}.jpeg`, file, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/jpeg',
+    })
+    
+    console.log('uploadReturn', data, userId)
 
     return {
         data,
@@ -19,6 +26,4 @@ const userSingle = async (event: Event, userId: string, isPublic: boolean) => {
     }
 }
 
-export default {
-    userSingle,
-}
+export { profileSingle }

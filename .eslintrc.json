@@ -23,6 +23,7 @@
         "vue/multi-word-component-names": 0,
         "no-global-assign": [0, {"exceptions": ["Object"]}],
         "import/no-unresolved": "off",
+        "no-console": "off",
         "no-undefined": [0],
         "no-new": 0
     },

@@ -2,10 +2,13 @@ import publicClient from '../publicClient'
 
 const getCurrent = async () => {
     const client = publicClient()
-    const { data, error } = await client.auth.getSession()
+    const {
+        data: { session },
+        error,
+    } = await client.auth.getSession()
 
     return {
-        data,
+        session,
         error,
     }
 }
@@ -21,7 +24,4 @@ const refresh = async () => {
     }
 }
 
-export default {
-    getCurrent,
-    refresh,
-}
+export { getCurrent, refresh }

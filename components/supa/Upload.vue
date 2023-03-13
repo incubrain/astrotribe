@@ -1,166 +1,155 @@
 <template>
-    <div class="example-avatar bg-white p-12">
-        <div
-            v-show="upload && upload.dropActive"
-            class="drop-active p-16 bg-green-200 w-100 h64"
-        >
-            <h3>Drop files to upload</h3>
+    <div class="example-avatar flex flex-col gap-4 justify-center items-center w-full h-full">
+        <div v-show="imageSrc" class="my-4 w-1/2 aspect-ratio object-fill mx-auto border-4 border-stone-700 rounded-full">
+            <img :src="destination" class="block w-full rounded-full ">
         </div>
-        <div class="avatar-upload" v-show="!edit">
-            <div class="text-center p-2">
-                <label for="avatar">
-                    <img
-                        :src="
-                            files?.length
-                                ? files[0].url
-                                : 'https://www.gravatar.com/avatar/default?s=200&r=pg&d=mm'
-                        "
-                        class="rounded-full"
-                    />
-                    <h4 class="pt-2">or<br />Drop files anywhere to upload</h4>
-                </label>
-            </div>
-            <div class="text-center p-2">
-                <file-upload
-                    extensions="gif,jpg,jpeg,png,webp"
-                    accept="image/png,image/gif,image/jpeg,image/webp"
-                    name="avatar"
-                    class="px-12 py 4 bg-slate-200"
-                    post-action="/upload/post"
-                    :drop="!edit"
-                    v-model="files"
-                    @input-filter="inputFilter"
-                    @input-file="inputFile"
-                    ref="upload"
-                >
-                    Upload avatar
-                </file-upload>
-            </div>
+        <div v-show="imageSrc" class="my-2 w-1/2 aspect-ratio object-fill mx-auto">
+            <img
+                ref="img"
+                class="block w-full aspect-auto max-w-full pb-4"
+                :src="imageSrc"
+            >
         </div>
-
-        <div class="avatar-edit" v-show="files?.length && edit">
-            <div class="avatar-edit-image" v-if="files?.length">
-                <img ref="editImage" :src="files[0].url" />
-            </div>
-            <div class="text-center p-4 bg-gray-300">
-                <button
-                    type="button"
-                    class="bg-blue-100 px-12 py-4 rounded-md shadow-md"
-                    @click.prevent="upload.clear"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    class="bg-gray-100 px-12 py-4 rounded-md shadow-md"
-                    @click="editSave"
-                >
-                    Save
-                </button>
-            </div>
+        <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
+            <button
+                v-if="!imageSrc"
+                class="w-64 mx-4 h-64 bg-[#E5E7EB] rounded-full hover:bg-[#d5d5d5]"
+                @click="imageInput.click()"
+            >
+                <slot />
+            </button>
+            <button
+                v-else
+                class="btn-primary w-32 mx-2"
+                @click="handleImageCropped"
+            >
+                Update
+            </button>
+            <button
+                button
+                v-if="imageSrc"
+                class="btn-primary w-32 mx-2"
+                @click="fileCleared"
+            >
+                Cancel
+            </button>
+            <input
+                type="file"
+                ref="imageInput"
+                accept=".jpg,.jpeg,.png"
+                class="py-4"
+                @change="fileChanged"
+                :style="{ display: 'none' }"
+            />
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Cropper from 'cropperjs'
-import * as FileUpload from 'vue-upload-component'
 
-const { getUser } = useData()
-const { uploadFile } = useStorage()
+const { upload } = useStorage()
 
-const user = await getUser()
-
-const files = ref([])
-const upload = ref({})
-const edit = ref(false)
-const editImage = ref()
-const crop = ref(false)
-
-onMounted(() => {
-    watch(
-        () => edit.value,
-        (value) => {
-            if (value) {
-                nextTick(() => {
-                    if (!editImage.value) {
-                        return
-                    }
-                    let cropNew = new Cropper(editImage.value, {
-                        aspectRatio: 1 / 1,
-                        viewMode: 1,
-                    })
-                    crop.value = cropNew
-                })
-            } else {
-                if (crop.value) {
-                    crop.value.destroy()
-                    crop.value = false
-                }
-            }
-        }
-    )
+const props = defineProps({
+    uploadType: {
+        type: String as PropType<string>,
+        required: true,
+    },
 })
 
-function editSave() {
-    edit.value = false
+const imageInput = ref(null) // template ref for file input
+const selectedFile = ref(null)
+const imageSrc = ref(null)
+const img = ref(null)
+const cropper = ref({})
+const destination = ref(null)
 
-    let oldFile = files.value[0]
-
-    let binStr = atob(
-        crop.value.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1]
-    )
-    let arr = new Uint8Array(binStr.length)
-    for (let i = 0; i < binStr.length; i++) {
-        arr[i] = binStr.charCodeAt(i)
-    }
-
-    let file = new File([arr], oldFile.name, { type: oldFile.type })
-
-    uploadFile(file, user.id, true)
-
-    // upload.value.update(oldFile.id, {
-    //   file,
-    //   type: file.type,
-    //   size: file.size,
-    //   active: true,
-    // })
+const fileReader = new FileReader()
+fileReader.onload = (event) => {
+    imageSrc.value = event.target.result
 }
-
-function alert(message) {
-    alert(message)
-}
-
-function inputFile(newFile, oldFile) {
-    if (newFile && !oldFile) {
-        nextTick(() => {
-            edit.value = true
+const handleImageCropped = () => {
+    cropper.value
+        .getCroppedCanvas({
+            width: 180,
+            height: 180,
         })
-    }
-    if (!newFile && oldFile) {
-        edit.value = false
+        .toBlob((blob) => {
+            console.log(blob)
+            upload.avatar({ file: blob, userId, type: props.uploadType }) // !todo auth user, get id
+        }, 'image/png')
+    selectedFile.value = null
+}
+const fileChanged = (e) => {
+    const files = e.target.files || e.dataTransfer.files
+    if (files.length) {
+        selectedFile.value = files[0]
     }
 }
-
-function inputFilter(newFile, oldFile, prevent) {
-    if (newFile && !oldFile) {
-        if (!/\.(gif|jpg|jpeg|png|webp)$/i.test(newFile.name)) {
-            alert('Your choice is not a picture')
-            return prevent()
-        }
-    }
-
-    if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-        newFile.url = ''
-        let URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-            newFile.url = URL.createObjectURL(newFile.file)
-        }
-    }
+const fileCleared = (_) => {
+    selectedFile.value = null
 }
+
+onMounted(() => {
+        cropper.value = new Cropper(img.value, {
+        aspectRatio: 1,
+        zoomable: true,
+        zoomOnWheel: true,
+        minCropBoxWidth: 180,
+        minCropBoxHeight: 180,
+        viewMode: 3,
+        dragMode: 'crop',
+        background: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        preview: '.preview',
+        crop() {
+            console.log(cropper.value.getCroppedCanvas())
+            const canvas = cropper.value.getCroppedCanvas()
+            destination.value = canvas.toDataURL('image/jpeg')
+            // Crop
+            // console.log(crop.baseURI)
+
+            // Round
+            // const roundedImage = document.createElement('img')
+            // roundedImage.src = crop.baseURI
+            // result.innerHTML = '';
+            // result.appendChild(roundedImage)
+        },
+    })
+})
+onUnmounted(() => {
+    cropper.value.destroy()
+})
+watchEffect(() => {
+    if (selectedFile.value) {
+        fileReader.readAsDataURL(selectedFile.value)
+    } else {
+        imageSrc.value = null
+    }
+})
+watch(
+    imageSrc,
+    () => {
+        if (imageSrc.value) {
+            cropper.value.replace(imageSrc.value)
+        }
+    },
+    {
+        flush: 'post', // watch runs after component updates
+    }
+)
 </script>
 
 <style scoped>
+
+.preview {
+    border: 5px solid #292929;
+    overflow: hidden;
+    width: 50px; 
+    height: 50px;
+}
+
 .example-avatar .avatar-upload .rounded-circle {
     width: 200px;
     height: 200px;
