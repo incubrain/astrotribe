@@ -1,13 +1,4 @@
 {
   // https://v3.nuxtjs.org/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
-  "include": [
-    "**/*",
-  ],
-  "exclude": ["node_modules", "dist"],
-  "types": ["@nuxt/types", "vite/client"],
-  "compilerOptions": {
-    "target": "ESNext",
-    "strict": true
-  }
 }
