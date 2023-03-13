@@ -1,8 +1,8 @@
-<h1 align="center" style="margin-top: 0px;">Astrotribe</h1>
+<h1 align="center" style="margin-top: 0px;">AstroTribe</h1>
 <!-- <p align="center" style="margin-bottom: 0px !important;">
   <img width="200" src="https://github.com/Drew-Macgibbon/design-portfolio/blob/main/public/readme/doom-logo.png" align="center">
 </p> -->
-<p align="center" >The Astrotribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
+<p align="center" >The AstroTribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
 
 <p align="center">
   <a href="https://astrotribe.onrender.com/">Live site</a> --- |  .  | --- <a href="https://astrotribe-dev.onrender.com">Dev site</a>
@@ -28,10 +28,12 @@
 -   Nuxt 3
     -   [@nuxt/content:](https://content.nuxtjs.org/guide/writing/content-directory) For rendering static pages using Markdown files
     -   [@nuxtjs/color-mode:](https://color-mode.nuxtjs.org/) easy light/dark mode
+    -   [nuxt-icon:](https://github.com/nuxt-modules/icon) 100k icons, search icons [here](https://icones.js.org/collection/all)
     -   [@nuxtjs/partytown:](https://github.com/nuxt-modules/partytown) extract blocking JS to a separate thread
 -   TypeScript
+-   [Sentry:](https://sentry.io/organizations/ml-tech/projects/astrotribe/?project=4504389151621120) For error tracking
 -   Node
-    -   Trpc
+    -   TRPC - For API types and validation
     -   Zod - Data Validation
 -   [Eslint:]()
     -   [@nuxtjs/eslint-config-typescript]()
@@ -42,8 +44,6 @@
 -   Tailwind 3
     -   [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
     -   [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
--   [Historie:](https://histoire.dev/) For developing components in isolation (Storybook alternative)
-    -   [@histoire/plugin-nuxt](https://github.com/histoire-dev/histoire/tree/main/packages/histoire-plugin-nuxt)
 
 ## Housekeeping
 

@@ -1,24 +1,32 @@
-import eventHandler from './supabase/eventHandler'
-import logout from './supabase/auth/logout'
-import session from './supabase/auth/session'
-import { showResetForm, update, requestResetEmail, handlePasswordReset } from './supabase/auth/password'
-import register from './supabase/auth/register'
-import login from './supabase/auth/login'
+import { logout } from './supabase/auth/logout'
+import { refresh, getCurrent } from './supabase/auth/session'
+import { update, requestResetEmail } from './supabase/auth/password'
+import { registerWithEmail } from './supabase/auth/register'
+import { loginWithEmail } from './supabase/auth/login'
 
 export default function useAuth() {
+    const showResetForm = ref(false)
+
     return {
-        login,
+        login: {
+            loginWithEmail,
+        },
         logout,
-        register,
+        register: {
+            registerWithEmail,
+        },
         password: {
             requestResetEmail,
             update,
-            showResetForm: computed(() => showResetForm.value),
+            toggleResetForm: (newValue: boolean) => {
+                console.log('toggleResetForm')
+                showResetForm.value = newValue
+            },
         },
-        session,
-        eventHandler,
-        event: {
-            handlePasswordReset,
-        }
+        showResetForm: computed(() => showResetForm.value),
+        session: {
+            refresh,
+            getCurrent,
+        },
     }
 }
