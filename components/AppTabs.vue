@@ -1,9 +1,11 @@
 <template>
-    <ul>
-        <li class="flex flex-1 transition-all duration-300 mb-[-1px] items-center"
+    <ul class="flex justify-center">
+        <li 
             v-for="tab in currentTabs"
+            :key="tab.id"
+            class="flex flex-1 transition-all duration-300 mb-[-1px] items-center max-w-[180px]"
             :style="route.name === tab.name ? { 'border-bottom': '1px solid blue' } : { 'border-bottom': 'none'  }"
-            :key="tab.id">
+        >
             <NuxtLink class="relative block py-2 rounded-lg w-full transition-all duration-300 animate-pop-in scale-90" :to="`/${parentRoute[1] + tab.slug}`" 
                 :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none'  }"
                 >

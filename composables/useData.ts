@@ -1,4 +1,4 @@
-import { userSingle, UsersMany, userById, userFollowers, userFollowed } from './supabase/get/users'
+import * as user from './supabase/get/users'
 import { eventsMany, eventById } from './supabase/get/events'
 import { venuesMany, venueById } from './supabase/get/venues'
 import { postsMany } from './supabase/get/posts'
@@ -19,13 +19,13 @@ export default function useData() {
             cover: image.profileSingle,
         },
         users: {
-            single: userSingle,
-            many: UsersMany,
-            byId: userById,
+            single: user.userSingle,
+            many: user.UsersMany,
+            byId: user.userById,
             // byRole: userByRole,
             // connections: UserConnections,
-            followers: userFollowers,
-            followed: userFollowed,
+            followers: user.userFollowers,
+            followed: user.userFollowed,
         },
         events: {
             many: eventsMany,

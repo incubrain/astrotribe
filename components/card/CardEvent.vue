@@ -9,7 +9,7 @@
             <section class="user-info">
                 <h3>
                     <span
-                        v-for="host in props.hosts"
+                        v-for="host in props.event.event_hosts"
                         :key="host.id"
                     >
                         {{ host.given_name }},
@@ -24,11 +24,11 @@
                 <Icon name="uil:location-point" size="24px" />
             </div>
             <div class="flex flex-col">
-                <h3> {{ props.venue.name }}</h3>
+                <h3> {{ props.event.venues.name }}</h3>
                 <p>
-                    {{ props.venue.location.country }},
-                    {{ props.venue.location.state_province }}, 
-                    {{ props.venue.location.city }}
+                    {{ props.event.venues.location.country }},
+                    {{ props.event.venues.location.state_province }}, 
+                    {{ props.event.venues.location.city }}
                 </p>
             </div>
         </div>
@@ -41,8 +41,8 @@
                     <span class="day">{{ time.month }}</span>
                     <span class="month text-center">{{ time.day }}</span>
                 </div>
-                <h2>{{ props.title }}</h2>
-                <span class="text-sm text-black font-thin"> {{ props.description }}</span>
+                <h2>{{ props.event.title }}</h2>
+                <span class="text-sm text-black font-thin"> {{ props.event.description }}</span>
             </section>
             <!-- <div
                 class="flex flex-wrap gap-4 justify-left items-center text-black p-6"
@@ -80,51 +80,18 @@
 
 <script setup lang="ts">
 
-const h = useHelpers()
+import type { ATEvent } from '@/types/types'
 
-interface Props {
-    title: string
-    description: string
-    date: string
-    hosts: [{
-        id: number
-        given_name: string
-        featured_image: string
-    }],
-    venue: {
-        name: string
-        location: {
-            country: string
-            state_province: string
-            city: string
-        }
-    }
-}
 
-const props = withDefaults(defineProps<Props>(), {
-    title: 'bob',
-    description: 'billy will be looking at the stars',
-    date: '12/10/22',
-    venue: () => {
-        return {
-            name: 'Error getting venue',
-            location: {
-                country: 'N/A',
-                state_province: 'N/A',
-                city: 'N/A',
-            },
-        }
+const props = defineProps({
+    event: {
+        type: Object as PropType<ATEvent>,
+        required: true,
     },
-    hosts: () => [
-        {
-            id: 0,
-            given_name: 'Error getting host',
-            featured_image: '/avatar.png',
-        },
-    ]
 })
-
-const time = h.time.format(props.date)
+    
+const h = useHelpers()
+const time = h.time.format(props.event.date)
 
 </script>
 

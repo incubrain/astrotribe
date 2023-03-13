@@ -1,8 +1,9 @@
 <template>
     <div class="flex flex-col gap-2">
-        <div v-for="social in socials" class="flex gap-2 items-center">
+        <div class="flex gap-2 items-center">
             <div class="w-[200px] h-[32px] relative bg-red-50 rounded-sm overflow-hidden flex items-center">
-                <p> {{  social }}</p>
+                <Icon name="uil:location-point" size="24px" />
+                <p> {{  socials.instagram }}</p>
             </div>
         </div>
     </div>
@@ -10,9 +11,14 @@
 
 <script setup lang="ts">
 
-defineProps<{
-    socials: {}
-}>()
+import type { Socials } from '@/types/types'
+
+defineProps({
+    socials: {
+        type: Object as PropType<Socials>,
+        required: true,
+    },
+})
 
 </script>
 

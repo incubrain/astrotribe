@@ -7,7 +7,7 @@
             title="Introduction"
             class="lg:col-span-2"
         />
-        <ProfileBlockSocials :socials="user.socials" class="col-span-1" />
+        <ProfileBlockSocials :socials="user.user_socials" class="col-span-1" />
         <CommonBlockText
             :body="user.quote"
             title="Favourite Quote"
