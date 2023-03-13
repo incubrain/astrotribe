@@ -1,6 +1,6 @@
 import publicClient from '../publicClient'
 
-const loginWithEmail = async (email: string, password: string) => {
+export const loginWithEmail = async (email: string, password: string) => {
     const client = publicClient()
     console.log('login', client, email, password)
     const { data, error } = await client.auth.signInWithPassword({
@@ -14,4 +14,17 @@ const loginWithEmail = async (email: string, password: string) => {
     }
 }
 
-export { loginWithEmail }
+export async function signInWithGoogle() {
+    const client = publicClient()
+    const { data, error } = await client.auth.signInWithOAuth({
+        provider: "google",
+    });
+
+    if (data) {
+        console.log("data: ", data);
+    }
+
+    if (error) {
+        console.log("error: ", error);
+    }
+}
