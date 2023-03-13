@@ -80,7 +80,7 @@
         </div>
         <div class="w-full flex bg-white">
             <!-- this is the article section -->
-            <AppifyTest />
+            <!-- <AppifyTest /> -->
         </div>
     </div>
 </template>

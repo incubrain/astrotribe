@@ -2,6 +2,7 @@ import useData from '../composables/useData'
 import { checkLocalStorage } from './utilities'
 
 export const useVenuesStore = defineStore('venues', {
+    state: () => ({}),
     actions: {
         async getVenues() {
             // check localStorage and state

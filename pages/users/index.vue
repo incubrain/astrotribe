@@ -11,20 +11,21 @@
             :key="user.id"
             :user="user"
         />
-        <div class="md:col-span-2">
-            <h1 class="text-xl text-black pb-4"> User</h1>
-            <p> {{ s.users }}</p>
-            <h1 class="text-xl text-black pb-4"> Followers </h1>
-            <p> {{ s.followers }}</p>
-            <h1 class="text-xl text-black pb-4"> Followed</h1>
-            <p> {{ s.followed }}</p>
-        </div>
+        <!-- <div class="md:col-span-2">
+            <button
+                class="bg-blue-500 text-white rounded-md px-4 py-2"
+                @click="post.users.many()"
+            >   
+            Create Users</button>
+        </div> -->
     </div>
 </template>
 
 <script setup lang="ts">
 
 definePageMeta({ name: 'All' })
+
+const post = useCreate()
 
 const u = useUsersStore()
 await u.getUsers()

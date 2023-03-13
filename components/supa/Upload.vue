@@ -4,7 +4,11 @@
             <img :src="destination" class="block w-full rounded-full ">
         </div>
         <div v-show="imageSrc" class="my-2 w-1/2 aspect-ratio object-fill mx-auto">
-            <img class="block w-full aspect-auto max-w-full pb-4" ref="img" :src="imageSrc">
+            <img
+                ref="img"
+                class="block w-full aspect-auto max-w-full pb-4"
+                :src="imageSrc"
+            >
         </div>
         <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
             <button
@@ -41,10 +45,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Cropper from 'cropperjs'
 
 const { upload } = useStorage()
+
+const props = defineProps({
+    uploadType: {
+        type: String as PropType<string>,
+        required: true,
+    },
+})
 
 const imageInput = ref(null) // template ref for file input
 const selectedFile = ref(null)
@@ -65,7 +76,7 @@ const handleImageCropped = () => {
         })
         .toBlob((blob) => {
             console.log(blob)
-            upload.avatar({ file: blob, userId, type: 'avatar' }) // !todo auth user, get id
+            upload.avatar({ file: blob, userId, type: props.uploadType }) // !todo auth user, get id
         }, 'image/png')
     selectedFile.value = null
 }

@@ -18,6 +18,7 @@ export const eventsMany = async () => {
             body,
             date,
             venues(
+                id,
                 name,
                 location(
                     country,
@@ -29,7 +30,7 @@ export const eventsMany = async () => {
                 users(
                     id,
                     given_name
-                    )
+                )
             )
         `)
     const events = data?.map(item => {

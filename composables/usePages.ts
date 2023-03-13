@@ -9,16 +9,16 @@ interface Page {
 }
 
 const pages = ref([
-    {
-        id: 0,
-        name: 'News',
-        slug: '/news',
-        icon: 'bi:newspaper',
-        children: [
-            { id: 1, name: 'Newsfeed', slug: '/', icon: 'bi:newspaper' },
-            { id: 2, name: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' },
-        ],
-    },
+    // {
+    //     id: 0,
+    //     name: 'News',
+    //     slug: '/news',
+    //     icon: 'bi:newspaper',
+    //     children: [
+    //         { id: 1, name: 'Newsfeed', slug: '/', icon: 'bi:newspaper' },
+    //         { id: 2, name: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' },
+    //     ],
+    // },
     {
         id: 1,
         name: 'Events',
@@ -26,7 +26,7 @@ const pages = ref([
         icon: 'material-symbols:event',
         children: [
             { id: 10, name: 'Upcoming', slug: '/', icon: 'material-symbols:event' },
-            { id: 11, name: 'Popular', slug: '/popular', icon: 'ph:fire-simple-bold' },
+            // { id: 11, name: 'Popular', slug: '/popular', icon: 'ph:fire-simple-bold' },
         ],
     },
     {
@@ -36,7 +36,7 @@ const pages = ref([
         icon: 'fa-solid:user-astronaut',
         children: [
             { id: 20, name: 'All', slug: '/', icon: 'fa-solid:user-astronaut' },
-            { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
+            // { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
         ],
     },
     {

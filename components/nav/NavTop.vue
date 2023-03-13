@@ -117,14 +117,14 @@
                                             <path d="M7 12h14l-3 -3m0 6l3 -3" />
                                         </svg>
                                         <button
-                                            @click="logout()"
                                             v-if="currentSession !== null"
+                                            @click="logout()"
                                         >
                                             Logout
                                         </button>
                                         <button
-                                            @click="navigateTo('/auth/login')"
                                             v-else
+                                            @click="navigateTo('/auth/login')"
                                         >
                                             Login
                                         </button>
@@ -161,7 +161,7 @@ if (error) throw createError('error getting user session')
 console.log('currentSession', currentSession)
 
 function dropdownHandler(event) {
-    let single = event.currentTarget.getElementsByTagName('ul')[0]
+    const single = event.currentTarget.getElementsByTagName('ul')[0]
     single.classList.toggle('hidden')
 }
 </script>

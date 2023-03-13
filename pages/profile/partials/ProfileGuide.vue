@@ -21,7 +21,7 @@
             <div
                 class="bg-white w-full h-[200px] relative lg:col-start-2 row-span-1 row-start-2 py-[140px] px-12 rounded-b-lg"
             >
-                <ProfileBlockAvatar :avatar="user.avatar" />
+                <ProfileBlockAvatar :avatar="user?.avatar" />
                 <ProfileBlockInfo :user="user" />
                 <!-- ! Todo | add message and follow func -->
                 <!-- <div
@@ -44,7 +44,7 @@
                     title="Introduction"
                     class="lg:col-span-2"
                 />
-                <ProfileBlockAstroRating :skills="user.guide.skills" />
+                <ProfileBlockAstroRating :skills="user.skills" />
             </div>
         </div>
     </div>
@@ -52,8 +52,15 @@
 
 <script setup lang="ts">
 
-const s  = appState()
-const user = s.user
+import type { UserFull } from '@/types/types'
+
+
+defineProps({
+    user: {
+        type: Object as PropType<UserFull>,
+        required: true,
+    },
+})
 
 </script>
 

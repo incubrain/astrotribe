@@ -16,24 +16,18 @@ export default defineNuxtConfig({
         },
     },
     css: ['/assets/main.css', 'vuetify/lib/styles/main.css'],
-    generate: {
-        // dir: 'output',
-        subFolders: true,
-    },
     imports: {
         dirs: ['stores'],
     },
-    // routeRules: {
-    //     '/auth/**': { swr: 1200 },
+    // formkit: {
+    //     configFile: './formkit.config.ts',
     // },
-    formkit: {
-        configFile: './formkit.config.ts',
-    },
     modules: [
         '@nuxtjs/tailwindcss',
         '@formkit/nuxt',
         '@nuxt/content',
         '@nuxtjs/partytown',
+        '@nuxt/devtools',
         '@nuxtjs/color-mode',
         'nuxt-icon',
         [
@@ -43,10 +37,10 @@ export default defineNuxtConfig({
             },
         ],
     ],
-    partytown: {
-        // For google analytics
-        forward: ['dataLayer.push'],
-    },
+    // partytown: {
+    //     // For google analytics
+    //     forward: ['dataLayer.push'],
+    // },
     runtimeConfig: {
         // Keys within public, will be also exposed to the client-side
         public: {
@@ -58,18 +52,18 @@ export default defineNuxtConfig({
     },
     typescript: {
         shim: false,
-        typeCheck: true,
+        tsConfig: {
+            exclude: ['node_modules', 'dist'],
+            include: ['./test/types'],
+            compilerOptions: {
+                // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
+                strict: true,
+            },
+        },
     },
-    log: {
-        level: 'debug',
-        //  possible values are debug, info, warn, error, and fatal.
-        format: 'common',
-        // possible values are tiny, short, common, combined, and json
-        destination: '/server/log/nuxt.log',
-    },
-    nitro: {
-        preset: 'render-com',
-    },
+    // nitro: {
+    //     preset: 'render-com',
+    // },
     // For @nuxt/image-edge
     // image: {
     //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
