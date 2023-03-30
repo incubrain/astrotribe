@@ -1,29 +1,29 @@
 <template>
   <article class="rounded-lg p-1 text-center flex relative flex-col overflow-hidden animate-swipe-in scale-x-0 origin-left">
     <div class="bg-white w-full flex flex-col rounded-lg h-full p-6 gap-4">
-      <div class="w-full flex items-center flex-row gap-4 justify-between">
+      <div v-if="props.user" class="w-full flex items-center flex-row gap-4 justify-between">
         <NuxtLink
           :to="`/profile/${props.user.id}`"
           class="group"
         >
           <div class="flex gap-2 justify-center items-center">
             <img
-              :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${props.user.avatar}`"
+              :src="u.users.avatar(props.user.id, props.user.avatar)"
               class="rounded-full h-16 aspect-square object-cover object-top"
             />
             <div class="flex flex-col gap-2 align-start">
               <h2 class="text-lg font-semibold group-hover:underline group-hover:underline-offset-2 text-black">{{ props.user.given_name }} {{ props.user.surname }}</h2>
               <div class="flex gap-1 w-full text-xs items-center">
                 <span
-                  v-if="props.user.main_role.role !== 'User'"
+                  v-if="props.user.main_role.name !== 'User'"
                   class="font-light flex justify-center text-black"
                 >
                   <Icon
-                    :name="props.user.main_role.icon"
+                    :name="u.users.roleIcon(props.user.main_role.id)"
                     class="text-green-700 mr-1"
                     size="14px"
                   />
-                  {{ props.user.main_role.role }} | @{{ props.user.username }}
+                  {{ props.user.main_role.name }} | @{{ props.user.username }}
                 </span>
                 <span
                   v-else
@@ -75,9 +75,10 @@ const props = defineProps({
   }
 })
 
-const h = useUtils()
+const u = useUtils()
 
-const lastSeen = h.time.lastSeen(props.user.last_seen)
+// const lastSeen = u.time.lastSeen(props.user.last_seen)
+
 </script>
 
 <style scoped>

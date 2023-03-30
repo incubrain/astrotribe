@@ -3,7 +3,7 @@
     <NuxtLink :to="`/venues/${p.venue.id}`">
       <div class="pb-4 pl-4 flex flex-col gap-4 text-gray-500">
         <h3 class="text-2xl font-semibold p-4">{{ p.venue.name }}</h3>
-        <img :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/venues-public/${$p.venue.featured_image}`" :alt="` featured image on Astrotribe`">
+        <!-- <img :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/venues-public/${$p.venue.featured_image}`" :alt="` featured image on Astrotribe`"> -->
       </div>
       <div class="pb-4 pl-4 flex items-center gap-4 text-gray-500">
         <div class="bg-gray-100 rounded-full p-2">

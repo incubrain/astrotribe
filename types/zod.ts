@@ -2,9 +2,14 @@ import * as z from 'zod'
 
 export const Role = z.object({
   id: z.number(),
-  title: z.string().nullable(),
+  name: z.string().nullable(),
   body: z.string().nullable().optional(),
   created_at: z.string().optional()
+})
+
+export const MainRole = z.object({
+  id: z.number(),
+  name: z.string()
 })
 
 export const Skill = z.object({
@@ -96,10 +101,7 @@ export const UserFull = z.object({
   user_locations: z.array(UserLocation),
   user_languages: z.array(Language),
   user_socials: z.array(Socials),
-  main_role: z.object({
-    role: z.string(),
-    icon: z.string()
-  })
+  main_role: MainRole
 })
 
 export const User = z.object({
@@ -112,41 +114,9 @@ export const User = z.object({
   follow_count: z.number().nullable(),
   followed_count: z.number().nullable(),
   is_following: z.boolean().nullable(),
-  main_role: z.object({
-    role: z.string(),
-    icon: z.string()
-  }),
-  user_roles: z.array(
-    z.object({
-      id: z.number(),
-      title: z.string()
-    })
-  ),
+  main_role: MainRole,
+  user_roles: z.array(Role),
   last_seen: z.string()
-})
-
-export const ATEvent = z.object({
-  id: z.number(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  date: z.string(),
-  hosts: z.array(
-    z.object({
-      id: z.number(),
-      given_name: z.string(),
-      avatar: z.string()
-    })
-  ),
-  venue: z.object({
-    id: z.number(),
-    name: z.string()
-  }),
-  location: z.object({
-    city: z.string(),
-    country: z.string(),
-    state: z.string(),
-    address: z.string().nullable()
-  })
 })
 
 export const Venue = z.object({
@@ -161,6 +131,21 @@ export const Venue = z.object({
     address: z.string().nullable(),
     state: z.string()
   })
+})
+
+export const ATEvent = z.object({
+  id: z.number(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(
+    z.object({
+      id: z.number(),
+      given_name: z.string(),
+      avatar: z.string()
+    })
+  ),
+  venue: Venue
 })
 
 export const UserRoles = z.array(Role)

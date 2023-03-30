@@ -41,8 +41,8 @@
         <div class="flex flex-col">
           <h3>{{ props.event.venue.name }}</h3>
           <p>
-            {{ props.event.location.country }}, {{ props.event.location.state }},
-            {{ props.event.location.city }}
+            {{ props.event.venue.location.country }}, {{ props.event.venue.location.state }},
+            {{ props.event.venue.location.city }}
           </p>
         </div>
       </div>
