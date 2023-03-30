@@ -41,7 +41,7 @@ export const userSingle = async ({ userId }: { userId: number }) => {
 }
 
 export const UsersMany = async ({ userId }: { userId: number }) => {
-  const { data, error } = await client.rpc('users_is_following', { userid: userId })
+  const { data, error } = await client.rpc('get_many_users', { userid: userId })
   if (!data) throw new Error('No user found')
   if (error) throw new Error(`Error getting user: ${error}`)
 
