@@ -4,48 +4,36 @@ import * as S from '../types/zod'
 type ZodSchemaMap = { [key: string]: z.ZodType<any, any> }
 
 const zod: ZodSchemaMap = {
-    ...S,
+  ...S
 }
 
-export function addLocalStorage({
-    dataType,
-    data,
-}: {
-    data: any
-    dataType: string
-}) {
-    // store validated data in localStorage
-    console.log('addLocalStorage', dataType, data)
-    localStorage.setItem(dataType, JSON.stringify(data))
+export function addLocalStorage({ dataType, data }: { data: any; dataType: string }) {
+  // store validated data in localStorage
+  console.log('addLocalStorage', dataType, data)
+  localStorage.setItem(dataType, JSON.stringify(data))
 }
 
-export function checkDataValidity({
-    data,
-    dataType,
-    schema,
-}: {
-    data: any
-    dataType: string
-    schema: string
-}) {
-    let validated
-    console.log('validated', zod[schema].array().parse(data))
-    if (data.length > 0) validated = zod[schema].array().parse(data)
-    else validated = zod[schema].parse(data)
-    console.log('validated', validated)
-    if (validated.length <= 1) validated = validated[0]
-    addLocalStorage({ dataType, data: validated })
-    if (!validated) throw createError(`Error validating ${dataType} data`)
-    return validated
+export function checkDataValidity({ data, dataType, schema }: { data: any; dataType: string; schema: string }) {
+  let validated
+  console.log('validating', dataType, data, schema)
+  if (!data || data.length === 0) throw createError(`There is no data to validate: ${dataType} data`)
+  else if (data.length > 0) validated = zod[schema].array().parse(data)
+  else validated = zod[schema].parse(data)
+  console.log('validated', validated)
+  if (validated.length === 1) validated = validated[0]
+  addLocalStorage({ dataType, data: validated })
+  if (!validated) throw createError(`Error validating ${dataType} data`)
+  console.log('validated returned', validated)
+  return validated
 }
 
 export function checkLocalStorage({ dataType }) {
-    // if in localStorage, update state
-    // const localStore = localStorage.getItem(dataType)
-    // if (!localStore) return false
+  // if in localStorage, update state
+  // const localStore = localStorage.getItem(dataType)
+  // if (!localStore) return false
 
-    // const parsedStore = JSON.parse(localStore)
+  // const parsedStore = JSON.parse(localStore)
 
-    // if (parsedStore) return parsedStore
-    return []
+  // if (parsedStore) return parsedStore
+  return []
 }
