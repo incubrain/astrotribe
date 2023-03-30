@@ -1,10 +1,12 @@
 <template>
-    <HomeHero />
-    <div class="max-w-[1240px] mx-auto flex flex-col gap-32 py-32">
-        <HomeFeatures />
-        <HomeWorld />
-        <!-- <HomeTrusted /> -->
-        <HomeTestimonial />
+    <div>
+        <HomeHero />
+        <div class="max-w-[1240px] mx-auto flex flex-col gap-32 py-32">
+            <HomeFeatures />
+            <HomeWorld />
+            <!-- <HomeTrusted /> -->
+            <HomeTestimonial />
+        </div>
     </div>
 </template>
 

@@ -26,7 +26,6 @@
 ## Stack
 
 -   Nuxt 3
-    -   [@nuxt/content:](https://content.nuxtjs.org/guide/writing/content-directory) For rendering static pages using Markdown files
     -   [@nuxtjs/color-mode:](https://color-mode.nuxtjs.org/) easy light/dark mode
     -   [nuxt-icon:](https://github.com/nuxt-modules/icon) 100k icons, search icons [here](https://icones.js.org/collection/all)
     -   [@nuxtjs/partytown:](https://github.com/nuxt-modules/partytown) extract blocking JS to a separate thread

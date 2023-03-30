@@ -3,13 +3,14 @@
     <nav
         class="min-h-[60px] flex items-center md:items-stretch w-full justify-end md:justify-between bg-white shadow relative z-0"
     >
-        <div class="md:grid md:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center flex space-between">
+        <div class="md:grid md:grid-cols-[minmax(160px,220px)_minmax(1fr,420px)_minmax(160px,220px)] w-full gap-6 items-center flex space-between text-black">
             <!-- logo -->
             <div class="h-full flex items-center pl-4">
                 <NavMobi class="flex lg:hidden" />
                 <h1 class="text-2xl font-bold border-r hidden lg:block pr-4">AstroTribe</h1>
-                <div v-show="route.path === '/'"
-                    class="hidden lg:flex gap-4 pl-4 justify-center items-center h-full leading-none  text-sm font-semibold">
+                <div 
+                  v-show="route.path === '/'"
+                  class="hidden lg:flex gap-4 pl-4 justify-center items-center h-full leading-none  text-sm font-semibold">
                     <NuxtLink to="/news" class="hover:text-[#471bc9]"> News </NuxtLink>
                     <NuxtLink to="/about" class="hover:text-[#471bc9]"> About </NuxtLink>
                     <NuxtLink to="/contact" class="hover:text-[#471bc9]"> Contact us </NuxtLink>
@@ -85,7 +86,7 @@
                                             />
                                         </svg>
                                         <NuxtLink
-                                            to="/account/profile"
+                                            :to="`/profile/1`"
                                             class="text-sm ml-2 text-gray-600 hover:text-indigo-700 cursor-pointer items-center">
                                             My Profile
                                         </NuxtLink>
@@ -157,8 +158,10 @@ const route = useRoute()
 const { logout, session } = useAuth()
 
 const { error, session: currentSession } = await session.getCurrent()
+
 if (error) throw createError('error getting user session')
-console.log('currentSession', currentSession)
+
+console.log('currentSession', session, currentSession, error)
 
 function dropdownHandler(event) {
     const single = event.currentTarget.getElementsByTagName('ul')[0]

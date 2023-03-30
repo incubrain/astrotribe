@@ -4,16 +4,16 @@
             bg-cover border-white group text-black overflow-hidden"
         :style="{ 'background-image': `url(https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${avatar})` }"
     >
-        <InteractiveModal
-            :buttonsVisible="false"
-            modalTitle="Upload Avatar"
+        <!-- <InteractiveModal
+            :buttons-visible="false"
+            modal-title="Upload Avatar"
             class="hidden justify-center items-center w-full h-full group-hover:flex">
             <SupaUpload
                 upload-type="avatar"
             >
                 Upload Avatar
             </SupaUpload>
-        </InteractiveModal>
+        </InteractiveModal> -->
     </div>
 </template>
 
@@ -26,4 +26,6 @@ defineProps<{
 
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
