@@ -1,40 +1,39 @@
 import * as user from './supabase/get/users'
-import { eventsMany, eventById } from './supabase/get/events'
-import { venuesMany, venueById } from './supabase/get/venues'
-import { postsMany } from './supabase/get/posts'
-import { newsMany } from './supabase/get/news'
+import * as events from './supabase/get/events'
+import * as venues from './supabase/get/venues'
+import * as posts from './supabase/get/posts'
+import * as news from './supabase/get/news'
 import * as image from './supabase/get/publicImage'
 
 export default function useData() {
-    return {
-        posts: {
-            many: postsMany,
-            // byCategory: postsByCategory,
-        },
-        news: {
-            many: newsMany,
-        },
-        images: {
-            avatar: image.profileSingle,
-            cover: image.profileSingle,
-        },
-        users: {
-            single: user.userSingle,
-            many: user.UsersMany,
-            byId: user.userById,
-            // byRole: userByRole,
-            // connections: UserConnections,
-            followers: user.userFollowers,
-            followed: user.userFollowed,
-        },
-        events: {
-            many: eventsMany,
-            byId: eventById,
-            // byHost: eventsByHost,
-        },
-        venues: {
-            many: venuesMany,
-            byId: venueById,
-        },
+  return {
+    posts: {
+      many: posts.postsMany
+      // byCategory: postsByCategory,
+    },
+    news: {
+      many: news.newsMany
+    },
+    images: {
+      avatar: image.profileSingle,
+      cover: image.profileSingle
+    },
+    users: {
+      single: user.userSingle,
+      many: user.UsersMany,
+      // byRole: userByRole,
+      // connections: UserConnections,
+      followers: user.userFollowers,
+      followed: user.userFollowed
+    },
+    events: {
+      many: events.eventsMany,
+      single: events.getSingleEvent
+      // byHost: eventsByHost,
+    },
+    venues: {
+      many: venues.venuesMany,
+      byId: venues.venueSingle
     }
+  }
 }

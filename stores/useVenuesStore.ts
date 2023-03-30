@@ -1,31 +1,35 @@
 import useData from '../composables/useData'
-import { checkLocalStorage } from './utilities'
+import * as util from './utilities'
+import { appState } from './appState'
 
 export const useVenuesStore = defineStore('venues', {
-    state: () => ({}),
-    actions: {
-        async getVenues() {
-            // check localStorage and state
-            if (this.venues.length) return
-            let venues = await checkLocalStorage({ dataType: 'venues', schema: venueSchema})
-            if (venues) return this.venues = venues
-            // if not stored get them from database
-            if (!venues) {
-                const { data, error } = await useData().venues.many()
-                console.log('get venues from supabase', data)
-                if (error) throw createError(error)
-                this.venues = data
-                localStorage.setItem('venues', JSON.stringify(data))
-            }
-        },
-    },
-    getters: {
-        venueById: (state) => {
-            return (id: number) => state.venues.find(venue => venue.id === id)
-        }
-    },
+  state: () => ({}),
+  actions: {
+    async getVenues() {
+      const dataType = 'venues'
+      const globalState = appState()
+      // check localStorage and state
+      if (globalState[dataType].length) return globalState[dataType]
+
+      const { data, error } = await useData().venues.many()
+      console.log('get events from supabase', data)
+      if (error) throw createError(error)
+      globalState[dataType] = await util.checkDataValidity({
+        data,
+        dataType,
+        schema: 'Venue'
+      })
+      console.log('Venue Store', globalState[dataType])
+    }
+  },
+  getters: {
+    venueById: () => {
+      const globalState = appState()
+      return (id: number) => globalState.venues.find((venue) => venue.id === id)
+    }
+  }
 })
 
 if (import.meta.hot) {
-    import.meta.hot.accept(acceptHMRUpdate(useVenuesStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useVenuesStore, import.meta.hot))
 }
