@@ -62,10 +62,6 @@
   }
 }
 
-html {
-  @apply scrollbar-hidden;
-}
-
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
@@ -80,4 +76,19 @@ html {
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
+}
+
+/*
+Layout transition animation
+https://nuxt.com/docs/getting-started/transitions
+*/
+.layout-enter-active,
+.layout-leave-active {
+    transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+    opacity: 0;
+    filter: blur(1rem);
 }
