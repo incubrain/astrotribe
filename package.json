@@ -27,6 +27,7 @@
     "@sentry/tracing": "^7.46.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/parser": "^5.57.0",
     "chart.js": "^4.2.1",
     "cropperjs": "^1.5.13",
@@ -44,6 +45,7 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.15.1",
     "@heroicons/vue": "^2.0.16",
+    "@supabase/storage-js": "^2.3.1",
     "@supabase/supabase-js": "^2.13.0",
     "cypress": "^11.2.0",
     "uuid": "^9.0.0",
