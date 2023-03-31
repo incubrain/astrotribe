@@ -1,6 +1,9 @@
 import * as time from './utils/time'
 import * as users from './utils/users'
-// import * as storage from './utils/storage'
+import * as storage from './utils/storage'
+import * as strings from './utils/strings'
+import * as objects from './utils/objects'
+import * as arrays from './utils/arrays'
 
 export default function useUtils() {
   return {
@@ -10,7 +13,22 @@ export default function useUtils() {
     },
     users: {
       roleIcon: users.userRoleIcon,
-      avatar: users.getAvatar
+      avatar: storage.getAvatar
+    },
+    venues: {
+      featuredImage: storage.getVenueFeatured,
+      logo: storage.getVenueLogo
+    },
+    strings: {
+      firstUpper: strings.upperCaseFirstLetter,
+      slugify: strings.slugify
+    },
+    arrays: {
+      removeDuplicates: arrays.removeDuplicates,
+      sortBy: arrays.sortBy
+    },
+    objects: {
+      pluck: objects.pluck
     }
   }
 }

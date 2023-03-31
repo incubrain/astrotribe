@@ -14,10 +14,3 @@ export const userRoleIcon = (roleId: number): string => {
   }
   return '' // default
 }
-
-const baseUrl = 'https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/'
-
-export const getAvatar = (userId: number, avatar: string | null): string => {
-  if (avatar === null || avatar.startsWith('default')) return `${baseUrl}profile-public/defaults/avatar/default.png`
-  else return `${baseUrl}profile-public/${userId}/avatar/${avatar}`
-}
