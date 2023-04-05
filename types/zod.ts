@@ -1,5 +1,20 @@
 import * as z from 'zod'
 
+export const Page = z.object({
+  id: z.number(),
+  name: z.string(),
+  icon: z.string(),
+  slug: z.string()
+})
+
+export const PageWithChildren = z.object({
+  id: z.number(),
+  name: z.string().nullable(),
+  icon: z.string().nullable(),
+  slug: z.string().nullable(),
+  children: z.array(Page).optional()
+})
+
 export const Role = z.object({
   id: z.number(),
   name: z.string().nullable(),

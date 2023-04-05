@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 
-import type { Skill } from '@/types/types'
+import type { Skill } from '~~/types/index.js'
 
 
 defineProps({

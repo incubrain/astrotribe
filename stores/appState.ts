@@ -1,4 +1,4 @@
-import * as t from '../types/types'
+import * as t from '../types'
 
 type AppState = {
   posts: t.User[]

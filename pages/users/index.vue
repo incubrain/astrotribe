@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="min-h-full grid grid-cols-[minmax(160px,1fr)] md:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)] 2xl:grid-cols-[minmax(160px,1fr)_minmax(160px,1fr)_minmax(160px,1fr)] rounded-md shadow-sm gap-6"
-  >
+  <div class="min-h-full card-grid">
     <CardUser
       v-for="user in s.users"
       :key="user.id"
@@ -28,5 +26,4 @@ await u.getUsers({ userId: 1 })
 // await u.getUserFollowed({ userId: 1 })
 
 const s = appState()
-
 </script>

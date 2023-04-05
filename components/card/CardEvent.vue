@@ -1,5 +1,5 @@
 <template>
-  <div class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-start animate-swipe-in scale-x-0 origin-left">
+  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in scale-x-0 origin-left border-b border-gray-200 bg-white">
     <div class="user-block">
       <section
         v-for="(host, idx) in props.event.hosts"
@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ATEvent } from '@/types/types'
+import type { ATEvent } from '~~/types/index.js'
 
 const props = defineProps({
   event: {
