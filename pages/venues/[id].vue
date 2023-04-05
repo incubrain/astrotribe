@@ -58,7 +58,7 @@
         </a>
       </div>
       <CommonBlockText
-        :body="desc"
+        :body="'blahhh'"
         title="About"
         class="col-span-1 row-start-2 lg:col-span-2 row-span-1"
       />
@@ -87,14 +87,16 @@
 </template>
 
 <script setup lang="ts">
-import CardEvent from '../../components/card/CardEvent.vue'
 
-const desc = `
-    Our retreat is nestled in the Sahyadri mountain range, a five-minute walk from the small village of Shillim.
-    Connect with a personalized Dharana wellness program
-    with yoga, meditation, conservation walks,
-    and cooking lessons. Ayurveda-inspired dining, quiet zones,
-    and private villas calm the senses amid views of the Western Ghats.`
+const { id } = useRoute().params
+
+const v = useVenuesStore()
+v.getSingleVenue({ venueId: Number(id) })
+const images = await v.getVenueImages({ venueId: Number(id) })
+
+const s = appState()
+console.log('singleVenue', s.venue, images)
+
 </script>
 
 <style lang="scss"></style>

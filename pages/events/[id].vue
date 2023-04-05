@@ -9,8 +9,10 @@
 <script setup lang="ts">
 definePageMeta({ name: 'Single Event' })
 
+const { id } = useRoute().params
+
 const e = useEventsStore()
-e.getSingleEvent()
+e.getSingleEvent({ eventId: Number(id) })
 
 const s = appState()
 </script>
