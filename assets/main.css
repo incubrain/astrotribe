@@ -62,6 +62,12 @@
   }
 }
 
+@layer utilities {
+  .main-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8;
+  }
+} 
+
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;

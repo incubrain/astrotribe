@@ -2,25 +2,28 @@
   <div class="py-4 m-0 relative bg-white rounded-lg overflow-hidden flex flex-col justify-start animate-swipe-in scale-x-0 origin-left">
     <div class="user-block">
       <section
-        v-for="host in props.event.hosts"
+        v-for="(host, idx) in props.event.hosts"
         :key="host.id"
-        class="user-avatars"
+        class="user-avatars text-black"
       >
-        <div class="photo">
+        <div :class="idx > 0 ? 'photo ml-[-20px] border-4 border-white' : 'photo border-4 border-white relative z-10'">
           <img :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${host.id}/avatar/${host.avatar}`" />
         </div>
       </section>
-      <section class="user-info">
+      <section class="user-info pl-2">
         <h3>
           <span
-            v-for="host in props.event.hosts"
+            v-for="(host, index) in props.event.hosts"
             :key="host.id"
           >
             <NuxtLink :to="`/profile/${host.id}`">
-              <span> {{ host.given_name }}, </span>
+              <span> {{ host.given_name }} </span>
+              <span
+                v-if="index !== (props.event.hosts.length - 1)"
+              >, </span>
             </NuxtLink>
           </span>
-          <em>hosting</em>
+          <em class="pl-2">hosting</em>
         </h3>
         <span
           v-if="time"
@@ -31,11 +34,11 @@
       </section>
     </div>
     <NuxtLink :to="`/venues/${props.event.venue.id}`">
-      <div class="pb-4 pl-4 flex items-center gap-4 text-gray-500">
-        <div class="bg-gray-100 rounded-full p-2">
+      <div class="pb-4 pl-4 text-xs flex items-center gap-4 text-gray-500">
+        <div class="pl-2">
           <Icon
             name="uil:location-point"
-            size="24px"
+            size="20px"
           />
         </div>
         <div class="flex flex-col">
@@ -125,7 +128,6 @@ const time = h.time.format(props.event.date)
   height: 40px;
   overflow: hidden;
   border-radius: 100%;
-  margin-right: 10px;
 }
 
 .user-block .photo img {
