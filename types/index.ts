@@ -2,6 +2,7 @@ import * as z from 'zod'
 import * as schema from './zod'
 
 // Generic Types
+export type Page = z.infer<typeof schema.PageWithChildren>
 export type Role = z.infer<typeof schema.Role>
 export type Skill = z.infer<typeof schema.Skill>
 export type Socials = z.infer<typeof schema.Socials>

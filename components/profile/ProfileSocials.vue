@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 
-import type { Socials } from '@/types/types'
+import type { Socials } from '~~/types/index.js'
 
 defineProps({
     socials: {

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="min-h-full main-grid"
-  >
+  <div class="min-h-full card-grid">
     <CardVenue
       v-for="venue in s.venues"
       :key="venue.id"

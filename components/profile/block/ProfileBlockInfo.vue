@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 
-import type { UserFull } from '@/types/types'
+import type { UserFull } from '~~/types/index.js'
 
 
 const props = defineProps({
