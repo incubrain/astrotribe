@@ -42,7 +42,6 @@
     --color-button-accent-hover: 55, 79, 5;
     --color-button-muted: 212, 255, 122;
   }
-
 }
 
 @layer components {
@@ -63,10 +62,10 @@
 }
 
 @layer utilities {
-  .main-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8;
+  .card-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-8;
   }
-} 
+}
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hidden::-webkit-scrollbar {
@@ -75,8 +74,8 @@
 
 /* For IE, Edge and Firefox */
 .scrollbar-hidden {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .cropper-view-box,
@@ -90,11 +89,11 @@ https://nuxt.com/docs/getting-started/transitions
 */
 .layout-enter-active,
 .layout-leave-active {
-    transition: all 0.4s;
+  transition: all 0.4s;
 }
 
 .layout-enter-from,
 .layout-leave-to {
-    opacity: 0;
-    filter: blur(1rem);
+  opacity: 0;
+  filter: blur(1rem);
 }
