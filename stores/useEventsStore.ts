@@ -24,24 +24,22 @@ export const useEventsStore = defineStore('events', () => {
   }
 
   async function getSingleEvent({ eventId }: { eventId: number }) {
-    console.log('testing', globalState.user)
     const dataType = 'event'
     // check appState
     if (globalState[dataType].id === eventId) return globalState[dataType]
-    console.log('userzz2')
+    console.log('eventzz')
     // check localStorage
     // globalState[dataType] = util.checkLocalStorage({ dataType })
     // if (globalState[dataType]) return globalState[dataType]
-    console.log('userzz3')
     // if not stored get them from database
-    const { data, error } = await useData().events.single({ eventId })
-    console.log('userzz4', data, error)
+    const { data, error } = await useData().events.single(eventId)
+    console.log('eventzz4', data, error)
     if (error) throw createError(error)
     // validate data, then store in localStorage
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserFull'
+      schema: 'ATEvent'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
