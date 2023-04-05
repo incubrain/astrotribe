@@ -1,11 +1,19 @@
+import publicClient from '../composables/supabase/publicClient'
 import useData from '../composables/useData'
 import * as util from './utilities'
 import { appState } from './appState'
 
+const client = publicClient()
+
 export const useUsersStore = defineStore('users', () => {
   const globalState = appState()
 
-  async function getUsers() {
+  async function testUserRoles({ userId }: { userId: number }) {
+    const { data, error } = await client.rpc('get_user_roles', { current_user_id: userId })
+    console.log('testData', data, error)
+  }
+
+  async function getUsers({ userId }: { userId: number }) {
     const dataType = 'users'
     // check appState
     if (globalState[dataType].length) return globalState[dataType]
@@ -13,9 +21,9 @@ export const useUsersStore = defineStore('users', () => {
     // check localStorage
     globalState[dataType] = util.checkLocalStorage({ dataType })
     if (globalState[dataType].length) return globalState[dataType]
-    console.log('userzz3')
+    console.log('userzz3', userId)
     // if not stored get them from database
-    const { data, error } = await useData().users.many({ userId: 1 })
+    const { data, error } = await useData().users.many({ userId })
     if (error) throw createError(error)
     // validate data, then store in localStorage
     globalState[dataType] = util.checkDataValidity({
@@ -64,7 +72,7 @@ export const useUsersStore = defineStore('users', () => {
     // check localStorage
     // globalState[dataType] = util.checkLocalStorage({ dataType })
     // if (globalState[dataType]) return globalState[dataType]
-    console.log('userzz3')
+    console.log('userzz3', userId)
     // if not stored get them from database
     const { data, error } = await useData().users.single({ userId })
     console.log('userzz4', data, error)
@@ -154,7 +162,8 @@ export const useUsersStore = defineStore('users', () => {
     getSingleUser,
     getUserFollowers,
     getUserFollowed,
-    userById
+    userById,
+    testUserRoles
   }
 })
 

@@ -3,7 +3,7 @@ import publicClient from '../publicClient'
 const client = publicClient()
 
 export const getSingleEvent = async (eventId: number) => {
-  const { data, error } = await client.rpc('get_single_event', { eventId })
+  const { data, error } = await client.rpc('get_event_single', { eventId })
   console.log('eventById', data, error)
   return {
     data,
@@ -12,7 +12,7 @@ export const getSingleEvent = async (eventId: number) => {
 }
 
 export const eventsMany = async () => {
-  const { data, error } = await client.rpc('get_many_events')
+  const { data, error } = await client.rpc('get_events_many')
 
   console.log('eventsMany', data, error)
 

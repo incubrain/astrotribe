@@ -125,6 +125,8 @@ export const Venue = z.object({
   name: z.string().nullable(),
   body: z.string().nullable(),
   featured_image: z.string(),
+  events_hosted: z.number().nullable().optional(),
+  rating: z.number().nullable().optional(),
   location: z.object({
     city: z.string(),
     country: z.string(),
