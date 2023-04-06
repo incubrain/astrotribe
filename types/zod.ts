@@ -7,11 +7,7 @@ export const Page = z.object({
   slug: z.string()
 })
 
-export const PageWithChildren = z.object({
-  id: z.number(),
-  name: z.string().nullable(),
-  icon: z.string().nullable(),
-  slug: z.string().nullable(),
+export const PageWithChildren = Page.extend({
   children: z.array(Page).optional()
 })
 
@@ -32,8 +28,8 @@ export const Skill = z.object({
   title: z.string().nullable(),
   body: z.string().nullable().optional(),
   total_endorsements: z.number(),
-  admin_rating: z.number(),
-  rating: z.number(),
+  admin_rating: z.number().nullable(),
+  avg_rating: z.number().nullable(),
   created_at: z.string().optional()
 })
 
@@ -51,19 +47,11 @@ export const Location = z.object({
   country: z.string(),
   state: z.string(),
   address: z.string().nullable(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional()
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable()
 })
 
-export const UserLocation = z.object({
-  id: z.number(),
-  created_at: z.string(),
-  city: z.string(),
-  country: z.string(),
-  state: z.string(),
-  address: z.string().nullable(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
+export const UserLocation = Location.extend({
   from: z.string().optional(),
   to: z.string().optional(),
   is_home: z.boolean()
@@ -94,31 +82,6 @@ export const News = z.object({
   category: z.string().nullable()
 })
 
-export const UserFull = z.object({
-  id: z.number(),
-  email: z.string(),
-  given_name: z.string(),
-  surname: z.string().nullable(),
-  username: z.string().nullable(),
-  dob: z.string().nullable(),
-  gender_id: z.number().nullable(),
-  created_at: z.string(),
-  updated_at: z.string().nullable(),
-  last_seen: z.string(),
-  avatar: z.string().nullable(),
-  cover_image: z.string().nullable(),
-  introduction: z.string().nullable(),
-  quote: z.string().nullable(),
-  user_roles: z.array(Role),
-  follow_count: z.number().nullable(),
-  followed_count: z.number().nullable(),
-  user_skills: z.array(Skill),
-  user_locations: z.array(UserLocation),
-  user_languages: z.array(Language),
-  user_socials: z.array(Socials),
-  main_role: MainRole
-})
-
 export const User = z.object({
   id: z.number(),
   given_name: z.string(),
@@ -134,6 +97,20 @@ export const User = z.object({
   last_seen: z.string()
 })
 
+export const UserFull = User.extend({
+  email: z.string(),
+  dob: z.string().nullable(),
+  gender_id: z.number().nullable(),
+  created_at: z.string(),
+  updated_at: z.string().nullable(),
+  cover_image: z.string().nullable(),
+  quote: z.string().nullable(),
+  user_skills: z.array(Skill),
+  user_locations: z.array(UserLocation),
+  user_languages: z.array(Language),
+  user_socials: z.array(Socials)
+})
+
 export const Venue = z.object({
   id: z.number(),
   created_at: z.string(),
@@ -141,7 +118,7 @@ export const Venue = z.object({
   body: z.string().nullable(),
   featured_image: z.string(),
   events_hosted: z.number().nullable().optional(),
-  rating: z.number().nullable().optional(),
+  avg_rating: z.number().nullable().optional(),
   location: z.object({
     city: z.string(),
     country: z.string(),
