@@ -1,35 +1,39 @@
 <template>
-    <div class="card flex flex-col gap-2">
-        <h1 class="text-2xl pb-4 font-semibold">Connect</h1>
+  <div class="flex flex-col gap-2">
+    <h1 class="card-heading pb-4 font-semibold">Connect</h1>
+    <div class="flex flex-col sm:flex-row gap-2 md:gap-4">
+      <a
+        v-for="social in socials"
+        :key="social.id"
+        :href="social.url"
+        class="flex justify-center w-full"
+      >
         <span
-            v-for="social in socials"
-            :key="social.id"
-            class="flex gap-2 items-center bg-blue-50 rounded-lg p-2 w-full"
+          class="flex flex-wrap gap-2 items-center bg-blue-50 rounded-lg p-2 w-full"
         >
-            <a
-                :href="social.url"
-                class="flex justify-center"
-            >
-                <Icon :name="`mdi:${social.platform}`" size="24px" class="mr-1" />
-                {{  util.upperCaseFirstLetter(social.platform) }}
-            </a>
+          <Icon
+            :name="`mdi:${social.platform}`"
+            size="24px"
+            class="mr-1"
+          />
+          {{ util.strings.firstUpper(social.platform) }}
         </span>
+      </a>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-
 import type { Socials } from '~~/types/index.js'
 
 defineProps({
-    socials: {
-        type: Array as PropType<Socials[]>,
-        required: true,
-    },
+  socials: {
+    type: Array as PropType<Socials[]>,
+    required: true
+  }
 })
 
-const util = useUtilities()
-
+const util = useUtils()
 </script>
 
 <style scoped></style>

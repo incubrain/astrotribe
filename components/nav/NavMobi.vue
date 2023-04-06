@@ -1,5 +1,5 @@
 <template>
-  <div class="relative text-black flex-row w-full items-center justify-between p-2 bg-white">
+  <div class="relative text-black flex-row w-full items-center justify-between border-t border-gray-200 p-2 bg-white">
     <ul class="flex h-full flex-row items-center justify-center w-full">
       <li
         v-for="page in pages"
@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { Page } from '@/types'
 
 const { pages } = usePages()
 
