@@ -1,7 +1,5 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
-import { fileURLToPath } from 'url'
-
 export default defineNuxtConfig({
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -86,5 +84,5 @@ export default defineNuxtConfig({
   // alias: {
   //     '@data': "/assets/data",
   // },
-  ssr: false,
+  ssr: true,
 })

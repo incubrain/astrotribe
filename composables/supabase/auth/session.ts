@@ -1,27 +1,25 @@
-import publicClient from '../publicClient'
-
 const getCurrent = async () => {
-    const client = publicClient()
-    const {
-        data: { session },
-        error,
-    } = await client.auth.getSession()
+  const client = usePublicClient()
+  const {
+    data: { session },
+    error
+  } = await client.auth.getSession()
 
-    return {
-        session,
-        error,
-    }
+  return {
+    session,
+    error
+  }
 }
 
 const refresh = async () => {
-    const client = publicClient()
-    const { data, error } = await client.auth.refreshSession()
-    const { session, user } = data
+  const client = usePublicClient()
+  const { data, error } = await client.auth.refreshSession()
+  const { session, user } = data
 
-    return {
-        data,
-        error,
-    }
+  return {
+    data,
+    error
+  }
 }
 
 export { getCurrent, refresh }
