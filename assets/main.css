@@ -46,7 +46,7 @@
 
 @layer components {
   .card {
-    @apply p-12 rounded-lg bg-white text-black shadow-sm;
+    @apply p-4 border-b border-gray-200 md:border-none md:p-12 md:rounded-lg bg-white text-black md:shadow-sm;
   }
   .btn-primary {
     color: var(--color-button-accent);
@@ -63,7 +63,16 @@
 
 @layer utilities {
   .card-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-8;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8;
+  }
+  .profile-block {
+    @apply border-y border-gray-200;
+  }
+  .card-heading {
+    @apply text-base font-semibold md:text-lg xl:text-xl;
+  }
+  .card-subheading {
+    @apply text-sm md:text-base xl:text-lg;
   }
 }
 
