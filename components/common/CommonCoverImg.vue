@@ -1,7 +1,7 @@
 <template>
-  <div class="absolute top-0 left-0 right-0 w-full h-[80vh]">
+  <div class="w-full aspect-auto h-[200px] md:h-[80vh] relative md:rounded-lg md:overflow-hidden">
     <div
-      class="flex items-center justify-center h-full mb-12 bg-fixed bg-center bg-cover"
+      class="flex items-center justify-center h-full w-full md:mb-12 bg-center bg-contain md:bg-cover"
       :style="{ backgroundImage: `url(${url})` }"
     ></div>
     <div class="bg-[#12060625] w-full h-full bg-blend-overlay absolute top-0 left-0"></div>

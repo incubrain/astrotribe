@@ -9,7 +9,9 @@
       >
         <NavSidebar class="left-0 sticky top-0" />
       </div>
-      <div class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-90px)] lg:h-[calc(100vh-60px)] overflow-y-scroll md:p-4 lg:p-8 relative">
+      <div
+      ref="defaultLayout"
+      class="lg:col-start-2 lg:col-span-1 lg:row-span-1 lg:row-start-2 w-full h-[calc(100vh-90px)] lg:h-[calc(100vh-60px)] overflow-y-scroll md:p-4 xl:p-8 relative">
         <div class="max-w-[1600px] mx-auto">
           <slot />
         </div>

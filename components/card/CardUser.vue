@@ -16,14 +16,14 @@
               <div class="flex gap-1 w-full text-xs items-start">
                 <span
                   v-if="props.user.main_role.name !== 'User'"
-                  class="font-light flex justify-center text-black"
+                  class="font-light flex justify-center items-center text-black"
                 >
                   <Icon
                     :name="u.users.roleIcon(props.user.main_role.id)"
                     class="text-green-700 mr-1"
                     size="14px"
                   />
-                  {{ props.user.main_role.name }} | @{{ props.user.username }}
+                {{ props.user.main_role.name }} | @{{ props.user.username }}
                 </span>
                 <span
                   v-else
@@ -36,9 +36,10 @@
           </div>
         </NuxtLink>
         <div class="absolute top-2 right-3 flex-row align-center justify-center gap-1 text-black">
-          <Icon name="mdi:account-multiple-plus" class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer" />
+          <Icon v-if="props.user.is_following" name="mdi:account-multiple-check" class="flex justify-end items-start w-[26px] h-[26px] text-green-800 hover:text-red-800 cursor-pointer" />
+          <Icon v-else name="mdi:account-multiple-plus" class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer" />
           <!-- <button
-            v-if="!props.user.is_following"
+            
             class="bg-[#0f1419] border rounded-full pl-2 pr-1 py-[4px] md:pl-4 md:pr-2 md:py-[8px] w-full text-xs font-semibold leading-none text-white flex gap-2 items-center hover:bg-[#3d3d3d] focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 focus:outline-none"
           >
             Follow
