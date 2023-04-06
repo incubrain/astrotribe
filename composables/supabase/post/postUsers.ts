@@ -1,12 +1,8 @@
-import publicClient from '../publicClient'
 import users from './users'
 
-const client = publicClient()
-
 export async function createManyUsers() {
-  const { error } = await client
-    .from('users')
-    .insert(users)
+  const client = usePublicClient()
+  const { error } = await client.from('users').insert(users)
 
-    console.log('createManyUsers', error)
+  console.log('createManyUsers', error)
 }

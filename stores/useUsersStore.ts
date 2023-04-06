@@ -1,12 +1,10 @@
-import publicClient from '../composables/supabase/publicClient'
 import useData from '../composables/useData'
 import * as util from './utilities'
 import { appState } from './appState'
 
-const client = publicClient()
-
 export const useUsersStore = defineStore('users', () => {
   const globalState = appState()
+  const client = usePublicClient()
 
   async function testUserRoles({ userId }: { userId: number }) {
     const { data, error } = await client.rpc('get_user_roles', { current_user_id: userId })

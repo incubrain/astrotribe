@@ -13,7 +13,8 @@ export default function useUtils() {
     },
     users: {
       roleIcon: users.userRoleIcon,
-      avatar: storage.getAvatar
+      avatar: storage.getAvatar,
+      cover: storage.getCover
     },
     venues: {
       featuredImage: storage.getVenueFeatured,

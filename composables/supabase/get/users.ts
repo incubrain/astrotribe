@@ -1,8 +1,5 @@
-import publicClient from '../publicClient'
-
-const client = publicClient()
-
 export const userFollowers = async ({ userId }: { userId: number }) => {
+  const client = usePublicClient()
   const { data, error } = await client.rpc('get_user_followed', { userId })
   if (!data) throw new Error('No followed found')
   if (error) throw new Error(`Error getting followed: ${error}`)
@@ -15,6 +12,7 @@ export const userFollowers = async ({ userId }: { userId: number }) => {
 }
 
 export const userFollowed = async ({ userId }: { userId: number }) => {
+  const client = usePublicClient()
   const { data, error } = await client.rpc('get_user_followers', { userId })
   if (!data) throw new Error('No followers found')
   if (error) throw new Error(`Error getting followers: ${error}`)
@@ -27,8 +25,12 @@ export const userFollowed = async ({ userId }: { userId: number }) => {
 }
 
 export const userSingle = async ({ userId }: { userId: number }) => {
+  const client = usePublicClient()
   console.log('userSingle1', userId)
-  const { data, error } = await client.rpc('get_user_single', { userId })
+  const { data, error } = await client.rpc('get_user_single', {
+    p_user_id: userId,
+    p_current_user_id: 2
+  })
 
   console.log('userSingle', data, error)
   if (!data) throw new Error('No user found')
@@ -41,7 +43,10 @@ export const userSingle = async ({ userId }: { userId: number }) => {
 }
 
 export const UsersMany = async ({ userId }: { userId: number }) => {
-  const { data, error } = await client.rpc('get_users_many', { p_user_id: userId })
+  const client = usePublicClient()
+  const { data, error } = await client.rpc('get_users_many', {
+    p_user_id: userId
+  })
   if (!data) throw new Error('No user found')
   if (error) throw new Error(`Error getting user: ${error}`)
 

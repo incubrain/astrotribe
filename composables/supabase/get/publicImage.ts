@@ -1,8 +1,13 @@
-import publicClient from '../publicClient'
 
-const client = publicClient()
-
-export const profileSingle = async ({ userId, type, fileName }: { userId: number, type: string, fileName: string }) => {
+export const profileSingle = ({
+  userId,
+  type,
+  fileName
+}: {
+  userId: number
+  type: string
+  fileName: string
+}) => {
   // !todo: add dynamic transforms
   // {
   //   transform: {
@@ -11,13 +16,13 @@ export const profileSingle = async ({ userId, type, fileName }: { userId: number
   //   }
   // }
   console.log('profileSingle', userId, type)
-  const { data } = client
-  .storage
-  .from('profile-public')
-  .getPublicUrl(`${userId}/${type}/${fileName}.png`)
-  
+  const client = usePublicClient()
+  const { data } = client.storage
+    .from('profile-public')
+    .getPublicUrl(`${userId}/${type}/${fileName}.png`)
+
   console.log('profileSingle2', data)
-    return {
-      data,
+  return {
+    data
   }
 }
