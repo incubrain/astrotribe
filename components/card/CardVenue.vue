@@ -8,7 +8,9 @@
       />
       <div class="p-4 flex flex-col gap-2 bg-white md:h-full">
         <div class="flex justify-between text-gray-700">
-          <h3 class="text-base font-semibold">{{ p.venue.name?.substring(0, 30) }}...</h3>
+          <h3 class="text-base font-semibold">
+            {{ p.venue.name?.substring(0, 30) }}...
+          </h3>
           <span v-if="p.venue.rating" class="flex items-start gap-1">
             <Icon
               name="material-symbols:star"

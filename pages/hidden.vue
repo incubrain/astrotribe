@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <p>This page should require login</p>
-    </div>
+  <div>
+    <p>This page should require login</p>
+  </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'auth',
+  middleware: 'auth'
 })
 </script>
 

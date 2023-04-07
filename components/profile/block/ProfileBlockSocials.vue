@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col gap-2">
-    <h1 class="card-heading pb-4 font-semibold">Connect</h1>
+    <h1 class="card-heading pb-4 font-semibold">
+      Connect
+    </h1>
     <div class="flex flex-col sm:flex-row gap-2 md:gap-4">
       <a
         v-for="social in socials"

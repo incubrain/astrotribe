@@ -160,6 +160,7 @@ export const useUsersStore = defineStore('users', () => {
     getSingleUser,
     getUserFollowers,
     getUserFollowed,
+    getFollowCount,
     userById,
     testUserRoles
   }

@@ -1,36 +1,38 @@
 <template>
-    <div
-        class="w-full h-full p-20 text-black gap-4 justify-center items-center bg-indigo-50 animate-swipe-down scale-y-0 origin-top"
-    >
-        <p>reset value: {{ showForm }}</p>
-        <form v-if="showForm">
-            <div class="flex flex-col">
-                <label for="password">Password</label>
-                <input type="password" v-model="newPass.a" />
-            </div>
-            <div class="flex flex-col">
-                <label for="password">Confirm Password</label>
-                <input type="password" v-model="newPass.b" />
-            </div>
-            <div class="flex flex-col">
-                <button @click="updatePassword">Reset Password</button>
-            </div>
-        </form>
-        <div v-else>
-            <form>
-                <div class="flex flex-col">
-                    <label for="email">Confirm Email</label>
-                    <input type="email" v-model="email" />
-                </div>
-            </form>
-            <button @click="password.requestResetEmail(email)" class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2">
-                Request Password Email
-            </button>
-        </div>
-        <button @click="password.toggleResetForm(!showResetForm)" class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2">
-            test form visible
+  <div
+    class="w-full h-full p-20 text-black gap-4 justify-center items-center bg-indigo-50 animate-swipe-down scale-y-0 origin-top"
+  >
+    <p>reset value: {{ showForm }}</p>
+    <form v-if="showForm">
+      <div class="flex flex-col">
+        <label for="password">Password</label>
+        <input v-model="newPass.a" type="password" />
+      </div>
+      <div class="flex flex-col">
+        <label for="password">Confirm Password</label>
+        <input v-model="newPass.b" type="password" />
+      </div>
+      <div class="flex flex-col">
+        <button @click="updatePassword">
+          Reset Password
         </button>
+      </div>
+    </form>
+    <div v-else>
+      <form>
+        <div class="flex flex-col">
+          <label for="email">Confirm Email</label>
+          <input v-model="email" type="email" />
+        </div>
+      </form>
+      <button class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2" @click="password.requestResetEmail(email)">
+        Request Password Email
+      </button>
     </div>
+    <button class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2" @click="password.toggleResetForm(!showResetForm)">
+      test form visible
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -38,25 +40,25 @@
 const email = ref()
 const showForm = ref(false)
 const newPass = ref({
-    a: '',
-    b: '',
+  a: '',
+  b: ''
 })
 
 const { password, showResetForm } = useAuth()
 
-watch(() => showResetForm.value, () => showForm.value = showResetForm.value)
+watch(() => showResetForm.value, () => (showForm.value = showResetForm.value))
 
 const updatePassword = async () => {
-    if (newPass.value.a === newPass.value.b) {
-        const { data, error } = await password.update(newPass.value.a)
-        if (error) throw createError('plase make sure your passwords match')
-        console.log('data retunred', data)
-    }
+  if (newPass.value.a === newPass.value.b) {
+    const { data, error } = await password.update(newPass.value.a)
+    if (error) throw createError('plase make sure your passwords match')
+    console.log('data retunred', data)
+  }
 }
 
 definePageMeta({
-    layout: 'auth',
-})  
+  layout: 'auth'
+})
 </script>
 
 <style scoped></style>
