@@ -10,7 +10,9 @@
           />
         </div>
         <div class="flex flex-col">
-          <h1 class="text-2xl font-bold">Hilton Shillim Estate Retreat & Spa</h1>
+          <h1 class="text-2xl font-bold">
+            Hilton Shillim Estate Retreat & Spa
+          </h1>
           <h3 class="mt-1 flex items-center text-md">
             <Icon
               name="uil:location-point"
@@ -36,10 +38,12 @@
     <div class="w-full relative grid grid-cols-1 lg:grid-cols-3 mt-6 gap-6 row-start-3 row-span-1 lg:col-start-2">
       <div class="row-start-1 col-span-1 lg:col-span-3 w-full flex flex-wrap over gap-8 h-auto">
         <div class="flex items-center px-6 py-2 rounded-lg bg-white w-full flex-grow lg:max-w-[340px]">
-          <h4 class="pr-2 text-lg">Our rating</h4>
+          <h4 class="pr-2 text-lg">
+            Our rating
+          </h4>
           <AppStars
             :rating="4.5"
-            :starSize="28"
+            :star-size="28"
           />
         </div>
         <div class="flex items-center rounded-lg bg-white min-w-[600px] w-full lg:w-2/6 flex-grow">
@@ -63,7 +67,9 @@
         class="col-span-1 row-start-2 lg:col-span-2 row-span-1"
       />
       <div class="bg-white rounded-lg overflow-hidden col-span-1 row-span-2 row-start-3 lg:row-start-2">
-        <h4 class="pr-2 text-2xl font-semibold w-full p-8">Events</h4>
+        <h4 class="pr-2 text-2xl font-semibold w-full p-8">
+          Events
+        </h4>
         <div style="border-top: 1px solid #e5e7eb" />
         <CardEvent />
         <div style="border-top: 1px solid #e5e7eb" />

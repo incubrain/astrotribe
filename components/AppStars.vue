@@ -3,7 +3,9 @@
     <div class="h-full">
       <div class="flex gap-2 h-full leading-4">
         <div class="flex gap-1 items-center justify-center h-full">
-          <p class="leading-4 text-md pr-2 flex justify-center items-center mt-[2px]">{{ rating.toPrecision(2) }}/10</p>
+          <p class="leading-4 text-md pr-2 flex justify-center items-center mt-[2px]">
+            {{ rating.toPrecision(2) }}/10
+          </p>
           <Icon
             v-for="i in 5"
             :key="i"

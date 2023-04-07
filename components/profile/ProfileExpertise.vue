@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <p> {{  expertise }}</p>
-    </div>
+  <div>
+    <p> {{ expertise }}</p>
+  </div>
 </template>
 
 <script setup lang="ts">

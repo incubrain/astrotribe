@@ -1,32 +1,32 @@
 <template>
-    <div>
-        <input
-            type="checkbox"
-            class="checkbox"
-            id="chk"
-            @click="
-                colorMode.preference !== 'dark'
-                    ? (colorMode.preference = 'dark')
-                    : (colorMode.preference = 'light')
-            "
-        />
-        <label class="label" for="chk">
-            <i class="fas fa-moon"></i>
-            <i class="fas fa-sun"></i>
-            <div class="ball"></div>
-        </label>
-    </div>
+  <div>
+    <input
+      id="chk"
+      type="checkbox"
+      class="checkbox"
+      @click="
+        colorMode.preference !== 'dark'
+          ? (colorMode.preference = 'dark')
+          : (colorMode.preference = 'light')
+      "
+    />
+    <label class="label" for="chk">
+      <i class="fas fa-moon"></i>
+      <i class="fas fa-sun"></i>
+      <div class="ball"></div>
+    </label>
+  </div>
 </template>
 
 <script setup lang="ts">
 const colorMode = useColorMode()
 
 onMounted(() => {
-    const chk = document.getElementById('chk')!
+  const chk = document.getElementById('chk')!
 
-    chk.addEventListener('change', () => {
-        document.body.classList.toggle('dark')
-    })
+  chk.addEventListener('change', () => {
+    document.body.classList.toggle('dark')
+  })
 })
 </script>
 

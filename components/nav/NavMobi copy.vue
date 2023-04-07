@@ -20,7 +20,9 @@
       "
     >
       <div class="w-full flex pt-15 pb-8">
-        <h1 class="text-2xl font-bold">AstroTribe</h1>
+        <h1 class="text-2xl font-bold">
+          AstroTribe
+        </h1>
         <Icon
           name="material-symbols:close"
           size="24px"

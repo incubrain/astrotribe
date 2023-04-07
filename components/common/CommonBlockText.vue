@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1 class="card-heading pb-4 font-semibold">{{ title }}</h1>
-    <p >
+    <h1 class="card-heading pb-4 font-semibold">
+      {{ title }}
+    </h1>
+    <p>
       {{ body }}
     </p>
   </div>

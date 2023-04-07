@@ -1,9 +1,9 @@
 // https://github.com/iamkun/dayjs
 
-import dayjs from "dayjs/esm/index.js"
-import utc from "dayjs/esm/plugin/utc"
-import timezone from "dayjs/esm/plugin/timezone"
-import isSameOrAfter from "dayjs/esm/plugin/isSameOrAfter"
+import dayjs from 'dayjs/esm/index.js'
+import utc from 'dayjs/esm/plugin/utc'
+import timezone from 'dayjs/esm/plugin/timezone'
+import isSameOrAfter from 'dayjs/esm/plugin/isSameOrAfter'
 
 export const useTime = (start_date: string, end_date: string) => {
   dayjs.extend(utc)
@@ -14,21 +14,21 @@ export const useTime = (start_date: string, end_date: string) => {
 
   const timePT = computed(() => {
     return `${startDate
-      .tz("America/Los_Angeles")
-      .format("D MMM")} at ${startDate
-      .tz("America/Los_Angeles")
-      .format("hh:mma")} - to - ${endDate
-      .tz("America/Los_Angeles")
-      .format("D MMM")} at ${endDate
-      .tz("America/Los_Angeles")
-      .format("hh:mma")} (PT)`
+      .tz('America/Los_Angeles')
+      .format('D MMM')} at ${startDate
+      .tz('America/Los_Angeles')
+      .format('hh:mma')} - to - ${endDate
+      .tz('America/Los_Angeles')
+      .format('D MMM')} at ${endDate
+      .tz('America/Los_Angeles')
+      .format('hh:mma')} (PT)`
   })
 
   const timeLocale = computed(() => {
-    return `${startDate.format("D MMM")} at ${startDate.format(
-      "hh:mma"
-    )} - to - ${endDate.format("D MMM")} at ${endDate.format(
-      "hh:mma"
+    return `${startDate.format('D MMM')} at ${startDate.format(
+      'hh:mma'
+    )} - to - ${endDate.format('D MMM')} at ${endDate.format(
+      'hh:mma'
     )} (${dayjs.tz.guess()})`
   })
 
@@ -46,6 +46,6 @@ export const useTime = (start_date: string, end_date: string) => {
     endDate,
     timePT,
     timeLocale,
-    isExpired,
+    isExpired
   }
 }

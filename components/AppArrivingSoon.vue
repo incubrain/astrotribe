@@ -1,60 +1,64 @@
 <template>
-    <div
+  <div
     class="space h-full w-full flex justify-center items-center flex-col max-w-full max-h-full relative p-10 overflow-hidden"
-    >
-        <div id="space" class="h-[250vh] w-[250vw] animate-spin-slow bg-black absolute">
-            <div class="star animate-glitter"/>
-        </div>
-        <img class="ship" src="/rocket.png">
-        <div class="mars">
-            <div class="tentacle"></div>
-            <div class="flag">
-                <div class="small-tentacle"></div>
-            </div>
-            <div class="planet">
-                <div class="surface"></div>
-                <div class="crater1"></div>
-                <div class="crater2"></div>
-                <div class="crater3"></div>
-            </div>
-        </div>
-        <div class="relative w-full pt-20 text-center">
-            <h1 class="text-[8vh] pt-[5vh] lg:text-[12vh] lg:pt-0">AstroTribe</h1>
-            <h2 class="text-[3vh] lg:text-[4vh] arriving-soon">Arriving Soon!</h2>
-        </div>
+  >
+    <div id="space" class="h-[250vh] w-[250vw] animate-spin-slow bg-black absolute">
+      <div class="star animate-glitter" />
     </div>
+    <img class="ship" src="/rocket.png">
+    <div class="mars">
+      <div class="tentacle"></div>
+      <div class="flag">
+        <div class="small-tentacle"></div>
+      </div>
+      <div class="planet">
+        <div class="surface"></div>
+        <div class="crater1"></div>
+        <div class="crater2"></div>
+        <div class="crater3"></div>
+      </div>
+    </div>
+    <div class="relative w-full pt-20 text-center">
+      <h1 class="text-[8vh] pt-[5vh] lg:text-[12vh] lg:pt-0">
+        AstroTribe
+      </h1>
+      <h2 class="text-[3vh] lg:text-[4vh] arriving-soon">
+        Arriving Soon!
+      </h2>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 
 onMounted(() => {
-    let limit = 500
-    const space = document.getElementById('space')
+  const limit = 500
+  const space = document.getElementById('space')
 
-    const stars = {
-        rand: () => {
-            return Math.random()
-        },
+  const stars = {
+    rand: () => {
+      return Math.random()
+    },
 
-        createStar: () => {
-            let star = document.createElement('div')
-            star.className = 'star'
+    createStar: () => {
+      const star = document.createElement('div')
+      star.className = 'star'
 
-            return star
-        },
+      return star
+    },
 
-        create: () => {
-            for (let i = 0; i <= limit; i += 1) {
-                let star = stars.createStar()
-                star.style.top = `${stars.rand() * 100}%`
-                star.style.left = `${stars.rand() * 100}%`
-                star.style.animation = `glitter 8s ease-in ${stars.rand() * 8}s infinite`
-                space.appendChild(star)
-            }
-        },
+    create: () => {
+      for (let i = 0; i <= limit; i += 1) {
+        const star = stars.createStar()
+        star.style.top = `${stars.rand() * 100}%`
+        star.style.left = `${stars.rand() * 100}%`
+        star.style.animation = `glitter 8s ease-in ${stars.rand() * 8}s infinite`
+        space.appendChild(star)
+      }
     }
+  }
 
-    stars.create()
+  stars.create()
 })
 </script>
 

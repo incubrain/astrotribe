@@ -1,9 +1,9 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 p-4 md:p-0">
     <div class="col-span-2 col-start-1 text-black">
-      <h1 class="card-heading font-semibold"
-        >{{ props.user.given_name }} {{ props.user.surname }}</h1
-      >
+      <h1 class="card-heading font-semibold">
+        {{ props.user.given_name }} {{ props.user.surname }}
+      </h1>
       <!-- <h4 class="text-lg">{{ props.user.profession }} {{ type === 'mentor' ?   `- Associated with: ${props.user.associated_companies}` : `` }}</h4> -->
       <h6
         v-if="home"
@@ -17,7 +17,9 @@
         {{ home.city }}, {{ home.state }},
         {{ home.country }}
       </h6>
-      <p class="pt-4"> {{ props.user.introduction }} </p>
+      <p class="pt-4">
+        {{ props.user.introduction }}
+      </p>
     </div>
     <div class="col-span-1 lg:col-start-2 flex flex-col gap-2"></div>
   </div>

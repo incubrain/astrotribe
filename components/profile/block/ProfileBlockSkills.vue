@@ -1,13 +1,17 @@
 <template>
   <div>
-    <h1 class="card-heading pb-4 font-semibold">Skills</h1>
+    <h1 class="card-heading pb-4 font-semibold">
+      Skills
+    </h1>
     <div class="flex flex-col gap-2">
       <div
         v-for="skill in skills"
         :key="skill.id"
         class="flex flex-col gap-4 border-b-2 text-gray-600 py-4"
       >
-        <h3 class="text-md font-semibold">{{ skill.title }}</h3>
+        <h3 class="text-md font-semibold">
+          {{ skill.title }}
+        </h3>
         <AppStars
           v-if="
             skill.total_endorsements !== null && skill.total_endorsements > 0
@@ -24,8 +28,7 @@
             class="mr-2"
           />
           {{ skill.total_endorsements }}
-          {{ endorsementText(skill.total_endorsements) }}</span
-        >
+          {{ endorsementText(skill.total_endorsements) }}</span>
       </div>
     </div>
   </div>
