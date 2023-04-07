@@ -9,8 +9,8 @@ type AppState = {
   followed: t.Follower[]
   venues: t.Venue[]
   venue: t.Venue
-  events: t.ATEvent[]
-  event: t.ATEvent
+  events: t.EventFull[]
+  event: t.EventFull
 }
 
 export const appState = defineStore('app', {
@@ -23,8 +23,8 @@ export const appState = defineStore('app', {
     followed: [] as t.Follower[],
     venues: [] as t.Venue[],
     venue: {} as t.Venue,
-    events: [] as t.ATEvent[],
-    event: {} as t.ATEvent
+    events: [] as t.EventFull[],
+    event: {} as t.EventFull
   })
 })
 

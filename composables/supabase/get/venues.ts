@@ -1,8 +1,8 @@
 import { FileObject } from '@supabase/storage-js'
 
-export const venuesSingle = async (venueId: number) => {
+export const venueSingle = async (venueId: number) => {
   const client = usePublicClient()
-  const { data, error } = await client.rpc('get_venue_single', { venueId })
+  const { data, error } = await client.rpc('get_venue_single', { p_venue_id: venueId })
   console.log('venueById', data, error)
   return {
     data,

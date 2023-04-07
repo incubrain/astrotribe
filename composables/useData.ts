@@ -33,7 +33,7 @@ export default function useData() {
     },
     venues: {
       many: venues.venuesMany,
-      single: venues.venuesSingle,
+      single: venues.venueSingle,
       allImages: venues.getVenueImages
     }
   }

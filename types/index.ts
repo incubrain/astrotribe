@@ -20,6 +20,10 @@ export type Follower = z.infer<typeof schema.Follower>
 export type Post = z.infer<typeof schema.Post>
 export type News = z.infer<typeof schema.News>
 
+// Venue Types
+export type VenueFull = z.infer<typeof schema.VenueFull>
+export type VenueBasic = z.infer<typeof schema.VenueBasic>
+
 // Event Types
-export type Venue = z.infer<typeof schema.Venue>
-export type ATEvent = z.infer<typeof schema.ATEvent>
+export type EventFull = z.infer<typeof schema.EventFull>
+export type EventBasic = z.infer<typeof schema.EventBasic>

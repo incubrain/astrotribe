@@ -27,14 +27,15 @@
 
 <script setup lang="ts">
 
-interface Props {
-    rating: number
-    showAll: boolean
-}
-
-withDefaults(defineProps<Props>(), {
-  rating: 3,
-  showAll: false
+defineProps({
+  rating: {
+    type: Number as PropType<Number>,
+    required: true
+  },
+  showAll: {
+    type: Boolean as PropType<Boolean>,
+    default: false
+  }
 })
 
 const bortle = [

@@ -11,13 +11,13 @@
           <h3 class="text-base font-semibold">
             {{ p.venue.name?.substring(0, 30) }}...
           </h3>
-          <span v-if="p.venue.rating" class="flex items-start gap-1">
+          <span v-if="p.venue.avg_rating" class="flex items-start gap-1">
             <Icon
               name="material-symbols:star"
               size="18px"
               class="text-yellow-400"
             />
-            <p class="text-xs font-semibold"> {{ p.venue.rating.toPrecision(2) }} </p>
+            <p class="text-xs font-semibold"> {{ p.venue.avg_rating.toPrecision(2) }} </p>
           </span>
         </div>
         <div class="flex flex-col text-sm gap-2 text-gray-500">
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Venue } from '~~/types/index.js'
+import type { Venue } from '@/types'
 
 const p = defineProps({
   venue: {

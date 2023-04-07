@@ -17,10 +17,11 @@ export const useEventsStore = defineStore('events', () => {
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
-      schema: 'ATEvent'
+      schema: 'EventFull'
     })
     console.log('events Store', globalState[dataType])
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    if (!globalState[dataType])
+      throw createError(`Error validating ${dataType} data`)
   }
 
   async function getSingleEvent({ eventId }: { eventId: number }) {
@@ -39,10 +40,11 @@ export const useEventsStore = defineStore('events', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'ATEvent'
+      schema: 'EventFull'
     })
     console.log('userzz5', globalState[dataType])
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    if (!globalState[dataType])
+      throw createError(`Error validating ${dataType} data`)
   }
 
   const eventById = () => {

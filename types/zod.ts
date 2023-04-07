@@ -18,9 +18,38 @@ export const Role = z.object({
   created_at: z.string().optional()
 })
 
-export const MainRole = z.object({
+export const IdName = z.object({
   id: z.number(),
   name: z.string()
+})
+
+export const HostBasic = z.object({
+  id: z.number(),
+  given_name: z.string(),
+  avatar: z.string()
+})
+
+export const VenueBasic = z.object({
+  id: z.number(),
+  created_at: z.string(),
+  name: z.string().nullable(),
+  body: z.string().nullable(),
+  featured_image: z.string(),
+  location: z.object({
+    city: z.string(),
+    country: z.string(),
+    address: z.string().nullable(),
+    state: z.string()
+  })
+})
+
+export const EventBasic = z.object({
+  id: z.number(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(HostBasic),
+  venue: VenueBasic
 })
 
 export const Skill = z.object({
@@ -92,7 +121,7 @@ export const User = z.object({
   follow_count: z.number().nullable(),
   followed_count: z.number().nullable(),
   is_following: z.boolean().nullable(),
-  main_role: MainRole,
+  main_role: IdName,
   user_roles: z.array(Role),
   last_seen: z.string()
 })
@@ -124,22 +153,27 @@ export const Venue = z.object({
     country: z.string(),
     address: z.string().nullable(),
     state: z.string()
-  })
+  }),
+  events: z.array(EventBasic)
 })
 
-export const ATEvent = z.object({
+export const EventFull = z.object({
   id: z.number(),
   title: z.string().nullable(),
   body: z.string().nullable(),
   date: z.string(),
-  hosts: z.array(
-    z.object({
-      id: z.number(),
-      given_name: z.string(),
-      avatar: z.string()
-    })
-  ),
+  hosts: z.array(HostBasic),
   venue: Venue
+})
+
+export const VenueEvents = z.object({
+  id: z.number(),
+  created_at: z.string(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  featured_image: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(HostBasic)
 })
 
 export const UserRoles = z.array(Role)
