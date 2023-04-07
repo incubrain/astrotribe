@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1 class="card-heading pb-4 font-semibold">
-      Skills
-    </h1>
+    <h1 class="card-heading pb-4 font-semibold"> Skills </h1>
     <div class="flex flex-col gap-2">
       <div
         v-for="skill in skills"
@@ -28,14 +26,15 @@
             class="mr-2"
           />
           {{ skill.total_endorsements }}
-          {{ endorsementText(skill.total_endorsements) }}</span>
+          {{ endorsementText(skill.total_endorsements) }}</span
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Skill } from '~~/types/index.js'
+import type { Skill } from '@/types'
 
 defineProps({
   skills: {

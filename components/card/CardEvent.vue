@@ -1,13 +1,23 @@
 <template>
-  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in scale-x-0 origin-left border-b border-gray-200 bg-white">
+  <div
+    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in scale-x-0 origin-left border-b border-gray-200 bg-white"
+  >
     <div class="user-block">
       <section
         v-for="(host, idx) in props.event.hosts"
         :key="host.id"
         class="user-avatars text-black"
       >
-        <div :class="idx > 0 ? 'photo ml-[-20px] border-4 border-white' : 'photo border-4 border-white relative z-10'">
-          <img :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${host.id}/avatar/${host.avatar}`" />
+        <div
+          :class="
+            idx > 0
+              ? 'photo ml-[-20px] border-4 border-white'
+              : 'photo border-4 border-white relative z-10'
+          "
+        >
+          <img
+            :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${host.id}/avatar/${host.avatar}`"
+          />
         </div>
       </section>
       <section class="user-info pl-2">
@@ -18,9 +28,7 @@
           >
             <NuxtLink :to="`/profile/${host.id}`">
               <span> {{ host.given_name }} </span>
-              <span
-                v-if="index !== (props.event.hosts.length - 1)"
-              >, </span>
+              <span v-if="index !== props.event.hosts.length - 1">, </span>
             </NuxtLink>
           </span>
           <em class="pl-2">hosting</em>
@@ -44,7 +52,8 @@
         <div class="flex flex-col">
           <h3>{{ props.event.venue.name }}</h3>
           <p>
-            {{ props.event.venue.location.country }}, {{ props.event.venue.location.state }},
+            {{ props.event.venue.location.country }},
+            {{ props.event.venue.location.state }},
             {{ props.event.venue.location.city }}
           </p>
         </div>
@@ -61,7 +70,9 @@
             <span class="month text-center">{{ time.day }}</span>
           </div>
           <h2>{{ props.event.title }}</h2>
-          <span class="text-sm text-black font-thin"> {{ props.event.body }}</span>
+          <span class="text-sm text-black font-thin">
+            {{ props.event.body }}</span
+          >
         </section>
       </NuxtLink>
       <!-- <div
@@ -99,11 +110,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ATEvent } from '~~/types/index.js'
+import type { EventBasic } from '@/types'
 
 const props = defineProps({
   event: {
-    type: Object as PropType<ATEvent>,
+    type: Object as PropType<EventBasic>,
     required: true
   }
 })

@@ -2,7 +2,9 @@
   <div>
     <div class="text-slate-600 pb-8 flex justify-between items-center">
       <div class="flex gap-4 items-center">
-        <div class="bg-white border-4 border-slate-800 rounded-full overflow-hidden w-28 h-28 p-2">
+        <div
+          class="bg-white border-4 border-slate-800 rounded-full overflow-hidden w-28 h-28 p-2"
+        >
           <img
             src="/venue/hilton-logo.png"
             alt=""
@@ -24,7 +26,9 @@
         </div>
       </div>
       <div>
-        <button class="bg-blue-500 text-white text-md px-4 py-2 rounded-lg flex items-center">
+        <button
+          class="bg-blue-500 text-white text-md px-4 py-2 rounded-lg flex items-center"
+        >
           10 events hosted
           <Icon
             name="material-symbols:event-available"
@@ -35,18 +39,24 @@
       </div>
     </div>
     <VenueImgBlock />
-    <div class="w-full relative grid grid-cols-1 lg:grid-cols-3 mt-6 gap-6 row-start-3 row-span-1 lg:col-start-2">
-      <div class="row-start-1 col-span-1 lg:col-span-3 w-full flex flex-wrap over gap-8 h-auto">
-        <div class="flex items-center px-6 py-2 rounded-lg bg-white w-full flex-grow lg:max-w-[340px]">
-          <h4 class="pr-2 text-lg">
-            Our rating
-          </h4>
+    <div
+      class="w-full relative grid grid-cols-1 lg:grid-cols-3 mt-6 gap-6 row-start-3 row-span-1 lg:col-start-2"
+    >
+      <div
+        class="row-start-1 col-span-1 lg:col-span-3 w-full flex flex-wrap over gap-8 h-auto"
+      >
+        <div
+          class="flex items-center px-6 py-2 rounded-lg bg-white w-full flex-grow lg:max-w-[340px]"
+        >
+          <h4 class="pr-2 text-lg"> Our rating </h4>
           <AppStars
             :rating="4.5"
             :star-size="28"
           />
         </div>
-        <div class="flex items-center rounded-lg bg-white min-w-[600px] w-full lg:w-2/6 flex-grow">
+        <div
+          class="flex items-center rounded-lg bg-white min-w-[600px] w-full lg:w-2/6 flex-grow"
+        >
           <CommonBortle />
         </div>
         <a
@@ -66,16 +76,21 @@
         title="About"
         class="col-span-1 row-start-2 lg:col-span-2 row-span-1"
       />
-      <div class="bg-white rounded-lg overflow-hidden col-span-1 row-span-2 row-start-3 lg:row-start-2">
-        <h4 class="pr-2 text-2xl font-semibold w-full p-8">
-          Events
-        </h4>
-        <div style="border-top: 1px solid #e5e7eb" />
-        <CardEvent />
-        <div style="border-top: 1px solid #e5e7eb" />
-        <CardEvent />
+      <div
+        class="bg-white rounded-lg overflow-hidden col-span-1 row-span-2 row-start-3 lg:row-start-2"
+      >
+        <h4 class="pr-2 text-2xl font-semibold w-full p-8"> Events </h4>
+        <div
+          v-for="event in s.venue.events"
+          :key="event.id"
+        >
+          <div style="border-top: 1px solid #e5e7eb" />
+          <CardEvent :event="event" />
+        </div>
       </div>
-      <div class="h-full col-span-1 row-span-1 rounded-lg overflow-hidden shadow-sm lg:row-start-3 lg:col-span-2 min-h-[380px]">
+      <div
+        class="h-full col-span-1 row-span-1 rounded-lg overflow-hidden shadow-sm lg:row-start-3 lg:col-span-2 min-h-[380px]"
+      >
         <iframe
           width="100%"
           height="100%"
@@ -93,7 +108,6 @@
 </template>
 
 <script setup lang="ts">
-
 const { id } = useRoute().params
 
 const v = useVenuesStore()
@@ -102,7 +116,6 @@ const images = await v.getVenueImages({ venueId: Number(id) })
 
 const s = appState()
 console.log('singleVenue', s.venue, images)
-
 </script>
 
 <style lang="scss"></style>

@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import type { UserFull } from '~~/types/index.js'
+import type { UserFull } from '@/types'
 
 const props = defineProps({
   user: {
