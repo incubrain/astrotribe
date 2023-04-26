@@ -10,11 +10,11 @@ export type Language = z.infer<typeof schema.Language>
 export type Location = z.infer<typeof schema.Location>
 
 // User Types
-export type User = z.infer<typeof schema.User>
+export type User = z.infer<typeof schema.UserBasic>
 export type UserFull = z.infer<typeof schema.UserFull>
 export type UserRoles = z.infer<typeof schema.UserRoles>
 export type UserLocation = z.infer<typeof schema.UserLocation>
-export type Follower = z.infer<typeof schema.Follower>
+export type Follower = z.infer<typeof schema.UserBasic>
 
 // Post Types
 export type Post = z.infer<typeof schema.Post>
