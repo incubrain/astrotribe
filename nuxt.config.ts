@@ -3,7 +3,7 @@
 export default defineNuxtConfig({
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
-    pageTransition: { name: 'page', mode: 'out-in' },
+    pageTransition: { name: 'page', mode: 'out-in' }
     // head: {
     //     link: [
     //       { rel: 'stylesheet', href: '' }
@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   },
   css: ['/assets/main.css'],
   imports: {
-    dirs: ['stores'],
+    dirs: ['stores']
   },
   // formkit: {
   //     configFile: './formkit.config.ts',
@@ -28,12 +28,13 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxtjs/color-mode',
     'nuxt-icon',
+    'nuxt-swiper',
     [
       '@pinia/nuxt',
       {
-        autoImports: ['defineStore', 'acceptHMRUpdate'],
-      },
-    ],
+        autoImports: ['defineStore', 'acceptHMRUpdate']
+      }
+    ]
   ],
   // partytown: {
   //     // For google analytics
@@ -43,10 +44,10 @@ export default defineNuxtConfig({
     // Keys within public, will be also exposed to the client-side
     public: {
       SUPABASE_URL: process.env.SUPABASE_URL,
-      SUPABASE_KEY: process.env.SUPABASE_KEY,
+      SUPABASE_KEY: process.env.SUPABASE_KEY
     },
     // The private keys which are only available within server-side
-    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
+    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY
   },
   typescript: {
     shim: false,
@@ -54,9 +55,9 @@ export default defineNuxtConfig({
       exclude: ['node_modules', 'dist'],
       compilerOptions: {
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
-        strict: true,
-      },
-    },
+        strict: true
+      }
+    }
   },
   // nitro: {
   //     preset: 'render-com',
@@ -84,5 +85,5 @@ export default defineNuxtConfig({
   // alias: {
   //     '@data': "/assets/data",
   // },
-  ssr: true,
+  ssr: true
 })
