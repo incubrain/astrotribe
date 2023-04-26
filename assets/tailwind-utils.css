@@ -1,0 +1,98 @@
+/* Define your custom utilities using CSS variables */
+@import './variables.css';
+
+/* Custom background colors */
+.bg-base {
+  background-color: rgb(var(--color-bg-base));
+}
+
+.bg-alt {
+  background-color: rgb(var(--color-bg-alt));
+}
+
+/* Custom text colors */
+.text-dark {
+  color: rgb(var(--color-text-base));
+}
+
+.text-muted {
+  color: rgb(var(--color-text-muted));
+}
+
+.text-inverted {
+  color: rgb(var(--color-text-inverted));
+}
+
+/* Custom primary and secondary colors */
+.text-primary {
+  color: rgb(var(--color-primary));
+}
+
+.text-link {
+  color: rgb(var(--color-primary));
+}
+
+.text-secondary {
+  color: rgb(var(--color-secondary));
+}
+
+.bg-primary {
+  background-color: rgb(var(--color-primary));
+}
+
+.bg-secondary {
+  background-color: rgb(var(--color-secondary));
+}
+
+.border-primary {
+  border-color: rgb(var(--color-primary));
+}
+
+.border-secondary {
+  border-color: rgb(var(--color-secondary));
+}
+
+/* Custom button styles */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-lg {
+  display: inline-block;
+  padding: 1rem 3rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--color-text-inverted));
+}
+
+.btn-primary:hover {
+  background-color: rgba(var(--color-primary), var(--opacity-muted));
+}
+
+.btn-muted {
+  background-color: rgb(var(--color-button-muted));
+  color: rgb(var(--color-text-inverted));
+}
+
+.btn-muted:hover {
+  background-color: rgba(var(--color-button-accent-hover), var(--opacity-muted));
+}
+
+.btn-inverted {
+  background-color: rgb(var(--color-button-inverted));
+  color: rgb(var(--color-text-base));
+}
+
+.btn-inverted:hover {
+  background-color: rgba(var(--color-button-accent-hover), var(--opacity-muted));
+}

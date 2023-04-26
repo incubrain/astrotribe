@@ -1,9 +1,10 @@
 import { FileObject } from '@supabase/storage-js'
 
 export const venueSingle = async (venueId: number) => {
+  console.log('venueById', venueId)
   const client = usePublicClient()
   const { data, error } = await client.rpc('get_venue_single', { p_venue_id: venueId })
-  console.log('venueById', data, error)
+  console.log('venueById2', data, error)
   return {
     data,
     error
@@ -21,14 +22,11 @@ export const venuesMany = async () => {
   }
 }
 
-const baseUrl =
-  'https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/'
+const baseUrl = 'https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/'
 
 export async function getVenueImages(venueId: number): Promise<string[]> {
   const client = usePublicClient()
-  const { data, error } = await client.storage
-    .from('venues-public')
-    .list(`${venueId}/`)
+  const { data, error } = await client.storage.from('venues-public').list(`${venueId}/venue/`)
 
   if (error) {
     console.error('Error fetching venue images:', error)
@@ -36,7 +34,9 @@ export async function getVenueImages(venueId: number): Promise<string[]> {
   }
 
   // If you want to store full URLs
-  const imageUrls = data.map((file: FileObject) => `${baseUrl}${file.name}`)
+  // Filter out .folderPlaceholder
+  const filtered = data.filter((file: FileObject) => !file.name.startsWith('.'))
+  const imageUrls = filtered.map((file: FileObject) => `${baseUrl}venues-public/${venueId}/venue/${file.name}`)
 
   return imageUrls
 }

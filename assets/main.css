@@ -1,63 +1,16 @@
 @import 'cropperjs/dist/cropper.css';
-
+@import './variables.css';
+@import './tailwind-utils.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-text-base: 255, 255, 255;
-    --color-text-muted: 199, 210, 254;
-    --color-text-inverted: 79, 70, 229;
-    --color-fill: 67, 56, 202;
-    --color-button-accent: 255, 255, 255;
-    --color-button-accent-hover: 238, 242, 255;
-    --color-button-muted: 99, 102, 241;
-  }
-  .theme-light {
-    --color-text-base: 255, 255, 255;
-    --color-text-muted: 199, 210, 254;
-    --color-text-inverted: 79, 70, 229;
-    --color-fill: 67, 56, 202;
-    --color-button-accent: 255, 255, 255;
-    --color-button-accent-hover: 238, 242, 255;
-    --color-button-muted: 99, 102, 241;
-  }
-
-  .theme-dark {
-    --color-text-base: 255, 255, 255;
-    --color-text-muted: 254, 202, 202;
-    --color-text-inverted: 220, 38, 38;
-    --color-fill: 185, 28, 28;
-    --color-button-accent: 255, 255, 255;
-    --color-button-accent-hover: 254, 242, 242;
-    --color-button-muted: 239, 68, 68;
-  }
-  .theme-neon {
-    --color-text-base: 17, 24, 2;
-    --color-text-muted: 47, 67, 6;
-    --color-text-inverted: 235, 250, 204;
-    --color-fill: 179, 255, 23;
-    --color-button-accent: 36, 52, 3;
-    --color-button-accent-hover: 55, 79, 5;
-    --color-button-muted: 212, 255, 122;
-  }
 }
 
 @layer components {
   .card {
-    @apply p-4 border-b border-gray-200 md:border-none md:p-12 md:rounded-lg bg-white text-black md:shadow-sm;
-  }
-  .btn-primary {
-    color: var(--color-button-accent);
-    background-color: var(--color-fill);
-    background-image: linear-gradient(
-      45deg,
-      var(--color-fill),
-      var(--color-button-accent)
-    );
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
+    @apply p-4 border-b border-gray-200 md:border-none md:p-12 md:rounded-lg bg-white text-black md:shadow-sm w-full;
   }
 }
 
@@ -69,10 +22,47 @@
     @apply border-y border-gray-200;
   }
   .card-heading {
-    @apply text-base font-semibold md:text-lg xl:text-xl;
+    @apply text-lg font-semibold md:text-xl xl:text-2xl;
+  }
+
+  .card-heading-padding {
+    @apply pb-4;
   }
   .card-subheading {
     @apply text-sm md:text-base xl:text-lg;
+  }
+  .card-body {
+    @apply text-xs md:text-sm xl:text-base;
+  }
+  .card-padding {
+    @apply p-4 md:p-6 lg:p-8;
+  }
+  .py-home {
+    @apply py-[40px] md:py-[80px] lg:py-[160px] mx-auto;
+  }
+  .px-home {
+    @apply px-[40px] md:px-[80px] lg:px-[160px];
+  }
+  .home-width {
+    @apply max-w-[100%] md:max-w-[80%] lg:max-w-[1240px];
+  }
+  .p-body {
+    @apply text-[12px] md:text-[18px];
+  }
+  .head-1 {
+    @apply text-[48px] md:text-[56px] lg:text-[64px] font-bold;
+  }
+  .head-2 {
+    @apply text-[38px] md:text-[48px] lg:text-[56px];
+  }
+  .head-3 {
+    @apply text-[30px] md:text-[34px] lg:text-[38px];
+  }
+  .head-4 {
+    @apply text-[24px] md:text-[28px] lg:text-[30px];
+  }
+  .inverted {
+    @apply text-[#fff];
   }
 }
 

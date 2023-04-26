@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="card-heading pb-4 font-semibold">
+    <h1 class="card-heading">
       {{ title }}
     </h1>
     <p>

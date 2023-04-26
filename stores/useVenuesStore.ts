@@ -19,16 +19,16 @@ export const useVenuesStore = defineStore('venues', {
         dataType,
         schema: 'VenueBasic'
       })
-      console.log('Venue Store', globalState[dataType])
+      console.log('Venues Store', globalState[dataType])
     },
-    async getSingleVenue({ venueId }: { venueId: number }): Promise<void> {
+    async getVenueSingle({ venueId }: { venueId: number }): Promise<void> {
       const dataType = 'venue'
       const globalState = appState()
       // check localStorage and state
-      if (globalState[dataType]) return
+      // if (globalState[dataType]) return
+      console.log('retTest')
 
       const { data, error } = await useData().venues.single(venueId)
-      console.log('get events from supabase', data)
       if (error) throw createError(error)
       globalState[dataType] = await util.checkDataValidity({
         data,
@@ -39,7 +39,6 @@ export const useVenuesStore = defineStore('venues', {
     },
     async getVenueImages({ venueId }: { venueId: number }): Promise<string[]> {
       const data = await useData().venues.allImages(venueId)
-      console.log('get venue images from supabase', data)
       return data
     }
   },
