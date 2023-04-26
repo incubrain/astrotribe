@@ -18,6 +18,7 @@ export default function useUtils() {
     },
     venues: {
       featuredImage: storage.getVenueFeatured,
+      images: storage.getVenueImages,
       logo: storage.getVenueLogo
     },
     strings: {

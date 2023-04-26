@@ -17,7 +17,7 @@ export const useEventsStore = defineStore('events', () => {
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
-      schema: 'EventFull'
+      schema: 'EventBasic'
     })
     console.log('events Store', globalState[dataType])
     if (!globalState[dataType])

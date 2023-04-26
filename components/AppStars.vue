@@ -2,10 +2,7 @@
   <div>
     <div class="h-full">
       <div class="flex gap-2 h-full leading-4">
-        <div class="flex gap-1 items-center justify-center h-full">
-          <p class="leading-4 text-md pr-2 flex justify-center items-center mt-[2px]">
-            {{ rating.toPrecision(2) }}/10
-          </p>
+        <div class="flex gap-1 items-center justify-center h-full relative group">
           <Icon
             v-for="i in 5"
             :key="i"
@@ -13,6 +10,11 @@
             :size="`${starSize}px`"
             class="text-yellow-400"
           />
+          <div
+            class="absolute left-1/2 top-full mt-2 p-2 bg-gray-700 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition duration-200 ease-in-out transform -translate-x-1/2"
+          >
+            {{ rating.toPrecision(2) }}
+          </div>
         </div>
       </div>
     </div>
@@ -27,7 +29,7 @@ defineProps({
   },
   starSize: {
     type: Number as PropType<number>,
-    default: 20
+    default: 14
   }
 })
 
@@ -42,4 +44,8 @@ const isStarFilled = (index: number, rating: number) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.group:focus .group-focus\:opacity-100 {
+  opacity: 100 !important;
+}
+</style>

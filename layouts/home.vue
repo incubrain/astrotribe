@@ -6,7 +6,7 @@
       </div>
       <div class="w-full h-[calc(100vh-50px)] lg:h-[calc(100vh-60px)] relative overflow-y-scroll">
         <slot />
-        <FooterSimple />
+        <HomeFooter />
       </div>
       <!-- <NuxtErrorBoundary @error="someErrorLogger">
                     You use the default slot to render your content

@@ -8,18 +8,16 @@
     >
       <!-- logo -->
       <div class="h-full flex items-center pl-3 md:pl-4">
-        <h1 class="text-xl md:text-2xl block font-semibold pr-4">
-          AstroTribe
-        </h1>
+        <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
         <div
           v-show="route.path === '/'"
           class="hidden lg:flex gap-4 pl-4 justify-center border-l items-center h-full leading-none text-sm font-semibold"
         >
           <NuxtLink
-            to="/news"
+            to="/users"
             class="hover:text-[#471bc9]"
           >
-            News
+            AstroTribe
           </NuxtLink>
           <NuxtLink
             to="/about"
@@ -37,17 +35,16 @@
       </div>
       <!-- tabs -->
       <AppTabs class="hidden h-full md:flex" />
-      <div
-        class="md:col-start-3 md:col-span-1 pr-3 md:pr-6 flex w-full relative"
-      >
-        <div class="w-full flex items-center justify-end">
+      <div class="md:col-start-3 md:col-span-1 pr-3 md:pr-6 flex w-full relative">
+        <div
+          v-show="route.path !== '/'"
+          class="w-full flex items-center justify-end"
+        >
           <!-- avatar dropdown -->
           <NuxtLink to="/profile/1">
             <div class="flex items-center relative cursor-pointer">
               <p class="text-gray-800 hidden md:flex text-sm mx-3">
-                {{
-                  currentSession ? 'Authenticated' : 'Anon.'
-                }}
+                {{ currentSession ? 'Authenticated' : 'Anon.' }}
               </p>
 
               <div class="rounded-md">
@@ -65,6 +62,15 @@
             </div>
           </NuxtLink>
         </div>
+        <div
+          v-show="route.path === '/'"
+          class="w-full flex items-end justify-end"
+        >
+          <HomeButton
+            cta="Join Free"
+            :variant="true"
+          />
+        </div>
       </div>
     </div>
   </nav>
@@ -80,9 +86,4 @@ const { error, session: currentSession } = await session.getCurrent()
 if (error) throw createError('error getting user session')
 
 console.log('currentSession', session, currentSession, error)
-
-function dropdownHandler(event) {
-  const single = event.currentTarget.getElementsByTagName('ul')[0]
-  single.classList.toggle('hidden')
-}
 </script>

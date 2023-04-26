@@ -27,7 +27,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'User'
+      schema: 'UserBasic'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)

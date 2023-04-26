@@ -6,6 +6,11 @@
         :alt="`${p.venue.name} AstroTribe featured image`"
         class="aspect-square object-contain w-full"
       />
+      <img
+        :src="u.venues.logo(p.venue.id, p.venue.logo)"
+        :alt="`${p.venue.name} Logo on AstroTribe`"
+        class="aspect-square rounded-full object-contain absolute left-2 top-2 w-12 bg-white p-1"
+      />
       <div class="p-4 flex flex-col gap-2 bg-white md:h-full">
         <div class="flex justify-between text-gray-700">
           <h3 class="text-base font-semibold">
@@ -30,11 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Venue } from '@/types'
+import type { VenueFull } from '@/types'
 
 const p = defineProps({
   venue: {
-    type: Object as PropType<Venue>,
+    type: Object as PropType<VenueFull>,
     required: true
   }
 })

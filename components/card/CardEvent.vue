@@ -41,7 +41,7 @@
         </span>
       </section>
     </div>
-    <NuxtLink :to="`/venues/${props.event.venue.id}`">
+    <NuxtLink :to="`/venues/${props.venue.id}`">
       <div class="pb-4 pl-4 text-xs flex items-center gap-4 text-gray-500">
         <div class="pl-2">
           <Icon
@@ -50,11 +50,11 @@
           />
         </div>
         <div class="flex flex-col">
-          <h3>{{ props.event.venue.name }}</h3>
+          <h3>{{ props.venue.name }}</h3>
           <p>
-            {{ props.event.venue.location.country }},
-            {{ props.event.venue.location.state }},
-            {{ props.event.venue.location.city }}
+            {{ props.venue.location.country }},
+            {{ props.venue.location.state }},
+            {{ props.venue.location.city }}
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@
         <img src="/cover1.jpg" />
       </figure>
       <NuxtLink :to="`/events/${props.event.id}`">
-        <section class="article-info">
+        <section class="article-info relative">
           <div class="date flex-col justify-center items-center">
             <span class="day">{{ time.month }}</span>
             <span class="month text-center">{{ time.day }}</span>
@@ -110,11 +110,15 @@
 </template>
 
 <script setup lang="ts">
-import type { EventBasic } from '@/types'
+import type { EventBasic, VenueBasic } from '@/types'
 
 const props = defineProps({
   event: {
     type: Object as PropType<EventBasic>,
+    required: true
+  },
+  venue: {
+    type: Object as PropType<VenueBasic>,
     required: true
   }
 })

@@ -4,6 +4,7 @@
       v-for="event in s.events"
       :key="event.id"
       :event="event"
+      :venue="event.venue"
     />
   </div>
 </template>

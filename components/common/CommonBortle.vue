@@ -1,40 +1,24 @@
 <template>
-  <div class="flex flex-row w-full h-full rounded-md overflow-hidden items-center">
-    <h3 class="p-4 whitespace-nowrap">
-      Bortle rating
-    </h3>
-    <div
-      v-for="rate in bortle"
-      :key="rate.id"
-      class="relative w-full h-full border-r border-slate-500"
-    >
+  <div class="card flex gap-4 items-center">
+    <div class="w-[60px] h-[60px] object-contain rounded-full overflow-hidden relative">
       <img
-        :src="rate.src"
+        :src="bortle.find((b) => b.id === p.rating)?.src"
         alt="bortle dark sky rating"
-        class="w-full h-full object-contain"
+        class=""
       />
-      <div
-        v-if="showAll || rate.id === rating"
-        class="absolute w-full h-full text-md text-white z-50 text-l top-0 left-0 flex justify-center items-center"
-      >
-        <p>
-          {{ rating }}
-        </p>
-      </div>
+      <p class="absolute w-full h-full flex items-center justify-center card-subheading text-white top-0 left-0 text-lg font-bold">
+        {{ p.rating }}
+      </p>
     </div>
+    <h3 class="card-heading"> Bortle rating </h3>
   </div>
 </template>
 
 <script setup lang="ts">
-
-defineProps({
+const p = defineProps({
   rating: {
     type: Number as PropType<Number>,
     required: true
-  },
-  showAll: {
-    type: Boolean as PropType<Boolean>,
-    default: false
   }
 })
 
