@@ -4,13 +4,23 @@
     <h2 class="text-center text-3xl font-semibold mb-10">Testimonials</h2>
     <Swiper
       :modules="[SwiperAutoplay]"
-      :slides-per-view="3"
-      :space-between="40"
+      :slides-per-view="1"
+      :space-between="20"
       :auto-height="true"
       :loop="true"
       :autoplay="{
         delay: 7000,
         disableOnInteraction: true
+      }"
+      :breakpoints="{
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 30
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 50
+        }
       }"
       class="w-full h-full"
     >
@@ -34,10 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/effect-creative'
-
 const testimonials = ref([
   {
     image: '/avatar.png',
