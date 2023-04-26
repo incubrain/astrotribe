@@ -35,21 +35,13 @@ export const VenueBasic = z.object({
   name: z.string().nullable(),
   body: z.string().nullable(),
   featured_image: z.string(),
+  logo: z.string().nullable(),
   location: z.object({
     city: z.string(),
     country: z.string(),
     address: z.string().nullable(),
     state: z.string()
   })
-})
-
-export const EventBasic = z.object({
-  id: z.number(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  date: z.string(),
-  hosts: z.array(HostBasic),
-  venue: VenueBasic
 })
 
 export const Skill = z.object({
@@ -111,7 +103,7 @@ export const News = z.object({
   category: z.string().nullable()
 })
 
-export const User = z.object({
+export const UserBasic = z.object({
   id: z.number(),
   given_name: z.string(),
   surname: z.string().nullable(),
@@ -126,7 +118,7 @@ export const User = z.object({
   last_seen: z.string()
 })
 
-export const UserFull = User.extend({
+export const UserFull = UserBasic.extend({
   email: z.string(),
   dob: z.string().nullable(),
   gender_id: z.number().nullable(),
@@ -140,20 +132,26 @@ export const UserFull = User.extend({
   user_socials: z.array(Socials)
 })
 
-export const Venue = z.object({
+export const EventBasic = z.object({
   id: z.number(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(HostBasic),
+  venue: VenueBasic
+})
+
+export const VenueFull = z.object({
+  id: z.number(),
+  bortle_rating: z.number().nullable(),
   created_at: z.string(),
   name: z.string().nullable(),
   body: z.string().nullable(),
   featured_image: z.string(),
+  logo: z.string().nullable(),
   events_hosted: z.number().nullable().optional(),
   avg_rating: z.number().nullable().optional(),
-  location: z.object({
-    city: z.string(),
-    country: z.string(),
-    address: z.string().nullable(),
-    state: z.string()
-  }),
+  location: Location,
   events: z.array(EventBasic)
 })
 
@@ -163,7 +161,7 @@ export const EventFull = z.object({
   body: z.string().nullable(),
   date: z.string(),
   hosts: z.array(HostBasic),
-  venue: Venue
+  venue: VenueFull
 })
 
 export const VenueEvents = z.object({
@@ -171,6 +169,7 @@ export const VenueEvents = z.object({
   created_at: z.string(),
   title: z.string().nullable(),
   body: z.string().nullable(),
+  logo: z.string().nullable(),
   featured_image: z.string().nullable(),
   date: z.string(),
   hosts: z.array(HostBasic)
