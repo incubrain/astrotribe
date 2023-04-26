@@ -1,5 +1,11 @@
 {
   "editor.tabSize": 2,
   "indentRainbow.lightIndicatorStyleLineWidth": 2,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.hg/store/**": true
+  },
   "editor.detectIndentation": false
 }
