@@ -1,7 +1,7 @@
 <template>
   <div>
     <HomeHero2 />
-    <div class="max-w-[1240px] mx-auto flex flex-col pt-32">
+    <div class="max-w-[1240px] mx-auto flex flex-col pt-32 padx-home">
       <HomeTrusted />
       <HomeFeatures />
       <HomeProductStep
@@ -28,7 +28,7 @@
       title="Call to Action"
       body="Some more information about AstroTribe that spills onto the second line"
     />
-    <div class="max-w-[1240px] mx-auto flex flex-col pb-32">
+    <div class="max-w-[1240px] mx-auto flex flex-col pb-32 padx-home">
       <HomeTestimonial />
       <HomeTimeline />
       <HomeCtaSecond

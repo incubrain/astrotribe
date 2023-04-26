@@ -70,16 +70,15 @@
             </defs>
           </svg>
           <div class="pt-5">
-            <h1 class="text-xl lg:text-2xl font-semibold tracking-wider text-gray-800"
-              >Home Insurance</h1
-            >
-            <p class="mt-4 tracking-wider leading-8 text-base w-11/12 text-gray-700"
-              >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non
-              at</p
-            >
+            <h1 class="text-xl lg:text-2xl font-semibold tracking-wider text-gray-800">
+              Home Insurance
+            </h1>
+            <p class="mt-4 tracking-wider leading-8 text-base w-11/12 text-gray-700">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at
+            </p>
           </div>
         </div>
-        <div class="mx-auto m-4 bg-white rounded-3xl shadow-md py-6 px-16">
+        <div class="mx-auto m-4 bg-white rounded-xl shadow-md py-6 px-16">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="73"
