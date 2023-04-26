@@ -2,67 +2,31 @@
   <div class="f-f-p bg-primary px-6 pt-12 pb-12">
     <div class="w-full lg:flex justify-between mx-auto container">
       <div class="lg:w-1/2 justify-between lg:flex">
-        <div class="flex flex-col mt-4 lg:mt-0">
+        <div
+          v-for="(category, index) in links"
+          :key="index"
+          class="flex flex-col mt-4 lg:mt-0"
+        >
           <ul>
             <li>
               <p
                 href=""
                 class="text-lg text-white tracking-wide font-semibold"
-                >Insurance</p
               >
+                {{ category.title }}
+              </p>
             </li>
-            <li class="mt-6">
+            <li
+              v-for="(link, linkIndex) in category.links"
+              :key="linkIndex"
+              class="mt-6"
+            >
               <a
                 href=""
                 class="text-base text-white tracking-wide"
-                >How it works</a
               >
-            </li>
-            <li class="mt-2">
-              <a
-                href=""
-                class="text-base text-white tracking-wide"
-                >Benefits</a
-              >
-            </li>
-            <li class="mt-2">
-              <a
-                href=""
-                class="text-base text-white tracking-wide"
-                >Features</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="flex flex-col mt-4 lg:mt-0">
-          <ul>
-            <li>
-              <p
-                href=""
-                class="text-lg text-white tracking-wide font-semibold"
-                >About Us</p
-              >
-            </li>
-            <li class="mt-6">
-              <a
-                href=""
-                class="text-base text-white tracking-wide"
-                >Our team</a
-              >
-            </li>
-            <li class="mt-2">
-              <a
-                href=""
-                class="text-base text-white tracking-wide"
-                >Career</a
-              >
-            </li>
-            <li class="mt-2">
-              <a
-                href=""
-                class="text-base text-white tracking-wide"
-                >Blog</a
-              >
+                {{ link }}
+              </a>
             </li>
           </ul>
         </div>
@@ -72,8 +36,9 @@
               <p
                 href=""
                 class="text-lg text-white tracking-wide font-semibold"
-                >Stay Connected</p
               >
+                Stay Connected
+              </p>
             </li>
             <div class="flex w-2/5 sm:w-1/4 lg:w-full justify-between lg:px-4 items-center mt-6">
               <li class="">
@@ -181,11 +146,26 @@
     </div>
   </div>
   <div class="bg-gray-100 py-5">
-    <h1 class="text-base text-gray-700 text-center">©2020 - Inertia. All right reserved</h1>
+    <h1 class="text-base text-gray-700 text-center"
+      >©2018 - {{ currentYear }} AstronEra. All right reserved</h1
+    >
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const links = [
+  {
+    title: 'Insurance',
+    links: ['How it works', 'Benefits', 'Features']
+  },
+  {
+    title: 'About Us',
+    links: ['Our team', 'Career', 'Blog']
+  }
+]
+
+const currentYear = new Date().getFullYear()
+</script>
 
 <style scoped>
 @import url('https://cdn.tuk.dev/dist/css/tailwind-v2.2.11.min.css');

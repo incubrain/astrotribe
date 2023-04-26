@@ -1,7 +1,7 @@
 <!-- components/TestimonialSlider.vue -->
 <template>
   <section class="container mx-auto px-4 py-10 w-full">
-    <h2 class="text-center text-3xl font-semibold mb-10">Testimonials</h2>
+    <h2 class="text-left head-2 mb-10 text-dark">Testimonials</h2>
     <Swiper
       :modules="[SwiperAutoplay]"
       :slides-per-view="1"
