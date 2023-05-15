@@ -1,53 +1,38 @@
 <template>
-  <div>
-    <div class="border-b-2 shadow-md">
-    </div>
-    <div class="mx-auto container relative px-6 py-7 xl:px-0">
-      <div
-        class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 items-center pb-40"
-      >
-        <div class="xl:mt-8">
-          <div
-            class="text-3xl lg:text-6xl xl:text-8xl text-gray-800 tracking-1px font-extrabold"
-          >
-            <h1 class="lg:text-7xl leading-tight mt-3 lg:mt-4">
-              Humanity is our tribe, space is our frontier!
-            </h1>
-          </div>
-          <h2
-            class="text-base lg:text-lg tracking-wide leading-9 lg:w-10/12 mt-2 lg:mt-6 text-gray-700"
-          >
-            A community of stargazers, astronomers, space enthusiasts, and aliens...? Are we alone...?
-          </h2>
-          <div class="my-2">
-            <button
-              class="focus:ring-indigo-700 focus:ring-2 focus:ring-offset-2 focus:outline-none mt-5 lg:mt-10 bg-indigo-700 text-base leading-none text-white hover:bg-indigo-600 p-4 rounded"
-            >
-              To the moon
-            </button>
-            <button
-              class="focus:ring-indigo-700 ml-4 focus:ring-2 focus:ring-offset-2 focus:outline-none mt-5 lg:mt-10 bg-indigo-700 text-base leading-none text-white hover:bg-indigo-600 p-4 rounded"
-            >
-              Video popup
-            </button>
-          </div>
-        </div>
-        <div
-          class="w-full custom-height mt-8 lg:mt-0 rounded-3xl relative"
-        >
-          <a
-            tabindex="-1"
-            href="javascript:void(0)"
-          ><img
-            src="https://i.ibb.co/dLsYS9C/Group-1.png"
-            alt="Group-1"
-          /></a>
-        </div>
+  <div class="relative w-full h-[100vh] flex flex-row gap-4 md:gap-10 lg:gap-20 py-home px-home">
+    <div
+      :style="{ backgroundImage: `url('${bgImg}')` }"
+      class="absolute w-full h-full top-0 left-0 bg-cover bg-center bg-no-repeat"
+    ></div>
+    <!-- Hero Left -->
+    <div class="relative z-50 w-full h-full flex flex-col gap-4">
+      <div class="w-24 h-24 aspect-square rounded-full shadow-lg p-4 bg-white">
+        <img
+          src="/astronera-logo.jpg"
+          class=""
+        />
       </div>
+      <h1 class="head-1 leading-none pt-4 max-w-md">This is the main title</h1>
+      <p class="text-xl font-semibold max-w-sm"
+        >Convincing people to sign up to the product in just 2 lines</p
+      >
+      <div class="pt-4">
+        <v-btn
+          color="#82b440"
+          variant="flat"
+          size="large"
+        >
+          Join Free Today
+        </v-btn>
+      </div>
+    </div>
+    <!-- Hero Right -->
+    <div class="relative z-50 bg-blue-200 w-full h-full">
+      <p>Right Side</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const menu = false
+const bgImg = '/cover1.jpg'
 </script>

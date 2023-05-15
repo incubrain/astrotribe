@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-full p-20 text-black gap-4 justify-center items-center bg-indigo-50 animate-swipe-down scale-y-0 origin-top"
+    class="w-full h-full p-20 text-black gap-4 justify-center items-center bg-indigo-50 animate-swipe-down"
   >
     <p>reset value: {{ showForm }}</p>
     <form v-if="showForm">
@@ -57,7 +57,8 @@ const updatePassword = async () => {
 }
 
 definePageMeta({
-  layout: 'auth'
+  layout: 'auth',
+  name: 'Reset Password'
 })
 </script>
 
