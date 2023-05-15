@@ -9,7 +9,7 @@
     }"
   >
     <div
-      class="absolute top-10 right-10 cursor-pointer p-6 rounded-full bg-[#00000040] backdrop-blur-md"
+      class="absolute top-10 right-10 cursor-pointer p-6 rounded-full bg-[#00000040] backdrop-blur-md hidden lg:flex"
       @click="isVisible = !isVisible"
     >
       <Icon name="ic:baseline-remove-red-eye" size="23px" />
@@ -44,7 +44,7 @@
         {{ data.nasaImg.title }}
       </h1>
       <p
-        class="h-[0px] lg:h-[100px] overflow-auto group-hover:h-[48vh] transition-all duration-300 scrollbar-hidden"
+        class="h-[0px] xl:h-[100px] overflow-auto group-hover:h-[48vh] transition-all duration-300 scrollbar-hidden"
       >
         {{ data.nasaImg.explanation }}
       </p>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-indigo-50 animate-swipe-down scale-y-0 origin-top">
+  <div class="bg-indigo-50 animate-swipe-down">
     <div
       class="xl:px-20 md:px-10 sm:px-6 px-4 md:py-10 py-4 2xl:mx-auto 2xl:container md:flex items-center justify-center"
     >
@@ -145,7 +145,6 @@
       </div>
     </div>
   </div>
-  <!-- <FeedbackAlert /> -->
 </template>
 
 <script setup lang="ts">
@@ -159,17 +158,21 @@ const email = ref()
 const router = useRouter()
 const { register } = useAuth()
 
-const handleregister = async (email, password) => {
+const handleregister = async (email: string, password: { a: string, b: string}) => {
   if (password.a === password.b) {
-    const { data, error } = await register.registerWithEmail(email, password)
+    const { data, error } = await register.registerWithEmail(email, password.a)
     if (error) throw createError({ error, message: 'something went wrong' })
     // updateUserState(data.user)
     router.push('/')
+  } else {
+    // window.alert('passwords do not match')
+    console.log('passwords do not match')
   }
 }
 
 definePageMeta({
-  layout: 'auth'
+  layout: 'auth',
+  name: 'Register'
 })
 </script>
 

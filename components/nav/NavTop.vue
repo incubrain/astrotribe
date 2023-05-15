@@ -66,10 +66,12 @@
           v-show="route.path === '/'"
           class="w-full flex items-end justify-end"
         >
-          <HomeButton
-            cta="Join Free"
-            :variant="true"
-          />
+          <v-btn
+            variant="flat"
+            color="#82b440"
+          >
+            Join Free
+          </v-btn>
         </div>
       </div>
     </div>

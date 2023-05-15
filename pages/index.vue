@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomeHero2 />
+    <HomeHero />
     <div class="max-w-[1240px] mx-auto flex flex-col pt-32 px-home">
       <HomeTrusted />
       <HomeFeatures />
