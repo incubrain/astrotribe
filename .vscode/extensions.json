@@ -4,8 +4,6 @@
 		"dbaeumer.vscode-eslint",
 		"github.codespaces",
 		"github.vscode-pull-request-github",
-		"graphql.vscode-graphql",
-		"graphql.vscode-graphql-syntax",
 		"ecmel.vscode-html-css",
 		"ms-vscode.vscode-typescript-next",
 		"christian-kohler.path-intellisense",

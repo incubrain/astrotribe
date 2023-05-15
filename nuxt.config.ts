@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     //     ],
     // },
   },
-  css: ['/assets/main.css'],
+  css: ['/assets/main.css', 'vuetify/lib/styles/main.sass'],
   imports: {
     dirs: ['stores']
   },
@@ -36,6 +36,9 @@ export default defineNuxtConfig({
       }
     ]
   ],
+  build: {
+    transpile: ['vuetify'],
+  },
   // partytown: {
   //     // For google analytics
   //     forward: ['dataLayer.push'],

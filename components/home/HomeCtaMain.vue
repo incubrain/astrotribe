@@ -8,7 +8,7 @@
         alt=""
       />
       <p class="text-lg pt-4 pb-8 max-w-sm text-center leading-tight">{{ body }}</p>
-      <button class="btn btn-primary text-dark text-lg font-semibold"> Join Free Today </button>
+      <v-btn color="##82b440"> Join Free Today </v-btn>
     </div>
   </div>
 </template>
