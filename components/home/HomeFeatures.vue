@@ -9,7 +9,7 @@
           Keep your Life Simple, Safe and Wealthy
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-top">
         <div
           v-for="feature in features"
           :key="feature.id"

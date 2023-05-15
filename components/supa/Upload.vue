@@ -1,38 +1,48 @@
 <template>
   <div class="example-avatar flex flex-col gap-4 justify-center items-center w-full h-full">
-    <div v-show="imageSrc" class="my-4 w-1/2 aspect-ratio object-fill mx-auto border-4 border-stone-700 rounded-full">
-      <img :src="destination" class="block w-full rounded-full ">
+    <div
+      v-show="imageSrc"
+      class="my-4 w-1/2 aspect-ratio object-fill mx-auto border-4 border-stone-700 rounded-full"
+    >
+      <img
+        :src="destination"
+        class="block w-full rounded-full"
+      />
     </div>
-    <div v-show="imageSrc" class="my-2 w-1/2 aspect-ratio object-fill mx-auto">
+    <div
+      v-show="imageSrc"
+      class="my-2 w-1/2 aspect-ratio object-fill mx-auto"
+    >
       <img
         ref="img"
         class="block w-full aspect-auto max-w-full pb-4"
         :src="imageSrc"
-      >
+      />
     </div>
     <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
-      <button
+      <v-btn
         v-if="!imageSrc"
-        class="w-64 mx-4 h-64 bg-[#E5E7EB] rounded-full hover:bg-[#d5d5d5]"
+        color="##82b440"
         @click="imageInput.click()"
       >
         <slot />
-      </button>
-      <button
+      </v-btn>
+      <v-btn
         v-else
-        class="btn-primary w-32 mx-2"
+        color="##82b440"
+        class="w-32 mx-2"
         @click="handleImageCropped"
       >
         Update
-      </button>
-      <button
+      </v-btn>
+      <v-btn
         v-if="imageSrc"
-        button
-        class="btn-primary w-32 mx-2"
+        color="##82b440"
+        class="w-32 mx-2"
         @click="fileCleared"
       >
         Cancel
-      </button>
+      </v-btn>
       <input
         ref="imageInput"
         type="file"
@@ -142,50 +152,49 @@ watch(
 </script>
 
 <style scoped>
-
 .preview {
-    border: 5px solid #292929;
-    overflow: hidden;
-    width: 50px;
-    height: 50px;
+  border: 5px solid #292929;
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
 }
 
 .example-avatar .avatar-upload .rounded-circle {
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .example-avatar .text-center .btn {
-    margin: 0 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .example-avatar .avatar-edit-image {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .example-avatar .drop-active {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    position: fixed;
-    z-index: 9999;
-    opacity: 0.6;
-    text-align: center;
-    background: #000;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  z-index: 9999;
+  opacity: 0.6;
+  text-align: center;
+  background: #000;
 }
 
 .example-avatar .drop-active h3 {
-    margin: -0.5em 0 0;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    font-size: 40px;
-    color: #fff;
-    padding: 0;
+  margin: -0.5em 0 0;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: #fff;
+  padding: 0;
 }
 </style>
