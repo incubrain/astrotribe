@@ -15,7 +15,6 @@
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },
   "devDependencies": {
-    "@formkit/nuxt": "0.17.0",
     "@nuxt/devtools": "0.4.6",
     "@nuxt/types": "^2.16.3",
     "@nuxtjs/color-mode": "^3.2.0",
@@ -29,6 +28,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/parser": "5.59.6",
+    "@unlighthouse/nuxt": "^0.7.4",
     "chart.js": "4.3.0",
     "cropperjs": "^1.5.13",
     "dayjs": "^1.11.7",

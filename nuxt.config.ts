@@ -1,6 +1,12 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
 export default defineNuxtConfig({
+  unlighthouse: {
+    scanner: {
+      // simulate a desktop device
+      device: 'desktop'
+    }
+  },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -18,17 +24,14 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores']
   },
-  // formkit: {
-  //     configFile: './formkit.config.ts',
-  // },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@formkit/nuxt',
     '@nuxtjs/partytown',
     '@nuxt/devtools',
     '@nuxtjs/color-mode',
     'nuxt-icon',
     'nuxt-swiper',
+    '@unlighthouse/nuxt',
     [
       '@pinia/nuxt',
       {
@@ -37,7 +40,7 @@ export default defineNuxtConfig({
     ]
   ],
   build: {
-    transpile: ['vuetify'],
+    transpile: ['vuetify']
   },
   // partytown: {
   //     // For google analytics
