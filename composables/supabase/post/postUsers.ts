@@ -1,4 +1,4 @@
-import users from './users.json'
+import users from '@/data/users.json'
 
 export async function createManyUsers() {
   const client = usePublicClient()

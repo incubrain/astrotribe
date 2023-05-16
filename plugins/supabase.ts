@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '../types/schema'
+import { Database } from '@/types/schema'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
