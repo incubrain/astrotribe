@@ -353,30 +353,33 @@ export interface Database {
       locations: {
         Row: {
           address: string | null
-          city: string | null
-          country: string | null
+          city_id: number
+          country_id: number
           created_at: string | null
           id: number
-          lat_long: string | null
-          state_province: string | null
+          latitude: number | null
+          longitude: number | null
+          state_id: number
         }
         Insert: {
           address?: string | null
-          city?: string | null
-          country?: string | null
+          city_id: number
+          country_id: number
           created_at?: string | null
           id?: number
-          lat_long?: string | null
-          state_province?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          state_id: number
         }
         Update: {
           address?: string | null
-          city?: string | null
-          country?: string | null
+          city_id?: number
+          country_id?: number
           created_at?: string | null
           id?: number
-          lat_long?: string | null
-          state_province?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          state_id?: number
         }
       }
       post_categories: {
@@ -530,19 +533,19 @@ export interface Database {
           body: string | null
           created_at: string | null
           id: number
-          title: string
+          name: string
         }
         Insert: {
           body?: string | null
           created_at?: string | null
           id?: number
-          title: string
+          name: string
         }
         Update: {
           body?: string | null
           created_at?: string | null
           id?: number
-          title?: string
+          name?: string
         }
       }
       skill_endorsements: {
@@ -651,26 +654,6 @@ export interface Database {
           title?: string | null
         }
       }
-      user_connections: {
-        Row: {
-          created_at: string | null
-          id: number
-          user1_id: number
-          user2_id: number
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          user1_id: number
-          user2_id: number
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          user1_id?: number
-          user2_id?: number
-        }
-      }
       user_followers: {
         Row: {
           created_at: string | null
@@ -754,6 +737,62 @@ export interface Database {
           user_id?: number
         }
       }
+      user_profiles: {
+        Row: {
+          avatar: string | null
+          cover_image: string | null
+          created_at: string | null
+          dob: string | null
+          email: string | null
+          follow_count: number | null
+          followed_count: number | null
+          gender_id: number | null
+          given_name: string | null
+          id: string
+          introduction: string | null
+          last_seen: string | null
+          quote: string | null
+          surname: string | null
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          dob?: string | null
+          email?: string | null
+          follow_count?: number | null
+          followed_count?: number | null
+          gender_id?: number | null
+          given_name?: string | null
+          id: string
+          introduction?: string | null
+          last_seen?: string | null
+          quote?: string | null
+          surname?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          dob?: string | null
+          email?: string | null
+          follow_count?: number | null
+          followed_count?: number | null
+          gender_id?: number | null
+          given_name?: string | null
+          id?: string
+          introduction?: string | null
+          last_seen?: string | null
+          quote?: string | null
+          surname?: string | null
+          updated_at?: string | null
+          username?: string | null
+        }
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -810,6 +849,7 @@ export interface Database {
       }
       users: {
         Row: {
+          auth_id: string | null
           avatar: string | null
           cover_image: string | null
           created_at: string | null
@@ -828,6 +868,7 @@ export interface Database {
           username: string | null
         }
         Insert: {
+          auth_id?: string | null
           avatar?: string | null
           cover_image?: string | null
           created_at?: string | null
@@ -846,6 +887,7 @@ export interface Database {
           username?: string | null
         }
         Update: {
+          auth_id?: string | null
           avatar?: string | null
           cover_image?: string | null
           created_at?: string | null
@@ -886,26 +928,35 @@ export interface Database {
       }
       venues: {
         Row: {
-          body: Json | null
+          body: string | null
+          bortle_rating: number | null
           created_at: string | null
+          featured_image: string | null
           id: number
           location_id: number
+          logo: string | null
           name: string
           socials_id: number | null
         }
         Insert: {
-          body?: Json | null
+          body?: string | null
+          bortle_rating?: number | null
           created_at?: string | null
+          featured_image?: string | null
           id?: number
           location_id: number
+          logo?: string | null
           name: string
           socials_id?: number | null
         }
         Update: {
-          body?: Json | null
+          body?: string | null
+          bortle_rating?: number | null
           created_at?: string | null
+          featured_image?: string | null
           id?: number
           location_id?: number
+          logo?: string | null
           name?: string
           socials_id?: number | null
         }
@@ -915,15 +966,173 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      update_follow_count: {
+      add_user_skills: {
         Args: {
           userid: number
+          skillids: number[]
         }
         Returns: undefined
       }
-      users_is_following: {
+      get_event_hosts: {
+        Args: {
+          p_event_id: number
+        }
+        Returns: Json
+      }
+      get_event_single: {
+        Args: {
+          eventid: number
+        }
+        Returns: {
+          id: number
+          created_at: string
+          date: string
+          title: string
+          body: string
+          featured_image: string
+          venue: Json
+          hosts: Json
+        }[]
+      }
+      get_event_venue: {
+        Args: {
+          p_venue_id: number
+        }
+        Returns: Json
+      }
+      get_events_many: {
+        Args: {
+          p_limit?: number
+        }
+        Returns: {
+          id: number
+          created_at: string
+          date: string
+          title: string
+          body: string
+          featured_image: string
+          venue: Json
+          hosts: Json
+        }[]
+      }
+      get_location: {
+        Args: {
+          p_location_id: number
+        }
+        Returns: Json
+      }
+      get_user_followed: {
         Args: {
           userid: number
+        }
+        Returns: {
+          id: number
+          given_name: string
+          surname: string
+          username: string
+          avatar: string
+          last_seen: string
+          introduction: string
+          follow_count: number
+          followed_count: number
+          user_roles: Json
+          is_connection: boolean
+        }[]
+      }
+      get_user_followers: {
+        Args: {
+          userid: number
+        }
+        Returns: {
+          id: number
+          given_name: string
+          surname: string
+          username: string
+          avatar: string
+          last_seen: string
+          introduction: string
+          follow_count: number
+          followed_count: number
+          user_roles: Json
+          is_connection: boolean
+        }[]
+      }
+      get_user_languages: {
+        Args: {
+          p_user_id: number
+        }
+        Returns: Json
+      }
+      get_user_locations: {
+        Args: {
+          p_user_id: number
+        }
+        Returns: Json
+      }
+      get_user_main_role: {
+        Args: {
+          userid: number
+        }
+        Returns: Json
+      }
+      get_user_role_main: {
+        Args: {
+          userid: number
+        }
+        Returns: Json
+      }
+      get_user_roles: {
+        Args: {
+          current_user_id: number
+        }
+        Returns: Json
+      }
+      get_user_single: {
+        Args: {
+          p_user_id: number
+          p_current_user_id: number
+        }
+        Returns: {
+          id: number
+          given_name: string
+          surname: string
+          username: string
+          email: string
+          avatar: string
+          cover_image: string
+          introduction: string
+          quote: string
+          follow_count: number
+          followed_count: number
+          last_seen: string
+          created_at: string
+          updated_at: string
+          dob: string
+          gender_id: number
+          user_roles: Json
+          main_role: Json
+          user_skills: Json
+          user_languages: Json
+          user_socials: Json
+          user_locations: Json
+          is_following: boolean
+        }[]
+      }
+      get_user_skills: {
+        Args: {
+          p_user_id: number
+        }
+        Returns: Json
+      }
+      get_user_socials: {
+        Args: {
+          p_user_id: number
+        }
+        Returns: Json
+      }
+      get_users_many: {
+        Args: {
+          p_user_id: number
         }
         Returns: {
           id: number
@@ -935,9 +1144,89 @@ export interface Database {
           follow_count: number
           followed_count: number
           email: string
+          last_seen: string
+          main_role: Json
           is_following: boolean
           user_roles: Json
         }[]
+      }
+      get_venue_avg_rating: {
+        Args: {
+          p_venue_id: number
+        }
+        Returns: number
+      }
+      get_venue_event_count: {
+        Args: {
+          venueid: number
+        }
+        Returns: number
+      }
+      get_venue_events: {
+        Args: {
+          p_venue_id: number
+        }
+        Returns: Json
+      }
+      get_venue_single: {
+        Args: {
+          p_venue_id: number
+        }
+        Returns: {
+          id: number
+          bortle_rating: number
+          created_at: string
+          name: string
+          body: string
+          featured_image: string
+          logo: string
+          avg_rating: number
+          location: Json
+          events: Json
+        }[]
+      }
+      get_venues_many: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          created_at: string
+          name: string
+          body: string
+          logo: string
+          featured_image: string
+          location: Json
+          rating: number
+          events_hosted: number
+        }[]
+      }
+      is_follower: {
+        Args: {
+          followerid: number
+          followedid: number
+        }
+        Returns: boolean
+      }
+      post_user_roles: {
+        Args: {
+          p_user_ids: number[]
+          p_role_id: number
+        }
+        Returns: undefined
+      }
+      update_follow_count: {
+        Args: {
+          userid: number
+        }
+        Returns: undefined
+      }
+      upsert_skill_endorsements: {
+        Args: {
+          userid: number
+          skillids: number[]
+          ratings: number[]
+          endorserid: number
+        }
+        Returns: undefined
       }
     }
     Enums: {
