@@ -1,6 +1,6 @@
 <template>
   <article
-    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in scale-x-0 origin-left border-b border-gray-200"
+    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-gray-200"
   >
     <div
       class="bg-white w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative"

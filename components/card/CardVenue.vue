@@ -1,5 +1,5 @@
 <template>
-  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in scale-x-0 origin-left border-b border-gray-200">
+  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-gray-200">
     <NuxtLink :to="`/venues/${p.venue.id}`" class="h-full">
       <img
         :src="u.venues.featuredImage(p.venue.id, p.venue.featured_image)"
@@ -14,7 +14,8 @@
       <div class="p-4 flex flex-col gap-2 bg-white md:h-full">
         <div class="flex justify-between text-gray-700">
           <h3 class="text-base font-semibold">
-            {{ p.venue.name?.substring(0, 30) }}...
+            {{ p.venue.name?.substring(0, 30) }}
+            {{ p.venue.name && p.venue.name.length > 30 ? '...' : '' }}
           </h3>
           <span v-if="p.venue.avg_rating" class="flex items-start gap-1">
             <Icon
