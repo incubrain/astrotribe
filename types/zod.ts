@@ -141,6 +141,17 @@ export const EventBasic = z.object({
   venue: VenueBasic
 })
 
+export const VenueEvents = z.object({
+  id: z.number(),
+  created_at: z.string(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  logo: z.string().nullable(),
+  featured_image: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(HostBasic)
+})
+
 export const VenueFull = z.object({
   id: z.number(),
   bortle_rating: z.number().nullable(),
@@ -152,7 +163,7 @@ export const VenueFull = z.object({
   events_hosted: z.number().nullable().optional(),
   avg_rating: z.number().nullable().optional(),
   location: Location,
-  events: z.array(EventBasic)
+  events: z.array(VenueEvents)
 })
 
 export const EventFull = z.object({
@@ -161,18 +172,8 @@ export const EventFull = z.object({
   body: z.string().nullable(),
   date: z.string(),
   hosts: z.array(HostBasic),
-  venue: VenueFull
+  venue: VenueFull.optional()
 })
 
-export const VenueEvents = z.object({
-  id: z.number(),
-  created_at: z.string(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  logo: z.string().nullable(),
-  featured_image: z.string().nullable(),
-  date: z.string(),
-  hosts: z.array(HostBasic)
-})
 
 export const UserRoles = z.array(Role)
