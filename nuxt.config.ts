@@ -7,6 +7,17 @@ export default defineNuxtConfig({
       device: 'desktop'
     }
   },
+  $production: {
+    routeRules: {
+      '/**': { isr: true }
+    }
+  },
+  $development: {
+    //
+  },
+  experimental: {
+    typedPages: true
+  },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -61,7 +72,8 @@ export default defineNuxtConfig({
       exclude: ['node_modules', 'dist'],
       compilerOptions: {
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
-        strict: true
+        strict: true,
+        moduleResolution: 'bundler'
       }
     }
   },
