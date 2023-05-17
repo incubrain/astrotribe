@@ -36,7 +36,7 @@
     "eslint": "8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-vue": "^9.10.0",
-    "nuxt": "^3.3.2",
+    "nuxt": "^3.5.0",
     "nuxt-icon": "0.4.0",
     "nuxt-swiper": "^1.1.0",
     "typescript": "5.0.4",
@@ -48,10 +48,11 @@
     "@heroicons/vue": "2.0.18",
     "@supabase/storage-js": " 2.5.1",
     "@supabase/supabase-js": "2.22.0",
+    "lightgallery": "^2.7.1",
     "sass": "^1.62.1",
     "uuid": "^9.0.0",
     "vue-upload-component": "2.8.23",
-    "vuetify": "^3.2.4"
+    "vuetify": "^3.2.5"
   },
   "engines": {
     "node": "v18.16.0"
