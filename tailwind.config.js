@@ -21,6 +21,17 @@ export default {
   ],
   mode: 'jit',
   theme: {
+    colors: {
+      'primary': '#1fb6ff',
+      'purple': '#7e5bef',
+      'pink': '#ff49db',
+      'orange': '#ff7849',
+      'green': '#13ce66',
+      'yellow': '#ffc82c',
+      'gray-dark': '#273444',
+      'gray': '#8492a6',
+      'gray-light': '#d3dce6',
+    },
     screens: {
       sm: '640px',
       // => @media (min-width: 640px) { ... }
