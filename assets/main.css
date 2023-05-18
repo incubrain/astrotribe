@@ -66,17 +66,6 @@
   }
 }
 
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-}
-
-/* For IE, Edge and Firefox */
-.scrollbar-hidden {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
