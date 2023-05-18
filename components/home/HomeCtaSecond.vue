@@ -1,11 +1,11 @@
 <template>
   <div class="flex items-center justify-center py-home w-full h-full">
     <div
-      class="flex flex-col gap-10 justify-center items-center h-[360px] bg-primary w-full rounded-xl shadow-lg mx-auto"
+      class="flex flex-col gap-10 justify-center items-center h-[360px] bg-primary w-full rounded-lg shadow-lg mx-auto"
     >
       <h4 class="head-2"> {{ title }}</h4>
       <v-btn
-        color="##82b440"
+        color="white"
         size="large"
       >
         <!-- <Icon

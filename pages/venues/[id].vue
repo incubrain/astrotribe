@@ -1,8 +1,7 @@
 <template>
   <div class="bg-white overflow-hidden max-w-[1200px]">
     <div class="relative">
-      <VenueImgBlock
-        :venue-id="s.venue.id"
+      <ImageCarousel
         :images="images"
         class="mb-6"
       />
@@ -60,7 +59,7 @@
       <CommonBortle :rating="s.venue.bortle_rating" />
       <h4 class="card-padding card-heading text-black"> Events </h4>
       <div class="card-grid">
-        <CardEvent
+        <EventCard
           v-for="event in s.venue.events"
           :key="event.id"
           :event="event"

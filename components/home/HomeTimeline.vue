@@ -1,6 +1,9 @@
 <template>
-  <div class="flex flex-col gap-8 w-full py-home">
-    <h2 class="head-2 text-dark w-full text-left">Timeline</h2>
+  <div class="flex flex-col gap-8 w-full py-home bg-white">
+    <div class="text-center text-dark w-full mb-10">
+      <h2 class="head-2">Timeline</h2>
+      <p class="text-lg">The future looks bright for AstronEra and AstroTribe</p>
+    </div>
     <div class="flex flex-col justify-center items-center w-full mx-auto">
       <div
         v-for="item in timeline"
