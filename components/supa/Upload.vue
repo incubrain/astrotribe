@@ -22,14 +22,14 @@
     <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
       <v-btn
         v-if="!imageSrc"
-        color="##82b440"
+        color="primary"
         @click="imageInput.click()"
       >
         <slot />
       </v-btn>
       <v-btn
         v-else
-        color="##82b440"
+        color="primary"
         class="w-32 mx-2"
         @click="handleImageCropped"
       >
@@ -37,7 +37,7 @@
       </v-btn>
       <v-btn
         v-if="imageSrc"
-        color="##82b440"
+        color="primary"
         class="w-32 mx-2"
         @click="fileCleared"
       >

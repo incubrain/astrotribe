@@ -1,3 +1,4 @@
+<!-- Carousel.vue -->
 <template>
   <div
     class="w-full relative overflow-hidden h-[50vh]"
@@ -5,7 +6,7 @@
     @touchend="handleTouchEnd"
   >
     <img
-      v-for="(image, index) in p.images"
+      v-for="(image, index) in images"
       :key="image"
       :src="image"
       :alt="`Slide ${index + 1}`"
@@ -19,14 +20,14 @@
       class="absolute top-1/2 left-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
       @click="previousSlide"
     >
-      <i class="fas fa-chevron-left"></i>
+      <Icon name="mdi:chevron-left" />
     </div>
     <div
       v-if="currentSlide < images.length - 1"
       class="absolute top-1/2 right-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
       @click="nextSlide"
     >
-      <i class="fas fa-chevron-right"></i>
+      <Icon name="mdi:chevron-right" />
     </div>
     <div class="absolute bottom-0 right-0 p-2 bg-black bg-opacity-50 text-white">
       {{ currentSlide + 1 }}/{{ images.length }}
@@ -35,20 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 
-const p = defineProps({
-  images: {
-    type: Array as PropType<string[]>,
-    required: true
-  }
-})
+const props = defineProps<{
+  images: string[]
+}>()
 
 const currentSlide = ref(0)
 const touchStartX = ref(0)
 
 const nextSlide = () => {
-  if (currentSlide.value < p.images.length - 1) {
+  if (currentSlide.value < props.images.length - 1) {
     currentSlide.value++
   }
 }
@@ -76,5 +73,4 @@ const handleTouchEnd = (event: TouchEvent) => {
 </script>
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 </style>

@@ -8,7 +8,7 @@
       <p class="text-base text-dark py-2">{{ body }}</p>
       <a class="text-link text-base">{{ cta }}</a>
     </div>
-    <div class="w-100% h-[360px] rounded-xl overflow-hidden shadow-2xl">
+    <div class="w-100% h-[360px] rounded-lg overflow-hidden shadow-2xl">
       <img
         class="w-full h-full"
         src="/cover1.jpg"

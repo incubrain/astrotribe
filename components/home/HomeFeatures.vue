@@ -13,16 +13,23 @@
         <div
           v-for="feature in features"
           :key="feature.id"
-          class="mx-auto m-4 bg-white rounded-lg shadow-md py-6 px-16"
+          class="mx-auto m-4 bg-white rounded-lg shadow-md p-8 relative overflow-hidden"
         >
-          <div v-html="feature.svg"></div>
-          <div class="pt-5">
-            <h1 class="text-xl lg:text-2xl font-semibold tracking-wider text-gray-800">
-              {{ feature.title }}
-            </h1>
-            <p class="mt-4 tracking-wider leading-8 text-base w-11/12 text-gray-700">
-              {{ feature.description }}
-            </p>
+          <div class="absolute w-full h-full top-0 left-0" :style="{ backgroundImage: 'url(' + feature.backgroundImage + ')' }" />
+          <div class="absolute w-full h-full top-0 left-0 bg-gray-900 bg-opacity-40" />
+          <div class="relative z-50 text-white">
+            <Icon
+              :name="feature.icon"
+              class="w-[38px] h-[38px]"
+            ></Icon>
+            <div class="pt-4">
+              <h1 class="text-xl lg:text-2xl font-semibold tracking-wider">
+                {{ feature.title }}
+              </h1>
+              <p class="mt-2 tracking-wider leading-normal text-base w-11/12">
+                {{ feature.description }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -37,42 +44,48 @@ const features = [
     title: 'Home Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Home Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   },
   {
     id: 2,
     title: 'Car Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Car Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   },
   {
     id: 3,
     title: 'Life Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Life Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   },
   {
     id: 4,
     title: 'Travel Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Travel Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   },
   {
     id: 5,
     title: 'Travel Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Travel Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   },
   {
     id: 6,
     title: 'Travel Insurance',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra ultrices nunc, non at',
-    svg: '...' // SVG markup for Travel Insurance
+    icon: 'mdi:home',
+    backgroundImage: '/cover1.jpg'
   }
 ]
 </script>
