@@ -51,7 +51,7 @@ export default defineNuxtConfig({
     ]
   ],
   build: {
-    transpile: ['vuetify']
+    transpile: ['vuetify', 'lightgallery']
   },
   // partytown: {
   //     // For google analytics
