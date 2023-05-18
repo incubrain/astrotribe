@@ -4,9 +4,13 @@ import * as storage from './utils/storage'
 import * as strings from './utils/strings'
 import * as objects from './utils/objects'
 import * as arrays from './utils/arrays'
+import { dynamicAsset } from './utils/assets'
 
 export default function useUtils() {
   return {
+    assets: {
+      local: dynamicAsset
+    },
     time: {
       format: time.toDateObject,
       lastSeen: time.lastSeen

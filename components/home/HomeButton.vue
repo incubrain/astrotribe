@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    color="#5865f2"
+    color="primary"
     size="large"
   >
     <Icon

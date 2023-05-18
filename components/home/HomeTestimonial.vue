@@ -1,50 +1,30 @@
-<!-- components/TestimonialSlider.vue -->
 <template>
-  <section class="container mx-auto px-4 py-10 w-full">
-    <h2 class="text-left head-2 mb-10 text-dark">Testimonials</h2>
-    <Swiper
-      :modules="[SwiperAutoplay]"
-      :slides-per-view="1"
-      :space-between="20"
-      :auto-height="true"
-      :loop="true"
-      :autoplay="{
-        delay: 7000,
-        disableOnInteraction: true
-      }"
-      :breakpoints="{
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 30
-        },
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 50
-        }
-      }"
-      class="w-full h-full"
-    >
-      <SwiperSlide
-        v-for="(testimonial, index) in testimonials"
-        :key="index"
-        :ref="`slide-${index}`"
-        class="testimonial-card bg-white min-h-full text-black shadow-md p-8 rounded-lg flex flex-col items-start justify-start"
-      >
-        <img
-          :src="testimonial.image"
-          :alt="testimonial.name"
-          class="w-24 h-24 rounded-full"
-        />
-        <h3 class="font-semibold text-2xl mt-4">{{ testimonial.name }}</h3>
-        <p class="text-sm font-semibold">{{ testimonial.company }}</p>
-        <p class="italic text-sm mt-4">{{ testimonial.quote }}</p>
-      </SwiperSlide>
-    </Swiper>
-  </section>
+  <div class="mb-10 text-dark text-center">
+    <h2 class="head-2 mb-4">Testimonials</h2>
+    <p class="text-lg"> Don't take our word for it, listen to what our users have to say</p>
+  </div>
+  <SwiperComponent :items="testimonials">
+    <template #default="{ item }: { item: Testimonial } ">
+      <div class="testimonial-card bg-white min-h-full text-black shadow-md">
+        <img :src="item.image" :alt="item.name" class="w-24 h-24 rounded-full" />
+        <h3 class="font-semibold text-2xl mt-4">{{ item.name }}</h3>
+        <p class="text-sm font-semibold">{{ item.company }}</p>
+        <p class="italic text-sm mt-4">{{ item.quote }}</p>
+      </div>
+    </template>
+  </SwiperComponent>
 </template>
 
 <script setup lang="ts">
-const testimonials = ref([
+
+interface Testimonial {
+  image: string
+  name: string
+  company: string
+  quote: string
+}
+
+const testimonials = [
   {
     image: '/avatar.png',
     name: 'Person 1',
@@ -82,11 +62,11 @@ const testimonials = ref([
     company: 'Company 6',
     quote: 'Great work and dedication!'
   }
-  // Add the rest of the testimonials (total of 6)
-])
+  // !todo - allow users to add testimonials, fetch from supabase
+] as Testimonial[]
 </script>
 
-<style>
+<style scoped>
 .swiper-wrapper {
   display: flex;
   margin: auto;
