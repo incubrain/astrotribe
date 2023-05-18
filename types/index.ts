@@ -2,7 +2,7 @@ import * as z from 'zod'
 import * as schema from './zod'
 
 // Generic Types
-export type Page = z.infer<typeof schema.PageWithChildren>
+export type Page = z.infer<typeof schema.Page>
 export type Role = z.infer<typeof schema.Role>
 export type Skill = z.infer<typeof schema.Skill>
 export type Socials = z.infer<typeof schema.Socials>
@@ -11,6 +11,7 @@ export type Location = z.infer<typeof schema.Location>
 
 // User Types
 export type User = z.infer<typeof schema.UserBasic>
+export type EventHost = z.infer<typeof schema.HostBasic> // Using zod schema to infer type
 export type UserFull = z.infer<typeof schema.UserFull>
 export type UserRoles = z.infer<typeof schema.UserRoles>
 export type UserLocation = z.infer<typeof schema.UserLocation>
@@ -23,6 +24,7 @@ export type News = z.infer<typeof schema.News>
 // Venue Types
 export type VenueFull = z.infer<typeof schema.VenueFull>
 export type VenueBasic = z.infer<typeof schema.VenueBasic>
+export type VenueEvent = z.infer<typeof schema.VenueEvents>
 
 // Event Types
 export type EventFull = z.infer<typeof schema.EventFull>

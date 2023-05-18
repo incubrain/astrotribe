@@ -1,5 +1,6 @@
 import * as z from 'zod'
 
+// Page Schemas
 export const Page = z.object({
   id: z.number(),
   name: z.string(),
@@ -11,6 +12,7 @@ export const PageWithChildren = Page.extend({
   children: z.array(Page).optional()
 })
 
+// Role Schemas
 export const Role = z.object({
   id: z.number(),
   name: z.string().nullable(),
@@ -18,49 +20,7 @@ export const Role = z.object({
   created_at: z.string().optional()
 })
 
-export const IdName = z.object({
-  id: z.number(),
-  name: z.string()
-})
-
-export const HostBasic = z.object({
-  id: z.number(),
-  given_name: z.string(),
-  avatar: z.string()
-})
-
-export const VenueBasic = z.object({
-  id: z.number(),
-  created_at: z.string(),
-  name: z.string().nullable(),
-  body: z.string().nullable(),
-  featured_image: z.string(),
-  logo: z.string().nullable(),
-  location: z.object({
-    city: z.string(),
-    country: z.string(),
-    address: z.string().nullable(),
-    state: z.string()
-  })
-})
-
-export const Skill = z.object({
-  id: z.number(),
-  title: z.string().nullable(),
-  body: z.string().nullable().optional(),
-  total_endorsements: z.number(),
-  admin_rating: z.number().nullable(),
-  avg_rating: z.number().nullable(),
-  created_at: z.string().optional()
-})
-
-export const Language = z.object({
-  id: z.number(),
-  name: z.string(),
-  iso_639_1: z.string().optional(),
-  iso_639_2: z.string().optional()
-})
-
+// Location Schemas
 export const Location = z.object({
   id: z.number(),
   created_at: z.string().optional(),
@@ -78,6 +38,74 @@ export const UserLocation = Location.extend({
   is_home: z.boolean()
 })
 
+// Basic Info Schemas
+export const IdName = z.object({
+  id: z.number(),
+  name: z.string()
+})
+
+export const HostBasic = z.object({
+  id: z.number(),
+  given_name: z.string(),
+  avatar: z.string()
+})
+
+// Venue Schemas
+export const VenueBasic = z.object({
+  id: z.number(),
+  created_at: z.string(),
+  name: z.string().nullable(),
+  body: z.string().nullable(),
+  featured_image: z.string(),
+  logo: z.string().nullable(),
+  location: Location
+})
+
+export const VenueEvents = z.object({
+  id: z.number(),
+  created_at: z.string(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  logo: z.string().nullable(),
+  featured_image: z.string().nullable(),
+  date: z.string(),
+  hosts: z.array(HostBasic)
+})
+
+export const VenueFull = z.object({
+  id: z.number(),
+  bortle_rating: z.number().nullable(),
+  created_at: z.string(),
+  name: z.string().nullable(),
+  body: z.string().nullable(),
+  featured_image: z.string(),
+  logo: z.string().nullable(),
+  events_hosted: z.number().nullable().optional(),
+  avg_rating: z.number().nullable().optional(),
+  location: Location,
+  events: z.array(VenueEvents)
+})
+
+// Skill Schemas
+export const Skill = z.object({
+  id: z.number(),
+  title: z.string().nullable(),
+  body: z.string().nullable().optional(),
+  total_endorsements: z.number(),
+  admin_rating: z.number().nullable(),
+  avg_rating: z.number().nullable(),
+  created_at: z.string().optional()
+})
+
+// Language Schemas
+export const Language = z.object({
+  id: z.number(),
+  name: z.string(),
+  iso_639_1: z.string().optional(),
+  iso_639_2: z.string().optional()
+})
+
+// Socials Schema
 export const Socials = z.object({
   id: z.number(),
   url: z.string(),
@@ -85,24 +113,7 @@ export const Socials = z.object({
   username: z.string().nullable()
 })
 
-export const Post = z.object({
-  id: z.number(),
-  created_at: z.string().nullable(),
-  user_id: z.string().nullable(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  image: z.string().nullable(),
-  status_id: z.number()
-})
-
-export const News = z.object({
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  author: z.string().nullable(),
-  published: z.string().nullable(),
-  category: z.string().nullable()
-})
-
+// User Schemas
 export const UserBasic = z.object({
   id: z.number(),
   given_name: z.string(),
@@ -132,6 +143,27 @@ export const UserFull = UserBasic.extend({
   user_socials: z.array(Socials)
 })
 
+// Post Schemas
+export const Post = z.object({
+  id: z.number(),
+  created_at: z.string().nullable(),
+  user_id: z.string().nullable(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  image: z.string().nullable(),
+  status_id: z.number()
+})
+
+// News Schema
+export const News = z.object({
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  author: z.string().nullable(),
+  published: z.string().nullable(),
+  category: z.string().nullable()
+})
+
+// Event Schemas
 export const EventBasic = z.object({
   id: z.number(),
   title: z.string().nullable(),
@@ -139,31 +171,6 @@ export const EventBasic = z.object({
   date: z.string(),
   hosts: z.array(HostBasic),
   venue: VenueBasic
-})
-
-export const VenueEvents = z.object({
-  id: z.number(),
-  created_at: z.string(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  logo: z.string().nullable(),
-  featured_image: z.string().nullable(),
-  date: z.string(),
-  hosts: z.array(HostBasic)
-})
-
-export const VenueFull = z.object({
-  id: z.number(),
-  bortle_rating: z.number().nullable(),
-  created_at: z.string(),
-  name: z.string().nullable(),
-  body: z.string().nullable(),
-  featured_image: z.string(),
-  logo: z.string().nullable(),
-  events_hosted: z.number().nullable().optional(),
-  avg_rating: z.number().nullable().optional(),
-  location: Location,
-  events: z.array(VenueEvents)
 })
 
 export const EventFull = z.object({
@@ -175,5 +182,5 @@ export const EventFull = z.object({
   venue: VenueFull.optional()
 })
 
-
+// UserRoles Schema
 export const UserRoles = z.array(Role)
