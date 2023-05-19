@@ -1,35 +1,29 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
 export default defineNuxtConfig({
-  unlighthouse: {
-    scanner: {
-      // simulate a desktop device
-      device: 'desktop'
-    }
-  },
-  $production: {
-    routeRules: {
-      '/**': { isr: true }
-    }
-  },
-  $development: {
-    //
-  },
-  experimental: {
-    typedPages: true
-  },
+  // unlighthouse: {
+  //   scanner: {
+  //     // simulate a desktop device
+  //     device: 'desktop'
+  //   }
+  // },
+  // vue: {
+  //   compilerOptions: {
+  //     isCustomElement: (tag: string) => tag.startsWith('swiper-'),
+  //   }
+  // },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' }
     // head: {
-    //     link: [
-    //       { rel: 'stylesheet', href: '' }
-    //     ],
-    //     script: [
-    //         // Insert your Google Tag Manager Script here
-    //         { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-    //     ],
-    // },
+    //   link: [
+    //     { rel: 'stylesheet', href: '' }
+    //   ],
+    //   script: [
+        // Insert your Google Tag Manager Script here
+        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+    //   ]
+    // }
   },
   css: ['/assets/main.css', 'vuetify/lib/styles/main.sass'],
   imports: {
@@ -41,7 +35,6 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxtjs/color-mode',
     'nuxt-icon',
-    'nuxt-swiper',
     '@unlighthouse/nuxt',
     [
       '@pinia/nuxt',
@@ -51,7 +44,7 @@ export default defineNuxtConfig({
     ]
   ],
   build: {
-    transpile: ['vuetify', 'lightgallery']
+    transpile: ['vuetify', 'swiper', 'lightgallery']
   },
   // partytown: {
   //     // For google analytics
@@ -73,13 +66,9 @@ export default defineNuxtConfig({
       compilerOptions: {
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
         strict: true,
-        moduleResolution: 'bundler'
       }
     }
   },
-  // nitro: {
-  //     preset: 'render-com',
-  // },
   // For @nuxt/image-edge
   // image: {
   //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],

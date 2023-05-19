@@ -39,12 +39,16 @@
               fill="#EB4335"
             />
           </svg>
-          <p class="text-sm font-medium ml-4 text-gray-700"> Continue with Google </p>
+          <p class="text-sm font-medium ml-4 text-gray-700">
+            Continue with Google
+          </p>
         </button>
 
         <div class="w-full flex items-center justify-between py-8 gap-4">
           <hr class="w-full bg-gray-400" />
-          <p class="text-base font-medium leading-4 px-2.5 text-gray-500"> OR </p>
+          <p class="text-base font-medium leading-4 px-2.5 text-gray-500">
+            OR
+          </p>
           <hr class="w-full bg-gray-400" />
         </div>
         <div class="w-full flex flex-col gap-4">

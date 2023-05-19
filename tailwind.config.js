@@ -1,16 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-import cssVariables from './assets/variables.css'
-
-function withOpacity(variableName) {
-  return ({ opacityValue }) => {
-    if (opacityValue !== undefined) {
-      return `rgba(var(${variableName}), ${opacityValue})`
-    }
-    return `rgb(var(${variableName}))`
-  }
-}
-
 export default {
   content: [
     './components/**/*.{js,vue,ts}',
@@ -19,38 +8,10 @@ export default {
     './plugins/**/*.{js,ts}',
     './nuxt.config.{js,ts}'
   ],
-  mode: 'jit',
   theme: {
-    colors: {
-      'primary': '#1fb6ff',
-      'purple': '#7e5bef',
-      'pink': '#ff49db',
-      'orange': '#ff7849',
-      'green': '#13ce66',
-      'yellow': '#ffc82c',
-      'gray-dark': '#273444',
-      'gray': '#8492a6',
-      'gray-light': '#d3dce6',
-    },
-    screens: {
-      sm: '640px',
-      // => @media (min-width: 640px) { ... }
-
-      md: '768px',
-      // => @media (min-width: 768px) { ... }
-
-      lg: '1224px',
-      // => @media (min-width: 1024px) { ... }
-
-      xl: '1680px',
-      // => @media (min-width: 1280px) { ... }
-
-      '2xl': '2000px'
-      // => @media (min-width: 1536px) { ... }
-    },
     extend: {
-      gradientColorStops: {
-        hue: withOpacity('--color-fill')
+      colors: {
+        'primary': '#1fb6ff',
       },
       animation: {
         'spin-slow': 'spin 300s linear infinite',

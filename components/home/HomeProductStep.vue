@@ -4,8 +4,12 @@
     :style="!imageRight ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }"
   >
     <div class="w-[50%] px-4">
-      <h4 class="head-4 text-dark font-bold mb-4"> {{ title }}</h4>
-      <p class="text-base text-dark py-2">{{ body }}</p>
+      <h4 class="head-4 text-dark font-bold mb-4">
+        {{ title }}
+      </h4>
+      <p class="text-base text-dark py-2">
+        {{ body }}
+      </p>
       <a class="text-link text-base">{{ cta }}</a>
     </div>
     <div class="w-100% h-[360px] rounded-lg overflow-hidden shadow-2xl">

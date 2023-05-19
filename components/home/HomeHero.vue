@@ -18,7 +18,9 @@
             class=""
           />
         </div>
-        <h1 class="head-1 leading-tight pt-4 max-w-lg"> This is the main title </h1>
+        <h1 class="head-1 leading-tight pt-4 max-w-lg">
+          This is the main title
+        </h1>
         <p class="text-xl font-semibold max-w-sm">
           Convincing people to sign up to the product in just 2 lines
         </p>
@@ -30,32 +32,33 @@
           >
             Join Free Today
           </v-btn>
-        </div> 
+        </div>
       </div>
       <!-- Hero Right -->
       <div class="relative z-50 w-full max-w-[600px] mx-auto">
-        <LightgalleryYoutube
+        <!-- <LightgalleryYoutube
           :media="video"
           class="w-full h-full"
         >
-          <p class="absolute left-0 bottom-0 mb-[-50px] w-full text-center text-xl font-semibold text-white py-2 px-4 rounded-[0_8px_8px_0]">
+          <p
+            class="absolute left-0 bottom-0 mb-[-50px] w-full text-center text-xl font-semibold text-white py-2 px-4 rounded-[0_8px_8px_0]"
+          >
             AstroTribe 2022 Project in Review
           </p>
-        </LightgalleryYoutube>
+        </LightgalleryYoutube> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const video = [
-  {
-    id: 1,
-    url: 'https://www.youtube.com/watch?v=x5ijmeCJ42s',
-    thumbnail: 'hero-image.jpg',
-    alt: 'Video'
-  }
-]
+const video = [{
+  id: 1,
+  url: 'https://www.youtube.com/watch?v=x5ijmeCJ42s',
+  thumbnail: 'hero-image.jpg',
+  alt: 'Video'
+}]
 
 const bgImg = '/cover1.jpg'
+
 </script>

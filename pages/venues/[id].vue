@@ -57,7 +57,9 @@
         title="About us"
       />
       <CommonBortle :rating="s.venue.bortle_rating" />
-      <h4 class="card-padding card-heading text-black"> Events </h4>
+      <h4 class="card-padding card-heading text-black">
+        Events
+      </h4>
       <div class="card-grid">
         <EventCard
           v-for="event in s.venue.events"
@@ -68,7 +70,9 @@
         />
       </div>
       <div class="h-full aspect-square shadow-sm min-h-[380px] overflow-hidden md:rounded-md">
-        <h4 class="card-padding card-heading text-black"> Location </h4>
+        <h4 class="card-padding card-heading text-black">
+          Location
+        </h4>
         <iframe
           width="100%"
           height="100%"

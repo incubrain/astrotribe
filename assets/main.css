@@ -1,4 +1,5 @@
 @import 'cropperjs/dist/cropper.css';
+@import './css/scrollbar.css';
 @import './variables.css';
 @import './tailwind-utils.css';
 @tailwind base;

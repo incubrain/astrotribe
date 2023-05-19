@@ -10,7 +10,9 @@
         {{ p.rating }}
       </p>
     </div>
-    <h3 class="card-heading"> Bortle rating </h3>
+    <h3 class="card-heading">
+      Bortle rating
+    </h3>
   </div>
 </template>
 

@@ -1,45 +1,41 @@
 <template>
   <section class="container mx-auto px-4 py-10 w-full">
-    <Swiper
-      :modules="[SwiperAutoplay]"
-      :slides-per-view="1"
+    <swiper-container
+      :slides-per-view="3"
       :space-between="20"
       :auto-height="true"
       :loop="true"
       :autoplay="{
-        delay: 7000,
+        delay: 5000,
         disableOnInteraction: true
       }"
-      :breakpoints="{
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 10
-        },
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 20
-        }
-      }"
-      class="w-full h-full"
     >
-      <SwiperSlide
+      <swiper-slide
         v-for="(item, index) in items"
         :key="index"
-        class="p-8 rounded-lg flex flex-col items-start justify-start"
+        :lazy="true"
       >
         <slot :item="item"></slot>
-      </SwiperSlide>
-    </Swiper>
+      </swiper-slide>
+    </swiper-container>
   </section>
 </template>
 
-<script setup lang="ts">
-import { defineProps } from 'vue'
+<script setup lang="ts" generic="T">
+// register()
 
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true
-  }
-})
+defineProps<{
+  items: T[]
+}>()
 </script>
+
+<style>
+.swiper-wrapper {
+  display: flex;
+  margin: auto;
+}
+
+.testimonial-slider {
+  width: 100%;
+}
+</style>

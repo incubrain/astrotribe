@@ -3,7 +3,9 @@
     <div
       class="flex flex-col gap-10 justify-center items-center h-[360px] bg-primary w-full rounded-lg shadow-lg mx-auto"
     >
-      <h4 class="head-2"> {{ title }}</h4>
+      <h4 class="head-2">
+        {{ title }}
+      </h4>
       <v-btn
         color="white"
         size="large"

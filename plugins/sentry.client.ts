@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   Sentry.init({
     dsn: 'https://eec364410b024a5a837f60e00d367513@o1175094.ingest.sentry.io/4504389151621120',
     integrations: [
