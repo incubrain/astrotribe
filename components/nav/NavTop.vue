@@ -4,7 +4,9 @@
     <div class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-black">
       <!-- logo -->
       <div class="h-full flex items-center pl-3 md:pl-4 col-start-1 col-span-2 md:col-span-1">
-        <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
+        <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4">
+          AstronEra
+        </h1>
         <div v-show="route.path === '/'" class="hidden lg:flex gap-4 pl-4 justify-center border-l items-center h-full leading-none text-sm font-semibold whitespace-nowrap">
           <NuxtLink to="/users" class="hover:text-[#471bc9]">
             AstroTribe

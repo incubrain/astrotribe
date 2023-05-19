@@ -1,6 +1,6 @@
 const url = 'http://localhost:3000/'
 
-const showResetForm = reactive(false)
+const showResetForm = false
 
 const requestResetEmail = async (email: string) => {
   const client = usePublicClient()

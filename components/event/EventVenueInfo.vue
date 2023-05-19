@@ -15,7 +15,9 @@
           />
         </div>
         <div class="flex flex-col">
-          <h3 class="m-0 text-gray-700 font-semibold">{{ venue.name }}</h3>
+          <h3 class="m-0 text-gray-700 font-semibold">
+            {{ venue.name }}
+          </h3>
           <p class="m-0 text-gray-500">
             {{ venue.location.country }}, {{ venue.location.state }},
             {{ venue.location.city }}

@@ -1,8 +1,12 @@
 <template>
-  <div class="flex flex-col gap-8 w-full py-home bg-white">
+  <div class="flex flex-col gap-8 w-full py-home bg-white rounded-md shadow-lg">
     <div class="text-center text-dark w-full mb-10">
-      <h2 class="head-2">Timeline</h2>
-      <p class="text-lg">The future looks bright for AstronEra and AstroTribe</p>
+      <h2 class="head-2">
+        Timeline
+      </h2>
+      <p class="text-lg">
+        The future looks bright for AstronEra and AstroTribe
+      </p>
     </div>
     <div class="flex flex-col justify-center items-center w-full mx-auto">
       <div
@@ -11,14 +15,22 @@
         class="flex flex-row text-dark"
       >
         <div class="text-right mt-16">
-          <h4 class="head-4">{{ item.date }}</h4>
-          <p class="p-body">{{ item.body }}</p>
+          <h4 class="head-4">
+            {{ item.date }}
+          </h4>
+          <p class="p-body">
+            {{ item.body }}
+          </p>
         </div>
         <div class="w-[6px] flex bg-green-600 mx-8" />
         <!-- right  -->
         <div class="text-left mt-44">
-          <h4 class="head-4">{{ item.date }}</h4>
-          <p class="p-body">{{ item.body }}</p>
+          <h4 class="head-4">
+            {{ item.date }}
+          </h4>
+          <p class="p-body">
+            {{ item.body }}
+          </p>
         </div>
       </div>
       <div class="w-full flex flex-col gap-8 text-left justify-between"></div>

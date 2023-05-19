@@ -3,7 +3,6 @@ import { Database } from '@/types/schema'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
-  console.log('nuxtApp', config)
   const supaUrl = config.public.SUPABASE_URL
   const supaKey = config.public.SUPABASE_KEY
 

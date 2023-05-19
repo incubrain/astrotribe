@@ -27,7 +27,7 @@
 
 -   Nuxt 3
     -   [@nuxtjs/color-mode:](https://color-mode.nuxtjs.org/) easy light/dark mode
-    -   [nuxt-icon:](https://github.com/nuxt-modules/icon) 100k icons, search icons [here](https://icones.js.org/collection/all)
+    -   [nuxt-icon:](https://github.com/nuxt-modules/icon) 100k icons, search icons [here](https://icones.js.org/cohomellection/all)
     -   [@nuxtjs/partytown:](https://github.com/nuxt-modules/partytown) extract blocking JS to a separate thread
 -   TypeScript
 -   [Sentry:](https://sentry.io/organizations/ml-tech/projects/astrotribe/?project=4504389151621120) For error tracking

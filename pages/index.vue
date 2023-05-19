@@ -29,7 +29,7 @@
       body="Some more information about AstroTribe that spills onto the second line"
     />
     <div class="max-w-[1240px] mx-auto flex flex-col pb-32 px-home">
-      <HomeTestimonial />
+      <!-- <HomeTestimonial /> -->
       <HomeTimeline />
       <HomeCtaSecond
         cta="Get Started Now"
