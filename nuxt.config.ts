@@ -7,11 +7,11 @@ export default defineNuxtConfig({
   //     device: 'desktop'
   //   }
   // },
-  // vue: {
-  //   compilerOptions: {
-  //     isCustomElement: (tag: string) => tag.startsWith('swiper-'),
-  //   }
-  // },
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag: string) => tag.startsWith('swiper-'),
+    }
+  },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' }
@@ -35,7 +35,7 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxtjs/color-mode',
     'nuxt-icon',
-    '@unlighthouse/nuxt',
+    // '@unlighthouse/nuxt',
     [
       '@pinia/nuxt',
       {
