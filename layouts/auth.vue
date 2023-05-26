@@ -1,18 +1,20 @@
 <template>
   <div
-    class="bg-gray-200 text-white flex flex-col w-full h-[100vh] justify-center items-center
-        overflow-hidden scrollbar-hidden"
+    class="bg-gray-200 text-white flex flex-col w-full h-[100vh] justify-center items-center overflow-hidden scrollbar-hidden"
     :style="{
       backgroundImage: `url(${data.nasaImg.hdurl})`,
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      backgroundPosition: 'center'
     }"
   >
     <div
       class="absolute top-10 right-10 cursor-pointer p-6 rounded-full bg-[#00000040] backdrop-blur-md hidden lg:flex"
       @click="isVisible = !isVisible"
     >
-      <Icon name="ic:baseline-remove-red-eye" size="23px" />
+      <UIcon
+        name="i-mdi-eye-off"
+        class="w-7 h-7"
+      />
     </div>
     <div
       v-show="isVisible"
@@ -29,7 +31,7 @@
         </NuxtLink>
         <NuxtLink
           to="/auth/register"
-          class=" text-[#fff] h-full w-full flex justify-center items-center rounded-t-lg"
+          class="text-[#fff] h-full w-full flex justify-center items-center rounded-t-lg"
         >
           Register
         </NuxtLink>
@@ -37,8 +39,7 @@
       <slot class="animate-swipe-in scale-x-0 origin-left overflow-hidden" />
     </div>
     <div
-      class="group bg-[#000000d8]  lg:bg-[#00000040] p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px]
-            transition-all duration-300 backdrop-blur-md"
+      class="group bg-[#000000d8] lg:bg-[#00000040] p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] transition-all duration-300 backdrop-blur-md"
     >
       <h1 class="text-xl font-semibold pb-2">
         {{ data.nasaImg.title }}
@@ -52,9 +53,7 @@
         <p class="text-sm font-bold">
           {{ data.nasaImg.date }}
         </p>
-        <p class="text-xs">
-          Copyright: {{ data.nasaImg.copyright }}
-        </p>
+        <p class="text-xs"> Copyright: {{ data.nasaImg.copyright }} </p>
       </div>
     </div>
     <!-- <NuxtErrorBoundary @error="someErrorLogger">
@@ -71,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-
 const isVisible = ref(true)
 
 const { event } = useEventHandler()
@@ -89,19 +87,19 @@ https://nuxt.com/docs/getting-started/transitions
 */
 .layout-enter-active,
 .layout-leave-active {
-    transition: all 0.4s;
+  transition: all 0.4s;
 }
 
 .layout-enter-from,
 .layout-leave-to {
-    opacity: 0;
-    filter: blur(1rem);
+  opacity: 0;
+  filter: blur(1rem);
 }
 
 /* exact link will show the primary color for only the exact matching link */
 .router-link-exact-active {
-    background: #EDF1FE;
-    font-weight: bold;
-    color: #000;
+  background: #edf1fe;
+  font-weight: bold;
+  color: #000;
 }
 </style>

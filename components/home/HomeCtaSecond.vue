@@ -1,21 +1,26 @@
 <template>
-  <div class="flex items-center justify-center py-home w-full h-full">
+  <div class="flex items-center justify-center mx-auto w-full h-full">
     <div
-      class="flex flex-col gap-10 justify-center items-center h-[360px] bg-primary w-full rounded-lg shadow-lg mx-auto"
+      class="flex flex-col gap-8 justify-center items-center h-[360px] bg-primary-600 dark:bg-primary-800 w-full rounded-lg shadow-lg mx-auto"
     >
-      <h4 class="head-2">
-        {{ title }}
-      </h4>
-      <v-btn
+      <div class="text-center">
+        <h4 class="max-w-2xl text-3xl font-bold pb-8">
+          {{ title }}
+        </h4>
+        <p class="text-lg max-w-xl">
+          {{ body }}
+        </p>
+      </div>
+      <UButton
         color="white"
-        size="large"
+        size="xl"
       >
-        <!-- <Icon
+        <!-- <UIcon
           :class="hasIcon ? 'flex' : 'hidden'"
           :name="icon"
         /> -->
-        Join Free Today
-      </v-btn>
+        {{ cta }}
+      </UButton>
     </div>
   </div>
 </template>
@@ -23,6 +28,10 @@
 <script setup lang="ts">
 defineProps({
   title: {
+    type: String as PropType<string>,
+    required: true
+  },
+  body: {
     type: String as PropType<string>,
     required: true
   },

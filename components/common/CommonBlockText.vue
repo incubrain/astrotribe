@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="card-heading">
+    <h1 class="text-lg font-semibold md:text-xl xl:text-2xl">
       {{ title }}
     </h1>
     <p>

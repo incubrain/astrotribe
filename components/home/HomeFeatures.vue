@@ -1,36 +1,40 @@
 <template>
-  <div class="py-home">
+  <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
     <div class="mx-auto">
-      <div class="mb-20">
-        <h1 class="text-center text-2xl lg:text-5xl font-bold text-gray-800 tracking-1px">
-          Choose your Insurance
-        </h1>
-        <h2 class="text-base lg:text-lg text-center text-gray-700 mt-5 tracking-wider">
+      <div class="mb-4 text-left text-general pl-8">
+        <h1 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight"> Why AstroTribe? </h1>
+        <h2 class="text-3xl font-semibold mt-5 max-w-[50%] leading-normal">
           Keep your Life Simple, Safe and Wealthy
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-top">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-top">
         <div
           v-for="feature in features"
           :key="feature.id"
-          class="mx-auto m-4 bg-white rounded-lg shadow-md p-8 relative overflow-hidden"
+          class="mx-auto m-4 bg-white rounded-lg shadow-md p-8 relative overflow-hidden h-full"
         >
           <div
             class="absolute w-full h-full top-0 left-0"
             :style="{ backgroundImage: 'url(' + feature.backgroundImage + ')' }"
           />
-          <div class="absolute w-full h-full top-0 left-0 bg-gray-900 bg-opacity-40" />
-          <div class="relative z-50 text-white">
-            <Icon
+          <div class="absolute w-full h-full top-0 left-0 bg-gray-900/50 dark:bg-zinc-900/80" />
+          <div class="relative z-50 text-light">
+            <UIcon
               :name="feature.icon"
-              class="w-[38px] h-[38px]"
-            ></Icon>
+              class="w-[26px] h-[26px]"
+            ></UIcon>
             <div class="pt-4">
-              <h1 class="text-xl lg:text-2xl font-semibold tracking-wider">
+              <h1 class="text-lg lg:text-2xl font-semibold tracking-wider">
                 {{ feature.title }}
               </h1>
-              <p class="mt-2 tracking-wider leading-normal text-base w-11/12">
+              <p class="mt-2 tracking-wider leading-normal text-sm w-11/12">
                 {{ feature.description }}
+              </p>
+              <p
+                v-if="!feature.isAvailable"
+                class="text-xs pt-2 font-semibold text-success-600 dark:text-success-test"
+              >
+                Coming soon
               </p>
             </div>
           </div>
@@ -44,45 +48,57 @@
 const features = [
   {
     id: 1,
-    title: 'Home Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Universe of Connections',
+    description:
+      'Connect and share insights with astronomers and enthusiasts in our interactive community. Make your passion for the cosmos a shared journey.',
+    icon: 'i-material-symbols-group-add',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: true
   },
   {
     id: 2,
-    title: 'Car Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Local Astronomy Events',
+    description:
+      'Discover local astronomical happenings from stargazing sessions to professional conferences. Experience the cosmos in your neighborhood.',
+    icon: 'i-material-symbols-calendar-month',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: false
   },
   {
     id: 3,
-    title: 'Life Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Join the Cosmic Conversation',
+    description:
+      'Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey',
+    icon: 'ph:chat-dots-fill',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: false
   },
   {
     id: 4,
-    title: 'Travel Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Start An Astronomy Career',
+    description:
+      'Explore our selection of online and offline educational resources. From online courses to local workshops, fuel your knowledge and passion for astronomy.',
+    icon: 'i-mdi-briefcase',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: false
   },
   {
     id: 5,
-    title: 'Travel Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Connect With AstroGuides',
+    description:
+      'Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers',
+    icon: 'ion:telescope',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: true
   },
   {
     id: 6,
-    title: 'Travel Insurance',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: 'material-symbols:home',
-    backgroundImage: '/cover1.jpg'
+    title: 'Celestial Event Alerts',
+    description:
+      'Never miss an astronomical spectacle with our timely push notifications. Stay ready for the next cosmic show',
+    icon: 'i-material-symbols-circle-notifications',
+    backgroundImage: '/cover1.jpg',
+    isAvailable: false
   }
 ]
 </script>

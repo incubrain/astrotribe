@@ -1,45 +1,61 @@
 <template>
   <div>
     <HomeHero />
-    <div class="max-w-[1240px] mx-auto flex flex-col pt-32 px-home">
+    <div class="max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px]">
       <HomeTrusted />
-      <HomeFeatures />
+      <HomeFeatures class="py-16 md:py-32" />
       <HomeProductStep
-        :image-right="true"
-        cta="Find out more"
-        title="Step 1"
-        body="This is an amazing feature This is an amazing feature This is an amazing feature This is an amazing feature"
-      />
-      <HomeProductStep
-        :image-right="false"
-        cta="Find out more"
-        title="Step 2"
-        body="This is a 2nd amazing feature"
-      />
-      <HomeProductStep
-        :image-right="true"
-        cta="Find out more"
-        title="Step 3"
-        body="This is a 3rd amazing feature"
+        v-for="step in productSteps"
+        :key="step.id"
+        :image-right="step.imageRight"
+        :title="step.title"
+        :body="step.body"
+        :cta="step.cta"
+        class="py-16 md:py-32"
       />
     </div>
     <HomeCtaMain
-      cta="Get Started Now"
-      title="Call to Action"
-      body="Some more information about AstroTribe that spills onto the second line"
+      class="py-16 md:py-32"
+      title="Earlybird Exclusive Benefits"
+      body="The first 50 people will get exclusive life-time free use of our platform"
+      cta="Claim your spot"
     />
-    <div class="max-w-[1240px] mx-auto flex flex-col pb-32 px-home">
-      <!-- <HomeTestimonial /> -->
-      <HomeTimeline />
+    <div class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-32 px-[20px] md:px-[80px] lg:px-[160px]">
+      <HomeTestimonial />
       <HomeCtaSecond
-        cta="Get Started Now"
-        title="Going to the moon"
+        title="Host Stargazing Events"
+        body="Share your passion for the stars. Organize stargazing events and connect with local enthusiasts."
+        cta="Plan Your Event Today"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const productSteps = [
+  {
+    id: 1,
+    title: 'Host Paid Stargazing Events',
+    body: 'Host stargazing events with ease through our platform. Partner with local resorts, manage RSVPs, and receive payments securely. Gather feedback for continuous improvement, all while earning from your passion!',
+    cta: 'Coming Q3 2023',
+    imageRight: true
+  },
+  {
+    id: 2,
+    title: 'Curated Galactic News',
+    body: 'Stay updated with the latest astronomy news, courtesy of our advanced AI. Get brief, easy-to-understand summaries from trusted sources, making cosmic discovery effortless and quick.',
+    cta: 'Coming Q4 2023',
+    imageRight: false
+  },
+  {
+    id: 3,
+    title: 'Space Conversations: AI-Q&A',
+    body: 'Satisfy your cosmic curiosity with our AI trained on NASA and ULA data. Just ask your question, and get reliable, detailed answers about the universe effortlessly.',
+    cta: 'Coming Q4 2023',
+    imageRight: true
+  }
+]
+
 definePageMeta({
   name: 'Home',
   layout: 'home'

@@ -1,0 +1,65 @@
+/* @import 'cropperjs/dist/cropper.css'; */
+@import './scrollbar.css';
+/* @import './variables.css'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+}
+
+@layer components {
+  .card {
+    @apply p-4 border-b border-slate-300 md:border-none md:p-12 md:rounded-lg bg-white text-black md:shadow-sm w-full;
+  }
+}
+
+@layer utilities {
+  .nav-link {
+    @apply text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700 cursor-pointer;
+  }
+  .link {
+    @apply text-secondary-600 dark:text-secondary-800 hover:text-primary-500 dark:hover:text-primary-700 cursor-pointer;
+  }
+  .background {
+    @apply bg-zinc-100 dark:bg-neutral-950;
+  }
+  .foreground {
+    @apply bg-zinc-200 dark:bg-zinc-900;
+  }
+  .border-color {
+    @apply border-zinc-300 dark:border-zinc-800;
+  }
+  .text-general {
+    @apply text-zinc-800 dark:text-zinc-300;
+  }
+  .text-light {
+    @apply text-zinc-100 dark:text-zinc-300;
+  }
+  .home-width {
+    @apply max-w-[100%] md:max-w-[80%] lg:max-w-[1240px];
+  }
+  .inverted {
+    @apply text-[#fff];
+  }
+}
+
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50%;
+}
+
+/*
+Layout transition animation
+https://nuxt.com/docs/getting-started/transitions
+*/
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
