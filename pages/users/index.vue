@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-full card-grid">
+  <div
+    class="min-h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
+  >
     <CardUser
       v-for="user in s.users"
       :key="user.id"

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="w-full hidden lg:relative h-full flex-col bg-gray-200 lg:flex py-8 pl-8 "
-  >
+  <div class="w-full hidden lg:relative h-full flex-col bg-gray-200 lg:flex py-8 pl-8">
     <ul class="w-full">
       <li
         v-for="page in pages"
@@ -20,9 +18,9 @@
                 : { background: 'none' }
             "
           >
-            <Icon
+            <UIcon
               :name="page.icon"
-              size="20px"
+              class="w-[20px] h-[20px]"
             />
             {{ page.name }}
           </span>

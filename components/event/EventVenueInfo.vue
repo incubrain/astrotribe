@@ -9,7 +9,7 @@
     <NuxtLink :to="`/venues/${venue.id}`">
       <div class="pb-4 pl-4 text-xs flex items-center space-x-4 text-gray-500">
         <div class="pl-2">
-          <Icon
+          <UIcon
             name="uil:location-point"
             size="20px"
           />

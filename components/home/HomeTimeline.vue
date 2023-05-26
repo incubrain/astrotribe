@@ -1,21 +1,17 @@
 <template>
-  <div class="flex flex-col gap-8 w-full py-home bg-white rounded-md shadow-lg">
-    <div class="text-center text-dark w-full mb-10">
-      <h2 class="head-2">
-        Timeline
-      </h2>
-      <p class="text-lg">
-        The future looks bright for AstronEra and AstroTribe
-      </p>
+  <div class="flex flex-col gap-8 w-full py-10 bg-white rounded-md shadow-lg">
+    <div class="px-10 text-center text-slate-700 w-full mb-10">
+      <h2 class="text-3xl"> Timeline </h2>
+      <p class="text-lg"> The future looks bright for AstronEra and AstroTribe </p>
     </div>
     <div class="flex flex-col justify-center items-center w-full mx-auto">
       <div
         v-for="item in timeline"
         :key="item.id"
-        class="flex flex-row text-dark"
+        class="flex flex-row text-slate-700"
       >
         <div class="text-right mt-16">
-          <h4 class="head-4">
+          <h4 class="text-xl">
             {{ item.date }}
           </h4>
           <p class="p-body">
@@ -25,7 +21,7 @@
         <div class="w-[6px] flex bg-green-600 mx-8" />
         <!-- right  -->
         <div class="text-left mt-44">
-          <h4 class="head-4">
+          <h4 class="text-xl">
             {{ item.date }}
           </h4>
           <p class="p-body">

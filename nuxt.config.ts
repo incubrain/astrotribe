@@ -9,32 +9,35 @@ export default defineNuxtConfig({
   // },
   vue: {
     compilerOptions: {
-      isCustomElement: (tag: string) => tag.startsWith('swiper-'),
+      isCustomElement: (tag: string) => tag.startsWith('swiper-')
     }
   },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
-    pageTransition: { name: 'page', mode: 'out-in' }
-    // head: {
-    //   link: [
-    //     { rel: 'stylesheet', href: '' }
-    //   ],
-    //   script: [
-        // Insert your Google Tag Manager Script here
-        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-    //   ]
-    // }
+    pageTransition: { name: 'page', mode: 'out-in' },
+    head: {
+      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }]
+      // script: [
+      // Insert your Google Tag Manager Script here
+      // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+      //   ]
+    }
   },
-  css: ['/assets/main.css', 'vuetify/lib/styles/main.sass'],
+  css: [
+    '/assets/css/tailwind.css',
+    'lightgallery/css/lightgallery-bundle.css'
+  ],
   imports: {
-    dirs: ['stores']
+    dirs: ['stores', 'themes']
+  },
+  colorMode: {
+    classSuffix: ''
   },
   modules: [
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/partytown',
     '@nuxt/devtools',
-    '@nuxtjs/color-mode',
-    'nuxt-icon',
+    '@nuxthq/ui',
+    '@vueuse/nuxt',
     // '@unlighthouse/nuxt',
     [
       '@pinia/nuxt',
@@ -44,7 +47,7 @@ export default defineNuxtConfig({
     ]
   ],
   build: {
-    transpile: ['vuetify', 'swiper', 'lightgallery']
+    transpile: ['swiper', 'lightgallery']
   },
   // partytown: {
   //     // For google analytics
@@ -65,7 +68,7 @@ export default defineNuxtConfig({
       exclude: ['node_modules', 'dist'],
       compilerOptions: {
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
-        strict: true,
+        strict: true
       }
     }
   },

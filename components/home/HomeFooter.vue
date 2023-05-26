@@ -1,18 +1,7 @@
 <template>
-  <div class="f-f-p bg-primary p-6 pt-12 pb-12">
-    <div class="w-full lg:flex justify-between mx-auto container">
-      <div class="lg:w-1/2 justify-between lg:flex">
-        <div
-          v-for="(category, index) in links"
-          :key="index"
-          class="flex flex-col mt-4 lg:mt-0"
-        >
-          <FooterCategories :category="category" />
-        </div>
-        <div class="flex flex-col mt-4 lg:mt-0 lg:items-center">
-          <FooterSocialLinks />
-        </div>
-      </div>
+  <div class="bg-primary-600 dark:bg-primary-700 p-6 pt-12 pb-12">
+    <div class="w-full lg:flex justify-around mx-auto container max-w-[840px]">
+      <FooterSocialLinks />
       <NewsletterBasic />
     </div>
   </div>
@@ -20,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-
 const links = [
   {
     title: 'Insurance',

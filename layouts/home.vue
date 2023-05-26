@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 text-white flex flex-col w-full h-full">
+  <div class="bg-gray-100 dark:bg-neutral-950 text-white flex flex-col w-full h-full">
     <div class="w-full h-full">
       <div class="w-full gap-4 md:gap-8 relative z-10">
         <NavTop class="min-h-[50px] lg:min-h-[60px]" />

@@ -16,9 +16,9 @@ const pages = ref([
     id: 1,
     name: 'Events',
     slug: '/events',
-    icon: 'material-symbols:event',
+    icon: 'i-material-symbols-event',
     children: [
-      { id: 10, name: 'Upcoming', slug: '/', icon: 'material-symbols:event' }
+      { id: 10, name: 'Upcoming', slug: '/', icon: 'i-material-symbols-event' }
       // { id: 11, name: 'Popular', slug: '/popular', icon: 'ph:fire-simple-bold' },
     ]
   },
@@ -36,7 +36,7 @@ const pages = ref([
     id: 3,
     name: 'Venues',
     slug: '/venues',
-    icon: 'material-symbols:location-on-rounded'
+    icon: 'i-material-symbols-location-on-rounded'
     // children: [
     //     { id: 20, name: 'All', slug: '/', icon: 'tabler:building-church' },
     //     { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'tabler:building-church' },
@@ -47,6 +47,7 @@ const pages = ref([
 export default function usePages() {
   return {
     pages: computed(() => pages.value),
-    tabs: (currentPage: string) => pages.value.find((p: Page) => p.name.toLocaleLowerCase() === currentPage)
+    tabs: (currentPage: string) =>
+      pages.value.find((p: Page) => p.name.toLocaleLowerCase() === currentPage)
   }
 }

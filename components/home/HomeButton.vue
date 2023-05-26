@@ -1,14 +1,14 @@
 <template>
-  <v-btn
+  <UButton
     color="primary"
     size="large"
   >
-    <Icon
+    <UIcon
       :class="hasIcon ? 'flex' : 'hidden absolute'"
       :name="icon"
     />
     {{ cta }}
-  </v-btn>
+  </UButton>
 </template>
 
 <script setup lang="ts">

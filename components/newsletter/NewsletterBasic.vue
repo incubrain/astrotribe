@@ -16,7 +16,7 @@
           />
           <button
             type="submit"
-            class="absolute right-0 inset-y-0 h-full focus:outline-none transition duration-150 border-l border-gray-300 text-xs lg:text-base font-medium text-indigo-700 ease-in-out rounded px-2 sm:px-6 py-2 lg:py-4"
+            class="absolute right-0 inset-y-0 h-full focus:outline-none transition duration-150 border-l border-gray-300 text-xs lg:text-base font-medium text-primary-700 ease-in-out rounded px-2 sm:px-6 py-2 lg:py-4"
           >
             Subscribe
           </button>

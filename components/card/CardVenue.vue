@@ -1,6 +1,11 @@
 <template>
-  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-gray-200">
-    <NuxtLink :to="`/venues/${p.venue.id}`" class="h-full">
+  <div
+    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300"
+  >
+    <NuxtLink
+      :to="`/venues/${p.venue.id}`"
+      class="h-full"
+    >
       <img
         :src="u.venues.featuredImage(p.venue.id, p.venue.featured_image)"
         :alt="`${p.venue.name} AstroTribe featured image`"
@@ -17,11 +22,13 @@
             {{ p.venue.name?.substring(0, 30) }}
             {{ p.venue.name && p.venue.name.length > 30 ? '...' : '' }}
           </h3>
-          <span v-if="p.venue.avg_rating" class="flex items-start gap-1">
-            <Icon
-              name="material-symbols:star"
-              size="18px"
-              class="text-yellow-400"
+          <span
+            v-if="p.venue.avg_rating"
+            class="flex items-start gap-1"
+          >
+            <UIcon
+              name="i-material-symbols-star"
+              class="text-yellow-400 w-6 h-6"
             />
             <p class="text-xs font-semibold"> {{ p.venue.avg_rating.toPrecision(2) }} </p>
           </span>
