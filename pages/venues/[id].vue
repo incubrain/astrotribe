@@ -15,9 +15,9 @@
           class="bg-[#1d2f6d] text-white text-xs font-semibold leading-none px-2 py-1 md:px-4 md:py-2 rounded-md flex items-center justify-center flex-row gap-1"
         >
           10
-          <Icon
-            name="material-symbols:event-available"
-            size="16px"
+          <UIcon
+            name="i-material-symbols-event-available"
+            class="w-4 h-4 md:w-6 md:h-6"
           />
         </button>
       </div>
@@ -26,18 +26,17 @@
       <div class="text-slate-600 card flex justify-between items-center">
         <div class="flex gap-4 items-center">
           <div class="flex flex-col">
-            <h1 class="card-heading font-bold flex items-center">
+            <h1 class="text-lg font-semibold md:text-xl xl:text-2xl flex items-center">
               {{ s.venue.name }}
             </h1>
             <span class="card-subheading flex items-center">
-              <Icon
-                name="material-symbols:star"
-                size="16px"
-                class="text-yellow-400 mr-1"
+              <UIcon
+                name="i-material-symbols-star"
+                class="text-yellow-400 mr-1 w-5 h-5"
               />
               {{ s.venue.avg_rating?.toPrecision(2) }}
             </span>
-            <h3 class="card-body mt-4 flex items-center underline">
+            <h3 class="text-xs md:text-sm xl:text-base mt-4 flex items-center underline">
               <a
                 :href="googleMapsLink"
                 target="_blank"
@@ -57,10 +56,10 @@
         title="About us"
       />
       <CommonBortle :rating="s.venue.bortle_rating" />
-      <h4 class="card-padding card-heading text-black">
+      <h4 class="p-4 md:p-6 lg:p-8 text-lg font-semibold md:text-xl xl:text-2xl text-black">
         Events
       </h4>
-      <div class="card-grid">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8">
         <EventCard
           v-for="event in s.venue.events"
           :key="event.id"
@@ -70,7 +69,7 @@
         />
       </div>
       <div class="h-full aspect-square shadow-sm min-h-[380px] overflow-hidden md:rounded-md">
-        <h4 class="card-padding card-heading text-black">
+        <h4 class="p-4 md:p-6 lg:p-8 text-lg font-semibold md:text-xl xl:text-2xl text-black">
           Location
         </h4>
         <iframe

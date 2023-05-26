@@ -1,23 +1,27 @@
 <template>
   <div
-    class="flex justify-between items-center w-full py-home gap-10"
-    :style="!imageRight ? { flexDirection: 'row-reverse' } : { flexDirection: 'row' }"
+    :class="
+      imageRight
+        ? 'flex flex-col md:flex-row-reverse justify-between items-center w-full py-[20px] md:py-[60px] lg:py-[160px] mx-auto gap-10'
+        : 'flex flex-col md:flex-row justify-between items-center w-full py-[20px] md:py-[60px] lg:py-[160px] mx-auto gap-10'
+    "
   >
-    <div class="w-[50%] px-4">
-      <h4 class="head-4 text-dark font-bold mb-4">
-        {{ title }}
-      </h4>
-      <p class="text-base text-dark py-2">
-        {{ body }}
-      </p>
-      <a class="text-link text-base">{{ cta }}</a>
-    </div>
-    <div class="w-100% h-[360px] rounded-lg overflow-hidden shadow-2xl">
+    <div class="md:w-[70%] h-[360px] shadow-2xl relative">
       <img
-        class="w-full h-full"
+        class="w-full h-full rounded-lg overflow-hidden"
         src="/cover1.jpg"
         alt=""
       />
+      <div class="absolute hidden dark:block w-full h-full bg-zinc-900/10 top-0 left-0 rounded-lg"></div>
+    </div>
+    <div class="md:w-[50%] px-4 text-general">
+      <h4 class="text-xl font-bold mb-4">
+        {{ title }}
+      </h4>
+      <p class="text-sm pb-2">
+        {{ body }}
+      </p>
+      <a class="text-success-600 text-sm font-semibold">{{ cta }}</a>
     </div>
   </div>
 </template>

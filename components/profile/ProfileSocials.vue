@@ -4,9 +4,9 @@
       <div
         class="w-[200px] h-[32px] relative bg-red-50 rounded-sm overflow-hidden flex items-center"
       >
-        <Icon
-          name="uil:location-point"
-          size="24px"
+        <UIcon
+          name="i-material-symbols-location-on"
+          class="w-[20px] h-[20px]"
         />
         <p> {{ socials.platform }}</p>
       </div>

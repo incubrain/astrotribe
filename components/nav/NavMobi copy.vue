@@ -5,10 +5,9 @@
       class="w-10 relative flex flex-col items-center h-full rounded-tr justify-center cursor-pointer"
       @click="mobiOpenClose(!isOpen)"
     >
-      <Icon
-        name="cil:hamburger-menu"
-        size="24px"
-        class="relative text-black"
+      <UIcon
+        name="i-material-symbols-menu"
+        class="relative text-black w-7 h-7"
       />
     </div>
     <div
@@ -20,13 +19,10 @@
       "
     >
       <div class="w-full flex pt-15 pb-8">
-        <h1 class="text-2xl font-bold">
-          AstroTribe
-        </h1>
-        <Icon
-          name="material-symbols:close"
-          size="24px"
-          class="absolute right-3 top-3 text-black cursor-pointer"
+        <h1 class="text-2xl font-bold"> AstroTribe </h1>
+        <UIcon
+          name="i-material-symbols-close"
+          class="absolute right-3 top-3 text-black cursor-pointer w-7 h-7"
           @click="mobiOpenClose(!isOpen)"
         />
       </div>
@@ -46,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
-
 const { pages } = usePages()
 // const route = useRoute()
 

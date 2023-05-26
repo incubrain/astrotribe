@@ -1,8 +1,16 @@
 <template>
-  <div class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-gray-200 bg-white">
+  <div
+    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300 bg-white"
+  >
     <EventHosts :hosts="props.event.hosts" />
-    <EventVenueInfo v-if="props.venue" :venue="props.venue" />
-    <EventInfo :event="props.event" :time="time" />
+    <EventVenueInfo
+      v-if="props.venue"
+      :venue="props.venue"
+    />
+    <EventInfo
+      :event="props.event"
+      :time="time"
+    />
   </div>
 </template>
 

@@ -12,7 +12,11 @@
       :alt="`Slide ${index + 1}`"
       :class="[
         'w-full h-full object-cover transform transition-transform duration-300 ease-in-out',
-        index === currentSlide ? 'translate-x-0' : index > currentSlide ? 'translate-x-full' : '-translate-x-full'
+        index === currentSlide
+          ? 'translate-x-0'
+          : index > currentSlide
+          ? 'translate-x-full'
+          : '-translate-x-full'
       ]"
     />
     <div
@@ -20,14 +24,14 @@
       class="absolute top-1/2 left-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
       @click="previousSlide"
     >
-      <Icon name="mdi:chevron-left" />
+      <UIcon name="i-mdi-chevron-left" />
     </div>
     <div
       v-if="currentSlide < images.length - 1"
       class="absolute top-1/2 right-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
       @click="nextSlide"
     >
-      <Icon name="mdi:chevron-right" />
+      <UIcon name="i-mdi-chevron-right" />
     </div>
     <div class="absolute bottom-0 right-0 p-2 bg-black bg-opacity-50 text-white">
       {{ currentSlide + 1 }}/{{ images.length }}
@@ -36,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-
 const props = defineProps<{
   images: string[]
 }>()
@@ -72,5 +75,4 @@ const handleTouchEnd = (event: TouchEvent) => {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

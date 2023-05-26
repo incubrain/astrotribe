@@ -1,10 +1,8 @@
 <template>
   <article
-    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-gray-200"
+    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300"
   >
-    <div
-      class="bg-white w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative"
-    >
+    <div class="bg-white w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative">
       <div
         v-if="props.user"
         class="w-full flex items-center flex-row gap-2 md:gap-4 justify-between"
@@ -29,10 +27,9 @@
                   v-if="props.user.main_role.name !== 'User'"
                   class="font-light flex justify-center items-center text-black"
                 >
-                  <Icon
+                  <UIcon
                     :name="u.users.roleIcon(props.user.main_role.id)"
-                    class="text-green-700 mr-1"
-                    size="14px"
+                    class="text-green-700 mr-1 w-5 h-5"
                   />
                   {{ props.user.main_role.name }} | @{{ props.user.username }}
                 </span>
@@ -46,17 +43,15 @@
             </div>
           </div>
         </NuxtLink>
-        <div
-          class="absolute top-2 right-3 flex-row align-center justify-center gap-1 text-black"
-        >
-          <Icon
+        <div class="absolute top-2 right-3 flex-row align-center justify-center gap-1 text-black">
+          <UIcon
             v-if="props.user.is_following"
-            name="mdi:account-multiple-check"
+            name="i-mdi-account-multiple-check"
             class="flex justify-end items-start w-[26px] h-[26px] text-green-800 hover:text-red-800 cursor-pointer"
           />
-          <Icon
+          <UIcon
             v-else
-            name="mdi:account-multiple-plus"
+            name="i-mdi-account-multiple-plus"
             class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer"
           />
           <!-- <button

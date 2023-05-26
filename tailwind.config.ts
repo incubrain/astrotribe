@@ -1,17 +1,27 @@
-/** @type {import('tailwindcss').Config} */
+import type { Config } from 'tailwindcss'
+import c from 'tailwindcss/colors'
 
-export default {
-  content: [
-    './components/**/*.{js,vue,ts}',
-    './layouts/**/*.vue',
-    './pages/**/*.vue',
-    './plugins/**/*.{js,ts}',
-    './nuxt.config.{js,ts}'
-  ],
+export default <Partial<Config>>{
+  darkMode: 'class',
+  content: ['./nuxt.config.{js,ts}'],
   theme: {
+    fontSize: {
+      sm: '0.8rem',
+      base: '1rem',
+      xl: '1.25rem',
+      '2xl': '1.563rem',
+      '3xl': '1.953rem',
+      '4xl': '2.441rem',
+      '5xl': '4.052rem'
+    },
     extend: {
       colors: {
-        'primary': '#1fb6ff',
+        primary: c.cyan,
+        secondary: c.indigo,
+        error: c.red,
+        success: c.green,
+        warning: c.yellow,
+        info: c.cyan,
       },
       animation: {
         'spin-slow': 'spin 300s linear infinite',
@@ -24,21 +34,21 @@ export default {
         glitter: {
           '0%': {
             transform: 'scale(0.8)',
-            opacity: 0
+            opacity: '0'
           },
           '25%': {
             transform: 'scale(1.6)',
-            opacity: 1
+            opacity: '1'
           },
           '50%': {
-            tranwidsform: 'scale(0.8)',
-            opacity: 0
+            transform: 'scale(0.8)',
+            opacity: '0'
           },
           '75%': {
             transform: 'scale(1.6)',
-            opacity: 1
+            opacity: '1'
           },
-          '100%': { transform: 'scale(0.8)', opacity: 0 }
+          '100%': { transform: 'scale(0.8)', opacity: '0' }
         },
         loadin: {
           '0%': {
@@ -67,49 +77,13 @@ export default {
             transform: 'scale(1)'
           }
         }
-      },
-      fontFamily: {
-        body: [
-          'Inter',
-          'ui-sans-serif',
-          'system-ui',
-          '-apple-system',
-          'system-ui',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica Neue',
-          'Arial',
-          'Noto Sans',
-          'sans-serif',
-          'Apple Color Emoji',
-          'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji'
-        ],
-        sans: [
-          'Inter',
-          'ui-sans-serif',
-          'system-ui',
-          '-apple-system',
-          'system-ui',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica Neue',
-          'Arial',
-          'Noto Sans',
-          'sans-serif',
-          'Apple Color Emoji',
-          'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji'
-        ]
       }
     }
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    // require('@tailwindcss/typography'),
     // https://tailwindcss.com/docs/typography-plugin
-    require('@tailwindcss/forms')
+    // require('@tailwindcss/forms')
     // https://github.com/tailwindlabs/tailwindcss-forms
   ]
 }
