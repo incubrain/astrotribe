@@ -10,13 +10,15 @@
       :data-src="item.url"
       :data-poster="utils.assets.local(item.thumbnail)"
     >
-      <div class="relative w-full h-full flex justify-center items-center bg-gray-200 p-4 rounded-lg">
+      <div
+        class="relative w-full h-full flex justify-center items-center foreground p-4 rounded-lg"
+      >
         <img
           class="img-responsive rounded-lg shadow-lg aspect-auto w-full h-full"
           :src="utils.assets.local(item.thumbnail)"
         />
-        <Icon
-          name="mdi:play"
+        <UIcon
+          name="i-mdi-play"
           class="absolute w-[72px] h-[72px]"
         />
         <slot class="bottom-0 left-0 absolute" />
@@ -44,7 +46,6 @@ const utils = useUtils()
 
 onMounted(() => {
   const lg = document.getElementById('lightgallery')!
-  console.log('gallery', lg)
   lightGallery(lg, {
     plugins: [lgZoom, lgThumbnail, lgVideo],
     speed: 500,

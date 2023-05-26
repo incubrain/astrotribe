@@ -20,29 +20,29 @@
       />
     </div>
     <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
-      <v-btn
+      <UButton
         v-if="!imageSrc"
         color="primary"
         @click="imageInput.click()"
       >
         <slot />
-      </v-btn>
-      <v-btn
+      </UButton>
+      <UButton
         v-else
         color="primary"
         class="w-32 mx-2"
         @click="handleImageCropped"
       >
         Update
-      </v-btn>
-      <v-btn
+      </UButton>
+      <UButton
         v-if="imageSrc"
         color="primary"
         class="w-32 mx-2"
         @click="fileCleared"
       >
         Cancel
-      </v-btn>
+      </UButton>
       <input
         ref="imageInput"
         type="file"

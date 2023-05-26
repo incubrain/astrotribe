@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-gray-100 py-5">
-    <h1 class="text-base text-gray-700 text-center">
+  <div class="foreground text-general py-5">
+    <h1 class="text-base text-center">
       ©2018 - {{ currentYear }} AstronEra. All right reserved
     </h1>
   </div>

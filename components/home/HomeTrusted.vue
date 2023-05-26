@@ -1,12 +1,12 @@
 <template>
-  <div class="flex flex-col gap-8">
-    <h4 class="block lg:pl-5 text-gray-500 text-lg font-bold text-center md:text-left gap-4 uppercase">
+  <div class="flex flex-col gap-8 bg-zinc-200 dark:bg-zinc-300 rounded-[0_0_.5rem_.5rem] px-4 md:px-8 pb-8 pt-4 md:pt-8 md:pb-12">
+    <h4 class="block text-zinc-800 text-lg font-bold text-center gap-4 uppercase">
       Supported by
     </h4>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:justify-around md:justify-between w-full head-3 text-dark">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-around md:justify-around w-full">
       <img
         src="~/assets/images/trusted/dst.png"
-        class="h-16 lg:h-20 mx-auto"
+        class="h-16 lg:h-20 mx-auto md:ml-0"
       />
       <img
         src="~/assets/images/trusted/iau-oad.png"
@@ -18,7 +18,7 @@
       />
       <img
         src="~/assets/images/trusted/iimb-nsrcel.png"
-        class="h-16 lg:h-20 mx-auto"
+        class="h-16 lg:h-20 mx-auto md:mr-0"
       />
     </div>
   </div>

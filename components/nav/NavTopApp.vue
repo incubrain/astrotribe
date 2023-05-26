@@ -16,6 +16,7 @@
         </div>
         <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
         <div
+          v-show="route.path === '/'"
           class="hidden lg:flex gap-4 pl-4 justify-center border-l border-color items-center h-full leading-none text-sm font-semibold whitespace-nowrap"
         >
           <NuxtLink
@@ -38,10 +39,35 @@
           </NuxtLink>
         </div>
       </div>
+      <AppTabs class="hidden h-full md:flex" />
       <div class="col-start-3 col-span-1 pr-3 md:pr-6 flex w-full relative">
+        <div
+          v-show="route.path !== '/'"
+          class="w-full flex items-center justify-end"
+        >
+          <NuxtLink to="/profile/1">
+            <div class="flex items-center relative cursor-pointer">
+              <p class="text-gray-800 hidden md:flex text-sm mx-3">
+                {{ currentSession ? 'Authenticated' : 'Anon.' }}
+              </p>
+              <div class="rounded-full">
+                <div class="relative">
+                  <img
+                    class="rounded-full h-[32px] w-[32px] md:h-[40px] md:w-[40px] object-cover"
+                    src="/avatar.png"
+                    alt="avatar"
+                  />
+                  <div
+                    class="w-2 h-2 rounded-full bg-green-400 border border-color absolute inset-0 mb-0 mr-0 m-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </NuxtLink>
+        </div>
         <div class="flex gap-4 w-full items-center justify-end">
           <ThemeToggle />
-          <div>
+          <div v-show="route.path === '/'">
             <UButton color="primary"> Join Free </UButton>
           </div>
         </div>
@@ -51,6 +77,7 @@
 </template>
 
 <script setup>
+const route = useRoute()
 
 const { logout, session } = useAuth()
 
