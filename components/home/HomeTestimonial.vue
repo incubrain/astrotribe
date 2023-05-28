@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-10 text-general">
+  <div class="pb-10">
     <div class="mb-8 pl-8">
       <h2 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight mb-4"
         >Hear From Our Users
@@ -10,7 +10,7 @@
     </div>
     <SwiperComponent :items="testimonials">
       <template #default="{ item }: { item: Testimonial }">
-        <div class="foreground min-h-full text-black p-8 rounded-md shadow-lg text-general">
+        <div class="foreground min-h-full p-8 rounded-md shadow-lg">
           <div class="flex items-center">
             <img
               :src="item.image"

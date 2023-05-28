@@ -12,9 +12,11 @@
         src="/cover1.jpg"
         alt=""
       />
-      <div class="absolute hidden dark:block w-full h-full bg-zinc-900/10 top-0 left-0 rounded-lg"></div>
+      <div
+        class="absolute hidden dark:block w-full h-full bg-zinc-900/10 top-0 left-0 rounded-lg"
+      ></div>
     </div>
-    <div class="md:w-[50%] px-4 text-general">
+    <div class="md:w-[50%] px-4">
       <h4 class="text-xl font-bold mb-4">
         {{ title }}
       </h4>
