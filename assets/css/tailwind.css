@@ -1,5 +1,6 @@
 /* @import 'cropperjs/dist/cropper.css'; */
 @import './scrollbar.css';
+@import './transitions.css';
 /* @import './variables.css'; */
 @tailwind base;
 @tailwind components;
@@ -15,14 +16,14 @@
 }
 
 @layer utilities {
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-zinc-200 dark:bg-zinc-900;
+  }
   .nav-link {
     @apply text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700 cursor-pointer;
   }
   .link {
     @apply text-secondary-600 dark:text-secondary-800 hover:text-primary-500 dark:hover:text-primary-700 cursor-pointer;
-  }
-  .background {
-    @apply bg-zinc-100 dark:bg-neutral-950;
   }
   .foreground {
     @apply bg-zinc-200 dark:bg-zinc-900;
@@ -30,8 +31,8 @@
   .border-color {
     @apply border-zinc-300 dark:border-zinc-800;
   }
-  .text-general {
-    @apply text-zinc-800 dark:text-zinc-300;
+  body {
+    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950;
   }
   .text-light {
     @apply text-zinc-100 dark:text-zinc-300;

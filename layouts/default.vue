@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 text-white flex flex-col w-full h-full">
+  <div class="flex flex-col w-full h-full">
     <div
       class="w-full h-full lg:grid-cols-[minmax(240px,10%)_minmax(600px,100%)] lg:grid"
     >
@@ -9,7 +9,7 @@
         <NavTop class="min-h-[50px] lg:min-h-[60px]" />
       </div>
       <div
-        class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full relative bg-[#E5E7EB]"
+        class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full relative"
       >
         <NavSidebar class="left-0 sticky top-0" />
       </div>
@@ -31,29 +31,5 @@
 <script setup></script>
 
 <style>
-/*
-Layout transition animation
-https://nuxt.com/docs/getting-started/transitions
-*/
-.layout-enter-active,
-.layout-leave-active {
-  transition: all 0.4s;
-}
 
-.layout-enter-from,
-.layout-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-}
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.4s;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-}
 </style>
