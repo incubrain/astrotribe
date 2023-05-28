@@ -54,7 +54,6 @@
 </template>
 
 <script setup lang="ts">
-
 definePageMeta({
   name: 'About',
   layout: 'home'
