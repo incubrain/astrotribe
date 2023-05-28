@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       isCustomElement: (tag: string) => tag.startsWith('swiper-')
     }
   },
+  ui: {
+    icons: ['mdi', 'heroicons', 'material-symbols']
+  },
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -23,10 +26,7 @@ export default defineNuxtConfig({
       //   ]
     }
   },
-  css: [
-    '/assets/css/tailwind.css',
-    'lightgallery/css/lightgallery-bundle.css'
-  ],
+  css: ['/assets/css/tailwind.css', 'lightgallery/css/lightgallery-bundle.css'],
   imports: {
     dirs: ['stores', 'themes']
   },
