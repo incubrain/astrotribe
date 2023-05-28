@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-60px)]">
+  <div class="h-[calc(100vh-60px)] text-white">
     <div
       :style="{ backgroundImage: `url('${bgImg}')` }"
       class="absolute w-full h-full top-0 left-0 bg-cover bg-center bg-no-repeat"

@@ -1,12 +1,8 @@
 <template>
   <div class="flex justify-center items-center flex-col py-12 px-4 md:px-6">
     <div class="flex justify-center items-center flex-col space-y-4">
-      <h1
-        class="text-3xl xl:text-4xl font-extrabold leading-8 xl:leading-9 text-gray-800 dark:text-white"
-      >
-        Our Team
-      </h1>
-      <p class="w-11/12 text-base leading-normal text-center text-gray-600 dark:text-gray-200">
+      <h1 class="text-3xl xl:text-4xl font-extrabold leading-8 xl:leading-9"> Our Team </h1>
+      <p class="w-11/12 text-base leading-normal text-center">
         It is a long established fact that a reader will be distracted by the readable content of a
         page when looking at its layout.
       </p>
@@ -26,10 +22,10 @@
           />
         </div>
         <div class="flex flex-col justify-center items-center space-y-2">
-          <p class="text-base font-semibold leading-none text-center text-gray-800 dark:text-white">
+          <p class="text-base font-semibold leading-none text-center">
             {{ member.name }}
           </p>
-          <p class="text-sm leading-none text-center text-gray-600 dark:text-gray-200">
+          <p class="text-sm leading-none text-center">
             {{ member.role }}
           </p>
         </div>

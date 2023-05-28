@@ -8,13 +8,18 @@
     >
       <!-- logo -->
       <div class="h-full flex items-center pl-3 md:pl-4 col-start-1 col-span-2 md:col-span-1">
-        <div class="p-1 rounded-full h-[40px] w-[40px] bg-white overflow-hidden">
-          <img
-            src="/astronera-logo.jpg"
-            class="w-full h-full"
-          />
-        </div>
-        <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
+        <NuxtLink
+          to="/"
+          class="nav-link flex items-center gap-2"
+        >
+          <div class="p-1 rounded-full h-[40px] w-[40px] bg-white overflow-hidden">
+            <img
+              src="/astronera-logo.jpg"
+              class="w-full h-full"
+            />
+          </div>
+          <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
+        </NuxtLink>
         <div
           class="hidden lg:flex gap-4 pl-4 justify-center border-l border-color items-center h-full leading-none text-sm font-semibold whitespace-nowrap"
         >
@@ -51,7 +56,6 @@
 </template>
 
 <script setup>
-
 const { logout, session } = useAuth()
 
 const { error, session: currentSession } = await session.getCurrent()

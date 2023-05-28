@@ -1,8 +1,10 @@
 <template>
   <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
     <div class="mx-auto">
-      <div class="mb-4 text-left text-general pl-8">
-        <h1 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight"> Why AstroTribe? </h1>
+      <div class="mb-4 text-left pl-8">
+        <h1 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight">
+          Why AstroTribe?
+        </h1>
         <h2 class="text-3xl font-semibold mt-5 max-w-[50%] leading-normal">
           Keep your Life Simple, Safe and Wealthy
         </h2>
@@ -69,7 +71,7 @@ const features = [
     title: 'Join the Cosmic Conversation',
     description:
       'Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey',
-    icon: 'ph:chat-dots-fill',
+    icon: 'i-material-symbols-calendar-month',
     backgroundImage: '/cover1.jpg',
     isAvailable: false
   },
@@ -87,7 +89,7 @@ const features = [
     title: 'Connect With AstroGuides',
     description:
       'Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers',
-    icon: 'ion:telescope',
+    icon: 'i-mdi-telescope',
     backgroundImage: '/cover1.jpg',
     isAvailable: true
   },
@@ -104,9 +106,5 @@ const features = [
 </script>
 
 <style scoped>
-@import url('https://cdn.tuk.dev/dist/css/tailwind-v2.2.11.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-.f-f-p {
-  font-family: 'Poppins', sans-serif;
-}
+
 </style>
