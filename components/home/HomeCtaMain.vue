@@ -1,16 +1,25 @@
 <template>
   <div>
     <div class="rounded-[100%_100%_0_0] relative h-[300px] bg-neutral-900 dark:bg-black"></div>
-    <div class="flex relative justify-center items-center py-10 md:py-20 lg:py-40 mx-auto w-full bg-neutral-900 dark:bg-black">
-      <div class="flex flex-col gap-4 justify-center items-center">
-        <h2 class="text-3xl font-bold text-white">
+    <div
+      class="flex relative justify-center items-center py-10 md:py-20 lg:py-40 mx-auto w-full bg-neutral-900 dark:bg-black"
+    >
+      <div class="flex flex-col gap-4 justify-center items-center text-light">
+        <h2 class="text-3xl font-bold">
           {{ title }}
         </h2>
         <p class="text-lg pt-4 max-w-sm text-center leading-snug">
           {{ body }}
         </p>
-        <img class="ml-[-40px] w-[600px] rounded-full" src="/earth.png" alt="" />
-        <UButton color="white" size="xl">
+        <img
+          class="ml-[-40px] w-[600px] rounded-full"
+          src="/earth.png"
+          alt=""
+        />
+        <UButton
+          color="white"
+          size="xl"
+        >
           {{ cta }}
         </UButton>
       </div>
@@ -37,7 +46,6 @@ defineProps({
 </script>
 
 <style scoped>
-
 .curved {
   border-bottom-left-radius: 50% 100%;
   border-bottom-right-radius: 50% 100%;
@@ -47,5 +55,4 @@ defineProps({
   border-top-left-radius: 50% 100%;
   border-top-right-radius: 50% 100%;
 }
-
 </style>

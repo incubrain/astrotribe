@@ -1,6 +1,6 @@
 <template>
   <div
-    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300"
+    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left"
   >
     <NuxtLink
       :to="`/venues/${p.venue.id}`"
@@ -11,13 +11,14 @@
         :alt="`${p.venue.name} AstroTribe featured image`"
         class="aspect-square object-contain w-full"
       />
-      <img
-        :src="u.venues.logo(p.venue.id, p.venue.logo)"
-        :alt="`${p.venue.name} Logo on AstroTribe`"
-        class="aspect-square rounded-full object-contain absolute left-2 top-2 w-12 bg-white p-1"
-      />
-      <div class="p-4 flex flex-col gap-2 bg-white md:h-full">
-        <div class="flex justify-between text-gray-700">
+      <div class="absolute p-1 w-12 left-2 top-2 h-12 rounded-full bg-light overflow-hidden">
+        <img
+          :src="u.venues.logo(p.venue.id, p.venue.logo)"
+          :alt="`${p.venue.name} Logo on AstroTribe`"
+        />
+      </div>
+      <div class="p-4 flex flex-col gap-2 foreground md:h-full">
+        <div class="flex justify-between">
           <h3 class="text-base font-semibold">
             {{ p.venue.name?.substring(0, 30) }}
             {{ p.venue.name && p.venue.name.length > 30 ? '...' : '' }}

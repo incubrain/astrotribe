@@ -28,8 +28,17 @@
   .foreground {
     @apply bg-zinc-200 dark:bg-zinc-900;
   }
+  .background {
+    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950;
+  }
+  .bg-light {
+    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300;
+  }
   .border-color {
     @apply border-zinc-300 dark:border-zinc-800;
+  }
+  .border-inverted {
+    @apply border-zinc-800 dark:border-zinc-300;
   }
   body {
     @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950;
@@ -48,19 +57,4 @@
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
-}
-
-/*
-Layout transition animation
-https://nuxt.com/docs/getting-started/transitions
-*/
-.layout-enter-active,
-.layout-leave-active {
-  transition: all 0.4s;
-}
-
-.layout-enter-from,
-.layout-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
 }

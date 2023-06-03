@@ -1,29 +1,32 @@
 <template>
-  <div class="bg-white overflow-hidden max-w-[1200px]">
+  <div class="overflow-hidden max-w-[1200px]">
     <div class="relative">
       <ImageCarousel
         :images="images"
-        class="mb-6"
+        class="mb-6 rounded-md"
       />
       <div class="absolute top-2 left-2 flex flex-col gap-3 items-center z-10">
         <img
           :src="util.venues.logo(s.venue.id, s.venue.logo)"
           alt=""
-          class="object-contain bg-white border-4 border-slate-800 rounded-full overflow-hidden w-[60px] h-[60px] md:w-28 md:h-28 p-2"
+          class="object-contain border-2 rounded-full bg-light overflow-hidden w-14 h-14 md:w-20 md:h-20 p-2"
         />
-        <button
-          class="bg-[#1d2f6d] text-white text-xs font-semibold leading-none px-2 py-1 md:px-4 md:py-2 rounded-md flex items-center justify-center flex-row gap-1"
+        <UButton
+          class="text-xs font-semibold leading-none px-2 py-1 md:px-4 md:py-2 rounded-md flex items-center justify-center flex-row gap-1"
+          color="primary"
         >
           10
           <UIcon
             name="i-material-symbols-event-available"
             class="w-4 h-4 md:w-6 md:h-6"
           />
-        </button>
+        </UButton>
       </div>
     </div>
-    <div class="max-w-[900px] flex flex-col">
-      <div class="text-slate-600 card flex justify-between items-center">
+    <div
+      class="max-w-[900px] mx-auto flex flex-col foreground p-4 md:p-6 lg:p-8 gap-4 md:gap-6 lg:gap-8 rounded-md"
+    >
+      <div class="flex justify-between items-center">
         <div class="flex gap-4 items-center">
           <div class="flex flex-col">
             <h1 class="text-lg font-semibold md:text-xl xl:text-2xl flex items-center">
@@ -41,7 +44,7 @@
                 :href="googleMapsLink"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-600 hover:text-blue-800"
+                class="link"
               >
                 {{ fullAddress }}
               </a>
@@ -52,27 +55,26 @@
       <CommonBlockText
         v-if="s.venue.body"
         :body="s.venue.body"
-        class="card"
         title="About us"
       />
-      <CommonBortle :rating="s.venue.bortle_rating" />
-      <h4 class="p-4 md:p-6 lg:p-8 text-lg font-semibold md:text-xl xl:text-2xl text-black">
-        Events
-      </h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8">
+      <CommonBortle
+        v-if="s.venue.bortle_rating"
+        :rating="s.venue.bortle_rating"
+      />
+      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl"> Events </h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4 xl:gap-8">
         <EventCard
           v-for="event in s.venue.events"
           :key="event.id"
           :event="event"
           :venue="s.venue"
-          class="shadow-none border-black"
+          class="shadow-none background"
         />
       </div>
-      <div class="h-full aspect-square shadow-sm min-h-[380px] overflow-hidden md:rounded-md">
-        <h4 class="p-4 md:p-6 lg:p-8 text-lg font-semibold md:text-xl xl:text-2xl text-black">
-          Location
-        </h4>
+      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl"> Location </h4>
+      <div class="aspect-square shadow-sm min-h-[380px] overflow-hidden md:rounded-md">
         <iframe
+          class="h-full"
           width="100%"
           height="100%"
           style="border: 0"

@@ -66,7 +66,6 @@ export const VenueEvents = z.object({
   created_at: z.string(),
   title: z.string().nullable(),
   body: z.string().nullable(),
-  logo: z.string().nullable(),
   featured_image: z.string().nullable(),
   date: z.string(),
   hosts: z.array(HostBasic)

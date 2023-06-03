@@ -1,5 +1,5 @@
 <template>
-  <div class="card flex gap-4 items-center">
+  <div class="flex gap-4 items-center">
     <div class="w-[60px] h-[60px] object-contain rounded-full overflow-hidden relative">
       <img
         :src="bortle.find((b) => b.id === p.rating)?.src"

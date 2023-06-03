@@ -11,11 +11,10 @@
           class="flex flex-row items-center justify-center group w-full overflow-hidden"
         >
           <span
-            class="w-full p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm"
-            :style="
+            :class="
               route.path.split('/')[1] === page.slug.split('/')[1]
-                ? { background: '#fff' }
-                : { background: 'none' }
+                ? 'w-full background p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
+                : 'w-full p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
             "
           >
             <UIcon

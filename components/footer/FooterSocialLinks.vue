@@ -3,7 +3,7 @@
     <li>
       <p class="text-lg text-white tracking-wide font-semibold"> Stay Connected </p>
     </li>
-    <div class="flex w-full lg:w-full justify-around px-4 items-center mt-10">
+    <div class="flex w-full lg:w-full justify-around px-4 items-center mt-10 text-light">
       <li> <IconSocial type="facebook" /> </li>
       <li> <IconSocial type="twitter" /> </li>
       <li> <IconSocial type="instagram" /> </li>

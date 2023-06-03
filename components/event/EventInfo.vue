@@ -1,24 +1,39 @@
 <template>
   <article>
-    <section class="relative p-4">
-      <div class="flex flex-col justify-center items-center bg-white rounded-md shadow-md p-4 absolute left-4 top-[-10rem]">
-        <span class="block text-lg text-[#162b39] font-light mb-2">{{ time.month }}</span>
-        <span class="block text-base text-[#d73601] font-bold text-center">{{ time.day }}</span>
+    <div class="relative">
+      <img
+        :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/venues-public/${venue.id}/featured/${venue.featured_image}`"
+        :alt="`${venue.name} featured image on AstroTribe`"
+      />
+      <div
+        class="flex justify-center foreground gap-2 items-center rounded-md shadow-md px-4 py-2 text-sm font-semibold absolute left-4 bottom-4"
+      >
+        <span class="block uppercase">{{ time.month }}</span>
+        <span class="block">{{ time.day }}</span>
+        <span class="block text-success-600 dark:text-success-700"
+          >{{ time.time }} {{ time.ampm }}</span
+        >
       </div>
-      <h2 class="m-0 text-lg text-[#162b39] font-bold">
+    </div>
+    <section class="relative p-4">
+      <h2 class="m-0 text-lg font-bold">
         {{ event.title }}
       </h2>
-      <span class="text-sm text-black font-thin"> {{ event.body }}</span>
+      <span class="text-sm font-thin"> {{ event.body }}</span>
     </section>
   </article>
 </template>
 
 <script setup lang="ts">
-import type { EventBasic } from '@/types'
+import type { EventBasic, VenueEvent, VenueBasic } from '@/types'
 
 defineProps({
   event: {
-    type: Object as PropType<EventBasic>,
+    type: Object as PropType<EventBasic | VenueEvent>,
+    required: true
+  },
+  venue: {
+    type: Object as PropType<VenueBasic>,
     required: true
   },
   time: {
@@ -28,6 +43,4 @@ defineProps({
 })
 </script>
 
-<style scoped>
-/* EventInfo related styles */
-</style>
+<style scoped></style>

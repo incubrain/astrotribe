@@ -26,9 +26,9 @@ const pages = ref([
     id: 2,
     name: 'Users',
     slug: '/users',
-    icon: 'fa-solid:user-astronaut',
+    icon: 'i-material-symbols-account-circle',
     children: [
-      { id: 20, name: 'All', slug: '/', icon: 'fa-solid:user-astronaut' }
+      { id: 20, name: 'All', slug: '/', icon: 'i-material-symbols-account-circle' }
       // { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
     ]
   },

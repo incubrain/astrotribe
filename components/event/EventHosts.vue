@@ -3,13 +3,12 @@
     <section
       v-for="(host, idx) in hosts"
       :key="host.id"
-      class="text-black"
     >
       <div
         :class="
           idx > 0
-            ? 'w-10 h-10 overflow-hidden rounded-full border-4 border-white ml-[-20px]'
-            : 'w-10 h-10 overflow-hidden rounded-full border-4 border-white relative z-10'
+            ? 'w-8 h-8 overflow-hidden rounded-full border-2 ml-[-20px] border-inverted'
+            : 'w-8 h-8 overflow-hidden rounded-full border-2 relative z-10 border-inverted'
         "
       >
         <img
@@ -19,7 +18,7 @@
       </div>
     </section>
     <section class="pl-2">
-      <h3 class="m-0 text-lg text-[#162b39] font-bold">
+      <h3 class="m-0 text-base font-semibold">
         <span
           v-for="(host, index) in hosts"
           :key="host.id"
@@ -29,7 +28,7 @@
             <span v-if="index !== hosts.length - 1">, </span>
           </NuxtLink>
         </span>
-        <em class="pl-2 text-[#8492a6]">hosting</em>
+        <span class="pl-2 text-xs">hosting</span>
       </h3>
     </section>
   </div>
@@ -46,6 +45,4 @@ defineProps({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

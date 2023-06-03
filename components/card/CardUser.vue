@@ -1,8 +1,8 @@
 <template>
   <article
-    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300"
+    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left"
   >
-    <div class="bg-white w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative">
+    <div class="foreground w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative">
       <div
         v-if="props.user"
         class="w-full flex items-center flex-row gap-2 md:gap-4 justify-between"
@@ -18,14 +18,14 @@
             />
             <div class="flex flex-col gap-2 align-start">
               <h2
-                class="text-sm md:text-lg text-left font-semibold group-hover:underline group-hover:underline-offset-2 text-black"
+                class="text-sm md:text-lg text-left font-semibold group-hover:underline group-hover:underline-offset-2"
               >
                 {{ props.user.given_name }} {{ props.user.surname }}
               </h2>
               <div class="flex gap-1 w-full text-xs items-start">
                 <span
                   v-if="props.user.main_role.name !== 'User'"
-                  class="font-light flex justify-center items-center text-black"
+                  class="font-light flex justify-center items-center"
                 >
                   <UIcon
                     :name="u.users.roleIcon(props.user.main_role.id)"
@@ -43,7 +43,7 @@
             </div>
           </div>
         </NuxtLink>
-        <div class="absolute top-2 right-3 flex-row align-center justify-center gap-1 text-black">
+        <div class="absolute top-2 right-3 flex-row align-center justify-center gap-1">
           <UIcon
             v-if="props.user.is_following"
             name="i-mdi-account-multiple-check"
@@ -75,7 +75,7 @@
       </div>
       <p
         v-if="props.user.introduction"
-        class="text-black text-left text-xs"
+        class="text-left text-xs"
       >
         {{ props.user.introduction?.slice(0, 120) }}...
       </p>

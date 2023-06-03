@@ -1,6 +1,6 @@
 <template>
   <div
-    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left border-b border-slate-300 bg-white"
+    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left foreground border"
   >
     <EventHosts :hosts="props.event.hosts" />
     <EventVenueInfo
@@ -9,17 +9,18 @@
     />
     <EventInfo
       :event="props.event"
+      :venue="props.venue"
       :time="time"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { EventBasic, VenueBasic } from '@/types'
+import type { EventBasic, VenueEvent, VenueBasic } from '@/types'
 
 const props = defineProps({
   event: {
-    type: Object as PropType<EventBasic>,
+    type: Object as PropType<EventBasic | VenueEvent>,
     required: true
   },
   venue: {
