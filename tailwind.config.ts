@@ -21,7 +21,7 @@ export default <Partial<Config>>{
         error: c.red,
         success: c.green,
         warning: c.yellow,
-        info: c.cyan,
+        info: c.cyan
       },
       animation: {
         'spin-slow': 'spin 300s linear infinite',
