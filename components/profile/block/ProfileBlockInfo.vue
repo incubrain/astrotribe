@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 p-4 md:p-0">
-    <div class="col-span-2 col-start-1 text-black">
-      <h1 class="text-lg font-semibold md:text-xl xl:text-2xl font-semibold">
+    <div class="col-span-2 col-start-1">
+      <h1 class="text-lg font-semibold md:text-xl xl:text-2xl">
         {{ props.user.given_name }} {{ props.user.surname }}
       </h1>
       <!-- <h4 class="text-lg">{{ props.user.profession }} {{ type === 'mentor' ?   `- Associated with: ${props.user.associated_companies}` : `` }}</h4> -->
@@ -11,7 +11,7 @@
       >
         <UIcon
           name="i-material-symbols-location-on"
-          class="mr-1 card-subheading w-5 h-5"
+          class="mr-1 w-5 h-5"
         />
         {{ home.city }}, {{ home.state }},
         {{ home.country }}

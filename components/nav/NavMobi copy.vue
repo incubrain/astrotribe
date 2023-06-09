@@ -1,5 +1,5 @@
 <template>
-  <div class="relative text-black md:h-full flex-col justify-between">
+  <div class="relative md:h-full flex-col justify-between">
     <div
       id="openSideBar"
       class="w-10 relative flex flex-col items-center h-full rounded-tr justify-center cursor-pointer"
@@ -7,7 +7,7 @@
     >
       <UIcon
         name="i-material-symbols-menu"
-        class="relative text-black w-7 h-7"
+        class="relative w-7 h-7"
       />
     </div>
     <div
@@ -22,7 +22,7 @@
         <h1 class="text-2xl font-bold"> AstroTribe </h1>
         <UIcon
           name="i-material-symbols-close"
-          class="absolute right-3 top-3 text-black cursor-pointer w-7 h-7"
+          class="absolute right-3 top-3 cursor-pointer w-7 h-7"
           @click="mobiOpenClose(!isOpen)"
         />
       </div>

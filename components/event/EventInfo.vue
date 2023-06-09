@@ -4,6 +4,7 @@
       <img
         :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/venues-public/${venue.id}/featured/${venue.featured_image}`"
         :alt="`${venue.name} featured image on AstroTribe`"
+        class="w-full"
       />
       <div
         class="flex justify-center foreground gap-2 items-center rounded-md shadow-md px-4 py-2 text-sm font-semibold absolute left-4 bottom-4"

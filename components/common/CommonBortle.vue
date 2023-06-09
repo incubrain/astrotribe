@@ -7,7 +7,7 @@
         class=""
       />
       <p
-        class="absolute w-full h-full flex items-center justify-center card-subheading text-white top-0 left-0 text-lg font-bold"
+        class="absolute w-full h-full flex items-center justify-center text-white top-0 left-0 text-lg font-bold"
       >
         {{ p.rating }}
       </p>

@@ -3,10 +3,10 @@
     <div class="w-full sticky top-0 left-0 gap-4 md:gap-8 z-50">
       <NavTop class="min-h-[50px] lg:min-h-[60px]" />
     </div>
-    <AppScrollToTop class="w-full">
+    <AppBody class="w-full">
       <slot />
       <HomeFooter />
-    </AppScrollToTop>
+    </AppBody>
     <!-- <NuxtErrorBoundary @error="someErrorLogger">
                     You use the default slot to render your content
                     <template #error="{ error }">

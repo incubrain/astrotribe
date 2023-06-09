@@ -7,11 +7,18 @@
 @tailwind utilities;
 
 @layer base {
+
+  :root {
+    --nav-height-mobi: 40px;
+    --nav-height-sm: 44px;
+    --nav-height-md: 50px;
+    --nav-height-lg: 60px;
+  }
 }
 
 @layer components {
   .card {
-    @apply p-4 border-b border-slate-300 md:border-none md:p-12 md:rounded-lg bg-white text-black md:shadow-sm w-full;
+    @apply p-4 border border-zinc-300 dark:border-zinc-800 md:p-12 md:rounded-lg md:shadow-sm w-full bg-zinc-200 dark:bg-zinc-900;
   }
 }
 
@@ -41,7 +48,7 @@
     @apply border-zinc-800 dark:border-zinc-300;
   }
   body {
-    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950;
+    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950 border-zinc-300 dark:border-zinc-800;
   }
   .text-light {
     @apply text-zinc-100 dark:text-zinc-300;

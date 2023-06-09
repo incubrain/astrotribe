@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-lg font-semibold md:text-xl xl:text-2xl">
+    <h1 class="text-lg font-semibold md:text-xl xl:text-2xl mb-4">
       {{ title }}
     </h1>
     <p>

@@ -1,14 +1,18 @@
 <template>
   <div>
     <Title>AstroTribe</Title>
-    <div
-      class="flex items-center md:justify-between justify-center bg-white px-12 py-4"
-    >
+    <div class="flex items-center md:justify-between justify-center px-12 py-4">
       <div class="hidden md:block">
-        <button target="_blank" to="/register">
-          Register
-        </button>>
-        <button target="_blank" to="/login">
+        <button
+          target="_blank"
+          to="/register"
+        >
+          Register </button
+        >>
+        <button
+          target="_blank"
+          to="/login"
+        >
           Login
         </button>
       </div>
@@ -36,8 +40,6 @@ const toggleDark = () => {
 }
 
 const colorModeIcon = computed(() =>
-  colorMode.preference === 'dark'
-    ? 'heroicons-outline:moon'
-    : 'heroicons-outline:sun'
+  colorMode.preference === 'dark' ? 'heroicons-outline:moon' : 'heroicons-outline:sun'
 )
 </script>

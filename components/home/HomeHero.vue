@@ -10,7 +10,7 @@
     >
       <!-- Hero Left -->
       <div class="relative z-50 w-full h-full flex flex-col md:items-start text-left gap-4">
-        <div class="w-24 h-24 aspect-square rounded-full shadow-lg p-4 bg-white">
+        <div class="w-24 h-24 aspect-square rounded-full shadow-lg p-4">
           <img
             src="/astronera-logo.jpg"
             class=""
@@ -20,8 +20,8 @@
           Explore The Universe And Grow With Us
         </h1>
         <p class="text-xl font-semibold max-w-sm">
-          AstroTribe is a community of astronomers and enthusiasts unveiling the mysteries of
-          the cosmos together.
+          AstroTribe is a community of astronomers and enthusiasts unveiling the mysteries of the
+          cosmos together.
         </p>
         <div class="pt-4">
           <UButton

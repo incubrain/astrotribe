@@ -5,10 +5,14 @@
   >
     <div
       role="alert"
-      :class="fullscreen ? 'relative z-50 mx-auto w-11/12 md:w-2/3' : 'relative z-50 mx-auto w-11/12 w-full'"
+      :class="
+        fullscreen
+          ? 'relative z-50 mx-auto w-11/12 md:w-2/3'
+          : 'relative z-50 mx-auto w-11/12 w-full'
+      "
     >
       <div
-        class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400 h-[80vh] overflow-y-scroll"
+        class="relative py-8 px-5 md:px-10 shadow-md rounded border border-gray-400 h-[80vh] overflow-y-scroll"
       >
         <div class="flex flex-col justify-start w-full">
           <slot />
@@ -43,15 +47,31 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path stroke="none" d="M0 0h24v24H0z" />
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
+            <path
+              stroke="none"
+              d="M0 0h24v24H0z"
+            />
+            <line
+              x1="18"
+              y1="6"
+              x2="6"
+              y2="18"
+            />
+            <line
+              x1="6"
+              y1="6"
+              x2="18"
+              y2="18"
+            />
           </svg>
         </div>
       </div>
     </div>
   </div>
-  <div id="button" class="py-12 absolute hidden justify-center items-center w-full h-full group-hover:flex">
+  <div
+    id="button"
+    class="py-12 absolute hidden justify-center items-center w-full h-full group-hover:flex"
+  >
     <button
       class="focus:outline-none mx-auto transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
       @click="modalHandler(true)"
@@ -62,11 +82,10 @@
 </template>
 
 <script setup lang="ts">
-
 interface Props {
-    buttonsVisible: boolean,
-    fullscreen: boolean,
-    modalTitle: string
+  buttonsVisible: boolean
+  fullscreen: boolean
+  modalTitle: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -106,5 +125,4 @@ function modalHandler(val) {
     fadeOut(modal)
   }
 }
-
 </script>

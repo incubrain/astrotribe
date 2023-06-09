@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 w-full py-10 bg-white rounded-md shadow-lg">
+  <div class="flex flex-col gap-8 w-full py-10 rounded-md shadow-lg">
     <div class="px-10 text-center text-slate-700 w-full mb-10">
       <h2 class="text-3xl"> Timeline </h2>
       <p class="text-lg"> The future looks bright for AstronEra and AstroTribe </p>

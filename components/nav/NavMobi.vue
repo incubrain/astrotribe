@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative text-black flex-row w-full items-center justify-between border-t border-slate-300 p-2 bg-white"
+    class="sticky bottom-0 left-0 flex-row w-full items-center justify-between foreground p-2 h-[var(--nav-height-mobi)]"
   >
     <ul class="flex h-full flex-row items-center justify-center w-full">
       <li

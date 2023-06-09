@@ -17,15 +17,12 @@ export function addLocalStorage({ dataType, data }: { data: any; dataType: strin
 
 export function checkDataValidity({ data, dataType, schema }: { data: any; dataType: string; schema: string }) {
   let validated
-  console.log('validating', dataType, data, schema)
   if (!data || data.length === 0) throw createError(`There is no data to validate: ${dataType} data`)
   else if (data.length > 0) validated = zod[schema].array().parse(data)
   else validated = zod[schema].parse(data)
-  console.log('validated', validated)
   if (validated.length === 1) validated = validated[0]
   addLocalStorage({ dataType, data: validated })
   if (!validated) throw createError(`Error validating ${dataType} data`)
-  console.log('validated returned', validated)
   return validated
 }
 

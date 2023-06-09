@@ -11,7 +11,7 @@ export default defineComponent({
             <div>
                 <div
                     id="alert"
-                    class="transition duration-150 ease-in-out lg:w-11/12 mx-auto py-3 px-4 dark:bg-gray-800 bg-white md:flex items-center justify-between shadow rounded"
+                    class="transition duration-150 ease-in-out lg:w-11/12 mx-auto py-3 px-4 dark:bg-gray-800  md:flex items-center justify-between shadow rounded"
                 >
                     <div class="sm:flex sm:items-start lg:items-center">
                         <div class="flex items-end">

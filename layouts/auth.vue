@@ -20,9 +20,7 @@
       v-show="isVisible"
       class="max-w-[780px] h-[80vh] flex flex-col justify-center items-center overflow-hidden"
     >
-      <nav
-        class="w-full h-[80px] flex justify-between items-center text-black text-sm font-semibold"
-      >
+      <nav class="w-full h-[80px] flex justify-between items-center text-sm font-semibold">
         <NuxtLink
           to="/auth/login"
           class="text-[#fff] h-full w-full flex justify-center items-center rounded-t-lg"

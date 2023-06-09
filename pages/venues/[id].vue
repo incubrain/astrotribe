@@ -1,9 +1,9 @@
 <template>
-  <div class="overflow-hidden max-w-[1200px]">
+  <div class="overflow-hidden mx-auto">
     <div class="relative">
       <ImageCarousel
         :images="images"
-        class="mb-6 rounded-md"
+        class="mb-6 md:rounded-md"
       />
       <div class="absolute top-2 left-2 flex flex-col gap-3 items-center z-10">
         <img
@@ -24,15 +24,15 @@
       </div>
     </div>
     <div
-      class="max-w-[900px] mx-auto flex flex-col foreground p-4 md:p-6 lg:p-8 gap-4 md:gap-6 lg:gap-8 rounded-md"
+      class="max-w-[1080px] mx-auto flex flex-col foreground p-0 md:p-6 lg:p-8 gap-4 md:gap-6 lg:gap-8 md:rounded-md"
     >
       <div class="flex justify-between items-center">
-        <div class="flex gap-4 items-center">
+        <div class="flex gap-4 items-center p-4 md:p-0">
           <div class="flex flex-col">
             <h1 class="text-lg font-semibold md:text-xl xl:text-2xl flex items-center">
               {{ s.venue.name }}
             </h1>
-            <span class="card-subheading flex items-center">
+            <span class="flex items-center">
               <UIcon
                 name="i-material-symbols-star"
                 class="text-yellow-400 mr-1 w-5 h-5"
@@ -56,13 +56,15 @@
         v-if="s.venue.body"
         :body="s.venue.body"
         title="About us"
+        class="p-4 md:p-0"
       />
       <CommonBortle
         v-if="s.venue.bortle_rating"
         :rating="s.venue.bortle_rating"
+        class="p-4 md:p-0"
       />
-      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl"> Events </h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4 xl:gap-8">
+      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl p-4 md:p-0"> Events </h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
         <EventCard
           v-for="event in s.venue.events"
           :key="event.id"
@@ -71,8 +73,8 @@
           class="shadow-none background"
         />
       </div>
-      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl"> Location </h4>
-      <div class="aspect-square shadow-sm min-h-[380px] overflow-hidden md:rounded-md">
+      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl p-4 md:p-0"> Location </h4>
+      <div class="aspect-square shadow-sm h-[380px] overflow-hidden md:rounded-md">
         <iframe
           class="h-full"
           width="100%"

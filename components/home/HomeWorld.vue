@@ -19,34 +19,22 @@
       />
 
       <div
-        class="shadow-lg xl:p-6 p-4 sm:w-auto w-full bg-white sm:absolute relative z-20 sm:mt-0 mt-4 left-0 xl:ml-56 sm:ml-12 xl:-mt-40 sm:-mt-12"
+        class="shadow-lg xl:p-6 p-4 sm:w-auto w-full sm:absolute relative z-20 sm:mt-0 mt-4 left-0 xl:ml-56 sm:ml-12 xl:-mt-40 sm:-mt-12"
       >
-        <p class="text-3xl font-semibold text-gray-800">
-          20K+
-        </p>
-        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600">
-          Recently Property Listed
-        </p>
+        <p class="text-3xl font-semibold text-gray-800"> 20K+ </p>
+        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600"> Recently Property Listed </p>
       </div>
       <div
-        class="shadow-lg xl:p-6 p-4 w-48 sm:w-auto w-full bg-white sm:absolute relative z-20 sm:mt-0 mt-4 xl:mt-80 sm:mt-56 xl:-ml-0 sm:-ml-12"
+        class="shadow-lg xl:p-6 p-4 w-48 sm:w-auto w-full sm:absolute relative z-20 sm:mt-0 mt-4 xl:mt-80 sm:mt-56 xl:-ml-0 sm:-ml-12"
       >
-        <p class="text-3xl font-semibold text-gray-800">
-          8K+
-        </p>
-        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600">
-          Active Listening
-        </p>
+        <p class="text-3xl font-semibold text-gray-800"> 8K+ </p>
+        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600"> Active Listening </p>
       </div>
       <div
-        class="shadow-lg xl:p-6 p-4 sm:w-auto w-full bg-white sm:absolute relative z-20 md:mt-0 sm:-mt-5 mt-4 right-0 xl:mr-56 sm:mr-24"
+        class="shadow-lg xl:p-6 p-4 sm:w-auto w-full sm:absolute relative z-20 md:mt-0 sm:-mt-5 mt-4 right-0 xl:mr-56 sm:mr-24"
       >
-        <p class="text-3xl font-semibold text-gray-800">
-          15K+
-        </p>
-        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600">
-          Recently Sold Lands
-        </p>
+        <p class="text-3xl font-semibold text-gray-800"> 15K+ </p>
+        <p class="text-base leading-4 xl:mt-4 mt-2 text-gray-600"> Recently Sold Lands </p>
       </div>
     </div>
   </div>

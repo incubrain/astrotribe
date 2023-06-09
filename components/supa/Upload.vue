@@ -19,7 +19,7 @@
         :src="imageSrc"
       />
     </div>
-    <div class="flex justify-center w-full content-end mt-2 bg-white rounded-md py-2">
+    <div class="flex justify-center w-full content-end mt-2 rounded-md py-2">
       <UButton
         v-if="!imageSrc"
         color="primary"

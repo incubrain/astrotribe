@@ -2,7 +2,7 @@
   <div>
     <CommonCoverImg :url="util.users.cover(s.user.id, s.user.cover_image)" />
     <div
-      class="grid mx-auto grid-cols-1 lg:grid-cols-[minmax(40px,1fr)_minmax(300px,804px)_300px_minmax(40px,1fr)] bg-[#fff] md:bg-[#fff0]  md:px-4 mb-2 md:mb-0"
+      class="grid mx-auto max-w-[1080px] grid-cols-1 lg:grid-cols-[minmax(40px,1fr)_minmax(300px,804px)_300px_minmax(40px,1fr)] md:px-4 mb-2 md:mb-0"
     >
       <div
         class="rounded-lg row-start-1 col-span-1 col-start-2 lg:col-start-3 w-full relative bg-cover"
@@ -13,16 +13,16 @@
         />
       </div>
       <div
-        class="bg-white w-full relative col-start-1 lg:col-start-1 row-span-1 col-span-1 lg:col-span-3 row-start-2 pt-16 md:pt-[100px] lg:pt-[140px] md:px-6 md:pb-6 rounded-b-lg"
+        class="w-full relative col-start-1 lg:col-start-1 row-span-1 col-span-1 lg:col-span-3 row-start-2  md:px-6 md:pb-6 rounded-b-lg foreground"
       >
         <ProfileBlockAvatar
           :avatar="util.users.avatar(s.user.id, s.user.avatar)"
           class="ml-4 md:ml-0"
         />
-        <ProfileBlockInfo :user="s.user" />
+        <ProfileBlockInfo :user="s.user" class="sm:mt-[80px] md:mt-[100px] lg:mt-[140px]" />
       </div>
       <div
-        class="w-full relative flex flex-col gap-2 md:mt-4 md:gap-4 row-start-3 col-start-1 row-span-1 col-span-1 lg:col-span-3 bg-gray-200"
+        class="w-full relative flex flex-col gap-2 md:mt-4 md:gap-4 row-start-3 col-start-1 row-span-1 col-span-1 lg:col-span-3"
       >
         <ProfileBlockSkills
           v-if="s.user.user_skills.length > 0"

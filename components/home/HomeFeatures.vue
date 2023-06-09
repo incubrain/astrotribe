@@ -13,7 +13,7 @@
         <div
           v-for="feature in features"
           :key="feature.id"
-          class="mx-auto m-4 bg-white rounded-lg shadow-md p-8 relative overflow-hidden h-full"
+          class="mx-auto m-4 rounded-lg shadow-md p-8 relative overflow-hidden h-full"
         >
           <div
             class="absolute w-full h-full top-0 left-0"
@@ -105,6 +105,4 @@ const features = [
 ]
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

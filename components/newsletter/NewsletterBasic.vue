@@ -5,7 +5,7 @@
         Subscribe to our Newsletter
       </h1>
       <div class="flex justify-center">
-        <div class="w-full bg-white rounded-2xl flex justify-center items-center relative">
+        <div class="w-full rounded-2xl flex justify-center items-center relative">
           <input
             id="email"
             type="email"
