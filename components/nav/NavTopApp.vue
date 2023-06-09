@@ -8,7 +8,7 @@
     >
       <!-- logo -->
       <div class="h-full flex items-center pl-3 md:pl-4 col-start-1 col-span-2 md:col-span-1">
-        <div class="p-1 rounded-full h-[40px] w-[40px] bg-white overflow-hidden">
+        <div class="p-1 rounded-full h-[40px] w-[40px] overflow-hidden">
           <img
             src="/astronera-logo.jpg"
             class="w-full h-full"

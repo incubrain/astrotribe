@@ -10,7 +10,7 @@
             :class="`text-yellow-400 w-[${starSize}px] h-[${starSize}px]`"
           />
           <div
-            class="absolute left-1/2 top-full mt-2 p-2 bg-gray-700 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition duration-200 ease-in-out transform -translate-x-1/2"
+            class="absolute left-1/2 top-full mt-2 p-2 text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition duration-200 ease-in-out transform -translate-x-1/2"
           >
             {{ rating.toPrecision(2) }}
           </div>

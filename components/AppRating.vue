@@ -1,12 +1,10 @@
 <template>
   <div class="px-4 py-12">
     <div
-      class="lg:max-w-[452px] md:max-w-[516px] max-w-[350px] mx-auto bg-white lg:px-10 md:px-6 px-4 py-12 rounded"
+      class="lg:max-w-[452px] md:max-w-[516px] max-w-[350px] mx-auto lg:px-10 md:px-6 px-4 py-12 rounded"
     >
       <div>
-        <p class="text-base font-semibold text-center text-gray-800">
-          Star Rating
-        </p>
+        <p class="text-base font-semibold text-center text-gray-800"> Star Rating </p>
         <div
           class="flex justify-center gap-5 mt-6 bg-gray-100 max-w-[296px] w-full mx-auto py-3 rounded"
         >
@@ -75,13 +73,15 @@
             </div>
           </div>
           <div>
-            <p class="text-base font-medium text-gray-800">
-              4.5 out of 5
-            </p>
+            <p class="text-base font-medium text-gray-800"> 4.5 out of 5 </p>
           </div>
         </div>
         <div>
-          <div v-for="skill in skills" :id="skill.name" class="flex justify-left gap-3 mt-6">
+          <div
+            v-for="skill in skills"
+            :id="skill.name"
+            class="flex justify-left gap-3 mt-6"
+          >
             <p class="text-xs leading-none text-indigo-700">
               {{ skill.name }}
             </p>
@@ -92,8 +92,18 @@
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="195" height="14" rx="7" fill="#F3F4F6" />
-              <rect width="15" height="14" rx="7" fill="#FBBF24" />
+              <rect
+                width="195"
+                height="14"
+                rx="7"
+                fill="#F3F4F6"
+              />
+              <rect
+                width="15"
+                height="14"
+                rx="7"
+                fill="#FBBF24"
+              />
             </svg>
 
             <p class="text-xs font-semibold leading-none text-gray-800">
@@ -110,7 +120,6 @@
 </template>
 
 <script setup lang="ts">
-
 const skills = [
   { name: 'Astronomy Knowledge', rating: 4 },
   { name: 'Telescope Handling Ability', rating: 4 },
@@ -123,7 +132,7 @@ const skills = [
 // 'Locality',  Ajmer Daudane,Nashik
 // 'Events Done',  02
 
-function getStars () {
+function getStars() {
   return `
         <svg
             width="24"
@@ -139,9 +148,6 @@ function getStars () {
         </svg>
     `
 }
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

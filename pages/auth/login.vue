@@ -3,7 +3,7 @@
     <div
       class="xl:px-20 md:px-10 sm:px-6 px-4 md:py-10 py-4 2xl:mx-auto 2xl:container md:flex items-center justify-center"
     >
-      <div class="bg-white flex flex-col shadow-lg rounded w-full p-6">
+      <div class="flex flex-col shadow-lg rounded w-full p-6">
         <p
           tabindex="0"
           class="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800 mt-4"
@@ -39,16 +39,12 @@
               fill="#EB4335"
             />
           </svg>
-          <p class="text-sm font-medium ml-4 text-gray-700">
-            Continue with Google
-          </p>
+          <p class="text-sm font-medium ml-4 text-gray-700"> Continue with Google </p>
         </button>
 
         <div class="w-full flex items-center justify-between py-8 gap-4">
           <hr class="w-full bg-gray-400" />
-          <p class="text-base font-medium leading-4 px-2.5 text-gray-500">
-            OR
-          </p>
+          <p class="text-base font-medium leading-4 px-2.5 text-gray-500"> OR </p>
           <hr class="w-full bg-gray-400" />
         </div>
         <div class="w-full flex flex-col gap-4">

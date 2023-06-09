@@ -1,7 +1,7 @@
 <!-- Carousel.vue -->
 <template>
   <div
-    class="w-full relative overflow-hidden h-[50vh]"
+    class="relative overflow-hidden w-full aspect-auto h-[80vh]"
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
   >
@@ -21,19 +21,19 @@
     />
     <div
       v-if="currentSlide > 0"
-      class="absolute top-1/2 left-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
+      class="absolute top-1/2 left-0 p-2 transform -translate-y-1/2 bg-opacity-50 text-white cursor-pointer"
       @click="previousSlide"
     >
       <UIcon name="i-mdi-chevron-left" />
     </div>
     <div
       v-if="currentSlide < images.length - 1"
-      class="absolute top-1/2 right-0 p-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white cursor-pointer"
+      class="absolute top-1/2 right-0 p-2 transform -translate-y-1/2 bg-opacity-50 text-white cursor-pointer"
       @click="nextSlide"
     >
       <UIcon name="i-mdi-chevron-right" />
     </div>
-    <div class="absolute bottom-0 right-0 p-2 bg-black bg-opacity-50 text-white">
+    <div class="absolute bottom-0 right-0 p-2 bg-opacity-50 text-white">
       {{ currentSlide + 1 }}/{{ images.length }}
     </div>
   </div>

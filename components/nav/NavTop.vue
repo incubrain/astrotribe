@@ -1,7 +1,6 @@
 <template>
-  <!-- Navigation starts -->
   <nav
-    class="flex items-center md:items-stretch w-full h-[60px] justify-end md:justify-between foreground relative shadow-lg z-50 border-b border-color"
+    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between foreground shadow-lg z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
   >
     <div
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
@@ -12,10 +11,10 @@
           to="/"
           class="nav-link flex items-center gap-2"
         >
-          <div class="p-1 rounded-full h-[40px] w-[40px] bg-white overflow-hidden">
+          <div class="p-1 h-[26px] w-[26px] md:h-[40px] md:w-[40px]">
             <img
               src="/astronera-logo.jpg"
-              class="w-full h-full"
+              class="w-full h-full rounded-full dark:opacity-90"
             />
           </div>
           <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>

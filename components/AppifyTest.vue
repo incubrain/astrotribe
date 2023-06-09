@@ -4,22 +4,22 @@
     :style="
       isFullscreen
         ? {
-          background: 'white',
-          width: '100vw',
-          height: '100vh',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          'z-index': 1000,
-          display: 'flex',
-          flexDirection: 'column',
-        }
+            background: 'white',
+            width: '100vw',
+            height: '100vh',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            'z-index': 1000,
+            display: 'flex',
+            flexDirection: 'column'
+          }
         : { width: '100%' }
     "
   >
     <div
       v-show="store.news.length"
-      class="max-w-[90%] lg:max-w-[620px] mx-auto py-20 text-black relative"
+      class="max-w-[90%] lg:max-w-[620px] mx-auto py-20 relative"
     >
       <div
         class="absolute top-4 right-4"
@@ -36,9 +36,7 @@
         >
           {{ store.news[1].category }}
         </h4>
-        <h4 class="text-sm mb-4">
-          Published {{ store.news[1].published }}
-        </h4>
+        <h4 class="text-sm mb-4"> Published {{ store.news[1].published }} </h4>
       </div>
       <span
         class="parsed-article flex flex-col gap-4 pb-20"
@@ -79,21 +77,21 @@ function purifiedHTML(d) {
 
 <style>
 .parsed-article figure img {
-    margin: 32px auto;
-    border-radius: 1.6rem;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  margin: 32px auto;
+  border-radius: 1.6rem;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
 
 .fullscreen {
-    background: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
 }
 </style>
