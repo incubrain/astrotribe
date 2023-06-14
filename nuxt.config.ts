@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxthq/ui',
     '@vueuse/nuxt',
+    '@nuxt/image',
     // '@unlighthouse/nuxt',
     [
       '@pinia/nuxt',
