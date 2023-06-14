@@ -2,7 +2,7 @@
   <div class="bg-primary-600 dark:bg-primary-700 p-6 pt-12 pb-12">
     <div class="w-full lg:flex justify-around mx-auto container max-w-[840px]">
       <FooterSocialLinks />
-      <NewsletterBasic />
+      <!-- <NewsletterBasic /> -->
     </div>
   </div>
   <FooterBar :current-year="currentYear" />

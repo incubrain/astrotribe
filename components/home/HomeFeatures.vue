@@ -15,9 +15,11 @@
           :key="feature.id"
           class="mx-auto m-4 rounded-lg shadow-md p-8 relative overflow-hidden h-full"
         >
-          <div
+          <NuxtImg
             class="absolute w-full h-full top-0 left-0"
-            :style="{ backgroundImage: 'url(' + feature.backgroundImage + ')' }"
+            :src="feature.bgImg"
+            height="366px"
+            width="290px"
           />
           <div class="absolute w-full h-full top-0 left-0 bg-gray-900/50 dark:bg-zinc-900/80" />
           <div class="relative z-50 text-light">
@@ -54,7 +56,7 @@ const features = [
     description:
       'Connect and share insights with astronomers and enthusiasts in our interactive community. Make your passion for the cosmos a shared journey.',
     icon: 'i-material-symbols-group-add',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat1.png',
     isAvailable: true
   },
   {
@@ -63,7 +65,7 @@ const features = [
     description:
       'Discover local astronomical happenings from stargazing sessions to professional conferences. Experience the cosmos in your neighborhood.',
     icon: 'i-material-symbols-calendar-month',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat2.png',
     isAvailable: false
   },
   {
@@ -72,7 +74,7 @@ const features = [
     description:
       'Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey',
     icon: 'i-material-symbols-calendar-month',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat3.png',
     isAvailable: false
   },
   {
@@ -81,7 +83,7 @@ const features = [
     description:
       'Explore our selection of online and offline educational resources. From online courses to local workshops, fuel your knowledge and passion for astronomy.',
     icon: 'i-mdi-briefcase',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat4.png',
     isAvailable: false
   },
   {
@@ -90,7 +92,7 @@ const features = [
     description:
       'Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers',
     icon: 'i-mdi-telescope',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat5.png',
     isAvailable: true
   },
   {
@@ -99,7 +101,7 @@ const features = [
     description:
       'Never miss an astronomical spectacle with our timely push notifications. Stay ready for the next cosmic show',
     icon: 'i-material-symbols-circle-notifications',
-    backgroundImage: '/cover1.jpg',
+    bgImg: '/images/features/feat6.png',
     isAvailable: false
   }
 ]

@@ -9,7 +9,7 @@
     <div class="md:w-[70%] h-[360px] shadow-2xl relative">
       <img
         class="w-full h-full rounded-lg overflow-hidden"
-        src="/cover1.jpg"
+        :src="imgSrc"
         alt=""
       />
       <div
@@ -44,6 +44,10 @@ defineProps({
   },
   imageRight: {
     type: Boolean as PropType<boolean>,
+    required: true
+  },
+  imgSrc: {
+    type: String as PropType<string>,
     required: true
   }
 })
