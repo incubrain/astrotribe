@@ -10,10 +10,9 @@
     >
       <!-- Hero Left -->
       <div class="relative z-50 w-full h-full flex flex-col md:items-start text-left gap-4">
-        <div class="w-24 h-24 aspect-square rounded-full shadow-lg p-4">
-          <img
+        <div class="p-4 bg-white w-24 h-24 rounded-full overflow-hidden shadow-lg ">
+          <NuxtImg
             src="/astronera-logo.jpg"
-            class=""
           />
         </div>
         <h1 class="text-5xl font-bold leading-tight pt-4 max-w-lg">

@@ -11,10 +11,10 @@
           to="/"
           class="nav-link flex items-center gap-2"
         >
-          <div class="p-1 h-[26px] w-[26px] md:h-[40px] md:w-[40px]">
-            <img
+          <div class="p-1 h-[26px] w-[26px] md:h-[40px] md:w-[40px] bg-white rounded-full overflow-hidden">
+            <NuxtImg
               src="/astronera-logo.jpg"
-              class="w-full h-full rounded-full dark:opacity-90"
+              class="w-full h-full dark:opacity-90"
             />
           </div>
           <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>

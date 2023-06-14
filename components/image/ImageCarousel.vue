@@ -1,4 +1,3 @@
-<!-- Carousel.vue -->
 <template>
   <div
     class="relative overflow-hidden w-full aspect-auto h-[80vh]"
