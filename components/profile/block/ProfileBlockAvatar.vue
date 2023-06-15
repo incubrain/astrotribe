@@ -1,6 +1,6 @@
 <template>
   <NuxtImg
-    class="absolute left-0 top-[-60px] md:top-[-80px] rounded-full border-8 bg-cover border-color group overflow-hidden"
+    class="absolute left-0 rounded-full border-8 bg-cover border-color group overflow-hidden"
     :src="avatar"
     sizes="sm:120px md:160px lg:240px"
     width="240"

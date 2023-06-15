@@ -1,4 +1,5 @@
-const baseUrl = 'https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/'
+const baseUrl =
+  'https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/render/image/public/'
 
 const stringNullCheck = (input: string | null): boolean => {
   if (input === null) return false
@@ -8,10 +9,14 @@ const stringNullCheck = (input: string | null): boolean => {
   else return true
 }
 
-export const getAvatar = (userId: number, avatar: string | null): string => {
+export const getAvatar = (
+  userId: number,
+  avatar: string | null,
+  transfrom: { width: number; height: number }
+): string => {
   if (stringNullCheck(avatar)) {
-    return `${baseUrl}profile-public/${userId}/avatar/${avatar}?width=100&height=100`
-  } else return `${baseUrl}profile-public/defaults/avatar/default.png?width=100&height=100`
+    return `${baseUrl}profile-public/${userId}/avatar/${avatar}?width=${transfrom.width}&height=${transfrom.width}`
+  } else return `${baseUrl}profile-public/defaults/avatar/default.png?width=${transfrom.width}&height=${transfrom.width}`
 }
 
 export const getCover = (userId: number, cover: string | null): string => {
