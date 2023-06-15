@@ -12,9 +12,14 @@
           class="group"
         >
           <div class="flex gap-2 justify-center items-center">
-            <img
+            <NuxtImg
               :src="u.users.avatar(props.user.id, props.user.avatar)"
-              class="rounded-full h-10 md:h-14 aspect-square object-cover object-top"
+              loading="lazy"
+              quality="80"
+              width="40"
+              height="40"
+              format="webp"
+              class="rounded-full object-top"
             />
             <div class="flex flex-col gap-2 align-start">
               <h2

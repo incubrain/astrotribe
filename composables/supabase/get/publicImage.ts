@@ -1,28 +1,30 @@
-
 export const profileSingle = ({
   userId,
   type,
-  fileName
+  fileName,
+  transform
 }: {
   userId: number
   type: string
   fileName: string
+  transform: { width: number; height: number }
 }) => {
   // !todo: add dynamic transforms
-  // {
-  //   transform: {
-  //     width: 100,
-  //     height: 100,
-  //   }
-  // }
   console.log('profileSingle', userId, type)
   const client = usePublicClient()
-  const { data } = client.storage
-    .from('profile-public')
-    .getPublicUrl(`${userId}/${type}/${fileName}.png`)
+  let image
+  if (transform.height || transform.width) {
+    image = client.storage
+      .from('profile-public')
+      .getPublicUrl(`${userId}/${type}/${fileName}.png`, {
+        transform
+      })
+  } else {
+    image = client.storage.from('profile-public').getPublicUrl(`${userId}/${type}/${fileName}.png`)
+  }
 
-  console.log('profileSingle2', data)
+  console.log('profileSingle2', image)
   return {
-    data
+    data: image.data
   }
 }
