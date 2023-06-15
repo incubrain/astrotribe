@@ -1,7 +1,12 @@
 <template>
-  <div
-    class="absolute left-0 top-[-60px] md:top-[-80px] w-[120px] h-[120px] md:w-[160px] md:h-[160px] lg:top-[-120px] lg:w-[240px] lg:h-[240px] rounded-full border-8 bg-cover border-color group overflow-hidden"
-    :style="{ 'background-image': `url(${avatar})` }"
+  <NuxtImg
+    class="absolute left-0 top-[-60px] md:top-[-80px] rounded-full border-8 bg-cover border-color group overflow-hidden"
+    :src="avatar"
+    sizes="sm:120px md:160px lg:240px"
+    width="240"
+    height="240"
+    format="webp"
+    quality="80"
   >
     <!-- <InteractiveModal
             :buttons-visible="false"
@@ -13,7 +18,7 @@
                 Upload Avatar
             </SupaUpload>
         </InteractiveModal> -->
-  </div>
+  </NuxtImg>
 </template>
 
 <script setup lang="ts">

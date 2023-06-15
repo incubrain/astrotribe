@@ -10,8 +10,8 @@ const stringNullCheck = (input: string | null): boolean => {
 
 export const getAvatar = (userId: number, avatar: string | null): string => {
   if (stringNullCheck(avatar)) {
-    return `${baseUrl}profile-public/${userId}/avatar/${avatar}`
-  } else return `${baseUrl}profile-public/defaults/avatar/default.png`
+    return `${baseUrl}profile-public/${userId}/avatar/${avatar}?width=100&height=100`
+  } else return `${baseUrl}profile-public/defaults/avatar/default.png?width=100&height=100`
 }
 
 export const getCover = (userId: number, cover: string | null): string => {
