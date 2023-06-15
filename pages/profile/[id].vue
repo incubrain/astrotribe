@@ -16,8 +16,8 @@
         class="w-full relative col-start-1 lg:col-start-1 row-span-1 col-span-1 lg:col-span-3 row-start-2  md:px-6 md:pb-6 rounded-b-lg foreground"
       >
         <ProfileBlockAvatar
-          :avatar="util.users.avatar(s.user.id, s.user.avatar)"
-          class="ml-4 md:ml-0"
+          :avatar="util.users.avatar(s.user.id, s.user.avatar, { width: 240, height: 240 })"
+          class="ml-4 md:ml-0 top-[-60px] md:top-[-80px] lg:top-[-120px]"
         />
         <ProfileBlockInfo :user="s.user" class="sm:mt-[80px] md:mt-[100px] lg:mt-[140px]" />
       </div>

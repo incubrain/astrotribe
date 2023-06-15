@@ -13,18 +13,19 @@ export const profileSingle = ({
   console.log('profileSingle', userId, type)
   const client = usePublicClient()
   let image
-  if (transform.height || transform.width) {
+  if (fileName === 'default.png') {
+    image = client.storage.from('profile-public').getPublicUrl(`defaults/avatar/${fileName}`)
+  } else if (transform.height || transform.width) {
     image = client.storage
       .from('profile-public')
-      .getPublicUrl(`${userId}/${type}/${fileName}.png`, {
+      .getPublicUrl(`${userId}/${type}/${fileName}`, {
         transform
       })
   } else {
-    image = client.storage.from('profile-public').getPublicUrl(`${userId}/${type}/${fileName}.png`)
+    image = client.storage.from('profile-public').getPublicUrl(`${userId}/${type}/${fileName}`)
   }
 
-  console.log('profileSingle2', image)
-  return {
-    data: image.data
-  }
+  console.log('profileSingle2', image.data.publicUrl)
+  const url = image.data.publicUrl as string
+  return url
 }

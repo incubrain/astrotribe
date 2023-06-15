@@ -13,7 +13,7 @@
         >
           <div class="flex gap-2 justify-center items-center">
             <NuxtImg
-              :src="u.users.avatar(props.user.id, props.user.avatar)"
+              :src="u.users.avatar(props.user.id, props.user.avatar, { width: 40, height: 40 })"
               loading="lazy"
               quality="80"
               width="40"
@@ -23,7 +23,7 @@
             />
             <div class="flex flex-col gap-2 align-start">
               <h2
-                class="text-sm md:text-lg text-left font-semibold group-hover:underline group-hover:underline-offset-2"
+                class="text-sm md:text-lg text-left font-semibold group-hover:underline group-hover:underline-offset-2 tracking-tighter"
               >
                 {{ props.user.given_name }} {{ props.user.surname }}
               </h2>
