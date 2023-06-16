@@ -40,8 +40,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     // '@unlighthouse/nuxt',
-    [
-      '@pinia/nuxt',
+    '@nuxtjs/robots',
+    ['@pinia/nuxt',
       {
         autoImports: ['defineStore', 'acceptHMRUpdate']
       }
@@ -54,6 +54,9 @@ export default defineNuxtConfig({
   //     // For google analytics
   //     forward: ['dataLayer.push'],
   // },
+  robots: {
+    configPath: '~/robots.config.ts',
+  },
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
