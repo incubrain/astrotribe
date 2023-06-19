@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.1.47",
+    "@iconify-json/material-symbols": "^1.1.48",
     "@iconify-json/mdi": "^1.1.52",
     "@nuxt/devtools": "^0.6.1",
     "@nuxt/image": "^1.0.0-rc.1",
