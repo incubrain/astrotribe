@@ -48,7 +48,7 @@
     "zod": "^3.21.4"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.1",
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@heroicons/vue": "2.0.18",
     "@supabase/storage-js": " 2.5.1",
     "@supabase/supabase-js": "2.24.0",
