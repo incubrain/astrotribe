@@ -23,8 +23,8 @@
 }
 
 @layer utilities {
-  .scrollbar::-webkit-scrollbar-track {
-    @apply bg-zinc-200 dark:bg-zinc-900;
+  ::-webkit-scrollbar-track {
+    @apply bg-zinc-200 dark:bg-zinc-900 border-l border-zinc-300;
   }
   .nav-link {
     @apply text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700 cursor-pointer;

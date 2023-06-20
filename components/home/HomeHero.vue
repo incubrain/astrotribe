@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-60px)] text-white relative">
+  <div class="min-h-[calc(100vh-60px)] text-white relative">
     <NuxtImg
       class="absolute w-full h-full top-0 left-0 object-cover bg-center bg-no-repeat"
       quality="80"

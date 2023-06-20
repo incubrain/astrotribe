@@ -3,6 +3,13 @@
   width: 16px;
 }
 
+/* Tailwind sm default */
+@media screen and (max-width: 640px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+  
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
