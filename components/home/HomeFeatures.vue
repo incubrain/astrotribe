@@ -52,62 +52,7 @@
 </template>
 
 <script setup lang="ts">
-const features = [
-  {
-    id: 1,
-    title: 'Universe of Connections',
-    description:
-      'Connect and share insights with astronomers and enthusiasts in our interactive community. Make your passion for the cosmos a shared journey.',
-    icon: 'i-material-symbols-group-add',
-    bgImg: '/images/features/feat1.png',
-    isAvailable: true
-  },
-  {
-    id: 2,
-    title: 'Local Astronomy Events',
-    description:
-      'Discover local astronomical happenings from stargazing sessions to professional conferences. Experience the cosmos in your neighborhood.',
-    icon: 'i-material-symbols-calendar-month',
-    bgImg: '/images/features/feat2.png',
-    isAvailable: false
-  },
-  {
-    id: 3,
-    title: 'Join the Cosmic Conversation',
-    description:
-      'Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey',
-    icon: 'i-material-symbols-calendar-month',
-    bgImg: '/images/features/feat3.png',
-    isAvailable: false
-  },
-  {
-    id: 4,
-    title: 'Start An Astronomy Career',
-    description:
-      'Explore our selection of online and offline educational resources. From online courses to local workshops, fuel your knowledge and passion for astronomy.',
-    icon: 'i-mdi-briefcase',
-    bgImg: '/images/features/feat4.png',
-    isAvailable: false
-  },
-  {
-    id: 5,
-    title: 'Connect With AstroGuides',
-    description:
-      'Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers',
-    icon: 'i-mdi-telescope',
-    bgImg: '/images/features/feat5.png',
-    isAvailable: true
-  },
-  {
-    id: 6,
-    title: 'Celestial Event Alerts',
-    description:
-      'Never miss an astronomical spectacle with our timely push notifications. Stay ready for the next cosmic show',
-    icon: 'i-material-symbols-circle-notifications',
-    bgImg: '/images/features/feat6.png',
-    isAvailable: false
-  }
-]
+import features from '~/public/data/features.json'
 </script>
 
 <style scoped></style>

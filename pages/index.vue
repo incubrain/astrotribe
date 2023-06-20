@@ -21,7 +21,9 @@
       body="The first 50 people will get exclusive life-time free use of our platform"
       cta="Claim your spot"
     />
-    <div class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-32 px-[20px] md:px-[80px] lg:px-[160px]">
+    <div
+      class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-32 px-[20px] md:px-[80px] lg:px-[160px]"
+    >
       <HomeTestimonial />
       <HomeCtaSecond
         title="Host Stargazing Events"
@@ -33,32 +35,7 @@
 </template>
 
 <script setup lang="ts">
-const productSteps = [
-  {
-    id: 1,
-    title: 'Host Paid Stargazing Events',
-    body: 'Host stargazing events with ease through our platform. Partner with local resorts, manage RSVPs, and receive payments securely. Gather feedback for continuous improvement, all while earning from your passion!',
-    cta: 'Coming Q3 2023',
-    imageRight: true,
-    imgSrc: '/images/astrotribe-paid-events-shweta-hosting-event.png'
-  },
-  {
-    id: 2,
-    title: 'Curated Galactic News',
-    body: 'Stay updated with the latest astronomy news, courtesy of our advanced AI. Get brief, easy-to-understand summaries from trusted sources, making cosmic discovery effortless and quick.',
-    cta: 'Coming Q4 2023',
-    imageRight: false,
-    imgSrc: '/images/astrotribe-news-isro-rocket-launch.png'
-  },
-  {
-    id: 3,
-    title: 'Space Conversations: AI-Q&A',
-    body: 'Satisfy your cosmic curiosity with our AI trained on NASA and ULA data. Just ask your question, and get reliable, detailed answers about the universe effortlessly.',
-    cta: 'Coming Q4 2023',
-    imageRight: true,
-    imgSrc: '/images/astrotribe-ai-chatbot.png'
-  }
-]
+import productSteps from '~/public/data/product-steps.json'
 
 definePageMeta({
   name: 'Home',

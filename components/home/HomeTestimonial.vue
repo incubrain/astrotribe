@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import testimonials from '~/public/data/testimonials.json'
+
 interface Testimonial {
   image: string
   name: string
@@ -44,57 +46,6 @@ interface Testimonial {
 }
 
 // !todo - allow users to add testimonials, fetch from supabase
-
-const testimonials = [
-  {
-    image: '/avatar.png',
-    name: 'Person 1',
-    company: 'Company 1',
-    quote: 'This is an amazing project, This is an amazing project This is an amazing project'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 2',
-    company: 'Company 2',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 3',
-    company: 'Company 3',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 4',
-    company: 'Company 4',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 4',
-    company: 'Company 4',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 4',
-    company: 'Company 4',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 4',
-    company: 'Company 4',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  },
-  {
-    image: '/avatar.png',
-    name: 'Person 4',
-    company: 'Company 4',
-    quote: 'Great work and dedication! an amazing project, This is an amazing project Thi'
-  }
-] as Testimonial[]
 </script>
 
 <style></style>
