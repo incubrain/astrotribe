@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative z-0">
     <HomeHero />
     <div class="max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px]">
       <HomeTrusted />
