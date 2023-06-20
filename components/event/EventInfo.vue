@@ -1,8 +1,17 @@
 <template>
   <article>
     <div class="relative">
-      <img
-        :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/venues-public/${venue.id}/featured/${venue.featured_image}`"
+      <NuxtImg
+        :src="
+          s.image.optimized({
+            bucket: 'venues',
+            folderPath: `${venue.id}/featured`,
+            file: venue.featured_image,
+            isPrivate: false,
+            transform: { width: 800, height: 600, fit: 'cover', quality: 75 }
+          })
+        "
+        loading="lazy"
         :alt="`${venue.name} featured image on AstroTribe`"
         class="w-full"
       />
@@ -27,6 +36,8 @@
 
 <script setup lang="ts">
 import type { EventBasic, VenueEvent, VenueBasic } from '@/types'
+
+const s = useStorage()
 
 defineProps({
   event: {

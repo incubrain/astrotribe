@@ -16,8 +16,17 @@
         class="flex flex-col items-center justify-center space-y-4"
       >
         <div class="w-24 border rounded-full">
-          <img
-            :src="member.avatar"
+          <NuxtImg
+            :src="
+              s.image.optimized({
+                bucket: 'test',
+                folderPath: `${member.id}/avatar`,
+                file: member.avatar,
+                isPrivate: false,
+                transform: { width: 100, height: 100, fit: 'cover', quality: 75 }
+              })
+            "
+            loading="lazy"
             :alt="member.name"
           />
         </div>
@@ -35,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+const s = useStorage()
+
 const team = [
   {
     name: 'Drew MacGibbon',

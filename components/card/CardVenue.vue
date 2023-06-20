@@ -6,15 +6,34 @@
       :to="`/venues/${p.venue.id}`"
       class="h-full"
     >
-      <img
-        :src="u.venues.featuredImage(p.venue.id, p.venue.featured_image)"
+      <NuxtImg
+        :src="
+          s.image.optimized({
+            bucket: 'venues',
+            folderPath: `${p.venue.id}`,
+            file: p.venue.featured_image,
+            isPrivate: false,
+            transform: { width: 250, height: 250, fit: 'cover', quality: 75 }
+          })
+        "
+        loading="lazy"
         :alt="`${p.venue.name} AstroTribe featured image`"
         class="aspect-square object-contain w-full"
       />
       <div class="absolute p-1 w-12 left-2 top-2 h-12 rounded-full bg-light overflow-hidden">
-        <img
-          :src="u.venues.logo(p.venue.id, p.venue.logo)"
+        <NuxtImg
+          :src="
+            s.image.optimized({
+              bucket: 'venues',
+              folderPath: `${p.venue.id}`,
+              file: p.venue.logo!,
+              isPrivate: false,
+              transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
+            })
+          "
+          loading="lazy"
           :alt="`${p.venue.name} Logo on AstroTribe`"
+          class="aspect-square object-contain w-full"
         />
       </div>
       <div class="p-4 flex flex-col gap-2 foreground md:h-full">
@@ -45,6 +64,8 @@
 
 <script setup lang="ts">
 import type { VenueFull } from '@/types'
+
+const s = useStorage()
 
 const p = defineProps({
   venue: {

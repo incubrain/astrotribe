@@ -1,8 +1,10 @@
 <template>
-  <div class="h-[calc(100vh-60px)] text-white">
-    <div
-      :style="{ backgroundImage: `url('${bgImg}')` }"
-      class="absolute w-full h-full top-0 left-0 bg-cover bg-center bg-no-repeat"
+  <div class="h-[calc(100vh-60px)] text-white relative">
+    <NuxtImg
+      class="absolute w-full h-full top-0 left-0 object-cover bg-center bg-no-repeat"
+      quality="80"
+      :src="bgImg"
+      format="webp"
     />
     <div class="absolute w-full h-full top-0 left-0 bg-zinc-900/40 dark:bg-zinc-900/60" />
     <div

@@ -52,10 +52,18 @@
               </p>
               <div class="rounded-full">
                 <div class="relative">
-                  <img
+                  <NuxtImg
                     class="rounded-full h-[32px] w-[32px] md:h-[40px] md:w-[40px] object-cover"
-                    src="/avatar.png"
-                    alt="avatar"
+                    :src="
+                      s.image.optimized({
+                        bucket: 'profile-public',
+                        folderPath: `${user.id}/avatar`,
+                        file: user.avatar,
+                        isPrivate: false,
+                        transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
+                      })
+                    "
+                    :alt="`${user.given_name} AstroTribe avatar`"
                   />
                   <div
                     class="w-2 h-2 rounded-full bg-green-400 border border-color absolute inset-0 mb-0 mr-0 m-auto"
@@ -78,6 +86,7 @@
 
 <script setup>
 const route = useRoute()
+const s = useStorage()
 
 const { logout, session } = useAuth()
 
