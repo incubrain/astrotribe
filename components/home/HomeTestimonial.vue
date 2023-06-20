@@ -12,7 +12,7 @@
       <template #default="{ item }: { item: Testimonial }">
         <div class="foreground min-h-full p-8 rounded-md shadow-lg">
           <div class="flex items-center">
-            <img
+            <NuxtImg
               :src="item.image"
               :alt="item.name"
               class="w-14 h-14 rounded-full"

@@ -4,9 +4,18 @@
     :key="post.id"
     class="grid grid-rows-4 rounded-md shadow-sm overflow-hidden animate-swipe-in scale-x-0 origin-left group"
   >
-    <img
-      src="/cover1.jpg"
-      class="row-start-1 row-span-3 col-span-1 col-start-1 object-cover object-top shadow-lg h-[320px]"
+    <NuxtImg
+      :src="
+        s.image.optimized({
+          bucket: 'posts',
+          folderPath: `${post.id}`,
+          file: post.id,
+          isPrivate: false,
+          transform: { width: 100, height: 100, fit: 'cover', quality: 75 }
+        })
+      "
+      loading="lazy"
+      :alt="post.title"
     />
     <div
       class="row-start-3 row-span-2 w-full col-span-1 col-start-1 relative transition-all duration-500 ease-in-out"
@@ -33,6 +42,7 @@
 
 <script setup lang="ts">
 const store = usePostsStore()
+const s = useStorage()
 await store.getPosts()
 // const p = usePostsStore()
 </script>

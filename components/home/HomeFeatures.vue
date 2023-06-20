@@ -16,10 +16,13 @@
           class="mx-auto m-4 rounded-lg shadow-md p-8 relative overflow-hidden h-full"
         >
           <NuxtImg
-            class="absolute w-full h-full top-0 left-0"
+            class="absolute w-full h-full object-cover top-0 left-0"
             :src="feature.bgImg"
             height="366px"
             width="290px"
+            quality="70"
+            format="webp"
+            :alt="`${feature.title} background image`"
           />
           <div class="absolute w-full h-full top-0 left-0 bg-gray-900/50 dark:bg-zinc-900/80" />
           <div class="relative z-50 text-light">

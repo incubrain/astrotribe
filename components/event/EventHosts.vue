@@ -11,9 +11,19 @@
             : 'w-8 h-8 overflow-hidden rounded-full border-2 relative z-10 border-inverted'
         "
       >
-        <img
-          class="w-full"
-          :src="`https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/profile-public/${host.id}/avatar/${host.avatar}`"
+        <NuxtImg
+          :src="
+            s.image.optimized({
+              bucket: 'profile-public',
+              folderPath: `${host.id}/avatar`,
+              file: host.avatar,
+              isPrivate: false,
+              transform: { width: 50, height: 50, fit: 'cover', quality: 75 }
+            })
+          "
+          loading="lazy"
+          :alt="`${host.given_name} is an AstroTribe event host`"
+          class="aspect-square object-contain w-full"
         />
       </div>
     </section>
@@ -36,6 +46,8 @@
 
 <script setup lang="ts">
 import type { EventHost } from '@/types'
+
+const s = useStorage()
 
 defineProps({
   hosts: {

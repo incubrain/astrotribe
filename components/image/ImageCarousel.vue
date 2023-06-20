@@ -4,11 +4,10 @@
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
   >
-    <img
+    <NuxtImg
       v-for="(image, index) in images"
       :key="image"
       :src="image"
-      :alt="`Slide ${index + 1}`"
       :class="[
         'w-full h-full object-cover transform transition-transform duration-300 ease-in-out',
         index === currentSlide

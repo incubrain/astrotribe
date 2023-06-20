@@ -4,20 +4,20 @@
       Supported by
     </h4>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-around md:justify-around w-full">
-      <img
-        src="~/assets/images/trusted/dst.png"
+      <NuxtImg
+        src="images/trusted/dst.png"
         class="h-16 lg:h-20 mx-auto md:ml-0"
       />
-      <img
-        src="~/assets/images/trusted/iau-oad.png"
+      <NuxtImg
+        src="images/trusted/iau-oad.png"
         class="h-16 lg:h-20 mx-auto"
       />
-      <img
-        src="~/assets/images/trusted/in-fed.png"
+      <NuxtImg
+        src="images/trusted/in-fed.png"
         class="h-16 lg:h-20 mx-auto"
       />
-      <img
-        src="~/assets/images/trusted/iimb-nsrcel.png"
+      <NuxtImg
+        src="images/trusted/iimb-nsrcel.png"
         class="h-16 lg:h-20 mx-auto md:mr-0"
       />
     </div>

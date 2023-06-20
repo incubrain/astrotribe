@@ -6,10 +6,18 @@
         class="mb-6 md:rounded-md"
       />
       <div class="absolute top-2 left-2 flex flex-col gap-3 items-center z-10">
-        <img
-          :src="util.venues.logo(s.venue.id, s.venue.logo)"
-          alt=""
+        <NuxtImg
           class="object-contain border-2 rounded-full bg-light overflow-hidden w-14 h-14 md:w-20 md:h-20 p-2"
+          :src="
+            storage.image.optimized({
+              bucket: 'venues',
+              folderPath: `${s.venue.id}/logo`,
+              file: s.venue.logo,
+              isPrivate: false,
+              transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
+            })
+          "
+          :alt="`${s.venue.name} logo`"
         />
         <UButton
           class="text-xs font-semibold leading-none px-2 py-1 md:px-4 md:py-2 rounded-md flex items-center justify-center flex-row gap-1"
@@ -96,6 +104,7 @@
 const { id } = useRoute().params
 
 const v = useVenuesStore()
+const storage = useStorage()
 const util = useUtils()
 
 const images = await v.getVenueImages({ venueId: Number(id) })

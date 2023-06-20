@@ -6,11 +6,12 @@
         : 'flex flex-col md:flex-row justify-between items-center w-full py-[20px] md:py-[60px] lg:py-[160px] mx-auto gap-10'
     "
   >
-    <div class="md:w-[70%] h-[360px] shadow-2xl relative">
-      <img
-        class="w-full h-full rounded-lg overflow-hidden"
+    <div class="md:w-[70%] h-[360px] aspect-auto shadow-2xl relative">
+      <NuxtImg
+        class="w-full h-full rounded-lg object-cover overflow-hidden"
         :src="imgSrc"
-        alt=""
+        format="webp"
+        :alt="`${title} AstroTribe feature`"
       />
       <div
         class="absolute hidden dark:block w-full h-full bg-zinc-900/10 top-0 left-0 rounded-lg"
