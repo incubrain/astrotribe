@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   },
   css: ['/assets/css/tailwind.css', 'lightgallery/css/lightgallery-bundle.css'],
   imports: {
-    dirs: ['stores', 'themes']
+    dirs: ['stores']
   },
   colorMode: {
     classSuffix: ''
@@ -95,9 +95,6 @@ export default defineNuxtConfig({
   //       },
   //     },
   //   },
-  // },
-  // alias: {
-  //     '@data': "/assets/data",
   // },
   ssr: true
 })

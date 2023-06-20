@@ -1,0 +1,13 @@
+{
+  "email": "info@astrotribe.com",
+  "phone": "123-456-7890",
+  "socialMedia": {
+    "twitter": "@astrotribe",
+    "facebook": "fb.com/astrotribe",
+    "instagram": "@astrotribe"
+  },
+  "location": {
+    "headquarters": "123 Galaxy Way, Star City, 90210",
+    "otherOffices": ["456 Comet Street, Astro Town, 56789"]
+  }
+}

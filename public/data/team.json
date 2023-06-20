@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Shweta Kulkarni",
+    "position": "CEO",
+    "photoUrl": "/images/team/shweta.png",
+    "bio": "some bio",
+    "socials": {
+      "linkedin": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b/"
+    }
+  },
+  {
+    "name": "Drew MacGibbon",
+    "position": "CTO",
+    "photoUrl": "/images/team/drew.png",
+    "bio": "some bio",
+    "socials": {
+      "linkedin": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b/"
+    }
+  }
+]
