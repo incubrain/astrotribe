@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import productSteps from '~/public/data/product-steps.json'
+import productSteps from '@/data/home/product-steps.json'
 
 definePageMeta({
   name: 'Home',

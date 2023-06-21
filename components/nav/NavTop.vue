@@ -45,9 +45,9 @@
       <div class="col-start-3 col-span-1 pr-3 md:pr-6 flex w-full relative">
         <div class="flex gap-4 w-full items-center justify-end">
           <ThemeToggle />
-          <div>
+          <NuxtLink to="/auth/register-interest">
             <UButton color="primary"> Join Free </UButton>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </div>
