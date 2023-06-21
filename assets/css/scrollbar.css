@@ -12,7 +12,6 @@
   
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
   border: 3px solid transparent;
   /* Creates "gap" */
   background-clip: content-box;
@@ -22,8 +21,7 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  border: 3px solid transparent;
+border: 3px solid transparent;
   /* Creates "gap" */
   background-clip: content-box;
   /* Prevents background color from filling "gap" */
