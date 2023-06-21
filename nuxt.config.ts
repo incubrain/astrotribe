@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   },
   css: ['/assets/css/tailwind.css', 'lightgallery/css/lightgallery-bundle.css'],
   imports: {
-    dirs: ['stores']
+    dirs: ['stores', 'data']
   },
   colorMode: {
     classSuffix: ''
@@ -41,7 +41,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
-    ['@pinia/nuxt',
+    [
+      '@pinia/nuxt',
       {
         autoImports: ['defineStore', 'acceptHMRUpdate']
       }
@@ -55,7 +56,7 @@ export default defineNuxtConfig({
   //     forward: ['dataLayer.push'],
   // },
   robots: {
-    configPath: '~/robots.config.ts',
+    configPath: '~/robots.config.ts'
   },
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side

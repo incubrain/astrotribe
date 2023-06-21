@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import features from '~/public/data/features.json'
+import features from '@/data/home/features.json'
 </script>
 
 <style scoped></style>

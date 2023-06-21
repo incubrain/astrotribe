@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import testimonials from '~/public/data/testimonials.json'
+import testimonials from '@/data/home/testimonials.json'
 
 interface Testimonial {
   image: string
