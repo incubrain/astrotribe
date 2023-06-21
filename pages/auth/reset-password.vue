@@ -1,78 +1,41 @@
 <template>
-  <div class="w-full h-full p-20 gap-4 justify-center items-center bg-indigo-50 animate-swipe-down">
-    <p>reset value: {{ showForm }}</p>
-    <form v-if="showForm">
-      <div class="flex flex-col">
-        <label for="password">Password</label>
-        <input
-          v-model="newPass.a"
-          type="password"
-        />
-      </div>
-      <div class="flex flex-col">
-        <label for="password">Confirm Password</label>
-        <input
-          v-model="newPass.b"
-          type="password"
-        />
-      </div>
-      <div class="flex flex-col">
-        <button @click="updatePassword"> Reset Password </button>
-      </div>
-    </form>
-    <div v-else>
-      <form>
-        <div class="flex flex-col">
-          <label for="email">Confirm Email</label>
-          <input
-            v-model="email"
-            type="email"
-          />
-        </div>
-      </form>
-      <button
-        class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2"
-        @click="password.requestResetEmail(email)"
-      >
-        Request Password Email
-      </button>
-    </div>
-    <button
-      class="px-12 py-4 rounded-sm bg-red-100 shadow-sm mt-2"
-      @click="password.toggleResetForm(!showResetForm)"
+  <div class="w-full h-full flex flex-col justify-center items-center">
+    <h2 class="text-2xl mb-6 text-center">Reset Password</h2>
+    <FormDynamic
+      :schema="resetPasswordData"
+      :schema-validation="ResetPasswordValidation"
+      class="w-full"
+      @submit.prevent="handleResetPassword"
     >
-      test form visible
-    </button>
+      <UButton
+        color="primary"
+        size="md"
+        class="w-full flex items-center justify-center"
+        type="submit"
+      >
+        Reset Password
+      </UButton>
+    </FormDynamic>
   </div>
 </template>
 
 <script setup lang="ts">
-const email = ref()
-const showForm = ref(false)
-const newPass = ref({
-  a: '',
-  b: ''
-})
+import useAuth from '~/composables/useAuth'
+import { ResetPasswordValidation } from '@/types/zod'
+import { resetPasswordData } from '@/data/forms'
 
-const { password, showResetForm } = useAuth()
+const auth = useAuth()
+// const router = useRouter()
 
-watch(
-  () => showResetForm.value,
-  () => (showForm.value = showResetForm.value)
-)
-
-const updatePassword = async () => {
-  if (newPass.value.a === newPass.value.b) {
-    const { data, error } = await password.update(newPass.value.a)
-    if (error) throw createError('plase make sure your passwords match')
-    console.log('data retunred', data)
+const handleResetPassword = (value: { password: string; confirmPassword: string }) => {
+  // Get the user token from the URL
+  if (value.password === value.confirmPassword) {
+    auth.password.update(value.password)
   }
 }
 
 definePageMeta({
-  layout: 'auth',
-  name: 'Reset Password'
+  name: 'Reset Password',
+  layout: 'auth'
 })
 </script>
-
-<style scoped></style>
