@@ -1,0 +1,26 @@
+[
+  {
+    "name": "name",
+    "component": "FormText",
+    "label": "Name",
+    "type": "text"
+  },
+  {
+    "name": "email",
+    "component": "FormText",
+    "label": "Email",
+    "type": "email"
+  },
+  {
+    "name": "referral",
+    "component": "FormText",
+    "label": "Where did you hear about us?",
+    "type": "text"
+  },
+  {
+    "name": "interest",
+    "component": "FormText",
+    "label": "What interests you about AstroTribe?",
+    "type": "text"
+  }
+]
