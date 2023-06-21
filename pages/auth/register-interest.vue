@@ -23,27 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import useAuth from '~/composables/useAuth'
 import { RegisterInterestValidation } from '@/types/zod'
 import { registerInterestData } from '@/data/forms'
 
-const auth = useAuth()
 
 const handleRegister = async (value: { email: string }) => {
   const { email } = value
   // Here you would usually send the email to your backend to be saved in your database
   console.log(email)
-}
-
-async function handleGoogleSignUp() {
-  try {
-    const { data, error } = await auth.register.withOauth('google')
-
-    if (error) throw error
-    console.log('User registered interest via Google', data)
-  } catch (error) {
-    console.error('Error registering interest via Google', error)
-  }
 }
 
 definePageMeta({
