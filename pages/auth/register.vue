@@ -5,16 +5,11 @@
       :schema="registerData"
       :schema-validation="RegisterValidation"
       class="w-full"
-      @submit.prevent="handleRegister"
+      @submit="handleRegister"
     >
-      <UButton
-        color="primary"
-        size="md"
-        class="w-full flex items-center justify-center"
-        type="submit"
-      >
+      <FormButton>
         Sign Up
-      </UButton>
+      </FormButton>
     </FormDynamic>
     <p class="text-center text-sm mt-4">
       <NuxtLink to="/auth/login">Already have an account? Sign In</NuxtLink>

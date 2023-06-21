@@ -17,7 +17,7 @@ export const RegisterValidation = z.object({
 export const RegisterInterestValidation = z.object({
   name: z.string(),
   email: z.string().email(),
-  refferal: z.string().optional(),
+  referral: z.string().optional(),
   interest: z.string().optional()
 })
 

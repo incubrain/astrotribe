@@ -17,7 +17,6 @@ let nasaImg: NasaImg | undefined
 
 export default defineEventHandler(async (event) => {
   if (nasaImg !== undefined) return { nasaImg }
-  console.log('should continue')
 
   const unvalidated = await $fetch(
     'https://api.nasa.gov/planetary/apod?api_key=qVu1erjdjYJLfLLALZyIz3EfYxOerf29waltn3PM'

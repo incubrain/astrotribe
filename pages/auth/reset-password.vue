@@ -5,16 +5,11 @@
       :schema="resetPasswordData"
       :schema-validation="ResetPasswordValidation"
       class="w-full"
-      @submit.prevent="handleResetPassword"
+      @submit="handleResetPassword"
     >
-      <UButton
-        color="primary"
-        size="md"
-        class="w-full flex items-center justify-center"
-        type="submit"
-      >
+      <FormButton>
         Reset Password
-      </UButton>
+      </FormButton>
     </FormDynamic>
   </div>
 </template>

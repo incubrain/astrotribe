@@ -1,7 +1,7 @@
 import { logout } from './supabase/auth/logout'
 import { refresh, getCurrent } from './supabase/auth/session'
 import { update, requestResetEmail } from './supabase/auth/password'
-import { registerWithEmail, bulkRegisterWithEmail } from './supabase/auth/register'
+import { registerWithEmail, bulkRegisterWithEmail, interest } from './supabase/auth/register'
 import { loginWithEmail } from './supabase/auth/login'
 
 export default function useAuth() {
@@ -13,6 +13,7 @@ export default function useAuth() {
     },
     logout,
     register: {
+      interest,
       registerWithEmail,
       bulkRegisterWithEmail
     },

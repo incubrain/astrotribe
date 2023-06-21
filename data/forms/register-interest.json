@@ -14,7 +14,7 @@
   {
     "name": "referral",
     "component": "FormText",
-    "label": "Where did you hear about us?",
+    "label": "Where did you hear about AstroTribe?",
     "type": "text"
   },
   {

@@ -5,16 +5,9 @@
       :schema="loginData"
       :schema-validation="LoginValidation"
       class="w-full"
-      @submit.prevent="handleLogin"
+      @submit="handleLogin"
     >
-      <UButton
-        color="primary"
-        size="md"
-        class="w-full flex items-center justify-center"
-        type="submit"
-      >
-        Sign In
-      </UButton>
+      <FormButton> Sign In </FormButton>
     </FormDynamic>
     <p class="text-center text-sm mt-4">
       <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
@@ -24,7 +17,11 @@
       color="white"
       @click="handleProviderSignIn('google')"
     >
-      <NuxtImg src="/icons/google.svg" alt="Google Logo" width="28px" />
+      <NuxtImg
+        src="/icons/google.svg"
+        alt="Google Logo"
+        width="28px"
+      />
       Sign In with Google
     </UButton>
     <UButton
@@ -32,7 +29,11 @@
       color="white"
       @click="handleProviderSignIn('github')"
     >
-      <UIcon name="i-mdi-github" alt="Github Logo" width="28px" />
+      <UIcon
+        name="i-mdi-github"
+        alt="Github Logo"
+        width="28px"
+      />
       Sign In with Github
     </UButton>
   </div>

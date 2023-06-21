@@ -5,16 +5,9 @@
       :schema="forgotPasswordData"
       :schema-validation="ForgotPasswordValidation"
       class="w-full"
-      @submit.prevent="handleForgotPassword"
+      @submit="handleForgotPassword"
     >
-      <UButton
-        color="primary"
-        size="md"
-        class="w-full flex items-center justify-center"
-        type="submit"
-      >
-        Request Reset Email
-      </UButton>
+      <FormButton> Request Reset Email </FormButton>
     </FormDynamic>
   </div>
 </template>
