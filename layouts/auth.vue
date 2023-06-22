@@ -15,20 +15,20 @@
           <div class="dark:bg-black/30 absolute w-full h-full left-0 top-0" />
           <NuxtImg
             v-if="!imageLoaded"
+            ref="blur"
             :src="data.url"
             quality="20"
-            width="240"
-            height="160"
+            width="150"
+            height="120"
             alt=""
-            class="w-full object-cover object-center blur-md"
+            class="w-full object-cover object-center"
           />
           <NuxtImg
             v-else
-            :src="data.hdurl"
+            :src="data.url"
             quality="95"
             alt=""
             class="w-full object-cover object-center"
-            loading="lazy"
             @load="imageLoaded = true"
           />
           <div
