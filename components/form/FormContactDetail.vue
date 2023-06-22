@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h2 class="lg:w-64 text-xl lg:text-2xl font-semibold leading-normal">{{ title }}</h2>
-    <p class="text-base leading-normal mt-2">{{ value }}</p>
+  <div class="w-64">
+    <h2 class="text-xl lg:text-2xl font-semibold leading-normal">{{ title }}</h2>
+    <p class="text-base mt-2">{{ value }}</p>
   </div>
 </template>
 

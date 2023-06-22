@@ -1,13 +1,14 @@
 {
-  "email": "info@astrotribe.com",
-  "phone": "123-456-7890",
-  "socialMedia": {
-    "twitter": "@astrotribe",
-    "facebook": "fb.com/astrotribe",
-    "instagram": "@astrotribe"
-  },
+  "email": "connectus@astronera.org",
+  "phone": "+91 880 610 7510",
+  "socials": [
+    { "platform": "twitter", "link": "https://twitter.com/AstronEra"},
+    { "platform": "linkedin", "link": "https://www.linkedin.com/company/astronera/"},
+    { "platform": "youtube", "link": "https://www.youtube.com/@AstronEra"},
+    { "platform": "facebook", "link": "https://www.facebook.com/AstronEra"},
+    { "platform": "instagram", "link": "https://www.instagram.com/astronera"}
+  ],
   "location": {
-    "headquarters": "123 Galaxy Way, Star City, 90210",
-    "otherOffices": ["456 Comet Street, Astro Town, 56789"]
+    "headquarters": "Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk,, Model Colony, Pune, Maharashtra 411016"
   }
 }
