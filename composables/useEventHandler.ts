@@ -8,7 +8,7 @@ export default function useEventHandler() {
 
   const { password, showResetForm } = useAuth()
 
-  const authPages = ['/login', '/register']
+  const authPages = ['/auth/login', '/auth/register']
 
   return {
     event: {
