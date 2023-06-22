@@ -1,13 +1,6 @@
 <template>
   <div class="pb-10">
-    <div class="mb-8 pl-8">
-      <h2 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight mb-4"
-        >Hear From Our Users
-      </h2>
-      <h2 class="text-3xl font-semibold mt-5 max-w-[50%] leading-normal">
-        Keep your Life Simple, Safe and Wealthy
-      </h2>
-    </div>
+    <HomeHeading heading="Hear From Our Users" subheading="Keep your Life Simple, Safe and Wealthy" />
     <SwiperComponent :items="testimonials">
       <template #default="{ item }: { item: Testimonial }">
         <div class="foreground min-h-full p-8 rounded-md shadow-lg">
