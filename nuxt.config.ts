@@ -7,6 +7,11 @@ export default defineNuxtConfig({
   //     device: 'desktop'
   //   }
   // },
+  routeRules: {
+    '/auth/**': {
+      swr: 60 * 60
+    }
+  },
   vue: {
     compilerOptions: {
       isCustomElement: (tag: string) => tag.startsWith('swiper-')

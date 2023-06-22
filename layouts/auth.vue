@@ -14,30 +14,39 @@
         >
           <div class="dark:bg-black/30 absolute w-full h-full left-0 top-0" />
           <NuxtImg
-            :src="data.nasaImg.hdurl"
-            quality="80"
+            v-if="!imageLoaded"
+            :src="data.url"
+            quality="20"
+            width="240"
+            height="160"
             alt=""
-            width="1240px"
-            format="webp"
+            class="w-full object-cover object-center blur-md"
+          />
+          <NuxtImg
+            v-else
+            :src="data.hdurl"
+            quality="95"
+            alt=""
             class="w-full object-cover object-center"
             loading="lazy"
+            @load="imageLoaded = true"
           />
           <div
             class="group bg-[#00000040] text-white p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] transition-all duration-300 backdrop-blur-md"
           >
             <h1 class="text-xl font-semibold pb-2">
-              {{ data.nasaImg.title }}
+              {{ data.title }}
             </h1>
             <p
               class="h-[0px] xl:h-[100px] overflow-auto group-hover:h-[48vh] transition-all duration-300 scrollbar-hidden"
             >
-              {{ data.nasaImg.explanation }}
+              {{ data.explanation }}
             </p>
             <div class="flex flex-row gap-2 pt-2 items-center">
               <p class="text-sm font-bold">
-                {{ data.nasaImg.date }}
+                {{ data.date }}
               </p>
-              <p class="text-xs"> Copyright: {{ data.nasaImg.copyright }} </p>
+              <p class="text-xs"> Copyright: {{ data.copyright }} </p>
             </div>
           </div>
         </div>
@@ -47,13 +56,15 @@
 </template>
 
 <script setup lang="ts">
-
 const { event } = useEventHandler()
+
+const imageLoaded = ref(false)
+
 event.auth
 
 const { data, error } = await useFetch('/api/iotd')
 
-console.log('spazz', data, error)
+console.log('spazz', data.value, error)
 </script>
 
 <style scoped>
