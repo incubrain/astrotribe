@@ -17,7 +17,10 @@
             :src="data.nasaImg.hdurl"
             quality="80"
             alt=""
+            width="1240px"
+            format="webp"
             class="w-full object-cover object-center"
+            loading="lazy"
           />
           <div
             class="group bg-[#00000040] text-white p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] transition-all duration-300 backdrop-blur-md"

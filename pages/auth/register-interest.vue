@@ -1,10 +1,10 @@
 <template>
   <div class="w-full h-full flex flex-col justify-center items-center px-4">
     <h2 class="text-2xl mb-6 text-center">Register Your Interest</h2>
-    <p class="text-center mb-6">
+    <h4 class="text-center mb-6">
       We are currently in closed alpha, but we appreciate your interest. Please register and we will
       send you an email once we launch our public beta.
-    </p>
+    </h4>
     <FormDynamic
       :schema="registerInterestData"
       :schema-validation="RegisterInterestValidation"
