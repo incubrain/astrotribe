@@ -1,19 +1,12 @@
 <template>
   <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
     <div class="mx-auto">
-      <div class="mb-4 text-left pl-8">
-        <h1 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight">
-          Why AstroTribe?
-        </h1>
-        <h2 class="text-3xl font-semibold mt-5 max-w-[50%] leading-normal">
-          Keep your Life Simple, Safe and Wealthy
-        </h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-top">
+      <HomeHeading heading="Why AstroTribe?" subheading="Here are some great reasons..." />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-center items-top">
         <div
           v-for="feature in features"
           :key="feature.id"
-          class="mx-auto m-4 rounded-lg shadow-md p-8 relative overflow-hidden h-full"
+          class="mx-auto rounded-lg shadow-md p-8 relative overflow-hidden h-full"
         >
           <NuxtImg
             class="absolute w-full h-full object-cover top-0 left-0"

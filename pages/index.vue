@@ -4,6 +4,10 @@
     <div class="max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px]">
       <HomeTrusted />
       <HomeFeatures class="py-16 md:py-32" />
+      <HomeHeading
+        heading="Why AstroTribe?"
+        subheading="Here are some great reasons..."
+      />
       <HomeProductStep
         v-for="step in productSteps"
         :key="step.id"
@@ -12,7 +16,7 @@
         :title="step.title"
         :body="step.body"
         :cta="step.cta"
-        class="py-16 md:py-32"
+        class="pb-16 md:pb-32"
       />
     </div>
     <HomeCtaMain

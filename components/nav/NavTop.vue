@@ -11,7 +11,7 @@
           to="/"
           class="nav-link flex items-center gap-2"
         >
-          <div class="p-1 h-[26px] w-[26px] md:h-[40px] md:w-[40px] bg-white rounded-full overflow-hidden">
+          <div class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden">
             <NuxtImg
               src="/astronera-logo.jpg"
               class="w-full h-full dark:opacity-90"
