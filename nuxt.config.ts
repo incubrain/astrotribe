@@ -26,7 +26,7 @@ export default defineNuxtConfig({
       //   ]
     }
   },
-  css: ['/assets/css/tailwind.css', 'lightgallery/css/lightgallery-bundle.css'],
+  css: ['lightgallery/css/lightgallery-bundle.css'],
   imports: {
     dirs: ['stores', 'data']
   },
