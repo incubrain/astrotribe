@@ -31,10 +31,10 @@
     @apply bg-zinc-200 dark:bg-zinc-900 border-l border-zinc-300;
   }
   *::-webkit-scrollbar-thumb:hover {
-    @apply bg-zinc-600 dark:bg-zinc-600 border-l border-zinc-300;
+    @apply bg-zinc-600 dark:bg-zinc-600 border-4 border-transparent border-solid rounded-full bg-clip-content;
   }
   *::-webkit-scrollbar-thumb {
-    @apply bg-zinc-400 dark:bg-zinc-700 border-l border-zinc-300;
+    @apply bg-zinc-400 dark:bg-zinc-700 border-4 border-transparent border-solid rounded-full bg-clip-content w-2;
   }
   .nav-link {
     @apply text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700 cursor-pointer;
