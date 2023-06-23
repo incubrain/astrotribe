@@ -3,8 +3,8 @@
   width: 16px;
 }
 
-/* Tailwind sm default */
-@media screen and (max-width: 640px) {
+/* Tailwind md default */
+@media screen and (max-width: 768px) {
   ::-webkit-scrollbar {
     display: none;
   }
