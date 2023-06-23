@@ -27,6 +27,9 @@
 }
 
 @layer utilities {
+  .swiper-slide {
+    @apply bg-zinc-200 dark:bg-zinc-900 p-8 rounded-md shadow-md;
+  }
   *::-webkit-scrollbar {
     @apply bg-zinc-200 dark:bg-zinc-900 border-l border-zinc-300;
   }

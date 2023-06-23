@@ -25,13 +25,15 @@
           cosmos together.
         </p>
         <div>
-          <UButton
-            color="primary"
-            variant="solid"
-            size="xl"
-          >
-            Start Your Cosmic Journey
-          </UButton>
+          <NuxtLink to="auth/register-interest">
+            <UButton
+              color="primary"
+              variant="solid"
+              size="xl"
+            >
+              Start Your Cosmic Journey
+            </UButton>
+          </NuxtLink>
         </div>
       </div>
       <!-- Hero Right -->

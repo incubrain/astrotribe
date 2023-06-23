@@ -62,7 +62,7 @@ defineProps<{
 }>()
 </script>
 
-<style scoped>
+<style>
 .testimonial-slider {
   width: 100%;
 }

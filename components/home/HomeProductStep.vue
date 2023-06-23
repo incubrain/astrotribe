@@ -2,13 +2,13 @@
   <div
     :class="
       imageRight
-        ? 'flex flex-col md:flex-row-reverse justify-between items-center w-full py-[20px] md:py-[60px] lg:py-[160px] mx-auto gap-10'
-        : 'flex flex-col md:flex-row justify-between items-center w-full py-[20px] md:py-[60px] lg:py-[160px] mx-auto gap-10'
+        ? 'flex flex-col md:flex-row-reverse justify-between items-center w-full mx-auto gap-10'
+        : 'flex flex-col md:flex-row justify-between items-center w-full mx-auto gap-10'
     "
   >
     <div class="md:w-[70%] h-[360px] aspect-auto shadow-2xl relative">
       <NuxtImg
-        class="w-full h-full rounded-lg object-cover overflow-hidden"
+        class="w-full h-full rounded-lg object-cover object-left overflow-hidden"
         :src="imgSrc"
         format="webp"
         :alt="`${title} AstroTribe feature`"

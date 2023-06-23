@@ -5,8 +5,8 @@
       <HomeTrusted />
       <HomeFeatures class="py-16 md:py-32" />
       <HomeHeading
-        heading="Why AstroTribe?"
-        subheading="Here are some great reasons..."
+        heading="That's not all..."
+        subheading="We Have Some Big Plans!"
       />
       <HomeProductStep
         v-for="step in productSteps"
@@ -16,7 +16,7 @@
         :title="step.title"
         :body="step.body"
         :cta="step.cta"
-        class="pb-16 md:pb-32"
+        class="py-16 md:py-24"
       />
     </div>
     <HomeCtaMain
