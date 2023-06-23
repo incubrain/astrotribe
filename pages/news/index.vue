@@ -25,7 +25,7 @@
           </div>
           <div class="flex items-center gap-4">
             <img
-              src="/avatar.png"
+              src="/images/team/drew-macgibbon.jpg"
               class="rounded-full h-[46px]"
             />
             <h3 class="text-lg font-semibold leading-6">
@@ -54,7 +54,7 @@
           </div>
           <div class="flex items-center gap-4">
             <img
-              src="/avatar.png"
+              src="/images/team/drew-macgibbon.jpg"
               class="rounded-full h-[46px]"
             />
             <h3 class="text-lg font-semibold leading-6"> Medium length for the title </h3>
@@ -81,7 +81,7 @@
           </div>
           <div class="flex items-center gap-4">
             <img
-              src="/avatar.png"
+              src="/images/team/drew-macgibbon.jpg"
               class="rounded-full h-[46px]"
             />
             <h3 class="text-lg font-semibold leading-6"> Test shorter title </h3>
