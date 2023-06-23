@@ -36,7 +36,7 @@
             title="Email"
             :value="contactData.email"
           />
-          <SocialBlock />
+          <SocialBlock :socials="contactData.socials" />
         </div>
       </div>
     </div>

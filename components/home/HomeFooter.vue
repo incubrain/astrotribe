@@ -1,7 +1,7 @@
 <template>
   <div class="bg-primary-600 dark:bg-primary-700 p-6 pt-12 pb-12">
     <div class="w-full flex justify-around mx-auto container max-w-[840px]">
-      <SocialBlock class="text-white text-center" />
+      <SocialBlock :socials="contact.socials" class="text-white text-center" />
       <!-- <NewsletterBasic /> -->
     </div>
   </div>
@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import contact from '@/data/home/contact.json'
 const currentYear = new Date().getFullYear()
 </script>
 

@@ -11,7 +11,9 @@
           to="/"
           class="nav-link flex items-center gap-2"
         >
-          <div class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden">
+          <div
+            class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden"
+          >
             <NuxtImg
               src="/astronera-logo.jpg"
               class="w-full h-full dark:opacity-90"
@@ -23,12 +25,6 @@
           class="hidden lg:flex gap-4 pl-4 justify-center border-l border-color items-center h-full leading-none text-sm font-semibold whitespace-nowrap"
         >
           <NuxtLink
-            to="/users"
-            class="nav-link"
-          >
-            AstroTribe
-          </NuxtLink>
-          <NuxtLink
             to="/about"
             class="nav-link"
           >
@@ -39,6 +35,12 @@
             class="nav-link"
           >
             Contact us
+          </NuxtLink>
+          <NuxtLink
+            to="/users"
+            class="nav-link"
+          >
+            AstroTribe
           </NuxtLink>
         </div>
       </div>
