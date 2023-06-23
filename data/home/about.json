@@ -1,0 +1,75 @@
+{
+  "sections": [
+    { 
+      "title": "AstronEra",
+      "paragraphs": [
+        "AstronEra, officially known as AEII Pvt. Ltd., has been operational since 2018. Committed to the scientifically accurate and innovative dissemination of astronomy, it was established by Shweta Kulkarni and incubated by the Indian Institute of Management, Bangalore.",
+        "The Pune-based firm has gained global recognition for organizing stargazing events, workshops, and camps. Leveraging its experience with diverse partners and age groups, AstronEra launched the world's first astronomy-dedicated e-learning platform.",
+        "Hosting over 15 courses by worldwide instructors, the platform at www.astronera.org is transitioning into an interactive community. This will allow the public to connect with astronomy professionals globally, fostering a community of shared knowledge and passion."
+      ]
+    },
+    { 
+      "title": "AstroTribe", 
+      "paragraphs": [
+        "The International Astronomical Union (IAU), a Paris-based NGO, is committed to enhancing astronomy through research, outreach, and development. It sponsors the AstroTribe project through its Office of Astronomy for Development (OAD).",
+        "Established by AstronEra, AstroTribe aims to empower economically disadvantaged tribal students in India and Brazil. The project transforms them into AstroGuides, providing them with learning and earning opportunities through a unique online platform.",
+        "In 2022, AstroTribe successfully trained 15 students in Maharashtra, India. The project's ambition extends to training 15 more students in Himachal Pradesh, India, and Brazil in 2023. Through a rigorous selection process, AstroTribe identifies students aged 14-19 and provides them with knowledge, communication, and skill training. It also connects them with mentors and organisers globally for ongoing support and potential stargazing event opportunities.",
+        "AstroTribe's implementation is proposed for the DPS in 2023, leveraging its advantageous position for astrotourism and access to less light-polluted skies. The project aspires to enrich the students' future prospects and, potentially, to expand its influence globally."
+      ]
+    }
+  ],
+  "images": [
+    { "title": "Featured", "src": "images/shweta-kulkarni-painting-common-man-looking-at-universe.jpg", "alt": "Painting by Shweta Kulkarni, CEO of AstronEra, of common man looking at the universe" },
+    { "src": "images/astronera.png", "alt": "AstronEra Logo" }
+  ],
+  "timeline": [
+    {
+      "date": "December 2011",
+      "title": "First Stargazing Event",
+      "body": "Shweta held a public event for a Total Lunar Eclipse, beginning her science communication journey.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "November 2013",
+      "title": "Astron-SHK Trust",
+      "body": "Our non-profit under SHK Trust was registered. Shweta, 18, became CEO.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "June 2016",
+      "title": "DST, GOI Funded",
+      "body": "Guided by Dr. Mashelkar and Prof. Swarup, we received DST, GOI grant, launching our online presence.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "March 2018",
+      "title": "IIMB Incubated",
+      "body": "Shweta, among top 100 women entrepreneurs in India, helped shape AstronEra, registered as AEII Pvt. Ltd.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "November 2018",
+      "title": "AstronEra Founded",
+      "body": "AstronEra, the first astronomy elearning platform, was launched at Pune's Chandrasekhar Auditorium.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "March 2019",
+      "title": "IAU Award",
+      "body": "Our efforts to popularise astronomy among tribal students was acknowledged by the International Astronomical Union.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "January 2022",
+      "title": "OAD, IAU Funded",
+      "body": "AstronEra received an IAU OAD grant to train tribal students as AstroGuides through AstroTribe project.",
+      "icon": "i-material-symbols-star"
+    },
+    {
+      "date": "March 2023",
+      "title": "Astrotourism",
+      "body": "DST, GOI granted funds for AstronEra's AstroTourism and light pollution awareness in Himachal Pradesh and Leh Ladakh.",
+      "icon": "i-material-symbols-star"
+    }
+  ]
+}

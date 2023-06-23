@@ -1,31 +1,26 @@
 <template>
-  <div class="flex justify-center items-center flex-col py-12 px-4 md:px-6">
-    <div class="flex justify-center items-center flex-col space-y-4">
-      <h1 class="text-3xl xl:text-4xl font-extrabold leading-8 xl:leading-9"> Our Team </h1>
-      <p class="w-11/12 text-base leading-normal text-center">
-        It is a long established fact that a reader will be distracted by the readable content of a
-        page when looking at its layout.
+  <div class="flex flex-col gap-12">
+    <div class="flex flex-col space-y-4">
+      <h1 class="text-3xl xl:text-4xl font-extrabold leading-8 xl:leading-9"> AstronEra Team </h1>
+      <p class="max-w-sm text-base leading-normal">
+        AstronEra thrives thanks to its dedicated team. Passionate about astronomy and education?
+      </p>
+      <p class="max-w-md text-base leading-normal">
+        <strong> Contact Shweta or Mac to join us.</strong> <br />
+        Together, we'll explore the universe!
       </p>
     </div>
     <div
-      class="mt-6 md:mt-10 xl:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-y-12 md:gap-y-14 md:gap-x-24 xl:gap-y-0 lg:gap-x-14"
+      class="mt-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12 w-full"
     >
       <div
         v-for="member in team"
-        :key="member.name"
-        class="flex flex-col items-center justify-center space-y-4"
+        :key="member.id"
+        class="flex flex-col items-center space-y-4 foreground rounded-md shadow-md p-4 w-full justify-between"
       >
-        <div class="w-24 border rounded-full">
+        <div class="w-20 md:w-24 border rounded-full overflow-hidden">
           <NuxtImg
-            :src="
-              s.image.optimized({
-                bucket: 'test',
-                folderPath: `${member.id}/avatar`,
-                file: member.avatar,
-                isPrivate: false,
-                transform: { width: 100, height: 100, fit: 'cover', quality: 75 }
-              })
-            "
+            :src="member.avatar"
             loading="lazy"
             :alt="member.name"
           />
@@ -35,25 +30,23 @@
             {{ member.name }}
           </p>
           <p class="text-sm leading-none text-center">
-            {{ member.role }}
+            {{ member.position }}
           </p>
+          <SocialBlock
+            :socials="member.socials"
+            :has-title="false"
+            class="flex justify-center items-center space-x-2"
+          />
         </div>
       </div>
-    </div>
+  </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import team from '@/data/home/team.json'
 const s = useStorage()
 
-const team = [
-  {
-    name: 'Drew MacGibbon',
-    role: 'Head, Product Design',
-    avatar: 'https://tuk-cdn.s3.amazonaws.com/can-uploader/team_7_img-1.png'
-  }
-  // ... other team members
-]
 </script>
 
 <style scoped></style>
