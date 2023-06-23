@@ -9,21 +9,3 @@
     display: none;
   }
 }
-  
-/* Handle */
-::-webkit-scrollbar-thumb {
-  border: 3px solid transparent;
-  /* Creates "gap" */
-  background-clip: content-box;
-  /* Prevents background color from filling "gap" */
-  border-radius: 8px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-border: 3px solid transparent;
-  /* Creates "gap" */
-  background-clip: content-box;
-  /* Prevents background color from filling "gap" */
-  border-radius: 8px;
-}
