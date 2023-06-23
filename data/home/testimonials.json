@@ -1,50 +1,37 @@
 [
   {
-    "image": "/avatar.png",
-    "name": "Person 1",
-    "company": "Company 1",
-    "quote": "This is an amazing project, This is an amazing project This is an amazing project"
+    "id": 1,
+    "image": "/images/testimonials/prachi-shevgaonkar.jpg",
+    "name": "Prachi Shevgaonkar",
+    "company": "Cool The Globe Founder",
+    "quote": "Astronomy has always seemed beyond our reach. Not just because it studies the universe beyond the Earth's atmosphere, but because there are very few avenues for the ordinary citizens to study it. AstronEra is changing that. AstronEra is doing magical work. Scientifically. It is making Astronomy accessible, enjoyable and within reach for citizens around the world."
   },
   {
-    "image": "/avatar.png",
-    "name": "Person 2",
-    "company": "Company 2",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
+    "id": 2,
+    "image": "/images/testimonials/dr-raghunath-mashelkar.jpg",
+    "name": "Dr. Raghunath Mashelkar",
+    "company": "Renowned Scientist",
+    "quote": "Such a remarkable initiative of digitising astronomy by Shweta Kulkarni, whom I admire enormously. I applaud her very noble objective to create a scientific temper. This is precisely what India needs."
   },
   {
-    "image": "/avatar.png",
-    "name": "Person 3",
-    "company": "Company 3",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
+    "id": 3,
+    "image": "/images/testimonials/dr-jayant-narlika.jpg",
+    "name": "Dr. Jayant Narlika",
+    "company": "Astrophysicist",
+    "quote": "This is an effort of understanding the significance of astronomy enjoy this search. Let me hope that you will feel much more friendly with astronomy through this initiative."
   },
   {
-    "image": "/avatar.png",
-    "name": "Person 4",
-    "company": "Company 4",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
+    "id": 4,
+    "image": "/images/testimonials/kevin-govender.jpg",
+    "name": "Kevin Govender",
+    "company": "Director of Office of Astronomy Development IAU",
+    "quote": "The IAU OAD is proud to support the Astrotribe project. By training and supporting disadvantaged tribal students, they are not only improving the students' educational outcomes but also setting them up with livelihood opportunities, boosting their soft skills, and helping them develop as individuals."
   },
   {
-    "image": "/avatar.png",
-    "name": "Person 4",
-    "company": "Company 4",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
-  },
-  {
-    "image": "/avatar.png",
-    "name": "Person 4",
-    "company": "Company 4",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
-  },
-  {
-    "image": "/avatar.png",
-    "name": "Person 4",
-    "company": "Company 4",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
-  },
-  {
-    "image": "/avatar.png",
-    "name": "Person 4",
-    "company": "Company 4",
-    "quote": "Great work and dedication! an amazing project, This is an amazing project Thi"
+    "id": 5,
+    "image": "/images/testimonials/sarang-sathaye.jpg",
+    "name": "Sarang Sathaye",
+    "company": "Director of BhaDiPa",
+    "quote": "AstronEra and Shweta came in my life during a tough phase of my life. When there is darkness you need light. What a better way to find the light  than on a stary night. This is the feeling I got when I did my first ever star gazing with Shweta and AstronEra. Her spirit and passion to see beyond  our world, to explore the space is so contagious. Stay curious!"
   }
 ]
