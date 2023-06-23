@@ -1,7 +1,7 @@
 <template>
   <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
     <div class="mx-auto">
-      <HomeHeading heading="Why AstroTribe?" subheading="Here are some great reasons..." />
+      <HomeHeading heading="What is AstroTribe?" subheading="Built By Astronomers For Astronomers" />
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-center items-start">
         <div
           v-for="feature in features"

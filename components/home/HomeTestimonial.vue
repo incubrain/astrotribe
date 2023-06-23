@@ -1,13 +1,23 @@
 <template>
   <div class="pb-10">
-    <HomeHeading heading="Hear From Our Users" subheading="Keep your Life Simple, Safe and Wealthy" />
-    <SwiperComponent :items="testimonials">
+    <HomeHeading
+      heading="Hear From The Community"
+      subheading="Discover How We're Making a Difference"
+    />
+    <SwiperComponent
+      :items="testimonials"
+    >
       <template #default="{ item }: { item: Testimonial }">
-        <div class="foreground min-h-full p-8 rounded-md shadow-lg">
-          <div class="flex items-center">
+        <div>
+          <div class="flex items-center h-auto">
             <NuxtImg
               :src="item.image"
               :alt="item.name"
+              width="60px"
+              height="60px"
+              loading="lazy"
+              quality="80"
+              format="webp"
               class="w-14 h-14 rounded-full"
             />
             <div class="flex flex-col pl-4 items-start">
@@ -19,7 +29,7 @@
               </p>
             </div>
           </div>
-          <p class="italic text-sm mt-8">
+          <p class="italic text-sm mt-8 h-auto">
             {{ item.quote }}
           </p>
         </div>
@@ -41,4 +51,8 @@ interface Testimonial {
 // !todo - allow users to add testimonials, fetch from supabase
 </script>
 
-<style></style>
+<style>
+.swiper-slide {
+  height: auto;
+}
+</style>

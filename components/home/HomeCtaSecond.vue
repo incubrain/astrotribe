@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center mx-auto w-full h-full">
     <div
-      class="flex flex-col gap-8 justify-center items-center h-[360px] bg-primary-600 dark:bg-primary-800 w-full rounded-lg shadow-lg mx-auto"
+      class="flex flex-col gap-8 p-8 justify-center items-center h-[360px] bg-primary-600 dark:bg-primary-800 w-full rounded-lg shadow-lg mx-auto"
     >
       <div class="text-center text-zinc-100">
         <h4 class="max-w-2xl text-3xl font-bold pb-8">
@@ -11,16 +11,14 @@
           {{ body }}
         </p>
       </div>
-      <UButton
-        color="white"
-        size="xl"
-      >
-        <!-- <UIcon
-          :class="hasIcon ? 'flex' : 'hidden'"
-          :name="icon"
-        /> -->
-        {{ cta }}
-      </UButton>
+      <NuxtLink to="auth/register-interest">
+        <UButton
+          color="white"
+          size="xl"
+        >
+          {{ cta }}
+        </UButton>
+      </NuxtLink>
     </div>
   </div>
 </template>
