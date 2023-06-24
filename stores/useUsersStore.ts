@@ -27,7 +27,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserBasic'
+      schema: 'UserBasicValidation'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
@@ -54,7 +54,7 @@ export const useUsersStore = defineStore('users', () => {
   //     globalState[dataType] = await util.checkDataValidity({
   //         data,
   //         dataType,
-  //         schema: 'User',
+  //         schema: 'UserValidation',
   //     })
   //     console.log('userzz5', globalState[dataType])
   //     if (!globalState[dataType])
@@ -79,7 +79,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserFull'
+      schema: 'UserFullValidation'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
@@ -103,7 +103,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserFull'
+      schema: 'UserFullValidation'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
@@ -124,7 +124,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserBasic'
+      schema: 'UserBasicValidation'
     })
     console.log('userzz', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
@@ -145,7 +145,7 @@ export const useUsersStore = defineStore('users', () => {
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
-      schema: 'UserBasic'
+      schema: 'UserBasicValidation'
     })
     console.log('userzz', globalState[dataType])
     if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)

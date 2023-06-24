@@ -17,7 +17,7 @@ export const useVenuesStore = defineStore('venues', {
       globalState[dataType] = await util.checkDataValidity({
         data,
         dataType,
-        schema: 'VenueBasic'
+        schema: 'VenueBasicValidation'
       })
       console.log('Venues Store', globalState[dataType])
     },
@@ -33,7 +33,7 @@ export const useVenuesStore = defineStore('venues', {
       globalState[dataType] = await util.checkDataValidity({
         data,
         dataType,
-        schema: 'VenueFull'
+        schema: 'VenueFullValidation'
       })
       console.log('Venue Store', globalState[dataType])
     },

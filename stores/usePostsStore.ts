@@ -13,7 +13,7 @@ export const usePostsStore = defineStore('posts', {
       const { data, error } = await useData().posts.many()
       if (error) throw createError(error)
 
-      const validated = util.checkDataValidity({ data, dataType, schema: PostSchema })
+      const validated = util.checkDataValidity({ data, dataType, schema: 'PostSchemaValidation' })
       if (validated) this[`${dataType}`] = validated
     },
     async getNews() {
@@ -26,7 +26,7 @@ export const usePostsStore = defineStore('posts', {
         const { data, error } = await useData().news.many()
         if (error.value) throw createError(error)
 
-        const validated = util.checkDataValidity({ data, dataType, schema: NewsSchema })
+        const validated = util.checkDataValidity({ data, dataType, schema: 'NewsSchemaValidation' })
         if (validated) this[`${dataType}`] = validated
       }
     }
