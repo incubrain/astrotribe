@@ -17,7 +17,7 @@ export const useEventsStore = defineStore('events', () => {
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
-      schema: 'EventBasic'
+      schema: 'EventBasicValidation'
     })
     console.log('events Store', globalState[dataType])
     if (!globalState[dataType])
@@ -40,7 +40,7 @@ export const useEventsStore = defineStore('events', () => {
     globalState[dataType] = util.checkDataValidity({
       data,
       dataType,
-      schema: 'EventFull'
+      schema: 'EventFullValidation'
     })
     console.log('userzz5', globalState[dataType])
     if (!globalState[dataType])
