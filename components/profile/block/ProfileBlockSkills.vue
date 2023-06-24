@@ -31,11 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Skill } from '@/types'
+import type { UserSkill } from '@/types'
 
 defineProps({
   skills: {
-    type: Array as PropType<Skill[]>,
+    type: Array as PropType<UserSkill[]>,
     required: true
   }
 })

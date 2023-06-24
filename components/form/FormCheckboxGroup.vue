@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { CheckboxOption } from '@/types'
+import { CheckboxOptionForm } from '@/types'
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -31,7 +31,7 @@ const props = defineProps({
     default: () => []
   },
   options: {
-    type: Array<CheckboxOption>,
+    type: Array<CheckboxOptionForm>,
     required: true
   },
   name: {

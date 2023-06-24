@@ -29,7 +29,7 @@ export type VenueEvents = z.infer<typeof schema.VenueEventsValidation>
 export type VenueFull = z.infer<typeof schema.VenueFullValidation>
 
 // Event Types
-export type HostBasic = z.infer<typeof schema.HostBasicValidation>
+export type EventHost = z.infer<typeof schema.HostBasicValidation>
 export type EventBasic = z.infer<typeof schema.EventBasicValidation>
 export type EventFull = z.infer<typeof schema.EventFullValidation>
 

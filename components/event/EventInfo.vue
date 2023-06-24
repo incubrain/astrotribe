@@ -35,13 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import type { EventBasic, VenueEvent, VenueBasic } from '@/types'
+import type { EventBasic, VenueEvents, VenueBasic } from '@/types'
 
 const s = useStorage()
 
 defineProps({
   event: {
-    type: Object as PropType<EventBasic | VenueEvent>,
+    type: Object as PropType<EventBasic | VenueEvents>,
     required: true
   },
   venue: {
