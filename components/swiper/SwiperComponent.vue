@@ -42,12 +42,10 @@
 </template>
 
 <script setup lang="ts" generic="T">
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
 // Import Swiper styles
 import 'swiper/css'
-
 import 'swiper/css/grid'
 import 'swiper/css/pagination'
 import 'swiper/css/autoplay'

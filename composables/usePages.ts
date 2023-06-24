@@ -8,38 +8,34 @@ const pages = ref([
   //     slug: '/news',
   //     icon: 'bi:newspaper',
   //     children: [
-  //         { id: 1, name: 'Newsfeed', slug: '/', icon: 'bi:newspaper' },
   //         { id: 2, name: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' },
   //     ],
   // },
   {
     id: 1,
     name: 'Events',
-    slug: '/events',
+    slug: '/astrotribe/events',
     icon: 'i-material-symbols-event',
     children: [
-      { id: 10, name: 'Upcoming', slug: '/', icon: 'i-material-symbols-event' }
-      // { id: 11, name: 'Popular', slug: '/popular', icon: 'ph:fire-simple-bold' },
+      // { id: 11, name: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
     ]
   },
   {
     id: 2,
     name: 'Users',
-    slug: '/users',
+    slug: '/astrotribe/users',
     icon: 'i-material-symbols-account-circle',
     children: [
-      { id: 20, name: 'All', slug: '/', icon: 'i-material-symbols-account-circle' }
-      // { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'ri:compass-discover-line' },
+      // { id: 21, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
     ]
   },
   {
     id: 3,
     name: 'Venues',
-    slug: '/venues',
+    slug: '/astrotribe/venues',
     icon: 'i-material-symbols-location-on-rounded'
     // children: [
-    //     { id: 20, name: 'All', slug: '/', icon: 'tabler:building-church' },
-    //     { id: 21, name: 'In Orbit', slug: '/in-orbit', icon: 'tabler:building-church' },
+    //     { id: 21, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
   }
 ] as Page[])

@@ -10,14 +10,16 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  title: string
-  body: string
-}
 
-withDefaults(defineProps<Props>(), {
-  title: 'Title',
-  body: 'some body text'
+defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  body: {
+    type: String,
+    required: true
+  }
 })
 </script>
 

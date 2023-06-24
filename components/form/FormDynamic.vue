@@ -38,7 +38,6 @@ const p = defineProps({
 })
 
 const validateFormWithZod = (fieldName: string, value: string) => {
-  console.log('zzzzz', p.schemaValidation.shape[fieldName], fieldName, value)
   if (value === undefined) return
   try {
     p.schemaValidation.shape[fieldName].parse(value)

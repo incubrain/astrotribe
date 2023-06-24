@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  url: string
-}
 
-withDefaults(defineProps<Props>(), {
-  url: '/cover1.jpg'
+defineProps({
+  url: {
+    type: String,
+    required: true
+  }
 })
 
 </script>
