@@ -1,9 +1,9 @@
 import * as t from '../types'
 
 type AppState = {
-  posts: t.User[]
-  news: t.User[]
-  users: t.User[]
+  posts: t.UserBasic[]
+  news: t.UserBasic[]
+  users: t.UserBasic[]
   user: t.UserFull
   followers: t.Follower[]
   followed: t.Follower[]
@@ -15,9 +15,9 @@ type AppState = {
 
 export const appState = defineStore('app', {
   state: (): AppState => ({
-    posts: [] as t.User[],
-    news: [] as t.User[],
-    users: [] as t.User[],
+    posts: [] as t.UserBasic[],
+    news: [] as t.UserBasic[],
+    users: [] as t.UserBasic[],
     user: {} as t.UserFull,
     followers: [] as t.Follower[],
     followed: [] as t.Follower[],

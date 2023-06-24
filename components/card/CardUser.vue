@@ -59,23 +59,6 @@
             name="i-mdi-account-multiple-plus"
             class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer"
           />
-          <!-- <button
-
-            class="bg-[#0f1419] border rounded-full pl-2 pr-1 py-[4px] md:pl-4 md:pr-2 md:py-[8px] w-full text-xs font-semibold leading-none text-white flex gap-2 items-center hover:bg-[#3d3d3d] focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 focus:outline-none"
-          >
-            Follow
-            <p class="bg-[#fff] rounded-full py-[4px] px-[6px] text-xs font-semibold leading-none text-[#3d3d3d]">
-              {{ props.user.follow_count ? props.user.follow_count : 0 }}
-            </p>
-          </button>
-          <button
-            v-else
-            class="border rounded-full px-2 py-[4px] md:pl-4 md:pr-2 md:py-[8px] text-xs font-semibold leading-none text-[#0f1419] w-[110px] flex gap-2 items-center justify-end hover:bg-[#ffe4e4] hover:border-[#ffc6c6] hover:text-[#e16767] hover:before:content-['Unfollow'] focus:ring-2 focus:ring-offset-2 focus:outline-none before:content-['Following']"
-          >
-            <p class="bg-[#3b3b3b] w-auto rounded-full py-[4px] px-[6px] text-xs font-semibold leading-none text-[#d0d0d0]">
-              {{ props.user.follow_count ? props.user.follow_count : 0 }}
-            </p>
-          </button> -->
         </div>
       </div>
       <p
@@ -89,11 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '@/types'
+import type { UserBasic } from '@/types'
 
 const props = defineProps({
   user: {
-    type: Object as PropType<User>,
+    type: Object as PropType<UserBasic>,
     required: true
   }
 })
