@@ -41,7 +41,6 @@
 -   Cypress - For testing
 -   Tailwind 3
     -   [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
-    -   [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
 
 ## Housekeeping
 
