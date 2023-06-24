@@ -21,7 +21,7 @@ export default function useEventHandler() {
         if (event === 'SIGNED_IN') {
           // do nothing
           console.log('SIGNED_IN', route.path)
-          if (!authPages.includes(route.path)) null
+          if (!authPages.includes(route.path)) return
           else router.push('/')
           // !todo redirect to previous page if came from internal page requiring login
         }

@@ -12,7 +12,7 @@
         >
           <span
             :class="
-              route.path.split('/')[1] === page.slug.split('/')[1]
+              route.path.split('/')[2] === page.slug.split('/')[2]
                 ? 'w-full background p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
                 : 'w-full p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
             "

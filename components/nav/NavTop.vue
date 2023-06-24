@@ -37,7 +37,7 @@
             Contact us
           </NuxtLink>
           <NuxtLink
-            to="/users"
+            to="/astrotribe"
             class="nav-link"
           >
             AstroTribe

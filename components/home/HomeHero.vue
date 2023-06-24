@@ -36,18 +36,11 @@
           </NuxtLink>
         </div>
       </div>
-      <!-- Hero Right -->
       <div class="relative z-50 w-full mx-auto">
         <LightgalleryYoutube
           :media="video"
           class="w-full h-full"
-        >
-          <!-- <p
-            class="absolute left-0 bottom-0 mb-[-50px] w-full text-center text-xl font-semibold text-white py-2 px-4 rounded-[0_8px_8px_0]"
-          >
-            AstroTribe 2022 Project in Review
-          </p> -->
-        </LightgalleryYoutube>
+        />
       </div>
     </div>
   </div>
