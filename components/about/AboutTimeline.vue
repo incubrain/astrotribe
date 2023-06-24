@@ -7,10 +7,6 @@
     >
       <div class="flex flex-col justify-center w-full p-4">
         <h2 class="font-bold text-lg lg:leading-9 leading-7">
-          <!-- <UIcon
-            name="i-material-symbols-star"
-            class="w-4 h-4 rounded-full mr-2"
-          /> -->
           {{ item.title }}
         </h2>
         <h4>
