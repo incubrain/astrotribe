@@ -11,7 +11,7 @@
       "
     >
       <NuxtLink
-        class="relative block py-2 rounded-lg w-full transition-all duration-300 animate-pop-in scale-90"
+        class="relative block w-full py-2 transition-all duration-300 scale-90 rounded-lg animate-pop-in"
         :to="`/${parentRoute[1] + tab.slug}`"
         :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none' }"
       >

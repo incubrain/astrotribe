@@ -1,10 +1,10 @@
 <template>
-  <div class="foreground py-1 px-2 md:py-2 md:px-4 rounded-t-lg">
-    <span class="text-sm md:text-base flex gap-1 justify-center items-center">
+  <div class="px-2 py-1 rounded-t-lg foreground md:py-2 md:px-4">
+    <span class="flex items-center justify-center gap-1 text-sm md:text-base">
       {{ util.strings.firstUpper(userRole.name || '') }}
       <UIcon
         :name="util.users.roleIcon(userRole.id)"
-        class="ml-1 md:ml-2 w-6 h-6"
+        class="w-6 h-6 ml-1 md:ml-2"
       />
     </span>
   </div>

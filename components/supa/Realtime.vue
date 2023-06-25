@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center w-full h-full p-12 shadow-md rounded-md">
+  <div class="flex items-center justify-center w-full h-full p-12 rounded-md shadow-md">
     <div
       v-for="t in store"
       :key="t.id"

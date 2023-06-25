@@ -11,17 +11,17 @@
       :data-poster="utils.assets.local(item.thumbnail)"
     >
       <div
-        class="relative w-full h-full flex justify-center items-center foreground p-4 rounded-lg"
+        class="relative flex items-center justify-center w-full h-full p-4 rounded-lg foreground"
       >
         <img
-          class="img-responsive rounded-lg shadow-lg aspect-auto w-full h-full"
+          class="w-full h-full rounded-lg shadow-lg img-responsive aspect-auto"
           :src="utils.assets.local(item.thumbnail)"
         />
         <UIcon
           name="i-mdi-play"
           class="absolute w-[72px] h-[72px]"
         />
-        <slot class="bottom-0 left-0 absolute" />
+        <slot class="absolute bottom-0 left-0" />
       </div>
     </a>
   </div>

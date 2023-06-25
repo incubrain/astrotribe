@@ -1,14 +1,14 @@
 <template>
-  <div class="fixed left-0 w-full hidden lg:relative h-full flex-col foreground lg:flex py-8 pl-8">
+  <div class="fixed left-0 flex-col hidden w-full h-full py-8 pl-8 lg:relative foreground lg:flex">
     <ul class="w-full">
       <li
         v-for="page in pages"
         :key="page.id"
-        class="flex w-full justify-between cursor-pointer items-center"
+        class="flex items-center justify-between w-full cursor-pointer"
       >
         <NuxtLink
           :to="page.slug"
-          class="flex flex-row items-center justify-center group w-full overflow-hidden"
+          class="flex flex-row items-center justify-center w-full overflow-hidden group"
         >
           <span
             :class="

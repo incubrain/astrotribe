@@ -1,18 +1,18 @@
 <template>
-  <div class="relative h-full w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="relative grid w-full h-full grid-cols-1 gap-6 md:grid-cols-2">
     <div
       v-for="item in timeline"
       :key="item.title"
-      class="w-full flex items-start border border-color relative rounded-md foreground"
+      class="relative flex items-start w-full border rounded-md border-color foreground"
     >
       <div class="flex flex-col justify-center w-full p-4">
-        <h2 class="font-bold text-lg lg:leading-9 leading-7">
+        <h2 class="text-lg font-bold leading-7 lg:leading-9">
           {{ item.title }}
         </h2>
         <h4>
           {{ item.date }}
         </h4>
-        <p class="font-normal text-base leading-6 mt-4">
+        <p class="mt-4 text-base font-normal leading-6">
           {{ item.body }}
         </p>
       </div>

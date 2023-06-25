@@ -6,10 +6,10 @@
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
       <!-- logo -->
-      <div class="h-full flex items-center pl-3 md:pl-4 col-start-1 col-span-2 md:col-span-1">
+      <div class="flex items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1">
         <NuxtLink
           to="/"
-          class="nav-link flex items-center gap-2"
+          class="flex items-center gap-2 nav-link"
         >
           <div
             class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden"
@@ -19,10 +19,10 @@
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
+          <h1 class="block px-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         </NuxtLink>
         <div
-          class="hidden lg:flex gap-4 pl-4 justify-center border-l border-color items-center h-full leading-none text-sm font-semibold whitespace-nowrap"
+          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
         >
           <NuxtLink
             to="/about"
@@ -44,8 +44,8 @@
           </NuxtLink>
         </div>
       </div>
-      <div class="col-start-3 col-span-1 pr-3 md:pr-6 flex w-full relative">
-        <div class="flex gap-4 w-full items-center justify-end">
+      <div class="relative flex w-full col-span-1 col-start-3 pr-3 md:pr-6">
+        <div class="flex items-center justify-end w-full gap-4">
           <ThemeToggle />
           <NuxtLink to="/auth/register-interest">
             <UButton color="primary"> Join Free </UButton>

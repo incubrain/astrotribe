@@ -19,19 +19,19 @@
     />
     <div
       v-if="currentSlide > 0"
-      class="absolute top-1/2 left-0 p-2 transform -translate-y-1/2 bg-opacity-50 text-white cursor-pointer"
+      class="absolute left-0 p-2 text-white transform -translate-y-1/2 bg-opacity-50 cursor-pointer top-1/2"
       @click="previousSlide"
     >
       <UIcon name="i-mdi-chevron-left" />
     </div>
     <div
       v-if="currentSlide < images.length - 1"
-      class="absolute top-1/2 right-0 p-2 transform -translate-y-1/2 bg-opacity-50 text-white cursor-pointer"
+      class="absolute right-0 p-2 text-white transform -translate-y-1/2 bg-opacity-50 cursor-pointer top-1/2"
       @click="nextSlide"
     >
       <UIcon name="i-mdi-chevron-right" />
     </div>
-    <div class="absolute bottom-0 right-0 p-2 bg-opacity-50 text-white">
+    <div class="absolute bottom-0 right-0 p-2 text-white bg-opacity-50">
       {{ currentSlide + 1 }}/{{ images.length }}
     </div>
   </div>

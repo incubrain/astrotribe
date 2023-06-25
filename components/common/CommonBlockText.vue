@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-lg font-semibold md:text-xl xl:text-2xl mb-4">
+    <h1 class="mb-4 text-lg font-semibold md:text-xl xl:text-2xl">
       {{ title }}
     </h1>
     <p>
@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps({
   title: {
     type: String,

@@ -1,8 +1,8 @@
 <template>
-  <div class="example-avatar flex flex-col gap-4 justify-center items-center w-full h-full">
+  <div class="flex flex-col items-center justify-center w-full h-full gap-4 example-avatar">
     <div
       v-show="imageSrc"
-      class="my-4 w-1/2 aspect-ratio object-fill mx-auto border-4 border-stone-700 rounded-full"
+      class="object-fill w-1/2 mx-auto my-4 border-4 rounded-full aspect-ratio border-stone-700"
     >
       <img
         :src="destination"
@@ -11,15 +11,15 @@
     </div>
     <div
       v-show="imageSrc"
-      class="my-2 w-1/2 aspect-ratio object-fill mx-auto"
+      class="object-fill w-1/2 mx-auto my-2 aspect-ratio"
     >
       <img
         ref="img"
-        class="block w-full aspect-auto max-w-full pb-4"
+        class="block w-full max-w-full pb-4 aspect-auto"
         :src="imageSrc"
       />
     </div>
-    <div class="flex justify-center w-full content-end mt-2 rounded-md py-2">
+    <div class="flex content-end justify-center w-full py-2 mt-2 rounded-md">
       <UButton
         v-if="!imageSrc"
         color="primary"

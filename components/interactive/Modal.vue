@@ -1,7 +1,7 @@
 <template>
   <div
     id="modal"
-    class="py-12 bg-gray-900 bg-opacity-30 transition duration-150 ease-in-out z-50 fixed top-0 right-0 bottom-0 left-0 hidden"
+    class="fixed top-0 bottom-0 left-0 right-0 z-50 hidden py-12 transition duration-150 ease-in-out bg-gray-900 bg-opacity-30"
   >
     <div
       role="alert"
@@ -18,12 +18,12 @@
           <slot />
           <div v-if="buttonsVisible">
             <button
-              class="focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm"
+              class="px-8 py-2 text-sm text-white transition duration-150 ease-in-out bg-indigo-700 rounded focus:outline-none hover:bg-indigo-600"
             >
               Submit
             </button>
             <button
-              class="focus:outline-none ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
+              class="px-8 py-2 ml-3 text-sm text-gray-600 transition duration-150 ease-in-out bg-gray-100 border rounded focus:outline-none hover:border-gray-400 hover:bg-gray-300"
               @click="modalHandler()"
             >
               Cancel
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div
-          class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out"
+          class="absolute top-0 right-0 mt-4 mr-5 text-gray-400 transition duration-150 ease-in-out cursor-pointer hover:text-gray-600"
           @click="modalHandler()"
         >
           <svg
@@ -70,10 +70,10 @@
   </div>
   <div
     id="button"
-    class="py-12 absolute hidden justify-center items-center w-full h-full group-hover:flex"
+    class="absolute items-center justify-center hidden w-full h-full py-12 group-hover:flex"
   >
     <button
-      class="focus:outline-none mx-auto transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
+      class="px-4 py-2 mx-auto text-xs text-white transition duration-150 ease-in-out bg-indigo-700 rounded focus:outline-none hover:bg-indigo-600 sm:px-8 sm:text-sm"
       @click="modalHandler(true)"
     >
       {{ modalTitle }}

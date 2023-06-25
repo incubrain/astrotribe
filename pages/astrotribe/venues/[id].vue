@@ -1,13 +1,13 @@
 <template>
-  <div class="overflow-hidden mx-auto">
+  <div class="mx-auto overflow-hidden">
     <div class="relative">
       <ImageCarousel
         :images="images"
         class="mb-6 md:rounded-md"
       />
-      <div class="absolute top-2 left-2 flex flex-col gap-3 items-center z-10">
+      <div class="absolute z-10 flex flex-col items-center gap-3 top-2 left-2">
         <NuxtImg
-          class="object-contain border-2 rounded-full bg-light overflow-hidden w-14 h-14 md:w-20 md:h-20 p-2"
+          class="object-contain p-2 overflow-hidden border-2 rounded-full bg-light w-14 h-14 md:w-20 md:h-20"
           :src="
             storage.image.optimized({
               bucket: 'venues',
@@ -20,7 +20,7 @@
           :alt="`${s.venue.name} logo`"
         />
         <UButton
-          class="text-xs font-semibold leading-none px-2 py-1 md:px-4 md:py-2 rounded-md flex items-center justify-center flex-row gap-1"
+          class="flex flex-row items-center justify-center gap-1 px-2 py-1 text-xs font-semibold leading-none rounded-md md:px-4 md:py-2"
           color="primary"
         >
           10
@@ -34,20 +34,20 @@
     <div
       class="max-w-[1080px] mx-auto flex flex-col foreground p-0 md:p-6 lg:p-8 gap-4 md:gap-6 lg:gap-8 md:rounded-md"
     >
-      <div class="flex justify-between items-center">
-        <div class="flex gap-4 items-center p-4 md:p-0">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4 p-4 md:p-0">
           <div class="flex flex-col">
-            <h1 class="text-lg font-semibold md:text-xl xl:text-2xl flex items-center">
+            <h1 class="flex items-center text-lg font-semibold md:text-xl xl:text-2xl">
               {{ s.venue.name }}
             </h1>
             <span class="flex items-center">
               <UIcon
                 name="i-material-symbols-star"
-                class="text-yellow-400 mr-1 w-5 h-5"
+                class="w-5 h-5 mr-1 text-yellow-400"
               />
               {{ s.venue.avg_rating?.toPrecision(2) }}
             </span>
-            <h3 class="text-xs md:text-sm xl:text-base mt-4 flex items-center underline">
+            <h3 class="flex items-center mt-4 text-xs underline md:text-sm xl:text-base">
               <a
                 :href="googleMapsLink"
                 target="_blank"
@@ -71,7 +71,7 @@
         :rating="s.venue.bortle_rating"
         class="p-4 md:p-0"
       />
-      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl p-4 md:p-0"> Events </h4>
+      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Events </h4>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
         <EventCard
           v-for="event in s.venue.events"
@@ -81,7 +81,7 @@
           class="shadow-none background"
         />
       </div>
-      <h4 class="text-lg font-semibold md:text-xl xl:text-2xl p-4 md:p-0"> Location </h4>
+      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Location </h4>
       <div class="aspect-square shadow-sm h-[380px] overflow-hidden md:rounded-md">
         <iframe
           class="h-full"

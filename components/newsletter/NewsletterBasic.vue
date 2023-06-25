@@ -1,22 +1,22 @@
 <template>
-  <div class="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center lg:justify-end pb-4 lg:pb-0">
+  <div class="flex justify-center w-full pb-4 mt-10 lg:w-1/2 lg:mt-0 lg:justify-end lg:pb-0">
     <div class="w-10/12 lg:w-1/2">
-      <h1 class="text-lg text-white font-semibold tracking-wide mb-6 text-center lg:text-left">
+      <h1 class="mb-6 text-lg font-semibold tracking-wide text-center text-white lg:text-left">
         Subscribe to our Newsletter
       </h1>
       <div class="flex justify-center">
-        <div class="w-full rounded-2xl flex justify-center items-center relative">
+        <div class="relative flex items-center justify-center w-full rounded-2xl">
           <input
             id="email"
             type="email"
             required="true"
             placeholder="Your Email"
             aria-label="email"
-            class="placeholder-gray-600 h-12 lg:h-16 pl-4 rounded-lg text-gray-700 text-xs sm:text-base bg-transparent focus:outline-none w-full"
+            class="w-full h-12 pl-4 text-xs text-gray-700 placeholder-gray-600 bg-transparent rounded-lg lg:h-16 sm:text-base focus:outline-none"
           />
           <button
             type="submit"
-            class="absolute right-0 inset-y-0 h-full focus:outline-none transition duration-150 border-l border-gray-300 text-xs lg:text-base font-medium text-primary-700 ease-in-out rounded px-2 sm:px-6 py-2 lg:py-4"
+            class="absolute inset-y-0 right-0 h-full px-2 py-2 text-xs font-medium transition duration-150 ease-in-out border-l border-gray-300 rounded focus:outline-none lg:text-base text-primary-700 sm:px-6 lg:py-4"
           >
             Subscribe
           </button>

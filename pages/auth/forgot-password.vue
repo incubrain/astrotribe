@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full h-full flex flex-col justify-center items-center">
-    <h2 class="text-2xl mb-6 text-center"> Forgot Your Password? </h2>
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? </h2>
     <FormDynamic
       :schema="forgotPasswordData"
       :schema-validation="ForgotPasswordValidation"

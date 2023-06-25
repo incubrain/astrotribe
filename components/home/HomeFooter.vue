@@ -1,7 +1,10 @@
 <template>
-  <div class="bg-primary-600 dark:bg-primary-700 p-6 pt-12 pb-12">
+  <div class="p-6 pt-12 pb-12 bg-primary-600 dark:bg-primary-700">
     <div class="w-full flex justify-around mx-auto container max-w-[840px]">
-      <SocialBlock :socials="contact.socials" class="text-white text-center" />
+      <SocialBlock
+        :socials="contact.socials"
+        class="text-center text-white"
+      />
       <!-- <NewsletterBasic /> -->
     </div>
   </div>

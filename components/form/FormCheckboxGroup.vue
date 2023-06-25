@@ -3,11 +3,15 @@
     <div
       v-for="(option, index) in options"
       :key="index"
-      class="w-36 h-36 m-2 flex flex-col items-center justify-center border border-color rounded-2xl shadow-soft-xl cursor-pointer transition-colors ease-linear"
+      class="flex flex-col items-center justify-center m-2 transition-colors ease-linear border cursor-pointer w-36 h-36 border-color rounded-2xl shadow-soft-xl"
       :class="{ 'bg-primary-500 text-white': isSelected(option.value) }"
       @click="toggleSelection(option.value)"
     >
-      <UIcon v-show="option.icon" :name="option.icon" class="h-16 w-16" />
+      <UIcon
+        v-show="option.icon"
+        :name="option.icon"
+        class="w-16 h-16"
+      />
       <span class="mt-2 text-sm">{{ option.label }}</span>
       <VField
         class="hidden"

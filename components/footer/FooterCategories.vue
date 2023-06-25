@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li>
-      <p class="text-lg text-white tracking-wide font-semibold">
+      <p class="text-lg font-semibold tracking-wide text-white">
         {{ category.title }}
       </p>
     </li>
@@ -12,7 +12,7 @@
     >
       <a
         href=""
-        class="text-base text-white tracking-wide"
+        class="text-base tracking-wide text-white"
       >
         {{ link }}
       </a>
@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-
 type Category = {
   title: string
   links: string[]
@@ -30,9 +29,6 @@ type Category = {
 defineProps<{
   category: Category
 }>()
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

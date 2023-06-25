@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col mb-8 text-center justify-center lg:pl-8">
-    <h1 class="text-base font-bold text-primary-700 dark:text-primary-600 tracking-tight mb-4">
+  <div class="flex flex-col justify-center mb-8 text-center lg:pl-8">
+    <h1 class="mb-4 text-base font-bold tracking-tight text-primary-700 dark:text-primary-600">
       {{ heading }}
     </h1>
-    <h2 class="text-3xl font-semibold max-w-80 leading-normal">
+    <h2 class="text-3xl font-semibold leading-normal max-w-80">
       {{ subheading }}
     </h2>
   </div>

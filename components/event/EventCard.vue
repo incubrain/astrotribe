@@ -1,6 +1,6 @@
 <template>
   <div
-    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left foreground border border-color"
+    class="relative flex flex-col text-left origin-left border md:rounded-lg md:overflow-hidden animate-swipe-in foreground border-color"
   >
     <EventHosts :hosts="props.event.hosts" />
     <EventVenueInfo

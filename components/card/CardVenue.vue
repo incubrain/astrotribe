@@ -1,6 +1,6 @@
 <template>
   <div
-    class="md:rounded-lg text-left flex relative flex-col md:overflow-hidden animate-swipe-in origin-left"
+    class="relative flex flex-col text-left origin-left md:rounded-lg md:overflow-hidden animate-swipe-in"
   >
     <NuxtLink
       :to="`/venues/${p.venue.id}`"
@@ -18,9 +18,9 @@
         "
         loading="lazy"
         :alt="`${p.venue.name} AstroTribe featured image`"
-        class="aspect-square object-contain w-full"
+        class="object-contain w-full aspect-square"
       />
-      <div class="absolute p-1 w-12 left-2 top-2 h-12 rounded-full bg-light overflow-hidden">
+      <div class="absolute w-12 h-12 p-1 overflow-hidden rounded-full left-2 top-2 bg-light">
         <NuxtImg
           :src="
             s.image.optimized({
@@ -33,10 +33,10 @@
           "
           loading="lazy"
           :alt="`${p.venue.name} Logo on AstroTribe`"
-          class="aspect-square object-contain w-full"
+          class="object-contain w-full aspect-square"
         />
       </div>
-      <div class="p-4 flex flex-col gap-2 foreground md:h-full">
+      <div class="flex flex-col gap-2 p-4 foreground md:h-full">
         <div class="flex justify-between">
           <h3 class="text-base font-semibold">
             {{ p.venue.name?.substring(0, 30) }}
@@ -48,12 +48,12 @@
           >
             <UIcon
               name="i-material-symbols-star"
-              class="text-yellow-400 w-6 h-6"
+              class="w-6 h-6 text-yellow-400"
             />
             <p class="text-xs font-semibold"> {{ p.venue.avg_rating.toPrecision(2) }} </p>
           </span>
         </div>
-        <div class="flex flex-col text-sm gap-2 text-gray-500">
+        <div class="flex flex-col gap-2 text-sm text-gray-500">
           <p>{{ p.venue.location.state }}, {{ p.venue.location.country }}</p>
           <p>{{ p.venue.events_hosted }} events hosted</p>
         </div>

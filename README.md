@@ -30,15 +30,14 @@
     -   [@nuxtjs/partytown:](https://github.com/nuxt-modules/partytown) extract blocking JS to a separate thread
 -   TypeScript
 -   [Sentry:](https://sentry.io/organizations/ml-tech/projects/astrotribe/?project=4504389151621120) For error tracking
--   Node
-    -   TRPC - For API types and validation
+-   Server
     -   Zod - Data Validation
 -   [Eslint:]()
     -   [@nuxtjs/eslint-config-typescript]()
         [@typescript-eslint/parser:]()
         [eslint-plugin-vue:]()
 -   Supabase
--   Cypress - For testing
+-   Vitest - For testing
 -   Tailwind 3
     -   [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
 

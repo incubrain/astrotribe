@@ -7,7 +7,5 @@
 </template>
 
 <script setup lang="ts">
-
 definePageMeta({ name: 'In Orbit' })
-
 </script>

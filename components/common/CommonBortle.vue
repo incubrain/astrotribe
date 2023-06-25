@@ -1,12 +1,12 @@
 <template>
-  <div class="flex gap-4 items-center">
+  <div class="flex items-center gap-4">
     <div class="w-[60px] h-[60px] object-contain rounded-full overflow-hidden relative">
       <NuxtImg
         :src="bortle.find((b) => b.id === p.rating)?.src"
         alt="bortle dark sky rating"
       />
       <p
-        class="absolute w-full h-full flex items-center justify-center text-white top-0 left-0 text-lg font-bold"
+        class="absolute top-0 left-0 flex items-center justify-center w-full h-full text-lg font-bold text-white"
       >
         {{ p.rating }}
       </p>

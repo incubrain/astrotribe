@@ -16,7 +16,7 @@
         class="w-full"
       />
       <div
-        class="flex justify-center foreground gap-2 items-center rounded-md shadow-md px-4 py-2 text-sm font-semibold absolute left-4 bottom-4"
+        class="absolute flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-md shadow-md foreground left-4 bottom-4"
       >
         <span class="block uppercase">{{ time.month }}</span>
         <span class="block">{{ time.day }}</span>

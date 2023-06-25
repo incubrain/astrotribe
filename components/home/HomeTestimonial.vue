@@ -4,9 +4,7 @@
       heading="Hear From The Community"
       subheading="Discover How We're Making a Difference"
     />
-    <SwiperComponent
-      :items="testimonials"
-    >
+    <SwiperComponent :items="testimonials">
       <template #default="{ item }: { item: Testimonial }">
         <div>
           <div class="flex items-center h-auto">
@@ -18,10 +16,10 @@
               loading="lazy"
               quality="80"
               format="webp"
-              class="w-14 h-14 rounded-full"
+              class="rounded-full w-14 h-14"
             />
-            <div class="flex flex-col pl-4 items-start">
-              <h3 class="font-semibold text-2xl">
+            <div class="flex flex-col items-start pl-4">
+              <h3 class="text-2xl font-semibold">
                 {{ item.name }}
               </h3>
               <p class="text-sm">
@@ -29,7 +27,7 @@
               </p>
             </div>
           </div>
-          <p class="italic text-sm mt-8 h-auto">
+          <p class="h-auto mt-8 text-sm italic">
             {{ item.quote }}
           </p>
         </div>

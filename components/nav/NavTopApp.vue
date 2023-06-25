@@ -7,17 +7,17 @@
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
       <!-- logo -->
-      <div class="h-full flex items-center pl-3 md:pl-4 col-start-1 col-span-2 md:col-span-1">
+      <div class="flex items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1">
         <div class="p-1 rounded-full h-[40px] w-[40px] overflow-hidden">
           <img
             src="/astronera-logo.jpg"
             class="w-full h-full"
           />
         </div>
-        <h1 class="text-xl md:text-2xl block font-semibold px-4 mr-4"> AstronEra </h1>
+        <h1 class="block px-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         <div
           v-show="route.path === '/'"
-          class="hidden lg:flex gap-4 pl-4 justify-center border-l border-color items-center h-full leading-none text-sm font-semibold whitespace-nowrap"
+          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
         >
           <NuxtLink
             to="/users"
@@ -40,14 +40,14 @@
         </div>
       </div>
       <AppTabs class="hidden h-full md:flex" />
-      <div class="col-start-3 col-span-1 pr-3 md:pr-6 flex w-full relative">
+      <div class="relative flex w-full col-span-1 col-start-3 pr-3 md:pr-6">
         <div
           v-show="route.path !== '/'"
-          class="w-full flex items-center justify-end"
+          class="flex items-center justify-end w-full"
         >
           <NuxtLink to="/profile/1">
-            <div class="flex items-center relative cursor-pointer">
-              <p class="text-gray-800 hidden md:flex text-sm mx-3">
+            <div class="relative flex items-center cursor-pointer">
+              <p class="hidden mx-3 text-sm text-gray-800 md:flex">
                 {{ currentSession ? 'Authenticated' : 'Anon.' }}
               </p>
               <div class="rounded-full">
@@ -66,14 +66,14 @@
                     :alt="`${user.given_name} AstroTribe avatar`"
                   />
                   <div
-                    class="w-2 h-2 rounded-full bg-green-400 border border-color absolute inset-0 mb-0 mr-0 m-auto"
+                    class="absolute inset-0 w-2 h-2 m-auto mb-0 mr-0 bg-green-400 border rounded-full border-color"
                   />
                 </div>
               </div>
             </div>
           </NuxtLink>
         </div>
-        <div class="flex gap-4 w-full items-center justify-end">
+        <div class="flex items-center justify-end w-full gap-4">
           <ThemeToggle />
           <div v-show="route.path === '/'">
             <UButton color="primary"> Join Free </UButton>
