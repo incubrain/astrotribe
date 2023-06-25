@@ -58,5 +58,8 @@
     "swiper": "^9.3.2",
     "uuid": "^9.0.0",
     "vue-upload-component": "2.8.23"
+  },
+  "headwind.classRegex": {
+      "typescriptvue": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
   }
 }
