@@ -11,7 +11,7 @@
           :src="
             storage.image.optimized({
               bucket: 'venues',
-              folderPath: `${s.venue.id}/logo`,
+              folderPath: `${s.venue.id}`,
               fileType: 'venue-logo',
               file: s.venue.logo,
               isPrivate: false,

@@ -36,7 +36,7 @@
           v-for="(host, index) in hosts"
           :key="host.id"
         >
-          <NuxtLink :to="`/profile/${host.id}`">
+          <NuxtLink :to="`/astrotribe/profile/${host.id}`">
             <span> {{ host.given_name }} </span>
             <span v-if="index !== hosts.length - 1">, </span>
           </NuxtLink>
