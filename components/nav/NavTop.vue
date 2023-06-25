@@ -34,13 +34,13 @@
             to="/contact"
             class="nav-link"
           >
-            Contact us
+            Contact
           </NuxtLink>
           <NuxtLink
             to="/astrotribe"
             class="nav-link"
           >
-            AstroTribe
+            Preview
           </NuxtLink>
         </div>
       </div>
