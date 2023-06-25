@@ -8,7 +8,7 @@
       :class="
         fullscreen
           ? 'relative z-50 mx-auto w-11/12 md:w-2/3'
-          : 'relative z-50 mx-auto w-11/12 w-full'
+          : 'relative z-50 mx-auto w-11/12'
       "
     >
       <div
