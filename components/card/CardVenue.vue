@@ -3,7 +3,7 @@
     class="relative flex flex-col text-left origin-left md:rounded-lg md:overflow-hidden animate-swipe-in"
   >
     <NuxtLink
-      :to="`/venues/${p.venue.id}`"
+      :to="`/astrotribe/venues/${p.venue.id}`"
       class="h-full"
     >
       <NuxtImg

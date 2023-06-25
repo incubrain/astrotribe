@@ -43,7 +43,7 @@ export const VenueFullValidation = z.object({
   created_at: z.string(),
   name: z.string().nullable(),
   body: z.string().nullable(),
-  featured_image: z.string(),
+  featured_image: z.string().nullable(),
   logo: z.string().nullable(),
   events_hosted: z.number().nullable().optional(),
   avg_rating: z.number().nullable().optional(),

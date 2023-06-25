@@ -1,6 +1,6 @@
 <template>
   <div class="px-4 pb-4">
-    <NuxtLink :to="`/venues/${venue.id}`">
+    <NuxtLink :to="`/astrotribe/venues/${venue.id}`">
       <div class="flex items-center space-x-4 text-xs">
         <div class="pl-2">
           <UIcon
