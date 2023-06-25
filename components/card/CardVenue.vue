@@ -12,12 +12,15 @@
             bucket: 'venues',
             folderPath: `${p.venue.id}`,
             file: p.venue.featured_image,
+            fileType: 'venue-featured-image',
             isPrivate: false,
             transform: { width: 250, height: 250, fit: 'cover', quality: 75 }
           })
         "
         loading="lazy"
         :alt="`${p.venue.name} AstroTribe featured image`"
+        width="250"
+        height="250"
         class="object-contain w-full aspect-square"
       />
       <div class="absolute w-12 h-12 p-1 overflow-hidden rounded-full left-2 top-2 bg-light">
@@ -27,12 +30,15 @@
               bucket: 'venues',
               folderPath: `${p.venue.id}`,
               file: p.venue.logo!,
+              fileType: 'venue-logo',
               isPrivate: false,
               transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
             })
           "
           loading="lazy"
           :alt="`${p.venue.name} Logo on AstroTribe`"
+          width="80"
+          height="80"
           class="object-contain w-full aspect-square"
         />
       </div>
@@ -74,7 +80,6 @@ const p = defineProps({
   }
 })
 
-const u = useUtils()
 </script>
 
 <style scoped></style>

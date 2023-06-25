@@ -3,6 +3,8 @@
     <div class="w-[60px] h-[60px] object-contain rounded-full overflow-hidden relative">
       <NuxtImg
         :src="bortle.find((b) => b.id === p.rating)?.src"
+        width="80"
+        height="80"
         alt="bortle dark sky rating"
       />
       <p

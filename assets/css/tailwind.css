@@ -22,28 +22,28 @@
 
 @layer components {
   .card {
-    @apply p-4 border border-zinc-300 dark:border-zinc-800 md:p-12 md:rounded-lg md:shadow-sm w-full bg-zinc-200 dark:bg-zinc-900;
+    @apply w-full p-4 border border-zinc-300 dark:border-zinc-800 md:p-12 md:rounded-lg md:shadow-sm bg-zinc-200 dark:bg-zinc-900;
   }
 }
 
 @layer utilities {
   .swiper-slide {
-    @apply bg-zinc-200 dark:bg-zinc-900 p-8 rounded-md shadow-md;
+    @apply p-8 rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
   }
   *::-webkit-scrollbar {
-    @apply bg-zinc-200 dark:bg-zinc-900 border-l border-zinc-300;
+    @apply border-l bg-zinc-200 dark:bg-zinc-900 border-zinc-300;
   }
   *::-webkit-scrollbar-thumb:hover {
-    @apply bg-zinc-600 dark:bg-zinc-600 border-4 border-transparent border-solid rounded-full bg-clip-content;
+    @apply border-4 border-transparent border-solid rounded-full bg-zinc-600 dark:bg-zinc-600 bg-clip-content;
   }
   *::-webkit-scrollbar-thumb {
-    @apply bg-zinc-400 dark:bg-zinc-700 border-4 border-transparent border-solid rounded-full bg-clip-content w-2;
+    @apply w-2 border-4 border-transparent border-solid rounded-full bg-zinc-400 dark:bg-zinc-700 bg-clip-content;
   }
   .nav-link {
-    @apply text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700 cursor-pointer;
+    @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;
   }
   .link {
-    @apply text-secondary-600 dark:text-secondary-800 hover:text-primary-500 dark:hover:text-primary-700 cursor-pointer;
+    @apply cursor-pointer text-primary-600 dark:text-primary-700 hover:text-primary-500 dark:hover:text-primary-600;
   }
   .foreground {
     @apply bg-zinc-200 dark:bg-zinc-900;

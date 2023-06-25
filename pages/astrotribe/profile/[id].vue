@@ -1,6 +1,17 @@
 <template>
   <div>
-    <CommonCoverImg :url="util.users.cover(s.user.id, s.user.cover_image)" />
+    <CommonCoverImg
+      :url="
+        supaStorage.image.optimized({
+          bucket: 'profile-public',
+          folderPath: `${s.user.id}/cover`,
+          file: s.user.cover_image,
+          fileType: 'user-cover',
+          isPrivate: false,
+          transform: { width: 1080, height: 360, fit: 'cover', quality: 75 }
+        })
+      "
+    />
     <div
       class="grid mx-auto max-w-[1080px] grid-cols-1 lg:grid-cols-[minmax(40px,1fr)_minmax(300px,804px)_300px_minmax(40px,1fr)] md:px-4 mb-2 md:mb-0"
     >
@@ -16,7 +27,16 @@
         class="relative w-full col-span-1 col-start-1 row-span-1 row-start-2 rounded-b-lg lg:col-start-1 lg:col-span-3 md:px-6 md:pb-6 foreground"
       >
         <ProfileBlockAvatar
-          :avatar="util.users.avatar(s.user.id, s.user.avatar, { width: 240, height: 240 })"
+          :avatar="
+            supaStorage.image.optimized({
+              bucket: 'profile-public',
+              folderPath: `${s.user.id}/avatar`,
+              file: s.user.avatar,
+              fileType: 'user-avatar',
+              isPrivate: false,
+              transform: { width: 240, height: 240, fit: 'cover', quality: 85 }
+            })
+          "
           class="ml-4 md:ml-0 top-[-60px] md:top-[-80px] lg:top-[-120px]"
         />
         <ProfileBlockInfo
@@ -57,9 +77,7 @@
 const route = useRoute()
 const id = route.params.id
 
-console.log('profile', id)
-const util = useUtils()
-
+const supaStorage = useStorage()
 const u = useUsersStore()
 await u.getSingleUser({ userId: Number(id) })
 

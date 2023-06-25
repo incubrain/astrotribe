@@ -8,17 +8,24 @@
         class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
       >
         <NuxtLink
-          :to="`/profile/${props.user.id}`"
+          :to="`profile/${props.user.id}`"
           class="group"
         >
           <div class="flex items-center justify-center gap-2">
             <NuxtImg
-              :src="u.users.avatar(props.user.id, props.user.avatar, { width: 40, height: 40 })"
+              :src="
+                s.image.optimized({
+                  bucket: 'profile-public',
+                  folderPath: `${props.user.id}/avatar`,
+                  file: props.user.avatar,
+                  fileType: 'user-avatar',
+                  isPrivate: false,
+                  transform: { width: 40, height: 40, fit: 'cover', quality: 75 }
+                })
+              "
               loading="lazy"
-              quality="80"
               width="40"
               height="40"
-              format="webp"
               class="object-top rounded-full"
             />
             <div class="flex flex-col gap-2 align-start">
@@ -73,6 +80,8 @@
 
 <script setup lang="ts">
 import type { UserBasic } from '@/types'
+
+const s = useStorage()
 
 const props = defineProps({
   user: {

@@ -1,12 +1,10 @@
 <template>
   <NuxtImg
-    class="absolute left-0 overflow-hidden bg-cover border-8 rounded-full border-color group"
+    class="absolute left-0 p-2 overflow-hidden bg-cover border-8 rounded-full group foreground"
     :src="avatar"
     sizes="sm:120px md:160px lg:240px"
     width="240"
     height="240"
-    format="webp"
-    quality="80"
   >
     <!-- <InteractiveModal
             :buttons-visible="false"

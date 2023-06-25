@@ -22,7 +22,7 @@ export const VenueBasicValidation = z.object({
   created_at: z.string(),
   name: z.string().nullable(),
   body: z.string().nullable(),
-  featured_image: z.string(),
+  featured_image: z.string().nullable(),
   logo: z.string().nullable(),
   location: LocationValidation
 })
@@ -55,6 +55,7 @@ export const EventBasicValidation = z.object({
   id: z.number(),
   title: z.string().nullable(),
   body: z.string().nullable(),
+  featured_image: z.string().nullable(),
   date: z.string(),
   hosts: z.array(HostBasicValidation),
   venue: VenueBasicValidation
