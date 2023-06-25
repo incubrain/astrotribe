@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-    <div class="w-full flex">
+    <div class="flex w-full">
       <!-- this is the article section -->
       <!-- <AppifyTest /> -->
     </div>

@@ -34,7 +34,6 @@ export async function getVenueImages(venueId: number): Promise<string[]> {
   }
 
   // If you want to store full URLs
-  // Filter out .folderPlaceholder
   const filtered = data.filter((file: FileObject) => !file.name.startsWith('.'))
   const imageUrls = filtered.map((file: FileObject) => `${baseUrl}venues-public/${venueId}/venue/${file.name}`)
 

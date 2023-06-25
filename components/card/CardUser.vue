@@ -1,17 +1,17 @@
 <template>
   <article
-    class="md:rounded-lg text-center flex relative flex-col md:overflow-hidden animate-swipe-in origin-left"
+    class="relative flex flex-col text-center origin-left md:rounded-lg md:overflow-hidden animate-swipe-in"
   >
-    <div class="foreground w-full flex flex-col h-full p-4 md:p-6 gap-2 md:gap-4 relative">
+    <div class="relative flex flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4">
       <div
         v-if="props.user"
-        class="w-full flex items-center flex-row gap-2 md:gap-4 justify-between"
+        class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
       >
         <NuxtLink
           :to="`/profile/${props.user.id}`"
           class="group"
         >
-          <div class="flex gap-2 justify-center items-center">
+          <div class="flex items-center justify-center gap-2">
             <NuxtImg
               :src="u.users.avatar(props.user.id, props.user.avatar, { width: 40, height: 40 })"
               loading="lazy"
@@ -19,22 +19,22 @@
               width="40"
               height="40"
               format="webp"
-              class="rounded-full object-top"
+              class="object-top rounded-full"
             />
             <div class="flex flex-col gap-2 align-start">
               <h2
-                class="text-sm md:text-lg text-left font-semibold group-hover:underline group-hover:underline-offset-2 tracking-tighter"
+                class="text-sm font-semibold tracking-tighter text-left md:text-lg group-hover:underline group-hover:underline-offset-2"
               >
                 {{ props.user.given_name }} {{ props.user.surname }}
               </h2>
-              <div class="flex gap-1 w-full text-xs items-start">
+              <div class="flex items-start w-full gap-1 text-xs">
                 <span
                   v-if="props.user.main_role.name !== 'User'"
-                  class="font-light flex justify-center items-center"
+                  class="flex items-center justify-center font-light"
                 >
                   <UIcon
                     :name="u.users.roleIcon(props.user.main_role.id)"
-                    class="text-green-700 mr-1 w-5 h-5"
+                    class="w-5 h-5 mr-1 text-green-700"
                   />
                   {{ props.user.main_role.name }} | @{{ props.user.username }}
                 </span>
@@ -48,7 +48,7 @@
             </div>
           </div>
         </NuxtLink>
-        <div class="absolute top-2 right-3 flex-row align-center justify-center gap-1">
+        <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
           <UIcon
             v-if="props.user.is_following"
             name="i-mdi-account-multiple-check"
@@ -63,7 +63,7 @@
       </div>
       <p
         v-if="props.user.introduction"
-        class="text-left text-xs"
+        class="text-xs text-left"
       >
         {{ props.user.introduction?.slice(0, 120) }}...
       </p>

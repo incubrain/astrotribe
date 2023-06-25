@@ -1,7 +1,7 @@
 <template>
   <div class="px-4 pb-4">
     <NuxtLink :to="`/venues/${venue.id}`">
-      <div class="text-xs flex items-center space-x-4">
+      <div class="flex items-center space-x-4 text-xs">
         <div class="pl-2">
           <UIcon
             name="i-material-symbols-location-on-rounded"

@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full h-full flex flex-col justify-center items-center px-4">
-    <h2 class="text-2xl mb-6 text-center">Register Your Interest</h2>
-    <h4 class="text-center mb-6">
+  <div class="flex flex-col items-center justify-center w-full h-full px-4">
+    <h2 class="mb-6 text-2xl text-center">Register Your Interest</h2>
+    <h4 class="mb-6 text-center">
       We are currently in closed alpha, but we appreciate your interest. Please register and we will
       send you an email once we launch our public beta.
     </h4>

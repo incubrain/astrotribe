@@ -2,7 +2,7 @@
   <div
     v-for="post in store.posts"
     :key="post.id"
-    class="grid grid-rows-4 rounded-md shadow-sm overflow-hidden animate-swipe-in scale-x-0 origin-left group"
+    class="grid grid-rows-4 overflow-hidden origin-left scale-x-0 rounded-md shadow-sm animate-swipe-in group"
   >
     <NuxtImg
       :src="
@@ -18,15 +18,15 @@
       :alt="post.title"
     />
     <div
-      class="row-start-3 row-span-2 w-full col-span-1 col-start-1 relative transition-all duration-500 ease-in-out"
+      class="relative w-full col-span-1 col-start-1 row-span-2 row-start-3 transition-all duration-500 ease-in-out"
     >
-      <div class="p-8 absolute bottom-0 foreground w-full">
+      <div class="absolute bottom-0 w-full p-8 foreground">
         <NuxtLink :to="`/news/article/${post.id}`">
           <button
             class="h-[40px] px-8 bg-[#440439] rounded-md absolute top-[-20px] left-0 right-0 w-[80%] shadow-lg mx-auto font-bold before:content-['Category'] group-hover:before:content-['Read_more']"
           ></button>
         </NuxtLink>
-        <h1 class="text-2xl font-semibold pb-4">
+        <h1 class="pb-4 text-2xl font-semibold">
           {{ post.title }}
         </h1>
         <p
@@ -34,7 +34,7 @@
         >
           {{ post.body }}
         </p>
-        <!-- <p class="text-sm mt-4"> {{ post.publisheAt }}</p> -->
+        <!-- <p class="mt-4 text-sm"> {{ post.publisheAt }}</p> -->
       </div>
     </div>
   </div>

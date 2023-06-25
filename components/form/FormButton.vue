@@ -2,7 +2,7 @@
   <UButton
     color="primary"
     size="md"
-    class="w-full flex items-center justify-center"
+    class="flex items-center justify-center w-full"
     type="submit"
     :disabled="isDisabled"
   >

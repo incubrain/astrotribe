@@ -1,25 +1,27 @@
 <template>
-  <div class="w-full h-full flex flex-col justify-center items-center">
-    <h2 class="text-2xl mb-6 text-center">Sign Up</h2>
+  <div class="flex flex-col items-center justify-center w-full h-full">
+    <h2 class="mb-6 text-2xl text-center">Sign Up</h2>
     <FormDynamic
       :schema="registerData"
       :schema-validation="RegisterValidation"
       class="w-full"
       @submit="handleRegister"
     >
-      <FormButton>
-        Sign Up
-      </FormButton>
+      <FormButton> Sign Up </FormButton>
     </FormDynamic>
-    <p class="text-center text-sm mt-4">
+    <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/login">Already have an account? Sign In</NuxtLink>
     </p>
     <UButton
-      class="w-full mt-6 flex justify-center items-center gap-4"
+      class="flex items-center justify-center w-full gap-4 mt-6"
       color="white"
       @click="handleGoogleSignUp"
     >
-      <NuxtImg src="/icons/google.svg" alt="Google Logo" width="28px" />
+      <NuxtImg
+        src="/icons/google.svg"
+        alt="Google Logo"
+        width="28px"
+      />
       Sign Up with Google
     </UButton>
   </div>

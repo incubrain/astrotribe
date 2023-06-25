@@ -23,7 +23,7 @@
           "
           loading="lazy"
           :alt="`${host.given_name} is an AstroTribe event host`"
-          class="aspect-square object-contain w-full"
+          class="object-contain w-full aspect-square"
         />
       </div>
     </section>

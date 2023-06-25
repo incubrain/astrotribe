@@ -1,9 +1,9 @@
 <template>
-  <div class="example-avatar p-12 w-full h-full">
+  <div class="w-full h-full p-12 example-avatar">
     <button @click="tester"> clicker </button>
     <p>{{ files }}</p>
     <button
-      class="p-6 bg-red-200 mt-4"
+      class="p-6 mt-4 bg-red-200"
       @click="tester2"
     >
       clicker2

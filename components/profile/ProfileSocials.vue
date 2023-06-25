@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col gap-2">
-    <div class="flex gap-2 items-center">
-      <div
-        class="w-[200px] h-[32px] relative rounded-sm overflow-hidden flex items-center"
-      >
+    <div class="flex items-center gap-2">
+      <div class="w-[200px] h-[32px] relative rounded-sm overflow-hidden flex items-center">
         <UIcon
           name="i-material-symbols-location-on"
           class="w-[20px] h-[20px]"

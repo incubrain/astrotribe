@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2 p-4 md:p-0">
+  <div class="grid grid-cols-1 p-4 lg:grid-cols-2 md:p-0">
     <div class="col-span-2 col-start-1">
       <h1 class="text-lg font-semibold md:text-xl xl:text-2xl">
         {{ props.user.given_name }} {{ props.user.surname }}
@@ -7,11 +7,11 @@
       <!-- <h4 class="text-lg">{{ props.user.profession }} {{ type === 'mentor' ?   `- Associated with: ${props.user.associated_companies}` : `` }}</h4> -->
       <h6
         v-if="home"
-        class="text-sm md:text-base pt-3 flex items-center"
+        class="flex items-center pt-3 text-sm md:text-base"
       >
         <UIcon
           name="i-material-symbols-location-on"
-          class="mr-1 w-5 h-5"
+          class="w-5 h-5 mr-1"
         />
         {{ home.city }}, {{ home.state }},
         {{ home.country }}
@@ -20,7 +20,7 @@
         {{ props.user.introduction }}
       </p>
     </div>
-    <div class="col-span-1 lg:col-start-2 flex flex-col gap-2"></div>
+    <div class="flex flex-col col-span-1 gap-2 lg:col-start-2"></div>
   </div>
 </template>
 

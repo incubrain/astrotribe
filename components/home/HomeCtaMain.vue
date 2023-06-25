@@ -1,12 +1,12 @@
 <template>
   <div
-    class="flex relative justify-center items-center p-10 md:py-20 lg:py-40 mx-auto w-full bg-neutral-900 dark:bg-black"
+    class="relative flex items-center justify-center w-full p-10 mx-auto md:py-20 lg:py-40 bg-neutral-900 dark:bg-black"
   >
-    <div class="flex flex-col gap-4 justify-center items-center text-light text-center">
+    <div class="flex flex-col items-center justify-center gap-4 text-center text-light">
       <h2 class="text-3xl font-bold">
         {{ title }}
       </h2>
-      <p class="text-lg max-w-sm text-center leading-snug">
+      <p class="max-w-sm text-lg leading-snug text-center">
         {{ body }}
       </p>
       <NuxtLink to="auth/register-interest">
@@ -38,5 +38,4 @@ defineProps({
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,6 +1,6 @@
 <template>
   <NuxtImg
-    class="absolute left-0 rounded-full border-8 bg-cover border-color group overflow-hidden"
+    class="absolute left-0 overflow-hidden bg-cover border-8 rounded-full border-color group"
     :src="avatar"
     sizes="sm:120px md:160px lg:240px"
     width="240"
@@ -11,7 +11,7 @@
     <!-- <InteractiveModal
             :buttons-visible="false"
             modal-title="Upload Avatar"
-            class="hidden justify-center items-center w-full h-full group-hover:flex">
+            class="items-center justify-center hidden w-full h-full group-hover:flex">
             <SupaUpload
                 upload-type="avatar"
             >
