@@ -5,13 +5,16 @@
         :src="
           s.image.optimized({
             bucket: 'venues',
-            folderPath: `${venue.id}/featured`,
-            file: venue.featured_image,
+            folderPath: `${venue.id}/events`,
+            file: event.featured_image,
+            fileType: 'event-featured-image',
             isPrivate: false,
-            transform: { width: 800, height: 600, fit: 'cover', quality: 75 }
+            transform: { width: 400, height: 400, fit: 'cover', quality: 75 }
           })
         "
         loading="lazy"
+        width="400"
+        height="400"
         :alt="`${venue.name} featured image on AstroTribe`"
         class="w-full"
       />

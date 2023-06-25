@@ -9,6 +9,7 @@
               s.image.optimized({
                 bucket: 'posts',
                 folderPath: `${post.id}`,
+                fileType: 'user-avatar',
                 file: post.media,
                 isPrivate: false,
                 transform: { width: 250, height: 250, fit: 'cover', quality: 75 }

@@ -11,19 +11,19 @@ type FileType =
 
 // Map this to supabase storage bucket structures
 export const defaultConstructorOptions: Record<FileType, string> = {
-  'venue-logo': 'logo.png',
-  'venue-featured-image': 'featured_image.jpg',
+  'venue-logo': 'logo.jpg',
+  'venue-featured-image': 'featured-image.jpg',
   'venue-images': 'images/',
-  'event-featured-image': 'featured_image.png',
+  'event-featured-image': 'events/featured-image.jpg',
   'event-images': 'images/',
-  'user-avatar': 'avatar.png',
+  'user-avatar': 'avatar.jpg',
   'user-cover': 'cover.jpg'
 }
 
 interface UrlConstructorOptions {
   baseURL: string
   bucket: 'profile-public' | 'posts' | 'venues'
-  file: string
+  file: string | null
   folderPath: string
   fileType: FileType
   isPrivate?: boolean

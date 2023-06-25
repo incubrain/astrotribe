@@ -1,6 +1,5 @@
 import * as time from './utils/time'
 import * as users from './utils/users'
-import * as storage from './utils/storage'
 import * as strings from './utils/strings'
 import * as objects from './utils/objects'
 import * as arrays from './utils/arrays'
@@ -16,14 +15,7 @@ export default function useUtils() {
       lastSeen: time.lastSeen
     },
     users: {
-      roleIcon: users.userRoleIcon,
-      avatar: storage.getAvatar,
-      cover: storage.getCover
-    },
-    venues: {
-      featuredImage: storage.getVenueFeatured,
-      images: storage.getVenueImages,
-      logo: storage.getVenueLogo
+      roleIcon: users.userRoleIcon
     },
     strings: {
       firstUpper: strings.upperCaseFirstLetter,

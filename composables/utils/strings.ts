@@ -23,4 +23,4 @@ export function upperCaseFirstLetter(str: string): string {
 }
 
 export const stringIsNull = (value: any): boolean =>
-  value === null || value === undefined || value === ''
+  value === null || value === undefined || value === '' || value.length === 0

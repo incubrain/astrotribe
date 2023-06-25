@@ -12,11 +12,14 @@
             storage.image.optimized({
               bucket: 'venues',
               folderPath: `${s.venue.id}/logo`,
+              fileType: 'venue-logo',
               file: s.venue.logo,
               isPrivate: false,
               transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
             })
           "
+          width="80"
+          height="80"
           :alt="`${s.venue.name} logo`"
         />
         <UButton
@@ -73,7 +76,7 @@
       />
       <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Events </h4>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
-        <EventCard
+        <CardEvent
           v-for="event in s.venue.events"
           :key="event.id"
           :event="event"

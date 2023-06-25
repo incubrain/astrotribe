@@ -1,8 +1,7 @@
-
 export const getSingleEvent = async (eventId: number) => {
   const client = usePublicClient()
   const { data, error } = await client.rpc('get_event_single', { eventId })
-  console.log('eventById', data, error)
+
   return {
     data,
     error
@@ -12,8 +11,6 @@ export const getSingleEvent = async (eventId: number) => {
 export const eventsMany = async () => {
   const client = usePublicClient()
   const { data, error } = await client.rpc('get_events_many')
-
-  console.log('eventsMany', data, error)
 
   return {
     data,

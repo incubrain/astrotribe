@@ -7,8 +7,8 @@
       <div
         :class="
           idx > 0
-            ? 'w-8 h-8 overflow-hidden rounded-full border-2 ml-[-20px] border-inverted'
-            : 'w-8 h-8 overflow-hidden rounded-full border-2 relative z-10 border-inverted'
+            ? 'overflow-hidden rounded-full border-2 ml-[-20px] border-inverted'
+            : 'overflow-hidden rounded-full border-2 relative z-10 border-inverted'
         "
       >
         <NuxtImg
@@ -16,6 +16,7 @@
             s.image.optimized({
               bucket: 'profile-public',
               folderPath: `${host.id}/avatar`,
+              fileType: 'user-avatar',
               file: host.avatar,
               isPrivate: false,
               transform: { width: 50, height: 50, fit: 'cover', quality: 75 }
@@ -23,6 +24,8 @@
           "
           loading="lazy"
           :alt="`${host.given_name} is an AstroTribe event host`"
+          width="50"
+          height="50"
           class="object-contain w-full aspect-square"
         />
       </div>
