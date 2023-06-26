@@ -5,8 +5,11 @@
     <div
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
+      <NavMobiSlideover :links="links" class="lg:hidden pl-3 md:pl-4 flex items-center" />
       <!-- logo -->
-      <div class="flex items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1">
+      <div
+        class="lg:flex hidden items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1"
+      >
         <NuxtLink
           to="/"
           class="flex items-center gap-2 nav-link"
@@ -19,28 +22,18 @@
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="block px-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
+          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         </NuxtLink>
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
         >
           <NuxtLink
-            to="/about"
+            v-for="link in links"
+            :key="link.id"
+            :to="link.slug"
             class="nav-link"
           >
-            About
-          </NuxtLink>
-          <NuxtLink
-            to="/contact"
-            class="nav-link"
-          >
-            Contact
-          </NuxtLink>
-          <NuxtLink
-            to="/astrotribe"
-            class="nav-link"
-          >
-            Preview
+            {{ link.name }}
           </NuxtLink>
         </div>
       </div>
@@ -57,6 +50,8 @@
 </template>
 
 <script setup>
+import links from './routes/website.json'
+
 const { logout, session } = useAuth()
 
 const { error, session: currentSession } = await session.getCurrent()

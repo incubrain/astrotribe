@@ -1,0 +1,23 @@
+[
+  {
+    "id": 0,
+    "name": "About",
+    "slug": "/about",
+    "icon": "i-material-symbols-info",
+    "children": []
+  },
+  {
+    "id": 1,
+    "name": "Contact",
+    "slug": "/contact",
+    "icon": "i-material-symbols-call",
+    "children": []
+  },
+  {
+    "id": 2,
+    "name": "Preview",
+    "slug": "/astrotribe",
+    "icon": "i-material-symbols-globe-asia",
+    "children": []
+  }
+]
