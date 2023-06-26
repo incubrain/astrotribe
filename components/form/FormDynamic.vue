@@ -9,8 +9,7 @@
         v-if="p.hasLabels"
         :for="field.name"
         class="block mb-2 text-xs font-semibold"
-        >{{ field.label }}</label
-      >
+      >{{ field.label }}</label>
       <VField
         :id="field.name"
         :as="field.as"

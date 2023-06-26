@@ -23,9 +23,7 @@
       >
         <span class="block uppercase">{{ time.month }}</span>
         <span class="block">{{ time.day }}</span>
-        <span class="block text-success-600 dark:text-success-700"
-          >{{ time.time }} {{ time.ampm }}</span
-        >
+        <span class="block text-success-600 dark:text-success-700">{{ time.time }} {{ time.ampm }}</span>
       </div>
     </div>
     <section class="relative p-4">

@@ -10,8 +10,7 @@
     <label
       :for="id"
       class="ml-2 text-sm text-slate-700 dark:text-white/80"
-      >{{ label }}</label
-    >
+    >{{ label }}</label>
   </div>
 </template>
 

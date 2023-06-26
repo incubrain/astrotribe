@@ -13,7 +13,9 @@
         {{ p.rating }}
       </p>
     </div>
-    <h3 class="text-lg font-semibold md:text-xl xl:text-2xl"> Bortle rating </h3>
+    <h3 class="text-lg font-semibold md:text-xl xl:text-2xl">
+      Bortle rating
+    </h3>
   </div>
 </template>
 
