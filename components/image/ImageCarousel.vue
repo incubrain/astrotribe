@@ -1,76 +1,69 @@
 <template>
-  <div
-    class="relative overflow-hidden w-full aspect-auto h-[80vh]"
-    @touchstart="handleTouchStart"
-    @touchend="handleTouchEnd"
+  <Swiper
+    :modules="modules"
+    :loop="true"
+    :navigation="{
+      nextEl: '.custom-button-next',
+      prevEl: '.custom-button-prev'
+    }"
+    @slide-change="onSlideChange"
   >
-    <NuxtImg
+    <SwiperSlide
       v-for="(image, index) in images"
       :key="image"
-      :src="image"
-      :class="[
-        'w-full h-full object-cover transform transition-transform duration-300 ease-in-out',
-        index === currentSlide
-          ? 'translate-x-0'
-          : index > currentSlide
-          ? 'translate-x-full'
-          : '-translate-x-full'
-      ]"
-    />
-    <div
-      v-if="currentSlide > 0"
-      class="absolute left-0 p-2 text-white transform -translate-y-1/2 bg-opacity-50 cursor-pointer top-1/2"
-      @click="previousSlide"
     >
-      <UIcon name="i-mdi-chevron-left" />
+      <NuxtImg
+        :src="image"
+        class="w-full h-full object-cover transform transition-transform duration-300 ease-in-out"
+        width="800"
+        height="250"
+        quality="80"
+        loading="lazy"
+      />
+    </SwiperSlide>
+    <div
+      class="custom-button-next flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 right-0 z-10 cursor-pointer"
+    >
+      <UIcon
+        name="i-mdi-chevron-right"
+        class="w-10 h-10"
+      />
     </div>
     <div
-      v-if="currentSlide < images.length - 1"
-      class="absolute right-0 p-2 text-white transform -translate-y-1/2 bg-opacity-50 cursor-pointer top-1/2"
-      @click="nextSlide"
+      class="custom-button-prev flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 left-0 z-10 cursor-pointer"
     >
-      <UIcon name="i-mdi-chevron-right" />
+      <UIcon
+        name="i-mdi-chevron-left"
+        class="w-10 h-10"
+      />
     </div>
-    <div class="absolute bottom-0 right-0 p-2 text-white bg-opacity-50">
-      {{ currentSlide + 1 }}/{{ images.length }}
+    <div class="custom-pagination absolute bottom-2 flex justify-center z-10 w-full">
+      <p class="px-2 py-1 rounded-md bg-black/20 text-white text-sm">
+        {{ currentPage }}/{{ totalPage }}
+      </p>
     </div>
-  </div>
+  </Swiper>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+import { Swiper, SwiperSlide } from 'swiper/vue'
+
+// import required modules
+import { Navigation, Pagination } from 'swiper'
+
+const modules = [Navigation, Pagination]
+
+const p = defineProps<{
   images: string[]
 }>()
 
-const currentSlide = ref(0)
-const touchStartX = ref(0)
+const totalPage = ref(p.images.length)
+const currentPage = ref(1)
 
-const nextSlide = () => {
-  if (currentSlide.value < props.images.length - 1) {
-    currentSlide.value++
-  }
-}
-
-const previousSlide = () => {
-  if (currentSlide.value > 0) {
-    currentSlide.value--
-  }
-}
-
-const handleTouchStart = (event: TouchEvent) => {
-  touchStartX.value = event.touches[0].clientX
-}
-
-const handleTouchEnd = (event: TouchEvent) => {
-  const touchEndX = event.changedTouches[0].clientX
-  const distance = touchStartX.value - touchEndX
-
-  if (distance > 100) {
-    nextSlide()
-  } else if (distance < -100) {
-    previousSlide()
-  }
+function onSlideChange(s) {
+  console.log(s)
+  currentPage.value = s.realIndex + 1
 }
 </script>
 
-<style scoped></style>
+<style></style>

@@ -28,7 +28,7 @@
 
 @layer utilities {
   .swiper-slide {
-    @apply p-8 rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
+    @apply rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
   }
   *::-webkit-scrollbar {
     @apply border-l bg-zinc-200 dark:bg-zinc-900 border-zinc-300;
