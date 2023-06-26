@@ -1,11 +1,12 @@
 import * as upload from './supabase/storage/upload'
 import { folder, avatar } from './supabase/storage/download'
-import { getImageURL } from './supabase/get/image'
+import { getImageURL, getStorageImages } from './utils/image'
 
 export default function useStorage() {
   return {
     image: {
-      optimized: getImageURL
+      single: getImageURL,
+      many: getStorageImages
     },
     upload: {
       avatar: upload.profileSingle,
