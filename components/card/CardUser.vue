@@ -14,18 +14,18 @@
           <div class="flex items-center justify-center gap-2">
             <NuxtImg
               :src="
-                s.image.optimized({
+                s.image.single({
                   bucket: 'profile-public',
                   folderPath: `${props.user.id}/avatar`,
                   file: props.user.avatar,
                   fileType: 'user-avatar',
                   isPrivate: false,
-                  transform: { width: 40, height: 40, fit: 'cover', quality: 75 }
                 })
               "
               loading="lazy"
               width="40"
               height="40"
+              quality="80"
               class="object-top rounded-full"
             />
             <div class="flex flex-col gap-2 align-start">

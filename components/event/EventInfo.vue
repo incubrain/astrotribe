@@ -3,18 +3,18 @@
     <div class="relative">
       <NuxtImg
         :src="
-          s.image.optimized({
+          s.image.single({
             bucket: 'venues',
             folderPath: `${venue.id}/events`,
             file: event.featured_image,
             fileType: 'event-featured-image',
-            isPrivate: false,
-            transform: { width: 400, height: 400, fit: 'cover', quality: 75 }
+            isPrivate: false
           })
         "
         loading="lazy"
         width="400"
         height="400"
+        quality="80"
         :alt="`${venue.name} featured image on AstroTribe`"
         class="w-full"
       />

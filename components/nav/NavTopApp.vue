@@ -55,15 +55,17 @@
                   <NuxtImg
                     class="rounded-full h-[32px] w-[32px] md:h-[40px] md:w-[40px] object-cover"
                     :src="
-                      s.image.optimized({
+                      s.image.single({
                         bucket: 'profile-public',
                         folderPath: `${user.id}/avatar`,
                         file: user.avatar,
-                        isPrivate: false,
-                        transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
+                        isPrivate: false
                       })
                     "
                     :alt="`${user.given_name} AstroTribe avatar`"
+                    width="60"
+                    height="60"
+                    quality="80"
                   />
                   <div
                     class="absolute inset-0 w-2 h-2 m-auto mb-0 mr-0 bg-green-400 border rounded-full border-color"
