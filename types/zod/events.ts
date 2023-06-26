@@ -66,6 +66,7 @@ export const EventFullValidation = z.object({
   title: z.string().nullable(),
   body: z.string().nullable(),
   date: z.string(),
+  featured_image: z.string().nullable(),
   hosts: z.array(HostBasicValidation),
   venue: VenueFullValidation.optional()
 })
