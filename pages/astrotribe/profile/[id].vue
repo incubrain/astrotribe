@@ -2,13 +2,12 @@
   <div>
     <CommonCoverImg
       :url="
-        supaStorage.image.optimized({
+        supaStorage.image.single({
           bucket: 'profile-public',
           folderPath: `${s.user.id}/cover`,
           file: s.user.cover_image,
           fileType: 'user-cover',
           isPrivate: false,
-          transform: { width: 1080, height: 360, fit: 'cover', quality: 75 }
         })
       "
     />
@@ -28,13 +27,12 @@
       >
         <ProfileBlockAvatar
           :avatar="
-            supaStorage.image.optimized({
+            supaStorage.image.single({
               bucket: 'profile-public',
               folderPath: `${s.user.id}/avatar`,
               file: s.user.avatar,
               fileType: 'user-avatar',
               isPrivate: false,
-              transform: { width: 240, height: 240, fit: 'cover', quality: 85 }
             })
           "
           class="ml-4 md:ml-0 top-[-60px] md:top-[-80px] lg:top-[-120px]"

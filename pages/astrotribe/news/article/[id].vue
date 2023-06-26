@@ -6,16 +6,16 @@
           <NuxtImg
             class="object-contain p-2 overflow-hidden border-2 rounded-full bg-light w-14 h-14 md:w-20 md:h-20"
             :src="
-              s.image.optimized({
+              s.image.single({
                 bucket: 'posts',
                 folderPath: `${post.id}`,
                 fileType: 'user-avatar',
                 file: post.media,
                 isPrivate: false,
-                transform: { width: 250, height: 250, fit: 'cover', quality: 75 }
               })
             "
             :alt="`${post.title} featured image`"
+            quality="80"
           />
           <h1 class="text-4xl leading-10 text-center lg:text-6xl">
             {{ post.title }}

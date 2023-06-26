@@ -6,12 +6,11 @@
   >
     <NuxtImg
       :src="
-        s.image.optimized({
+        s.image.single({
           bucket: 'posts',
           folderPath: `${post.id}`,
           file: post.id,
-          isPrivate: false,
-          transform: { width: 100, height: 100, fit: 'cover', quality: 75 }
+          isPrivate: false
         })
       "
       loading="lazy"

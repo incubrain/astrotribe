@@ -13,19 +13,19 @@
       >
         <NuxtImg
           :src="
-            s.image.optimized({
+            s.image.single({
               bucket: 'profile-public',
               folderPath: `${host.id}/avatar`,
               fileType: 'user-avatar',
               file: host.avatar,
               isPrivate: false,
-              transform: { width: 50, height: 50, fit: 'cover', quality: 75 }
             })
           "
           loading="lazy"
           :alt="`${host.given_name} is an AstroTribe event host`"
           width="50"
           height="50"
+          quality="80"
           class="object-contain w-full aspect-square"
         />
       </div>
