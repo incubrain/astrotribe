@@ -1,25 +1,25 @@
 <template>
   <div class="mx-auto overflow-hidden">
-    <div class="relative">
+    <div class="relative h-auto text-white">
       <ImageCarousel
         :images="images"
-        class="mb-6 md:rounded-md"
+        class="mb-12 md:rounded-md"
       />
-      <div class="absolute z-10 flex flex-col items-center gap-3 top-2 left-2">
+      <div class="absolute hidden lg:flex z-10 flex-col items-center gap-3 top-2 left-2">
         <NuxtImg
           class="object-contain p-2 overflow-hidden border-2 rounded-full bg-light w-14 h-14 md:w-20 md:h-20"
           :src="
-            storage.image.optimized({
+            storage.image.single({
               bucket: 'venues',
               folderPath: `${s.venue.id}`,
               fileType: 'venue-logo',
               file: s.venue.logo,
-              isPrivate: false,
-              transform: { width: 80, height: 80, fit: 'cover', quality: 75 }
+              isPrivate: false
             })
           "
           width="80"
           height="80"
+          quality="80"
           :alt="`${s.venue.name} logo`"
         />
         <UButton
@@ -108,18 +108,22 @@ const { id } = useRoute().params
 
 const v = useVenuesStore()
 const storage = useStorage()
-const util = useUtils()
 
-const images = await v.getVenueImages({ venueId: Number(id) })
 v.getVenueSingle({ venueId: Number(id) })
 
 const s = appState()
+const images = await storage.image.many({
+  bucket: 'venues',
+  fileType: 'venue-images',
+  folderPath: `${id}/images`
+})
 
 const fullAddress = computed(() => {
   console.log('venue.location', s.venue.location)
   if (!s.venue.location) return ''
   return `${s.venue.location?.address}, ${s.venue.location.city}, ${s.venue.location.state}, ${s.venue.location.country}`
 })
+
 const googleMapsLink = computed(() => {
   const formattedAddress = fullAddress.value.split(' ').join('+')
   return `https://www.google.com/maps/search/${formattedAddress}`

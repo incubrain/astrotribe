@@ -6,7 +6,7 @@
     />
     <SwiperComponent :items="testimonials">
       <template #default="{ item }: { item: Testimonial }">
-        <div>
+        <div class="p-6">
           <div class="flex items-center h-auto">
             <NuxtImg
               :src="item.image"
