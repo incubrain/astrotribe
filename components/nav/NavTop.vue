@@ -22,7 +22,9 @@
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
+          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl">
+            AstronEra
+          </h1>
         </NuxtLink>
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
@@ -41,7 +43,9 @@
         <div class="flex items-center justify-end w-full gap-4">
           <ThemeToggle />
           <NuxtLink to="/auth/register-interest">
-            <UButton color="primary"> Join Free </UButton>
+            <UButton color="primary">
+              Join Free
+            </UButton>
           </NuxtLink>
         </div>
       </div>

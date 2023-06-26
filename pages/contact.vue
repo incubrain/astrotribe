@@ -19,7 +19,9 @@
           class="lg:w-2/5 w-full min-h-[100vh] text-center md:text-right absolute flex flex-col items-center md:items-end pr-8 right-0 gap-10 z-30 bg-gradient-to-r from-transparent dark:to-zinc-900 dark:via-zinc-900 via-white to-white md:pl-6 py-4 sm:py-10 lg:py-40"
         >
           <div class="lg:w-96">
-            <h1 class="text-2xl font-bold leading-10 sm:text-4xl lg:text-5xl"> LET’S TALK </h1>
+            <h1 class="text-2xl font-bold leading-10 sm:text-4xl lg:text-5xl">
+              LET’S TALK
+            </h1>
             <p class="mt-4 text-base leading-normal lg:mt-2">
               We'll happily answer any questions <br />you have about AstronEra / AstroTribe
             </p>

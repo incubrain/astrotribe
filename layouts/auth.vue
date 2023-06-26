@@ -46,7 +46,9 @@
               <p class="text-sm font-bold">
                 {{ data.date }}
               </p>
-              <p class="text-xs"> Copyright: {{ data.copyright }} </p>
+              <p class="text-xs">
+                Copyright: {{ data.copyright }}
+              </p>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full h-full">
-    <h2 class="mb-6 text-2xl text-center">Sign Up</h2>
+    <h2 class="mb-6 text-2xl text-center">
+      Sign Up
+    </h2>
     <FormDynamic
       :schema="registerData"
       :schema-validation="RegisterValidation"
@@ -10,7 +12,9 @@
       <FormButton> Sign Up </FormButton>
     </FormDynamic>
     <p class="mt-4 text-sm text-center">
-      <NuxtLink to="/auth/login">Already have an account? Sign In</NuxtLink>
+      <NuxtLink to="/auth/login">
+        Already have an account? Sign In
+      </NuxtLink>
     </p>
     <UButton
       class="flex items-center justify-center w-full gap-4 mt-6"

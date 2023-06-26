@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col gap-2">
-    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl"> Connect </h1>
+    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl">
+      Connect
+    </h1>
     <div class="flex flex-col gap-2 sm:flex-row md:gap-4">
       <a
         v-for="social in socials"

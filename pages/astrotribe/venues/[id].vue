@@ -74,7 +74,9 @@
         :rating="s.venue.bortle_rating"
         class="p-4 md:p-0"
       />
-      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Events </h4>
+      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
+        Events
+      </h4>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
         <CardEvent
           v-for="event in s.venue.events"
@@ -84,7 +86,9 @@
           class="shadow-none background"
         />
       </div>
-      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Location </h4>
+      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
+        Location
+      </h4>
       <div class="aspect-square shadow-sm h-[380px] overflow-hidden md:rounded-md">
         <iframe
           class="h-full"

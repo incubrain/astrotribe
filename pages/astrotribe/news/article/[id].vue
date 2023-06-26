@@ -21,7 +21,9 @@
             {{ post.title }}
           </h1>
           <div class="flex flex-row justify-center gap-2items-center">
-            <p class="font-semibold"> Published: {{ post.published }} </p>
+            <p class="font-semibold">
+              Published: {{ post.published }}
+            </p>
           </div>
         </div>
         <div class="max-w-[920px] mx-auto">

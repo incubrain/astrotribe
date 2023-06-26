@@ -1,6 +1,8 @@
 <template>
   <div class="p-8 rounded-md shadow-md foreground">
-    <h1 class="text-xl font-semibold">Admin</h1>
+    <h1 class="text-xl font-semibold">
+      Admin
+    </h1>
     <div class="flex flex-wrap gap-2">
       <UButton
         color="primary"
