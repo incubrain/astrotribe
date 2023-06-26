@@ -29,8 +29,7 @@ export default function useData() {
     },
     venues: {
       many: venues.venuesMany,
-      single: venues.venueSingle,
-      allImages: venues.getVenueImages
+      single: venues.venueSingle
     }
   }
 }

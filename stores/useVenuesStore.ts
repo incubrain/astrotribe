@@ -36,10 +36,6 @@ export const useVenuesStore = defineStore('venues', {
         schema: 'VenueFullValidation'
       })
       console.log('Venue Store', globalState[dataType])
-    },
-    async getVenueImages({ venueId }: { venueId: number }): Promise<string[]> {
-      const data = await useData().venues.allImages(venueId)
-      return data
     }
   },
   getters: {
