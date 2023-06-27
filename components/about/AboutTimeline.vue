@@ -6,13 +6,13 @@
       class="relative flex items-start w-full border rounded-md border-color foreground"
     >
       <div class="flex flex-col justify-center w-full p-4">
-        <h2 class="text-lg font-bold leading-7 lg:leading-9">
+        <h2 class="text-lg font-semibold leading-7 lg:leading-9">
           {{ item.title }}
         </h2>
-        <h4>
+        <h4 class="text-sm">
           {{ item.date }}
         </h4>
-        <p class="mt-4 text-base font-normal leading-6">
+        <p class="mt-4 text-sm font-normal leading-6">
           {{ item.body }}
         </p>
       </div>

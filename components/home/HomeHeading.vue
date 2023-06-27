@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center mb-8 text-center lg:pl-8">
+  <div class="flex flex-col justify-center text-center lg:pl-8">
     <h1 class="mb-4 text-base font-bold tracking-tight text-primary-700 dark:text-primary-600">
       {{ heading }}
     </h1>
