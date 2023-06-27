@@ -30,7 +30,7 @@
       }
     }"
     :space-between="40"
-    class="pb-20"
+    class="pb-10"
   >
     <SwiperSlide
       v-for="(item, index) in items"
@@ -64,4 +64,5 @@ defineProps<{
 .testimonial-slider {
   width: 100%;
 }
+
 </style>

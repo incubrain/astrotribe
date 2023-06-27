@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col gap-12">
     <div class="flex flex-col space-y-4">
-      <h1 class="text-3xl font-extrabold leading-8 xl:text-4xl xl:leading-9">
+      <h3 class="text-2xl font-bold leading-7">
         AstronEra Team
-      </h1>
+      </h3>
       <p class="max-w-sm text-base leading-normal">
         AstronEra thrives thanks to its dedicated team. Passionate about astronomy and education?
       </p>

@@ -3,10 +3,11 @@
     <HomeHero />
     <div class="max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px]">
       <HomeTrusted />
-      <HomeFeatures class="py-16 md:py-32" />
+      <HomeFeatures class="py-16 md:py-24" />
       <HomeHeading
         heading="That's not all..."
         subheading="We Have Some Big Plans!"
+        class="pb-16 md:pb-24"
       />
       <HomeProductStep
         v-for="step in productSteps"
@@ -16,17 +17,17 @@
         :title="step.title"
         :body="step.body"
         :cta="step.cta"
-        class="py-16 md:py-24"
+        class="pb-16 md:pb-24"
       />
     </div>
     <HomeCtaMain
-      class="py-16 md:py-32"
+      class="py-16 md:py-24"
       title="Earlybird Exclusive Benefits"
       body="The first 50 people will get exclusive life-time free use of our platform"
       cta="Claim your spot"
     />
     <div
-      class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-32 px-[20px] md:px-[80px] lg:px-[160px]"
+      class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-24 px-[20px] md:px-[80px] lg:px-[160px]"
     >
       <HomeTestimonial />
       <HomeCtaSecond

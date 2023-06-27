@@ -13,7 +13,7 @@
     </div>
 
     <div class="flex flex-col max-w-6xl gap-12 p-6 mx-auto lg:gap-24 lg:py-24">
-      <h2 class="text-3xl font-bold leading-7 text-center lg:text-4xl lg:leading-9">
+      <h2 class="text-3xl font-bold leading-7 text-center lg:text-4xl lg:leading-9 pt-6 lg:pt-0">
         Our Story
       </h2>
 
@@ -24,7 +24,7 @@
             :key="section.title"
             class="w-full leading-6 text-left xl:w-10/12"
           >
-            <h3 class="pb-4 text-xl font-bold leading-7">
+            <h3 class="pb-4 text-2xl font-bold leading-7">
               {{ section.title }}
             </h3>
             <p
@@ -38,7 +38,7 @@
         </div>
 
         <div class="w-full h-auto">
-          <h3 class="pb-4 text-xl font-bold leading-7">
+          <h3 class="pb-4 text-2xl font-bold leading-7">
             Timeline
           </h3>
           <AboutTimeline :timeline="about.timeline" />

@@ -35,7 +35,6 @@
               isPrivate: false,
             })
           "
-          class="ml-4 md:ml-0 top-[-60px] md:top-[-80px] lg:top-[-120px]"
         />
         <ProfileBlockInfo
           :user="s.user"

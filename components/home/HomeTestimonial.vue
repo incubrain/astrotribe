@@ -1,8 +1,9 @@
 <template>
-  <div class="pb-10">
+  <div class="pb-16 md:pb-24">
     <HomeHeading
       heading="Hear From The Community"
       subheading="Discover How We're Making a Difference"
+      class="pb-16 md:pb-24"
     />
     <SwiperComponent :items="testimonials">
       <template #default="{ item }: { item: Testimonial }">
