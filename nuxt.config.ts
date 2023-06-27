@@ -12,6 +12,23 @@ export default defineNuxtConfig({
       swr: 60 * 60
     }
   },
+  nitro: {
+    // Production
+    storage: {
+      db: {
+        driver: 'redis',
+        host: `redis://default:${process.env.UPSTASH_REDIS_KEY}@kind-warthog-40316.upstash.io:40316`
+        /* redis connector options */
+      }
+    },
+    // Development
+    devStorage: {
+      db: {
+        driver: 'fs',
+        base: './data/db'
+      }
+    }
+  },
   vue: {
     compilerOptions: {
       isCustomElement: (tag: string) => tag.startsWith('swiper-')

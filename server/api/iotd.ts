@@ -1,6 +1,3 @@
-import { Buffer } from 'buffer'
-import type { StorageValue } from 'unstorage'
-import Jimp from 'jimp'
 import { z } from 'zod'
 
 const imageObject = z.object({
@@ -22,7 +19,7 @@ export default cachedEventHandler(
     const cacheKey = `image:${date}`
 
     let nasaImg = await useStorage().getItem(cacheKey)
-
+    console.log('nasaImg', nasaImg)
     if (!nasaImg) {
       const unvalidated = await $fetch(
         'https://api.nasa.gov/planetary/apod?api_key=qVu1erjdjYJLfLLALZyIz3EfYxOerf29waltn3PM'
@@ -30,9 +27,11 @@ export default cachedEventHandler(
       const data: NasaImg = imageObject.parse(unvalidated)
       nasaImg = data
       // Save the image data to the cache
+      console.log('nasaImg2', nasaImg)
       await useStorage().setItem(cacheKey, nasaImg)
     }
 
+    console.log('nasaImg3', nasaImg)
     return nasaImg
   },
   {
