@@ -82,7 +82,9 @@ export default defineNuxtConfig({
       }
     }
   },
-  // For @nuxt/image-edge
+  image: {
+    format: ['webp', 'jpg']
+  },
   // image: {
   //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
   //   presets: {
