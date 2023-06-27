@@ -1,25 +1,47 @@
 <template>
-  <NuxtImg
-    class="absolute left-0 p-2 overflow-hidden bg-cover border-8 rounded-full group foreground"
-    :src="avatar"
-    sizes="sm:120px md:160px lg:240px"
-    width="240"
-    height="240"
+  <div
+    class="absolute left-0 overflow-hidden w-auto h-auto border-8 rounded-full foreground ml-4 md:ml-0 top-[-40px] md:top-[-90px]"
   >
-    <!-- <InteractiveModal
-            :buttons-visible="false"
-            modal-title="Upload Avatar"
-            class="items-center justify-center hidden w-full h-full group-hover:flex">
-            <SupaUpload
-                upload-type="avatar"
-            >
-                Upload Avatar
-            </SupaUpload>
-        </InteractiveModal> -->
-  </NuxtImg>
+    <NuxtImg
+      class="hidden md:flex"
+      :src="avatar"
+      width="180"
+      height="180"
+    />
+    <NuxtImg
+      class="md:hidden"
+      :src="avatar"
+      width="80"
+      height="80"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
+import { useWindowSize } from '@vueuse/core'
+
+const { width, height } = useWindowSize()
+
+const getWidth = () => {
+  if (width.value < 640) {
+    return '60px'
+  } else if (width.value < 768) {
+    return '120px'
+  } else {
+    return '240px'
+  }
+}
+
+const getHeight = () => {
+  if (height.value < 640) {
+    return '60px'
+  } else if (height.value < 768) {
+    return '120px'
+  } else {
+    return '240px'
+  }
+}
+
 defineProps<{
   avatar: string
 }>()

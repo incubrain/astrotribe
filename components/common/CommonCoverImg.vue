@@ -1,9 +1,10 @@
 <template>
-  <div class="w-full aspect-auto h-[200px] md:h-[80vh] relative md:rounded-lg md:overflow-hidden">
-    <div
-      class="flex items-center justify-center w-full h-full bg-center bg-contain md:mb-12 md:bg-cover"
-      :style="{ backgroundImage: `url(${url})` }"
-    ></div>
+  <div class="w-full aspect-auto h-[320px] md:h-[60vh] relative md:rounded-lg md:overflow-hidden">
+    <NuxtImg
+      class="object-cover object-center w-full h-full overflow-hidden"
+      :src="url"
+      :alt="`${title} AstroTribe feature`"
+    />
     <div class="bg-[#12060625] w-full h-full bg-blend-overlay absolute top-0 left-0"></div>
   </div>
 </template>
