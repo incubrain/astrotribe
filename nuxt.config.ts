@@ -7,25 +7,23 @@ export default defineNuxtConfig({
   //     device: 'desktop'
   //   }
   // },
-  routeRules: {
-    '/auth/**': {
-      swr: 60 * 60
-    }
-  },
+  // routeRules: {
+  //   '/auth/**': {
+  //     swr: 60 * 60
+  //   }
+  // },
   nitro: {
     // Production
     storage: {
-      db: {
-        driver: 'redis',
-        host: `redis://default:${process.env.UPSTASH_REDIS_KEY}@kind-warthog-40316.upstash.io:40316`
-        /* redis connector options */
+      data: {
+        driver: 'vercelKV',
       }
     },
     // Development
     devStorage: {
-      db: {
+      data: {
         driver: 'fs',
-        base: './data/db'
+        base: './data/kv'
       }
     }
   },
@@ -87,7 +85,8 @@ export default defineNuxtConfig({
       SUPABASE_KEY: process.env.SUPABASE_KEY
     },
     // The private keys which are only available within server-side
-    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY
+    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
+    NASA_API_KEY: process.env.NASA_API_KEY
   },
   typescript: {
     shim: false,
