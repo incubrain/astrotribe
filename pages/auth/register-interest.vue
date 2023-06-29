@@ -9,7 +9,7 @@
     </h4>
     <FormDynamic
       :schema="registerInterestData"
-      :schema-validation="RegisterInterestValidation"
+      :validation-schema="RegisterInterestValidation"
       class="w-full"
       @submit="handleRegister"
     >

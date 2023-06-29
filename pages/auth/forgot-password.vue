@@ -1,11 +1,9 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full h-full">
-    <h2 class="mb-6 text-2xl text-center">
-      Forgot Your Password?
-    </h2>
+    <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? </h2>
     <FormDynamic
       :schema="forgotPasswordData"
-      :schema-validation="ForgotPasswordValidation"
+      :validation-schema="ForgotPasswordValidation"
       class="w-full"
       @submit="handleForgotPassword"
     >

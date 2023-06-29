@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
 import * as forms from './forms'
 import * as users from './users'
 import * as toasts from './toasts'
@@ -7,15 +8,15 @@ import * as posts from './posts'
 import * as events from './events'
 
 // Forms
-export const LoginValidation = forms.LoginValidation
-export const RegisterValidation = forms.RegisterValidation
-export const ForgotPasswordValidation = forms.ForgotPasswordValidation
-export const ResetPasswordValidation = forms.ResetPasswordValidation
-export const ProfessionalInfoValidation = forms.ProfessionalInfoValidation
-export const SocialMediaValidation = forms.SocialMediaValidation
-export const LocationValidation = forms.LocationValidation
-export const InterestValidation = forms.InterestValidation
-export const RegisterInterestValidation = forms.RegisterInterestValidation
+export const LoginValidation = toTypedSchema(forms.LoginValidation)
+export const RegisterValidation = toTypedSchema(forms.RegisterValidation)
+export const ForgotPasswordValidation = toTypedSchema(forms.ForgotPasswordValidation)
+export const ResetPasswordValidation = toTypedSchema(forms.ResetPasswordValidation)
+export const ProfessionalInfoValidation = toTypedSchema(forms.ProfessionalInfoValidation)
+export const SocialMediaValidation = toTypedSchema(forms.SocialMediaValidation)
+export const LocationValidation = toTypedSchema(forms.LocationValidation)
+export const InterestValidation = toTypedSchema(forms.InterestValidation)
+export const RegisterInterestValidation = toTypedSchema(forms.RegisterInterestValidation)
 
 // Form Components
 export const CheckboxOptionValidation = forms.CheckboxOptionValidation
