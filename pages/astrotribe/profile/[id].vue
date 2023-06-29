@@ -79,7 +79,6 @@ const u = useUsersStore()
 await u.getSingleUser({ userId: Number(id) })
 
 const s = appState()
-console.log('userProfile', s.user)
 
 definePageMeta({
   name: 'Profile'

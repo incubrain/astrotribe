@@ -9,7 +9,6 @@ const zod: ZodSchemaMap = {
 
 export function addLocalStorage({ dataType, data }: { data: any; dataType: string }) {
   // store validated data in localStorage
-  console.log('addLocalStorage', dataType, data)
   if (process.client) {
     localStorage.setItem(dataType, JSON.stringify(data))
   }

@@ -16,5 +16,4 @@ await v.getVenues()
 
 const s = appState()
 
-console.log('venues', s.venues)
 </script>

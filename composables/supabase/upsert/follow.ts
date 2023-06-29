@@ -11,7 +11,6 @@ export async function followUser({
     .upsert({ followed_id: userId, follower_id: followerId })
     .select()
 
-  console.log('followUser', error)
 }
 
 export async function unfollowUser({
@@ -27,5 +26,4 @@ export async function unfollowUser({
     .upsert({ followed_id: userId, follower_id: followerId })
     .select()
 
-  console.log('followUser', error)
 }

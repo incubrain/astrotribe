@@ -53,9 +53,7 @@ const handleLogin = (value: { email: string; password: string }) => {
 async function handleProviderSignIn(provider) {
   try {
     const { data, error } = await auth.login.withOAuth(provider)
-
     if (error) throw error
-    console.log('User logged in via Google', data)
   } catch (error) {
     console.error('Error logging in via Google', error)
   }

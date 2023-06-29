@@ -25,7 +25,6 @@ export default function useAuth() {
       requestResetEmail,
       update,
       toggleResetForm: (newValue: boolean) => {
-        console.log('toggleResetForm')
         showResetForm.value = newValue
       }
     },
