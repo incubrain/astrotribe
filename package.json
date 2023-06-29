@@ -4,7 +4,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "supabase:login": "npx supabase login",
-    "supabase:types": "npx supabase gen types typescript --db-url postgres://postgres:uk!mHb96Xdk8SNk@db.idsifamzvzlpgnmlnldw.supabase.co:6543/postgres > ./types/schema.d.ts --debug",
+    "supabase:types": "npx supabase gen types typescript --db-url postgres://postgres:[password]@db.idsifamzvzlpgnmlnldw.supabase.co:6543/postgres > ./types/schema.d.ts --debug",
     "cache:clean": "npm cache clean --force && npx nuxi cleanup",
     "type:check": "npx nuxi typecheck",
     "generate": "nuxt generate",

@@ -58,11 +58,8 @@
 </template>
 
 <script setup lang="ts">
-const { event } = useEventHandler()
 
 const imageLoaded = ref(false)
-
-event.auth
 
 const { data: nasa, error } = await useFetch('/api/iotd')
 if (error.value) console.error('error fetching nasa iotd: ', error.value)
