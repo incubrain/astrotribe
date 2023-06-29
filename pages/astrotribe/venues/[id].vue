@@ -3,7 +3,7 @@
     <div class="relative h-auto text-white">
       <ImageCarousel
         :images="images"
-        class="mb-12 md:rounded-md"
+        class="md:mb-12 md:rounded-md"
       />
       <div class="absolute hidden lg:flex z-10 flex-col items-center gap-3 top-2 left-2">
         <NuxtImg
@@ -74,10 +74,10 @@
         :rating="s.venue.bortle_rating"
         class="p-4 md:p-0"
       />
-      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
+      <h4 v-show="hasEvents" class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
         Events
       </h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
+      <div v-show="hasEvents" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
         <CardEvent
           v-for="event in s.venue.events"
           :key="event.id"
@@ -116,6 +116,12 @@ const storage = useStorage()
 v.getVenueSingle({ venueId: Number(id) })
 
 const s = appState()
+const hasEvents = computed(() => {
+  if (!s.venue.events) return false
+  if (s.venue.events.length === 0) return false
+  return true
+})
+
 const images = await storage.image.many({
   bucket: 'venues',
   fileType: 'venue-images',

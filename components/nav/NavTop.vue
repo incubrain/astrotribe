@@ -57,7 +57,14 @@ import links from './routes/website.json'
 
 const { logout, session } = useAuth()
 
-const { error, session: currentSession } = await session.getCurrent()
+const error = ref(null)
+const currentSession = ref(null)
 
-if (error) throw new Error('error getting user session')
+onMounted(async () => {
+  const sessionData = await session.getCurrent()
+  error.value = sessionData.error
+  currentSession.value = sessionData.session
+
+  if (error.value) throw new Error('error getting user session')
+})
 </script>
