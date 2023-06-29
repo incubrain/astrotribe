@@ -1,18 +1,6 @@
-import { z } from 'zod'
 import logger from '../../utils/logger'
-
-const imageObject = z.object({
-  title: z.string(),
-  explanation: z.string(),
-  date: z.string(),
-  url: z.string(),
-  hdurl: z.string(),
-  media_type: z.string(),
-  copyright: z.string(),
-  service_version: z.string()
-})
-
-type NasaImg = z.infer<typeof imageObject>
+import { NasaImgValidation } from '../../../types/zod'
+import { NasaImg } from '../../../types'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -37,7 +25,7 @@ export default defineEventHandler(async (event) => {
     // Validate with zod
     logger.info(`Validating ${kvForCache} data`)
     try {
-      nasaImg = imageObject.parse(unvalidated)
+      nasaImg = NasaImgValidation.parse(unvalidated)
     } catch (error) {
       logger.error('Error validating data', error)
       throw error

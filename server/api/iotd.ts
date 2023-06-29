@@ -1,18 +1,5 @@
-import { z } from 'zod'
 import logger from '../utils/logger'
-
-const imageObject = z.object({
-  title: z.string(),
-  explanation: z.string(),
-  date: z.string(),
-  url: z.string(),
-  hdurl: z.string(),
-  media_type: z.string(),
-  copyright: z.string(),
-  service_version: z.string()
-})
-
-type NasaImg = z.infer<typeof imageObject>
+import { NasaImg } from '../../types'
 
 export default defineEventHandler(async (event) => {
   // use date for KV storage
