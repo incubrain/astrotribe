@@ -32,9 +32,13 @@ const handleRegister = async (value: {
 }) => {
   const { name, email, referral, interest } = value
   const { data, error } = await auth.register.interest({ name, email, referral, interest })
-
-  if (error.value) console.error('error registering interest: ', error.value)
-  else console.info('User registered interest: ', data.value)
+  console.log('data: ', data, error)
+  if (error !== null) console.error('error registering interest: ', error.value)
+  else {
+    console.info('User registered interest: ', data.value)
+    const router = useRouter()
+    router.push('/auth/register-interest-success')
+  }
 }
 
 definePageMeta({

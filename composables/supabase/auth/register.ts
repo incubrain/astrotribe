@@ -10,7 +10,7 @@ export const interest = async ({
   interest: string
 }) => {
   const client = usePublicClient()
-  const { data, error } = await client.from('register_interest').insert({ name, email, referral, interest })
+  const { data, error } = await client.from('register_interest').insert({ name, email, referral, interest }).select('*')
   console.log('insert interested user', data, error)
   return {
     data,
