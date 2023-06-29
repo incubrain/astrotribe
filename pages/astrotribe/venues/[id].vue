@@ -129,7 +129,6 @@ const images = await storage.image.many({
 })
 
 const fullAddress = computed(() => {
-  console.log('venue.location', s.venue.location)
   if (!s.venue.location) return ''
   return `${s.venue.location?.address}, ${s.venue.location.city}, ${s.venue.location.state}, ${s.venue.location.country}`
 })

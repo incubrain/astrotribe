@@ -12,29 +12,28 @@ export const useEventsStore = defineStore('events', () => {
     // if (globalState[dataType].length) return globalState[dataType]
     // if not stored get them from database
     const { data, error } = await useData().events.many()
-    console.log('get events from supabase', data)
+
     if (error) throw createError(error)
     globalState[dataType] = await util.checkDataValidity({
       data,
       dataType,
       schema: 'EventBasicValidation'
     })
-    console.log('events Store', globalState[dataType])
-    if (!globalState[dataType])
-      throw createError(`Error validating ${dataType} data`)
+
+    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
   }
 
   async function getSingleEvent({ eventId }: { eventId: number }) {
     const dataType = 'event'
     // check appState
     if (globalState[dataType].id === eventId) return globalState[dataType]
-    console.log('eventzz')
+
     // check localStorage
     // globalState[dataType] = util.checkLocalStorage({ dataType })
     // if (globalState[dataType]) return globalState[dataType]
     // if not stored get them from database
     const { data, error } = await useData().events.single(eventId)
-    console.log('eventzz4', data, error)
+
     if (error) throw createError(error)
     // validate data, then store in localStorage
     globalState[dataType] = util.checkDataValidity({
@@ -42,9 +41,8 @@ export const useEventsStore = defineStore('events', () => {
       dataType,
       schema: 'EventFullValidation'
     })
-    console.log('userzz5', globalState[dataType])
-    if (!globalState[dataType])
-      throw createError(`Error validating ${dataType} data`)
+
+    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
   }
 
   const eventById = () => {

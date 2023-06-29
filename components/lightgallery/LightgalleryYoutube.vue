@@ -66,13 +66,6 @@ const props = defineProps({
   }
 })
 
-const onInit = () => {
-  console.log('lightGallery has been initialized')
-}
-
-const onBeforeSlide = () => {
-  console.log('calling before slide')
-}
 </script>
 
 <style>

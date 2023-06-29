@@ -12,21 +12,19 @@ export const useVenuesStore = defineStore('venues', {
       if (globalState[dataType].length) return globalState[dataType]
 
       const { data, error } = await useData().venues.many()
-      console.log('get events from supabase', data)
+
       if (error) throw createError(error)
       globalState[dataType] = await util.checkDataValidity({
         data,
         dataType,
         schema: 'VenueBasicValidation'
       })
-      console.log('Venues Store', globalState[dataType])
     },
     async getVenueSingle({ venueId }: { venueId: number }): Promise<void> {
       const dataType = 'venue'
       const globalState = appState()
       // check localStorage and state
       // if (globalState[dataType]) return
-      console.log('retTest')
 
       const { data, error } = await useData().venues.single(venueId)
       if (error) throw createError(error)
@@ -35,7 +33,6 @@ export const useVenuesStore = defineStore('venues', {
         dataType,
         schema: 'VenueFullValidation'
       })
-      console.log('Venue Store', globalState[dataType])
     }
   },
   getters: {

@@ -48,7 +48,6 @@ export const constructUrl = (options: UrlConstructorOptions) => {
   } = options
 
   let filePath = `${folderPath}/${file}`
-  console.log('filePath', fileType, file, stringIsNull(file))
   if (stringIsNull(file) && fileType) {
     filePath = `defaults/${defaultFileOptions[fileType]}`
   }
@@ -108,7 +107,6 @@ export async function getStorageImages(options: GetStorageImagesOptions): Promis
 
   const { data, error } = await client.storage.from(bucket).list(folderPath)
 
-  console.log('getStorageImages', data, error)
 
   if (error) {
     console.error(`Error fetching images from ${bucket}:`, error)
@@ -147,6 +145,5 @@ export async function getStorageImages(options: GetStorageImagesOptions): Promis
     }
   })
 
-  console.log('imageUrls', images)
   return images
 }
