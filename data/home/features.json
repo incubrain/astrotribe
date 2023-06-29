@@ -19,7 +19,7 @@
     "id": 3,
     "title": "Join the Cosmic Conversation",
     "description": "Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey",
-    "icon": "i-material-symbols-calendar-month",
+    "icon": "i-material-symbols-android-messages-outline",
     "bgImg": "/images/features/feat3.png",
     "isAvailable": false
   },
