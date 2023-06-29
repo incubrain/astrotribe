@@ -16,7 +16,7 @@
           <NuxtImg
             v-if="!imageLoaded"
             ref="blur"
-            :src="nasa.url"
+            :src="nasa.url || '/astron-era-hero.jpg'"
             quality="20"
             width="150"
             height="120"
@@ -25,13 +25,14 @@
           />
           <NuxtImg
             v-else
-            :src="nasa.url"
+            :src="nasa.url || '/astron-era-hero.jpg'"
             quality="95"
             alt=""
             class="w-full object-cover object-center"
             @load="imageLoaded = true"
           />
           <div
+            v-show="nasa.title"
             class="group bg-[#00000040] text-white p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] transition-all duration-300 backdrop-blur-md"
           >
             <h1 class="text-xl font-semibold pb-2">

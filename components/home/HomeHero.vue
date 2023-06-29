@@ -56,5 +56,5 @@ const video = [
   }
 ]
 
-const bgImg = '/cover1.jpg'
+const bgImg = '/astron-era-hero.jpg'
 </script>
