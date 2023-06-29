@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute left-0 overflow-hidden w-auto h-auto border-8 rounded-full foreground ml-4 md:ml-0 top-[-40px] md:top-[-90px]"
+    class="absolute left-0 overflow-hidden w-auto h-auto border-8 border-color rounded-full foreground ml-4 md:ml-0 top-[-40px] md:top-[-90px]"
   >
     <NuxtImg
       class="hidden md:flex"
