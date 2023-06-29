@@ -6,7 +6,6 @@
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
       <NavMobiSlideover :links="links" class="lg:hidden pl-3 md:pl-4 flex items-center" />
-      <!-- logo -->
       <div
         class="lg:flex hidden items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1"
       >

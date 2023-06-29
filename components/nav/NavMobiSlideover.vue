@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtLink to="/">
+    <NuxtLink to="/" class="flex items-center">
       <UButton
         variant="link"
         :padded="false"
