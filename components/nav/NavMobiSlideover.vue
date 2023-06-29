@@ -44,7 +44,7 @@
             v-for="link in links"
             :key="link.id"
             :to="link.slug"
-            class="w-full flex justify-end items-center border-b border-color py-3 px-8 text-xs font-medium"
+            class="w-full flex justify-end items-center border-b border-color py-3 px-8 text-sm font-medium"
             @click="isOpen = false"
           >
             {{ link.name }}

@@ -6,6 +6,7 @@ export default <Partial<Config>>{
   content: ['./nuxt.config.{js,ts}'],
   theme: {
     fontSize: {
+      xs: '0.625rem',
       sm: '0.8rem',
       base: '1rem',
       xl: '1.25rem',
