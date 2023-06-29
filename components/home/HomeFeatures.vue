@@ -2,6 +2,7 @@
   <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
     <div class="mx-auto">
       <HomeHeading
+        class="pb-16 md:pb-24"
         heading="What is AstroTribe?"
         subheading="Built By Astronomers For Astronomers"
       />
@@ -27,7 +28,7 @@
             <UIcon
               :name="feature.icon"
               class="w-[26px] h-[26px]"
-            ></UIcon>
+            />
             <div class="pt-4">
               <h1 class="text-lg font-semibold tracking-wider lg:text-2xl">
                 {{ feature.title }}
@@ -51,6 +52,17 @@
 
 <script setup lang="ts">
 import features from '@/data/home/features.json'
+
+// must list out icons for them to work, for some reason they don't load directly from JSON (nuxthq/ui bug)
+const icons = [
+  'i-material-symbols-group-add',
+  'i-material-symbols-calendar-month',
+  'i-material-symbols-android-messages-outline',
+  'i-mdi-briefcase',
+  'i-mdi-telescope',
+  'i-material-symbols-circle-notifications'
+]
+
 </script>
 
 <style scoped></style>
