@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/fetch-nasa",
+      "schedule": "0 * * * *"
+    }
+  ]
+}
