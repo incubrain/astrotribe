@@ -9,14 +9,14 @@
     @slide-change="onSlideChange"
   >
     <SwiperSlide
-      v-for="(image, index) in images"
+      v-for="image in images"
       :key="image"
     >
       <NuxtImg
         :src="image"
         class="w-full h-full object-cover transform transition-transform duration-300 ease-in-out"
         width="800"
-        height="250"
+        height="280"
         quality="80"
         loading="lazy"
       />
@@ -60,8 +60,7 @@ const p = defineProps<{
 const totalPage = ref(p.images.length)
 const currentPage = ref(1)
 
-function onSlideChange(s) {
-  console.log(s)
+function onSlideChange(s: any) {
   currentPage.value = s.realIndex + 1
 }
 </script>
