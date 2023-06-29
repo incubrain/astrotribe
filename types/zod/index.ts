@@ -1,3 +1,4 @@
+import * as z from 'zod'
 import * as forms from './forms'
 import * as users from './users'
 import * as toasts from './toasts'
@@ -50,3 +51,14 @@ export const PageValidation = pages.PageValidation
 export const ToastValidation = toasts.ToastValidator
 export const ToastStateValidation = toasts.ToastStateValidator
 export const ToastActionValidation = toasts.ToastActionValidator
+
+export const NasaImgValidation = z.object({
+  title: z.string(),
+  explanation: z.string(),
+  date: z.string(),
+  url: z.string(),
+  hdurl: z.string(),
+  media_type: z.string(),
+  copyright: z.string(),
+  service_version: z.string()
+})

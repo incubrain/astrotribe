@@ -44,3 +44,5 @@ export type Page = z.infer<typeof schema.PageValidation>
 export type Toast = z.infer<typeof schema.ToastValidation>
 export type ToastState = z.infer<typeof schema.ToastStateValidation>
 export type ToastAction = z.infer<typeof schema.ToastActionValidation>
+
+export type NasaImg = z.infer<typeof schema.NasaImgValidation>
