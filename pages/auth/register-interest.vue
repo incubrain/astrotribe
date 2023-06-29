@@ -33,8 +33,8 @@ const handleRegister = async (value: {
   const { name, email, referral, interest } = value
   const { data, error } = await auth.register.interest({ name, email, referral, interest })
 
-  // Here you would usually send the email to your backend to be saved in your database
-  console.log('signed up, redirect', data, error)
+  if (error.value) console.error('error registering interest: ', error.value)
+  else console.info('User registered interest: ', data.value)
 }
 
 definePageMeta({
