@@ -1,7 +1,7 @@
 <template>
   <div
     ref="scrollContainer"
-    class="w-full h-[calc(100vh-var(--nav-height-sm))] md:h-[calc(100vh-var(--nav-height-md))] lg:h-[calc(100vh-var(--nav-height-lg))] relative overflow-y-scroll"
+    class="w-full h-[calc(100vh-var(--nav-height-sm)-var(--nav-height-mobi))] md:h-[calc(100vh-var(--nav-height-md))] lg:h-[calc(100vh-var(--nav-height-lg))] relative overflow-y-scroll"
   >
     <slot />
   </div>
