@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import logger from '../utils/logger'
 
 const imageObject = z.object({
   title: z.string(),
@@ -14,30 +15,34 @@ const imageObject = z.object({
 type NasaImg = z.infer<typeof imageObject>
 
 export default defineEventHandler(async (event) => {
-  // Create key for KV storage
-  let nasaImg: NasaImg | null
+  // use date for KV storage
   const date = new Date().toISOString().split('T')[0]
   const cacheKey = `nasa-iotd:${date}`
-
-  // Initiate storage redis in prod, fs in dev
   const storage = useStorage('data')
 
-  // Check if item exists in KV storage
+  // Check if item exists in storage
+  let nasaImg: NasaImg | null = null
   const isItemInStorage = await storage.hasItem(cacheKey)
+  logger.info(`Is ${cacheKey} in storage: ${isItemInStorage}`)
   if (isItemInStorage) {
-    // Get item from KV storage
+    // Get item from storage
     nasaImg = await storage.getItem<NasaImg>(cacheKey)!
+    logger.info(`Got ${cacheKey} from storage: `, nasaImg)
   } else {
-    // Fetch data
-    const nasaKey = useRuntimeConfig().NASA_API_KEY
-    const unvalidated = await $fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaKey}`)
+    // Get the item for the previous day
+    const previousDay = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    const previousCacheKey = `nasa-iotd:${previousDay}`
 
-    // Validate with zod
-    const data: NasaImg = imageObject.parse(unvalidated)
-    nasaImg = data
+    const isPreviousItemInStorage = await storage.hasItem(previousCacheKey)
+    if (isPreviousItemInStorage) {
+      nasaImg = await storage.getItem<NasaImg>(previousCacheKey)!
+      logger.info(`Got ${previousCacheKey} from storage: `, nasaImg)
+    }
+  }
 
-    // Store in KV
-    await storage.setItem(cacheKey, nasaImg)
+  if (!nasaImg) {
+    logger.info('No iotd in storage')
+    return false
   }
 
   return nasaImg
