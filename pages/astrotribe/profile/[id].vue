@@ -42,7 +42,7 @@
         />
       </div>
       <div
-        class="relative flex flex-col w-full col-span-1 col-start-1 row-span-1 row-start-3 gap-2 md:mt-4 md:gap-4 lg:col-span-3 mb-16 lg:mb-24"
+        class="relative flex flex-col w-full col-span-1 col-start-1 row-span-1 row-start-3 gap-2 md:mt-4 md:gap-4 lg:col-span-3 md:mb-24"
       >
         <ProfileBlockSkills
           v-if="s.user.user_skills.length > 0"
