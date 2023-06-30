@@ -2,10 +2,11 @@ import supabaseClient from '../../../utils/supabaseClient'
 // import venues from '../../../../private-data/venues.json'
 
 export default cachedEventHandler(async (event) => {
+  const venues = null
   const admin = false
   let status = 400
   let message = 'You Are Not Authorized'
-  if (admin) {
+  if (admin && venues) {
     const client = supabaseClient()
     const { data, error } = await client.from('venues').insert(venues)
     console.log('venues', data, error)

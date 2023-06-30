@@ -9,4 +9,3 @@ dist
 .unlighthouse
 private-data
 data/kv
-data/logs
