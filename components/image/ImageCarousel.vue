@@ -22,7 +22,7 @@
       />
     </SwiperSlide>
     <div
-      class="custom-button-next flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 right-0 z-10 cursor-pointer"
+      class="custom-button-next hidden md:flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 right-0 z-10 cursor-pointer"
     >
       <UIcon
         name="i-mdi-chevron-right"
@@ -30,7 +30,7 @@
       />
     </div>
     <div
-      class="custom-button-prev flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 left-0 z-10 cursor-pointer"
+      class="custom-button-prev hidden md:flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 left-0 z-10 cursor-pointer"
     >
       <UIcon
         name="i-mdi-chevron-left"
