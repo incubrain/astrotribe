@@ -1,4 +1,3 @@
-import logger from '../../utils/logger'
 import { NasaImgValidation } from '../../../types/zod'
 import { NasaImg } from '../../../types'
 
@@ -39,8 +38,8 @@ export default defineEventHandler(async (event) => {
       logger.error('Error storing data', error)
       throw error
     }
-  } catch (error) {
-    return { message: `Error: ${error.message}`, status: 500 }
+  } catch (error: any) {
+    return { message: `Error fetching iotd: ${error.message}`, status: 500 }
   }
   return { message: 'Success fetching iotd', status: 200 }
 })
