@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     storage: {
       data: {
         driver: 'vercelKV',
+        base: 'astrotribe:'
       }
     },
     // Development
