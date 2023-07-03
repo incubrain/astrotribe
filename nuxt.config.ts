@@ -25,6 +25,10 @@ export default defineNuxtConfig({
       data: {
         driver: 'fs',
         base: './data/kv'
+      },
+      blogs: {
+        driver: 'fs',
+        base: './data/blogs'
       }
     }
   },

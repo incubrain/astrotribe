@@ -37,6 +37,15 @@ const pages = ref([
     // children: [
     //     { id: 41, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
+  },
+  {
+    id: 5,
+    name: 'Feed',
+    slug: '/astrotribe/feed',
+    icon: 'i-material-symbols-location-on-rounded'
+    // children: [
+    //     { id: 51, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
+    // ],
   }
 ] as Page[])
 
