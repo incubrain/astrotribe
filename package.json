@@ -37,7 +37,7 @@
     "chart.js": "4.3.0",
     "cropperjs": "^1.5.13",
     "dayjs": "^1.11.8",
-    "dompurify": "3.0.3",
+    "dompurify": "3.0.4",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-vue": "^9.14.1",
