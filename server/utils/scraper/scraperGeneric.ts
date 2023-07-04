@@ -1,14 +1,9 @@
 import { Browser, Page } from 'puppeteer'
+import { Blog } from './scraperBlogs'
 
 // maps the name of a data field to a CSS selector string that can be used to find the corresponding element on the page.
 interface SelectorConfig {
   [key: string]: string
-}
-
-interface Blog {
-  name: string
-  url: string
-  selectorConfig: SelectorConfig
 }
 
 // take a puppeteer Browser instance and a Blog object, and return a promise that resolves to an array of scraped data.
@@ -28,26 +23,39 @@ const scraperGeneric: ScrapeFunction = async (browser: Browser, blog: Blog) => {
     try {
       // To have access you have to pass in data to the page.$$eval function.
       const newPosts = await page.$$eval(
-        'article',
-        (articles: HTMLElement[], selectorConfig: SelectorConfig) =>
-          articles.map((article: HTMLElement) => {
+        blog.selectorBase,
+        (articles: Element[], selectorConfig: SelectorConfig) =>
+          articles.map((article: Element) => {
             const data: { [key: string]: any } = {}
 
             // For each key in the selectorConfig, find the corresponding element
             for (const key in selectorConfig) {
               const element = article.querySelector(selectorConfig[key])
               if (!element) {
-                if (key === 'featured_image') {
-                  data[key] = null // set featured_image to null if not found
+                if (key === 'image') {
+                  data[key] = {
+                    src: null,
+                    alt: null,
+                    caption: null
+                  } // if no image, set null, no error
                   continue
                 }
                 throw new Error(`Missing ${key} element in article`)
               }
 
               if (key === 'content') {
-                data[key] = element.textContent?.replace(/\n/g, ' ').trim()
-              } else if (key === 'featured_image') {
-                data[key] = element.getAttribute('src')
+                const clonedElement = element.cloneNode(true) as Element
+                const figcaptions = clonedElement.querySelectorAll('figcaption')
+                figcaptions.forEach((figcaption) => figcaption.remove())
+                data[key] = clonedElement.textContent?.replace(/\n/g, ' ').trim()
+              } else if (key === 'image') {
+                const captionElement = element.querySelector('figcaption')
+                const imgElement = element.querySelector('img')
+                data[key] = {
+                  src: imgElement ? imgElement.getAttribute('src') : null,
+                  alt: imgElement ? imgElement.getAttribute('alt') : null,
+                  caption: captionElement ? captionElement.textContent?.trim() : null
+                }
               } else {
                 data[key] = {
                   name: element.textContent?.trim(),
@@ -64,7 +72,7 @@ const scraperGeneric: ScrapeFunction = async (browser: Browser, blog: Blog) => {
       posts = [...posts, ...newPosts]
 
       // Find the link to the next page.
-      const nextPageLink = await page.$$eval('.nav-links .next', (elements) =>
+      const nextPageLink = await page.$$eval(blog.selectorPagination, (elements) =>
         elements.length ? elements[0].getAttribute('href') : null
       )
 
