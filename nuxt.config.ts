@@ -91,7 +91,9 @@ export default defineNuxtConfig({
     },
     // The private keys which are only available within server-side
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
-    NASA_API_KEY: process.env.NASA_API_KEY
+    NASA_API_KEY: process.env.NASA_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_ORG: process.env.OPENAI_ORG
   },
   typescript: {
     shim: false,
