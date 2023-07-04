@@ -16,8 +16,13 @@
         >
           <h3 class="text-2xl"> {{ p.title.name }}</h3>
         </a>
-        <div v-if="p.featured_image">
-          <NuxtImg :src="p.featured_image" class="mx-auto rounded-md" />
+        <div v-if="p.image.src">
+          <NuxtImg
+            :src="p.image.src"
+            :alt="p.image.alt || `${p.title.name} featured image`"
+            class="mx-auto rounded-md"
+          />
+          <p class="text-xs"> {{ p.image.caption ? p.image.caption : '' }}</p>
         </div>
         <div class="flex gap-2">
           <a
@@ -59,7 +64,11 @@ interface Post {
     link: string
   }
   content: string
-  featured_image: string | null
+  image: {
+    src: string | null
+    alt: string | null
+    caption: string | null
+  }
 }
 
 const posts = ref([] as Post[])
