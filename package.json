@@ -44,6 +44,7 @@
     "libphonenumber-js": "^1.10.36",
     "nuxt": "^3.6.0",
     "nuxt-icon": "^0.4.1",
+    "openai": "^3.3.0",
     "puppeteer": "^20.7.4",
     "typescript": "5.0.4",
     "vee-validate": "^4.9.6",
