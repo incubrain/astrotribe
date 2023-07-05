@@ -17,12 +17,18 @@ interface Post {
   }
   content: string
   featured_image: string | null
+  summaries: {
+    beginner: string[]
+    intermediate: string[]
+    expert: string[]
+  }
 }
 
 export default defineEventHandler(async () => {
   try {
+    // ${scraperBlogs[0].name}
     const storage = useStorage('blogs')
-    const blogsFile = await storage.getItem<Post[]>(`${scraperBlogs[0].name}.json`)
+    const blogsFile = await storage.getItem<Post[]>('summary-test.json')
     return {
       status: 200,
       message: 'Blogs retrieved',
