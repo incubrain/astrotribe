@@ -15,7 +15,7 @@
         Interested in joining the beta waitlist?
       </p>
       <NuxtLink
-        to="auth/register-interest"
+        to="/auth/register-interest"
       >
         <UButton color="primary">
           Register your interest here.

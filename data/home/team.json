@@ -13,7 +13,7 @@
   },
   {
     "id": 2,
-    "name": "Drew MacGibbon (Mac)",
+    "name": "Drew MacGibbon",
     "position": "CTO",
     "avatar": "/images/team/drew-macgibbon.jpg",
     "bio": "some bio",
@@ -37,7 +37,7 @@
   },
   {
     "id": 4,
-    "name": "Atharva Joshi (Jhey)",
+    "name": "Atharva Joshi",
     "position": "Project Coordinator",
     "avatar": "/images/team/atharva-joshi.jpg",
     "bio": "some bio",

@@ -1,44 +1,48 @@
 <template>
-  <div class="flex flex-col gap-12">
-    <div class="flex flex-col space-y-4">
+  <div class="flex flex-col gap-4 xl:gap-8">
+    <div class="flex flex-col gap-4 xl:gap-8">
       <h3 class="text-2xl font-bold leading-7">
         AstronEra Team
       </h3>
-      <p class="max-w-sm text-base leading-normal">
-        AstronEra thrives thanks to its dedicated team. Passionate about astronomy and education?
-      </p>
-      <p class="max-w-md text-base leading-normal">
-        <strong> Contact Shweta or Mac to join us.</strong> <br />
-        Together, we'll explore the universe!
-      </p>
+      <div class="space-y-3">
+        <p class="max-w-sm text-base leading-normal">
+          AstronEra thrives thanks to its dedicated team. Passionate about astronomy and education?
+        </p>
+        <p class="max-w-md text-base leading-normal">
+          <strong> Contact Shweta or Drew to join us.</strong> <br />
+          Together, we'll explore the universe!
+        </p>
+      </div>
     </div>
     <div
-      class="grid w-full grid-cols-1 gap-6 mt-6 md:grid-cols-3 lg:grid-cols-4 md:gap-8 lg:gap-12"
+      class="grid w-full grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 xl:gap-8"
     >
       <div
         v-for="member in team"
         :key="member.id"
-        class="flex flex-col items-center justify-between w-full p-4 space-y-4 rounded-md shadow-md foreground"
+        class="flex flex-row items-center gap-4 w-full p-4 space-y-4 rounded-md shadow-md foreground"
       >
-        <div class="w-20 overflow-hidden border rounded-full md:w-24">
+        <div class="w-14 overflow-hidden border rounded-full">
           <NuxtImg
             :src="member.avatar"
             loading="lazy"
             :alt="member.name"
           />
         </div>
-        <div class="flex flex-col items-center justify-center space-y-2">
-          <p class="text-base font-semibold leading-none text-center">
+        <div class="flex flex-col justify-center gap-2">
+          <p class="text-base font-semibold leading-none">
             {{ member.name }}
           </p>
-          <p class="text-sm leading-none text-center">
+          <p class="text-sm leading-none">
             {{ member.position }}
           </p>
-          <SocialBlock
-            :socials="member.socials"
-            :has-title="false"
-            class="flex items-center justify-center space-x-2"
-          />
+          <div class="flex xl:flex-col gap-2">
+            <SocialBlock
+              :socials="member.socials"
+              :has-title="false"
+              class="flex items-center justify-center space-x-2"
+            />
+          </div>
         </div>
       </div>
     </div>
