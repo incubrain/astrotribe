@@ -10,6 +10,9 @@ export default defineAppConfig({
     modal: {
       width: 'max-w-[90%] md:max-w-[80%] lg:max-w-[80%] w-auto xl:max-w-[80%]',
       container: 'flex min-h-full items-center justify-center text-center'
+    },
+    slideover: {
+      background: 'background',
     }
   }
 })
