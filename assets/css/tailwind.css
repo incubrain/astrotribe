@@ -1,7 +1,5 @@
-/* @import 'cropperjs/dist/cropper.css'; */
 @import './scrollbar.css';
 @import './transitions.css';
-/* @import './variables.css'; */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,15 +27,6 @@
 @layer utilities {
   .swiper-slide {
     @apply rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
-  }
-  *::-webkit-scrollbar {
-    @apply border-l bg-zinc-200 dark:bg-zinc-900 border-zinc-300;
-  }
-  *::-webkit-scrollbar-thumb:hover {
-    @apply border-4 border-transparent border-solid rounded-full bg-zinc-600 dark:bg-zinc-600 bg-clip-content;
-  }
-  *::-webkit-scrollbar-thumb {
-    @apply w-2 border-4 border-transparent border-solid rounded-full bg-zinc-400 dark:bg-zinc-700 bg-clip-content;
   }
   .nav-link {
     @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;

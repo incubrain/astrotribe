@@ -4,17 +4,18 @@
       <UButton @click="scrapeBlogs">Scrape Blogs</UButton>
       <UButton @click="getBlogs">Get Blogs</UButton>
       <UButton @click="getSummary">Get Summary</UButton>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto gap-8">
-      <p>{{ summary }}</p>
-      <ul>
-        <li
-          v-for="sum in summary"
-          :key="sum"
+      <div class="w-full flex justify-end gap-2 mb-4">
+        <select
+          v-model="summaryLevel"
+          class="outline-none p-2 rounded-md shadow-sm"
         >
-          {{ sum }}
-        </li>
-      </ul>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto gap-8">
       <div
         v-for="(p, i) in posts"
         :key="i"
@@ -28,13 +29,16 @@
         </a>
         <div v-if="p.image.src">
           <UTooltip :text="p.image.caption?.substring(0, 240) + '...' || 'No caption'">
-            <NuxtImg
-              :src="p.image.src"
-              :alt="p.image.alt || `${p.title.name} featured image`"
-              class="mx-auto rounded-md"
-              loading="lazy"
-              @click="imgModalOpen = true"
-            />
+            <div class=" h-56 w-full rounded-md overflow-hidden relative object-cover">
+              <NuxtImg
+                :src="p.image.src"
+                :alt="p.image.alt || `${p.title.name} featured image`"
+                width="460"
+                height="259"
+                class="h-full object-cover"
+                @click="imgModalOpen = true"
+              />
+            </div>
           </UTooltip>
           <UModal v-model="imgModalOpen">
             <div
@@ -47,30 +51,74 @@
                   `${posts[currentIndex].title.name} featured image`
                 "
                 loading="lazy"
-                class="mx-auto rounded-md"
+                class="mx-auto rounded-md object-cover w-full"
               />
               <div>
                 <p class="text-sm">
                   {{ posts[currentIndex].image.caption ? posts[currentIndex].image.caption : '' }}
                 </p>
-                <p class="text-sm hidden xl:flex pt-4">
-                  {{ posts[currentIndex].content.substring(0, 360) }}
-                </p>
+                <div>
+                  <h4 class="pb-2 font-semibold"> {{ summaryLevel }}</h4>
+                  <ul class="space-y-2">
+                    <li
+                      v-for="sum in p.summaries[summaryLevel]"
+                      :key="sum"
+                      class="flex gap-2 items-start"
+                    >
+                      <UIcon
+                        name="i-mdi-star"
+                        class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
+                      />
+                      <p class="flex-grow leading-snug text-sm">
+                        {{ sum }}
+                      </p>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="flex gap-4 justify-center">
-                <UButton
-                  class="btn btn-primary"
-                  @click="prevPost"
-                  :disabled="currentIndex === 0"
+                <!-- <div
+                  v-if="prevIndex >= 0"
+                  class="flex flex-col gap-2"
                 >
-                  Prev
-                </UButton>
+                  <NuxtImg
+                    :src="posts[prevIndex].image.src || 'astron-era-hero.jpg'"
+                    :alt="
+                      posts[prevIndex].image.alt || `${posts[prevIndex].title.name} featured image`
+                    "
+                    width="50"
+                    height="50"
+                    loading="lazy"
+                    class="mx-auto rounded-md object-cover w-full"
+                  />
+                  <UButton
+                    class="btn btn-primary"
+                    variant="link"
+                    @click="prevPost"
+                  >
+                    {{ posts[prevIndex].title.name }}
+                  </UButton>
+                </div> -->
                 <UButton
-                  class="btn btn-primary"
+                  v-if="nextIndex <= posts.length -1"
+                  class="flex flex-col gap-2"
+                  variant="link"
                   @click="nextPost"
-                  :disabled="currentIndex === posts.length - 1"
                 >
-                  Next
+                  <div class="w-24 h-24">
+                    <NuxtImg
+                      :src="posts[nextIndex].image.src || 'astron-era-hero.jpg'"
+                      :alt="
+                        posts[nextIndex].image.alt || `${posts[nextIndex].title.name} featured image`
+                      "
+                      width="50"
+                      height="50"
+                      quality="65"
+                      loading="lazy"
+                      class="mx-auto rounded-md object-cover w-full h-full"
+                    />
+                  </div>
+                  {{ posts[nextIndex].title.name }}
                 </UButton>
               </div>
             </div>
@@ -91,7 +139,24 @@
             <p class="text-sm"> {{ p.category.name }}</p>
           </a>
         </div>
-        <p class="text-sm"> {{ p.content.substring(0, 360) }}</p>
+        <div>
+          <h4 class="pb-2 font-semibold"> {{ summaryLevel }}</h4>
+          <ul class="space-y-2">
+            <li
+              v-for="sum in p.summaries[summaryLevel]"
+              :key="sum"
+              class="flex gap-2 items-start"
+            >
+              <UIcon
+                name="i-mdi-star"
+                class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
+              />
+              <p class="flex-grow leading-snug text-sm">
+                {{ sum }}
+              </p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -123,14 +188,16 @@ interface Post {
     imgModalOpen: boolean
   }
   summaries: {
-    beginner: string | null
-    intermediate: string | null
-    expert: string | null
+    beginner: string[] | null
+    intermediate: string[] | null
+    expert: string[] | null
+    [key: string]: string[] | null
   }
 }
 
 const posts = ref([] as Post[])
 const imgModalOpen = ref(false)
+const summaryLevel = ref<'beginner' | 'intermediate' | 'expert'>('beginner')
 
 const summary = ref([] as string[])
 
@@ -154,6 +221,8 @@ const getSummary = async () => {
 }
 
 const currentIndex = ref(0)
+const prevIndex = ref(computed(() => currentIndex.value - 1))
+const nextIndex = ref(computed(() => currentIndex.value + 1))
 
 const nextPost = () => {
   if (currentIndex.value < posts.value.length - 1) {
