@@ -7,6 +7,7 @@
     />
     <AppBody
       class="w-full mx-auto md:p-4 lg:p-8 lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
+      :mobi-bottom-nav="true"
     >
       <slot />
     </AppBody>

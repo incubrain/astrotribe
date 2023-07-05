@@ -23,7 +23,7 @@
         quality="80"
         class="object-contain w-full aspect-square"
       />
-      <div class="absolute w-12 h-12 p-1 overflow-hidden rounded-full left-2 top-2 bg-light">
+      <div class="absolute w-12 h-12 p-1 overflow-hidden rounded-full flex left-2 top-2 bg-white">
         <NuxtImg
           :src="
             s.image.single({

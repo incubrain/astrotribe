@@ -9,8 +9,8 @@
 @layer base {
 
   :root {
-    --nav-height-mobi: 40px;
-    --nav-height-sm: 44px;
+    --nav-height-mobi: 46px;
+    --nav-height-sm: 50px;
     --nav-height-md: 50px;
     --nav-height-lg: 60px;
   }
