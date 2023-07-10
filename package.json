@@ -30,7 +30,7 @@
     "@sentry/tracing": "^7.56.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/uuid": "^9.0.2",
-    "@typescript-eslint/parser": "5.60.0",
+    "@typescript-eslint/parser": "5.61.0",
     "@vee-validate/zod": "^4.10.2",
     "@vueuse/core": "^10.2.0",
     "@vueuse/nuxt": "^10.1.2",
