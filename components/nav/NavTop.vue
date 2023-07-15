@@ -40,6 +40,9 @@
       </div>
       <div class="relative flex w-full col-span-1 col-start-3 pr-3 md:pr-6">
         <div class="flex items-center justify-end w-full gap-4">
+          <a href="https://github.com/incubrain/astrotribe" target="_blank">
+            <UIcon name="i-mdi-github" class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center" />
+          </a>
           <ThemeToggle />
           <NuxtLink to="/auth/register-interest">
             <UButton color="primary">
