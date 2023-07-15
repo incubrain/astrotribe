@@ -32,11 +32,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  vue: {
-    compilerOptions: {
-      isCustomElement: (tag: string) => tag.startsWith('swiper-')
-    }
-  },
   ui: {
     icons: ['mdi', 'heroicons', 'material-symbols']
   },
@@ -64,6 +59,7 @@ export default defineNuxtConfig({
     '@nuxthq/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
+    'nuxt-swiper',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
     [
@@ -74,7 +70,7 @@ export default defineNuxtConfig({
     ]
   ],
   build: {
-    transpile: ['swiper', 'lightgallery']
+    transpile: ['lightgallery']
   },
   // partytown: {
   //     // For google analytics
@@ -82,6 +78,10 @@ export default defineNuxtConfig({
   // },
   robots: {
     configPath: '~/robots.config.ts'
+  },
+  swiper: {
+    styleLang: 'scss',
+    modules: ['navigation', 'pagination', 'grid', 'autoplay']
   },
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
