@@ -32,7 +32,7 @@
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/parser": "5.60.0",
     "@vee-validate/zod": "^4.10.2",
-    "@vueuse/core": "^10.2.0",
+    "@vueuse/core": "^10.2.1",
     "@vueuse/nuxt": "^10.1.2",
     "chart.js": "4.3.0",
     "cropperjs": "^1.5.13",
