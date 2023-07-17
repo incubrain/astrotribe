@@ -24,10 +24,40 @@
         />
         <div
           v-if="image.caption || image.credit"
-          class="flex flex-col lg:hidden gap-2 px-4 pt-4 lg:px-14 foreground text-sm"
+          class="flex flex-row text-sm w-full items-center"
         >
-          <p v-if="image.caption">{{ image.caption }}</p>
-          <p v-if="image.credit"> Credit: {{ image.credit }} </p>
+          <UPopover
+            v-if="image.caption"
+            :popper="{ placement: 'bottom-start' }"
+            class="p-2 w-1/2"
+          >
+            <UButton
+              block
+              color="white"
+              label="Caption"
+              trailing-icon="i-heroicons-chevron-down-20-solid"
+            />
+
+            <template #panel>
+              <p class="p-2 w-64 z-50">{{ image.caption }}</p>
+            </template>
+          </UPopover>
+          <UPopover
+            v-if="image.credit"
+            :popper="{ placement: 'bottom-start' }"
+            class="w-1/2"
+          >
+            <UButton
+              block
+              color="white"
+              label="Credit"
+              trailing-icon="i-heroicons-chevron-down-20-solid"
+            />
+
+            <template #panel>
+              <p class="p-2 w-64 z-50"> Credit: {{ image.credit }} </p>
+            </template>
+          </UPopover>
         </div>
       </div>
     </SwiperSlide>
@@ -54,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import { Media } from '@/types/zod/news'
 // const items = [
 //   {
 //     label: 'Getting Started',
@@ -70,13 +101,6 @@
 //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.'
 //   }
 // ]
-
-interface Media {
-  src: string
-  alt: string | null
-  caption: string | null
-  credit: string | null
-}
 
 interface ImgOptions {
   width: number

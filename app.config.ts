@@ -8,8 +8,11 @@ export default defineAppConfig({
       base: 'invisible lg:visible h-auto px-3 py-2 text-sm font-normal truncat'
     },
     modal: {
-      width: 'max-w-[90%] md:max-w-[80%] lg:max-w-[80%] w-auto xl:max-w-[80%]',
-      container: 'flex min-h-full items-center justify-center text-center'
+      padding: "lg:p-4",
+      width: 'w-full lg:max-w-[80%] w-auto xl:max-w-[80%]',
+      height: 'h-full',
+      container: 'flex h-full items-center justify-center text-center',
+      rounded: 'lg:rounded-lg',
     },
     slideover: {
       background: 'background',

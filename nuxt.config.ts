@@ -72,6 +72,13 @@ export default defineNuxtConfig({
   build: {
     transpile: ['lightgallery']
   },
+  devtools: {
+    // Enable devtools (default: true)
+    enabled: false,
+    // VS Code Server options
+    vscode: {},
+    // ...other options
+  },
   // partytown: {
   //     // For google analytics
   //     forward: ['dataLayer.push'],

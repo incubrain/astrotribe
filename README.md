@@ -5,8 +5,18 @@
 <p align="center" >The AstroTribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
 
 <p align="center">
-  <a href="https://astrotribe.vercel.app/">Production</a> --- |  .  | --- <a href="https://astrotribe.vercel.app/">Dev</a>
+  <a href="https://astronera.org">Production</a> --- |  .  | --- <a href="https://astrotribe.vercel.app/">Dev</a>
 </p>
 
 We're currently working towards an open beta release. 
 If you'd like to be notified when we launch, register your interest [here](https://astrotribe.vercel.app/auth/register-interest)
+
+
+### Contributing:
+Clone the `develop` Branch
+Create your Feature Branch `git checkout -b feature/AmazingFeature`
+Open a Pull Request against `develop` when the feature is ready for review
+
+#### Helpful links:
+[] - [Component Library](https://ui.nuxtlabs.com/)
+[] - [Icons](https://icones.js.org/)

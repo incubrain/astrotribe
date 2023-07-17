@@ -1,0 +1,43 @@
+<template>
+  <UButton
+    v-if="condition"
+    class="background rounded-md hover:text-primary-500 flex items-center justify-center"
+    variant="none"
+    :padded="false"
+    @click="handleClick"
+  >
+    <div
+      class="flex justify-center items-center gap-2 p-2 text-sm font-normal"
+      :class="isPrev ? 'flex-row text-right' : 'flex-row-reverse text-left'"
+    >
+      <UIcon
+        :name="isPrev ? 'i-mdi-chevron-left' : 'i-mdi-chevron-right'"
+        class="w-6 h-6 flex-shrink-0"
+      />
+      {{ post.title.substring(0, 54) }}...
+    </div>
+  </UButton>
+</template>
+
+<script setup lang="ts">
+import { News } from '@/types/zod/news'
+
+defineProps({
+  condition: {
+    type: Boolean,
+    required: true
+  },
+  isPrev: {
+    type: Boolean,
+    default: false
+  },
+  post: {
+    type: Object as () => News,
+    required: true
+  },
+  handleClick: {
+    type: Function,
+    required: true
+  }
+})
+</script>

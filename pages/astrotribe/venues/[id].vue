@@ -2,7 +2,7 @@
   <div class="mx-auto overflow-hidden">
     <div class="relative h-auto text-white">
       <ImageCarousel
-        :images="images"
+        :media="images"
         class="md:mb-12 md:rounded-md"
       />
       <div class="absolute hidden lg:flex z-10 flex-col items-center gap-3 top-2 left-2">
@@ -74,10 +74,16 @@
         :rating="s.venue.bortle_rating"
         class="p-4 md:p-0"
       />
-      <h4 v-show="hasEvents" class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
+      <h4
+        v-show="hasEvents"
+        class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"
+      >
         Events
       </h4>
-      <div v-show="hasEvents" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8">
+      <div
+        v-show="hasEvents"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 xl:gap-8"
+      >
         <CardEvent
           v-for="event in s.venue.events"
           :key="event.id"
@@ -86,9 +92,7 @@
           class="shadow-none background"
         />
       </div>
-      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0">
-        Location
-      </h4>
+      <h4 class="p-4 text-lg font-semibold md:text-xl xl:text-2xl md:p-0"> Location </h4>
       <div class="aspect-square shadow-sm h-[380px] overflow-hidden md:rounded-md">
         <iframe
           class="h-full"
@@ -122,11 +126,26 @@ const hasEvents = computed(() => {
   return true
 })
 
-const images = await storage.image.many({
+interface Media {
+  src: string
+  alt: string | null
+  caption: string | null
+  credit: string | null
+}
+const images = ref([] as Media[])
+
+const venueImages = await storage.image.many({
   bucket: 'venues',
   fileType: 'venue-images',
   folderPath: `${id}/images`
 })
+
+images.value = venueImages.map((v) => ({
+  src: v,
+  alt: 'venue image',
+  caption: null,
+  credit: null
+}))
 
 const fullAddress = computed(() => {
   if (!s.venue.location) return ''

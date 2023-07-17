@@ -3,7 +3,7 @@
     ref="scrollContainer"
     :class="
       mobiBottomNav
-        ? 'w-full h-[calc(100svh-var(--nav-height-sm)-var(--nav-height-mobi))] md:h-[calc(100svh-var(--nav-height-md))] lg:h-[calc(100svh-var(--nav-height-lg))] relative overflow-y-scroll'
+        ? 'w-full h-[calc(100svh-var(--nav-height-sm)-var(--nav-height-mobi))] md:h-[calc(100svh-var(--nav-height-md)-var(--nav-height-mobi))] lg:h-[calc(100svh-var(--nav-height-lg))] relative overflow-y-scroll'
         : 'w-full h-[calc(100svh-var(--nav-height-sm))] md:h-[calc(100svh-var(--nav-height-md))] lg:h-[calc(100svh-var(--nav-height-lg))] relative overflow-y-scroll'
     "
   >
