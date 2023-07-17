@@ -1,34 +1,10 @@
-interface Post {
-  title: {
-    name: string
-    link: string
-  }
-  author: {
-    name: string
-    link: string
-  }
-  published: {
-    name: string
-    link: string
-  }
-  category: {
-    name: string
-    link: string
-  }
-  content: string
-  featured_image: string | null
-  summaries: {
-    beginner: string[]
-    intermediate: string[]
-    expert: string[]
-  }
-}
+import { News } from '@/types/zod/news'
 
 export default defineEventHandler(async () => {
   try {
     // ${scraperBlogs[0].name}
     const storage = useStorage('blogs')
-    const blogsFile = await storage.getItem<Post[]>('summary-test.json')
+    const blogsFile = await storage.getItem<News[]>('summary-test.json')
     return {
       status: 200,
       message: 'Blogs retrieved',
