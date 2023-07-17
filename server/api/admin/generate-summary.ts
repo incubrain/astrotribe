@@ -1,46 +1,20 @@
-interface Post {
-  title: {
-    name: string
-    link: string
-  }
-  author: {
-    name: string
-    link: string
-  }
-  published: {
-    name: string
-    link: string
-  }
-  category: {
-    name: string
-    link: string
-  }
-  content: string
-  featured_image: string | null
-  summaries: {
-    beginner: string[]
-    intermediate: string[]
-    expert: string[]
-  }
-}
+import { NewsGenerate } from '@/types/zod/news'
 
 export default defineEventHandler(async () => {
   try {
     const storage = useStorage('blogs')
-    const blogs = await storage.getItem<Post[]>('summary-test.json')
-    if (!blogs) throw new Error('No blogs found')
+    const blogs = await storage.getItem<NewsGenerate[]>('summary-test.json')
+    if (!blogs) throw createError('No blogs found')
     for (let i = 0; i < blogs.length; i++) {
       console.log('call generateSummary')
-      const summaries = await generateSummary(blogs[i].content)
+      if (blogs[i].raw.body === undefined) throw createError('Error no body for generating summaries')
+      const summaries = await generateSummary(blogs[i].raw.body)
       console.log('Summaries', summaries)
-      if (summaries !== undefined) {
-        blogs[i].summaries = {
-          beginner: summaries.beginner,
-          intermediate: summaries.intermediate,
-          expert: summaries.expert
-        }
-      } else {
-        throw new Error('Error generating summaries')
+      if (summaries === undefined) throw createError('Error generating summaries')
+      blogs[i].summary = {
+        beginner: summaries.beginner,
+        intermediate: summaries.intermediate,
+        expert: summaries.expert
       }
     }
 
