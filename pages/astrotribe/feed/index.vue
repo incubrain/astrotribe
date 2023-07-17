@@ -1,203 +1,72 @@
 <template>
   <div class="flex flex-col relative h-full w-full">
     <div class="w-full flex gap-2">
-      <UButton @click="scrapeBlogs">Scrape Blogs</UButton>
       <UButton @click="getBlogs">Get Blogs</UButton>
+      <!--  <UButton @click="scrapeBlogs">Scrape Blogs</UButton>
       <UButton @click="getSummary">Get Summary</UButton>
+      <UButton @click="getEmbed">Get Embed</UButton>
+      <UButton @click="getCategory">Get Cat</UButton> -->
       <div class="w-full flex justify-end gap-2 mb-4">
-        <select
-          v-model="summaryLevel"
-          class="outline-none p-2 rounded-md shadow-sm"
+        <UDropdown
+          :items="summaryLevels"
+          mode="hover"
+          :popper="{ placement: 'bottom-start' }"
         >
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="expert">Expert</option>
-        </select>
+          <UButton
+            color="white"
+            :label="summaryLevel"
+            trailing-icon="i-heroicons-chevron-down-20-solid"
+          />
+        </UDropdown>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto gap-8">
-      <div
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
+      <CardNews
         v-for="(p, i) in posts"
         :key="i"
-        class="flex flex-col gap-4 rounded-md border p-4 foreground border-color"
-      >
-        <a
-          :href="p.title.link"
-          target="_blank"
-        >
-          <h3 class="text-2xl"> {{ p.title.name }}</h3>
-        </a>
-        <div v-if="p.image.src">
-          <UTooltip :text="p.image.caption?.substring(0, 240) + '...' || 'No caption'">
-            <div class=" h-56 w-full rounded-md overflow-hidden relative object-cover">
-              <NuxtImg
-                :src="p.image.src"
-                :alt="p.image.alt || `${p.title.name} featured image`"
-                width="460"
-                height="259"
-                class="h-full object-cover"
-                @click="imgModalOpen = true"
-              />
-            </div>
-          </UTooltip>
-          <UModal v-model="imgModalOpen">
-            <div
-              class="p-4 foreground grid grid-cols-1 xl:grid-cols-[1fr_minmax(200px,300px)] gap-4 w-auto"
-            >
-              <NuxtImg
-                :src="posts[currentIndex].image.src || 'astron-era-hero.jpg'"
-                :alt="
-                  posts[currentIndex].image.alt ||
-                  `${posts[currentIndex].title.name} featured image`
-                "
-                loading="lazy"
-                class="mx-auto rounded-md object-cover w-full"
-              />
-              <div>
-                <p class="text-sm">
-                  {{ posts[currentIndex].image.caption ? posts[currentIndex].image.caption : '' }}
-                </p>
-                <div>
-                  <h4 class="pb-2 font-semibold"> {{ summaryLevel }}</h4>
-                  <ul class="space-y-2">
-                    <li
-                      v-for="sum in p.summaries[summaryLevel]"
-                      :key="sum"
-                      class="flex gap-2 items-start"
-                    >
-                      <UIcon
-                        name="i-mdi-star"
-                        class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
-                      />
-                      <p class="flex-grow leading-snug text-sm">
-                        {{ sum }}
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex gap-4 justify-center">
-                <!-- <div
-                  v-if="prevIndex >= 0"
-                  class="flex flex-col gap-2"
-                >
-                  <NuxtImg
-                    :src="posts[prevIndex].image.src || 'astron-era-hero.jpg'"
-                    :alt="
-                      posts[prevIndex].image.alt || `${posts[prevIndex].title.name} featured image`
-                    "
-                    width="50"
-                    height="50"
-                    loading="lazy"
-                    class="mx-auto rounded-md object-cover w-full"
-                  />
-                  <UButton
-                    class="btn btn-primary"
-                    variant="link"
-                    @click="prevPost"
-                  >
-                    {{ posts[prevIndex].title.name }}
-                  </UButton>
-                </div> -->
-                <UButton
-                  v-if="nextIndex <= posts.length -1"
-                  class="flex flex-col gap-2"
-                  variant="link"
-                  @click="nextPost"
-                >
-                  <div class="w-24 h-24">
-                    <NuxtImg
-                      :src="posts[nextIndex].image.src || 'astron-era-hero.jpg'"
-                      :alt="
-                        posts[nextIndex].image.alt || `${posts[nextIndex].title.name} featured image`
-                      "
-                      width="50"
-                      height="50"
-                      quality="65"
-                      loading="lazy"
-                      class="mx-auto rounded-md object-cover w-full h-full"
-                    />
-                  </div>
-                  {{ posts[nextIndex].title.name }}
-                </UButton>
-              </div>
-            </div>
-          </UModal>
-        </div>
-        <div class="flex gap-2">
-          <a
-            :href="p.author.link"
-            target="_blank"
-          >
-            <p class="text-sm"> {{ p.author.name }}</p>
-          </a>
-          <p class="text-sm"> {{ p.published.name }}</p>
-          <a
-            :href="p.category.link"
-            target="_blank"
-          >
-            <p class="text-sm"> {{ p.category.name }}</p>
-          </a>
-        </div>
-        <div>
-          <h4 class="pb-2 font-semibold"> {{ summaryLevel }}</h4>
-          <ul class="space-y-2">
-            <li
-              v-for="sum in p.summaries[summaryLevel]"
-              :key="sum"
-              class="flex gap-2 items-start"
-            >
-              <UIcon
-                name="i-mdi-star"
-                class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
-              />
-              <p class="flex-grow leading-snug text-sm">
-                {{ sum }}
-              </p>
-            </li>
-          </ul>
-        </div>
-      </div>
+        :post="p"
+        :summaryLevel="summaryLevel"
+        @click="openModal(i)"
+      />
+      <UModal v-model="isModalOpen">
+        <ModalNews
+          :posts="posts"
+          :current-index="currentIndex"
+          :summary-level="summaryLevel"
+          :next-index="nextIndex"
+          :next-post="nextPost"
+          :previous-index="previousIndex"
+          :previous-post="previousPost"
+          @close-news-modal="isModalOpen = false"
+        />
+      </UModal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-interface Post {
-  title: {
-    name: string
-    link: string
-  }
-  author: {
-    name: string
-    link: string
-  }
-  published: {
-    name: string
-    link: string
-  }
-  category: {
-    name: string
-    link: string
-  }
-  content: string
-  image: {
-    src: string | null
-    alt: string | null
-    caption: string | null
-    imgModalOpen: boolean
-  }
-  summaries: {
-    beginner: string[] | null
-    intermediate: string[] | null
-    expert: string[] | null
-    [key: string]: string[] | null
-  }
+import { News } from '@/types/zod/news'
+
+const posts = ref([] as News[])
+
+type SummaryLevel = 'beginner' | 'intermediate' | 'expert'
+const summaryLevel = ref<SummaryLevel>('beginner')
+const changeSummaryLevel = (level: SummaryLevel) => {
+  summaryLevel.value = level
 }
 
-const posts = ref([] as Post[])
-const imgModalOpen = ref(false)
-const summaryLevel = ref<'beginner' | 'intermediate' | 'expert'>('beginner')
+const summaryLevels = [
+  [
+    {
+      label: 'Beginner',
+      value: 'beginner',
+      click: (e: PointerEvent) =>
+        changeSummaryLevel((e.target as HTMLInputElement).value as SummaryLevel)
+    }
+  ],
+  [{ label: 'Intermediate', value: 'intermediate' }],
+  [{ label: 'Expert', value: 'expert' }]
+]
 
 const summary = ref([] as string[])
 
@@ -220,9 +89,33 @@ const getSummary = async () => {
   summary.value = data.value.blogs
 }
 
+const getCategory = async () => {
+  const { data, error } = await useAsyncData('category', () =>
+    $fetch('/api/admin/generate-category-tags')
+  )
+  if (error.value) throw new Error('error getting category: ', error.value)
+  console.log('returned to client:', data.value.blogs)
+  summary.value = data.value.blogs
+}
+
+const getEmbed = async () => {
+  const { data, error } = await useAsyncData('embeddings', () =>
+    $fetch('/api/admin/generate-embeddings')
+  )
+  if (error.value) throw new Error('error generating embedding: ', error.value)
+  console.log('returned to client:', data.value.blogs)
+  summary.value = data.value.blogs
+}
+
+const isModalOpen = ref(false)
 const currentIndex = ref(0)
-const prevIndex = ref(computed(() => currentIndex.value - 1))
+const previousIndex = ref(computed(() => currentIndex.value - 1))
 const nextIndex = ref(computed(() => currentIndex.value + 1))
+
+const openModal = (postIndex: number) => {
+  isModalOpen.value = true
+  currentIndex.value = postIndex
+}
 
 const nextPost = () => {
   if (currentIndex.value < posts.value.length - 1) {
@@ -230,7 +123,7 @@ const nextPost = () => {
   }
 }
 
-const prevPost = () => {
+const previousPost = () => {
   if (currentIndex.value > 0) {
     currentIndex.value--
   }

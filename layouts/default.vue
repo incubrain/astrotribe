@@ -9,7 +9,7 @@
       class=" lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
       :mobi-bottom-nav="true"
     >
-      <div class="w-full mx-auto md:p-4 lg:p-8">
+      <div class="w-full mx-auto md:p-4 xl:p-8">
         <slot />
       </div>
     </AppBody>
@@ -17,6 +17,6 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup lang="ts"></script>
 
 <style></style>
