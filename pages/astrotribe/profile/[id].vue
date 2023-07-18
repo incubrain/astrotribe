@@ -71,12 +71,12 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
-const id = route.params.id
+// const route = useRoute()
+// const id = route.params.id
 
 const supaStorage = useStorage()
-const u = useUsersStore()
-await u.getSingleUser({ userId: Number(id) })
+// const u = useUsersStore()
+// await u.getSingleUser({ userId: Number(id) })
 
 const s = appState()
 
