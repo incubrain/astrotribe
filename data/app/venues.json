@@ -2,9 +2,13 @@
   {
     "created_at": "2023-02-27 18:06:12.660401+00",
     "name": "Hilton Shillim Estate Retreat & Spa",
-    "socials_id": "",
     "body": "Hilton is dedicated to preserving the natural beauty of the night sky. That's why we take light pollution seriously, and have designed our resort to minimize its impact. Spread out over 100+ acres, our private villas are thoughtfully positioned to provide the most unobstructed views of the stars possible. The result is a stargazing experience that is truly unforgettable",
-    "location_id": 3,
+    "location": {
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "address": "Pawana Nagar, Taluka Maval, Pune, Maharashtra 410406"
+    },
     "featured_image": "hilton-featured.jpg",
     "logo": "hilton-logo.jpg",
     "bortle_rating": 5,
@@ -15,9 +19,14 @@
     "name": "GlampEco Stays Manali",
     "socials_id": "",
     "body": "Imagine yourself surrounded by breathtaking views of snow-capped mountains, an endless valley, and a lush green forest; as you float above the clouds in your futuristic yet cozy abode and share this dream-like memory with a special someone. For the first time in India, you can experience a stay in Geodesic Domes Glamping tents which are perched at a height of over 2600 mt, with a splendid view of Dhauldhar ranges and Manali valley.",
-    "location_id": 3,
-    "featured_image": "",
-    "logo": "",
+    "location": {
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "address": "Pawana Nagar, Taluka Maval, Pune, Maharashtra 410406"
+    },
+    "featured_image": "hilton-featured.jpg",
+    "logo": "hilton-logo.jpg",
     "bortle_rating": 5,
     "id": 2
   }

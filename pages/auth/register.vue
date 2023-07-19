@@ -28,26 +28,26 @@
 </template>
 
 <script setup lang="ts">
-import useAuth from '~/composables/useAuth'
+// import useAuth from '~/composables/useAuth'
 import { RegisterValidation } from '@/types/zod'
 import { registerData } from '@/data/forms'
 
-const auth = useAuth()
+// const auth = useAuth()
 
 const handleRegister = async (value: { email: string; password: string }) => {
   const { email, password } = value
-  await auth.register.withEmail(email, password)
+  // await auth.register.withEmail(email, password)
 }
 
 async function handleGoogleSignUp() {
-  try {
-    const { data, error } = await auth.register.withOauth('google')
+  // try {
+  //   const { data, error } = await auth.register.withOauth('google')
 
-    if (error) throw error
-    console.log('User registered via Google', data)
-  } catch (error) {
-    console.error('Error registering via Google', error)
-  }
+  //   if (error) throw error
+  //   console.log('User registered via Google', data)
+  // } catch (error) {
+  //   console.error('Error registering via Google', error)
+  // }
 }
 
 definePageMeta({

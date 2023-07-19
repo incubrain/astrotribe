@@ -32,26 +32,20 @@
               {{ user.given_name }} {{ user.surname }}
             </h2>
             <div class="flex items-start w-full gap-1 text-xs">
-              <!-- <span
-                v-if="user.main_role.name !== 'User'"
+              <span
                 class="flex items-center justify-center font-light"
               >
                 <UIcon
                   :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
                 />
-                {{ user.main_role.name }} | @{{ user.username }}
-              </span> -->
-              <span
-                class="font-light"
-              >
-                @{{ user.username }}
+                {{ user.roles.name }} | @{{ user.username }}
               </span>
             </div>
           </div>
         </div>
       </NuxtLink>
-      <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
+      <!-- <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
         <UIcon
           v-if="user.is_following"
           name="i-mdi-account-multiple-check"
@@ -62,7 +56,7 @@
           name="i-mdi-account-multiple-plus"
           class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer"
         />
-      </div>
+      </div> -->
     </div>
     <p
       v-if="user.introduction"
@@ -75,23 +69,23 @@
 
 <script setup lang="ts">
 
-// const roleIconMapping: Record<number, string> = {
-//   // mapped to database role id
-//   7: 'i-material-symbols-shield-lock', // admin
-//   6: 'i-material-symbols-manage-accounts', //
-//   5: 'i-mdi-account-school', // Mentor
-//   4: 'i-mdi-book-education', // Teacher
-//   3: 'i-mdi-telescope', // AstroGuide
-//   2: 'i-material-symbols-menu-book-rounded', // Student
-//   1: 'i-material-symbols-account-circle' // Basic user
-// }
+const roleIconMapping: Record<number, string> = {
+  // mapped to database role id
+  7: 'i-material-symbols-shield-lock', // admin
+  6: 'i-material-symbols-manage-accounts', //
+  5: 'i-mdi-account-school', // Mentor
+  4: 'i-mdi-book-education', // Teacher
+  3: 'i-mdi-telescope', // AstroGuide
+  2: 'i-material-symbols-menu-book-rounded', // Student
+  1: 'i-material-symbols-account-circle' // Basic user
+}
 
-// const userRoleIcon = (roleId: number): string => {
-//   if (Object.prototype.hasOwnProperty.call(roleIconMapping, roleId)) {
-//     return roleIconMapping[roleId]
-//   }
-//   return '' // default
-// }
+const userRoleIcon = (roleId: number): string => {
+  if (Object.prototype.hasOwnProperty.call(roleIconMapping, roleId)) {
+    return roleIconMapping[roleId]
+  }
+  return '' // default
+}
 
 const s = useStorage()
 

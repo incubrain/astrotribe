@@ -13,14 +13,14 @@
 </template>
 
 <script setup lang="ts">
-import useAuth from '~/composables/useAuth'
+// import useAuth from '~/composables/useAuth'
 import { ForgotPasswordValidation } from '@/types/zod'
 import { forgotPasswordData } from '@/data/forms'
 
-const auth = useAuth()
+// const auth = useAuth()
 
 const handleForgotPassword = (value: { email: string }) => {
-  auth.password.requestResetEmail(value.email)
+  // auth.password.requestResetEmail(value.email)
 }
 
 definePageMeta({
