@@ -199,6 +199,7 @@ model sessions {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model sso_domains {
   id              String        @id @db.Uuid
   sso_provider_id String        @db.Uuid
@@ -214,6 +215,7 @@ model sso_domains {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model sso_providers {
   id                String              @id @db.Uuid
   resource_id       String?
@@ -228,6 +230,7 @@ model sso_providers {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 /// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model auth_users {
   instance_id                 String?        @db.Uuid
@@ -301,11 +304,11 @@ model register_interest {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model roles {
-  id         BigInt       @id @default(autoincrement())
-  created_at DateTime?    @default(now()) @db.Timestamptz(6)
-  name       String       @unique(map: "roles_title_key") @db.VarChar
+  id         BigInt         @id @default(autoincrement())
+  created_at DateTime?      @default(now()) @db.Timestamptz(6)
+  name       String         @unique(map: "roles_title_key") @db.VarChar
   body       String?
-  user_roles user_roles[]
+  users      public_users[]
 
   @@schema("public")
 }
@@ -359,39 +362,27 @@ model user_profiles {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model user_roles {
-  id         BigInt       @id @default(autoincrement())
-  created_at DateTime?    @default(now()) @db.Timestamptz(6)
-  user_id    BigInt
-  role_id    BigInt
-  roles      roles        @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users      public_users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@schema("public")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model public_users {
-  id             BigInt       @id @default(autoincrement())
+  id             BigInt      @id @default(autoincrement())
   email          String
   given_name     String
   surname        String
-  username       String?      @db.VarChar
-  dob            DateTime?    @db.Date
-  gender_id      Int?         @db.SmallInt
-  created_at     DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime?    @default(now()) @db.Timestamptz(6)
-  last_seen      DateTime?    @default(now()) @db.Timestamptz(6)
-  avatar         String?      @default("'defualt.png'::text")
-  cover_image    String?      @default("'default.jpg'::text")
+  username       String?     @db.VarChar
+  dob            DateTime?   @db.Date
+  gender_id      Int?        @db.SmallInt
+  created_at     DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?   @default(now()) @db.Timestamptz(6)
+  last_seen      DateTime?   @default(now()) @db.Timestamptz(6)
+  avatar         String?     @default("'defualt.png'::text")
+  cover_image    String?     @default("'default.jpg'::text")
   introduction   String?
   quote          String?
-  follow_count   Int?         @default(0)
-  followed_count Int?         @default(0)
-  auth_id        String?      @unique @db.Uuid
-  user_roles     user_roles[]
-  users          auth_users?  @relation(fields: [auth_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  follow_count   Int?        @default(0)
+  followed_count Int?        @default(0)
+  auth_id        String?     @unique @db.Uuid
+  role_id        BigInt?     @default(1)
+  users          auth_users? @relation(fields: [auth_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  roles          roles?      @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("users")
   @@schema("public")
