@@ -5,7 +5,7 @@
         {{ props.user.given_name }} {{ props.user.surname }}
       </h1>
       <!-- <h4 class="text-lg">{{ props.user.profession }} {{ type === 'mentor' ?   `- Associated with: ${props.user.associated_companies}` : `` }}</h4> -->
-      <h6
+      <!-- <h6
         v-if="home"
         class="flex items-center pt-3 text-sm md:text-base"
       >
@@ -15,7 +15,7 @@
         />
         {{ home.city }}, {{ home.state }},
         {{ home.country }}
-      </h6>
+      </h6> -->
       <p class="pt-4">
         {{ props.user.introduction }}
       </p>
@@ -34,7 +34,7 @@ const props = defineProps({
   }
 })
 
-const home = props.user.user_locations?.find((location) => location.is_home === true)
+// const home = props.user.user_locations?.find((location) => location.is_home === true)
 </script>
 
 <style scoped></style>

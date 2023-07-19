@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div v-if="haveUser">
     <CommonCoverImg
       :url="
-        supaStorage.image.single({
+        s.image.single({
           bucket: 'profile-public',
-          folderPath: `${s.user.id}/cover`,
-          file: s.user.cover_image,
+          folderPath: `${userCurrent.id}/cover`,
+          file: userCurrent.cover_image,
           fileType: 'user-cover',
           isPrivate: false,
         })
@@ -19,7 +19,7 @@
       >
         <ProfileBlockBadge
           class="absolute bottom-0 right-0 mr-4 md:mr-0"
-          :user-role="s.user.main_role"
+          :user-role="userCurrent.roles"
         />
       </div>
       <div
@@ -27,41 +27,41 @@
       >
         <ProfileBlockAvatar
           :avatar="
-            supaStorage.image.single({
+            s.image.single({
               bucket: 'profile-public',
-              folderPath: `${s.user.id}/avatar`,
-              file: s.user.avatar,
+              folderPath: `${userCurrent.id}/avatar`,
+              file: userCurrent.avatar,
               fileType: 'user-avatar',
               isPrivate: false,
             })
           "
         />
         <ProfileBlockInfo
-          :user="s.user"
+          :user="userCurrent"
           class="mt-[80px] md:mt-[140px]"
         />
       </div>
       <div
         class="relative flex flex-col w-full col-span-1 col-start-1 row-span-1 row-start-3 gap-2 md:mt-4 md:gap-4 lg:col-span-3 md:mb-24"
       >
-        <ProfileBlockSkills
-          v-if="s.user.user_skills.length > 0"
-          :skills="s.user.user_skills"
+        <!-- <ProfileBlockSkills
+          v-if="userCurrent.user_skills.length > 0"
+          :skills="userCurrent.user_skills"
           class="card"
-        />
-        <ProfileBlockSocials
-          v-if="s.user.user_socials.length > 0"
-          :socials="s.user.user_socials"
+        /> -->
+        <!-- <ProfileBlockSocials
+          v-if="userCurrent.user_socials.length > 0"
+          :socials="userCurrent.user_socials"
           class="card"
-        />
+        /> -->
         <!-- <ProfileBlockExperties
-          v-if="s.user.user_skills.length > 0"
-          :expertise="s.user.user_skills"
+          v-if="userCurrent.user_skills.length > 0"
+          :expertise="userCurrent.user_skills"
           class="p-6"
         /> -->
         <CommonBlockText
-          v-if="s.user.quote"
-          :body="s.user.quote"
+          v-if="userCurrent.quote"
+          :body="userCurrent.quote"
           class="card"
           title="Favourite Quote"
         />
@@ -71,14 +71,13 @@
 </template>
 
 <script setup lang="ts">
-// const route = useRoute()
-// const id = route.params.id
+const route = useRoute()
+const id = route.params.id
 
-const supaStorage = useStorage()
-// const u = useUsersStore()
-// await u.getSingleUser({ userId: Number(id) })
-
-const s = appState()
+const s = useStorage()
+const u = useUsersStore()
+const haveUser = await u.checkWeHaveUser(Number(id))
+const { userCurrent } = storeToRefs(u)
 
 definePageMeta({
   name: 'Profile'
