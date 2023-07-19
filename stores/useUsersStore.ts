@@ -1,150 +1,26 @@
-import useData from '../composables/useData'
-import * as util from './utilities'
-import { appState } from './appState'
+// import * as util from './utilities'
 
 export const useUsersStore = defineStore('users', () => {
-  const globalState = appState()
-  const client = usePublicClient()
+  const users = ref([])
 
-  async function testUserRoles({ userId }: { userId: number }) {
-    const { data, error } = await client.rpc('get_user_roles', { current_user_id: userId })
-  }
-
-  async function getUsers({ userId }: { userId: number }) {
-    const dataType = 'users'
+  async function checkWeHaveUsers() {
+    console.log('checkWeHaveUsers', users.value.length)
+    if (users.value.length) return
+    console.log('checkWeHaveUsers2', users.value.length)
     // check appState
-    if (globalState[dataType].length) return globalState[dataType]
-    // check localStorage
-    globalState[dataType] = util.checkLocalStorage({ dataType })
-    if (globalState[dataType].length) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().users.many({ userId })
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'UserBasicValidation'
-    })
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
-  }
-
-  // async function getAvatar({
-  //     userId,
-  //     type,
-  //     fileName,
-  // }: {
-  //     userId: number
-  //     type: string
-  //     fileName: string
-  // }) {
-  //
-  //     // if not stored get them from database
-  //     const { data } = await useData().images.avatar({
-  //         userId,
-  //         type,
-  //         fileName,
-  //     })
-  //     if (error) throw createError(error)
-  //     // validate data, then store in localStorage
-  //     globalState[dataType] = await util.checkDataValidity({
-  //         data,
-  //         dataType,
-  //         schema: 'UserValidation',
-  //     })
-  //
-  //     if (!globalState[dataType])
-  //         throw createError(`Error validating ${dataType} data`)
-  // }
-
-  async function getSingleUser({ userId }: { userId: number }) {
-    const dataType = 'user'
-    // check appState
-    if (globalState[dataType].id === userId) return globalState[dataType]
-    // check localStorage
-    // globalState[dataType] = util.checkLocalStorage({ dataType })
-    // if (globalState[dataType]) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().users.single({ userId })
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'UserFullValidation'
-    })
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
-  }
-
-  async function getFollowCount({ userId }: { userId: number }) {
-    const dataType = 'user'
-    // check appState
-    if (globalState[dataType].id === userId) return globalState[dataType]
-    // check localStorage
-    // globalState[dataType] = util.checkLocalStorage({ dataType })
-    // if (globalState[dataType]) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().users.followerCount({ userId })
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'UserFullValidation'
-    })
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
-  }
-
-  async function getUserFollowers({ userId }: { userId: number }) {
-    const dataType = 'followers'
-    // check state
-    if (globalState[dataType].length) return globalState[dataType]
-    // check localStorage
-    globalState[dataType] = util.checkLocalStorage({ dataType })
-    if (globalState[dataType].length) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().users.followers({ userId })
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = await util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'UserBasicValidation'
-    })
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
-  }
-
-  async function getUserFollowed({ userId }: { userId: number }) {
-    const dataType = 'followed'
-    // check state
-    if (globalState[dataType].length) return globalState[dataType]
-    // check localStorage
-    globalState[dataType] = util.checkLocalStorage({ dataType })
-    if (globalState[dataType].length) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().users.followed({ userId })
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = await util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'UserBasicValidation'
-    })
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    const { error, data } = await useFetch('/api/users/many')
+    if (error.value) throw createError(`error getting users: ${error.value.message}`)
+    if (data.value?.users) users.value = data.value.users // todo check data validity
   }
 
   const userById = () => {
-    return (id: number) => globalState.users.find((user) => user.id === id)
+    return (id: number) => users.value.find((user) => user.id === id)
   }
 
   return {
-    getUsers,
-    getSingleUser,
-    getUserFollowers,
-    getUserFollowed,
-    getFollowCount,
+    users,
     userById,
-    testUserRoles
+    checkWeHaveUsers
   }
 })
 
