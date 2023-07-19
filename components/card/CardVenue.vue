@@ -59,10 +59,10 @@
             <p class="text-xs font-semibold"> {{ p.venue.avg_rating.toPrecision(2) }} </p>
           </span>
         </div>
-        <div class="flex flex-col gap-2 text-sm text-gray-500">
+        <!-- <div class="flex flex-col gap-2 text-sm text-gray-500">
           <p>{{ p.venue.location.state }}, {{ p.venue.location.country }}</p>
           <p>{{ p.venue.events_hosted }} events hosted</p>
-        </div>
+        </div> -->
       </div>
     </NuxtLink>
   </div>

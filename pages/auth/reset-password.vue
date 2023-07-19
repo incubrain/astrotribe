@@ -13,18 +13,18 @@
 </template>
 
 <script setup lang="ts">
-import useAuth from '~/composables/useAuth'
+// import useAuth from '~/composables/useAuth'
 import { ResetPasswordValidation } from '@/types/zod'
 import { resetPasswordData } from '@/data/forms'
 
-const auth = useAuth()
+// const auth = useAuth()
 // const router = useRouter()
 
 const handleResetPassword = (value: { password: string; confirmPassword: string }) => {
   // Get the user token from the URL
-  if (value.password === value.confirmPassword) {
-    auth.password.update(value.password)
-  }
+  // if (value.password === value.confirmPassword) {
+  //   auth.password.update(value.password)
+  // }
 }
 
 definePageMeta({
