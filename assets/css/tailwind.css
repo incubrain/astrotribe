@@ -78,3 +78,15 @@
 .cropper-face {
   border-radius: 50%;
 }
+
+.cropper-point.point-se {
+  right: -6px;
+  bottom: -6px;
+}
+
+.bg-radial::before{
+  background: radial-gradient(75.61% 75.61% at 50% 24.39%, #352e53 0%, #b4530900 100%);
+  z-index: -1;
+  overflow: hidden;
+
+}
