@@ -66,6 +66,7 @@ const getIcon = (val: string) => {
   if (val === 'Contact') return 'i-material-symbols-info'
   if (val === 'About') return 'i-material-symbols-call'
   if (val === 'Preview') return 'i-material-symbols-globe-asia'
+  if (val === 'Team') return 'i-material-symbols-emoji-people'
 }
 
 defineProps({

@@ -19,5 +19,12 @@
     "slug": "/astrotribe",
     "icon": "i-material-symbols-globe-asia",
     "children": []
+  },
+  {
+    "id": 3,
+    "name": "Team",
+    "slug": "/team",
+    "icon": "i-material-symbols-emoji-people",
+    "children": []
   }
 ]

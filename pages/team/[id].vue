@@ -1,38 +1,41 @@
 <template>
-  <div class="bg-[#d9dce0] dark:bg-[#444444] w-full h-full text-white">
+  <div class="bg-[#cccccc] dark:bg-[#18181B] flex flex-wrap items-start justify-center">
     <div
+      class="container max-w-3xl bg-[#e4e4e4]/50 dark:bg-[#1f1e1e] rounded shadow-lg transform duration-200 easy-in-out m-12 backdrop-filter backdrop-blur-lg"
       :key="user.id"
     >
-      <NuxtImg
-        :src="user.avatar"
-        :alt="user.name"
-        class="absolute right-24 top-12 rounded-full shadow-2xl bg-white border-neutral-300 border h-28 w-28"
-      />
-      <p class="absolute left-12 top-10 text-[35px] font-bold text-left text-[#393939] dark:text-white/80">
-        {{ user.name }}
-      </p>
-      <p class="absolute left-12 top-24 text-[20px] text-left text-[#393939] dark:text-white/80">
-        • {{ user.position.title }} • Joined: {{ user.position.joining }}
-      </p>
-      <p
-        class="flex flex-row absolute left-12 top-40 text-[24px] font-semibold text-left text-[#393939] dark:text-white/80"
-      >
-        About
-      </p>
-      <p class="flex flex-row w-30 absolute left-12 right-12 top-52 text-[18px] text-left text-[#393939] dark:text-white/80">
-        {{ user.bio }}
-      </p>
-      <p
-        class="absolute left-12  text-[24px] top-[380px] font-semibold text-left text-[#393939] dark:text-white/80"
-      >
-        Achievements
-      </p>
-      <p class="absolute left-12 top-[430px] text-[18px] text-left text-[#393939] dark:text-white/80">
-        <ul>
-          <li>• {{ user.achievements[0].title }}</li>
-          <li>• {{ user.achievements[1].title }}</li>
-        </ul>
-      </p>
+      <div class="flex justify-start px-5 -mt-12 mb-5">
+        <span clspanss="block relative h-32 w-32">
+          <NuxtImg
+            class="w-32 h-32 rounded-full mt-2 hover:shadow-xl"
+            :src="user.avatar"
+            :alt="user.name"
+          />
+        </span>
+      </div>
+      <div class="px-7 mb-8">
+        <h2 class="text-3xl font-bold dark:text-gray-300">{{ user.name }}</h2>
+        <p class="mt-2 text-xl font-semibold text-gray-700 dark:text-gray-500"
+          >• {{ user.position.title }} •</p
+        >
+        <p class="text-md font-semibold text-gray-500 dark:text-gray-500"
+          >Since {{ user?.position.joining }}</p
+        >
+
+        <h4 class="mt-4 text-lg font-semibold">About</h4>
+        <p class="mt-2 text-md dark:text-gray-300">{{ user.bio }}</p>
+
+        <h4 class="mt-4 text-lg font-semibold">Achievements</h4>
+        <p class="mt-2 text-md dark:text-gray-300">• {{ user.achievements[0].title }}</p>
+        <p class="text-md dark:text-gray-300">• {{ user.achievements[1].title }}</p>
+
+        <h4 class="mt-4 text-lg font-semibold">Connect with {{ user.name }}</h4>
+        <SocialBlock
+          :socials="user.socials"
+          :has-title="false"
+          class="flex items-center justify-center space-x-2"
+        />
+      </div>
     </div>
   </div>
 </template>
