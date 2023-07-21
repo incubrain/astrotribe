@@ -40,23 +40,23 @@
 </template>
 
 <script setup lang="ts">
-import useAuth from '~/composables/useAuth'
+// import useAuth from '~/composables/useAuth'
 import { LoginValidation } from '@/types/zod'
 import { loginData } from '@/data/forms'
 
-const auth = useAuth()
+// const auth = useAuth()
 
 const handleLogin = (value: { email: string; password: string }) => {
-  auth.login.withEmail(value.email, value.password)
+  // auth.login.withEmail(value.email, value.password)
 }
 
 async function handleProviderSignIn(provider) {
-  try {
-    const { data, error } = await auth.login.withOAuth(provider)
-    if (error) throw error
-  } catch (error) {
-    console.error('Error logging in via Google', error)
-  }
+  // try {
+  //   const { data, error } = await auth.login.withOAuth(provider)
+  //   if (error) throw error
+  // } catch (error) {
+  //   console.error('Error logging in via Google', error)
+  // }
 }
 
 definePageMeta({

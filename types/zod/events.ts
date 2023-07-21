@@ -57,7 +57,7 @@ export const EventBasicValidation = z.object({
   body: z.string().nullable(),
   featured_image: z.string().nullable(),
   date: z.string(),
-  hosts: z.array(HostBasicValidation),
+  // hosts: z.array(HostBasicValidation),
   venue: VenueBasicValidation
 })
 
