@@ -1,6 +1,3 @@
-import supabaseClient from '../../../utils/supabaseClient'
-// import venues from '../../../../private-data/venues.json'
-
 export default cachedEventHandler(async (event) => {
   const venues = null
   const admin = false

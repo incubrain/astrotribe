@@ -3,11 +3,16 @@
     <NavTop class="min-h-[50px] lg:min-h-[60px]" />
     <AppBody class="w-full">
       <slot />
-      <HomeFooter />
+      <HomeFooter v-if="$route.path !== '/contact'" />
     </AppBody>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const route = useRoute()
+console.log('path', route.path)
+
+</script>
 
 <style></style>
