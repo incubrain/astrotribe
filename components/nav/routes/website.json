@@ -15,16 +15,16 @@
   },
   {
     "id": 2,
-    "name": "Preview",
-    "slug": "/astrotribe",
-    "icon": "i-material-symbols-globe-asia",
+    "name": "Team",
+    "slug": "/team",
+    "icon": "i-material-symbols-emoji-people",
     "children": []
   },
   {
     "id": 3,
-    "name": "Team",
-    "slug": "/team",
-    "icon": "i-material-symbols-emoji-people",
+    "name": "Preview",
+    "slug": "/astrotribe",
+    "icon": "i-material-symbols-globe-asia",
     "children": []
   }
 ]
