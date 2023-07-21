@@ -54,6 +54,9 @@
   .bg-light {
     @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300;
   }
+  .container {
+    @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
+  }
   .border-color {
     @apply border-zinc-300 dark:border-zinc-800;
   }
@@ -77,4 +80,16 @@
 .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
+}
+
+.cropper-point.point-se {
+  right: -6px;
+  bottom: -6px;
+}
+
+.bg-radial::before{
+  background: radial-gradient(75.61% 75.61% at 50% 24.39%, #352e53 0%, #b4530900 100%);
+  z-index: -1;
+  overflow: hidden;
+
 }

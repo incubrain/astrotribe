@@ -15,6 +15,13 @@
   },
   {
     "id": 2,
+    "name": "Team",
+    "slug": "/team",
+    "icon": "i-material-symbols-emoji-people",
+    "children": []
+  },
+  {
+    "id": 3,
     "name": "Preview",
     "slug": "/astrotribe",
     "icon": "i-material-symbols-globe-asia",
