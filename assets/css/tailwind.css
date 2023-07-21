@@ -54,6 +54,9 @@
   .bg-light {
     @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300;
   }
+  .container {
+    @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
+  }
   .border-color {
     @apply border-zinc-300 dark:border-zinc-800;
   }
