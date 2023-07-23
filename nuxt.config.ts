@@ -83,6 +83,7 @@ export default defineNuxtConfig({
     '@nuxthq/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
+    'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
     [
