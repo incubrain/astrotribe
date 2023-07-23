@@ -5,7 +5,7 @@
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
         alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
       }"
-      title="The AstronEra Team"
+      :title="user?.name"
     >
       <p class="text-xl font-semibold bg-white/30 px-2 rounded-sm">
         {{ user.position.title }}
