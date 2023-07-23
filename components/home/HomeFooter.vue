@@ -3,7 +3,7 @@
     <div class="w-full flex justify-around mx-auto container max-w-[840px]">
       <SocialBlock
         :socials="contact.socials"
-        class="text-center text-white"
+        class="text-center text-white w-full"
       />
       <!-- <NewsletterBasic /> -->
     </div>
