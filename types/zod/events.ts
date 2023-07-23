@@ -17,38 +17,17 @@ export const LocationValidation = z.object({
   longitude: z.number().optional().nullable()
 })
 
-export const VenueBasicValidation = z.object({
+export const VenueValidation = z.object({
   id: z.number(),
   created_at: z.string(),
-  name: z.string().nullable(),
-  body: z.string().nullable(),
-  featured_image: z.string().nullable(),
-  logo: z.string().nullable(),
-  location: LocationValidation
-})
-
-export const VenueEventsValidation = z.object({
-  id: z.number(),
-  created_at: z.string(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  featured_image: z.string().nullable(),
-  date: z.string(),
-  hosts: z.array(HostBasicValidation)
-})
-
-export const VenueFullValidation = z.object({
-  id: z.number(),
-  bortle_rating: z.number().nullable(),
-  created_at: z.string(),
-  name: z.string().nullable(),
-  body: z.string().nullable(),
-  featured_image: z.string().nullable(),
-  logo: z.string().nullable(),
+  name: z.string(),
+  body: z.string(),
+  website: z.string(),
+  featured_image: z.string(),
+  logo: z.string(),
   events_hosted: z.number().nullable().optional(),
-  avg_rating: z.number().nullable().optional(),
-  location: LocationValidation,
-  events: z.array(VenueEventsValidation)
+  bortle_rating: z.number(),
+  location: LocationValidation
 })
 
 export const EventBasicValidation = z.object({
@@ -57,8 +36,7 @@ export const EventBasicValidation = z.object({
   body: z.string().nullable(),
   featured_image: z.string().nullable(),
   date: z.string(),
-  // hosts: z.array(HostBasicValidation),
-  venue: VenueBasicValidation
+  venue: VenueValidation
 })
 
 export const EventFullValidation = z.object({
@@ -68,5 +46,11 @@ export const EventFullValidation = z.object({
   date: z.string(),
   featured_image: z.string().nullable(),
   hosts: z.array(HostBasicValidation),
-  venue: VenueFullValidation.optional()
+  venue: VenueValidation.optional()
 })
+
+export type Venue = z.infer<typeof VenueValidation>
+export type Location = z.infer<typeof LocationValidation>
+export type Host = z.infer<typeof HostBasicValidation>
+export type Event = z.infer<typeof EventBasicValidation>
+export type EventFull = z.infer<typeof EventFullValidation>
