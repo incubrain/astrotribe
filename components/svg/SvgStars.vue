@@ -21,6 +21,7 @@ defineProps({
   },
   color: {
     type: String,
+    required: false,
     default: '#3d3d3d'
   }
 })
