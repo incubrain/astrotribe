@@ -11,7 +11,7 @@
         v-for="s in socials"
         :key="s.id"
         :platform="s.platform"
-        :link="s.url"
+        :url="s.url"
       />
       <!-- !todo add social username -->
     </div>
@@ -32,6 +32,7 @@ defineProps({
   },
   position: {
     type: String,
+    required: false,
     default: 'justify-center'
   }
 })

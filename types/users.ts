@@ -38,7 +38,7 @@ export const UserSocialSchema = z.object({
   id: z.number(),
   url: z.string(),
   platform: z.string(),
-  username: z.string().nullable()
+  username: z.string()
 })
 
 export const UserBasicSchema = z.object({

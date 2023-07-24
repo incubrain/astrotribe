@@ -31,11 +31,13 @@
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
         "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
         "url": "optional"
@@ -43,6 +45,7 @@
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
         "url": "optional"
@@ -81,11 +84,13 @@
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
         "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
         "url": "optional"
@@ -93,6 +98,7 @@
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
         "url": "optional"
@@ -131,11 +137,13 @@
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
         "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
         "url": "optional"
@@ -143,6 +151,7 @@
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
         "url": "optional"
@@ -181,11 +190,13 @@
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
         "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
         "url": "optional"
@@ -193,6 +204,7 @@
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
         "url": "optional"

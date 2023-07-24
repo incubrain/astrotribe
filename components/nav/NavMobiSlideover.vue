@@ -7,7 +7,7 @@
     >
       <UIcon
         name="i-mdi-menu"
-        class="w-6 h-6 md:w-8 md:h-8 text-black dark:text-white"
+        class="w-6 h-6 text-black dark:text-white"
       />
     </UButton>
     <USlideover

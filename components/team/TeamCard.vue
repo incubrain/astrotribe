@@ -6,27 +6,27 @@
       <SvgStars
         class="bottom-46 left-12"
         :size="15"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="bottom-22 left-36"
         :size="8"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="top-28 right-14"
         :size="12"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="bottom-12 left-44"
         :size="20"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="top-52 left-12"
         :size="14"
-        color="#303030"
+        svg-color="#303030"
       />
     </div>
     <!-- SemiCircle -->
