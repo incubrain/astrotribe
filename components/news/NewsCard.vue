@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4 lg:rounded-md border p-4 foreground border-color">
+  <div class="flex flex-col gap-4 lg:rounded-md border p-4 foreground border-color origin-left animate-swipe-in">
     <h3 class="text-2xl"> {{ post.title }}</h3>
     <div class="flex gap-2 text-sm whitespace-nowrap flex-wrap">
       <UBadge>{{ post.category.name }}</UBadge>
