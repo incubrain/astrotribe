@@ -10,9 +10,6 @@
 
 <script setup lang="ts">
 
-const route = useRoute()
-console.log('path', route.path)
-
 </script>
 
 <style></style>
