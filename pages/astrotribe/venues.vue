@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UButton class="mb-4 lg:mb-8">
+    <UButton class="my-4 ml-4 lg:mb-8 lg:mt-0 lg:ml-0">
       Submit Your Venue
     </UButton>
     <div
@@ -30,8 +30,6 @@ const v = useVenuesStore()
 v.checkWeHaveVenues()
 
 const { venues } = storeToRefs(v)
-
-console.log('venues', venues)
 
 definePageMeta({ name: 'Venues' })
 </script>

@@ -44,7 +44,6 @@ async function handleGoogleSignUp() {
   //   const { data, error } = await auth.register.withOauth('google')
 
   //   if (error) throw error
-  //   console.log('User registered via Google', data)
   // } catch (error) {
   //   console.error('Error registering via Google', error)
   // }

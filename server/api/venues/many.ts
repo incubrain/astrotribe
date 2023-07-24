@@ -6,8 +6,6 @@ export default defineEventHandler(async () => {
   const status = 200
   const message = 'venues fetched'
 
-  console.log('venues', venues)
-
   return {
     status,
     message,

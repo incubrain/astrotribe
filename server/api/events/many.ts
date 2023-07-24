@@ -12,19 +12,16 @@ export default defineEventHandler(async () => {
       }
     })
 
-    console.log('events', events)
 
     return {
       status: 200,
       message: 'Events fetched',
       events
     }
-  } catch (error) {
-    console.log('error', error)
-
+  } catch (error: any) {
     return {
       status: 500,
-      message: 'Error getting events',
+      message: `Error getting events: ${error.message}`,
       events: undefined
     }
   }
