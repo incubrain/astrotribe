@@ -6,7 +6,7 @@
     >
       Follow us
     </h2>
-    <div class="flex w-full gap-2 mt-2">
+    <div :class="`flex w-full gap-2 mt-2 ${position}`">
       <IconSocial
         v-for="s in socials"
         :key="s.platform"
@@ -31,6 +31,10 @@ defineProps({
   hasTitle: {
     type: Boolean,
     default: true
+  },
+  position: {
+    type: String,
+    default: 'justify-center'
   }
 })
 </script>

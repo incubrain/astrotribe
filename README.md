@@ -5,7 +5,7 @@
 <p align="center" >The AstroTribe App is a social network for astronomers and wannabe astronomers around the globe.</p>
 
 <p align="center">
-  <a href="https://astronera.org">Production</a> --- |  .  | --- <a href="https://astrotribe.vercel.app/">Dev</a>
+  <a href="https://astronera.org/">Production</a> --- |  .  | --- <a href="https://astrotribe.vercel.app/">Development</a>
 </p>
 
 We're currently working towards an open beta release. 

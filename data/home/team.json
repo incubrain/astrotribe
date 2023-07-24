@@ -2,49 +2,177 @@
   {
     "id": 1,
     "name": "Shweta Kulkarni",
-    "position": "CEO",
+    "position": {
+      "title": "CEO",
+      "description": "Information about the position, responsibilities etc.",
+      "joining": "Mar' 2018"
+    },
     "avatar": "/images/team/shweta-kulkarni.jpg",
     "bio": "Shweta Kulkarni is the founder and director of AstronEra. She has experience in Science Communication for more than a decade. She was selected as one of the top 100 women astronomers in India (2018) under the women’s startup program supported by DST GOI. She was awarded a fellowship from the Royal Astronomical Society of England to appreciate her work. She has worked on various State, national and international projects to popularise astronomy. She is currently pursuing her education part-time at the university of central Lancashire in England while working full-time with her startup.",
     "socials": [
-      { "platform": "twitter", "link": "https://twitter.com/AstronEra"},
-      { "platform": "linkedin", "link": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"},
-      { "platform": "instagram", "link": "https://www.instagram.com/astronera"}
+      {
+        "platform": "twitter",
+        "link": "https://twitter.com/AstronEra"
+      },
+      {
+        "platform": "linkedin",
+        "link": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"
+      },
+      {
+        "platform": "instagram",
+        "link": "https://www.instagram.com/astronera"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "link": "optional"
+      },
+      {
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "link": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "title": "",
+        "body": "elaborate",
+        "link": "optional"
+      }
     ]
   },
   {
     "id": 2,
     "name": "Drew MacGibbon",
-    "position": "CTO",
+    "position": {
+      "title": "CTO",
+      "description": "Information about the position, responsibilities etc.",
+      "joining": "Mar' 2018"
+    },
     "avatar": "/images/team/drew-macgibbon.jpg",
     "bio": "some bio",
     "socials": [
-      { "platform": "twitter", "link": "https://twitter.com/AstronEra"},
-      { "platform": "linkedin", "link": "https://www.linkedin.com/company/astronera/"},
-      { "platform": "instagram", "link": "https://www.instagram.com/astronera"}
+      {
+        "platform": "twitter",
+        "link": "https://twitter.com/AstronEra"
+      },
+      {
+        "platform": "linkedin",
+        "link": "https://www.linkedin.com/company/astronera/"
+      },
+      {
+        "platform": "instagram",
+        "link": "https://www.instagram.com/astronera"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "link": "optional"
+      },
+      {
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "link": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "title": "",
+        "body": "elaborate",
+        "link": "optional"
+      }
     ]
   },
   {
     "id": 3,
     "name": "Ruchira Huchgol",
-    "position": "Operations Manager",
+    "position": {
+      "title": "Operations Manager",
+      "description": "Information about the position, responsibilities etc.",
+      "joining": "Jun' 2018"
+    },
     "avatar": "/images/team/ruchira-huchgol.jpg",
     "bio": "some bio",
     "socials": [
-      { "platform": "twitter", "link": "https://twitter.com/AstronEra"},
-      { "platform": "linkedin", "link": "https://www.linkedin.com/company/astronera/"},
-      { "platform": "instagram", "link": "https://www.instagram.com/astronera"}
+      {
+        "platform": "twitter",
+        "link": "https://twitter.com/AstronEra"
+      },
+      {
+        "platform": "linkedin",
+        "link": "https://www.linkedin.com/company/astronera/"
+      },
+      {
+        "platform": "instagram",
+        "link": "https://www.instagram.com/astronera"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "link": "optional"
+      },
+      {
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "link": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "title": "",
+        "body": "elaborate",
+        "link": "optional"
+      }
     ]
   },
   {
     "id": 4,
     "name": "Atharva Joshi",
-    "position": "Project Coordinator",
+    "position": {
+      "title": "Project Coordinator",
+      "description": "Information about the position, responsibilities etc.",
+      "joining": "Jun' 2018"
+    },
     "avatar": "/images/team/atharva-joshi.jpg",
     "bio": "some bio",
     "socials": [
-      { "platform": "twitter", "link": "https://twitter.com/AstronEra"},
-      { "platform": "linkedin", "link": "https://www.linkedin.com/company/astronera/"},
-      { "platform": "instagram", "link": "https://www.instagram.com/astronera"}
+      {
+        "platform": "twitter",
+        "link": "https://twitter.com/AstronEra"
+      },
+      {
+        "platform": "linkedin",
+        "link": "https://www.linkedin.com/company/astronera/"
+      },
+      {
+        "platform": "instagram",
+        "link": "https://www.instagram.com/astronera"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "link": "optional"
+      },
+      {
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "link": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "title": "",
+        "body": "elaborate",
+        "link": "optional"
+      }
     ]
   }
 ]

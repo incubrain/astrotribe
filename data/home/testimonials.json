@@ -16,7 +16,7 @@
   {
     "id": 3,
     "image": "/images/testimonials/dr-jayant-narlika.jpg",
-    "name": "Dr. Jayant Narlika",
+    "name": "Dr. Jayant Narlikar",
     "company": "Astrophysicist",
     "quote": "This is an effort of understanding the significance of astronomy enjoy this search. Let me hope that you will feel much more friendly with astronomy through this initiative."
   },
@@ -33,5 +33,12 @@
     "name": "Sarang Sathaye",
     "company": "Director of BhaDiPa",
     "quote": "AstronEra and Shweta came in my life during a tough phase of my life. When there is darkness you need light. What a better way to find the light  than on a stary night. This is the feeling I got when I did my first ever star gazing with Shweta and AstronEra. Her spirit and passion to see beyond  our world, to explore the space is so contagious. Stay curious!"
+  },
+  {
+    "id": 6,
+    "image": "/images/testimonials/kasturi-sukhapure.jpg",
+    "name": "Kasturi Sukhapure",
+    "company": "master of engineering and MSc in climate change policy",
+    "quote": "Shweta and her team at Astron Era are doing remarkable work spreading the joys of astronomy in India. Everyone should experience the wonders of the universe - not least so we protect our planet and all life on it."
   }
 ]

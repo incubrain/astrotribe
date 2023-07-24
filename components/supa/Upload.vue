@@ -85,7 +85,6 @@ const handleImageCropped = () => {
       height: 180
     })
     .toBlob((blob) => {
-      console.log(blob)
       upload.avatar({ file: blob, userId, type: props.uploadType }) // !todo auth user, get id
     }, 'image/png')
   selectedFile.value = null
@@ -114,11 +113,9 @@ onMounted(() => {
     cropBoxResizable: true,
     preview: '.preview',
     crop() {
-      console.log(cropper.value.getCroppedCanvas())
       const canvas = cropper.value.getCroppedCanvas()
       destination.value = canvas.toDataURL('image/jpeg')
       // Crop
-      // console.log(crop.baseURI)
 
       // Round
       // const roundedImage = document.createElement('img')

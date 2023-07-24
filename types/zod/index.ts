@@ -31,11 +31,6 @@ export const UserSocialValidation = users.UserSocialValidation
 export const UserLocationValidation = users.UserLocationValidation
 export const UserRolesValidation = users.UserRolesValidation
 
-// Venues
-export const VenueBasicValidation = events.VenueBasicValidation
-export const VenueEventsValidation = events.VenueEventsValidation
-export const VenueFullValidation = events.VenueFullValidation
-
 // Events
 export const HostBasicValidation = events.HostBasicValidation
 export const EventBasicValidation = events.EventBasicValidation
