@@ -40,9 +40,9 @@ const pages = ref([
   },
   {
     id: 5,
-    name: 'Feed',
-    slug: '/astrotribe/feed',
-    icon: 'i-material-symbols-location-on-rounded'
+    name: 'News',
+    slug: '/astrotribe/news',
+    icon: 'i-mdi-newspaper-variant-outline'
     // children: [
     //     { id: 51, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],

@@ -25,11 +25,11 @@
         v-for="(p, i) in posts"
         :key="i"
         :post="p"
-        :summaryLevel="summaryLevel"
-        @click="openModal(i)"
+        :summary-level="summaryLevel"
+        @open-news-modal="openModal(i)"
       />
-      <UModal v-model="isModalOpen">
-        <NewsModal
+      <LazyUModal v-model="isModalOpen">
+        <LazyNewsModal
           :posts="posts"
           :current-index="currentIndex"
           :summary-level="summaryLevel"
@@ -39,7 +39,7 @@
           :previous-post="previousPost"
           @close-news-modal="isModalOpen = false"
         />
-      </UModal>
+      </LazyUModal>
     </div>
   </div>
 </template>
@@ -112,11 +112,6 @@ const currentIndex = ref(0)
 const previousIndex = ref(computed(() => currentIndex.value - 1))
 const nextIndex = ref(computed(() => currentIndex.value + 1))
 
-const openModal = (postIndex: number) => {
-  isModalOpen.value = true
-  currentIndex.value = postIndex
-}
-
 const nextPost = () => {
   if (currentIndex.value < posts.value.length - 1) {
     currentIndex.value++
@@ -127,6 +122,11 @@ const previousPost = () => {
   if (currentIndex.value > 0) {
     currentIndex.value--
   }
+}
+
+const openModal = (postIndex: number) => {
+  isModalOpen.value = true
+  currentIndex.value = postIndex
 }
 
 definePageMeta({
