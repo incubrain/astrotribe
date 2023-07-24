@@ -7,7 +7,7 @@
       v-if="venues !== null"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
     >
-      <CardVenue
+      <VenueCard
         v-for="venue in venues"
         :key="venue.id"
         :venue="venue"

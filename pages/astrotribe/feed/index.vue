@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      <CardNews
+      <NewsCard
         v-for="(p, i) in posts"
         :key="i"
         :post="p"
@@ -29,7 +29,7 @@
         @click="openModal(i)"
       />
       <UModal v-model="isModalOpen">
-        <ModalNews
+        <NewsModal
           :posts="posts"
           :current-index="currentIndex"
           :summary-level="summaryLevel"
