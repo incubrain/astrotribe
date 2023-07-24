@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { Page } from '@/types'
+import { Page } from '@/types/pages'
 
 const pages = ref([
   {

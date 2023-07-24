@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
-export const ToastActionValidator = z.object({
+export const ToastActionSchema = z.object({
   variant: z.string(),
   color: z.string(),
   label: z.string()
 })
 
-export const ToastValidator = z.object({
+export const ToastSchema = z.object({
   id: z.union([z.string(), z.number()]),
   title: z.string(),
   description: z.string().optional(),
@@ -16,10 +16,14 @@ export const ToastValidator = z.object({
   ui: z.unknown().optional(),
   avatar: z.unknown().optional(),
   closeButton: z.unknown().optional(),
-  actions: z.array(ToastActionValidator).optional(),
+  actions: z.array(ToastActionSchema).optional(),
   callback: z.function().optional()
 })
 
-export const ToastStateValidator = z.object({
-  toasts: z.array(ToastValidator)
+export const ToastStateSchema = z.object({
+  toasts: z.array(ToastSchema)
 })
+
+export type Toast = z.infer<typeof ToastSchema>
+export type ToastAction = z.infer<typeof ToastActionSchema>
+export type ToastState = z.infer<typeof ToastStateSchema>

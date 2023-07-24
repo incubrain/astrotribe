@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { Media } from '@/types/zod/news'
+import { Media } from '@/types/news'
 // const items = [
 //   {
 //     label: 'Getting Started',

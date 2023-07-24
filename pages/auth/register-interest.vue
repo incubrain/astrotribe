@@ -9,7 +9,7 @@
     </h4>
     <FormDynamic
       :schema="registerInterestData"
-      :validation-schema="RegisterInterestValidation"
+      :validation-schema="RegisterInterestSchema"
       class="w-full"
       @submit="handleRegister"
     >
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { RegisterInterestValidation } from '@/types/zod'
+import { RegisterInterestSchema } from '@/types/forms'
 import { registerInterestData } from '@/data/forms'
 
 const auth = useAuth()

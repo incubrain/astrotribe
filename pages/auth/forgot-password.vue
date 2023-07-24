@@ -3,7 +3,7 @@
     <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? </h2>
     <FormDynamic
       :schema="forgotPasswordData"
-      :validation-schema="ForgotPasswordValidation"
+      :validation-schema="ForgotPasswordSchema"
       class="w-full"
       @submit="handleForgotPassword"
     >
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
-import { ForgotPasswordValidation } from '@/types/zod'
+import { ForgotPasswordSchema } from '@/types/forms'
 import { forgotPasswordData } from '@/data/forms'
 
 // const auth = useAuth()

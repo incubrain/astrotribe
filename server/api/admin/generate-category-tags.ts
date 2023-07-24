@@ -1,4 +1,4 @@
-import { NewsGenerate } from '@/types/zod/news'
+import { NewsGenerate } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {

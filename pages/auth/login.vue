@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
-import { LoginValidation } from '@/types/zod'
+import { LoginValidation } from '@/types/forms'
 import { loginData } from '@/data/forms'
 
 // const auth = useAuth()

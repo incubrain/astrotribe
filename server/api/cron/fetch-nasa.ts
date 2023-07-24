@@ -1,5 +1,4 @@
-import { NasaImgValidation } from '../../../types/zod'
-import { NasaImg } from '../../../types'
+import { NasaImgSchema, NasaImg } from '../../../types/nasa'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -24,7 +23,7 @@ export default defineEventHandler(async (event) => {
     // Validate with zod
     logger.info(`Validating ${kvForCache} data`)
     try {
-      nasaImg = NasaImgValidation.parse(unvalidated)
+      nasaImg = NasaImgSchema.parse(unvalidated)
     } catch (error) {
       logger.error('Error validating data', error)
       throw error

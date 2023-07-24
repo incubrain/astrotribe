@@ -3,7 +3,7 @@
     <h2 class="mb-6 text-2xl text-center"> Sign Up </h2>
     <FormDynamic
       :schema="registerData"
-      :validation-schema="RegisterValidation"
+      :validation-schema="RegisterSchema"
       class="w-full"
       @submit="handleRegister"
     >
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
-import { RegisterValidation } from '@/types/zod'
+import { RegisterSchema } from '@/types/forms'
 import { registerData } from '@/data/forms'
 
 // const auth = useAuth()

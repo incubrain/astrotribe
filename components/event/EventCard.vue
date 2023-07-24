@@ -10,13 +10,13 @@
     <EventInfo
       :event="event"
       :venue="event.venue"
-      :time=" h.time.format(event.date)"
+      :time="h.time.format(event.date)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Event } from '@/types/zod/events'
+import type { Event } from '@/types/events'
 
 defineProps({
   event: {

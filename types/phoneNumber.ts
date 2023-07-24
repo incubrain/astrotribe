@@ -11,7 +11,7 @@ export const phoneNumberValidator = z.string().refine(
     return phoneNumber?.isValid() ?? false
   },
   {
-    // This message will be used if the validation fails
+    // This message will be used if the Schema fails
     message: 'Invalid phone number'
   }
 )

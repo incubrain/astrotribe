@@ -1,4 +1,4 @@
-import { News, NewsScraped } from '@/types/zod/news'
+import { News, NewsScraped } from '@/types/news'
 
 const formatMedia = (images: any, videos: any) => {
   const media = [...(images || []), ...(videos || [])]
