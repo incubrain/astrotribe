@@ -1,7 +1,8 @@
 // import * as util from './utilities'
+import { Event } from '@/types/events'
 
 export default defineStore('events', () => {
-  const events = ref([])
+  const events = ref([] as Event[])
 
   async function checkWeHaveEvents() {
     if (events.value.length) return
@@ -12,7 +13,7 @@ export default defineStore('events', () => {
   }
 
   const eventById = () => {
-    return (id: number) => events.value.find((event) => event.id === id)
+    return (id: number) => events.value.find((event: Event) => event.id === id)
   }
 
   return {

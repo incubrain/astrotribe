@@ -7,20 +7,24 @@ export const PositionSchema = z.object({
 })
 
 export const SocialSchema = z.object({
+  id: z.number(),
   platform: z.string(),
-  link: z.string()
+  url: z.string(),
+  username: z.string()
 })
 
 export const AchievementSchema = z.object({
+  id: z.number(),
   title: z.string(),
   body: z.string(),
-  link: z.string().optional()
+  url: z.string().optional()
 })
 
 export const PublicitySchema = z.object({
+  id: z.number(),
   title: z.string(),
   body: z.string(),
-  link: z.string().optional()
+  url: z.string().optional()
 })
 
 export const TeamMemberSchema = z.object({

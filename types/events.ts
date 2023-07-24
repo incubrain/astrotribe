@@ -32,8 +32,8 @@ export const VenueSchema = z.object({
 
 export const EventSchema = z.object({
   id: z.number(),
-  title: z.string().nullable(),
-  body: z.string().nullable(),
+  title: z.string(),
+  body: z.string(),
   featured_image: z.string(),
   date: z.string(),
   venue: VenueSchema,
