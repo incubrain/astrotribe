@@ -4,7 +4,7 @@
       <div class="pl-2">
         <UIcon
           name="i-material-symbols-location-on-rounded"
-          size="20px"
+          class="w-4 h-4"
         />
       </div>
       <div class="flex flex-col">
@@ -12,8 +12,7 @@
           {{ venue.name }}
         </h3>
         <p class="m-0">
-          {{ venue.location.country }}, {{ venue.location.state }},
-          {{ venue.location.city }}
+          {{ venue.location.city }}, {{ venue.location.state }}, {{ venue.location.country }}
         </p>
       </div>
     </div>
