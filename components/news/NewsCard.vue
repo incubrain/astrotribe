@@ -14,7 +14,10 @@
       </UBadge>
     </div>
     <UTooltip :text="post.media ? post.media[0].caption?.substring(0, 240) + '...' : 'No caption'">
-      <div class="h-64 w-full overflow-hidden">
+      <div
+        class="h-64 w-full overflow-hidden"
+        @click="$emit('openNewsModal')"
+      >
         <ImageWithFallback
           :image="post.media ? post.media[0] : undefined"
           :sizes="{ width: 500, height: 280, sizes: undefined }"

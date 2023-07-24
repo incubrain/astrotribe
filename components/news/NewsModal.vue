@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 xl:grid-cols-4 gap-4 overflow-scroll w-full h-full py-4">
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 xl:col-start-4 gap-4">
         <NewsNavigationButton
           :condition="nextIndex <= posts.length - 1"
           :is-prev="true"
@@ -34,7 +34,7 @@
       </div>
       <div
         v-if="posts[currentIndex].media"
-        class="xl:col-span-3 col-start-1 xl:row-start-2 lg:mt-0"
+        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2 lg:mt-0"
       >
         <LazyImageCarousel
           :media="posts[currentIndex].media"
@@ -43,7 +43,7 @@
       </div>
       <div
         v-else
-        class="xl:col-span-3 col-start-1 xl:row-start-2 w-full overflow-hidden"
+        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2  overflow-hidden"
       >
         <ImageWithFallback
           :image="undefined"
