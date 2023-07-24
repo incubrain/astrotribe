@@ -1,48 +1,21 @@
-import useData from '../composables/useData'
-import * as util from './utilities'
-import { appState } from './appState'
+export default defineStore('venues', () => {
+  const venues = ref([])
 
-export const useVenuesStore = defineStore('venues', {
-  state: () => ({}),
-  actions: {
-    async getVenues() {
-      const dataType = 'venues'
-      const globalState = appState()
-      // check localStorage and state
-      if (globalState[dataType].length) return globalState[dataType]
+  async function checkWeHaveVenues() {
+    if (venues.value.length) return
+    // check appState
+    const { error, data } = await useFetch('/api/venues/many')
+    if (error.value) throw createError(`error getting venues: ${error.value.message}`)
+    if (data.value?.venues) venues.value = data.value.venues // todo check data validity
+  }
 
-      const { data, error } = await useData().venues.many()
+  const venueById = () => {
+    return (id: number) => venues.value.find((venue) => venue.id === id)
+  }
 
-      if (error) throw createError(error)
-      globalState[dataType] = await util.checkDataValidity({
-        data,
-        dataType,
-        schema: 'VenueBasicValidation'
-      })
-    },
-    async getVenueSingle({ venueId }: { venueId: number }): Promise<void> {
-      const dataType = 'venue'
-      const globalState = appState()
-      // check localStorage and state
-      // if (globalState[dataType]) return
-
-      const { data, error } = await useData().venues.single(venueId)
-      if (error) throw createError(error)
-      globalState[dataType] = await util.checkDataValidity({
-        data,
-        dataType,
-        schema: 'VenueFullValidation'
-      })
-    }
-  },
-  getters: {
-    venueById: () => {
-      const globalState = appState()
-      return (id: number) => globalState.venues.find((venue) => venue.id === id)
-    }
+  return {
+    venues,
+    venueById,
+    checkWeHaveVenues
   }
 })
-
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useVenuesStore, import.meta.hot))
-}

@@ -31,7 +31,7 @@
               variant="solid"
               size="xl"
             >
-              Start Your Cosmic Journey
+              Begin your cosmic journey now!
             </UButton>
           </NuxtLink>
         </div>

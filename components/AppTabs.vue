@@ -36,7 +36,6 @@ const { tabs } = usePages()
 const parentRoute = computed(() => route.path.split('/'))
 const currentTabs = computed(() => tabs(parentRoute.value[1])?.children)
 
-console.log(route.name, currentTabs.value)
 </script>
 
 <style scoped></style>
