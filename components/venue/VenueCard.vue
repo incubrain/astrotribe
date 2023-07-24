@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Venue } from '@/types/zod/events'
+import type { Venue } from '@/types/events'
 
 const getBG = (id: number) => {
   const darkBG = [3]

@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer'
 import { Blog } from './scraperBlogs'
-import { News } from '@/types/zod/news'
+import { News } from '@/types/news'
 
 // take a puppeteer Browser instance and a Blog object, and return a promise that resolves to an array of scraped data.
 interface ScrapeFunction {

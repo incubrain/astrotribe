@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const PostValidation = z.object({
+export const PostSchema = z.object({
   id: z.number(),
   created_at: z.string().nullable(),
   user_id: z.string().nullable(),
@@ -11,10 +11,5 @@ export const PostValidation = z.object({
 })
 
 // make posts extendable
-export const NewsValidation = z.object({
-  title: z.string().nullable(),
-  body: z.string().nullable(),
-  author: z.string().nullable(),
-  published: z.string().nullable(),
-  category: z.string().nullable()
-})
+
+export type Post = z.infer<typeof PostSchema>

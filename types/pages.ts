@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const PageValidation = z.object({
+export const PageSchema = z.object({
   id: z.number(),
   name: z.string(),
   icon: z.string(),
@@ -16,3 +16,5 @@ export const PageValidation = z.object({
     )
     .optional()
 })
+
+export type Page = z.infer<typeof PageSchema>

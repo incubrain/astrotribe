@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { News } from '@/types/zod/news'
+import { News } from '@/types/news'
 
 const posts = ref([] as News[])
 

@@ -1,7 +1,7 @@
 // don't forget to add to this file if you make any changes in the database
 import * as z from 'zod'
 
-export const LocationValidation = z.object({
+export const LocationSchema = z.object({
   id: z.number(),
   created_at: z.string().optional(),
   city: z.string(),
@@ -12,7 +12,7 @@ export const LocationValidation = z.object({
   longitude: z.number().optional().nullable()
 })
 
-export const UserRoleValidation = z.object({
+export const UserRoleSchema = z.object({
   id: z.number(),
   name: z.string().nullable(),
   body: z.string().nullable().optional(),
@@ -24,7 +24,7 @@ export const IdName = z.object({
   name: z.string()
 })
 
-export const UserSkillValidation = z.object({
+export const UserSkillSchema = z.object({
   id: z.number(),
   title: z.string().nullable(),
   body: z.string().nullable().optional(),
@@ -34,27 +34,14 @@ export const UserSkillValidation = z.object({
   created_at: z.string().optional()
 })
 
-export const UserLanguageValidation = z.object({
-  id: z.number(),
-  name: z.string(),
-  iso_639_1: z.string().optional(),
-  iso_639_2: z.string().optional()
-})
-
-export const UserSocialValidation = z.object({
+export const UserSocialSchema = z.object({
   id: z.number(),
   url: z.string(),
   platform: z.string(),
   username: z.string().nullable()
 })
 
-export const UserLocationValidation = LocationValidation.extend({
-  from: z.string().optional(),
-  to: z.string().optional(),
-  is_home: z.boolean()
-})
-
-export const UserBasicValidation = z.object({
+export const UserBasicSchema = z.object({
   id: z.number(),
   given_name: z.string(),
   surname: z.string().nullable(),
@@ -65,11 +52,11 @@ export const UserBasicValidation = z.object({
   followed_count: z.number().nullable(),
   is_following: z.boolean().nullable(),
   main_role: IdName,
-  user_roles: z.array(UserRoleValidation),
+  user_roles: z.array(UserRoleSchema),
   last_seen: z.string()
 })
 
-export const UserFullValidation = UserBasicValidation.extend({
+export const UserFullSchema = UserBasicSchema.extend({
   email: z.string(),
   dob: z.string().nullable(),
   gender_id: z.number().nullable(),
@@ -77,10 +64,13 @@ export const UserFullValidation = UserBasicValidation.extend({
   updated_at: z.string().nullable(),
   cover_image: z.string().nullable(),
   quote: z.string().nullable(),
-  user_skills: z.array(UserSkillValidation),
-  user_locations: z.array(UserLocationValidation),
-  user_languages: z.array(UserLanguageValidation),
-  user_socials: z.array(UserSocialValidation)
+  user_skills: z.array(UserSkillSchema),
+  user_socials: z.array(UserSocialSchema)
 })
 
-export const UserRolesValidation = z.array(UserRoleValidation)
+export const UserRolesSchema = z.array(UserRoleSchema)
+
+export type User = z.infer<typeof UserBasicSchema>
+export type UserFull = z.infer<typeof UserFullSchema>
+export type UserRole = z.infer<typeof UserRoleSchema>
+export type UserSocial = z.infer<typeof UserSocialSchema>

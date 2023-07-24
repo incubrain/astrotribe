@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import type { UserSkill } from '@/types'
+import type { UserSkill } from '@/types/users'
 
 defineProps({
   skills: {

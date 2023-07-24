@@ -1,4 +1,4 @@
-import { NewsGenerate } from '@/types/zod/news'
+import { NewsGenerate } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
@@ -7,7 +7,8 @@ export default defineEventHandler(async () => {
     if (!blogs) throw createError('No blogs found')
     for (let i = 0; i < blogs.length; i++) {
       console.log('call generateSummary')
-      if (blogs[i].raw.body === undefined) throw createError('Error no body for generating summaries')
+      if (blogs[i].raw.body === undefined)
+        throw createError('Error no body for generating summaries')
       const summaries = await generateSummary(blogs[i].raw.body)
       console.log('Summaries', summaries)
       if (summaries === undefined) throw createError('Error generating summaries')

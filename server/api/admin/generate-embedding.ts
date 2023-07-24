@@ -1,4 +1,4 @@
-import { News } from '@/types/zod/news'
+import { News } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
