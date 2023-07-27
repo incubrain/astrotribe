@@ -35,7 +35,7 @@
     "@vee-validate/zod": "^4.10.2",
     "@vueuse/core": "^10.2.0",
     "@vueuse/nuxt": "^10.1.2",
-    "chart.js": "4.3.0",
+    "chart.js": "4.3.2",
     "cropperjs": "^1.5.13",
     "dayjs": "^1.11.8",
     "dompurify": "3.0.3",
