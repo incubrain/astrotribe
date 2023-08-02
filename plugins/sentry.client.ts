@@ -8,7 +8,6 @@ export default defineNuxtPlugin(() => {
         tracingOrigins: ['localhost', /^\//]
       })
     ],
-    tracePropagationTargets: ['https://localhost:'],
     // release,
     // environment,
     // sampleRate: 1,
