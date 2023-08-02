@@ -1,17 +1,19 @@
-import roles from './data/roles.json'
+const roles = []
 
 export default defineEventHandler(async () => {
   const client = useClient()
 
   // Function to insert users from JSON file
-  const mappedRoles = roles.map((role) => {
-    role.created_at = new Date(role.created_at).toISOString()
-    return {
-      ...role
-    }
-  })
+  if (roles.length > 0) {
+    const mappedRoles = roles.map((role) => {
+      role.created_at = new Date(role.created_at).toISOString()
+      return {
+        ...role
+      }
+    })
 
-  await client.roles.createMany({ data: [...mappedRoles] })
+    await client.roles.createMany({ data: [...mappedRoles] })
+  }
 
   return {
     status: 200,
