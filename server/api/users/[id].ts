@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
   // const query = getQuery(event)
   const client = useClient()
   // const admin = false
-  const user = await client.public_users.findFirst({
+  const user = await client.users.findFirst({
     where: {
       id: Number(id)
     },

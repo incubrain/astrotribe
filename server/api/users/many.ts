@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const client = useClient()
   // const admin = false
-  const users = await client.public_users.findMany({
+  const users = await client.users.findMany({
     include: {
       roles: true
     }

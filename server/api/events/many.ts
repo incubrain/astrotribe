@@ -12,7 +12,6 @@ export default defineEventHandler(async () => {
       }
     })
 
-
     return {
       status: 200,
       message: 'Events fetched',
