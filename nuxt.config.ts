@@ -100,7 +100,7 @@ export default defineNuxtConfig({
     // Enable devtools (default: true)
     enabled: false,
     // VS Code Server options
-    vscode: {},
+    vscode: {}
     // ...other options
   },
   // partytown: {
@@ -124,7 +124,9 @@ export default defineNuxtConfig({
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     NASA_API_KEY: process.env.NASA_API_KEY,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-    OPENAI_ORG: process.env.OPENAI_ORG
+    OPENAI_ORG: process.env.OPENAI_ORG,
+    BRIGHT_DATA_SERP_PASS: process.env.BRIGHT_DATA_SERP_PASS,
+    BRIGHT_DATA_SERP_USER: process.env.BRIGHT_DATA_SERP_USER,
   },
   typescript: {
     shim: false,

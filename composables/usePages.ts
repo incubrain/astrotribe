@@ -43,9 +43,12 @@ const pages = ref([
     name: 'News',
     slug: '/astrotribe/news',
     icon: 'i-mdi-newspaper-variant-outline'
-    // children: [
-    //     { id: 51, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
-    // ],
+  },
+  {
+    id: 5,
+    name: 'Serp',
+    slug: '/astrotribe/serp',
+    icon: 'i-mdi-newspaper-variant-outline'
   }
 ] as Page[])
 

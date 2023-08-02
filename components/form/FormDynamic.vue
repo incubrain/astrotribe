@@ -1,12 +1,12 @@
 <template>
-  <VForm :validation-schema="p.validationSchema">
+  <VForm :validation-schema="validationSchema">
     <div
-      v-for="field in p.schema"
+      v-for="field in schema"
       :key="field.name"
       class="mb-4"
     >
       <label
-        v-if="p.hasLabels"
+        v-if="hasLabels"
         :for="field.name"
         class="block mb-2 text-xs font-semibold"
       >{{ field.label }}</label>
@@ -27,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-const p = defineProps({
+
+defineProps({
   schema: {
     type: Object,
     required: true
