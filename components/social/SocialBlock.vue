@@ -6,12 +6,12 @@
     >
       Follow us
     </h2>
-    <div class="flex w-full gap-2 mt-2">
+    <div :class="`flex w-full gap-2 mt-2 ${position}`">
       <IconSocial
         v-for="s in socials"
         :key="s.platform"
         :platform="s.platform"
-        :link="s.link"
+        :link="s.url"
       />
     </div>
   </div>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 interface Social {
   platform: string
-  link: string
+  url: string
 }
 
 defineProps({
@@ -31,6 +31,10 @@ defineProps({
   hasTitle: {
     type: Boolean,
     default: true
+  },
+  position: {
+    type: String,
+    default: 'justify-center'
   }
 })
 </script>

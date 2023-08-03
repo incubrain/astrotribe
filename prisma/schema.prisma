@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  title      String    @unique @db.VarChar
+  body       String?
+}
+
+model register_interest {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  name       String
+  email      String
+  referral   String?
+  interest   String?
+}
+
+model roles {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  name       String    @unique(map: "roles_title_key") @db.VarChar
+  body       String?
+  users      users[]
+}
+
+model seo_data {
+  id          Int      @id @default(autoincrement())
+  keyword     String
+  country     String
+  scrape_date DateTime
+  general     Json
+  organic     Json
+  ads         Json
+  domain      String
+
+  @@index([country], map: "idx_seodata_country")
+  @@index([scrape_date], map: "idx_seodata_date")
+  @@index([domain], map: "idx_seodata_domain")
+  @@index([keyword], map: "idx_seodata_keyword")
+}
+
+model statuses {
+  id         Int       @id @default(autoincrement()) @db.SmallInt
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  title      String?   @db.VarChar
+}
+
+model user_followers {
+  id          String    @id @db.Uuid
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  follower_id String    @db.Uuid
+  followed_id String    @db.Uuid
+}
+
+model users {
+  id             BigInt    @id @default(autoincrement())
+  email          String
+  given_name     String
+  surname        String
+  username       String?   @db.VarChar
+  dob            DateTime? @db.Date
+  gender_id      Int?      @db.SmallInt
+  created_at     DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
+  last_seen      DateTime? @default(now()) @db.Timestamptz(6)
+  avatar         String?   @default("'defualt.png'::text")
+  cover_image    String?   @default("'default.jpg'::text")
+  introduction   String?
+  quote          String?
+  follow_count   Int?      @default(0)
+  followed_count Int?      @default(0)
+  role_id        BigInt?   @default(1)
+  auth_id        String?   @unique @db.Uuid
+  roles          roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

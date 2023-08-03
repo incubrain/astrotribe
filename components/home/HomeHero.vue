@@ -14,15 +14,14 @@
       <div
         class="relative z-50 flex flex-col items-center w-full h-full gap-8 text-center lg:items-start lg:text-left"
       >
-        <div class="w-24 h-24 p-4 overflow-hidden bg-white rounded-full shadow-lg">
-          <NuxtImg src="/astronera-logo.jpg" />
+        <div class="w-24 h-24 p-2 overflow-hidden bg-white rounded-full shadow-lg">
+          <NuxtImg src="/astronera-logo-with-text.jpg" />
         </div>
         <h1 class="max-w-lg text-5xl font-bold leading-tight">
-          Explore The Universe And Grow With Us
+          Connect, Learn, and Unravel the Cosmos Together
         </h1>
         <p class="max-w-sm text-xl font-semibold">
-          AstroTribe is a community of astronomers and enthusiasts unveiling the mysteries of the
-          cosmos together.
+          Join our global network of starry-eyed enthusiasts and astronomers.
         </p>
         <div>
           <NuxtLink to="auth/register-interest">
@@ -31,7 +30,7 @@
               variant="solid"
               size="xl"
             >
-              Start Your Cosmic Journey
+              Begin your cosmic journey now!
             </UButton>
           </NuxtLink>
         </div>
