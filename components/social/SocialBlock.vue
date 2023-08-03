@@ -11,7 +11,7 @@
         v-for="s in socials"
         :key="s.platform"
         :platform="s.platform"
-        :link="s.link"
+        :link="s.url"
       />
     </div>
   </div>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 interface Social {
   platform: string
-  link: string
+  url: string
 }
 
 defineProps({
