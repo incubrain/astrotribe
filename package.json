@@ -42,7 +42,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-vue": "^9.14.1",
     "libphonenumber-js": "^1.10.36",
-    "nuxt": "^3.6.3",
+    "nuxt": "^3.6.5",
     "nuxt-icon": "^0.4.1",
     "prisma": "^5.0.0",
     "typescript": "5.0.4",
