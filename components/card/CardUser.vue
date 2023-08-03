@@ -1,11 +1,11 @@
 <template>
   <div class="relative flex border-b border-color md:border-none flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4 md:rounded-md">
     <div
-      v-if="props.user"
+      v-if="user"
       class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
     >
       <NuxtLink
-        :to="`profile/${props.user.id}`"
+        :to="`users/${user.id}`"
         class="group"
       >
         <div class="flex items-center justify-center gap-2">
@@ -13,8 +13,8 @@
             :src="
               s.image.single({
                 bucket: 'profile-public',
-                folderPath: `${props.user.id}/avatar`,
-                file: props.user.avatar,
+                folderPath: `${user.id}/avatar`,
+                file: user.avatar,
                 fileType: 'user-avatar',
                 isPrivate: false
               })
@@ -29,32 +29,25 @@
             <h2
               class="text-sm font-semibold tracking-tighter text-left md:text-lg group-hover:underline group-hover:underline-offset-2"
             >
-              {{ props.user.given_name }} {{ props.user.surname }}
+              {{ user.given_name }} {{ user.surname }}
             </h2>
             <div class="flex items-start w-full gap-1 text-xs">
               <span
-                v-if="props.user.main_role.name !== 'User'"
                 class="flex items-center justify-center font-light"
               >
                 <UIcon
-                  :name="u.users.roleIcon(props.user.main_role.id)"
+                  :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
                 />
-                {{ props.user.main_role.name }} | @{{ props.user.username }}
-              </span>
-              <span
-                v-else
-                class="font-light"
-              >
-                @{{ props.user.username }}
+                {{ user.roles.name }} | @{{ user.username }}
               </span>
             </div>
           </div>
         </div>
       </NuxtLink>
-      <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
+      <!-- <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
         <UIcon
-          v-if="props.user.is_following"
+          v-if="user.is_following"
           name="i-mdi-account-multiple-check"
           class="flex justify-end items-start w-[26px] h-[26px] text-green-800 hover:text-red-800 cursor-pointer"
         />
@@ -63,32 +56,47 @@
           name="i-mdi-account-multiple-plus"
           class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer"
         />
-      </div>
+      </div> -->
     </div>
     <p
-      v-if="props.user.introduction"
+      v-if="user.introduction"
       class="text-xs text-left"
     >
-      {{ props.user.introduction?.slice(0, 120) }}...
+      {{ user.introduction?.slice(0, 120) }}...
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { UserBasic } from '@/types'
+
+const roleIconMapping: Record<number, string> = {
+  // mapped to database role id
+  7: 'i-material-symbols-shield-lock', // admin
+  6: 'i-material-symbols-manage-accounts', //
+  5: 'i-mdi-account-school', // Mentor
+  4: 'i-mdi-book-education', // Teacher
+  3: 'i-mdi-telescope', // AstroGuide
+  2: 'i-material-symbols-menu-book-rounded', // Student
+  1: 'i-material-symbols-account-circle' // Basic user
+}
+
+const userRoleIcon = (roleId: number): string => {
+  if (Object.prototype.hasOwnProperty.call(roleIconMapping, roleId)) {
+    return roleIconMapping[roleId]
+  }
+  return '' // default
+}
 
 const s = useStorage()
 
-const props = defineProps({
+defineProps({
   user: {
-    type: Object as PropType<UserBasic>,
+    type: Object,
     required: true
   }
 })
 
-const u = useUtils()
-
-// const lastSeen = u.time.lastSeen(props.user.last_seen)
+// const lastSeen = u.time.lastSeen(user.last_seen)
 </script>
 
 <style scoped>

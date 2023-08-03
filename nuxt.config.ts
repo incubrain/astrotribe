@@ -1,5 +1,12 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+const og = {
+  title: 'AstronEra: Your Gateway to the Stars',
+  description: 'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
+  image: '/astronera-logo-with-text.jpg',
+  url: 'https://astronera.com'
+}
+
 export default defineNuxtConfig({
   // unlighthouse: {
   //   scanner: {
@@ -40,7 +47,23 @@ export default defineNuxtConfig({
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }]
+      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+      htmlAttrs: {
+        lang: 'en'
+      },
+      meta: [
+        { property: 'title', content: og.description },
+        { property: 'description', content: og.description },
+        { property: 'og:title', content: og.title },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: og.image },
+        { property: 'og:description', content: og.description },
+        { property: 'og:url', content: og.url },
+        { name: 'twitter:card', content: 'Twitter Card' },
+        { name: 'twitter:title', content: og.title },
+        { name: 'twitter:description', content: og.description },
+        { name: 'twitter:image', content: og.image }
+      ]
       // script: [
       // Insert your Google Tag Manager Script here
       // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
@@ -60,12 +83,13 @@ export default defineNuxtConfig({
     '@nuxthq/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
+    'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
     [
       '@pinia/nuxt',
       {
-        autoImports: ['defineStore', 'acceptHMRUpdate']
+        autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
       }
     ]
   ],

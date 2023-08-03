@@ -1,61 +1,23 @@
-import useData from '../composables/useData'
-import * as util from './utilities'
-import { appState } from './appState'
+// import * as util from './utilities'
 
-export const useEventsStore = defineStore('events', () => {
-  const globalState = appState()
-  async function getEvents() {
-    const dataType = 'events'
-    // check localStorage and state
-    if (globalState[dataType].length) return globalState[dataType]
-    // globalState[dataType] = util.checkLocalStorage({ dataType: 'events' })
-    // if (globalState[dataType].length) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().events.many()
+export default defineStore('events', () => {
+  const events = ref([])
 
-    if (error) throw createError(error)
-    globalState[dataType] = await util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'EventBasicValidation'
-    })
-
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
-  }
-
-  async function getSingleEvent({ eventId }: { eventId: number }) {
-    const dataType = 'event'
+  async function checkWeHaveEvents() {
+    if (events.value.length) return
     // check appState
-    if (globalState[dataType].id === eventId) return globalState[dataType]
-
-    // check localStorage
-    // globalState[dataType] = util.checkLocalStorage({ dataType })
-    // if (globalState[dataType]) return globalState[dataType]
-    // if not stored get them from database
-    const { data, error } = await useData().events.single(eventId)
-
-    if (error) throw createError(error)
-    // validate data, then store in localStorage
-    globalState[dataType] = util.checkDataValidity({
-      data,
-      dataType,
-      schema: 'EventFullValidation'
-    })
-
-    if (!globalState[dataType]) throw createError(`Error validating ${dataType} data`)
+    const { error, data } = await useFetch('/api/events/many')
+    if (error.value) throw createError(`error getting events: ${error.value.message}`)
+    if (data.value?.events) events.value = data.value.events // todo check data validity
   }
 
   const eventById = () => {
-    return (id: number) => globalState.events.find((event) => event.id === id)
+    return (id: number) => events.value.find((event) => event.id === id)
   }
 
   return {
-    getEvents,
-    getSingleEvent,
-    eventById
+    events,
+    eventById,
+    checkWeHaveEvents
   }
 })
-
-// if (import.meta.hot) {
-//   import.meta.hot.accept(acceptHMRUpdate(useEventsStore, import.meta.hot))
-// }

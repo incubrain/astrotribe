@@ -17,11 +17,11 @@
   },
   {
     "id": 3,
-    "title": "Join the Cosmic Conversation",
-    "description": "Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey",
-    "icon": "i-material-symbols-android-messages-outline",
-    "bgImg": "/images/features/feat3.png",
-    "isAvailable": false
+    "title": "Connect With AstroGuides",
+    "description": "Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers",
+    "icon": "i-mdi-telescope",
+    "bgImg": "/images/features/feat5.png",
+    "isAvailable": true
   },
   {
     "id": 4,
@@ -33,11 +33,11 @@
   },
   {
     "id": 5,
-    "title": "Connect With AstroGuides",
-    "description": "Find expert AstroGuides to make your stargazing events more enlightening. Discover the universe under the guidance of seasoned astronomers",
-    "icon": "i-mdi-telescope",
-    "bgImg": "/images/features/feat5.png",
-    "isAvailable": true
+    "title": "Join the Cosmic Conversation",
+    "description": "Share, discuss, and engage with the latest news and events in the astronomy world. Be a part of our dynamic community and enrich your cosmic journey",
+    "icon": "i-material-symbols-android-messages-outline",
+    "bgImg": "/images/features/feat3.png",
+    "isAvailable": false
   },
   {
     "id": 6,
