@@ -1,7 +1,7 @@
 <template>
   <div v-if="haveUser">
     <form
-      :key="userCurrent.id"
+      :key="id"
       method="POST"
       @submit.prevent="updateUser"
     >
@@ -25,9 +25,15 @@
                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 v-bind="avatar"
               /> -->
+              <NuxtImg
+                v-if="avatar"
+                :src="avatar"
+                :alt="given_name + ' ' + surname + ' avatar'"
+                class="w-28 h-28 mt-16 border-2 border-gray-700 dark:border-white/80 rounded-full object-cover"
+              />
             </div>
           </div>
-          <h2 class="text-lg text-center font-semibold my-6"
+          <h2 class="text-lg text-center font-semibold mt-24 mb-6"
             >{{ given_name }} {{ surname }}</h2
           >
 
@@ -35,7 +41,9 @@
             <li
               class="dark:bg-transparent dark:text-gray-50 bg-white/40 hover:bg-gray-300 text-md md:text-lg font-base"
             >
-              <NuxtLink class="flex items-center p-2 space-x-3 rounded-md">
+              <NuxtLink
+                class="flex items-center p-2 space-x-3 rounded-md bg-white/40 cursor-pointer"
+              >
                 <UIcon
                   name="i-material-symbols-home"
                   class="md:w-6 md:h-6 w-4 h-4"
@@ -186,9 +194,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useUsersStore } from '@/stores/useUsersStore'
-const u = useUsersStore()
-const { userCurrent } = u
+import { createToast } from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 const { id } = useRoute().params
 const haveUser = ref(false)
 const given_name = ref('')
@@ -196,6 +203,7 @@ const surname = ref('')
 const email = ref('')
 const introduction = ref('')
 const quote = ref('')
+const avatar = ref(null)
 
 // Displaying the user data in the input fields initially
 async function fetchUserData() {
@@ -207,6 +215,7 @@ async function fetchUserData() {
     email.value = user.user.email
     introduction.value = user.user.introduction
     quote.value = user.user.quote
+    avatar.value = user.user.avatar
     haveUser.value = true
     console.log('User fetched:', user.user.id)
   } else {
@@ -224,6 +233,23 @@ const edit = () => {
   updateButton.disabled = false
 }
 
+const successToast = () => {
+  createToast(
+    {
+      title: 'Success 🎉',
+      description: given_name.value + ' ' + surname.value + ', your profile has been updated.'
+    },
+    {
+      timeout: 3000,
+      showIcon: true,
+      position: 'top-right',
+      type: 'success',
+      transition: 'slide'
+    }
+  )
+  return { successToast }
+}
+
 // Update Button Functionality
 async function updateUser() {
   const response = await fetch(`/api/users/update/${id}`, {
@@ -238,9 +264,9 @@ async function updateUser() {
     })
   })
   if (response.ok) {
+    successToast()
     const updatedUser = await response.json()
     console.log('User updated:', updatedUser.user)
-    window.alert('Profile updated successfully!')
     const updateButton = document.querySelector('button[type="submit"]')
     updateButton.disabled = true
     const inputs = document.querySelectorAll('input')
