@@ -185,17 +185,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useUsersStore } from '@/stores/useUsersStore'
+// !info these are all auto-imported
+// import { ref, onMounted } from 'vue'
+// import { useUsersStore } from '@/stores/useUsersStore'
+
 const u = useUsersStore()
 const { userCurrent } = storeToRefs(u)
 const { id } = useRoute().params
 const haveUser = ref(false)
-const given_name = ref('')
-const surname = ref('')
-const email = ref('')
-const introduction = ref('')
-const quote = ref('')
+
+// ractive gives us reactive objects
+const settings = reactive({
+  given_name: '',
+  surname: '',
+  email: '',
+  introduction: '',
+  quote: '',
+  currentPassword: '',
+  password: '',
+  confirmPassword: ''
+})
+
+// const given_name = ref('')
+// const surname = ref('')
+// const email = ref('')
+// const introduction = ref('')
+// const quote = ref('')
 
 // Displaying the user data in the input fields initially
 async function fetchUserData() {
