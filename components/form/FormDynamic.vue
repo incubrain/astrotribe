@@ -1,28 +1,42 @@
 <template>
   <VForm :validation-schema="p.validationSchema">
-    <div
-      v-for="field in p.schema"
-      :key="field.name"
-      class="mb-4"
-    >
-      <label
-        v-if="p.hasLabels"
-        :for="field.name"
-        class="block mb-2 text-xs font-semibold"
-      >{{ field.label }}</label>
-      <VField
-        :id="field.name"
-        :as="field.as"
-        :name="field.name"
-        class="w-full px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline placeholder:text-sm placeholder:text-gray-300 dark:placeholder-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
-        :placeholder="field.label"
-      />
-      <VErrorMessage
-        :name="field.name"
-        class="block px-3 py-1 text-xs italic text-error-400 dark:text-error-800"
-      />
+    <div class="flex flex-wrap justify-between w-full gap-4">
+      <div
+        v-for="(field, index) in p.schema"
+        :key="index"
+        class="h-full my-2 flex flex-col gap-2"
+        :class="field.width === 'half' ? 'w-full lg:w-[calc(50%-8px)]' : 'w-full'"
+      >
+        <label
+          v-if="hasLabels"
+          :for="field.name"
+          class="block mb-2 text-xs font-semibold"
+        >
+          {{ field.props.label }}
+        </label>
+        <VField
+          :id="field.name"
+          :name="field.name"
+          :type="field.props.type"
+        >
+          <input
+            v-model="localModelValue[field.name]"
+            :placeholder="placeholder[field.name]"
+            class="w-full h-10 px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline placeholder:text-sm placeholder:text-gray-800 dark:placeholder-gray-500 background"
+          />
+        </VField>
+        <VErrorMessage
+          :name="field.name"
+          class="block px-3 py-1 text-xs italic text-error-400 dark:text-error-800"
+        />
+      </div>
     </div>
-    <slot />
+    <UButton
+      class="mt-4"
+      @click="submitForm"
+    >
+      {{ p.buttonLabel }}
+    </UButton>
   </VForm>
 </template>
 
@@ -36,10 +50,33 @@ const p = defineProps({
     type: Object,
     required: true
   },
+  placeholder: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
   hasLabels: {
     type: Boolean,
     default: false
+  },
+  buttonLabel: {
+    type: String,
+    default: 'Submit'
   }
 })
 
+const localModelValue = ref({ ...p.placeholder })
+
+watchEffect(() => {
+  console.log('placeholder changed: ', p.placeholder)
+  Object.assign(localModelValue.value, p.placeholder)
+  console.log('local changed: ', localModelValue.value)
+})
+
+const emit = defineEmits(['submitForm'])
+
+const submitForm = () => {
+  console.log('sending data:', localModelValue.value)
+  emit('submitForm', { ...localModelValue.value })
+}
 </script>
