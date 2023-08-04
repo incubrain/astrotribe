@@ -13,22 +13,22 @@
             <div
               class="text-gray-500 dark:text-white/80 text-xs font-bold rounded-lg float-left absolute cursor-pointer"
             >
-              <UIcon
+              <!-- <UIcon
                 name="i-material-symbols-add-a-photo"
                 class="w-4 h-4 md:mt-12 cursor-pointer"
-              />
+              /> -->
               <!-- <input
                 type="file"
                 accept="image/*"
                 name="avatar"
                 id="avatar"
                 class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                v-bind="userCurrent.avatar"
+                v-bind="avatar"
               /> -->
             </div>
           </div>
-          <h2 class="text-lg text-center font-semibold mb-4"
-            >{{ userCurrent.given_name }} {{ userCurrent.surname }}</h2
+          <h2 class="text-lg text-center font-semibold my-6"
+            >{{ given_name }} {{ surname }}</h2
           >
 
           <ul class="pt-2 pb-4 space-y-3 text-sm">
@@ -102,7 +102,7 @@
               >
               <input
                 class="appearance-none block w-full text-gray-700 bg-white/80 dark:bg-[#363636] dark:text-white/80 font-semibold rounded py-4 px-2 mb-2 leading-tight"
-                v-model="userCurrent.given_name"
+                v-model="given_name"
                 type="text"
                 id="given_name"
                 disabled
@@ -116,7 +116,7 @@
               >
               <input
                 class="appearance-none block w-full text-gray-700 bg-white/80 dark:bg-[#363636] dark:text-white/80 font-semibold rounded py-4 px-2 mb-2 leading-tight"
-                v-model="userCurrent.surname"
+                v-model="surname"
                 type="text"
                 id="surname"
                 disabled
@@ -132,7 +132,7 @@
               >
               <input
                 class="appearance-none block w-full text-gray-700 bg-white/80 dark:bg-[#363636] dark:text-white/80 font-semibold rounded py-4 px-2 mb-2 leading-tight"
-                v-model="userCurrent.email"
+                v-model="email"
                 type="email"
                 id="email"
                 disabled
@@ -147,7 +147,7 @@
             >
             <input
               class="appearance-none block w-full text-gray-700 bg-white/80 dark:bg-[#363636] dark:text-white/80 font-semibold rounded py-4 px-2 mb-2 leading-tight"
-              v-model="userCurrent.introduction"
+              v-model="introduction"
               type="text"
               id="introduction"
               disabled
@@ -160,7 +160,7 @@
               >Favourite Quote</label
             >
             <input
-              v-model="userCurrent.quote"
+              v-model="quote"
               id="quote"
               class="appearance-none block w-full text-gray-700 bg-white/80 dark:bg-[#363636] dark:text-white/80 font-semibold rounded py-4 px-2 mb-2 leading-tight"
               type="text"
@@ -188,7 +188,7 @@
 import { ref, onMounted } from 'vue'
 import { useUsersStore } from '@/stores/useUsersStore'
 const u = useUsersStore()
-const { userCurrent } = storeToRefs(u)
+const { userCurrent } = u
 const { id } = useRoute().params
 const haveUser = ref(false)
 const given_name = ref('')
@@ -202,14 +202,13 @@ async function fetchUserData() {
   const response = await fetch(`/api/users/${id}`)
   if (response.ok) {
     const user = await response.json()
-    userCurrent.id = user.id
-    userCurrent.given_name = user.given_name
-    userCurrent.surname = user.surname
-    userCurrent.email = user.email
-    userCurrent.introduction = user.introduction
-    userCurrent.quote = user.quote
+    given_name.value = user.user.given_name
+    surname.value = user.user.surname
+    email.value = user.user.email
+    introduction.value = user.user.introduction
+    quote.value = user.user.quote
     haveUser.value = true
-    console.log('User fetched:', user)
+    console.log('User fetched:', user.user.id)
   } else {
     console.error('Error fetching user:', response.statusText)
   }
