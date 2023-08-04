@@ -1,0 +1,42 @@
+[
+  {
+    "name": "given_name",
+    "width": "half",
+    "props": {
+      "label": "Given Name",
+      "type": "text"
+    }
+  },
+  {
+    "name": "surname",
+    "width": "half",
+    "props": {
+      "label": "Surname",
+      "type": "text"
+    }
+  },
+  {
+    "name": "email",
+    "width": "full",
+    "props": {
+      "label": "Email",
+      "type": "email"
+    }
+  },
+  {
+    "name": "introduction",
+    "width": "full",
+    "props": {
+      "label": "Introduction",
+      "type": "text"
+    }
+  },
+  {
+    "name": "quote",
+    "width": "full",
+    "props": {
+      "label": "Quote",
+      "type": "text"
+    }
+  }
+]

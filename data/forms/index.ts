@@ -7,6 +7,8 @@ import resetPasswordData from './reset-password.json'
 import forgotPasswordData from './forgot-password.json'
 import socialData from './socials.json'
 import registerInterestData from './register-interest.json'
+import settingsPasswordData from './settings-password.json'
+import settingsAccountData from './settings-account.json'
 
 export {
   interestsData,
@@ -17,5 +19,7 @@ export {
   resetPasswordData,
   forgotPasswordData,
   socialData,
-  registerInterestData
+  registerInterestData,
+  settingsPasswordData,
+  settingsAccountData
 }
