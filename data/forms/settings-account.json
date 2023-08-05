@@ -28,7 +28,7 @@
     "width": "full",
     "props": {
       "label": "Introduction",
-      "type": "text"
+      "type": "textarea"
     }
   },
   {
@@ -36,7 +36,7 @@
     "width": "full",
     "props": {
       "label": "Quote",
-      "type": "text"
+      "type": "textarea"
     }
   }
 ]
