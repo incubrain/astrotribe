@@ -4,6 +4,7 @@
       :schema="settingsAccountData"
       :validation-schema="FormAccountSchema"
       :placeholder="userAccountSettings"
+      :has-labels="true"
       @submit-form="onSubmitAccount"
     />
   </UCard>

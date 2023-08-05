@@ -4,6 +4,7 @@
       :schema="settingsPasswordData"
       :validation-schema="FormPasswordSchema"
       :placeholder="userPasswordSettings"
+      :has-labels="true"
       @submit-form="onSubmitPassword"
     />
   </UCard>
