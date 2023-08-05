@@ -40,26 +40,26 @@ const ResponseSchema = z.object({
 // Configuration
 const config = {
   testMode: true, // Turn testing on
-  testNumber: 5, // # Results you want to scrape
+  testNumber: 10, // # Results you want to scrape
   testKeyword: 'Best Telescopes', // Your test keyword here
-  prodNumber: 100 // # Results you want to scrape
+  prodNumber: 2 // # Results you want to scrape
 }
 
 const domains = [
   {
     domain: 'google',
     countries: [
-      { name: 'New Zealand', code: 'cc=nz' },
-      { name: 'Australia', code: 'cc=au' },
-      { name: 'India', code: 'cc=in' }
+      { name: 'New Zealand', code: 'gl=nz' },
+      { name: 'Australia', code: 'gl=au' },
+      { name: 'India', code: 'gl=in' }
     ]
   },
   {
     domain: 'bing',
     countries: [
-      { name: 'New Zealand', code: 'gl=nz' },
-      { name: 'Australia', code: 'gl=au' },
-      { name: 'India', code: 'gl=in' }
+      { name: 'New Zealand', code: 'cc=nz' },
+      { name: 'Australia', code: 'cc=au' },
+      { name: 'India', code: 'cc=in' }
     ]
   }
 ]
@@ -67,19 +67,20 @@ const domains = [
 // Refactoring for modularity: separate function to process a keyword
 async function processKeyword(
   domain: string,
-  country: string,
+  country: { code: string; name: string },
   keyword: string,
   amount: number,
   options: any
 ): Promise<any> {
-  const url = `https://${domain}.com/search?q=${encodeURIComponent(keyword)}&num=${String(
+  const url = `https://www.${domain}.com/search?q=${encodeURIComponent(keyword)}&num=${String(
     amount
-  )}&${country}&lum_json=1`
+  )}&${country.code}&lum_json=1`
 
   try {
     const response = await axios.get(url, options)
     console.log('Response:', response.data)
     const parsed = ResponseSchema.parse(response.data) // Use zod to validate and parse the data
+    console.log('Response Parsed:')
 
     const general = parsed.general
     const ads = {
@@ -99,10 +100,11 @@ async function processKeyword(
 
     const client = useClient()
 
-    await client.serp.create({
+    console.log('Sending Parsed Data')
+    const returnedData = await client.seo_data.create({
       data: {
         keyword,
-        country,
+        country: country.name,
         date: new Date(),
         general: JSON.stringify(general),
         organic: JSON.stringify(organic),
@@ -110,14 +112,14 @@ async function processKeyword(
         domain
       }
     })
+    console.log('Returned Data:', returnedData)
   } catch (error: any) {
     console.error(`Error with keyword "${keyword}" and URL "${url}": ${error.message}`)
     throw error
   }
 }
 
-export default defineEventHandler(async () => {
-  console.log('scrape-blogs start')
+async function scrapeSeo() {
   const env = useRuntimeConfig()
 
   try {
@@ -139,7 +141,7 @@ export default defineEventHandler(async () => {
       // Test with the first domain and country in your list
       await processKeyword(
         domains[0].domain,
-        domains[0].countries[0].code,
+        domains[0].countries[0],
         config.testKeyword,
         config.testNumber,
         options
@@ -147,26 +149,20 @@ export default defineEventHandler(async () => {
     } else {
       // Iterate through each domain and country
       for (const { domain, countries } of domains) {
-        for (const { code } of countries) {
+        for (const country of countries) {
           await Promise.all(
             keywords.map((keyword) =>
-              processKeyword(domain, code, keyword.name, config.prodNumber, options)
+              processKeyword(domain, country, keyword.name, config.prodNumber, options)
             )
           )
         }
       }
     }
 
-    return {
-      status: 200,
-      message: 'Blogs scraped'
-    }
+    console.log('SEO scraped')
   } catch (error: any) {
-    console.error('scrape-blogs error', error.message)
-    return {
-      status: 500,
-      message: 'Error scraping blogs',
-      error
-    }
+    throw createError(`error scraping seo: ${error.message}`)
   }
-})
+}
+
+scrapeSeo()
