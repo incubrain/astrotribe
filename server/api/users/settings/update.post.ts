@@ -1,9 +1,29 @@
+import { SettingsAccountValidation, SettingsPasswordValidation, SettingsAccount, SettingsPassword } from '@/types/zod/settings'
+
+function validateSettingsData(settingsType: string, data: SettingsAccount | SettingsPassword): any {
+  switch (settingsType) {
+    case 'account':
+      return SettingsAccountValidation.parse(data)
+    case 'password':
+      return SettingsPasswordValidation.parse(data)
+    default:
+      throw createError(`Error validating ${settingsType} settings data`)
+  }
+}
+
 export default defineEventHandler(async (event) => {
-  const { id } = event.context.params
-  console.log('updating user', id)
+  let status
+  let message
+  let data
+  // TODO: make this endpoint dynamic, we should be able to update each settings tab based on a type passed in body
+  // TODO: use zod to validate the body data
+  // TODO: pass id in post body
+  // TODO: dynamically choose the table to update based on the type passed in body
 
   const body = await readBody(event)
-  console.log('body', body)
+  console.log('updating user', body, body.id)
+
+  const validatedData = validateSettingsData(body.settingsType, body.data)
 
   const client = useClient()
 
@@ -11,7 +31,7 @@ export default defineEventHandler(async (event) => {
     // Update the user data in the Supabase table
     const user = await client.users.update({
       where: {
-        id
+        id: body.id
       },
       data: {
         // fetch the body data from the request and update the user
@@ -21,13 +41,8 @@ export default defineEventHandler(async (event) => {
         introduction: body.introduction,
         quote: body.quote,
         updated_at: new Date()
-
       }
     })
-
-    let status
-    let message
-    let data
 
     if (user) {
       status = 200
