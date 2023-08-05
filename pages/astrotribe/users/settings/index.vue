@@ -1,9 +1,11 @@
 <template>
   <UTabs
     :items="items"
-    class="w-full"
     orientation="vertical"
-    :ui="{ wrapper: 'flex items-start gap-4', list: { width: 'w-48' } }"
+    :ui="{
+      wrapper: 'flex flex-col lg:flex-row items-start gap-4',
+      list: { width: 'w-full lg:w-48' }
+    }"
   >
     <template #account>
       <LazySettingsAccount />
@@ -12,23 +14,29 @@
       <LazySettingsPassword />
     </template>
     <template #default="{ item, index, selected }">
-      <div class="flex items-center w-full justify-between gap-2 relative truncate">
+      <div class="flex items-center w-full justify-between gap-2 relative">
         <div class="flex gap-1 items-center">
-          <span>
-            {{ index + 1 }}.
-          </span>
-          <UIcon :name="item.icon" class="w-4 h-4 flex-shrink-0" />
+          <span> {{ index + 1 }}. </span>
+          <UIcon
+            :name="item.icon"
+            class="w-4 h-4 flex-shrink-0"
+          />
         </div>
 
-        <span class="truncate">{{ item.label }}</span>
-
-        <span v-if="selected" class="absolute -right-4 w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400" />
+        <div class="relative flex gap-2 justify-center items-center">
+          <span class="truncate">{{ item.label }}</span>
+          <span
+            v-if="selected"
+            class="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-400"
+          />
+        </div>
       </div>
     </template>
   </UTabs>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
 const items = [
   {
     slot: 'account',
@@ -39,12 +47,6 @@ const items = [
     slot: 'password',
     label: 'Password',
     icon: 'i-material-symbols-key'
-  },
-  {
-    slot: 'security',
-    label: 'Security',
-    icon: 'i-material-symbols-shield',
-    disabled: true
   },
   {
     slot: 'application',
