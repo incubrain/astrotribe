@@ -26,6 +26,8 @@ const settingsTabs = [
 ]
 
 export const useUserSettingsStore = defineStore('userSettings', () => {
+  // info: use reactive() to make the object reactive, ref is for primitive types
+  // TypeScript supports 7 primitive types number, string, boolean, bigint, symbol, undefined, and null.
   const userAccountSettings = reactive({
     given_name: 'your given name',
     surname: 'your surname',
@@ -46,6 +48,7 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
     console.log('getUserSettings', id)
     // TODO: get user settings from database
     // TODO: store retrieved settings in pinia store
+    // TODO: think of errors you need to handle, use try catch block
     // const { error, data } = await useFetch(`/api/users/settings/${id}`)
     // if (error) throw new Error(`error getting user settings: ${error.message}`)
     // if (data) {

@@ -40,7 +40,6 @@
 const settings = useUserSettingsStore()
 
 onMounted(() => {
-  // Fetch user settings using the user's ID or another identifier
   const userId = 1
   settings.getUserSettings(userId)
 })
