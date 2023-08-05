@@ -9,7 +9,8 @@ const settingsTabs = [
   {
     slot: 'password',
     label: 'Password',
-    icon: 'i-material-symbols-key'
+    icon: 'i-material-symbols-key',
+    disabled: true
   },
   {
     slot: 'application',
@@ -67,6 +68,7 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
 
   async function updatePassword(newPassword: SettingsPassword) {
     console.log('password:', newPassword)
+    // !important: we will add password upate functionality later
     // TODO: Upate pinia store
     // TODO: Call API to update the password
     // TODO: Handle response and update passwordSettings
