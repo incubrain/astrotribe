@@ -11,17 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { FormAccountSchema } from '@/types/zod/settings'
+import { FormAccountSchema, SettingsAccount } from '@/types/zod/settings'
 import settingsAccountData from '@/data/forms/settings-account.json'
-
-// const schema = ref(settingsAccountData)
-
-// console.log('settingsAccountData: ', schema.value)
 
 const settings = useUserSettingsStore()
 const { userAccountSettings } = storeToRefs(settings)
 
-function onSubmitAccount(value: any) {
+function onSubmitAccount(value: SettingsAccount) {
   console.log('Submitted form:', value)
   settings.updateAccountSettings(value)
 }
