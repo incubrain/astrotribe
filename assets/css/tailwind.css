@@ -13,6 +13,7 @@
     --nav-height-sm: 44px;
     --nav-height-md: 50px;
     --nav-height-lg: 60px;
+    --max-width-md: 1080px;
   }
 
   h1, h2, h3, h4 {

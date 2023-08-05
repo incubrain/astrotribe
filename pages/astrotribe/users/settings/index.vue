@@ -3,7 +3,7 @@
     :items="items"
     orientation="vertical"
     :ui="{
-      wrapper: 'flex flex-col lg:flex-row items-start gap-4',
+      wrapper: 'flex flex-col lg:flex-row items-start gap-4 p-4 lg:p-0 max-w-[var(--max-width-md)]',
       list: { width: 'w-full lg:w-48' }
     }"
   >
