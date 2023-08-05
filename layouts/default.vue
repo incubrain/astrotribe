@@ -10,6 +10,7 @@
     >
       <slot />
     </AppBody>
+    <UNotifications />
     <NavMobiBottom class="lg:hidden" />
   </div>
 </template>
