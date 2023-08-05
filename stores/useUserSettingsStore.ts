@@ -1,5 +1,30 @@
 import { SettingsAccount, SettingsPassword } from '@/types/zod/settings'
 
+const settingsTabs = [
+  {
+    slot: 'account',
+    label: 'Account',
+    icon: 'i-material-symbols-home'
+  },
+  {
+    slot: 'password',
+    label: 'Password',
+    icon: 'i-material-symbols-key'
+  },
+  {
+    slot: 'application',
+    label: 'Application',
+    icon: 'i-material-symbols-apps',
+    disabled: true
+  },
+  {
+    slot: 'notifications',
+    label: 'Notifications',
+    icon: 'i-material-symbols-notifications',
+    disabled: true
+  }
+]
+
 export const useUserSettingsStore = defineStore('userSettings', () => {
   const userAccountSettings = reactive({
     given_name: 'your given name',
@@ -47,6 +72,7 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
   return {
     userAccountSettings,
     userPasswordSettings,
+    tabs: settingsTabs,
     getUserSettings,
     updateAccountSettings,
     updatePassword

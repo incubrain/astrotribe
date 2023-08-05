@@ -1,6 +1,6 @@
 <template>
   <UTabs
-    :items="items"
+    :items="settings.tabs"
     orientation="vertical"
     :ui="{
       wrapper: 'flex flex-col lg:flex-row items-start gap-4 p-4 lg:p-0 max-w-[var(--max-width-md)]',
@@ -36,31 +36,6 @@
 </template>
 
 <script setup lang="ts">
-
-const items = [
-  {
-    slot: 'account',
-    label: 'Account',
-    icon: 'i-material-symbols-home'
-  },
-  {
-    slot: 'password',
-    label: 'Password',
-    icon: 'i-material-symbols-key'
-  },
-  {
-    slot: 'application',
-    label: 'Application',
-    icon: 'i-material-symbols-apps',
-    disabled: true
-  },
-  {
-    slot: 'notifications',
-    label: 'Notifications',
-    icon: 'i-material-symbols-notifications',
-    disabled: true
-  }
-]
 
 const settings = useUserSettingsStore()
 
