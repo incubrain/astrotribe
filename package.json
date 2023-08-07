@@ -41,6 +41,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-vue": "^9.14.1",
     "libphonenumber-js": "^1.10.36",
+    "node-cron": "^3.0.2",
     "nuxt": "^3.6.3",
     "nuxt-icon": "^0.4.1",
     "openai": "^3.3.0",
