@@ -37,7 +37,7 @@ function select(row) {
 }
 
 const test = async () => {
-  await useFetch('/api/admin/create/many-users')
+  await useFetch('/api/admin/scrape-search')
 }
 
 const currentKeyword = ref(keywords[0].name)
