@@ -78,7 +78,7 @@ model users {
   roles          roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-view AuthUser {
+view auth_users {
   instance_id                 String?   @db.Uuid
   id                          String    @id @unique @db.Uuid
   aud                         String?   @db.VarChar(255)
@@ -118,7 +118,7 @@ view AuthUser {
   @@map("auth_users")
 }
 
-model Serp {
+model seo_data {
   id        Int      @id @default(autoincrement())
   keyword   String
   country   String
