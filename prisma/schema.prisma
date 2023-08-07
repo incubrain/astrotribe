@@ -1,62 +1,74 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["views"]
+  previewFeatures = ["views", "postgresqlExtensions"]
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+  extensions  = [vector]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model categories {
+model Categories {
   id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  title      String    @unique @db.VarChar
-  body       String?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  title      String    @unique @db.VarChar(255)
+  body       String?   @db.VarChar(255)
+  news       News[]
+
+  @@map("categories")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model register_interest {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  name       String
-  email      String
-  referral   String?
-  interest   String?
-}
+model RegisterInterest {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String   @db.VarChar(255)
+  email      String   @db.VarChar(255)
+  referral   String?  @db.VarChar(255)
+  interest   String?  @db.VarChar(255)
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model roles {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  name       String    @unique(map: "roles_title_key") @db.VarChar
-  body       String?
-  users      users[]
+  @@map("register_interest")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model statuses {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  title      String?   @db.VarChar
+model Roles {
+  id         BigInt @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String @unique(map: "roles_title_key") @db.VarChar(255)
+  body       String? @db.VarChar(255)
+  users      Users[]
+
+  @@map("roles")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Statuses {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  title      String?  @db.VarChar(255)
+
+  @@map("statuses")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model user_followers {
+model UserFollowers {
   id          String    @id @db.Uuid
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
   follower_id String    @db.Uuid
   followed_id String    @db.Uuid
+
+  @@map("user_followers")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model users {
+model Users {
   id             BigInt    @id @default(autoincrement())
   email          String
   given_name     String
@@ -75,10 +87,12 @@ model users {
   followed_count Int?      @default(0)
   role_id        BigInt?   @default(1)
   auth_id        String?   @unique @db.Uuid
-  roles          roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roles          Roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("users")
 }
 
-view auth_users {
+view AuthUsers {
   instance_id                 String?   @db.Uuid
   id                          String    @id @unique @db.Uuid
   aud                         String?   @db.VarChar(255)
@@ -118,20 +132,103 @@ view auth_users {
   @@map("auth_users")
 }
 
-model seo_data {
-  id        Int      @id @default(autoincrement())
-  keyword   String
-  country   String
-  date      DateTime @map("scrape_date")
-  general   Json
-  organic   Json
-  ads       Json
-  domain    String
+model SeoData {
+  id      Int      @id @default(autoincrement())
+  keyword String
+  country String
+  date    DateTime @map("scrape_date")
+  general Json
+  organic Json
+  ads     Json
+  domain  String
 
   @@index([keyword], name: "idx_seodata_keyword")
   @@index([date], name: "idx_seodata_date")
   @@index([country], name: "idx_seodata_country")
   @@index([domain], name: "idx_seodata_domain")
-
   @@map("seo_data")
+}
+
+model Embeddings {
+  id        BigInt           @id @default(autoincrement())
+  vector    Unsupported("vector(1536)")?
+  type      String // e.g. "news", "post"
+  created_at DateTime?        @default(now()) @db.Timestamptz(6)
+  news      NewsEmbeddings[]
+
+  @@map("embeddings")
+}
+
+model NewsEmbeddings {
+  id           BigInt     @id @default(autoincrement())
+  news_id      BigInt
+  embedding_id BigInt
+  news         News       @relation(fields: [news_id], references: [id])
+  embedding   Embeddings @relation(fields: [embedding_id], references: [id])
+
+  @@map("news_embeddings")
+}
+
+model NewsAuthors {
+  id       Int    @id @default(autoincrement())
+  news     News   @relation(fields: [news_id], references: [id])
+  news_id   BigInt
+  author   Authors @relation(fields: [author_id], references: [id])
+  author_id Int
+  @@map("news_authors")
+}
+
+model News {
+  id         BigInt          @id @default(autoincrement())
+  created_at DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at DateTime        @updatedAt @db.Timestamptz(6)
+  title      String          @db.VarChar(255)
+  link       String          @db.VarChar(255)
+  body       String?         @db.VarChar(255)
+  category   Categories      @relation(fields: [category_id], references: [id])
+  category_id BigInt
+  authors    NewsAuthors[]
+  tags       NewsTags[]
+  embeddings NewsEmbeddings[]
+  summaries  Summaries[]
+
+  @@map("news")
+}
+
+model Summaries {
+  id        Int      @id @default(autoincrement())
+  level     String
+  content   String
+  created_at DateTime @default(now())
+  news      News     @relation(fields: [news_id], references: [id])
+  news_id    BigInt
+  @@map("summaries")
+}
+
+model NewsTags {
+  id     Int  @id @default(autoincrement())
+  news   News @relation(fields: [news_id], references: [id])
+  news_id BigInt
+  tag    Tags @relation(fields: [tag_id], references: [id])
+  tag_id  Int
+
+  @@map("news_tags")
+}
+
+model Tags {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  news_tags NewsTags[]
+
+  @@map("tags")
+}
+
+model Authors {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  link        String?       @unique
+  image       String?
+  news_authors NewsAuthors[]
+
+  @@map("authors")
 }
