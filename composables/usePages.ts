@@ -43,13 +43,13 @@ const pages = ref([
     name: 'News',
     slug: '/astrotribe/news',
     icon: 'i-mdi-newspaper-variant-outline'
-  },
-  {
-    id: 5,
-    name: 'Serp',
-    slug: '/astrotribe/serp',
-    icon: 'i-mdi-newspaper-variant-outline'
   }
+  // {
+  //   id: 5,
+  //   name: 'Serp',
+  //   slug: '/astrotribe/serp',
+  //   icon: 'i-mdi-newspaper-variant-outline'
+  // }
 ] as Page[])
 
 export default function usePages() {
