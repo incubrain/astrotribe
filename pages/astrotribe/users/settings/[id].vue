@@ -38,9 +38,9 @@
 <script setup lang="ts">
 
 const settings = useUserSettingsStore()
-
 onMounted(() => {
-  const userId = 1
-  settings.getUserSettings(userId)
+  const { id } = useRoute().params
+  settings.getUserSettings(Number(id))
 })
+
 </script>

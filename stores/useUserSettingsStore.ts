@@ -15,7 +15,7 @@ const settingsTabs = [
   {
     slot: 'application',
     label: 'Application',
-    icon: 'i-material-symbols-apps',
+    icon: 'i-material-symbols-laptop-mac-outline',
     disabled: true
   },
   {
@@ -46,7 +46,6 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
   // const notificationSettings = reactive({ email: true, push: false })
 
   async function getUserSettings(id: number) {
-    console.log('getUserSettings', id)
     // TODO: get user settings from database
     // TODO: store retrieved settings in pinia store
     // TODO: think of errors you need to handle, use try catch block
@@ -55,8 +54,20 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
     // if (data) {
     //   Object.assign(accountSettings, data?.accountSettings)
     //   passwordSettings.currentPassword = data.password
-    //   // TODO: Create api endpoint, think about how we will fetch data based on DB schema
     // }
+    try {
+      console.log('getUserSettings', id)
+      const response = await fetch(`/api/users/${id}`)
+      if (!response.ok) {
+        throw new Error(`Error fetching user settings. Status: ${response.status}`)
+      }
+      const data = await response.json()
+      Object.assign(userAccountSettings, data.accountSettings)
+      console.log('data:', data)
+      // userPasswordSettings.currentPassword = data.password
+    } catch (error) {
+      console.error('Error fetching user settings:', error.message)
+    }
   }
 
   async function updateAccountSettings(newSettings: SettingsAccount) {
