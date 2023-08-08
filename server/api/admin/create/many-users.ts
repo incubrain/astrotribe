@@ -1,5 +1,7 @@
-const users = []
 export default defineEventHandler(async () => {
+  const env = useRuntimeConfig().public
+  let users = []
+  if (env.NODE_ENV !== 'development') users = await import('@/data/seed/users.json')
   const client = useClient()
   let message
   let status
