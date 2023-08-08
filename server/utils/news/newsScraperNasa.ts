@@ -1,12 +1,9 @@
 import { Page } from 'puppeteer'
-import { Blog } from './scraperBlogs'
+import { Blog, SelectorConfig } from './newsBlogs'
 
 // maps the name of a data field to a CSS selector string that can be used to find the corresponding element on the page.
-interface SelectorConfig {
-  [key: string]: string
-}
 
-const scraperNasa = async (page: Page, blog: Blog) => {
+const newsScraperNasa = async (page: Page, blog: Blog) => {
   return await page.$$eval(
     blog.selectorBase,
     (articles: Element[], selectorConfig: SelectorConfig) => {
@@ -14,7 +11,7 @@ const scraperNasa = async (page: Page, blog: Blog) => {
         const data: { [key: string]: any } = {}
 
         for (const key in selectorConfig) {
-          const elements = article.querySelectorAll(selectorConfig[key])
+          const elements = article.querySelectorAll(key as keyof SelectorConfig)
 
           if (!elements.length) {
             data[key] = null
@@ -63,12 +60,6 @@ const scraperNasa = async (page: Page, blog: Blog) => {
               data[key] = elements[0].textContent?.replace(/\n/g, ' ').trim()
               data.srcArticle = elements[0].getAttribute('src')
               break
-            case 'category':
-              data[key] = {
-                id: 1,
-                name: elements[0].textContent?.trim()
-              }
-              break
             default:
               data[key] = {
                 name: elements[0].textContent?.trim(),
@@ -83,4 +74,4 @@ const scraperNasa = async (page: Page, blog: Blog) => {
   )
 }
 
-export default scraperNasa
+export default newsScraperNasa
