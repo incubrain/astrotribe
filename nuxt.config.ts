@@ -2,7 +2,8 @@
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
-  description: 'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
+  description:
+    'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
   url: 'https://astronera.com'
 }
@@ -83,6 +84,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     'nuxt-swiper',
+    '@nuxtjs/supabase',
     'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
@@ -102,6 +104,26 @@ export default defineNuxtConfig({
     // VS Code Server options
     vscode: {}
     // ...other options
+  },
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/astrotribe',
+      exclude: ['/auth/**', '/team/**', '/about/**', '/contact/**', '/blog/**']
+    },
+    cookieOptions: {
+      maxAge: 60 * 60 * 8,
+      sameSite: 'lax',
+      secure: true
+    },
+    clientOptions: {
+      auth: {
+        flowType: 'pkce',
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    }
   },
   // partytown: {
   //     // For google analytics
