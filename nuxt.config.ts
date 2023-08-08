@@ -117,6 +117,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
+      NODE_ENV: process.env.NODE_ENV,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY
     },
@@ -127,6 +128,8 @@ export default defineNuxtConfig({
     OPENAI_ORG: process.env.OPENAI_ORG,
     BRIGHT_DATA_SERP_PASS: process.env.BRIGHT_DATA_SERP_PASS,
     BRIGHT_DATA_SERP_USER: process.env.BRIGHT_DATA_SERP_USER,
+    BRIGHT_DATA_BROWSER_PASS: process.env.BRIGHT_DATA_BROWSER_PASS,
+    BRIGHT_DATA_BROWSER_USER: process.env.BRIGHT_DATA_BROWSER_USER
   },
   typescript: {
     shim: false,
