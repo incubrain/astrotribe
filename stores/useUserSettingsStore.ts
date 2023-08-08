@@ -46,35 +46,52 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
   // const notificationSettings = reactive({ email: true, push: false })
 
   async function getUserSettings(id: number) {
-    // TODO: get user settings from database
-    // TODO: store retrieved settings in pinia store
-    // TODO: think of errors you need to handle, use try catch block
-    // const { error, data } = await useFetch(`/api/users/settings/${id}`)
-    // if (error) throw new Error(`error getting user settings: ${error.message}`)
-    // if (data) {
-    //   Object.assign(accountSettings, data?.accountSettings)
-    //   passwordSettings.currentPassword = data.password
-    // }
     try {
       console.log('getUserSettings', id)
-      const response = await fetch(`/api/users/${id}`)
+      // TODO: get user settings from database
+      const response = await fetch(`/api/users/settings/${id}`, {
+        method: 'GET'
+      })
       if (!response.ok) {
         throw new Error(`Error fetching user settings. Status: ${response.status}`)
       }
       const data = await response.json()
+      // TODO: store retrieved settings in pinia store
       Object.assign(userAccountSettings, data.accountSettings)
       console.log('data:', data)
+      // Password is not returned from the API
       // userPasswordSettings.currentPassword = data.password
     } catch (error) {
-      console.error('Error fetching user settings:', error.message)
+      console.error('Error fetching user settings:', error)
     }
   }
 
   async function updateAccountSettings(newSettings: SettingsAccount) {
+    const id = 34
     console.log('settings:', newSettings)
-    // TODO: Upate pinia store
-    // TODO: Call API to update the password
-    // TODO: Handle response and update accountSettings
+    try {
+      // Calling the API to update the account settings
+      const response = await fetch(`/api/users/settings/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id,
+          settingsType: 'account',
+          data: newSettings
+        })
+      })
+      if (!response.ok) {
+        throw new Error(`Error updating account settings. Status: ${response.status}`)
+      }
+      const updatedData = await response.json()
+      // Updating the Pinia store with the new settings received from the API
+      Object.assign(userAccountSettings, updatedData.user.accountSettings)
+      console.log('Updated account settings:', updatedData.user)
+    } catch (error) {
+      console.error('Error updating account settings:', error)
+    }
   }
 
   async function updatePassword(newPassword: SettingsPassword) {

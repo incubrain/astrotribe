@@ -1,19 +1,39 @@
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params
+  console.log('getting user', id)
+  // const query = getQuery(event)
   const client = useClient()
+  console.log('getting user', id)
+  // const admin = false
+  const user = await client.users.findFirst({
+    where: {
+      id: BigInt(id)
+    },
+    include: {
+      roles: true
+    }
+  })
 
-  try {
-    // TODO: get user settings from database
-    return {
-      status: 200,
-      message: 'User settings fetched',
-      settings
-    }
-  } catch (error) {
-    // TODO: handle error
-    return {
-      status: 500,
-      message: 'Error getting user settings'
-    }
+  let status: number
+  let message: string
+  let data: any
+
+  if (user) {
+    status = 200
+    message = 'User fetched'
+    data = JSON.stringify(
+      user,
+      (key, value) => (typeof value === 'bigint' ? value.toString() : value) // return everything else unchanged
+    )
+  } else {
+    status = 500
+    message = 'Error getting user'
+    data = undefined
+  }
+
+  return {
+    status,
+    message,
+    user: JSON.parse(data)
   }
 })

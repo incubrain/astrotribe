@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   // TODO: dynamically choose the table to update based on the type passed in body
 
   const body = await readBody(event)
-  console.log('updating user', body, body.id)
+  console.log('updating user', body)
 
   const validatedData = validateSettingsData(body.settingsType, body.data)
 
@@ -34,13 +34,8 @@ export default defineEventHandler(async (event) => {
         id: body.id
       },
       data: {
-        // fetch the body data from the request and update the user
-        given_name: body.given_name,
-        surname: body.surname,
-        email: body.email,
-        introduction: body.introduction,
-        quote: body.quote,
-        updated_at: new Date()
+        // fetching the body data from the request and update the user
+        ...validatedData
       }
     })
 
