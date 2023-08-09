@@ -4,19 +4,19 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-  extensions  = [vector]
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [vector]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Categories {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  title      String    @unique @db.VarChar(255)
-  body       String?   @db.VarChar(255)
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  title      String   @unique @db.VarChar(255)
+  body       String?  @db.VarChar(255)
   news       News[]
 
   @@map("categories")
@@ -37,10 +37,10 @@ model RegisterInterest {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Roles {
-  id         BigInt @id @default(autoincrement())
+  id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
-  name       String @unique(map: "roles_title_key") @db.VarChar(255)
-  body       String? @db.VarChar(255)
+  name       String   @unique(map: "roles_title_key") @db.VarChar(255)
+  body       String?  @db.VarChar(255)
   users      Users[]
 
   @@map("roles")
@@ -150,11 +150,11 @@ model SeoData {
 }
 
 model Embeddings {
-  id        BigInt           @id @default(autoincrement())
-  vector    Unsupported("vector(1536)")?
-  type      String // e.g. "news", "post"
-  created_at DateTime?        @default(now()) @db.Timestamptz(6)
-  news      NewsEmbeddings[]
+  id         BigInt                       @id @default(autoincrement())
+  vector     Unsupported("vector(1536)")?
+  type       String // e.g. "news", "post"
+  created_at DateTime?                    @default(now()) @db.Timestamptz(6)
+  news       NewsEmbeddings[]
 
   @@map("embeddings")
 }
@@ -164,70 +164,72 @@ model NewsEmbeddings {
   news_id      BigInt
   embedding_id BigInt
   news         News       @relation(fields: [news_id], references: [id])
-  embedding   Embeddings @relation(fields: [embedding_id], references: [id])
+  embedding    Embeddings @relation(fields: [embedding_id], references: [id])
 
   @@map("news_embeddings")
 }
 
 model NewsAuthors {
-  id       Int    @id @default(autoincrement())
-  news     News   @relation(fields: [news_id], references: [id])
+  id        Int     @id @default(autoincrement())
+  news      News    @relation(fields: [news_id], references: [id])
   news_id   BigInt
-  author   Authors @relation(fields: [author_id], references: [id])
+  author    Authors @relation(fields: [author_id], references: [id])
   author_id Int
+
   @@map("news_authors")
 }
 
 model News {
-  id         BigInt          @id @default(autoincrement())
-  created_at DateTime        @default(now()) @db.Timestamptz(6)
-  updated_at DateTime        @updatedAt @db.Timestamptz(6)
-  title      String          @db.VarChar(255)
-  link       String          @db.VarChar(255)
-  body       String?         @db.VarChar(255)
-  category   Categories      @relation(fields: [category_id], references: [id])
+  id          BigInt           @id @default(autoincrement())
+  created_at  DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime         @updatedAt @db.Timestamptz(6)
+  title       String           @db.VarChar(255)
+  link        String           @db.VarChar(255)
+  body        String?          @db.VarChar(255)
+  category    Categories       @relation(fields: [category_id], references: [id])
   category_id BigInt
-  authors    NewsAuthors[]
-  tags       NewsTags[]
-  embeddings NewsEmbeddings[]
-  summaries  Summaries[]
+  authors     NewsAuthors[]
+  tags        NewsTags[]
+  embeddings  NewsEmbeddings[]
+  summaries   Summaries[]
 
   @@map("news")
 }
 
 model Summaries {
-  id        Int      @id @default(autoincrement())
-  level     String
-  content   String
+  id         Int      @id @default(autoincrement())
+  level      String
+  content    String
   created_at DateTime @default(now())
-  news      News     @relation(fields: [news_id], references: [id])
+  news       News     @relation(fields: [news_id], references: [id])
   news_id    BigInt
+
   @@map("summaries")
 }
 
 model NewsTags {
-  id     Int  @id @default(autoincrement())
-  news   News @relation(fields: [news_id], references: [id])
+  id      Int    @id @default(autoincrement())
+  news    News   @relation(fields: [news_id], references: [id])
   news_id BigInt
-  tag    Tags @relation(fields: [tag_id], references: [id])
+  tag     Tags   @relation(fields: [tag_id], references: [id])
   tag_id  Int
 
   @@map("news_tags")
 }
 
 model Tags {
-  id       Int        @id @default(autoincrement())
-  name     String     @unique
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
   news_tags NewsTags[]
 
   @@map("tags")
 }
 
 model Authors {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  link        String?       @unique
-  image       String?
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  link         String?       @unique
+  image        String?
   news_authors NewsAuthors[]
 
   @@map("authors")
