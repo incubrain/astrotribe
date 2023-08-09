@@ -66,8 +66,8 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
     }
   }
 
-  async function updateAccountSettings(newSettings: SettingsAccount) {
-    const id = 34
+  async function updateAccountSettings(id: number, newSettings: SettingsAccount) {
+    // TODO: Make id dynamic
     console.log('settings:', newSettings)
     try {
       // Calling the API to update the account settings
