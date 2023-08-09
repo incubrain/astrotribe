@@ -47,7 +47,7 @@ interface Testimonial {
   quote: string
 }
 
-// !todo - allow users to add testimonials, fetch from supabase
+// !TODO: - allow users to add testimonials, fetch from supabase
 </script>
 
 <style>

@@ -1,66 +1,74 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views", "postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  extensions  = [vector]
 }
 
-model categories {
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Categories {
   id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  title      String    @unique @db.VarChar
-  body       String?
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  title      String    @unique @db.VarChar(255)
+  body       String?   @db.VarChar(255)
+  news       News[]
+
+  @@map("categories")
 }
 
-model register_interest {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  name       String
-  email      String
-  referral   String?
-  interest   String?
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RegisterInterest {
+  id         BigInt   @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String   @db.VarChar(255)
+  email      String   @db.VarChar(255)
+  referral   String?  @db.VarChar(255)
+  interest   String?  @db.VarChar(255)
+
+  @@map("register_interest")
 }
 
-model roles {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  name       String    @unique(map: "roles_title_key") @db.VarChar
-  body       String?
-  users      users[]
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Roles {
+  id         BigInt @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String @unique(map: "roles_title_key") @db.VarChar(255)
+  body       String? @db.VarChar(255)
+  users      Users[]
+
+  @@map("roles")
 }
 
-model seo_data {
-  id          Int      @id @default(autoincrement())
-  keyword     String
-  country     String
-  scrape_date DateTime
-  general     Json
-  organic     Json
-  ads         Json
-  domain      String
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Statuses {
+  id         Int      @id @default(autoincrement()) @db.SmallInt
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  title      String?  @db.VarChar(255)
 
-  @@index([country], map: "idx_seodata_country")
-  @@index([scrape_date], map: "idx_seodata_date")
-  @@index([domain], map: "idx_seodata_domain")
-  @@index([keyword], map: "idx_seodata_keyword")
+  @@map("statuses")
 }
 
-model statuses {
-  id         Int       @id @default(autoincrement()) @db.SmallInt
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  title      String?   @db.VarChar
-}
-
-model user_followers {
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserFollowers {
   id          String    @id @db.Uuid
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
   follower_id String    @db.Uuid
   followed_id String    @db.Uuid
+
+  @@map("user_followers")
 }
 
-model users {
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Users {
   id             BigInt    @id @default(autoincrement())
   email          String
   given_name     String
@@ -79,5 +87,148 @@ model users {
   followed_count Int?      @default(0)
   role_id        BigInt?   @default(1)
   auth_id        String?   @unique @db.Uuid
-  roles          roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roles          Roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("users")
+}
+
+view AuthUsers {
+  instance_id                 String?   @db.Uuid
+  id                          String    @id @unique @db.Uuid
+  aud                         String?   @db.VarChar(255)
+  role                        String?   @db.VarChar(255)
+  email                       String?   @db.VarChar(255)
+  encrypted_password          String?   @db.VarChar(255)
+  email_confirmed_at          DateTime? @db.Timestamptz(6)
+  invited_at                  DateTime? @db.Timestamptz(6)
+  confirmation_token          String?   @db.VarChar(255)
+  confirmation_sent_at        DateTime? @db.Timestamptz(6)
+  recovery_token              String?   @db.VarChar(255)
+  recovery_sent_at            DateTime? @db.Timestamptz(6)
+  email_change_token_new      String?   @db.VarChar(255)
+  email_change                String?   @db.VarChar(255)
+  email_change_sent_at        DateTime? @db.Timestamptz(6)
+  last_sign_in_at             DateTime? @db.Timestamptz(6)
+  raw_app_meta_data           Json?
+  raw_user_meta_data          Json?
+  is_super_admin              Boolean?
+  created_at                  DateTime? @db.Timestamptz(6)
+  updated_at                  DateTime? @db.Timestamptz(6)
+  phone                       String?   @unique
+  phone_confirmed_at          DateTime? @db.Timestamptz(6)
+  phone_change                String?
+  phone_change_token          String?   @db.VarChar(255)
+  phone_change_sent_at        DateTime? @db.Timestamptz(6)
+  confirmed_at                DateTime? @db.Timestamptz(6)
+  email_change_token_current  String?   @db.VarChar(255)
+  email_change_confirm_status Int?      @db.SmallInt
+  banned_until                DateTime? @db.Timestamptz(6)
+  reauthentication_token      String?   @db.VarChar(255)
+  reauthentication_sent_at    DateTime? @db.Timestamptz(6)
+  is_sso_user                 Boolean
+  deleted_at                  DateTime? @db.Timestamptz(6)
+
+  @@index([instance_id])
+  @@map("auth_users")
+}
+
+model SeoData {
+  id      Int      @id @default(autoincrement())
+  keyword String
+  country String
+  date    DateTime @map("scrape_date")
+  general Json
+  organic Json
+  ads     Json
+  domain  String
+
+  @@index([keyword], name: "idx_seodata_keyword")
+  @@index([date], name: "idx_seodata_date")
+  @@index([country], name: "idx_seodata_country")
+  @@index([domain], name: "idx_seodata_domain")
+  @@map("seo_data")
+}
+
+model Embeddings {
+  id        BigInt           @id @default(autoincrement())
+  vector    Unsupported("vector(1536)")?
+  type      String // e.g. "news", "post"
+  created_at DateTime?        @default(now()) @db.Timestamptz(6)
+  news      NewsEmbeddings[]
+
+  @@map("embeddings")
+}
+
+model NewsEmbeddings {
+  id           BigInt     @id @default(autoincrement())
+  news_id      BigInt
+  embedding_id BigInt
+  news         News       @relation(fields: [news_id], references: [id])
+  embedding   Embeddings @relation(fields: [embedding_id], references: [id])
+
+  @@map("news_embeddings")
+}
+
+model NewsAuthors {
+  id       Int    @id @default(autoincrement())
+  news     News   @relation(fields: [news_id], references: [id])
+  news_id   BigInt
+  author   Authors @relation(fields: [author_id], references: [id])
+  author_id Int
+  @@map("news_authors")
+}
+
+model News {
+  id         BigInt          @id @default(autoincrement())
+  created_at DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at DateTime        @updatedAt @db.Timestamptz(6)
+  title      String          @db.VarChar(255)
+  link       String          @db.VarChar(255)
+  body       String?         @db.VarChar(255)
+  category   Categories      @relation(fields: [category_id], references: [id])
+  category_id BigInt
+  authors    NewsAuthors[]
+  tags       NewsTags[]
+  embeddings NewsEmbeddings[]
+  summaries  Summaries[]
+
+  @@map("news")
+}
+
+model Summaries {
+  id        Int      @id @default(autoincrement())
+  level     String
+  content   String
+  created_at DateTime @default(now())
+  news      News     @relation(fields: [news_id], references: [id])
+  news_id    BigInt
+  @@map("summaries")
+}
+
+model NewsTags {
+  id     Int  @id @default(autoincrement())
+  news   News @relation(fields: [news_id], references: [id])
+  news_id BigInt
+  tag    Tags @relation(fields: [tag_id], references: [id])
+  tag_id  Int
+
+  @@map("news_tags")
+}
+
+model Tags {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  news_tags NewsTags[]
+
+  @@map("tags")
+}
+
+model Authors {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  link        String?       @unique
+  image       String?
+  news_authors NewsAuthors[]
+
+  @@map("authors")
 }

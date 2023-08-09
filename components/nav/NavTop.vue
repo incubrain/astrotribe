@@ -5,7 +5,10 @@
     <div
       class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <NavMobiSlideover :links="links" class="lg:hidden pl-3 md:pl-4 flex items-center" />
+      <NavMobiSlideover
+        :links="links"
+        class="lg:hidden pl-3 md:pl-4 flex items-center"
+      />
       <div
         class="lg:flex hidden items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1"
       >
@@ -21,9 +24,7 @@
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl">
-            AstronEra
-          </h1>
+          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         </NuxtLink>
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
@@ -40,12 +41,49 @@
       </div>
       <div class="relative flex w-full col-span-1 col-start-3 pr-3 md:pr-6">
         <div class="flex items-center justify-end w-full gap-4">
+          <a
+            href="https://github.com/incubrain/astrotribe"
+            target="_blank"
+          >
+            <UIcon
+              name="i-mdi-github"
+              class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
+            />
+          </a>
           <ThemeToggle />
-          <NuxtLink to="/auth/register-interest">
-            <UButton color="primary">
+          <div v-if="!session">
+            <UButton
+              color="primary"
+              variant="link"
+              @click="auth.login"
+            >
+              login
+            </UButton>
+            <UButton
+              color="primary"
+              to="/auth/register"
+            >
               Join Free
             </UButton>
-          </NuxtLink>
+          </div>
+          <div
+            v-else
+            class="flex gap-4"
+          >
+            <UButton
+              class="hidden md:flex"
+              color="primary"
+              to="/astrotribe"
+            >
+              Dashboard
+            </UButton>
+            <UButton
+              color="primary"
+              @click="auth.logout"
+            >
+              Logout
+            </UButton>
+          </div>
         </div>
       </div>
     </div>
@@ -55,16 +93,6 @@
 <script setup>
 import links from './routes/website.json'
 
-// const { logout, session } = useAuth()
-
-const error = ref(null)
-const currentSession = ref(null)
-
-onMounted(async () => {
-  // const sessionData = await session.getCurrent()
-  // error.value = sessionData.error
-  // currentSession.value = sessionData.session
-
-  // if (error.value) throw new Error('error getting user session')
-})
+const auth = useAuthStore()
+const { session } = storeToRefs(auth)
 </script>

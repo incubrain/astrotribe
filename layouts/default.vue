@@ -6,14 +6,17 @@
       class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full"
     />
     <AppBody
-      class="w-full mx-auto md:p-4 lg:p-8 lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
+      class=" lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
+      :mobi-bottom-nav="true"
     >
-      <slot />
+      <div class="w-full mx-auto md:p-4 xl:p-8">
+        <slot />
+      </div>
     </AppBody>
     <NavMobiBottom class="lg:hidden" />
   </div>
 </template>
 
-<script setup></script>
+<script setup lang="ts"></script>
 
 <style></style>

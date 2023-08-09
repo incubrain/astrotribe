@@ -1,0 +1,126 @@
+[
+  {
+    "id": 1,
+    "name": "Planetary Science"
+  },
+  {
+    "id": 2,
+    "name": "Solar Astronomy"
+  },
+  {
+    "id": 3,
+    "name": "Galactic Astronomy"
+  },
+  {
+    "id": 4,
+    "name": "Extragalactic Astronomy"
+  },
+  {
+    "id": 5,
+    "name": "Cosmology"
+  },
+  {
+    "id": 6,
+    "name": "Stellar Astronomy"
+  },
+  {
+    "id": 7,
+    "name": "Astrophysics"
+  },
+  {
+    "id": 8,
+    "name": "Astrobiology"
+  },
+  {
+    "id": 9,
+    "name": "Astrochemistry"
+  },
+  {
+    "id": 10,
+    "name": "Astrometry"
+  },
+  {
+    "id": 11,
+    "name": "Radio Astronomy"
+  },
+  {
+    "id": 12,
+    "name": "Infrared Astronomy"
+  },
+  {
+    "id": 13,
+    "name": "Optical Astronomy"
+  },
+  {
+    "id": 14,
+    "name": "Ultraviolet Astronomy"
+  },
+  {
+    "id": 15,
+    "name": "X-ray Astronomy"
+  },
+  {
+    "id": 16,
+    "name": "Gamma-ray Astronomy"
+  },
+  {
+    "id": 17,
+    "name": "Space Exploration"
+  },
+  {
+    "id": 18,
+    "name": "Space Weather"
+  },
+  {
+    "id": 19,
+    "name": "Amateur Astronomy"
+  },
+  {
+    "id": 20,
+    "name": "Astronomical Equipment"
+  },
+  {
+    "id": 21,
+    "name": "Observational Astronomy"
+  },
+  {
+    "id": 22,
+    "name": "Theoretical Astronomy"
+  },
+  {
+    "id": 23,
+    "name": "Celestial Mechanics"
+  },
+  {
+    "id": 24,
+    "name": "Physical Cosmology"
+  },
+  {
+    "id": 25,
+    "name": "Astrostatistics"
+  },
+  {
+    "id": 26,
+    "name": "Space Telescopes"
+  },
+  {
+    "id": 27,
+    "name": "Space Agencies"
+  },
+  {
+    "id": 28,
+    "name": "Science Communication"
+  },
+  {
+    "id": 29,
+    "name": "Space Policy"
+  },
+  {
+    "id": 30,
+    "name": "Astroarchaeology"
+  },
+  {
+    "id": 31,
+    "name": "Uncategorized"
+  }
+]
