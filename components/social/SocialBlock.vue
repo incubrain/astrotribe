@@ -6,31 +6,34 @@
     >
       Follow us
     </h2>
-    <div class="flex w-full gap-2 mt-2">
+    <div :class="`flex w-full gap-2 mt-2 ${position}`">
       <IconSocial
         v-for="s in socials"
-        :key="s.platform"
+        :key="s.id"
         :platform="s.platform"
-        :link="s.link"
+        :url="s.url"
       />
+      <!-- !todo add social username -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-interface Social {
-  platform: string
-  link: string
-}
+import { UserSocial } from '@/types/users'
 
 defineProps({
   socials: {
-    type: Array as PropType<Social[]>,
+    type: Array as PropType<UserSocial[]>,
     required: true
   },
   hasTitle: {
     type: Boolean,
     default: true
+  },
+  position: {
+    type: String,
+    required: false,
+    default: 'justify-center'
   }
 })
 </script>

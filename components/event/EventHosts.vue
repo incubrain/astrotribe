@@ -26,7 +26,7 @@
           width="50"
           height="50"
           quality="80"
-          class="object-contain w-full aspect-square"
+          class="object-contain aspect-square w-8 h-8"
         />
       </div>
     </section>
@@ -36,7 +36,8 @@
           v-for="(host, index) in hosts"
           :key="host.id"
         >
-          <NuxtLink :to="`/astrotribe/profile/${host.id}`">
+          <span v-if="host.id === 2">This could be you</span>
+          <NuxtLink v-else :to="`/astrotribe/users/${host.id}`">
             <span> {{ host.given_name }} </span>
             <span v-if="index !== hosts.length - 1">, </span>
           </NuxtLink>
@@ -48,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import type { EventHost } from '@/types'
+import type { EventHost } from '@/types/events'
 
 const s = useStorage()
 

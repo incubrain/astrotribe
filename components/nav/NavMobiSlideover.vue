@@ -1,18 +1,15 @@
 <template>
   <div>
-    <NuxtLink to="/" class="flex items-center">
-      <UButton
-        variant="link"
-        :padded="false"
-        @click="isOpen = true"
-      >
-        <UAvatar
-          src="/astronera-logo.jpg"
-          alt="Astron Era Logo"
-          class="w-8 h-8 md:w-12 md:h-12"
-        />
-      </UButton>
-    </NuxtLink>
+    <UButton
+      variant="link"
+      :padded="false"
+      @click="isOpen = true"
+    >
+      <UIcon
+        name="i-mdi-menu"
+        class="w-6 h-6 text-black dark:text-white"
+      />
+    </UButton>
     <USlideover
       v-model="isOpen"
       side="left"
@@ -20,16 +17,18 @@
       <div class="border-r border-color">
         <div class="foreground w-full flex items-center justify-between p-8">
           <NuxtLink
-            class="flex items-center gap-2"
+            class="flex items-center gap-4"
             to="/"
             @click="isOpen = false"
           >
-            <UAvatar
-              src="/astronera-logo.jpg"
-              alt="Astron Era Logo"
-              class="w-8 h-8 md:w-12 md:h-12"
-            />
-            <h3>AstronEra</h3>
+            <div class="p-2 bg-white rounded-full aspect-square flex">
+              <NuxtImg
+                src="/astronera-logo.jpg"
+                alt="Astron Era Logo"
+                class="w-8 h-8 md:w-12 md:h-12"
+              />
+            </div>
+            <h3 class="text-xl">AstronEra</h3>
           </NuxtLink>
           <UButton
             variant="solid"

@@ -1,38 +1,40 @@
 <template>
   <div
-    class="flex flex-col items-center relative overflow-hidden justify-between w-full p-4 space-y-4 rounded-md shadow-md foreground backdrop-filter backdrop-blur-lg hadow-xl ring-1 ring-gray-900/5 dark:ring-[#2F1352]/50 transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+    class="flex flex-col items-center relative overflow-hidden justify-between w-full p-4 xl:p-8 rounded-md shadow-md foreground backdrop-filter backdrop-blur-lg hadow-xl ring-1 ring-gray-900/5 dark:ring-[#2F1352]/50 transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
     <div class="absolute w-full h-full animate-pulse">
       <SvgStars
         class="bottom-46 left-12"
         :size="15"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="bottom-22 left-36"
         :size="8"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="top-28 right-14"
         :size="12"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="bottom-12 left-44"
         :size="20"
-        color="#303030"
+        svg-color="#303030"
       />
       <SvgStars
         class="top-52 left-12"
         :size="14"
-        color="#303030"
+        svg-color="#303030"
       />
     </div>
     <!-- SemiCircle -->
-    <div class="absolute bottom-2 left-0 right-0 -z-10 transform w-56 h-28 mx-auto opacity-10 blur-[4px] bg-black rounded-t-full" />
+    <div
+      class="absolute bottom-2 left-0 right-0 -z-10 transform w-56 h-28 mx-auto opacity-10 blur-[4px] bg-black rounded-t-full"
+    />
 
-    <div class="relative px-10 flex items-center justify-center">
+    <div class="relative px-10 flex items-start justify-center pb-4">
       <div class="w-20 overflow-hidden border rounded-full md:w-24">
         <NuxtImg
           :src="member.avatar"
@@ -73,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { TeamMember } from '@/types/zod/team'
+import { TeamMember } from '@/types/team'
 
 defineProps({
   member: {

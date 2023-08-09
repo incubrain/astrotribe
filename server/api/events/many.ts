@@ -1,28 +1,26 @@
 export default defineEventHandler(async () => {
   try {
-    const e = await import('@/data/app/events.json')
-    const v = await import('@/data/app/venues.json')
+    const e = await import('../data/events.json')
+    const v = await import('../data/venues.json')
+    const h = await import('../data/hosts.json')
 
     const events = e.default.map((i) => {
       return {
-        venue: v.default.find((it) => it.id === i.venue_id),
+        venue: v.default.find((iv) => iv.id === i.venue_id),
+        hosts: h.default.filter((ih) => i.event_hosts.includes(ih.id)),
         ...i
       }
     })
-
-    console.log('events', events)
 
     return {
       status: 200,
       message: 'Events fetched',
       events
     }
-  } catch (error) {
-    console.log('error', error)
-
+  } catch (error: any) {
     return {
       status: 500,
-      message: 'Error getting events',
+      message: `Error getting events: ${error.message}`,
       events: undefined
     }
   }

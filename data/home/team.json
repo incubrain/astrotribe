@@ -3,43 +3,54 @@
     "id": 1,
     "name": "Shweta Kulkarni",
     "position": {
-      "title": "CEO",
-      "description": "Information about the position, responsibilities etc.",
-      "joining": "Mar' 2018"
+      "title": "CEO"
     },
     "avatar": "/images/team/shweta-kulkarni.jpg",
-    "bio": "Shweta Kulkarni is the founder and director of AstronEra. She has experience in Science Communication for more than a decade. She was selected as one of the top 100 women astronomers in India (2018) under the women’s startup program supported by DST GOI. She was awarded a fellowship from the Royal Astronomical Society of England to appreciate her work. She has worked on various State, national and international projects to popularise astronomy. She is currently pursuing her education part-time at the university of central Lancashire in England while working full-time with her startup.",
+    "bio": [
+      "Shweta Kulkarni is the founder and CEO of AstronEra. She has experience in Science Communication for more than a decade.",
+      "She was selected as one of the top 100 women astronomers in India (2018) under the women’s startup program supported by DST GOI. She was awarded a fellowship from the Royal Astronomical Society of England to appreciate her work. She has worked on various State, national and international projects to popularise astronomy.",
+      "She is currently pursuing her education part-time at the university of central Lancashire in England while working full-time with her startup."
+    ],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/AstronEra"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/astronera"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ]
   },
@@ -47,43 +58,56 @@
     "id": 2,
     "name": "Drew MacGibbon",
     "position": {
-      "title": "CTO",
-      "description": "Information about the position, responsibilities etc.",
-      "joining": "Mar' 2018"
+      "title": "CTO"
     },
     "avatar": "/images/team/drew-macgibbon.jpg",
-    "bio": "some bio",
+    "bio": [
+      "As the Chief Technology Officer of AstonEra, Drew MacGibbon brings more than a decade of startup experience, and an unwavering passion for business and technology.",
+      "With a foundation of 5 years in the tech industry, Drew specializes in full-stack product development, seamlessly integrating the front-end and back-end components to ensure a smooth user experience.",
+      "Drew's journey with AstonEra began with a bold move to India, where the vision of starting a software development company took root. It was there that he met Shweta, and was instantly captivated by her idea for AstonEra. The blend of innovation, creativity, and potential in her concept was irresistible, leading Drew to join hands with her to bring this vision to life.",
+      "Today, Drew leads the technical team at AstonEra, driving the company's technological strategies, and ensuring that the product not only meets but exceeds the expectations of the clients. With a keen eye for detail and a forward-thinking approach, he continues to push the boundaries, making AstonEra a standout name in the industry.",
+      "Outside of work, Drew enjoys learning new skills, traveling to discover new cultures and places, gaming, and indulging in TV shows and anime. A sports enthusiast, he often finds himself engrossed in Rugby, UFC, and Cricket matches. Exercise also plays a significant role in his daily routine, keeping his body and mind sharp and energized."
+    ],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/AstronEra"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/company/astronera/"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/astronera"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ]
   },
@@ -91,43 +115,50 @@
     "id": 3,
     "name": "Ruchira Huchgol",
     "position": {
-      "title": "Operations Manager",
-      "description": "Information about the position, responsibilities etc.",
-      "joining": "Jun' 2018"
+      "title": "Operations Manager"
     },
     "avatar": "/images/team/ruchira-huchgol.jpg",
-    "bio": "some bio",
+    "bio": ["coming soon"],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/AstronEra"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/company/astronera/"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/astronera"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ]
   },
@@ -135,43 +166,50 @@
     "id": 4,
     "name": "Atharva Joshi",
     "position": {
-      "title": "Project Coordinator",
-      "description": "Information about the position, responsibilities etc.",
-      "joining": "Jun' 2018"
+      "title": "Project Coordinator"
     },
     "avatar": "/images/team/atharva-joshi.jpg",
-    "bio": "some bio",
+    "bio": ["coming soon"],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/AstronEra"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/company/astronera/"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/astronera"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       },
       {
+        "id": 2,
         "title": "Previous experience as well",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ]
   }
