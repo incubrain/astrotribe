@@ -21,8 +21,6 @@
 
 <script setup lang="ts">
 const { pages } = usePages()
-
-// const route = useRoute()
 </script>
 
 <style scoped></style>
