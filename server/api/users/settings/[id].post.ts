@@ -16,13 +16,15 @@ export default defineEventHandler(async (event) => {
   let message
   let data
   // TODO: make this endpoint dynamic, we should be able to update each settings tab based on a type passed in body
-  // TODO: use zod to validate the body data
   // TODO: pass id in post body
   // TODO: dynamically choose the table to update based on the type passed in body
 
   const body = await readBody(event)
   console.log('updating user', body)
-
+  const { id } = event.context.params
+  console.log('getting user', id)
+  
+  // TODO: use zod to validate the body data
   const validatedData = validateSettingsData(body.settingsType, body.data)
 
   const client = useClient()

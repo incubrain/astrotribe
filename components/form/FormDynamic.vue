@@ -1,19 +1,18 @@
 <template>
   <form
     v-if="fields.length > 1"
-    class="flex flex-wrap justify-between w-full gap-2"
+    class="flex flex-wrap gap-6"
     @submit="onSubmit"
   >
     <div
       v-for="(field, index) in fields"
       :key="field.name"
-      class="h-full my-2 flex flex-col gap-1"
-      :class="field.width === 'half' ? 'w-full lg:w-[calc(50%-10px)]' : 'w-full'"
+      class="w-full"
     >
       <label
         :for="field.name"
         v-if="hasLabels"
-        class="block text-xs font-semibold"
+        class="block text-sm font-semibold mb-1"
       >
         {{ field.label }}
       </label>
@@ -22,7 +21,7 @@
         v-model="field.value"
         :placeholder="field.initialValue"
         :name="field.name"
-        class="w-full h-32 px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline placeholder:text-sm placeholder:text-gray-800 dark:placeholder-gray-500 background"
+        class="w-full h-32 px-4 py-2 leading-6 border rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
       ></textarea>
       <input
         v-else
@@ -30,11 +29,11 @@
         :type="field.type"
         :placeholder="field.initialValue"
         :name="field.name"
-        class="w-full h-10 px-3 py-2 leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline placeholder:text-sm placeholder:text-gray-800 dark:placeholder-gray-500 background"
+        class="w-full h-10 px-4 py-2 leading-6 border rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
       />
       <span
         v-if="field.errorMessage !== undefined"
-        class="block px-3 py-1 text-xs italic text-error-400 dark:text-error-800"
+        class="block mt-1 text-xs text-error-500"
       >
         {{ field.errorMessage }}
       </span>
