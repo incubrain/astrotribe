@@ -1,5 +1,5 @@
 import logger from '../utils/logger'
-import { NasaImg } from '../../types'
+import { NasaImg } from '@/types/nasa'
 
 export default defineEventHandler(async (event) => {
   // use date for KV storage

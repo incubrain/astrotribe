@@ -7,5 +7,21 @@
     "**/node_modules/*/**": true,
     "**/.hg/store/**": true
   },
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "files.associations": {
+      "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+      "strings": true
+  },
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "ui"
+  ]
 }

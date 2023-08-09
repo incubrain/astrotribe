@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { NasaImg } from '@/types'
+import { NasaImg } from '@/types/nasa'
 
 const imageLoaded = ref(false)
 const nasa = ref({} as NasaImg | { url: string })
