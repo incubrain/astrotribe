@@ -1,6 +1,6 @@
 <template>
   <Swiper
-    :modules="modules"
+    :modules="[SwiperNavigation, SwiperPagination]"
     :loop="true"
     :navigation="{
       nextEl: '.custom-button-next',
@@ -9,55 +9,95 @@
     @slide-change="onSlideChange"
   >
     <SwiperSlide
-      v-for="image in images"
-      :key="image"
+      v-for="image in p.media"
+      :key="image.src"
     >
-      <NuxtImg
-        :src="image"
-        class="w-full h-full object-cover transform transition-transform duration-300 ease-in-out"
-        width="800"
-        height="280"
-        quality="80"
-        loading="lazy"
-      />
+      <div class="flex flex-col">
+        <NuxtImg
+          :src="image.src"
+          :alt="image.alt ? image.alt : 'no alt message'"
+          class="w-full h-full object-contain object-top"
+          :width="p.imgOptions?.width"
+          :height="p.imgOptions?.height"
+          :quality="p.imgOptions?.quality"
+          loading="lazy"
+        />
+        <div
+          v-if="image.caption || image.credit"
+          class="flex flex-row text-sm w-full items-center"
+        >
+          <UAccordion :items="getImagInfo(image)" />
+        </div>
+      </div>
     </SwiperSlide>
     <div
+      v-if="totalPage && totalPage > 1"
       class="custom-button-next hidden md:flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 right-0 z-10 cursor-pointer"
     >
       <UIcon
         name="i-mdi-chevron-right"
-        class="w-10 h-10"
+        class="w-10 h-10 text-white"
       />
     </div>
     <div
+      v-if="totalPage && totalPage > 1"
       class="custom-button-prev hidden md:flex items-center w-12 justify-center h-full bg-black/30 absolute top-0 left-0 z-10 cursor-pointer"
     >
       <UIcon
         name="i-mdi-chevron-left"
-        class="w-10 h-10"
+        class="w-10 h-10 text-white"
       />
     </div>
-    <div class="custom-pagination absolute bottom-2 flex justify-center z-10 w-full">
-      <p class="px-2 py-1 rounded-md bg-black/20 text-white text-sm">
-        {{ currentPage }}/{{ totalPage }}
-      </p>
+    <div
+      v-if="totalPage && totalPage > 1"
+      class="custom-pagination absolute top-2 left-2 z-10"
+    >
+      <p class="rounded-md bg-black/20 text-white text-sm"> {{ currentPage }}/{{ totalPage }} </p>
     </div>
   </Swiper>
 </template>
 
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Media } from '@/types/news'
+const getImagInfo = (image: Media) => [
+  {
+    label: 'Caption',
+    icon: 'i-heroicons-information-circle',
+    defaultOpen: true,
+    content: image.caption!
+  },
+  {
+    label: 'Credit',
+    icon: 'i-heroicons-information-circle',
+    defaultOpen: false,
+    content: image.credit!
+  }
+]
 
-// import required modules
-import { Navigation, Pagination } from 'swiper'
+interface ImgOptions {
+  width: number
+  height: number
+  sizes: string | undefined | null
+  quality: number | undefined
+}
 
-const modules = [Navigation, Pagination]
+const p = defineProps({
+  media: {
+    type: Array as () => Media[] | undefined,
+    required: true
+  },
+  imgOptions: {
+    type: Object as () => ImgOptions | undefined,
+    default: () => ({
+      width: 800,
+      height: 460,
+      sizes: null,
+      quality: 80
+    })
+  }
+})
 
-const p = defineProps<{
-  images: string[]
-}>()
-
-const totalPage = ref(p.images.length)
+const totalPage = ref(computed(() => p.media?.length))
 const currentPage = ref(1)
 
 function onSlideChange(s: any) {

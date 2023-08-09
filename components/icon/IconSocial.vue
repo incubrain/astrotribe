@@ -2,7 +2,7 @@
   <a
     class="cursor-pointer"
     target="_blank"
-    :href="link"
+    :href="url"
   >
     <UIcon
       :name="`i-mdi-${platform}`"
@@ -17,7 +17,7 @@ defineProps({
     type: String,
     required: true
   },
-  link: {
+  url: {
     type: String,
     required: true
   }

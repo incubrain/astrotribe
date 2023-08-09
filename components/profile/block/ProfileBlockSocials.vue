@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { UserSocial } from '@/types'
+import type { UserSocial } from '@/types/users'
 
 defineProps({
   socials: {

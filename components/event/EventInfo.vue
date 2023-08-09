@@ -7,7 +7,7 @@
         width="400"
         height="400"
         quality="80"
-        :alt="`${venue.name} featured image on AstroTribe`"
+        :alt="`${event.title} featured image on AstroTribe`"
         class="w-full"
       />
       <div
@@ -31,15 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import type { EventBasic, VenueEvents, VenueBasic } from '@/types'
+import type { Event } from '@/types/events'
 
 defineProps({
   event: {
-    type: Object as PropType<EventBasic | VenueEvents>,
-    required: true
-  },
-  venue: {
-    type: Object as PropType<VenueBasic>,
+    type: Object as PropType<Event>,
     required: true
   },
   time: {

@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserRole } from '@/types'
+import { UserRole } from '@/types/users'
 
 const util = useUtils()
 

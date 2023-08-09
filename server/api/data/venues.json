@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "created_at": "2023-02-27 18:06:12.660401+00",
+    "name": "Hilton Shillim Estate Retreat & Spa",
+    "website": "https://www.hilton.com/en/hotels/pnqshhi-hilton-shillim-estate-retreat-and-spa/",
+    "body": "Hilton is dedicated to preserving the natural beauty of the night sky. That's why we take light pollution seriously, and have designed our resort to minimize its impact. Spread out over 100+ acres, our private villas are thoughtfully positioned to provide the most unobstructed views of the stars possible. The result is a stargazing experience that is truly unforgettable",
+    "location": {
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Shilimb",
+      "pin_code": "410406",
+      "address": "Pawana Nagar, Maval",
+      "google_map": "https://goo.gl/maps/noBgmkWgiSJd1roDA"
+    },
+    "featured_image": "images/venues/hilton-shillim/hilton-shillim-estate-surrounded-by-trees-and-mountains.jpg",
+    "logo": "images/venues/hilton-shillim/hilton-shillim-logo.png",
+    "bortle_rating": 5,
+    "socials": [
+      { "platform": "instagram", "url": "https://www.instagram.com/hilton_shillim/" },
+      { "platform": "facebook", "url": "https://www.facebook.com/hiltonshillim" }
+    ]
+  },
+  {
+    "id": 2,
+    "created_at": "2023-03-30 10:41:48.869355+00",
+    "name": "GlampEco Stays Manali",
+    "website": "https://glampeco.com/",
+    "body": "Imagine yourself surrounded by breathtaking views of snow-capped mountains, an endless valley, and a lush green forest; as you float above the clouds in your futuristic yet cozy abode and share this dream-like memory with a special someone. For the first time in India, you can experience a stay in Geodesic Domes Glamping tents which are perched at a height of over 2600 mt, with a splendid view of Dhauldhar ranges and Manali valley.",
+    "location": {
+      "country": "India",
+      "state": "Himachal Pradesh",
+      "city": "Manali",
+      "address": "Hamta Village AD Hydro Project, Curve Number 32 & 33, Road",
+      "pin_code": "175143",
+      "google_map": "https://goo.gl/maps/jSPW88h3SAvgisrm9"
+    },
+    "featured_image": "images/venues/glampeco/glampeco-dome-overlooking-the-himalayas-in-manali.jpg",
+    "logo": "images/venues/glampeco/glampeco-logo.png",
+    "bortle_rating": 5,
+    "socials": [
+      { "platform": "instagram", "url": "https://www.instagram.com/glampeco/" },
+      { "platform": "facebook", "url": "https://www.facebook.com/hiltonshillim" }
+    ]
+  },
+  {
+    "id": 3,
+    "created_at": "2023-03-30 10:41:48.869355+00",
+    "name": "Alive Beach Resort",
+    "website": "https://alivebeachresort.com/",
+    "body": "Alive Beach Resort is built to offer a stress-free, tranquil holiday experience to travellers looking for a delightful stay in Harihareshwar. Our resort is adorned with 5 cottages, each offering a different theme to its guests.",
+    "location": {
+      "country": "India",
+      "state": "Maharashtra",
+      "pin_code": "402110",
+      "city": "Maral",
+      "address": "Harihareshwar Aagar Rd",
+      "google_map": "https://goo.gl/maps/SDf5ednpxr3DUzoe6"
+    },
+    "featured_image": "images/venues/alive-beach-resort/alive-beach-resort-top-down-photo-of-cabins-and-palm-trees.jpg",
+    "logo": "images/venues/alive-beach-resort/alive-beach-resort-logo.png",
+    "bortle_rating": 5,
+    "socials": [
+      { "platform": "instagram", "url": "https://www.instagram.com/alivebeachresort/" },
+      { "platform": "facebook", "url": "https://www.facebook.com/hiltonshillim" }
+    ]
+  }
+]
