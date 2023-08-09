@@ -65,7 +65,7 @@
 import team from '@/data/home/team.json'
 
 const { name } = useRoute().params
-const user = team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name)
+const user = computed(() => team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name))
 
 definePageMeta({
   name: 'TeamIndividual',

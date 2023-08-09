@@ -13,20 +13,46 @@
     ],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/FrasShweta"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/shweta_astron"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
-    "achievements": [],
-    "publicity": []
+    "achievements": [
+      {
+        "id": 1,
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "url": "optional"
+      },
+      {
+        "id": 2,
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "id": 1,
+        "title": "",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ]
   },
   {
     "id": 2,
@@ -44,30 +70,44 @@
     ],
     "socials": [
       {
+        "id": 1,
         "platform": "twitter",
-        "link": "https://twitter.com/DrewMacGibbon"
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
         "platform": "linkedin",
-        "link": "https://www.linkedin.com/in/drew-macgibbon/"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
       },
       {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/drew.macgibbon"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
     "achievements": [
       {
+        "id": 1,
         "title": "Add highest education here if wanted",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
+      },
+      {
+        "id": 2,
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "url": "optional"
       }
     ],
     "publicity": [
       {
+        "id": 1,
         "title": "",
         "body": "elaborate",
-        "link": "optional"
+        "url": "optional"
       }
     ]
   },
@@ -81,16 +121,46 @@
     "bio": ["coming soon"],
     "socials": [
       {
-        "platform": "linkedin",
-        "link": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/"
+        "id": 1,
+        "platform": "twitter",
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
+        "platform": "linkedin",
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
+      },
+      {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/ruchirahuchgol"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
-    "achievements": [],
-    "publicity": []
+    "achievements": [
+      {
+        "id": 1,
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "url": "optional"
+      },
+      {
+        "id": 2,
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "id": 1,
+        "title": "",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ]
   },
   {
     "id": 4,
@@ -102,15 +172,45 @@
     "bio": ["coming soon"],
     "socials": [
       {
-        "platform": "linkedin",
-        "link": "https://www.linkedin.com/company/astronera/"
+        "id": 1,
+        "platform": "twitter",
+        "url": "https://twitter.com/AstronEra",
+        "username": "uk"
       },
       {
+        "id": 2,
+        "platform": "linkedin",
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
+        "username": "uk"
+      },
+      {
+        "id": 3,
         "platform": "instagram",
-        "link": "https://www.instagram.com/joshi_atharva"
+        "url": "https://www.instagram.com/astronera",
+        "username": "uk"
       }
     ],
-    "achievements": [],
-    "publicity": []
+    "achievements": [
+      {
+        "id": 1,
+        "title": "Add highest education here if wanted",
+        "body": "elaborate",
+        "url": "optional"
+      },
+      {
+        "id": 2,
+        "title": "Previous experience as well",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ],
+    "publicity": [
+      {
+        "id": 1,
+        "title": "",
+        "body": "elaborate",
+        "url": "optional"
+      }
+    ]
   }
 ]
