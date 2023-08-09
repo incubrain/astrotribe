@@ -3,7 +3,7 @@
     <h2 class="mb-6 text-2xl text-center"> Reset Password </h2>
     <FormDynamic
       :schema="resetPasswordData"
-      :validation-schema="ResetPasswordValidation"
+      :validation-schema="ResetPasswordSchema"
       class="w-full"
       @submit="handleResetPassword"
     >
@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
-import { ResetPasswordValidation } from '@/types/zod'
-import { resetPasswordData } from '@/data/forms'
+import { ResetPasswordSchema } from '@/types/forms'
+import resetPasswordData from '@/data/forms/auth/reset-password.json'
 
 // const auth = useAuth()
 // const router = useRouter()

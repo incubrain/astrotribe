@@ -1,0 +1,214 @@
+[
+  {
+    "id": 1,
+    "name": "Solar System"
+  },
+  {
+    "id": 2,
+    "name": "Black Holes"
+  },
+  {
+    "id": 3,
+    "name": "Galaxies"
+  },
+  {
+    "id": 4,
+    "name": "Nebulae"
+  },
+  {
+    "id": 5,
+    "name": "Stars"
+  },
+  {
+    "id": 6,
+    "name": "Planets"
+  },
+  {
+    "id": 7,
+    "name": "Moons"
+  },
+  {
+    "id": 8,
+    "name": "Comets"
+  },
+  {
+    "id": 9,
+    "name": "Asteroids"
+  },
+  {
+    "id": 10,
+    "name": "Telescopes"
+  },
+  {
+    "id": 11,
+    "name": "Radio Telescopes"
+  },
+  {
+    "id": 12,
+    "name": "Space Probes"
+  },
+  {
+    "id": 13,
+    "name": "Exoplanets"
+  },
+  {
+    "id": 14,
+    "name": "Dark Matter"
+  },
+  {
+    "id": 15,
+    "name": "Dark Energy"
+  },
+  {
+    "id": 16,
+    "name": "Astrophotography"
+  },
+  {
+    "id": 17,
+    "name": "Space Missions"
+  },
+  {
+    "id": 18,
+    "name": "Big Bang"
+  },
+  {
+    "id": 19,
+    "name": "Supernovae"
+  },
+  {
+    "id": 20,
+    "name": "Astronomy Events"
+  },
+  {
+    "id": 21,
+    "name": "Astrobiology"
+  },
+  {
+    "id": 22,
+    "name": "Astrochemistry"
+  },
+  {
+    "id": 23,
+    "name": "Cosmic Rays"
+  },
+  {
+    "id": 24,
+    "name": "Space Weather"
+  },
+  {
+    "id": 25,
+    "name": "Astronomy History"
+  },
+  {
+    "id": 26,
+    "name": "Astrology"
+  },
+  {
+    "id": 27,
+    "name": "Alien Life"
+  },
+  {
+    "id": 28,
+    "name": "Space Travel"
+  },
+  {
+    "id": 29,
+    "name": "Gravitational Waves"
+  },
+  {
+    "id": 30,
+    "name": "Interstellar Medium"
+  },
+  {
+    "id": 31,
+    "name": "Orion"
+  },
+  {
+    "id": 32,
+    "name": "Hubble Space Telescope"
+  },
+  {
+    "id": 33,
+    "name": "James Webb Space Telescope"
+  },
+  {
+    "id": 34,
+    "name": "NASA"
+  },
+  {
+    "id": 35,
+    "name": "ESA"
+  },
+  {
+    "id": 36,
+    "name": "SpaceX"
+  },
+  {
+    "id": 37,
+    "name": "Milky Way"
+  },
+  {
+    "id": 38,
+    "name": "Andromeda"
+  },
+  {
+    "id": 39,
+    "name": "Event Horizon Telescope"
+  },
+  {
+    "id": 40,
+    "name": "Astroinformatics"
+  },
+  {
+    "id": 41,
+    "name": "Multiverse"
+  },
+  {
+    "id": 42,
+    "name": "Space Station"
+  },
+  {
+    "id": 43,
+    "name": "Astronomy Software"
+  },
+  {
+    "id": 44,
+    "name": "Binary Stars"
+  },
+  {
+    "id": 45,
+    "name": "Mars Rover"
+  },
+  {
+    "id": 46,
+    "name": "Blue Moon"
+  },
+  {
+    "id": 47,
+    "name": "Solar Eclipse"
+  },
+  {
+    "id": 48,
+    "name": "Lunar Eclipse"
+  },
+  {
+    "id": 49,
+    "name": "Satellites"
+  },
+  {
+    "id": 50,
+    "name": "International Space Station"
+  },
+  {
+    "id": 51,
+    "name": "Sky Map Apps"
+  },
+  {
+    "id": 52,
+    "name": "Astro tourism"
+  },
+  {
+    "id": 53,
+    "name": "No Tags"
+  }
+]

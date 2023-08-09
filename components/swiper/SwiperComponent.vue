@@ -1,7 +1,7 @@
 <template>
   <Swiper
     v-if="items.length > 0"
-    :modules="modules"
+    :modules="[SwiperGrid, SwiperPagination, SwiperAutoplay]"
     :pagination="{ clickable: true }"
     :autoplay="{
       delay: 5000
@@ -42,18 +42,6 @@
 </template>
 
 <script setup lang="ts" generic="T">
-import { Swiper, SwiperSlide } from 'swiper/vue'
-
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/grid'
-import 'swiper/css/pagination'
-import 'swiper/css/autoplay'
-
-// import required modules
-import { Grid, Autoplay, Pagination } from 'swiper'
-
-const modules = [Grid, Autoplay, Pagination]
 
 defineProps<{
   items: T[]
