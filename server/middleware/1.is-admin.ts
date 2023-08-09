@@ -1,5 +1,5 @@
 export default defineEventHandler((event) => {
-  const isAdmin = true
+  const isAdmin = false
   if (event.path.includes('admin') && !isAdmin) {
     console.log(`You are not authentcated to use ${event.path}`)
     return {

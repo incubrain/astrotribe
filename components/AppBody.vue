@@ -23,7 +23,7 @@ defineProps({
 })
 
 onMounted(() => {
-  watch(route, () => {
+  watch(route.fullPath, () => {
     if (scrollContainer.value) {
       scrollContainer.value.scrollTop = 0
     }

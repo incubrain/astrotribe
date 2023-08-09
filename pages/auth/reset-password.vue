@@ -15,7 +15,7 @@
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
 import { ResetPasswordSchema } from '@/types/forms'
-import { resetPasswordData } from '@/data/forms'
+import resetPasswordData from '@/data/forms/auth/reset-password.json'
 
 // const auth = useAuth()
 // const router = useRouter()

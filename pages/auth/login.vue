@@ -2,62 +2,79 @@
   <div class="flex flex-col items-center justify-center w-full h-full">
     <h2 class="mb-6 text-2xl text-center"> Sign In </h2>
     <FormDynamic
-      :schema="loginData"
-      :validation-schema="LoginValidation"
+      :schema="loginForm"
+      :validation-schema="LoginSchema"
       class="w-full"
-      @submit="handleLogin"
+      @submit="auth.login"
     >
       <FormButton> Sign In </FormButton>
     </FormDynamic>
     <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
     </p>
-    <UButton
-      class="flex items-center justify-center w-full gap-4 mt-6"
-      color="white"
-      @click="handleProviderSignIn('google')"
-    >
-      <NuxtImg
-        src="/icons/google.svg"
-        alt="Google Logo"
-        width="28px"
-      />
-      Sign In with Google
-    </UButton>
-    <UButton
-      class="flex items-center justify-center w-full gap-4 mt-6"
-      color="white"
-      @click="handleProviderSignIn('github')"
-    >
-      <UIcon
-        name="i-mdi-github"
-        alt="Github Logo"
-        width="28px"
-      />
-      Sign In with Github
-    </UButton>
+    <!-- <div class="gap-4 w-full mt-6 hidden">
+      <UButton
+        class="flex items-center justify-center w-full"
+        color="white"
+        @click="handleProviderSignIn('google')"
+      >
+        <UIcon
+          class="mr-2"
+          name="i-mdi-google"
+          width="28px"
+        />
+        Sign In with Google
+      </UButton>
+      <UButton
+        class="flex items-center justify-center w-full"
+        color="white"
+        @click="handleProviderSignIn('linkedin')"
+      >
+        <UIcon
+          class="mr-2"
+          name="i-mdi-linkedin"
+          width="28px"
+        />
+        Sign In with Linkedin
+      </UButton>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-// import useAuth from '~/composables/useAuth'
-import { LoginValidation } from '@/types/forms'
-import { loginData } from '@/data/forms'
+import { LoginSchema } from '@/types/forms'
+import loginForm from '@/data/forms/auth/login.json'
 
-// const auth = useAuth()
+const auth = useAuthStore()
 
-const handleLogin = (value: { email: string; password: string }) => {
-  // auth.login.withEmail(value.email, value.password)
+const { hash } = useRoute()
+const router = useRouter()
+
+const extractFromHash = (paramName: string) => {
+  const regex = new RegExp('(?:[&]|^)' + paramName + '=([^&]*)')
+  const match = hash.substring(1).match(regex) // Remove the '#' at the beginning of the hash
+  return match ? decodeURIComponent(match[1]) : null
 }
 
-async function handleProviderSignIn(provider) {
-  // try {
-  //   const { data, error } = await auth.login.withOAuth(provider)
-  //   if (error) throw error
-  // } catch (error) {
-  //   console.error('Error logging in via Google', error)
-  // }
-}
+watch(
+  () => hash,
+  (newHash: string) => {
+    if (newHash.startsWith('#access_token')) {
+      console.log('newHash', newHash)
+      const session = {
+        access_token: String(extractFromHash('access_token')),
+        refresh_token: String(extractFromHash('refresh_token')),
+        expires_in: Number(extractFromHash('expires_in')),
+        token_type: String(extractFromHash('token_type')),
+        type: String(extractFromHash('type'))
+      }
+      console.log('session', session)
+      auth.updateSession(session)
+      router.push('/astrotribe')
+    }
+  },
+  { immediate: true }
+)
 
 definePageMeta({
   name: 'Login',

@@ -15,7 +15,7 @@
 <script setup lang="ts">
 // import useAuth from '~/composables/useAuth'
 import { ForgotPasswordSchema } from '@/types/forms'
-import { forgotPasswordData } from '@/data/forms'
+import forgotPasswordData from '@/data/forms/auth/forgot-password.json'
 
 // const auth = useAuth()
 
