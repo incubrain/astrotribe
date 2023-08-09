@@ -1,10 +1,9 @@
-import { getImageURL, getStorageImages } from './utils/image'
+import { getImageURL } from './utils/image'
 
 export default function useStorage() {
   return {
     image: {
       single: getImageURL,
-      many: getStorageImages
     }
   }
 }

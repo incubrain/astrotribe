@@ -1,4 +1,3 @@
-// import { FileObject } from '@supabase/storage-js'
 import { stringIsNull } from '~/composables/utils/strings'
 
 export type FileType =
