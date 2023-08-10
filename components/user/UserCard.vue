@@ -5,7 +5,7 @@
       class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
     >
       <NuxtLink
-        :to="`users/${user.id}`"
+        :to="`users/${user.auth_id}`"
         class="group"
       >
         <div class="flex items-center justify-center gap-2">

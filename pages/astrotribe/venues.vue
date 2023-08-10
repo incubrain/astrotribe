@@ -1,17 +1,16 @@
 <template>
   <div>
-    <UButton class="my-4 ml-4 xl:mb-8 md:mt-0 md:ml-0">
+    <!-- <UButton class="my-4 ml-4 xl:mb-8 md:mt-0 md:ml-0">
       Submit Your Venue
-    </UButton>
-    <div
-      v-if="venues !== null"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
-    >
-      <VenueCard
-        v-for="venue in venues"
-        :key="venue.id"
-        :venue="venue"
-      />
+    </UButton> -->
+    <div v-if="venues !== null">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 md:gap-4 xl:gap-8">
+        <VenueCard
+          v-for="venue in venues"
+          :key="venue.id"
+          :venue="venue"
+        />
+      </div>
     </div>
     <div
       v-else
@@ -26,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
-const v = useVenuesStore()
-v.checkWeHaveVenues()
+const ven = useVenuesStore()
+ven.checkWeHaveVenues()
 
-const { venues } = storeToRefs(v)
+const { venues } = storeToRefs(ven)
 
 definePageMeta({ name: 'Venues' })
 </script>
