@@ -4,6 +4,7 @@
     <FormDynamic
       :schema="loginForm"
       :validation-schema="LoginSchema"
+      has-labels
       class="w-full"
       @submit="auth.login"
     >

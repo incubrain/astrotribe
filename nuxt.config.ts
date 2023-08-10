@@ -24,80 +24,80 @@ export default defineNuxtConfig({
     // Production
     storage: {
       data: {
-        driver: "vercelKV",
-        base: "astrotribe:",
-      },
+        driver: 'vercelKV',
+        base: 'astrotribe:'
+      }
     },
     // Development
     devStorage: {
       data: {
-        driver: "fs",
-        base: "./data/kv",
+        driver: 'fs',
+        base: './data/kv'
       },
       blogs: {
-        driver: "fs",
-        base: "./data/blogs",
-      },
-    },
+        driver: 'fs',
+        base: './data/blogs'
+      }
+    }
   },
   ui: {
-    icons: ["mdi", "heroicons", "material-symbols"],
+    icons: ['mdi', 'heroicons', 'material-symbols']
   },
   app: {
-    layoutTransition: { name: "layout", mode: "out-in" },
-    pageTransition: { name: "page", mode: "out-in" },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      link: [{ rel: "icon", href: "/favicon.ico", sizes: "any" }],
+      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
       htmlAttrs: {
-        lang: "en",
+        lang: 'en'
       },
       meta: [
-        { property: "title", content: og.description },
-        { property: "description", content: og.description },
-        { property: "og:title", content: og.title },
-        { property: "og:type", content: "website" },
-        { property: "og:image", content: og.image },
-        { property: "og:description", content: og.description },
-        { property: "og:url", content: og.url },
-        { name: "twitter:card", content: "Twitter Card" },
-        { name: "twitter:title", content: og.title },
-        { name: "twitter:description", content: og.description },
-        { name: "twitter:image", content: og.image },
-      ],
+        { property: 'title', content: og.description },
+        { property: 'description', content: og.description },
+        { property: 'og:title', content: og.title },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: og.image },
+        { property: 'og:description', content: og.description },
+        { property: 'og:url', content: og.url },
+        { name: 'twitter:card', content: 'Twitter Card' },
+        { name: 'twitter:title', content: og.title },
+        { name: 'twitter:description', content: og.description },
+        { name: 'twitter:image', content: og.image }
+      ]
       // script: [
       // Insert your Google Tag Manager Script here
       // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
       //   ]
-    },
+    }
   },
-  css: ["lightgallery/css/lightgallery-bundle.css"],
+  css: ['lightgallery/css/lightgallery-bundle.css'],
   imports: {
-    dirs: ["stores", "data"],
+    dirs: ['stores', 'data']
   },
   colorMode: {
-    classSuffix: "",
+    classSuffix: ''
   },
   modules: [
-    "@nuxtjs/partytown",
-    "@nuxt/devtools",
-    "@nuxthq/ui",
-    "@vueuse/nuxt",
-    "@nuxt/image",
-    "nuxt-swiper",
-    "@nuxtjs/supabase",
-    "magic-regexp/nuxt",
+    '@nuxtjs/partytown',
+    '@nuxt/devtools',
+    '@nuxthq/ui',
+    '@vueuse/nuxt',
+    '@nuxt/image',
+    'nuxt-swiper',
+    '@nuxtjs/supabase',
+    'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
-    "@nuxtjs/robots",
-    "@pinia/nuxt",
+    '@nuxtjs/robots',
+    '@pinia/nuxt'
   ],
   build: {
-    transpile: ["lightgallery"],
+    transpile: ['lightgallery']
   },
   devtools: {
     // Enable devtools (default: true)
     enabled: false,
     // VS Code Server options
-    vscode: {},
+    vscode: {}
     // ...other options
   },
   // partytown: {
@@ -105,21 +105,21 @@ export default defineNuxtConfig({
   //     forward: ['dataLayer.push'],
   // },
   pinia: {
-    autoImports: ["defineStore", "acceptHMRUpdate", "storeToRefs"],
+    autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
   },
   robots: {
-    configPath: "~/robots.config.ts",
+    configPath: '~/robots.config.ts'
   },
   swiper: {
-    styleLang: "scss",
-    modules: ["navigation", "pagination", "grid", "autoplay"],
+    styleLang: 'scss',
+    modules: ['navigation', 'pagination', 'grid', 'autoplay']
   },
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
       NODE_ENV: process.env.NODE_ENV,
       SUPABASE_URL: process.env.SUPABASE_URL,
-      SUPABASE_KEY: process.env.SUPABASE_KEY,
+      SUPABASE_KEY: process.env.SUPABASE_KEY
     },
     // The private keys which are only available within server-side
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
@@ -131,38 +131,32 @@ export default defineNuxtConfig({
     BRIGHT_DATA_BROWSER_PASS: process.env.BRIGHT_DATA_BROWSER_PASS,
     BRIGHT_DATA_BROWSER_USER: process.env.BRIGHT_DATA_BROWSER_USER,
     TESTING_USERNAME: process.env.TESTING_USERNAME,
-    TESTING_PASSWORD: process.env.TESTING_PASSWORD,
+    TESTING_PASSWORD: process.env.TESTING_PASSWORD
   },
   typescript: {
     shim: false,
     tsConfig: {
       compilerOptions: {
+        exclude: ['node_modules', 'dist'],
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
-        strict: true,
-      },
-    },
+        strict: true
+      }
+    }
   },
   supabase: {
     redirectOptions: {
-      login: "/auth/login",
-      callback: "/astrotribe",
-      exclude: [
-        "/",
-        "/auth/*",
-        "/contact",
-        "/about",
-        "/team/*",
-        "/team",
-      ],
+      login: '/auth/login',
+      callback: '/astrotribe',
+      exclude: ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
     },
     cookieOptions: {
       maxAge: 60 * 60 * 8,
-      sameSite: "lax",
-      secure: true,
-    },
+      sameSite: 'lax',
+      secure: true
+    }
   },
   image: {
-    format: ["webp", "jpg"],
+    format: ['webp', 'jpg']
   },
   // image: {
   //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
@@ -183,5 +177,5 @@ export default defineNuxtConfig({
   //     },
   //   },
   // },
-  ssr: true,
-});
+  ssr: true
+})
