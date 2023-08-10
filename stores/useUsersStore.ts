@@ -1,6 +1,8 @@
+import { UserFull } from '@/types/users'
+
 export const useUsersStore = defineStore('users', () => {
-  const users = ref([])
-  const userCurrent = ref({})
+  const users = ref([] as UserFull[])
+  const userCurrent = ref({} as UserFull)
 
   async function checkWeHaveUsers() {
     if (users.value.length) return
@@ -10,8 +12,8 @@ export const useUsersStore = defineStore('users', () => {
     if (data.value?.users) users.value = data.value.users // todo check data validity
   }
 
-  async function checkWeHaveUser(id: number) {
-    if (userCurrent.value.id && userCurrent.value.id === id) return true
+  async function checkWeHaveUser(id: string) {
+    if (userCurrent.value.auth_id && userCurrent.value.auth_id === id) return true
 
     const { error, data } = await useFetch(`/api/users/${id}`)
     if (error.value) throw createError(`error getting users: ${error.value.message}`)
@@ -23,12 +25,12 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   const userById = () => {
-    return (id: number) => users.value.find((user) => user.id === id)
+    return (id: string) => users.value.find((user) => user.auth_id === id)
   }
 
   return {
     users,
-    userCurrent,
+    user: userCurrent,
     userById,
     checkWeHaveUsers,
     checkWeHaveUser
