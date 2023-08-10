@@ -40,7 +40,7 @@
             />
             <p class="text-xs font-semibold"> {{ venue.avg_rating.toPrecision(2) }} </p>
           </span> -->
-        <div class="flex flex-col gap-2 text-sm text-gray-500">
+        <div class="flex flex-col gap-2 text-sm pt-2">
           <p>{{ venue.location.state }}, {{ venue.location.country }}</p>
           <p>{{ venue.body }}</p>
         </div>
