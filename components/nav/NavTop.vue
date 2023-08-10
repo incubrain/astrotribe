@@ -70,19 +70,22 @@
             v-else
             class="flex gap-4"
           >
-            <UButton
-              class="hidden md:flex"
-              color="primary"
-              to="/astrotribe"
+            <UDropdown
+              :items="[dropdownItems]"
+              :popper="{ placement: 'bottom-start' }"
+              mode="hover"
             >
-              Dashboard
-            </UButton>
-            <UButton
-              color="primary"
-              @click="auth.logout"
-            >
-              Logout
-            </UButton>
+              <UButton
+                color="white"
+                class="flex items-center justify-center"
+              >
+                Logged in
+                <UIcon
+                  name="i-heroicons-chevron-down-20-solid"
+                  class="flex justify-center items-center w-5 h-5"
+                />
+              </UButton>
+            </UDropdown>
           </div>
         </div>
       </div>
@@ -91,8 +94,54 @@
 </template>
 
 <script setup>
-import links from './routes/website.json'
-
 const auth = useAuthStore()
-const { session } = storeToRefs(auth)
+const { session, user } = storeToRefs(auth)
+
+const router = useRouter()
+
+const links = [
+  {
+    id: 0,
+    name: 'About',
+    slug: '/about',
+    icon: 'i-material-symbols-info',
+    children: []
+  },
+  {
+    id: 1,
+    name: 'Contact',
+    slug: '/contact',
+    icon: 'i-material-symbols-call',
+    children: []
+  },
+  {
+    id: 2,
+    name: 'Team',
+    slug: '/team',
+    icon: 'i-material-symbols-emoji-people',
+    children: []
+  },
+  {
+    id: 3,
+    name: 'Community',
+    slug: '/astrotribe',
+    icon: 'i-material-symbols-globe-asia',
+    children: []
+  }
+]
+
+const dropdownItems = computed(() => [
+  {
+    label: 'Profile',
+    onClick: () => router.push(`/astrotribe/users/${user.value.id}`)
+  },
+  {
+    label: 'Settings',
+    onClick: () => router.push(`/astrotribe/users/${user.value.id}/settings`)
+  },
+  {
+    label: 'Logout',
+    onClick: () => auth.logout()
+  }
+])
 </script>
