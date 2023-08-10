@@ -136,8 +136,8 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
     tsConfig: {
+      exclude: ['node_modules', 'dist'],
       compilerOptions: {
-        exclude: ['node_modules', 'dist'],
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
         strict: true
       }

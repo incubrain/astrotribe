@@ -6,12 +6,12 @@
   >
     <div
       v-for="(field, index) in fields"
-      :key="field.name"
+      :key="index"
       class="w-full"
     >
       <label
-        :for="field.name"
         v-if="hasLabels"
+        :for="field.name"
         class="block text-sm font-semibold mb-1"
       >
         {{ field.label }}
@@ -41,6 +41,7 @@
     <UButton
       class="mt-4"
       type="submit"
+      block
       :disabled="hasErrors"
     >
       {{ p.buttonLabel }}
@@ -50,11 +51,11 @@
 
 <script setup lang="ts">
 import { useForm, useField } from 'vee-validate'
-import type { Ref } from 'vue'
+import { FormField } from 'types/forms'
 
 const p = defineProps({
   schema: {
-    type: Object,
+    type: Array as PropType<FormField[]>,
     required: true
   },
   validationSchema: {
@@ -67,7 +68,7 @@ const p = defineProps({
     default: () => ({})
   },
   hasLabels: {
-  type: Boolean,
+    type: Boolean,
     default: false
   },
   buttonLabel: {
@@ -77,7 +78,7 @@ const p = defineProps({
 })
 
 const { handleSubmit, errors } = useForm({
-  initialValues: { ...p.placeholder },
+  initialValues: { ...(p.placeholder ?? {}) },
   validationSchema: p.validationSchema
 })
 
@@ -94,8 +95,12 @@ interface Field {
 
 const fields = ref([] as Field[])
 // Loop through schema and create fields
-p.schema.forEach((item) => {
+if (p.schema.length === 0) {
+  throw createError('FormDynamic: schema is empty')
+}
+p.schema.forEach((item: FormField) => {
   const { value, errorMessage, errors } = useField(item.name)
+  console.log('item', item)
   fields.value.push({
     value,
     errorMessage,
@@ -104,8 +109,9 @@ p.schema.forEach((item) => {
     name: item.name,
     label: item.props.label,
     type: item.props.type,
-    initialValue: p.placeholder[item.name]
+    initialValue: p.placeholder[item.name] || item.props.label
   })
+  console.log('item', fields)
 })
 
 const toast = useToast()
