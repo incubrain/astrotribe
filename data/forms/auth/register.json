@@ -1,16 +1,6 @@
 [
   {
-    "name": "givenName",
-    "component": "FormText",
-    "props": {
-      "label": "Given name",
-      "name": "givenName",
-      "type": "text"
-    }
-  },
-  {
     "name": "email",
-    "component": "FormText",
     "props": {
       "label": "Email",
       "name": "email",
@@ -19,7 +9,6 @@
   },
   {
     "name": "password",
-    "component": "FormText",
     "props": {
       "label": "Password",
       "name": "password",
@@ -28,7 +17,6 @@
   },
   {
     "name": "confirmPassword",
-    "component": "FormText",
     "props": {
       "label": "Confirm Password",
       "name": "confirmPassword",

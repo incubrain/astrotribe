@@ -4,6 +4,7 @@
     <FormDynamic
       :schema="registerForm"
       :validation-schema="RegisterSchema"
+      has-labels
       class="w-full"
       @submit="handleRegister"
     >

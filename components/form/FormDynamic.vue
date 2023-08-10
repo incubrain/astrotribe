@@ -38,7 +38,7 @@ defineProps({
     required: true
   },
   hasLabels: {
-    type: Boolean,
+  type: Boolean,
     default: false
   }
 })
