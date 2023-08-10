@@ -1,5 +1,3 @@
-// import * as util from './utilities'
-
 export const useUsersStore = defineStore('users', () => {
   const users = ref([])
   const userCurrent = ref({})

@@ -1,7 +1,9 @@
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params
+  console.log('getting user', id)
   // const query = getQuery(event)
   const client = useClient()
+  console.log('getting user', id)
   // const admin = false
   const user = await client.users.findFirst({
     where: {
