@@ -79,7 +79,8 @@ const formFieldSchema = z.object({
   width: z.literal('full' || 'half'),
   props: z.object({
     label: z.string(),
-    type: z.string()
+    type: z.string(),
+    disabled: z.boolean().optional()
   })
 })
 

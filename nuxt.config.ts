@@ -119,7 +119,9 @@ export default defineNuxtConfig({
     public: {
       NODE_ENV: process.env.NODE_ENV,
       SUPABASE_URL: process.env.SUPABASE_URL,
-      SUPABASE_KEY: process.env.SUPABASE_KEY
+      SUPABASE_KEY: process.env.SUPABASE_KEY,
+      TESTING_USERNAME: process.env.TESTING_USERNAME,
+      TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
@@ -129,9 +131,7 @@ export default defineNuxtConfig({
     BRIGHT_DATA_SERP_PASS: process.env.BRIGHT_DATA_SERP_PASS,
     BRIGHT_DATA_SERP_USER: process.env.BRIGHT_DATA_SERP_USER,
     BRIGHT_DATA_BROWSER_PASS: process.env.BRIGHT_DATA_BROWSER_PASS,
-    BRIGHT_DATA_BROWSER_USER: process.env.BRIGHT_DATA_BROWSER_USER,
-    TESTING_USERNAME: process.env.TESTING_USERNAME,
-    TESTING_PASSWORD: process.env.TESTING_PASSWORD
+    BRIGHT_DATA_BROWSER_USER: process.env.BRIGHT_DATA_BROWSER_USER
   },
   typescript: {
     shim: false,

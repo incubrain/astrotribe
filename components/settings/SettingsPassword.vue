@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { FormPasswordSchema, SettingsPassword } from 'types/settings'
-import { FormField } from 'types/forms'
+import { FormPasswordSchema, SettingsPassword } from '@/types/settings'
+import { FormField } from '@/types/forms'
 
 const schema = computed(() => {
   return [

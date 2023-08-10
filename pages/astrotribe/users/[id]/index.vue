@@ -4,8 +4,8 @@
       :url="
         s.image.single({
           bucket: 'profile-public',
-          folderPath: `${userCurrent.id}/cover`,
-          file: userCurrent.cover_image,
+          folderPath: `${user.id}/cover`,
+          file: user.cover_image,
           fileType: 'user-cover',
           isPrivate: false,
         })
@@ -19,7 +19,7 @@
       >
         <ProfileBlockBadge
           class="absolute bottom-0 right-0 mr-4 md:mr-0"
-          :user-role="userCurrent.roles"
+          :user-role="user.roles"
         />
       </div>
       <div
@@ -29,15 +29,15 @@
           :avatar="
             s.image.single({
               bucket: 'profile-public',
-              folderPath: `${userCurrent.id}/avatar`,
-              file: userCurrent.avatar,
+              folderPath: `${user.id}/avatar`,
+              file: user.avatar,
               fileType: 'user-avatar',
               isPrivate: false,
             })
           "
         />
         <ProfileBlockInfo
-          :user="userCurrent"
+          :user="user"
           class="mt-[80px] md:mt-[140px]"
         />
       </div>
@@ -45,23 +45,23 @@
         class="relative flex flex-col w-full col-span-1 col-start-1 row-span-1 row-start-3 gap-2 md:mt-4 md:gap-4 lg:col-span-3 md:mb-24"
       >
         <!-- <ProfileBlockSkills
-          v-if="userCurrent.user_skills.length > 0"
-          :skills="userCurrent.user_skills"
+          v-if="user.user_skills.length > 0"
+          :skills="user.user_skills"
           class="card"
         /> -->
         <!-- <ProfileBlockSocials
-          v-if="userCurrent.user_socials.length > 0"
-          :socials="userCurrent.user_socials"
+          v-if="user.user_socials.length > 0"
+          :socials="user.user_socials"
           class="card"
         /> -->
         <!-- <ProfileBlockExperties
-          v-if="userCurrent.user_skills.length > 0"
-          :expertise="userCurrent.user_skills"
+          v-if="user.user_skills.length > 0"
+          :expertise="user.user_skills"
           class="p-6"
         /> -->
         <CommonBlockText
-          v-if="userCurrent.quote"
-          :body="userCurrent.quote"
+          v-if="user.quote"
+          :body="user.quote"
           class="card"
           title="Favourite Quote"
         />
@@ -76,8 +76,8 @@ const id = route.params.id
 
 const s = useStorage()
 const u = useUsersStore()
-const haveUser = await u.checkWeHaveUser(Number(id))
-const { userCurrent } = storeToRefs(u)
+const haveUser = await u.checkWeHaveUser(String(id))
+const { user } = storeToRefs(u)
 
 definePageMeta({
   name: 'Profile'

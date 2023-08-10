@@ -28,6 +28,7 @@
         v-model="field.value"
         :type="field.type"
         :placeholder="field.initialValue"
+        :disabled="field.disabled"
         :name="field.name"
         class="w-full h-10 px-4 py-2 leading-6 border rounded shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
       />
@@ -50,6 +51,7 @@
 </template>
 
 <script setup lang="ts">
+import { ComputedRef } from 'vue'
 import { useForm, useField } from 'vee-validate'
 import { FormField } from 'types/forms'
 
@@ -78,7 +80,7 @@ const p = defineProps({
 })
 
 const { handleSubmit, errors } = useForm({
-  initialValues: { ...(p.placeholder ?? {}) },
+  initialValues: computed(() => p.placeholder),
   validationSchema: p.validationSchema
 })
 
@@ -90,7 +92,8 @@ interface Field {
   name: string
   label: string
   type: string
-  initialValue: string | undefined
+  disabled: boolean
+  initialValue: ComputedRef
 }
 
 const fields = ref([] as Field[])
@@ -98,9 +101,9 @@ const fields = ref([] as Field[])
 if (p.schema.length === 0) {
   throw createError('FormDynamic: schema is empty')
 }
+
 p.schema.forEach((item: FormField) => {
   const { value, errorMessage, errors } = useField(item.name)
-  console.log('item', item)
   fields.value.push({
     value,
     errorMessage,
@@ -109,9 +112,9 @@ p.schema.forEach((item: FormField) => {
     name: item.name,
     label: item.props.label,
     type: item.props.type,
-    initialValue: p.placeholder[item.name] || item.props.label
+    disabled: item.props.disabled ?? false,
+    initialValue: computed(() => p.placeholder[item.name])
   })
-  console.log('item', fields)
 })
 
 const toast = useToast()
