@@ -5,7 +5,10 @@ import {
   authSchema,
   AuthType,
   SimpleUserType,
-  EmailUnvalidatedUserType
+  EmailUnvalidatedUserType,
+  emailUnvalidatedUserSchema,
+  sessionSchema,
+  userSchema
 } from '@/types/auth'
 
 export default defineStore('auth', () => {
@@ -14,6 +17,9 @@ export default defineStore('auth', () => {
   const PROTECTED_ROUTE = 'astrotribe'
 
   const router = useRouter()
+  const client: SupabaseClient = useNuxtApp().$supabase.client
+  const env = useRuntimeConfig().public
+
   const user = ref<UserType | EmailUnvalidatedUserType | null>(null)
   const session = ref<SessionType | null>(null)
   const createdUsers = ref([] as SimpleUserType[])
@@ -44,11 +50,29 @@ export default defineStore('auth', () => {
   const register = async ({ email, password }: { email: string; password: string }) => {
     console.log('register')
 
-    const { data, error } = await useFetch('/api/auth/register', {
-      method: 'POST',
-      headers: useRequestHeaders(['cookie']),
-      body: JSON.stringify({ email, password })
+    if (env.NODE_ENV === 'development') {
+      email = String(env.TESTING_USERNAME)
+      password = String(env.TESTING_PASSWORD)
+    }
+    console.log('register', email, password)
+    const { data, error } = await client.auth.signUp({
+      email,
+      password
     })
+    if (error) {
+      throw createError({
+        statusCode: 401,
+        message: error.message
+      })
+    }
+
+    console.log('register data', data)
+
+    const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
+    if (!validatedUser.success) {
+      throw createError(validatedUser.error)
+    }
+
     if (error.value) throw createError(`Error registering user: ${error.value}`)
     if (!data.value) throw createError({ message: 'No Register data', statusCode: 401 })
     user.value = data.value.data.user
@@ -65,8 +89,13 @@ export default defineStore('auth', () => {
   }
 
   const logout = async () => {
-    const data = await useFetch('/api/auth/logout')
-    console.log('user logged out client', data)
+    const { error } = await client.auth.signOut()
+    if (error) {
+      throw createError({
+        statusCode: 401,
+        message: error.message
+      })
+    }
     clearUserData()
     router.push('/auth/login')
   }
@@ -78,14 +107,6 @@ export default defineStore('auth', () => {
     refreshToken.value = newSession.refresh_token
     expiresAt.value = Number(newSession.expires_at)
     expiresIn.value = Number(newSession.expires_in)
-    console.log(
-      'updateSession',
-      session.value,
-      accessToken.value,
-      refreshToken.value,
-      expiresAt.value,
-      expiresIn.value
-    )
   }
 
   const updateUser = (data: UserType) => {
@@ -100,30 +121,48 @@ export default defineStore('auth', () => {
 
   const login = async ({ email, password }: { email?: string; password?: string }) => {
     console.log('login', email, password)
-    const { data, error } = await useFetch('/api/auth/login', {
-      method: 'POST',
-      headers: useRequestHeaders(['cookie']),
-      body: JSON.stringify({ email, password })
+    if (env.NODE_ENV === 'development') {
+      email = String(env.TESTING_USERNAME)
+      password = String(env.TESTING_PASSWORD)
+    }
+    console.log('login client', email, password)
+    const { data, error } = await client.auth.signInWithPassword({
+      email,
+      password
     })
+    console.log('login Data', data, error)
+    if (error) {
+      throw createError(`Login Error: ${error}`)
+    }
 
-    if (error.value) throw createError({ message: error.value.message, statusCode: 401 })
-    if (!data.value) throw createError({ message: 'No Login data', statusCode: 401 })
+    const validatedUser = userSchema.safeParse(data.user)
+    if (!validatedUser.success) {
+      // Handle validation error
+      throw createError(validatedUser.error)
+    }
+
+    if (!data) throw createError('Login Error: No data returned from supabase')
+    const validatedSession = sessionSchema.safeParse(data.session)
+    if (!validatedSession.success) {
+      throw createError(validatedSession.error)
+    }
 
     console.log(data)
-    updateData(data.value.data)
+    updateData({ user: validatedUser.data, session: validatedSession.data })
+    router.push('/astrotribe/users')
   }
 
-  const requestPasswordReset = async ({ email }): Promise<boolean> => {
+  const requestPasswordReset = async (email: string): Promise<boolean> => {
     console.log('requestPasswordReset', email)
     return true
   }
-  
-  const resetPassword = async ({ confirmPassword, password }): Promise<boolean> => {
-    console.log('resetPassword', password)
+
+  const resetPassword = async (confirmPassword: string, password: string): Promise<boolean> => {
+    console.log('resetPassword', confirmPassword, password)
     return true
   }
 
-  async function setSession(client: SupabaseClient): Promise<boolean> {
+  async function setSession(): Promise<boolean> {
     // Update the session expiration time in your cookies if available from the auth response
     console.log('setSession')
     const { data, error } = await client.auth.setSession({
@@ -150,9 +189,9 @@ export default defineStore('auth', () => {
     return Number((Date.now() / 1000).toFixed(0)) >= expiresAt.value
   })
 
-  const hasTokens = computed(() =>
-    Boolean(refreshToken.value && accessToken.value && expiresAt.value)
-  )
+  const hasTokens = computed(() => {
+    return Boolean(refreshToken.value && accessToken.value && expiresAt.value)
+  })
 
   const isFirstLogin = computed(() =>
     Boolean(refreshToken.value && accessToken.value && !expiresAt.value && expiresIn.value)
