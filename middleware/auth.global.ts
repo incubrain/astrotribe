@@ -1,12 +1,8 @@
-import { SupabaseClient } from '@supabase/supabase-js'
-
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { $supabase } = useNuxtApp()
-  const client: SupabaseClient = $supabase.client
   const auth = useAuthStore()
 
   // if the user is authenticated, don't do anything
-  console.log('auth.isAuthenticated', auth.isAuthenticated)
+  console.log('auth.isAuthenticated', auth.isAuthenticated, auth.hasTokens)
   if (auth.isAuthenticated) return
 
   // if no tokens and protectd route, navigate to login
@@ -18,14 +14,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   // handle first time login
   if (auth.isFirstLogin) {
     console.log('first login, setSession')
-    await auth.setSession(client)
+    await auth.setSession()
     return navigateTo('/astrotribe')
   }
 
   // if the cookie session has NOT expired, set the session
   if (!auth.hasSessionExpired) {
     console.log('Session available, call setSession')
-    await auth.setSession(client)
+    await auth.setSession()
     return
   }
 

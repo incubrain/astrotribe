@@ -18,18 +18,18 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (session) {
       if (event === 'SIGNED_IN') {
-        console.log('SIGNED_IN', session)
+        console.log('SIGNED_IN')
         auth.updateSession(session)
-        $router.push('/astrotribe') // Redirect to a protected area
+        // Redirect to a protected area
       }
 
       if (event === 'TOKEN_REFRESHED') {
-        console.log('TOKEN_REFRESHED', session)
+        console.log('TOKEN_REFRESHED')
         auth.updateSession(session) // Update token in the store
       }
 
       if (event === 'USER_UPDATED') {
-        console.log('USER_UPDATED', session)
+        console.log('USER_UPDATED')
         auth.updateSession(session) // Update user data in the store
       }
     }
