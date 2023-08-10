@@ -1,4 +1,4 @@
-import { SettingsAccountValidation, SettingsPasswordValidation, SettingsAccount, SettingsPassword } from '@/types/zod/settings'
+import { SettingsAccountValidation, SettingsPasswordValidation, SettingsAccount, SettingsPassword } from '@/types/settings'
 
 function validateSettingsData(settingsType: string, data: SettingsAccount | SettingsPassword): any {
   switch (settingsType) {

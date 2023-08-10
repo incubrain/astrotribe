@@ -1,4 +1,4 @@
-import { SettingsAccount, SettingsPassword } from '@/types/zod/settings'
+import { SettingsAccount, SettingsPassword } from '@/types/settings'
 
 const settingsTabs = [
   {

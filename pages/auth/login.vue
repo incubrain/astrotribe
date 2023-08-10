@@ -2,17 +2,17 @@
   <div class="flex flex-col items-center justify-center w-full h-full">
     <h2 class="mb-6 text-2xl text-center"> Sign In </h2>
     <FormDynamic
-      :schema="loginForm"
-      :validation-schema="LoginSchema"
+      :schema="schema"
+      :validation-schema="LoginForm"
       has-labels
       class="w-full"
-      @submit="auth.login"
+      @submit-form="auth.login"
     >
       <FormButton> Sign In </FormButton>
     </FormDynamic>
-    <p class="mt-4 text-sm text-center">
+    <!-- <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
-    </p>
+    </p> -->
     <!-- <div class="gap-4 w-full mt-6 hidden">
       <UButton
         class="flex items-center justify-center w-full"
@@ -43,10 +43,28 @@
 </template>
 
 <script setup lang="ts">
-import { LoginSchema } from '@/types/forms'
-import loginForm from '@/data/forms/auth/login.json'
+import { LoginForm, FormField } from '@/types/forms'
 
 const auth = useAuthStore()
+
+const schema = computed(() => {
+  return [
+    {
+      name: 'email',
+      props: {
+        label: 'Email',
+        type: 'email'
+      }
+    },
+    {
+      name: 'password',
+      props: {
+        label: 'Password',
+        type: 'password'
+      }
+    }
+  ] as FormField[]
+})
 
 const { hash } = useRoute()
 const router = useRouter()

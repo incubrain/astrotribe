@@ -113,6 +113,16 @@ export default defineStore('auth', () => {
     updateData(data.value.data)
   }
 
+  const requestPasswordReset = async ({ email }): Promise<boolean> => {
+    console.log('requestPasswordReset', email)
+    return true
+  }
+  
+  const resetPassword = async ({ confirmPassword, password }): Promise<boolean> => {
+    console.log('resetPassword', password)
+    return true
+  }
+
   async function setSession(client: SupabaseClient): Promise<boolean> {
     // Update the session expiration time in your cookies if available from the auth response
     console.log('setSession')
@@ -166,6 +176,8 @@ export default defineStore('auth', () => {
     login,
     logout,
     register,
+    resetPassword,
+    requestPasswordReset,
     // createUsers,
     updateData,
     updateSession,
