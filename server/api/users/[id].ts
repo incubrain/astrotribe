@@ -1,11 +1,10 @@
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params
-  // const query = getQuery(event)
+  console.log('getting user', id)
   const client = useClient()
-  // const admin = false
   const user = await client.users.findFirst({
     where: {
-      id: BigInt(id)
+      auth_id: String(id)
     },
     include: {
       roles: true
@@ -19,10 +18,7 @@ export default defineEventHandler(async (event) => {
   if (user) {
     status = 200
     message = 'User fetched'
-    data = JSON.stringify(
-      user,
-      (key, value) => (typeof value === 'bigint' ? value.toString() : value) // return everything else unchanged
-    )
+    data = handleBigInt(user)
   } else {
     status = 500
     message = 'Error getting user'
@@ -32,6 +28,6 @@ export default defineEventHandler(async (event) => {
   return {
     status,
     message,
-    user: JSON.parse(data)
+    user: data
   }
 })
