@@ -1,9 +1,10 @@
-export default defineEventHandler(async () => {
-  const client = useClient()
-  // const env = useRuntimeConfig().public
+import { Role } from '@/types/roles'
 
-  let roles = []
-  // if (env.NODE_ENV === 'local') roles = await import('@/data/seed/roles.json')
+export default defineEventHandler(async (event) => {
+  const client = useClient()
+
+  const { roles }: { roles: Role[] } = await readBody(event)
+  // const env = useRuntimeConfig().public
 
   // Function to insert users from JSON file
   if (roles.length > 0) {
