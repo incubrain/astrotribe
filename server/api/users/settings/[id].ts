@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
     return {
       status,
       message,
-      user: JSON.parse(data)
+      user: data
     }
   } catch (error) {
     throw createError(`Error getting user: ${error}`)
