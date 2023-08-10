@@ -26,16 +26,18 @@ const settingsTabs = [
   }
 ]
 
-export const useUserSettingsStore = defineStore('userSettings', () => {
+export default defineStore('settings', () => {
   // info: use reactive() to make the object reactive, ref is for primitive types
   // TypeScript supports 7 primitive types number, string, boolean, bigint, symbol, undefined, and null.
   const userAccountSettings = reactive({
-    given_name: 'your given name',
-    surname: 'your surname',
-    email: 'your email',
-    introduction: 'your introduction',
-    quote: 'your quote'
+    given_name: 'loading name',
+    surname: 'loading surname',
+    email: 'loading email',
+    introduction: 'loading introduction',
+    quote: 'loading quote'
   })
+
+  const user = reactive({})
   const userPasswordSettings = reactive({
     currentPassword: 'current password',
     newPassword: 'new password',
@@ -45,33 +47,39 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
   // const preferenceSettings = reactive({ theme: 'light', language: 'en' })
   // const notificationSettings = reactive({ email: true, push: false })
 
-  async function getUserSettings(id: number) {
+  function updateStateSettings(settings: any, newSettings: any) {
+    console.log('updateStateSettings', settings, newSettings)
+    for (const key in settings) {
+      if (Object.prototype.hasOwnProperty.call(newSettings, key)) {
+        // Using a type assertion to tell TypeScript that key is definitely a key of settings
+        const typedKey = key as keyof typeof settings
+        settings[typedKey] = newSettings[typedKey]
+        console.log('updated', key, settings[typedKey])
+      }
+    }
+  }
+
+  async function getUserSettings(id: string) {
     try {
       console.log('getUserSettings', id)
       // TODO: get user settings from database
-      const response = await fetch(`/api/users/settings/${id}`, {
-        method: 'GET'
-      })
-      if (!response.ok) {
-        throw new Error(`Error fetching user settings. Status: ${response.status}`)
-      }
-      const data = await response.json()
-      // TODO: store retrieved settings in pinia store
-      Object.assign(userAccountSettings, data.accountSettings)
-      console.log('data:', data)
-      // Password is not returned from the API
-      // userPasswordSettings.currentPassword = data.password
+      const { data, error } = await useFetch(`/api/users/settings/${id}`)
+      console.log('GET-DATA:', data.value, error.value)
+      if (error.value) throw createError(`Error fetching user settings. Status: ${error.value}`)
+      if (!data.value) throw createError('No user settings data returned from supabase')
+
+      updateStateSettings(userAccountSettings, data.value.user)
+      updateStateSettings(user, data.value.user)
     } catch (error) {
       console.error('Error fetching user settings:', error)
     }
   }
 
-  async function updateAccountSettings(id: number, newSettings: SettingsAccount) {
-    // TODO: Make id dynamic
-    console.log('settings:', newSettings)
+  async function updateAccountSettings(id: string, newSettings: SettingsAccount) {
+    console.log('settings:', id, newSettings)
     try {
       // Calling the API to update the account settings
-      const response = await fetch(`/api/users/settings/${id}`, {
+      const { data, error } = await useFetch('/api/users/settings/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,19 +90,20 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
           data: newSettings
         })
       })
-      if (!response.ok) {
-        throw new Error(`Error updating account settings. Status: ${response.status}`)
+
+      if (error.value) {
+        throw createError(`Error updating account settings: ${error}`)
       }
-      const updatedData = await response.json()
-      // Updating the Pinia store with the new settings received from the API
-      Object.assign(userAccountSettings, updatedData.user.accountSettings)
-      console.log('Updated account settings:', updatedData.user)
+      if (!data.value) throw createError('No data returned from supabase')
+      updateStateSettings(userAccountSettings, data.value.user)
+      console.log('Updated Account:', data, userAccountSettings)
+      // Object.assign(userAccountSettings, updatedData.user.accountSettings)
     } catch (error) {
-      console.error('Error updating account settings:', error)
+      throw createError(`Error updating account settings: ${error}`)
     }
   }
 
-  async function updatePassword(newPassword: SettingsPassword) {
+  function updatePassword(newPassword: SettingsPassword) {
     console.log('password:', newPassword)
     // !important: we will add password upate functionality later
     // TODO: Upate pinia store
@@ -106,12 +115,9 @@ export const useUserSettingsStore = defineStore('userSettings', () => {
     userAccountSettings,
     userPasswordSettings,
     tabs: settingsTabs,
+    user,
     getUserSettings,
     updateAccountSettings,
     updatePassword
   }
 })
-
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useUserSettingsStore, import.meta.hot))
-}
