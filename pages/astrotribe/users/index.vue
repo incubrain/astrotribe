@@ -1,12 +1,12 @@
 <template>
   <div>
     <div
-      v-if="users.length > 0"
+      v-if="haveUsers"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
     >
       <LazyUserCard
         v-for="user in users"
-        :key="user.id"
+        :key="user.auth_id"
         :user="user"
       />
     </div>
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 const u = useUsersStore()
-u.checkWeHaveUsers()
+const haveUsers = await u.checkWeHaveUsers()
 const { users } = storeToRefs(u)
 
 definePageMeta({ name: 'All' })

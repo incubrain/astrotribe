@@ -66,17 +66,17 @@ const schema = computed(() => {
   ] as FormField[]
 })
 
-const { hash } = useRoute()
+const route = useRoute()
 const router = useRouter()
 
 const extractFromHash = (paramName: string) => {
   const regex = new RegExp('(?:[&]|^)' + paramName + '=([^&]*)')
-  const match = hash.substring(1).match(regex) // Remove the '#' at the beginning of the hash
+  const match = route.hash.substring(1).match(regex) // Remove the '#' at the beginning of the hash
   return match ? decodeURIComponent(match[1]) : null
 }
 
 watch(
-  () => hash,
+  () => route.hash,
   (newHash: string) => {
     if (newHash.startsWith('#access_token')) {
       console.log('newHash', newHash)
