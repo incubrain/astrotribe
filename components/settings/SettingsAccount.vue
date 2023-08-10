@@ -1,18 +1,26 @@
 <template>
   <UCard>
+    <template #header>
+      <h1 class="text-2xl font-semibold pb-4"> Welcome to your account {{ userAccountSettings.given_name }}</h1>
+      <p> The ability to update password and email will be coming soon </p>
+    </template>
     <FormDynamic
       :schema="schema"
       :validation-schema="FormAccountSchema"
       :placeholder="userAccountSettings"
       :has-labels="true"
+      button-label="Update Account Info"
       @submit-form="onSubmitAccount"
     />
+    <!-- <template #footer>
+      <UButton> Contact Support </UButton>
+    </template> -->
   </UCard>
 </template>
 
 <script setup lang="ts">
-import { FormAccountSchema, SettingsAccount } from 'types/settings'
-import { FormField } from 'types/forms'
+import { FormAccountSchema, SettingsAccount } from '@/types/settings'
+import { FormField } from '@/types/forms'
 
 const schema = computed(() => {
   return [
@@ -37,7 +45,8 @@ const schema = computed(() => {
       width: 'full',
       props: {
         label: 'Email',
-        type: 'email'
+        type: 'email',
+        disabled: true
       }
     },
     {
@@ -60,10 +69,12 @@ const schema = computed(() => {
 })
 
 const settings = useUserSettingsStore()
+const users = useUsersStore()
 const { userAccountSettings } = storeToRefs(settings)
+const { user } = storeToRefs(users)
 
 function onSubmitAccount(value: SettingsAccount) {
   console.log('Submitted form:', value)
-  settings.updateAccountSettings(value)
+  settings.updateAccountSettings(user.value?.auth_id, value)
 }
 </script>
