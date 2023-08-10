@@ -118,6 +118,7 @@ export default defineNuxtConfig({
     // Keys within public, will be also exposed to the client-side
     public: {
       NODE_ENV: process.env.NODE_ENV,
+      TESTING_ENV: process.env.TESTING_ENV,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
       TESTING_USERNAME: process.env.TESTING_USERNAME,

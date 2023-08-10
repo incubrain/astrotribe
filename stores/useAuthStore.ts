@@ -50,7 +50,7 @@ export default defineStore('auth', () => {
   const register = async ({ email, password }: { email: string; password: string }) => {
     console.log('register')
 
-    if (env.NODE_ENV === 'development' || env.NODE_ENV === 'preview') {
+    if (env.TESTING_ENV === 'true') {
       email = String(env.TESTING_USERNAME)
       password = String(env.TESTING_PASSWORD)
     }
@@ -121,7 +121,7 @@ export default defineStore('auth', () => {
 
   const login = async ({ email, password }: { email?: string; password?: string }) => {
     console.log('login', email, password)
-    if (env.NODE_ENV === 'development' || env.NODE_ENV === 'preview') {
+    if (env.TESTING_ENV === 'true') {
       email = String(env.TESTING_USERNAME)
       password = String(env.TESTING_PASSWORD)
     }
