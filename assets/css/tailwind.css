@@ -36,7 +36,7 @@
     @apply cursor-pointer text-primary-600 dark:text-primary-700 hover:text-primary-500 dark:hover:text-primary-600;
   }
   .foreground {
-    @apply bg-zinc-200 dark:bg-zinc-900;
+    @apply bg-zinc-50 dark:bg-zinc-900;
   }
   .background {
     @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950;
@@ -48,7 +48,7 @@
     @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
   }
   .border-color {
-    @apply border-zinc-300 dark:border-zinc-800;
+    @apply border-zinc-200 dark:border-zinc-800;
   }
   .border-inverted {
     @apply border-zinc-800 dark:border-zinc-300;

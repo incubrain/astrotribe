@@ -1,17 +1,15 @@
 <template>
   <nav
-    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between foreground shadow-lg z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
+    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between foreground z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
   >
     <div
-      class="grid grid-cols-[minmax(160px,1fr)_minmax(1fr,420px)_minmax(160px,220px)] gap-6 items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
+      class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(240px,_0.5fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <NavMobiSlideover
-        :links="links"
-        class="lg:hidden pl-3 md:pl-4 flex items-center"
-      />
-      <div
-        class="lg:flex hidden items-center h-full col-span-2 col-start-1 pl-3 md:pl-4 md:col-span-1"
-      >
+      <div class="border-color border-r h-full pl-3 md:pl-4 flex col-start-1">
+        <NavMobiSlideover
+          :links="links"
+          class="lg:hidden pl-3 md:pl-4 flex items-center"
+        />
         <NuxtLink
           to="/"
           class="flex items-center gap-2 nav-link"
@@ -26,8 +24,10 @@
           </div>
           <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         </NuxtLink>
+      </div>
+      <div class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1">
         <div
-          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none border-l lg:flex border-color whitespace-nowrap"
+          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
         >
           <NuxtLink
             v-for="link in links"
@@ -39,7 +39,7 @@
           </NuxtLink>
         </div>
       </div>
-      <div class="relative flex w-full col-span-1 col-start-3 pr-3 md:pr-6">
+      <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6">
         <div class="flex items-center justify-end w-full gap-4">
           <a
             href="https://github.com/incubrain/astrotribe"
