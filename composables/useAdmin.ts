@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { emailUnvalidatedUserSchema } from '@/types/auth'
-import users from '@/private-data/users.json'
+// import users from '@/private-data/users.json'
 
 interface User {
   email: string
@@ -31,6 +31,7 @@ export default function useAdmin() {
   }
 
   async function registerManyUsers() {
+    const users = []
     for (const user of users) {
       // Extract the given name and surname
       const givenName = user.given_name.charAt(0).toUpperCase() + user.given_name.slice(1)
@@ -49,8 +50,26 @@ export default function useAdmin() {
     }
   }
 
+  async function updateMany() {
+    const users = []
+    // update the user
+    try {
+      const { data, error } = await useFetch('/api/admin/create/many-public-users', {
+        method: 'POST',
+        body: JSON.stringify(users)
+      })
+      if (error) {
+        throw createError(`error updating users: ${error.value}`)
+      }
+      console.log('updated users', data)
+    } catch (error) {
+      console.error(`error updating users: ${error}`)
+    }
+  }
+
   return {
     registerManyUsers,
+    updateMany,
     createdUsers
   }
 }

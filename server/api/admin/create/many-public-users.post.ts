@@ -1,7 +1,8 @@
 import { UserFull } from '@/types/users'
 
 export default defineEventHandler(async (event) => {
-  const { users }: { users: UserFull[] } = await readBody(event)
+  const users = await readBody(event)
+  console.log('many-users', users)
   const client = useClient()
   let message
   let status
@@ -12,9 +13,9 @@ export default defineEventHandler(async (event) => {
       if (user.dob !== null) {
         user.dob = new Date(user.dob).toISOString()
       }
-      user.created_at = new Date(user.created_at).toISOString()
-      user.updated_at = new Date(user.updated_at).toISOString()
-      user.last_seen = new Date(user.last_seen).toISOString()
+      user.created_at = new Date().toISOString()
+      user.updated_at = new Date().toISOString()
+      user.last_seen = new Date().toISOString()
       return {
         ...user
       }

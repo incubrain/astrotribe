@@ -8,13 +8,13 @@
       >
         Register
       </UButton>
-      <!-- <UButton
+      <UButton
         color="primary"
         class="mt-4"
-        @click="admin.registerManyUsers()"
+        @click="admin.updateMany()"
       >
-        Register Many
-      </UButton> -->
+        Update Many
+      </UButton>
       <UButton
         color="primary"
         class="mt-4"
@@ -30,7 +30,7 @@
 
 const testing = useTestingStore()
 
-// const admin = useAdmin()
+const admin = useAdmin()
 
 </script>
 
