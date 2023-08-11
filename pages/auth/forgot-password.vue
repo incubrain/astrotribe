@@ -31,7 +31,6 @@ const schema = computed(() => {
 const auth = useAuthStore()
 
 const handleForgotPassword = (value: { email: string }) => {
-  console.log('handleForgotPassword', value)
   // auth.password.requestResetEmail(value.email)
 }
 

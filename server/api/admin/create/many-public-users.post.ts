@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
   let status
 
   // Function to insert users from JSON file
-  console.log('trying to add users')
   if (users.length > 0) {
     const mappedUsers = users.map((user) => {
       if (user.dob !== null) {
@@ -26,7 +25,7 @@ export default defineEventHandler(async (event) => {
     status = 200
     message = 'Users have been inserted successfully'
   } else {
-    console.log('no users to add')
+    console.error('no users to add')
     status = 200
     message = 'no users to add'
   }

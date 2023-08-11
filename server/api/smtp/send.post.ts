@@ -6,7 +6,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const env = useRuntimeConfig()
   if (!resend) resend = new Resend(env.RESEND_API_KEY)
-  console.log('SMTP_SEND', env, body, resend)
   try {
     const response = await resend.emails.send({
       from: `Acme <${env.SMTP_SENDER}>`,
