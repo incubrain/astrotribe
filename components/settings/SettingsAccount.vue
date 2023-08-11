@@ -75,6 +75,6 @@ const { user } = storeToRefs(users)
 
 function onSubmitAccount(value: SettingsAccount) {
   console.log('Submitted form:', value)
-  settings.updateAccountSettings(user.value?.auth_id, value)
+  settings.updateAccountSettings({ id: user.value?.id, ...value })
 }
 </script>

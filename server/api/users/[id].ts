@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const client = useClient()
   const user = await client.users.findFirst({
     where: {
-      auth_id: String(id)
+      id: String(id)
     },
     include: {
       roles: true
