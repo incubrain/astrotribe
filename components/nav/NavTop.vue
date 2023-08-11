@@ -51,23 +51,8 @@
             />
           </a>
           <ThemeToggle />
-          <div v-if="!session">
-            <UButton
-              color="primary"
-              variant="link"
-              @click="auth.login"
-            >
-              login
-            </UButton>
-            <UButton
-              color="primary"
-              to="/auth/register"
-            >
-              Join Free
-            </UButton>
-          </div>
           <div
-            v-else
+            v-if="testing.auth.componentVisible()"
             class="flex gap-4"
           >
             <UDropdown
@@ -87,6 +72,21 @@
               </UButton>
             </UDropdown>
           </div>
+          <div v-else>
+            <UButton
+              color="primary"
+              variant="link"
+              @click="auth.login"
+            >
+              login
+            </UButton>
+            <UButton
+              color="primary"
+              to="/auth/register"
+            >
+              Join Free
+            </UButton>
+          </div>
         </div>
       </div>
     </div>
@@ -95,7 +95,9 @@
 
 <script setup>
 const auth = useAuthStore()
-const { session, user } = storeToRefs(auth)
+const { user } = storeToRefs(auth)
+
+const testing = useTestingStore()
 
 const router = useRouter()
 

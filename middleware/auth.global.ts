@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { settings } = storeToRefs(admin)
 
   if (!settings.value.authOn) {
-    console.log('TEST_MODE: Auth Off')
+    console.log('TEST_MODE: authOn = false')
     return
   }
 
