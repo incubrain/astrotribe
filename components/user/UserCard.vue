@@ -1,9 +1,13 @@
 <template>
-  <div class="relative flex border-b border-color md:border-none flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4 md:rounded-md origin-left animate-swipe-in">
+  <div
+    v-if="!user.avatar.includes('defualt.png') && !user.avatar !== null"
+    class="relative flex border-b border-color md:border-none flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4 md:rounded-md origin-left animate-swipe-in"
+  >
     <div
       v-if="user"
       class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
     >
+    {{ user.avatar }}
       <NuxtLink
         :to="`users/${user.id}`"
         class="group"
@@ -32,9 +36,7 @@
               {{ user.given_name }} {{ user.surname }}
             </h2>
             <div class="flex items-start w-full gap-1 text-xs">
-              <span
-                class="flex items-center justify-center font-light"
-              >
+              <span class="flex items-center justify-center font-light">
                 <UIcon
                   :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
@@ -68,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-
 const roleIconMapping: Record<number, string> = {
   // mapped to database role id
   7: 'i-material-symbols-shield-lock', // admin
