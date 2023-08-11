@@ -1,13 +1,12 @@
 <template>
   <div
     v-if="!user.avatar.includes('defualt.png') && !user.avatar !== null"
-    class="relative flex border-b border-color md:border-none flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4 md:rounded-md origin-left animate-swipe-in"
+    class="relative flex border-b border-color md:border flex-col w-full h-full gap-2 p-4 foreground md:p-6 md:gap-4 md:rounded-md origin-left animate-swipe-in"
   >
     <div
       v-if="user"
       class="flex flex-row items-center justify-between w-full gap-2 md:gap-4"
     >
-    {{ user.avatar }}
       <NuxtLink
         :to="`users/${user.id}`"
         class="group"
