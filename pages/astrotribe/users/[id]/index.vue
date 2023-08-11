@@ -62,7 +62,6 @@
         <CommonBlockText
           v-if="user.quote"
           :body="user.quote"
-          class="card"
           title="Favourite Quote"
         />
       </div>
