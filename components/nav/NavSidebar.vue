@@ -1,10 +1,10 @@
 <template>
-  <div class="fixed left-0 flex-col hidden w-full h-full py-8 pl-8 lg:relative foreground lg:flex">
+  <div class="fixed left-0 flex-col hidden w-full h-full py-8 lg:relative foreground lg:flex border-r border-color">
     <ul class="w-full">
       <li
         v-for="page in pages"
         :key="page.id"
-        class="flex items-center justify-between w-full cursor-pointer"
+        class="flex items-center justify-between w-full cursor-pointer pl-8"
       >
         <NuxtLink
           :to="page.slug"

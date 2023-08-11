@@ -1,18 +1,18 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full h-full">
-    <h2 class="mb-6 text-2xl text-center"> Sign Up </h2>
+    <h2 class="mb-6 text-2xl text-center"> Register </h2>
     <FormDynamic
-      :schema="registerData"
-      :validation-schema="RegisterValidation"
+      :schema="schema"
+      :validation-schema="RegisterForm"
+      has-labels
+      button-label="Register"
       class="w-full"
-      @submit="handleRegister"
-    >
-      <FormButton> Sign Up </FormButton>
-    </FormDynamic>
+      @submit-form="handleRegister"
+    />
     <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/login"> Already have an account? Sign In </NuxtLink>
     </p>
-    <UButton
+    <!-- <UButton
       class="flex items-center justify-center w-full gap-4 mt-6"
       color="white"
       @click="handleGoogleSignUp"
@@ -23,30 +23,44 @@
         width="28px"
       />
       Sign Up with Google
-    </UButton>
+    </UButton> -->
   </div>
 </template>
 
 <script setup lang="ts">
-// import useAuth from '~/composables/useAuth'
-import { RegisterValidation } from '@/types/zod'
-import { registerData } from '@/data/forms'
+import { RegisterForm, FormField } from '@/types/forms'
 
-// const auth = useAuth()
+const auth = useAuthStore()
 
-const handleRegister = async (value: { email: string; password: string }) => {
-  const { email, password } = value
-  // await auth.register.withEmail(email, password)
-}
+const schema = computed(() => {
+  return [
+    {
+      name: 'email',
+      props: {
+        label: 'Email',
+        type: 'email'
+      }
+    },
+    {
+      name: 'password',
+      props: {
+        label: 'Password',
+        type: 'password'
+      }
+    },
+    {
+      name: 'confirmPassword',
+      props: {
+        label: 'Confirm Password',
+        type: 'password'
+      }
+    }
+  ] as FormField[]
+})
 
-async function handleGoogleSignUp() {
-  // try {
-  //   const { data, error } = await auth.register.withOauth('google')
-
-  //   if (error) throw error
-  // } catch (error) {
-  //   console.error('Error registering via Google', error)
-  // }
+function handleRegister(value: { email: string; password: string }) {
+  console.log('handleRegister', value)
+  auth.register(value)
 }
 
 definePageMeta({

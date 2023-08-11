@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { Page } from '@/types'
+import { Page } from '@/types/pages'
 
 const pages = ref([
   {
@@ -38,6 +38,18 @@ const pages = ref([
     //     { id: 41, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
   }
+  // {
+  //   id: 5,
+  //   name: 'News',
+  //   slug: '/astrotribe/news',
+  //   icon: 'i-mdi-newspaper-variant-outline'
+  // }
+  // {
+  //   id: 5,
+  //   name: 'Serp',
+  //   slug: '/astrotribe/serp',
+  //   icon: 'i-mdi-newspaper-variant-outline'
+  // }
 ] as Page[])
 
 export default function usePages() {

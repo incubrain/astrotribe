@@ -2,10 +2,13 @@
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
-  description: 'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
+  description:
+    'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
   url: 'https://astronera.com'
 }
+
+const authExclude = process.env.TEST_MODE === 'true' ? ['/*'] : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
 
 export default defineNuxtConfig({
   // unlighthouse: {
@@ -32,12 +35,11 @@ export default defineNuxtConfig({
       data: {
         driver: 'fs',
         base: './data/kv'
+      },
+      blogs: {
+        driver: 'fs',
+        base: './data/blogs'
       }
-    }
-  },
-  vue: {
-    compilerOptions: {
-      isCustomElement: (tag: string) => tag.startsWith('swiper-')
     }
   },
   ui: {
@@ -83,35 +85,58 @@ export default defineNuxtConfig({
     '@nuxthq/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
+    'nuxt-swiper',
+    '@nuxtjs/supabase',
     'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
-      }
-    ]
+    '@pinia/nuxt'
   ],
   build: {
-    transpile: ['swiper', 'lightgallery']
+    transpile: ['lightgallery']
+  },
+  devtools: {
+    // Enable devtools (default: true)
+    enabled: false,
+    // VS Code Server options
+    vscode: {}
+    // ...other options
   },
   // partytown: {
   //     // For google analytics
   //     forward: ['dataLayer.push'],
   // },
+  pinia: {
+    autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
+  },
   robots: {
     configPath: '~/robots.config.ts'
+  },
+  swiper: {
+    styleLang: 'scss',
+    modules: ['navigation', 'pagination', 'grid', 'autoplay']
   },
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
+      NODE_ENV: process.env.NODE_ENV,
+      TEST_MODE: process.env.TEST_MODE,
       SUPABASE_URL: process.env.SUPABASE_URL,
-      SUPABASE_KEY: process.env.SUPABASE_KEY
+      SUPABASE_KEY: process.env.SUPABASE_KEY,
+      TESTING_USERNAME: process.env.TESTING_USERNAME,
+      TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    SMTP_SENDER: process.env.SMTP_SENDER,
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
-    NASA_API_KEY: process.env.NASA_API_KEY
+    NASA_API_KEY: process.env.NASA_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_ORG: process.env.OPENAI_ORG,
+    BRIGHT_DATA_SERP_PASS: process.env.BRIGHT_DATA_SERP_PASS,
+    BRIGHT_DATA_SERP_USER: process.env.BRIGHT_DATA_SERP_USER,
+    BRIGHT_DATA_BROWSER_PASS: process.env.BRIGHT_DATA_BROWSER_PASS,
+    BRIGHT_DATA_BROWSER_USER: process.env.BRIGHT_DATA_BROWSER_USER
   },
   typescript: {
     shim: false,
@@ -121,6 +146,18 @@ export default defineNuxtConfig({
         // types: ['@nuxt/types', 'vite/client', './types/types.d.ts'],
         strict: true
       }
+    }
+  },
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/astrotribe',
+      exclude: authExclude
+    },
+    cookieOptions: {
+      maxAge: 60 * 60 * 8,
+      sameSite: 'lax',
+      secure: true
     }
   },
   image: {
