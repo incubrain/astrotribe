@@ -49,8 +49,25 @@ export default function useAdmin() {
     }
   }
 
+  async function updateMany() {
+    // update the user
+    try {
+      const { data, error } = await useFetch('/api/admin/create/many-public-users', {
+        method: 'POST',
+        body: JSON.stringify(users)
+      })
+      if (error) {
+        throw createError(`error updating users: ${error.value}`)
+      }
+      console.log('updated users', data)
+    } catch (error) {
+      console.error(`error updating users: ${error}`)
+    }
+  }
+
   return {
     registerManyUsers,
+    updateMany,
     createdUsers
   }
 }
