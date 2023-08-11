@@ -8,6 +8,8 @@ const og = {
   url: 'https://astronera.com'
 }
 
+const authExclude = process.env.TEST_MODE === 'true' ? ['/*'] : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
+
 export default defineNuxtConfig({
   // unlighthouse: {
   //   scanner: {
@@ -150,7 +152,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/auth/login',
       callback: '/astrotribe',
-      exclude: ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
+      exclude: authExclude
     },
     cookieOptions: {
       maxAge: 60 * 60 * 8,
