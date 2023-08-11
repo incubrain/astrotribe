@@ -23,8 +23,8 @@ export default defineEventHandler(async (event) => {
   let returnData
   // TODO: dynamically choose the table to update based on the type passed in body
 
-  const { data, id, settingsType } = await readBody(event)
-  console.log('updating user', id)
+  const { data, settingsType } = await readBody(event)
+  console.log('updating user', data)
 
   const validatedData = validateSettingsData(settingsType, data)
 
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     // Update the user data in the Supabase table
     const user = await client.users.update({
       where: {
-        auth_id: String(id)
+        id: String(data.id)
       },
       data: {
         // fetching the body data from the request and update the user

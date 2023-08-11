@@ -6,7 +6,7 @@
     >
       <LazyUserCard
         v-for="user in users"
-        :key="user.auth_id"
+        :key="user.id"
         :user="user"
       />
     </div>

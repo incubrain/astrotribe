@@ -14,7 +14,7 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   async function checkWeHaveUser(id: string) {
-    if (userCurrent.value.auth_id && userCurrent.value.auth_id === id) return true
+    if (userCurrent.value.id && userCurrent.value.id === id) return true
 
     const { error, data } = await useFetch(`/api/users/${id}`)
     if (error.value) throw createError(`error getting users: ${error.value.message}`)
@@ -26,7 +26,7 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   const userById = () => {
-    return (id: string) => users.value.find((user) => user.auth_id === id)
+    return (id: string) => users.value.find((user) => user.id === id)
   }
 
   return {

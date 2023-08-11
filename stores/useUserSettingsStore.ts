@@ -75,8 +75,12 @@ export default defineStore('settings', () => {
     }
   }
 
-  async function updateAccountSettings(id: string, newSettings: SettingsAccount) {
-    console.log('settings:', id, newSettings)
+  interface UpdateAccountSettings extends SettingsAccount {
+    id: string
+  }
+
+  async function updateAccountSettings(newSettings: UpdateAccountSettings) {
+    console.log('settings:', newSettings)
     try {
       // Calling the API to update the account settings
       const { data, error } = await useFetch('/api/users/settings/update', {
@@ -85,7 +89,6 @@ export default defineStore('settings', () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id,
           settingsType: 'account',
           data: newSettings
         })
