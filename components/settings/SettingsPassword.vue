@@ -48,6 +48,5 @@ const { userPasswordSettings } = storeToRefs(settings)
 
 function onSubmitPassword(value: SettingsPassword) {
   settings.updatePassword(value)
-  console.log('Submitted form:', value)
 }
 </script>

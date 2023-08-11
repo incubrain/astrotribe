@@ -48,23 +48,19 @@ export default defineStore('settings', () => {
   // const notificationSettings = reactive({ email: true, push: false })
 
   function updateStateSettings(settings: any, newSettings: any) {
-    console.log('updateStateSettings', settings, newSettings)
     for (const key in settings) {
       if (Object.prototype.hasOwnProperty.call(newSettings, key)) {
         // Using a type assertion to tell TypeScript that key is definitely a key of settings
         const typedKey = key as keyof typeof settings
         settings[typedKey] = newSettings[typedKey]
-        console.log('updated', key, settings[typedKey])
       }
     }
   }
 
   async function getUserSettings(id: string) {
     try {
-      console.log('getUserSettings', id)
       // TODO: get user settings from database
       const { data, error } = await useFetch(`/api/users/settings/${id}`)
-      console.log('GET-DATA:', data.value, error.value)
       if (error.value) throw createError(`Error fetching user settings. Status: ${error.value}`)
       if (!data.value) throw createError('No user settings data returned from supabase')
 
@@ -80,7 +76,6 @@ export default defineStore('settings', () => {
   }
 
   async function updateAccountSettings(newSettings: UpdateAccountSettings) {
-    console.log('settings:', newSettings)
     try {
       // Calling the API to update the account settings
       const { data, error } = await useFetch('/api/users/settings/update', {
@@ -99,20 +94,18 @@ export default defineStore('settings', () => {
       }
       if (!data.value) throw createError('No data returned from supabase')
       updateStateSettings(userAccountSettings, data.value.user)
-      console.log('Updated Account:', data, userAccountSettings)
       // Object.assign(userAccountSettings, updatedData.user.accountSettings)
     } catch (error) {
       throw createError(`Error updating account settings: ${error}`)
     }
   }
 
-  function updatePassword(newPassword: SettingsPassword) {
-    console.log('password:', newPassword)
-    // !important: we will add password upate functionality later
-    // TODO: Upate pinia store
-    // TODO: Call API to update the password
-    // TODO: Handle response and update passwordSettings
-  }
+  // function updatePassword(newPassword: SettingsPassword) {
+  //   // !important: we will add password upate functionality later
+  //   // TODO: Upate pinia store
+  //   // TODO: Call API to update the password
+  //   // TODO: Handle response and update passwordSettings
+  // }
 
   return {
     userAccountSettings,
@@ -120,7 +113,7 @@ export default defineStore('settings', () => {
     tabs: settingsTabs,
     user,
     getUserSettings,
-    updateAccountSettings,
-    updatePassword
+    updateAccountSettings
+    // updatePassword
   }
 })

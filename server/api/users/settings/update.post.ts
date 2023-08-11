@@ -17,14 +17,12 @@ function validateSettingsData(settingsType: string, data: SettingsAccount | Sett
 }
 
 export default defineEventHandler(async (event) => {
-  console.log('POST-USER')
   let status
   let message
   let returnData
   // TODO: dynamically choose the table to update based on the type passed in body
 
   const { data, settingsType } = await readBody(event)
-  console.log('updating user', data)
 
   const validatedData = validateSettingsData(settingsType, data)
 
@@ -41,14 +39,12 @@ export default defineEventHandler(async (event) => {
         ...validatedData
       }
     })
-    console.log('data returned', user)
     if (user) {
       status = 200
       message = 'User updated'
       returnData = handleBigInt(user)
-      console.log('parsed data')
     } else {
-      console.log('error parsed data')
+      console.error('error parsed data')
       status = 500
       message = 'Error updating user'
       returnData = undefined

@@ -119,13 +119,11 @@ p.schema.forEach((item: FormField) => {
 
 const toast = useToast()
 const onSubmit = handleSubmit((values) => {
-  console.log('sending data:', values)
   toast.add({ title: 'Success', description: 'Your information has been updated', timeout: 5000 })
   emit('submitForm', { ...values })
 })
 
 const hasErrors = computed(() => {
-  console.log('errors', errors.value)
   return Object.keys(errors.value).length > 0
 })
 
