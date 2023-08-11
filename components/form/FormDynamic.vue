@@ -125,6 +125,7 @@ const onSubmit = handleSubmit((values) => {
 })
 
 const hasErrors = computed(() => {
+  console.log('errors', errors.value)
   return Object.keys(errors.value).length > 0
 })
 

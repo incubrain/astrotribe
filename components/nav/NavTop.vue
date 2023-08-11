@@ -3,7 +3,7 @@
     class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between foreground z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
   >
     <div
-      class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(240px,_0.5fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
+      class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(300px,_1fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
       <div class="border-color border-r h-full pl-3 md:pl-4 flex col-start-1">
         <NavMobiSlideover
@@ -15,7 +15,7 @@
           class="flex items-center gap-2 nav-link"
         >
           <div
-            class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden"
+            class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden border border-color"
           >
             <NuxtImg
               src="/astronera-logo.jpg"
@@ -39,7 +39,7 @@
           </NuxtLink>
         </div>
       </div>
-      <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6">
+      <div class="relative flex col-span-1 w-full col-start-3 pr-3 md:pr-6">
         <div class="flex items-center justify-end w-full gap-4">
           <a
             href="https://github.com/incubrain/astrotribe"
@@ -76,7 +76,7 @@
             <UButton
               color="primary"
               variant="link"
-              @click="auth.login"
+              to="/auth/login"
             >
               login
             </UButton>

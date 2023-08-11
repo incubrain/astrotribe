@@ -9,17 +9,9 @@ export const passwordSchema = z
   .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character')
 
 export const RegisterSchema = z.object({
-  givenName: z.string(),
   email: z.string().email(),
   password: passwordSchema,
   confirmPassword: passwordSchema
-})
-
-export const RegisterInterestSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  referral: z.string().optional(),
-  interest: z.string().optional()
 })
 
 export const LoginSchema = z.object({
