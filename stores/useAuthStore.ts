@@ -175,6 +175,10 @@ export default defineStore('auth', () => {
     return Boolean(refreshToken.value && accessToken.value && expiresAt.value)
   })
 
+  const hasSession = computed(() => {
+    return Boolean(session.value)
+  })
+
   const isFirstLogin = computed(() =>
     Boolean(refreshToken.value && accessToken.value && !expiresAt.value && expiresIn.value)
   )
@@ -190,6 +194,7 @@ export default defineStore('auth', () => {
     accessToken,
     refreshToken,
     hasSessionExpired,
+    hasSession,
     hasTokens,
     isProtectedRoute,
     session,
