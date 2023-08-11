@@ -59,7 +59,6 @@ const schema = computed(() => {
 })
 
 function handleRegister(value: { email: string; password: string }) {
-  console.log('handleRegister', value)
   auth.register(value)
 }
 

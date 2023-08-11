@@ -42,7 +42,6 @@ export default function useAdmin() {
       })
     }
 
-    console.log('email sent data', data.value)
 
     // const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
 

@@ -47,14 +47,11 @@ export default defineStore('auth', () => {
   // }
 
   const register = async ({ email, password }: { email: string; password: string }) => {
-    console.log('register', email, password)
     const { data, error } = await client.auth.signUp({
       email,
       password
     })
     if (error) throw createError(`Error registering user: ${error}`)
-
-    console.log('register data', data)
 
     const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
     if (!validatedUser.success) {
@@ -87,7 +84,6 @@ export default defineStore('auth', () => {
   }
 
   const updateSession = (newSession: SessionType) => {
-    console.log('updateSession')
     session.value = newSession
     accessToken.value = newSession.access_token
     refreshToken.value = newSession.refresh_token
@@ -96,7 +92,6 @@ export default defineStore('auth', () => {
   }
 
   const updateUser = (data: UserType) => {
-    console.log('updateUser')
     user.value = data
   }
 
@@ -106,12 +101,10 @@ export default defineStore('auth', () => {
   }
 
   const login = async ({ email, password }: { email: string; password: string }) => {
-    console.log('login client', email, password)
     const { data, error } = await client.auth.signInWithPassword({
       email,
       password
     })
-    console.log('login Data', data, error)
     if (error) {
       throw createError(`Login Error: ${error}`)
     }
@@ -128,24 +121,20 @@ export default defineStore('auth', () => {
       throw createError(validatedSession.error)
     }
 
-    console.log(data)
     updateData({ user: validatedUser.data, session: validatedSession.data })
     router.push('/astrotribe/users')
   }
 
-  const requestPasswordReset = async (email: string): Promise<boolean> => {
-    console.log('requestPasswordReset', email)
-    return true
-  }
+  // const requestPasswordReset = async (email: string): Promise<boolean> => {
+  //   return true
+  // }
 
-  const resetPassword = async (confirmPassword: string, password: string): Promise<boolean> => {
-    console.log('resetPassword', confirmPassword, password)
-    return true
-  }
+  // const resetPassword = async (confirmPassword: string, password: string): Promise<boolean> => {
+  //   return true
+  // }
 
   async function setSession(): Promise<boolean> {
     // Update the session expiration time in your cookies if available from the auth response
-    console.log('setSession')
     const { data, error } = await client.auth.setSession({
       refresh_token: refreshToken.value!,
       access_token: accessToken.value!
@@ -155,13 +144,11 @@ export default defineStore('auth', () => {
     if (!validatedData) {
       throw createError({ message: 'Invalid session data', statusCode: 401 })
     }
-    console.log('setSession success')
     updateData(validatedData)
     return true
   }
 
   const isAuthenticated = computed(() => {
-    console.log('isAuthenticated', user.value)
     return user.value?.aud === AUTHENTICATED_AUD
   })
 
