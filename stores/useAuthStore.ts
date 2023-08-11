@@ -48,23 +48,12 @@ export default defineStore('auth', () => {
   // }
 
   const register = async ({ email, password }: { email: string; password: string }) => {
-    console.log('register')
-
-    if (env.TESTING_ENV === 'true') {
-      email = String(env.TESTING_USERNAME)
-      password = String(env.TESTING_PASSWORD)
-    }
     console.log('register', email, password)
     const { data, error } = await client.auth.signUp({
       email,
       password
     })
-    if (error) {
-      throw createError({
-        statusCode: 401,
-        message: error.message
-      })
-    }
+    if (error) throw createError(`Error registering user: ${error}`)
 
     console.log('register data', data)
 
@@ -73,9 +62,7 @@ export default defineStore('auth', () => {
       throw createError(validatedUser.error)
     }
 
-    if (error.value) throw createError(`Error registering user: ${error.value}`)
-    if (!data.value) throw createError({ message: 'No Register data', statusCode: 401 })
-    user.value = data.value.data.user
+    user.value = validatedUser.data
     router.push('/auth/confirm')
   }
 
@@ -119,12 +106,7 @@ export default defineStore('auth', () => {
     updateSession(data.session)
   }
 
-  const login = async ({ email, password }: { email?: string; password?: string }) => {
-    console.log('login', email, password)
-    if (env.TESTING_ENV === 'true') {
-      email = String(env.TESTING_USERNAME)
-      password = String(env.TESTING_PASSWORD)
-    }
+  const login = async ({ email, password }: { email: string; password: string }) => {
     console.log('login client', email, password)
     const { data, error } = await client.auth.signInWithPassword({
       email,

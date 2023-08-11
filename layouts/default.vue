@@ -6,7 +6,7 @@
       class="lg:col-start-1 lg:col-span-1 lg:row-start-2 lg:row-span-1 flex w-full h-full"
     />
     <AppBody
-      class=" lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
+      class="lg:col-start-2 lg:col-span-1 lg:row-start-2 lg:row-span-1"
       :mobi-bottom-nav="true"
     >
       <div class="w-full mx-auto md:p-4 xl:p-8">
@@ -14,6 +14,7 @@
       </div>
     </AppBody>
     <UNotifications />
+    <TestingPopover />
     <NavMobiBottom class="lg:hidden" />
   </div>
 </template>

@@ -1,4 +1,12 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  const admin = useTestingStore()
+  const { settings } = storeToRefs(admin)
+
+  if (!settings.value.authOn) {
+    console.log('TEST_MODE: Auth Off')
+    return
+  }
+
   const auth = useAuthStore()
 
   // if the user is authenticated, don't do anything

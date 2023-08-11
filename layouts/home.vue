@@ -6,11 +6,10 @@
       <HomeFooter v-if="$route.path !== '/contact'" />
     </AppBody>
     <UNotifications />
+    <TestingPopover />
   </div>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style></style>

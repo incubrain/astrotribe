@@ -17,6 +17,10 @@ export default defineAppConfig({
     slideover: {
       background: 'background'
     },
+    popover: {
+      width: 'w-full lg:max-w-[80%] xl:max-w-[80%]',
+      wrapper: 'relative p-4 xl:p-8'
+    },
     dropdown: {
       background: 'background',
       border: 'border-color',
@@ -32,6 +36,9 @@ export default defineAppConfig({
       tr: {
         base: 'hover:foreground border-b border-color'
       }
+    },
+    card: {
+      background: 'foreground'
     }
   }
 })

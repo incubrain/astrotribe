@@ -118,13 +118,15 @@ export default defineNuxtConfig({
     // Keys within public, will be also exposed to the client-side
     public: {
       NODE_ENV: process.env.NODE_ENV,
-      TESTING_ENV: process.env.TESTING_ENV,
+      TEST_MODE: process.env.TEST_MODE,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
       TESTING_USERNAME: process.env.TESTING_USERNAME,
       TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    SMTP_SENDER: process.env.SMTP_SENDER,
     SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     NASA_API_KEY: process.env.NASA_API_KEY,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
