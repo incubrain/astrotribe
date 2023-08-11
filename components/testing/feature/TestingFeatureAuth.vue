@@ -8,6 +8,13 @@
       >
         Register
       </UButton>
+      <!-- <UButton
+        color="primary"
+        class="mt-4"
+        @click="admin.registerManyUsers()"
+      >
+        Register Many
+      </UButton> -->
       <UButton
         color="primary"
         class="mt-4"
@@ -22,6 +29,8 @@
 <script setup lang="ts">
 
 const testing = useTestingStore()
+
+// const admin = useAdmin()
 
 </script>
 
