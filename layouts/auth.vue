@@ -12,7 +12,7 @@
         class="h-full hidden lg:flex relative col-start-2 overflow-hidden"
       >
         <div class="dark:bg-black/30 absolute w-full h-full left-0 top-0" />
-        <NuxtImg
+        <!-- <NuxtImg
           v-if="!imageLoaded && data"
           ref="blur"
           :src="nasa.url"
@@ -21,16 +21,15 @@
           height="120"
           alt=""
           class="w-full object-cover object-center"
-        />
+        /> -->
         <NuxtImg
-          v-else
           :src="nasa.url"
           alt=""
           class="w-full object-cover object-center"
           @load="imageLoaded = true"
         />
         <div
-          v-show="data"
+          v-show="false"
           class="group bg-[#00000040] text-white p-6 rounded-lg shadow-lg absolute top-2 lg:left-2 w-[90%] max-w-[420px] transition-all duration-300 backdrop-blur-md"
         >
           <h1 class="text-xl font-semibold pb-2">
@@ -54,14 +53,13 @@
 </template>
 
 <script setup lang="ts">
-import { NasaImg } from '@/types'
+// import { NasaImg } from '@/types/nasa'
 
 const imageLoaded = ref(false)
-const nasa = ref({} as NasaImg | { url: string })
+const nasa = ref({ url: '/astron-era-hero.jpg' })
 
-const { data, error } = await useFetch('/api/iotd')
-nasa.value = data.value ? data.value : { url: '/astron-era-hero.jpg' }
-if (error.value) console.error('error fetching nasa iotd: ', error.value)
+// const { data, error } = await useFetch('/api/iotd')
+// if (error.value) console.error('error fetching nasa iotd: ', error.value)
 </script>
 
 <style scoped>

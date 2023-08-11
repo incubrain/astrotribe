@@ -1,12 +1,12 @@
 <template>
-  <div class="relative grid w-full h-full grid-cols-1 gap-6 md:grid-cols-2">
+  <div class="relative grid w-full h-full grid-cols-1 gap-4 xl:gap-8 md:grid-cols-2">
     <div
       v-for="item in timeline"
       :key="item.title"
       class="relative flex items-start w-full border rounded-md border-color foreground"
     >
       <div class="flex flex-col justify-center w-full p-4">
-        <h2 class="text-lg font-semibold leading-7 lg:leading-9">
+        <h2 class="text-lg font-semibold leading-7 xl:leading-9">
           {{ item.title }}
         </h2>
         <h4 class="text-sm">

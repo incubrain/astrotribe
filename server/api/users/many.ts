@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const client = useClient()
-  // const admin = false
   const users = await client.users.findMany({
     include: {
       roles: true
@@ -14,10 +13,7 @@ export default defineEventHandler(async (event) => {
   if (users) {
     status = 200
     message = 'Users fetched'
-    data = JSON.stringify(
-      users,
-      (key, value) => (typeof value === 'bigint' ? value.toString() : value) // return everything else unchanged
-    )
+    data = handleBigInt(users)
   } else {
     status = 500
     message = 'Error getting users'
@@ -27,6 +23,6 @@ export default defineEventHandler(async (event) => {
   return {
     status,
     message,
-    users: JSON.parse(data)
+    users: data
   }
 })

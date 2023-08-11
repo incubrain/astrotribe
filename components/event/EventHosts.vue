@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import type { EventHost } from '@/types'
+import type { EventHost } from '@/types/events'
 
 const s = useStorage()
 

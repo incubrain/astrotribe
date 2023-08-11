@@ -3,7 +3,6 @@ import c from 'tailwindcss/colors'
 
 export default <Partial<Config>>{
   darkMode: 'class',
-  content: ['./nuxt.config.{js,ts}'],
   theme: {
     fontSize: {
       xs: '0.625rem',
@@ -16,6 +15,9 @@ export default <Partial<Config>>{
       '5xl': '4.052rem'
     },
     extend: {
+      screens: {
+        '2xl': '1536px'
+      },
       colors: {
         primary: c.cyan,
         secondary: c.indigo,

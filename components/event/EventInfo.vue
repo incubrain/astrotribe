@@ -7,7 +7,7 @@
         width="400"
         height="400"
         quality="80"
-        :alt="`${venue.name} featured image on AstroTribe`"
+        :alt="`${event.title} featured image on AstroTribe`"
         class="w-full"
       />
       <div
@@ -18,11 +18,11 @@
         <span class="block text-success-600 dark:text-success-700">{{ time.time }} {{ time.ampm }}</span>
       </div>
     </div>
-    <section class="relative p-4 space-y-4">
+    <section class="relative p-4">
       <h2 class="text-lg font-bold">
         {{ event.title }}
       </h2>
-      <span class="text-sm font-thin"> {{ event.body }}</span>
+      <p class="text-sm py-4"> {{ event.body }}</p>
       <UButton variant="outline" block color="slate">
         Create Free Event
       </UButton>
@@ -31,15 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import type { EventBasic, VenueEvents, VenueBasic } from '@/types'
+import type { Event } from '@/types/events'
 
 defineProps({
   event: {
-    type: Object as PropType<EventBasic | VenueEvents>,
-    required: true
-  },
-  venue: {
-    type: Object as PropType<VenueBasic>,
+    type: Object as PropType<Event>,
     required: true
   },
   time: {

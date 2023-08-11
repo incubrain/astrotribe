@@ -1,7 +1,11 @@
 <template>
   <div
     ref="scrollContainer"
-    class="w-full h-[calc(100vh-var(--nav-height-sm)-var(--nav-height-mobi))] md:h-[calc(100vh-var(--nav-height-md))] lg:h-[calc(100vh-var(--nav-height-lg))] relative overflow-y-scroll"
+    :class="
+      mobiBottomNav
+        ? 'w-full h-[calc(100svh-var(--nav-height-sm)-var(--nav-height-mobi))] md:h-[calc(100svh-var(--nav-height-md)-var(--nav-height-mobi))] lg:h-[calc(100svh-var(--nav-height-lg))] relative overflow-y-scroll'
+        : 'w-full h-[calc(100svh-var(--nav-height-sm))] md:h-[calc(100svh-var(--nav-height-md))] lg:h-[calc(100svh-var(--nav-height-lg))] relative overflow-y-scroll'
+    "
   >
     <slot />
   </div>
@@ -11,8 +15,15 @@
 const route = useRoute()
 const scrollContainer = ref(null)
 
+defineProps({
+  mobiBottomNav: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  }
+})
+
 onMounted(() => {
-  watch(route, () => {
+  watch(route.fullPath, () => {
     if (scrollContainer.value) {
       scrollContainer.value.scrollTop = 0
     }

@@ -1,30 +1,42 @@
 <template>
   <div class="flex flex-col items-center justify-center w-full h-full">
-    <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? </h2>
+    <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? test </h2>
     <FormDynamic
-      :schema="forgotPasswordData"
-      :validation-schema="ForgotPasswordValidation"
+      :schema="schema"
+      :validation-schema="ForgotPasswordForm"
+      has-labels
+      button-label="Request Reset Email"
       class="w-full"
-      @submit="handleForgotPassword"
-    >
-      <FormButton> Request Reset Email </FormButton>
-    </FormDynamic>
+      @submit-form="auth.requestPasswordReset"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-// import useAuth from '~/composables/useAuth'
-import { ForgotPasswordValidation } from '@/types/zod'
-import { forgotPasswordData } from '@/data/forms'
+import { ForgotPasswordForm, FormField } from '@/types/forms'
 
-// const auth = useAuth()
+const schema = computed(() => {
+  return [
+    {
+      name: 'email',
+      width: 'full',
+      props: {
+        label: 'Email',
+        type: 'email'
+      }
+    }
+  ] as FormField[]
+})
+
+const auth = useAuthStore()
 
 const handleForgotPassword = (value: { email: string }) => {
+  console.log('handleForgotPassword', value)
   // auth.password.requestResetEmail(value.email)
 }
 
 definePageMeta({
-  name: 'Forgot Password',
+  name: 'ForgotPassword',
   layout: 'auth'
 })
 </script>

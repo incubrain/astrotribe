@@ -1,4 +1,3 @@
-import { FileObject } from '@supabase/storage-js'
 import { stringIsNull } from '~/composables/utils/strings'
 
 export type FileType =
@@ -94,56 +93,54 @@ export const getImageURL = ({
 
 export interface GetStorageImagesOptions extends Omit<UrlConstructorOptions, 'baseURL' | 'file'> {}
 
-export async function getStorageImages(options: GetStorageImagesOptions): Promise<string[]> {
-  const { bucket, fileType, folderPath, isPrivate, transform } = options
-  const baseURL = useRuntimeConfig().public.SUPABASE_URL
-  if (!bucket || !folderPath) {
-    console.error('Bucket and folder are required parameters')
-    return []
-  }
+// export async function getStorageImages(options: GetStorageImagesOptions): Promise<string[]> {
+//   const { bucket, fileType, folderPath, isPrivate, transform } = options
+//   const baseURL = useRuntimeConfig().public.SUPABASE_URL
+//   if (!bucket || !folderPath) {
+//     console.error('Bucket and folder are required parameters')
+//     return []
+//   }
 
-  const client = usePublicClient()
-  const images: string[] = []
+//   const images: string[] = []
 
-  const { data, error } = await client.storage.from(bucket).list(folderPath)
+//   const { data, error } = await client.storage.from(bucket).list(folderPath)
 
+//   if (error) {
+//     console.error(`Error fetching images from ${bucket}:`, error)
+//     return []
+//   }
 
-  if (error) {
-    console.error(`Error fetching images from ${bucket}:`, error)
-    return []
-  }
+//   if (!data || data.length === 0) {
+//     console.info(`No data returned from Supabase for bucket ${bucket}`)
 
-  if (!data || data.length === 0) {
-    console.info(`No data returned from Supabase for bucket ${bucket}`)
+//     // use constructUrl to create a default image URL
+//     const defaultUrlOptions: UrlConstructorOptions = {
+//       baseURL,
+//       bucket,
+//       file: null,
+//       folderPath: '',
+//       fileType,
+//       isPrivate
+//     }
+//     return [constructUrl(defaultUrlOptions)]
+//   }
 
-    // use constructUrl to create a default image URL
-    const defaultUrlOptions: UrlConstructorOptions = {
-      baseURL,
-      bucket,
-      file: null,
-      folderPath: '',
-      fileType,
-      isPrivate
-    }
-    return [constructUrl(defaultUrlOptions)]
-  }
+//   // If you want to store full URLs
+//   await data.forEach((file: FileObject) => {
+//     if (!file.name.startsWith('.')) {
+//       // use constructUrl to create image URLs
+//       const urlOptions: UrlConstructorOptions = {
+//         baseURL,
+//         bucket,
+//         file: file.name,
+//         folderPath,
+//         fileType,
+//         isPrivate,
+//         transform
+//       }
+//       images.push(constructUrl(urlOptions))
+//     }
+//   })
 
-  // If you want to store full URLs
-  await data.forEach((file: FileObject) => {
-    if (!file.name.startsWith('.')) {
-      // use constructUrl to create image URLs
-      const urlOptions: UrlConstructorOptions = {
-        baseURL,
-        bucket,
-        file: file.name,
-        folderPath,
-        fileType,
-        isPrivate,
-        transform
-      }
-      images.push(constructUrl(urlOptions))
-    }
-  })
-
-  return images
-}
+//   return images
+// }
