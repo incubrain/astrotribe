@@ -13,8 +13,6 @@
         <slot />
       </div>
     </AppBody>
-    <UNotifications />
-    <TestingPopover />
     <NavMobiBottom class="lg:hidden" />
   </div>
 </template>

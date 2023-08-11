@@ -49,8 +49,6 @@
         </div>
       </div>
     </AppBody>
-    <TestingPopover />
-    <UNotifications />
   </div>
 </template>
 
