@@ -5,8 +5,6 @@
       <slot />
       <HomeFooter v-if="$route.path !== '/contact'" />
     </AppBody>
-    <UNotifications />
-    <TestingPopover />
   </div>
 </template>
 

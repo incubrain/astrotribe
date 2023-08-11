@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="testingEnabled"
-    class="absolute bottom-2 left-2"
+    class="absolute bottom-2 left-2 z-50"
   >
     <UPopover>
       <UButton
