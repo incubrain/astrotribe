@@ -11,7 +11,7 @@ export default defineEventHandler(async () => {
       blogs: blogsFile
     }
   } catch (error: any) {
-    console.log('get-blogs error', error.message)
+    console.error('get-blogs error', error.message)
     return {
       status: 500,
       message: 'Error retrieving blogs',

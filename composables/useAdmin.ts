@@ -23,8 +23,6 @@ export default function useAdmin() {
       })
     }
 
-    console.log('register data', data)
-
     const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
 
     if (!validatedUser.success) {

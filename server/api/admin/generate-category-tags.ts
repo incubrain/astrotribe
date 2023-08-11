@@ -7,12 +7,10 @@ export default defineEventHandler(async () => {
     if (!blogs) throw createError('No blogs found')
 
     for (let i = 0; i < blogs.length; i++) {
-      console.log('call generateCategoryTags')
       if (blogs[i].raw.body === undefined)
         throw createError('Error no body for generating category and tags')
 
       const categoryTags = await generateCategoryTags(blogs[i].raw.body)
-      console.log('Category and Tags', categoryTags)
       if (categoryTags === undefined) throw createError('Error generating category and tags')
 
       blogs[i].category = categoryTags.category
@@ -28,7 +26,7 @@ export default defineEventHandler(async () => {
       blogs
     }
   } catch (error: any) {
-    console.log('generate-category-tags error', error.message)
+    console.error('generate-category-tags error', error.message)
     return {
       status: 500,
       message: 'Error categorizing and tagging blogs',

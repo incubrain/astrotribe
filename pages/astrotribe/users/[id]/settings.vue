@@ -48,16 +48,13 @@ const { push, back } = useRouter()
 
 if (await users.checkWeHaveUser(String(id))) {
   const { user } = storeToRefs(userAuth)
-  console.log('we have user')
   if (user.value && String(id) === user.value.id) {
-    console.log('allowed to see page')
     settings.getUserSettings(user.value.id)
   } else if (user.value && String(id) !== user.value.id) {
-    console.log('not allowed to see page, redirect to your settings')
     push(`/astrotribe/users/${user.value.id}/settings`)
   }
 } else {
-  console.log('user does not exist in state')
+  console.error('user does not exist in state')
   back()
 }
 </script>

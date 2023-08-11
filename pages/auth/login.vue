@@ -79,7 +79,6 @@ watch(
   () => route.hash,
   (newHash: string) => {
     if (newHash.startsWith('#access_token')) {
-      console.log('newHash', newHash)
       const session = {
         access_token: String(extractFromHash('access_token')),
         refresh_token: String(extractFromHash('refresh_token')),
@@ -87,7 +86,6 @@ watch(
         token_type: String(extractFromHash('token_type')),
         type: String(extractFromHash('type'))
       }
-      console.log('session', session)
       auth.updateSession(session)
       router.push('/astrotribe')
     }

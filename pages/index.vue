@@ -44,8 +44,6 @@ import productSteps from '@/data/home/product-steps.json'
 
 const env = useRuntimeConfig().public
 
-console.log('NODE_ENV', env.NODE_ENV)
-
 definePageMeta({
   name: 'Home',
   layout: 'home'

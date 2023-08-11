@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
-  console.log('scrape-blogs start')
   const params = getQuery(event)
-  console.log('params', params)
   try {
     const storage = useStorage('blogs')
 
@@ -17,7 +15,7 @@ export default defineEventHandler(async (event) => {
       items
     }
   } catch (error: any) {
-    console.log('scrape-blogs error', error.message)
+    console.error('scrape-blogs error', error.message)
     return {
       status: 500,
       message: 'Error scraping blogs',

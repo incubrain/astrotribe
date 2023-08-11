@@ -6,11 +6,9 @@ export default defineEventHandler(async () => {
     const blogs = await storage.getItem<NewsGenerate[]>('summary-test.json')
     if (!blogs) throw createError('No blogs found')
     for (let i = 0; i < blogs.length; i++) {
-      console.log('call generateSummary')
       if (blogs[i].raw.body === undefined)
         throw createError('Error no body for generating summaries')
       const summaries = await generateSummary(blogs[i].raw.body)
-      console.log('Summaries', summaries)
       if (summaries === undefined) throw createError('Error generating summaries')
       blogs[i].summary = {
         beginner: summaries.beginner,
@@ -28,7 +26,7 @@ export default defineEventHandler(async () => {
       blogs
     }
   } catch (error: any) {
-    console.log('generate-summary error', error.message)
+    console.error('generate-summary error', error.message)
     return {
       status: 500,
       message: 'Error summarising blogs',
