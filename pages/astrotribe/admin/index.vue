@@ -5,6 +5,8 @@
       <UButton @click="seedUsers"> Seed Users </UButton>
       <UButton @click="testFunction('newsScraper')"> Test Function </UButton>
     </div>
+    <AdminSeedDatabase />
+    <AdminTesting />
     <!-- <UTable
       :rows="rows"
       :columns="columns"
