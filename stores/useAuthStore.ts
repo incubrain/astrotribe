@@ -18,7 +18,6 @@ export default defineStore('auth', () => {
 
   const router = useRouter()
   const client: SupabaseClient = useNuxtApp().$supabase.client
-  const env = useRuntimeConfig().public
 
   const user = ref<UserType | EmailUnvalidatedUserType | null>(null)
   const session = ref<SessionType | null>(null)
@@ -63,7 +62,7 @@ export default defineStore('auth', () => {
     }
 
     user.value = validatedUser.data
-    router.push('/auth/confirm')
+    router.push('/auth/success')
   }
 
   const clearUserData = () => {
