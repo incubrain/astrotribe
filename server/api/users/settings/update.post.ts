@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     // Update the user data in the Supabase table
     const user = await client.users.update({
       where: {
-        id: String(data.id)
+        auth_id: String(data.id)
       },
       data: {
         // fetching the body data from the request and update the user
