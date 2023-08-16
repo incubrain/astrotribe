@@ -42,7 +42,8 @@ export const UserSocialSchema = z.object({
 })
 
 export const UserBasicSchema = z.object({
-  id: z.string(),
+  id: z.number(),
+  auth_id: z.string().optional(),
   given_name: z.string(),
   surname: z.string().nullable(),
   username: z.string().nullable(),
