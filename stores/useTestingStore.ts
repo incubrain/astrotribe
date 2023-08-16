@@ -4,8 +4,7 @@ export default defineStore('admin-settings', () => {
   const env = useRuntimeConfig().public
   const testingEnabled = readonly(ref(env.TEST_MODE === 'true'))
   const settings = reactive<TestingSettingsType>({
-    authOn: false,
-    smtpOn: true
+    authOn: true
     // Add other features as needed, update type in types\testing.ts
   })
 
