@@ -5,14 +5,14 @@
     <div
       class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(300px,_1fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <div class="border-color border-r h-full pl-3 md:pl-4 flex col-start-1">
+      <div class="border-color lg:border-r h-full pl-3 md:pl-4 flex col-start-1">
         <NavMobiSlideover
           :links="links"
           class="lg:hidden pl-3 md:pl-4 flex items-center"
         />
         <NuxtLink
           to="/"
-          class="flex items-center gap-2 nav-link"
+          class="items-center gap-2 nav-link hidden lg:flex"
         >
           <div
             class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden border border-color"
