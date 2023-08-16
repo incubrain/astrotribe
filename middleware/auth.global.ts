@@ -3,6 +3,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { settings } = storeToRefs(admin)
 
   if (!settings.value.authOn) {
+    console.log('auth is off')
     return
   }
 
