@@ -11,6 +11,38 @@ import {
   userSchema
 } from '@/types/auth'
 
+// const handleSupabaseError = async (errorCode: number, email: string) => {
+//   console.log('handleSupabaseError', errorCode, email)
+//   switch (errorCode) {
+//     case '401':
+//       // Resend verification link logic here.
+//       // This is just a pseudo-code, so make sure you replace this with the actual function to send the link.
+//       await resendVerificationLink(userId)
+//       console.error('Verification Link Expired')
+//       break
+
+//     case '403':
+//       // Handle forbidden errors, maybe log or notify admin.
+//       console.error('Access forbidden.')
+//       break
+
+//     case '404':
+//       // Handle not found errors.
+//       console.error('Resource not found.')
+//       break
+
+//     case '500':
+//       // Handle internal server errors.
+//       console.error('Internal server error.')
+//       break
+
+//     default:
+//       console.error('An unknown error occurred.')
+//   }
+
+//   return response
+// }
+
 export default defineStore('auth', () => {
   // !TODO: add isAdmin check
   const AUTHENTICATED_AUD = 'authenticated'
@@ -125,6 +157,18 @@ export default defineStore('auth', () => {
     router.push('/astrotribe/users')
   }
 
+  async function handleInvalidEmailLink(userEmail: string) {
+    const { data, error } = await client.auth.resend({
+      type: 'signup',
+      email: userEmail
+    })
+    if (error) {
+      console.error('Error sending new verification email:', error)
+    }
+    console.log('New verification email sent!', data)
+    // provide feedback to user
+  }
+
   // const requestPasswordReset = async (email: string): Promise<boolean> => {
   //   return true
   // }
@@ -182,6 +226,7 @@ export default defineStore('auth', () => {
     hasSessionExpired,
     hasSession,
     hasTokens,
+    handleInvalidEmailLink,
     isProtectedRoute,
     session,
     setSession,
