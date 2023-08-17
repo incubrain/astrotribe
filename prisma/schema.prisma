@@ -78,14 +78,15 @@ model Users {
   created_at     DateTime? @default(now()) @db.Timestamptz(6)
   updated_at     DateTime? @default(now()) @db.Timestamptz(6)
   last_seen      DateTime? @default(now()) @db.Timestamptz(6)
-  avatar         String?   @default("'defualt.png'::text")
+  avatar         String?   @default("")
   cover_image    String?   @default("'default.jpg'::text")
   introduction   String?
   quote          String?
   follow_count   Int?      @default(0)
   followed_count Int?      @default(0)
   role_id        BigInt    @default(1)
-  id             String    @id @unique(map: "users_auth_id_key") @db.Uuid
+  auth_id        String    @unique @db.Uuid
+  id             BigInt    @id @unique @default(autoincrement())
   roles          Roles     @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("users")
