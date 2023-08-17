@@ -13,7 +13,15 @@ export default defineStore('admin-settings', () => {
   const authStore = useAuthStore()
   const user = { email: env.TESTING_USERNAME, password: env.TESTING_PASSWORD }
   const auth = {
-    login: async () => await authStore.login(user),
+    login: async () => {
+      try {
+        const result = await authStore.login(user)
+        console.log('Login Successful:', result)
+      } catch (error) {
+        console.error('(test) Login Error:', error)
+        throw error
+      }
+    },
     register: async () => await authStore.register(user),
     componentVisible: () => !settings.authOn || authStore.hasSession
   }
