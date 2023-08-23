@@ -89,7 +89,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     'nuxt-swiper',
-    '@nuxtjs/supabase',
     'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
@@ -131,9 +130,10 @@ export default defineNuxtConfig({
       TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
+    ADMIN_EMAILS: process.env.ADMIN_EMAILS,
+    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     SMTP_SENDER: process.env.SMTP_SENDER,
-    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     NASA_API_KEY: process.env.NASA_API_KEY,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     OPENAI_ORG: process.env.OPENAI_ORG,

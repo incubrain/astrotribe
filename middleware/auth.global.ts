@@ -1,3 +1,13 @@
+const excludedRoutes = ['/auth/*', '/']
+const login = '/auth/login'
+
+const isExcluded = (to: string): boolean => {
+  return excludedRoutes?.some((path): boolean => {
+    const regex = new RegExp(`^${path.replace(/\*/g, '.*')}$`)
+    return regex.test(to)
+  })
+}
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const admin = useTestingStore()
   const { settings } = storeToRefs(admin)
@@ -7,30 +17,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return
   }
 
-  const auth = useAuthStore()
+  if (isExcluded(to.path)) return
+  console.log('protected route')
 
-  // if the user is authenticated, don't do anything
-  if (auth.isAuthenticated) return
-
-  // if no tokens and protectd route, navigate to login
-  if (!auth.hasTokens && auth.isProtectedRoute(to.fullPath)) {
-    return navigateTo('/auth/login')
+  const user = useSupabaseUser()
+  if (!user.value) {
+    console.log('no user')
+    return navigateTo(login)
   }
-
-  // handle first time login
-  if (auth.isFirstLogin) {
-    await auth.setSession()
-    return navigateTo('/astrotribe')
-  }
-
-  // if the cookie session has NOT expired, set the session
-  if (!auth.hasSessionExpired) {
-    await auth.setSession()
-    return
-  }
-
-  // finally, if no session cookies exists, force user to login
-  if (!auth.isAuthenticated && auth.isProtectedRoute(to.fullPath)) {
-    return navigateTo('/auth/login')
-  }
+  console.log('have user:', user)
 })

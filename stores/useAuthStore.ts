@@ -50,7 +50,7 @@ export default defineStore('auth', () => {
 
   const router = useRouter()
   const env = useRuntimeConfig().public
-  const client: SupabaseClient = useNuxtApp().$supabase.client
+  const client: SupabaseClient = useNuxtApp().$supabase
 
   const user = ref<UserType | EmailUnvalidatedUserType | null>(null)
   const session = ref<SessionType | null>(null)
