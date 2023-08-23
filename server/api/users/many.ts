@@ -1,7 +1,8 @@
 export default defineEventHandler(async (event) => {
-  const supabase = await supabaseServerClient(event)
+  const client = await supabaseServerClient(event)
+  console.log('Supaclient', client)
 
-  const { data, error } = await supabase.from('users').select('*, roles(*)')
+  const { data, error } = await client.from('users').select('*, roles(*)')
 
   console.log('manyUsers:', data, error)
   if (error) {
