@@ -19,8 +19,7 @@ export default defineNuxtPlugin({
           flowType: 'pkce',
           detectSessionInUrl: false,
           persistSession: false,
-          autoRefreshToken: false,
-          debug: true
+          autoRefreshToken: false
         }
       })
     }

@@ -13,8 +13,8 @@ export default async function supabaseServerClient<T>(event: H3Event): Promise<S
     supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
       auth: {
         detectSessionInUrl: false,
-        persistSession: true,
-        autoRefreshToken: true
+        persistSession: false,
+        autoRefreshToken: false
       }
     })
     event.context._supabaseClient = supabaseClient
