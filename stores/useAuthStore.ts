@@ -49,6 +49,7 @@ export default defineStore('auth', () => {
   const PROTECTED_ROUTE = 'astrotribe'
 
   const router = useRouter()
+  const env = useRuntimeConfig().public
   const client: SupabaseClient = useNuxtApp().$supabase.client
 
   const user = ref<UserType | EmailUnvalidatedUserType | null>(null)
@@ -56,6 +57,7 @@ export default defineStore('auth', () => {
   const createdUsers = ref([] as SimpleUserType[])
 
   // !TODO: add types for cookies
+  // !TODO: check if supabase handles cookies for us
   const accessToken = useCookie('access_token')
   const refreshToken = useCookie('refresh_token')
   const expiresIn = useCookie('expires_in', {
@@ -81,10 +83,13 @@ export default defineStore('auth', () => {
   const register = async ({ email, password }: { email: string; password: string }) => {
     const { data, error } = await client.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        emailRedirectTo: `${env.BASE_URL}/auth/login`
+      }
     })
     if (error) throw createError(`Error registering user: ${error}`)
-
+    console.log('register', data)
     const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
     if (!validatedUser.success) {
       throw createError(validatedUser.error)

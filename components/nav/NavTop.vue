@@ -125,6 +125,13 @@ const links = [
   },
   {
     id: 3,
+    name: 'Conference',
+    slug: '/conference',
+    icon: 'i-material-symbols-emoji-people',
+    children: []
+  },
+  {
+    id: 4,
     name: 'Community',
     slug: '/astrotribe',
     icon: 'i-material-symbols-globe-asia',
