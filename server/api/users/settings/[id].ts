@@ -1,17 +1,13 @@
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params
-    // const query = getQuery(event)
-    const client = useClient()
-    // const admin = false
-    const user = await client.users.findFirst({
-      where: {
-        auth_id: String(id)
-      },
-      include: {
-        roles: true
-      }
-    })
+    const supabase = await supabaseServerClient(event)
+
+    const user = await supabase
+      .from('users')
+      .select('*, roles(*)')
+      .eq('auth_id', String(id))
+      .single()
 
     let status: number
     let message: string

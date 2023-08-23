@@ -1,32 +1,34 @@
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params
-  const client = useClient()
-  const user = await client.users.findFirst({
-    where: {
-      auth_id: String(id)
-    },
-    include: {
-      roles: true
+
+  const supabase = await supabaseServerClient(event)
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('*, roles(*)') // assuming 'roles' is a foreign table related to 'users'
+    .eq('auth_id', String(id))
+    .single() // Since findFirst gets only one user, we use single() with Supabase
+
+  if (error) {
+    return {
+      status: 500,
+      message: 'Error getting user',
+      user: undefined
     }
-  })
-
-  let status: number
-  let message: string
-  let data: any
-
-  if (user) {
-    status = 200
-    message = 'User fetched'
-    data = handleBigInt(user)
-  } else {
-    status = 500
-    message = 'Error getting user'
-    data = undefined
   }
 
+  if (data) {
+    return {
+      status: 200,
+      message: 'User fetched',
+      user: handleBigInt(data) // Assuming handleBigInt works with Supabase objects as well
+    }
+  }
+
+  // This can be a catch-all, in case the user is not found
   return {
-    status,
-    message,
-    user: data
+    status: 404,
+    message: 'User not found',
+    user: undefined
   }
 })

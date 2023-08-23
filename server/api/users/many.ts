@@ -1,28 +1,19 @@
 export default defineEventHandler(async (event) => {
-  const client = useClient()
-  const users = await client.users.findMany({
-    include: {
-      roles: true
+  const supabase = await supabaseServerClient(event)
+
+  const { data, error } = await supabase.from('users').select('*, roles(*)') // Assuming 'roles' is a foreign table related to 'users'
+
+  if (error) {
+    return {
+      status: 500,
+      message: 'Error fetching users',
+      users: undefined
     }
-  })
-
-  let status: number
-  let message: string
-  let data: any
-
-  if (users) {
-    status = 200
-    message = 'Users fetched'
-    data = handleBigInt(users)
-  } else {
-    status = 500
-    message = 'Error getting users'
-    data = undefined
   }
 
   return {
-    status,
-    message,
-    users: data
+    status: 200,
+    message: 'Users fetched',
+    users: handleBigInt(data) // Assuming handleBigInt works with Supabase objects as well
   }
 })
