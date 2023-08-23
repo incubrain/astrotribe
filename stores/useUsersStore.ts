@@ -7,7 +7,9 @@ export const useUsersStore = defineStore('users', () => {
   async function checkWeHaveUsers(): Promise<boolean> {
     if (users.value.length) return true
 
-    const { error, data } = await useFetch('/api/users/many')
+    const { error, data } = await useFetch('/api/users/many', {
+      headers: useRequestHeaders(['cookie'])
+    })
     if (error.value) throw createError(`error getting users: ${error.value.message}`)
     if (data.value?.users) users.value = data.value.users // todo check data validity
     return true
