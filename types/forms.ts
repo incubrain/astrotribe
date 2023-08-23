@@ -8,11 +8,16 @@ export const passwordSchema = z
   .regex(/[A-Z]/, 'Password must contain an uppercase letter')
   .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character')
 
-export const RegisterSchema = z.object({
-  email: z.string().email(),
-  password: passwordSchema,
-  confirmPassword: passwordSchema
-})
+export const RegisterSchema = z
+  .object({
+    email: z.string().email(),
+    password: passwordSchema,
+    confirmPassword: passwordSchema
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords must match'
+  })
 
 export const LoginSchema = z.object({
   email: z.string().email(),
@@ -23,10 +28,15 @@ export const ForgotPasswordSchema = z.object({
   email: z.string().email()
 })
 
-export const ResetPasswordSchema = z.object({
-  password: passwordSchema,
-  confirmPassword: passwordSchema
-})
+export const ResetPasswordSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: passwordSchema
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Passwords must match'
+  })
 
 export const CheckboxOptionSchema = z.object({
   value: z.string(),
