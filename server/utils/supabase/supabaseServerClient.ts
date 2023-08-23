@@ -2,7 +2,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { getCookie } from 'h3'
 import type { H3Event } from 'h3'
 
-export default async function serverSupabaseClient<T>(event: H3Event): Promise<SupabaseClient<T>> {
+export default async function supabaseServerClient<T>(event: H3Event): Promise<SupabaseClient<T>> {
   // get settings from runtime config
   const env = useRuntimeConfig().public
 
@@ -14,10 +14,14 @@ export default async function serverSupabaseClient<T>(event: H3Event): Promise<S
       auth: {
         detectSessionInUrl: false,
         persistSession: false,
-        autoRefreshToken: false,
-      },
+        autoRefreshToken: false
+      }
     })
     event.context._supabaseClient = supabaseClient
+  }
+
+  if (!supabaseClient) {
+    throw createError({ statusMessage: 'Supabase client failed to initialize' })
   }
 
   // check for authorized session
@@ -32,7 +36,7 @@ export default async function serverSupabaseClient<T>(event: H3Event): Promise<S
     // Set session from cookies
     await supabaseClient.auth.setSession({
       refresh_token: refreshToken,
-      access_token: accessToken,
+      access_token: accessToken
     })
   }
   return supabaseClient

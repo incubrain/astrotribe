@@ -1,7 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import type { H3Event } from 'h3'
 
-export default function serverSupabaseServiceRole<T>(event: H3Event): SupabaseClient<T> {
+export default function supabaseServerServiceRole<T>(event: H3Event): SupabaseClient<T> {
   const {
     SUPABASE_SERVICE_KEY,
     public: { SUPABASE_URL }
