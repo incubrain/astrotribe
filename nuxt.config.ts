@@ -8,7 +8,10 @@ const og = {
   url: 'https://astronera.com'
 }
 
-const authExclude = process.env.TEST_MODE === 'true' ? ['/*'] : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
+const authExclude =
+  process.env.TEST_MODE === 'true'
+    ? ['/*']
+    : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
 
 export default defineNuxtConfig({
   // unlighthouse: {
@@ -119,6 +122,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
+      BASE_URL: process.env.BASE_URL,
       NODE_ENV: process.env.NODE_ENV,
       TEST_MODE: process.env.TEST_MODE,
       SUPABASE_URL: process.env.SUPABASE_URL,

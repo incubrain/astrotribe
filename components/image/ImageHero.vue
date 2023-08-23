@@ -9,6 +9,12 @@
       <h2 class="text-3xl font-bold lg:text-5xl bg-white/30 py-1 px-2 rounded-sm">
         {{ title }}
       </h2>
+      <h4
+        v-if="subtitle"
+        class="text-xl font-semibold lg:text-3xl bg-white/30 py-1 px-2 rounded-sm"
+      >
+        {{ subtitle }}
+      </h4>
       <slot />
     </div>
     <div class="absolute top-0 left-0 w-full h-full bg-black/25" />
@@ -27,6 +33,10 @@ defineProps({
     required: true
   },
   title: {
+    type: String,
+    required: true
+  },
+  subtitle: {
     type: String,
     required: true
   },
