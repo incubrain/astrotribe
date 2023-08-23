@@ -9,20 +9,19 @@ export default defineStore('admin-settings', () => {
   })
 
   // TODO: add all functions I want to test here
-  const authStore = useAuthStore()
+  const auth = useAuth()
   const user = { email: env.TESTING_USERNAME, password: env.TESTING_PASSWORD }
-  const auth = {
+  const authTests = {
     login: async () => {
       try {
-        const result = await authStore.login(user)
+        const result = await auth.login(user)
         console.log('Login Successful:', result)
       } catch (error) {
         console.error('(test) Login Error:', error)
         throw error
       }
     },
-    register: async () => await authStore.register(user),
-    componentVisible: () => !settings.authOn || authStore.hasSession
+    register: async () => await auth.register(user)
   }
 
   function toggleFeature(featureName: keyof TestingSettingsType) {
@@ -32,7 +31,7 @@ export default defineStore('admin-settings', () => {
   return {
     testingEnabled,
     settings,
-    auth,
+    auth: authTests,
     toggleFeature
   }
 })

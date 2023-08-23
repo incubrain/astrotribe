@@ -1,8 +1,9 @@
 export default defineEventHandler(async (event) => {
   const supabase = await supabaseServerClient(event)
 
-  const { data, error } = await supabase.from('users').select('*, roles(*)') // Assuming 'roles' is a foreign table related to 'users'
+  const { data, error } = await supabase.from('users').select('*, roles(*)')
 
+  console.log('manyUsers:', data, error)
   if (error) {
     return {
       status: 500,
@@ -14,6 +15,6 @@ export default defineEventHandler(async (event) => {
   return {
     status: 200,
     message: 'Users fetched',
-    users: handleBigInt(data) // Assuming handleBigInt works with Supabase objects as well
+    users: data // Assuming handleBigInt works with Supabase objects as well
   }
 })

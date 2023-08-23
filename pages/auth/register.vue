@@ -7,7 +7,7 @@
       has-labels
       button-label="Register"
       class="w-full"
-      @submit-form="handleRegister"
+      @submit-form="auth.register"
     />
     <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/login"> Already have an account? Sign In </NuxtLink>
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { RegisterForm, FormField } from '@/types/forms'
 
-const auth = useAuthStore()
+const auth = useAuth()
 
 const schema = computed(() => {
   return [
@@ -57,10 +57,6 @@ const schema = computed(() => {
     }
   ] as FormField[]
 })
-
-function handleRegister(value: { email: string; password: string }) {
-  auth.register(value)
-}
 
 definePageMeta({
   name: 'Register',

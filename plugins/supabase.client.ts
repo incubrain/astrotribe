@@ -14,7 +14,7 @@ const setCookiesNull = () => {
 export default defineNuxtPlugin({
   name: 'supabase',
   enforce: 'pre', // Enforce the plugin to run before other plugins.
-  async setup() {
+  setup() {
     const env = useRuntimeConfig().public
     const router = useRouter()
 
@@ -27,14 +27,14 @@ export default defineNuxtPlugin({
           persistSession: true,
           detectSessionInUrl: true,
           flowType: 'pkce',
-          debug: true,
-        },
+          debug: true
+        }
       })
     }
 
     const user = useSupabaseUser()
 
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
       // Update the user value if the session's user differs from the current one.
       console.log('onAuthStateChange', event, session)
       if (!session) {
@@ -62,5 +62,5 @@ export default defineNuxtPlugin({
     })
 
     return { provide: { supabase } }
-  },
+  }
 })

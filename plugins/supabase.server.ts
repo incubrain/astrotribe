@@ -1,4 +1,3 @@
-import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#imports'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
 let supabase: SupabaseClient
@@ -14,15 +13,15 @@ export default defineNuxtPlugin({
     if (!supabase) {
       supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
         db: {
-          schema: 'public',
+          schema: 'public'
         },
         auth: {
           flowType: 'pkce',
           detectSessionInUrl: false,
           persistSession: false,
           autoRefreshToken: false,
-          debug: true,
-        },
+          debug: true
+        }
       })
     }
 
@@ -30,7 +29,7 @@ export default defineNuxtPlugin({
     if (accessToken && refreshToken) {
       const { data } = await supabase.auth.setSession({
         refresh_token: refreshToken,
-        access_token: accessToken,
+        access_token: accessToken
       })
       if (data?.user) {
         useSupabaseUser().value = data.user
@@ -39,8 +38,8 @@ export default defineNuxtPlugin({
 
     return {
       provide: {
-        supabase,
-      },
+        supabase
+      }
     }
-  },
+  }
 })

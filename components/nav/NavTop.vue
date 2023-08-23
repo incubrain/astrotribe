@@ -52,7 +52,7 @@
           </a>
           <ThemeToggle />
           <div
-            v-if="testing.auth.componentVisible()"
+            v-if="auth.isLoggedIn"
             class="flex gap-4"
           >
             <UDropdown
@@ -94,10 +94,8 @@
 </template>
 
 <script setup>
-const auth = useAuthStore()
+const auth = useAuth()
 const { user } = storeToRefs(auth)
-
-const testing = useTestingStore()
 
 const router = useRouter()
 
