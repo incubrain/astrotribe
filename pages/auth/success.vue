@@ -36,8 +36,8 @@
 </template>
 
 <script setup lang="ts">
-const auth = useAuthStore()
-const { user } = storeToRefs(auth)
+const auth = useAuth()
+const { user } = auth
 
 definePageMeta({
   name: 'Success',

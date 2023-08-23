@@ -7,7 +7,7 @@
       has-labels
       button-label="Request Reset Email"
       class="w-full"
-      @submit-form="auth.requestPasswordReset"
+      @submit-form="auth.forgotPassword"
     />
   </div>
 </template>
@@ -28,11 +28,7 @@ const schema = computed(() => {
   ] as FormField[]
 })
 
-const auth = useAuthStore()
-
-const handleForgotPassword = (value: { email: string }) => {
-  // auth.password.requestResetEmail(value.email)
-}
+const auth = useAuth()
 
 definePageMeta({
   name: 'ForgotPassword',

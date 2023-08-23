@@ -97,6 +97,7 @@ export default function useAuth() {
 
   return {
     handleInvalidEmailLink,
+    user,
     login,
     logout,
     register,
