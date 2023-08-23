@@ -143,19 +143,19 @@ export default defineStore('auth', () => {
       password
     })
     if (error) {
-      throw createError(`Login Error: ${error}`)
+      throw createError(`(auth) Login Error: ${error.message}`)
     }
 
     if (!data) throw createError('Login Error: No data returned from supabase')
     const validatedUser = userSchema.safeParse(data.user)
     if (!validatedUser.success) {
       // Handle validation error
-      throw createError(validatedUser.error)
+      throw createError(`Validation Failed: ${validatedUser.error.message}`)
     }
 
     const validatedSession = sessionSchema.safeParse(data.session)
     if (!validatedSession.success) {
-      throw createError(validatedSession.error)
+      throw createError(`No Data: ${validatedSession.error.message}`)
     }
 
     updateData({ user: validatedUser.data, session: validatedSession.data })
