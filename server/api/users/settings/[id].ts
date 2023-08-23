@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
     const { id } = event.context.params
     const supabase = await supabaseServerClient(event)
 
-    const user = await supabase
+    const { data: user, error } = await supabase
       .from('users')
       .select('*, roles(*)')
       .eq('auth_id', String(id))
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       data = handleBigInt(user)
     } else {
       status = 500
-      message = 'Error getting user'
+      message = `Error getting user: ${error.message}`
       data = undefined
     }
     return {

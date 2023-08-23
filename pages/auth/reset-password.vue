@@ -15,7 +15,7 @@
 <script setup lang="ts">
 // import { ResetPasswordForm, FormField } from '@/types/forms'
 
-// const auth = useAuthStore()
+// const auth = useAuth()
 // const router = useRouter()
 
 // const handleResetPassword = (value: { password: string; confirmPassword: string }) => {
