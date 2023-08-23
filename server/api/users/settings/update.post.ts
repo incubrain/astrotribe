@@ -6,12 +6,15 @@ import {
 } from '@/types/settings'
 
 // Validate the settings data based on the type
-function validateSettingsData(settingsType: string, data: SettingsAccount | SettingsPassword): any {
+function validateSettingsData(
+  settingsType: string,
+  data: SettingsAccount | SettingsPassword
+): SettingsAccount | SettingsPassword {
   switch (settingsType) {
     case 'account':
-      return SettingsAccountValidation.parse(data)
+      return SettingsAccountValidation.parse(data) as SettingsAccount
     case 'password':
-      return SettingsPasswordValidation.parse(data)
+      return SettingsPasswordValidation.parse(data) as SettingsPassword
     default:
       throw new Error(`Unsupported settings type: ${settingsType}`)
   }
@@ -23,9 +26,14 @@ export default defineEventHandler(async (event) => {
     const validatedData = validateSettingsData(settingsType, data)
     const supabase = await supabaseServerClient(event)
 
-    const user = await supabase.from('users').update(validatedData).eq('auth_id', data.id)
+    const { data: user, error } = await supabase
+      .from('users')
+      .update(validatedData)
+      .eq('auth_id', data.id)
+
+    if (error) throw createError(`Error updating user: ${error.message}`)
     if (!user) {
-      throw new Error('Failed to update user in Supabase')
+      throw createError('Failed to update user in Supabase')
     }
 
     return {

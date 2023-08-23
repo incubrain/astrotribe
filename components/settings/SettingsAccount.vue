@@ -1,7 +1,9 @@
 <template>
   <UCard>
     <template #header>
-      <h1 class="text-2xl font-semibold pb-4"> Welcome to your account {{ userAccountSettings.given_name }}</h1>
+      <h1 class="text-2xl font-semibold pb-4">
+        Welcome to your account {{ userAccountSettings.given_name }}</h1
+      >
       <p> The ability to update password and email will be coming soon </p>
     </template>
     <FormDynamic
@@ -69,11 +71,12 @@ const schema = computed(() => {
 })
 
 const settings = useUserSettingsStore()
-const users = useUsersStore()
+const auth = useAuth()
+const { user } = auth
 const { userAccountSettings } = storeToRefs(settings)
-const { user } = storeToRefs(users)
 
 function onSubmitAccount(value: SettingsAccount) {
-  settings.updateAccountSettings({ id: user.value?.id, ...value })
+  if (!user.value) return
+  settings.updateAccountSettings({ id: user.value.id, ...value })
 }
 </script>
