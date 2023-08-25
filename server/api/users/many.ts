@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   if (error) {
     return {
       status: 500,
-      message: 'Error fetching users',
+      message: `Error fetching users: ${error}`,
       users: undefined
     }
   }

@@ -77,9 +77,35 @@ interface Speaker {
   about: string
 }
 
-defineProps<{
-  speakers: Speaker[]
-}>()
+const speakers = [
+  {
+    id: 1,
+    name: 'first person',
+    avatar: 'images/team/drew-macgibbon.jpg',
+    expertise: 'My title',
+    company: 'Incubrain',
+    about:
+      'I am the best person in the world and this is some information abour what I will be talking about'
+  },
+  {
+    id: 2,
+    name: 'second person',
+    avatar: 'images/team/drew-macgibbon.jpg',
+    expertise: 'My title',
+    company: 'Incubrain',
+    about:
+      'I am the best person in the world and this is some information abour what I will be talking about'
+  },
+  {
+    id: 3,
+    name: 'third person',
+    avatar: 'images/team/drew-macgibbon.jpg',
+    expertise: 'My title',
+    company: 'Incubrain',
+    about:
+      'I am the best person in the world and this is some information abour what I will be talking about'
+  }
+] as Speaker[]
 </script>
 
 <style scoped></style>

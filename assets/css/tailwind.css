@@ -5,7 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-
   :root {
     --nav-height-mobi: 46px;
     --nav-height-sm: 50px;
@@ -14,7 +13,10 @@
     --max-width-md: 1080px;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     text-wrap: balance;
   }
 }
@@ -28,6 +30,9 @@
 @layer utilities {
   .swiper-slide {
     @apply rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
+  }
+  .conference-wrap {
+    @apply flex flex-col max-w-6xl gap-6 mx-auto xl:gap-12 px-4 xl:px-8 py-6 xl:py-12;
   }
   .nav-link {
     @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;
@@ -77,9 +82,8 @@
   bottom: -6px;
 }
 
-.bg-radial::before{
+.bg-radial::before {
   background: radial-gradient(75.61% 75.61% at 50% 24.39%, #352e53 0%, #b4530900 100%);
   z-index: -1;
   overflow: hidden;
-
 }
