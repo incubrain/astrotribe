@@ -12,6 +12,7 @@ export default async function supabaseServerClient<T>(event: H3Event): Promise<S
   if (!supabaseClient) {
     supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
       auth: {
+        flowType: 'pkce',
         detectSessionInUrl: false,
         persistSession: false,
         autoRefreshToken: false
