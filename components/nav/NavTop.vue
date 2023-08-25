@@ -51,8 +51,19 @@
             />
           </a>
           <ThemeToggle />
+          <div v-if="!loggedIn">
+            <UButtonGroup>
+              <UButton
+                variant="link"
+                to="/auth/login"
+              >
+                login
+              </UButton>
+              <UButton to="/auth/register"> Join Free </UButton>
+            </UButtonGroup>
+          </div>
           <div
-            v-if="auth.isLoggedIn"
+            v-else
             class="flex gap-4"
           >
             <UDropdown
@@ -64,28 +75,13 @@
                 color="white"
                 class="flex items-center justify-center"
               >
-                Logged in
+                Logged in {{ auth.isLoggedIn }}
                 <UIcon
                   name="i-heroicons-chevron-down-20-solid"
                   class="flex justify-center items-center w-5 h-5"
                 />
               </UButton>
             </UDropdown>
-          </div>
-          <div v-else>
-            <UButton
-              color="primary"
-              variant="link"
-              to="/auth/login"
-            >
-              login
-            </UButton>
-            <UButton
-              color="primary"
-              to="/auth/register"
-            >
-              Join Free
-            </UButton>
           </div>
         </div>
       </div>
@@ -95,7 +91,8 @@
 
 <script setup>
 const auth = useAuth()
-const { user } = storeToRefs(auth)
+const loggedIn = computed(() => auth.isLoggedIn.value)
+const user = computed(() => auth.user.value)
 
 const router = useRouter()
 
