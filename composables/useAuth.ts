@@ -78,7 +78,7 @@ export default function useAuth() {
 
     if (!data) throw createError('Login Error: No data returned from supabase')
 
-    router.push('/protected')
+    router.push('/astrotribe')
   }
 
   async function handleInvalidEmailLink(userEmail: string) {

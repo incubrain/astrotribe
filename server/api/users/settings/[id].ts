@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const { data: user, error } = await supabase
       .from('users')
       .select('*, roles(*)')
-      .eq('auth_id', String(id))
+      .eq('id', String(id))
       .single()
 
     let status: number

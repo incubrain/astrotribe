@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const { data, error } = await supabase
     .from('users')
     .select('*, roles(*)') // assuming 'roles' is a foreign table related to 'users'
-    .eq('auth_id', String(id))
+    .eq('id', String(id))
     .single() // Since findFirst gets only one user, we use single() with Supabase
 
   if (error) {

@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     const { data: user, error } = await supabase
       .from('users')
       .update(validatedData)
-      .eq('auth_id', data.id)
+      .eq('id', data.id)
 
     if (error) throw createError(`Error updating user: ${error.message}`)
     if (!user) {
