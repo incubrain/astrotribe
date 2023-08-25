@@ -9,7 +9,7 @@
       <p class="max-w-sm text-lg leading-snug text-center">
         {{ body }}
       </p>
-      <NuxtLink to="auth/register-interest">
+      <NuxtLink to="auth/register">
         <UButton
           color="primary"
           size="xl"

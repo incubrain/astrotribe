@@ -8,15 +8,14 @@
   <a href="https://astronera.org/">Production</a> --- |  .  | --- <a href="https://astrotribe.vercel.app/">Development</a>
 </p>
 
-We're currently working towards an open beta release. 
-If you'd like to be notified when we launch, register your interest [here](https://astrotribe.vercel.app/auth/register-interest)
-
+We're currently working towards an open beta release. If you'd like to be notified when we launch,
+register your interest [here](https://astrotribe.vercel.app/auth/register)
 
 ### Contributing:
-Clone the `develop` Branch
-Create your Feature Branch `git checkout -b feature/AmazingFeature`
-Open a Pull Request against `develop` when the feature is ready for review
+
+Clone the `develop` Branch Create your Feature Branch `git checkout -b feature/AmazingFeature` Open
+a Pull Request against `develop` when the feature is ready for review
 
 #### Helpful links:
-[] - [Component Library](https://ui.nuxtlabs.com/)
-[] - [Icons](https://icones.js.org/)
+
+[] - [Component Library](https://ui.nuxtlabs.com/) [] - [Icons](https://icones.js.org/)
