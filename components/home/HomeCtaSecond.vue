@@ -11,7 +11,7 @@
           {{ body }}
         </p>
       </div>
-      <NuxtLink to="auth/register-interest">
+      <NuxtLink to="auth/register">
         <UButton
           color="white"
           size="xl"
