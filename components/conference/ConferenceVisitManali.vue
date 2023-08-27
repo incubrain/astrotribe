@@ -65,7 +65,7 @@ const manali = {
       url: 'https://instahimachal.com/blog/best-traditional-himachali-food-in-manali/'
     },
     {
-      title: 'Getting to Manali (Bus will be organized)',
+      title: 'Getting to Manali (Bus from Delhi will be organized)',
       url: 'https://www.himachaltourism.gov.in/destination/manali/',
       disabled: true
     },
