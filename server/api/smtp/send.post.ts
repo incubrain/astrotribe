@@ -14,13 +14,12 @@ export default defineEventHandler(async (event) => {
       html: body.html
     })
 
-    consop
+    if (response.error) {
+      throw createError(`Error Sending ${body.type} Email: ${response.error.message}`)
+    }
 
-    if (response.error<ErrorResponse>)
-      throw createError(`Error Sending ${body.type} Email: ${error}`)
-
-    return data
+    return { data: response.data }
   } catch (error) {
-    return { error }
+    return { error: error.message }
   }
 })

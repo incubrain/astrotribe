@@ -80,9 +80,6 @@ export default defineStore('settings', () => {
       // Calling the API to update the account settings
       const { data, error } = await useFetch('/api/users/settings/update', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({
           settingsType: 'account',
           data: newSettings

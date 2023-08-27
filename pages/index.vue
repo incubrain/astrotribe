@@ -33,16 +33,22 @@
       <HomeCtaSecond
         title="Host Stargazing Events"
         body="Share your passion for the stars. Organize stargazing events and connect with local enthusiasts."
-        cta="Plan Your Event Today"
-      />
+      >
+        <NuxtLink to="auth/register">
+          <UButton
+            color="white"
+            size="xl"
+          >
+            Create an Event Now
+          </UButton>
+        </NuxtLink>
+      </HomeCtaSecond>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import productSteps from '@/data/home/product-steps.json'
-
-const env = useRuntimeConfig().public
 
 definePageMeta({
   name: 'Home',

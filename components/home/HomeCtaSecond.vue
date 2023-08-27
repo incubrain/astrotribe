@@ -11,14 +11,7 @@
           {{ body }}
         </p>
       </div>
-      <NuxtLink to="auth/register-interest">
-        <UButton
-          color="white"
-          size="xl"
-        >
-          {{ cta }}
-        </UButton>
-      </NuxtLink>
+      <slot />
     </div>
   </div>
 </template>
@@ -30,10 +23,6 @@ defineProps({
     required: true
   },
   body: {
-    type: String as PropType<string>,
-    required: true
-  },
-  cta: {
     type: String as PropType<string>,
     required: true
   }

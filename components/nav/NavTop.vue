@@ -5,14 +5,14 @@
     <div
       class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(300px,_1fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <div class="border-color border-r h-full pl-3 md:pl-4 flex col-start-1">
+      <div class="border-color lg:border-r h-full pl-3 md:pl-4 flex col-start-1">
         <NavMobiSlideover
           :links="links"
           class="lg:hidden pl-3 md:pl-4 flex items-center"
         />
         <NuxtLink
           to="/"
-          class="flex items-center gap-2 nav-link"
+          class="items-center gap-2 nav-link hidden lg:flex"
         >
           <div
             class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden border border-color"
@@ -51,8 +51,19 @@
             />
           </a>
           <ThemeToggle />
+          <div v-if="!loggedIn">
+            <UButtonGroup>
+              <UButton
+                variant="link"
+                to="/auth/login"
+              >
+                login
+              </UButton>
+              <UButton to="/auth/register"> Join Free </UButton>
+            </UButtonGroup>
+          </div>
           <div
-            v-if="testing.auth.componentVisible()"
+            v-else
             class="flex gap-4"
           >
             <UDropdown
@@ -72,21 +83,6 @@
               </UButton>
             </UDropdown>
           </div>
-          <div v-else>
-            <UButton
-              color="primary"
-              variant="link"
-              to="/auth/login"
-            >
-              login
-            </UButton>
-            <UButton
-              color="primary"
-              to="/auth/register"
-            >
-              Join Free
-            </UButton>
-          </div>
         </div>
       </div>
     </div>
@@ -94,10 +90,9 @@
 </template>
 
 <script setup>
-const auth = useAuthStore()
-const { user } = storeToRefs(auth)
-
-const testing = useTestingStore()
+const auth = useAuth()
+const loggedIn = computed(() => auth.isLoggedIn.value)
+const user = computed(() => auth.user.value)
 
 const router = useRouter()
 
@@ -125,6 +120,13 @@ const links = [
   },
   {
     id: 3,
+    name: 'Conference',
+    slug: '/conference',
+    icon: 'i-material-symbols-emoji-people',
+    children: []
+  },
+  {
+    id: 4,
     name: 'Community',
     slug: '/astrotribe',
     icon: 'i-material-symbols-globe-asia',

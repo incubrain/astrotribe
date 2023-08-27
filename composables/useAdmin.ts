@@ -1,6 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { emailUnvalidatedUserSchema } from '@/types/auth'
-// import users from '@/private-data/users.json'
 
 interface User {
   email: string
@@ -8,7 +7,7 @@ interface User {
 }
 
 export default function useAdmin() {
-  const client: SupabaseClient = useNuxtApp().$supabase.client
+  const client: SupabaseClient = useNuxtApp().$supabase
   const createdUsers = ref([] as User[])
 
   const register = async ({ email, password }: { email: string; password: string }) => {
