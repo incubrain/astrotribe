@@ -4,12 +4,12 @@
       class="flex flex-col gap-8 p-8 justify-center items-center h-[360px] bg-primary-600 dark:bg-primary-800 w-full rounded-lg shadow-lg mx-auto"
     >
       <div class="text-center text-zinc-100">
-        <h4 class="max-w-2xl pb-8 text-3xl font-bold">
+        <h2 class="max-w-2xl pb-8 text-3xl font-bold">
           {{ title }}
-        </h4>
-        <p class="max-w-xl text-lg">
+        </h2>
+        <h4 class="max-w-xl text-lg">
           {{ body }}
-        </p>
+        </h4>
       </div>
       <slot />
     </div>
