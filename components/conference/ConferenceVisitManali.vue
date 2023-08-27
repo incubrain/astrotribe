@@ -27,7 +27,9 @@
             </UButton>
           </div>
         </div>
-        <div class="w-full grid grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2">
+        <div
+          class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
+        >
           <NuxtImg
             v-for="img in images"
             :key="img.src"
