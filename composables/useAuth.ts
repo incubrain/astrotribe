@@ -34,7 +34,6 @@ export default function useAuth() {
 
   const forgotPassword = async ({ email }: { email: string }) => {
     //  sends a reset email to the user
-    console.log('forgotPassword', email, `${env.BASE_URL}/auth/update-password`)
     const { data, error } = await client.auth.resetPasswordForEmail(email, {
       redirectTo: `${env.BASE_URL}/auth/update-password`
     })
@@ -65,8 +64,6 @@ export default function useAuth() {
   const isLoggedIn = computed(() => user.value !== null)
 
   const login = async ({ email, password }: { email: string; password: string }) => {
-    console.log('login', email, password)
-
     const { data, error } = await client.auth.signInWithPassword({
       email,
       password
