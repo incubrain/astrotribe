@@ -18,5 +18,5 @@ const u = useUsersStore()
 const haveUsers = await u.checkWeHaveUsers()
 const { users } = storeToRefs(u)
 
-definePageMeta({ name: 'All' })
+definePageMeta({ name: 'Users' })
 </script>

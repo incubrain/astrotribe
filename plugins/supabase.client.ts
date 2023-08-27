@@ -26,7 +26,8 @@ export default defineNuxtPlugin({
           autoRefreshToken: true,
           persistSession: true,
           detectSessionInUrl: true,
-          flowType: 'pkce'
+          flowType: 'pkce',
+          debug: true
         }
       })
     }
@@ -42,7 +43,7 @@ export default defineNuxtPlugin({
         user.value = session.user
       }
 
-      if (event === EVENTS.SIGNED_OUT) {
+      if (event === EVENTS.SIGNED_OUT || event === EVENTS.USER_DELETED) {
         // If the user signed out, clear cookies.
         setCookiesNull()
         user.value = null
