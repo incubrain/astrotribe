@@ -1,7 +1,3 @@
-// import { PrismaClient } from '@prisma/client'
-
-// const prisma = new PrismaClient()
-
 const newsScraper = async (isTesting = true) => {
   console.log('scrape-blogs start')
   try {
@@ -16,15 +12,8 @@ const newsScraper = async (isTesting = true) => {
       const posts = await newsScraperBase(browser, blog)
       console.log(`newsScraper: store ${blog.name}`)
       for (const post of posts) {
-        // Assuming you have a 'blogs' table with fields 'name' and 'posts'
-        // that are appropriate for your data
         console.log(post)
-        // await prisma.news.create({
-        //   data: {
-        //     name: blog.name,
-        //     posts: JSON.stringify(post, null, 2)
-        //   }
-        // })
+        // store in db
       }
     }
 

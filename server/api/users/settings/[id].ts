@@ -1,17 +1,13 @@
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params
-    // const query = getQuery(event)
-    const client = useClient()
-    // const admin = false
-    const user = await client.users.findFirst({
-      where: {
-        id: String(id)
-      },
-      include: {
-        roles: true
-      }
-    })
+    const supabase = await supabaseServerClient(event)
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*, roles(*)')
+      .eq('id', String(id))
+      .single()
 
     let status: number
     let message: string
@@ -23,7 +19,7 @@ export default defineEventHandler(async (event) => {
       data = handleBigInt(user)
     } else {
       status = 500
-      message = 'Error getting user'
+      message = `Error getting user: ${error.message}`
       data = undefined
     }
     return {

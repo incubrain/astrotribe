@@ -4,18 +4,24 @@ export default defineStore('admin-settings', () => {
   const env = useRuntimeConfig().public
   const testingEnabled = readonly(ref(env.TEST_MODE === 'true'))
   const settings = reactive<TestingSettingsType>({
-    authOn: false,
-    smtpOn: true
+    authOn: true
     // Add other features as needed, update type in types\testing.ts
   })
 
   // TODO: add all functions I want to test here
-  const authStore = useAuthStore()
+  const auth = useAuth()
   const user = { email: env.TESTING_USERNAME, password: env.TESTING_PASSWORD }
-  const auth = {
-    login: async () => await authStore.login(user),
-    register: async () => await authStore.register(user),
-    componentVisible: () => !settings.authOn || authStore.hasSession
+  const authTests = {
+    login: async () => {
+      try {
+        const result = await auth.login(user)
+        console.log('Login Successful:', result)
+      } catch (error) {
+        console.error('(test) Login Error:', error)
+        throw error
+      }
+    },
+    register: async () => await auth.register(user)
   }
 
   function toggleFeature(featureName: keyof TestingSettingsType) {
@@ -25,7 +31,7 @@ export default defineStore('admin-settings', () => {
   return {
     testingEnabled,
     settings,
-    auth,
+    auth: authTests,
     toggleFeature
   }
 })

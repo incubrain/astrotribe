@@ -1,6 +1,6 @@
 <template>
   <form
-    v-if="fields.length > 1"
+    v-if="fields.length > 0"
     class="flex flex-wrap gap-6"
     @submit="onSubmit"
   >

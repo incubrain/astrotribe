@@ -14,7 +14,9 @@
       <div
         class="relative z-50 flex flex-col items-center w-full h-full gap-8 text-center lg:items-start lg:text-left"
       >
-        <div class="w-16 h-16 lg:w-24 lg:h-24 p-2 lg:p-4 overflow-hidden bg-white rounded-full shadow-lg">
+        <div
+          class="w-16 h-16 lg:w-24 lg:h-24 p-2 lg:p-4 overflow-hidden bg-white rounded-full shadow-lg"
+        >
           <NuxtImg src="/astronera-logo.jpg" />
         </div>
         <h1 class="max-w-lg text-3xl lg:text-5xl font-bold leading-tight">
@@ -25,7 +27,7 @@
           cosmos together.
         </p>
         <div>
-          <NuxtLink to="auth/register-interest">
+          <NuxtLink to="auth/register">
             <UButton
               color="primary"
               variant="solid"

@@ -13,7 +13,6 @@
 		"vue.vscode-typescript-vue-plugin",
 		"sdras.vue-vscode-snippets",
 		"nuxt.mdc",
-    "heybourn.headwind",
-    "Prisma.prisma"
+    "heybourn.headwind"
 	]
 }

@@ -41,13 +41,13 @@
 <script setup lang="ts">
 const settings = useUserSettingsStore()
 const users = useUsersStore()
-const userAuth = useAuthStore()
+const auth = useAuth()
 
 const { id } = useRoute().params
 const { push, back } = useRouter()
 
 if (await users.checkWeHaveUser(String(id))) {
-  const { user } = storeToRefs(userAuth)
+  const { user } = auth
   if (user.value && String(id) === user.value.id) {
     settings.getUserSettings(user.value.id)
   } else if (user.value && String(id) !== user.value.id) {
