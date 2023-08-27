@@ -75,7 +75,7 @@
                 color="white"
                 class="flex items-center justify-center"
               >
-                Logged in {{ auth.isLoggedIn }}
+                Logged in
                 <UIcon
                   name="i-heroicons-chevron-down-20-solid"
                   class="flex justify-center items-center w-5 h-5"
