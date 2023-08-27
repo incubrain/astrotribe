@@ -22,7 +22,6 @@
             </div>
           </div>
           <div class="w-full grid gap-4 xl:gap-8 grid-flow-row">
-            <TestingFeatureSMTP v-if="settings.smtpOn" />
             <TestingFeatureAuth v-if="settings.authOn" />
           </div>
         </div>
@@ -36,7 +35,7 @@ import { TestingSettingsType } from '@/types/testing'
 
 type FeatureKeys = keyof TestingSettingsType
 
-const features: FeatureKeys[] = ['authOn', 'smtpOn']
+const features: FeatureKeys[] = ['authOn']
 
 const testing = useTestingStore()
 const { testingEnabled, settings } = storeToRefs(testing)

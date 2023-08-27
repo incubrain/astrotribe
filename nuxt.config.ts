@@ -8,7 +8,10 @@ const og = {
   url: 'https://astronera.com'
 }
 
-const authExclude = process.env.TEST_MODE === 'true' ? ['/*'] : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
+const authExclude =
+  process.env.TEST_MODE === 'true'
+    ? ['/*']
+    : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
 
 export default defineNuxtConfig({
   // unlighthouse: {
@@ -86,7 +89,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     'nuxt-swiper',
-    '@nuxtjs/supabase',
     'magic-regexp/nuxt',
     // '@unlighthouse/nuxt',
     '@nuxtjs/robots',
@@ -119,7 +121,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public, will be also exposed to the client-side
     public: {
-      NODE_ENV: process.env.NODE_ENV,
+      BASE_URL: process.env.BASE_URL,
       TEST_MODE: process.env.TEST_MODE,
       SUPABASE_URL: process.env.SUPABASE_URL,
       SUPABASE_KEY: process.env.SUPABASE_KEY,
@@ -127,9 +129,10 @@ export default defineNuxtConfig({
       TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
+    ADMIN_EMAILS: process.env.ADMIN_EMAILS,
+    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     SMTP_SENDER: process.env.SMTP_SENDER,
-    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     NASA_API_KEY: process.env.NASA_API_KEY,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     OPENAI_ORG: process.env.OPENAI_ORG,

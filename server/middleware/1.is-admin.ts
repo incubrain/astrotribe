@@ -1,10 +1,13 @@
-export default defineEventHandler((event) => {
-  const isAdmin = false
-  if (event.path.includes('admin') && !isAdmin) {
-    console.log(`You are not authentcated to use ${event.path}`)
-    return {
-      status: 403,
-      statusText: `You are not authorized to access ${event.path}`
+export default defineEventHandler(async (event) => {
+  if (event.path.includes('admin')) {
+    console.log('admin path', event.path)
+    const isAdmin = await isAdminUser(event)
+    console.log('admin path', isAdmin)
+    if (!isAdmin) {
+      return {
+        statusCode: 401,
+        body: 'Unauthorized'
+      }
     }
   }
 })
