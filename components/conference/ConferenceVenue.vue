@@ -19,7 +19,7 @@
       <NuxtImg
         v-for="img in venue.images"
         :key="img.src"
-        class="rounded-md"
+        class="rounded-md mx-auto"
         :src="img.src"
         :alt="img.alt"
       />

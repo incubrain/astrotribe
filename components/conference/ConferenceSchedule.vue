@@ -1,12 +1,12 @@
 <template>
-  <div class="grid items-start grid-cols-1 gap-8 xl:gap-24 lg:grid-cols-2">
-    <ConferenceTitle
-      :title="schedule.title"
-      :subtitle="schedule.subtitle"
-    />
+  <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
     <ConferenceTitle
       :title="speakers.title"
       :subtitle="speakers.subtitle"
+    />
+    <ConferenceTitle
+      :title="schedule.title"
+      :subtitle="schedule.subtitle"
     />
   </div>
 </template>
