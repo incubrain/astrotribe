@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient, User, Session } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { COOKIE_OPTIONS, COOKIE_KEYS, EVENTS } from '@/types/supabase'
 
 let supabase: SupabaseClient
