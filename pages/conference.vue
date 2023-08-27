@@ -7,11 +7,11 @@
     </div>
     <!-- <ConferenceMission />
     <div class="conference-wrap">
-      <ConferenceSchedule />
-      <ConferenceSpeakers />
     </div> -->
     <ConferenceVisitManali />
     <div class="conference-wrap">
+      <ConferenceSchedule />
+      <!-- <ConferenceSpeakers /> -->
       <HomeCtaSecond
         title="Register to Become a Speaker"
         body="join us if you are awesome"

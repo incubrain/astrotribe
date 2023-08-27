@@ -1,10 +1,10 @@
-const excludedRoutes = ['/auth/*', '/']
+const protectedRoutes = ['/astrotribe', '/astrotribe/*']
 const login = '/auth/login'
 
-const isExcluded = (to: string): boolean => {
-  return excludedRoutes?.some((path): boolean => {
+const isProtected = (to: string): boolean => {
+  return protectedRoutes?.some((path): boolean => {
     const regex = new RegExp(`^${path.replace(/\*/g, '.*')}$`)
-    return regex.test(to)
+    return !regex.test(to)
   })
 }
 
@@ -17,7 +17,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return
   }
 
-  if (isExcluded(to.path)) return
+  if (isProtected(to.path)) return
   console.log('protected route')
 
   const user = useSupabaseUser()
