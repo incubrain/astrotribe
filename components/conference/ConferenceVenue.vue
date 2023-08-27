@@ -13,7 +13,9 @@
         <UButton to="https://www.manuallaya.com/"> More Info </UButton>
       </div>
     </ConferenceTitle>
-    <div class="w-full grid grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2">
+    <div
+      class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
+    >
       <NuxtImg
         v-for="img in venue.images"
         :key="img.src"
