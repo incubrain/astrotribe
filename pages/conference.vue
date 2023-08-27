@@ -2,15 +2,15 @@
   <div class="">
     <ConferenceHero />
     <div class="conference-wrap">
-      <ConferenceAbout />
-      <ConferenceVenue />
+      <LazyConferenceAbout />
+      <LazyConferenceVenue />
     </div>
     <!-- <ConferenceMission />
     <div class="conference-wrap">
     </div> -->
-    <ConferenceVisitManali />
+    <LazyConferenceVisitManali />
     <div class="conference-wrap">
-      <ConferenceSchedule />
+      <LazyConferenceSchedule />
       <!-- <ConferenceSpeakers /> -->
       <HomeCtaSecond
         title="Register to Become a Speaker"
