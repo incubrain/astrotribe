@@ -1,16 +1,19 @@
 <template>
   <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2 relative">
     <CommonTitle
-      class="lg:col-start-2 row-start-1"
+      class="row-start-1"
       :title="venue.title"
       :subtitle="venue.subtitle"
+      :has-border="false"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
-        <h4 class="text-md font-semibold leading-7"> Why Manu Allaya? </h4>
-        <p class="text-sm font-normal">
-          {{ venue.about }}
-        </p>
-        <UButton to="https://www.manuallaya.com/"> More Info </UButton>
+        <UAlert
+          variant="outline"
+          title="Why Manu Allaya?"
+          :description="venue.about"
+          color="primary"
+        />
+        <UButton to="https://www.manuallaya.com/"> Manu Allaya Website</UButton>
       </div>
     </CommonTitle>
     <div
