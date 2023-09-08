@@ -1,28 +1,30 @@
 <template>
   <div>
     <CommonTitle
-      class="w-full lg:w-1/2 mx-auto"
+      class="w-full lg:w-1/2 mx-auto foreground"
       :title="about.title"
       :subtitle="about.subtitle"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
         <p class="text-sm font-normal">
-          In our world filled with artificial light, we often overlook the significance of dark
-          skies. Beneath the city's glow is a celestial realm, offering not just stargazing
-          opportunities, but a connection to the universe's mysteries.
+          {{ about.info }}
         </p>
-        <p class="text-sm font-normal">
-          Dark skies reveal galaxies, guiding constellations, and gleaming planets, grounding us in
-          cosmic wonder and humility. Moreover, combating light pollution is essential. It disturbs
-          ecosystems, impacts wildlife, wastes energy, and disrupts our sleep, affecting our health.
+        <div
+          v-for="(theme, ti) in about.themes"
+          :key="`poster-competition-theme-${ti}`"
+        >
+          <UAlert
+            variant="soft"
+            color="sky"
+            :title="theme.title"
+            :description="theme.body"
+          />
+        </div>
+        <p class="text-sm font-normal border-t border-color pt-4">
+          <strong>Expectation from Participants:</strong>
+          Address the aforementioned themes, articulating both the challenges and potential
+          solutions. Visual creativity and clarity will be paramount.
         </p>
-        <p class="text-sm font-normal">
-          Recognizing the importance of dark skies urges us to combat light pollution, advocating
-          for energy-efficient illumination and protecting our planet's natural night. As we embrace
-          modernity, preserving these celestial wonders is crucial.
-        </p>
-
-        <UButton to="/conference">Conference Info</UButton>
       </div>
     </CommonTitle>
     <CommonTwoColumn>
@@ -63,9 +65,36 @@ const image = {
 }
 
 const about = {
-  title: 'About',
-  subtitle: 'Posters For Dark Sky Conservation India Conference',
-  info: '',
+  title: 'Competition Objective',
+  subtitle: 'Spotlight on Light Pollution',
+  info: 'Highlight the pressing challenges surrounding the escalating issue of light pollution. Through the medium of posters, participants are urged to delineate the identified problems and propose viable solutions.',
+  themes: [
+    {
+      title: 'Importance of DARK SKY PRESERVATION',
+      body: 'Emphasize the significance of maintaining natural darkness for the benefit of our ecosystem and heritage.'
+    },
+    {
+      title: 'Dark Sky Conservation and Implementation for SDGs',
+      body: 'Connect the goal of preserving dark skies with the Sustainable Development Goals, elucidating how they can be symbiotic.'
+    },
+    {
+      title: 'Satellite Constellation - A Challenge for Astronomy',
+      body: 'Shed light on how the increasing number of satellites can obstruct astronomical observations and study.'
+    },
+    {
+      title: 'Astro-tourism: The Emerging Frontier',
+      body: 'Dive into the potential of astro-tourism as an industry and how it can promote the preservation of dark skies.'
+    },
+    {
+      title: 'Indian Astronomy: Past and Future',
+      body: 'Trace the legacy of astronomical studies in India and envision its future against the backdrop of current challenges.'
+    },
+    {
+      title: 'Increasing Light Pollution',
+      body: 'Highlight the growing concern of urban light pollution, its adverse impacts, and the urgent need for mitigation.'
+    }
+  ],
+
   sections: [
     {
       title: 'Challenge',
