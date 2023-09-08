@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-16 md:pb-24">
+  <div>
     <HomeHeading
       heading="Hear From The Community"
       subheading="Discover How We're Making a Difference"

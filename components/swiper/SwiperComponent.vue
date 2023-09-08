@@ -1,8 +1,7 @@
 <template>
   <Swiper
     v-if="items.length > 0"
-    :modules="[SwiperGrid, SwiperPagination, SwiperAutoplay]"
-    :pagination="{ clickable: true }"
+    :modules="[SwiperGrid, SwiperAutoplay]"
     :autoplay="{
       delay: 5000
     }"
@@ -16,21 +15,22 @@
       },
       768: {
         slidesPerView: 2,
+        spaceBetween: 24,
         grid: {
           rows: 1,
           fill: 'row'
         }
       },
-      1024: {
+      1280: {
         slidesPerView: 2,
+        spaceBetween: 48,
         grid: {
           rows: 2,
           fill: 'row'
         }
       }
     }"
-    :space-between="40"
-    class="pb-10"
+    class="pb-1 gap-6"
   >
     <SwiperSlide
       v-for="(item, index) in items"
@@ -42,7 +42,6 @@
 </template>
 
 <script setup lang="ts" generic="T">
-
 defineProps<{
   items: T[]
 }>()
@@ -52,5 +51,4 @@ defineProps<{
 .testimonial-slider {
   width: 100%;
 }
-
 </style>
