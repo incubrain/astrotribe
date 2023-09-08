@@ -7,12 +7,10 @@
       :has-border="false"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
-        <UAlert
-          variant="outline"
-          title="Why Manu Allaya?"
-          :description="venue.about"
-          color="primary"
-        />
+        <h4 class="text-md font-semibold leading-7"> Why Manu Allaya? </h4>
+        <p class="text-sm font-normal">
+          {{ venue.about }}
+        </p>
         <UButton to="https://www.manuallaya.com/"> Manu Allaya Website</UButton>
       </div>
     </CommonTitle>
