@@ -7,7 +7,7 @@
         subheading="Built By Astronomers For Astronomers"
       />
       <div
-        class="grid items-start justify-center grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-8"
+        class="grid items-start justify-center grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 md:gap-8"
       >
         <div
           v-for="feature in features"
