@@ -1,6 +1,22 @@
 <template>
   <div class="">
-    <ConferenceHero />
+    <CommonHero
+      :img="{
+        title: 'Featured image for the Dark Sky Conservation India Conference',
+        src: 'conference/shweta-kulkarnin-milkyway-galaxy-manali.jpg',
+        alt: 'Featured image for the Dark Sky Conservation India Conference'
+      }"
+      subtitle="24th-26th November 2023"
+      title="Dark Sky Conservation India Conference"
+    >
+      <NuxtImg
+        class="rounded-full overflow-hidden"
+        width="160px"
+        height="160px"
+        src="conference/conference-logo.png"
+        alt="Conference logo"
+      />
+    </CommonHero>
     <div class="conference-wrap">
       <LazyConferenceAbout />
       <LazyConferenceVenue />

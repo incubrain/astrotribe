@@ -1,6 +1,6 @@
 <template>
   <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2 relative">
-    <ConferenceTitle
+    <CommonTitle
       class="lg:col-start-2 row-start-1"
       :title="venue.title"
       :subtitle="venue.subtitle"
@@ -12,7 +12,7 @@
         </p>
         <UButton to="https://www.manuallaya.com/"> More Info </UButton>
       </div>
-    </ConferenceTitle>
+    </CommonTitle>
     <div
       class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
     >
