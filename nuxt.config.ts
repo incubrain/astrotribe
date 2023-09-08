@@ -151,18 +151,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  supabase: {
-    redirectOptions: {
-      login: '/auth/login',
-      callback: '/astrotribe',
-      exclude: authExclude
-    },
-    cookieOptions: {
-      maxAge: 60 * 60 * 8,
-      sameSite: 'lax',
-      secure: true
-    }
-  },
   image: {
     format: ['webp', 'jpg']
   },
