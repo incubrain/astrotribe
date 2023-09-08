@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
-      <ConferenceTitle
+      <CommonTitle
         class="row-start-1 col-span-1"
         :title="about.title"
         :subtitle="about.subtitle"
@@ -11,15 +11,15 @@
       >
         <div
           v-for="(section, i) in about.sections"
-          :key="i"
+          :key="`about-conference-section-${i}`"
           class="flex flex-col pb-3 w-full"
         >
           <h4 class="text-lg font-semibold pb-4"> {{ section.title }}</h4>
           <ul class="list-disc space-y-2">
             <li
-              class="text-sm mx-4"
               v-for="(point, i2) in section.points"
-              :key="i2"
+              :key="`about-conference-point-${i2}`"
+              class="text-sm mx-4"
             >
               {{ point }}
             </li>
@@ -52,7 +52,7 @@ const images = [
 ]
 
 const about = {
-  title: 'Help us Preserve the Night Sky',
+  title: 'INTRODUCTION',
   subtitle:
     'As our skies face the challenges of light pollution and environmental changes, the urgency to act has never been more apparent. This conference serves as a bridge connecting academia, policy, and public engagement, forging alliances to safeguard our shared treasure – the celestial tapestry above.',
   sections: [

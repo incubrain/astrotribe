@@ -3,7 +3,7 @@
     <div class="conference-wrap">
       <div class="grid items-start grid-cols-1 gap-8 xl:gap-12 lg:grid-cols-2 w-full">
         <div class="flex flex-col lg:flex-row gap-6 xl:gap-12">
-          <ConferenceTitle
+          <CommonTitle
             :title="mission.title"
             :subtitle="mission.subtitle"
             :has-border="false"

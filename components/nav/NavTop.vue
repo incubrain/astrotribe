@@ -127,6 +127,13 @@ const links = [
   },
   {
     id: 4,
+    name: 'Poster Competition',
+    slug: '/poster-competition',
+    icon: 'i-material-symbols-award-star',
+    children: []
+  },
+  {
+    id: 5,
     name: 'Community',
     slug: '/astrotribe',
     icon: 'i-material-symbols-globe-asia',
