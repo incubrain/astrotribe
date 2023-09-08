@@ -39,6 +39,9 @@ export default defineAppConfig({
     },
     card: {
       background: 'foreground'
+    },
+    alert: {
+      description: 'mt-2 text-sm leading-normal opacity-90'
     }
   }
 })

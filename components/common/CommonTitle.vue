@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center items-start gap-3 flex-col w-full border-color rounded-lg"
+    class="flex justify-center items-start gap-4 flex-col w-full rounded-lg"
     :class="hasBorder ? 'border p-4 xl:p-8' : ''"
   >
     <h2 class="text-xl xl:text-2xl font-bold"> {{ title }}</h2>
