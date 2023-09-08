@@ -16,6 +16,10 @@
         src="astronera-logo-with-text.jpg"
         alt="AstronEra Logo"
       />
+      <NuxtImg
+        src="images/trusted/dst.png"
+        class="h-16 mx-auto lg:h-20"
+      />
     </CommonHero>
     <div class="conference-wrap">
       <CompetitionAbout />
