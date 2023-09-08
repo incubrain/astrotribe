@@ -3,7 +3,7 @@
     <div class="conference-wrap">
       <div class="grid items-start grid-cols-1 gap-8 xl:gap-24 lg:grid-cols-2 w-full h-full">
         <div class="flex flex-col">
-          <ConferenceTitle
+          <CommonTitle
             :title="manali.title"
             :subtitle="manali.subtitle"
             :has-border="false"

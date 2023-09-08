@@ -1,10 +1,10 @@
 <template>
   <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
-    <ConferenceTitle
+    <CommonTitle
       :title="speakers.title"
       :subtitle="speakers.subtitle"
     />
-    <ConferenceTitle
+    <CommonTitle
       :title="schedule.title"
       :subtitle="schedule.subtitle"
     />
