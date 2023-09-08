@@ -7,7 +7,9 @@
       object-position="object-bottom"
       fit="cover"
     >
-      <slot />
+      <div class="flex flex-col gap-4 bg-white rounded-md pb-6">
+        <slot />
+      </div>
     </ImageHero>
   </div>
 </template>

@@ -16,6 +16,10 @@
         src="conference/conference-logo.png"
         alt="Conference logo"
       />
+      <NuxtImg
+        src="images/trusted/dst.png"
+        class="h-16 mx-auto lg:h-20"
+      />
     </CommonHero>
     <div class="conference-wrap">
       <LazyConferenceAbout />
