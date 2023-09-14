@@ -59,7 +59,7 @@
     "magic-regexp": "^0.7.0",
     "nuxt-swiper": "^1.1.1",
     "particles.vue": "^3.11.0",
-    "sass": "^1.63.4",
+    "sass": "^1.67.0",
     "tsparticles-slim": "^2.11.0",
     "uuid": "^9.0.0",
     "vue-upload-component": "2.8.23",
