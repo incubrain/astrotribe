@@ -16,7 +16,8 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5 {
     text-wrap: balance;
   }
 }
@@ -59,7 +60,7 @@
     @apply border-zinc-800 dark:border-zinc-300;
   }
   body {
-    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950 border-zinc-300 dark:border-zinc-800;
+    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-neutral-950 border-zinc-300 dark:border-zinc-800 decoration-primary-500 dark:decoration-primary-700;
   }
   .text-light {
     @apply text-zinc-100 dark:text-zinc-300;
