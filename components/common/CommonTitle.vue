@@ -1,27 +1,51 @@
 <template>
-  <div
-    class="flex justify-center items-start gap-4 flex-col w-full rounded-lg"
-    :class="hasBorder ? 'border p-4 xl:p-8' : ''"
-  >
-    <h2 class="text-xl xl:text-2xl font-bold"> {{ title }}</h2>
-    <h4 class="text-base font-semibold"> {{ subtitle }}</h4>
-    <slot />
+  <div :class="`flex flex-col gap-4 lg:gap-6 text-${alignment} lg:max-w-lg`">
+    <p
+      v-if="title.label"
+      class="text-sm font-bold uppercase"
+      :class="labelWhite ? 'text-white' : 'text-primary-500 dark:text-primary-700'"
+    >
+      {{ title.label }}
+    </p>
+    <h2
+      class="text-2xl lg:text-4xl font-bold"
+      :class="isCta ? 'underline decoration-primary-500 dark:decoration-primary-900' : ''"
+    >
+      {{ title.main }}
+    </h2>
+    <h5
+      v-if="title.subtitle"
+      class="text-base"
+    >
+      {{ title.subtitle }}
+    </h5>
+    <div class="space-y-6">
+      <slot />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Title } from '~/types/content'
+
 defineProps({
   title: {
-    type: String,
+    type: Object as PropType<Title>,
     required: true
   },
-  subtitle: {
+  alignment: {
     type: String,
-    required: true
+    default: 'left'
   },
-  hasBorder: {
+  isCta: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  labelWhite: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
+
+<style scoped></style>

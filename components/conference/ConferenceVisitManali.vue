@@ -1,17 +1,13 @@
 <template>
   <div class="w-full bg-primary-600 dark:bg-primary-800 text-white">
     <div class="conference-wrap">
-      <div class="grid items-start grid-cols-1 gap-8 xl:gap-24 lg:grid-cols-2 w-full h-full">
+      <div class="grid items-start grid-cols-1 gap-8 xl:gap-12 lg:grid-cols-2 w-full h-full">
         <div class="flex flex-col">
           <CommonTitle
             :title="manali.title"
-            :subtitle="manali.subtitle"
-            :has-border="false"
+            label-white
           />
-          <p
-            class="pt-4 text-sm"
-            v-html="manali.about"
-          />
+          <p v-html="manali.about" />
         </div>
         <div class="flex flex-col justofy-center h-full w-full gap-4">
           <h3 class="text-2xl font-semibold">More Info</h3>
@@ -45,8 +41,10 @@
 
 <script setup lang="ts">
 const manali = {
-  title: 'Visit Manali',
-  subtitle: 'Tucked away in the Himalayas',
+  title: {
+    label: 'Visit Manali',
+    main: 'Tucked away in the Himalayas'
+  },
   about: `
     Nestled in the heart of the Himalayas, Manali is a tapestry of rich history and vibrant traditions.
     Often dubbed the "Valley of the Gods", this picturesque town offers not only pristine landscapes but also clear, pollution-free night skies that promise enchanting views of the Milky Way.
