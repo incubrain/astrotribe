@@ -3,19 +3,16 @@
     <CommonTitle
       class="row-start-1"
       :title="venue.title"
-      :subtitle="venue.subtitle"
-      :has-border="false"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
-        <h4 class="text-md font-semibold leading-7"> Why Manu Allaya? </h4>
         <p class="text-sm font-normal">
           {{ venue.about }}
         </p>
-        <UButton to="https://www.manuallaya.com/"> Manu Allaya Website</UButton>
+        <UButton to="https://www.manuallaya.com/" variant="outline"> Manu Allaya Website</UButton>
       </div>
     </CommonTitle>
     <div
-      class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
+      class="w-full grid grid-cols-2 md:grid-cols-3 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
     >
       <NuxtImg
         v-for="img in venue.images"
@@ -23,6 +20,8 @@
         class="rounded-md mx-auto"
         :src="img.src"
         :alt="img.alt"
+        width="340"
+        height="400"
       />
     </div>
   </div>
@@ -30,8 +29,11 @@
 
 <script setup lang="ts">
 const venue = {
-  title: 'Conference Venue',
-  subtitle: 'Manu Allaya, Manali, Himachal Pradesh, India',
+  title: {
+    label: 'Beautiful Himalayan Skies',
+    main: 'Conference Venue, Manu Allaya',
+    subtitle: 'Manali, Himachal Pradesh, India'
+  },
   website: 'https://www.manuallaya.com/',
   about:
     "Nestled under the expansive canopy of the Himalayan skies, ManuAllaya is not just a luxury resort but a celestial gateway. Here, the night comes alive with the brilliance of a thousand stars, offering unparalleled views of the mesmerizing Milky Way. Located in the heart of Himachal, this resort celebrates the region's rich history, art, and culture while seamlessly blending it with modern elegance.",
