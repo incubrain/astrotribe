@@ -85,7 +85,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/partytown',
     '@nuxt/devtools',
-    '@nuxthq/ui',
+    '@nuxt/ui',
     '@vueuse/nuxt',
     '@nuxt/image',
     'nuxt-swiper',
