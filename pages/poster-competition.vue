@@ -24,9 +24,8 @@
     <div class="conference-wrap">
       <CompetitionAbout />
       <CommonTitle
-        class="w-full lg:w-1/2 mx-auto foreground"
+        class="w-full lg:w-1/2 mx-auto foreground p-4 rounded-md"
         :title="submission.title"
-        :subtitle="submission.subtitle"
       >
         <div class="w-full leading-6 text-sm space-y-4 text-left row-start-2 h-full">
           <p class="font-normal">
@@ -48,8 +47,17 @@
           </p>
           <div class="border-t border-color pt-4 space-y-4">
             <h3 class="text-xl xl:text-2xl font-bold">Create A Poster</h3>
-            <UBadge variant="soft" color="sky" class="mr-4">Deadline 30th September 2023</UBadge>
-            <UBadge variant="soft" color="sky">Winners Selected 10th October 2023</UBadge>
+            <UBadge
+              variant="soft"
+              color="sky"
+              class="mr-4"
+              >Deadline 30th September 2023</UBadge
+            >
+            <UBadge
+              variant="soft"
+              color="sky"
+              >Winners Selected 10th October 2023</UBadge
+            >
           </div>
           <div class="flex gap-4">
             <a
@@ -74,8 +82,10 @@
 
 <script setup lang="ts">
 const submission = {
-  title: 'Competition Prizes',
-  subtitle: 'One Winner Per Theme (6 total)',
+  title: {
+    main: 'Competition Prizes',
+    subtitle: 'One Winner Per Theme (6 total)'
+  },
   info: 'The entrants must complete the online registrations and the submission must include, (but are not limited to) the points listed in the brief as a whole. For each of our competition themes, one exemplary participant will be crowned the winner. These distinguished winners will receive',
   prizes: [
     {

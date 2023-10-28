@@ -2,15 +2,17 @@
   <div>
     <UCard
       :ui="{
-        header: { padding: '' },
+        background: 'background',
+        header: { padding: '', base: 'relative' },
         body: { base: 'flex flex-grow' },
         ring: featured
           ? 'ring-1 ring-primary-500 dark:ring-primary-800'
           : 'ring-1 ring-gray-200 dark:ring-gray-800'
       }"
-      class="foreground h-full"
+      class="h-full"
     >
       <template #header>
+        <div class="invisible dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10 " />
         <NuxtImg
           :src="`conference/speakers/${speaker.avatar}.jpg`"
           :alt="`${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`"
@@ -19,7 +21,7 @@
           loading="lazy"
           quality="80"
           format="webp"
-          class="object-cover w-full"
+          class="object-cover w-full grayscale-[20%]"
         />
       </template>
       <div class="flex flex-col gap-4 justify-between flex-grow">
