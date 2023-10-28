@@ -2,17 +2,17 @@
   <div>
     <UCard
       :ui="{
-        background: 'background',
+        base: 'flex flex-col h-full',
+        background: featured ? 'bg-primary-50 dark:bg-primary-950' : 'background',
         header: { padding: '', base: 'relative' },
-        body: { base: 'flex flex-grow' },
-        ring: featured
-          ? 'ring-1 ring-primary-500 dark:ring-primary-800'
-          : 'ring-1 ring-gray-200 dark:ring-gray-800'
+        body: { base: 'flex flex-grow h-full', padding: 'sm:px-4' },
+        footer: { base: 'flex flex-shrink', padding: 'sm:px-4' },
+        ring: 'ring-1 ring-gray-200 dark:ring-gray-800'
       }"
       class="h-full"
     >
       <template #header>
-        <div class="invisible dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10 " />
+        <div class="invisible dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
         <NuxtImg
           :src="`conference/speakers/${speaker.avatar}.jpg`"
           :alt="`${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`"
@@ -29,7 +29,7 @@
           <h3 class="text-2xl font-semibold">
             {{ speaker.title }} {{ speaker.given_name }} {{ speaker.surname }}
           </h3>
-          <p class="flex gap-2 items-center text-primary-500 dark:text-primary-700 font-semibold">
+          <p class="flex gap-2 items-center text-primary-500 dark:text-primary-600 font-semibold">
             <UIcon
               name="i-mdi-account"
               class="w-4 h-4 flex-shrink-0"
@@ -42,12 +42,15 @@
         </div>
       </div>
       <template #footer>
-        <UAlert
-          variant="soft"
-          color="primary"
-          title="Abstract"
-          :description="speaker.abstract"
-        />
+        <div
+          class="flex flex-col gap-2 p-4 justify-center w-full rounded-md border border-color"
+          :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-50 dark:bg-primary-950'"
+        >
+          <h5 class="font-semibold"> Abstract </h5>
+          <p class="text-sm">
+            {{ speaker.abstract }}
+          </p>
+        </div>
       </template>
     </UCard>
   </div>

@@ -30,7 +30,7 @@ const speakers = [
     given_name: 'Sonam',
     surname: 'Wangchuk',
     professional_title: 'Engineer, Innovator and Education Reformist',
-    bio: '',
+    bio: 'Recipient of the Ramon Magsaysay Award, Sonam Wangchuk, an engineer and educator, is lauded for his sustainable development efforts via SECMOL ALTERNATIVE SCHOOL. His innovative approach to environmental and educational challenges showcases a profound commitment to fostering sustainable communities.',
     abstract: 'Sustainable Development for Tribal Ladakhies',
     avatar: 'sonam-wangchuk',
     featured: true,
@@ -40,7 +40,7 @@ const speakers = [
     given_name: 'Connie',
     surname: 'Walker',
     professional_title: "NSF's NOIRLab, Co-director of IAU C.C5, USA",
-    bio: '',
+    bio: "Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she’s devoted two decades at NSF's National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.",
     abstract: 'Light Pollution and Satellite Constellations',
     avatar: 'connie-walker',
     featured: true,
@@ -78,16 +78,16 @@ const speakers = [
     featured: false,
     inPerson: false
   },
-  {
-    given_name: 'Jayanta',
-    surname: 'Acharya',
-    professional_title: 'Astronomer SPoC 2009 to till 2020',
-    bio: '',
-    abstract: 'Astrotourism in Nepal',
-    avatar: 'jayanta-acharya',
-    featured: false,
-    inPerson: true
-  },
+  // {
+  //   given_name: 'Jayanta',
+  //   surname: 'Acharya',
+  //   professional_title: 'Astronomer SPoC 2009 to till 2020',
+  //   bio: '',
+  //   abstract: 'Astrotourism in Nepal',
+  //   avatar: 'jayanta-acharya',
+  //   featured: false,
+  //   inPerson: true
+  // },
   {
     title: 'Dr.',
     given_name: 'Priya',
@@ -114,7 +114,7 @@ const speakers = [
     given_name: 'David',
     surname: 'Ault',
     professional_title: 'Director of Education For Immersive Experiences',
-    bio: '',
+    bio: "David, an adept in Astronomy and Astrophysics, spurred scientific curiosity in over 25,000 youths through projects like The Big Bang in the Midlands. Starting as a STEM Ambassador and enriched by his time at Birmingham's Planetarium, he explored science communication in a North American 'Astrotour'. Now a Senior Presenter for Immersive Experiences, he delivers engaging virtual and in-person planetarium shows, merging academic knowledge with theatrical engagement to make science intriguing and accessible.",
     abstract: 'The planetarium as a creative space',
     avatar: 'david-ault',
     featured: false,
@@ -125,7 +125,7 @@ const speakers = [
     surname: 'Sommer',
     professional_title:
       'Argentina DarkSky Chapter- Director of Ecotourism, Ministry of Tourism of the Province of Misiones',
-    bio: '',
+    bio: 'Championing dark skies conservation in Misiones, Argentina, Alejandro Sommer blends astrotourism and storytelling to safeguard the night environment and indigenous cultural heritage. His advocacy underscores the potential of astrotourism in fostering a respectful interaction with natural and cultural legacies.',
     abstract: 'Know to preserve',
     avatar: 'alejandro-sommer',
     featured: false,
@@ -149,6 +149,7 @@ const speakers = [
     bio: `Upasana Dasgupta researches space policies at Université Laval and is on ACES Worldwide's board. With a Doctorate from McGill,
     she's an expert in space law, associated with global space entities, and emphasizes on space collision prevention and dark sky conservation.`,
     avatar: 'upasana-dasgupta',
+    abstract: 'Astral Intruders: The Mega-Constellation Crisis',
     featured: false,
     inPerson: true
   },
@@ -158,6 +159,7 @@ const speakers = [
     professional_title: 'Science Communicator',
     bio: `Dinesh founded Sunday Science School and is passionate about science communication. An astronomer, he views astronomy as a unifier for humanity.
     He enjoys astrophotography, exploring nature, and is an aspiring writer with articles and a book on scientific innovation. Focus: ISAAC.`,
+    abstract: 'Stellar Education: Unveiling ISAAC',
     avatar: 'dinesh-nisang',
     featured: false,
     inPerson: true
@@ -174,16 +176,16 @@ const speakers = [
     featured: false,
     inPerson: false
   },
-  {
-    given_name: 'Nadia Madhavji',
-    surname: 'and Usha Sharma',
-    professional_title: 'BSc. Physics Students',
-    bio: '',
-    abstract: 'Affordable Radio Astronomy Lab',
-    avatar: 'nadia-madhavji',
-    featured: false,
-    inPerson: false
-  },
+  // {
+  //   given_name: 'Nadia Madhavji',
+  //   surname: 'and Usha Sharma',
+  //   professional_title: 'BSc. Physics Students',
+  //   bio: '',
+  //   abstract: 'Affordable Radio Astronomy Lab',
+  //   avatar: 'nadia-madhavji',
+  //   featured: false,
+  //   inPerson: false
+  // },
   {
     given_name: 'Rashmi',
     surname: 'Sheoran',
@@ -214,7 +216,7 @@ const speakers = [
     given_name: 'Kiran',
     surname: 'Kulkarni',
     professional_title: 'Indian Administrative Service Officer',
-    bio: '',
+    bio: "Dr. Kulkarni has significantly contributed to tribal development, notably as Tribal Development Commissioner. While his work doesn't directly involve astronomy, his extensive outreach in education and governance innovations hints at a potential for fostering astronomy-related initiatives within tribal communities. His campaigns like Dream Melghat showcase his commitment to community upliftment, possibly providing a platform for intertwining traditional tribal knowledge with astronomical insights.",
     abstract: 'Sustainable Development through Astronomy: A Tribal Perspective',
     avatar: 'kiran-kulkarni',
     featured: true,
@@ -257,7 +259,7 @@ const speakers = [
     given_name: 'Aishwarya',
     surname: 'Khade',
     professional_title: 'Mental Health Practitioner / Expressive Arts ',
-    bio: '',
+    bio: 'A seasoned Psychologist and Mental Health Professional, Aishwarya Khade employs art and movement-based facilitation in educational and corporate settings. Specialized in corporate wellness, her drive is to enhance mental health and well-being through innovative methodologies.',
     abstract: 'Mental Health Arts and Astronomy',
     avatar: 'aishwarya-khade',
     featured: false,
@@ -267,7 +269,7 @@ const speakers = [
     given_name: 'Hossein',
     surname: 'Khezri',
     professional_title: 'Associate of Commission C1 WG Astronomy Education Research & Methods',
-    bio: '',
+    bio: 'Affiliated with multiple astronomical unions including the IAU, Hossein Khezri is dedicated to elevating astronomy education and its cultural integration. His association with the Iranian Teachers Astronomy Union and various International Astronomical Union commissions reflects a broad engagement in promoting astronomy in diverse cultural landscapes.',
     abstract: 'Road to Sky',
     avatar: 'hossein-khezri',
     featured: false,
@@ -277,7 +279,7 @@ const speakers = [
     given_name: 'Shweta',
     surname: 'Kulkarni',
     professional_title: 'Founder/Director of AstronEra',
-    bio: '',
+    bio: 'Astropreneur Shweta Kulkarni, listed among top 100 women entrepreneurs, spearheads Astronera, marrying business acumen with astronomy for innovative solutions. As a Fellow of the Royal Astronomical Society of England, her venture reflects a novel approach to integrating astronomy with enterprise.',
     abstract: 'Skill Training in Astronomy for Income Generation',
     avatar: 'shweta-kulkarni',
     featured: true,
