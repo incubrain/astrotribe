@@ -13,7 +13,7 @@
         :class="`row-start-${i + 2} col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12`"
       >
         <div
-          class="flex flex-col pb-3 w-full border border-color justify-center rounded-md p-4 xl:p-8"
+          class="flex flex-col pb-3 w-full border border-color justify-center background rounded-md p-4 xl:p-8"
         >
           <h4
             class="text-lg xl:text-xl font-bold pb-4 underline"

@@ -1,5 +1,5 @@
 <template>
-  <div class="background flex flex-col w-full">
+  <div class="foreground flex flex-col w-full">
     <NavTop class="min-h-[50px] lg:min-h-[60px]" />
     <AppBody class="w-full">
       <slot />

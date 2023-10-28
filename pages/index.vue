@@ -30,34 +30,6 @@
       class="max-w-[1040px] mx-auto flex flex-col py-16 md:py-24 px-[20px] md:px-[80px] lg:px-[160px]"
     >
       <LazyHomeTestimonial class="pb-6 xl:pb-12" />
-      <div class="grid items-start gap-6 xl:gap-12 grid-cols-1 md:grid-cols-2">
-        <HomeCtaSecond
-          alignement="left"
-          title="Dark Sky Conservation India Conference"
-          body="We're hosting a conference in Manali, Himachal Pradesh, India. Join us in person or virtually from home. Delve into captivating sessions and connect with astronomy enthusiasts"
-        >
-          <UButton
-            color="white"
-            to="/conference"
-            block
-          >
-            Find Out More
-          </UButton>
-        </HomeCtaSecond>
-        <HomeCtaSecond
-          alignement="left"
-          title="Dark Sky Conservation Poster Competition"
-          body="Do you have design skills and an interest in astronomy? We've created a poster competition to help raise awareness about light pollution and the importance of dark skies."
-        >
-          <UButton
-            color="white"
-            to="/poster-competition"
-            block
-          >
-            Find Out More
-          </UButton>
-        </HomeCtaSecond>
-      </div>
     </div>
   </div>
 </template>

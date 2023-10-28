@@ -1,9 +1,8 @@
 <template>
   <div>
     <CommonTitle
-      class="w-full lg:w-1/2 mx-auto foreground"
+      class="w-full lg:w-1/2 mx-auto foreground p-4 rounded-md"
       :title="about.title"
-      :subtitle="about.subtitle"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
         <p class="text-sm font-normal">
@@ -28,13 +27,13 @@
       </div>
     </CommonTitle>
     <CommonTwoColumn>
-      <div class="foreground row-start-2 flex flex-col gap-4 rounded-md p-4 xl:p-8 h-full">
+      <div class="foreground row-start-2 flex flex-col justify-center gap-4 rounded-md p-4 h-full">
         <div
           v-for="(section, i) in about.sections"
           :key="`competition-section-${i}`"
           class="flex flex-col pb-3 w-full"
         >
-          <h4 class="text-lg font-semibold pb-4"> {{ section.title }}</h4>
+          <h4 class="text-xl lg:text-2xl font-semibold pb-4"> {{ section.title }}</h4>
           <div class="space-y-2">
             <p
               v-for="(point, i2) in section.points"
@@ -65,8 +64,10 @@ const image = {
 }
 
 const about = {
-  title: 'Competition Objective',
-  subtitle: 'Spotlight on Light Pollution',
+  title: {
+    main: 'Competition Objective',
+    subtitle: 'Spotlight on Light Pollution'
+  },
   info: 'Highlight the pressing challenges surrounding the escalating issue of light pollution. Through the medium of posters, participants are urged to delineate the identified problems and propose viable solutions.',
   themes: [
     {
