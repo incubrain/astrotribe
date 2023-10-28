@@ -50,7 +50,13 @@
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
           </a>
-          <ThemeToggle />
+          <DarkToggle v-slot="{ toggle, isDark }">
+            <UIcon
+              :name="isDark ? 'i-heroicons-moon' : 'i-heroicons-sun'"
+              class="w-6 h-6 cursor-pointer"
+              @click="toggle"
+            />
+          </DarkToggle>
           <div v-if="!loggedIn">
             <UButtonGroup>
               <UButton
