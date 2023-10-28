@@ -4,7 +4,7 @@ export default defineAppConfig({
   ui: {
     primary: 'cyan',
     tooltip: {
-      background: 'background',
+      background: 'bg-zinc-100 dark:bg-neutral-950',
       base: 'invisible lg:visible h-auto px-3 py-2 text-sm font-normal truncat'
     },
     modal: {
@@ -15,30 +15,30 @@ export default defineAppConfig({
       rounded: 'lg:rounded-lg'
     },
     slideover: {
-      background: 'background'
+      background: 'bg-zinc-100 dark:bg-neutral-950'
     },
     popover: {
       width: 'w-full lg:max-w-[80%] xl:max-w-[80%]',
       wrapper: 'relative p-4 xl:p-8'
     },
     dropdown: {
-      background: 'background',
-      border: 'border-color',
+      background: 'bg-zinc-100 dark:bg-neutral-950',
+      border: 'border-zinc-200 dark:border-zinc-800',
       item: {
-        active: 'foreground'
+        active: 'bg-zinc-50 dark:bg-zinc-900'
       }
     },
     table: {
-      thead: 'foreground sticky top-0',
+      thead: 'bg-zinc-50 dark:bg-zinc-900 sticky top-0',
       td: {
         base: 'max-w-[160px] overflow-hidden'
       },
       tr: {
-        base: 'hover:foreground border-b border-color'
+        base: 'hover:bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800'
       }
     },
     card: {
-      background: 'foreground'
+      background: 'bg-zinc-50 dark:bg-zinc-900'
     },
     alert: {
       description: 'mt-2 text-sm leading-normal opacity-90'
