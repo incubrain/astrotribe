@@ -1,61 +1,86 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { Page } from '@/types/pages'
 
 const pages = ref([
   {
     id: 1,
-    name: 'Home',
+    label: 'Home',
     slug: '/astrotribe/',
     icon: 'i-material-symbols-home-rounded',
     children: [
-      // { id: 11, name: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' }
+      // { id: 11, label: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' }
     ]
   },
   {
     id: 2,
-    name: 'Users',
+    label: 'Users',
     slug: '/astrotribe/users',
     icon: 'i-material-symbols-account-circle',
     children: [
-      // { id: 21, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
+      // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
     ]
   },
   {
     id: 3,
-    name: 'Events',
+    label: 'Events',
     slug: '/astrotribe/events',
     icon: 'i-material-symbols-event',
     children: [
-      // { id: 31, name: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
+      // { id: 31, label: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
     ]
   },
   {
     id: 4,
-    name: 'Venues',
+    label: 'Venues',
     slug: '/astrotribe/venues',
     icon: 'i-material-symbols-location-on-rounded'
     // children: [
-    //     { id: 41, name: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
+    //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
   }
   // {
   //   id: 5,
-  //   name: 'News',
+  //   label: 'News',
   //   slug: '/astrotribe/news',
   //   icon: 'i-mdi-newspaper-variant-outline'
   // }
   // {
   //   id: 5,
-  //   name: 'Serp',
+  //   label: 'Serp',
   //   slug: '/astrotribe/serp',
   //   icon: 'i-mdi-newspaper-variant-outline'
   // }
 ] as Page[])
 
+const socials = ref([
+  {
+    id: 1,
+    platform: 'twitter',
+    icon: 'i-mdi-twitter',
+    url: 'https://twitter.com/AstronEra',
+    username: 'uk'
+  },
+  {
+    id: 2,
+    icon: 'i-mdi-linkedin',
+    platform: 'linkedin',
+    url: 'https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b',
+    username: 'uk'
+  },
+  {
+    id: 3,
+    icon: 'i-mdi-instagram',
+    platform: 'instagram',
+    url: 'https://www.instagram.com/astronera',
+    username: 'uk'
+  }
+])
+
 export default function usePages() {
   return {
-    pages: computed(() => pages.value),
+    pages,
+    socials,
     tabs: (currentPage: string) =>
-      pages.value.find((p: Page) => p.name.toLocaleLowerCase() === currentPage)
+      pages.value.find((p: Page) => p.label.toLocaleLowerCase() === currentPage)
   }
 }
