@@ -21,10 +21,10 @@
         class="h-16 mx-auto lg:h-20"
       />
     </CommonHero>
-    <div class="conference-wrap">
+    <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
       <CompetitionAbout />
       <CommonTitle
-        class="w-full lg:w-1/2 mx-auto foreground p-4 rounded-md"
+        class="w-full lg:w-1/2 mx-auto background p-4 rounded-md border border-color"
         :title="submission.title"
       >
         <div class="w-full leading-6 text-sm space-y-4 text-left row-start-2 h-full">

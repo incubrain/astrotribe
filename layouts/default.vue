@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full lg:grid-cols-[minmax(240px,10%)_minmax(600px,100%)] lg:grid">
+  <div class="w-full lg:grid-cols-[minmax(240px,_10%)_minmax(600px,_90%)] lg:grid">
     <NavTop class="lg:col-start-1 lg:col-span-2" />
 
     <NavSidebar

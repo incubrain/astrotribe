@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center w-full h-full mx-auto">
     <div
-      :class="`flex flex-col gap-4 xl:gap-8 p-4 xl:p-8 justify-${alignement} text-${alignement} text-zinc-100 bg-primary-600 dark:bg-primary-800 w-full rounded-lg shadow-lg mx-auto`"
+      :class="`flex flex-col gap-4 xl:gap-8 p-4 xl:p-8 justify-${alignement} text-${alignement} text-zinc-100 bg-primary-600 dark:bg-primary-950 w-full rounded-lg shadow-lg mx-auto`"
     >
       <h2 class="max-w-2xl text-xl xl:text-2xl font-bold `">
         {{ title }}

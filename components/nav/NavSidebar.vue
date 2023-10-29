@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed left-0 flex-col hidden w-full h-full py-8 lg:relative foreground lg:flex border-r border-color">
+  <div class="fixed left-0 flex-col hidden w-full h-full py-8 lg:relative background lg:flex border-r border-color">
     <ul class="w-full">
       <li
         v-for="page in pages"
@@ -13,7 +13,7 @@
           <span
             :class="
               route.path.split('/')[2] === page.slug.split('/')[2]
-                ? 'w-full background p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
+                ? 'w-full foreground p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
                 : 'w-full p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
             "
           >
@@ -21,7 +21,7 @@
               :name="page.icon"
               class="w-[20px] h-[20px]"
             />
-            {{ page.name }}
+            {{ page.label }}
           </span>
         </NuxtLink>
       </li>

@@ -5,7 +5,7 @@
     <div
       class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <div class="border-color lg:border-r h-full pl-3 md:pl-4 flex col-start-1">
+      <div class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 col-start-1">
         <NavMobiSlideover
           :links="links"
           class="lg:hidden pl-3 md:pl-4 flex items-center"
@@ -26,7 +26,7 @@
         </NuxtLink>
       </div>
       <div
-        class="lg:flex hidden items-center h-full flex-shrink-0 col-span-2 col-start-2 md:col-span-1"
+        class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1"
       >
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
@@ -42,16 +42,17 @@
         </div>
       </div>
       <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6 flex-shrink-0">
-        <div class="flex items-center justify-end w-full gap-4">
-          <a
-            href="https://github.com/incubrain/astrotribe"
+        <div class="flex items-center justify-center w-full gap-4">
+          <NuxtLink
+            to="https://github.com/incubrain/astrotribe"
             target="_blank"
+            class="flex justify-center items-center"
           >
             <UIcon
               name="i-mdi-github"
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
-          </a>
+          </NuxtLink>
           <DarkToggle v-slot="{ toggle, isDark }">
             <UIcon
               :name="isDark ? 'i-heroicons-moon' : 'i-heroicons-sun'"

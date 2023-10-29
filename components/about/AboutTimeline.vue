@@ -3,7 +3,7 @@
     <div
       v-for="item in timeline"
       :key="item.title"
-      class="relative flex items-start w-full border rounded-md border-color foreground"
+      class="relative flex items-start w-full border rounded-md border-color background"
     >
       <div class="flex flex-col justify-center w-full p-4">
         <h2 class="text-lg font-semibold leading-7 xl:leading-9">

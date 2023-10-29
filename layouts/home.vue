@@ -3,7 +3,7 @@
     <NavTop class="min-h-[50px] lg:min-h-[60px]" />
     <AppBody class="w-full">
       <slot />
-      <HomeFooter v-if="$route.path !== '/contact'" />
+      <FooterWebsite v-if="$route.path !== '/contact'" />
     </AppBody>
   </div>
 </template>

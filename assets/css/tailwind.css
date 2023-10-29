@@ -10,7 +10,9 @@
     --nav-height-sm: 50px;
     --nav-height-md: 50px;
     --nav-height-lg: 60px;
-    --max-width-md: 1080px;
+    --max-width-sm: 840px;
+    --max-width-md: 1040px;
+    --max-width-lg: 1140px;
   }
 
   h1,
@@ -32,9 +34,6 @@
   .swiper-slide {
     @apply rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
   }
-  .conference-wrap {
-    @apply flex flex-col max-w-6xl gap-6 mx-auto xl:gap-12 px-4 xl:px-8 py-6 xl:py-12;
-  }
   .nav-link {
     @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;
   }
@@ -47,6 +46,9 @@
   .background {
     @apply text-zinc-800 bg-white dark:text-zinc-300  dark:bg-black;
   }
+  .wrapper {
+    @apply max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)] mx-auto;
+  }
   .bg-light {
     @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300;
   }
@@ -58,6 +60,9 @@
   }
   .border-inverted {
     @apply border-zinc-800 dark:border-zinc-300;
+  }
+  .padded-x {
+    @apply px-4 lg:px-8;
   }
   body {
     @apply text-zinc-800 dark:text-zinc-300  border-zinc-300 dark:border-zinc-800 decoration-primary-500 dark:decoration-primary-700;

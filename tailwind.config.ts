@@ -18,6 +18,9 @@ export default <Partial<Config>>{
       screens: {
         '2xl': '1536px'
       },
+      gridTemplateColumns: {
+        nav: 'minmax(240px, 1fr) minmax(420px, 2fr) minmax(300px,1fr)'
+      },
       colors: {
         primary: c.cyan,
         secondary: c.indigo,

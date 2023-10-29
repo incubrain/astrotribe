@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full bg-primary-600 dark:bg-primary-800 text-white">
-    <div class="conference-wrap">
+  <div class="w-full bg-primary-600 dark:bg-primary-950 text-white">
+    <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
       <div class="grid items-start grid-cols-1 gap-8 xl:gap-12 lg:grid-cols-2 w-full h-full">
         <div class="flex flex-col">
           <CommonTitle
