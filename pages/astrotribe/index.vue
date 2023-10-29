@@ -1,6 +1,6 @@
 <template>
   <div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-    <div class="p-8 rounded-md shadow-md foreground">
+    <div class="p-8 rounded-md background border border-color">
       <h1 class="pb-4 text-4xl font-semibold">
         Welcome 👋
       </h1>

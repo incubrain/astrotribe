@@ -207,7 +207,7 @@ const schedule = [
         topic: 'Complimentary Breakfast',
         speaker: '',
         time: { start: '09:00', end: '10:00' },
-        class: 'bg-primary-500/50 dark:bg-primary-900'
+        class: 'bg-primary-500/50 dark:bg-primary-950'
       },
       {
         icon: 'i-mdi-microphone',

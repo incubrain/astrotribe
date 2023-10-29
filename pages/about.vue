@@ -5,7 +5,7 @@
       title="The AstronEra Journey"
       object-position="object-top"
     />
-    <div class="flex flex-col max-w-6xl gap-12 p-4 mx-auto xl:gap-24 xl:py-24">
+    <div class="flex flex-col wrapper gap-12 padded-x mx-auto xl:gap-24 xl:py-24">
       <h2 class="text-3xl font-bold leading-7 text-center xl:text-4xl xl:leading-9 pt-6 xl:pt-0">
         Our Story
       </h2>

@@ -5,7 +5,7 @@
       :key="tab.id"
       class="flex flex-1 transition-all duration-300 mb-[-1px] items-center max-w-[180px]"
       :style="
-        route.name === tab.name
+        route.name === tab.label
           ? { 'border-bottom': '1px solid blue' }
           : { 'border-bottom': 'none' }
       "
@@ -13,7 +13,7 @@
       <NuxtLink
         class="relative block w-full py-2 transition-all duration-300 scale-90 rounded-lg animate-pop-in"
         :to="`/${parentRoute[1] + tab.slug}`"
-        :style="route.name === tab.name ? { background: '#E5E7EB' } : { background: 'none' }"
+        :style="route.name === tab.label ? { background: '#E5E7EB' } : { background: 'none' }"
       >
         <div class="flex items-center justify-center text-gray-900">
           <UIcon
@@ -21,7 +21,7 @@
             class="w-5 h-5"
           />
           <span class="ml-3 text-sm font-medium">
-            {{ tab.name }}
+            {{ tab.label }}
           </span>
         </div>
       </NuxtLink>

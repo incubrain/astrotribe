@@ -1,7 +1,7 @@
 <template>
   <div>
     <CommonTitle
-      class="w-full lg:w-1/2 mx-auto foreground p-4 rounded-md"
+      class="w-full lg:w-1/2 mx-auto background border border-color p-4 rounded-md"
       :title="about.title"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
@@ -27,7 +27,7 @@
       </div>
     </CommonTitle>
     <CommonTwoColumn>
-      <div class="foreground row-start-2 flex flex-col justify-center gap-4 rounded-md p-4 h-full">
+      <div class="background border border-color row-start-2 flex flex-col justify-center gap-4 rounded-md p-4 h-full">
         <div
           v-for="(section, i) in about.sections"
           :key="`competition-section-${i}`"

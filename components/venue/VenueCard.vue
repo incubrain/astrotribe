@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex flex-col text-left origin-left md:rounded-lg md:overflow-hidden animate-swipe-in"
+    class="relative flex flex-col text-left origin-left md:rounded-lg md:overflow-hidden animate-swipe-in border border-color background"
   >
     <NuxtImg
       :src="venue.featured_image"
@@ -24,7 +24,7 @@
         class="object-contain w-full aspect-square"
       />
     </div>
-    <div class="flex flex-col gap-2 p-4 foreground md:h-full justify-between">
+    <div class="flex flex-col gap-2 p-4 md:h-full justify-between">
       <div class="flex flex-col">
         <h3 class="text-base font-semibold">
           {{ venue.name?.substring(0, 30) }}
