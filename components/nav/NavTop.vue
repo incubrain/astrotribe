@@ -1,9 +1,9 @@
 <template>
   <nav
-    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between foreground z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
+    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between background z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
   >
     <div
-      class="grid grid-cols-2 lg:grid-cols-[minmax(240px,_0.5fr)_minmax(420px,_2fr)_minmax(300px,_1fr)] items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
+      class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
       <div class="border-color lg:border-r h-full pl-3 md:pl-4 flex col-start-1">
         <NavMobiSlideover
@@ -25,7 +25,9 @@
           <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
         </NuxtLink>
       </div>
-      <div class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1">
+      <div
+        class="lg:flex hidden items-center h-full flex-shrink-0 col-span-2 col-start-2 md:col-span-1"
+      >
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
         >
@@ -39,7 +41,7 @@
           </NuxtLink>
         </div>
       </div>
-      <div class="relative flex col-span-1 w-full col-start-3 pr-3 md:pr-6">
+      <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6 flex-shrink-0">
         <div class="flex items-center justify-end w-full gap-4">
           <a
             href="https://github.com/incubrain/astrotribe"
@@ -57,19 +59,8 @@
               @click="toggle"
             />
           </DarkToggle>
-          <div v-if="!loggedIn">
-            <UButtonGroup>
-              <UButton
-                variant="link"
-                to="/auth/login"
-              >
-                login
-              </UButton>
-              <UButton to="/auth/register"> Join Free </UButton>
-            </UButtonGroup>
-          </div>
           <div
-            v-else
+            v-if="isLoggedIn"
             class="flex gap-4"
           >
             <UDropdown
@@ -81,7 +72,7 @@
                 color="white"
                 class="flex items-center justify-center"
               >
-                Logged in
+                Logged in {{ auth.isLoggedIn }}
                 <UIcon
                   name="i-heroicons-chevron-down-20-solid"
                   class="flex justify-center items-center w-5 h-5"
@@ -89,16 +80,31 @@
               </UButton>
             </UDropdown>
           </div>
+          <div v-else>
+            <div class="space-x-2">
+              <UButton
+                variant="link"
+                to="/auth/login"
+              >
+                login
+              </UButton>
+              <UButton to="/auth/register"> Join Free </UButton>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const auth = useAuth()
-const loggedIn = computed(() => auth.isLoggedIn.value)
-const user = computed(() => auth.user.value)
+const user = useSupabaseUser()
+
+// !todo - move this to a pinia store
+const isLoggedIn = computed(() => {
+  return user.value !== null
+})
 
 const router = useRouter()
 
@@ -150,11 +156,11 @@ const links = [
 const dropdownItems = computed(() => [
   {
     label: 'Profile',
-    onClick: () => router.push(`/astrotribe/users/${user.value.id}`)
+    onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
   },
   {
     label: 'Settings',
-    onClick: () => router.push(`/astrotribe/users/${user.value.id}/settings`)
+    onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
   },
   {
     label: 'Logout',
