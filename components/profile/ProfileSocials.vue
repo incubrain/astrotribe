@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Socials } from '@/types'
+import type { UserSocial } from '~/types/users'
 
 defineProps({
   socials: {
-    type: Object as PropType<Socials>,
+    type: Object as PropType<UserSocial>,
     required: true
   }
 })

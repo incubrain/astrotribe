@@ -5,22 +5,23 @@
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
         alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
       }"
-      :title="user?.name"
+      :title="user.name"
+      :subtitle="user.position.title"
+    />
+    <UButton
+      class="hidden fixed lg:flex top-20 left-4"
+      icon="i-mdi-keyboard-backspace"
+      @click="$router.back()"
     >
-      <p class="text-xl font-semibold bg-white/30 px-2 rounded-sm">
-        {{ user.position.title }}
-      </p>
-    </ImageHero>
-    <UButton class="hidden fixed lg:flex top-20 left-4" icon="i-mdi-keyboard-backspace" @click="$router.back()">
       Back
     </UButton>
-    <div class="container flex flex-wrap items-start justify-center pb-6 lg:pb-12">
+    <div class="wrapper padded-x flex flex-wrap items-start justify-center lg:pb-12">
       <div
-        class="foreground rounded shadow-lg w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"
+        class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"
       >
         <div class="flex justify-start items-center -mt-16 lg:-mt-24">
           <NuxtImg
-            class="w-32 h-32 lg:w-48 lg:h-48 rounded-full p-2 foreground"
+            class="w-32 h-32 lg:w-48 lg:h-48 rounded-full p-2 background"
             :src="user.avatar"
             :alt="user.name"
           />
@@ -65,7 +66,9 @@
 import team from '@/data/home/team.json'
 
 const { name } = useRoute().params
-const user = computed(() => team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name))
+const user = computed(() =>
+  team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name)
+)
 
 definePageMeta({
   name: 'TeamIndividual',
