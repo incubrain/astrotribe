@@ -5,7 +5,7 @@
     <div
       class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <div class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 col-start-1">
+      <div class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 justify-between items-center col-start-1">
         <NavMobiSlideover
           :links="links"
           class="lg:hidden pl-3 md:pl-4 flex items-center"
@@ -22,7 +22,7 @@
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="blockpx-4 mr-4 text-xl font-semibold md:text-2xl"> AstronEra </h1>
+          <h1 class="block px-4 mr-4 text-xl font-semibold"> AstronEra </h1>
         </NuxtLink>
       </div>
       <div
