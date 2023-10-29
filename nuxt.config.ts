@@ -98,11 +98,9 @@ export default defineNuxtConfig({
     transpile: ['lightgallery']
   },
   devtools: {
-    // Enable devtools (default: true)
-    enabled: false,
-    // VS Code Server options
+    enabled: true,
+    // inclued vscode to enable element selection to open vscode related file
     vscode: {}
-    // ...other options
   },
   // partytown: {
   //     // For google analytics
