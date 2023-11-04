@@ -45,11 +45,26 @@
         <div
           class="flex flex-col gap-2 p-4 justify-center w-full rounded-md border border-color"
           :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-50 dark:bg-primary-950'"
+          @click="isOpen = true"
         >
           <h5 class="font-semibold"> Abstract </h5>
           <p class="text-sm">
-            {{ speaker.abstract }}
+            {{ speaker.abstract.title }}
           </p>
+          <UModal v-model="isOpen" :ui="{ base: 'w-[600px] overflow-y-scroll'}">
+            <UButton
+              class="md:hidden fixed top-2 right-2 m-4"
+              icon="i-mdi-close"
+              :ui="{ base: 'text-primary-500 dark:text-primary-600 hover:text-primary-600 dark:hover:text-primary-500' }"
+              @click="isOpen = false"
+            />
+            <div class="p-4 lg:p-8 space-y-2">
+              <h3 class="font-semibold text-2xl"> {{ speaker.abstract.title }}</h3>
+              <p>
+                {{ speaker.abstract.description }}
+              </p>
+            </div>
+          </UModal>
         </div>
       </template>
     </UCard>
@@ -58,6 +73,8 @@
 
 <script setup lang="ts">
 import { Speaker } from '~/types/conference'
+
+const isOpen = ref(false)
 
 defineProps({
   speaker: {
