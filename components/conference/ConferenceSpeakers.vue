@@ -108,8 +108,8 @@ const speakers = [
   {
     given_name: 'Bhakti',
     surname: 'Mithagri',
-    professional_title: 'Indian successor to the Compton Gamma-Ray Observatory (CGRO)',
-    bio: "I'm an astronomy enthusiast and a curious learner. I hold a Master's degree in Astrophysics from St. Xavier's College in Mumbai and am presently engaged in preparing for my Ph.D. applications. Curious learner and astronomy enthusiast. Graduated with a Master's degree in Astrophysics from St. Xavier's College in Mumbai and currently preparing for Ph.D.",
+    professional_title: 'MSc Astrophysics',
+    bio: "Curious learner and astronomy enthusiast. Graduated with a Master's degree in Astrophysics from St. Xavier's College in Mumbai and currently preparing for Ph.D.",
     abstract: {
       title: 'Indian successors to the Indian Gamma-Ray Observatory(IGRO) Mission',
       description: `We are proposing the development of a MeV (Mega-electronvolt) gamma-ray telescope to augment India's observation capabilities across
@@ -378,14 +378,14 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     inPerson: false
   },
   {
-    given_name: 'Nadia Madhavji',
-    surname: 'and Usha Sharma',
+    given_name: 'Nadia Makhijani',
+    surname: '& Udish Sharma',
     professional_title: 'BSc. Physics Students',
     bio: `We are pursuing BSc Physics hons from St. Stephen's College, University of Delhi and have mainly worked in radio astronomy,
     its applications and Cosmology. Nadia Makhijani and Udish Sharma are students in their final year at St. Stephen's College pursuing a course in physics.
     They work in the fields of Astronomy and Cosmology and are currently involved in setting up a Radio Astronomy Laboratory in their institution.
     They are also currently in the student led physics and astronomy society.`,
-    avatar: 'nadia-madhavji',
+    avatar: 'nadia-makhijani',
     abstract: {
       title: 'Affordable Radio Astronomy Lab',
       description: `Radio Astronomy is a growing field. It opens a window of observation in astronomy that is not largely affected by the atmosphere of earth,
@@ -502,7 +502,7 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
   {
     given_name: 'Amshu',
     surname: 'CR',
-    professional_title: 'Ecopreneur',
+    professional_title: 'Entrepreneur, Thapasu foods LLP',
     bio: 'Forest value chains, Land degradation, Biodynamic Agriculture, Tribal produce supply chains, Food security, knowledge preservation, Sustainablity ',
     abstract: {
       title: 'The ancient science of space and agriculture for sustainability and harmony',
