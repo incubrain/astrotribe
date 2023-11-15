@@ -6,7 +6,10 @@
         main: 'Experts From All Around The Globe'
       }"
     />
-    <ConferenceChairperson class="pt-6" :speaker="chairman" />
+    <ConferenceChairperson
+      class="pt-6"
+      :speaker="chairman"
+    />
     <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
       <LazyConferenceSpeakerCard
         v-for="speaker in filterSpeakers(true)"
@@ -531,7 +534,7 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     given_name: 'Albert',
     surname: 'Kuntu Forson',
     professional_title: 'PhD Research Student',
-    bio: 'Albert is specializing in the design, construction and implementation of a software-defined radio interferometer at the University of Mauritius',
+    bio: 'Albert, an engineer specializing in Radio Astronomy Instrumentation and radio interferometer designs at the University of Mauritius, holds the esteemed role of IAU-OAD National Astronomy Education Coordinator for Ghana. Additionally, he serves as the President for PRAGSAC and is highly enthusiastic about science communication.',
     abstract: {
       title:
         "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
