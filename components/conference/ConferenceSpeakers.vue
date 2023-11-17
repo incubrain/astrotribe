@@ -54,6 +54,7 @@ const speakers = [
     inPerson: true
   },
   {
+    title: 'Dr.',
     given_name: 'Constance (Connie)',
     surname: 'Walker',
     professional_title:
@@ -434,33 +435,6 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     avatar: 'rashmi-sheoran',
     featured: false,
     inPerson: true
-  },
-  {
-    title: 'Dr.',
-    given_name: 'Janak',
-    surname: 'Ratna Malla',
-    professional_title: 'Associate Prof. Janak Ratna Malla Department of Physics Amrit Campus',
-    bio: `Assoc. Prof. Dr. Janak Ratna Malla from Tribhuvan University, Nepal, is distinguished for his galaxy orientation research,
-    with many international publications in astrophysics. He's been active in conferences and leadership roles. Honors include the Dirgha Sewa Padak and Shikshya Diwash Padak.`,
-    abstract: {
-      title:
-        'Spatial Orientation of Spin vectors of Galaxies in the Substructures of SDSS Supercluster S[231+030+0117]',
-      description: `We present substructures and preferred alignments of 1172 galaxies in the
-      supercluster S[231+030+0017]. A study of the magnitude, color, redshift and number density
-      of the nearest neighbor galaxies was carried out. The ’galaxy counting code’ is used to count
-      nearest neighbors of each galaxy by varying the radius. We found 2 substructures in the
-      supercluster region. An empirical relation between the number of galaxies and mean redshift
-      of substructures is observed. The spatial distribution of the angular momentum vectors
-      of galaxies in the supercluster and its substructures are studied. The selection effects in
-      the database are removed using the random simulation method. The observed distributions
-      of the angular momentum vectors of galaxies are compared with the expected theoretical
-      distribution using chi-square, auto-correlation and Fourier tests. No preferred alignments of
-      the angular momentum vectors of galaxies are noticed in the supercluster S[231+030+0017], supporting the hierarchy model. In the substructures, local groupings are observed.
-      `
-    },
-    avatar: 'janak-ratna',
-    featured: false,
-    inPerson: false
   },
   {
     title: 'Dr.',

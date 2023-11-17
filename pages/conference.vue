@@ -27,7 +27,7 @@
     </div>
     <LazyConferenceVisitManali />
     <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
-      <!-- <LazyConferenceScheduleTabs /> -->
+      <LazyConferenceScheduleTabs />
       <LazyConferenceSpeakers />
     </div>
   </div>
