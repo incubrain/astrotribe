@@ -60,7 +60,7 @@
               @click="toggle"
             />
           </DarkToggle>
-          <div
+          <!-- <div
             v-if="isLoggedIn"
             class="flex gap-4"
           >
@@ -80,8 +80,8 @@
                 />
               </UButton>
             </UDropdown>
-          </div>
-          <div v-else>
+          </div> -->
+          <div>
             <div class="space-x-2">
               <UButton
                 variant="link"
@@ -99,15 +99,15 @@
 </template>
 
 <script setup lang="ts">
-const auth = useAuth()
-const user = useSupabaseUser()
+// const auth = useAuth()
+// const user = useSupabaseUser()
 
 // !todo - move this to a pinia store
-const isLoggedIn = computed(() => {
-  return user.value !== null
-})
+// const isLoggedIn = computed(() => {
+//   return user.value !== null
+// })
 
-const router = useRouter()
+// const router = useRouter()
 
 const links = [
   {
@@ -154,18 +154,18 @@ const links = [
   }
 ]
 
-const dropdownItems = computed(() => [
-  {
-    label: 'Profile',
-    onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
-  },
-  {
-    label: 'Settings',
-    onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
-  },
-  {
-    label: 'Logout',
-    onClick: () => auth.logout()
-  }
-])
+// const dropdownItems = computed(() => [
+//   {
+//     label: 'Profile',
+//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
+//   },
+//   {
+//     label: 'Settings',
+//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
+//   },
+//   {
+//     label: 'Logout',
+//     onClick: () => auth.logout()
+//   }
+// ])
 </script>
