@@ -31,11 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Event } from '@/types/events'
+import type { EventType } from '@/types/events'
 
 defineProps({
   event: {
-    type: Object as PropType<Event>,
+    type: Object as PropType<EventType>,
     required: true
   },
   time: {

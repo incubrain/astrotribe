@@ -11,5 +11,5 @@ export const faqSchema = z.object({
   description: z.string()
 })
 
-export type Title = z.infer<typeof titleSchema>
-export type Faq = z.infer<typeof faqSchema>
+export type TitleType = z.infer<typeof titleSchema>
+export type FaqType = z.infer<typeof faqSchema>

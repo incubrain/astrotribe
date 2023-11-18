@@ -28,7 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { RegisterForm, FormField } from '@/types/forms'
+import { RegisterForm } from '@/types/forms'
+import type { FormFieldType } from '@/types/forms'
 
 const auth = useAuth()
 
@@ -55,7 +56,7 @@ const schema = computed(() => {
         type: 'password'
       }
     }
-  ] as FormField[]
+  ] as FormFieldType[]
 })
 
 definePageMeta({

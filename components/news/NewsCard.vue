@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 defineProps({
   post: {

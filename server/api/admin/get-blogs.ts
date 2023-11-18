@@ -1,10 +1,10 @@
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
     // ${scraperBlogs[0].name}
     const storage = useStorage('blogs')
-    const blogsFile = await storage.getItem<News[]>('summary-test.json')
+    const blogsFile = await storage.getItem<NewsType[]>('summary-test.json')
     return {
       status: 200,
       message: 'Blogs retrieved',

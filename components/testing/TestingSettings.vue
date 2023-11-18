@@ -15,11 +15,11 @@
 </template>
 
 <script setup lang="ts">
-import { Settings } from '@/types/testing'
+import type { TestingSettingsType } from '@/types/testing'
 
 defineProps({
   feature: {
-    type: String as PropType<keyof Settings>,
+    type: String as PropType<keyof TestingSettingsType>,
     required: true
   }
 })

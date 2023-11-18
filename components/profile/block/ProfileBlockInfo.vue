@@ -25,11 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '@/types/users'
+import type { UserType } from '@/types/users'
 
 const props = defineProps({
   user: {
-    type: Object as PropType<User>,
+    type: Object as PropType<UserType>,
     required: true
   }
 })

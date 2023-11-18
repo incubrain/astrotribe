@@ -7,6 +7,6 @@
     "date": "2023-06-22 16:00:00+00",
     "featured_image": "images/events/astrotribe-paid-events-shweta-hosting-event.png",
     "venue_id": 1,
-    "event_hosts": [2]
+    "event_hosts": ["e1bf12c6-aad4-4905-bda2-127c027504a3"]
   }
 ]

@@ -21,7 +21,7 @@ const SMTPMessagesSchema = z.object({
 })
 
 // Infer the types from the schemas
-export type MessageRequest = z.infer<typeof MessageRequestSchema>
-export type Message = z.infer<typeof MessageSchema>
-export type SMTPMessage = z.infer<typeof SMTPMessageSchema>
-export type SMTPMessages = z.infer<typeof SMTPMessagesSchema>
+export type MessageRequestType = z.infer<typeof MessageRequestSchema>
+export type MessageType = z.infer<typeof MessageSchema>
+export type SMTPMessageType = z.infer<typeof SMTPMessageSchema>
+export type SMTPMessagesType = z.infer<typeof SMTPMessagesSchema>

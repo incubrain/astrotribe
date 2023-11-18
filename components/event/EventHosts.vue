@@ -18,7 +18,7 @@
               folderPath: `${host.id}/avatar`,
               fileType: 'user-avatar',
               file: host.avatar,
-              isPrivate: false,
+              isPrivate: false
             })
           "
           loading="lazy"
@@ -34,10 +34,9 @@
       <h3 class="m-0 text-base font-semibold">
         <span
           v-for="(host, index) in hosts"
-          :key="host.id"
+          :key="`host-${host.id}`"
         >
-          <span v-if="host.id === 2">This could be you</span>
-          <NuxtLink v-else :to="`/astrotribe/users/${host.id}`">
+          <NuxtLink :to="`/astrotribe/users/${host.id}`">
             <span> {{ host.given_name }} </span>
             <span v-if="index !== hosts.length - 1">, </span>
           </NuxtLink>
@@ -49,13 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import type { EventHost } from '@/types/events'
+import type { EventHostType } from '@/types/events'
 
 const s = useStorage()
 
 defineProps({
   hosts: {
-    type: Array as PropType<EventHost[]>,
+    type: Array as PropType<EventHostType[]>,
     required: true
   }
 })

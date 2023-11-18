@@ -1,5 +1,5 @@
 import logger from '../utils/logger'
-import { NasaImg } from '@/types/nasa'
+import type { NasaImgType } from '@/types/nasa'
 
 export default defineEventHandler(async (event) => {
   // use date for KV storage
@@ -8,12 +8,12 @@ export default defineEventHandler(async (event) => {
   const storage = useStorage('data')
 
   // Check if item exists in storage
-  let nasaImg: NasaImg | null = null
+  let nasaImg: NasaImgType | null = null
   const isItemInStorage = await storage.hasItem(cacheKey)
   logger.info(`Is ${cacheKey} in storage: ${isItemInStorage}`)
   if (isItemInStorage) {
     // Get item from storage
-    nasaImg = await storage.getItem<NasaImg>(cacheKey)!
+    nasaImg = await storage.getItem<NasaImgType>(cacheKey)!
     logger.info(`Got ${cacheKey} from storage: `, nasaImg)
   } else {
     // Get the item for the previous day
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     const isPreviousItemInStorage = await storage.hasItem(previousCacheKey)
     if (isPreviousItemInStorage) {
-      nasaImg = await storage.getItem<NasaImg>(previousCacheKey)!
+      nasaImg = await storage.getItem<NasaImgType>(previousCacheKey)!
       logger.info(`Got ${previousCacheKey} from storage: `, nasaImg)
     }
   }

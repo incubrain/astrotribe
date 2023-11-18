@@ -6,7 +6,7 @@
   >
     <div
       v-for="(field, index) in fields"
-      :key="index"
+      :key="`form-feild-${index}`"
       class="w-full"
     >
       <label
@@ -51,13 +51,13 @@
 </template>
 
 <script setup lang="ts">
-import { ComputedRef } from 'vue'
 import { useForm, useField } from 'vee-validate'
-import { FormField } from 'types/forms'
+import type { ComputedRef } from 'vue'
+import type { FormFieldType } from '@/types/forms'
 
 const p = defineProps({
   schema: {
-    type: Array as PropType<FormField[]>,
+    type: Array as PropType<FormFieldType[]>,
     required: true
   },
   validationSchema: {
@@ -102,7 +102,7 @@ if (p.schema.length === 0) {
   throw createError('FormDynamic: schema is empty')
 }
 
-p.schema.forEach((item: FormField) => {
+p.schema.forEach((item: FormFieldType) => {
   const { value, errorMessage, errors } = useField(item.name)
   fields.value.push({
     value,

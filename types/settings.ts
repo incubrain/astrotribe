@@ -29,5 +29,5 @@ export const SettingsAccountValidation = z.object({
 export const FormAccountSchema = toTypedSchema(SettingsAccountValidation)
 export const FormPasswordSchema = toTypedSchema(SettingsPasswordValidation)
 
-export type SettingsAccount = z.infer<typeof SettingsAccountValidation>
-export type SettingsPassword = z.infer<typeof SettingsPasswordValidation>
+export type SettingsAccountType = z.infer<typeof SettingsAccountValidation>
+export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>

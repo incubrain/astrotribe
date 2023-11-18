@@ -1,4 +1,4 @@
-import { SettingsAccount, SettingsPassword } from '@/types/settings'
+import type { SettingsAccountType, SettingsPasswordType } from '@/types/settings'
 
 const settingsTabs = [
   {
@@ -71,7 +71,7 @@ export default defineStore('settings', () => {
     }
   }
 
-  interface UpdateAccountSettings extends SettingsAccount {
+  interface UpdateAccountSettings extends SettingsAccountType {
     id: string
   }
 
@@ -97,7 +97,7 @@ export default defineStore('settings', () => {
     }
   }
 
-  // function updatePassword(newPassword: SettingsPassword) {
+  // function updatePassword(newPassword: SettingsPasswordType) {
   //   // !important: we will add password upate functionality later
   //   // TODO: Upate pinia store
   //   // TODO: Call API to update the password

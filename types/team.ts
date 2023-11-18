@@ -41,9 +41,9 @@ export const TeamMemberSchema = z.object({
 export const TeamSchema = z.array(TeamMemberSchema)
 
 // Infer types
-export type Position = z.infer<typeof PositionSchema>
-export type Social = z.infer<typeof SocialSchema>
-export type Achievement = z.infer<typeof AchievementSchema>
-export type Publicity = z.infer<typeof PublicitySchema>
-export type TeamMember = z.infer<typeof TeamMemberSchema>
-export type Team = z.infer<typeof TeamSchema>
+export type PositionType = z.infer<typeof PositionSchema>
+export type SocialType = z.infer<typeof SocialSchema>
+export type AchievementType = z.infer<typeof AchievementSchema>
+export type PublicityType = z.infer<typeof PublicitySchema>
+export type TeamMemberType = z.infer<typeof TeamMemberSchema>
+export type TeamType = z.infer<typeof TeamSchema>

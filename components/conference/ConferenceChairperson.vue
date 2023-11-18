@@ -44,11 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { Speaker } from '~/types/conference'
+import type { SpeakerType } from '@/types/conference'
 
 defineProps({
   speaker: {
-    type: Object as PropType<Speaker>,
+    type: Object as PropType<SpeakerType>,
     required: true
   }
 })

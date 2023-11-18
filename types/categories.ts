@@ -5,4 +5,4 @@ const CategorySchema = z.object({
   name: z.string()
 })
 
-export type Category = z.infer<typeof CategorySchema>
+export type CategoryType = z.infer<typeof CategorySchema>

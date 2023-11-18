@@ -10,4 +10,4 @@ const SummarySchema = z
   })
   .nullable()
 
-export type Summary = z.infer<typeof SummarySchema>
+export type SummaryType = z.infer<typeof SummarySchema>

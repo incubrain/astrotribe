@@ -7,4 +7,4 @@ export const RoleSchema = z.object({
   body: z.string().optional()
 })
 
-export type Role = z.infer<typeof RoleSchema>
+export type RoleType = z.infer<typeof RoleSchema>

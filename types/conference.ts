@@ -17,4 +17,4 @@ const speakerSchema = z.object({
   featured: z.boolean()
 })
 
-export type Speaker = z.infer<typeof speakerSchema>
+export type SpeakerType = z.infer<typeof speakerSchema>

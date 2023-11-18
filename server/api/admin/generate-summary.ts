@@ -1,9 +1,9 @@
-import { NewsGenerate } from '@/types/news'
+import type { NewsGenerateType } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
     const storage = useStorage('blogs')
-    const blogs = await storage.getItem<NewsGenerate[]>('summary-test.json')
+    const blogs = await storage.getItem<NewsGenerateType[]>('summary-test.json')
     if (!blogs) throw createError('No blogs found')
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].raw.body === undefined)

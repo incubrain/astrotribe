@@ -86,8 +86,5 @@ export default <Partial<Config>>{
       }
     }
   },
-  plugins: [
-    // require('@tailwindcss/typography'),
-    // https://tailwindcss.com/docs/typography-plugin
-  ]
+  plugins: []
 }

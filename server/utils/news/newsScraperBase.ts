@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer'
 import { Blog } from './newsBlogs'
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 interface ScrapeFunction {
   (browser: Browser, blog: Blog): Promise<any[]>
@@ -44,7 +44,7 @@ const newsScraperBase: ScrapeFunction = async (browser: Browser, blog: Blog) => 
   console.log('newsScraperBase: try formatting posts')
   const formattedPosts = newsFormat(posts) // Assuming newsFormat is defined elsewhere
 
-  return formattedPosts as News[]
+  return formattedPosts as NewsType[]
 }
 
 export default newsScraperBase
