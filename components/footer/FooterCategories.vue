@@ -7,7 +7,7 @@
     </li>
     <li
       v-for="(link, linkIndex) in category.links"
-      :key="linkIndex"
+      :key="`footer-link-${linkIndex}`"
       class="mt-6"
     >
       <a

@@ -17,4 +17,4 @@ export const PageSchema = z.object({
     .optional()
 })
 
-export type Page = z.infer<typeof PageSchema>
+export type PageType = z.infer<typeof PageSchema>

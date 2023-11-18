@@ -1,4 +1,4 @@
-import { TestingSettingsType } from '@/types/testing'
+import type { TestingSettingsType } from '@/types/testing'
 
 export default defineStore('admin-settings', () => {
   const env = useRuntimeConfig().public

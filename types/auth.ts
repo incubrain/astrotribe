@@ -70,8 +70,8 @@ export const simpleUserSchema = z.object({
 })
 
 // Infer the types
-export type AuthType = z.infer<typeof authSchema>
-export type SimpleUserType = z.infer<typeof simpleUserSchema>
-export type EmailUnvalidatedUserType = z.infer<typeof emailUnvalidatedUserSchema>
-export type UserType = z.infer<typeof userSchema>
-export type SessionType = z.infer<typeof sessionSchema>
+export type AuthTypeType = z.infer<typeof authSchema>
+export type SimpleUserTypeType = z.infer<typeof simpleUserSchema>
+export type EmailUnvalidatedUserTypeType = z.infer<typeof emailUnvalidatedUserSchema>
+export type UserTypeType = z.infer<typeof userSchema>
+export type SessionTypeType = z.infer<typeof sessionSchema>

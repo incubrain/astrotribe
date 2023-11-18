@@ -1,8 +1,8 @@
-import { UserFull } from '@/types/users'
+import type { UserFullType } from '@/types/users'
 
 export const useUsersStore = defineStore('users', () => {
-  const users = ref([] as UserFull[])
-  const userCurrent = ref({} as UserFull)
+  const users = ref([] as UserFullType[])
+  const userCurrent = ref({} as UserFullType)
 
   async function checkWeHaveUsers(): Promise<boolean> {
     if (users.value.length) return true

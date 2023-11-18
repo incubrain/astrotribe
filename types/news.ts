@@ -35,7 +35,7 @@ export const NewsEmbeddingSchema = z.object({
   created_at: z.string().nullable()
 })
 
-export type News = z.infer<typeof NewsSchema>
-export type Media = z.infer<typeof MediaSchema>
-export type NewsEmbedding = z.infer<typeof NewsEmbeddingSchema>
-export type NewsScraped = z.infer<typeof NewsScrapedSchema>
+export type NewsType = z.infer<typeof NewsSchema>
+export type MediaType = z.infer<typeof MediaSchema>
+export type NewsEmbeddingType = z.infer<typeof NewsEmbeddingSchema>
+export type NewsScrapedType = z.infer<typeof NewsScrapedSchema>

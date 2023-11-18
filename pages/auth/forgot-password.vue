@@ -13,7 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { ForgotPasswordForm, FormField } from '@/types/forms'
+import { ForgotPasswordForm } from '@/types/forms'
+import type { FormFieldType } from '@/types/forms'
 
 const schema = computed(() => {
   return [
@@ -25,7 +26,7 @@ const schema = computed(() => {
         type: 'email'
       }
     }
-  ] as FormField[]
+  ] as FormFieldType[]
 })
 
 const auth = useAuth()

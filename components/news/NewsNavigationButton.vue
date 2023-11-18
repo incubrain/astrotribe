@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 defineProps({
   condition: {
@@ -32,7 +32,7 @@ defineProps({
     default: false
   },
   post: {
-    type: Object as () => News,
+    type: Object as () => NewsType,
     required: true
   },
   handleClick: {

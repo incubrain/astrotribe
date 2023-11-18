@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { Speaker } from '~/types/conference'
+import type { SpeakerType } from '@/types/conference'
 
 const chairman = {
   given_name: 'Ruchira',
@@ -584,7 +584,7 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     featured: true,
     inPerson: true
   }
-] as Speaker[]
+] as SpeakerType[]
 
 const filterSpeakers = (featured: boolean, toSort = false) => {
   return speakers

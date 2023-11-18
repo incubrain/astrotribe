@@ -11,8 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { FormPasswordSchema, SettingsPassword } from '@/types/settings'
-import { FormField } from '@/types/forms'
+import { FormPasswordSchema } from '@/types/settings'
+import type { SettingsPasswordType } from '@/types/settings'
+import type { FormFieldType } from '@/types/forms'
 
 const schema = computed(() => {
   return [
@@ -40,13 +41,13 @@ const schema = computed(() => {
         type: 'password'
       }
     }
-  ] as FormField[]
+  ] as FormFieldType[]
 })
 
 const settings = useUserSettingsStore()
 const { userPasswordSettings } = storeToRefs(settings)
 
-function onSubmitPassword(value: SettingsPassword) {
+function onSubmitPassword(value: SettingsPasswordType) {
   settings.updatePassword(value)
 }
 </script>

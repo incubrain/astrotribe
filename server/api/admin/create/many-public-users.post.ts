@@ -1,5 +1,3 @@
-import { UserFull } from '@/types/users'
-
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
   console.log('many-users', users)

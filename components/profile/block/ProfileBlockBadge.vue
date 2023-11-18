@@ -11,13 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { UserRole } from '@/types/users'
+import type { UserRoleType } from '@/types/users'
 
 const util = useUtils()
 
 defineProps({
   userRole: {
-    type: Object as PropType<UserRole>,
+    type: Object as PropType<UserRoleType>,
     required: true
   }
 })

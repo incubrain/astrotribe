@@ -11,4 +11,4 @@ export const NasaImgSchema = z.object({
   service_version: z.string()
 })
 
-export type NasaImg = z.infer<typeof NasaImgSchema>
+export type NasaImgType = z.infer<typeof NasaImgSchema>

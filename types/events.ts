@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const HostSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   given_name: z.string(),
   avatar: z.string()
 })
@@ -40,7 +40,7 @@ export const EventSchema = z.object({
   hosts: z.array(HostSchema)
 })
 
-export type Venue = z.infer<typeof VenueSchema>
-export type Location = z.infer<typeof LocationSchema>
-export type Host = z.infer<typeof HostSchema>
-export type Event = z.infer<typeof EventSchema>
+export type VenueType = z.infer<typeof VenueSchema>
+export type LocationType = z.infer<typeof LocationSchema>
+export type EventHostType = z.infer<typeof HostSchema>
+export type EventType = z.infer<typeof EventSchema>

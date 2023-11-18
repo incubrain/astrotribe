@@ -34,7 +34,7 @@
   >
     <SwiperSlide
       v-for="(item, index) in items"
-      :key="index"
+      :key="`swiper-slide-${index}`"
     >
       <slot :item="item"></slot>
     </SwiperSlide>

@@ -40,7 +40,6 @@
             :rows="item.items"
             :ui="{
               wrapper: width > 520 ? '' : 'overflow-x-scroll',
-              base: 'max-w-full table-fixed',
               thead: 'sticky top-0 z-10'
             }"
           >
@@ -83,7 +82,6 @@
 
 <script setup lang="ts">
 function convertISTtoLocal(day: string, time: { start: string; end: string }) {
-  console.log('dateInIST', day, time)
   const start = `2023-11-${day}T${time.start}:00+05:30` // '+05:30' is the offset for IST
   const end = `2023-11-${day}T${time.end}:00+05:30` // '+05:30' is the offset for IST
 

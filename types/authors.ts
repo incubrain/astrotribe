@@ -7,4 +7,4 @@ const AuthorSchema = z.object({
   image: z.string().nullable()
 })
 
-export type Author = z.infer<typeof AuthorSchema>
+export type AuthorType = z.infer<typeof AuthorSchema>

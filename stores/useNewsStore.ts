@@ -1,7 +1,7 @@
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 export const useNewsStore = defineStore('news', () => {
-  const posts = ref([] as News[])
+  const posts = ref([] as NewsType[])
   const summaryLevel = ref('beginner' as 'beginner' | 'intermediate' | 'expert')
   const isModalOpen = ref(false)
   const currentIndex = ref(0)

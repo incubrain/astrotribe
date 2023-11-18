@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import type { VenueBasic } from '@/types'
+import type { VenueType } from '@/types/events'
 
 defineProps({
   venue: {
-    type: Object as PropType<VenueBasic>,
+    type: Object as PropType<VenueType>,
     required: true
   }
 })
