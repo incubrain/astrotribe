@@ -24,6 +24,6 @@ export const ToastStateSchema = z.object({
   toasts: z.array(ToastSchema)
 })
 
-export type Toast = z.infer<typeof ToastSchema>
-export type ToastAction = z.infer<typeof ToastActionSchema>
-export type ToastState = z.infer<typeof ToastStateSchema>
+export type ToastType = z.infer<typeof ToastSchema>
+export type ToastActionType = z.infer<typeof ToastActionSchema>
+export type ToastStateType = z.infer<typeof ToastStateSchema>

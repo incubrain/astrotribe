@@ -75,11 +75,11 @@
 </template>
 
 <script setup lang="ts">
-import { TeamMember } from '@/types/team'
+import type { TeamMemberType } from '@/types/team'
 
 defineProps({
   member: {
-    type: Object as PropType<TeamMember>,
+    type: Object as PropType<TeamMemberType>,
     required: true
   }
 })

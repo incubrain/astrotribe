@@ -1,8 +1,9 @@
-import { NasaImgSchema, NasaImg } from '@/types/nasa'
+import { NasaImgSchema } from '@/types/nasa'
+import type { NasaImgType } from '@/types/nasa'
 
 export default defineEventHandler(async (event) => {
   try {
-    let nasaImg: NasaImg | null
+    let nasaImg: NasaImgType | null
     const date = new Date().toISOString().split('T')[0]
     const kvForCache = `nasa-iotd:${date}`
     // const storage = useStorage('data')

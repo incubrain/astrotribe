@@ -1,4 +1,5 @@
-import { SMTPMessage, SMTPMessages, MessageRequest, MessageRequestSchema } from '@/types/smtp'
+import type { SMTPMessageType, SMTPMessagesTyep, MessageRequestType } from '@/types/smtp'
+import { MessageRequestSchema } from '@/types/smtp'
 
 export default function useAdmin() {
   const smtpMessages = {
@@ -9,9 +10,9 @@ export default function useAdmin() {
         html: '<strong>It works!</strong>'
       }
     ]
-  } as SMTPMessages
+  } as SMTPMessagesType
 
-  const sendEmail = async (request: MessageRequest) => {
+  const sendEmail = async (request: MessageRequestType) => {
     const validatedRequest = MessageRequestSchema.safeParse(request)
     if (!validatedRequest.success) {
       throw createError(`Error With Input For sendEmail: ${validatedRequest.error}`)
@@ -32,7 +33,7 @@ export default function useAdmin() {
 
     const { data, error } = await useFetch('/api/smtp/send', {
       method: 'POST',
-      body: JSON.stringify({ message: { ...message, email } as SMTPMessage })
+      body: JSON.stringify({ message: { ...message, email } as SMTPMessageType })
     })
 
     if (error.value) {
@@ -41,7 +42,6 @@ export default function useAdmin() {
         message: error.value.message
       })
     }
-
 
     // const validatedUser = emailUnvalidatedUserSchema.safeParse(data.user)
 

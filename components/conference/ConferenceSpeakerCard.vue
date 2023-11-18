@@ -51,11 +51,16 @@
           <p class="text-sm">
             {{ speaker.abstract.title }}
           </p>
-          <UModal v-model="isOpen" :ui="{ base: 'w-[600px] overflow-y-scroll'}">
+          <UModal
+            v-model="isOpen"
+            :ui="{ base: 'w-[600px] overflow-y-scroll' }"
+          >
             <UButton
               class="md:hidden fixed top-2 right-2 m-4"
               icon="i-mdi-close"
-              :ui="{ base: 'text-primary-500 dark:text-primary-600 hover:text-primary-600 dark:hover:text-primary-500' }"
+              :ui="{
+                base: 'text-primary-500 dark:text-primary-600 hover:text-primary-600 dark:hover:text-primary-500'
+              }"
               @click="isOpen = false"
             />
             <div class="p-4 lg:p-8 space-y-2">
@@ -72,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { Speaker } from '~/types/conference'
+import { Speaker } from '@/types/conference'
 
 const isOpen = ref(false)
 

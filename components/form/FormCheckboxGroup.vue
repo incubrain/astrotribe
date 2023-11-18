@@ -2,7 +2,7 @@
   <div class="flex flex-wrap justify-center">
     <div
       v-for="(option, index) in options"
-      :key="index"
+      :key="`checkbox-group-${index}`"
       class="flex flex-col items-center justify-center m-2 transition-colors ease-linear border cursor-pointer w-36 h-36 border-color rounded-2xl shadow-soft-xl"
       :class="{ 'bg-primary-500 text-white': isSelected(option.value) }"
       @click="toggleSelection(option.value)"
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { CheckboxOption } from '@/types/forms'
+import type { CheckboxOptionType } from '@/types/forms'
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -35,7 +35,7 @@ const props = defineProps({
     default: () => []
   },
   options: {
-    type: Array<CheckboxOption>,
+    type: Array<CheckboxOptionType>,
     required: true
   },
   name: {
@@ -48,7 +48,7 @@ const props = defineProps({
   }
 })
 
-const isSelected = (value) => props.modelValue.includes(value)
+const isSelected = (value: string) => props.modelValue.includes(value)
 
 const toggleSelection = (value: string) => {
   const newModelValue = [...props.modelValue]

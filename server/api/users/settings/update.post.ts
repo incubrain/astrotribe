@@ -1,20 +1,16 @@
-import {
-  SettingsAccountValidation,
-  SettingsPasswordValidation,
-  SettingsAccount,
-  SettingsPassword
-} from '@/types/settings'
+import { SettingsAccountValidation, SettingsPasswordValidation } from '@/types/settings'
+import type { SettingsAccountType, SettingsPasswordType } from '@/types/settings'
 
 // Validate the settings data based on the type
 function validateSettingsData(
   settingsType: string,
-  data: SettingsAccount | SettingsPassword
-): SettingsAccount | SettingsPassword {
+  data: SettingsAccountType | SettingsPasswordType
+): SettingsAccountType | SettingsPasswordType {
   switch (settingsType) {
     case 'account':
-      return SettingsAccountValidation.parse(data) as SettingsAccount
+      return SettingsAccountValidation.parse(data) as SettingsAccountType
     case 'password':
-      return SettingsPasswordValidation.parse(data) as SettingsPassword
+      return SettingsPasswordValidation.parse(data) as SettingsPasswordType
     default:
       throw new Error(`Unsupported settings type: ${settingsType}`)
   }

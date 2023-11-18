@@ -72,11 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import { News } from '@/types/news'
+import type { NewsType } from '@/types/news'
 
 defineProps({
   posts: {
-    type: Array as () => News[],
+    type: Array as () => NewsType[],
     required: true
   },
   currentIndex: {

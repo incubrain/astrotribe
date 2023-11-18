@@ -11,7 +11,7 @@
         :to="`users/${user.id}`"
         class="group"
       >
-        <div class="flex items-center justify-center gap-2">
+        <div class="flex items-center justify-center gap-3">
           <NuxtImg
             :src="
               s.image.single({
@@ -23,24 +23,24 @@
               })
             "
             loading="lazy"
-            width="40"
-            height="40"
+            width="46"
+            height="46"
             quality="80"
             class="object-top rounded-full"
           />
-          <div class="flex flex-col gap-2 align-start">
+          <div class="flex flex-col gap-1 align-start">
             <h2
-              class="text-sm font-semibold tracking-tighter text-left md:text-lg group-hover:underline group-hover:underline-offset-2"
+              class="font-semibold tracking-tighter text-left md:text-lg group-hover:underline group-hover:underline-offset-2"
             >
               {{ user.given_name }} {{ user.surname }}
             </h2>
-            <div class="flex items-start w-full gap-1 text-xs">
-              <span class="flex items-center justify-center font-light">
+            <div class="flex items-start w-full gap-1 text-sm">
+              <span class="flex items-center justify-center font-light leading-none">
                 <UIcon
                   :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
                 />
-                {{ user.roles.name }} | @{{ user.username }}
+                @{{ user.username.toLowerCase() }} | {{ user.roles.name }}
               </span>
             </div>
           </div>
@@ -61,7 +61,7 @@
     </div>
     <p
       v-if="user.introduction"
-      class="text-xs text-left"
+      class="text-sm text-left"
     >
       {{ user.introduction?.slice(0, 120) }}...
     </p>

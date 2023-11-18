@@ -1,5 +1,5 @@
-import { News, NewsScraped } from '@/types/news'
-import { Author } from '@/types/authors'
+import type { NewsType, NewsScrapedType } from '@/types/news'
+import type { AuthorType } from '@/types/authors'
 
 const formatMedia = (images: any, videos: any) => {
   const media = [...(images || []), ...(videos || [])]
@@ -15,16 +15,16 @@ const formatMedia = (images: any, videos: any) => {
 
 // The goal of this function is to take the scraped data and format it to match the News database table
 const newsFormat = (
-  scrapedData: NewsScraped[]
+  scrapedData: NewsScrapedType[]
 ): {
-  newsPost: Partial<News>[]
-  authors: Partial<Author>[]
+  newsPost: Partial<NewsType>[]
+  authors: Partial<AuthorType>[]
 } => {
-  const newsPosts: Partial<News>[] = []
-  const authors: Partial<Author>[] = []
+  const newsPosts: Partial<NewsType>[] = []
+  const authors: Partial<AuthorType>[] = []
 
   for (const data of scrapedData) {
-    const newsPost: Partial<News> = {
+    const newsPost: Partial<NewsType> = {
       created_at: data.created_at,
       updated_at: data.updated_at || data.created_at,
       title: data.title,
@@ -36,7 +36,7 @@ const newsFormat = (
     newsPosts.push(newsPost)
 
     if (data.author) {
-      const author: Partial<Author> = {
+      const author: Partial<AuthorType> = {
         name: data.author.name || null,
         link: null,
         image: data.author.image || null

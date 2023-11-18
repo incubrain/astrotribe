@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { TestingSettingsType } from '@/types/testing'
+import type { TestingSettingsType } from '@/types/testing'
 
 type FeatureKeys = keyof TestingSettingsType
 

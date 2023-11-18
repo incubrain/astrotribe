@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Venue } from '@/types/events'
+import type { VenueType } from '@/types/events'
 
 const getBG = (id: number) => {
   const darkBG = [3]
@@ -77,7 +77,7 @@ const getBG = (id: number) => {
 
 defineProps({
   venue: {
-    type: Object as PropType<Venue>,
+    type: Object as PropType<VenueType>,
     required: true
   }
 })

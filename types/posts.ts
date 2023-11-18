@@ -12,4 +12,4 @@ export const PostSchema = z.object({
 
 // make posts extendable
 
-export type Post = z.infer<typeof PostSchema>
+export type PostType = z.infer<typeof PostSchema>

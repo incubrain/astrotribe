@@ -19,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { UserSocial } from '@/types/users'
+import type { UserSocialType } from '@/types/users'
 
 defineProps({
   socials: {
-    type: Array as PropType<UserSocial[]>,
+    type: Array as PropType<UserSocialType[]>,
     required: true
   },
   hasTitle: {

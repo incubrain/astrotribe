@@ -70,7 +70,7 @@ export const UserFullSchema = UserBasicSchema.extend({
 
 export const UserRolesSchema = z.array(UserRoleSchema)
 
-export type User = z.infer<typeof UserBasicSchema>
-export type UserFull = z.infer<typeof UserFullSchema>
-export type UserRole = z.infer<typeof UserRoleSchema>
-export type UserSocial = z.infer<typeof UserSocialSchema>
+export type UserType = z.infer<typeof UserBasicSchema>
+export type UserFullType = z.infer<typeof UserFullSchema>
+export type UserRoleType = z.infer<typeof UserRoleSchema>
+export type UserSocialType = z.infer<typeof UserSocialSchema>

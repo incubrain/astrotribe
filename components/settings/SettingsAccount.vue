@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { FormAccountSchema, SettingsAccount } from '@/types/settings'
-import { FormField } from '@/types/forms'
+import type { FormFieldType } from '@/types/forms'
 
 const schema = computed(() => {
   return [
@@ -67,7 +67,7 @@ const schema = computed(() => {
         type: 'textarea'
       }
     }
-  ] as FormField[]
+  ] as FormFieldType[]
 })
 
 const settings = useUserSettingsStore()

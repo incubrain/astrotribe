@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { Page } from '@/types/pages'
+import type { PageType } from '@/types/pages'
 
 const pages = ref([
   {
@@ -50,7 +50,7 @@ const pages = ref([
   //   slug: '/astrotribe/serp',
   //   icon: 'i-mdi-newspaper-variant-outline'
   // }
-] as Page[])
+] as PageType[])
 
 const socials = ref([
   {
@@ -81,6 +81,6 @@ export default function usePages() {
     pages,
     socials,
     tabs: (currentPage: string) =>
-      pages.value.find((p: Page) => p.label.toLocaleLowerCase() === currentPage)
+      pages.value.find((p: PageType) => p.label.toLocaleLowerCase() === currentPage)
   }
 }
