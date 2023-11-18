@@ -65,11 +65,6 @@ const manali = {
       url: 'https://instahimachal.com/blog/best-traditional-himachali-food-in-manali/'
     },
     {
-      title: 'Getting to Manali (Bus from Delhi will be organized)',
-      url: 'https://www.himachaltourism.gov.in/destination/manali/',
-      disabled: true
-    },
-    {
       title: 'Climate',
       url: 'https://www.accuweather.com/en/in/manali/198332/november-weather/198332?year=2023'
     }
