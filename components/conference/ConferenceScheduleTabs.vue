@@ -8,14 +8,14 @@
     />
     <div class="space-x-2">
       <UButton
-            v-for="link in registerLinks"
-            :key="`register-for-${link.day}`"
-            :to="link.url"
-            target="_blank"
-            color="primary"
-          >
-           Online Register {{ link.day }}
-          </UButton>
+        v-for="link in registerLinks"
+        :key="`register-for-${link.day}`"
+        :to="link.url"
+        target="_blank"
+        color="primary"
+      >
+        Online Register {{ link.day }}
+      </UButton>
     </div>
     <UTabs
       :items="schedule"
