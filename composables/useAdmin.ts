@@ -60,7 +60,6 @@ export default function useAdmin() {
       if (error) {
         throw createError(`error updating users: ${error.value}`)
       }
-      console.log('updated users', data)
     } catch (error) {
       console.error(`error updating users: ${error}`)
     }

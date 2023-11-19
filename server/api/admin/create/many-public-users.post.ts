@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
-  console.log('many-users', users)
   const client = useClient()
   let message
   let status

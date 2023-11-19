@@ -13,17 +13,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { settings } = storeToRefs(admin)
 
   if (!settings.value.authOn) {
-    console.log('auth is off')
     return
   }
 
   if (isProtected(to.path)) return
-  console.log('protected route')
 
   const user = useSupabaseUser()
   if (!user.value) {
-    console.log('no user')
     return navigateTo(login)
   }
-  console.log('have user:', user)
 })
