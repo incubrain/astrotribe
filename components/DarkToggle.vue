@@ -35,12 +35,10 @@ function toggle(event?: MouseEvent) {
   const transition = document.startViewTransition(async () => {
     isDark.value = !isDark.value
     await nextTick()
-    console.log('nextTick', isDark.value)
   })
 
   transition.ready.then(() => {
     const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
-    console.log('clipPath', clipPath, isDark.value)
     document.documentElement.animate(
       {
         clipPath: isDark.value ? clipPath.reverse() : clipPath
