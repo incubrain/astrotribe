@@ -40,7 +40,7 @@
                   :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
                 />
-                @{{ user.username.toLowerCase() }} | {{ user.roles.name }}
+                @{{ user.username }} | {{ user.roles.name }}
               </span>
             </div>
           </div>
