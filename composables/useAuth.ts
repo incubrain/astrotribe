@@ -7,7 +7,6 @@ export default function useAuth() {
   const client: SupabaseClient = useNuxtApp().$supabase
 
   const register = async ({ email, password }: { email: string; password: string }) => {
-    console.log('register', email, password, `${env.BASE_URL}/auth/login`)
     const { data, error } = await client.auth.signUp({
       email,
       password,
@@ -17,7 +16,6 @@ export default function useAuth() {
     })
 
     if (error) throw createError(`Error registering user: ${error}`)
-    console.log('register', data)
 
     router.push('/auth/success')
   }
@@ -88,7 +86,6 @@ export default function useAuth() {
       console.error('Error sending new verification email:', error)
     }
 
-    console.log('New verification email sent!', data)
     // provide feedback to user
   }
 

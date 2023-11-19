@@ -15,7 +15,6 @@ export default defineStore('admin-settings', () => {
     login: async () => {
       try {
         const result = await auth.login(user)
-        console.log('Login Successful:', result)
       } catch (error) {
         console.error('(test) Login Error:', error)
         throw error

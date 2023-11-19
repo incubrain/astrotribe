@@ -119,7 +119,6 @@ function convertISTtoLocal(day: string, time: { start: string; end: string }) {
 const { width } = useWindowSize()
 
 const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone)
-console.log('timezone', timezone.value)
 const columns = computed(() => [
   {
     key: 'time',
