@@ -6,6 +6,17 @@
         main: 'A 3-Day Astronomical Adventure '
       }"
     />
+    <div class="space-x-2">
+      <UButton
+            v-for="link in registerLinks"
+            :key="`register-for-${link.day}`"
+            :to="link.url"
+            target="_blank"
+            color="primary"
+          >
+           Online Register {{ link.day }}
+          </UButton>
+    </div>
     <UTabs
       :items="schedule"
       :ui="{
@@ -123,6 +134,21 @@ const columns = computed(() => [
     label: 'Topic'
   }
 ])
+
+const registerLinks = [
+  {
+    day: 'Friday',
+    url: 'https://us06web.zoom.us/meeting/register/tZIoc-igrzstHdIOAAn1vJXPRxgohInXjlsV'
+  },
+  {
+    day: 'Saturday',
+    url: 'https://us06web.zoom.us/meeting/register/tZAodeyvpjMrG9AwjinCx86l5d5pPHPVp5JQ'
+  },
+  {
+    day: 'Sunday',
+    url: 'https://us06web.zoom.us/meeting/register/tZUudO2qrzkpE9IGWf_fEi7ejckAdy2Mm370'
+  }
+]
 
 const schedule = [
   {
