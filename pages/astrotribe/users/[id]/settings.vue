@@ -57,4 +57,9 @@ if (await users.checkWeHaveUser(String(id))) {
   console.error('user does not exist in state')
   back()
 }
+
+definePageMeta({
+  name: 'ProfileSettings',
+  layout: 'app'
+})
 </script>

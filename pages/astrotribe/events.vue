@@ -29,5 +29,5 @@ const e = useEventsStore()
 e.checkWeHaveEvents()
 const { events } = storeToRefs(e)
 
-definePageMeta({ name: 'Upcoming' })
+definePageMeta({ name: 'UpcomingEvents', layout: 'app' })
 </script>

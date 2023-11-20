@@ -1,9 +1,9 @@
 <template>
-  <div class="mx-auto w-full h-full">
-    <div class="relative lg:block flex flex-col h-full">
-      <div class="h-full">
+  <div class="mx-auto w-full min-h-full">
+    <div class="relative lg:block flex flex-col min-h-full">
+      <div class="min-h-full">
         <div
-          class="lg:w-2/5 w-full h-full text-center lg:text-right lg:absolute flex flex-col items-center lg:items-end lg:pr-8 right-0 gap-10 z-30 lg:bg-gradient-to-r from-transparent dark:to-zinc-900 dark:via-zinc-900 via-white to-white lg:pl-6 py-4 sm:py-10 lg:py-40"
+          class="lg:w-2/5 w-full lg:min-h-[calc(100vh-var(--nav-height-lg))] text-center lg:text-right lg:absolute flex flex-col items-center lg:items-end lg:pr-8 right-0 gap-10 z-30 lg:bg-gradient-to-r from-transparent dark:to-zinc-900 dark:via-zinc-900 via-white to-white lg:pl-6 py-4 sm:py-10 lg:py-40"
         >
           <div class="lg:w-96">
             <h1 class="text-2xl font-bold leading-10 sm:text-4xl lg:text-5xl"> LET’S TALK </h1>
@@ -31,7 +31,7 @@
         :style="
           color.value === 'dark' ? { filter: ' grayscale(100%) invert(92%) contrast(83%)' } : {}
         "
-        class="block right-0 top-0 w-full min-h-[600px] lg:h-full lg:absolute"
+        class="block right-0 top-0 w-full min-h-[600px] lg:min-h-[calc(100vh-var(--nav-height-lg))] lg:absolute"
         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
         style="border: 0"
         loading="lazy"
@@ -46,8 +46,7 @@ import contactData from '@/data/home/contact.json'
 const color = useColorMode()
 
 definePageMeta({
-  name: 'Contact',
-  layout: 'home'
+  name: 'Contact'
 })
 </script>
 

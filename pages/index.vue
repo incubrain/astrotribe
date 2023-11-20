@@ -38,8 +38,7 @@
 import productSteps from '@/data/home/product-steps.json'
 
 definePageMeta({
-  name: 'Home',
-  layout: 'home'
+  name: 'Home'
 })
 </script>
 

@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-
 const seedRoles = async () => {
   await useFetch('/api/admin/create/roles')
 }
@@ -33,5 +32,5 @@ const testFunction = async (name: string) => {
   })
 }
 
-definePageMeta({ name: 'Admin' })
+definePageMeta({ name: 'Admin', layout: 'app' })
 </script>

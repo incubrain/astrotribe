@@ -33,7 +33,6 @@
 import teamMembers from '@/data/home/team.json'
 
 definePageMeta({
-  name: 'Team',
-  layout: 'home'
+  name: 'Team'
 })
 </script>

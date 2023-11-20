@@ -15,6 +15,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+definePageMeta({
+  name: 'AstroTribe',
+  layout: 'app'
+})
+
+</script>
 
 <style scoped></style>
