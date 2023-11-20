@@ -1,0 +1,27 @@
+[
+  { "id": 1, "platform": "twitter", "url": "https://twitter.com/AstronEra", "username": "uk" },
+  {
+    "id": 2,
+    "platform": "linkedin",
+    "url": "https://www.linkedin.com/company/astronera/",
+    "username": "uk"
+  },
+  {
+    "id": 3,
+    "platform": "youtube",
+    "url": "https://www.youtube.com/@AstronEra",
+    "username": "uk"
+  },
+  {
+    "id": 4,
+    "platform": "facebook",
+    "url": "https://www.facebook.com/AstronEra",
+    "username": "uk"
+  },
+  {
+    "id": 5,
+    "platform": "instagram",
+    "url": "https://www.instagram.com/astronera",
+    "username": "uk"
+  }
+]
