@@ -42,7 +42,7 @@ defineProps({
   },
   subtitle: {
     type: String,
-    required: true
+    default: ''
   },
   fit: {
     type: String,
