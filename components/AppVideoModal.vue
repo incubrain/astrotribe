@@ -8,6 +8,8 @@
       <NuxtImg
         :src="video.thumbnail"
         :alt="video.alt"
+        height="480px"
+        width="840px"
         sizes="100vw lg:50vw"
       />
       <UIcon
