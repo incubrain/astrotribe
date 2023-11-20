@@ -5,7 +5,9 @@
     <div
       class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
     >
-      <div class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 justify-between items-center col-start-1">
+      <div
+        class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 justify-between items-center col-start-1"
+      >
         <NavMobiSlideover
           :links="links"
           class="lg:hidden pl-3 md:pl-4 flex items-center"
@@ -25,9 +27,7 @@
           <h1 class="block px-4 mr-4 text-xl font-semibold"> AstronEra </h1>
         </NuxtLink>
       </div>
-      <div
-        class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1"
-      >
+      <div class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1">
         <div
           class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
         >
@@ -86,10 +86,16 @@
               <UButton
                 variant="link"
                 to="/auth/login"
+                @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
               >
                 login
               </UButton>
-              <UButton to="/auth/register"> Join Free </UButton>
+              <UButton
+                to="/auth/register"
+                @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
+              >
+                Join Free
+              </UButton>
             </div>
           </div>
         </div>

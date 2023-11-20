@@ -27,15 +27,15 @@
           cosmos together.
         </p>
         <div>
-          <NuxtLink to="auth/register">
-            <UButton
-              color="primary"
-              variant="solid"
-              size="xl"
-            >
-              Begin your cosmic journey now!
-            </UButton>
-          </NuxtLink>
+          <UButton
+            color="primary"
+            variant="solid"
+            size="xl"
+            to="auth/register"
+            @click="$posthog()?.capture('register_app', { location: 'hero_cta' })"
+          >
+            Begin your cosmic journey now!
+          </UButton>
         </div>
       </div>
       <div class="relative z-50 w-full mx-auto">
