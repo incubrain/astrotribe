@@ -6,7 +6,7 @@
     >
       <LazyEventCard
         v-for="event in events"
-        :key="event.id"
+        :key="`event-card-${event.id}`"
         :event="event"
       />
     </div>
