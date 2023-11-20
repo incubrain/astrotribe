@@ -13,8 +13,9 @@
         :to="link.url"
         target="_blank"
         color="primary"
+        @click="$posthog()?.capture('conference_register', { day: link.day, })"
       >
-        Online Register {{ link.day }}
+        Attend {{ link.day }} Online
       </UButton>
     </div>
     <UTabs
