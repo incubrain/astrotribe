@@ -23,7 +23,7 @@
         {{ event.title }}
       </h2>
       <p class="text-sm py-4"> {{ event.body }}</p>
-      <UButton variant="outline" block color="slate">
+      <UButton variant="outline" block color="white">
         Create Free Event
       </UButton>
     </section>
