@@ -1,34 +1,5 @@
 {
-  "email": "connectus@astronera.org",
-  "phone": "+91 880 610 7510",
-  "socials": [
-    { "id": 1, "platform": "twitter", "url": "https://twitter.com/AstronEra", "username": "uk" },
-    {
-      "id": 2,
-      "platform": "linkedin",
-      "url": "https://www.linkedin.com/company/astronera/",
-      "username": "uk"
-    },
-    {
-      "id": 3,
-      "platform": "youtube",
-      "url": "https://www.youtube.com/@AstronEra",
-      "username": "uk"
-    },
-    {
-      "id": 4,
-      "platform": "facebook",
-      "url": "https://www.facebook.com/AstronEra",
-      "username": "uk"
-    },
-    {
-      "id": 5,
-      "platform": "instagram",
-      "url": "https://www.instagram.com/astronera",
-      "username": "uk"
-    }
-  ],
-  "location": {
-    "headquarters": "Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk,, Model Colony, Pune, Maharashtra 411016"
-  }
+  "Email": "connectus@astronera.org",
+  "Phone": "+91 880 610 7510",
+  "Location": "Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk,, Model Colony, Pune, Maharashtra 411016"
 }
