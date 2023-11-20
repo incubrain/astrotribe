@@ -8,7 +8,7 @@ const isProtected = (to: string): boolean => {
   })
 }
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const admin = useTestingStore()
   const { settings } = storeToRefs(admin)
 

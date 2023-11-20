@@ -2,10 +2,8 @@ import type { TestingSettingsType } from '@/types/testing'
 
 export default defineStore('admin-settings', () => {
   const env = useRuntimeConfig().public
-  const testingEnabled = readonly(ref(env.TEST_MODE === 'true'))
-  const settings = reactive<TestingSettingsType>({
+  const settings = ref<TestingSettingsType>({
     authOn: true
-    // Add other features as needed, update type in types\testing.ts
   })
 
   // TODO: add all functions I want to test here
@@ -24,11 +22,10 @@ export default defineStore('admin-settings', () => {
   }
 
   function toggleFeature(featureName: keyof TestingSettingsType) {
-    settings[featureName] = !settings[featureName]
+    settings.value[featureName] = !settings.value[featureName]
   }
 
   return {
-    testingEnabled,
     settings,
     auth: authTests,
     toggleFeature
