@@ -18,10 +18,10 @@
           Contact Shweta or Mac to join us.
         </p>
       </div>
-      <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-8 lg:gap-12">
+      <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-8 lg:gap-12 pb-6">
         <LazyTeamCard
           v-for="member in teamMembers"
-          :key="member.id"
+          :key="`astronera-team-member-${member.id}`"
           :member="member"
         />
       </div>
