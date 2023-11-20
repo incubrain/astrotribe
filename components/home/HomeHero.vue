@@ -8,7 +8,7 @@
     />
     <div class="absolute top-0 left-0 w-full h-full bg-zinc-900/40 dark:bg-zinc-900/60" />
     <div
-      class="relative mx-auto gap-8 lg:gap-20 py-[40px] md:py-[80px] lg:py-[160px] px-4 md:px-16 lg:px-32 grid lg:grid-cols-[1.5fr_1.75fr] max-w-[1920px]"
+      class="relative mx-auto gap-8 xl:gap-16 py-[40px] md:py-[80px] xl:py-[160px] px-4 md:px-16 xl:px-32 grid lg:grid-cols-[1.5fr_1.75fr] max-w-[1920px]"
     >
       <!-- Hero Left -->
       <div
@@ -19,10 +19,10 @@
         >
           <NuxtImg src="/astronera-logo.jpg" />
         </div>
-        <h1 class="max-w-lg text-3xl lg:text-5xl font-bold leading-tight">
+        <h1 class="max-w-lg text-4xl lg:text-5xl font-bold leading-tight">
           Explore The Universe And Grow With Us
         </h1>
-        <p class="max-w-sm text-lg lg:text-xl font-semibold">
+        <p class="max-w-sm text-xl font-semibold">
           AstroTribe is a community of astronomers and enthusiasts unveiling the mysteries of the
           cosmos together.
         </p>
@@ -39,24 +39,18 @@
         </div>
       </div>
       <div class="relative z-50 w-full mx-auto">
-        <LightgalleryYoutube
-          :media="video"
-          class="w-full h-full"
-        />
+        <AppVideoModal :video="video" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const video = [
-  {
-    id: 1,
-    url: 'https://www.youtube.com/watch?v=x5ijmeCJ42s',
-    thumbnail: 'hero-image.jpg',
-    alt: 'Video'
-  }
-]
+const video = {
+  url: 'https://www.youtube.com/embed/x5ijmeCJ42s?si=V_t46bCe9ClaKmrN?mute=0&autoplay=1',
+  thumbnail: 'images/hero-image.jpg',
+  alt: 'Astron Era Hero Video'
+}
 
 const bgImg = '/astron-era-hero.jpg'
 </script>

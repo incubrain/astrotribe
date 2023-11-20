@@ -10,7 +10,6 @@ export default defineAppConfig({
     modal: {
       padding: 'lg:p-4',
       width: 'w-full lg:max-w-[80%] xl:max-w-[80%]',
-      height: 'h-full',
       container: 'flex h-full items-center justify-center text-center',
       rounded: 'lg:rounded-lg'
     },

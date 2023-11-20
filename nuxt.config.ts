@@ -75,7 +75,7 @@ export default defineNuxtConfig({
       //   ]
     }
   },
-  css: ['lightgallery/css/lightgallery-bundle.css'],
+  css: [],
   imports: {
     dirs: ['stores', 'data']
   },
@@ -94,9 +94,6 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@pinia/nuxt'
   ],
-  build: {
-    transpile: ['lightgallery']
-  },
   devtools: {
     enabled: true,
     // inclued vscode to enable element selection to open vscode related file
