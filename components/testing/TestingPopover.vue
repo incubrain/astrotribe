@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="testingEnabled"
+    v-if="TEST_MODE === 'true'"
     class="absolute bottom-2 left-2 z-50"
   >
     <UPopover>
@@ -33,12 +33,14 @@
 <script setup lang="ts">
 import type { TestingSettingsType } from '@/types/testing'
 
+const { TEST_MODE } = useRuntimeConfig().public
+
 type FeatureKeys = keyof TestingSettingsType
 
 const features: FeatureKeys[] = ['authOn']
 
 const testing = useTestingStore()
-const { testingEnabled, settings } = storeToRefs(testing)
+const { settings } = storeToRefs(testing)
 </script>
 
 <style scoped></style>
