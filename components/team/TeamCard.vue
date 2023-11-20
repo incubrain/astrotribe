@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center relative overflow-hidden justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl ring-1 ring-gray-900/5 dark:ring-primary/50 transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+    class="flex flex-col items-center relative justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl ring-1 ring-primary-100 dark:ring-primary-950 transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
     <div class="absolute w-full h-full animate-pulse">
       <SvgStars
@@ -14,7 +14,7 @@
         svg-color="#303030"
       />
       <SvgStars
-        class="top-28 right-14"
+        class="top-24 right-14"
         :size="12"
         svg-color="#303030"
       />
@@ -29,10 +29,6 @@
         svg-color="#303030"
       />
     </div>
-    <!-- SemiCircle -->
-    <div
-      class="absolute bottom-2 left-0 right-0 -z-10 transform w-56 h-28 mx-auto opacity-10 blur-[4px] bg-black rounded-t-full"
-    />
 
     <div class="relative px-10 flex items-start justify-center pb-4">
       <div class="w-20 overflow-hidden border rounded-full md:w-24">
@@ -44,12 +40,10 @@
       </div>
     </div>
     <div class="flex flex-col items-center justify-center space-y-5">
-      <p
-        class="text-black dark:text-gray-300 text-base font-semibold leading-none text-center rounded-sm"
-      >
+      <p class="text-base font-semibold leading-none text-center rounded-sm">
         {{ member.name }}
       </p>
-      <p class="text-sm font-semibold leading-none text-center dark:text-gray-400">
+      <p class="text-sm font-semibold leading-none text-center">
         {{ member.position.title }}
       </p>
       <div class="space-y-2 pt-12 z-10">
@@ -58,17 +52,13 @@
           :has-title="false"
           class="flex items-center justify-center space-x-2"
         />
-        <NuxtLink
+        <UButton
           :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`"
-          class="flex flex-col items-center justify-center font-semibold"
+          variant="outline"
+          color="black"
         >
-          <UButton
-            variant="outline"
-            color="black"
-          >
-            View Profile
-          </UButton>
-        </NuxtLink>
+          View Profile
+        </UButton>
       </div>
     </div>
   </div>
