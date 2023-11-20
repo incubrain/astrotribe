@@ -53,7 +53,7 @@
         <UButton
           variant="outline"
           block
-          color="slate"
+          color="white"
         >
           More info
         </UButton>
