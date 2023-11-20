@@ -3,7 +3,7 @@
     <UButton
       variant="link"
       class="relative flex items-center justify-center w-full h-full p-4 rounded-lg foreground"
-      @click="isOpen = true"
+      @click="isOpen = true; $posthog()?.capture('interest_video', { location: 'hero' })"
     >
       <NuxtImg
         :src="video.thumbnail"

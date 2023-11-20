@@ -13,6 +13,7 @@
         <UButton
           color="primary"
           size="xl"
+          @click="$posthog()?.capture('register_app', { location: 'main_cta' })"
         >
           {{ cta }}
         </UButton>
