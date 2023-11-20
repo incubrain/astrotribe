@@ -40,6 +40,7 @@
     "nuxt": "^3.8.1",
     "nuxt-icon": "^0.4.1",
     "openai": "^3.3.0",
+    "posthog-js": "^1.91.1",
     "puppeteer": "^20.7.4",
     "puppeteer-core": "^20.9.0",
     "resend": "^0.17.2",
