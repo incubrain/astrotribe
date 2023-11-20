@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="haveUser">
       <CommonCoverImg
         :url="
@@ -9,7 +8,7 @@
             folderPath: `${user.id}/cover`,
             file: user.cover_image,
             fileType: 'user-cover',
-            isPrivate: false,
+            isPrivate: false
           })
         "
       />
@@ -34,7 +33,7 @@
                 folderPath: `${user.id}/avatar`,
                 file: user.avatar,
                 fileType: 'user-avatar',
-                isPrivate: false,
+                isPrivate: false
               })
             "
           />
@@ -82,6 +81,7 @@ const haveUser = await u.checkWeHaveUser(String(id))
 const { user } = storeToRefs(u)
 
 definePageMeta({
-  name: 'Profile'
+  name: 'Profile',
+  layout: 'app'
 })
 </script>

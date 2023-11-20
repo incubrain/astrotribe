@@ -68,6 +68,7 @@ const summaryLevels = [
 ]
 
 definePageMeta({
-  name: 'Feed'
+  name: 'Feed',
+  layout: 'app'
 })
 </script>

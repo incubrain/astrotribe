@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-  name: 'Conference',
-  layout: 'home'
+  name: 'Conference'
 })
 </script>

@@ -89,5 +89,5 @@ const columns = [
 //   { immediate: true }
 // )
 
-definePageMeta({ name: 'Serp' })
+definePageMeta({ name: 'Serp', layout: 'app' })
 </script>

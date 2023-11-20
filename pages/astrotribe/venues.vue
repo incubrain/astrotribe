@@ -30,5 +30,5 @@ ven.checkWeHaveVenues()
 
 const { venues } = storeToRefs(ven)
 
-definePageMeta({ name: 'Venues' })
+definePageMeta({ name: 'Venues', layout: 'app' })
 </script>

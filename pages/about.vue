@@ -54,7 +54,6 @@
 import about from '@/data/home/about.json'
 
 definePageMeta({
-  name: 'About',
-  layout: 'home'
+  name: 'About'
 })
 </script>
