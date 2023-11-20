@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between background z-50 border-b border-color h-[var(--nav-height-sm)] md:h-[var(--nav-height-md)] lg:h-[var(--nav-height-lg)]"
+    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between background z-50 border-b border-color h-[var(--nav-height-sm)] lg:h-[var(--nav-height-lg)]"
   >
     <div
       class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"

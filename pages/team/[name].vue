@@ -71,8 +71,7 @@ const user = computed(() =>
 )
 
 definePageMeta({
-  name: 'TeamIndividual',
-  layout: 'home'
+  name: 'TeamIndividual'
 })
 </script>
 

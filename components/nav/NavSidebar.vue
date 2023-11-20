@@ -1,6 +1,6 @@
 <template>
-  <div class="fixed left-0 flex-col hidden w-full h-full py-8 lg:relative background lg:flex border-r border-color">
-    <ul class="w-full">
+  <div class="flex-col hidden w-full min-h-full py-8 lg:relative background lg:flex border-r border-color">
+    <ul class="w-full sticky top-24">
       <li
         v-for="page in pages"
         :key="page.id"

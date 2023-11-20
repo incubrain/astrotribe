@@ -104,7 +104,6 @@ const submission = {
 }
 
 definePageMeta({
-  name: 'Poster Competition',
-  layout: 'home'
+  name: 'Poster Competition'
 })
 </script>
