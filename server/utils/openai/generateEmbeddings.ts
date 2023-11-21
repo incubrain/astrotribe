@@ -2,6 +2,9 @@ import { CreateEmbeddingRequest } from 'openai'
 import openaiClient from './openaiClient'
 // import { z } from 'zod'
 
+// !ignore for now:
+// later we will use embeddings for article search, recommendation, and similarity checks when scraping new articles
+
 export interface Embedding {
   // Define the structure of your embedding here. For example:
   // embeddings: number[]
