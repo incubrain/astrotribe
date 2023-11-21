@@ -47,7 +47,7 @@ const speakers = [
     bio: 'Recipient of the Ramon Magsaysay Award, Sonam Wangchuk, an engineer and educator, is lauded for his sustainable development efforts via SECMOL ALTERNATIVE SCHOOL. His innovative approach to environmental and educational challenges showcases a profound commitment to fostering sustainable communities.',
     abstract: {
       title: 'Sustainable Development for Tribal Ladakhies',
-      description: ``
+      description: ''
     },
     avatar: 'sonam-wangchuk',
     featured: true,
