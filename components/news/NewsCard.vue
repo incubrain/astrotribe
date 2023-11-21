@@ -53,7 +53,7 @@ import type { NewsType } from '@/types/news'
 
 defineProps({
   post: {
-    type: Object as () => News,
+    type: Object as () => NewsType,
     required: true
   },
   summaryLevel: {
