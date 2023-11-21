@@ -7,15 +7,14 @@ export default defineEventHandler(async () => {
       // pass up all the console logs inside page.evaluate.
       dumpio: true
     })
-    const storage = useStorage('blogs')
     console.log('scrapeBlogs: browser init')
 
-    for (const blog of scraperBlogs) {
-      console.log(`scrapeBlogs: scrape ${blog.name}`)
-      const posts = await scraperGeneric(browser, blog)
-      console.log(`scrapeBlogs: store ${blog.name}`)
-      await storage.setItem(`${blog.name}.json`, JSON.stringify(posts, null, 2))
-    }
+    const spaceDotCom = newsBlogs.find((blog) => blog.name === 'space.com')!
+
+    console.log(`scrapeBlogs: scrape ${spaceDotCom.name}`)
+    const posts = await scraperGeneric(browser, spaceDotCom)
+    console.log(`scraped blogs: ${posts}`)
+    // !todo: store in the DB no KV
 
     await browser.close()
     return {
