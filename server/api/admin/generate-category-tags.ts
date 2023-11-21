@@ -2,6 +2,7 @@ import type { NewsGenerateType } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
+    // !important: ignore this step for now
     const storage = useStorage('blogs')
     const blogs = await storage.getItem<NewsGenerateType[]>('summary-test.json')
     if (!blogs) throw createError('No blogs found')

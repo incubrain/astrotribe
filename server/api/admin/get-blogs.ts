@@ -2,7 +2,8 @@ import type { NewsType } from '@/types/news'
 
 export default defineEventHandler(async () => {
   try {
-    // ${scraperBlogs[0].name}
+    // !todo: this should be a database call
+    // use the summary-test.json file as reference for the database structure
     const storage = useStorage('blogs')
     const blogsFile = await storage.getItem<NewsType[]>('summary-test.json')
     return {

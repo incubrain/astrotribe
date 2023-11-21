@@ -1,6 +1,7 @@
 import type { NewsType } from '@/types/news'
 
 export default defineEventHandler(async () => {
+  // !important: ignore this step for now
   try {
     const storage = useStorage('blogs')
     const blogs = await storage.getItem<NewsType[]>('summary-test.json')
