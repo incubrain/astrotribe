@@ -190,7 +190,7 @@ const schedule = [
       {
         online: true,
         icon: 'i-mdi-microphone',
-        topic: 'Light Pollution and Satellite Constellations',
+        topic: 'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
         speaker: 'Dr. Constance (Connie) Walker',
         time: { start: '12:00', end: '12:30' }
       },
@@ -223,7 +223,7 @@ const schedule = [
         time: { start: '14:30', end: '15:00' }
       },
       {
-        online: false,
+        online: true,
         icon: 'i-mdi-microphone',
         topic: 'AstroTourism in Nepal',
         speaker: 'Dr. Jayanta Acharya',
