@@ -6,10 +6,14 @@
         main: 'Experts From All Around The Globe'
       }"
     />
+    <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase"> Hosts </p>
     <ConferenceChairperson
       class="pt-6"
-      :speaker="chairman"
+      :hosts="hosts"
     />
+    <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase pt-4 lg:pt-8">
+      Speakers
+    </p>
     <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
       <LazyConferenceSpeakerCard
         v-for="speaker in filterSpeakers(true)"
@@ -29,15 +33,26 @@
 <script setup lang="ts">
 import type { SpeakerType } from '@/types/conference'
 
-const chairman = {
-  given_name: 'Ruchira',
-  surname: 'Huchgol',
-  professional_title: 'Organising Committee, Chairman, IDSPAC23 & Operations Manager, AstronEra.',
-  bio: `Ruchira Huchgol an analog astronaut with background of
+const hosts = [
+  {
+    given_name: 'Ruchira',
+    surname: 'Huchgol',
+    professional_title: 'Organising Committee, Chairman, IDSPAC23 & Operations Manager, AstronEra.',
+    bio: `Ruchira Huchgol an analog astronaut with background of
     aerospace engineering has a keen intersted in human space exploration and also works to bring in new opportunities in space sector for the Indian student community
     `,
-  avatar: 'ruchira-huchgol'
-}
+    avatar: 'ruchira-huchgol'
+  },
+  {
+    given_name: 'Atharva',
+    surname: 'Joshi (Jhey)',
+    professional_title:
+      'Organising Committee, Online Chairman, IDSPAC23 & Project Co-ordinator, AstronEra.',
+    bio: `Atharva Joshi is a dedicated architect with extensive experience ranging from the Southern coast to the Himalayas.
+    His profound interest in astronomy brings a unique perspective to the innovative projects at AstronEra.`,
+    avatar: 'atharva-joshi'
+  }
+]
 
 const speakers = [
   {
@@ -61,7 +76,8 @@ const speakers = [
       "Head of Office of Site Protection, NSF's NOIRLab, USA and Co-Director, IAU CPS",
     bio: "Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she's devoted two decades at NSF's National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.",
     abstract: {
-      title: 'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
+      title:
+        'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
       description: `While broadband communications enabled by satellite constellations can be beneficial,
       they pose a significant challenge to existing and upcoming astronomical infrastructures. Surfaces of these satellites are often made of highly reflective metal,
       and reflections from the Sun can be detrimental to the sensitive capabilities of large astronomical telescopes, including wide-angle survey telescopes under construction. In addition, astronomical observations at radio wavelengths are threatened through radio leaks.
@@ -193,7 +209,7 @@ const speakers = [
     },
     avatar: 'jayanta-acharya',
     featured: false,
-    inPerson: true
+    inPerson: false
   },
   {
     title: 'Dr.',
