@@ -6,7 +6,7 @@
         main: 'A 3-Day Astronomical Adventure '
       }"
     />
-    <div class="space-x-2">
+    <div class="flex gap-2 flex-wrap">
       <UButton
         v-for="link in registerLinks"
         :key="`register-for-${link.day}`"
@@ -36,8 +36,11 @@
     >
       <template #default="{ item, index, selected }">
         <div>
-          <p class="text-sm font-semibold lg:text-lg">
+          <p class="hidden md:block text-sm font-semibold lg:text-lg">
             {{ item.label.slice(0, 3) }} {{ item.day }}th Nov
+          </p>
+          <p class="md:hidden text-sm font-semibold lg:text-lg">
+            {{ item.day }}th Nov
           </p>
         </div>
       </template>
