@@ -61,7 +61,7 @@ const speakers = [
       "Head of Office of Site Protection, NSF's NOIRLab, USA and Co-Director, IAU CPS",
     bio: "Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she's devoted two decades at NSF's National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.",
     abstract: {
-      title: 'Light Pollution and Satellite Constellations',
+      title: 'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
       description: `While broadband communications enabled by satellite constellations can be beneficial,
       they pose a significant challenge to existing and upcoming astronomical infrastructures. Surfaces of these satellites are often made of highly reflective metal,
       and reflections from the Sun can be detrimental to the sensitive capabilities of large astronomical telescopes, including wide-angle survey telescopes under construction. In addition, astronomical observations at radio wavelengths are threatened through radio leaks.
@@ -94,7 +94,7 @@ const speakers = [
       title: 'Lighting for Dark Skies',
       description: `We talk about human-centric lighting and well-being solutions for indoor spaces. We discuss air pollution, water pollution, and noise pollution. But, light pollution or the impacts of artificial lighting on the ecosystem is often overlooked.
       The effort to mitigate light pollution at a macro level (in a community, a city, or a country) must begin at the micro level (one's own premises). Most of the general public worldwide, including key decision-makers are unaware of light pollution. The term light pollution shouldn’t be a term for the technically savvy, but rather a common term for everyone.
-      Light pollution is rising by 2% annually, and almost 80% of the global population lives under light pollution. Rather than lighting up what is intended to be lit up, it turns the night skies brighter and limits the visibility of celestial bodies. Particulate matter suspended in the air (air pollution) further increases light scattering at night. 
+      Light pollution is rising by 2% annually, and almost 80% of the global population lives under light pollution. Rather than lighting up what is intended to be lit up, it turns the night skies brighter and limits the visibility of celestial bodies. Particulate matter suspended in the air (air pollution) further increases light scattering at night.
       This paper imparts knowledge and guidance to the common man, in analyzing outdoor lighting and making feasible and practical changes, to make the environment a safe place both for humanity, and the ecosystem.
       Light pollution and its components – backlight, uplight, and glare (BUG) are explained. Light trespass due to backlight and light spill, skyglow due to uplight, and veiling luminance due to glare are analyzed with real-life images that demonstrate the consequences of overlighting, as we often link lighting to safety when lighting up an exterior space.
       The Bortle scale is explained along with the interactive Light Pollution Map recommended by DarkSky International.
@@ -140,6 +140,20 @@ const speakers = [
     inPerson: true
   },
   {
+    title: 'Dr.',
+    given_name: 'Anita',
+    surname: 'Gupta',
+    professional_title: 'Adviser/Scientist G at DST, Govt. of India',
+    bio: "Dr. Anita Gupta, an Adviser/Scientist G at India's DST, has over 25 years of experience in innovation, entrepreneurship, and start-ups. As Associate Head of Innovation and Entrepreneurship, she leads initiatives like Startup India, fostering over 150 technology business incubators across premier institutes and engaging in Public-Private Partnerships with major MNCs to enhance India's innovation landscape.",
+    abstract: {
+      title: "Harnessing India's  potential to fight Climate Change",
+      description: ``
+    },
+    avatar: 'anita-gupta',
+    featured: true,
+    inPerson: false
+  },
+  {
     given_name: 'Maria',
     surname: 'Alejandra Díaz',
     professional_title: 'Astronomer',
@@ -174,7 +188,7 @@ const speakers = [
       we also conduct various activities such as public lectures, workshops, and sky observation sessions to promote astronomy in Nepal.
       We have just started astrotourisum in Nepal.
       The propose of the astrotourisum project in Neapal is to link scientefic knowledge and information thnology with the tourism industry.
-      This paper describe some of the unique cultural activities related to astronomy. 
+      This paper describe some of the unique cultural activities related to astronomy.
       `
     },
     avatar: 'jayanta-acharya',
@@ -264,7 +278,7 @@ const speakers = [
     abstract: {
       title: 'Know to preserve',
       description: `Astrotourism as a conservation tool.
-      Many times, we choose to make known a science, perhaps a bit harsh, that is not for everyone... 
+      Many times, we choose to make known a science, perhaps a bit harsh, that is not for everyone...
       but when we put that knowledge, within an experience, in a natural environment, we take people to experience it first-hand a dark sky is when they realize their importance...
       after all, people cannot protect what they do not know... it is not the same... talking about the Milky Way, during the day in an urban center...
       that under the same in a clear sky!After all... half of a day... is in the dark! This is when we value how we guide a group of people,
@@ -339,9 +353,9 @@ const speakers = [
       title: 'Stellar Education: Unveiling ISAAC',
       description: `Sky and Astronomy - Fascination for ages
       The most ancient and the oldest hobby of mankind is Astronomy. Sky offered humans the most fascinating phenomena,
-      which were mysterious, often fearful and at the same time challenging to human intelligence. As the Sun sets, people could see dark sky studded with stars. 
+      which were mysterious, often fearful and at the same time challenging to human intelligence. As the Sun sets, people could see dark sky studded with stars.
       It is important that students are made aware about the concepts from Astronomy and Space Science during school years.
-      If their interest in Astronomy and Space Science is developed at a young age, then it is more likely that few of them may take up these subjects for higher studies and may become Astronomer, Space scientist or Astrophysicist in future. 
+      If their interest in Astronomy and Space Science is developed at a young age, then it is more likely that few of them may take up these subjects for higher studies and may become Astronomer, Space scientist or Astrophysicist in future.
       Purpose of ISAAC
       The Interactive Space and Astronomy Activity Centre (ISAAC) is planned with the purpose of educating students about basic concepts in sky and space exploration.
       It shows students the fundamentals of Astronomy with the help of interactive models.
@@ -356,8 +370,8 @@ const speakers = [
       however, a practical and interactive approach to teaching these subjects is missing in most of the schools.
       Many Corporation Schools are taking the most appropriate step to introduce these subjects in an interactive and entertaining way.
       It will become an example for tens of thousands of schools in India to follow.
-      The ISAAC centre emphasizes on providing hands-on experience to the students. It has several Activity kits on Astronomy and Space related concepts. Kids can do activities on these subjects to understand basic concepts thoroughly. This is in line with NEP 2020. 
-      How to raise funds from government for ISAAC ? 
+      The ISAAC centre emphasizes on providing hands-on experience to the students. It has several Activity kits on Astronomy and Space related concepts. Kids can do activities on these subjects to understand basic concepts thoroughly. This is in line with NEP 2020.
+      How to raise funds from government for ISAAC ?
       Well, there are various ways to get funds for the setting up Astronomy Activity centre. National Education Policy 2020 (NEP2020) already mentioned importance of "Hands-on" science education. Apart from that various schemes from central and state govt. like PM Shri Schools etc. are there. You can approach local guardian ministers for DPC funds. Local municipal corporation, Gram Panchayat have funds under "Innovative activity" Even many corporates are looking for better options to utilize their CSR funds. All you need to know about how to write a proposal, appropriate department to approach and zeal to communicate the importance of studying astronomy and space science.
       `
     },
@@ -406,35 +420,6 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     },
     featured: false,
     inPerson: false
-  },
-  {
-    given_name: 'Rashmi',
-    surname: 'Sheoran',
-    professional_title: 'CCL, IIT gandhinagar',
-    bio: `Rashmi has worked in the space education sector for 5 years, with startups and government organisations.
-    As "Astro Roxy" on social media with 60k+ followers, she makes astronomy accessible and popular in India,
-    creates a thriving online community and is one of the few content creators to be recognised as ISRO Space Tutor.
-    She's currently with IIT Gandhinagar's Centre for Creative Learning (CCL) lab, designing physics activities and doing astronomy outreach.`,
-    abstract: {
-      title: 'Day and Night on the Pale Blue Dot',
-      description: `
-      Commencing with the familiar concept of 24-hour days, where daytime and night duration vary yearly.
-      I do a role-play with volunteers from the audience to act as the sun and earth to show how the earth moves around itself, and the sun and we have 24-hour long days. 
-      The pivotal question emerges: "Would Earth still experience day and night if it stopped spinning?" In our exploration,
-      we delve into the role of Earth's orbit around the Sun, revealing the emergence of six-month-long days and nights.
-      Proceeding, we explore the intriguing scenario where the Earth stops revolving. Here, we explore the concept of sidereal and solar day.
-      Further, we move on to the axial tilt, which plays a crucial role. We inquire, "How does Earth's tilt affect the duration of day and night?"
-      from 0 degrees to 23 degrees reveal how we have seasons and phenomena like analemma. The exploration takes a fascinating turn when we examine an extreme scenario
-      akin to Uranus, where Earth's tilt reaches a staggering 90 degrees. Here, one side of Earth continually faces the Sun,
-      leading to perpetual daylight on that side and unending darkness on the opposite side, but there's so much more.
-      Then, we bring our celestial neighbor, the Moon, into the picture. The roleplay is enjoyable at this point.
-      The talk concludes by discussing the phases of the Moon through artistic images in famous paintings and eclipses using Tellurion made in CCL.
-      If there's time, I would talk about the different colors of the sky.
-      This talk simplifies intricate astronomical concepts, guiding you from Earth's daily rhythms to the captivating mysteries of lunar cycles.`
-    },
-    avatar: 'rashmi-sheoran',
-    featured: false,
-    inPerson: true
   },
   {
     title: 'Dr.',
@@ -488,10 +473,10 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
       in Europe when they noticed the rapid degeneration of the soil, of the quality of the produce, and of seed viability.
       They had been noticing a general decrease in vitality. The concept was then presented as a different way of looking at cultivation and the Earth in general,
       showing the inter-relationship and connections between all living things. The concept is very much influenced by oriental philosophy, especially Buddhism, Hinduism,
-      and the Vedic scriptures. Agriculture is the base of human life. We need to grow food simply to eat each day, and to sustain our bodies, our minds, our souls and our spirit! 
+      and the Vedic scriptures. Agriculture is the base of human life. We need to grow food simply to eat each day, and to sustain our bodies, our minds, our souls and our spirit!
       Biodynamic methods produce a living soil with revitalised natural forces, in alignment with planetary cosmic rhythms.
       At the heart of this activity is the intelligence and consciousness of the human being who is caring for this piece of the Earth, and who is the 'ordering principle'.
-      This deep awareness is based on observation and relationship with the land and with Nature. 
+      This deep awareness is based on observation and relationship with the land and with Nature.
       Biodynamic farming is a technique of crop production based on astronomical activities such as lunar cycles and also easy availability of locally-sourced materials.
       Moreover, this farming technique prohibits the use of chemicals and external mediums for crop production.
       This is an early researched topic under organic farming practices and involves much deeper space sciences with Vedic philosophy.
@@ -512,7 +497,7 @@ ASTROx is an interdisciplinary initiative that seeks to integrate astronomy with
     abstract: {
       title:
         "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
-      description: `Astronomy holds immense potential for STEM education and development. 
+      description: `Astronomy holds immense potential for STEM education and development.
       In Africa, this potential remains largely untapped, with Ghana facing challenges in attracting students to STEM subjects.
       Contemporary progress heavily relies on technologies used in astronomical techniques, data analysis from celestial sources and satellites,
       and instrumentation processes, offering solutions to socio-economic issues like poverty and hunger, particularly in developing nations like Ghana.
