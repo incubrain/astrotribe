@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  if (event.path.includes('admin')) {
+  if (event.path.includes('adminTest')) {
     const isAdmin = await isAdminUser(event)
     if (!isAdmin) {
       return {
