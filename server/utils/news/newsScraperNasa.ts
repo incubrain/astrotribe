@@ -5,6 +5,10 @@ import { Blog, SelectorConfig } from './newsBlogs'
 
 // Asynchronous function specific to scraping NASA's blog.
 const newsScraperNasa = async (page: Page, blog: Blog) => {
+  // Navigate to the blog's URL.
+  await page.goto(blog.url, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector(blog.selectorBase) // Wait for the page to load.
+
   // Evaluate and execute script within the context of the page.
   return await page.$$eval(
     blog.selectorBase, // Base CSS selector for articles.
@@ -18,6 +22,7 @@ const newsScraperNasa = async (page: Page, blog: Blog) => {
         for (const key in selectorConfig) {
           // Select elements within the article based on the current key.
           const elements = article.querySelectorAll(key as keyof SelectorConfig)
+          console.log('newsScraperNasa elements:', elements)
 
           // If no elements are found for the current key, set the data to null.
           if (!elements.length) {

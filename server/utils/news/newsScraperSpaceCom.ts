@@ -12,7 +12,9 @@ const newsScraperSpaceCom = async (
 ) => {
   // Initialize an array to store the scraped data.
   const scrapedData: any[] = []
-  console.log('newsScraperSpaceCom:', page)
+
+  await page.goto(blog.url, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('#sidebar ul > li > ul > li > a')
 
   // Retrieve the list of month links from the sidebar.
   const months = await page.$$eval('#sidebar ul > li > ul > li > a', (months) =>
@@ -21,25 +23,46 @@ const newsScraperSpaceCom = async (
   // Select either the first month (in development mode) or all months.
   const monthsToIterate = isDevelopment ? [months[0]] : months
 
-  console.log('newsScraperSpaceCom:', months)
-
   // Iterate through each month.
   for (const month of monthsToIterate) {
-    await page.goto(month) // Navigate to the month page.
-    console.log('newsScraperSpaceCom:', month)
+    await page.goto(month, { waitUntil: 'domcontentloaded' }) // Navigate to the month page.
+    await page.waitForSelector('.archive-list ul > li > ul > li.day-article > a')
 
     // Retrieve the list of article links for the current month.
-    const articles = await page.$$('.archive-list ul > ul > li.day-article > a')
+    const articles = await page.$$eval(
+      '.archive-list ul > li > ul > li.day-article > a',
+      (articles) => {
+        console.log('newsScraperSpaceCom articles:', articles)
+        return articles.map((article) => (article as HTMLAnchorElement).href)
+      }
+    )
+
     // Limit the number of articles based on the numArticlesPerMonth parameter.
     const articlesToIterate =
       numArticlesPerMonth === null ? articles : articles.slice(0, numArticlesPerMonth)
-    console.log('newsScraperSpaceCom:', articles)
 
-    // Iterate through each article link.
-    for (const articleLink of articlesToIterate) {
-      await articleLink.click() // Click the article link to open the article page.
+    for (const article of articlesToIterate) {
+      await page.goto(article, { waitUntil: 'domcontentloaded' }) // Navigate to the article page.
+      await page.waitForSelector(blog.selectorBase) // Wait for the article to load.
 
-      // Scrape data from the current article page.
+      /* ALTERNATE APPROACH TO SCRAPING (Works partially, while working on this I found a solution for the previously written code)
+
+      const articleData: { [key: string]: any } = {}
+
+      for (const key in blog.selectorConfig) {
+        if (key === 'ignore') continue
+        // Title scraping
+        await page.waitForSelector((blog.selectorBase, blog.selectorConfig.title))
+
+        articleData[key] = await page.$$eval(
+          (blog.selectorBase, blog.selectorConfig[key as keyof SelectorConfig] as string),
+          (article) => {
+            return (article[0] as HTMLDivElement).textContent?.replace(/\n/g, ' ').trim()
+          }
+        )
+      }
+      */
+
       const articleData = await page.$eval(
         blog.selectorBase, // Base selector for the article content.
         (article: Element, selectorConfig: SelectorConfig) => {
@@ -78,9 +101,9 @@ const newsScraperSpaceCom = async (
                   }
                   // Extract the caption and credit.
                   const caption =
-                    figcaption?.querySelector('.caption-text').textContent.trim() || undefined
+                    figcaption?.querySelector('.caption-text')?.textContent?.trim() || undefined
                   const credit =
-                    figcaption?.querySelector('.credit').textContent?.trim() || 'Space.com'
+                    figcaption?.querySelector('.credit')?.textContent?.trim() || 'Space.com'
                   // Return the image data.
                   return {
                     src: img?.getAttribute('src'), // Source URL of the image.
@@ -119,14 +142,11 @@ const newsScraperSpaceCom = async (
         },
         blog.selectorConfig // Pass the selector configuration as an argument.
       )
-
+      console.log('articleData:', articleData)
       // Add the scraped article data to the scrapedData array.
       scrapedData.push(articleData)
-
-      await page.goBack() // Navigate back to the month's article list.
     }
   }
-
   // Return the aggregated scraped data.
   return scrapedData
 }
