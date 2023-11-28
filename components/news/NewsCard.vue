@@ -4,16 +4,16 @@
   >
     <h3 class="text-2xl"> {{ post.title }}</h3>
     <div class="flex gap-2 text-sm whitespace-nowrap flex-wrap">
-      <UBadge>{{ post.category.name }}</UBadge>
-      <UBadge
+      <UBadge>{{ post.title }}</UBadge>
+      <!-- <UBadge
         v-for="tag in post.tags?.slice(0, 2)"
         :key="tag.id"
         color="rose"
       >
         {{ tag.name }}
-      </UBadge>
+      </UBadge> -->
     </div>
-    <UTooltip :text="post.media ? post.media[0].caption?.substring(0, 240) + '...' : 'No caption'">
+    <!-- <UTooltip :text="post.media ? post.media[0].caption?.substring(0, 240) + '...' : 'No caption'">
       <div
         class="h-64 w-full overflow-hidden"
       >
@@ -22,13 +22,13 @@
           :sizes="{ width: 500, height: 280, sizes: undefined }"
         />
       </div>
-    </UTooltip>
+    </UTooltip> -->
     <div class="flex gap-2 text-sm">
       <p class="font-semibold">Credit:</p>
-      <p>{{ post.author.name }},</p>
-      <p>{{ post.published || '12th Dec, 2023' }}</p>
+      <p>{{ post.title }},</p>
+      <p>{{ post.title || '12th Dec, 2023' }}</p>
     </div>
-    <div v-if="post.summary[summaryLevel]">
+    <!-- <div v-if="post.summary[summaryLevel]">
       <ul class="space-y-2">
         <li
           v-for="sum in post.summary[summaryLevel]"
@@ -44,7 +44,7 @@
           </p>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 

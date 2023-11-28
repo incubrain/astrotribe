@@ -48,10 +48,10 @@ const newsBlogs: Blog[] = [
     selectorPagination: '.nav-links .next',
     scraper: newsScraperSpaceCom,
     selectorConfig: {
-      title: 'header h1',
-      author: '.author a',
-      published: '.relative-date',
-      body: '.content-wrapper',
+      title: 'header > h1',
+      author: 'a.author-byline__link',
+      published: 'time.relative-date',
+      body: '.content-wrapper > #article-body',
       images: 'figure',
       ignore: [
         // List of selectors to ignore during scraping.
