@@ -15,10 +15,21 @@ export const useNewsStore = defineStore('news', () => {
   const nextPost = computed(() => posts.value[nextIndex.value])
   const previousPost = computed(() => posts.value[previousIndex.value])
 
-  const getBlogs = async () => {
-    const { data, error } = await useAsyncData('blogs', () => $fetch('/api/admin/get-blogs'))
+  const getBlogs = () => {
+    // const { data, error } = await useAsyncData('', () => $fetch('/api/admin/get-blogs'))
+    // if (error.value) throw new Error('error getting blogs: ' + error.value)
+    const blogs = JSON.parse(localStorage.getItem('blogs')!)
+    console.log('getBlogs:', blogs)
+
+    posts.value = blogs
+  }
+
+  const scrapeBlogs = async () => {
+    const { data, error } = await useAsyncData('', () => $fetch('/api/admin/scrape-blogs'))
     if (error.value) throw new Error('error getting blogs: ' + error.value)
-    posts.value = data.value.blogs
+    console.log('scraped blogs:', data)
+    posts.value = data._rawValue.posts
+    return data._rawValue.posts
   }
 
   const getSummary = async () => {
@@ -64,6 +75,7 @@ export const useNewsStore = defineStore('news', () => {
     nextPost,
     previousPost,
     getBlogs,
+    scrapeBlogs,
     getSummary,
     changeSummaryLevel,
     toggleModal,

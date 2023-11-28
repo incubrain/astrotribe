@@ -6,6 +6,8 @@ export default defineEventHandler(async () => {
     // use the summary-test.json file as reference for the database structure
     const storage = useStorage('blogs')
     const blogsFile = await storage.getItem<NewsType[]>('summary-test.json')
+    console.log('get-blogs start')
+
     return {
       status: 200,
       message: 'Blogs retrieved',
