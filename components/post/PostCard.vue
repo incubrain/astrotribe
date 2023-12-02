@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 const store = usePostsStore()
-const s = useStorage()
+const s = useImageStorage()
 await store.getPosts()
 // const p = usePostsStore()
 </script>

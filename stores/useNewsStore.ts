@@ -1,3 +1,5 @@
+// import type { PostgrestSingleResponse } from '@supabase/supabase-js'
+import { SupabaseClient, type PostgrestSingleResponse } from '@supabase/supabase-js'
 import type { NewsType } from '@/types/news'
 
 export const useNewsStore = defineStore('news', () => {
@@ -5,6 +7,7 @@ export const useNewsStore = defineStore('news', () => {
   const summaryLevel = ref('beginner' as 'beginner' | 'intermediate' | 'expert')
   const isModalOpen = ref(false)
   const currentIndex = ref(0)
+  const client: SupabaseClient = useNuxtApp().$supabase
 
   const previousIndex = computed(() => (currentIndex.value > 0 ? currentIndex.value - 1 : 0))
   const nextIndex = computed(() =>
@@ -15,21 +18,36 @@ export const useNewsStore = defineStore('news', () => {
   const nextPost = computed(() => posts.value[nextIndex.value])
   const previousPost = computed(() => posts.value[previousIndex.value])
 
-  const getBlogs = () => {
-    // const { data, error } = await useAsyncData('', () => $fetch('/api/admin/get-blogs'))
-    // if (error.value) throw new Error('error getting blogs: ' + error.value)
-    const blogs = JSON.parse(localStorage.getItem('blogs')!)
-    console.log('getBlogs:', blogs)
+  const getBlogs = async () => {
+    const res = (await client.from('articles').select('*')) as PostgrestSingleResponse<NewsType[]>
+    console.log('res:', res.data)
 
-    posts.value = blogs
+    posts.value = res.data
   }
 
   const scrapeBlogs = async () => {
-    const { data, error } = await useAsyncData('', () => $fetch('/api/admin/scrape-blogs'))
-    if (error.value) throw new Error('error getting blogs: ' + error.value)
-    console.log('scraped blogs:', data)
-    posts.value = data._rawValue.posts
-    return data._rawValue.posts
+    try {
+      const { data, error } = await useAsyncData('news', () => $fetch('/api/admin/scrape-blogs'))
+      if (error.value) throw new Error('error getting blogs: ' + error.value)
+      const scrapedData = data._rawValue.posts[0]
+      console.log('scrapedData:', scrapedData)
+      const articleData = {
+        title: scrapedData.title,
+        link: scrapedData.link,
+        author: scrapedData.author,
+        original: scrapedData.body,
+        published: scrapedData.published,
+        images: scrapedData.images
+      }
+      await client.from('articles').insert([articleData])
+    } catch (error: any) {
+      console.log('scrape-blogs error', error.message)
+      return {
+        status: 500,
+        message: 'Error scraping blogs',
+        error
+      }
+    }
   }
 
   const getSummary = async () => {
