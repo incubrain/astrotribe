@@ -5,7 +5,7 @@ export default defineEventHandler(async () => {
   try {
     const browser = await puppeteer.launch({
       // pass up all the console logs inside page.evaluate.
-      dumpio: true
+      // dumpio: true
     })
     const page = await browser.newPage()
     console.log('scrapeBlogs: browser init')
@@ -17,9 +17,9 @@ export default defineEventHandler(async () => {
     // console.log(`scrapeBlogs: scrape ${nasa.name}`)
     // const posts = await newsScraperNasa(page, nasa)
     const posts = await newsScraperSpaceCom(page, spaceDotCom, true)
-    console.log('scraped blogs:', posts)
-    // !todo: store in the DB no KV
+    // console.log('scrapeBlogs: posts', posts)
 
+    // !todo: store in the DB no KV
     await browser.close()
     return {
       status: 200,

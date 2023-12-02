@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col relative h-full w-full">
     <div class="w-full flex gap-2">
-      <UButton @click="storeBlogs">Scrape Blogs</UButton>
+      <UButton @click="news.scrapeBlogs">Scrape Blogs</UButton>
       <UButton @click="news.getBlogs">Get Blogs</UButton>
       <div class="w-full flex justify-end gap-2 mb-4">
         <UDropdown
@@ -30,11 +30,6 @@
 
 <script setup lang="ts">
 const news = useNewsStore()
-
-const storeBlogs = async () => {
-  const blogs = await news.scrapeBlogs()
-  localStorage.setItem('blogs', JSON.stringify(blogs))
-}
 
 const summaryLevels = [
   [
