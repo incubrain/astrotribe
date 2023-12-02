@@ -1,18 +1,18 @@
+import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import type { NewsType } from '@/types/news'
+import serverSupabaseClient from '~/server/utils/useSupabaseClient'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
   try {
-    // !todo: this should be a database call
-    // use the summary-test.json file as reference for the database structure
-    const storage = useStorage('blogs')
-    const blogsFile = await storage.getItem<NewsType[]>('blogsData')
-    console.log('get-blogs start')
-    console.log(blogsFile)
+    const supabaseClient: SupabaseClient = await serverSupabaseClient(event)
+    const res = (await supabaseClient.from('articles').select('*')) as PostgrestSingleResponse<
+      NewsType[]
+    >
 
     return {
       status: 200,
       message: 'Blogs retrieved',
-      blogs: blogsFile
+      blogs: res.data
     }
   } catch (error: any) {
     console.error('get-blogs error', error.message)
