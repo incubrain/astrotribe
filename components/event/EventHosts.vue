@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import type { EventHostType } from '@/types/events'
 
-const s = useStorage()
+const s = useImageStorage()
 
 defineProps({
   hosts: {

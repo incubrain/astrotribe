@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import Cropper from 'cropperjs'
 
-const { upload } = useStorage()
+const { upload } = useImageStorage()
 
 const props = defineProps({
   uploadType: {

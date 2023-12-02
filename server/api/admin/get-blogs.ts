@@ -5,8 +5,9 @@ export default defineEventHandler(async () => {
     // !todo: this should be a database call
     // use the summary-test.json file as reference for the database structure
     const storage = useStorage('blogs')
-    const blogsFile = await storage.getItem<NewsType[]>('summary-test.json')
+    const blogsFile = await storage.getItem<NewsType[]>('blogsData')
     console.log('get-blogs start')
+    console.log(blogsFile)
 
     return {
       status: 200,

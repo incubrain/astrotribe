@@ -41,8 +41,10 @@ const newsScraperSpaceCom = async (
     const articlesToIterate =
       numArticlesPerMonth === null ? articles : articles.slice(0, numArticlesPerMonth)
 
-    for (const article of articlesToIterate) {
-      await page.goto(article, { waitUntil: 'domcontentloaded' }) // Navigate to the article page.
+    console.log('newsScraperSpaceCom articlesToIterate:', articlesToIterate)
+
+    for (const articleLink of articlesToIterate) {
+      await page.goto(articleLink, { waitUntil: 'domcontentloaded' }) // Navigate to the article page.
       await page.waitForSelector(blog.selectorBase) // Wait for the article to load.
 
       /* ALTERNATE APPROACH TO SCRAPING (Works partially, while working on this I found a solution for the previously written code)
@@ -65,7 +67,7 @@ const newsScraperSpaceCom = async (
 
       const articleData = await page.$eval(
         blog.selectorBase, // Base selector for the article content.
-        (article: Element, selectorConfig: SelectorConfig) => {
+        (article: Element, selectorConfig: SelectorConfig, link: string) => {
           const data: { [key: string]: any } = {}
 
           // Iterate over each key in the selector configuration.
@@ -136,13 +138,14 @@ const newsScraperSpaceCom = async (
                 // Handle other unspecified keys.
                 break
             }
+            // console.log('dataSraped:', data)
           }
-          console.log('dataSraped:', data)
+          data.link = link // Add the article link to the scraped data.
           return data
         },
-        blog.selectorConfig // Pass the selector configuration as an argument.
+        blog.selectorConfig, // Pass the selector configuration as an argument.
+        articleLink
       )
-      console.log('articleData:', articleData)
       // Add the scraped article data to the scrapedData array.
       scrapedData.push(articleData)
     }

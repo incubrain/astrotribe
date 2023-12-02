@@ -75,7 +75,7 @@
 const route = useRoute()
 const id = route.params.id
 
-const s = useStorage()
+const s = useImageStorage()
 const u = useUsersStore()
 const haveUser = await u.checkWeHaveUser(String(id))
 const { user } = storeToRefs(u)
