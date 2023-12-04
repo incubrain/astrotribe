@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import scraperClient from '../scraperClient'
-import newsScraperBase from './newsScraperBase'
+import newsScraperPagination from './newsScraperPagination'
 import newsBlogs from './newsBlogs'
 
 function formatStringToFileName(input: string): string {
@@ -38,7 +38,7 @@ const newsScraper = async (event: H3Event, isTest = true) => {
       console.log(`newsScraper: scrape ${blog.name}`)
 
       // Use the base scraping function to scrape posts from the current blog.
-      const posts = await newsScraperBase(browser, blog)
+      const posts = await newsScraperPagination(browser, blog)
 
       // Log the storing process for each blog.
       console.log(`newsScraper: store ${blog.name}`)
@@ -59,7 +59,11 @@ const newsScraper = async (event: H3Event, isTest = true) => {
         const { data: newsData, error: newsError } = await supabase
           .from('news')
           .insert(formattedPost)
+          .select()
         console.log('newsScraper: newsData', newsData, newsError)
+        // now insert the news_tags based on response
+        if (!newsData) return
+        await supabase.from('news_tags').insert({ news_id: newsData.id, tag_id: 53 })
       }
     }
 
