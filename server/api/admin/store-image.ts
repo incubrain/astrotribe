@@ -1,6 +1,11 @@
 export default defineEventHandler(async (event) => {
   try {
     console.log('store-image start')
+    // !todo: I envision this endpoint being called, fetching all the image URLs that need to be stored
+    // We would need to check if we have already stored the image, and if not, fetch and store it
+    // When storing it would need to be stored in a folder using the news.id as the folder name
+    // image name doesn't matter
+    // then we would need to update the news.featured_image with the new URL
 
     // Fetch the image as a blob
     const imgBlob = await $fetch(
