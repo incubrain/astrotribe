@@ -3,7 +3,7 @@ export interface SelectorConfig {
   title: string // CSS selector to find the post title.
   author: string // CSS selector to find the author's name.
   published: string // CSS selector to find the published date.
-  body: string // CSS selector to find the main content/body of the post.
+  original: string // CSS selector to find the main content/body of the post.
   images: string // CSS selector to find images in the post.
   ignore?: string[] // Optional array of selectors to ignore/remove from the scraped content.
   videos?: string // Optional CSS selector to find videos in the post.
@@ -35,7 +35,7 @@ const newsBlogs: Blog[] = [
       title: '.entry-title a',
       author: '.entry-footer .author a',
       published: '.entry-footer .posted-on time',
-      body: '.entry-content',
+      original: '.entry-content',
       images: '.entry-content figure'
     }
   },
@@ -51,7 +51,7 @@ const newsBlogs: Blog[] = [
       title: 'header > h1',
       author: 'a.author-byline__link',
       published: 'time.relative-date',
-      body: '.content-wrapper > #article-body',
+      original: '.content-wrapper > #article-body',
       images: 'figure',
       ignore: [
         // List of selectors to ignore during scraping.
