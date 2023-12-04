@@ -1,23 +1,23 @@
 // Defines the structure for configuring how to select various elements of a blog post.
 export interface SelectorConfig {
-  title: string // CSS selector to find the post title.
-  author: string // CSS selector to find the author's name.
-  published: string // CSS selector to find the published date.
-  original: string // CSS selector to find the main content/body of the post.
-  images: string // CSS selector to find images in the post.
-  ignore?: string[] // Optional array of selectors to ignore/remove from the scraped content.
-  videos?: string // Optional CSS selector to find videos in the post.
+  title: string,
+  author: string
+  created_at: string
+  body: string
+  featured_image: string
+  ignore?: string[]
+  videos?: string
 }
 
 // Represents the structure and configuration for a specific blog.
 export interface Blog {
-  id: number // Unique identifier for the blog.
-  name: string // Human-readable name of the blog.
-  url: string // URL of the blog.
-  selectorBase: string // Base CSS selector used for scraping.
-  selectorPagination: string // CSS selector to identify pagination links.
-  scraper: any // Function used for scraping the blog.
-  selectorConfig: SelectorConfig // Specific selectors to use for scraping elements of the blog.
+  id: number
+  name: string
+  url: string
+  selectorBase: string
+  selectorPagination: string
+  scraper: any
+  selectorConfig: SelectorConfig
 }
 
 // Array containing configurations for different blogs to be scraped.
@@ -34,9 +34,9 @@ const newsBlogs: Blog[] = [
       // Specific element selectors for this blog.
       title: '.entry-title a',
       author: '.entry-footer .author a',
-      published: '.entry-footer .posted-on time',
-      original: '.entry-content',
-      images: '.entry-content figure'
+      created_at: '.entry-footer .posted-on time',
+      body: '.entry-content',
+      featured_image: 'figure'
     }
   },
   {
@@ -50,9 +50,9 @@ const newsBlogs: Blog[] = [
     selectorConfig: {
       title: 'header > h1',
       author: 'a.author-byline__link',
-      published: 'time.relative-date',
-      original: '.content-wrapper > #article-body',
-      images: 'figure',
+      created_at: 'time.relative-date',
+      body: '.content-wrapper > #article-body',
+      featured_image: 'figure',
       ignore: [
         // List of selectors to ignore during scraping.
         '.jwplayer__wrapper',
