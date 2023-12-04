@@ -20,6 +20,7 @@ export const useNewsStore = defineStore('news', () => {
   const getBlogs = async () => {
     const { data, error } = await useAsyncData('news', () => $fetch('/api/admin/get-blogs'))
     if (error.value) throw new Error('error getting blogs: ' + error.value)
+    // !todo we should format out _rawValue before this stage, all formatting on server
     posts.value = data._rawValue.blogs
     return {
       status: 200,

@@ -5,9 +5,9 @@ import serverSupabaseClient from '~/server/utils/useSupabaseClient'
 export default defineEventHandler(async (event) => {
   try {
     const supabaseClient: SupabaseClient = await serverSupabaseClient(event)
-    const res = (await supabaseClient.from('articles').select('*')) as PostgrestSingleResponse<
-      NewsType[]
-    >
+    const res: PostgrestSingleResponse<NewsType[]> = await supabaseClient
+      .from('articles')
+      .select('*')
 
     return {
       status: 200,
