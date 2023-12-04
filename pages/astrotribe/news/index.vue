@@ -2,6 +2,7 @@
   <div class="flex flex-col relative h-full w-full">
     <div class="w-full flex gap-2">
       <UButton @click="storeBlogs">Scrape Blogs</UButton>
+      <UButton @click="storeImage">Store Image</UButton>
       <UButton @click="news.getBlogs">Get Blogs</UButton>
       <div class="w-full flex justify-end gap-2 mb-4">
         <UDropdown
@@ -35,6 +36,11 @@ const news = useNewsStore()
 const storeBlogs = async () => {
   const blogs = await news.scrapeBlogs()
   localStorage.setItem('blogs', JSON.stringify(blogs))
+}
+
+const storeImage = async () => {
+  const res = await useFetch('/api/admin/store-image')
+  console.log('store image res', res)
 }
 
 const summaryLevels = [
