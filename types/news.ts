@@ -9,13 +9,13 @@ const MediaSchema = z.object({
 
 const NewsScrapedSchema = z.object({
   title: z.string(),
-  link: z.string(),
+  url: z.string(),
   body: z.string(),
   category: z.string(),
-  images: z.array(MediaSchema).nullable(),
-  videos: z.array(MediaSchema).nullable(),
+  featured_image: MediaSchema.nullable(),
+  featured_video: MediaSchema.nullable(),
   author: z.string().nullable(),
-  created_at: z.string().optional(),
+  created_at: z.string(),
   updated_at: z.string().optional()
 })
 
@@ -24,8 +24,21 @@ export const NewsSchema = z.object({
   created_at: z.string(),
   updated_at: z.string().optional(),
   title: z.string(),
-  link: z.string(),
-  categoryId: z.number().optional()
+  url: z.string(),
+  category_id: z.number().optional()
+})
+
+export const NewsFullSchema = NewsSchema.extend({
+  author: z.object({
+    name: z.string(),
+    url: z.string().nullable(),
+    image: MediaSchema.nullable()
+  }),
+  raw: z.object({
+    title: z.string(),
+    body: z.string()
+  }),
+  featured_image: MediaSchema.nullable()
 })
 
 export const NewsEmbeddingSchema = z.object({
@@ -36,6 +49,7 @@ export const NewsEmbeddingSchema = z.object({
 })
 
 export type NewsType = z.infer<typeof NewsSchema>
+export type NewsFullType = z.infer<typeof NewsFullSchema>
 export type MediaType = z.infer<typeof MediaSchema>
 export type NewsEmbeddingType = z.infer<typeof NewsEmbeddingSchema>
 export type NewsScrapedType = z.infer<typeof NewsScrapedSchema>

@@ -18,12 +18,13 @@
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      <NewsCard
+      {{ news.posts }}
+      <!-- <NewsCard
         v-for="(p, i) in news.posts"
         :key="`news-post-${i}`"
         :post="p"
         :summary-level="news.summaryLevel"
-      />
+      /> -->
     </div>
   </div>
 </template>

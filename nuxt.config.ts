@@ -41,7 +41,7 @@ export default defineNuxtConfig({
       },
       blogs: {
         driver: 'fs',
-        base: './data/blogs'
+        base: './data/blogs/scraped'
       }
     }
   },
