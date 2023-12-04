@@ -43,7 +43,6 @@
 const store = usePostsStore()
 const s = useImageStorage()
 await store.getPosts()
-// const p = usePostsStore()
 </script>
 
 <style scoped></style>

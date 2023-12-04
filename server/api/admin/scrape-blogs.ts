@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     const posts = await newsScraperSpaceCom(page, spaceDotCom, true)
     console.log('scrapeBlogs: posts', posts)
-
+    // !todo extract post format into a function, better for testing / maintainability
     const articleData = {
       title: posts[0].title,
       link: posts[0].link,

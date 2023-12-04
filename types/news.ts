@@ -24,7 +24,7 @@ export const NewsSchema = z.object({
   updated_at: z.string().optional(),
   title: z.string(),
   link: z.string(),
-  categoryId: z.number().optional(),
+  category_id: z.number().optional(),
   original: z.object({}),
   summary: z.object({}).optional(),
   published: z.date().optional(),
