@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer'
 import { Blog } from './newsBlogs'
-import type { NewsType } from '@/types/news'
+import newsFormat from './newsFormat'
 
 interface ScrapeFunction {
   (browser: Browser, blog: Blog): Promise<any[]>
@@ -12,13 +12,14 @@ const newsScraperBase: ScrapeFunction = async (browser: Browser, blog: Blog) => 
   console.log(`newsScraperBase: scrape ${blog.name}`)
 
   // Set a maximum number of articles to scrape, useful for testing.
-  const maxArticles = 10
+  const maxArticles = 2
   let posts: any[] = []
 
   // Open a new browser page.
   const page: Page = await browser.newPage()
   // Navigate to the blog's URL.
   await page.goto(blog.url)
+  console.log('newsScraperBase: goto complete')
 
   // Loop indefinitely until the break condition is met.
   while (true) {
@@ -27,6 +28,7 @@ const newsScraperBase: ScrapeFunction = async (browser: Browser, blog: Blog) => 
       const data: any[] = await blog.scraper(page, blog)
       // Add the newly scraped data to our posts array.
       posts = [...posts, ...data]
+      console.log('newsScraperBase: while loop')
 
       // Check if the number of posts meets or exceeds the maxArticles limit.
       if (maxArticles && posts.length >= maxArticles) {
@@ -60,13 +62,8 @@ const newsScraperBase: ScrapeFunction = async (browser: Browser, blog: Blog) => 
     }
   }
 
-  // Log the attempt to format the scraped posts.
-  console.log('newsScraperBase: try formatting posts')
-  // Format the posts using a predefined formatting function.
-  const formattedPosts = newsFormat(posts)
-
   // Return the formatted posts, cast to the NewsType type.
-  return formattedPosts as NewsType[]
+  return posts
 }
 
 export default newsScraperBase
