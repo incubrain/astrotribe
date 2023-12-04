@@ -127,12 +127,12 @@ const newsScraperSpaceCom = async (
                 // Store the datetime attribute as the published date.
                 data[key] = elements[0].getAttribute('datetime')
                 break
-              case 'body':
+              case 'original':
               case 'title':
                 // Extract and format the text content for body and title.
                 data[key] = elements[0].textContent?.replace(/\n/g, ' ').trim()
                 // Extract the source article URL.
-                data.srcArticle = elements[0].getAttribute('src')
+                // data.srcArticle = elements[0].getAttribute('src')
                 break
               default:
                 // Handle other unspecified keys.
