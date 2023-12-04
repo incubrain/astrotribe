@@ -22,18 +22,9 @@ export default defineEventHandler(async (event) => {
 
     const posts = await newsScraperSpaceCom(page, spaceDotCom, true)
     console.log('scrapeBlogs: posts', posts)
-    // !todo extract post format into a function, better for testing / maintainability
-    const articleData = {
-      title: posts[0].title,
-      link: posts[0].link,
-      author: posts[0].author,
-      original: posts[0].body,
-      published: posts[0].published,
-      images: posts[0].images
-    }
 
     try {
-      await supabaseClient.from('articles').insert([articleData])
+      await supabaseClient.from('articles').insert([posts[0]])
     } catch (error: any) {
       console.log('scrape-blogs error', error.message)
       throw new Error('error getting blogs: ' + error.value)
