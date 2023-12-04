@@ -7,8 +7,8 @@ import { Blog, SelectorConfig } from './newsBlogs'
 const newsScraperSpaceCom = async (
   page: Page,
   blog: Blog,
-  isDevelopment: true,
-  numArticlesPerMonth: number | null = 1
+  isDevelopment = true,
+  numArticlesPerMonth = 1
 ) => {
   // Initialize an array to store the scraped data.
   const scrapedData: any[] = []
@@ -21,6 +21,7 @@ const newsScraperSpaceCom = async (
     months.map((month) => (month as HTMLAnchorElement).href)
   )
   // Select either the first month (in development mode) or all months.
+  console.log('newsScraperSpaceCom Config:', isDevelopment, numArticlesPerMonth, page)
   const monthsToIterate = isDevelopment ? [months[0]] : months
 
   // Iterate through each month.
@@ -38,34 +39,14 @@ const newsScraperSpaceCom = async (
     )
 
     // Limit the number of articles based on the numArticlesPerMonth parameter.
-    const articlesToIterate =
+    const urlsToScrape =
       numArticlesPerMonth === null ? articles : articles.slice(0, numArticlesPerMonth)
-
-    console.log('newsScraperSpaceCom articlesToIterate:', articlesToIterate)
-
-    for (const articleLink of articlesToIterate) {
-      await page.goto(articleLink, { waitUntil: 'domcontentloaded' }) // Navigate to the article page.
+    console.log('newsScraperSpaceCom Articles to Scrape:', urlsToScrape, articles)
+    for (const url of urlsToScrape) {
+      await page.goto(url, { waitUntil: 'domcontentloaded' }) // Navigate to the article page.
       await page.waitForSelector(blog.selectorBase) // Wait for the article to load.
 
-      /* ALTERNATE APPROACH TO SCRAPING (Works partially, while working on this I found a solution for the previously written code)
-
-      const articleData: { [key: string]: any } = {}
-
-      for (const key in blog.selectorConfig) {
-        if (key === 'ignore') continue
-        // Title scraping
-        await page.waitForSelector((blog.selectorBase, blog.selectorConfig.title))
-
-        articleData[key] = await page.$$eval(
-          (blog.selectorBase, blog.selectorConfig[key as keyof SelectorConfig] as string),
-          (article) => {
-            return (article[0] as HTMLDivElement).textContent?.replace(/\n/g, ' ').trim()
-          }
-        )
-      }
-      */
-
-      const articleData = await page.$eval(
+      let articleData = await page.$eval(
         blog.selectorBase, // Base selector for the article content.
         (article: Element, selectorConfig: SelectorConfig, link: string) => {
           const data: { [key: string]: any } = {}
@@ -88,43 +69,46 @@ const newsScraperSpaceCom = async (
 
             // Switch case to handle different types of data based on the key.
             switch (key) {
-              case 'images':
-                // Map each image element to its data representation.
-                data[key] = Array.from(elements).map((element) => {
-                  // Find the image and its caption elements.
-                  const img = element.querySelector('img')
-                  const figcaption = element.querySelector('figcaption')
-                  // Remove all 'a' tags from the figcaption.
-                  if (figcaption) {
-                    const aTags = figcaption.querySelectorAll('a')
-                    aTags.forEach((a) => {
-                      a.parentNode?.removeChild(a)
-                    })
-                  }
-                  // Extract the caption and credit.
-                  const caption =
-                    figcaption?.querySelector('.caption-text')?.textContent?.trim() || undefined
-                  const credit =
-                    figcaption?.querySelector('.credit')?.textContent?.trim() || 'Space.com'
-                  // Return the image data.
-                  return {
-                    src: img?.getAttribute('src'), // Source URL of the image.
-                    alt: img?.getAttribute('alt'), // Alt text of the image.
-                    caption, // Image caption.
-                    credit // Image credit.
-                  }
-                })
+              case 'featured_image':
+                try {
+                  console.log('featured_image:', elements)
+                  const imgs = Array.from(elements).map((element) => {
+                    const img = element.querySelector('img')
+                    const figcaption = element.querySelector('figcaption')
+                    // Remove all 'a' tags from the figcaption.
+                    if (figcaption) {
+                      const aTags = figcaption.querySelectorAll('a')
+                      aTags.forEach((a) => {
+                        a.parentNode?.removeChild(a)
+                      })
+                    }
+                    // Extract the caption and credit.
+                    const caption =
+                      figcaption?.querySelector('.caption-text')?.textContent?.trim() || undefined
+                    const credit =
+                      figcaption?.querySelector('.credit')?.textContent?.trim() || 'Space.com'
+                    // Return the image data.
+                    return {
+                      src: img?.getAttribute('src'),
+                      alt: img?.getAttribute('alt'),
+                      caption,
+                      credit
+                    }
+                  })
+                  data[key] = imgs[1]
+                } catch (err) {
+                  console.log('Error in featured_image:', err)
+                  data[key] = null
+                }
                 break
               case 'author':
-                // Extract and store the author's name and link.
                 data[key] = {
                   name: elements[0].textContent?.trim(),
                   link: elements[0].getAttribute('href'),
                   image: null // No image for the author in this case.
                 }
                 break
-              case 'published':
-                // Store the datetime attribute as the published date.
+              case 'created_at':
                 data[key] = elements[0].getAttribute('datetime')
                 break
               case 'original':
@@ -132,7 +116,6 @@ const newsScraperSpaceCom = async (
                 // Extract and format the text content for body and title.
                 data[key] = elements[0].textContent?.replace(/\n/g, ' ').trim()
                 // Extract the source article URL.
-                // data.srcArticle = elements[0].getAttribute('src')
                 break
               default:
                 // Handle other unspecified keys.
@@ -143,9 +126,10 @@ const newsScraperSpaceCom = async (
           data.link = link // Add the article link to the scraped data.
           return data
         },
-        blog.selectorConfig, // Pass the selector configuration as an argument.
-        articleLink
+        blog.selectorConfig // Pass the selector configuration as an argument.
       )
+      articleData = { ...articleData, url }
+      console.log('articleData:', articleData)
       // Add the scraped article data to the scrapedData array.
       scrapedData.push(articleData)
     }

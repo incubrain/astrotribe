@@ -9,5 +9,5 @@ dist
 .unlighthouse
 private-data
 data/kv
-data/blogs
+data/blogs/serp
 data/seed
