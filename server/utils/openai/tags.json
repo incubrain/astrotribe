@@ -1,214 +1,214 @@
 [
   {
     "id": 1,
-    "name": "Solar System"
+    "title": "Solar System"
   },
   {
     "id": 2,
-    "name": "Black Holes"
+    "title": "Black Holes"
   },
   {
     "id": 3,
-    "name": "Galaxies"
+    "title": "Galaxies"
   },
   {
     "id": 4,
-    "name": "Nebulae"
+    "title": "Nebulae"
   },
   {
     "id": 5,
-    "name": "Stars"
+    "title": "Stars"
   },
   {
     "id": 6,
-    "name": "Planets"
+    "title": "Planets"
   },
   {
     "id": 7,
-    "name": "Moons"
+    "title": "Moons"
   },
   {
     "id": 8,
-    "name": "Comets"
+    "title": "Comets"
   },
   {
     "id": 9,
-    "name": "Asteroids"
+    "title": "Asteroids"
   },
   {
     "id": 10,
-    "name": "Telescopes"
+    "title": "Telescopes"
   },
   {
     "id": 11,
-    "name": "Radio Telescopes"
+    "title": "Radio Telescopes"
   },
   {
     "id": 12,
-    "name": "Space Probes"
+    "title": "Space Probes"
   },
   {
     "id": 13,
-    "name": "Exoplanets"
+    "title": "Exoplanets"
   },
   {
     "id": 14,
-    "name": "Dark Matter"
+    "title": "Dark Matter"
   },
   {
     "id": 15,
-    "name": "Dark Energy"
+    "title": "Dark Energy"
   },
   {
     "id": 16,
-    "name": "Astrophotography"
+    "title": "Astrophotography"
   },
   {
     "id": 17,
-    "name": "Space Missions"
+    "title": "Space Missions"
   },
   {
     "id": 18,
-    "name": "Big Bang"
+    "title": "Big Bang"
   },
   {
     "id": 19,
-    "name": "Supernovae"
+    "title": "Supernovae"
   },
   {
     "id": 20,
-    "name": "Astronomy Events"
+    "title": "Astronomy Events"
   },
   {
     "id": 21,
-    "name": "Astrobiology"
+    "title": "Astrobiology"
   },
   {
     "id": 22,
-    "name": "Astrochemistry"
+    "title": "Astrochemistry"
   },
   {
     "id": 23,
-    "name": "Cosmic Rays"
+    "title": "Cosmic Rays"
   },
   {
     "id": 24,
-    "name": "Space Weather"
+    "title": "Space Weather"
   },
   {
     "id": 25,
-    "name": "Astronomy History"
+    "title": "Astronomy History"
   },
   {
     "id": 26,
-    "name": "Astrology"
+    "title": "Astrology"
   },
   {
     "id": 27,
-    "name": "Alien Life"
+    "title": "Alien Life"
   },
   {
     "id": 28,
-    "name": "Space Travel"
+    "title": "Space Travel"
   },
   {
     "id": 29,
-    "name": "Gravitational Waves"
+    "title": "Gravitational Waves"
   },
   {
     "id": 30,
-    "name": "Interstellar Medium"
+    "title": "Interstellar Medium"
   },
   {
     "id": 31,
-    "name": "Orion"
+    "title": "Orion"
   },
   {
     "id": 32,
-    "name": "Hubble Space Telescope"
+    "title": "Hubble Space Telescope"
   },
   {
     "id": 33,
-    "name": "James Webb Space Telescope"
+    "title": "James Webb Space Telescope"
   },
   {
     "id": 34,
-    "name": "NASA"
+    "title": "NASA"
   },
   {
     "id": 35,
-    "name": "ESA"
+    "title": "ESA"
   },
   {
     "id": 36,
-    "name": "SpaceX"
+    "title": "SpaceX"
   },
   {
     "id": 37,
-    "name": "Milky Way"
+    "title": "Milky Way"
   },
   {
     "id": 38,
-    "name": "Andromeda"
+    "title": "Andromeda"
   },
   {
     "id": 39,
-    "name": "Event Horizon Telescope"
+    "title": "Event Horizon Telescope"
   },
   {
     "id": 40,
-    "name": "Astroinformatics"
+    "title": "Astroinformatics"
   },
   {
     "id": 41,
-    "name": "Multiverse"
+    "title": "Multiverse"
   },
   {
     "id": 42,
-    "name": "Space Station"
+    "title": "Space Station"
   },
   {
     "id": 43,
-    "name": "Astronomy Software"
+    "title": "Astronomy Software"
   },
   {
     "id": 44,
-    "name": "Binary Stars"
+    "title": "Binary Stars"
   },
   {
     "id": 45,
-    "name": "Mars Rover"
+    "title": "Mars Rover"
   },
   {
     "id": 46,
-    "name": "Blue Moon"
+    "title": "Blue Moon"
   },
   {
     "id": 47,
-    "name": "Solar Eclipse"
+    "title": "Solar Eclipse"
   },
   {
     "id": 48,
-    "name": "Lunar Eclipse"
+    "title": "Lunar Eclipse"
   },
   {
     "id": 49,
-    "name": "Satellites"
+    "title": "Satellites"
   },
   {
     "id": 50,
-    "name": "International Space Station"
+    "title": "International Space Station"
   },
   {
     "id": 51,
-    "name": "Sky Map Apps"
+    "title": "Sky Map Apps"
   },
   {
     "id": 52,
-    "name": "Astro tourism"
+    "title": "Astro tourism"
   },
   {
     "id": 53,
-    "name": "No Tags"
+    "title": "No Tags"
   }
 ]
