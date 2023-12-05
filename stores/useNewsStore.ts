@@ -1,5 +1,3 @@
-// import type { PostgrestSingleResponse } from '@supabase/supabase-js'
-
 import type { NewsType } from '@/types/news'
 
 export const useNewsStore = defineStore('news', () => {
@@ -18,17 +16,11 @@ export const useNewsStore = defineStore('news', () => {
   const previousPost = computed(() => posts.value[previousIndex.value])
 
   const getBlogs = async () => {
-    const res = await useAsyncData('news', () => $fetch('/api/admin/get-blogs'))
-    console.log(res)
+    const { data, error } = await useFetch('/api/admin/get-news')
+    console.log(data, error)
 
-    if (res.error.value) throw new Error('error getting blogs: ' + error.value)
-    // !todo we should format out _rawValue before this stage, all formatting on server
-    posts.value = res.data._rawValue.blogs
-    return {
-      status: 200,
-      message: 'Scraped blogs successfully!',
-      data: res.data._rawValue.blogs
-    }
+    if (error.value) throw new Error('error getting blogs: ' + error.value)
+    posts.value = data.value.news
   }
 
   const scrapeBlogs = async () => {
