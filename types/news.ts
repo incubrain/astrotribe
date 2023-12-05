@@ -7,6 +7,12 @@ const MediaSchema = z.object({
   credit: z.string().optional()
 })
 
+const AuthorSchema = z.object({
+  name: z.string(),
+  url: z.string().nullable(),
+  image: MediaSchema.nullable()
+})
+
 const NewsScrapedSchema = z.object({
   title: z.string(),
   url: z.string(),
@@ -14,7 +20,7 @@ const NewsScrapedSchema = z.object({
   category: z.string(),
   featured_image: MediaSchema.nullable(),
   featured_video: MediaSchema.nullable(),
-  author: z.string().nullable(),
+  author: AuthorSchema.nullable(),
   created_at: z.string(),
   updated_at: z.string().optional()
 })
@@ -29,11 +35,7 @@ export const NewsSchema = z.object({
 })
 
 export const NewsFullSchema = NewsSchema.extend({
-  author: z.object({
-    name: z.string(),
-    url: z.string().nullable(),
-    image: MediaSchema.nullable()
-  }),
+  author: AuthorSchema.nullable(),
   raw: z.object({
     title: z.string(),
     body: z.string()
