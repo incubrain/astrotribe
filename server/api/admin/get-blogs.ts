@@ -1,10 +1,9 @@
 import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import type { NewsType } from '@/types/news'
-import serverSupabaseClient from '~/server/utils/useSupabaseClient'
 
 export default defineEventHandler(async (event) => {
   try {
-    const supabaseClient: SupabaseClient = await serverSupabaseClient(event)
+    const supabaseClient: SupabaseClient = await supabaseServerClient(event)
     const res: PostgrestSingleResponse<NewsType[]> = await supabaseClient
       .from('articles')
       .select('*')
