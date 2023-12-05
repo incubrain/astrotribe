@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col relative h-full w-full">
     <div class="w-full flex gap-2">
-      <UButton @click="storeBlogs">Scrape Blogs</UButton>
+      <UButton @click="news.scrapeBlogs">Scrape Blogs</UButton>
       <UButton @click="storeImage">Store Image</UButton>
       <UButton @click="news.getBlogs">Get Blogs</UButton>
       <div class="w-full flex justify-end gap-2 mb-4">
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      {{ news.posts }}
+      {{ posts }}
       <!-- <NewsCard
         v-for="(p, i) in news.posts"
         :key="`news-post-${i}`"
@@ -32,11 +32,7 @@
 
 <script setup lang="ts">
 const news = useNewsStore()
-
-const storeBlogs = async () => {
-  const blogs = await news.scrapeBlogs()
-  localStorage.setItem('blogs', JSON.stringify(blogs))
-}
+const { posts } = storeToRefs(news)
 
 const storeImage = async () => {
   const res = await useFetch('/api/admin/store-image')
