@@ -1,5 +1,6 @@
 import { Page } from 'puppeteer'
 import { Blog, SelectorConfig } from './newsBlogs'
+import type { NewsScrapedType } from '~/types/news'
 
 // maps the name of a data field to a CSS selector string that can be used to find the corresponding element on the page.
 
@@ -48,7 +49,7 @@ const newsScraperSpaceCom = async (
 
       let articleData = await page.$eval(
         blog.selectorBase, // Base selector for the article content.
-        (article: Element, selectorConfig: SelectorConfig, link: string) => {
+        (article: Element, selectorConfig: SelectorConfig) => {
           const data: { [key: string]: any } = {}
 
           // Iterate over each key in the selector configuration.
@@ -104,14 +105,14 @@ const newsScraperSpaceCom = async (
               case 'author':
                 data[key] = {
                   name: elements[0].textContent?.trim(),
-                  link: elements[0].getAttribute('href'),
+                  url: elements[0].getAttribute('href'),
                   image: null // No image for the author in this case.
                 }
                 break
               case 'created_at':
                 data[key] = elements[0].getAttribute('datetime')
                 break
-              case 'original':
+              case 'body':
               case 'title':
                 // Extract and format the text content for body and title.
                 data[key] = elements[0].textContent?.replace(/\n/g, ' ').trim()
@@ -123,12 +124,11 @@ const newsScraperSpaceCom = async (
             }
             // console.log('dataSraped:', data)
           }
-          data.link = link // Add the article link to the scraped data.
           return data
         },
         blog.selectorConfig // Pass the selector configuration as an argument.
       )
-      articleData = { ...articleData, url }
+      articleData = { ...articleData as NewsScrapedType, url }
       console.log('articleData:', articleData)
       // Add the scraped article data to the scrapedData array.
       scrapedData.push(articleData)
