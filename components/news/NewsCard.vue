@@ -2,9 +2,9 @@
   <div
     class="flex flex-col gap-4 lg:rounded-md border p-4 foreground border-color origin-left animate-swipe-in"
   >
-    <h3 class="text-2xl"> {{ post.title }}</h3>
+    <h3 class="text-2xl">{{ post.title }}</h3>
     <div class="flex gap-2 text-sm whitespace-nowrap flex-wrap">
-      <UBadge>{{ post.title }}</UBadge>
+      <!-- <UBadge>{{ post.category.name }}</UBadge> -->
       <!-- <UBadge
         v-for="tag in post.tags?.slice(0, 2)"
         :key="tag.id"
@@ -13,20 +13,20 @@
         {{ tag.name }}
       </UBadge> -->
     </div>
-    <!-- <UTooltip :text="post.media ? post.media[0].caption?.substring(0, 240) + '...' : 'No caption'">
-      <div
-        class="h-64 w-full overflow-hidden"
-      >
+    <UTooltip
+      :text="post.images ? post.images[0].caption?.substring(0, 240) + '...' : 'No caption'"
+    >
+      <div class="h-64 w-full overflow-hidden">
         <ImageWithFallback
-          :image="post.media ? post.media[0] : undefined"
+          :image="post.images ? post.images[0] : undefined"
           :sizes="{ width: 500, height: 280, sizes: undefined }"
         />
       </div>
-    </UTooltip> -->
+    </UTooltip>
     <div class="flex gap-2 text-sm">
       <p class="font-semibold">Credit:</p>
-      <p>{{ post.title }},</p>
-      <p>{{ post.title || '12th Dec, 2023' }}</p>
+      <p>{{ post.author.name }},</p>
+      <p>{{ post.published || '12th Dec, 2023' }}</p>
     </div>
     <!-- <div v-if="post.summary[summaryLevel]">
       <ul class="space-y-2">

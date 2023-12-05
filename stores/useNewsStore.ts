@@ -15,21 +15,31 @@ export const useNewsStore = defineStore('news', () => {
   const nextPost = computed(() => posts.value[nextIndex.value])
   const previousPost = computed(() => posts.value[previousIndex.value])
 
-  const getBlogs = () => {
-    // const { data, error } = await useAsyncData('', () => $fetch('/api/admin/get-blogs'))
-    // if (error.value) throw new Error('error getting blogs: ' + error.value)
-    const blogs = JSON.parse(localStorage.getItem('blogs')!)
-    console.log('getBlogs:', blogs)
+  const getBlogs = async () => {
+    const { data, error } = await useFetch('/api/admin/get-news')
+    console.log(data, error)
 
-    posts.value = blogs
+    if (error.value) throw new Error('error getting blogs: ' + error.value)
+    posts.value = data.value.news
   }
 
   const scrapeBlogs = async () => {
-    const { data, error } = await useAsyncData('', () => $fetch('/api/admin/scrape-blogs'))
-    if (error.value) throw new Error('error getting blogs: ' + error.value)
-    console.log('scraped blogs:', data)
-    posts.value = data._rawValue.posts
-    return data._rawValue.posts
+    try {
+      const { data, error } = await useAsyncData('news', () => $fetch('/api/admin/scrape-blogs'))
+      if (error.value) throw new Error('error scraping blogs: ' + error.value)
+      return {
+        status: 200,
+        message: 'Scraped blogs successfully!',
+        data
+      }
+    } catch (error: any) {
+      console.log('scrape-blogs error', error.message)
+      return {
+        status: 500,
+        message: 'Error scraping blogs',
+        error
+      }
+    }
   }
 
   const getSummary = async () => {
