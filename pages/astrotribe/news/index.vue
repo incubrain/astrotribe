@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      {{ news.posts }}
+      {{ posts }}
       <!-- <NewsCard
         v-for="(p, i) in news.posts"
         :key="`news-post-${i}`"
@@ -32,11 +32,7 @@
 
 <script setup lang="ts">
 const news = useNewsStore()
-
-const storeBlogs = async () => {
-  const blogs = await news.scrapeBlogs()
-  localStorage.setItem('blogs', JSON.stringify(blogs))
-}
+const { posts } = storeToRefs(news)
 
 const storeImage = async () => {
   const res = await useFetch('/api/admin/store-image')
