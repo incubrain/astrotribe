@@ -3,7 +3,7 @@ import type { NewsType } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
   try {
-    const supabaseClient: SupabaseClient = await serverSupabaseClient(event)
+    const supabaseClient: SupabaseClient = await supabaseServerClient(event)
     const res: PostgrestSingleResponse<NewsType[]> = await supabaseClient
       .from('news')
       .select('*')
