@@ -96,8 +96,13 @@ export default defineNuxtConfig({
   ],
   devtools: {
     enabled: true,
+
     // inclued vscode to enable element selection to open vscode related file
-    vscode: {}
+    vscode: {},
+
+    timeline: {
+      enabled: true
+    }
   },
   // partytown: {
   //     // For google analytics
