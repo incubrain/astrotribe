@@ -1,10 +1,8 @@
-import { SupabaseClient } from '@supabase/supabase-js'
-
 export default function useAuth() {
   const router = useRouter()
   const user = useSupabaseUser()
   const env = useRuntimeConfig().public
-  const client: SupabaseClient = useNuxtApp().$supabase
+  const client = useSupabaseClient()
 
   const register = async ({ email, password }: { email: string; password: string }) => {
     const { data, error } = await client.auth.signUp({

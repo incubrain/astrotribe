@@ -1,3 +1,5 @@
+import { serverSupabaseClient } from '#supabase/server'
+
 export default defineEventHandler(async (event) => {
   try {
     console.log('store-image start')
@@ -16,7 +18,7 @@ export default defineEventHandler(async (event) => {
     console.log('Image fetched', imgBlob)
 
     // Get the Supabase client
-    const supabase = await supabaseServerClient(event)
+    const supabase = await serverSupabaseClient(event)
 
     // Upload the blob to Supabase Storage
     const { data, error } = await supabase.storage.from('posts').upload('public/test.webp', imgBlob)

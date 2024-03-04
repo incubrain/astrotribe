@@ -4,16 +4,16 @@
       <UButton
         color="primary"
         class="mt-4"
-        @click="testing.auth.register()"
+        @click="admin.registerManyUsers()"
       >
-        Register
+        Register Many
       </UButton>
       <UButton
         color="primary"
         class="mt-4"
-        @click="admin.updateMany()"
+        @click="admin.updateManyUsers()"
       >
-        Update Many
+        Update Many Existing
       </UButton>
       <UButton
         color="primary"
@@ -27,11 +27,9 @@
 </template>
 
 <script setup lang="ts">
-
 const testing = useTestingStore()
 
 const admin = useAdmin()
-
 </script>
 
 <style scoped></style>

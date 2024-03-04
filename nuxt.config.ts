@@ -90,7 +90,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'nuxt-swiper',
     'magic-regexp/nuxt',
-    // '@unlighthouse/nuxt',
+    '@nuxtjs/supabase',
     '@nuxtjs/robots',
     '@pinia/nuxt'
   ],
@@ -104,10 +104,14 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
-  // partytown: {
-  //     // For google analytics
-  //     forward: ['dataLayer.push'],
-  // },
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/auth/confirm',
+      exclude: authExclude,
+      cookieRedirect: false
+    }
+  },
   pinia: {
     autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
   },
@@ -124,14 +128,11 @@ export default defineNuxtConfig({
       BASE_URL: process.env.BASE_URL,
       TEST_MODE: process.env.TEST_MODE || 'false',
       POSTHOG_PUBLIC_KEY: process.env.POSTHOG_PUBLIC_KEY,
-      SUPABASE_URL: process.env.SUPABASE_URL,
-      SUPABASE_KEY: process.env.SUPABASE_KEY,
       TESTING_USERNAME: process.env.TESTING_USERNAME,
       TESTING_PASSWORD: process.env.TESTING_PASSWORD
     },
     // The private keys which are only available within server-side
     ADMIN_EMAILS: process.env.ADMIN_EMAILS,
-    SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     SMTP_SENDER: process.env.SMTP_SENDER,
     NASA_API_KEY: process.env.NASA_API_KEY,
