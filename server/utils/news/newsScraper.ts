@@ -2,6 +2,7 @@ import type { H3Event } from 'h3'
 import scraperClient from '../scraperClient'
 import newsScraperPagination from './newsScraperPagination'
 import newsBlogs from './newsBlogs'
+import { serverSupabaseClient } from '#supabase/server'
 
 function formatStringToFileName(input: string): string {
   // Convert the string to lowercase
@@ -55,7 +56,7 @@ const newsScraper = async (event: H3Event, isTest = true) => {
           await storage.setItem(`${formatStringToFileName(formattedPost.title)}`, formattedPost)
         }
 
-        const supabase = await supabaseServerClient(event)
+        const supabase = await serverSupabaseClient(event)
         const { data: newsData, error: newsError } = await supabase
           .from('news')
           .insert(formattedPost)

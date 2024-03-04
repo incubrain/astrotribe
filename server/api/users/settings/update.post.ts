@@ -1,5 +1,6 @@
 import { SettingsAccountValidation, SettingsPasswordValidation } from '@/types/settings'
 import type { SettingsAccountType, SettingsPasswordType } from '@/types/settings'
+import { serverSupabaseClient } from '#supabase/server'
 
 // Validate the settings data based on the type
 function validateSettingsData(
@@ -20,7 +21,7 @@ export default defineEventHandler(async (event) => {
   try {
     const { data, settingsType } = await readBody(event)
     const validatedData = validateSettingsData(settingsType, data)
-    const supabase = await supabaseServerClient(event)
+    const supabase = await serverSupabaseClient(event)
 
     const { data: user, error } = await supabase
       .from('users')
