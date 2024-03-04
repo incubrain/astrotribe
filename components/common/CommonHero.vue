@@ -4,7 +4,7 @@
       :img="img"
       :title="title"
       :subtitle="subtitle"
-      object-position="object-bottom"
+      :object-position="`object-${position}`"
       fit="cover"
     >
       <div class="flex flex-col gap-4 bg-white rounded-md pb-6">
@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-
 interface Image {
   title: string
   src: string
@@ -34,6 +33,10 @@ defineProps({
   img: {
     type: Object as PropType<Image>,
     required: true
+  },
+  position: {
+    type: String,
+    default: 'bottom'
   }
 })
 </script>

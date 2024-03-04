@@ -51,10 +51,7 @@
           <p class="text-sm">
             {{ speaker.abstract.title }}
           </p>
-          <UModal
-            v-model="isOpen"
-            :ui="{ base: 'w-[600px] overflow-y-scroll' }"
-          >
+          <UModal v-model="isOpen">
             <UButton
               class="md:hidden fixed top-2 right-2 m-4"
               icon="i-mdi-close"
