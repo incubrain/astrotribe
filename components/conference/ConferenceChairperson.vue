@@ -23,7 +23,7 @@
           loading="lazy"
           quality="80"
           format="webp"
-          class="object-cover aspect-square h-full grayscale-[20%] min-w-[180px]"
+          class="object-cover aspect-square h-full grayscale-[20%] min-w-[180px] w-full"
         />
       </template>
       <div class="flex flex-col gap-4 justify-between">

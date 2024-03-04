@@ -2,22 +2,9 @@
   <div class="py-12 space-y-6">
     <CommonTitle
       :title="{
-        label: 'Conference Schedule',
-        main: 'A 3-Day Astronomical Adventure '
+        main: 'Conference Schedule'
       }"
     />
-    <div class="flex gap-2 flex-wrap">
-      <UButton
-        v-for="link in registerLinks"
-        :key="`register-for-${link.day}`"
-        :to="link.url"
-        target="_blank"
-        color="primary"
-        @click="$posthog()?.capture('conference_register', { day: link.day })"
-      >
-        Attend {{ link.day }} Online
-      </UButton>
-    </div>
     <UTabs
       :items="schedule"
       :ui="{
@@ -136,21 +123,6 @@ const columns = computed(() => [
   }
 ])
 
-const registerLinks = [
-  {
-    day: 'Friday',
-    url: 'https://us06web.zoom.us/meeting/register/tZIoc-igrzstHdIOAAn1vJXPRxgohInXjlsV'
-  },
-  {
-    day: 'Saturday',
-    url: 'https://us06web.zoom.us/meeting/register/tZAodeyvpjMrG9AwjinCx86l5d5pPHPVp5JQ'
-  },
-  {
-    day: 'Sunday',
-    url: 'https://us06web.zoom.us/meeting/register/tZUudO2qrzkpE9IGWf_fEi7ejckAdy2Mm370'
-  }
-]
-
 const schedule = [
   {
     slot: 'friday',
@@ -208,10 +180,9 @@ const schedule = [
         time: { start: '13:30', end: '14:00' }
       },
       {
-        icon: 'i-mdi-microphone',
-        topic: 'Know to Preserve',
-        speaker: 'Alejandro Sommer',
-        online: true,
+        icon: 'i-material-symbols-group-work',
+        topic: 'Round Table Activity',
+        speaker: 'Ruchira Huchgol',
         time: { start: '14:00', end: '14:30' }
       },
       {
@@ -222,10 +193,9 @@ const schedule = [
         time: { start: '14:30', end: '15:00' }
       },
       {
-        online: true,
-        icon: 'i-mdi-microphone',
-        topic: 'AstroTourism in Nepal',
-        speaker: 'Dr. Jayanta Acharya',
+        icon: 'i-material-symbols-group-work',
+        topic: 'Round Table Activity',
+        speaker: 'Ruchira Huchgol',
         time: { start: '15:00', end: '15:30' }
       },
       {
@@ -489,10 +459,9 @@ const schedule = [
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        online: true,
-        icon: 'i-mdi-microphone',
-        topic: 'Future Scientists in an Astrotourium',
-        speaker: 'João Retre ',
+        icon: 'i-material-symbols-group-work',
+        speaker: 'Ruchira Huchgol',
+        topic: 'Round Table Activity',
         time: { start: '14:00', end: '14:30' }
       },
       {
