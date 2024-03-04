@@ -1,21 +1,23 @@
-import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import type { NewsType } from '@/types/news'
+import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   try {
-    const supabaseClient: SupabaseClient = await supabaseServerClient(event)
-    const res: PostgrestSingleResponse<NewsType[]> = await supabaseClient
-      .from('news')
-      .select('*')
-      .limit(10)
+    const supabaseClient = await serverSupabaseClient(event)
+    const { data, error } = await supabaseClient.from('news').select('*').limit(10)
 
-    if (res.error) createError(`400: ${res.error.message}`)
-    if (!res.data) createError('400: No News Returned From Supabase')
+    if (error) {
+      createError(`400: ${error.message}`)
+    }
+
+    if (!data) {
+      createError('400: No News Returned From Supabase')
+    }
 
     return {
       status: 200,
       message: 'News retrieved from supabase',
-      news: res.data!
+      news: data
     }
   } catch (error: any) {
     console.error('get-news error', error.message)
