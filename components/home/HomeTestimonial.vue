@@ -10,7 +10,7 @@
       type="testimonial"
     >
       <template #default="{ item }: { item: Testimonial }">
-        <div class="p-6 border rounded-md h-full">
+        <div class="p-6 border border-color rounded-md h-full">
           <div class="flex items-center h-auto">
             <NuxtImg
               :src="item.image"

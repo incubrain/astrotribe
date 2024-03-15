@@ -1,9 +1,18 @@
+<script setup lang="ts">
+import type { TitleT, ImageT } from '@/types/content'
+
+defineProps<{
+  title: TitleT
+  img: ImageT
+  position: string
+}>()
+</script>
+
 <template>
   <div>
     <ImageHero
       :img="img"
       :title="title"
-      :subtitle="subtitle"
       :object-position="`object-${position}`"
       fit="cover"
     >
@@ -13,30 +22,3 @@
     </ImageHero>
   </div>
 </template>
-
-<script setup lang="ts">
-interface Image {
-  title: string
-  src: string
-  alt: string
-}
-
-defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  subtitle: {
-    type: String,
-    required: true
-  },
-  img: {
-    type: Object as PropType<Image>,
-    required: true
-  },
-  position: {
-    type: String,
-    default: 'bottom'
-  }
-})
-</script>

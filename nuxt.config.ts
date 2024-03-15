@@ -44,7 +44,6 @@ export default defineNuxtConfig({
 
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
-    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
       htmlAttrs: {
