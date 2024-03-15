@@ -78,7 +78,7 @@ export const getImageURL = ({
   isPrivate,
   transform
 }: GetImageUrlOptions): string => {
-  const baseURL = useRuntimeConfig().public.SUPABASE_URL
+  const baseURL = useRuntimeConfig().public.supabaseUrl
 
   return constructUrl({
     baseURL,
@@ -95,7 +95,7 @@ export interface GetStorageImagesOptions extends Omit<UrlConstructorOptions, 'ba
 
 // export async function getStorageImages(options: GetStorageImagesOptions): Promise<string[]> {
 //   const { bucket, fileType, folderPath, isPrivate, transform } = options
-//   const baseURL = useRuntimeConfig().public.SUPABASE_URL
+//   const baseURL = useRuntimeConfig().public.supabaseUrl
 //   if (!bucket || !folderPath) {
 //     console.error('Bucket and folder are required parameters')
 //     return []

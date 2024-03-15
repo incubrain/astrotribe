@@ -20,7 +20,7 @@ export default defineNuxtPlugin({
 
     if (!supabase) {
       // Initialize Supabase client if it's not already done.
-      supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+      supabase = createClient(env.supabaseUrl, env.supabaseKey, {
         db: { schema: 'public' },
         auth: {
           autoRefreshToken: true,
