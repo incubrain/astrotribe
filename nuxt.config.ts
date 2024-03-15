@@ -41,9 +41,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  ui: {
-    icons: ['mdi', 'heroicons', 'material-symbols']
-  },
+
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -71,13 +69,18 @@ export default defineNuxtConfig({
       //   ]
     }
   },
-  css: [],
+  css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
+
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag)
+    }
+  },
+
   imports: {
     dirs: ['stores', 'data']
   },
-  colorMode: {
-    classSuffix: ''
-  },
+
   modules: MODULES,
   ...MODULE_OPTIONS,
 
@@ -88,7 +91,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Keys within public, will be also exposed to the client-side
+    // client
     public: {
       baseUrl: '',
       testMode: '',
@@ -96,15 +99,16 @@ export default defineNuxtConfig({
       supabaseUrl: '',
       supabaseKey: '',
       testingUserame: '',
-      testingPassword: '',
+      testingPassword: ''
     },
-    // The private keys which are only available within server-side
+    // server
     adminEmails: '',
     supabaseServiceKey: '',
     nasaApiKey: '',
     openaiApiKey: '',
-    openaiOrg: '',
+    openaiOrg: ''
   },
+
   typescript: {
     shim: false,
     tsConfig: {
@@ -114,27 +118,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  image: {
-    format: ['webp', 'jpg']
-  },
-  // image: {
-  //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
-  //   presets: {
-  //     cover: {
-  //       modifiers: {
-  //         format: "jpg",
-  //         quality: 80,
-  //         sizes: "sm:100vw md:50vw lg:800px",
-  //       },
-  //     },
-  //     card: {
-  //       modifiers: {
-  //         format: "jpg",
-  //         quality: 70,
-  //         sizes: "sm:100vw md:40vw lg:300px",
-  //       },
-  //     },
-  //   },
-  // },
+
   ssr: true
 })
