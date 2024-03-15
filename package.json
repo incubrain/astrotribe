@@ -53,7 +53,6 @@
     "@googlemaps/js-api-loader": "^1.16.2",
     "@heroicons/vue": "2.0.18",
     "@vercel/kv": "^0.2.2",
-    "magic-regexp": "^0.7.0",
     "nuxt-swiper": "^1.1.1",
     "particles.vue": "^3.11.0",
     "sass": "^1.63.4",
