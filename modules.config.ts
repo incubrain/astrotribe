@@ -9,7 +9,8 @@ export const MODULES: NuxtConfig['modules'] = [
   '@pinia/nuxt',
   '@nuxtjs/seo',
   '@nuxt/content',
-  'nuxt-primevue'
+  'nuxt-primevue',
+  '@nuxthq/studio'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {

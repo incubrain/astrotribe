@@ -98,7 +98,8 @@ export default defineNuxtConfig({
       supabaseUrl: '',
       supabaseKey: '',
       testingUserame: '',
-      testingPassword: ''
+      testingPassword: '',
+      studioTokens: ''
     },
     // server
     adminEmails: '',
