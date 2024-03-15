@@ -1,7 +1,7 @@
 import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 
 export const MODULES: NuxtConfig['modules'] = [
-  '@nuxtjs/partytown',
+  // '@nuxtjs/partytown',
   '@nuxt/devtools',
   '@nuxt/ui',
   '@vueuse/nuxt',

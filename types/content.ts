@@ -11,5 +11,13 @@ export const faqSchema = z.object({
   description: z.string()
 })
 
-export type TitleType = z.infer<typeof titleSchema>
+export const imageSchema = z.object({
+  src: z.string(),
+  alt: z.string(),
+  width: z.number().optional(),
+  height: z.number().optional()
+})
+
+export type ImageT = z.infer<typeof imageSchema>
+export type TitleT = z.infer<typeof titleSchema>
 export type FaqType = z.infer<typeof faqSchema>
