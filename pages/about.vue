@@ -2,7 +2,10 @@
   <div>
     <ImageHero
       :img="about.images[0]"
-      title="The AstronEra Journey"
+      :title="{
+        main: 'The AstronEra Journey'
+      }"
+      fit="cover"
       object-position="object-top"
     />
     <div class="flex flex-col wrapper gap-12 padded-x mx-auto xl:gap-24 xl:py-24">

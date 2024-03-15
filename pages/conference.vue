@@ -2,12 +2,13 @@
   <div>
     <CommonHero
       :img="{
-        title: 'Featured image for the Dark Sky Conservation India Conference',
         src: 'conference/photos/IDSPAC23-ruchira-huchgol.jpg',
         alt: 'Featured image for the Dark Sky Conservation India Conference'
       }"
-      subtitle="24th-26th November 2023"
-      title="Dark Sky Conservation India Conference"
+      :title="{
+        main: 'Dark Sky Conservation India Conference',
+        subtitle: '24th-26th November 2023'
+      }"
       position="object-top"
     >
       <NuxtImg
