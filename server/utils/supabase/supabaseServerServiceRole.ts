@@ -3,13 +3,13 @@ import type { H3Event } from 'h3'
 
 export default function supabaseServerServiceRole<T>(event: H3Event): SupabaseClient<T> {
   const {
-    SUPABASE_SERVICE_KEY,
-    public: { SUPABASE_URL }
+    supabaseServiceKey,
+    public: { supabaseUrl }
   } = useRuntimeConfig()
 
   // Make sure service key is set
-  if (!SUPABASE_SERVICE_KEY) {
-    throw new Error('Missing `SUPABASE_SERVICE_KEY` in `.env`')
+  if (!supabaseServiceKey) {
+    throw new Error('Missing `supabaseServiceKey` in `.env`')
   }
 
   // No need to recreate client if exists in request context
@@ -20,7 +20,7 @@ export default function supabaseServerServiceRole<T>(event: H3Event): SupabaseCl
       autoRefreshToken: false
     }
 
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, { auth })
+    const supabaseClient = createClient(supabaseUrl, supabaseServiceKey, { auth })
 
     event.context._supabaseServiceRole = supabaseClient
   }

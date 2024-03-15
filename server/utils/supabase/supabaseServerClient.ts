@@ -10,7 +10,7 @@ export default async function supabaseServerClient<T>(event: H3Event): Promise<S
 
   // No need to recreate client if exists in request context
   if (!supabaseClient) {
-    supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+    supabaseClient = createClient(env.supabaseUrl, env.supabaseKey, {
       auth: {
         detectSessionInUrl: false,
         persistSession: false,
