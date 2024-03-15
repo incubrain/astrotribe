@@ -17,10 +17,6 @@ const PINIA_OPTIONS: NuxtConfig['pinia'] = {
   autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
 }
 
-const ROBOTS_OPTIONS: NuxtConfig['robots'] = {
-  configPath: '~/robots.config.ts'
-}
-
 const SEO_OPTIONS: NuxtConfig['seo'] = {
   redirectToCanonicalSiteUrl: true
 }
@@ -42,26 +38,26 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
   }
 }
 
-const PRIMEVUE_OPTIONS: NuxtConfig["primevue"] = {
+const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   components: {
-    include: "*",
-    exclude: [],
-    prefix: "Prime",
+    include: '*',
+    exclude: ['Editor', 'Chart', 'Toast'],
+    prefix: 'Prime'
   },
   directives: {
-    include: "*",
-    exclude: [],
+    include: '*',
+    exclude: []
   },
   composables: {
-    include: "*",
-    exclude: [],
+    include: '*',
+    exclude: ['useToast']
   },
   options: {
-    ripple: true,
+    ripple: true
   },
-  importPT: { as: "Tailwind", from: "primevue/passthrough/tailwind" },
-  cssLayerOrder: "tailwind-base, primevue, tailwind-utilities",
-};
+  importPT: { as: 'Tailwind', from: 'primevue/passthrough/tailwind' },
+  cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
+}
 
 const IMAGE_OPTIONS: NuxtConfig['image'] = {
   format: ['webp', 'jpg']
@@ -97,7 +93,6 @@ const UI_OPTIONS: NuxtConfig['ui'] = {
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   pinia: PINIA_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
-  robots: ROBOTS_OPTIONS,
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,
   content: CONTENT_OPTIONS,
