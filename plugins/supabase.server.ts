@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
 
     const env = useRuntimeConfig().public
     if (!supabase) {
-      supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, {
+      supabase = createClient(env.supabaseUrl, env.supabaseKey, {
         db: {
           schema: 'public'
         },

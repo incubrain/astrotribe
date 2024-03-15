@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="TEST_MODE === 'true'"
+    v-if="testMode === 'true'"
     class="fixed bottom-2 left-2 z-50"
   >
     <UPopover>
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import type { TestingSettingsType } from '@/types/testing'
 
-const { TEST_MODE } = useRuntimeConfig().public
+const { testMode } = useRuntimeConfig().public
 
 type FeatureKeys = keyof TestingSettingsType
 
