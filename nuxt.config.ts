@@ -99,15 +99,12 @@ export default defineNuxtConfig({
       baseUrl: '',
       testMode: '',
       posthogKey: '',
-      supabaseUrl: '',
-      supabaseKey: '',
       testingUserame: '',
       testingPassword: '',
       studioTokens: ''
     },
     // server
     adminEmails: '',
-    supabaseServiceKey: '',
     nasaApiKey: '',
     openaiApiKey: '',
     openaiOrg: ''
