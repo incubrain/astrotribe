@@ -95,8 +95,17 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
   redirectOptions: {
     login: '/auth/login',
     callback: '/auth/confirm',
-    exclude: ['/', '/auth/*', '/contact', '/about', '/team/*', '/team', '/blog', '/blog/*'],
+    include: ['/astrotribe/**'],
+    exclude: [],
     cookieRedirect: false
+  },
+  clientOptions: {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true
+    }
   }
 }
 
