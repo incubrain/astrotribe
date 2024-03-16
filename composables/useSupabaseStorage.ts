@@ -1,6 +1,6 @@
 import { getImageURL } from './utils/image'
 
-export default function useImageStorage() {
+export default function useSupabaseStorage() {
   return {
     image: {
       single: getImageURL
