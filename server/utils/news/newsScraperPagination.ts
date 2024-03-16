@@ -1,4 +1,4 @@
-import { Browser, Page } from 'puppeteer'
+import { Browser, Page } from 'playwright'
 import { Blog } from './newsBlogs'
 
 interface ScrapeFunction {
@@ -17,7 +17,10 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
   // Open a new browser page.
   const page: Page = await browser.newPage()
   // Navigate to the blog's URL.
-  await page.goto(blog.url)
+  await page.goto(blog.url, {
+    waitUntil: 'domcontentloaded',
+    timeout: 0
+  })
   console.log('newsScraperPagination: goto complete')
 
   // Loop indefinitely until the break condition is met.
@@ -36,10 +39,14 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
         break
       }
 
-      // Find the link to the next page of the blog.
-      const nextPageLink = await page.$$eval(blog.selectorPagination, (elements) =>
-        elements.length ? elements[0].getAttribute('href') : null
-      )
+      // Use Playwright's page.locator() to find the link to the next page of the blog.
+      const nextPageLinkElement = page.locator(blog.selectorPagination)
+      const nextPageLinkCount = await nextPageLinkElement.count()
+
+      let nextPageLink = null
+      if (nextPageLinkCount > 0) {
+        nextPageLink = await nextPageLinkElement.getAttribute('href', { index: 0 })
+      }
 
       // If there is no link to a next page, log and break the loop.
       if (!nextPageLink) {
@@ -49,11 +56,11 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
 
       // Log moving to the next page.
       console.log('newsScraperPagination: next page')
-      // Wait for 2 seconds before proceeding.
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Wait for 2 seconds before proceeding to mimic human behavior (adjust as needed).
+      await page.waitForTimeout(2000) // Using Playwright's waitForTimeout instead of a manual promise
       // Go to the next page.
       await page.goto(nextPageLink)
-    } catch (error: any) {
+    } catch (error) {
       // Log any errors encountered during scraping.
       console.error(`newsScraperPagination: error scraping page - ${error.message}`, error.stack)
       // Break the loop if an error occurs.
