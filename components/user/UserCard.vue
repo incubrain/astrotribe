@@ -87,7 +87,7 @@ const userRoleIcon = (roleId: number): string => {
   return '' // default
 }
 
-const supabaseStorage = useStorage()
+const supabaseStorage = useSupabaseStorage()
 
 defineProps({
   user: {
