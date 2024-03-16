@@ -1,6 +1,7 @@
 export default defineEventHandler(async (event) => {
   const client = await supabaseServerClient(event)
-  const { data, error } = await client.from('users').select('*, roles(*)')
+  // only fetch users if there is a avatar
+  const { data, error } = await client.from('users').select('*, roles(*)').neq('avatar', '')
 
   if (error) {
     return {
