@@ -8,7 +8,7 @@ export default defineStore('admin-settings', () => {
 
   // TODO: add all functions I want to test here
   const auth = useAuth()
-  const user = { email: env.TESTING_USERNAME, password: env.TESTING_PASSWORD }
+  const user = { email: env.testingUsername, password: env.testingPassword }
   const authTests = {
     login: async () => {
       try {

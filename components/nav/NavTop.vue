@@ -105,16 +105,6 @@
 </template>
 
 <script setup lang="ts">
-// const auth = useAuth()
-// const user = useSupabaseUser()
-
-// !todo - move this to a pinia store
-// const isLoggedIn = computed(() => {
-//   return user.value !== null
-// })
-
-// const router = useRouter()
-
 const links = [
   {
     id: 0,
@@ -151,6 +141,19 @@ const links = [
     icon: 'i-material-symbols-globe-asia',
     children: []
   }
+  // {
+  //   id: 6,
+  //   name: 'Blog',
+  //   slug: '/blog',
+  //   icon: 'i-material-symbols-menu-book-outline',
+  //   children: [
+  //     {
+  //       id: 61,
+  //       name: 'ISRO',
+  //       slug: '/blog/isro'
+  //     }
+  //   ]
+  // }
 ]
 
 // const dropdownItems = computed(() => [

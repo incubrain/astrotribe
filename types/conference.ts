@@ -1,9 +1,11 @@
 import { z } from 'zod'
 
-const abstract = z.object({
-  title: z.string(),
-  description: z.string()
-})
+const abstract = z
+  .object({
+    title: z.string(),
+    description: z.string()
+  })
+  .optional()
 
 const speakerSchema = z.object({
   title: z.string().optional(),
@@ -13,8 +15,8 @@ const speakerSchema = z.object({
   bio: z.string(),
   abstract,
   avatar: z.string(),
-  inPerson: z.boolean(),
-  featured: z.boolean()
+  inPerson: z.boolean().optional(),
+  featured: z.boolean().optional()
 })
 
 export type SpeakerType = z.infer<typeof speakerSchema>

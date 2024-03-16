@@ -30,9 +30,6 @@
 }
 
 @layer utilities {
-  .swiper-slide {
-    @apply rounded-md shadow-md bg-zinc-200 dark:bg-zinc-900;
-  }
   .nav-link {
     @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;
   }

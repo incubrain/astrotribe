@@ -8,9 +8,9 @@ export default defineEventHandler(async (event) => {
     const kvForCache = `nasa-iotd:${date}`
     // const storage = useStorage('data')
 
-    const nasaKey = process.env.NASA_API_KEY
+    const nasaKey = process.env.nasaApiKey
     if (!nasaKey) {
-      throw createError('NASA_API_KEY not set in environment variables')
+      throw createError('nasaApiKey not set in environment variables')
     }
 
     let unvalidated

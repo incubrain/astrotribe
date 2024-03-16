@@ -14,7 +14,7 @@
         <div class="flex items-center justify-center gap-3">
           <NuxtImg
             :src="
-              s.image.single({
+              supabaseStorage.image.single({
                 bucket: 'profile-public',
                 folderPath: `${user.id}/avatar`,
                 file: user.avatar,
@@ -87,7 +87,7 @@ const userRoleIcon = (roleId: number): string => {
   return '' // default
 }
 
-const s = useImageStorage()
+const supabaseStorage = useStorage()
 
 defineProps({
   user: {
