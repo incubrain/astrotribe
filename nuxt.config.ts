@@ -17,6 +17,13 @@ export default defineNuxtConfig({
   //   }
   // },
   nitro: {
+    experimental: {
+      tasks: true
+    },
+    scheduledTasks: {
+      // every 3 minutes
+      '*/2 * * * *': ['scrape:nasa']
+    },
     // Production
     storage: {
       data: {
@@ -101,7 +108,8 @@ export default defineNuxtConfig({
       posthogKey: '',
       testingUserame: '',
       testingPassword: '',
-      studioTokens: ''
+      studioTokens: '',
+      supabaseUrl: ''
     },
     // server
     adminEmails: '',
