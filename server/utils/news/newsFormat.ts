@@ -1,15 +1,15 @@
 import type { NewsFullType, NewsScrapedType } from '@/types/news'
 
 // Function to format images and videos into a standardized media format.
-const formatMedia = (media: any) => {
-  // Transform each media item to a standardized format.
-  return {
-    src: media.src || null,
-    alt: media.alt || null,
-    caption: media.caption || null,
-    credit: media.credit || null
-  }
-}
+// const formatMedia = (media: any) => {
+//   // Transform each media item to a standardized format.
+//   return {
+//     src: media.src || null,
+//     alt: media.alt || null,
+//     caption: media.caption || null,
+//     credit: media.credit || null
+//   }
+// }
 
 /// Function to format scraped data to match the structure of the News database table.
 const newsFormat = (rawPost: NewsScrapedType): NewsFullType => {
@@ -27,7 +27,7 @@ const newsFormat = (rawPost: NewsScrapedType): NewsFullType => {
       title: rawPost.title,
       body: rawPost.body
     },
-    featured_image: formatMedia(rawPost.featured_image),
+    featured_image: rawPost.featured_image || null,
     category_id: 31,
     author: rawPost.author || null
   }

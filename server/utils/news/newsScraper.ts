@@ -1,8 +1,8 @@
-import type { H3Event } from 'h3'
+// import type { H3Event } from 'h3'
 import scraperClient from '../scraperClient'
 import newsScraperPagination from './newsScraperPagination'
 import newsBlogs from './newsBlogs'
-import { serverSupabaseClient } from '#supabase/server'
+// import { serverSupabaseClient } from '#supabase/server'
 
 function formatStringToFileName(input: string): string {
   // Convert the string to lowercase
@@ -18,19 +18,20 @@ function formatStringToFileName(input: string): string {
   return formattedString + '.json'
 }
 
-const newsScraper = async (event: H3Event, isTest = true) => {
+const newsScraper = async (isTest = true): Promise<any[] | undefined> => {
   // Log the start of the scraping process.
   console.log('scrape-blogs start')
 
   try {
     // Initialize the scraper client (browser instance).
+    const formattedPosts = []
     const browser = await scraperClient()
     // By default, set the blogs to scrape from a predefined list of news blogs.
     let blogs = newsBlogs
     console.log('newsScraper: browser init')
 
     // If in test mode, limit scraping to a specific blog (with id = 2) for testing purposes.
-    if (isTest) blogs = [newsBlogs.find((blog) => blog.id === 2)!]
+    if (isTest) blogs = [newsBlogs.find((blog) => blog.id === 1)!]
     console.log('newsScraper: blogs to scrape init', blogs)
 
     // Loop through each blog in the list.
@@ -45,33 +46,27 @@ const newsScraper = async (event: H3Event, isTest = true) => {
       console.log(`newsScraper: store ${blog.name}`)
 
       // Loop through each post scraped from the blog.
-      const storage = useStorage('blogs')
       for (const post of posts) {
         // Log the post details.
         const formattedPost = newsFormat(post)
-
-        console.log('newsScraper: post', formattedPost)
-        // store in JSON so you can review the structure before storing in DB
-        if (formattedPost.title) {
-          await storage.setItem(`${formatStringToFileName(formattedPost.title)}`, formattedPost)
-        }
-
-        const supabase = await serverSupabaseClient(event)
-        const { data: newsData, error: newsError } = await supabase
-          .from('news')
-          .insert(formattedPost)
-          .select()
-        console.log('newsScraper: newsData', newsData, newsError)
-        // now insert the news_tags based on response
-        if (!newsData) return
-        await supabase.from('news_tags').insert({ news_id: newsData.id, tag_id: 53 })
+        formattedPosts.push(formattedPost)
+        // const supabase = await serverSupabaseClient(event)
+        // const { data: newsData, error: newsError } = await supabase
+        //   .from('news')
+        //   .insert(formattedPost)
+        //   .select()
+        // console.log('newsScraper: newsData', newsData, newsError)
+        // // now insert the news_tags based on response
+        // if (!newsData) return
+        // await supabase.from('news_tags').insert({ news_id: newsData.id, tag_id: 53 })
       }
     }
 
     // Close the browser instance after scraping is complete.
     await browser.close()
     // Log the completion of the scraping process.
-    console.log('Blogs scraped')
+    console.log('Blogs scraped', formattedPosts.length)
+    return formattedPosts
   } catch (error: any) {
     // Log any errors that occur during the scraping process.
     console.log('newsScraper error', error.message)

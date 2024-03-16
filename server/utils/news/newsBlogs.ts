@@ -1,6 +1,6 @@
 // Defines the structure for configuring how to select various elements of a blog post.
 export interface SelectorConfig {
-  title: string,
+  title: string
   author: string
   created_at: string
   body: string
