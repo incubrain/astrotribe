@@ -5,9 +5,12 @@
       subheading="Discover How We're Making a Difference"
       class="pb-16 md:pb-24"
     />
-    <SwiperComponent :items="testimonials">
+    <SwiperComponent
+      :items="testimonials"
+      type="testimonial"
+    >
       <template #default="{ item }: { item: Testimonial }">
-        <div class="p-6">
+        <div class="p-6 border border-color rounded-md h-full">
           <div class="flex items-center h-auto">
             <NuxtImg
               :src="item.image"
@@ -50,8 +53,4 @@ interface Testimonial {
 // !TODO: - allow users to add testimonials, fetch from supabase
 </script>
 
-<style>
-.swiper-slide {
-  height: auto;
-}
-</style>
+<style></style>

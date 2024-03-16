@@ -19,7 +19,7 @@
             <h3 class="text-xl font-semibold">
               {{ i }}
             </h3>
-            <p>
+            <p class="lg:max-w-48">
               {{ contact }}
             </p>
           </div>

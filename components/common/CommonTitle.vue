@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TitleType } from '@/types/content'
+import type { TitleT } from '@/types/content'
 
 defineProps({
   title: {
-    type: Object as PropType<TitleType>,
+    type: Object as PropType<TitleT>,
     required: true
   },
   alignment: {
