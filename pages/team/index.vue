@@ -5,7 +5,10 @@
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
         alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
       }"
-      title="The AstronEra Team"
+      :title="{
+        main: 'The AstronEra Team'
+      }"
+      fit="cover"
       object-position="object-top"
     />
 
@@ -18,7 +21,9 @@
           Contact Shweta or Mac to join us.
         </p>
       </div>
-      <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-8 lg:gap-12 pb-6">
+      <div
+        class="grid w-full grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 md:gap-8 lg:gap-12 pb-6"
+      >
         <LazyTeamCard
           v-for="member in teamMembers"
           :key="`astronera-team-member-${member.id}`"

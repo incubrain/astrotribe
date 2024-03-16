@@ -5,23 +5,24 @@
       :title="venue.title"
     >
       <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
-        <p class="text-sm font-normal">
+        <p class="font-normal">
           {{ venue.about }}
         </p>
-        <UButton to="https://www.manuallaya.com/" variant="outline"> Manu Allaya Website</UButton>
+        <UButton
+          to="https://www.manuallaya.com/"
+          variant="outline"
+        >
+          Manu Allaya Website
+        </UButton>
       </div>
     </CommonTitle>
-    <div
-      class="w-full grid grid-cols-2 md:grid-cols-3 gap-6 xl:gap-12 h-auto row-start-2 lg:col-span-2"
-    >
+    <div class="w-full h-full">
       <NuxtImg
-        v-for="img in venue.images"
-        :key="img.src"
-        class="rounded-md mx-auto"
-        :src="img.src"
-        :alt="img.alt"
-        width="340"
-        height="400"
+        class="rounded-md mx-auto w-full"
+        :src="image.src"
+        :alt="image.alt"
+        width="440"
+        height="520"
       />
     </div>
   </div>
@@ -30,22 +31,21 @@
 <script setup lang="ts">
 const venue = {
   title: {
-    label: 'Beautiful Himalayan Skies',
     main: 'Conference Venue, Manu Allaya',
     subtitle: 'Manali, Himachal Pradesh, India'
   },
   website: 'https://www.manuallaya.com/',
-  about:
-    "Nestled under the expansive canopy of the Himalayan skies, ManuAllaya is not just a luxury resort but a celestial gateway. Here, the night comes alive with the brilliance of a thousand stars, offering unparalleled views of the mesmerizing Milky Way. Located in the heart of Himachal, this resort celebrates the region's rich history, art, and culture while seamlessly blending it with modern elegance.",
-  images: [
-    {
-      src: 'conference/manu-allaya-milkyway-poster.jpg',
-      alt: 'Manu Allaya resort at night with the milky way in the background'
-    },
-    {
-      src: 'conference/manu-allaya-courtyard-mountains.jpg',
-      alt: 'Views of the Himalayan mountains from the Manu Allaya resort'
-    }
-  ]
+  about: `Nestled in the heart of Himachal Pradesh in India, ManuAllaya served as a celestial
+    gateway, offering guests an enchanting experience under the vast expanse of the night sky
+    adorned with a myriad of stars. Manu Allaya not only provided a luxurious setting but also
+    embraced the rich history, art, and culture of the region, seamlessly blending it with modern
+    elegance. Overall, the choice of ManuAllaya as the conference venue and the thoughtful selection of
+    presentation themes contributed to creating an immersive and intellectually stimulating
+    environment, enabling participants to engage deeply with the subject matter and further the
+    objectives of the conference.`
+}
+const image = {
+  src: 'conference/manu-allaya-milkyway-poster.jpg',
+  alt: 'Manu Allaya resort at night with the milky way in the background'
 }
 </script>

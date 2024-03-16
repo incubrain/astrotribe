@@ -1,7 +1,7 @@
 import { posthog } from 'posthog-js'
 
 export default defineNuxtPlugin(() => {
-  const pubkey = useRuntimeConfig().public.POSTHOG_PUBLIC_KEY
+  const pubkey = useRuntimeConfig().public.posthogKey
   if (!pubkey) return
   const posthogClient = posthog.init(pubkey, {
     api_host: 'https://app.posthog.com',
