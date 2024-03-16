@@ -1,5 +1,5 @@
 import { emailUnvalidatedUserSchema } from '@/types/auth'
-import users from '@/data/seed/manali-users.json'
+// import users from '@/data/seed/manali-users.json'
 import type { UserRowType } from '~/types/users'
 
 interface NewUser {
@@ -45,6 +45,22 @@ export default function useAdmin() {
       console.log(`Profile picture uploaded successfully for user with ID ${userId}`)
     } catch (error) {
       console.error(`Error uploading profile picture for user with ID ${userId}:`, error)
+    }
+  }
+
+  async function addCoverPicture(userId: string, file: File) {
+    try {
+      const { data, error } = await client.storage
+        .from('profile-public')
+        .upload(`${userId}/cover/${file.name}`, file)
+      if (error) {
+        throw createError(
+          `Error uploading cover picture for user with ID ${userId}: ${error.message}`
+        )
+      }
+      console.log(`cover picture uploaded successfully for user with ID ${userId}`)
+    } catch (error) {
+      console.error(`Error uploading cover picture for user with ID ${userId}:`, error)
     }
   }
 
