@@ -10,7 +10,8 @@ export const MODULES: NuxtConfig['modules'] = [
   '@nuxtjs/seo',
   '@nuxt/content',
   'nuxt-primevue',
-  '@nuxthq/studio'
+  '@nuxthq/studio',
+  '@nuxtjs/supabase'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
@@ -90,6 +91,15 @@ const UI_OPTIONS: NuxtConfig['ui'] = {
   icons: ['mdi', 'heroicons', 'material-symbols']
 }
 
+const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
+  redirectOptions: {
+    login: '/auth/login',
+    callback: '/auth/confirm',
+    exclude: ['/', '/auth/*', '/contact', '/about', '/team/*', '/team', '/blog', '/blog/*'],
+    cookieRedirect: false
+  }
+}
+
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   pinia: PINIA_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
@@ -98,7 +108,17 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   content: CONTENT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
-  ui: UI_OPTIONS
+  ui: UI_OPTIONS,
+  supabase: SUPABASE_OPTIONS
 }
 
-export const MODULE_DEV_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}
+export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/auth/confirm',
+      exclude: ['/*'],
+      cookieRedirect: false
+    }
+  }
+}

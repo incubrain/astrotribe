@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
-import { MODULE_OPTIONS, MODULES } from './modules.config'
+import { MODULE_OPTIONS, MODULES, DEV_MODULE_OPTIONS } from './modules.config'
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -9,11 +9,6 @@ const og = {
   image: '/astronera-logo-with-text.jpg',
   url: 'https://astronera.com'
 }
-
-// const authExclude =
-//   '',
-//     ? ['/*']
-//     : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
 
 export default defineNuxtConfig({
   // routeRules: {
@@ -82,6 +77,10 @@ export default defineNuxtConfig({
 
   modules: MODULES,
   ...MODULE_OPTIONS,
+
+  $development: {
+    ...DEV_MODULE_OPTIONS
+  },
 
   devtools: {
     enabled: true,
