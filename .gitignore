@@ -11,3 +11,7 @@ private-data
 data/kv
 data/blogs/serp
 data/seed
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
