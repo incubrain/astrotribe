@@ -65,6 +65,7 @@ export default function useAdmin() {
   }
 
   async function registerManyUsers() {
+    const users: UserRowType[] = []
     for (const user of users) {
       // Extract the given name and surname
       const givenName = user.given_name.charAt(0).toUpperCase() + user.given_name.slice(1)
