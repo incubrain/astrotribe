@@ -1,9 +1,16 @@
 import { chromium } from 'playwright'
-let client: any
 
+let client: any
 const scraperClient = async () => {
   // Retrieve runtime configuration variables.
-  if (client) return client
+  // if (client) return client
+
+  // chromium.use(StealthPlugin())
+
+  // chromium.plugins.setDependencyDefaults('stealth/evasions/webgl.vendor', {
+  //   vendor: 'Bob',
+  //   renderer: 'Alice'
+  // })
 
   // const env = useRuntimeConfig() // Assuming this function retrieves your configuration
 
@@ -15,9 +22,7 @@ const scraperClient = async () => {
   // Establish a connection to a browser. This example uses Chromium.
   // You might need to adjust it based on your specific requirements, such as using web socket endpoint or browser server.
   client = await chromium.launch({
-    headless: false, // Set false if you need a headful browser.
-    args: ['--disable-web-security'] // This is one way to relax security settings, but use with caution.
-    // For WebSocket or browser server connections, use chromium.connect({ wsEndpoint: 'your_websocket_endpoint' }) instead.
+    headless: false // Set false if you need a headful browser.
   })
 
   return client
