@@ -48,6 +48,7 @@ const newsScraper = async (isTest = true): Promise<any[] | undefined> => {
       // Loop through each post scraped from the blog.
       for (const post of posts) {
         // Log the post details.
+        console.log('formattingPosts', post)
         const formattedPost = newsFormat(post)
         formattedPosts.push(formattedPost)
         // const supabase = await serverSupabaseClient(event)
