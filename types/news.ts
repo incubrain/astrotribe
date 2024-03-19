@@ -21,7 +21,7 @@ const NewsScrapedSchema = z.object({
   featured_image: MediaSchema.nullable(),
   featured_video: MediaSchema.nullable(),
   author: AuthorSchema.nullable(),
-  created_at: z.string(),
+  published_at: z.string(),
   updated_at: z.string().optional()
 })
 

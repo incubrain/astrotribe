@@ -14,11 +14,10 @@ import type { NewsFullType, NewsScrapedType } from '@/types/news'
 /// Function to format scraped data to match the structure of the News database table.
 const newsFormat = (rawPost: NewsScrapedType): NewsFullType => {
   // Format each news post.
-  const date = new Date(rawPost.created_at)
+  const date = new Date(rawPost.published_at)
 
   // Convert to an ISO 8601 string
   const formattedCreatedAt = date.toISOString()
-  console.log('formattedCreatedAt:', formattedCreatedAt, rawPost.created_at)
   const newsPost: NewsFullType = {
     created_at: formattedCreatedAt,
     title: rawPost.title,

@@ -2,11 +2,10 @@
 export interface SelectorConfig {
   title: string
   author: string
-  created_at: string
+  published_at: string
   body: string
   featured_image: string
   ignore?: string[]
-  videos?: string
 }
 
 // Represents the structure and configuration for a specific blog.
@@ -34,7 +33,7 @@ const newsBlogs: Blog[] = [
       // Specific element selectors for this blog.
       title: '.entry-title a',
       author: '.entry-footer .author a',
-      created_at: '.entry-footer .posted-on time',
+      published_at: '.entry-footer .posted-on time',
       body: '.entry-content',
       featured_image: 'figure'
     }
@@ -50,7 +49,7 @@ const newsBlogs: Blog[] = [
     selectorConfig: {
       title: 'header > h1',
       author: 'a.author-byline__link',
-      created_at: 'time.relative-date',
+      published_at: 'time.relative-date',
       body: '.content-wrapper > #article-body',
       featured_image: 'figure',
       ignore: [
