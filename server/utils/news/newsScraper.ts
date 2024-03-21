@@ -1,38 +1,23 @@
 // import type { H3Event } from 'h3'
+import { Page } from 'playwright'
 import scraperClient from '../scraperClient'
-import newsScraperPagination from './newsScraperPagination'
-import newsBlogs from './newsBlogs'
-// import { serverSupabaseClient } from '#supabase/server'
+import genericScraper from './scrapers/genericScraper'
+import { newsBlogs } from './newsBlogs'
+import type { NewsCategoryT } from '@/types/news'
 
-function formatStringToFileName(input: string): string {
-  // Convert the string to lowercase
-  let formattedString = input.toLowerCase()
-
-  // Replace special characters and spaces with a dash
-  // This regex replaces anything that's not a letter, number, or space with nothing
-  // Then, replaces spaces with dashes
-  formattedString = formattedString.replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-')
-
-  // Append the '.json' extension
-  console.log('formatStringToFileName:', formattedString)
-  return formattedString + '.json'
-}
-
-const newsScraper = async (isTest = true): Promise<any[] | undefined> => {
+const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null> => {
   // Log the start of the scraping process.
   console.log('scrape-blogs start')
+  const allPosts = []
+
+  const blogs = singleScraper ? newsBlogs.filter((blog) => blog.name === singleScraper) : newsBlogs
 
   try {
     // Initialize the scraper client (browser instance).
-    const formattedPosts = []
     const browser = await scraperClient()
+    const page: Page = await browser.newPage()
     // By default, set the blogs to scrape from a predefined list of news blogs.
-    let blogs = newsBlogs
     console.log('newsScraper: browser init')
-
-    // If in test mode, limit scraping to a specific blog (with id = 2) for testing purposes.
-    if (isTest) blogs = [newsBlogs.find((blog) => blog.id === 1)!]
-    console.log('newsScraper: blogs to scrape init', blogs)
 
     // Loop through each blog in the list.
     for (const blog of blogs) {
@@ -40,37 +25,46 @@ const newsScraper = async (isTest = true): Promise<any[] | undefined> => {
       console.log(`newsScraper: scrape ${blog.name}`)
 
       // Use the base scraping function to scrape posts from the current blog.
-      const posts = await newsScraperPagination(browser, blog)
+      const posts: any[] = []
+
+      // Open a new browser page.
+      // Navigate to the blog's URL.
+
+      for (const urlIndex in blog.urls) {
+        console.log('scraping url', blog.urls[urlIndex])
+        await page.goto(blog.urls[urlIndex], {
+          waitUntil: 'domcontentloaded',
+          timeout: 0
+        })
+
+        // Use the blog's specific scraping function to extract data.
+        const data: any[] = await genericScraper(page, blog)
+        // Add the newly scraped data to our posts array.
+        posts.push(...data)
+      }
 
       // Log the storing process for each blog.
       console.log(`newsScraper: store ${blog.name}`)
 
       // Loop through each post scraped from the blog.
-      for (const post of posts) {
-        // Log the post details.
-        console.log('formattingPosts', post)
-        const formattedPost = newsFormat(post)
-        formattedPosts.push(formattedPost)
-        // const supabase = await serverSupabaseClient(event)
-        // const { data: newsData, error: newsError } = await supabase
-        //   .from('news')
-        //   .insert(formattedPost)
-        //   .select()
-        // console.log('newsScraper: newsData', newsData, newsError)
-        // // now insert the news_tags based on response
-        // if (!newsData) return
-        // await supabase.from('news_tags').insert({ news_id: newsData.id, tag_id: 53 })
+
+      const formattedPosts = newsFormat(posts, blog.baseUrl)
+      if (!formattedPosts) {
+        continue
       }
+      allPosts.push(...formattedPosts)
+      posts.length = 0
     }
 
     // Close the browser instance after scraping is complete.
     await browser.close()
     // Log the completion of the scraping process.
-    console.log('Blogs scraped', formattedPosts.length)
-    return formattedPosts
+    console.log('Blogs scraped', allPosts.length)
+    return allPosts
   } catch (error: any) {
     // Log any errors that occur during the scraping process.
     console.log('newsScraper error', error.message)
+    return null
   }
 }
 
