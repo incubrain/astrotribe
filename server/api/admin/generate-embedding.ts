@@ -1,10 +1,10 @@
-import type { NewsType } from '@/types/news'
+import type { NewsCardT } from '@/types/news'
 
 export default defineEventHandler(async () => {
   // !important: ignore this step for now
   try {
     const storage = useStorage('blogs')
-    const blogs = await storage.getItem<NewsType[]>('summary-test.json')
+    const blogs = await storage.getItem<NewsCardT[]>('summary-test.json')
     if (!blogs) throw createError('No blogs found')
     for (let i = 0; i < blogs.length; i++) {
       if (blogs[i].raw.body === undefined) throw createError('Error no raw body')
