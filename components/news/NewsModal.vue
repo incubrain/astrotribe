@@ -43,7 +43,7 @@
       </div>
       <div
         v-else
-        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2  overflow-hidden"
+        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2 overflow-hidden"
       >
         <ImageWithFallback
           :image="undefined"
@@ -72,11 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import type { NewsType } from '@/types/news'
+import type { NewsCardT } from '@/types/news'
 
 defineProps({
   posts: {
-    type: Array as () => NewsType[],
+    type: Array as () => NewsCardT[],
     required: true
   },
   currentIndex: {
