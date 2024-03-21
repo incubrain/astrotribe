@@ -18,29 +18,38 @@ const NewsScrapedSchema = z.object({
   url: z.string(),
   body: z.string(),
   category: z.string(),
-  featured_image: MediaSchema.nullable(),
+  featured_image: z.string(),
   featured_video: MediaSchema.nullable(),
   author: AuthorSchema.nullable(),
   published_at: z.string(),
   updated_at: z.string().optional()
 })
 
-export const NewsSchema = z.object({
-  id: z.number().optional(),
-  created_at: z.string(),
-  updated_at: z.string().optional(),
+const NewsCardScrapedSchema = z.object({
+  published_at: z.string().optional(),
   title: z.string(),
+  description: z.string(),
   url: z.string(),
-  category_id: z.number().optional()
+  source: z.string(),
+  featured_image: z.string()
 })
 
-export const NewsFullSchema = NewsSchema.extend({
-  author: AuthorSchema.nullable(),
-  raw: z.object({
-    title: z.string(),
-    body: z.string()
-  }),
-  featured_image: MediaSchema.nullable()
+export const NewsCardSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  url: z.string(),
+  source: z.string(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
+  published_at: z.string().nullable(),
+  description: z.string().nullable(),
+  featured_image: z.string().nullable()
+})
+
+export const NewsArticleSchema = NewsCardSchema.extend({
+  author: z.string(),
+  body: z.string(),
+  images: z.array(MediaSchema)
 })
 
 export const NewsEmbeddingSchema = z.object({
@@ -49,9 +58,10 @@ export const NewsEmbeddingSchema = z.object({
   news_id: z.number().optional(),
   created_at: z.string().nullable()
 })
-
-export type NewsType = z.infer<typeof NewsSchema>
-export type NewsFullType = z.infer<typeof NewsFullSchema>
+export type NewsCategoryT = 'isro' | 'nasa' | 'ula' | 'esa' | 'jaxa' | 'cnsa' | 'roscosmos' | 'csa'
+export type NewsCardT = z.infer<typeof NewsCardSchema>
+export type NewsCardScrapedT = z.infer<typeof NewsCardScrapedSchema>
+export type NewsArticleType = z.infer<typeof NewsArticleSchema>
 export type MediaType = z.infer<typeof MediaSchema>
 export type NewsEmbeddingType = z.infer<typeof NewsEmbeddingSchema>
 export type NewsScrapedType = z.infer<typeof NewsScrapedSchema>

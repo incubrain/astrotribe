@@ -1,102 +1,287 @@
 // Defines the structure for configuring how to select various elements of a blog post.
-export interface SelectorConfig {
-  title: string
-  author: string
-  published_at: string
-  body: string
-  featured_image: string
-  ignore?: string[]
+export interface ExtractionConfig {
+  selector: string
+  extract: 'text' | 'attribute'
+  attributeName?: string // Optional, only needed for attribute extraction
+}
+
+export interface SelectorConfigCard {
+  title: ExtractionConfig
+  url: ExtractionConfig
+  description?: ExtractionConfig
+  featured_image?: ExtractionConfig
+  published_at?: ExtractionConfig
 }
 
 // Represents the structure and configuration for a specific blog.
 export interface Blog {
   id: number
   name: string
-  url: string
+  urls: string[]
+  baseUrl: string
   selectorBase: string
   selectorPagination: string
-  scraper: any
-  selectorConfig: SelectorConfig
+  selectorConfigCard: SelectorConfigCard
 }
 
 // consider:
-// 1
-// https://www.stsci.edu/jwst/news-events/news
-// https://webbtelescope.org/news/news-releases
-// https://www.stsci.edu/news/newsletters
-// https://hubblesite.org/news/news-releases
-// https://www.nasa.gov/news/all-news/ // latest news from nasa
-// https://www.jpl.nasa.gov/news
 
 // https://earthobservatory.nasa.gov/blogs/ // multiple blogs
-
 // https://nightsky.jpl.nasa.gov/news-archive.cfm
 
-// Array containing configurations for different blogs to be scraped.
-const newsBlogs: Blog[] = [
+// spacex
+// https://spaceflightnow.com/?s=spacex
+
+// ula
+// https://blog.ulalaunch.com/blog/page/1
+
+// ASI Italian Space Agency
+// https://www.asi.it/en/news/
+
+// UK space agency
+// https://space.blog.gov.uk/
+
+export const newsBlogs: Blog[] = [
+  // {
+  //   // Nasa Blogs
+  //   id: 1,
+  //   name: 'nasa-blogs',
+  //   urls: [
+  //     'https://blogs.nasa.gov/webb/',
+  //     'https://blogs.nasa.gov/spacestation/',
+  //     'https://blogs.nasa.gov/commercialcrew/',
+  //     'https://blogs.nasa.gov/artemis/',
+  //     'https://blogs.nasa.gov/clps/',
+  //     'https://blogs.nasa.gov/earthexpeditions/',
+  //     'https://blogs.nasa.gov/nelson/',
+  //     'https://blogs.nasa.gov/ixpe/',
+  //     'https://blogs.nasa.gov/interns/',
+  //     'https://blogs.nasa.gov/stationreport/', // maybe not?
+  //     'https://blogs.nasa.gov/kennedy/',
+  //     'https://blogs.nasa.gov/northropgrumman/',
+  //     'https://blogs.nasa.gov/osiris-rex/',
+  //     'https://blogs.nasa.gov/parkersolarprobe/',
+  //     'https://blogs.nasa.gov/sofia/',
+  //     'https://blogs.nasa.gov/spacex/',
+  //     'https://blogs.nasa.gov/Watch_the_Skies/',
+  //     'https://blogs.nasa.gov/sunspot/',
+  //     'https://blogs.nasa.gov/odeo/'
+  //   ],
+  //   selectorBase: 'article',
+  //   selectorPagination: '.nav-links .next', // Selector for the next page link.
+  //   scraper: newsScraperNasaBlogs, // Function used to scrape this specific blog.
+  //   selectorConfigCard: {
+  //     // Specific element selectors for this blog.
+  //     title: '.entry-title a',
+  //     author: '.entry-footer .author a',
+  //     published_at: '.entry-footer .posted-on time',
+  //     body: '.entry-content',
+  //     featured_image: 'figure'
+  //   }
+  // },
   {
-    // Nasa Config
-    id: 1,
-    name: 'jwst-nasa-blog', // Name of the blog.
-    url: [
-      'https://blogs.nasa.gov/webb/',
-      'https://blogs.nasa.gov/spacestation/',
-      'https://blogs.nasa.gov/commercialcrew/',
-      'https://blogs.nasa.gov/artemis/',
-      'https://blogs.nasa.gov/clps/',
-      'https://blogs.nasa.gov/earthexpeditions/',
-      'https://blogs.nasa.gov/nelson/',
-      'https://blogs.nasa.gov/ixpe/',
-      'https://blogs.nasa.gov/interns/',
-      'https://blogs.nasa.gov/stationreport/', // maybe not?
-      'https://blogs.nasa.gov/kennedy/',
-      'https://blogs.nasa.gov/northropgrumman/',
-      'https://blogs.nasa.gov/osiris-rex/',
-      'https://blogs.nasa.gov/parkersolarprobe/',
-      'https://blogs.nasa.gov/sofia/',
-      'https://blogs.nasa.gov/spacex/',
-      'https://blogs.nasa.gov/Watch_the_Skies/',
-      'https://blogs.nasa.gov/sunspot/',
-      'https://blogs.nasa.gov/odeo/',
-      ''
-    ],
-    selectorBase: 'article', // Base selector for scraping.
-    selectorPagination: '.nav-links .next', // Selector for the next page link.
-    scraper: newsScraperNasa, // Function used to scrape this specific blog.
-    selectorConfig: {
-      // Specific element selectors for this blog.
-      title: '.entry-title a',
-      author: '.entry-footer .author a',
-      published_at: '.entry-footer .posted-on time',
-      body: '.entry-content',
-      featured_image: 'figure'
+    id: 2,
+    name: 'nasa',
+    urls: ['https://www.nasa.gov/news/all-news/'],
+    baseUrl: 'https://www.nasa.gov',
+    selectorBase: '.hds-content-item',
+    selectorPagination: '.next .page-numbers', // Selector for the next page link.
+    selectorConfigCard: {
+      title: {
+        selector: '.hds-content-item-heading',
+        extract: 'text'
+      },
+      url: {
+        selector: '.hds-content-item-heading',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      description: {
+        selector: 'p',
+        extract: 'text'
+      },
+      featured_image: {
+        selector: 'figure img',
+        extract: 'attribute',
+        attributeName: 'src'
+      }
     }
   },
   {
-    // Configuration for the second blog.
-    id: 2,
-    name: 'space.com',
-    url: 'https://www.space.com/news/archive',
+    id: 3,
+    name: 'isro',
+    urls: ['https://www.isro.gov.in/Archives.html'],
+    baseUrl: 'https://www.isro.gov.in/',
+    selectorBase: 'tbody tr',
+    selectorPagination: '.next .page-numbers', // Selector for the next page link.
+    selectorConfigCard: {
+      title: {
+        selector: '.link',
+        extract: 'text'
+      },
+      url: {
+        selector: '.link a',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      published_at: {
+        selector: '.date',
+        extract: 'text'
+      }
+    }
+  },
+  {
+    id: 4,
+    name: 'esa',
+    urls: [
+      'https://www.esa.int/Space_Safety/(archive)/0',
+      'https://www.esa.int/Science_Exploration/(archive)/0',
+      'https://www.esa.int/Applications/(archive)/0',
+      'https://www.esa.int/Enabling_Support/(archive)/0'
+    ],
+    baseUrl: 'https://www.esa.int',
+    selectorBase: '.grid-item',
+    selectorPagination: '.paging', // title="Next page" // Selector for the next page link.
+    selectorConfigCard: {
+      title: {
+        selector: 'header h3',
+        extract: 'text'
+      },
+      url: {
+        selector: 'a',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      featured_image: {
+        selector: 'figure img',
+        extract: 'attribute',
+        attributeName: 'src'
+      },
+      published_at: {
+        selector: 'header .meta span',
+        extract: 'text'
+      }
+    }
+  },
+  {
+    id: 5,
+    name: 'csa',
+    urls: ['https://www.asc-csa.gc.ca/eng/news/articles/'],
+    baseUrl: 'https://www.asc-csa.gc.ca',
     selectorBase: 'article',
-    selectorPagination: '.nav-links .next',
-    scraper: newsScraperSpaceCom,
-    selectorConfig: {
-      title: 'header > h1',
-      author: 'a.author-byline__link',
-      published_at: 'time.relative-date',
-      body: '.content-wrapper > #article-body',
-      featured_image: 'figure',
-      ignore: [
-        // List of selectors to ignore during scraping.
-        '.jwplayer__wrapper',
-        '.ad-unit',
-        '.fancy-box',
-        '.jwplayer__widthsetter',
-        'newsletter-inbodyContent-slice'
-      ]
+    selectorPagination: 'ul .pagination', // rel="next" // Selector for the next page link.
+    selectorConfigCard: {
+      title: {
+        selector: 'figcaption h3',
+        extract: 'text'
+      },
+      url: {
+        selector: 'a',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
+      },
+      published_at: {
+        selector: 'time',
+        extract: 'attribute',
+        attributeName: 'datetime'
+      }
+    }
+  },
+  // {
+  //   // CNSA News
+  //   id: 6,
+  //   name: 'cnsa',
+  //   urls: ['https://www.cnsa.gov.cn/english/n6465652/n6465653/'],
+  //   selectorBase: 'table',
+  //   selectorPagination: 'font', // innerText="Next page"
+  //   selectorConfigCard: {
+  //     title: {
+  //       selector: 'a',
+  //       extract: 'text'
+  //     },
+  //     url: {
+  //       selector: 'a',
+  //       extract: 'attribute',
+  //       attributeName: 'href'
+  //     }
+  //   }
+  // },
+  {
+    // JAXA News
+    id: 7,
+    name: 'jaxa',
+    urls: ['https://global.jaxa.jp/press/2024/'],
+    baseUrl: 'https://global.jaxa.jp',
+    selectorBase: '.press_release ul li',
+    selectorPagination: '.elem_years_selector_pad', // li a goto page
+    selectorConfigCard: {
+      title: {
+        selector: 'dd a',
+        extract: 'text'
+      },
+      url: {
+        selector: 'dd a',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      published_at: {
+        selector: 'dt font font',
+        extract: 'text'
+      }
+    }
+  },
+  {
+    // ROSCOSMOS News
+    id: 7,
+    name: 'roscosmos',
+    urls: ['https://tass.com/space-programs'],
+    baseUrl: 'https://tass.com',
+    selectorBase: '.theme-item',
+    selectorPagination: '.elem_years_selector_pad', // li a goto page
+    selectorConfigCard: {
+      title: {
+        selector: '.theme-item__title',
+        extract: 'text'
+      },
+      url: {
+        selector: 'self',
+        extract: 'attribute',
+        attributeName: 'href'
+      },
+      published_at: {
+        selector: 'dateformat',
+        extract: 'attribute',
+        attributeName: 'time'
+      }
     }
   }
+  // {
+  //   // Configuration for the second blog.
+  //   id: 3,
+  //   name: 'space.com',
+  //   urls: ['https://www.space.com/news/archive'],
+  //   selectorBase: 'article',
+  //   selectorPagination: '.nav-links .next',
+  //   selectorConfigCard: {
+  //     title: 'header > h1',
+  //     author: 'a.author-byline__link',
+  //     published_at: 'time.relative-date',
+  //     body: '.content-wrapper > #article-body',
+  //     featured_image: 'figure',
+  //     ignore: [
+  //       // List of selectors to ignore during scraping.
+  //       '.jwplayer__wrapper',
+  //       '.ad-unit',
+  //       '.fancy-box',
+  //       '.jwplayer__widthsetter',
+  //       'newsletter-inbodyContent-slice'
+  //     ]
+  //   }
+  // }
   // Additional blog configurations can be added as needed.
 ]
-
-export default newsBlogs
