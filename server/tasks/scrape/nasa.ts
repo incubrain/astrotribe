@@ -3,10 +3,8 @@ export default defineTask({
     name: 'scrape:nasa',
     description: 'Returns the provided nasa'
   },
-  run({ payload, context }) {
-    console.log('Running scrape task...')
-    const posts = newsScraper()
-    console.log('scrape:nasa posts', posts)
+  run({ payload, name }) {
+    $fetch('/api/admin/store-news')
     return payload
   }
 })

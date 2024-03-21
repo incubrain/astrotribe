@@ -21,8 +21,16 @@ const scraperClient = async () => {
 
   // Establish a connection to a browser. This example uses Chromium.
   // You might need to adjust it based on your specific requirements, such as using web socket endpoint or browser server.
-  client = await chromium.launch({
-    headless: false // Set false if you need a headful browser.
+  const browser = await chromium.launch({
+    headless: true // Set false for testing
+  })
+
+  client = await browser.newContext({
+    // Specify English as the preferred language
+    locale: 'en-US',
+    extraHTTPHeaders: {
+      'Accept-Language': 'en-US,en;q=0.9'
+    }
   })
 
   return client
