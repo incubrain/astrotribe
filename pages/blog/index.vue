@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import type { NewsCategoryT } from '@/types/news'
+
+const newsCategories: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'ula', 'roscosmos', 'csa']
+</script>
+
 <template>
   <div class="space-y-10 wrapper padded-y padded-x">
     <h1>Blog Home</h1>
@@ -13,9 +19,12 @@
       </template>
       <UButton to="/blog/isro">All ISRO Articles</UButton>
     </BlogShowcase>
+    <BlogNews
+      v-for="newsCat in newsCategories"
+      :key="`news-showcase-${newsCat}`"
+      :news-category="newsCat"
+    />
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped></style>
