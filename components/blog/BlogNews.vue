@@ -21,7 +21,7 @@ console.log('spaceNews', spaceNews)
     <h2 class="text-xl fong-bold py-4"> Latest {{ newsCategory.toUpperCase() }} News </h2>
     <div
       v-if="spaceNews?.news"
-      class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
     >
       <div
         v-for="news in spaceNews.news"
@@ -31,14 +31,14 @@ console.log('spaceNews', spaceNews)
         <div>
           <div
             v-if="news.featured_image"
-            class="max-h-48 overflow-hidden"
+            class="overflow-hidden sm:h-48"
           >
             <NuxtImg
               :src="news.featured_image"
               :alt="news.title"
               fit="cover"
-              class="rounded-t-md object-cover object-center"
-              width="360"
+              class="rounded-t-md object-cover object-center w-full h-full aspect-video"
+              width="420"
               height="220"
             />
           </div>
