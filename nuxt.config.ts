@@ -18,11 +18,13 @@ export default defineNuxtConfig({
   // },
   nitro: {
     experimental: {
-      tasks: true
+      tasks: true,
+      asyncContext: true
     },
     scheduledTasks: {
-      // every 3 minutes
-      '*/2 * * * *': ['scrape:nasa']
+      // every 12 hours
+      '0 */12 * * *': ['scrape:nasa']
+      // '*/2 * * * *': ['scrape:nasa']
     },
     // Production
     storage: {

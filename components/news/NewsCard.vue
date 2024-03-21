@@ -49,11 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import type { NewsType } from '@/types/news'
+import type { NewsCardT } from '@/types/news'
 
 defineProps({
   post: {
-    type: Object as () => NewsType,
+    type: Object as () => NewsCardT,
     required: true
   },
   summaryLevel: {
