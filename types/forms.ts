@@ -96,7 +96,7 @@ export const ForgotPasswordForm = toTypedSchema(ForgotPasswordSchema)
 export const ResetPasswordForm = toTypedSchema(ResetPasswordSchema)
 export const CheckboxOptionForm = toTypedSchema(CheckboxOptionSchema)
 
-export type SocialMediaType = z.infer<typeof SocialMediaSchema>
+export type SocialMediaT = z.infer<typeof SocialMediaSchema>
 export type InterestType = z.infer<typeof InterestSchema>
 export type LocationType = z.infer<typeof LocationSchema>
 export type ProfessionalInfoType = z.infer<typeof ProfessionalInfoSchema>

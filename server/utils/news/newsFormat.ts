@@ -1,4 +1,4 @@
-import type { NewsCardScrapedT } from '@/types/news'
+import type { NewsCardScrapedT, NewsScrapedArticleT } from '@/types/news'
 
 // Function to format images and videos into a standardized media format.
 // const formatMedia = (media: any) => {
@@ -11,9 +11,27 @@ import type { NewsCardScrapedT } from '@/types/news'
 //   }
 // }
 
+function cleanText(inputText: string) {
+  // Trim leading and trailing whitespace
+  console.log('inputText:', inputText)
+  const trimmedText = inputText.trim()
+
+  // Replace sequences of whitespace (including spaces, tabs, and new lines) with a single space
+  const cleanedText = trimmedText.replace(/\s+/g, ' ')
+  console.log('cleanedText:', cleanedText)
+
+  return cleanedText
+}
+
 const handleDate = (rawDate: string) => {
   let publishedAt: string | null
-  if (rawDate.includes('/')) {
+  console.log('rawDate:', rawDate)
+
+  if (rawDate.includes('[release]')) {
+    const formattedDate = rawDate.replace(/(\d+:\d+)?\s*\[.*\]/, '').trim()
+    const date = new Date(formattedDate)
+    publishedAt = date.toISOString()
+  } else if (rawDate.includes('/')) {
     const [day, month, year] = rawDate.split('/')
     const date = new Date(`${year}-${month}-${day}`)
     publishedAt = date.toISOString()
@@ -27,53 +45,76 @@ const handleDate = (rawDate: string) => {
     const date = new Date(rawDate)
     publishedAt = date.toISOString()
   } else {
-    publishedAt = null
+    const date = new Date(Number(rawDate) * 1000)
+    publishedAt = date.toISOString()
   }
   return publishedAt
 }
 
 const handleUrl = (url: string, baseUrl: string) => {
+  console.log('url:', url, 'baseUrl:', baseUrl)
   if (url.startsWith('http')) {
     return url
+  } else if (url.startsWith('//')) {
+    return `https:${url}`
   }
   return `${baseUrl}${url}`
 }
 
-const postCardFormat = (posts: any[], baseUrl: string) => {
-  return posts.map((post) => {
-    console.log('post', post)
-    post.url = handleUrl(post.url, baseUrl)
+const deleteItemsByKeywords = (items: any[]) => {
+  const keywords = ['[video]', 'ESA_Multimedia']
+  return items.filter((item) => {
+    const title = item.title.toLowerCase()
+    const url = item.url.toLowerCase()
+    console.log('url:', url)
+    return !keywords.some(
+      (keyword) => title.includes(keyword.toLowerCase()) || url.includes(keyword.toLowerCase())
+    )
+  })
+}
 
+const deleteDuplicates = (items: any[]) => {
+  return items.filter(
+    (item, index, self) => index === self.findIndex((i) => i.title === item.title)
+  )
+}
+
+const postCardFormat = (posts: any[], baseUrl: string): NewsCardScrapedT[] => {
+  posts = deleteItemsByKeywords(posts)
+  posts = deleteDuplicates(posts)
+  return posts.map((post) => {
+    post.url = handleUrl(post.url, baseUrl)
+    return post
+  })
+}
+
+const postArticleFormat = (posts: any[], baseUrl: string): NewsScrapedArticleT[] => {
+  console.log('postArticleFormat', posts)
+  posts = deleteDuplicates(posts)
+
+  return posts.map((post) => {
     if (post.featured_image) {
       post.featured_image = handleUrl(post.featured_image, baseUrl)
     }
-
-    if (!post.published_at) {
-      return {
-        ...post
-      }
+    if (post.body) {
+      post.body = cleanText(post.body)
     }
-
-    const publishedAt = handleDate(post.published_at)
-    delete post.published_at
-    return {
-      published_at: publishedAt,
-      ...post
-    }
+    post.published_at = handleDate(post.published_at)
+    return post
   })
 }
 
 /// Function to format scraped data to match the structure of the News database table.
 const newsFormat = (
-  rawPosts: NewsCardScrapedT[],
+  rawPosts: NewsCardScrapedT[] | NewsScrapedArticleT[],
   baseUrl: string,
   type = 'card'
-): NewsCardScrapedT[] | null => {
+): NewsCardScrapedT[] | NewsScrapedArticleT[] => {
   switch (type) {
     case 'card':
       return postCardFormat(rawPosts, baseUrl)
     default:
-      return null
+      return postArticleFormat(rawPosts, baseUrl)
   }
 }
 

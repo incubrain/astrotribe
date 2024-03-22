@@ -4,7 +4,7 @@
 // https://skyandtelescope.org/astronomy-club-organization-directory/clubs_category/clubs/
 // https://skyandtelescope.org/astronomy-club-organization-directory/clubs_category/special-interest/
 // https://en.wikipedia.org/wiki/List_of_private_spaceflight_companies
-//
+// https://esoc.esa.int/supporting-zero-debris-charter
 
 // India
 // https://www.isro.gov.in/spacetutor.html
