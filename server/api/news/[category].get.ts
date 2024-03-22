@@ -13,11 +13,9 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabaseClient
       .from('news')
       .select('*')
-      .limit(12)
+      .limit(6)
       .eq('source', category)
       .order('published_at', { ascending: false })
-
-    console.log('get-news', data, error)
 
     if (error) {
       createError(`400: ${error.message}`)

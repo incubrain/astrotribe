@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NewsCategoryT } from '@/types/news'
 
-const newsCategories: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'ula', 'roscosmos', 'csa']
+const newsCategories: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'roscosmos', 'csa']
 </script>
 
 <template>
