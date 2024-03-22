@@ -58,8 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import type { MediaType } from '@/types/news'
-const getImagInfo = (image: MediaType) => [
+import type { MediaT } from '@/types/news'
+const getImagInfo = (image: MediaT) => [
   {
     label: 'Caption',
     icon: 'i-heroicons-information-circle',
@@ -83,7 +83,7 @@ interface ImgOptions {
 
 const p = defineProps({
   media: {
-    type: Array as () => MediaType[] | undefined,
+    type: Array as () => MediaT[] | undefined,
     required: true
   },
   imgOptions: {

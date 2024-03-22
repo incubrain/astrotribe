@@ -1,6 +1,6 @@
 import { Browser, Page } from 'playwright'
 import { Blog } from './newsBlogs'
-import genericScraper from './scrapers/genericScraper'
+import genericScraper from './scrapers/genericScraperCard'
 
 interface ScrapeFunction {
   (browser: Browser, blog: Blog): Promise<any[]>

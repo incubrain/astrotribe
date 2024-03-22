@@ -1,7 +1,8 @@
 // import type { H3Event } from 'h3'
 import { Page } from 'playwright'
 import scraperClient from '../scraperClient'
-import genericScraper from './scrapers/genericScraper'
+import genericScraperCard from './scrapers/genericScraperCard'
+import genericScraperArticle from './scrapers/genericScraperArticle'
 import { newsBlogs } from './newsBlogs'
 import type { NewsCategoryT } from '@/types/news'
 
@@ -38,9 +39,9 @@ const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null>
         })
 
         // Use the blog's specific scraping function to extract data.
-        const data: any[] = await genericScraper(page, blog)
-        // Add the newly scraped data to our posts array.
-        posts.push(...data)
+        const cardData: any[] = await genericScraperCard(page, blog)
+
+        posts.push(...cardData)
       }
 
       // Log the storing process for each blog.
@@ -48,11 +49,40 @@ const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null>
 
       // Loop through each post scraped from the blog.
 
-      const formattedPosts = newsFormat(posts, blog.baseUrl)
-      if (!formattedPosts) {
+      const formattedCards = newsFormat(posts, blog.baseUrl, 'card')
+      if (!formattedCards) {
         continue
       }
-      allPosts.push(...formattedPosts)
+
+      // scrape article data
+      const articles = []
+      let updatedBaseUrl = blog.baseUrl
+
+      for (const card of formattedCards) {
+        await page.goto(card.url, {
+          waitUntil: 'domcontentloaded',
+          timeout: 0
+        })
+        const { articleData, pageUrl } = await genericScraperArticle(page, blog)
+        if (pageUrl !== card.url) {
+          console.log(`Redirect detected. Original URL: ${card.url}, Final URL: ${pageUrl}`)
+          // Update the stored URL with the final URL
+          card.url = pageUrl
+
+          const urlObj = new URL(pageUrl)
+          updatedBaseUrl = `${urlObj.protocol}//${urlObj.host}`
+        }
+        console.log('articleData', articleData)
+        articles.push({ ...card, ...articleData })
+      }
+
+      const formattedArticles = newsFormat(articles, updatedBaseUrl, 'article')
+
+      if (!formattedArticles) {
+        continue
+      }
+
+      allPosts.push(...formattedArticles)
       posts.length = 0
     }
 

@@ -1,24 +1,13 @@
 export default defineEventHandler(async (event) => {
   try {
-    const posts = await newsScraper('csa')
+    const posts = await newsScraper('jaxa')
 
     if (!posts) {
       createError('No Posts Returned from scraper')
     } else {
       console.log('posts', posts)
 
-      // ensure that each post has a unique ur
-
-      const uniquePosts = posts.filter((post, index, self) => {
-        return (
-          index ===
-          self.findIndex((p) => {
-            return p.url === post.url
-          })
-        )
-      })
-
-      await newsStorage(uniquePosts, event)
+      await newsStorage(posts, event)
     }
 
     return {

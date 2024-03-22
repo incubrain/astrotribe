@@ -13,15 +13,25 @@ export interface SelectorConfigCard {
   published_at?: ExtractionConfig
 }
 
+export interface SelectorConfigArticle {
+  body: ExtractionConfig
+  description?: ExtractionConfig
+  featured_image?: ExtractionConfig
+  author?: ExtractionConfig
+  published_at?: ExtractionConfig
+}
+
 // Represents the structure and configuration for a specific blog.
 export interface Blog {
   id: number
   name: string
   urls: string[]
   baseUrl: string
-  selectorBase: string
+  selectorBaseCard: string
   selectorPagination: string
   selectorConfigCard: SelectorConfigCard
+  selectorBaseArticle: string
+  selectorConfigArticle: SelectorConfigArticle
 }
 
 // consider:
@@ -67,7 +77,7 @@ export const newsBlogs: Blog[] = [
   //     'https://blogs.nasa.gov/sunspot/',
   //     'https://blogs.nasa.gov/odeo/'
   //   ],
-  //   selectorBase: 'article',
+  //   selectorBaseCard: 'article',
   //   selectorPagination: '.nav-links .next', // Selector for the next page link.
   //   scraper: newsScraperNasaBlogs, // Function used to scrape this specific blog.
   //   selectorConfigCard: {
@@ -84,7 +94,7 @@ export const newsBlogs: Blog[] = [
     name: 'nasa',
     urls: ['https://www.nasa.gov/news/all-news/'],
     baseUrl: 'https://www.nasa.gov',
-    selectorBase: '.hds-content-item',
+    selectorBaseCard: '.hds-content-item',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
     selectorConfigCard: {
       title: {
@@ -105,6 +115,22 @@ export const newsBlogs: Blog[] = [
         extract: 'attribute',
         attributeName: 'src'
       }
+    },
+    selectorBaseArticle: 'article',
+    selectorConfigArticle: {
+      body: {
+        selector: '.usa-article-content',
+        extract: 'text'
+      },
+      published_at: {
+        selector:
+          '.article-meta-item.grid-row.flex-align-center.border-bottom.padding-y-2 > .heading-12.text-uppercase',
+        extract: 'text'
+      },
+      author: {
+        selector: '.grid-col > .hds-meta-heading .heading-14',
+        extract: 'text'
+      }
     }
   },
   {
@@ -112,8 +138,8 @@ export const newsBlogs: Blog[] = [
     name: 'isro',
     urls: ['https://www.isro.gov.in/Archives.html'],
     baseUrl: 'https://www.isro.gov.in/',
-    selectorBase: 'tbody tr',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
+    selectorBaseCard: 'tbody tr',
     selectorConfigCard: {
       title: {
         selector: '.link',
@@ -128,6 +154,18 @@ export const newsBlogs: Blog[] = [
         selector: '.date',
         extract: 'text'
       }
+    },
+    selectorBaseArticle: '.card-body',
+    selectorConfigArticle: {
+      body: {
+        selector: 'self',
+        extract: 'text'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
+      }
     }
   },
   {
@@ -140,11 +178,11 @@ export const newsBlogs: Blog[] = [
       'https://www.esa.int/Enabling_Support/(archive)/0'
     ],
     baseUrl: 'https://www.esa.int',
-    selectorBase: '.grid-item',
+    selectorBaseCard: '.grid-item.story',
     selectorPagination: '.paging', // title="Next page" // Selector for the next page link.
     selectorConfigCard: {
       title: {
-        selector: 'header h3',
+        selector: 'header > h3',
         extract: 'text'
       },
       url: {
@@ -153,12 +191,19 @@ export const newsBlogs: Blog[] = [
         attributeName: 'href'
       },
       featured_image: {
-        selector: 'figure img',
+        selector: 'figure > img',
         extract: 'attribute',
         attributeName: 'src'
       },
       published_at: {
-        selector: 'header .meta span',
+        selector: 'header > .meta > span',
+        extract: 'text'
+      }
+    },
+    selectorBaseArticle: 'article',
+    selectorConfigArticle: {
+      body: {
+        selector: 'self',
         extract: 'text'
       }
     }
@@ -168,7 +213,7 @@ export const newsBlogs: Blog[] = [
     name: 'csa',
     urls: ['https://www.asc-csa.gc.ca/eng/news/articles/'],
     baseUrl: 'https://www.asc-csa.gc.ca',
-    selectorBase: 'article',
+    selectorBaseCard: 'article',
     selectorPagination: 'ul .pagination', // rel="next" // Selector for the next page link.
     selectorConfigCard: {
       title: {
@@ -190,6 +235,18 @@ export const newsBlogs: Blog[] = [
         extract: 'attribute',
         attributeName: 'datetime'
       }
+    },
+    selectorBaseArticle: 'main',
+    selectorConfigArticle: {
+      body: {
+        selector: 'self',
+        extract: 'text'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
+      }
     }
   },
   // {
@@ -197,7 +254,7 @@ export const newsBlogs: Blog[] = [
   //   id: 6,
   //   name: 'cnsa',
   //   urls: ['https://www.cnsa.gov.cn/english/n6465652/n6465653/'],
-  //   selectorBase: 'table',
+  //   selectorBaseCard: 'table',
   //   selectorPagination: 'font', // innerText="Next page"
   //   selectorConfigCard: {
   //     title: {
@@ -217,31 +274,43 @@ export const newsBlogs: Blog[] = [
     name: 'jaxa',
     urls: ['https://global.jaxa.jp/press/2024/'],
     baseUrl: 'https://global.jaxa.jp',
-    selectorBase: '.press_release ul li',
+    selectorBaseCard: '.press_release ul li',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
     selectorConfigCard: {
       title: {
-        selector: 'dd a',
+        selector: 'dd > a',
         extract: 'text'
       },
       url: {
-        selector: 'dd a',
+        selector: 'dd > a',
         extract: 'attribute',
         attributeName: 'href'
       },
       published_at: {
-        selector: 'dt font font',
+        selector: 'li > dl > dt',
         extract: 'text'
+      }
+    },
+    selectorBaseArticle: '.area_content_main_pad',
+    selectorConfigArticle: {
+      body: {
+        selector: 'self',
+        extract: 'text'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
       }
     }
   },
   {
     // ROSCOSMOS News
-    id: 7,
+    id: 8,
     name: 'roscosmos',
     urls: ['https://tass.com/space-programs'],
     baseUrl: 'https://tass.com',
-    selectorBase: '.theme-item',
+    selectorBaseCard: '.theme-item',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
     selectorConfigCard: {
       title: {
@@ -252,11 +321,27 @@ export const newsBlogs: Blog[] = [
         selector: 'self',
         extract: 'attribute',
         attributeName: 'href'
+      }
+    },
+    selectorBaseArticle: '#news',
+    selectorConfigArticle: {
+      body: {
+        selector: '.text-content',
+        extract: 'text'
+      },
+      description: {
+        selector: '.news-header__lead',
+        extract: 'text'
       },
       published_at: {
-        selector: 'dateformat',
+        selector: 'span > dateformat',
         extract: 'attribute',
         attributeName: 'time'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
       }
     }
   }
@@ -265,7 +350,7 @@ export const newsBlogs: Blog[] = [
   //   id: 3,
   //   name: 'space.com',
   //   urls: ['https://www.space.com/news/archive'],
-  //   selectorBase: 'article',
+  //   selectorBaseCard: 'article',
   //   selectorPagination: '.nav-links .next',
   //   selectorConfigCard: {
   //     title: 'header > h1',
