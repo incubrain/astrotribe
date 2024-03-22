@@ -13,16 +13,12 @@ const AuthorSchema = z.object({
   image: MediaSchema.nullable()
 })
 
-const NewsScrapedSchema = z.object({
-  title: z.string(),
-  url: z.string(),
+const NewsScrapedArticleSchema = z.object({
   body: z.string(),
-  category: z.string(),
-  featured_image: z.string(),
-  featured_video: MediaSchema.nullable(),
-  author: AuthorSchema.nullable(),
-  published_at: z.string(),
-  updated_at: z.string().optional()
+  featured_image: z.string().optional(),
+  published_at: z.string().optional(),
+  description: z.string().optional(),
+  author: z.string().optional()
 })
 
 const NewsCardScrapedSchema = z.object({
@@ -61,7 +57,7 @@ export const NewsEmbeddingSchema = z.object({
 export type NewsCategoryT = 'isro' | 'nasa' | 'ula' | 'esa' | 'jaxa' | 'cnsa' | 'roscosmos' | 'csa'
 export type NewsCardT = z.infer<typeof NewsCardSchema>
 export type NewsCardScrapedT = z.infer<typeof NewsCardScrapedSchema>
-export type NewsArticleType = z.infer<typeof NewsArticleSchema>
-export type MediaType = z.infer<typeof MediaSchema>
-export type NewsEmbeddingType = z.infer<typeof NewsEmbeddingSchema>
-export type NewsScrapedType = z.infer<typeof NewsScrapedSchema>
+export type NewsArticleT = z.infer<typeof NewsArticleSchema>
+export type MediaT = z.infer<typeof MediaSchema>
+export type NewsEmbeddingT = z.infer<typeof NewsEmbeddingSchema>
+export type NewsScrapedArticleT = z.infer<typeof NewsScrapedArticleSchema>
