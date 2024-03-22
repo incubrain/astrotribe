@@ -18,7 +18,11 @@ console.log('spaceNews', spaceNews)
 </script>
 <template>
   <div>
-    <h2 class="text-xl fong-bold py-4"> Latest {{ newsCategory.toUpperCase() }} News </h2>
+    <h2
+      class="text-3xl font-bold pb-10 underline underline-offset-8 decoration-primary-500 text-center"
+    >
+      {{ newsCategory.toUpperCase() }} NEWS
+    </h2>
     <div
       v-if="spaceNews?.news"
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
@@ -57,11 +61,8 @@ console.log('spaceNews', spaceNews)
           </div>
           <div class="space-y-3 p-4">
             <div class="flex gap-2">
-              <span
-                v-if="news.published_at"
-                class="p-2 text-sm w-auto"
-              >
-                {{ useTimeAgo(news.published_at).value }}
+              <span class="text-sm w-auto">
+                {{ useTimeAgo(news.published_at ?? news.created_at).value }}
               </span>
             </div>
             <h4 class="text-balance text-xl"> {{ news.title.slice(0, 80) }}... </h4>
