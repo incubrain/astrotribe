@@ -42,13 +42,21 @@ console.log('spaceNews', spaceNews)
               height="220"
             />
           </div>
-          <div class="space-y-4 p-4">
+          <div
+            v-else
+            class="overflow-hidden sm:h-48"
+          >
+            <NuxtImg
+              :src="`images/news/${newsCategory}-placeholder.jpg`"
+              :alt="news.title"
+              fit="cover"
+              class="rounded-t-md object-cover object-center w-full h-full aspect-video"
+              width="420"
+              height="220"
+            />
+          </div>
+          <div class="space-y-3 p-4">
             <div class="flex gap-2">
-              <span
-                class="p-2 text-sm rounded-full bg-primary-700 text-white uppercase font-bold w-auto"
-              >
-                {{ news.source }}
-              </span>
               <span
                 v-if="news.published_at"
                 class="p-2 text-sm w-auto"
