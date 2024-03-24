@@ -1,9 +1,9 @@
-import { Browser, Page } from 'playwright'
-import { Blog } from './newsBlogs'
+import type { Browser, Page } from 'playwright'
 import genericScraper from './scrapers/genericScraperCard'
+import type { ScraperT } from '@/types/scraper'
 
 interface ScrapeFunction {
-  (browser: Browser, blog: Blog): Promise<any[]>
+  (browser: Browser, blog: ScraperT): Promise<any[]>
 }
 
 // Define a base scraping function for news.
