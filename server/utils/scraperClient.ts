@@ -1,6 +1,5 @@
 import { chromium } from 'playwright'
 
-let client: any
 const scraperClient = async () => {
   // Retrieve runtime configuration variables.
   // if (client) return client
@@ -25,7 +24,7 @@ const scraperClient = async () => {
     headless: false // Set false for testing
   })
 
-  client = await browser.newContext({
+  const client = await browser.newContext({
     // Specify English as the preferred language
     locale: 'en-US',
     extraHTTPHeaders: {
