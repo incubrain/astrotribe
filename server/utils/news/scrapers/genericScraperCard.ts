@@ -1,12 +1,12 @@
 import { Page } from 'playwright'
-import type { Blog, SelectorConfigCard } from '../newsBlogs'
+import type { ScraperT, SelectorConfigCard } from '@/types/scraper'
 
-export default async function (page: Page, blog: Blog): Promise<any[]> {
+export default async function (page: Page, blog: ScraperT): Promise<any[]> {
   console.log('genericScraper: scrape', blog.name)
 
   const articlesData = await page
     .locator(blog.selectorBaseCard)
-    .evaluateAll((articles, blog: Blog) => {
+    .evaluateAll((articles, blog: ScraperT) => {
       return articles.map((article) => {
         const data: { [key: string]: any } = {}
         data.source = blog.name

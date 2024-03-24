@@ -1,39 +1,4 @@
-import type { NewsCategoryT } from '@/types/news'
-
-export interface ExtractionConfig {
-  selector: string
-  extract: 'text' | 'attribute'
-  attributeName?: string // Optional, only needed for attribute extraction
-}
-
-export interface SelectorConfigCard {
-  title: ExtractionConfig
-  url: ExtractionConfig
-  description?: ExtractionConfig
-  featured_image?: ExtractionConfig
-  published_at?: ExtractionConfig
-}
-
-export interface SelectorConfigArticle {
-  body: ExtractionConfig
-  description?: ExtractionConfig
-  featured_image?: ExtractionConfig
-  author?: ExtractionConfig
-  published_at?: ExtractionConfig
-}
-
-// Represents the structure and configuration for a specific blog.
-export interface Blog {
-  id: number
-  name: NewsCategoryT
-  urls: string[]
-  baseUrl: string
-  selectorBaseCard: string
-  selectorPagination: string
-  selectorConfigCard: SelectorConfigCard
-  selectorBaseArticle: string
-  selectorConfigArticle: SelectorConfigArticle
-}
+import type { ScraperT } from '@/types/scraper'
 
 // Creative Content
 // https://www.universetoday.com/ // free to use, images might require additional permissions
@@ -57,7 +22,7 @@ export interface Blog {
 // UK space agency
 // https://space.blog.gov.uk/
 
-export const newsBlogs: Blog[] = [
+export const newsConfigGov: ScraperT[] = [
   // {
   //   // Nasa Blogs
   //   id: 1,
@@ -326,7 +291,6 @@ export const newsBlogs: Blog[] = [
     }
   },
   {
-    // ROSCOSMOS News
     id: 8,
     name: 'roscosmos',
     urls: ['https://tass.com/space-programs'],

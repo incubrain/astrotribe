@@ -1,7 +1,7 @@
 import { Page } from 'playwright'
-import type { Blog, SelectorConfigArticle } from '../newsBlogs'
+import type { ScraperT, SelectorConfigArticle } from '@/types/scraper'
 
-export default async function (page: Page, blog: Blog): Promise<any> {
+export default async function (page: Page, blog: ScraperT): Promise<any> {
   console.log('genericScraperArticle: scrape', blog.name)
 
   try {
