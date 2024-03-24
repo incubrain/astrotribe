@@ -2,28 +2,38 @@ import { serverSupabaseClient } from '#supabase/server'
 import type { NewsCardT } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
-  const category = getRouterParam(event, 'category')
+  const { category, skip, limit } = getRouterParams(event)
+
+  const rangeEnd = limit ? Number(limit) + Number(skip) : 5
+  const rangeStart = skip ? Number(skip) : 0
 
   if (!category) {
-    return createError('400: No category provided')
+    throw createError({ message: 'No category provided' })
   }
 
   try {
     const supabaseClient = await serverSupabaseClient(event)
-    const { data, error } = await supabaseClient
+    let query = supabaseClient
       .from('news')
       .select('*')
-      .limit(6)
-      .eq('source', category)
+      .range(rangeStart, rangeEnd)
       .order('published_at', { ascending: false })
 
-    if (error) {
-      createError(`400: ${error.message}`)
+    if (category !== 'all') {
+      query = query.eq('source', category)
     }
 
-    if (!data) {
-      createError('400: No News Returned From Supabase')
+    const { data, error } = await query
+
+    if (error?.message) {
+      throw createError({ message: error.message })
     }
+
+    if (!data || data.length === 0) {
+      throw createError({ message: 'No News Returned From Supabase' })
+    }
+
+    console.log('get-news', data, error)
 
     return {
       status: 200,

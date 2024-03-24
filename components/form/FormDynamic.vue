@@ -99,7 +99,7 @@ interface Field {
 const fields = ref([] as Field[])
 // Loop through schema and create fields
 if (p.schema.length === 0) {
-  throw createError('FormDynamic: schema is empty')
+  throw createError({ message: 'FormDynamic: schema is empty' })
 }
 
 p.schema.forEach((item: FormFieldType) => {

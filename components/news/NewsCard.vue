@@ -1,50 +1,60 @@
 <template>
-  <div
-    class="flex flex-col gap-4 lg:rounded-md border p-4 foreground border-color origin-left animate-swipe-in"
-  >
-    <h3 class="text-2xl">{{ post.title }}</h3>
-    <div class="flex gap-2 text-sm whitespace-nowrap flex-wrap">
-      <!-- <UBadge>{{ post.category.name }}</UBadge> -->
-      <!-- <UBadge
-        v-for="tag in post.tags?.slice(0, 2)"
-        :key="tag.id"
-        color="rose"
+  <div class="rounded-md border border-color background flex flex-col justify-between">
+    <div>
+      <div
+        v-if="news.featured_image"
+        class="overflow-hidden sm:h-48"
       >
-        {{ tag.name }}
-      </UBadge> -->
-    </div>
-    <UTooltip
-      :text="post.images ? post.images[0].caption?.substring(0, 240) + '...' : 'No caption'"
-    >
-      <div class="h-64 w-full overflow-hidden">
-        <ImageWithFallback
-          :image="post.images ? post.images[0] : undefined"
-          :sizes="{ width: 500, height: 280, sizes: undefined }"
+        <NuxtImg
+          :src="news.featured_image"
+          :alt="news.title"
+          fit="cover"
+          class="rounded-t-md object-cover object-center w-full h-full aspect-video"
+          width="420"
+          height="220"
         />
       </div>
-    </UTooltip>
-    <div class="flex gap-2 text-sm">
-      <p class="font-semibold">Credit:</p>
-      <p>{{ post.author.name }},</p>
-      <p>{{ post.published || '12th Dec, 2023' }}</p>
-    </div>
-    <!-- <div v-if="post.summary[summaryLevel]">
-      <ul class="space-y-2">
-        <li
-          v-for="sum in post.summary[summaryLevel]"
-          :key="sum"
-          class="flex gap-2 items-start"
+      <div
+        v-else
+        class="overflow-hidden sm:h-48"
+      >
+        <NuxtImg
+          :src="`images/news/${news.source}-placeholder.jpg`"
+          :alt="news.title"
+          fit="cover"
+          class="rounded-t-md object-cover object-center w-full h-full aspect-video"
+          width="420"
+          height="220"
+        />
+      </div>
+      <div class="space-y-3 p-4">
+        <div class="flex gap-2">
+          <span class="text-sm w-auto">
+            {{ useTimeAgo(news.published_at ?? news.created_at).value }}
+          </span>
+        </div>
+        <h4 class="text-balance text-xl"> {{ news.title.slice(0, 80) }}... </h4>
+        <p
+          v-if="news.description"
+          class="text-sm"
         >
-          <UIcon
-            name="i-mdi-star"
-            class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
-          />
-          <p class="flex-grow leading-snug text-sm">
-            {{ sum }}
-          </p>
-        </li>
-      </ul>
-    </div> -->
+          {{ news.description }}
+        </p>
+      </div>
+    </div>
+    <div class="p-4 flex justify-end items-center">
+      <NuxtLink
+        :to="news.url"
+        target="_blank"
+        rel="noopener"
+      >
+        <PrimeButton
+          :label="`Read on ${news.source.toUpperCase()}`"
+          size="small"
+          outlined
+        />
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -52,13 +62,13 @@
 import type { NewsCardT } from '@/types/news'
 
 defineProps({
-  post: {
+  news: {
     type: Object as () => NewsCardT,
     required: true
-  },
-  summaryLevel: {
-    type: String,
-    required: true
   }
+  // summaryLevel: {
+  //   type: String,
+  //   required: true
+  // }
 })
 </script>
