@@ -37,13 +37,13 @@ const pages = ref([
     // children: [
     //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
+  },
+  {
+    id: 5,
+    label: 'News',
+    slug: '/astrotribe/news',
+    icon: 'i-mdi-newspaper-variant-outline'
   }
-  // {
-  //   id: 5,
-  //   label: 'News',
-  //   slug: '/astrotribe/news',
-  //   icon: 'i-mdi-newspaper-variant-outline'
-  // }
   // {
   //   id: 5,
   //   label: 'Serp',
