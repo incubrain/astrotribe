@@ -1,4 +1,5 @@
-// Defines the structure for configuring how to select various elements of a blog post.
+import type { NewsCategoryT } from '@/types/news'
+
 export interface ExtractionConfig {
   selector: string
   extract: 'text' | 'attribute'
@@ -24,7 +25,7 @@ export interface SelectorConfigArticle {
 // Represents the structure and configuration for a specific blog.
 export interface Blog {
   id: number
-  name: string
+  name: NewsCategoryT
   urls: string[]
   baseUrl: string
   selectorBaseCard: string
@@ -33,6 +34,11 @@ export interface Blog {
   selectorBaseArticle: string
   selectorConfigArticle: SelectorConfigArticle
 }
+
+// Creative Content
+// https://www.universetoday.com/ // free to use, images might require additional permissions
+// http://www.collectspace.com//
+// https://www.space.com/
 
 // consider:
 
@@ -249,27 +255,42 @@ export const newsBlogs: Blog[] = [
       }
     }
   },
-  // {
-  //   // CNSA News
-  //   id: 6,
-  //   name: 'cnsa',
-  //   urls: ['https://www.cnsa.gov.cn/english/n6465652/n6465653/'],
-  //   selectorBaseCard: 'table',
-  //   selectorPagination: 'font', // innerText="Next page"
-  //   selectorConfigCard: {
-  //     title: {
-  //       selector: 'a',
-  //       extract: 'text'
-  //     },
-  //     url: {
-  //       selector: 'a',
-  //       extract: 'attribute',
-  //       attributeName: 'href'
-  //     }
-  //   }
-  // },
   {
-    // JAXA News
+    id: 6,
+    name: 'cnsa',
+    urls: ['https://www.cnsa.gov.cn/english/n6465652/n6465653/index.html'],
+    baseUrl: 'https://www.cnsa.gov.cn/english/',
+    selectorBaseCard: 'span > table > tbody > tr > td > a',
+    selectorPagination: 'font', // innerText="Next page"
+    selectorConfigCard: {
+      title: {
+        selector: 'self',
+        extract: 'text'
+      },
+      url: {
+        selector: 'self',
+        extract: 'attribute',
+        attributeName: 'href'
+      }
+    },
+    selectorBaseArticle: 'body',
+    selectorConfigArticle: {
+      body: {
+        selector: 'table.black14_30',
+        extract: 'text'
+      },
+      published_at: {
+        selector: 'tr > td.brown',
+        extract: 'text'
+      },
+      featured_image: {
+        selector: 'img',
+        extract: 'attribute',
+        attributeName: 'src'
+      }
+    }
+  },
+  {
     id: 7,
     name: 'jaxa',
     urls: ['https://global.jaxa.jp/press/2024/'],

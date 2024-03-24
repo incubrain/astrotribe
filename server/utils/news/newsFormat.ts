@@ -25,9 +25,13 @@ function cleanText(inputText: string) {
 
 const handleDate = (rawDate: string) => {
   let publishedAt: string | null
-  console.log('rawDate:', rawDate)
+  const dateFormat = /(\d{4}-\d{2}-\d{2})/
+  const isDate = rawDate.match(dateFormat)
 
-  if (rawDate.includes('[release]')) {
+  if (isDate) {
+    const date = new Date(isDate![1])
+    publishedAt = date.toISOString()
+  } else if (rawDate.includes('[release]')) {
     const formattedDate = rawDate.replace(/(\d+:\d+)?\s*\[.*\]/, '').trim()
     const date = new Date(formattedDate)
     publishedAt = date.toISOString()
@@ -39,9 +43,6 @@ const handleDate = (rawDate: string) => {
     const date = new Date(rawDate)
     publishedAt = date.toISOString()
   } else if (rawDate.includes('T')) {
-    const date = new Date(rawDate)
-    publishedAt = date.toISOString()
-  } else if (rawDate.includes('-')) {
     const date = new Date(rawDate)
     publishedAt = date.toISOString()
   } else {
@@ -57,6 +58,10 @@ const handleUrl = (url: string, baseUrl: string) => {
     return url
   } else if (url.startsWith('//')) {
     return `https:${url}`
+  } else if (url.startsWith('../')) {
+    url.replaceAll('../', '')
+    const newUrl = url.replaceAll('../', '')
+    return `${baseUrl}${newUrl}`
   }
   return `${baseUrl}${url}`
 }
@@ -66,7 +71,6 @@ const deleteItemsByKeywords = (items: any[]) => {
   return items.filter((item) => {
     const title = item.title.toLowerCase()
     const url = item.url.toLowerCase()
-    console.log('url:', url)
     return !keywords.some(
       (keyword) => title.includes(keyword.toLowerCase()) || url.includes(keyword.toLowerCase())
     )
@@ -75,11 +79,13 @@ const deleteItemsByKeywords = (items: any[]) => {
 
 const deleteDuplicates = (items: any[]) => {
   return items.filter(
-    (item, index, self) => index === self.findIndex((i) => i.title === item.title)
+    (item, index, self) =>
+      index === self.findIndex((i) => i.title === item.title || i.url === item.url)
   )
 }
 
-const postCardFormat = (posts: any[], baseUrl: string): NewsCardScrapedT[] => {
+export const postCardFormat = (posts: any[], baseUrl: string): NewsCardScrapedT[] => {
+  console.log('post', posts)
   posts = deleteItemsByKeywords(posts)
   posts = deleteDuplicates(posts)
   return posts.map((post) => {
@@ -88,8 +94,7 @@ const postCardFormat = (posts: any[], baseUrl: string): NewsCardScrapedT[] => {
   })
 }
 
-const postArticleFormat = (posts: any[], baseUrl: string): NewsScrapedArticleT[] => {
-  console.log('postArticleFormat', posts)
+export const postArticleFormat = (posts: any[], baseUrl: string): NewsScrapedArticleT[] => {
   posts = deleteDuplicates(posts)
 
   return posts.map((post) => {
@@ -103,19 +108,3 @@ const postArticleFormat = (posts: any[], baseUrl: string): NewsScrapedArticleT[]
     return post
   })
 }
-
-/// Function to format scraped data to match the structure of the News database table.
-const newsFormat = (
-  rawPosts: NewsCardScrapedT[] | NewsScrapedArticleT[],
-  baseUrl: string,
-  type = 'card'
-): NewsCardScrapedT[] | NewsScrapedArticleT[] => {
-  switch (type) {
-    case 'card':
-      return postCardFormat(rawPosts, baseUrl)
-    default:
-      return postArticleFormat(rawPosts, baseUrl)
-  }
-}
-
-export default newsFormat
