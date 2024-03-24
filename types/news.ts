@@ -54,7 +54,10 @@ export const NewsEmbeddingSchema = z.object({
   news_id: z.number().optional(),
   created_at: z.string().nullable()
 })
+
 export type NewsCategoryT = 'isro' | 'nasa' | 'ula' | 'esa' | 'jaxa' | 'cnsa' | 'roscosmos' | 'csa'
+export const newsScraperArray: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'roscosmos', 'csa']
+
 export type NewsCardT = z.infer<typeof NewsCardSchema>
 export type NewsCardScrapedT = z.infer<typeof NewsCardScrapedSchema>
 export type NewsArticleT = z.infer<typeof NewsArticleSchema>
