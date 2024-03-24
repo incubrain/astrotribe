@@ -19,3 +19,28 @@ a Pull Request against `develop` when the feature is ready for review
 #### Helpful links:
 
 [] - [Component Library](https://ui.nuxtlabs.com/) [] - [Icons](https://icones.js.org/)
+
+
+### Development Setup:
+
+#### Supabase:
+
+install supabase locally if you don't have it already
+
+```bash
+brew install supabase/tap/supabase
+```
+
+```bash
+// make sure docker is open
+// download the images
+supabase start
+//
+supabase login
+// link the local project to production
+supabase link --project-ref <project-id>
+// pull down the database
+supabase db pull
+```
+
+
