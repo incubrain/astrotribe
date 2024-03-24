@@ -1,15 +1,15 @@
-// import type { H3Event } from 'h3'
+import type { H3Event } from 'h3'
 import { Page } from 'playwright'
 import scraperClient from '../scraperClient'
 import genericScraperCard from './scrapers/genericScraperCard'
 import genericScraperArticle from './scrapers/genericScraperArticle'
 import { newsBlogs } from './newsBlogs'
+import { postCardFormat, postArticleFormat } from './newsFormat'
 import type { NewsCategoryT } from '@/types/news'
 
-const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null> => {
+const newsScraper = async (event: H3Event, singleScraper?: NewsCategoryT): Promise<void> => {
   // Log the start of the scraping process.
   console.log('scrape-blogs start')
-  const allPosts = []
 
   const blogs = singleScraper ? newsBlogs.filter((blog) => blog.name === singleScraper) : newsBlogs
 
@@ -49,7 +49,7 @@ const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null>
 
       // Loop through each post scraped from the blog.
 
-      const formattedCards = newsFormat(posts, blog.baseUrl, 'card')
+      const formattedCards = postCardFormat(posts, blog.baseUrl)
       if (!formattedCards) {
         continue
       }
@@ -72,31 +72,25 @@ const newsScraper = async (singleScraper?: NewsCategoryT): Promise<any[] | null>
           const urlObj = new URL(pageUrl)
           updatedBaseUrl = `${urlObj.protocol}//${urlObj.host}`
         }
-        console.log('articleData', articleData)
         articles.push({ ...card, ...articleData })
       }
 
-      const formattedArticles = newsFormat(articles, updatedBaseUrl, 'article')
+      const formattedArticles = postArticleFormat(articles, updatedBaseUrl)
 
       if (!formattedArticles) {
         continue
       }
 
-      allPosts.push(...formattedArticles)
+      await newsStorage(formattedArticles, event)
+
+      console.log(`${blog.name} scraped ${posts.length} articles`)
       posts.length = 0
     }
-
-    // Close the browser instance after scraping is complete.
+    console.log('newsScraper: browser close')
     await browser.close()
-    // Log the completion of the scraping process.
-    console.log('Blogs scraped', allPosts.length)
-    return allPosts
   } catch (error: any) {
-    // Log any errors that occur during the scraping process.
-    console.log('newsScraper error', error.message)
-    return null
+    console.error('newsScraper error', error.message)
   }
 }
 
-// !todo Schedule a cron job to run once per day
 export default newsScraper

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { NewsCategoryT } from '@/types/news'
-
-const newsCategories: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'roscosmos', 'csa']
+import { newsScraperArray } from '@/types/news'
 </script>
 
 <template>
@@ -20,7 +18,7 @@ const newsCategories: NewsCategoryT[] = ['nasa', 'jaxa', 'isro', 'esa', 'roscosm
       <UButton to="/blog/isro">All ISRO Articles</UButton>
     </BlogShowcase>
     <BlogNews
-      v-for="newsCat in newsCategories"
+      v-for="newsCat in newsScraperArray"
       :key="`news-showcase-${newsCat}`"
       :news-category="newsCat"
     />
