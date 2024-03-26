@@ -3,7 +3,7 @@
     <div class="space-x-4 xl:space-x-8">
       <UButton @click="seedRoles"> Seed Roles </UButton>
       <UButton @click="seedUsers"> Seed Users </UButton>
-      <UButton @click="testFunction('newsScraper')"> Test Function </UButton>
+      <UButton @click="testFunction('scraperGeneric')"> Test Function </UButton>
     </div>
     <AdminSeedDatabase />
     <AdminTesting />

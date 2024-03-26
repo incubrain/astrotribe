@@ -1,1 +1,0 @@
-// https://www.stsci.edu/jwst/science-execution/science-publications
