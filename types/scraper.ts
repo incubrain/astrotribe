@@ -1,4 +1,4 @@
-import type { NewsCategoryT } from '@/types/news'
+import type { NewsListGovernmentT } from '@/types/news'
 
 export interface ExtractionConfig {
   selector: string
@@ -25,7 +25,7 @@ export interface SelectorConfigArticle {
 // Represents the structure and configuration for a specific blog.
 export interface ScraperT {
   id: number
-  name: NewsCategoryT
+  name: NewsListGovernmentT
   urls: string[]
   baseUrl: string
   selectorBaseCard: string

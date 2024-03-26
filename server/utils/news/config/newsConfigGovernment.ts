@@ -22,7 +22,7 @@ import type { ScraperT } from '@/types/scraper'
 // UK space agency
 // https://space.blog.gov.uk/
 
-export const newsConfigGov: ScraperT[] = [
+export const newsConfigGovernment: ScraperT[] = [
   // {
   //   // Nasa Blogs
   //   id: 1,
