@@ -1,7 +1,6 @@
-import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event)
+  const client = await dbClient(event)
   // only fetch users if there is a avatar
   const { data, error } = await client.from('users').select('*, roles(*)').neq('avatar', '')
 
