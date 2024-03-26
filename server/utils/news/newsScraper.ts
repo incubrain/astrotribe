@@ -3,17 +3,17 @@ import { Page } from 'playwright'
 import scraperClient from '../scraperClient'
 import genericScraperCard from './scrapers/genericScraperCard'
 import genericScraperArticle from './scrapers/genericScraperArticle'
-import { newsConfigGov } from './config/newsConfigGov'
+import { newsConfigGovernment } from './config/newsConfigGovernment'
 import { postCardFormat, postArticleFormat } from './newsFormat'
-import type { NewsCategoryT } from '@/types/news'
+import type { NewsListGovernmentT } from '@/types/news'
 
-const newsScraper = async (event: H3Event, singleScraper?: NewsCategoryT): Promise<void> => {
+const newsScraper = async (event: H3Event, singleScraper?: NewsListGovernmentT): Promise<void> => {
   // Log the start of the scraping process.
   console.log('scrape-blogs start')
 
   const blogs = singleScraper
-    ? newsConfigGov.filter((blog) => blog.name === singleScraper)
-    : newsConfigGov
+    ? newsConfigGovernment.filter((blog) => blog.name === singleScraper)
+    : newsConfigGovernment
 
   try {
     // Initialize the scraper client (browser instance).

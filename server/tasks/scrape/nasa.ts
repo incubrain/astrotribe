@@ -4,7 +4,7 @@ export default defineTask({
     description: 'Returns the provided nasa'
   },
   run({ payload, name }) {
-    $fetch('/api/admin/store-news')
+    $fetch('/api/admin/scrape-news')
     return payload
   }
 })
