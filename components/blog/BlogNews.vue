@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { NewsCategoryT } from '@/types/news'
+import type { NewsListGovernmentT } from '@/types/news'
 
 const p = defineProps({
   newsCategory: {
-    type: String as PropType<NewsCategoryT>,
+    type: String as PropType<NewsListGovernmentT>,
     required: true
   }
 })
