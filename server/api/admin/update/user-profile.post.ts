@@ -1,9 +1,8 @@
-import { serverSupabaseClient } from '#supabase/server'
 import { UserRowType } from '~/types/users'
 
 export default defineEventHandler(async (event) => {
   const { userId, profile }: { userId: string; profile: UserRowType } = await readBody(event)
-  const client = await serverSupabaseClient(event)
+  const client = await dbClient(event)
 
   // Function to insert users from JSON file
   try {

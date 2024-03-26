@@ -1,8 +1,7 @@
 import { Role } from '@/types/roles'
-import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = serverSupabaseClient(event)
+  const client = dbClient(event)
 
   const { roles }: { roles: Role[] } = await readBody(event)
   // const env = useRuntimeConfig().public
