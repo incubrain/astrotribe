@@ -1,12 +1,14 @@
 import type { NewsListGovernmentT } from '@/types/news'
 
+export type ScraperWebsitesT = NewsListGovernmentT | 'arxiv'
+
 export interface ExtractionConfig {
   selector: string
   extract: 'text' | 'attribute'
   attributeName?: string // Optional, only needed for attribute extraction
 }
 
-export interface SelectorConfigCard {
+export interface SelectorConfigLink {
   title: ExtractionConfig
   url: ExtractionConfig
   description?: ExtractionConfig
@@ -14,7 +16,7 @@ export interface SelectorConfigCard {
   published_at?: ExtractionConfig
 }
 
-export interface SelectorConfigArticle {
+export interface SelectorConfigPage {
   body: ExtractionConfig
   description?: ExtractionConfig
   featured_image?: ExtractionConfig
@@ -25,12 +27,14 @@ export interface SelectorConfigArticle {
 // Represents the structure and configuration for a specific blog.
 export interface ScraperT {
   id: number
-  name: NewsListGovernmentT
+  name: ScraperWebsitesT
   urls: string[]
   baseUrl: string
   selectorBaseCard: string
   selectorPagination: string
-  selectorConfigCard: SelectorConfigCard
-  selectorBaseArticle: string
-  selectorConfigArticle: SelectorConfigArticle
+  selectorConfigLink: SelectorConfigLink
+  selectorBasePage: string
+  selectorConfigPage: SelectorConfigPage
 }
+
+export type ScraperCategoriesT = 'news-government' | 'news-private' | 'research'

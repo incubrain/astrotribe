@@ -75,8 +75,8 @@ export const newsListGovernment: NewsListGovernmentT[] = [
 ]
 
 export type NewsCardT = z.infer<typeof NewsCardSchema>
-export type NewsCardScrapedT = z.infer<typeof NewsCardScrapedSchema>
+export type ScrapedLinkT = z.infer<typeof NewsCardScrapedSchema>
 export type NewsArticleT = z.infer<typeof NewsArticleSchema>
 export type MediaT = z.infer<typeof MediaSchema>
 export type NewsEmbeddingT = z.infer<typeof NewsEmbeddingSchema>
-export type NewsScrapedArticleT = z.infer<typeof NewsScrapedArticleSchema>
+export type ScrapedPageT = z.infer<typeof NewsScrapedArticleSchema>

@@ -22,7 +22,7 @@ import type { ScraperT } from '@/types/scraper'
 // UK space agency
 // https://space.blog.gov.uk/
 
-export const newsConfigGovernment: ScraperT[] = [
+export const configNewsGovernment: ScraperT[] = [
   // {
   //   // Nasa Blogs
   //   id: 1,
@@ -50,8 +50,8 @@ export const newsConfigGovernment: ScraperT[] = [
   //   ],
   //   selectorBaseCard: 'article',
   //   selectorPagination: '.nav-links .next', // Selector for the next page link.
-  //   scraper: newsScraperNasaBlogs, // Function used to scrape this specific blog.
-  //   selectorConfigCard: {
+  //   scraper: scraperGenericNasaBlogs, // Function used to scrape this specific blog.
+  //   selectorConfigLink: {
   //     // Specific element selectors for this blog.
   //     title: '.entry-title a',
   //     author: '.entry-footer .author a',
@@ -67,7 +67,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://www.nasa.gov',
     selectorBaseCard: '.hds-content-item',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: '.hds-content-item-heading',
         extract: 'text'
@@ -87,8 +87,8 @@ export const newsConfigGovernment: ScraperT[] = [
         attributeName: 'src'
       }
     },
-    selectorBaseArticle: 'article',
-    selectorConfigArticle: {
+    selectorBasePage: 'article',
+    selectorConfigPage: {
       body: {
         selector: '.usa-article-content',
         extract: 'text'
@@ -111,7 +111,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://www.isro.gov.in/',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
     selectorBaseCard: 'tbody tr',
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: '.link',
         extract: 'text'
@@ -126,8 +126,8 @@ export const newsConfigGovernment: ScraperT[] = [
         extract: 'text'
       }
     },
-    selectorBaseArticle: '.card-body',
-    selectorConfigArticle: {
+    selectorBasePage: '.card-body',
+    selectorConfigPage: {
       body: {
         selector: 'self',
         extract: 'text'
@@ -151,7 +151,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://www.esa.int',
     selectorBaseCard: '.grid-item.story',
     selectorPagination: '.paging', // title="Next page" // Selector for the next page link.
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: 'header > h3',
         extract: 'text'
@@ -171,8 +171,8 @@ export const newsConfigGovernment: ScraperT[] = [
         extract: 'text'
       }
     },
-    selectorBaseArticle: 'article',
-    selectorConfigArticle: {
+    selectorBasePage: 'article',
+    selectorConfigPage: {
       body: {
         selector: 'self',
         extract: 'text'
@@ -186,7 +186,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://www.asc-csa.gc.ca',
     selectorBaseCard: 'article',
     selectorPagination: 'ul .pagination', // rel="next" // Selector for the next page link.
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: 'figcaption h3',
         extract: 'text'
@@ -207,8 +207,8 @@ export const newsConfigGovernment: ScraperT[] = [
         attributeName: 'datetime'
       }
     },
-    selectorBaseArticle: 'main',
-    selectorConfigArticle: {
+    selectorBasePage: 'main',
+    selectorConfigPage: {
       body: {
         selector: 'self',
         extract: 'text'
@@ -227,7 +227,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://www.cnsa.gov.cn/english/',
     selectorBaseCard: 'span > table > tbody > tr > td > a',
     selectorPagination: 'font', // innerText="Next page"
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: 'self',
         extract: 'text'
@@ -238,8 +238,8 @@ export const newsConfigGovernment: ScraperT[] = [
         attributeName: 'href'
       }
     },
-    selectorBaseArticle: 'body',
-    selectorConfigArticle: {
+    selectorBasePage: 'body',
+    selectorConfigPage: {
       body: {
         selector: 'table.black14_30',
         extract: 'text'
@@ -262,7 +262,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://global.jaxa.jp',
     selectorBaseCard: '.press_release ul li',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: 'dd > a',
         extract: 'text'
@@ -277,8 +277,8 @@ export const newsConfigGovernment: ScraperT[] = [
         extract: 'text'
       }
     },
-    selectorBaseArticle: '.area_content_main_pad',
-    selectorConfigArticle: {
+    selectorBasePage: '.area_content_main_pad',
+    selectorConfigPage: {
       body: {
         selector: 'self',
         extract: 'text'
@@ -297,7 +297,7 @@ export const newsConfigGovernment: ScraperT[] = [
     baseUrl: 'https://tass.com',
     selectorBaseCard: '.theme-item',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: '.theme-item__title',
         extract: 'text'
@@ -308,8 +308,8 @@ export const newsConfigGovernment: ScraperT[] = [
         attributeName: 'href'
       }
     },
-    selectorBaseArticle: '#news',
-    selectorConfigArticle: {
+    selectorBasePage: '#news',
+    selectorConfigPage: {
       body: {
         selector: '.text-content',
         extract: 'text'
@@ -337,7 +337,7 @@ export const newsConfigGovernment: ScraperT[] = [
   //   urls: ['https://www.space.com/news/archive'],
   //   selectorBaseCard: 'article',
   //   selectorPagination: '.nav-links .next',
-  //   selectorConfigCard: {
+  //   selectorConfigLink: {
   //     title: 'header > h1',
   //     author: 'a.author-byline__link',
   //     published_at: 'time.relative-date',

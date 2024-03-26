@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
       items
     }
   } catch (error: any) {
-    console.error('scrape-blogs error', error.message)
+    console.error('get-search error', error.message)
     return {
       status: 500,
       message: 'Error scraping blogs',

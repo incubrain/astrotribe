@@ -1,14 +1,21 @@
 import type { ScraperT } from '@/types/scraper'
 
-export const newsConfigPrivate: ScraperT[] = [
+export const researchConfig: ScraperT[] = [
   {
     id: 1,
-    name: 'nasa',
-    urls: ['https://www.nasa.gov/news/all-news/'],
-    baseUrl: 'https://www.nasa.gov',
+    name: 'arxiv',
+    urls: [
+      'https://arxiv.org/list/astro-ph.GA/current',
+      'https://arxiv.org/list/astro-ph.CO/current',
+      'https://arxiv.org/list/astro-ph.EP/current',
+      'https://arxiv.org/list/astro-ph.HE/current',
+      'https://arxiv.org/list/astro-ph.IM/current',
+      'https://arxiv.org/list/astro-ph.SR/current'
+    ],
+    baseUrl: 'https://arxiv.org',
     selectorBaseCard: '.hds-content-item',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
-    selectorConfigCard: {
+    selectorConfigLink: {
       title: {
         selector: '.hds-content-item-heading',
         extract: 'text'
@@ -28,8 +35,8 @@ export const newsConfigPrivate: ScraperT[] = [
         attributeName: 'src'
       }
     },
-    selectorBaseArticle: 'article',
-    selectorConfigArticle: {
+    selectorBasePage: 'article',
+    selectorConfigPage: {
       body: {
         selector: '.usa-article-content',
         extract: 'text'
@@ -46,3 +53,14 @@ export const newsConfigPrivate: ScraperT[] = [
     }
   }
 ]
+
+// We can summarise research papers for our academic users
+
+// https://www.mdpi.com/search?q=&journal=astronomy&sort=pubdate&page_count=50 // ok
+// https://astro.theoj.org/articles // ok
+
+// https://arxiv.org/list/physics.space-ph/recent
+
+// download PDFs
+// https://www.researchgate.net/topic/Astrophysics/publications
+// https://www.researchgate.net/topic/Astronomy/publications
