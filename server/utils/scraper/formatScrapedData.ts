@@ -1,4 +1,4 @@
-import type { NewsCardScrapedT, NewsScrapedArticleT } from '@/types/news'
+import type { ScrapedLinkT, ScrapedPageT } from '@/types/news'
 
 // Function to format images and videos into a standardized media format.
 // const formatMedia = (media: any) => {
@@ -84,27 +84,27 @@ const deleteDuplicates = (items: any[]) => {
   )
 }
 
-export const postCardFormat = (posts: any[], baseUrl: string): NewsCardScrapedT[] => {
-  console.log('post', posts)
-  posts = deleteItemsByKeywords(posts)
-  posts = deleteDuplicates(posts)
-  return posts.map((post) => {
-    post.url = handleUrl(post.url, baseUrl)
-    return post
+export const formatLinks = (links: any[], baseUrl: string): ScrapedLinkT[] => {
+  console.log('link', links)
+  links = deleteItemsByKeywords(links)
+  links = deleteDuplicates(links)
+  return links.map((link) => {
+    link.url = handleUrl(link.url, baseUrl)
+    return link
   })
 }
 
-export const postArticleFormat = (posts: any[], baseUrl: string): NewsScrapedArticleT[] => {
-  posts = deleteDuplicates(posts)
+export const formatPages = (pages: any[], baseUrl: string): ScrapedPageT[] => {
+  pages = deleteDuplicates(pages)
 
-  return posts.map((post) => {
-    if (post.featured_image) {
-      post.featured_image = handleUrl(post.featured_image, baseUrl)
+  return pages.map((page) => {
+    if (page.featured_image) {
+      page.featured_image = handleUrl(page.featured_image, baseUrl)
     }
-    if (post.body) {
-      post.body = cleanText(post.body)
+    if (page.body) {
+      page.body = cleanText(page.body)
     }
-    post.published_at = handleDate(post.published_at)
-    return post
+    page.published_at = handleDate(page.published_at)
+    return page
   })
 }

@@ -1,5 +1,5 @@
 import type { Browser, Page } from 'playwright'
-import genericScraper from './scrapers/genericScraperCard'
+import genericScraper from './scrapeLinks'
 import type { ScraperT } from '@/types/scraper'
 
 interface ScrapeFunction {
@@ -7,9 +7,9 @@ interface ScrapeFunction {
 }
 
 // Define a base scraping function for news.
-const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blog) => {
+const scraperPagination: ScrapeFunction = async (browser: Browser, blog: Blog) => {
   // Log the start of scraping for a specific blog.
-  console.log(`newsScraperPagination: scrape ${blog.name}`)
+  console.log(`scraperPagination: scrape ${blog.name}`)
 
   // Set a maximum number of articles to scrape, useful for testing.
   const maxArticles = 2
@@ -32,12 +32,12 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
         const data: any[] = await genericScraper(page, blog)
         // Add the newly scraped data to our posts array.
         posts.push(...data)
-        console.log('newsScraperPagination: while loop')
+        console.log('scraperPagination: while loop')
 
         // Check if the number of posts meets or exceeds the maxArticles limit.
         if (maxArticles && posts.length >= maxArticles) {
           // Log the achievement of max articles and break the loop.
-          console.log(`newsScraperPagination: reached max articles ${posts.length}`)
+          console.log(`scraperPagination: reached max articles ${posts.length}`)
           break
         }
 
@@ -52,25 +52,25 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
 
         // If there is no link to a next page, log and break the loop.
         if (!nextPageLink) {
-          console.log(`newsScraperPagination: last page ${posts.length}`)
+          console.log(`scraperPagination: last page ${posts.length}`)
           break
         }
 
         // Log moving to the next page.
-        console.log('newsScraperPagination: next page')
+        console.log('scraperPagination: next page')
         // Wait for 2 seconds before proceeding to mimic human behavior (adjust as needed).
         await page.waitForTimeout(2000) // Using Playwright's waitForTimeout instead of a manual promise
         // Go to the next page.
         await page.goto(nextPageLink)
       } catch (error) {
         // Log any errors encountered during scraping.
-        console.error(`newsScraperPagination: error scraping page - ${error.message}`, error.stack)
+        console.error(`scraperPagination: error scraping page - ${error.message}`, error.stack)
         // Break the loop if an error occurs.
         break
       }
     }
   }
-  console.log('newsScraperPagination: goto complete')
+  console.log('scraperPagination: goto complete')
 
   // Loop indefinitely until the break condition is met.
 
@@ -78,4 +78,4 @@ const newsScraperPagination: ScrapeFunction = async (browser: Browser, blog: Blo
   return posts
 }
 
-export default newsScraperPagination
+export default scraperPagination

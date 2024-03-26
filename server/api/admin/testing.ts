@@ -3,8 +3,8 @@
 // mapp functions to a switch block
 async function testingFunction(name: string) {
   switch (name) {
-    case 'newsScraper':
-      await newsScraper()
+    case 'scraperGeneric':
+      await scraperGeneric()
       break
     case 'scrapeSeo':
       await scrapeSeo()

@@ -23,25 +23,6 @@ export const useNewsStore = defineStore('news', () => {
     posts.value = data.value.news
   }
 
-  const scrapeBlogs = async () => {
-    try {
-      const { data, error } = await useAsyncData('news', () => $fetch('/api/admin/scrape-blogs'))
-      if (error.value) throw new Error('error scraping blogs: ' + error.value)
-      return {
-        status: 200,
-        message: 'Scraped blogs successfully!',
-        data
-      }
-    } catch (error: any) {
-      console.log('scrape-blogs error', error.message)
-      return {
-        status: 500,
-        message: 'Error scraping blogs',
-        error
-      }
-    }
-  }
-
   const getSummary = async () => {
     const { data, error } = await useAsyncData('summary', () =>
       $fetch('/api/admin/generate-summary')
