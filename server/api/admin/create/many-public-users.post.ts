@@ -1,8 +1,7 @@
-import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
-  const client = serverSupabaseClient(event)
+  const client = dbClient(event)
   let message
   let status
 
@@ -20,7 +19,10 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    const { data, error } = await client.from('users').createMany({ data: [...mappedUsers] }).select('*')
+    const { data, error } = await client
+      .from('users')
+      .createMany({ data: [...mappedUsers] })
+      .select('*')
 
     status = 200
     message = 'Users have been inserted successfully'

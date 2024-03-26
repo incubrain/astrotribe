@@ -1,4 +1,3 @@
-import { serverSupabaseClient } from '#supabase/server'
 import type { NewsCardT } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
@@ -12,7 +11,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const supabaseClient = await serverSupabaseClient(event)
+    const supabaseClient = await dbClient(event)
     let query = supabaseClient
       .from('news')
       .select('*')
