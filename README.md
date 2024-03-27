@@ -13,15 +13,21 @@ register your interest [here](https://astrotribe.vercel.app/auth/register)
 
 ### Contributing:
 
-Clone the `develop` Branch Create your Feature Branch `git checkout -b feature/AmazingFeature` Open
+Clone the `develop` Branch Create your Feature Branch `git checkout -b feature/amazing-feature` Open
 a Pull Request against `develop` when the feature is ready for review
-
-#### Helpful links:
-
-[] - [Component Library](https://ui.nuxtlabs.com/) [] - [Icons](https://icones.js.org/)
 
 
 ### Development Setup:
+
+#### Stack
+
+- Nuxt
+- Vercel
+- Supabase
+
+#### Links
+
+- Dev Site: https://astrotribe-git-develop-incubrain.vercel.app
 
 #### Supabase:
 
