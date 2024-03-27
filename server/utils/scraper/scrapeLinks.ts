@@ -14,11 +14,10 @@ export default async function (page: Page, website: ScraperT): Promise<any[]> {
     })
 
     const linkData: any[] = await page
-      .locator(website.selectorBaseCard)
+      .locator(website.selectorBaseLink)
       .evaluateAll((page, website: ScraperT) => {
         return page.map((article) => {
           const data: { [key: string]: any } = {}
-          data.source = website.name
 
           for (const key in website.selectorConfigLink) {
             const config = website.selectorConfigLink[key as keyof SelectorConfigLink]
