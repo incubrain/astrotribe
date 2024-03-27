@@ -13,7 +13,7 @@
       >
         <NuxtImg
           :src="
-            s.image.single({
+            supabaseStorage.image.single({
               bucket: 'profile-public',
               folderPath: `${host.id}/avatar`,
               fileType: 'user-avatar',
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import type { EventHostType } from '@/types/events'
 
-const s = useImageStorage()
+const supabaseStorage = useSupabaseStorage()
 
 defineProps({
   hosts: {
