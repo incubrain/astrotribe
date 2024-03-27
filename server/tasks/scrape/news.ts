@@ -1,9 +1,9 @@
 export default defineTask({
   meta: {
-    name: 'scrape:nasa',
-    description: 'Returns the provided nasa'
+    name: 'scrape:news',
+    description: 'Scrape news from various sources'
   },
-  run({ payload, name }) {
+  run({ payload }) {
     $fetch('/api/admin/scrape-news')
     return payload
   }
