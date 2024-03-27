@@ -24,13 +24,24 @@ export default async function ({ config, event }: ConfigT) {
 
     for (const website of newsWebsites) {
       const links = await scrapeLinks(page, website)
-
+      console.log('scrapeData: initial length', links.length)
       if (!links) {
         console.error('no links from scraper')
         return {
           status: 500,
           message: `Error scraping ${config.scraperCategory} links`
         }
+      }
+      const includeSource = ['news-government', 'news-private']
+      if (includeSource.includes(config.scraperCategory)) {
+        links.forEach((d) => {
+          d.source = website.name
+        })
+      } else {
+        // research
+        links.forEach((d) => {
+          d.version = 1
+        })
       }
 
       const data = await scrapePages({ page, website, links })
@@ -41,6 +52,7 @@ export default async function ({ config, event }: ConfigT) {
           message: `Error scraping ${config.scraperCategory} pages`
         }
       }
+      console.log('scrapeData: formatted length', data.length)
 
       await storeScrapedData({
         event,

@@ -6,7 +6,7 @@ export const configNewsPrivate: ScraperT[] = [
     name: 'nasa',
     urls: ['https://www.nasa.gov/news/all-news/'],
     baseUrl: 'https://www.nasa.gov',
-    selectorBaseCard: '.hds-content-item',
+    selectorBaseLink: '.hds-content-item',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
     selectorConfigLink: {
       title: {

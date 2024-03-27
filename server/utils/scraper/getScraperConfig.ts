@@ -1,4 +1,4 @@
-import { researchConfig } from '../research/researchConfig'
+import { configResearch } from './configs/configResearch'
 import { configNewsGovernment } from './configs/configNewsGovernment'
 import { configNewsPrivate } from './configs/configNewsPrivate'
 import type { ScraperCategoriesT, ScraperWebsitesT, ScraperT } from '@/types/scraper'
@@ -20,8 +20,8 @@ export default function ({ singleWebsite, scraperCategory }: ConfigT): ScraperT[
         : configNewsPrivate
     case 'research':
       return singleWebsite
-        ? researchConfig.filter((blog) => blog.name === singleWebsite)
-        : researchConfig
+        ? configResearch.filter((blog) => blog.name === singleWebsite)
+        : configResearch
     default:
       return configNewsGovernment
   }

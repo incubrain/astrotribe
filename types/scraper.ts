@@ -9,15 +9,16 @@ export interface ExtractionConfig {
 }
 
 export interface SelectorConfigLink {
-  title: ExtractionConfig
   url: ExtractionConfig
+  title?: ExtractionConfig
   description?: ExtractionConfig
   featured_image?: ExtractionConfig
   published_at?: ExtractionConfig
 }
 
 export interface SelectorConfigPage {
-  body: ExtractionConfig
+  body?: ExtractionConfig
+  title?: ExtractionConfig
   description?: ExtractionConfig
   featured_image?: ExtractionConfig
   author?: ExtractionConfig
@@ -30,11 +31,12 @@ export interface ScraperT {
   name: ScraperWebsitesT
   urls: string[]
   baseUrl: string
-  selectorBaseCard: string
+  selectorBaseLink: string
   selectorPagination: string
   selectorConfigLink: SelectorConfigLink
   selectorBasePage: string
   selectorConfigPage: SelectorConfigPage
+  selectorIgnore?: string[]
 }
 
 export type ScraperCategoriesT = 'news-government' | 'news-private' | 'research'
