@@ -48,7 +48,7 @@ export const configNewsGovernment: ScraperT[] = [
   //     'https://blogs.nasa.gov/sunspot/',
   //     'https://blogs.nasa.gov/odeo/'
   //   ],
-  //   selectorBaseCard: 'article',
+  //   selectorBaseLink: 'article',
   //   selectorPagination: '.nav-links .next', // Selector for the next page link.
   //   scraper: scraperGenericNasaBlogs, // Function used to scrape this specific blog.
   //   selectorConfigLink: {
@@ -65,7 +65,7 @@ export const configNewsGovernment: ScraperT[] = [
     name: 'nasa',
     urls: ['https://www.nasa.gov/news/all-news/'],
     baseUrl: 'https://www.nasa.gov',
-    selectorBaseCard: '.hds-content-item',
+    selectorBaseLink: '.hds-content-item',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
     selectorConfigLink: {
       title: {
@@ -110,7 +110,7 @@ export const configNewsGovernment: ScraperT[] = [
     urls: ['https://www.isro.gov.in/Archives.html'],
     baseUrl: 'https://www.isro.gov.in/',
     selectorPagination: '.next .page-numbers', // Selector for the next page link.
-    selectorBaseCard: 'tbody tr',
+    selectorBaseLink: 'tbody tr',
     selectorConfigLink: {
       title: {
         selector: '.link',
@@ -149,7 +149,7 @@ export const configNewsGovernment: ScraperT[] = [
       'https://www.esa.int/Enabling_Support/(archive)/0'
     ],
     baseUrl: 'https://www.esa.int',
-    selectorBaseCard: '.grid-item.story',
+    selectorBaseLink: '.grid-item.story',
     selectorPagination: '.paging', // title="Next page" // Selector for the next page link.
     selectorConfigLink: {
       title: {
@@ -184,7 +184,7 @@ export const configNewsGovernment: ScraperT[] = [
     name: 'csa',
     urls: ['https://www.asc-csa.gc.ca/eng/news/articles/'],
     baseUrl: 'https://www.asc-csa.gc.ca',
-    selectorBaseCard: 'article',
+    selectorBaseLink: 'article',
     selectorPagination: 'ul .pagination', // rel="next" // Selector for the next page link.
     selectorConfigLink: {
       title: {
@@ -225,7 +225,7 @@ export const configNewsGovernment: ScraperT[] = [
     name: 'cnsa',
     urls: ['https://www.cnsa.gov.cn/english/n6465652/n6465653/index.html'],
     baseUrl: 'https://www.cnsa.gov.cn/english/',
-    selectorBaseCard: 'span > table > tbody > tr > td > a',
+    selectorBaseLink: 'span > table > tbody > tr > td > a',
     selectorPagination: 'font', // innerText="Next page"
     selectorConfigLink: {
       title: {
@@ -260,7 +260,7 @@ export const configNewsGovernment: ScraperT[] = [
     name: 'jaxa',
     urls: ['https://global.jaxa.jp/press/2024/'],
     baseUrl: 'https://global.jaxa.jp',
-    selectorBaseCard: '.press_release ul li',
+    selectorBaseLink: '.press_release ul li',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
     selectorConfigLink: {
       title: {
@@ -295,7 +295,7 @@ export const configNewsGovernment: ScraperT[] = [
     name: 'roscosmos',
     urls: ['https://tass.com/space-programs'],
     baseUrl: 'https://tass.com',
-    selectorBaseCard: '.theme-item',
+    selectorBaseLink: '.theme-item',
     selectorPagination: '.elem_years_selector_pad', // li a goto page
     selectorConfigLink: {
       title: {
@@ -335,7 +335,7 @@ export const configNewsGovernment: ScraperT[] = [
   //   id: 3,
   //   name: 'space.com',
   //   urls: ['https://www.space.com/news/archive'],
-  //   selectorBaseCard: 'article',
+  //   selectorBaseLink: 'article',
   //   selectorPagination: '.nav-links .next',
   //   selectorConfigLink: {
   //     title: 'header > h1',

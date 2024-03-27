@@ -11,10 +11,16 @@ export default async function ({ page, website, links }: ConfigT): Promise<any> 
   console.log('scrapePages: scrape', website.name)
   const pages = []
 
-  let updatedBaseUrl = website.baseUrl
+  let realBaseUrl = website.baseUrl
 
   for (const link of links) {
-    await page.goto(link.url, {
+    let gotoUrl = link.url
+    if (link.version) {
+      console.log('scrapePages: link version', link.version)
+      gotoUrl = `${link.url}v${link.version}`
+    }
+
+    await page.goto(gotoUrl, {
       waitUntil: 'domcontentloaded',
       timeout: 0
     })
@@ -25,9 +31,15 @@ export default async function ({ page, website, links }: ConfigT): Promise<any> 
       console.warn(`The main selector ${website.selectorBasePage} was not found.`)
     }
 
+    for (const ignoreSelector of website.selectorIgnore ?? []) {
+      await page.evaluate((selector) => {
+        document.querySelectorAll(selector).forEach((el) => el.remove())
+      }, ignoreSelector)
+    }
+
     const pageUrl = page.url()
 
-    const articleData = await page
+    const pageData = await page
       .locator(website.selectorBasePage)
       .evaluate((article, selectorConfig: SelectorConfigPage) => {
         const data: { [key: string]: any } = {}
@@ -67,21 +79,22 @@ export default async function ({ page, website, links }: ConfigT): Promise<any> 
         return data
       }, website.selectorConfigPage)
 
-    if (pageUrl !== link.url) {
+    if (pageUrl !== link.url && !link.version) {
       console.log(`Redirect detected. Original URL: ${link.url}, Final URL: ${pageUrl}`)
       // Update the stored URL with the final URL
       link.url = pageUrl
 
       const urlObj = new URL(pageUrl)
-      updatedBaseUrl = `${urlObj.protocol}//${urlObj.host}`
+      realBaseUrl = `${urlObj.protocol}//${urlObj.host}`
     }
-    pages.push({ ...link, ...articleData })
+    // console.log('arxiv article:', pageData)
+    pages.push({ ...link, ...pageData })
   }
 
-  const formattedPages = formatPages(pages, updatedBaseUrl)
+  const formattedPages = formatPages(pages, realBaseUrl)
   if (!formattedPages) {
     return []
   }
-
+  console.log('scrapePages: formattedPages', formattedPages.length)
   return formattedPages
 }
