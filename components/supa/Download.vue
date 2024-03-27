@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-const { download } = useImageStorage()
+const { download } = useSupabaseStorage()
 
 const files = ref(null)
 const files2 = ref(null)

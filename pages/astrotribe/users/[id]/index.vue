@@ -3,7 +3,7 @@
     <div v-if="haveUser">
       <CommonCoverImg
         :url="
-          s.image.single({
+          supabseStorage.image.single({
             bucket: 'profile-public',
             folderPath: `${user.id}/cover`,
             file: user.cover_image,
@@ -28,7 +28,7 @@
         >
           <ProfileBlockAvatar
             :avatar="
-              s.image.single({
+              supabseStorage.image.single({
                 bucket: 'profile-public',
                 folderPath: `${user.id}/avatar`,
                 file: user.avatar,
@@ -75,7 +75,7 @@
 const route = useRoute()
 const id = route.params.id
 
-const s = useImageStorage()
+const supabseStorage = useSupabaseStorage()
 const u = useUsersStore()
 const haveUser = await u.checkWeHaveUser(String(id))
 const { user } = storeToRefs(u)

@@ -43,6 +43,12 @@ const pages = ref([
     label: 'News',
     slug: '/astrotribe/news',
     icon: 'i-mdi-newspaper-variant-outline'
+  },
+  {
+    id: 6,
+    label: 'Research',
+    slug: '/astrotribe/research',
+    icon: 'i-mdi-library-books'
   }
   // {
   //   id: 5,
