@@ -19,6 +19,8 @@ a Pull Request against `develop` when the feature is ready for review
 
 ### Development Setup:
 
+supabase: http://localhost:54323/project/default
+
 #### Stack
 
 - Nuxt
@@ -31,7 +33,7 @@ a Pull Request against `develop` when the feature is ready for review
 
 #### Supabase:
 
-install supabase locally if you don't have it already
+install supabase locally if you don't have it already.
 
 ```bash
 brew install supabase/tap/supabase
@@ -50,3 +52,11 @@ supabase db pull
 ```
 
 
+#### Migrations:
+
+```bash
+// create a migration based on changes made in local studio
+supabase db diff -f new_employee
+// reset db to verify changes
+supabase db reset
+```

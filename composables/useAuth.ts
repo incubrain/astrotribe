@@ -1,15 +1,15 @@
 export default function useAuth() {
   const router = useRouter()
   const user = useSupabaseUser()
-  const env = useRuntimeConfig().public
   const client = useSupabaseClient()
+  const baseUrl = computed(() => window.location.origin)
 
   const register = async ({ email, password }: { email: string; password: string }) => {
     const { data, error } = await client.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${env.BASE_URL}/auth/login`
+        emailRedirectTo: `${baseUrl.value}/auth/login`
       }
     })
 
@@ -31,7 +31,7 @@ export default function useAuth() {
   const forgotPassword = async ({ email }: { email: string }) => {
     //  sends a reset email to the user
     const { data, error } = await client.auth.resetPasswordForEmail(email, {
-      redirectTo: `${env.BASE_URL}/auth/update-password`
+      redirectTo: `${baseUrl.value}/auth/update-password`
     })
     if (error) {
       throw createError({
