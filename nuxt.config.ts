@@ -105,7 +105,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // client
     public: {
-      baseUrl: '',
       testMode: '',
       posthogKey: '',
       testingUserame: '',
