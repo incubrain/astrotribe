@@ -31,7 +31,7 @@ a Pull Request against `develop` when the feature is ready for review
 
 #### Supabase:
 
-install supabase locally if you don't have it already
+install supabase locally if you don't have it already.
 
 ```bash
 brew install supabase/tap/supabase
