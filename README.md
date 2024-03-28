@@ -19,6 +19,8 @@ a Pull Request against `develop` when the feature is ready for review
 
 ### Development Setup:
 
+supabase: http://localhost:54323/project/default
+
 #### Stack
 
 - Nuxt
