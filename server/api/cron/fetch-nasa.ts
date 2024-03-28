@@ -6,7 +6,6 @@ export default defineEventHandler(async (event) => {
     let nasaImg: NasaImgType | null
     const date = new Date().toISOString().split('T')[0]
     const kvForCache = `nasa-iotd:${date}`
-    // const storage = useStorage('data')
 
     const nasaKey = process.env.nasaApiKey
     if (!nasaKey) {
