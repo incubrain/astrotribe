@@ -1,7 +1,8 @@
 import type { NewsCardT } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
-  const { category, skip, limit } = getRouterParams(event)
+  const { category } = getRouterParams(event)
+  const { skip, limit } = getQuery(event)
 
   console.log('get-research', category, skip, limit)
   const rangeEnd = limit ? Number(limit) + Number(skip) : 24
@@ -30,21 +31,17 @@ export default defineEventHandler(async (event) => {
       throw createError({ message: error.message })
     }
 
-    console.log('get-research', data, error)
     if (!data || data.length === 0) {
       throw createError({ message: 'No Research Returned From Supabase' })
     }
 
     return {
-      status: 200,
-      message: 'Research retrieved from supabase',
-      research: data as NewsCardT[]
+      research: data as NewsCardT[],
+      error: null
     }
   } catch (error: any) {
     console.error('get-research error', error.message)
     return {
-      status: 500,
-      message: 'Error retrieving research',
       research: null,
       error
     }

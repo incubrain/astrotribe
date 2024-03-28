@@ -1,8 +1,10 @@
 import type { NewsCardT } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
-  const { category, skip, limit } = getRouterParams(event)
+  const { category } = getRouterParams(event)
+  const { skip, limit } = getQuery(event)
 
+  console.log('get-news', category, skip, limit)
   const rangeEnd = limit ? Number(limit) + Number(skip) : 5
   const rangeStart = skip ? Number(skip) : 0
 
@@ -31,8 +33,6 @@ export default defineEventHandler(async (event) => {
     if (!data || data.length === 0) {
       throw createError({ message: 'No News Returned From Supabase' })
     }
-
-    console.log('get-news', data, error)
 
     return {
       status: 200,
