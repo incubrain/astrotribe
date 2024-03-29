@@ -23,8 +23,8 @@ export default defineNuxtConfig({
     },
     scheduledTasks: {
       // every 12 hours
-      '0 */12 * * *': ['scrape:news', 'scrape:papers']
-      // '*/30 * * * *': ['scrape:nasa']
+      '0 */12 * * *': ['scrape:news', 'scrape:papers'],
+      // '*/50 * * * *': ['scrape:papers']
     },
     // Production
     storage: {
@@ -109,7 +109,9 @@ export default defineNuxtConfig({
       posthogKey: '',
       testingUserame: '',
       testingPassword: '',
-      studioTokens: ''
+      studioTokens: '',
+      supabaseUrl: '',
+      supabaseKey: ''
     },
     // server
     adminEmails: '',
