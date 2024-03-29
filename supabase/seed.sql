@@ -1996,18 +1996,6 @@ INSERT INTO "public"."roles" ("id", "created_at", "name", "body") VALUES
 
 
 --
--- Data for Name: seo_data; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
--- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
 -- Data for Name: user_followers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2240,20 +2228,6 @@ SELECT pg_catalog.setval('"public"."register_interest_id_seq"', 1, false);
 --
 
 SELECT pg_catalog.setval('"public"."roles_id_seq"', 1, false);
-
-
---
--- Name: seo_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."seo_data_id_seq"', 1, false);
-
-
---
--- Name: statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."statuses_id_seq"', 1, false);
 
 
 --

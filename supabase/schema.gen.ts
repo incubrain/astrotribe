@@ -203,6 +203,7 @@ export type Database = {
           title: string | null
           updated_at: string | null
           url: string
+          version: number | null
         }
         Insert: {
           author?: string | null
@@ -214,6 +215,7 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           url: string
+          version?: number | null
         }
         Update: {
           author?: string | null
@@ -225,6 +227,7 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           url?: string
+          version?: number | null
         }
         Relationships: []
       }
@@ -273,57 +276,6 @@ export type Database = {
           created_at?: string
           id?: number
           name?: string
-        }
-        Relationships: []
-      }
-      seo_data: {
-        Row: {
-          ads: Json
-          country: string
-          domain: string
-          general: Json
-          id: number
-          keyword: string
-          organic: Json
-          scrape_date: string
-        }
-        Insert: {
-          ads: Json
-          country: string
-          domain: string
-          general: Json
-          id?: number
-          keyword: string
-          organic: Json
-          scrape_date: string
-        }
-        Update: {
-          ads?: Json
-          country?: string
-          domain?: string
-          general?: Json
-          id?: number
-          keyword?: string
-          organic?: Json
-          scrape_date?: string
-        }
-        Relationships: []
-      }
-      statuses: {
-        Row: {
-          created_at: string
-          id: number
-          title: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          title?: string | null
         }
         Relationships: []
       }
