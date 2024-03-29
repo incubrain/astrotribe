@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "",
-    "supa:gen:types": "supabase gen types typescript --local",
+    "supa:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
+    "supa:lint": "supabase db lint",
     "lint": "eslint . --ext .ts,.js,.vue",
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },

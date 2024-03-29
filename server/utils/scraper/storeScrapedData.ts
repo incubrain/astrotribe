@@ -15,23 +15,20 @@ export default async function ({ event, data, tableName, conflictRow }: StorageI
     return
   }
 
-  console.log('storing', data)
+  console.log(`storing ${data.length} rows in ${tableName} table`)
 
   try {
     let query = db.from(tableName).upsert(data, { ignoreDuplicates: false })
     if (conflictRow) {
       query = db.from(tableName).upsert(data, { onConflict: conflictRow, ignoreDuplicates: false })
     }
-    console.log('query', query)
     const { error: newsError } = await query
 
-    console.log('storingError', newsError)
-
-    if (newsError?.message) {
-      console.error(`error storing ${tableName}:`, data[0].link, newsError.message)
+    if (newsError) {
+      console.error(`supabase error for ${tableName} table:`, newsError.message)
     }
   } catch (error) {
-    console.error('error storing data', error)
+    console.error(`error storing rows in ${tableName}`, error)
   }
 }
 
