@@ -4,24 +4,24 @@ const settingsTabs = [
   {
     slot: 'account',
     label: 'Account',
-    icon: 'i-material-symbols-home'
+    icon: 'material-symbols:home'
   },
   {
     slot: 'password',
     label: 'Password',
-    icon: 'i-material-symbols-key',
+    icon: 'material-symbols:key',
     disabled: true
   },
   {
     slot: 'application',
     label: 'Application',
-    icon: 'i-material-symbols-laptop-mac-outline',
+    icon: 'material-symbols:laptop-mac-outline',
     disabled: true
   },
   {
     slot: 'notifications',
     label: 'Notifications',
-    icon: 'i-material-symbols-notifications',
+    icon: 'material-symbols:notifications',
     disabled: true
   }
 ]
