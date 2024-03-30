@@ -27,7 +27,7 @@
           cosmos together.
         </p>
         <div>
-          <UButton
+          <PrimeButton
             color="primary"
             variant="solid"
             size="xl"
@@ -35,7 +35,7 @@
             @click="$posthog()?.capture('register_app', { location: 'hero_cta' })"
           >
             Begin your cosmic journey now!
-          </UButton>
+          </PrimeButton>
         </div>
       </div>
       <div class="relative z-50 w-full mx-auto">

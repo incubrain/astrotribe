@@ -36,7 +36,7 @@
             </h2>
             <div class="flex items-start w-full gap-1 text-sm">
               <span class="flex items-center justify-center font-light leading-none">
-                <UIcon
+                <Icon
                   :name="userRoleIcon(user.role_id)"
                   class="w-5 h-5 mr-1 text-green-700"
                 />
@@ -47,14 +47,14 @@
         </div>
       </NuxtLink>
       <!-- <div class="absolute flex-row justify-center gap-1 top-2 right-3 align-center">
-        <UIcon
+        <Icon
           v-if="user.is_following"
-          name="i-mdi-account-multiple-check"
+          name="mdi:account-multiple-check"
           class="flex justify-end items-start w-[26px] h-[26px] text-green-800 hover:text-red-800 cursor-pointer"
         />
-        <UIcon
+        <Icon
           v-else
-          name="i-mdi-account-multiple-plus"
+          name="mdi:account-multiple-plus"
           class="flex justify-end items-start w-[26px] h-[26px] hover:text-green-800 cursor-pointer"
         />
       </div> -->
@@ -71,13 +71,13 @@
 <script setup lang="ts">
 const roleIconMapping: Record<number, string> = {
   // mapped to database role id
-  7: 'i-material-symbols-shield-lock', // admin
-  6: 'i-material-symbols-manage-accounts', //
-  5: 'i-mdi-account-school', // Mentor
-  4: 'i-mdi-book-education', // Teacher
-  3: 'i-mdi-telescope', // AstroGuide
-  2: 'i-material-symbols-menu-book-rounded', // Student
-  1: 'i-material-symbols-account-circle' // Basic user
+  7: 'material-symbols:shield-lock', // admin
+  6: 'material-symbols:manage-accounts', //
+  5: 'mdi:account-school', // Mentor
+  4: 'mdi:book-education', // Teacher
+  3: 'mdi:telescope', // AstroGuide
+  2: 'material-symbols:menu-book-rounded', // Student
+  1: 'material-symbols:account-circle' // Basic user
 }
 
 const userRoleIcon = (roleId: number): string => {

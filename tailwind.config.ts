@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss'
 import c from 'tailwindcss/colors'
 
 export default <Partial<Config>>{
-  darkMode: 'class',
+  darkMode: 'selector',
   theme: {
     fontSize: {
       xs: '0.625rem',

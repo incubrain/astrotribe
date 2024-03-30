@@ -31,7 +31,7 @@
         :style="
           color.value === 'dark' ? { filter: ' grayscale(100%) invert(92%) contrast(83%)' } : {}
         "
-        class="block right-0 top-0 w-full min-h-[600px] lg:min-h-[calc(100vh-var(--nav-height-lg))]"
+        class="block right-0 top-0 w-full min-h-[600px] lg:min-h-screen"
         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
         style="border: 0"
         referrerpolicy="no-referrer-when-downgrade"

@@ -8,22 +8,23 @@
         with a link to activate your account.
       </p>
       <div class="space-x-2 py-4 w-auto">
-        <UBadge>
+        <PrimeTag>
           <a
             target="_blank"
             href="https://mail.google.com/mail/u/0/"
             rel="noopener noreferrer"
             >Open Gmail</a
           >
-        </UBadge>
-        <UBadge>
+        </PrimeTag>
+        <PrimeTag>
           <a
             target="_blank"
             href="https://outlook.live.com/mail/0/inbox"
             rel="noopener noreferrer"
-            >Open Outlook</a
           >
-        </UBadge>
+            Open Outlook
+          </a>
+        </PrimeTag>
       </div>
       <div></div>
       <label>Didn’t get an email? Check your spam folder!</label>

@@ -77,7 +77,7 @@
               href="/conference/full-conference-report.pdf"
               target="_blank"
             >
-              <UButton size="xl"> View Full Conference Report </UButton>
+              <PrimeButton size="xl"> View Full Conference Report </PrimeButton>
             </a>
           </div>
         </div>

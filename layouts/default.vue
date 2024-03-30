@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full min-h-[calc(100vh-var(--nav-height-sm))] lg:min-h-[calc(100vh-var(--nav-height-lg))]">
+  <div class="w-full min-h-screen">
     <slot />
   </div>
 </template>

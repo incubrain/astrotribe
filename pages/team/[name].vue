@@ -8,13 +8,13 @@
       :title="user.name"
       :subtitle="user.position.title"
     />
-    <UButton
+    <PrimeButton
       class="hidden fixed lg:flex top-20 left-4"
-      icon="i-mdi-keyboard-backspace"
+      icon="mdi:keyboard-backspace"
       @click="$router.back()"
     >
       Back
-    </UButton>
+    </PrimeButton>
     <div class="wrapper padded-x flex flex-wrap items-start justify-center lg:pb-12">
       <div
         class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"

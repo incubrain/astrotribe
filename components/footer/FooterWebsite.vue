@@ -49,7 +49,7 @@
             target="_blank"
             class="flex items-center"
           >
-            <UIcon
+            <Icon
               :name="social.icon"
               class="flex-shrink-0 h-5 w-5 dark:text-white"
             />

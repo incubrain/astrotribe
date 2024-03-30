@@ -3,7 +3,7 @@
     <div class="h-full">
       <div class="flex h-full gap-2 leading-4">
         <div class="relative flex items-center justify-center h-full gap-1 group">
-          <UIcon
+          <Icon
             v-for="i in 5"
             :key="i"
             :name="isStarFilled(i, rating / 2)"
@@ -34,11 +34,11 @@ defineProps({
 
 const isStarFilled = (index: number, rating: number) => {
   if (index <= Math.floor(rating)) {
-    return 'i-material-symbols-star'
+    return 'material-symbols:star'
   } else if (index - 0.5 <= rating) {
-    return 'i-material-symbols-star-half'
+    return 'material-symbols:star-half'
   } else {
-    return 'i-material-symbols-star-outline'
+    return 'material-symbols:star-outline'
   }
 }
 </script>

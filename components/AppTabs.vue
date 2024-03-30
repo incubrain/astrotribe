@@ -16,7 +16,7 @@
         :style="route.name === tab.label ? { background: '#E5E7EB' } : { background: 'none' }"
       >
         <div class="flex items-center justify-center text-gray-900">
-          <UIcon
+          <Icon
             :name="tab.icon"
             class="w-5 h-5"
           />
@@ -35,7 +35,6 @@ const { tabs } = usePages()
 
 const parentRoute = computed(() => route.path.split('/'))
 const currentTabs = computed(() => tabs(parentRoute.value[1])?.children)
-
 </script>
 
 <style scoped></style>

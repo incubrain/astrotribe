@@ -12,7 +12,7 @@
     <p class="mt-4 text-sm text-center">
       <NuxtLink to="/auth/login"> Already have an account? Sign In </NuxtLink>
     </p>
-    <!-- <UButton
+    <!-- <PrimeButton
       class="flex items-center justify-center w-full gap-4 mt-6"
       color="white"
       @click="handleGoogleSignUp"
@@ -23,7 +23,7 @@
         width="28px"
       />
       Sign Up with Google
-    </UButton> -->
+    </PrimeButton> -->
   </div>
 </template>
 

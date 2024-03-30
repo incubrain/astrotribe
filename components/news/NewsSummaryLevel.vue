@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const summaryLevels = [
   [
     {
@@ -23,24 +22,31 @@ const summaryLevels = [
     }
   ]
 ]
+
+const selectedLevel = ref('beginner')
 </script>
 <template>
   <div class="w-full flex gap-2">
-    <UButton @click="news.scrapeBlogs">Scrape Blogs</UButton>
-    <UButton @click="storeImage">Store Image</UButton>
-    <UButton @click="news.getBlogs">Get Blogs</UButton>
+    <PrimeButton @click="news.scrapeBlogs">Scrape Blogs</PrimeButton>
+    <PrimeButton @click="storeImage">Store Image</PrimeButton>
+    <PrimeButton @click="news.getBlogs">Get Blogs</PrimeButton>
     <div class="w-full flex justify-end gap-2 mb-4">
-      <UDropdown
-        :items="summaryLevels"
+      <PrimeDropdown
+        v-model="selectedLevel"
+        :options="summaryLevels"
+        option-label="label"
+        placeholder="Choose Summary Level"
+        checkmark
+        :highlight-on-select="false"
         mode="hover"
         :popper="{ placement: 'bottom-start' }"
       >
-        <UButton
+        <PrimeButton
           color="white"
           :label="news.summaryLevel"
-          trailing-icon="i-heroicons-chevron-down-20-solid"
+          trailing-icon="heroicons:chevron-down-20-solid"
         />
-      </UDropdown>
+      </PrimeDropdown>
     </div>
   </div>
 </template>

@@ -34,8 +34,8 @@
             v-if="venue.avg_rating"
             class="flex items-start gap-1"
           >
-            <UIcon
-              name="i-material-symbols-star"
+            <Icon
+              name="material-symbols:star"
               class="w-6 h-6 text-yellow-400"
             />
             <p class="text-xs font-semibold"> {{ venue.avg_rating.toPrecision(2) }} </p>
@@ -50,13 +50,13 @@
         target="_blank"
         class="mt-4"
       >
-        <UButton
+        <PrimeButton
           variant="outline"
           block
           color="white"
         >
           More info
-        </UButton>
+        </PrimeButton>
       </a>
     </div>
   </div>
@@ -71,7 +71,7 @@ const getBG = (id: number) => {
   if (darkBG.includes(id)) {
     return 'bg-slate-950'
   } else {
-    return 'bg-light'
+    return 'text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300'
   }
 }
 
