@@ -1,10 +1,8 @@
-@import './scrollbar.css';
-@import './transitions.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* @import './scrollbar.css';
+@import './transitions.css'; */
 
-@layer base {
+@layer tailwind-base {
+  @tailwind base;
   :root {
     --mobi-bottom-nav-height: 46px;
     --nav-height-sm: 50px;
@@ -23,33 +21,24 @@
   }
 }
 
-@layer components {
-  .card {
-    @apply w-full p-4 border border-zinc-300 dark:border-zinc-800 lg:p-8 md:rounded-lg md:shadow-sm bg-zinc-200 dark:bg-zinc-900;
-  }
-}
-
-@layer utilities {
-  .nav-link {
-    @apply cursor-pointer text-zinc-800 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-700;
-  }
-  .link {
-    @apply cursor-pointer text-primary-600 dark:text-primary-700 hover:text-primary-500 dark:hover:text-primary-600;
-  }
-  .foreground {
-    @apply bg-gray-50 dark:bg-neutral-950;
-  }
-  .background {
-    @apply text-zinc-800 bg-white dark:text-zinc-300  dark:bg-black;
-  }
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+/* 
+  .bg-white {
+    @apply bg-slate-50;
+  } */
   .wrapper {
     @apply max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)] mx-auto;
   }
-  .bg-light {
-    @apply text-zinc-800 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-300;
-  }
   .container {
     @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
+  }
+  /* .text-light {
+    @apply text-zinc-100 dark:text-zinc-300;
+  } */
+  .padded-x {
+    @apply px-4 lg:px-8;
   }
   .border-color {
     @apply border-zinc-200 dark:border-zinc-800;
@@ -57,24 +46,26 @@
   .border-inverted {
     @apply border-zinc-800 dark:border-zinc-300;
   }
-  .padded-x {
-    @apply px-4 lg:px-8;
+}
+
+/* @layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+  
+  .foreground {
+    @apply bg-gray-50 dark:bg-neutral-950;
   }
-  body {
-    @apply text-zinc-800 dark:text-zinc-300  border-zinc-300 dark:border-zinc-800 decoration-primary-500 dark:decoration-primary-700;
+  .background {
+    @apply text-zinc-800 bg-white dark:text-zinc-300  dark:bg-black;
   }
-  .text-light {
-    @apply text-zinc-100 dark:text-zinc-300;
-  }
-  .home-width {
-    @apply max-w-[100%] md:max-w-[80%] lg:max-w-[1240px];
-  }
+ 
+
   .inverted {
     @apply text-[#fff];
   }
-}
+} */
 
-.cropper-view-box,
+/* .cropper-view-box,
 .cropper-face {
   border-radius: 50%;
 }
@@ -88,4 +79,4 @@
   background: radial-gradient(75.61% 75.61% at 50% 24.39%, #352e53 0%, #b4530900 100%);
   z-index: -1;
   overflow: hidden;
-}
+} */

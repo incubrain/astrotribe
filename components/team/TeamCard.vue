@@ -52,13 +52,13 @@
           :has-title="false"
           class="flex items-center justify-center space-x-2"
         />
-        <UButton
+        <PrimeButton
           :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`"
           variant="outline"
           color="black"
         >
           View Profile
-        </UButton>
+        </PrimeButton>
       </div>
     </div>
   </div>

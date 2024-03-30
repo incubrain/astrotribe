@@ -1,13 +1,8 @@
 <template>
   <div>
-    <UTabs
-      :items="settings.tabs"
-      orientation="vertical"
-      :ui="{
-        wrapper:
-          'flex flex-col lg:flex-row items-start gap-4 p-4 lg:p-0 max-w-[var(--max-width-md)]',
-        list: { width: 'w-full lg:w-48' }
-      }"
+    <PrimeTabMenu
+      :model="settings.tabs"
+      :active-index="0"
     >
       <template #account>
         <LazySettingsAccount />
@@ -19,7 +14,7 @@
         <div class="flex items-center w-full justify-between gap-2 relative">
           <div class="flex gap-1 items-center">
             <span> {{ index + 1 }}. </span>
-            <UIcon
+            <Icon
               :name="item.icon"
               class="w-4 h-4 flex-shrink-0"
             />
@@ -34,11 +29,12 @@
           </div>
         </div>
       </template>
-    </UTabs>
+    </PrimeTabMenu>
   </div>
 </template>
 
 <script setup lang="ts">
+// !todo replace tabs with PrimeMenu or PrimePanelMenu
 const settings = useUserSettingsStore()
 const users = useUsersStore()
 const auth = useAuth()

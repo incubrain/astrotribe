@@ -1,5 +1,5 @@
 <template>
-  <UCard>
+  <PrimeCard>
     <FormDynamic
       :schema="schema"
       :validation-schema="FormPasswordSchema"
@@ -7,7 +7,7 @@
       :has-labels="true"
       @submit-form="onSubmitPassword"
     />
-  </UCard>
+  </PrimeCard>
 </template>
 
 <script setup lang="ts">

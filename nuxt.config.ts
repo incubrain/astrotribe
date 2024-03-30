@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     },
     scheduledTasks: {
       // every 12 hours
-      '0 */12 * * *': ['scrape:news', 'scrape:papers'],
+      '0 */12 * * *': ['scrape:news', 'scrape:papers']
       // '*/50 * * * *': ['scrape:papers']
     },
     // Production
@@ -49,7 +49,14 @@ export default defineNuxtConfig({
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        {
+          id: 'theme-link',
+          rel: 'stylesheet',
+          href: '/themes/aura-light-teal/theme.css'
+        }
+      ],
       htmlAttrs: {
         lang: 'en'
       },

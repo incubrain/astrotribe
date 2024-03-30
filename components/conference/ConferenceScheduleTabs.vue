@@ -1,87 +1,72 @@
 <template>
-  <div class="py-12 space-y-6">
+  <div class="py-12">
     <CommonTitle
       :title="{
         main: 'Conference Schedule'
       }"
     />
-    <UTabs
-      :items="schedule"
-      :ui="{
-        wrapper: 'space-y-6',
-        list: {
-          background: 'bg-white dark:bg-black',
-          padding: 'p-2',
-          rounded: 'border border-color',
-          height: 'h-auto',
-          marker: {
-            background: 'bg-primary-50 dark:bg-primary-950'
-          }
-        }
-      }"
-      orientation="horizontal"
-    >
-      <template #default="{ item, index, selected }">
-        <div>
-          <p class="hidden md:block text-sm font-semibold lg:text-lg">
-            {{ item.label.slice(0, 3) }} {{ item.day }}th Nov
-          </p>
-          <p class="md:hidden text-sm font-semibold lg:text-lg"> {{ item.day }}th Nov </p>
-        </div>
-      </template>
-      <template
+    <PrimeTabView>
+      <PrimeTabPanel
         v-for="(day, i) in schedule"
-        :key="`conference-day${i}`"
-        #[day.slot]="{ item }"
+        :key="`tab-${i}`"
+        :header="`${day.label} ${day.day}th Nov`"
       >
         <div class="border border-color rounded-md">
-          <UTable
-            :columns="columns"
-            :rows="item.items"
-            :ui="{
-              wrapper: width > 520 ? '' : 'overflow-x-scroll',
-              thead: 'sticky top-0 z-10'
-            }"
+          <PrimeDataTable
+            :value="day.items"
+            table-style="min-width: 40rem"
           >
-            <template #topic-data="{ row }">
-              <span class="flex items-center gap-2 whitespace-normal">
-                {{ row.topic }}
-              </span>
-            </template>
-            <template #speaker-data="{ row }">
-              <span class="font-semibold flex items-center leading-none">
-                <div
-                  v-if="row.online"
-                  class="w-3 h-3 rounded-full bg-emerald-500 mr-1"
-                />
-                {{ row.speaker }}
-              </span>
-            </template>
-            <template #speaker-header="{ row }">
-              <span class="font-semibold flex items-center leading-none">
-                Speaker (
-                <div class="w-3 h-3 rounded-full bg-emerald-500 mr-1" />
-                = Online)
-              </span>
-            </template>
-            <template #time-data="{ row }">
-              <span class="flex items-center gap-2">
-                <UIcon
-                  :name="row.icon"
-                  class="w-5 h-5"
-                />
-                {{ convertISTtoLocal(String(i + 24), row.time) }}
-              </span>
-            </template>
-          </UTable>
+            <PrimeColumn
+              style="width: 20%"
+              field="time"
+              :header="`Time ${timezone}`"
+            >
+              <template #body="{ data }">
+                <span class="flex items-center gap-2 text-sm">
+                  <Icon
+                    :name="data.icon"
+                    class="w-5 h-5"
+                  />
+
+                  {{ convertISTtoLocal(day.day, data.time) }}
+                </span>
+              </template>
+            </PrimeColumn>
+            <PrimeColumn
+              style="width: 35%"
+              field="speaker"
+              header="Speaker"
+            >
+              <template #body="slotProps">
+                <span class="flex leading-none items-center text-sm">
+                  <div
+                    v-if="slotProps.data.online"
+                    class="w-3 h-3 rounded-full bg-emerald-500 mr-1"
+                  />
+                  {{ slotProps.data.speaker }}
+                </span>
+              </template>
+            </PrimeColumn>
+            <PrimeColumn
+              style="width: 40%"
+              field="topic"
+              header="Topic"
+            >
+              <template #body="slotProps">
+                <div class="text-sm">
+                  {{ slotProps.data.topic }}
+                </div>
+              </template>
+            </PrimeColumn>
+          </PrimeDataTable>
         </div>
-      </template>
-    </UTabs>
+      </PrimeTabPanel>
+    </PrimeTabView>
   </div>
 </template>
 
 <script setup lang="ts">
-function convertISTtoLocal(day: string, time: { start: string; end: string }) {
+function convertISTtoLocal(day: number, time: { start: string; end: string }) {
   const start = `2023-11-${day}T${time.start}:00+05:30` // '+05:30' is the offset for IST
   const end = `2023-11-${day}T${time.end}:00+05:30` // '+05:30' is the offset for IST
 
@@ -105,23 +90,7 @@ function convertISTtoLocal(day: string, time: { start: string; end: string }) {
   return `${startLocal} - ${endLocal}`
 }
 
-const { width } = useWindowSize()
-
 const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone)
-const columns = computed(() => [
-  {
-    key: 'time',
-    label: `Time (${timezone.value})`
-  },
-  {
-    key: 'speaker',
-    label: 'Speaker'
-  },
-  {
-    key: 'topic',
-    label: 'Topic'
-  }
-])
 
 const schedule = [
   {
@@ -130,28 +99,28 @@ const schedule = [
     day: 24,
     items: [
       {
-        icon: 'i-mdi-calendar-clock',
+        icon: 'mdi:calendar-clock',
         topic: 'Registration at Manu Allaya',
         speaker: '',
         time: { start: '09:00', end: '11:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-breakfast-dining',
+        icon: 'material-symbols:breakfast-dining',
         topic: 'Complimentary Breakfast',
         speaker: '',
         time: { start: '09:00', end: '10:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-line-end-arrow-rounded',
+        icon: 'material-symbols:line-end-arrow-rounded',
         topic: 'Opening Ceremony / Inauguration',
         speaker: 'Ruchira Huchgol',
         time: { start: '11:00', end: '11:20' }
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic:
           'Climate Change & Clean Energy (C3E) Division, Department of Science and Technolohgy, Government of India',
         speaker: 'Dr. Anita Gupta',
@@ -159,61 +128,61 @@ const schedule = [
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic:
           'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
         speaker: 'Dr. Constance (Connie) Walker',
         time: { start: '12:00', end: '12:30' }
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Lunch + Check In',
         speaker: '',
         time: { start: '12:30', end: '13:30' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         online: true,
         topic: 'Harnessing Dark Skies for Socioeconomic Development in Rural Areas',
         speaker: 'Samyukta Manikumar',
         time: { start: '13:30', end: '14:00' }
       },
       {
-        icon: 'i-material-symbols-group-work',
+        icon: 'material-symbols:group-work',
         topic: 'Round Table Activity',
         speaker: 'Ruchira Huchgol',
         time: { start: '14:00', end: '14:30' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Intruders in the Dark Sky: The Megaconstellation Crisiss',
         speaker: 'Upasana Dasgupta',
         time: { start: '14:30', end: '15:00' }
       },
       {
-        icon: 'i-material-symbols-group-work',
+        icon: 'material-symbols:group-work',
         topic: 'Round Table Activity',
         speaker: 'Ruchira Huchgol',
         time: { start: '15:00', end: '15:30' }
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: "Astronomy's Impact on Sustainability",
         speaker: 'María Alejandra Díaz Teodori',
         time: { start: '15:30', end: '16:00' }
       },
       {
-        icon: 'i-mdi-coffee',
+        icon: 'mdi:coffee',
         topic: 'Complimentary Tea',
         speaker: '',
         time: { start: '16:00', end: '16:30' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         online: false,
         topic: 'Mental Health, Arts and Astronomy',
         speaker: 'Aishwarya Khade',
@@ -221,41 +190,41 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-material-symbols-group-work',
+        icon: 'material-symbols:group-work',
         topic: 'Workshop',
         speaker: 'Aishwarya Khade',
         time: { start: '17:00', end: '18:00' }
       },
       {
         online: false,
-        icon: 'i-material-symbols-line-end-circle',
+        icon: 'material-symbols:line-end-circle',
         topic: 'Closing remarks',
         speaker: 'Ruchira Huchgol',
         time: { start: '18:00', end: '18:10' }
       },
       {
-        icon: 'i-material-symbols-alarm-add',
+        icon: 'material-symbols:alarm-add',
         topic: 'Free Time',
         speaker: '',
         time: { start: '18:10', end: '19:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-dark-mode',
+        icon: 'material-symbols:dark-mode',
         topic: 'Stargazing (Optional)',
         speaker: '',
         time: { start: '19:00', end: '21:30' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-celebration',
+        icon: 'material-symbols:celebration',
         topic: 'AstronEra 5 Year Celebration',
         speaker: '',
         time: { start: '19:00', end: '21:30' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Dinner',
         speaker: '',
         time: { start: '20:30', end: '22:00' },
@@ -269,14 +238,14 @@ const schedule = [
     day: 25,
     items: [
       {
-        icon: 'i-material-symbols-breakfast-dining',
+        icon: 'material-symbols:breakfast-dining',
         topic: 'Complimentary Breakfast',
         speaker: '',
         time: { start: '09:00', end: '10:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-line-end-arrow-rounded',
+        icon: 'material-symbols:line-end-arrow-rounded',
         topic: 'Opening Remarks',
         speaker: 'Ruchira Huchgol',
         online: false,
@@ -284,41 +253,41 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Sustainable Development through Astronomy: A Tribal Perspective',
         speaker: 'Dr. Kiran Kulkarni',
         time: { start: '10:20', end: '11:00' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'The planetarium as a creative space',
         speaker: 'David Ault',
         time: { start: '11:00', end: '11:30' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Indian successors to the Indian Gamma-Ray Observatory(IGRO) Mission',
         speaker: 'Bhakti Shashikant Mithagri',
         time: { start: '11:30', end: '12:00' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'The ancient science of space and agriculture for sustainability and harmony',
         speaker: 'Amshu CR',
         time: { start: '12:00', end: '12:30' }
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'ASTROx Dark Sky: How to Integrate Astronomy Education into Interactive Classroom',
         speaker: 'Exodus Chun-Long Sit',
         time: { start: '12:30', end: '13:00' }
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Lunch',
         speaker: '',
         time: { start: '13:00', end: '14:00' },
@@ -326,27 +295,27 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Working group discussion',
         speaker: 'Ruchira, Shweta, Aishwarya',
         time: { start: '14:00', end: '15:00' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Stellar Education: Unveiling ISAAC',
         speaker: 'Dinesh Nisang',
         time: { start: '15:00', end: '15:30' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Round Table Activity',
         speaker: 'Ruchira Huchgol',
         time: { start: '15:30', end: '16:00' }
       },
       {
-        icon: 'i-mdi-coffee',
+        icon: 'mdi:coffee',
         topic: 'Complimentary Tea',
         speaker: '',
         time: { start: '16:00', end: '16:30' },
@@ -354,27 +323,27 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-material-symbols-line-end-circle',
+        icon: 'material-symbols:line-end-circle',
         topic: 'Closing remarks',
         speaker: 'Ruchira Huchgol',
         time: { start: '16:30', end: '17:00' }
       },
       {
-        icon: 'i-material-symbols-alarm-add',
+        icon: 'material-symbols:alarm-add',
         topic: 'Free Time',
         speaker: '',
         time: { start: '17:00', end: '19:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-dark-mode',
+        icon: 'material-symbols:dark-mode',
         topic: 'Stargazing (Optional)',
         speaker: '',
         time: { start: '19:00', end: '20:30' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Dinner',
         speaker: '',
         time: { start: '20:30', end: '22:00' },
@@ -388,7 +357,7 @@ const schedule = [
     day: 26,
     items: [
       {
-        icon: 'i-material-symbols-breakfast-dining',
+        icon: 'material-symbols:breakfast-dining',
         topic: 'Complimentary Breakfast',
         speaker: '',
         time: { start: '08:30', end: '09:30' },
@@ -396,35 +365,35 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-material-symbols-line-end-arrow-rounded',
+        icon: 'material-symbols:line-end-arrow-rounded',
         topic: 'Opening Remarks',
         speaker: 'Ruchira Huchgol',
         time: { start: '09:30', end: '09:40' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Skill Training in Astronomy for Income Generation',
         speaker: 'Shweta Kulkarni',
         time: { start: '09:40', end: '10:00' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Sustainable Development for Tribal Ladakhies through Astronomy',
         speaker: 'Sonam Wangchuk',
         time: { start: '10:00', end: '10:30' }
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Dark Skies and Bright Satellites',
         speaker: 'Dr. Priya Hasan',
         time: { start: '10:30', end: '11:00' }
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic:
           "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
         speaker: 'Albert Kuntu Forson ',
@@ -432,61 +401,61 @@ const schedule = [
       },
       {
         online: true,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Road to Sky',
         speaker: 'Hosien Khezri',
         time: { start: '11:30', end: '12:00' }
       },
       {
         online: false,
-        icon: 'i-material-symbols-trophy-rounded',
+        icon: 'material-symbols:trophy-rounded',
         topic: 'Poster Winners Announcement',
         speaker: 'Ruchira Huchgol',
         time: { start: '12:00', end: '12:15' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Working group presentation',
         speaker: 'Ruchira, Shweta, Aishwarya',
         time: { start: '12:15', end: '13:00' }
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Lunch',
         speaker: '',
         time: { start: '13:00', end: '14:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-group-work',
+        icon: 'material-symbols:group-work',
         speaker: 'Ruchira Huchgol',
         topic: 'Round Table Activity',
         time: { start: '14:00', end: '14:30' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Affordable Radio Astronomy Lab',
         speaker: 'Nadia Makhijani and Udhish Sharma',
         time: { start: '14:30', end: '15:00' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Light pollution: A Camouflaging pollution',
         speaker: 'Vedavrat Bedekar',
         time: { start: '15:00', end: '15:30' }
       },
       {
         online: false,
-        icon: 'i-mdi-microphone',
+        icon: 'mdi:microphone',
         topic: 'Lighting for Dark Skies',
         speaker: 'Neethu Susan George',
         time: { start: '15:30', end: '16:00' }
       },
       {
-        icon: 'i-mdi-coffee',
+        icon: 'mdi:coffee',
         topic: 'Complimentary Tea',
         speaker: '',
         time: { start: '16:00', end: '16:15' },
@@ -494,41 +463,41 @@ const schedule = [
       },
       {
         online: false,
-        icon: 'i-material-symbols-group-work',
+        icon: 'material-symbols:group-work',
         topic: 'Panel Discussion',
         speaker: 'Shweta Kulkarni',
         time: { start: '16:15', end: '16:45' }
       },
       {
         online: false,
-        icon: 'i-material-symbols-line-end-circle',
+        icon: 'material-symbols:line-end-circle',
         topic: 'Closing Remarks',
         speaker: 'Ruchira Huchgol',
         time: { start: '16:45', end: '17:00' }
       },
       {
-        icon: 'i-material-symbols-alarm-add',
+        icon: 'material-symbols:alarm-add',
         topic: 'Free Time',
         speaker: '',
         time: { start: '17:00', end: '18:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-local-fire-department-rounded',
+        icon: 'material-symbols:local-fire-department-rounded',
         topic: 'Fireside Networking / Cultural Performance',
         speaker: '',
         time: { start: '18:00', end: '19:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-material-symbols-dark-mode',
+        icon: 'material-symbols:dark-mode',
         topic: 'Stargazing (Optional)',
         speaker: '',
         time: { start: '19:00', end: '20:00' },
         class: 'bg-primary-50 dark:bg-primary-950'
       },
       {
-        icon: 'i-mdi-silverware-fork-knife',
+        icon: 'mdi:silverware-fork-knife',
         topic: 'Complimentary Dinner',
         speaker: '',
         time: { start: '20:00', end: '22:00' },

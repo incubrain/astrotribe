@@ -1,8 +1,6 @@
 <template>
   <div class="flex flex-col gap-2">
-    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl">
-      Connect
-    </h1>
+    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl"> Connect </h1>
     <div class="flex flex-col gap-2 sm:flex-row md:gap-4">
       <a
         v-for="social in socials"
@@ -11,7 +9,7 @@
         class="flex justify-center w-full cursor-pointer"
       >
         <span class="flex flex-wrap items-center w-full gap-2 p-2 rounded-lg background">
-          <UIcon
+          <Icon
             :name="socialIcon(social.platform)"
             class="mr-1 w-7 h-7"
           />
@@ -37,28 +35,28 @@ const socialIcon = (icon: string): string => {
 
   switch (icon) {
     case 'facebook':
-      iconName = 'i-mdi-facebook'
+      iconName = 'mdi:facebook'
       break
     case 'twitter':
-      iconName = 'i-mdi-twitter'
+      iconName = 'mdi:twitter'
       break
     case 'instagram':
-      iconName = 'i-mdi-instagram'
+      iconName = 'mdi:instagram'
       break
     case 'linkedin':
-      iconName = 'i-mdi-linkedin'
+      iconName = 'mdi:linkedin'
       break
     case 'snapchat':
-      iconName = 'i-mdi-snapchat'
+      iconName = 'mdi:snapchat'
       break
     case 'tiktok':
-      iconName = 'i-mdi-tiktok'
+      iconName = 'mdi:tiktok'
       break
     case 'youtube':
-      iconName = 'i-mdi-youtube'
+      iconName = 'mdi:youtube'
       break
     case 'pinterest':
-      iconName = 'i-mdi-pinterest'
+      iconName = 'mdi:pinterest'
       break
     case 'reddit':
       iconName = 'reddit'

@@ -6,7 +6,7 @@ const pages = ref([
     id: 1,
     label: 'Home',
     slug: '/astrotribe/',
-    icon: 'i-material-symbols-home-rounded',
+    icon: 'material-symbols:home-rounded',
     children: [
       // { id: 11, label: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' }
     ]
@@ -15,7 +15,7 @@ const pages = ref([
     id: 2,
     label: 'Users',
     slug: '/astrotribe/users',
-    icon: 'i-material-symbols-account-circle',
+    icon: 'material-symbols:account-circle',
     children: [
       // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
     ]
@@ -24,7 +24,7 @@ const pages = ref([
     id: 3,
     label: 'Events',
     slug: '/astrotribe/events',
-    icon: 'i-material-symbols-event',
+    icon: 'material-symbols:event',
     children: [
       // { id: 31, label: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
     ]
@@ -33,7 +33,7 @@ const pages = ref([
     id: 4,
     label: 'Venues',
     slug: '/astrotribe/venues',
-    icon: 'i-material-symbols-location-on-rounded'
+    icon: 'material-symbols:location-on-rounded'
     // children: [
     //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
@@ -42,19 +42,19 @@ const pages = ref([
     id: 5,
     label: 'News',
     slug: '/astrotribe/news',
-    icon: 'i-mdi-newspaper-variant-outline'
+    icon: 'mdi:newspaper-variant-outline'
   },
   {
     id: 6,
     label: 'Research',
     slug: '/astrotribe/research',
-    icon: 'i-mdi-library-books'
+    icon: 'mdi:library-books'
   }
   // {
   //   id: 5,
   //   label: 'Serp',
   //   slug: '/astrotribe/serp',
-  //   icon: 'i-mdi-newspaper-variant-outline'
+  //   icon: 'mdi:newspaper-variant-outline'
   // }
 ] as PageType[])
 
@@ -62,20 +62,20 @@ const socials = ref([
   {
     id: 1,
     platform: 'twitter',
-    icon: 'i-mdi-twitter',
+    icon: 'mdi:twitter',
     url: 'https://twitter.com/AstronEra',
     username: 'uk'
   },
   {
     id: 2,
-    icon: 'i-mdi-linkedin',
+    icon: 'mdi:linkedin',
     platform: 'linkedin',
     url: 'https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b',
     username: 'uk'
   },
   {
     id: 3,
-    icon: 'i-mdi-instagram',
+    icon: 'mdi:instagram',
     platform: 'instagram',
     url: 'https://www.instagram.com/astronera',
     username: 'uk'

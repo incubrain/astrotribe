@@ -5,14 +5,14 @@
     >
       <h3 class="font-semibold text-sm lg:text-lg"> {{ posts[currentIndex].title }}</h3>
       <div class="flex gap-2 items-center">
-        <UButton
+        <PrimeButton
           to="https://tailwindcss.com/docs/content"
           target="_blank"
-          icon="i-material-symbols-chrome-reader-mode-rounded"
+          icon="material-symbols:chrome-reader-mode-rounded"
           class="lg:after:content-['Full_Article'] flex items-center justify-end"
         />
-        <UButton
-          icon="i-mdi-close"
+        <PrimeButton
+          icon="mdi:close"
           variant="link"
           @click="$emit('closeNewsModal')"
         />
@@ -57,8 +57,8 @@
             :key="sum"
             class="flex gap-2 items-start"
           >
-            <UIcon
-              name="i-mdi-star"
+            <Icon
+              name="mdi:star"
               class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
             />
             <p class="flex-grow leading-snug text-sm">

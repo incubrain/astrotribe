@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl">
-      Skills
-    </h1>
+    <h1 class="pb-4 text-lg font-semibold md:text-xl xl:text-2xl"> Skills </h1>
     <div class="flex flex-col gap-2">
       <div
         v-for="skill in skills"
@@ -20,8 +18,8 @@
           v-if="skill.total_endorsements !== 0"
           class="z-40 flex items-center m-0 font-thin"
         >
-          <UIcon
-            name="i-material-symbols-group"
+          <Icon
+            name="material-symbols:group"
             class="mr-2"
           />
           {{ skill.total_endorsements }}
