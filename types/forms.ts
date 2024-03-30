@@ -82,6 +82,7 @@ const formFieldSchema = z.object({
   props: z.object({
     label: z.string(),
     type: z.string(),
+    suggested: z.string().optional(),
     disabled: z.boolean().optional()
   })
 })

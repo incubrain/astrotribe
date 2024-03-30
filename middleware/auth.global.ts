@@ -9,13 +9,6 @@ const isProtected = (to: string): boolean => {
 }
 
 export default defineNuxtRouteMiddleware((to, from) => {
-  const admin = useTestingStore()
-  const { settings } = storeToRefs(admin)
-
-  if (!settings.value.authOn) {
-    return
-  }
-
   if (isProtected(to.path)) return
 
   const user = useSupabaseUser()
