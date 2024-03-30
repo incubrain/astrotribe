@@ -8,12 +8,12 @@
         <p class="font-normal">
           {{ venue.about }}
         </p>
-        <UButton
+        <PrimeButton
           to="https://www.manuallaya.com/"
           variant="outline"
         >
           Manu Allaya Website
-        </UButton>
+        </PrimeButton>
       </div>
     </CommonTitle>
     <div class="w-full h-full">

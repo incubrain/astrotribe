@@ -1,28 +1,33 @@
 <template>
-  <div
-    class="relative w-full h-full md:rounded-md border border-color p-4 gap-2 flex flex-col overflow-hidden background"
+  <PrimeCard
+    :pt="{
+      body: 'justify-between h-full'
+    }"
   >
-    <BlogCatTag
-      :tags="article.tags"
-      :category="article.category"
-      :article-link="article._path.split('/')[2]"
-      class="pb-2 pl-2"
-    />
-    <NuxtImg
-      class="rounded-md w-full object-cover aspect-video border border-color"
-      :src="`images/blog/${article.category}/${article.featured_image}`"
-      width="400"
-      height="300"
-      quality="80"
-    />
-    <div class="flex flex-col gap-2 items-start w-full px-2 pt-2 justify-center">
+    <template #header>
+      <BlogCatTag
+        :tags="article.tags"
+        :category="article.category"
+        :article-link="article._path.split('/')[2]"
+        class="p-4"
+      />
+      <NuxtImg
+        class="w-full object-cover aspect-video border border-color"
+        :src="`images/blog/${article.category}/${article.featured_image}`"
+        width="400"
+        height="300"
+        quality="80"
+      />
+    </template>
+    <template #title>
       <NuxtLink :to="article._path">
         <h3 class="text-xl lg:text-xl font-bold">
           {{ article.title }}
         </h3>
       </NuxtLink>
-
-      <div class="flex flex-row gap-2 justify-center items-center text-sm">
+    </template>
+    <template #subtitle>
+      <div class="flex flex-row gap-2 text-sm">
         <p class="text-primary">
           {{ useDateFormat(article.publishedAt, 'DD MMM YYYY').value }}
         </p>
@@ -39,20 +44,22 @@
           </template>
         </BlogAuthor>
       </div>
-      <p class="text-sm">
-        {{ article.description }}
-      </p>
-    </div>
-    <div class="w-full flex justify-end h-full items-end pt-2">
-      <UButton
-        :to="article._path"
-        color="white"
-        variant="solid"
-      >
-        Read More
-      </UButton>
-    </div>
-  </div>
+    </template>
+    <template #content>
+      <div class="flex flex-col gap-2 items-start w-full justify-center">
+        <p class="text-sm">
+          {{ article.description }}
+        </p>
+      </div>
+    </template>
+    <template #footer>
+      <div class="w-full flex justify-end">
+        <NuxtLink :to="article._path">
+          <PrimeButton> Read More </PrimeButton>
+        </NuxtLink>
+      </div>
+    </template>
+  </PrimeCard>
 </template>
 
 <script setup lang="ts">

@@ -15,7 +15,7 @@ import { newsListGovernment } from '@/types/news'
           }"
         />
       </template>
-      <UButton to="/blog/isro">All ISRO Articles</UButton>
+      <PrimeButton to="/blog/isro">All ISRO Articles</PrimeButton>
     </BlogShowcase>
     <BlogNews
       v-for="newsCat in newsListGovernment"

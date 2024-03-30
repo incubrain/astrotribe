@@ -27,6 +27,7 @@
         v-else
         v-model="field.value"
         :type="field.type"
+        :suggested="field.suggested"
         :placeholder="field.initialValue"
         :disabled="field.disabled"
         :name="field.name"
@@ -39,14 +40,14 @@
         {{ field.errorMessage }}
       </span>
     </div>
-    <UButton
+    <PrimeButton
       class="mt-4"
       type="submit"
       block
       :disabled="hasErrors"
     >
       {{ p.buttonLabel }}
-    </UButton>
+    </PrimeButton>
   </form>
 </template>
 
@@ -92,6 +93,7 @@ interface Field {
   name: string
   label: string
   type: string
+  suggested: string
   disabled: boolean
   initialValue: ComputedRef
 }
@@ -112,6 +114,7 @@ p.schema.forEach((item: FormFieldType) => {
     name: item.name,
     label: item.props.label,
     type: item.props.type,
+    suggested: item.props.suggested,
     disabled: item.props.disabled ?? false,
     initialValue: computed(() => p.placeholder[item.name])
   })
@@ -119,7 +122,7 @@ p.schema.forEach((item: FormFieldType) => {
 
 const toast = useToast()
 const onSubmit = handleSubmit((values) => {
-  toast.add({ title: 'Success', description: 'Your information has been updated', timeout: 5000 })
+  toast.add({ severity: 'success', summary: 'Your information has been updated', life: 5000 })
   emit('submitForm', { ...values })
 })
 

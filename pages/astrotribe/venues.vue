@@ -1,10 +1,12 @@
 <template>
   <div>
-    <!-- <UButton class="my-4 ml-4 xl:mb-8 md:mt-0 md:ml-0">
+    <!-- <PrimeButton class="my-4 ml-4 xl:mb-8 md:mt-0 md:ml-0">
       Submit Your Venue
-    </UButton> -->
+    </PrimeButton> -->
     <div v-if="venues !== null">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 md:gap-4 2xl:gap-8">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 md:gap-4 2xl:gap-8"
+      >
         <VenueCard
           v-for="(venue, i) in venues"
           :key="`venue-card-${i}`"

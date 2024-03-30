@@ -1,5 +1,5 @@
 <template>
-  <UCard>
+  <PrimeCard>
     <template #header>
       <h1 class="text-2xl font-semibold pb-4">
         Welcome to your account {{ userAccountSettings.given_name }}</h1
@@ -15,9 +15,9 @@
       @submit-form="onSubmitAccount"
     />
     <!-- <template #footer>
-      <UButton> Contact Support </UButton>
+      <PrimeButton> Contact Support </PrimeButton>
     </template> -->
-  </UCard>
+  </PrimeCard>
 </template>
 
 <script setup lang="ts">

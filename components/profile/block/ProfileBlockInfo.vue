@@ -9,8 +9,8 @@
         v-if="home"
         class="flex items-center pt-3 text-sm md:text-base"
       >
-        <UIcon
-          name="i-material-symbols-location-on"
+        <Icon
+          name="material-symbols:location-on"
           class="w-5 h-5 mr-1"
         />
         {{ home.city }}, {{ home.state }},

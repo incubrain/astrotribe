@@ -1,12 +1,13 @@
 <template>
-  <div class="w-full h-full foreground">
-    <NavTop />
+  <div class="w-full h-full">
+    <div class="fixed top-0 left-0 md:px-4 md:pt-4 z-50 w-full">
+      <NavTop />
+    </div>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <TestingPopover />
     <FooterWebsite v-if="!noFooter.some((noFooterPath) => $route.path.startsWith(noFooterPath))" />
-    <UNotifications :timeout="4000" />
+    <PrimeToast life="4000" />
   </div>
 </template>
 

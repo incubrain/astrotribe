@@ -1,5 +1,7 @@
 <template>
-  <div class="flex-col hidden w-full min-h-full py-8 lg:relative background lg:flex border-r border-color">
+  <div
+    class="flex-col hidden w-full min-h-full py-8 lg:relative background lg:flex border-r border-color"
+  >
     <ul class="w-full sticky top-24">
       <li
         v-for="page in pages"
@@ -17,7 +19,7 @@
                 : 'w-full p-3 flex items-center justify-start gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
             "
           >
-            <UIcon
+            <Icon
               :name="page.icon"
               class="w-[20px] h-[20px]"
             />

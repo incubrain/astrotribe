@@ -2,8 +2,8 @@
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2">
       <div class="w-[200px] h-[32px] relative rounded-sm overflow-hidden flex items-center">
-        <UIcon
-          name="i-material-symbols-location-on"
+        <Icon
+          name="material-symbols:location-on"
           class="w-[20px] h-[20px]"
         />
         <p> {{ socials.platform }}</p>

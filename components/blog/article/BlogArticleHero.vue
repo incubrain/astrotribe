@@ -12,18 +12,15 @@
         class="flex flex-col md:flex-row-reverse gap-12 items-start p-3 rounded-md w-full justify-between"
       >
         <div class="space-x-2">
-          <UBadge
-            :label="article.category"
-            color="primary"
-            variant="solid"
+          <PrimeTag
+            :value="article.category"
             class="text-sm"
           />
-          <UBadge
+          <PrimeTag
             v-for="tag in article.tags"
             :key="tag"
-            :label="tag"
-            color="secondary"
-            variant="soft"
+            :value="tag"
+            severity="secondary"
             class="text-sm"
           />
         </div>
