@@ -2,7 +2,7 @@
   <div>
     <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
       <CommonTitle
-        class="row-start-1 col-span-1"
+        class="col-start-1"
         :title="about.title"
       >
         <p>
@@ -18,7 +18,7 @@
           collaboration.
         </p>
       </CommonTitle>
-      <div class="row-start-2 lg:row-start-1 flex-col flex gap-2">
+      <div class="col-start-1 lg:col-start-2 flex-col flex gap-2">
         <p>
           The inception of this conference can be traced back to the transformative experience of
           Ms. Shweta Kulkarni, the esteemed founder and Director of AstronEra, during her visit to
@@ -41,7 +41,9 @@
           for the benefit of present and future generations.
         </p>
       </div>
-      <div class="row-start-3 lg:row-start-2 col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12">
+      <div
+        class="row-start-3 lg:row-start-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12"
+      >
         <NuxtImg
           class="rounded-md w-full"
           :src="themes.img.src"

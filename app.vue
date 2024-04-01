@@ -1,8 +1,5 @@
 <template>
   <div class="w-full h-full">
-    <div class="fixed top-0 left-0 md:px-4 md:pt-4 z-50 w-full">
-      <NavTop />
-    </div>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

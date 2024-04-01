@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { FormPasswordSchema } from '@/types/settings'
 import type { SettingsPasswordType } from '@/types/settings'
-import type { FormFieldType } from '@/types/forms'
+import type { FormFieldT } from '@/types/forms'
 
 const schema = computed(() => {
   return [
@@ -41,7 +41,7 @@ const schema = computed(() => {
         type: 'password'
       }
     }
-  ] as FormFieldType[]
+  ] as FormFieldT[]
 })
 
 const settings = useUserSettingsStore()
