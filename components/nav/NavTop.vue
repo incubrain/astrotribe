@@ -1,6 +1,9 @@
 <template>
   <PrimeMenubar
     :model="links"
+    :pt="{
+      root: 'rounded-none lg:rounded-md'
+    }"
     class="fixed top-0 lg:top-4 lg:mx-4 z-50 w-full lg:w-[calc(100%-2em)] background"
   >
     <template #start>

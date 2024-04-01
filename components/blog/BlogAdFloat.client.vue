@@ -1,10 +1,13 @@
 <template>
   <PrimeCard
     v-if="adVisible"
-    class="fixed bottom-0 right-0 z-20 lg:sticky lg:top-24 w-full p-4 lg:rounded-md bg-primary-50 dark:bg-primary-950 flex flex-col gap-4 justify-between border border-primary-200 dark:border-primary-800"
+    :pt="{
+      root: 'rounded-t-lg rounded-b-none lg:rounded-lg'
+    }"
+    class="fixed bottom-0 right-0 z-20 lg:sticky lg:top-24 w-full bg-primary-50 dark:bg-primary-950 flex flex-col justify-between border border-primary-200 dark:border-primary-800"
   >
     <template #header>
-      <div class="flex justify-start items-center gap-2 flex-shrink-0">
+      <div class="flex justify-start items-center gap-2 flex-shrink-0 p-2 pb-0">
         <div class="p-1 background rounded-full">
           <NuxtImg
             src="images/team/shweta-kulkarni.jpg"
@@ -22,31 +25,27 @@
         <Icon
           name="mdi:close"
           class="absolute"
-          @click="hideAd = true"
+          @click="toggleAd"
         />
       </div>
     </template>
     <template #content>
       <div class="flex flex-col justify-start items-start gap-4 w-full">
-        <p class="text-base">
+        <span class="text-base">
           We're want to showcase the amazing people and companies pushing astronomy and space
           exploration forward.
-        </p>
-        <p class="text-base font-semibold pb-2">
-          If this sounds like you or someone you know, let's connect!
-        </p>
-        <PrimeButton
-          to="mailto:shweta@astronera.org"
-          :aria-label="`Reach out to Shweta on LinkedIn`"
-          color="white"
-          variant="solid"
-          class="font-semibold px-8"
-          target="_blank"
-        >
-          Reach Out
-        </PrimeButton>
-        <slot />
+          <strong> If this sounds like you or someone you know, let's connect! </strong>
+        </span>
       </div>
+    </template>
+    <template #footer>
+      <NuxtLink
+        to="mailto:connectus@astronera.org"
+        aria-label="Reach out to Shweta via email"
+        target="_blank"
+      >
+        <PrimeButton severity="secondary"> Reach Out </PrimeButton>
+      </NuxtLink>
     </template>
   </PrimeCard>
 </template>
@@ -55,6 +54,11 @@
 const { width } = useWindowSize()
 const hideAd = ref(false)
 const adVisible = computed(() => !hideAd.value || width.value > 1024)
+
+const toggleAd = () => {
+  hideAd.value = !hideAd.value
+  console.log('hideAd', hideAd.value)
+}
 </script>
 
 <style scoped></style>

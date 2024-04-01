@@ -1,7 +1,6 @@
 <template>
   <div class="w-full p-8 min-h-screen flex justify-center items-center">
     <NavTop />
-
     <div class="relative z-20">
       <slot />
     </div>
