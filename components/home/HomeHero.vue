@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[calc(100vh-var(--nav-height-lg))] text-white relative">
+  <div class="min-h-screen text-white relative">
     <NuxtImg
       class="absolute top-0 left-0 object-cover w-full h-full bg-center bg-no-repeat"
       quality="80"
@@ -8,7 +8,7 @@
     />
     <div class="absolute top-0 left-0 w-full h-full bg-zinc-900/40 dark:bg-zinc-900/60" />
     <div
-      class="relative mx-auto gap-8 xl:gap-16 py-[40px] md:py-[80px] xl:py-[160px] px-4 md:px-16 xl:px-32 grid lg:grid-cols-[1.5fr_1.75fr] max-w-[1920px]"
+      class="relative mx-auto gap-8 xl:gap-16 py-32 px-4 md:px-16 xl:px-32 grid lg:grid-cols-[1.5fr_1.75fr] max-w-[1920px]"
     >
       <!-- Hero Left -->
       <div
@@ -27,18 +27,14 @@
           cosmos together.
         </p>
         <div>
-          <PrimeButton
-            color="primary"
-            variant="solid"
-            size="xl"
-            to="auth/register"
-            @click="$posthog()?.capture('register_app', { location: 'hero_cta' })"
-          >
-            Begin your cosmic journey now!
-          </PrimeButton>
+          <NuxtLink to="auth/register">
+            <PrimeButton @click="$posthog()?.capture('register_app', { location: 'hero_cta' })">
+              Begin your cosmic journey now!
+            </PrimeButton>
+          </NuxtLink>
         </div>
       </div>
-      <div class="relative z-50 w-full mx-auto">
+      <div class="relative z-50 w-full mx-auto h-full flex justify-center items-center">
         <AppVideoModal :video="video" />
       </div>
     </div>

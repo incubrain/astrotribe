@@ -9,7 +9,9 @@
       object-position="object-top"
     />
     <div class="flex flex-col wrapper gap-12 padded-x mx-auto xl:gap-24 xl:py-24">
-      <h2 class="text-3xl font-bold leading-7 text-center xl:text-4xl xl:leading-9 pt-6 xl:pt-0">
+      <h2
+        class="font-bold leading-7 text-center text-4xl xl:leading-9 pt-6 xl:pt-0 text-highlight uppercase underline underline-offset-4"
+      >
         Our Story
       </h2>
       <div class="grid items-start grid-cols-1 gap-8 lg:grid-cols-2">

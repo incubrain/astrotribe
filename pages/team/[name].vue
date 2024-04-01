@@ -1,20 +1,19 @@
 <template>
-  <div class="relative">
+  <div
+    v-if="user"
+    class="relative"
+  >
     <ImageHero
       :img="{
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
         alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
       }"
-      :title="user.name"
-      :subtitle="user.position.title"
+      :title="{
+        main: user.name,
+        subtitle: `${user.position.title} at AstronEra`
+      }"
     />
-    <PrimeButton
-      class="hidden fixed lg:flex top-20 left-4"
-      icon="mdi:keyboard-backspace"
-      @click="$router.back()"
-    >
-      Back
-    </PrimeButton>
+
     <div class="wrapper padded-x flex flex-wrap items-start justify-center lg:pb-12">
       <div
         class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"

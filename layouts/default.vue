@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full min-h-screen">
+  <div class="w-full min-h-screen foreground">
+    <NavTop />
     <slot />
   </div>
 </template>

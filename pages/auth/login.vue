@@ -1,10 +1,40 @@
+<script setup lang="ts">
+const form = reactive({
+  email: '',
+  password: ''
+})
+
+type Provider = 'twitter' | 'linkedin' | 'email'
+
+const handleLogin = async (provider: Provider) => {
+  let body = null
+
+  if (provider === 'email') {
+    console.log('email')
+    body = { email: form.email, password: form.password }
+  }
+
+  const data = await $fetch(`/api/auth/login/${provider}`, {
+    method: 'POST',
+    body
+  })
+
+  if (!data) throw createError('Login Error: No data returned from supabase')
+}
+
+definePageMeta({
+  name: 'Login',
+  layout: 'auth'
+})
+</script>
+
 <template>
   <PrimeCard>
     <template #title>
       <h2 class="text-2xl text-center"> Sign In </h2>
     </template>
     <template #content>
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-4 xl:gap-6">
         <PrimeFloatLabel class="flex flex-col w-full">
           <PrimeInputText
             id="username"
@@ -40,92 +70,26 @@
 
         <PrimeButton
           class="justify-center"
-          @click="handleLogin({ provider: 'email', email: form.email, password: form.password })"
+          @click="handleLogin('email')"
         >
           Sign in with email
         </PrimeButton>
-        <div class="flex gap-4 w-full">
-          <PrimeButton @click="handleLogin({ provider: 'google' })">
-            <Icon
-              class="mr-2"
-              name="mdi:google"
-              width="28px"
-            />
-            Sign in with Google
-          </PrimeButton>
-          <PrimeButton @click="handleLogin({ provider: 'linkedin' })">
-            <Icon
-              class="mr-2"
-              name="mdi:linkedin"
-              width="28px"
-            />
-            Sign in with Linkedin
-          </PrimeButton>
+        <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
+          <AuthSocialButton
+            provider="twitter"
+            @social-login="handleLogin('twitter')"
+          />
+          <AuthSocialButton
+            provider="linkedin"
+            @social-login="handleLogin('linkedin')"
+          />
         </div>
-        <p class="mt-4 text-sm text-center">
-          <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
-        </p>
       </div>
+    </template>
+    <template #footer>
+      <p class="mt-4 text-sm text-center">
+        <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
+      </p>
     </template>
   </PrimeCard>
 </template>
-
-<script setup lang="ts">
-// import { LoginForm } from '@/types/forms'
-import type { FormFieldType } from '@/types/forms'
-
-const form = reactive({
-  email: '',
-  password: ''
-})
-
-interface LoginInput {
-  provider?: string
-  email?: string
-  password?: string
-}
-
-const handleLogin = async ({ provider = 'email', email, password }: LoginInput) => {
-  let body = null
-
-  if (provider === 'email') {
-    console.log('email', email)
-    body = { email, password }
-  }
-
-  const data = await $fetch(`/api/auth/login/${provider}`, {
-    method: 'POST',
-    body
-  })
-
-  if (!data) throw createError('Login Error: No data returned from supabase')
-}
-
-// const auth = useAuth()
-
-const schema = computed(() => {
-  return [
-    {
-      name: 'email',
-      props: {
-        label: 'Email',
-        type: 'email',
-        suggested: 'username'
-      }
-    },
-    {
-      name: 'password',
-      props: {
-        label: 'Password',
-        type: 'password',
-        suggested: 'current-password'
-      }
-    }
-  ] as FormFieldType[]
-})
-
-definePageMeta({
-  name: 'Login',
-  layout: 'auth'
-})
-</script>

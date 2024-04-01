@@ -1,7 +1,7 @@
 <template>
   <PrimeMenubar
     :model="links"
-    class="sticky top-0 left-0 z-50"
+    class="fixed top-0 lg:top-4 lg:mx-4 z-50 w-full lg:w-[calc(100%-2em)] background"
   >
     <template #start>
       <NuxtLink
@@ -23,7 +23,23 @@
         </h1>
       </NuxtLink>
     </template>
-    <div> something here </div>
+    <template #item="{ item, hasSubmenu, root }">
+      <div class="px-4 py-2">
+        <NuxtLink
+          v-ripple
+          :to="item.url"
+        >
+          <span class="flex items-center gap-1">
+            <!-- <Icon :name="item.icon" /> -->
+            {{ item.label }}
+            <Icon
+              v-if="hasSubmenu"
+              :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
+            />
+          </span>
+        </NuxtLink>
+      </div>
+    </template>
     <template #end>
       <div class="flex items-center justify-center gap-2">
         <AppThemeToggle v-slot="{ toggle, isDark }">
@@ -44,7 +60,10 @@
           />
         </NuxtLink>
         <div class="gap-2 flex items-center justify-center h-auto">
-          <NuxtLink to="/auth/login">
+          <NuxtLink
+            v-ripple
+            to="/auth/login"
+          >
             <PrimeButton
               severity="secondary"
               outlined
@@ -53,7 +72,10 @@
               login
             </PrimeButton>
           </NuxtLink>
-          <NuxtLink to="/auth/register">
+          <NuxtLink
+            v-ripple
+            to="/auth/register"
+          >
             <PrimeButton @click="$posthog()?.capture('register_app', { location: 'top_nav' })">
               Join Free
             </PrimeButton>

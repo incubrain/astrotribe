@@ -1,5 +1,5 @@
 <template>
-  <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
+  <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto">
     <div class="mx-auto">
       <HomeHeading
         class="pb-16 md:pb-24"
