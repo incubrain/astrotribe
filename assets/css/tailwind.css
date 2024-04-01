@@ -1,5 +1,4 @@
 /* @import './scrollbar.css'; */
-@import './transitions.css';
 
 @layer tailwind-base {
   @tailwind base;

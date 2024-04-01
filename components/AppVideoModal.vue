@@ -1,5 +1,9 @@
 <template>
-  <PrimeCard>
+  <PrimeCard
+    :pt="{
+      body: 'py-2 px-1'
+    }"
+  >
     <template #content>
       <PrimeButton
         class="relative flex items-center justify-center"
