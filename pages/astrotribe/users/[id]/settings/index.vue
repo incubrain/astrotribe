@@ -5,10 +5,10 @@
       :active-index="0"
     >
       <template #account>
-        <LazySettingsAccount />
+        <LazyUserSettingsAccount />
       </template>
       <template #password>
-        <LazySettingsPassword />
+        <LazyUserSettingsPassword />
       </template>
       <template #default="{ item, index, selected }">
         <div class="flex items-center w-full justify-between gap-2 relative">
@@ -37,13 +37,12 @@
 // !todo replace tabs with PrimeMenu or PrimePanelMenu
 const settings = useUserSettingsStore()
 const users = useUsersStore()
-const auth = useAuth()
+const { user } = useUser()
 
 const { id } = useRoute().params
 const { push, back } = useRouter()
 
 if (await users.checkWeHaveUser(String(id))) {
-  const { user } = auth
   if (user.value && String(id) === user.value.id) {
     settings.getUserSettings(user.value.id)
   } else if (user.value && String(id) !== user.value.id) {

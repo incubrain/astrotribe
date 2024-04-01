@@ -1,9 +1,9 @@
 <template>
-  <div class="w-full h-full flex">
-    <NavSidebar class="w-full min-h-full max-w-[10%] min-w-[240px]" />
+  <div class="w-full h-screen flex foreground relative overflow-hidden">
+    <NavSidebar class="w-full h-full max-w-[10%] min-w-[240px] hidden lg:flex" />
 
     <div
-      class="w-full mx-auto md:p-4 xl:p-8 min-h-[calc(100vh-var(--nav-height-sm))] lg:min-h-[calc(100vh-var(--nav-height-lg))] pb-[var(--mobi-bottom-nav-height)]"
+      class="w-full h-full mx-auto md:p-4 xl:p-8 pb-[var(--mobi-bottom-nav-height)] overflow-scroll"
     >
       <slot />
     </div>

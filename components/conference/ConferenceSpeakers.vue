@@ -16,13 +16,13 @@
       Conference Speakers
     </p>
     <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
-      <LazyConferenceSpeakerCard
+      <ConferenceSpeakerCard
         v-for="speaker in filterSpeakers(true)"
         :key="speaker.given_name"
         :speaker="speaker"
         featured
       />
-      <LazyConferenceSpeakerCard
+      <ConferenceSpeakerCard
         v-for="speaker in filterSpeakers(false, true)"
         :key="speaker.given_name"
         :speaker="speaker"

@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import type { TitleT, ImageT } from '~/types/content'
 
-defineProps<{
-  img: ImageT
-  fit: string
-  objectPosition: string
-  title: TitleT
-}>()
+defineProps({
+  fit: {
+    type: String,
+    default: 'cover'
+  },
+  objectPosition: {
+    type: String,
+    default: 'center'
+  },
+  title: {
+    type: Object as () => TitleT,
+    required: true
+  },
+  img: {
+    type: Object as () => ImageT,
+    required: true
+  }
+})
 </script>
 
 <template>

@@ -4,11 +4,11 @@
       v-for="(host, i) in hosts"
       :key="`conference-host-${i}`"
       :pt="{
-        root: 'flex flex-col md:flex-row w-full h-full overflow-hidden'
+        root: 'flex flex-col md:flex-row w-full h-full overflow-hidden relative'
       }"
     >
       <template #header>
-        <div class="invisible dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
+        <div class="hidden dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
         <NuxtImg
           :src="`conference/speakers/${host.avatar}.jpg`"
           :alt="`${host.given_name} is the chairperson at the Dark Sky Conservation India Conference`"

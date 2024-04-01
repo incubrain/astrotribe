@@ -1,5 +1,5 @@
-/* @import './scrollbar.css';
-@import './transitions.css'; */
+/* @import './scrollbar.css'; */
+@import './transitions.css';
 
 @layer tailwind-base {
   @tailwind base;
@@ -24,19 +24,16 @@
 @layer tailwind-utilities {
   @tailwind components;
   @tailwind utilities;
-/* 
-  .bg-white {
-    @apply bg-slate-50;
-  } */
+
   .wrapper {
     @apply max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)] mx-auto;
   }
   .container {
     @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
   }
-  /* .text-light {
+  .text-light {
     @apply text-zinc-100 dark:text-zinc-300;
-  } */
+  }
   .padded-x {
     @apply px-4 lg:px-8;
   }
@@ -46,18 +43,22 @@
   .border-inverted {
     @apply border-zinc-800 dark:border-zinc-300;
   }
+  .background {
+    @apply bg-[var(--surface-section)];
+  }
+  .foreground {
+    @apply text-zinc-800  dark:text-zinc-300  bg-[var(--surface-ground)];
+  }
+
+  .text-highlight {
+    @apply text-[var(--primary-color)];
+  }
 }
 
 /* @layer tailwind-utilities {
   @tailwind components;
   @tailwind utilities;
   
-  .foreground {
-    @apply bg-gray-50 dark:bg-neutral-950;
-  }
-  .background {
-    @apply text-zinc-800 bg-white dark:text-zinc-300  dark:bg-black;
-  }
  
 
   .inverted {

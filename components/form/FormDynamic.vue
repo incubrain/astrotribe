@@ -54,11 +54,11 @@
 <script setup lang="ts">
 import { useForm, useField } from 'vee-validate'
 import type { ComputedRef } from 'vue'
-import type { FormFieldType } from '@/types/forms'
+import type { FormFieldT } from '@/types/forms'
 
 const p = defineProps({
   schema: {
-    type: Array as PropType<FormFieldType[]>,
+    type: Array as PropType<FormFieldT[]>,
     required: true
   },
   validationSchema: {
@@ -104,7 +104,7 @@ if (p.schema.length === 0) {
   throw createError({ message: 'FormDynamic: schema is empty' })
 }
 
-p.schema.forEach((item: FormFieldType) => {
+p.schema.forEach((item: FormFieldT) => {
   const { value, errorMessage, errors } = useField(item.name)
   fields.value.push({
     value,
