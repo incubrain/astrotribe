@@ -11,13 +11,13 @@
         >
           <NuxtLink
             to="/"
-            class="h-full flex justify-center flex-col lg:flex-row items-center gap-2 font-semibold text-sm"
+            class="h-full flex justify-center flex-col lg:flex-row items-center gap-4 font-semibold"
           >
             <NuxtImg
               src="/astronera-logo.jpg"
               alt="AstronEra Logo"
-              width="42"
-              height="42"
+              width="48"
+              height="48"
               class="dark:bg-white rounded-full overflow-hidden p-1"
             />
             AstronEra

@@ -3,14 +3,11 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <FooterWebsite v-if="!noFooter.some((noFooterPath) => $route.path.startsWith(noFooterPath))" />
     <PrimeToast life="4000" />
   </div>
 </template>
 
 <script setup lang="ts">
-const noFooter = ['/contact', '/auth', '/astrotribe']
-
 useHead({
   htmlAttrs: {
     lang: 'en'
@@ -42,5 +39,16 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
 }
 </style>

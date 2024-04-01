@@ -1,6 +1,7 @@
 <template>
   <PrimeCard
     :pt="{
+      root: 'rounded-none md:rounded-md border-b md:border border-color',
       body: 'justify-between h-full'
     }"
   >
