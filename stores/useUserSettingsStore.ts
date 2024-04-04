@@ -60,7 +60,7 @@ export default defineStore('settings', () => {
   async function getUserSettings(id: string) {
     try {
       // TODO: get user settings from database
-      const { data, error } = await useFetch(`/api/users/settings/${id}`)
+      const { data, error } = await useFetch(`/api/user/settings/${id}`)
       if (error.value) throw createError(`Error fetching user settings. Status: ${error.value}`)
       if (!data.value) throw createError('No user settings data returned from supabase')
 
@@ -78,7 +78,7 @@ export default defineStore('settings', () => {
   async function updateAccountSettings(newSettings: UpdateAccountSettings) {
     try {
       // Calling the API to update the account settings
-      const { data, error } = await useFetch('/api/users/settings/update', {
+      const { data, error } = await useFetch('/api/user/settings/update', {
         method: 'POST',
         body: JSON.stringify({
           settingsType: 'account',
