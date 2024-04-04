@@ -24,7 +24,7 @@ const handleLogin = async (provider: Provider) => {
     return
   }
 
-  if (provider === 'linkedin') {
+  if (provider === 'linkedin' || provider === 'twitter') {
     window.location.href = data.user.url
   }
 }

@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   // auto-linking of profiles seems to happen automatically
-  // worked with email first then linkedin social signin
+  // worked with email first then linkedin and Twitter social signin
   console.log('login-with-[provider].post.ts')
   const { provider } = getRouterParams(event)
   console.log('provider', provider)
@@ -43,7 +43,10 @@ export default defineEventHandler(async (event) => {
       //   "email_verified": true,
       //   "phone_verified": false
     } else if (provider === 'twitter') {
-      query = supabase.auth.signInWithOAuth({ provider: 'twitter' })
+      query = supabase.auth.signInWithOAuth({
+        provider: 'twitter',
+        options: { redirectTo: 'http://localhost:3000/astrotribe' }
+      })
     } else {
       throw createError({ message: 'Invalid login provider' })
     }
