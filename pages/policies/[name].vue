@@ -2,8 +2,6 @@
 const route = useRoute()
 const name = computed(() => String(route.params.name))
 
-console.log('policy name', name.value)
-
 const { error, data: policy } = await useAsyncData(`policies-${name.value}`, () =>
   queryContent('/policies').where({ _path: route.fullPath }).findOne()
 )
@@ -11,8 +9,6 @@ const { error, data: policy } = await useAsyncData(`policies-${name.value}`, () 
 if (error.value) {
   console.error(error.value)
 }
-
-console.log('policy', policy.value)
 </script>
 
 <template>
