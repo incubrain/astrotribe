@@ -3,7 +3,7 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <PrimeToast life="4000" />
+    <PrimeToast position="bottom-right" />
   </div>
 </template>
 

@@ -122,8 +122,17 @@ export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
     redirectOptions: {
       login: '/auth/login',
       callback: '/auth/confirm',
-      exclude: ['/*'],
-      cookieRedirect: false
-    }
+      include: ['/astrotribe/**'],
+      exclude: [],
+      cookieRedirect: true
+    },
+    clientOptions: {
+      auth: {
+        flowType: 'pkce',
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    },
   }
 }

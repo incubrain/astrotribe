@@ -5,41 +5,11 @@ const form = reactive({
   confirmPassword: ''
 })
 
-const isPasswordValid = computed(() => {
-  return form.password === form.confirmPassword
+const auth = useAuth()
+
+const isPasswordInvalid = computed(() => {
+  return form.password !== form.confirmPassword
 })
-
-const baseUrl = computed(() => window.location.origin)
-
-const handleRegister = async (provider: string) => {
-  let body = null
-
-  if (provider === 'email') {
-    console.log('email')
-
-    if (!isPasswordValid.value) {
-      // todo: show error message
-      console.log('passwords do not match')
-      return
-    }
-    body = { email: form.email, password: form.password }
-  }
-
-  const { user, error } = await $fetch(`/api/auth/register/${provider}`, {
-    method: 'POST',
-    body
-  })
-
-  if (error) {
-    console.error('Error signing up:', error)
-    // show message
-  }
-
-  if (user) {
-    // redirect to success page
-    console.log('user', user)
-  }
-}
 
 definePageMeta({
   name: 'Register',
@@ -94,9 +64,10 @@ definePageMeta({
         </PrimeFloatLabel>
         <PrimeButton
           class="justify-center"
-          @click="handleRegister('email')"
+          :disabled="isPasswordInvalid"
+          @click="auth.registerWithEmail(form.email, form.password)"
         >
-          Sign in with email
+          Sign up with email
         </PrimeButton>
       </div>
     </template>
@@ -104,11 +75,11 @@ definePageMeta({
       <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
         <AuthSocialButton
           provider="twitter"
-          @social-login="handleRegister('twitter')"
+          @social-login="auth.loginSocial('twitter')"
         />
         <AuthSocialButton
           provider="linkedin"
-          @social-login="handleRegister('linkedin')"
+          @social-login="auth.loginSocial('linkedin_oidc')"
         />
       </div>
       <p class="mt-4 text-sm text-center">
