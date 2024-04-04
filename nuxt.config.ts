@@ -18,31 +18,12 @@ export default defineNuxtConfig({
   // },
   nitro: {
     experimental: {
-      tasks: true,
-      asyncContext: true
+      tasks: true
     },
     scheduledTasks: {
       // every 12 hours
-      '0 */12 * * *': ['scrape:news', 'scrape:papers']
+      // '0 */12 * * *': ['scrape:news', 'scrape:papers']
       // '*/50 * * * *': ['scrape:papers']
-    },
-    // Production
-    storage: {
-      data: {
-        driver: 'vercelKV',
-        base: 'astrotribe:'
-      }
-    },
-    // Development
-    devStorage: {
-      data: {
-        driver: 'fs',
-        base: './data/kv'
-      },
-      blogs: {
-        driver: 'fs',
-        base: './data/blogs/scraped'
-      }
     }
   },
 
@@ -112,6 +93,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // client
     public: {
+      nodeEnv: process.env.NODE_ENV,
       testMode: '',
       posthogKey: '',
       testingUserame: '',

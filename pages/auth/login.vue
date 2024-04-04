@@ -19,7 +19,14 @@ const handleLogin = async (provider: Provider) => {
     body
   })
 
-  if (!data) throw createError('Login Error: No data returned from supabase')
+  if (!data.user) {
+    console.error('Login Error: No data returned from supabase')
+    return
+  }
+
+  if (provider === 'linkedin') {
+    window.location.href = data.user.url
+  }
 }
 
 definePageMeta({
