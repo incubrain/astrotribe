@@ -9,10 +9,10 @@
     <template #start>
       <NuxtLink
         to="/"
-        class="items-center gap-2 hidden lg:flex"
+        class="items-center gap-2 hidden lg:flex foreground rounded-md p-1"
       >
         <div
-          class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden"
+          class="p-1 h-[26px] w-[26px] md:h-[44px] md:w-[44px] bg-white rounded-full overflow-hidden"
         >
           <NuxtImg
             src="/astronera-logo.jpg"
@@ -20,7 +20,7 @@
           />
         </div>
         <h1
-          class="block px-4 mr-4 text-xl font-semibold cursor-pointer hover:text-primary-600 dark:hover:text-primary-700"
+          class="block pr-2 uppercase text-lg font-bold cursor-pointer text-primary-600 dark:text-primary-700"
         >
           AstronEra
         </h1>

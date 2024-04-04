@@ -2,11 +2,12 @@
   <PrimeMenu
     :model="pages"
     :pt="{
-      root: 'h-full flex flex-col justify-between'
+      root: 'h-full flex flex-col rounded-none border-color',
+      menu: 'pt-8'
     }"
   >
     <template #start>
-      <div class="p-2">
+      <div class="pt-4 px-2">
         <NuxtLink
           to="/"
           class="items-center gap-2 flex"
@@ -49,17 +50,6 @@
             />
           </span>
         </NuxtLink>
-      </div>
-    </template>
-    <template #end>
-      <div class="w-full flex justify-end p-2">
-        <AppThemeToggle v-slot="{ toggle, isDark }">
-          <Icon
-            :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-            class="w-6 h-6 cursor-pointer"
-            @click="toggle"
-          />
-        </AppThemeToggle>
       </div>
     </template>
   </PrimeMenu>
