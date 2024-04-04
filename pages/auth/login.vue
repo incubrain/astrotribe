@@ -4,30 +4,33 @@ const form = reactive({
   password: ''
 })
 
-type Provider = 'twitter' | 'linkedin' | 'email'
+// type Provider = 'twitter' | 'linkedin' | 'email'
 
-const handleLogin = async (provider: Provider) => {
-  let body = null
+// const handleLogin = async (provider: Provider) => {
+//   let body = null
 
-  if (provider === 'email') {
-    console.log('email')
-    body = { email: form.email, password: form.password }
-  }
+//   if (provider === 'email') {
+//     console.log('email')
+//     body = { email: form.email, password: form.password }
+//   }
 
-  const data = await $fetch(`/api/auth/login/${provider}`, {
-    method: 'POST',
-    body
-  })
+//   const data = await $fetch(`/api/auth/login/${provider}`, {
+//     method: 'POST',
+//     headers: useRequestHeaders(['cookie']),
+//     body
+//   })
 
-  if (!data.user) {
-    console.error('Login Error: No data returned from supabase')
-    return
-  }
+//   if (!data.user) {
+//     console.error('Login Error: No data returned from supabase')
+//     return
+//   }
 
-  if (provider === 'linkedin' || provider === 'twitter') {
-    window.location.href = data.user.url
-  }
-}
+//   if (provider === 'linkedin' || provider === 'twitter') {
+//     window.location.href = data.user.url
+//   }
+// }
+
+const auth = useAuth()
 
 definePageMeta({
   name: 'Login',
@@ -77,18 +80,18 @@ definePageMeta({
 
         <PrimeButton
           class="justify-center"
-          @click="handleLogin('email')"
+          @click="auth.loginWithEmail(form.email, form.password)"
         >
           Sign in with email
         </PrimeButton>
         <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
           <AuthSocialButton
             provider="twitter"
-            @social-login="handleLogin('twitter')"
+            @social-login="auth.loginSocial('twitter')"
           />
           <AuthSocialButton
             provider="linkedin"
-            @social-login="handleLogin('linkedin')"
+            @social-login="auth.loginSocial('linkedin_oidc')"
           />
         </div>
       </div>

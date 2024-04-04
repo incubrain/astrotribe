@@ -6,25 +6,7 @@ const form = reactive({
   email: ''
 })
 
-const handleForgotPassword = async () => {
-  // sends a reset email to the user
-  const { data, error } = await $fetch('/api/auth/password/forgot', {
-    method: 'POST',
-    body: { email: form.email }
-  })
-
-  // if the user used social login notify them
-
-  if (error) {
-    console.error('Error sending reset email:', error)
-    // provide feedback to user
-  }
-
-  if (data) {
-    // provide feedback to user
-    // check your email
-  }
-}
+const auth = useAuth()
 
 definePageMeta({
   name: 'ForgotPassword',
@@ -48,7 +30,7 @@ definePageMeta({
         </PrimeFloatLabel>
         <PrimeButton
           class="justify-center"
-          @click="handleForgotPassword"
+          @click="auth.password.forgot(form.email)"
         >
           Send Reset Email
         </PrimeButton>
