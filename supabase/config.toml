@@ -135,6 +135,13 @@ secret = "env(SUPABASE_AUTH_LINKEDIN_SECRET)"
 # overide the default redirect_uri
 redirect_uri = "http://localhost:54321/auth/v1/callback"
 
+[auth.external.twitter]
+enabled = true
+client_id = "env(SUPABASE_AUTH_TWITTER_API_KEY)"
+secret = "env(SUPABASE_AUTH_TWITTER_API_SECRET)"
+# overide the default redirect_uri
+redirect_uri = "http://localhost:54321/auth/v1/callback"
+
 
 [analytics]
 enabled = true
