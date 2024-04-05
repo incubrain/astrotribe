@@ -94,11 +94,13 @@ export default defineNuxtConfig({
     // client
     public: {
       nodeEnv: process.env.NODE_ENV,
+      logLevel: process.env.NUXT_PUBLIC_LOG_LEVEL || '0',
       testMode: '',
       posthogKey: '',
       testingUserame: '',
       testingPassword: '',
       studioTokens: '',
+      supabaseBucketUrl: '',
       supabaseUrl: '',
       supabaseKey: ''
     },
