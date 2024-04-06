@@ -1,6 +1,6 @@
 import type { NewsCardT } from '@/types/news'
 
-export const useNewsStore = defineStore('news', () => {
+export default defineStore('storeNews', () => {
   const posts = ref([] as NewsCardT[])
   const summaryLevel = ref('beginner' as 'beginner' | 'intermediate' | 'expert')
   const isModalOpen = ref(false)
