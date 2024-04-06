@@ -1,12 +1,3 @@
-<template>
-  <div class="w-full h-full">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <PrimeToast position="bottom-right" />
-  </div>
-</template>
-
 <script setup lang="ts">
 useHead({
   htmlAttrs: {
@@ -26,7 +17,20 @@ useHead({
     }
   ]
 })
+
+// !todo:med - add styling to the toasts, specifically dark mode
+// !todo:med - add a version of this logger to the server using consola, pino or winston logger
+// todo:med - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
 </script>
+
+<template>
+  <div class="w-full h-full">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <PrimeToast position="bottom-right" />
+  </div>
+</template>
 
 <style>
 html {

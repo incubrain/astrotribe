@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const policies = ['privacy-policy', 'terms-of-use', 'cookies-policy']
+const currentYear = new Date().getFullYear()
+
+</script>
+
 <template>
   <div class="py-5 background border-t border-color flex flex-col justify-center gap-4 text-sm">
     <div class="flex gap-2 mx-auto">
@@ -21,8 +27,3 @@
     </p>
   </div>
 </template>
-
-<script setup lang="ts">
-const policies = ['privacy-policy', 'terms-of-use', 'cookies-policy']
-const currentYear = new Date().getFullYear()
-</script>

@@ -1,7 +1,7 @@
 <template>
-  <div class="relative w-full flex justify-center items-center foreground pb-12">
+  <div class="relative w-full flex justify-center items-center foreground pb-12 pt-28">
     <div class="flex flex-col max-w-4xl">
-      <Breadcrumbs class="py-12 px-4" />
+      <Breadcrumbs class="py-4 px-4" />
       <NuxtImg
         :src="`images/blog/${article.category}/${article.featured_image}`"
         class="md:rounded-md relative"

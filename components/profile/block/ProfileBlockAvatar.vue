@@ -18,30 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { useWindowSize } from '@vueuse/core'
-
-const { width, height } = useWindowSize()
-
-const getWidth = () => {
-  if (width.value < 640) {
-    return '60px'
-  } else if (width.value < 768) {
-    return '120px'
-  } else {
-    return '240px'
-  }
-}
-
-const getHeight = () => {
-  if (height.value < 640) {
-    return '60px'
-  } else if (height.value < 768) {
-    return '120px'
-  } else {
-    return '240px'
-  }
-}
-
 defineProps<{
   avatar: string
 }>()

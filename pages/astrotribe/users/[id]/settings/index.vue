@@ -34,10 +34,12 @@
 </template>
 
 <script setup lang="ts">
+import { storeUsers } from '~/composables/stores/storeUsers'
+
 // !todo replace tabs with PrimeMenu or PrimePanelMenu
-const settings = useUserSettingsStore()
-const users = useUsersStore()
-const { user } = useUser()
+const settings = storeSettings()
+const users = storeUsers()
+const { user } = useCurrentUser()
 
 const { id } = useRoute().params
 const { push, back } = useRouter()

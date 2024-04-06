@@ -1,3 +1,11 @@
+<script setup>
+const p = usePages()
+const { socials, pages } = storeToRefs(p)
+
+// !todo: add the correct links, should not be app pages
+// again use the categories to consolidate the links, but list them all vertically under categories
+</script>
+
 <template>
   <footer class="foreground flex flex-col justify-center items-center relative overflow-hidden">
     <div
@@ -60,8 +68,3 @@
     <FooterBottomBar class="w-full" />
   </footer>
 </template>
-
-<script setup>
-const p = usePages()
-const { socials, pages } = storeToRefs(p)
-</script>

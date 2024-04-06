@@ -1,3 +1,17 @@
+<script setup lang="ts">
+defineProps({
+  article: {
+    type: Object,
+    required: true
+  }
+})
+
+// !todo: add links to the tags and category
+// !todo: add a read time to the article
+// !todo: add link to author profile
+// consider making read more button more subtle
+</script>
+
 <template>
   <PrimeCard
     :pt="{
@@ -62,12 +76,3 @@
     </template>
   </PrimeCard>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  article: {
-    type: Object,
-    required: true
-  }
-})
-</script>
