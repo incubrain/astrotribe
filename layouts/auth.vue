@@ -1,3 +1,9 @@
+<script setup lang="ts">
+// !todo:consider - add a delay to function execution, fade out the auth cards so the bg image is fully visible for a few seconds, then execute
+// !todo:med - add transitions to the auth cards
+// !todo:high - add subtitle prompt to all auth cards
+// !todo:med - add "or" between email login and social login
+</script>
 <template>
   <div class="w-full p-8 min-h-screen flex justify-center items-center">
     <NavTop />
@@ -14,8 +20,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped>
 ::-webkit-scrollbar {

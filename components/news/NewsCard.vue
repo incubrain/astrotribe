@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import type { NewsCardT } from '@/types/news'
+
+defineProps({
+  news: {
+    type: Object as () => NewsCardT,
+    required: true
+  }
+  // summaryLevel: {
+  //   type: String,
+  //   required: true
+  // }
+})
+</script>
+
 <template>
   <div class="rounded-md border border-color background flex flex-col justify-between">
     <div>
@@ -57,18 +72,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { NewsCardT } from '@/types/news'
-
-defineProps({
-  news: {
-    type: Object as () => NewsCardT,
-    required: true
-  }
-  // summaryLevel: {
-  //   type: String,
-  //   required: true
-  // }
-})
-</script>

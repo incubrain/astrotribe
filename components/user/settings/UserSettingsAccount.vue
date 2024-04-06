@@ -70,8 +70,8 @@ const schema = computed(() => {
   ] as FormFieldT[]
 })
 
-const settings = useUserSettingsStore()
-const { user } = useUser()
+const settings = storeSettings()
+const { user } = useCurrentUser()
 const { userAccountSettings } = storeToRefs(settings)
 
 function onSubmitAccount(value: SettingsAccount) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const router = useRouter()
-const user = useUser()
+const user = useCurrentUser()
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -11,11 +11,11 @@ const auth = useAuth()
 const items = ref([
   {
     label: 'Profile',
-    command: () => router.push(`/astrotribe/users/${user.profile?.value.id}`)
+    command: () => router.push(`/astrotribe/users/${user.profile.id}`)
   },
   {
     label: 'Settings',
-    command: () => router.push(`/astrotribe/users/${user.profile?.value.id}/settings`)
+    command: () => router.push(`/astrotribe/users/${user.profile.id}/settings`)
   },
   {
     label: 'Logout',
@@ -23,7 +23,10 @@ const items = ref([
   }
 ])
 
-console.log('profile', user.profile.value)
+console.log('profile', user.profile)
+
+// !todo: show a back button on tablet and below, left of nav.
+// !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
 
 <template>
@@ -44,7 +47,8 @@ console.log('profile', user.profile.value)
         />
       </AppThemeToggle>
       <PrimeAvatar
-        :image="user.profile?.value.avatar"
+        v-if="user.profile?.avatar"
+        :image="user.profile?.avatar"
         size="normal"
         shape="circle"
         class="cursor-pointer"

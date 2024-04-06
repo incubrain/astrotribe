@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-const ven = useVenuesStore()
+const ven = storeVenues()
 ven.checkWeHaveVenues()
 
 const { venues } = storeToRefs(ven)

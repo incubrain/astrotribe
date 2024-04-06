@@ -1,3 +1,95 @@
+<script setup lang="ts">
+const links = [
+  {
+    key: 'about',
+    label: 'About',
+    icon: 'material-symbols:info',
+    url: '/about',
+    visible: true,
+    disabled: false
+  },
+  {
+    key: 'contact',
+    label: 'Contact',
+    icon: 'material-symbols:call',
+    url: '/contact',
+    visible: true,
+    disabled: false
+  },
+  {
+    key: 'team',
+    label: 'Team',
+    icon: 'material-symbols:emoji-people',
+    url: '/team',
+    visible: true,
+    disabled: false
+  },
+  {
+    key: 'conference',
+    label: 'Conference',
+    icon: 'material-symbols:emoji-people',
+    url: '/conference',
+    visible: true,
+    disabled: false
+  },
+  {
+    key: 'community',
+    label: 'Community',
+    icon: 'material-symbols:globe-asia',
+    url: '/astrotribe',
+    visible: true,
+    disabled: false
+  },
+  {
+    key: 'blog',
+    label: 'Blog',
+    icon: 'material-symbols:menu-book-outline',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'blog-home',
+        label: 'All',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-isro',
+        label: 'ISRO',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/isro',
+        visible: true,
+        disabled: false
+      }
+    ]
+  }
+]
+
+// !todo:med auto detect session and show AstroTribe button
+// !todo:consider extracting profileMenu and Avatar for use here
+// !todo:med add a max-width to the TopNav
+// !todo:high consolidate the links into categories
+// !todo:high priority - make main CTA - "Join Free Astronomy Hub" on lg and above
+// !todo:fun - shrink the nav to an icon, left of screen above TOC on scroll, use % so when the sticky TOC starts movoing it's at 0%
+// !todo:low - shrink the nav on auth layout by default, show on click
+// const dropdownItems = computed(() => [
+//   {
+//     label: 'Profile',
+//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
+//   },
+//   {
+//     label: 'Settings',
+//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
+//   },
+//   {
+//     label: 'Logout',
+//     onClick: () => auth.logout()
+//   }
+// ])
+</script>
+
 <template>
   <PrimeMenubar
     :model="links"
@@ -88,88 +180,3 @@
     </template>
   </PrimeMenubar>
 </template>
-
-<script setup lang="ts">
-const links = [
-  {
-    key: 'about',
-    label: 'About',
-    icon: 'material-symbols:info',
-    url: '/about',
-    visible: true,
-    disabled: false
-  },
-  {
-    key: 'contact',
-    label: 'Contact',
-    icon: 'material-symbols:call',
-    url: '/contact',
-    visible: true,
-    disabled: false
-  },
-  {
-    key: 'team',
-    label: 'Team',
-    icon: 'material-symbols:emoji-people',
-    url: '/team',
-    visible: true,
-    disabled: false
-  },
-  {
-    key: 'conference',
-    label: 'Conference',
-    icon: 'material-symbols:emoji-people',
-    url: '/conference',
-    visible: true,
-    disabled: false
-  },
-  {
-    key: 'community',
-    label: 'Community',
-    icon: 'material-symbols:globe-asia',
-    url: '/astrotribe',
-    visible: true,
-    disabled: false
-  },
-  {
-    key: 'blog',
-    label: 'Blog',
-    icon: 'material-symbols:menu-book-outline',
-    visible: true,
-    disabled: false,
-    items: [
-      {
-        key: 'blog-home',
-        label: 'All',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog',
-        visible: true,
-        disabled: false
-      },
-      {
-        key: 'blog-isro',
-        label: 'ISRO',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/isro',
-        visible: true,
-        disabled: false
-      }
-    ]
-  }
-]
-
-// const dropdownItems = computed(() => [
-//   {
-//     label: 'Profile',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
-//   },
-//   {
-//     label: 'Settings',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
-//   },
-//   {
-//     label: 'Logout',
-//     onClick: () => auth.logout()
-//   }
-// ])
-</script>
