@@ -94,7 +94,7 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
     callback: '/auth/confirm',
     include: ['/astrotribe/**'],
     exclude: [],
-    cookieRedirect: false
+    cookieRedirect: true
   },
   clientOptions: {
     auth: {
@@ -117,22 +117,4 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   supabase: SUPABASE_OPTIONS
 }
 
-export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
-  supabase: {
-    redirectOptions: {
-      login: '/auth/login',
-      callback: '/auth/confirm',
-      include: ['/astrotribe/**'],
-      exclude: [],
-      cookieRedirect: true
-    },
-    clientOptions: {
-      auth: {
-        flowType: 'pkce',
-        detectSessionInUrl: true,
-        persistSession: true,
-        autoRefreshToken: true
-      }
-    },
-  }
-}
+export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}
