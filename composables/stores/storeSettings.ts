@@ -26,7 +26,7 @@ const settingsTabs = [
   }
 ]
 
-export default defineStore('settings', () => {
+export default defineStore('storeSettings', () => {
   // info: use reactive() to make the object reactive, ref is for primitive types
   // TypeScript supports 7 primitive types number, string, boolean, bigint, symbol, undefined, and null.
   const userAccountSettings = reactive({

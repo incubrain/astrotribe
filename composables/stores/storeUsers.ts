@@ -1,8 +1,8 @@
 import type { UserFullType } from '@/types/users'
 
-export const useUsersStore = defineStore('users', () => {
+export const storeUsers = defineStore('storeUsers', () => {
+  const logger = useLogger('storeUsers')
   const users = ref([] as UserFullType[])
-  const userCurrent = ref({} as UserFullType)
 
   async function checkWeHaveUsers(): Promise<boolean> {
     if (users.value.length) return true
@@ -14,6 +14,25 @@ export const useUsersStore = defineStore('users', () => {
     if (data.value?.users) users.value = data.value.users // todo check data validity
 
     return true
+  }
+
+  const userCurrent = ref({} as UserFullType)
+  async function getUserById(userId: string) {
+    if (userCurrent.value.id && userCurrent.value.id === userId) {
+      return
+    }
+
+    const { message, status, user } = await $fetch(`/api/user/${userId}`, {
+      method: 'GET',
+      headers: useRequestHeaders(['cookie'])
+    })
+
+    if (status !== 200) {
+      logger.error(`error getting user: ${message}`)
+      throw createError(message)
+    }
+
+    userCurrent.value = user
   }
 
   async function checkWeHaveUser(id: string) {
@@ -34,13 +53,14 @@ export const useUsersStore = defineStore('users', () => {
 
   return {
     users,
-    user: userCurrent,
+    userCurrent,
     userById,
     checkWeHaveUsers,
-    checkWeHaveUser
+    checkWeHaveUser,
+    getUserById
   }
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useUsersStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(storeUsers, import.meta.hot))
 }

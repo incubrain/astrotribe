@@ -1,7 +1,7 @@
 // import * as util from './utilities'
 import type { EventType } from '@/types/events'
 
-export default defineStore('events', () => {
+export default defineStore('storeEvents', () => {
   const events = ref([] as EventType[])
 
   async function checkWeHaveEvents() {

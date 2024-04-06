@@ -1,4 +1,4 @@
-export default defineStore('venues', () => {
+export default defineStore('storeVenues', () => {
   const venues = ref([])
 
   async function checkWeHaveVenues() {
