@@ -18,7 +18,8 @@ export default defineNuxtConfig({
   // },
   nitro: {
     experimental: {
-      tasks: true
+      tasks: true,
+      asyncContext: true
     },
     scheduledTasks: {
       // every 12 hours
@@ -94,7 +95,7 @@ export default defineNuxtConfig({
     // client
     public: {
       nodeEnv: process.env.NODE_ENV,
-      logLevel: process.env.NUXT_PUBLIC_LOG_LEVEL || '0',
+      logLevel: process.env.LOG_LEVEL || '0',
       testMode: '',
       posthogKey: '',
       testingUserame: '',
