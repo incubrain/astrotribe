@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-const eventStore = useEventsStore()
+const eventStore = storeEvents()
 eventStore.checkWeHaveEvents()
 const { events } = storeToRefs(eventStore)
 

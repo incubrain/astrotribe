@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const userStore = useUsersStore()
+import { storeUsers } from '~/composables/stores/storeUsers'
+
+const userStore = storeUsers()
 const haveUsers = await userStore.checkWeHaveUsers()
 const { users } = storeToRefs(userStore)
 

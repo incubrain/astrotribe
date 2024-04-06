@@ -1,3 +1,38 @@
+<script setup lang="ts">
+// !todo:consider - add realtime online status
+// !todo:high - add follow/unfollow support
+// !todo:fun - add personalized ranking systems, just start with titles
+// !todo:med - add more button that opens a modal with more user details, allow users to cycle through users
+const roleIconMapping: Record<number, string> = {
+  // mapped to database role id
+  7: 'material-symbols:shield-lock', // admin
+  6: 'material-symbols:manage-accounts', //
+  5: 'mdi:account-school', // Mentor
+  4: 'mdi:book-education', // Teacher
+  3: 'mdi:telescope', // AstroGuide
+  2: 'material-symbols:menu-book-rounded', // Student
+  1: 'material-symbols:account-circle' // Basic user
+}
+
+const userRoleIcon = (roleId: number): string => {
+  if (Object.prototype.hasOwnProperty.call(roleIconMapping, roleId)) {
+    return roleIconMapping[roleId]
+  }
+  return '' // default
+}
+
+const supabaseStorage = useSupabaseStorage()
+
+defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+})
+
+// const lastSeen = u.time.lastSeen(user.last_seen)
+</script>
+
 <template>
   <div
     v-if="!user.avatar.includes('defualt.png') && !user.avatar !== null"
@@ -67,37 +102,6 @@
     </p>
   </div>
 </template>
-
-<script setup lang="ts">
-const roleIconMapping: Record<number, string> = {
-  // mapped to database role id
-  7: 'material-symbols:shield-lock', // admin
-  6: 'material-symbols:manage-accounts', //
-  5: 'mdi:account-school', // Mentor
-  4: 'mdi:book-education', // Teacher
-  3: 'mdi:telescope', // AstroGuide
-  2: 'material-symbols:menu-book-rounded', // Student
-  1: 'material-symbols:account-circle' // Basic user
-}
-
-const userRoleIcon = (roleId: number): string => {
-  if (Object.prototype.hasOwnProperty.call(roleIconMapping, roleId)) {
-    return roleIconMapping[roleId]
-  }
-  return '' // default
-}
-
-const supabaseStorage = useSupabaseStorage()
-
-defineProps({
-  user: {
-    type: Object,
-    required: true
-  }
-})
-
-// const lastSeen = u.time.lastSeen(user.last_seen)
-</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');

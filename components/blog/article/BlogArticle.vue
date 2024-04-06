@@ -1,3 +1,41 @@
+<script setup lang="ts">
+import type { ArticleFullT } from '~/types/articles'
+
+const { width } = useWindowSize()
+
+const expandToc = computed(() => {
+  console.log('width.value', width.value)
+  return width.value < 1280
+})
+
+const articleContent = ref<HTMLElement | null>(null)
+const articleHtml = ref<string>('')
+
+watch(
+  () => articleContent.value,
+  async (newVal) => {
+    if (newVal && p.article.body) {
+      // awiat timeout of 1 seconds
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      articleHtml.value = newVal.innerHTML
+    }
+  }
+)
+
+const p = defineProps({
+  article: {
+    type: Object as PropType<ArticleFullT>,
+    required: true
+  }
+})
+
+// !todo:low add full width images
+// !todo:fun - add full width image grids with text
+// !todo:med - add a read time to the article
+// !todo:med - add social links to author block and links to profile
+// !todo:med - add links to the tags and category
+</script>
+
 <template>
   <div
     v-if="article.body"
@@ -43,38 +81,6 @@
     </main>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { ArticleFullT } from '~/types/articles'
-
-const { width } = useWindowSize()
-
-const expandToc = computed(() => {
-  console.log('width.value', width.value)
-  return width.value < 1280
-})
-
-const articleContent = ref<HTMLElement | null>(null)
-const articleHtml = ref<string>('')
-
-watch(
-  () => articleContent.value,
-  async (newVal) => {
-    if (newVal && p.article.body) {
-      // awiat timeout of 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      articleHtml.value = newVal.innerHTML
-    }
-  }
-)
-
-const p = defineProps({
-  article: {
-    type: Object as PropType<ArticleFullT>,
-    required: true
-  }
-})
-</script>
 
 <style>
 .nuxt-content p {

@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import productSteps from '@/data/home/product-steps.json'
+
+definePageMeta({
+  name: 'Home'
+})
+// !todo:low look into subtle black and white images or patterns to give the background some flair
+</script>
+
 <template>
   <div class="relative z-0">
     <HomeHero />
@@ -33,13 +42,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import productSteps from '@/data/home/product-steps.json'
-
-definePageMeta({
-  name: 'Home'
-})
-</script>
 
 <style scoped></style>

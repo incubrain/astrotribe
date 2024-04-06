@@ -3,7 +3,7 @@
 @layer tailwind-base {
   @tailwind base;
   :root {
-    --mobi-bottom-nav-height: 46px;
+    --mobi-bottom-nav-height: 50px;
     --nav-height-sm: 50px;
     --nav-height-lg: 60px;
     --max-width-sm: 840px;

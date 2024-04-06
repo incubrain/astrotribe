@@ -1,3 +1,14 @@
+<script setup lang="ts">
+definePageMeta({
+  name: 'Conference'
+})
+
+// !todo: low priority - reduce the amount of text at the beginning of the page
+// !todo: low priority - fix the styling of the conference schedule
+// !todo
+// consider: creating a 20-30 second video of the conference to use as the Hero Section
+</script>
+
 <template>
   <div>
     <CommonHero
@@ -89,9 +100,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-definePageMeta({
-  name: 'Conference'
-})
-</script>

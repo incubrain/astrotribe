@@ -44,7 +44,7 @@ const schema = computed(() => {
   ] as FormFieldT[]
 })
 
-const settings = useUserSettingsStore()
+const settings = storeSettings()
 const { userPasswordSettings } = storeToRefs(settings)
 
 function onSubmitPassword(value: SettingsPasswordType) {

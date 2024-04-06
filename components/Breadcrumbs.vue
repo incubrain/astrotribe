@@ -3,7 +3,12 @@ const links = useBreadcrumbItems()
 </script>
 
 <template>
-  <PrimeBreadcrumb :model="links" />
+  <PrimeBreadcrumb
+    :model="links"
+    :pt="{
+      root: 'foreground'
+    }"
+  />
 </template>
 
 <style></style>
