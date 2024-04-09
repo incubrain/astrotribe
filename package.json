@@ -30,7 +30,7 @@
     "@sentry/browser": "7.54.0",
     "@types/node": "^20.11.28",
     "@types/uuid": "^9.0.2",
-    "@typescript-eslint/parser": "^6.3.0",
+    "@typescript-eslint/parser": "^7.6.0",
     "@vee-validate/zod": "^4.10.2",
     "@vueuse/nuxt": "^10.1.2",
     "axios-https-proxy-fix": "^0.17.1",
