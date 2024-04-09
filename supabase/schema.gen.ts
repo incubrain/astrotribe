@@ -324,7 +324,7 @@ export type Database = {
         }
         Relationships: []
       }
-      users: {
+      user_profiles: {
         Row: {
           avatar: string | null
           cover_image: string | null
