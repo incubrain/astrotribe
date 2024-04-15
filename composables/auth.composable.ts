@@ -1,6 +1,47 @@
+import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+
+const passwordValidation = z
+  .string()
+  .min(8, 'Password must contain 8 characters')
+  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+  .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character')
+
+export const SettingsPasswordValidation = z
+  .object({
+    currentPassword: passwordValidation,
+    newPassword: passwordValidation,
+    confirmNewPassword: passwordValidation
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords don't match",
+    path: ['confirmNewPassword']
+  })
+
+export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
+
+export const FormPasswordSchema = toTypedSchema(SettingsPasswordValidation)
+
 const redirectUrl = 'http://localhost:3000/astrotribe'
 
 export function useAuth() {
+  // !todo:bug - I believe there is an issue where the token expires for Social login but it doesn't refresh
+  // !todo:high - look into cookieOptions
+  // !todo:high - retrieve current user profile
+  // cookieOptions: {
+  //   maxAge: 60 * 60 * 8,
+  //   sameSite: 'lax',
+  //   secure: true
+  // }
+  // https://nuxt.com/docs/api/composables/use-cookie#options
+  // https://supabase.com/docs/reference/javascript/initializing
+
+  const userPasswordSettings = reactive({
+    currentPassword: 'current password',
+    newPassword: 'new password',
+    confirmNewPassword: 'confirm new password'
+  })
+
   const baseUrl = computed(() => window.location.origin ?? null)
   const toast = useToast()
   const supabase = useSupabaseClient()
@@ -31,19 +72,6 @@ export function useAuth() {
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
-    // Linkedin returns this metadata:
-    //   "iss": "https://www.linkedin.com",
-    //   "sub": "hQfa_HISo7",
-    //   "name": "full name",
-    //   "email": "myemail@gmail.com",
-    //   "locale": "en_US",
-    //   "picture": "https://media.licdn.com/dms/image/D4D03AQE7S77JxVf6uQ/profile-displayphoto-shrink_100_100/0/1678109223064?e=2147483647&v=beta&t=btGs399dJp6PMGOAb8A2Q-yngrKo6mPQNLHRNSW_eMc",
-    //   "given_name": "first",
-    //   "family_name": "given",
-    //   "provider_id": "hQfa_HISo7",
-    //   "email_verified": true,
-    //   "phone_verified": false
-
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: 'http://localhost:3000/astrotribe' }

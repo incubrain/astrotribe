@@ -22,22 +22,31 @@ const pages = ref([
   },
   {
     id: 3,
-    label: 'Events',
-    slug: '/astrotribe/events',
-    icon: 'material-symbols:event',
-    children: [
-      // { id: 31, label: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
-    ]
-  },
-  {
-    id: 4,
-    label: 'Venues',
-    slug: '/astrotribe/venues',
+    label: 'Companies',
+    slug: '/astrotribe/companies',
     icon: 'material-symbols:location-on-rounded'
     // children: [
     //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
   },
+  // {
+  //   id: 3,
+  //   label: 'Events',
+  //   slug: '/astrotribe/events',
+  //   icon: 'material-symbols:event',
+  //   children: [
+  //     // { id: 31, label: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
+  //   ]
+  // },
+  // {
+  //   id: 4,
+  //   label: 'Venues',
+  //   slug: '/astrotribe/venues',
+  //   icon: 'material-symbols:location-on-rounded'
+  //   children: [
+  //       { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
+  //   ],
+  // },
   {
     id: 5,
     label: 'News',
