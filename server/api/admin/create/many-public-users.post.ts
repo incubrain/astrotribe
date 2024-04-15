@@ -1,4 +1,3 @@
-
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
   const client = dbClient(event)
@@ -20,7 +19,7 @@ export default defineEventHandler(async (event) => {
     })
 
     const { data, error } = await client
-      .from('users')
+      .from('user_profiles')
       .createMany({ data: [...mappedUsers] })
       .select('*')
 
