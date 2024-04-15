@@ -14,7 +14,7 @@
       }"
     />
 
-    <div class="wrapper padded-x flex flex-wrap items-start justify-center lg:pb-12">
+    <div class="wrapper padded-x flex flex-wrap items-start justify-center xl:pb-12">
       <div
         class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"
       >

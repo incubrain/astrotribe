@@ -21,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+
+
+// todo:med:1 - turn this into a baseStar component, then use in places like rating etc
 defineProps({
   rating: {
     type: Number as PropType<number>,

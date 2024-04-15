@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { storeUsers } from '~/composables/stores/storeUsers'
-
-const user = storeUsers()
+const user = useUsersStore()
 const userId = computed(() => useRoute().params.id)
 
 console.log('id', userId)
@@ -33,16 +31,16 @@ definePageMeta({
         <div
           class="relative w-full col-span-1 col-start-2 row-start-1 bg-cover rounded-lg lg:col-start-3"
         >
-          <ProfileBlockBadge
+          <UserProfileBlockBadge
             class="absolute bottom-0 right-0 mr-4 md:mr-0"
-            :user-role="currentProfile.role"
+            :user-role="currentProfile.roles"
           />
         </div>
         <div
           class="relative w-full col-span-1 col-start-1 row-span-1 row-start-2 rounded-b-lg lg:col-start-1 lg:col-span-3 md:px-6 md:pb-6 foreground"
         >
-          <ProfileBlockAvatar :avatar="currentProfile.avatar" />
-          <ProfileBlockInfo
+          <UserProfileBlockAvatar :avatar="currentProfile.avatar" />
+          <UserProfileBlockInfo
             :user="currentProfile"
             class="mt-[80px] md:mt-[140px]"
           />
@@ -50,17 +48,17 @@ definePageMeta({
         <div
           class="relative flex flex-col w-full col-span-1 col-start-1 row-span-1 row-start-3 gap-2 md:mt-4 md:gap-4 lg:col-span-3 md:mb-24"
         >
-          <!-- <ProfileBlockSkills
+          <!-- <UserProfileBlockSkills
             v-if="currentProfile.user_skills.length > 0"
             :skills="currentProfile.user_skills"
             class="card"
           /> -->
-          <!-- <ProfileBlockSocials
+          <!-- <UserProfileBlockSocials
             v-if="currentProfile.user_socials.length > 0"
             :socials="currentProfile.user_socials"
             class="card"
           /> -->
-          <!-- <ProfileBlockExperties
+          <!-- <UserProfileBlockExperties
             v-if="currentProfile.user_skills.length > 0"
             :expertise="currentProfile.user_skills"
             class="p-6"
