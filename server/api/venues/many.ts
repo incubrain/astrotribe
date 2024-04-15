@@ -8,6 +8,6 @@ export default defineEventHandler(async () => {
   return {
     status,
     message,
-    venues
+    data: venues
   }
 })

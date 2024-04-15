@@ -15,13 +15,13 @@ export default defineEventHandler(async () => {
     return {
       status: 200,
       message: 'Events fetched',
-      events
+      data: events
     }
   } catch (error: any) {
     return {
       status: 500,
       message: `Error getting events: ${error.message}`,
-      events: undefined
+      data: null
     }
   }
 })
