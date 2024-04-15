@@ -1,46 +1,39 @@
 <script setup lang="ts">
 // !todo:critical - add summaries for news articles
-// !todo:high - allow users to toggle summary level
-// !todo:high - add news posts to pinia store
+// !todo:high - allow news to toggle summary level
 // !todo:med - add loaders for news posts
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
-const dataFinished = ref(false)
-const allData = ref([])
-const pagination = reactive({ from: 0, to: 19, limit: 20 })
 
-const countDuplicatePosts = (data) => {
-  const ids = data.map((item) => item.id)
-  const uniqueIds = new Set(ids)
-  return ids.length - uniqueIds.size
-}
+const newsStore = useNewsStore()
+const { news } = storeToRefs(newsStore)
+const haveNews = computed(() => news.value.length > 0)
 
-const { error, pending, refresh } = await useAsyncData('news', async () => {
-  const { news } = await $fetch('/api/news/all', {
-    query: { from: pagination.from, to: pagination.to }
-  })
+const paginationStore = usePaginationStore()
 
-  console.log('fired again')
-
-  if (!news || !news.length || news.length < pagination.limit) {
-    console.log('dataFinished', news?.length, pagination.to, pagination.from)
-    dataFinished.value = true
+const fetchInput = ref({
+  storeKey: 'newsStore',
+  endpoint: '/api/news/many',
+  criteria: {
+    dto: 'select:news:card',
+    pagination: paginationStore.getPaginationRange('newsStore'),
+    filters: [
+      {
+        type: 'eq',
+        field: 'source',
+        value: 'nasa'
+      }
+    ]
   }
-
-  if (!news || !news.length) {
-    return
-  }
-
-  // these are 0 indexed
-  pagination.from += pagination.limit
-  pagination.to += pagination.limit
-  await new Promise((resolve) => setTimeout(resolve, 1200))
-  allData.value.push(...news)
-  console.log('Duplicates', allData.value.length, countDuplicatePosts(allData.value))
 })
 
-if (error.value) {
-  console.error(error.value)
-}
+watchEffect(() => {
+  if (haveNews.value === false) {
+    console.log('Fetching news')
+    newsStore.loadNews(fetchInput.value)
+  }
+})
+
+console.log('news', news)
 
 definePageMeta({
   name: 'News',
@@ -49,18 +42,27 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex flex-col relative h-full w-full">
+  <div class="flex flex-col relative h-full w-full md:gap-4 xl:gap-8">
+    <BaseFilter data-type="news" />
     <!-- <NewsSummaryLevel /> -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      <NewsCard
-        v-for="(news, i) in allData"
-        :key="`news-post-${i}`"
-        :news="news"
-      />
-    </div>
-    <AppDetectBottom
-      v-show="!dataFinished && !pending"
-      @bottom-trigger="refresh"
-    />
+    <BaseInfiniteScroll
+      store-key="newsStore"
+      :pagination="{
+        page: 1,
+        limit: 10
+      }"
+      @update:scroll-end="newsStore.loadNews(fetchInput)"
+    >
+      <div
+        v-if="haveNews"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
+      >
+        <NewsCard
+          v-for="(item, i) in news"
+          :key="`news-post-${i}`"
+          :news="item"
+        />
+      </div>
+    </BaseInfiniteScroll>
   </div>
 </template>

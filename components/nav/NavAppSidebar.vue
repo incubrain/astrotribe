@@ -2,25 +2,17 @@
   <PrimeMenu
     :model="pages"
     :pt="{
-      root: 'h-full flex flex-col rounded-none border-color',
+      root: 'h-full flex flex-col rounded-none border-none p-0',
       menu: 'pt-8'
     }"
   >
     <template #start>
-      <div class="pt-4 px-2">
+      <div class="min-h-[60px] flex justify-end items-center p-3">
         <NuxtLink
           to="/"
-          class="items-center gap-2 flex"
+          class="items-center justify-end gap-2 flex"
         >
-          <div
-            class="p-1 h-[28px] w-[28px] md:h-[38px] md:w-[38px] bg-white rounded-full overflow-hidden border"
-          >
-            <NuxtImg
-              src="/astronera-logo.jpg"
-              class="w-full h-full dark:opacity-90"
-            />
-          </div>
-          <h1 class="pl-2 text-xl font-bold cursor-pointer leading-none tracking-normal">
+          <h1 class="text-lg font-bold cursor-pointer leading-none tracking-normal flex">
             ASTRO
             <strong class="text-highlight"> TRIBE </strong>
           </h1>

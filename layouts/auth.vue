@@ -1,17 +1,18 @@
 <script setup lang="ts">
-// !todo:consider - add a delay to function execution, fade out the auth cards so the bg image is fully visible for a few seconds, then execute
-// !todo:med - add transitions to the auth cards
-// !todo:high - add subtitle prompt to all auth cards
-// !todo:med - add "or" between email login and social login
+// !todo:consider:2 - add a delay to function execution, fade out the auth cards so the bg image is fully visible for a few seconds, then execute
+// !todo:low:1 - add transitions to the auth cards
+// !todo:high:1 - add subtitle prompt to all auth cards
+// !todo:med:1 - add "or" between email login and social login
+// !todo:med:2 - handle session expired, redirect to login with explanation
 </script>
 <template>
   <div class="w-full p-8 min-h-screen flex justify-center items-center">
-    <NavTop />
-    <div class="relative z-20">
+    <NavTop is-compact />
+    <div class="relative z-20 p-4 min-w-[340px] w-full max-w-[480px]">
       <slot />
     </div>
     <div class="h-full flex absolute top-0 left-0 w-full overflow-hidden">
-      <div class="dark:bg-black/30 absolute w-full h-full left-0 top-0" />
+      <div class="bg-black/40 absolute w-full h-full left-0 top-0" />
       <NuxtImg
         src="/astron-era-hero.jpg"
         alt=""

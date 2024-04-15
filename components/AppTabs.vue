@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+// todo:high:2 - convert this to a base component
 const route = useRoute()
 const { tabs } = usePages()
 
