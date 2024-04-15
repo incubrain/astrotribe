@@ -102,7 +102,7 @@ export default function useAdmin() {
 
   async function updateManyUsers() {
     // first fetch all users from the database
-    const { data, error } = await client.from('users').select('*')
+    const { data, error } = await client.from('user_profiles').select('*')
     if (error) {
       throw createError(`error fetching users: ${error.message}`)
     }
@@ -126,7 +126,7 @@ export default function useAdmin() {
   async function updateSingle(userData: UserRowType, userId: string) {
     try {
       const { data, error } = await client
-        .from('users')
+        .from('user_profiles')
         .update({ given_name: userData.given_name, surname: userData.surname })
         .eq('id', userId)
         .select()
