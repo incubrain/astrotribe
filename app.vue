@@ -18,9 +18,12 @@ useHead({
   ]
 })
 
+// infra:med:med:2 setup feature flags for posthog
 // !todo:med - add styling to the toasts, specifically dark mode
 // !todo:med - add a version of this logger to the server using consola, pino or winston logger
 // todo:med - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
+// todo:critical:med - add pagination util for the server, should have the state stored in app state
+
 </script>
 
 <template>
