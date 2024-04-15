@@ -1976,13 +1976,6 @@ INSERT INTO "public"."tags" ("id", "title", "created_at", "updated_at", "body") 
 --
 
 
-
---
--- Data for Name: register_interest; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
 --
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2215,12 +2208,6 @@ SELECT pg_catalog.setval('"public"."news_id_seq"', 2354, true);
 
 SELECT pg_catalog.setval('"public"."news_tags_id_seq"', 1, false);
 
-
---
--- Name: register_interest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."register_interest_id_seq"', 1, false);
 
 
 --

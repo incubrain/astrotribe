@@ -1,4 +1,5 @@
 # A string used to distinguish different Supabase projects on the same host. Defaults to the
+
 # working directory name when running `supabase init`.
 project_id = "astrotribe"
 
@@ -67,6 +68,27 @@ enabled = true
 # The maximum file size allowed (e.g. "5MB", "500KB").
 file_size_limit = "50MiB"
 
+# infra:high:hard:4 add the ability for users to view as guests, 
+# design:critical:hard:12 - add role based access control to the database for the user roles
+# https://mannylara.medium.com/rbac-enforced-by-rls-in-supabase-bc6e98ff9cc3
+# https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac
+# https://lasse-skaalum.medium.com/implementing-rbac-with-next-js-and-supabase-5dd20adaaeba
+# https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-slack-clone
+# https://github.com/supabase-community/supabase-custom-claims
+# logic:high:med:2 - use social login metadata to populate user profiles
+#  Linkedin returns this metadata:
+# "iss": "https://www.linkedin.com",
+# "sub": "hQfa_HISo7",
+# "name": "full name",
+# "email": "myemail@gmail.com",
+# "locale": "en_US",
+# "picture": "https://media.licdn.com/dms/image/D4D03AQE7S77JxVf6uQ/profile-displayphoto-shrink_100_100/0/1678109223064?e=2147483647&v=beta&t=btGs399dJp6PMGOAb8A2Q-yngrKo6mPQNLHRNSW_eMc",
+# "given_name": "first",
+# "family_name": "given",
+# "provider_id": "hQfa_HISo7",
+# "email_verified": true,
+# "phone_verified": false
+# store cookie and ask them to signup after it has expired, save the ip in database incase cookie is cleanded.
 [auth]
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
