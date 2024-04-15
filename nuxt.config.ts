@@ -70,7 +70,7 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['stores', 'data']
+    dirs: ['composables/**']
   },
 
   modules: MODULES,
