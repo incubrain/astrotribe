@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import logger from '../utils/logger'
+import { logger } from '../utils/logger'
 
 export const NasaImgSchema = z.object({
   title: z.string(),

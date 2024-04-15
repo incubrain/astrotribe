@@ -5,11 +5,11 @@ export default defineEventHandler(async () => {
   try {
     const storage = useStorage('blogs')
     const blogs = await storage.getItem<NewsCardT[]>('summary-test.json')
-    if (!blogs) throw createError('No blogs found')
+    if (!blogs) throw createError({ message: 'No blogs found'})
     for (let i = 0; i < blogs.length; i++) {
-      if (blogs[i].raw.body === undefined) throw createError('Error no raw body')
+      if (blogs[i].raw.body === undefined) throw createError({ message: 'Error no raw body'})
       const embeddings = await generateEmbeddings(blogs[i].raw.body)
-      if (embeddings === undefined) throw createError('Error generating embedding')
+      if (embeddings === undefined) throw createError({ message: 'Error generating embedding'})
       blogs[i].embedding = embeddings
     }
 
