@@ -1,8 +1,9 @@
+import type { FuncConfig, GenericReturn } from '../base.interface'
 import { User } from './user.model'
 
 export interface IUserRepository {
-  findById(id: string): Promise<User | null>
-  create(user: User): Promise<User>
-  update(user: User): Promise<User>
-  delete(id: string): Promise<void>
+  selectUserCards(config: FuncConfig<{}>): GenericReturn<User>
+  selectUserProfile(config: FuncConfig<{}>): GenericReturn<User>
+  selectUserSettings(config: FuncConfig<{}>): GenericReturn<User>
+  updateUserProfile(config: FuncConfig<User>): GenericReturn<User>
 }

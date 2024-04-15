@@ -1,95 +1,66 @@
 import { BaseRepository } from '../base.repository'
+import type { FuncConfig, GenericReturn } from '../base.interface'
 import { IUserRepository } from './user.interface'
 import { User } from './user.model'
+import { UserDTO } from './user.dto'
 
 export class UserRepository extends BaseRepository<User> implements IUserRepository {
+  dto = new UserDTO()
   constructor() {
-    super('UserRepository')
+    super({ loggerPrefix: 'UserRepository', tableName: 'user_profiles' })
   }
 
-  findById(id: string): Promise<User | null> {
-    return this.clientQuery(async (client) => {
-      this.logger.info(`Finding user by ID: ${id}`)
-      const response = await client.from('users').select('*').eq('id', id).single()
-      const data = this.handleErrors(response)
-      // validate data
+  async selectUserCards(config: FuncConfig<{}>): GenericReturn<User> {
+    this.logger.info(`selectUserCards ${config.dto}`)
 
-      // format data
+    this.logger.debug('selectUserCards config: ', config)
+    const data = await this.select({
+      operation: 'select',
+      criteria: {
+        select: this.dto.getSelect(config.dto),
+        ...config.criteria
+      }
+    })
+    this.logger.debug('selectUserCards data: ', data.length)
+    const newCards = data.map((card) => new User(card))
+    return this.dto.validateAndFormatData({ data: newCards, dto: config.dto })
+  }
 
-      // return data
-      return data
-        ? new User(
-          data.id,
-          data.email,
-          data.password,
-          data.first_name,
-          data.last_name,
-          data.roles,
-          data.cover_image,
-          data.avatar,
-          data.introduction,
-          data.quote,
-          data.role,
-          data.last_seen
-        )
-        : null
+  async selectUserProfile(config: FuncConfig<{}>): GenericReturn<User> {
+    this.logger.debug(`selectUserProfile ${config.dto}`)
+    const data = await this.select({
+      operation: 'select',
+      criteria: {
+        select: this.dto.getSelect(config.dto),
+        ...config.criteria
+      }
+    })
+
+    this.logger.debug(`selectUserProfile data: ${data.id}`)
+    const newProfile = new User(data)
+    this.logger.debug(`selectUserProfile newProfile: ${newProfile.id}`)
+    return this.dto.validateAndFormatData({ data: newProfile, dto: config.dto })
+  }
+
+  async selectUserSettings(config: FuncConfig<{}>): GenericReturn<User> {
+    this.logger.info('selectUserSettings', config.dto)
+    return await this.select({
+      operation: 'select',
+      criteria: {
+        select: this.dto.getSelect(config.dto),
+        ...config.criteria
+      }
     })
   }
 
-  create(user: User): Promise<User> {
-    return this.clientQuery(async (client) => {
-      const response = await client.from('users').upsert([user])
-      const data = this.handleErrors(response)
-      return data
-        ? new User(
-          data.id,
-          data.email,
-          data.password,
-          data.first_name,
-          data.last_name,
-          data.roles,
-          data.cover_image,
-          data.avatar,
-          data.introduction,
-          data.quote,
-          data.role,
-          data.last_seen
-        )
-        : null
-    })
-  }
-
-  update(user: User): Promise<User> {
-    return this.clientQuery(async (client) => {
-      this.logger.info(`Updating user with ID: ${user.id}`)
-      const response = await client.from('users').update(user).eq('id', user.id)
-      const data = this.handleErrors(response)
-
-      // format data[0]? or data
-      return data
-        ? new User(
-          data.id,
-          data.email,
-          data.password,
-          data.first_name,
-          data.last_name,
-          data.roles,
-          data.cover_image,
-          data.avatar,
-          data.introduction,
-          data.quote,
-          data.role,
-          data.last_seen
-        )
-        : null
-    })
-  }
-
-  delete(id: string): Promise<void> {
-    return this.clientQuery(async (client) => {
-      this.logger.info(`Deleting user with ID: ${id}`)
-      const response = await client.from('users').delete().eq('id', id)
-      this.handleErrors(response)
+  async updateUserProfile(config: FuncConfig<User>): GenericReturn<User> {
+    this.logger.info('updateUserProfile')
+    return await this.update({
+      operation: 'update',
+      data: config.data!,
+      criteria: {
+        ...config.criteria
+      }
     })
   }
 }
