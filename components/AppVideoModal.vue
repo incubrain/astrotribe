@@ -71,6 +71,8 @@ defineProps({
     })
   }
 })
+
+// todo:med:easy - make the modal a base component
 </script>
 
 <style></style>

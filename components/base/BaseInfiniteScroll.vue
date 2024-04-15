@@ -1,88 +1,63 @@
-<template>
-  <div
-    ref="scrollContainer"
-    class="feed-container"
-  >
-    <div
-      v-for="item in data"
-      :key="item.id"
-      class="feed-item"
-    >
-      {{ item.content }}
-    </div>
-    <div v-if="isLoading">Loading more...</div>
-  </div>
-</template>
-
 <script setup lang="ts">
-
-// todo:high:1 - implement and test on component
-type InfiniteScrollConfig = {
-  setPageSize: number
-  setPageNumber: number
-}
+import type { StoreKey } from '@/composables/base/pagination.base.store'
 
 const props = defineProps({
-  apiUrl: {
-    type: String,
+  pagination: {
+    type: Object as PropType<{ page: number; limit: number }>,
     required: true
   },
-  config: {
-    type: Object,
-    default: PropType<InfiniteScrollConfig>
+  storeKey: {
+    type: String as PropType<StoreKey>,
+    required: true
   }
 })
 
-const page = ref(1)
-const pageSize = 10
-const scrollContainer = ref(null)
+const paginationStore = usePaginationStore()
 
-const { data, pending, refresh } = useAsyncData('posts', () =>
-  fetch(`${props.apiUrl}?page=${page.value}&limit=${pageSize}`).then((res) => res.json())
+watch(
+  props,
+  () => {
+    paginationStore.initPagination({ storeKey: props.storeKey, pagination: props.pagination })
+  },
+  { immediate: true, deep: true }
 )
 
-const isLoading = ref(false)
-watch(pending, (newVal) => {
-  isLoading.value = newVal
+onMounted(() => {
+  paginationStore.initPagination({ storeKey: props.storeKey, pagination: props.pagination })
 })
 
-function loadMore() {
-  if (!isLoading.value) {
-    page.value++
-    refresh()
-  }
-}
-
-watch(scrollContainer, (newContainer, oldContainer) => {
+const emit = defineEmits(['update:scrollEnd'])
+const scrollContainer = ref(null)
+onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       if (entries.some((entry) => entry.isIntersecting)) {
-        loadMore()
+        emit('update:scrollEnd')
       }
     },
     {
       root: null,
-      threshold: 0.5 // When 100% of the observer is visible
+      threshold: 1
     }
   )
 
-  if (oldContainer) {
-    observer.unobserve(oldContainer)
+  if (scrollContainer.value) {
+    observer.observe(scrollContainer.value)
   }
-  if (newContainer) {
-    observer.observe(newContainer)
-  }
+
+  // Cleanup observer on component unmount
+  onUnmounted(() => {
+    if (scrollContainer.value) {
+      observer.unobserve(scrollContainer.value)
+    }
+  })
 })
 </script>
 
-<style scoped>
-.feed-container {
-  display: flex;
-  flex-direction: column;
-}
-.feed-item {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-</style>
+<template>
+  <div>
+    <slot />
+    <div ref="scrollContainer" />
+  </div>
+</template>
+<style></style>

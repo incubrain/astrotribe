@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full flex justify-center items-center foreground pb-12 pt-28">
     <div class="flex flex-col max-w-4xl">
-      <Breadcrumbs class="py-4 px-4" />
+      <BaseBreadcrumbs class="py-4 px-4" />
       <NuxtImg
         :src="`images/blog/${article.category}/${article.featured_image}`"
         class="md:rounded-md relative"
@@ -32,11 +32,11 @@
       <div
         class="flex relative z-10 gap-8 flex-col items-start mx-auto w-full rounded-md max-w-[740px] pt-8 padded-x"
       >
-        <h1 class="text-4xl lg:text-5xl font-semibold font-[Oswald] lg:text-center">
+        <h1 class="text-4xl xl:text-5xl font-semibold font-[Oswald] lg:text-center">
           {{ article.title }}
         </h1>
         <div
-          class="w-full p-4 lg:p-8 rounded-md border border-color bg-primary-50 dark:bg-primary-950"
+          class="w-full p-4 xl:p-8 rounded-md border border-color bg-primary-50 dark:bg-primary-950"
         >
           <p class="text-xl">
             {{ article.description }}

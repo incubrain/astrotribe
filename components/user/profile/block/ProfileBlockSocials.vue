@@ -62,7 +62,7 @@ const socialIcon = (icon: string): string => {
       iconName = 'reddit'
       break
     default:
-      throw new Error('Invalid social media name')
+      throw createError({ message: 'Invalid social media name' })
   }
   return iconName
 }

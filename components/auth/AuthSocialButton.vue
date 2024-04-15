@@ -16,14 +16,19 @@ const socialLogin = () => {
 </script>
 
 <template>
-  <PrimeButton @click="socialLogin">
+  <PrimeButton
+    :pt="{
+      root: 'p-2'
+    }"
+    @click="socialLogin"
+  >
     <span>
       <Icon
         class="flex justify-center items-center"
         :name="`mdi:${provider}`"
-        width="28px"
+        width="30px"
+        height="30px"
       />
-      Sign in with {{ provider.charAt(0).toUpperCase() + provider.slice(1) }}
     </span>
   </PrimeButton>
 </template>

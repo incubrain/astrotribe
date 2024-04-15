@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const form = reactive({
   email: '',
-  password: ''
+  password: '',
+  rememberMe: false
 })
 
 // type Provider = 'twitter' | 'linkedin' | 'email'
@@ -39,67 +40,74 @@ definePageMeta({
 </script>
 
 <template>
-  <PrimeCard>
-    <template #title>
-      <h2 class="text-2xl text-center"> Sign In </h2>
-    </template>
+  <AuthCard
+    :title="{
+      main: 'Login to AstronEra',
+      subtitle: 'Don\'t have an account?',
+      label: 'Sign in.'
+    }"
+    help-url="/auth/login"
+  >
     <template #content>
-      <div class="flex flex-col gap-4 xl:gap-6">
-        <PrimeFloatLabel class="flex flex-col w-full">
-          <PrimeInputText
-            id="username"
-            v-model="form.email"
-          />
-          <label for="username">Username</label>
-        </PrimeFloatLabel>
-        <PrimeFloatLabel>
-          <PrimePassword
-            id="password"
-            v-model="form.password"
-            class="flex flex-col relative"
-          >
-            <template #header>
-              <h6>Pick a password</h6>
-            </template>
-            <template #footer>
-              <PrimeDivider />
-              <p class="mt-2">Suggestions</p>
-              <ul
-                class="pl-2 ml-2 mt-0"
-                style="line-height: 1.5"
-              >
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>Minimum 8 characters</li>
-              </ul>
-            </template>
-          </PrimePassword>
-          <label for="password">Password</label>
-        </PrimeFloatLabel>
+      <PrimeFloatLabel class="flex flex-col w-full">
+        <PrimeInputText
+          id="username"
+          v-model="form.email"
+        />
+        <label for="username">Username</label>
+      </PrimeFloatLabel>
 
-        <PrimeButton
-          class="justify-center"
-          @click="auth.loginWithEmail(form.email, form.password)"
-        >
-          Sign in with email
-        </PrimeButton>
-        <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
-          <AuthSocialButton
-            provider="twitter"
-            @social-login="auth.loginSocial('twitter')"
+      <PrimeFloatLabel>
+        <FormPassword v-model="form.password" />
+        <label for="password">Password</label>
+      </PrimeFloatLabel>
+
+      <div class="w-full py-2 flex justify-between">
+        <div class="flex gap-2 items-center">
+          <PrimeCheckbox
+            v-model="form.rememberMe"
+            :binary="true"
+            value="newsletter"
           />
-          <AuthSocialButton
-            provider="linkedin"
-            @social-login="auth.loginSocial('linkedin_oidc')"
-          />
+          <label
+            for="ingredient1"
+            class="text-sm"
+          >
+            Newsletter signup
+          </label>
         </div>
+
+        <p class="text-sm">
+          <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
+        </p>
       </div>
+
+      <PrimeButton
+        class="justify-center"
+        @click="auth.loginWithEmail(form.email, form.password)"
+      >
+        Sign in with email
+      </PrimeButton>
     </template>
     <template #footer>
-      <p class="mt-4 text-sm text-center">
-        <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
-      </p>
+      <div class="w-full">
+        <PrimeDivider
+          layout="horizontal"
+          class="flex justify-left items-center"
+        >
+          <p>Or continue with</p>
+        </PrimeDivider>
+      </div>
+      <div class="flex gap-4 xl:gap-6 w-full pt-4">
+        <AuthSocialButton
+          provider="twitter"
+          @social-login="auth.loginSocial('twitter')"
+        />
+        <AuthSocialButton
+          provider="linkedin"
+          @social-login="auth.loginSocial('linkedin_oidc')"
+        />
+      </div>
     </template>
-  </PrimeCard>
+  </AuthCard>
 </template>

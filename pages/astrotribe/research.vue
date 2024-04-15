@@ -1,51 +1,52 @@
-<template>
-  <div class="flex flex-col relative h-full w-full">
-    <!-- <SummaryLevel /> -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      <ResearchCard
-        v-for="(research, i) in allData"
-        :key="`research-post-${i}`"
-        :research="research"
-      />
-    </div>
-    <AppDetectBottom
-      v-show="!dataFinished && !pending"
-      @bottom-trigger="refresh"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
-const dataFinished = ref(false)
-const allData = ref([])
-const pagination = reactive({ skip: 0, limit: 19 })
+const researchStore = useResearchStore()
+const { research } = storeToRefs(researchStore)
+const haveResearch = computed(() => research.value.length > 0)
 
-const { error, pending, refresh } = await useAsyncData('research', async (): Promise<void> => {
-  const { research, error } = await $fetch('/api/research/all', {
-    query: { skip: pagination.skip, limit: pagination.limit }
-  })
+const paginationStore = usePaginationStore()
 
-  if (error) {
-    console.error(error)
-    return
+const fetchInput = ref({
+  storeKey: 'researchStore',
+  endpoint: '/api/research/many',
+  criteria: {
+    dto: 'select:research:card',
+    pagination: paginationStore.getPaginationRange('researchStore')
   }
-
-  if (!research.length || research.length < pagination.limit) {
-    dataFinished.value = true
-    return
-  }
-
-  pagination.skip += pagination.limit
-  await new Promise((resolve) => setTimeout(resolve, 1200))
-  allData.value.push(...research)
 })
 
-if (error.value) {
-  console.error(error.value)
-}
+watchEffect(() => {
+  if (haveResearch.value === false) {
+    console.log('Fetching research')
+    researchStore.loadResearch(fetchInput.value)
+  }
+})
+
+console.log('research', research)
 
 definePageMeta({
   name: 'Research',
   layout: 'app'
 })
 </script>
+
+<template>
+  <div class="flex flex-col relative h-full w-full">
+    <!-- <SummaryLevel /> -->
+    <BaseInfiniteScroll
+      store-key="researchStore"
+      :pagination="{
+        page: 1,
+        limit: 10
+      }"
+      @update:scroll-end="researchStore.loadResearch('select:venue:card')"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
+        <ResearchCard
+          v-for="(item, index) in research"
+          :key="`research-post-${index}`"
+          :research="item"
+        />
+      </div>
+    </BaseInfiniteScroll>
+  </div>
+</template>

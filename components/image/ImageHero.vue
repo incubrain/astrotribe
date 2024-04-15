@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TitleT, ImageT } from '~/types/content'
+import type { TitleType, ImageType } from '~/types/content'
 
 defineProps({
   fit: {
@@ -11,11 +11,11 @@ defineProps({
     default: 'center'
   },
   title: {
-    type: Object as () => TitleT,
+    type: Object as () => TitleType,
     required: true
   },
   img: {
-    type: Object as () => ImageT,
+    type: Object as () => ImageType,
     required: true
   }
 })
