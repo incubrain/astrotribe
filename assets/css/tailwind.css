@@ -49,6 +49,10 @@
     @apply text-zinc-800  dark:text-zinc-300  bg-[var(--surface-ground)];
   }
 
+  .link-active {
+    @apply text-[var(--primary-color)] underline underline-offset-4;
+  }
+
   .text-highlight {
     @apply text-[var(--primary-color)];
   }
