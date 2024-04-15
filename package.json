@@ -8,8 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "",
-    "supa:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
+    "gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:lint": "supabase db lint",
+    "supa:migrate": "supabase db diff -f",
     "lint": "eslint . --ext .ts,.js,.vue",
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },
@@ -54,7 +55,7 @@
     "typescript": "^5.1.6",
     "vee-validate": "^4.9.6",
     "vue-tsc": "^1.8.8",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
