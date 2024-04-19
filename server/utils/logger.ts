@@ -36,7 +36,7 @@ export const logger = winston.createLogger({
   format,
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: './data/logs/combined.log' })
+    // new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
+    // new winston.transports.File({ filename: './data/logs/combined.log' })
   ]
 }) as winston.Logger & Record<keyof typeof logLevels, winston.LeveledLogMethod>
