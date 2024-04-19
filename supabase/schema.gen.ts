@@ -34,13 +34,13 @@ export type Database = {
           city_id: number
           company_id: number | null
           country_id: number
+          created_at: string | null
           id: number
           is_primary: boolean | null
           name: string | null
-          postal_code: string | null
-          state: string | null
           street1: string
           street2: string | null
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
@@ -48,13 +48,13 @@ export type Database = {
           city_id: number
           company_id?: number | null
           country_id: number
+          created_at?: string | null
           id?: number
           is_primary?: boolean | null
           name?: string | null
-          postal_code?: string | null
-          state?: string | null
           street1: string
           street2?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
@@ -62,13 +62,13 @@ export type Database = {
           city_id?: number
           company_id?: number | null
           country_id?: number
+          created_at?: string | null
           id?: number
           is_primary?: boolean | null
           name?: string | null
-          postal_code?: string | null
-          state?: string | null
           street1?: string
           street2?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
@@ -128,16 +128,19 @@ export type Database = {
           country_id: number
           id: number
           name: string
+          state: string | null
         }
         Insert: {
           country_id: number
           id?: number
           name: string
+          state?: string | null
         }
         Update: {
           country_id?: number
           id?: number
           name?: string
+          state?: string | null
         }
         Relationships: [
           {
@@ -151,76 +154,51 @@ export type Database = {
       }
       companies: {
         Row: {
-          address_id: number | null
-          blog_url: string | null
           category_id: number | null
           created_at: string | null
           description: string | null
-          email: string | null
-          events_page_url: string | null
           founding_year: number | null
           id: number
           is_government: boolean
-          jobs_page_url: string | null
           last_scraped_at: string | null
           logo_url: string | null
           name: string
-          phone: string | null
           scrape_frequency: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id: number | null
           updated_at: string | null
-          website_url: string | null
+          website_url: string
         }
         Insert: {
-          address_id?: number | null
-          blog_url?: string | null
           category_id?: number | null
           created_at?: string | null
           description?: string | null
-          email?: string | null
-          events_page_url?: string | null
           founding_year?: number | null
           id?: number
           is_government?: boolean
-          jobs_page_url?: string | null
           last_scraped_at?: string | null
           logo_url?: string | null
           name: string
-          phone?: string | null
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url?: string | null
+          website_url: string
         }
         Update: {
-          address_id?: number | null
-          blog_url?: string | null
           category_id?: number | null
           created_at?: string | null
           description?: string | null
-          email?: string | null
-          events_page_url?: string | null
           founding_year?: number | null
           id?: number
           is_government?: boolean
-          jobs_page_url?: string | null
           last_scraped_at?: string | null
           logo_url?: string | null
           name?: string
-          phone?: string | null
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url?: string | null
+          website_url?: string
         }
         Relationships: [
-          {
-            foreignKeyName: 'fk_address'
-            columns: ['address_id']
-            isOneToOne: false
-            referencedRelation: 'addresses'
-            referencedColumns: ['id']
-          },
           {
             foreignKeyName: 'fk_category'
             columns: ['category_id']
@@ -237,18 +215,112 @@ export type Database = {
           }
         ]
       }
+      company_employees: {
+        Row: {
+          access_level: Database['public']['Enums']['access_level']
+          company_id: number
+          created_at: string | null
+          end_date: string | null
+          job_description: string | null
+          role: string
+          start_date: string | null
+          status: boolean | null
+          updated_at: string | null
+          user_profile_id: string
+        }
+        Insert: {
+          access_level?: Database['public']['Enums']['access_level']
+          company_id: number
+          created_at?: string | null
+          end_date?: string | null
+          job_description?: string | null
+          role: string
+          start_date?: string | null
+          status?: boolean | null
+          updated_at?: string | null
+          user_profile_id: string
+        }
+        Update: {
+          access_level?: Database['public']['Enums']['access_level']
+          company_id?: number
+          created_at?: string | null
+          end_date?: string | null
+          job_description?: string | null
+          role?: string
+          start_date?: string | null
+          status?: boolean | null
+          updated_at?: string | null
+          user_profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_employees_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_user_profile_id_fkey'
+            columns: ['user_profile_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_news: {
+        Row: {
+          company_id: number
+          created_at: string | null
+          importance_level: Database['public']['Enums']['news_importance_level'] | null
+          news_id: number
+          relation_type: Database['public']['Enums']['news_relation_type']
+          updated_at: string | null
+        }
+        Insert: {
+          company_id: number
+          created_at?: string | null
+          importance_level?: Database['public']['Enums']['news_importance_level'] | null
+          news_id: number
+          relation_type: Database['public']['Enums']['news_relation_type']
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: number
+          created_at?: string | null
+          importance_level?: Database['public']['Enums']['news_importance_level'] | null
+          news_id?: number
+          relation_type?: Database['public']['Enums']['news_relation_type']
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_news_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_news_news_id_fkey'
+            columns: ['news_id']
+            isOneToOne: false
+            referencedRelation: 'news'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       contacts: {
         Row: {
           company_id: number | null
           contact_type: Database['public']['Enums']['contact_type'] | null
           created_at: string | null
           email: string | null
-          given_name: string | null
           id: number
-          is_primary: boolean
-          phone_number: string | null
+          is_primary: boolean | null
+          phone: string | null
           privacy_level: Database['public']['Enums']['privacy_level'] | null
-          surname: string | null
           title: string | null
           updated_at: string | null
           user_id: string | null
@@ -258,12 +330,10 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          given_name?: string | null
           id?: number
-          is_primary?: boolean
-          phone_number?: string | null
+          is_primary?: boolean | null
+          phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
-          surname?: string | null
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
@@ -273,12 +343,10 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          given_name?: string | null
           id?: number
-          is_primary?: boolean
-          phone_number?: string | null
+          is_primary?: boolean | null
+          phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
-          surname?: string | null
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
@@ -520,41 +588,36 @@ export type Database = {
       }
       social_media: {
         Row: {
-          company_id: number | null
+          created_at: string | null
           facebook_url: string | null
           id: number
           instagram_url: string | null
           linkedin_url: string | null
           twitter_url: string | null
+          updated_at: string | null
           youtube_url: string | null
         }
         Insert: {
-          company_id?: number | null
+          created_at?: string | null
           facebook_url?: string | null
           id?: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
+          updated_at?: string | null
           youtube_url?: string | null
         }
         Update: {
-          company_id?: number | null
+          created_at?: string | null
           facebook_url?: string | null
           id?: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
+          updated_at?: string | null
           youtube_url?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'public_social_media_company_id_fkey'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       tags: {
         Row: {
@@ -731,6 +794,7 @@ export type Database = {
       }
     }
     Enums: {
+      access_level: 'Viewer' | 'Editor' | 'Admin' | 'Super Admin'
       address_type:
         | 'Residential'
         | 'Headquarters'
@@ -743,6 +807,8 @@ export type Database = {
         | 'Showroom'
         | 'Branch'
       contact_type: 'Personal' | 'Company' | 'Professional' | 'Recruitment' | 'Founder'
+      news_importance_level: 'High' | 'Medium' | 'Low'
+      news_relation_type: 'Source' | 'Topic' | 'Mention'
       privacy_level: 'Private' | 'Connected' | 'Public'
       scrape_frequency:
         | 'FourTimesDaily'

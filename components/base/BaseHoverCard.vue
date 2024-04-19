@@ -30,6 +30,8 @@ onMounted(() => {
   checkScreenSize()
   return () => window.removeEventListener('resize', checkScreenSize)
 })
+
+// ui:med:easy:1 - if there is only one card in the grid row, we need to set min h of 100% to prevent the card from collapsing
 </script>
 
 <template>
