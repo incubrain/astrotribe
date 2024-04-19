@@ -5,7 +5,6 @@ import { logger } from './logger'
 type DTODefinition<T> = {
   name: AllDTOKey
   schema: ZodSchema<T>
-  select: string
 }
 
 type InputDTO = {
@@ -67,3 +66,5 @@ export class BaseDTO<T> {
     return this.dtos
   }
 }
+
+// !infra:high:hard:4 how are we going to handle multiple tablenames, for example the table and a view

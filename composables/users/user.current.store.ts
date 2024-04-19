@@ -15,7 +15,7 @@ export function useCurrentUser() {
       return
     }
 
-    const { message, status, data } = await $fetch('/api/users/single', {
+    const { message, status, data } = await $fetch('/api/users/select/single', {
       method: 'GET',
       headers: useRequestHeaders(['cookie']),
       query: {

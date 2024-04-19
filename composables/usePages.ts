@@ -52,13 +52,13 @@ const pages = ref([
     label: 'News',
     slug: '/astrotribe/news',
     icon: 'mdi:newspaper-variant-outline'
-  },
-  {
-    id: 6,
-    label: 'Research',
-    slug: '/astrotribe/research',
-    icon: 'mdi:library-books'
   }
+  // {
+  //   id: 6,
+  //   label: 'Research',
+  //   slug: '/astrotribe/research',
+  //   icon: 'mdi:library-books'
+  // }
   // {
   //   id: 5,
   //   label: 'Serp',

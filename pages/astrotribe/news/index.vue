@@ -6,25 +6,24 @@
 
 const newsStore = useNewsStore()
 const { news } = storeToRefs(newsStore)
-const haveNews = computed(() => news.value.length > 0)
-
-const paginationStore = usePaginationStore()
+const haveNews = computed(() => news.value !== null && news.value.length > 0)
 
 const fetchInput = ref({
   storeKey: 'newsStore',
-  endpoint: '/api/news/many',
+  endpoint: '/api/news/select/many',
+  pagination: {
+    page: 1,
+    limit: 10
+  },
   criteria: {
     dto: 'select:news:card',
-    pagination: paginationStore.getPaginationRange('newsStore'),
-    filters: [
-      {
-        type: 'eq',
-        field: 'source',
-        value: 'nasa'
-      }
-    ]
+    filterBy: {
+      columnName: 'source',
+      operator: 'eq',
+      value: 'nasa'
+    }
   }
-})
+}) as Ref<FetchInput>
 
 watchEffect(() => {
   if (haveNews.value === false) {
@@ -46,11 +45,8 @@ definePageMeta({
     <BaseFilter data-type="news" />
     <!-- <NewsSummaryLevel /> -->
     <BaseInfiniteScroll
-      store-key="newsStore"
-      :pagination="{
-        page: 1,
-        limit: 10
-      }"
+      :store-key="fetchInput.storeKey"
+      :pagination="fetchInput.pagination"
       @update:scroll-end="newsStore.loadNews(fetchInput)"
     >
       <div

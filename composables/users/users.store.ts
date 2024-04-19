@@ -30,7 +30,7 @@ export const useUsersStore = defineStore('usersStore', () => {
       message,
       status,
       data: user
-    } = await $fetch('/api/users/single', {
+    } = await $fetch('/api/users/select/single', {
       method: 'GET',
       headers: useRequestHeaders(['cookie']),
       query: {

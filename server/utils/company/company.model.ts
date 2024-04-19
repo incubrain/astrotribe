@@ -1,33 +1,8 @@
-import { z } from 'zod'
-
-export const SocialMediaSchema = z.object({
-  id: z.number().optional(),
-  facebook_url: z.string().url().optional(),
-  twitter_url: z.string().url().optional(),
-  linkedin_url: z.string().url().optional(),
-  instagram_url: z.string().url().optional()
-})
-
-export const CountrySchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1)
-})
-
-export const CitySchema = z.object({
-  id: z.number().optional(), // Optional for creation
-  name: z.string().min(1),
-  country_id: z.number()
-})
-
-export const AddressSchema = z.object({
-  id: z.number().optional(), // Optional for creation
-  street1: z.string().min(1),
-  street2: z.string().optional(),
-  city_id: z.number(),
-  state: z.string().optional(),
-  postal_code: z.string().optional(),
-  country_id: z.number()
-})
+import { z, ZodError } from 'zod'
+import { datetimeOffset } from '../formatter'
+import { addressSchema, Address } from '../address/address.model'
+import { socialSchema, Social } from '../social/social.model'
+import { contactSchema, Contact } from '../contact/contact.model'
 
 const ScrapeFrequencySchema = z.enum([
   'FourTimesDaily',
@@ -40,63 +15,63 @@ const ScrapeFrequencySchema = z.enum([
 
 export const companySchema = z.object({
   id: z.number().optional(),
-  name: z.string().min(1),
+  name: z.string().min(1).optional(),
   description: z.string().optional(),
   logo_url: z.string().url().optional(),
   website_url: z.string().url().optional(),
   email: z.string().email().optional(),
   phone: z.string().optional(),
-  address_id: z.number(),
   social_media_id: z.number().optional(),
-  jobs_page_url: z.string().url().optional(),
-  events_page_url: z.string().url().optional(),
-  blog_url: z.string().url().optional(),
-  last_scraped_at: z.date().optional(),
-  scrape_frequency: ScrapeFrequencySchema,
-  sector: z.enum(['private', 'government']),
-  category_id: z.number(),
-  created_at: z.date().optional(),
-  updated_at: z.date().optional()
+  last_scraped_at: datetimeOffset().optional,
+  scrape_frequency: ScrapeFrequencySchema.optional(),
+  is_government: z.boolean().optional(),
+  category_id: z.number().optional(),
+  created_at: datetimeOffset().nullish,
+  updated_at: datetimeOffset().nullish,
+  addresses: z.array(addressSchema).optional(),
+  social_media: socialSchema.optional(),
+  contacts: z.array(contactSchema).optional()
 })
 
 export class Company {
-  id: number
-  name: string
-  description: string
-  logo_url: string
-  website_url: string
-  email: string
-  phone: string
-  address_id: number
-  social_media_id: number
-  jobs_page_url: string
-  events_page_url: string
-  blog_url: string
-  last_scraped_at: Date
-  scrape_frequency: 'FourTimesDaily' | 'TwiceDaily' | 'Daily' | 'Weekly' | 'BiWeekly' | 'Monthly'
-  sector: 'private' | 'government'
-  category_id: number
-  created_at: Date
-  updated_at: Date
+  id?: number
+  name?: string
+  description?: string
+  logo_url?: string
+  website_url?: string
+  email?: string
+  phone?: string
+  social_media_id?: number
+  last_scraped_at?: string
+  scrape_frequency?: 'FourTimesDaily' | 'TwiceDaily' | 'Daily' | 'Weekly' | 'BiWeekly' | 'Monthly'
+  is_government?: boolean
+  category_id?: number
+  created_at?: string
+  updated_at?: string
+  addresses?: any[]
+  social_media?: any
+  contacts?: Contact[]
 
   constructor(data: any) {
-    this.id = data.id
-    this.name = data.name
-    this.description = data.description
-    this.logo_url = data.logo_url
-    this.website_url = data.website_url
-    this.email = data.email
-    this.phone = data.phone
-    this.address_id = data.address_id
-    this.social_media_id = data.social_media_id
-    this.jobs_page_url = data.jobs_page_url
-    this.events_page_url = data.events_page_url
-    this.blog_url = data.blog_url
-    this.last_scraped_at = data.last_scraped_at
-    this.scrape_frequency = data.scrape_frequency
-    this.sector = data.sector
-    this.category_id = data.category_id
-    this.created_at = data.created_at
-    this.updated_at = data.updated_at
+    const parsedData = companySchema.parse(data)
+    this.id = parsedData.id ?? undefined
+    this.name = parsedData.name ?? undefined
+    this.description = parsedData.description ?? undefined
+    this.logo_url = parsedData.logo_url ?? undefined
+    this.website_url = parsedData.website_url ?? undefined
+    this.email = parsedData.email ?? undefined
+    this.phone = parsedData.phone ?? undefined
+    this.social_media_id = parsedData.social_media_id ?? undefined
+    this.last_scraped_at = parsedData.last_scraped_at ?? undefined
+    this.scrape_frequency = parsedData.scrape_frequency ?? undefined
+    this.is_government = parsedData.is_government ?? undefined
+    this.category_id = parsedData.category_id ?? undefined
+    this.created_at = parsedData.created_at ?? undefined
+    this.updated_at = parsedData.updated_at ?? undefined
+    this.addresses = parsedData.addresses
+    this.social_media = parsedData.social_media
+    this.contacts = parsedData.contacts
+      ? parsedData.contacts.map((contact: any) => new Contact(contact))
+      : undefined
   }
 }

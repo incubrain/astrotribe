@@ -1,23 +1,21 @@
 <script setup lang="ts">
 const userStore = useUsersStore()
 const { users } = storeToRefs(userStore)
-const haveUsers = computed(() => users.value.length > 0)
+const haveUsers = computed(() => users.value !== null && users.value.length > 0)
 
 const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
-  endpoint: '/api/users/many',
+  endpoint: '/api/users/select/many',
   storeKey: 'usersStore',
   criteria: {
     dto: 'select:user:card',
     pagination: paginationStore.getPaginationRange('usersStore'),
-    filters: [
-      {
-        type: 'eq',
-        field: 'role_id',
-        value: 1
-      }
-    ]
+    filterBy: {
+      columnName: 'role_id',
+      operator: 'eq',
+      value: 1
+    }
   }
 })
 

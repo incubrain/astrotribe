@@ -6,17 +6,10 @@ export default defineEventHandler(async (event) => {
   console.log('get users getQuery', query)
 
   try {
-    if (!Array.isArray(query.filters)) {
-      console.log('is not array')
-      query.filters = [JSON.parse(query.filters)]
-    }
+    const parsedQuery = handleQueryParams(query)
 
-    if (query.pagination) {
-      query.pagination = JSON.parse(query.pagination)
-    }
-
-    const user = new UserRepository()
-    const users = await user.selectUserCards(query)
+    const userRepository = new UserRepository()
+    const users = await userRepository.selectUserCards(parsedQuery)
 
     console.log('user/many data: ', users)
 
@@ -32,7 +25,7 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'Users fetched successfully',
-      data: users
+      data: userRepository.dto.validateAndFormatData({ data: users, dto: parsedQuery.dto })
     }
   } catch (error) {
     console.error('user-cards error', error)

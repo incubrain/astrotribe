@@ -4,17 +4,13 @@ export default defineEventHandler(async (event) => {
   console.log('get user', userId)
   try {
     const client = new UserRepository()
-    const user = await client.selectUserProfile({
-      dto: 'select:user:profile',
-      criteria: {
-        single: true,
-        filters: [
-          {
-            type: 'eq',
-            field: 'id',
-            value: String(userId)
-          }
-        ]
+    const user = await client.selectOne<'user_profiles'>({
+      tableName: 'user_profiles',
+      selectStatement: '*',
+      filterBy: {
+        columnName: 'id',
+        operator: 'eq',
+        value: String(userId)
       }
     })
 
