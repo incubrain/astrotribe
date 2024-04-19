@@ -20,13 +20,13 @@ export default defineEventHandler(async (event) => {
 
     console.log(`attempting to update ${profile.given_name} with id ${userId}`)
     const { data, error } = await client
-      .from('users')
+      .from('user_profiles')
       .update(profile)
       .eq('email', profile.email)
       .select()
 
     if (error) {
-      throw createError(`error updating users: ${error.message}`)
+      throw createError({ message: `error updating users: ${error.message}` })
     }
 
     console.log(`User ${data.email} updated successfully`)

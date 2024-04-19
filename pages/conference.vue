@@ -1,3 +1,14 @@
+<script setup lang="ts">
+definePageMeta({
+  name: 'Conference'
+})
+
+// !todo: low priority - reduce the amount of text at the beginning of the page
+// !todo: low priority - fix the styling of the conference schedule
+// !todo
+// consider: creating a 20-30 second video of the conference to use as the Hero Section
+</script>
+
 <template>
   <div>
     <CommonHero
@@ -26,7 +37,7 @@
     <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
       <ConferenceAbout />
       <div class="flex flex-col gap-6 xl:gap-12">
-        <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
+        <div class="flex flex-col lg:flex-row items-start gap-6 xl:gap-12">
           <div class="space-y-4">
             <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase">
               Conference Summary
@@ -51,7 +62,6 @@
               discussions held and distill key themes for consideration in future in-person
               conferences.
             </p>
-
             <p>
               Moreover, a collaborative endeavor is ongoing to host a dedicated in-person conference
               focusing on "Preserving the Night Sky for Astronomy and Sustainable Development,"
@@ -77,7 +87,7 @@
               href="/conference/full-conference-report.pdf"
               target="_blank"
             >
-              <UButton size="xl"> View Full Conference Report </UButton>
+              <PrimeButton> View Full Conference Report </PrimeButton>
             </a>
           </div>
         </div>
@@ -90,9 +100,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-definePageMeta({
-  name: 'Conference'
-})
-</script>

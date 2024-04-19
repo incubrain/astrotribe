@@ -45,7 +45,7 @@ const callOpenAI = async (
     // Log an error message if the API call fails.
     console.error('Error calling OpenAI API', error)
     // Rethrow the error for further handling.
-    throw error
+    throw createError({ message: error.message || 'Failed to call OpenAI API' })
   }
 }
 

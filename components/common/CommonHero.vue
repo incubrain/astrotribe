@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { TitleT, ImageT } from '@/types/content'
+import type { TitleType, ImageType } from '@/types/content'
 
 defineProps<{
-  title: TitleT
-  img: ImageT
+  title: TitleType
+  img: ImageType
   position: string
 }>()
 </script>

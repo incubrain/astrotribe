@@ -1,18 +1,13 @@
 <template>
   <div class="relative text-base">
     <div class="flex gap-2">
-      <UBadge
-        :label="`Updated ${useDateFormat(updatedAt, 'DD MMM YYYY').value}`"
-        color="primary"
-        variant="subtle"
-        size="sm"
+      <PrimeTag
+        :value="`Updated ${useDateFormat(updatedAt, 'DD MMM YYYY').value}`"
       />
       {{ expanded }}
-      <UBadge
-        :label="`Version ${version}`"
-        color="white"
-        variant="soft"
-        size="sm"
+      <PrimeTag
+        :value="`Version ${version}`"
+        severity="secondary"
       />
     </div>
     <h2 class="text-2xl font-bold py-4 font-[Oswald]">Table of Contents</h2>

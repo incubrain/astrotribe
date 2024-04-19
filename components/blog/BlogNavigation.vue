@@ -10,8 +10,8 @@
     >
       <h3 class="text-sm lg:text-xl font-semibold flex justify-center items-center gap-4">
         <div class="p-5 foreground rounded-full relative items-center justify-center flex">
-          <UIcon
-            name="i-mdi-chevron-left"
+          <Icon
+            name="mdi:chevron-left"
             class="h-5 w-5 lg:h-7 lg:w-7 inline-block shrink-0 absolute"
           />
         </div>
@@ -26,8 +26,8 @@
       <h3 class="text-sm lg:text-xl font-semibold flex justify-between items-center gap-4">
         {{ navigation[1].title }}
         <div class="p-5 foreground rounded-full relative items-center justify-center flex">
-          <UIcon
-            name="i-mdi-chevron-right"
+          <Icon
+            name="mdi:chevron-right"
             class="h-5 w-5 lg:h-7 lg:w-7 inline-block shrink-0 absolute"
           />
         </div>
@@ -41,7 +41,6 @@ const route = useRoute()
 
 const { data: navigation } = await useAsyncData('navigation', () =>
   queryContent()
-  
     .where({ _partial: { $ne: true }, status: 'published' })
     .only(['_path', 'title', 'publishedAt'])
     .sort({ publishedAt: 1 })
