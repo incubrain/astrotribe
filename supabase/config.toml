@@ -69,6 +69,7 @@ enabled = true
 file_size_limit = "50MiB"
 
 # infra:high:hard:4 add the ability for users to view as guests, 
+# bug:med:med:2 - when setting boolean default and nullable it always sets NULL if value is not present
 # design:critical:hard:12 - add role based access control to the database for the user roles
 # https://mannylara.medium.com/rbac-enforced-by-rls-in-supabase-bc6e98ff9cc3
 # https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac
