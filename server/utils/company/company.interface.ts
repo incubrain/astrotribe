@@ -1,28 +1,10 @@
-import type { FuncConfig, UpsertInput } from '../base.interface'
+import type { SelectInput, SelectInput } from '../base.interface'
 import { Company } from './company.model'
 
 export interface ICompanyRepository {
-  selectCompanyCards(config: FuncConfig<{}>): Promise<Company[] | Company>
-  insertCompany(config: UpsertInput<Company>): Promise<void>
+  selectCompanyCards(config: SelectInput<{}>): Promise<Company[]>
+  selectCompanyById(config: SelectInput<{}>): Promise<Company>
 }
-
-// contacts (
-//   id SERIAL PRIMARY KEY,
-//   given_name VARCHAR(100),
-//   surname VARCHAR(100),
-//   title VARCHAR(100),
-//   is_primary BOOLEAN NOT NULL DEFAULT false,  -- Specify NOT NULL and DEFAULT for clarity
-//   email VARCHAR(255),
-//   phone_number VARCHAR(50),
-//   contact_type contact_type,
-//   privacy_level privacy_level,
-//   user_id UUID,  -- Ensure the users table has UUID as the data type for id
-//   company_id INTEGER,  -- Ensure the companies table uses INTEGER for id
-//   created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-//   updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-//   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
-//   CONSTRAINT fk_company FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE SET NULL
-// );
 
 // Private
 // https://space-india.com/

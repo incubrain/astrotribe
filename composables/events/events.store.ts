@@ -18,7 +18,7 @@ export const useEventsStore = defineStore('eventsStore', () => {
       logger.log(`returned ${data.length} events`)
       events.value.push(...data)
     } catch (error) {
-      console.error('Failed to load users:', error)
+      console.error('Failed to load events:', error)
     }
   }
 

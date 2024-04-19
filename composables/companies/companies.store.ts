@@ -55,14 +55,14 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
     logger.log('loadCompanies start')
     try {
       const data = await baseFetch.fetchPaginatedData(input)
-
+      console.log('loadCompanies return', data)
       if (!data) {
         return
       }
       logger.log(`returned ${data.length} companies`)
       companies.value.push(...data)
     } catch (error) {
-      logger.error('Failed to load users:', error)
+      logger.error('Failed to load companies:', error)
     }
   }
 

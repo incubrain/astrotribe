@@ -17,14 +17,14 @@ const paginationStore = usePaginationStore()
 watch(
   props,
   () => {
-    paginationStore.initPagination({ storeKey: props.storeKey, pagination: props.pagination })
+    paginationStore.initPagination({
+      storeKey: props.storeKey,
+      pagination: props.pagination,
+      force: true
+    })
   },
   { immediate: true, deep: true }
 )
-
-onMounted(() => {
-  paginationStore.initPagination({ storeKey: props.storeKey, pagination: props.pagination })
-})
 
 const emit = defineEmits(['update:scrollEnd'])
 const scrollContainer = ref(null)

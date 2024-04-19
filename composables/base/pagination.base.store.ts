@@ -16,6 +16,7 @@ export type PaginationType = {
 export interface PaginationInput {
   storeKey: StoreKey
   pagination: PaginationType
+  force?: boolean
 }
 
 export const usePaginationStore = defineStore('usePaginationStore', () => {
@@ -24,15 +25,18 @@ export const usePaginationStore = defineStore('usePaginationStore', () => {
   const dataFinished = ref({} as Record<StoreKey, boolean>)
 
   function initPagination(input: PaginationInput) {
-    if (!stores[input.storeKey]) {
+    if (!stores[input.storeKey] || input.force) {
+      // -1 for supabase because it is 0 indexed
+      console.log('initPagination', input.force)
       stores[input.storeKey] = { page: input.pagination.page, limit: input.pagination.limit - 1 }
     }
   }
 
   function getPagination(storeKey: StoreKey) {
     if (!stores[storeKey]) {
-      logger.warn(`Pagination settings for '${storeKey}' are not initialized.`)
-      return undefined
+      logger.warn(`Pagination settings for '${storeKey}' is not initialized.`)
+      initPagination({ storeKey, pagination: { page: 1, limit: 10 } })
+      return stores[storeKey]
     }
     return stores[storeKey]
   }
@@ -50,7 +54,6 @@ export const usePaginationStore = defineStore('usePaginationStore', () => {
   }
 
   function incrementPagination(storeKey: StoreKey) {
-    1
     const currentPagination = getPagination(storeKey)
     if (currentPagination) {
       currentPagination.page++
