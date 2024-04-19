@@ -1,5 +1,5 @@
 import { BaseRepository } from '../base.repository'
-import type { FuncConfig, GenericReturn } from '../base.interface'
+import type { UpsertInput, SelectInput, GenericReturn } from '../base.interface'
 import { IResearchRepository } from './research.interface'
 import { Research } from './research.model'
 import { ResearchDTO } from './research.dto'
@@ -7,27 +7,24 @@ import { ResearchDTO } from './research.dto'
 export class ResearchRepository extends BaseRepository<Research> implements IResearchRepository {
   dto = new ResearchDTO()
   constructor() {
-    super({ loggerPrefix: 'ResearchRepository', tableName: 'research' })
+    super({ loggerPrefix: 'ResearchRepository', Model: Research })
   }
 
-  async selectResearchCards(config: FuncConfig<{}>): GenericReturn<Research> {
-    return await this.select({
-      operation: 'select',
-      criteria: {
-        select: this.dto.getSelect(config.dto),
-        ...config
-      }
+  async selectResearchCards(config: SelectInput<{}>): GenericReturn<Research> {
+    return await this.selectMany<'research'>({
+      tableName: 'research',
+      selectStatement: this.dto.getSelect(config.dto),
+      pagination: config.pagination,
+      filterBy: config.filterBy
     })
   }
 
-  async upsertResearchCards(config: FuncConfig<Research>): GenericReturn<Research> {
-    return await this.upsert({
-      operation: 'upsert',
+  async upsertResearchCards(config: UpsertInput<Research>): GenericReturn<Research> {
+    return await this.upsertMany({
+      tableName: 'research',
       data: config.data!,
-      criteria: {
-        conflictFields: ['id'],
-        ignoreDuplicates: false
-      }
+      onConflict: ['id'],
+      ignoreDuplicates: false
     })
   }
 }

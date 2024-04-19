@@ -1,16 +1,16 @@
 import type { StoreKey } from './pagination.base.store'
-import type { QueryFilter } from '@/server/utils/base.interface'
+import type { FilterBy, DBTable } from '@/server/utils/base.interface'
 
 export interface FetchInput {
   storeKey: StoreKey
   endpoint: string
-  config: {
+  pagination?: {
+    page: number
+    limit: number
+  }
+  criteria: {
     dto: string
-    filter?: QueryFilter
-    pagination?: {
-      page: number
-      limit: number
-    }
+    filterBy?: FilterBy<DBTable>
   }
 }
 
@@ -26,8 +26,8 @@ export function useBaseFetch() {
     throw createError({ message: error.message || 'An unknown error occurred' })
   }
 
-  async function fetchPaginatedData(params) {
-    const { storeKey, endpoint, criteria } = params
+  async function fetchPaginatedData(params: FetchInput) {
+    const { storeKey, endpoint, criteria, pagination } = params
 
     if (loading.isLoading(storeKey)) {
       return null
@@ -37,15 +37,20 @@ export function useBaseFetch() {
       return null
     }
 
+    if (!paginationStore.getPagination(storeKey) && pagination) {
+      paginationStore.initPagination({ storeKey, pagination })
+    }
+
     loading.setLoading(storeKey, true)
 
     try {
-      console.log('fetchPaginatedData', storeKey, endpoint, criteria)
+      logger.log('fetchPaginatedData for', storeKey, endpoint, criteria)
       const res = await $fetch(endpoint, {
         method: 'POST',
         headers: useRequestHeaders(['cookie']),
         params: {
-          ...criteria
+          ...criteria,
+          pagination: paginationStore.getPaginationRange(storeKey)
         }
       })
 

@@ -2,13 +2,13 @@
 const eventsStore = useEventsStore()
 const { events } = storeToRefs(eventsStore)
 
-const haveEvents = computed(() => events !== null && events.length > 0)
+const haveEvents = computed(() => events.value !== null && events.value.length > 0)
 
 const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
   storeKey: 'eventsStore',
-  endpoint: '/api/events/many',
+  endpoint: '/api/events/select/many',
   criteria: {
     dto: 'select:events:card',
     pagination: paginationStore.getPaginationRange('eventsStore')

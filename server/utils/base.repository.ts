@@ -2,9 +2,11 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type {
   DeleteInput,
   SelectInput,
+  BaseOperationInput,
+  SelectInput,
+  InsertInput,
   UpdateInput,
   UpsertInput,
-  OperationInput,
   Database,
   TableKey
 } from './base.interface'
@@ -16,20 +18,24 @@ import {
   serverSupabaseUser
 } from '#supabase/server'
 
-interface BaseConstructor {
+interface ModelConstructor<T> {
+  new (data: T): T
+}
+
+interface BaseConstructor<T> {
   loggerPrefix: string
-  tableName: TableKey
+  Model: ModelConstructor<T>
 }
 
 export abstract class BaseRepository<T> {
   private client!: SupabaseClient<Database>
   private clientAdmin!: SupabaseClient<Database>
+  protected Model: ModelConstructor<T>
   protected logger
-  protected tableName: TableKey
 
-  constructor({ loggerPrefix, tableName }: BaseConstructor) {
+  constructor({ loggerPrefix, Model }: BaseConstructor<T>) {
     this.logger = logger.child({ loggerPrefix })
-    this.tableName = tableName
+    this.Model = Model
   }
 
   async initClient() {
@@ -67,83 +73,178 @@ export abstract class BaseRepository<T> {
     return null
   }
 
-  protected async createQueryBuilder({
-    operation,
-    criteria,
-    data
-  }: OperationInput<T>): Promise<any> {
-    this.logger.info('Creating query')
-    await this.initClient()
-    let query = this.client.from(this.tableName)
-
-    switch (operation) {
-      case 'select':
-        query = query.select(criteria.select)
-        break
-      case 'update':
-        query = query.update(data)
-        break
-      case 'delete':
-        query = query.delete()
-        break
-      case 'upsert':
-        query = query.upsert(data, { conflictTarget: criteria.conflictFields })
-        break
+  protected processResponse(data: any): T | T[] {
+    try {
+      return Array.isArray(data) ? data.map((item) => new this.Model(item)) : new this.Model(data)
+    } catch (error) {
+      this.logger.error('Data validation failed', error)
+      throw createError({ message: 'Data validation failed: ' + error.message })
     }
-
-    // Apply filters
-    if (criteria.filters) {
-      this.logger.debug('criteria.filters:', criteria.filters)
-      criteria.filters.forEach((filter) => {
-        this.logger.debug('filter:', filter.type)
-        query = query.eq(filter.field, filter.value)
-      })
-    }
-
-    // Apply pagination
-    if (criteria.pagination) {
-      query = query.range(criteria.pagination.from, criteria.pagination.to)
-    }
-
-    if (criteria.single) {
-      this.logger.info('Single record query')
-      query = query.single()
-    }
-
-    this.logger.info(`Constructed query: ${JSON.stringify(query)}`)
-    return query
   }
 
-  async select(input: SelectInput<T>): Promise<T | T[]> {
-    this.logger.info(`select ${input.criteria.select}`)
-    const response = await this.createQueryBuilder(input)
+  private async constructSelectQuery<K extends TableKey>(
+    client: SupabaseClient<Database>,
+    input: BaseOperationInput<T, K>
+  ) {
+    let query = client.from(input.tableName).select(input.selectStatement)
+    if (input.filterBy) {
+      query = query.filter(
+        String(input.filterBy.columnName),
+        input.filterBy.operator,
+        input.filterBy.value
+      )
+    }
+
+    if (input.pagination) {
+      query = query.range(input.pagination.from, input.pagination.to)
+    }
+
+    if (input.limit) {
+      query = query.limit(input.limit)
+    }
+
+    return await query
+  }
+
+  // DATABASE LOGIC
+
+  async selectOne<K extends TableKey>(input: SelectInput<T, K>): Promise<T | T[]> {
+    this.logger.info(`selectOne ${input.filterBy}`)
+    const response = await this.clientQuery(
+      async (client) =>
+        await client
+          .from(input.tableName)
+          .select(input.selectStatement)
+          .filter(input.filterBy.columnName, input.filterBy.operator, input.filterBy.value)
+          .single()
+    )
     const data = this.handleDBErrors(response)
-    return data
+    return new this.Model(data) as T
   }
 
-  async create(input: CreateInput<T>): Promise<T> {
-    this.logger.info('create')
-    const response = await this.createQueryBuilder(input)
+  async selectMany<K extends TableKey>(input: SelectInput<T, K>): Promise<T[]> {
+    this.logger.info(`selectMany ${input.tableName}`)
+    const response = await this.clientQuery(async (client) => {
+      const query = this.constructSelectQuery<K>(client, input)
+      return await query
+    })
     const data = this.handleDBErrors(response)
-    return data
+    console.log('initial response', data)
+    return this.processResponse(data) as T[]
   }
 
-  async update(input: UpdateInput<T>): Promise<T> {
+  async insertOne<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+    this.logger.info('insert')
+    const response = await this.clientQuery(
+      async (client) => await client.from(input.tableName).insert(input.data)
+    )
+    return this.handleDBErrors(response)
+  }
+
+  async insertOneRestricted<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+    this.logger.info('insert')
+    const response = await this.clientQueryAdmin(
+      async (client) => await client.from(input.tableName).insert(input.data).select()
+    )
+    return this.handleDBErrors(response)
+  }
+
+  async inserteMany<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+    this.logger.info('insert')
+    const response = await this.clientQuery(
+      async (client) => await client.from(input.tableName).insert(input.data).select()
+    )
+    return this.handleDBErrors(response)
+  }
+
+  async insertManyRestricted<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+    this.logger.info('insert')
+    const response = await this.clientQueryAdmin(
+      async (client) => await client.from(input.tableName).insert(input.data).select()
+    )
+    return this.handleDBErrors(response)
+  }
+
+  async updateById<K extends TableKey>(input: UpdateInput<T, K>): Promise<T> {
     this.logger.info('update')
-    const response = await this.createQueryBuilder(input)
-    const data = this.handleDBErrors(response)
-    return data
+
+    const response = await this.clientQuery(
+      async (client) =>
+        await client
+          .from(input.tableName)
+          .update(input.data)
+          .eq(input.filterBy.columnName, input.filterBy.value)
+    )
+    return this.handleDBErrors(response)
   }
 
-  async upsert(input: UpsertInput<T>): Promise<T> {
+  async updateMany<K extends TableKey>(input: UpdateInput<T, K>): Promise<T> {
+    this.logger.info('update')
+
+    const response = await this.clientQuery(
+      async (client) =>
+        await client
+          .from(input.tableName)
+          .update(input.data)
+          .eq(input.filterBy.columnName, input.filterBy.value)
+    )
+
+    return this.handleDBErrors(response)
+  }
+
+  async upsertOne<K extends TableKey>(input: UpsertInput<T, K>): Promise<T> {
     this.logger.info('upsert')
-    const response = await this.createQueryBuilder(input)
-    const data = this.handleDBErrors(response)
-    return data
+
+    const response = await this.clientQuery(
+      async (client) =>
+        await client.from(input.tableName).upsert(input.data, {
+          onConflict: input.onConflict,
+          ignoreDuplicates: input.ignoreDuplicates
+        })
+    )
+
+    return this.handleDBErrors(response)
   }
 
-  async delete(input: DeleteInput<T>): Promise<void> {
-    const response = await this.createQueryBuilder(input)
-    this.handleDBErrors(response)
+  async upsertMany<K extends TableKey>(input: UpsertInput<T, K>): Promise<T> {
+    this.logger.info('upsertMany')
+
+    const response = await this.clientQuery(
+      async (client) =>
+        await client.from(input.tableName).upsert(input.data, {
+          onConflict: input.onConflict,
+          ignoreDuplicates: input.ignoreDuplicates
+        })
+    )
+
+    return this.handleDBErrors(response)
+  }
+
+  async deleteById<K extends TableKey>(input: DeleteInput<T, K>): Promise<void> {
+    // query = query.delete()
+    const response = await this.clientQuery(
+      async (client) =>
+        await client
+          .from(input.tableName)
+          .delete()
+          .eq(input.filterBy.columnName, input.filterBy.value)
+    )
+
+    return this.handleDBErrors(response)
+  }
+
+  async deleteMany<K extends TableKey>(input: DeleteInput<T, K>): Promise<void> {
+    const response = await this.clientQuery(
+      async (client) =>
+        await client
+          .from(input.tableName)
+          .delete()
+          .eq(input.filterBy.columnName, input.filterBy.value)
+          .select()
+    )
+
+    return this.handleDBErrors(response)
   }
 }
+
+// !logic:low:med:2 - create a constructQuery function that takes multiple filters and applies the .eq() etc functions in a switch

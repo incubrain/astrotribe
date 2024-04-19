@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const researchStore = useResearchStore()
 const { research } = storeToRefs(researchStore)
-const haveResearch = computed(() => research.value.length > 0)
+const haveResearch = computed(() => research.value !== null && research.value.length > 0)
 
 const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
   storeKey: 'researchStore',
-  endpoint: '/api/research/many',
+  endpoint: '/api/research/select/many',
   criteria: {
     dto: 'select:research:card',
     pagination: paginationStore.getPaginationRange('researchStore')

@@ -81,7 +81,7 @@ export class User {
   role_id: number
   roles: Role | null
 
-  constructor(user: any) {
+  constructor(user: User) {
     this.id = user.id
     this.dob = user.dob
     this.email = user.email

@@ -23,7 +23,7 @@ export const useVenuesStore = defineStore('venuesStore', () => {
 
       venues.value.push(...data)
     } catch (error) {
-      console.error('Failed to load users:', error)
+      console.error('Failed to load venues:', error)
     }
   }
 

@@ -2,20 +2,11 @@
 const companiesStore = useCompaniesStore()
 const { companies } = storeToRefs(companiesStore)
 
-const haveCompanies = computed(() => companies !== null && companies.length > 0)
+const haveCompanies = computed(() => companies.value !== null && companies.value.length > 0)
 
 const paginationStore = usePaginationStore()
-
-// 'Residential',
-//  'Headquarters',
-//  'Office',
-//  'Factory',
-//  'Lab',
-//  'Warehouse',
-//  'R&D',
-//  'Retail',
-//  'Showroom',
-//  'Branch'
+// blog_url: 'https://agnikul.in/#/news', // external blogs, just title, link and description
+// jobs_page_url: 'https://agnikul.in/#/career', // annoying dropdowns to select job type and job, no clear date
 
 const firstCompany = {
   name: 'Agnikul Cosmos',
@@ -24,24 +15,37 @@ const firstCompany = {
   founding_year: 2017,
   logo_url: 'https://agnikul.in/static/media/logo.4d8e7f0d.png',
   website_url: 'https://agnikul.in/#/',
-  blog_url: 'https://agnikul.in/#/news', // external blogs, just title, link and description
-  jobs_page_url: 'https://agnikul.in/#/career', // annoying dropdowns to select job type and job, no clear date
   is_government: false,
   category_id: 1,
   last_scraped_at: new Date(),
   scrape_frequency: 'BiWeekly',
   contacts: [
     {
-      type: 'Recruitment',
-      name: 'Srinath Ravichandran',
-      email: 'humancapital@agnikul.in'
+      contact_type: 'Recruitment',
+      title: 'Srinath Ravichandran',
+      email: 'humancapital@agnikul.in',
+      is_primary: false,
+      privacy_level: 'Private'
     },
     {
-      type: 'Company',
-      name: 'Srinath Ravichandran',
+      contact_type: 'Company',
+      title: 'Srinath Ravichandran',
       is_primary: true,
       email: 'curious@agnikul.in',
-      phone: '+91 72472 46334'
+      phone: '+91 72472 46334',
+      privacy_level: 'Public'
+    }
+  ],
+  cities: [
+    {
+      name: 'Thiruvananthapuram',
+      state: 'Kerala',
+      country_id: 1
+    },
+    {
+      name: 'Chennai',
+      state: 'Kerala',
+      country_id: 1
     }
   ],
   addresses: [
@@ -49,10 +53,6 @@ const firstCompany = {
       name: 'Agnikul Cosmos Private Limited.',
       street1: 'Rocket Factory, IIT Madras Research Park',
       street2: '1st Floor, A-Block',
-      city: 'Chennai',
-      state: 'Kerala',
-      country: 'India',
-      postal_code: '600113',
       address_type: 'Factory',
       is_primary: false
     },
@@ -60,12 +60,8 @@ const firstCompany = {
       name: 'Agnikul Cosmos Launch Vehicles Private Limited',
       street1: 'Kerala Startup Mission, Technopark',
       street2: 'Thejaswini, G3B, Technopark Rd, Karyavattom',
-      city: 'Thiruvananthapuram',
-      state: 'Kerala',
-      country: 'India',
       is_primary: true,
-      address_type: 'Headquarters',
-      postal_code: '695581'
+      address_type: 'Headquarters'
     }
   ],
   social_media: {
@@ -78,19 +74,19 @@ const firstCompany = {
 
 const fetchInput = ref({
   storeKey: 'companiesStore',
-  endpoint: '/api/companies/many',
+  endpoint: '/api/companies/select/many',
   criteria: {
     dto: 'select:company:card',
     pagination: paginationStore.getPaginationRange('companiesStore')
   }
 })
 
-// watchEffect(() => {
-//   if (haveCompanies.value === false) {
-//     console.log('Fetching companies')
-//     companiesStore.loadCompanies(fetchInput.value)
-//   }
-// })
+watchEffect(() => {
+  if (haveCompanies.value === false) {
+    console.log('Fetching companies')
+    companiesStore.loadCompanies(fetchInput.value)
+  }
+})
 
 definePageMeta({ name: 'Companies', layout: 'app' })
 </script>
@@ -106,8 +102,8 @@ definePageMeta({ name: 'Companies', layout: 'app' })
         page: 1,
         limit: 10
       }"
+      @update:scroll-end="companiesStore.loadCompanies(fetchInput)"
     >
-      <!-- @update:scroll-end="companiesStore.loadCompanies(fetchInput)" -->
       <div
         v-if="haveCompanies"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"

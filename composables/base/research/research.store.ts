@@ -19,7 +19,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
       research.value.push(...data)
     } catch (error) {
-      logger.error('Failed to load users:', error)
+      logger.error('Failed to load research:', error)
     }
   }
 

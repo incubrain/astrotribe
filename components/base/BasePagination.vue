@@ -15,7 +15,6 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-
 // todo:high:1 - implement and test on component
 
 const route = useRoute()

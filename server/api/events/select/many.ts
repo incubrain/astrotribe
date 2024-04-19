@@ -1,8 +1,8 @@
 export default defineEventHandler(async () => {
   try {
-    const e = await import('../data/events.json')
-    const v = await import('../data/venues.json')
-    const h = await import('../data/hosts.json')
+    const e = await import('../../data/events.json')
+    const v = await import('../../data/venues.json')
+    const h = await import('../../data/hosts.json')
 
     const events = e.default.map((i) => {
       return {

@@ -4,11 +4,11 @@ import type { ResearchDTOKey } from './research/research.dto'
 import type { CompanyDTOKey } from './company/company.dto'
 import type { Database, Tables } from '~/supabase/schema.gen'
 
-// type DBTable = keyof Database['public']['Tables']
-// type DBColumns<T extends DBTable> = keyof Tables<T>
-// type TableSpecificColumns<T extends DBTable> = Partial<Record<DBColumns<T>, true>>
+type DBTable = keyof Database['public']['Tables'] | keyof Database['public']['Views']
+type DBColumns<T extends DBTable> = keyof Tables<T>
+type TableSpecificColumns<T extends DBTable> = Partial<DBColumns<T>>
 
-export { Database, Tables }
+export { Database, Tables, DBTable }
 
 // full list of filters here: https://postgrest.org/en/v12/references/api/tables_views.html#operators
 
@@ -35,12 +35,6 @@ type FilterKey =
   | 'overlaps'
   | 'textSearch'
 
-export interface QueryFilter {
-  type?: FilterKey
-  field: string
-  value: string | number | boolean
-}
-
 interface Pagination {
   page?: number
   limit?: number
@@ -50,64 +44,47 @@ interface Pagination {
 
 export type AllDTOKey = UserDTOKey | NewsDTOKey | ResearchDTOKey | CompanyDTOKey
 
-export interface FuncConfig<T> {
-  data?: T | T[]
-  dto: AllDTOKey
-  criteria: {
-    single?: boolean
-    filters?: QueryFilter[] | null
-    pagination?: Pagination
-  }
-}
-
 export type GenericReturn<T> = Promise<T[] | T | null>
 
 export type TableKey = keyof Database['public']['Tables'] | keyof Database['public']['Views']
 
-// eq should map to db columns
-export interface OperationInput<T> {
-  operation: 'select' | 'update' | 'delete' | 'upsert' | 'insert'
+export type FilterBy<T extends TableKey> = {
+  columnName: TableSpecificColumns<T>
+  operator: FilterKey
+  value: string | boolean | number
+}
+
+export interface BaseOperationInput<T, K extends TableKey> {
+  tableName: K
   data?: T | T[]
-  criteria: {
-    single?: boolean
-    filters?: QueryFilter[] | null
-    pagination?: Pagination
-    select?: string
-    conflictFields?: string[]
-    ignoreDuplicates?: boolean
-  }
+  selectStatement?: string
+  filterBy?: FilterBy<K>
+  pagination?: Pagination
+  limit?: number
+  conflictFields?: string[]
+  ignoreDuplicates?: boolean
 }
 
-export interface SelectInput<T> extends OperationInput<T> {
-  operation: 'select'
-  criteria: {
-    select: string
-  }
+export interface SelectInput<T, K extends TableKey> extends BaseOperationInput<T, K> {
+  selectStatement: string
 }
 
-export interface DeleteInput<T> extends OperationInput<T> {
-  operation: 'delete'
+export interface InsertInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   data: T | T[]
 }
 
-export interface CreateInput<T> extends OperationInput<T> {
-  operation: 'insert'
+export interface UpsertInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   data: T | T[]
+  onConflict: string[]
+  ignoreDuplicates: boolean
 }
 
-export interface UpsertInput<T> extends OperationInput<T> {
-  operation: 'upsert'
+export interface UpdateInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   data: T | T[]
-  criteria: {
-    conflictFields: string[]
-    ignoreDuplicates: boolean
-  }
+  filterBy: FilterBy<K>
 }
 
-export interface UpdateInput<T> extends OperationInput<T> {
-  operation: 'update'
+export interface DeleteInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   data: T | T[]
-  criteria: {
-    single: boolean
-  }
+  filterBy: FilterBy<K>
 }

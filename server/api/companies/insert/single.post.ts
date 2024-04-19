@@ -1,3 +1,5 @@
+import { CompanyService } from '~/server/utils/company/company.service'
+
 export default defineEventHandler(async (event) => {
   const { newData, dto } = await readBody(event)
 
@@ -7,14 +9,9 @@ export default defineEventHandler(async (event) => {
 
   console.log('insert company', newData.name, dto)
   try {
-    const client = new CompanyRepository()
-    const company = await client.insertCompany({
-      data: newData,
-      dto,
-      criteria: {
-        single: true
-      }
-    })
+    const companyService = new CompanyService()
+    const validatedCompany = companyService.validateCompanyWithDetails(newData)
+    const insertedCompany = await companyService.createCompanyWithDetails(validatedCompany)
 
     // if (!company || !company.id) {
     //   console.error('Error Inserting Company')
@@ -28,14 +25,14 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'Company added',
-      company
+      data: insertedCompany
     }
   } catch (error: any) {
     console.error('insert-single-company error', error.message)
     return {
       status: 500,
       message: error.message,
-      company: null
+      data: null
     }
   }
 })
