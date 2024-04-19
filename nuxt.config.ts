@@ -23,33 +23,22 @@ export default defineNuxtConfig({
     },
     scheduledTasks: {
       // every 12 hours
-      '0 */12 * * *': ['scrape:news', 'scrape:papers']
-      // '*/30 * * * *': ['scrape:nasa']
-    },
-    // Production
-    storage: {
-      data: {
-        driver: 'vercelKV',
-        base: 'astrotribe:'
-      }
-    },
-    // Development
-    devStorage: {
-      data: {
-        driver: 'fs',
-        base: './data/kv'
-      },
-      blogs: {
-        driver: 'fs',
-        base: './data/blogs/scraped'
-      }
+      // '0 */12 * * *': ['scrape:news', 'scrape:papers']
+      // '*/50 * * * *': ['scrape:papers']
     }
   },
 
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        {
+          id: 'theme-link',
+          rel: 'stylesheet',
+          href: '/themes/aura-light-teal/theme.css'
+        }
+      ],
       htmlAttrs: {
         lang: 'en'
       },
@@ -81,7 +70,7 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['stores', 'data']
+    dirs: ['composables/**']
   },
 
   modules: MODULES,
@@ -105,11 +94,16 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // client
     public: {
+      nodeEnv: process.env.NODE_ENV,
+      logLevel: process.env.LOG_LEVEL || '0',
       testMode: '',
       posthogKey: '',
       testingUserame: '',
       testingPassword: '',
-      studioTokens: ''
+      studioTokens: '',
+      supabaseBucketUrl: '',
+      supabaseUrl: '',
+      supabaseKey: ''
     },
     // server
     adminEmails: '',

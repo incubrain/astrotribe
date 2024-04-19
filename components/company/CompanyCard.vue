@@ -1,0 +1,72 @@
+<script setup lang="ts">
+defineProps({
+  company: {
+    type: Object as () => {},
+    required: true
+  }
+})
+
+// What to display:
+// Company location(s)
+// Category
+// Tags?
+// Name
+// Link to website
+// Number of news updates
+// Scrape Frequency?
+// Sector
+// Founded Year
+// Description - probably a summary of all articles by chatGPT
+// Logo
+// isHiring (check job board to see, maybe linkedin) - add later, just scrape Linkedin Jobs for now
+// isFunded
+// valuation
+// companySize
+// primaryLocation
+// country
+// 
+</script>
+
+<template>
+  <BaseHoverCard>
+    <div>
+      <div class="space-y-3">
+        <div class="flex gap-2 items-center">
+          <PrimeTag>
+            {{ company.category_id }}
+          </PrimeTag>
+          <NuxtImg :src="company.logo_url" />
+          <span class="text-sm w-auto">
+            Scraped: {{ useTimeAgo(company.last_scraped_at).value }}
+          </span>
+          <NuxtLink
+            :to="company.website_url"
+            target="_blank"
+            rel="noopener"
+          >
+            <PrimeButton
+              label="Company Website"
+              size="small"
+              text
+            />
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex flex-col gap-2 pb-4 group-hover:max-h-none group-hover:overflow-scroll overflow-hidden"
+    >
+      <h4
+        class="text-balance text-xl md:max-h-16 group-hover:max-h-none group-hover:overflow-visible overflow-hidden"
+      >
+        {{ company.name }}
+      </h4>
+      <p
+        v-if="company.description"
+        class="text-sm max-h-none md:max-h-4 overflow-hidden group-hover:max-h-none group-hover:overflow-visible"
+      >
+        {{ company.description }}
+      </p>
+    </div>
+  </BaseHoverCard>
+</template>

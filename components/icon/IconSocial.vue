@@ -4,8 +4,8 @@
     target="_blank"
     :href="url"
   >
-    <UIcon
-      :name="`i-mdi-${platform}`"
+    <Icon
+      :name="`mdi:${platform}`"
       class="w-[24px] h-[24px]"
     />
   </a>

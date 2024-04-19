@@ -7,12 +7,12 @@
     >
       {{ title.label }}
     </p>
-    <h2
+    <h3
       class="text-2xl lg:text-4xl font-bold"
       :class="isCta ? 'underline decoration-primary-500 dark:decoration-primary-900' : ''"
     >
       {{ title.main }}
-    </h2>
+    </h3>
     <h5
       v-if="title.subtitle"
       class="text-base"
@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TitleT } from '@/types/content'
+import type { TitleType } from '@/types/content'
 
 defineProps({
   title: {
-    type: Object as PropType<TitleT>,
+    type: Object as PropType<TitleType>,
     required: true
   },
   alignment: {

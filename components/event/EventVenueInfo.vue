@@ -2,8 +2,8 @@
   <div class="px-4 pb-4">
     <div class="flex items-center space-x-4 text-xs">
       <div class="pl-2">
-        <UIcon
-          name="i-material-symbols-location-on-rounded"
+        <Icon
+          name="material-symbols:location-on-rounded"
           class="w-4 h-4"
         />
       </div>

@@ -1,11 +1,16 @@
 <template>
-  <div class="w-full h-full flex">
-    <NavSidebar class="w-full min-h-full max-w-[10%] min-w-[240px]" />
+  <div class="w-full h-screen flex background relative overflow-hidden lg:p-4">
+    <NavAppSidebar class="w-full h-full max-w-[10%] min-w-[140px] hidden lg:flex" />
 
     <div
-      class="w-full mx-auto md:p-4 xl:p-8 min-h-[calc(100vh-var(--nav-height-sm))] lg:min-h-[calc(100vh-var(--nav-height-lg))] pb-[var(--mobi-bottom-nav-height)]"
+      class="w-full h-full pb-[var(--mobi-bottom-nav-height)] lg:pb-0 relative flex flex-col rounded-lg overflow-hidden"
     >
-      <slot />
+      <NavAppTop />
+      <div class="md:p-4 xl:p-8 overflow-y-scroll h-full foreground">
+        <div>
+          <slot />
+        </div>
+      </div>
     </div>
     <NavMobiBottom class="lg:hidden" />
   </div>

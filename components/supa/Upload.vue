@@ -1,64 +1,5 @@
-<template>
-  <div class="flex flex-col items-center justify-center w-full h-full gap-4 example-avatar">
-    <div
-      v-show="imageSrc"
-      class="object-fill w-1/2 mx-auto my-4 border-4 rounded-full aspect-ratio border-stone-700"
-    >
-      <img
-        :src="destination"
-        class="block w-full rounded-full"
-      />
-    </div>
-    <div
-      v-show="imageSrc"
-      class="object-fill w-1/2 mx-auto my-2 aspect-ratio"
-    >
-      <img
-        ref="img"
-        class="block w-full max-w-full pb-4 aspect-auto"
-        :src="imageSrc"
-      />
-    </div>
-    <div class="flex content-end justify-center w-full py-2 mt-2 rounded-md">
-      <UButton
-        v-if="!imageSrc"
-        color="primary"
-        @click="imageInput.click()"
-      >
-        <slot />
-      </UButton>
-      <UButton
-        v-else
-        color="primary"
-        class="w-32 mx-2"
-        @click="handleImageCropped"
-      >
-        Update
-      </UButton>
-      <UButton
-        v-if="imageSrc"
-        color="primary"
-        class="w-32 mx-2"
-        @click="fileCleared"
-      >
-        Cancel
-      </UButton>
-      <input
-        ref="imageInput"
-        type="file"
-        accept=".jpg,.jpeg,.png"
-        class="py-4"
-        :style="{ display: 'none' }"
-        @change="fileChanged"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import Cropper from 'cropperjs'
-
-const { upload } = useSupabaseStorage()
 
 const props = defineProps({
   uploadType: {
@@ -78,6 +19,7 @@ const fileReader = new FileReader()
 fileReader.onload = (event) => {
   imageSrc.value = event.target.result
 }
+
 const handleImageCropped = () => {
   cropper.value
     .getCroppedCanvas({
@@ -95,6 +37,7 @@ const fileChanged = (e) => {
     selectedFile.value = files[0]
   }
 }
+
 const fileCleared = (_) => {
   selectedFile.value = null
 }
@@ -125,9 +68,11 @@ onMounted(() => {
     }
   })
 })
+
 onUnmounted(() => {
   cropper.value.destroy()
 })
+
 watchEffect(() => {
   if (selectedFile.value) {
     fileReader.readAsDataURL(selectedFile.value)
@@ -135,6 +80,7 @@ watchEffect(() => {
     imageSrc.value = null
   }
 })
+
 watch(
   imageSrc,
   () => {
@@ -147,6 +93,63 @@ watch(
   }
 )
 </script>
+
+<template>
+  <div class="flex flex-col items-center justify-center w-full h-full gap-4 example-avatar">
+    <div
+      v-show="imageSrc"
+      class="object-fill w-1/2 mx-auto my-4 border-4 rounded-full aspect-ratio border-stone-700"
+    >
+      <img
+        :src="destination"
+        class="block w-full rounded-full"
+      />
+    </div>
+    <div
+      v-show="imageSrc"
+      class="object-fill w-1/2 mx-auto my-2 aspect-ratio"
+    >
+      <img
+        ref="img"
+        class="block w-full max-w-full pb-4 aspect-auto"
+        :src="imageSrc"
+      />
+    </div>
+    <div class="flex content-end justify-center w-full py-2 mt-2 rounded-md">
+      <PrimeButton
+        v-if="!imageSrc"
+        color="primary"
+        @click="imageInput.click()"
+      >
+        <slot />
+      </PrimeButton>
+      <PrimeButton
+        v-else
+        color="primary"
+        class="w-32 mx-2"
+        @click="handleImageCropped"
+      >
+        Update
+      </PrimeButton>
+      <PrimeButton
+        v-if="imageSrc"
+        color="primary"
+        class="w-32 mx-2"
+        @click="fileCleared"
+      >
+        Cancel
+      </PrimeButton>
+      <input
+        ref="imageInput"
+        type="file"
+        accept=".jpg,.jpeg,.png"
+        class="py-4"
+        :style="{ display: 'none' }"
+        @change="fileChanged"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .preview {

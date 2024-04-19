@@ -1,5 +1,5 @@
 <template>
-  <UButton
+  <PrimeButton
     color="primary"
     size="md"
     class="flex items-center justify-center w-full"
@@ -7,7 +7,7 @@
     :disabled="isDisabled"
   >
     <slot />
-  </UButton>
+  </PrimeButton>
 </template>
 
 <script setup lang="ts">
