@@ -12,7 +12,7 @@
           :to="page.slug"
           class="flex justify-center items-center"
         >
-          <UIcon
+          <Icon
             :name="page.icon"
             class="w-[20px] h-[20px]"
           />

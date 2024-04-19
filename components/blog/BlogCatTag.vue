@@ -1,17 +1,16 @@
 <template>
   <div>
     <div class="flex flex-wrap gap-4">
-      <UBadge
+      <PrimeTag
         :id="`${articleLink}-${category}`"
-        :label="category"
+        :value="category"
         :class="`${badgeColor(category)}`"
       />
-      <UBadge
+      <PrimeTag
         v-for="tag in tags"
         :key="`${articleLink}-${tag}`"
-        :label="tag"
-        variant="subtle"
-        color="white"
+        :value="tag"
+        severity="secondary"
       />
     </div>
   </div>

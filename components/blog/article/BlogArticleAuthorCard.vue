@@ -6,12 +6,12 @@ defineProps<{
 <template>
   <BlogAuthor
     :author-id="authorId"
-    class="rounded-xl border border-color p-4 lg:p-8 foreground"
+    class="rounded-xl border border-color p-4 xl:p-8 foreground"
   >
     <template #default="{ author }">
       <div
         v-if="author"
-        class="flex flex-row items-center gap-4 lg:gap-8"
+        class="flex flex-row items-center gap-4 xl:gap-8"
       >
         <NuxtImg
           class="rounded-full sm:max-w-[100px] h-full"

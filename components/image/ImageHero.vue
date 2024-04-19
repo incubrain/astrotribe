@@ -1,18 +1,33 @@
 <script setup lang="ts">
-import type { TitleT, ImageT } from '~/types/content'
+import type { TitleType, ImageType } from '~/types/content'
 
-defineProps<{
-  img: ImageT
-  fit: string
-  objectPosition: string
-  title: TitleT
-}>()
+defineProps({
+  fit: {
+    type: String,
+    default: 'cover'
+  },
+  objectPosition: {
+    type: String,
+    default: 'center'
+  },
+  title: {
+    type: Object as () => TitleType,
+    required: true
+  },
+  img: {
+    type: Object as () => ImageType,
+    required: true
+  }
+})
+
+// consider turning the images into short videos using AI
+// consider using mix-blend-mode for cool text effect with video
 </script>
 
 <template>
   <div class="relative flex items-center justify-center">
     <NuxtImg
-      :class="`w-full object-${fit} ${objectPosition} h-[540px]`"
+      :class="`w-full object-${fit} ${objectPosition} h-screen`"
       :src="img.src"
       :alt="img.alt"
       :width="img.width"
@@ -23,7 +38,9 @@ defineProps<{
     >
       <slot />
       <div class="space-y-4 block">
-        <h2 class="text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-2 rounded-sm">
+        <h2
+          class="text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-4 xl:px-8 rounded-md shadow-xl"
+        >
           {{ title.main }}
         </h2>
         <h4

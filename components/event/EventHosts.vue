@@ -5,6 +5,7 @@
       :key="host.id"
     >
       <div
+        v-if="host.avatar"
         :class="
           idx > 0
             ? 'overflow-hidden rounded-full border-2 ml-[-20px] border-inverted'
@@ -12,15 +13,7 @@
         "
       >
         <NuxtImg
-          :src="
-            supabaseStorage.image.single({
-              bucket: 'profile-public',
-              folderPath: `${host.id}/avatar`,
-              fileType: 'user-avatar',
-              file: host.avatar,
-              isPrivate: false
-            })
-          "
+          :src="host.avatar"
           loading="lazy"
           :alt="`${host.given_name} is an AstroTribe event host`"
           width="50"
@@ -49,8 +42,6 @@
 
 <script setup lang="ts">
 import type { EventHostType } from '@/types/events'
-
-const supabaseStorage = useSupabaseStorage()
 
 defineProps({
   hosts: {

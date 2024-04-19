@@ -1,19 +1,16 @@
 <template>
   <div>
-    <UButton
+    <PrimeButton
       variant="link"
       :padded="false"
       @click="isOpen = true"
     >
-      <UIcon
-        name="i-mdi-menu"
+      <Icon
+        name="mdi:menu"
         class="w-6 h-6 text-black dark:text-white"
       />
-    </UButton>
-    <USlideover
-      v-model="isOpen"
-      side="left"
-    >
+    </PrimeButton>
+    <PrimeSidebar v-model:visible="isOpen">
       <div class="border-r border-color">
         <div class="foreground w-full flex items-center justify-between p-8">
           <NuxtLink
@@ -30,13 +27,13 @@
             </div>
             <h3 class="text-xl">AstronEra</h3>
           </NuxtLink>
-          <UButton
+          <PrimeButton
             variant="solid"
-            icon="i-mdi-chevron-left"
+            icon="mdi:chevron-left"
             @click="isOpen = false"
           >
             Return
-          </UButton>
+          </PrimeButton>
         </div>
         <div v-show="links">
           <NuxtLink
@@ -47,14 +44,14 @@
             @click="isOpen = false"
           >
             {{ link.name }}
-            <UIcon
+            <Icon
               :name="getIcon(link.name)"
               class="ml-2 w-4 h-4"
             />
           </NuxtLink>
         </div>
       </div>
-    </USlideover>
+    </PrimeSidebar>
   </div>
 </template>
 
@@ -62,13 +59,13 @@
 const isOpen = ref(false)
 
 const getIcon = (val: string) => {
-  if (val === 'Contact') return 'i-material-symbols-info'
-  if (val === 'About') return 'i-material-symbols-call'
-  if (val === 'Preview') return 'i-material-symbols-globe-asia'
-  if (val === 'Team') return 'i-material-symbols-emoji-people'
-  if (val === 'Blog') return 'i-material-symbols-article'
-  if (val === 'Community') return 'i-material-symbols-groups-rounded'
-  if (val === 'Conference') return 'i-mdi-presentation'
+  if (val === 'Contact') return 'material-symbols:info'
+  if (val === 'About') return 'material-symbols:call'
+  if (val === 'Preview') return 'material-symbols:globe-asia'
+  if (val === 'Team') return 'material-symbols:emoji-people'
+  if (val === 'Blog') return 'material-symbols:article'
+  if (val === 'Community') return 'material-symbols:groups-rounded'
+  if (val === 'Conference') return 'mdi:presentation'
 }
 
 defineProps({

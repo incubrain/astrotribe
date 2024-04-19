@@ -1,18 +1,4 @@
-<template>
-  <div class="w-full h-full foreground">
-    <NavTop />
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <TestingPopover />
-    <FooterWebsite v-if="!noFooter.some((noFooterPath) => $route.path.startsWith(noFooterPath))" />
-    <UNotifications :timeout="4000" />
-  </div>
-</template>
-
 <script setup lang="ts">
-const noFooter = ['/contact', '/auth', '/astrotribe']
-
 useHead({
   htmlAttrs: {
     lang: 'en'
@@ -31,7 +17,23 @@ useHead({
     }
   ]
 })
+
+// infra:med:med:2 setup feature flags for posthog
+// !todo:med - add styling to the toasts, specifically dark mode
+// !todo:med - add a version of this logger to the server using consola, pino or winston logger
+// todo:med - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
+// todo:critical:med - add pagination util for the server, should have the state stored in app state
+
 </script>
+
+<template>
+  <div class="w-full h-full">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <PrimeToast position="bottom-right" />
+  </div>
+</template>
 
 <style>
 html {
@@ -44,5 +46,16 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
 }
 </style>

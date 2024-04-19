@@ -28,6 +28,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          address_type: Database['public']['Enums']['address_type'] | null
+          city_id: number
+          company_id: number | null
+          country_id: number
+          created_at: string | null
+          id: number
+          is_primary: boolean | null
+          name: string | null
+          street1: string
+          street2: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          address_type?: Database['public']['Enums']['address_type'] | null
+          city_id: number
+          company_id?: number | null
+          country_id: number
+          created_at?: string | null
+          id?: number
+          is_primary?: boolean | null
+          name?: string | null
+          street1: string
+          street2?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          address_type?: Database['public']['Enums']['address_type'] | null
+          city_id?: number
+          company_id?: number | null
+          country_id?: number
+          created_at?: string | null
+          id?: number
+          is_primary?: boolean | null
+          name?: string | null
+          street1?: string
+          street2?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_city'
+            columns: ['city_id']
+            isOneToOne: false
+            referencedRelation: 'cities'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_country'
+            columns: ['country_id']
+            isOneToOne: false
+            referencedRelation: 'countries'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       categories: {
         Row: {
           body: string | null
@@ -46,6 +120,266 @@ export type Database = {
           created_at?: string
           id?: number
           title?: string
+        }
+        Relationships: []
+      }
+      cities: {
+        Row: {
+          country_id: number
+          id: number
+          name: string
+          state: string | null
+        }
+        Insert: {
+          country_id: number
+          id?: number
+          name: string
+          state?: string | null
+        }
+        Update: {
+          country_id?: number
+          id?: number
+          name?: string
+          state?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_country'
+            columns: ['country_id']
+            isOneToOne: false
+            referencedRelation: 'countries'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      companies: {
+        Row: {
+          category_id: number | null
+          created_at: string | null
+          description: string | null
+          founding_year: number | null
+          id: number
+          is_government: boolean
+          last_scraped_at: string | null
+          logo_url: string | null
+          name: string
+          scrape_frequency: Database['public']['Enums']['scrape_frequency'] | null
+          social_media_id: number | null
+          updated_at: string | null
+          website_url: string
+        }
+        Insert: {
+          category_id?: number | null
+          created_at?: string | null
+          description?: string | null
+          founding_year?: number | null
+          id?: number
+          is_government?: boolean
+          last_scraped_at?: string | null
+          logo_url?: string | null
+          name: string
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
+          social_media_id?: number | null
+          updated_at?: string | null
+          website_url: string
+        }
+        Update: {
+          category_id?: number | null
+          created_at?: string | null
+          description?: string | null
+          founding_year?: number | null
+          id?: number
+          is_government?: boolean
+          last_scraped_at?: string | null
+          logo_url?: string | null
+          name?: string
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
+          social_media_id?: number | null
+          updated_at?: string | null
+          website_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_category'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_social_media'
+            columns: ['social_media_id']
+            isOneToOne: false
+            referencedRelation: 'social_media'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_employees: {
+        Row: {
+          access_level: Database['public']['Enums']['access_level']
+          company_id: number
+          created_at: string | null
+          end_date: string | null
+          job_description: string | null
+          role: string
+          start_date: string | null
+          status: boolean | null
+          updated_at: string | null
+          user_profile_id: string
+        }
+        Insert: {
+          access_level?: Database['public']['Enums']['access_level']
+          company_id: number
+          created_at?: string | null
+          end_date?: string | null
+          job_description?: string | null
+          role: string
+          start_date?: string | null
+          status?: boolean | null
+          updated_at?: string | null
+          user_profile_id: string
+        }
+        Update: {
+          access_level?: Database['public']['Enums']['access_level']
+          company_id?: number
+          created_at?: string | null
+          end_date?: string | null
+          job_description?: string | null
+          role?: string
+          start_date?: string | null
+          status?: boolean | null
+          updated_at?: string | null
+          user_profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_employees_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_user_profile_id_fkey'
+            columns: ['user_profile_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_news: {
+        Row: {
+          company_id: number
+          created_at: string | null
+          importance_level: Database['public']['Enums']['news_importance_level'] | null
+          news_id: number
+          relation_type: Database['public']['Enums']['news_relation_type']
+          updated_at: string | null
+        }
+        Insert: {
+          company_id: number
+          created_at?: string | null
+          importance_level?: Database['public']['Enums']['news_importance_level'] | null
+          news_id: number
+          relation_type: Database['public']['Enums']['news_relation_type']
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: number
+          created_at?: string | null
+          importance_level?: Database['public']['Enums']['news_importance_level'] | null
+          news_id?: number
+          relation_type?: Database['public']['Enums']['news_relation_type']
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_news_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_news_news_id_fkey'
+            columns: ['news_id']
+            isOneToOne: false
+            referencedRelation: 'news'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      contacts: {
+        Row: {
+          company_id: number | null
+          contact_type: Database['public']['Enums']['contact_type'] | null
+          created_at: string | null
+          email: string | null
+          id: number
+          is_primary: boolean | null
+          phone: string | null
+          privacy_level: Database['public']['Enums']['privacy_level'] | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          company_id?: number | null
+          contact_type?: Database['public']['Enums']['contact_type'] | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          is_primary?: boolean | null
+          phone?: string | null
+          privacy_level?: Database['public']['Enums']['privacy_level'] | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: number | null
+          contact_type?: Database['public']['Enums']['contact_type'] | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          is_primary?: boolean | null
+          phone?: string | null
+          privacy_level?: Database['public']['Enums']['privacy_level'] | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      countries: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id?: number
+          name: string
+        }
+        Update: {
+          id?: number
+          name?: string
         }
         Relationships: []
       }
@@ -73,7 +407,7 @@ export type Database = {
       news: {
         Row: {
           author: string | null
-          body: string | null
+          body: string
           category_id: number
           created_at: string
           description: string | null
@@ -88,7 +422,7 @@ export type Database = {
         }
         Insert: {
           author?: string | null
-          body?: string | null
+          body: string
           category_id?: number
           created_at?: string
           description?: string | null
@@ -103,7 +437,7 @@ export type Database = {
         }
         Update: {
           author?: string | null
-          body?: string | null
+          body?: string
           category_id?: number
           created_at?: string
           description?: string | null
@@ -192,7 +526,7 @@ export type Database = {
           }
         ]
       }
-      papers: {
+      research: {
         Row: {
           author: string | null
           body: string | null
@@ -203,6 +537,7 @@ export type Database = {
           title: string | null
           updated_at: string | null
           url: string
+          version: number | null
         }
         Insert: {
           author?: string | null
@@ -214,6 +549,7 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           url: string
+          version?: number | null
         }
         Update: {
           author?: string | null
@@ -225,33 +561,7 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           url?: string
-        }
-        Relationships: []
-      }
-      register_interest: {
-        Row: {
-          created_at: string
-          email: string
-          id: number
-          interest: string | null
-          name: string
-          referral: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: number
-          interest?: string | null
-          name: string
-          referral?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: number
-          interest?: string | null
-          name?: string
-          referral?: string | null
+          version?: number | null
         }
         Relationships: []
       }
@@ -276,54 +586,36 @@ export type Database = {
         }
         Relationships: []
       }
-      seo_data: {
+      social_media: {
         Row: {
-          ads: Json
-          country: string
-          domain: string
-          general: Json
+          created_at: string | null
+          facebook_url: string | null
           id: number
-          keyword: string
-          organic: Json
-          scrape_date: string
+          instagram_url: string | null
+          linkedin_url: string | null
+          twitter_url: string | null
+          updated_at: string | null
+          youtube_url: string | null
         }
         Insert: {
-          ads: Json
-          country: string
-          domain: string
-          general: Json
+          created_at?: string | null
+          facebook_url?: string | null
           id?: number
-          keyword: string
-          organic: Json
-          scrape_date: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string | null
+          youtube_url?: string | null
         }
         Update: {
-          ads?: Json
-          country?: string
-          domain?: string
-          general?: Json
+          created_at?: string | null
+          facebook_url?: string | null
           id?: number
-          keyword?: string
-          organic?: Json
-          scrape_date?: string
-        }
-        Relationships: []
-      }
-      statuses: {
-        Row: {
-          created_at: string
-          id: number
-          title: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          title?: string | null
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string | null
+          youtube_url?: string | null
         }
         Relationships: []
       }
@@ -372,7 +664,7 @@ export type Database = {
         }
         Relationships: []
       }
-      users: {
+      user_profiles: {
         Row: {
           avatar: string | null
           cover_image: string | null
@@ -383,7 +675,7 @@ export type Database = {
           followers_count: number | null
           gender_id: number | null
           given_name: string | null
-          id: string | null
+          id: string
           introduction: string | null
           last_seen: string | null
           quote: string | null
@@ -402,7 +694,7 @@ export type Database = {
           followers_count?: number | null
           gender_id?: number | null
           given_name?: string | null
-          id?: string | null
+          id?: string
           introduction?: string | null
           last_seen?: string | null
           quote?: string | null
@@ -421,7 +713,7 @@ export type Database = {
           followers_count?: number | null
           gender_id?: number | null
           given_name?: string | null
-          id?: string | null
+          id?: string
           introduction?: string | null
           last_seen?: string | null
           quote?: string | null
@@ -434,7 +726,7 @@ export type Database = {
           {
             foreignKeyName: 'users_id_fkey'
             columns: ['id']
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: 'users'
             referencedColumns: ['id']
           },
@@ -502,7 +794,29 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      access_level: 'Viewer' | 'Editor' | 'Admin' | 'Super Admin'
+      address_type:
+        | 'Residential'
+        | 'Headquarters'
+        | 'Office'
+        | 'Factory'
+        | 'Lab'
+        | 'Warehouse'
+        | 'R&D'
+        | 'Retail'
+        | 'Showroom'
+        | 'Branch'
+      contact_type: 'Personal' | 'Company' | 'Professional' | 'Recruitment' | 'Founder'
+      news_importance_level: 'High' | 'Medium' | 'Low'
+      news_relation_type: 'Source' | 'Topic' | 'Mention'
+      privacy_level: 'Private' | 'Connected' | 'Public'
+      scrape_frequency:
+        | 'FourTimesDaily'
+        | 'TwiceDaily'
+        | 'Daily'
+        | 'Weekly'
+        | 'BiWeekly'
+        | 'Monthly'
     }
     CompositeTypes: {
       [_ in never]: never

@@ -82,6 +82,7 @@ const formFieldSchema = z.object({
   props: z.object({
     label: z.string(),
     type: z.string(),
+    suggested: z.string().optional(),
     disabled: z.boolean().optional()
   })
 })
@@ -105,4 +106,4 @@ export type RegisterType = z.infer<typeof RegisterSchema>
 export type ForgotPasswordType = z.infer<typeof ForgotPasswordSchema>
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>
 export type CheckboxOptionType = z.infer<typeof CheckboxOptionSchema>
-export type FormFieldType = z.infer<typeof formFieldSchema>
+export type FormFieldT = z.infer<typeof formFieldSchema>

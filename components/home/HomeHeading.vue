@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col justify-center text-center lg:pl-8">
-    <h1 class="mb-4 text-base font-bold tracking-tight text-primary-700 dark:text-primary-600">
+  <div class="flex flex-col justify-center items-center text-center lg:pl-8">
+    <p class="mb-4 text-base font-bold uppercase tracking-tight text-primary-700 dark:text-primary-600">
       {{ heading }}
-    </h1>
+    </p>
     <h2 class="text-3xl font-semibold leading-normal max-w-80">
       {{ subheading }}
     </h2>

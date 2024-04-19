@@ -1976,13 +1976,6 @@ INSERT INTO "public"."tags" ("id", "title", "created_at", "updated_at", "body") 
 --
 
 
-
---
--- Data for Name: register_interest; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
 --
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1996,28 +1989,16 @@ INSERT INTO "public"."roles" ("id", "created_at", "name", "body") VALUES
 
 
 --
--- Data for Name: seo_data; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
--- Data for Name: statuses; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
 -- Data for Name: user_followers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: user_profiles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."users" ("email", "given_name", "surname", "username", "dob", "gender_id", "created_at", "updated_at", "last_seen", "avatar", "cover_image", "introduction", "quote", "followers_count", "followed_count", "role_id", "id") VALUES
+INSERT INTO "public"."user_profiles" ("email", "given_name", "surname", "username", "dob", "gender_id", "created_at", "updated_at", "last_seen", "avatar", "cover_image", "introduction", "quote", "followers_count", "followed_count", "role_id", "id") VALUES
 	('mariaclarahlourenco@gmail.com', 'Maria', 'Lourenço', 'Maria', '2000-08-11', 2, '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', 'maria-heringer.jpg', NULL, 'I''m a brazilian girl who loves to travel and meet new people! Also trying to be an astronomer (I''m still an undergraduate student!) and discover the wonders of this universe!', NULL, 0, 0, 1, '65ca5a40-5a67-4dd8-b5c3-f77a24c89243'),
 	('shwetakk6@gmail.com', 'Shweta', 'Kulkarni', 'Shweta', '1995-11-16', 2, '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', 'shweta-kulkarni.jpg', NULL, NULL, NULL, 1, 1, 1, 'e1bf12c6-aad4-4905-bda2-127c027504a3'),
 	('rw47@st-andrews.ac.uk', 'Rose', 'Waugh', 'Rose', '1995-01-17', 2, '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', '2023-08-11 16:49:09.163+00', 'rose-waugh.jpg', NULL, 'Final year PhD student at the university of St. Andrews in Scotland, researching the magnetic fields of young suns.', NULL, 0, 0, 1, 'b4eb9ac1-d034-4c74-a372-53917c443f24'),
@@ -2228,32 +2209,12 @@ SELECT pg_catalog.setval('"public"."news_id_seq"', 2354, true);
 SELECT pg_catalog.setval('"public"."news_tags_id_seq"', 1, false);
 
 
---
--- Name: register_interest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."register_interest_id_seq"', 1, false);
-
 
 --
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('"public"."roles_id_seq"', 1, false);
-
-
---
--- Name: seo_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."seo_data_id_seq"', 1, false);
-
-
---
--- Name: statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."statuses_id_seq"', 1, false);
 
 
 --

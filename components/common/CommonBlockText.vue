@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-4 border border-color foreground lg:p-8 md:rounded-lg md:shadow-sm">
+  <div class="w-full p-4 border border-color foreground xl:p-8 md:rounded-lg md:shadow-sm">
     <h1 class="mb-4 text-lg font-semibold md:text-xl xl:text-2xl">
       {{ title }}
     </h1>

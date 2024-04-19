@@ -1,173 +1,289 @@
+<script setup lang="ts">
+const links = [
+  {
+    key: 'about-us',
+    label: 'About Us',
+    icon: 'material-symbols:info',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'about',
+        label: 'About',
+        icon: 'material-symbols:info',
+        url: '/about',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'team',
+        label: 'Team',
+        icon: 'material-symbols:emoji-people',
+        url: '/team',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'contact',
+        label: 'Contact',
+        icon: 'material-symbols:call',
+        url: '/contact',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'events',
+    label: 'Events',
+    icon: 'material-symbols:event',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'conference',
+        label: 'Conference',
+        icon: 'material-symbols:emoji-people',
+        url: '/conference',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'blog',
+    label: 'Blog',
+    icon: 'material-symbols:menu-book-outline',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'blog-home',
+        label: 'All',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-isro',
+        label: 'ISRO',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/isro',
+        visible: true,
+        disabled: false
+      }
+    ]
+  }
+]
+
+const props = defineProps({
+  isCompact: {
+    type: Boolean,
+    default: false
+  },
+  compactOnScroll: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const screenHeight = ref(0)
+const screenWidth = ref(null as number | null)
+const scrollPercentage = ref(0)
+const compactOnScroll = computed(() => props.compactOnScroll)
+const isSmall = ref(false)
+const navbarMaxWidth = computed(() => (isSmall.value ? '70px' : '1000px'))
+
+console.log('isSmall', isSmall)
+
+watchEffect(() => {
+  if (compactOnScroll.value && scrollPercentage.value >= 100) {
+    isSmall.value = true
+  }
+
+  if (screenWidth.value) {
+    if (screenWidth.value < 1020) {
+      console.log('setIsSmall false', screenWidth.value)
+      isSmall.value = false
+    }
+  }
+})
+
+const toggleIsSmall = () => {
+  isSmall.value = !isSmall.value
+}
+
+onMounted(() => {
+  screenHeight.value = window.innerHeight
+  screenWidth.value = window.innerWidth
+  isSmall.value = props.isCompact
+  window.addEventListener('resize', () => {
+    screenHeight.value = window.innerHeight
+    screenWidth.value = window.innerWidth
+  })
+
+  const { y } = useScroll(window)
+  watch(
+    y,
+    (newY) => {
+      // Calculate the scroll percentage
+      const percentage = (y.value / screenHeight.value) * 100
+      scrollPercentage.value = Math.min(100, Math.max(0, percentage)) // Clamps the value between 0% and 100%
+    },
+    { immediate: true }
+  )
+})
+
+// Clean up the event listener when the component unmounts
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {
+    screenHeight.value = window.innerHeight
+  })
+})
+
+const auth = useAuth()
+
+// !design:high:easy:1 - auto detect session and show AstroTribe button
+</script>
+
 <template>
-  <nav
-    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between background z-50 border-b border-color h-[var(--nav-height-sm)] lg:h-[var(--nav-height-lg)]"
+  <div
+    :class="[
+      'lg:rounded-full flex origin-top-left w-full',
+      isSmall ? 'lg:justify-left lf:items-left' : 'lg:justify-center lg:items-center'
+    ]"
+    :style="{
+      position: 'fixed',
+      top: isSmall ? '1.5rem' : '0',
+      left: isSmall ? '1.5rem' : '0',
+      right: isSmall ? '0' : '0',
+      transition: 'transform 0.5s ease, left 0.5s ease',
+      zIndex: '50'
+    }"
   >
-    <div
-      class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
+    <PrimeMenubar
+      :model="links"
+      class="rounded-none lg:rounded-full w-full"
+      :style="{
+        maxWidth: navbarMaxWidth,
+        maxHeight: navbarMaxWidth,
+        overflow: isSmall ? 'hidden' : 'visible'
+      }"
     >
-      <div
-        class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 justify-between items-center col-start-1"
-      >
-        <NavMobiSlideover
-          :links="links"
-          class="lg:hidden pl-3 md:pl-4 flex items-center"
-        />
-        <NuxtLink
-          to="/"
-          class="items-center gap-2 nav-link hidden lg:flex"
-        >
+      <template #start>
+        <div class="gap-4 hidden lg:flex rounded-md p-1">
           <div
-            class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden border border-color"
+            class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-full overflow-hidden relative flex justify-center items-center border"
           >
             <NuxtImg
               src="/astronera-logo.jpg"
               class="w-full h-full dark:opacity-90"
             />
+            <div class="absolute text-black z-50">
+              <Icon
+                :name="isSmall ? 'mdi:menu' : 'mdi:chevron-left'"
+                size="32"
+                @click="toggleIsSmall"
+              />
+            </div>
           </div>
-          <h1 class="block px-4 mr-4 text-xl font-semibold"> AstronEra </h1>
-        </NuxtLink>
-      </div>
-      <div class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1">
-        <div
-          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
-        >
           <NuxtLink
-            v-for="link in links"
-            :key="link.id"
-            :to="link.slug"
-            class="nav-link"
+            v-show="!isSmall"
+            to="/"
+            class="flex items-center justify-center min-h-full"
           >
-            {{ link.name }}
+            <h1
+              class="pr-2 uppercase text-sm font-bold cursor-pointer flex tracking-normal justify-start items-start mt-[2px] leading-none flex-col"
+            >
+              Astron
+              <strong class="text-primary-600 dark:text-primary-700 font-extrabold"> Era </strong>
+            </h1>
           </NuxtLink>
         </div>
-      </div>
-      <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6 flex-shrink-0">
-        <div class="flex items-center justify-center w-full gap-4">
+      </template>
+      <template #item="{ item, hasSubmenu, root }">
+        <div class="px-4 py-2">
+          <NuxtLink
+            v-ripple
+            :to="item.url"
+            class="cursor-pointer"
+          >
+            <p class="flex items-center gap-1">
+              {{ item.label }}
+              <Icon
+                v-if="hasSubmenu"
+                :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
+              />
+            </p>
+          </NuxtLink>
+        </div>
+      </template>
+      <template #end>
+        <div class="flex items-center justify-center gap-2 flex-nowrap">
+          <AppThemeToggle v-slot="{ toggle, isDark }">
+            <Icon
+              :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
+              class="w-6 h-6 cursor-pointer"
+              @click="toggle"
+            />
+          </AppThemeToggle>
           <NuxtLink
             to="https://github.com/incubrain/astrotribe"
             target="_blank"
             class="flex justify-center items-center"
           >
-            <UIcon
-              name="i-mdi-github"
+            <Icon
+              name="mdi:github"
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
           </NuxtLink>
-          <DarkToggle v-slot="{ toggle, isDark }">
-            <UIcon
-              :name="isDark ? 'i-heroicons-moon' : 'i-heroicons-sun'"
-              class="w-6 h-6 cursor-pointer"
-              @click="toggle"
-            />
-          </DarkToggle>
-          <!-- <div
-            v-if="isLoggedIn"
-            class="flex gap-4"
-          >
-            <UDropdown
-              :items="[dropdownItems]"
-              :popper="{ placement: 'bottom-start' }"
-              mode="hover"
+          <div class="gap-2 flex items-center justify-center h-auto min-w-24">
+            <NuxtLink
+              v-ripple
+              to="/auth/login"
             >
-              <UButton
-                color="white"
-                class="flex items-center justify-center"
-              >
-                Logged in {{ auth.isLoggedIn }}
-                <UIcon
-                  name="i-heroicons-chevron-down-20-solid"
-                  class="flex justify-center items-center w-5 h-5"
-                />
-              </UButton>
-            </UDropdown>
-          </div> -->
-          <div>
-            <div class="space-x-2">
-              <UButton
-                variant="link"
-                to="/auth/login"
+              <PrimeButton
+                severity="secondary"
+                outlined
                 @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
               >
                 login
-              </UButton>
-              <UButton
-                to="/auth/register"
+              </PrimeButton>
+            </NuxtLink>
+            <NuxtLink
+              v-if="auth.isLoggedIn"
+              v-ripple
+              to="/astrotribe"
+            >
+              <PrimeButton
+                :pt="{
+                  root: 'lg:rounded-r-full border'
+                }"
                 @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
               >
-                Join Free
-              </UButton>
-            </div>
+                Dashboard
+              </PrimeButton>
+            </NuxtLink>
+            <NuxtLink
+              v-else
+              v-ripple
+              to="/auth/register"
+            >
+              <PrimeButton
+                :pt="{
+                  root: 'lg:rounded-r-full'
+                }"
+                @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
+              >
+                Astronomy Hub
+              </PrimeButton>
+            </NuxtLink>
           </div>
         </div>
-      </div>
-    </div>
-  </nav>
+      </template>
+    </PrimeMenubar>
+  </div>
 </template>
 
-<script setup lang="ts">
-const links = [
-  {
-    id: 0,
-    name: 'About',
-    slug: '/about',
-    icon: 'i-material-symbols-info',
-    children: []
-  },
-  {
-    id: 1,
-    name: 'Contact',
-    slug: '/contact',
-    icon: 'i-material-symbols-call',
-    children: []
-  },
-  {
-    id: 2,
-    name: 'Team',
-    slug: '/team',
-    icon: 'i-material-symbols-emoji-people',
-    children: []
-  },
-  {
-    id: 3,
-    name: 'Conference',
-    slug: '/conference',
-    icon: 'i-material-symbols-emoji-people',
-    children: []
-  },
-  {
-    id: 5,
-    name: 'Community',
-    slug: '/astrotribe',
-    icon: 'i-material-symbols-globe-asia',
-    children: []
-  }
-  // {
-  //   id: 6,
-  //   name: 'Blog',
-  //   slug: '/blog',
-  //   icon: 'i-material-symbols-menu-book-outline',
-  //   children: [
-  //     {
-  //       id: 61,
-  //       name: 'ISRO',
-  //       slug: '/blog/isro'
-  //     }
-  //   ]
-  // }
-]
-
-// const dropdownItems = computed(() => [
-//   {
-//     label: 'Profile',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
-//   },
-//   {
-//     label: 'Settings',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
-//   },
-//   {
-//     label: 'Logout',
-//     onClick: () => auth.logout()
-//   }
-// ])
-</script>
+<style></style>

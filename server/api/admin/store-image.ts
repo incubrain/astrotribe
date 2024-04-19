@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase.storage.from('posts').upload('public/test.webp', imgBlob)
 
     if (error) {
-      throw new Error(`Error uploading image: ${error.message}`)
+      throw createError({ message: `Error uploading image: ${error.message}` })
     }
 
     console.log('Image uploaded successfully')

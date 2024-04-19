@@ -16,7 +16,8 @@ export const UserRoleSchema = z.object({
   id: z.number(),
   name: z.string().nullable(),
   body: z.string().nullable().optional(),
-  created_at: z.string().optional()
+  created_at: z.string().optional(),
+  icon: z.string()
 })
 
 export const IdName = z.object({

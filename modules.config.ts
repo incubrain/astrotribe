@@ -3,15 +3,17 @@ import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
   '@nuxt/devtools',
-  '@nuxt/ui',
   '@vueuse/nuxt',
   '@nuxt/image',
   '@pinia/nuxt',
   '@nuxtjs/seo',
   '@nuxt/content',
   'nuxt-primevue',
+  '@nuxtjs/tailwindcss',
+  '@nuxtjs/color-mode',
   '@nuxthq/studio',
-  '@nuxtjs/supabase'
+  '@nuxtjs/supabase',
+  'nuxt-icon'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
@@ -41,9 +43,9 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
 
 const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   components: {
+    prefix: 'Prime',
     include: '*',
-    exclude: ['Editor', 'Chart', 'Toast'],
-    prefix: 'Prime'
+    exclude: ['Editor', 'Chart']
   },
   directives: {
     include: '*',
@@ -51,12 +53,11 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   },
   composables: {
     include: '*',
-    exclude: ['useToast']
+    exclude: []
   },
   options: {
     ripple: true
   },
-  importPT: { as: 'Tailwind', from: 'primevue/passthrough/tailwind' },
   cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
 }
 
@@ -87,17 +88,13 @@ const COLOR_MODE_OPTIONS: NuxtConfig['colorMode'] = {
   classSuffix: ''
 }
 
-const UI_OPTIONS: NuxtConfig['ui'] = {
-  icons: ['mdi', 'heroicons', 'material-symbols']
-}
-
 const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
   redirectOptions: {
     login: '/auth/login',
     callback: '/auth/confirm',
     include: ['/astrotribe/**'],
     exclude: [],
-    cookieRedirect: false
+    cookieRedirect: true
   },
   clientOptions: {
     auth: {
@@ -117,17 +114,7 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   content: CONTENT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
-  ui: UI_OPTIONS,
   supabase: SUPABASE_OPTIONS
 }
 
-export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
-  supabase: {
-    redirectOptions: {
-      login: '/auth/login',
-      callback: '/auth/confirm',
-      exclude: ['/*'],
-      cookieRedirect: false
-    }
-  }
-}
+export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}
