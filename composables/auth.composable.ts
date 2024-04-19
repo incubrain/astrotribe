@@ -22,7 +22,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export const FormPasswordSchema = toTypedSchema(SettingsPasswordValidation)
 
-const redirectUrl = 'http://localhost:3000/astrotribe'
+const redirectUrl = computed(() => `${window.location.origin}/astrotribe`)
 
 export function useAuth() {
   // !todo:bug - I believe there is an issue where the token expires for Social login but it doesn't refresh
@@ -53,7 +53,7 @@ export function useAuth() {
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl
+        emailRedirectTo: redirectUrl.value
       }
     })
 
@@ -74,7 +74,7 @@ export function useAuth() {
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: 'http://localhost:3000/astrotribe' }
+      options: { redirectTo: redirectUrl.value }
     })
 
     if (error?.message) {
