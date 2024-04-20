@@ -93,7 +93,7 @@ const screenWidth = ref(null as number | null)
 const scrollPercentage = ref(0)
 const compactOnScroll = computed(() => props.compactOnScroll)
 const isSmall = ref(false)
-const navbarMaxWidth = computed(() => (isSmall.value ? '70px' : '1000px'))
+const navbarMaxWidth = computed(() => (isSmall.value ? '70px' : '100%'))
 
 watchEffect(() => {
   if (compactOnScroll.value && scrollPercentage.value >= 100) {
@@ -147,8 +147,8 @@ const auth = useAuth()
 <template>
   <div
     :class="[
-      'lg:rounded-full flex origin-top-left w-full',
-      isSmall ? 'lg:justify-left lf:items-left' : 'lg:justify-center lg:items-center'
+      'flex origin-top-left w-full wrapper',
+      isSmall ? 'lg:justify-left lf:items-left' : 'lg:justify-center lg:items-center lg:padded-x'
     ]"
     :style="{
       position: 'fixed',
@@ -161,7 +161,7 @@ const auth = useAuth()
   >
     <PrimeMenubar
       :model="links"
-      class="rounded-none lg:rounded-full w-full"
+      class="rounded-none lg:rounded-b-md w-full"
       :style="{
         maxWidth: navbarMaxWidth,
         maxHeight: navbarMaxWidth,
@@ -171,7 +171,7 @@ const auth = useAuth()
       <template #start>
         <div class="gap-4 hidden lg:flex rounded-md p-1">
           <div
-            class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-full overflow-hidden relative flex justify-center items-center border"
+            class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-md overflow-hidden relative flex justify-center items-center border"
           >
             <NuxtImg
               src="/astronera-logo.jpg"
@@ -218,13 +218,6 @@ const auth = useAuth()
       </template>
       <template #end>
         <div class="flex items-center justify-center gap-2 flex-nowrap">
-          <AppThemeToggle v-slot="{ toggle, isDark }">
-            <Icon
-              :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-              class="w-6 h-6 cursor-pointer"
-              @click="toggle"
-            />
-          </AppThemeToggle>
           <NuxtLink
             to="https://github.com/incubrain/astrotribe"
             target="_blank"
@@ -235,7 +228,7 @@ const auth = useAuth()
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
           </NuxtLink>
-          <div class="gap-2 flex items-center justify-center h-auto min-w-24">
+          <div class="gap-2 flex items-center justify-center h-auto min-w-24 pr-2">
             <NuxtLink
               v-ripple
               to="/auth/login"
@@ -255,7 +248,7 @@ const auth = useAuth()
             >
               <PrimeButton
                 :pt="{
-                  root: 'lg:rounded-r-full border'
+                  root: 'border'
                 }"
                 @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
               >
