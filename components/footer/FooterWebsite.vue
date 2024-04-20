@@ -2,7 +2,7 @@
 const p = usePages()
 const { socials, pages } = storeToRefs(p)
 
-// !todo: add the correct links, should not be app pages
+// ui:critical:easy:1 add the correct links, should not be app pages
 // again use the categories to consolidate the links, but list them all vertically under categories
 </script>
 

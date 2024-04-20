@@ -5,13 +5,13 @@
     <NuxtLink to="/">
       <PrimeButton label="Go back"> Go Home </PrimeButton>
     </NuxtLink>
-    <AppThemeToggle v-slot="{ toggle, isDark }">
+    <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
       <Icon
         :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
         class="w-6 h-6 cursor-pointer"
         @click="toggle"
       />
-    </AppThemeToggle>
+    </AppThemeToggle> -->
   </div>
 </template>
 

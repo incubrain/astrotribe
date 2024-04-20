@@ -36,7 +36,7 @@ export default defineNuxtConfig({
         {
           id: 'theme-link',
           rel: 'stylesheet',
-          href: '/themes/aura-light-teal/theme.css'
+          href: '/themes/aura-dark-teal/theme.css'
         }
       ],
       htmlAttrs: {

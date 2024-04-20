@@ -3,10 +3,11 @@ import { usePrimeVue } from 'primevue/config'
 const mode = useColorMode()
 
 const PrimeVue = usePrimeVue()
-const isDark = computed(() => mode.preference === 'dark')
+const isDark = computed(() => true)
+// const isDark = computed(() => mode.preference === 'dark')
 
 const toggle = () => {
-  mode.preference = isDark.value ? 'light' : 'dark'
+  mode.preference = isDark.value = true
 }
 
 const darkTheme = 'aura-dark-teal'
@@ -19,16 +20,16 @@ watch(
       console.log('going dark')
       PrimeVue.changeTheme(lightTheme, darkTheme, 'theme-link', () => {})
     } else {
-      console.log('going light')
-      PrimeVue.changeTheme(darkTheme, lightTheme, 'theme-link', () => {})
+      // console.log('going light')
+      // PrimeVue.changeTheme(darkTheme, lightTheme, 'theme-link', () => {})
     }
   },
   { immediate: true }
 )
 
 onMounted(() => {
-  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-  mode.preference = prefersDarkMode ? 'dark' : 'light'
+  // const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  // mode.preference = prefersDarkMode ? 'dark' : 'light'
 })
 
 const context = reactive({
@@ -39,6 +40,14 @@ const context = reactive({
 
 <template>
   <div class="flex">
+    <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
+      <Icon
+      :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
+      class="w-6 h-6 cursor-pointer"
+      @click="toggle"
+      />
+    </AppThemeToggle>
+    -->
     <slot v-bind="context" />
   </div>
 </template>
