@@ -95,8 +95,6 @@ const compactOnScroll = computed(() => props.compactOnScroll)
 const isSmall = ref(false)
 const navbarMaxWidth = computed(() => (isSmall.value ? '70px' : '1000px'))
 
-console.log('isSmall', isSmall)
-
 watchEffect(() => {
   if (compactOnScroll.value && scrollPercentage.value >= 100) {
     isSmall.value = true
@@ -104,7 +102,6 @@ watchEffect(() => {
 
   if (screenWidth.value) {
     if (screenWidth.value < 1020) {
-      console.log('setIsSmall false', screenWidth.value)
       isSmall.value = false
     }
   }
