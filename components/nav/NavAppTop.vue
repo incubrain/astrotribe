@@ -41,13 +41,13 @@ console.log('profile', profile.value)
     <div class="px-4 py-2"></div>
     <!-- end -->
     <div class="flex items-center justify-center gap-4">
-      <AppThemeToggle v-slot="{ toggle, isDark }">
+      <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
         <Icon
           :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
           class="w-6 h-6 cursor-pointer"
           @click="toggle"
         />
-      </AppThemeToggle>
+      </AppThemeToggle> -->
       <PrimeAvatar
         v-if="profile?.avatar"
         :image="profile?.avatar"

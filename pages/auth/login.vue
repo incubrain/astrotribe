@@ -5,32 +5,6 @@ const form = reactive({
   rememberMe: false
 })
 
-// type Provider = 'twitter' | 'linkedin' | 'email'
-
-// const handleLogin = async (provider: Provider) => {
-//   let body = null
-
-//   if (provider === 'email') {
-//     console.log('email')
-//     body = { email: form.email, password: form.password }
-//   }
-
-//   const data = await $fetch(`/api/auth/login/${provider}`, {
-//     method: 'POST',
-//     headers: useRequestHeaders(['cookie']),
-//     body
-//   })
-
-//   if (!data.user) {
-//     console.error('Login Error: No data returned from supabase')
-//     return
-//   }
-
-//   if (provider === 'linkedin' || provider === 'twitter') {
-//     window.location.href = data.user.url
-//   }
-// }
-
 const auth = useAuth()
 
 definePageMeta({
