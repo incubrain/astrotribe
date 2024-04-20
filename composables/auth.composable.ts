@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { toTypedSchema } from '@vee-validate/zod'
 
 const passwordValidation = z
   .string()
@@ -19,8 +18,6 @@ export const SettingsPasswordValidation = z
   })
 
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
-
-export const FormPasswordSchema = toTypedSchema(SettingsPasswordValidation)
 
 export function useAuth() {
   const redirectUrl = computed(() => `${window.location.origin}/astrotribe`)
