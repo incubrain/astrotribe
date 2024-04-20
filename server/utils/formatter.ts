@@ -23,14 +23,17 @@ export const datetimeOffset = (
     .nullish()
 })
 
-export const formatAvatarUrl = (user: any) =>
-  getImageURL({
-    bucket: 'profile-public',
-    folderPath: `${user.id}/avatar`,
-    fileType: 'user-avatar',
-    file: user.avatar,
-    isPrivate: false
-  })
+export const formatAvatarUrl = (user: any) => {
+  return user.avatar.startsWith('http')
+    ? user.avatar
+    : getImageURL({
+        bucket: 'profile-public',
+        folderPath: `${user.id}/avatar`,
+        fileType: 'user-avatar',
+        file: user.avatar,
+        isPrivate: false
+      })
+}
 
 export const formatCoverUrl = (user: any) =>
   getImageURL({
