@@ -1,10 +1,10 @@
 export default defineTask({
   meta: {
-    name: 'scrape:papers',
+    name: 'scrape:research',
     description: 'Scrape research papers from Arxiv'
   },
   run({ payload }) {
-    $fetch('/api/admin/scrape-papers')
+    $fetch('/api/admin/scrape-research')
     return payload
   }
 })

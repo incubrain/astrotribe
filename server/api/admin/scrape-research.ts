@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
     config: {
       scraperCategory: 'research',
       singleWebsite: 'arxiv',
-      tableName: 'papers',
+      tableName: 'research',
       conflictRow: 'url'
     },
     event
