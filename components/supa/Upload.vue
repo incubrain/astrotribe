@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Cropper from 'cropperjs'
-
 const props = defineProps({
   uploadType: {
     type: String as PropType<string>,
@@ -42,36 +40,9 @@ const fileCleared = (_) => {
   selectedFile.value = null
 }
 
-onMounted(() => {
-  cropper.value = new Cropper(img.value, {
-    aspectRatio: 1,
-    zoomable: true,
-    zoomOnWheel: true,
-    minCropBoxWidth: 180,
-    minCropBoxHeight: 180,
-    viewMode: 3,
-    dragMode: 'crop',
-    background: false,
-    cropBoxMovable: true,
-    cropBoxResizable: true,
-    preview: '.preview',
-    crop() {
-      const canvas = cropper.value.getCroppedCanvas()
-      destination.value = canvas.toDataURL('image/jpeg')
-      // Crop
+onMounted(() => {})
 
-      // Round
-      // const roundedImage = document.createElement('img')
-      // roundedImage.src = crop.baseURI
-      // result.innerHTML = '';
-      // result.appendChild(roundedImage)
-    }
-  })
-})
-
-onUnmounted(() => {
-  cropper.value.destroy()
-})
+onUnmounted(() => {})
 
 watchEffect(() => {
   if (selectedFile.value) {
