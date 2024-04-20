@@ -1,4 +1,10 @@
 <script setup lang="ts">
+const catTagStore = useCategoryTagStore()
+
+onMounted(async () => {
+  await catTagStore.getCategories()
+  await catTagStore.getTags()
+})
 useHead({
   htmlAttrs: {
     lang: 'en'
@@ -19,11 +25,8 @@ useHead({
 })
 
 // infra:med:med:2 setup feature flags for posthog
-// !todo:med - add styling to the toasts, specifically dark mode
-// !todo:med - add a version of this logger to the server using consola, pino or winston logger
-// todo:med - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
-// todo:critical:med - add pagination util for the server, should have the state stored in app state
-
+// ui:low:easy:1 - add styling to the toasts, specifically dark mode
+// !infra:med:hard:4 - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
 </script>
 
 <template>

@@ -6,6 +6,8 @@ defineProps({
   }
 })
 
+const { getCategoryName } = useCategoryTagStore()
+
 // What to display:
 // Company location(s)
 // Category
@@ -24,7 +26,7 @@ defineProps({
 // companySize
 // primaryLocation
 // country
-// 
+//
 </script>
 
 <template>
@@ -33,7 +35,7 @@ defineProps({
       <div class="space-y-3">
         <div class="flex gap-2 items-center">
           <PrimeTag>
-            {{ company.category_id }}
+            {{ getCategoryName(company.category_id) }}
           </PrimeTag>
           <NuxtImg :src="company.logo_url" />
           <span class="text-sm w-auto">
