@@ -32,26 +32,19 @@ const { getCategoryName } = useCategoryTagStore()
 <template>
   <BaseHoverCard>
     <div>
-      <div class="space-y-3">
-        <div class="flex gap-2 items-center">
+      <div class="space-y-4">
+        <div class="flex gap-4 items-center">
+          <NuxtImg
+            v-if="company.logo_url"
+            :src="`images/companies/${company.logo_url}`"
+            class="w-12 h-12 rounded-full"
+          />
           <PrimeTag>
             {{ getCategoryName(company.category_id) }}
           </PrimeTag>
-          <NuxtImg :src="company.logo_url" />
-          <span class="text-sm w-auto">
+          <!-- <span class="text-sm w-auto">
             Scraped: {{ useTimeAgo(company.last_scraped_at).value }}
-          </span>
-          <NuxtLink
-            :to="company.website_url"
-            target="_blank"
-            rel="noopener"
-          >
-            <PrimeButton
-              label="Company Website"
-              size="small"
-              text
-            />
-          </NuxtLink>
+          </span> -->
         </div>
       </div>
     </div>
@@ -69,6 +62,17 @@ const { getCategoryName } = useCategoryTagStore()
       >
         {{ company.description }}
       </p>
+      <NuxtLink
+        :to="company.website_url"
+        target="_blank"
+        rel="noopener"
+      >
+        <PrimeButton
+          label="Company Website"
+          size="small"
+          text
+        />
+      </NuxtLink>
     </div>
   </BaseHoverCard>
 </template>

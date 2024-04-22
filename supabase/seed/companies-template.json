@@ -1,0 +1,19 @@
+[
+  {
+    "name": "",
+    "description": "",
+    "founding_year": 2017,
+    "logo_url": "",
+    "website_url": "",
+    "is_government": false,
+    "category_id": 1,
+    "scrape_frequency": "BiWeekly",
+    "social_media": {
+      "linkedin_url": "",
+      "twitter_url": "",
+      "instagram_url": "",
+      "youtube_url": "",
+      "facebook_url": ""
+    }
+  }
+]

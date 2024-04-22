@@ -43,7 +43,7 @@ onMounted(() => {
     <div
       :class="[
         'transition-all duration-300 delay-200 p-4 border-b-2 md:border border-color overflow-hidden background',
-        'flex flex-col gap-2 w-full h-full md:rounded-md md:shadow-md',
+        'flex flex-col gap-4 w-full h-full md:rounded-md md:shadow-md',
         {
           'lg:group-hover:absolute': enableHoverEffect && !!hoverPosition,
           'top-0': enableHoverEffect && hoverPosition === 'down',
