@@ -43,7 +43,7 @@ defineProps({
         />
       </div> -->
       <div class="space-y-3">
-        <div class="flex gap-2 items-center">
+        <div class="flex gap-2 items-center justify-between">
           <PrimeTag>
             {{ news.source.toUpperCase() }}
           </PrimeTag>

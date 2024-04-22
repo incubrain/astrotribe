@@ -1,5 +1,5 @@
 export function useCurrentUser() {
-  const logger = useLogger('useUser')
+  const logger = useLogger('useCurrentUser')
   const currentUser = useSupabaseUser()
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile
@@ -46,6 +46,8 @@ export function useCurrentUser() {
   // cycle through identities check identities_data for picture
 
   return {
-    profile
+    profile,
+    userId: userId.value,
+    getUserFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)
   }
 }

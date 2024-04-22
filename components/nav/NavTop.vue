@@ -141,6 +141,11 @@ onUnmounted(() => {
 
 const auth = useAuth()
 
+const callGroq = () => {
+  const response = $fetch('/api/groq')
+  console.log(response)
+}
+
 // !design:high:easy:1 - auto detect session and show AstroTribe button
 </script>
 
@@ -229,6 +234,8 @@ const auth = useAuth()
             />
           </NuxtLink>
           <div class="gap-2 flex items-center justify-center h-auto min-w-24 pr-2">
+            <PrimeButton @click="callGroq"> test </PrimeButton>
+
             <NuxtLink
               v-ripple
               to="/auth/login"

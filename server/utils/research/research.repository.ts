@@ -13,7 +13,7 @@ export class ResearchRepository extends BaseRepository<Research> implements IRes
   async selectResearchCards(config: SelectInput<{}>): GenericReturn<Research> {
     return await this.selectMany<'research'>({
       tableName: 'research',
-      selectStatement: this.dto.getSelect(config.dto),
+      selectStatement: '*',
       pagination: config.pagination,
       filterBy: config.filterBy
     })

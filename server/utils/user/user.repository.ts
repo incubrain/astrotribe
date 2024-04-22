@@ -16,7 +16,7 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
     this.logger.debug('selectUserCards input: ', input)
     const data = await this.selectMany<'user_profiles'>({
       tableName: 'user_profiles',
-      selectStatement: this.dto.getSelect(input.dto),
+      selectStatement: '*, roles(*)',
       filterBy: input.filterBy,
       pagination: input.pagination
     })

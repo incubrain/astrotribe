@@ -5,7 +5,7 @@ type FileType =
   | 'event-featured-image'
   | 'event-images'
   | 'user-avatar'
-  | 'user-cover'
+  | 'user-cover_image'
 
 // Map this to supabase storage bucket structures
 const defaultFileOptions: Record<FileType, string> = {
@@ -15,7 +15,7 @@ const defaultFileOptions: Record<FileType, string> = {
   'event-featured-image': 'events/featured-image.jpg',
   'event-images': 'images/',
   'user-avatar': 'avatar.jpg',
-  'user-cover': 'cover.jpg'
+  'user-cover_image': 'cover.jpg'
 }
 
 interface UrlConstructorOptions {

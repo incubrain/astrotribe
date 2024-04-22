@@ -5,6 +5,7 @@ export type StoreKey =
   | 'venuesStore'
   | 'researchStore'
   | 'companiesStore'
+  | 'chatStore'
 
 type PaginationKey = 'from' | 'to' | undefined
 
