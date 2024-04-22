@@ -52,6 +52,12 @@ const pages = ref([
     label: 'News',
     slug: '/astrotribe/news',
     icon: 'mdi:newspaper-variant-outline'
+  },
+  {
+    id: 6,
+    label: 'Guide',
+    slug: '/astrotribe/galactic-guide',
+    icon: 'mdi:information-slab-box'
   }
   // {
   //   id: 6,
