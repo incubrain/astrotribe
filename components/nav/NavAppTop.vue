@@ -23,8 +23,6 @@ const items = ref([
   }
 ])
 
-console.log('profile', profile.value)
-
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -35,10 +33,12 @@ console.log('profile', profile.value)
   >
     <!-- start -->
     <div>
-      <BaseBreadcrumbs class="text-sm" />
+      <BaseBreadcrumbs class="text-sm hidden lg:block" />
     </div>
     <!-- center -->
-    <div class="px-4 py-2"></div>
+    <div class="px-4 py-2 flex gap-4 w-full max-w-[70%] lg:max-w-xl">
+      <SearchBar class="w-full" />
+    </div>
     <!-- end -->
     <div class="flex items-center justify-center gap-4">
       <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
