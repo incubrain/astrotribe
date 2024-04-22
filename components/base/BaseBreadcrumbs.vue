@@ -6,6 +6,10 @@ const links = useBreadcrumbItems()
 // if current link contains astrotribe, set home to astrotribe, remove astrotribe and / path
 const isAppRoute = useRoute().path.includes('/astrotribe')
 
+// if route contains /users/**/ then we should replace ** with the username
+const userStore = useCurrentUser()
+const { profile } = storeToRefs(userStore)
+
 // Prepare links by filtering and adjusting labels
 const formattedLinks = computed(() => {
   if (!links.value) return []
@@ -27,6 +31,15 @@ const formattedLinks = computed(() => {
       // Special handling for the 'astrotribe' path
       if (link.to === '/astrotribe') {
         return { ...link, label: 'Home', ariaLabel: 'Home' }
+      }
+
+      if (link.label.toLowerCase().replaceAll(' ', '-') === profile.value?.id) {
+        console.log('userIdReplace', link)
+        return {
+          ...link,
+          label: profile.value.given_name,
+          ariaLabel: profile.value.given_name
+        }
       }
 
       return link // Return unmodified link

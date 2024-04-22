@@ -75,13 +75,14 @@ const pickUserCard = {
   roles: true
 } as const
 
-const userProfileSchema = userSchema.pick(pickUserProfile).extend({
-  last_seen: datetimeOffset('userCard:last_seen - Incorrect Date Format').optional,
-  avatar: z.string().transform(formatAvatarUrl),
-  cover_image: z.string().transform(formatCoverUrl).nullish(),
-  dob: z.string().transform(formatDob).optional(),
-  roles: roleWithIconSchema.transform((data) => formatRoleIcon(data))
-})
+const userProfileSchema = userSchema.pick(pickUserProfile).transform((user) => ({
+  ...user,
+  avatar: user.avatar ? formatAvatarUrl(user) : undefined,
+  last_seen: user.last_seen ? datetimeOffset(user.last_seen) : undefined,
+  roles: user.roles ? formatRoleIcon(user.roles) : undefined,
+  cover_image: user.cover_image ? formatCoverUrl(user) : undefined,
+  dob: user.dob ? formatDob(user.dob) : undefined
+}))
 
 const userSettingsSchema = userSchema.pick(pickUserSettings).extend({
   last_seen: datetimeOffset('userCard:last_seen - Incorrect Date Format').optional,
@@ -89,11 +90,12 @@ const userSettingsSchema = userSchema.pick(pickUserSettings).extend({
   roles: roleWithIconSchema.transform((data) => formatRoleIcon(data))
 })
 
-const userCardSchema = userSchema.pick(pickUserCard).extend({
-  avatar: z.string().transform(formatAvatarUrl),
-  last_seen: datetimeOffset('userCard:last_seen - Incorrect Date Format').optional,
-  roles: roleWithIconSchema.transform((data) => formatRoleIcon(data))
-})
+const userCardSchema = userSchema.pick(pickUserCard).transform((user) => ({
+  ...user,
+  avatar: user.avatar ? formatAvatarUrl(user) : undefined,
+  last_seen: user.last_seen ? datetimeOffset(user.last_seen) : undefined,
+  roles: user.roles ? formatRoleIcon(user.roles) : undefined
+}))
 
 type UserCardType = z.output<typeof userCardSchema> & {
   avatar: string
@@ -111,18 +113,15 @@ export class UserDTO extends BaseDTO<UserDTOSchema> {
     super([
       {
         name: 'select:user:profile',
-        schema: userProfileSchema,
-        select: generateSelectStatement(pickUserProfile)
+        schema: userProfileSchema
       },
       {
         name: 'select:user:settings',
-        schema: userSettingsSchema,
-        select: generateSelectStatement(pickUserSettings)
+        schema: userSettingsSchema
       },
       {
         name: 'select:user:card',
-        schema: userCardSchema,
-        select: generateSelectStatement(pickUserCard)
+        schema: userCardSchema
       }
     ])
   }

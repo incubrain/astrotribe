@@ -26,21 +26,6 @@ export class BaseDTO<T> {
     return dto?.schema
   }
 
-  getSelect(dtoName: AllDTOKey): string {
-    const dto = this.dtos.find((d) => d.name === dtoName)
-
-    if (!dto) {
-      this.logger.error(`DTO not found for: ${dtoName}`)
-      return ''
-    }
-
-    if (!dto.select) {
-      this.logger.error(`Select not found for: ${dtoName}`)
-      return ''
-    }
-    return dto?.select
-  }
-
   validateAndFormatData(input: InputDTO): any {
     const schema = this.getSchema(input.dto)
 

@@ -23,7 +23,8 @@ const schema = [
   }
 ]
 
-const { accountSettings } = useSettingsStore()
+const userSettingsStore = useUserSettingsStore()
+const { settings } = storeToRefs(userSettingsStore)
 
 definePageMeta({
   name: 'SettingsPassword',
@@ -46,7 +47,7 @@ definePageMeta({
         :item="item"
       >
         <FormPassword
-          v-model="accountSettings[item.value]"
+          v-model="settings[item.value]"
           :pt="{
             root: 'w-full'
           }"

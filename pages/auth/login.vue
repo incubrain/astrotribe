@@ -18,7 +18,7 @@ definePageMeta({
     :title="{
       main: 'Login to AstronEra',
       subtitle: 'Don\'t have an account?',
-      label: 'Sign in.'
+      label: 'Sign up.'
     }"
     help-url="/auth/login"
   >
@@ -50,7 +50,7 @@ definePageMeta({
             Newsletter signup
           </label>
         </div>
-
+        111
         <p class="text-sm">
           <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
         </p>

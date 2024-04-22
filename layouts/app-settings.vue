@@ -40,31 +40,31 @@ const settingsRoutes = computed(() => [
 <template>
   <div>
     <NuxtLayout name="app">
-      <div class="flex flex-col md:flex-row gap-8">
+      <div class="flex flex-col md:flex-row md:gap-8">
         <PrimeMenu
           :model="settingsRoutes"
           :pt="{
             root: 'border-none bg-transparent relative',
-            menu: 'sticky top-12 flex flex-col justify-end items-end',
+            menu: 'md:sticky md:top-0 flex py-4 px-2 md:flex-col justify-left w-full items-center md:justify-end md:items-end overflow-scroll',
             menuitem: 'rounded-full'
           }"
         >
           <template #item="{ item }">
-            <div class="py-2">
-              <NuxtLink
-                v-if="item.url"
-                v-ripple
-                :to="item.url"
-                exact-active-class="link-active"
-                class="px-2"
-              >
-                <span class="mr-4">{{ item.label }}</span>
+            <NuxtLink
+              v-if="item.url"
+              v-ripple
+              :to="item.url"
+              exact-active-class="link-active background "
+              class="flex gap-2 py-2 px-3 rounded-md"
+            >
+              <span class="md:mr-4 text-nowrap">{{ item.label }}</span>
+              <div class="hidden md:block">
                 <Icon
                   v-if="item.icon"
                   :name="item.icon"
                 />
-              </NuxtLink>
-            </div>
+              </div>
+            </NuxtLink>
           </template>
         </PrimeMenu>
         <div class="flex-grow">

@@ -3,10 +3,10 @@ export default defineEventHandler(async (event) => {
 
   console.log('get user', userId)
   try {
-    const client = new UserRepository()
-    const user = await client.selectOne<'user_profiles'>({
+    const userRepository = new UserRepository()
+    const user = await userRepository.selectOne<'user_profiles'>({
       tableName: 'user_profiles',
-      selectStatement: '*',
+      selectStatement: '*, roles(*)',
       filterBy: {
         columnName: 'id',
         operator: 'eq',
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'User fetched',
-      data: user
+      data: userRepository.dto.validateAndFormatData({ dto: 'select:user:profile', data: user })
     }
   } catch (error: any) {
     console.error('get-user-[id] error', error.message)
