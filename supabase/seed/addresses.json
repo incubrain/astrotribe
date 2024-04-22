@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Agnikul Cosmos Private Limited.",
+    "street1": "Rocket Factory, IIT Madras Research Park",
+    "street2": "1st Floor, A-Block",
+    "address_type": "Factory",
+    "is_primary": false,
+    "company_id": 1
+  },
+  {
+    "name": "Agnikul Cosmos Launch Vehicles Private Limited",
+    "street1": "Kerala Startup Mission, Technopark",
+    "street2": "Thejaswini, G3B, Technopark Rd, Karyavattom",
+    "is_primary": true,
+    "address_type": "Headquarters",
+    "company_id": 1
+  }
+]

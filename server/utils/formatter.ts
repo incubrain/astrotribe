@@ -38,8 +38,8 @@ export const formatAvatarUrl = (user: any) => {
 export const formatCoverUrl = (user: any) =>
   getImageURL({
     bucket: 'profile-public',
-    folderPath: `${user.id}/cover`,
-    fileType: 'user-cover',
+    folderPath: `${user.id}/cover_image`,
+    fileType: 'user-cover_image',
     file: user.cover_image,
     isPrivate: false
   })

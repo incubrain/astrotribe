@@ -1,0 +1,19 @@
+[
+  {
+    "contact_type": "Recruitment",
+    "title": "Srinath Ravichandran",
+    "email": "humancapital@agnikul.in",
+    "is_primary": false,
+    "privacy_level": "Private",
+    "company_id": 1
+  },
+  {
+    "contact_type": "Company",
+    "title": "Srinath Ravichandran",
+    "is_primary": true,
+    "email": "curious@agnikul.in",
+    "phone": "+91 72472 46334",
+    "privacy_level": "Public",
+    "company_id": 1
+  }
+]
