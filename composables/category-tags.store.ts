@@ -105,7 +105,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
   }
 
   const getCategoryName = (cateogryId: number) => {
-    return categories.value.find((category) => category.id === cateogryId)
+    return categories.value.find((category) => category.id === cateogryId)?.name
   }
 
   const getTagName = (tagId: number) => {
