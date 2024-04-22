@@ -59,8 +59,8 @@ const p = defineProps({
           <ContentRenderer :value="article">
             <div class="pb-12">
               <div
-                class="mx-auto space-y-8"
                 ref="articleContent"
+                class="mx-auto space-y-8"
               >
                 <ContentRendererMarkdown
                   :value="article.body"

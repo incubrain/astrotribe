@@ -1,6 +1,6 @@
 type SettingsKey = 'usersStore' | 'storeNews'
 
-export const useSettingsBaseStore = defineStore('settingsBaseStore', () => {
+export const useSettingsStore = defineStore('settingsStore', () => {
   const settings = ref({} as Settings)
   const summaryLevel = ref('beginner' as SummaryLevel)
 

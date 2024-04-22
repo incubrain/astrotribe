@@ -3,6 +3,13 @@ import { CompanyService } from '~/server/utils/company/company.service'
 export default defineEventHandler(async (event) => {
   const { newData, dto } = await readBody(event)
 
+  // !infra:high:med:2 validate all data going to the database in the API layer useing these functions
+  //   query with getValidatedQuery
+  // params with getValidatedRouterParams.
+  // body with readValidatedBody
+  // eg. const query = await getValidatedQuery(event, userSchema.parse);
+  //  You could use safeParse instead of parse to get a partial query object and to not throw an error if the query is invalid.
+
   // logic:med:med:2 - set the dataTypes and call correct function. eg. settings or profile
   // consider if this is worthwhile, or we should have individual endpoints per dataType
   console.log('insert company', newData, dto)

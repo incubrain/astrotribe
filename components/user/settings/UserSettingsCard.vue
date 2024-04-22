@@ -10,7 +10,11 @@ defineProps({
 </script>
 
 <template>
-  <PrimeCard>
+  <PrimeCard
+    :pt="{
+      root: 'rounded-md'
+    }"
+  >
     <template #title>
       <div>
         <h2 class="text-2xl font-semibold">{{ title.main }}</h2>
