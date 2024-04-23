@@ -113,19 +113,22 @@ export type Database = {
           body: string | null
           created_at: string
           id: number
-          title: string
+          name: string
+          updated_at: string | null
         }
         Insert: {
           body?: string | null
           created_at?: string
           id?: number
-          title: string
+          name: string
+          updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string
           id?: number
-          title?: string
+          name?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -388,14 +391,17 @@ export type Database = {
       }
       countries: {
         Row: {
+          code: string
           id: number
           name: string
         }
         Insert: {
+          code: string
           id?: number
           name: string
         }
         Update: {
+          code?: string
           id?: number
           name?: string
         }
@@ -583,6 +589,41 @@ export type Database = {
         }
         Relationships: []
       }
+      responses: {
+        Row: {
+          created_at: string | null
+          downvotes: number | null
+          id: number
+          output: string
+          search_id: number
+          upvotes: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          downvotes?: number | null
+          id?: number
+          output: string
+          search_id: number
+          upvotes?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          downvotes?: number | null
+          id?: number
+          output?: string
+          search_id?: number
+          upvotes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "responses_search_id_fkey"
+            columns: ["search_id"]
+            isOneToOne: false
+            referencedRelation: "searches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       roles: {
         Row: {
           body: string | null
@@ -603,6 +644,35 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      searches: {
+        Row: {
+          created_at: string | null
+          id: number
+          input: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          input: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          input?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "searches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_media: {
         Row: {
@@ -642,21 +712,21 @@ export type Database = {
           body: string | null
           created_at: string | null
           id: number
-          title: string
+          name: string
           updated_at: string | null
         }
         Insert: {
           body?: string | null
           created_at?: string | null
           id?: number
-          title: string
+          name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string | null
           id?: number
-          title?: string
+          name?: string
           updated_at?: string | null
         }
         Relationships: []
@@ -957,6 +1027,101 @@ export type Database = {
           },
         ]
       }
+      s3_multipart_uploads: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          id: string
+          in_progress_size: number
+          key: string
+          owner_id: string | null
+          upload_signature: string
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          id: string
+          in_progress_size?: number
+          key: string
+          owner_id?: string | null
+          upload_signature: string
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          id?: string
+          in_progress_size?: number
+          key?: string
+          owner_id?: string | null
+          upload_signature?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      s3_multipart_uploads_parts: {
+        Row: {
+          bucket_id: string
+          created_at: string
+          etag: string
+          id: string
+          key: string
+          owner_id: string | null
+          part_number: number
+          size: number
+          upload_id: string
+          version: string
+        }
+        Insert: {
+          bucket_id: string
+          created_at?: string
+          etag: string
+          id?: string
+          key: string
+          owner_id?: string | null
+          part_number: number
+          size?: number
+          upload_id: string
+          version: string
+        }
+        Update: {
+          bucket_id?: string
+          created_at?: string
+          etag?: string
+          id?: string
+          key?: string
+          owner_id?: string | null
+          part_number?: number
+          size?: number
+          upload_id?: string
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
+            columns: ["bucket_id"]
+            isOneToOne: false
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "s3_multipart_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -994,6 +1159,37 @@ export type Database = {
         Returns: {
           size: number
           bucket_id: string
+        }[]
+      }
+      list_multipart_uploads_with_delimiter: {
+        Args: {
+          bucket_id: string
+          prefix_param: string
+          delimiter_param: string
+          max_keys?: number
+          next_key_token?: string
+          next_upload_token?: string
+        }
+        Returns: {
+          key: string
+          id: string
+          created_at: string
+        }[]
+      }
+      list_objects_with_delimiter: {
+        Args: {
+          bucket_id: string
+          prefix_param: string
+          delimiter_param: string
+          max_keys?: number
+          start_after?: string
+          next_token?: string
+        }
+        Returns: {
+          name: string
+          id: string
+          metadata: Json
+          updated_at: string
         }[]
       }
       search: {
