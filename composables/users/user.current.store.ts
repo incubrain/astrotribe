@@ -1,5 +1,5 @@
-export function useCurrentUser() {
-  const logger = useLogger('useCurrentUser')
+export const useCurrentUser = defineStore('currentUserStore', () => {
+  const logger = useLogger('currentUserStore')
   const currentUser = useSupabaseUser()
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile
@@ -47,7 +47,7 @@ export function useCurrentUser() {
 
   return {
     profile,
-    userId: userId.value,
-    getUserFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)
+    userId,
+    userFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)
   }
-}
+})

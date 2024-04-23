@@ -6,7 +6,9 @@ export default defineEventHandler(async (event) => {
   if (!question) {
     return {
       statusCode: 400,
-      message: 'message is required'
+      error: {
+        message: 'question is required'
+      }
     }
   }
 
@@ -14,15 +16,16 @@ export default defineEventHandler(async (event) => {
     const chatCompletion = await getGroqChatCompletion(String(question))
 
     return {
+      error: null,
       statusCode: 200,
-      message: 'success',
       data: chatCompletion || ''
     }
   } catch (error) {
     console.log('error', error)
     return {
-      statusCode: 500,
-      message: 'error'
+      data: null,
+      error,
+      statusCode: 500
     }
   }
 })

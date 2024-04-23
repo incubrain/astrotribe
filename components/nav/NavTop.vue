@@ -153,13 +153,13 @@ const callGroq = () => {
   <div
     :class="[
       'flex origin-top-left w-full wrapper',
-      isSmall ? 'lg:justify-left lf:items-left' : 'lg:justify-center lg:items-center lg:padded-x'
+      isSmall ? 'lg:justify-left lg:items-left' : 'lg:justify-center lg:items-center lg:padded-x'
     ]"
     :style="{
       position: 'fixed',
-      top: isSmall ? '1.5rem' : '0',
-      left: isSmall ? '1.5rem' : '0',
-      right: isSmall ? '0' : '0',
+      top: '0',
+      left: '0',
+      right: '0',
       transition: 'transform 0.5s ease, left 0.5s ease',
       zIndex: '50'
     }"

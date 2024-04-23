@@ -55,8 +55,8 @@ const pages = ref([
   },
   {
     id: 6,
-    label: 'Guide',
-    slug: '/astrotribe/galactic-guide',
+    label: 'Q&A',
+    slug: '/astrotribe/ask',
     icon: 'mdi:information-slab-box'
   }
   // {

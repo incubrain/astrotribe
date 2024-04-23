@@ -50,7 +50,6 @@ definePageMeta({
             Newsletter signup
           </label>
         </div>
-        111
         <p class="text-sm">
           <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
         </p>

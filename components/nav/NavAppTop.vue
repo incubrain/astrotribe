@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const router = useRouter()
-const profile = useCurrentUser().profile
+const userStore = useCurrentUser()
+const { profile } = storeToRefs(userStore)
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
-  profileMenu.value.toggle(e)
+  profileMenu.value?.toggle(e)
 }
 
 const auth = useAuth()

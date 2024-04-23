@@ -127,14 +127,15 @@ onMounted(async () => {
   }
 })
 
-const user = useCurrentUser()
+const userStore = useCurrentUser()
+const { userId, userFullName } = storeToRefs(userStore)
 async function uploadImage(blob: Blob) {
-  const fileName = user.getUserFullName.value.replace(' ', '-').toLowerCase()
+  const fileName = userFullName.value.replace(' ', '-').toLowerCase()
 
-  console.log('isUndefined', user.userId, fileName)
+  console.log('isUndefined', userId, fileName)
   const formData = new FormData()
   formData.append('file', blob)
-  formData.append('userId', user.userId) // Include the user ID
+  formData.append('userId', userId.value!) // Include the user ID
   formData.append('fileType', props.cropperType)
   formData.append('fileName', fileName)
 

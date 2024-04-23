@@ -38,6 +38,7 @@ export const useChatStore = defineStore('chatStore', () => {
   const loading = useLoadingStore()
   const chat = ref({} as Chat)
   const question = ref('' as string)
+  const client = useSupabaseClient()
 
   function handleDBErrors(response: { data?: any; error?: any }) {
     if (response.error) {
@@ -51,15 +52,36 @@ export const useChatStore = defineStore('chatStore', () => {
 
   function handleNavigation() {
     const route = useRoute()
-    if (route.path === '/astrotribe/galactic-guide') {
+    if (route.path === '/astrotribe/ask') {
       return
     }
-    navigateTo('/astrotribe/galactic-guide')
+    navigateTo('/astrotribe/ask')
   }
 
-  async function submitQuestion(newQuestion: string) {
-    console.log('searchMessage', question.value)
-    question.value = newQuestion
+  async function insertSearchData(userId: string) {
+    const response = await client
+      .from('searches')
+      .insert({
+        input: question.value,
+        created_at: new Date().toISOString(),
+        user_id: userId
+      })
+      .select()
+
+    return handleDBErrors(response)
+  }
+
+  async function insertResponseData(searchId: number, questionResponseData: Chat) {
+    const response = await client.from('responses').insert({
+      search_id: searchId,
+      output: questionResponseData.choices[0]?.message?.content,
+      created_at: new Date().toISOString()
+    })
+    return handleDBErrors(response)
+  }
+
+  async function submitQuestion(userId: string) {
+    console.log('searchMessage', question.value, userId)
 
     if (loading.isLoading(storeKey)) {
       return null
@@ -67,22 +89,28 @@ export const useChatStore = defineStore('chatStore', () => {
 
     loading.setLoading(storeKey, true)
 
-    const response = await $fetch('/api/groq', {
-      method: 'GET',
-      params: {
-        question: newQuestion
-      }
-    })
+    try {
+      const questionResponse = await $fetch('/api/groq', {
+        method: 'GET',
+        params: { question: question.value }
+      })
 
-    logger.debug('response', response)
-    const data = handleDBErrors(response)
-    chat.value = data
-    // redirect to answer page if required
-    handleNavigation()
-    loading.setLoading(storeKey, false)
+      const questionResponseData: Chat = handleDBErrors(questionResponse)
+
+      chat.value = questionResponseData
+      const search = await insertSearchData(userId)
+      console.log('search', search)
+      insertResponseData(search[0].id, questionResponseData)
+      handleNavigation()
+    } catch (error) {
+      console.error('Error submitting question and handling response:', error)
+    } finally {
+      await loading.setLoadingInterval(storeKey, false, 1000)
+    }
   }
 
   return {
+    isLoading: computed(() => loading.isLoading(storeKey)),
     chat,
     question,
     submitQuestion
