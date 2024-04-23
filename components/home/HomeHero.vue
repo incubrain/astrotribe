@@ -1,10 +1,12 @@
 <template>
   <div class="min-h-screen text-white relative">
-    <NuxtImg
+    <BaseImage
+      :img="{
+        src: bgImg,
+        quality: '80',
+        format: 'webp'
+      }"
       class="absolute top-0 left-0 object-cover w-full h-full bg-center bg-no-repeat"
-      quality="80"
-      :src="bgImg"
-      format="webp"
     />
     <div class="absolute top-0 left-0 w-full h-full bg-zinc-900/40 dark:bg-zinc-900/60" />
     <div
@@ -17,7 +19,11 @@
         <div
           class="w-16 h-16 lg:w-24 lg:h-24 p-2 xl:p-4 overflow-hidden bg-white rounded-full shadow-lg"
         >
-          <NuxtImg src="/astronera-logo.jpg" />
+          <BaseImage
+            :img="{
+              src: '/astronera-logo.jpg'
+            }"
+          />
         </div>
         <h1 class="max-w-lg text-4xl lg:text-5xl font-bold leading-tight">
           Explore The Universe And Grow With Us

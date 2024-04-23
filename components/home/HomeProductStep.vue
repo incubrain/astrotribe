@@ -7,11 +7,13 @@
     "
   >
     <div class="md:w-[70%] h-[360px] aspect-auto shadow-2xl relative">
-      <NuxtImg
+      <BaseImage
+        :img="{
+          src: imgSrc,
+          alt: `${title} AstroTribe feature`,
+          format: 'webp'
+        }"
         class="object-cover object-left w-full h-full overflow-hidden rounded-lg"
-        :src="imgSrc"
-        format="webp"
-        :alt="`${title} AstroTribe feature`"
       />
       <div
         class="absolute top-0 left-0 hidden w-full h-full rounded-lg dark:block bg-zinc-900/10"

@@ -19,9 +19,11 @@
             @click="isOpen = false"
           >
             <div class="p-2 bg-white rounded-full aspect-square flex">
-              <NuxtImg
-                src="/astronera-logo.jpg"
-                alt="Astron Era Logo"
+              <BaseImage
+                :img="{
+                  src: '/astronera-logo.jpg',
+                  alt: 'Astron Era Logo'
+                }"
                 class="w-8 h-8 md:w-12 md:h-12"
               />
             </div>

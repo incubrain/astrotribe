@@ -22,15 +22,19 @@ definePageMeta({
       }"
       position="object-top"
     >
-      <NuxtImg
+      <BaseImage
+        :img="{
+          width: '160px',
+          height: '160px',
+          src: 'conference/conference-logo.png',
+          alt: 'Conference logo'
+        }"
         class="rounded-full overflow-hidden"
-        width="160px"
-        height="160px"
-        src="conference/conference-logo.png"
-        alt="Conference logo"
       />
-      <NuxtImg
-        src="images/trusted/dst.png"
+      <BaseImage
+        :img="{
+          src: 'images/trusted/dst.png'
+        }"
         class="h-16 mx-auto lg:h-20"
       />
     </CommonHero>
@@ -74,12 +78,14 @@ definePageMeta({
           </div>
         </div>
         <div>
-          <NuxtImg
+          <BaseImage
+            :img="{
+              src: 'conference/photos/IDSPAC23-group-photo.jpg',
+              alt: 'Manu Allaya resort at night with the milky way in the background',
+              width: '900',
+              height: '460'
+            }"
             class="rounded-md mx-auto w-full"
-            src="conference/photos/IDSPAC23-group-photo.jpg"
-            alt="Manu Allaya resort at night with the milky way in the background"
-            width="900"
-            height="460"
           />
           <p class="p-4 w-full text-center">Thank you to everyone who made this possible! ❤️</p>
           <div class="flex justify-center items-center">

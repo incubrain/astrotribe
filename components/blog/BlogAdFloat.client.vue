@@ -9,11 +9,13 @@
     <template #header>
       <div class="flex justify-start items-center gap-2 flex-shrink-0 p-2 pb-0">
         <div class="p-1 background rounded-full">
-          <NuxtImg
-            src="images/team/shweta-kulkarni.jpg"
-            alt="Shweta Kulkarni is the CEO / Founder of AstronEra"
-            width="60"
-            height="60"
+          <BaseImage
+            :img="{
+              src: 'images/team/shweta-kulkarni.jpg',
+              alt: 'Shweta Kulkarni is the CEO / Founder of AstronEra',
+              width: '60',
+              height: '60'
+            }"
             class="rounded-full"
           />
         </div>

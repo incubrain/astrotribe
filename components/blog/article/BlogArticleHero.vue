@@ -2,11 +2,13 @@
   <div class="relative w-full flex justify-center items-center foreground pb-12 pt-28">
     <div class="flex flex-col max-w-4xl">
       <BaseBreadcrumbs class="py-4 px-4" />
-      <NuxtImg
-        :src="`images/blog/${article.category}/${article.featured_image}`"
+      <BaseImage
+        :img="{
+          src: `images/blog/${article.category}/${article.featured_image}`,
+          width: '900px',
+          height: '506px'
+        }"
         class="md:rounded-md relative"
-        width="900px"
-        height="506px"
       />
       <div
         class="flex flex-col md:flex-row-reverse gap-12 items-start p-3 rounded-md w-full justify-between"

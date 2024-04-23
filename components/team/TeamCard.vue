@@ -32,12 +32,14 @@
 
     <div class="relative px-10 flex items-start justify-center pb-4">
       <div class="w-20 overflow-hidden border rounded-full md:w-24">
-        <NuxtImg
-          :src="member.avatar"
-          loading="lazy"
-          width="100"
-          height="100"
-          :alt="member.name"
+        <BaseImage
+          :img="{
+            src: member.avatar,
+            alt: member.name,
+            loading: 'lazy',
+            width: '100',
+            height: '100'
+          }"
         />
       </div>
     </div>

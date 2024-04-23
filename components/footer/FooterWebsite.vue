@@ -21,11 +21,13 @@ const { socials, pages } = storeToRefs(p)
             to="/"
             class="h-full flex justify-center flex-col lg:flex-row items-center gap-4 font-semibold"
           >
-            <NuxtImg
-              src="/astronera-logo.jpg"
-              alt="AstronEra Logo"
-              width="48"
-              height="48"
+            <BaseImage
+              :img="{
+                src: '/astronera-logo.jpg',
+                alt: 'AstronEra Logo',
+                width: '48',
+                height: '48'
+              }"
               class="dark:bg-white rounded-full overflow-hidden p-1"
             />
             AstronEra
