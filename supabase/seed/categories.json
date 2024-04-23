@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Space Missions and Exploration"
+  },
+  {
+    "id": 2,
+    "name": "Observational Astronomy"
+  },
+  {
+    "id": 3,
+    "name": "Theoretical Astronomy and Cosmology"
+  },
+  {
+    "id": 4,
+    "name": "Astrophysics and Celestial Mechanics"
+  },
+  {
+    "id": 5,
+    "name": "Satellite Technology"
+  },
+  {
+    "id": 6,
+    "name": "Space Industry and Commerce"
+  },
+  {
+    "id": 7,
+    "name": "Astrobiology and Astrochemistry"
+  },
+  {
+    "id": 8,
+    "name": "Space Policy and Law"
+  },
+  {
+    "id": 9,
+    "name": "Educational Resources"
+  },
+  {
+    "id": 10,
+    "name": "Space Science and Engineering"
+  },
+  {
+    "id": 11,
+    "name": "Astronomy Events and Phenomena"
+  },
+  {
+    "id": 12,
+    "name": "Space Agencies and Organizations"
+  },
+  {
+    "id": 13,
+    "name": "Technology and Innovation"
+  },
+  {
+    "id": 14,
+    "name": "Historical Astronomy"
+  },
+  {
+    "id": 15,
+    "name": "Public Engagement and Media"
+  }
+]
