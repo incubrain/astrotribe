@@ -1,9 +1,11 @@
 type SettingsKey = 'usersStore' | 'storeNews'
 
 export const useUserSettingsStore = defineStore('settingsStore', () => {
-  const user = useCurrentUser()
+  const userStore = useCurrentUser()
+  const { profile } = storeToRefs(userStore)
+
   const settings = ref({
-    profile: user.profile
+    profile
   } as Settings)
 
   function toggleSettings(key: SettingsKey) {

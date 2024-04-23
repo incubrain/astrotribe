@@ -2,7 +2,7 @@
 const chatStore = useChatStore()
 const { chat } = storeToRefs(chatStore)
 
-definePageMeta({ name: 'Galactic Guide', layout: 'app' })
+definePageMeta({ name: 'Q&A', layout: 'app' })
 </script>
 
 <template>

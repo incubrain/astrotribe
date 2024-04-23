@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { user } = useCurrentUser()
+const userStore = useCurrentUser()
+const { profile } = storeToRefs(userStore)
 
 definePageMeta({
   name: 'Success',
@@ -19,7 +20,7 @@ definePageMeta({
       <div>
         <p> We’ve sent a message to your email address: </p>
         <p>
-          <strong>{{ user?.email }}</strong>
+          <strong>{{ profile?.email }}</strong>
         </p>
         <p> with a link to activate your account. </p>
         <div class="space-x-2 py-4 w-auto">
