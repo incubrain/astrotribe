@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const chatStore = useChatStore()
-const { question } = storeToRefs(chatStore)
+const { question, isLoading } = storeToRefs(chatStore)
+
+const userStore = useCurrentUser()
+const { userId } = storeToRefs(userStore)
+
 </script>
 
 <template>
@@ -17,7 +21,7 @@ const { question } = storeToRefs(chatStore)
         class="w-full"
         placeholder="Ask a question..."
         type="text"
-        @keydown.enter="chatStore.submitQuestion(question)"
+        @keydown.enter="chatStore.submitQuestion(userId)"
       />
       <PrimeInputGroupAddon>
         <PrimeButton
@@ -25,11 +29,12 @@ const { question } = storeToRefs(chatStore)
             root: 'p-0'
           }"
           link
-          @click="chatStore.submitQuestion(question)"
+          @click="chatStore.submitQuestion(userId)"
         >
           <Icon
-            name="mdi:send"
+            :name="isLoading ? 'mdi:loading' : 'mdi:send'"
             class="w-6 h-6 font-bold"
+            :class="isLoading ? 'animate-spin' : ''"
           />
         </PrimeButton>
       </PrimeInputGroupAddon>

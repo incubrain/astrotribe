@@ -33,6 +33,10 @@ const formattedLinks = computed(() => {
         return { ...link, label: 'Home', ariaLabel: 'Home' }
       }
 
+      if (link.to === '/astrotribe/ask') {
+        return { ...link, label: 'Q&A', ariaLabel: 'Q&A' }
+      }
+
       if (link.label.toLowerCase().replaceAll(' ', '-') === profile.value?.id) {
         console.log('userIdReplace', link)
         return {
