@@ -13,9 +13,11 @@
     </div>
     <div class="h-full flex absolute top-0 left-0 w-full overflow-hidden">
       <div class="bg-black/40 absolute w-full h-full left-0 top-0" />
-      <NuxtImg
-        src="/astron-era-hero.jpg"
-        alt=""
+      <BaseImage
+        :img="{
+          src: '/astron-era-hero.jpg',
+          alt: ''
+        }"
         class="w-full object-cover object-center"
       />
     </div>

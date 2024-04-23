@@ -6,20 +6,28 @@
       Supported by
     </h4>
     <div class="grid justify-around w-full grid-cols-2 gap-4 md:grid-cols-4 md:justify-around">
-      <NuxtImg
-        src="images/trusted/dst.png"
+      <BaseImage
+        :img="{
+          src: 'images/trusted/dst.png'
+        }"
         class="h-16 mx-auto lg:h-20 md:ml-0"
       />
-      <NuxtImg
-        src="images/trusted/iau-oad.png"
+      <BaseImage
+        :img="{
+          src: 'images/trusted/iau-oad.png'
+        }"
         class="h-16 mx-auto lg:h-20"
       />
-      <NuxtImg
-        src="images/trusted/in-fed.png"
+      <BaseImage
+        :img="{
+          src: 'images/trusted/in-fed.png'
+        }"
         class="h-16 mx-auto lg:h-20"
       />
-      <NuxtImg
-        src="images/trusted/iimb-nsrcel.png"
+      <BaseImage
+        :img="{
+          src: 'images/trusted/iimb-nsrcel.png'
+        }"
         class="h-16 mx-auto lg:h-20 md:mr-0"
       />
     </div>

@@ -44,10 +44,12 @@
       <div
         class="row-start-3 lg:row-start-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12"
       >
-        <NuxtImg
+        <BaseImage
+          :img="{
+            src: themes.img.src,
+            alt: themes.img.alt
+          }"
           class="rounded-md w-full"
-          :src="themes.img.src"
-          :alt="themes.img.alt"
         />
         <div class="flex flex-col pb-3 w-full justify-center rounded-md">
           <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase pb-4">

@@ -75,9 +75,11 @@ definePageMeta({
       }"
     >
       <div class="relative w-full max-w-[1200px] h-64">
-        <NuxtImg
-          v-if="user.profile.value?.cover_image"
-          :src="user.profile.value.cover_image"
+        <BaseImage
+          v-if="user.profile?.cover_image"
+          :img="{
+            src: user.profile.cover_image
+          }"
           class="w-full h-full rounded-md overflow-hidden border border-color"
         />
         <BaseUploadCropper
@@ -88,9 +90,11 @@ definePageMeta({
         <div
           class="w-32 h-32 absolute -bottom-16 left-16 bg-red-50 flex justify-center items-center rounded-full overflow-hidden"
         >
-          <NuxtImg
-            v-if="user.profile.value?.avatar"
-            :src="user.profile.value.avatar"
+          <BaseImage
+            v-if="user.profile?.avatar"
+            :img="{
+              src: user.profile.avatar
+            }"
             class="w-full h-full"
           />
           <BaseUploadCropper

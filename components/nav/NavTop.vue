@@ -178,8 +178,10 @@ const callGroq = () => {
           <div
             class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-md overflow-hidden relative flex justify-center items-center border"
           >
-            <NuxtImg
-              src="/astronera-logo.jpg"
+            <BaseImage
+              :img="{
+                src: '/astronera-logo.jpg'
+              }"
               class="w-full h-full dark:opacity-90"
             />
             <div class="absolute text-black z-50">
@@ -234,8 +236,6 @@ const callGroq = () => {
             />
           </NuxtLink>
           <div class="gap-2 flex items-center justify-center h-auto min-w-24 pr-2">
-            <PrimeButton @click="callGroq"> test </PrimeButton>
-
             <NuxtLink
               v-ripple
               to="/auth/login"

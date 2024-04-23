@@ -14,14 +14,16 @@
           :key="feature.id"
           class="relative h-full p-8 mx-auto overflow-hidden rounded-lg shadow-md"
         >
-          <NuxtImg
+          <BaseImage
+            :img="{
+              src: feature.bgImg,
+              alt: `${feature.title} background image`,
+              height: '366px',
+              width: '290px',
+              quality: '70',
+              format: 'webp'
+            }"
             class="absolute top-0 left-0 object-cover w-full h-full"
-            :src="feature.bgImg"
-            height="366px"
-            width="290px"
-            quality="70"
-            format="webp"
-            :alt="`${feature.title} background image`"
           />
           <div class="absolute top-0 left-0 w-full h-full bg-gray-900/50 dark:bg-zinc-900/80" />
           <div class="relative z-50 text-light">

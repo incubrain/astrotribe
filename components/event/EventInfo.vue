@@ -1,13 +1,15 @@
 <template>
   <article>
     <div class="relative">
-      <NuxtImg
-        :src="event.featured_image"
-        loading="lazy"
-        width="400"
-        height="400"
-        quality="80"
-        :alt="`${event.title} featured image on AstroTribe`"
+      <BaseImage
+        :img="{
+          src: event.featured_image,
+          alt: `${event.title} featured image on AstroTribe`,
+          loading: 'lazy',
+          width: '400',
+          height: '400',
+          quality: '80'
+        }"
         class="w-full"
       />
       <div

@@ -26,12 +26,14 @@ defineProps({
 
 <template>
   <div class="relative flex items-center justify-center">
-    <NuxtImg
+    <BaseImage
+      :img="{
+        src: img.src,
+        alt: img.alt,
+        width: img.width,
+        height: img.height
+      }"
       :class="`w-full object-${fit} ${objectPosition} h-screen`"
-      :src="img.src"
-      :alt="img.alt"
-      :width="img.width"
-      :height="img.height"
     />
     <div
       class="absolute z-10 flex flex-col lg:flex-row text-white gap-8 lg:gap-16 px-4 xl:px-8 justify-center items-center"

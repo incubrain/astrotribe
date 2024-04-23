@@ -19,10 +19,12 @@
         class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"
       >
         <div class="flex justify-start items-center -mt-16 lg:-mt-24">
-          <NuxtImg
+          <BaseImage
+            :img="{
+              src: user.avatar,
+              alt: user.name
+            }"
             class="w-32 h-32 lg:w-48 lg:h-48 rounded-full p-2 background"
-            :src="user.avatar"
-            :alt="user.name"
           />
         </div>
         <div class="p-4 xl:p-8 grid grid-cols-1 lg:grid-cols-2 gap-20">

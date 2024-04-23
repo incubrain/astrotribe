@@ -34,9 +34,11 @@ const { getCategoryName } = useCategoryTagStore()
     <div>
       <div class="space-y-4">
         <div class="flex gap-4 items-center">
-          <NuxtImg
+          <BaseImage
             v-if="company.logo_url"
-            :src="`images/companies/${company.logo_url}`"
+            :img="{
+              src: `images/companies/${company.logo_url}`
+            }"
             class="w-12 h-12 rounded-full"
           />
           <PrimeTag>
