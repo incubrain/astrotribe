@@ -9,14 +9,16 @@
     >
       <template #header>
         <div class="hidden dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
-        <NuxtImg
-          :src="`conference/speakers/${host.avatar}.jpg`"
-          :alt="`${host.given_name} is the chairperson at the Dark Sky Conservation India Conference`"
-          width="350"
-          height="350"
-          loading="lazy"
-          quality="80"
-          format="webp"
+        <BaseImage
+          :img="{
+            src: `conference/speakers/${host.avatar}.jpg`,
+            alt: `${host.given_name} is the chairperson at the Dark Sky Conservation India Conference`,
+            width: '350',
+            height: '350',
+            loading: 'lazy',
+            quality: '80',
+            format: 'webp'
+          }"
           class="object-cover aspect-square h-full grayscale-[20%] min-w-[180px] w-full"
         />
       </template>

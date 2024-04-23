@@ -20,26 +20,30 @@ defineProps({
         v-if="news.featured_image"
         class="overflow-hidden sm:h-48"
       >
-        <NuxtImg
-          :src="news.featured_image"
-          :alt="news.title"
-          fit="cover"
-          class="rounded-t-md object-cover object-center w-full h-full aspect-video"
-          width="420"
-          height="220"
+        <BaseImage
+        :img="{
+          src: news.featured_image,
+          alt: news.title,
+          fit: 'cover',
+          width: '420',
+          height: '220',
+        }"
+        class="rounded-t-md object-cover object-center w-full h-full aspect-video"
         />
       </div> -->
       <!-- <div
         v-else
         class="overflow-hidden sm:h-48"
       >
-        <NuxtImg
-          :src="`images/news/${news.source}-placeholder.jpg`"
-          :alt="news.title"
-          fit="cover"
-          class="rounded-t-md object-cover object-center w-full h-full aspect-video"
-          width="420"
-          height="220"
+        <BaseImage
+        :img="{
+          src: `images/news/${news.source}-placeholder.jpg`,
+          alt: news.title,
+          fit: 'cover',
+          width: '420',
+          height: '220',
+        }"
+        class="rounded-t-md object-cover object-center w-full h-full aspect-video"
         />
       </div> -->
       <div class="space-y-3">
@@ -74,7 +78,7 @@ defineProps({
       </h4>
       <p
         v-if="news.description"
-        class="text-sm max-h-none md:max-h-4 overflow-hidden group-hover:max-h-none group-hover:overflow-visible"
+        class="text-sm max-h-none md:max-h-4 overflow-hidden lg:group-hover:max-h-none lg:group-hover:overflow-visible"
       >
         {{ news.description }}
       </p>

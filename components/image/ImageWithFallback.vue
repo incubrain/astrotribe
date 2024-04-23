@@ -1,11 +1,13 @@
 <template>
   <div class="h-full w-full rounded-md overflow-hidden relative object-cover">
-    <NuxtImg
-      :src="image?.src || 'astron-era-hero.jpg'"
-      :alt="image?.alt || 'this is a default fallback for when an image is not present'"
-      :width="options?.width || 60"
-      :height="options?.height || 37"
-      :quality="options?.quality || 80"
+    <BaseImage
+      :img="{
+        src: image?.src || 'astron-era-hero.jpg',
+        alt: image?.alt || 'this is a default fallback for when an image is not present',
+        width: options?.width || 60,
+        height: options?.height || 37,
+        quality: options?.quality || 80
+      }"
       class="h-full object-cover w-full"
     />
     <div

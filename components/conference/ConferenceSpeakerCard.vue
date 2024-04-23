@@ -8,14 +8,16 @@
   >
     <template #header>
       <div class="hidden dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
-      <NuxtImg
-        :src="`conference/speakers/${speaker.avatar}.jpg`"
-        :alt="`${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`"
-        width="350"
-        height="350"
-        loading="lazy"
-        quality="80"
-        format="webp"
+      <BaseImage
+        :img="{
+          src: `conference/speakers/${speaker.avatar}.jpg`,
+          alt: `${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`,
+          width: '350',
+          height: '350',
+          loading: 'lazy',
+          quality: '80',
+          format: 'webp'
+        }"
         class="object-cover w-full grayscale-[20%]"
       />
     </template>

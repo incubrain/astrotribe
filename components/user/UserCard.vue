@@ -31,9 +31,11 @@ defineProps({
       :to="`users/${user.id}`"
       class="flex items-center gap-3 transition-transform origin-top"
     >
-      <NuxtImg
-        :src="user.avatar"
-        alt="User Avatar"
+      <BaseImage
+        :img="{
+          src: user.avatar,
+          alt: 'User Avatar'
+        }"
         class="rounded-full w-12 h-12"
       />
       <div class="space-y-1">

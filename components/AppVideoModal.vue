@@ -10,12 +10,14 @@
         link
         @click="handleClicked($posthog)"
       >
-        <NuxtImg
-          :src="video.thumbnail"
-          :alt="video.alt"
-          height="480px"
-          width="840px"
-          sizes="100vw lg:50vw"
+        <BaseImage
+          :img="{
+            src: video.thumbnail,
+            alt: video.alt,
+            height: '480px',
+            width: '840px',
+            sizes: '100vw lg:50vw'
+          }"
         />
         <Icon
           name="mdi:play"

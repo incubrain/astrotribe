@@ -26,12 +26,14 @@ defineProps({
         :article-link="article._path.split('/')[2]"
         class="p-4"
       />
-      <NuxtImg
+      <BaseImage
+        :img="{
+          src: `images/blog/${article.category}/${article.featured_image}`,
+          width: '400',
+          height: '300',
+          quality: '80'
+        }"
         class="w-full object-cover aspect-video border border-color"
-        :src="`images/blog/${article.category}/${article.featured_image}`"
-        width="400"
-        height="300"
-        quality="80"
       />
     </template>
     <template #title>

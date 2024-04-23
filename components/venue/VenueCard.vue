@@ -8,25 +8,29 @@
   >
     <template #header>
       <div>
-        <NuxtImg
-          :src="venue.featured_image"
-          loading="lazy"
-          :alt="`${venue.name} AstroTribe featured image`"
-          width="340"
-          height="250"
+        <BaseImage
+          :img="{
+            src: venue.featured_image,
+            alt: `${venue.name} AstroTribe featured image`,
+            loading: 'lazy',
+            width: '340',
+            height: '250'
+          }"
           class="object-cover w-full h-full aspect-video"
         />
         <div
           class="absolute w-12 h-12 p-1 overflow-hidden rounded-full left-2 top-2"
           :class="getBG(venue.id)"
         >
-          <NuxtImg
-            :src="venue.logo"
-            loading="lazy"
-            :alt="`${venue.name} AstroTribe featured image`"
-            width="60"
-            height="60"
-            quality="80"
+          <BaseImage
+            :img="{
+              src: venue.logo,
+              alt: `${venue.name} AstroTribe featured image`,
+              loading: 'lazy',
+              width: '60',
+              height: '60',
+              quality: '80'
+            }"
             class="object-contain w-full aspect-square"
           />
         </div>

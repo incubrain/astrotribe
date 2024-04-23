@@ -4,17 +4,17 @@
     :key="article.id"
     class="grid grid-rows-4 overflow-hidden origin-left scale-x-0 rounded-md shadow-sm animate-swipe-in group"
   >
-    <NuxtImg
-      :src="
-        s.image.single({
+    <BaseImage
+      :img="{
+        src: s.image.single({
           bucket: 'articles',
           folderPath: `${article.id}`,
           file: article.id,
           isPrivate: false
-        })
-      "
-      loading="lazy"
-      :alt="article.title"
+        }),
+        alt: article.title,
+        loading: 'lazy'
+      }"
     />
     <div
       class="relative w-full col-span-1 col-start-1 row-span-2 row-start-3 transition-all duration-500 ease-in-out"

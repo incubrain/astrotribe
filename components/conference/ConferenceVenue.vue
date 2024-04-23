@@ -17,12 +17,14 @@
       </div>
     </CommonTitle>
     <div class="w-full h-full">
-      <NuxtImg
+      <BaseImage
+        :img="{
+          src: image.src,
+          alt: image.alt,
+          width: '440',
+          height: '520'
+        }"
         class="rounded-md mx-auto w-full"
-        :src="image.src"
-        :alt="image.alt"
-        width="440"
-        height="520"
       />
     </div>
   </div>

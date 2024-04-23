@@ -12,13 +12,15 @@
             : 'overflow-hidden rounded-full border-2 relative z-10 border-inverted'
         "
       >
-        <NuxtImg
-          :src="host.avatar"
-          loading="lazy"
-          :alt="`${host.given_name} is an AstroTribe event host`"
-          width="50"
-          height="50"
-          quality="80"
+        <BaseImage
+          :img="{
+            src: host.avatar,
+            alt: `${host.given_name} is an AstroTribe event host`,
+            loading: 'lazy',
+            width: '50',
+            height: '50',
+            quality: '80'
+          }"
           class="object-contain aspect-square w-8 h-8"
         />
       </div>
