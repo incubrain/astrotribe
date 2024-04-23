@@ -3,12 +3,35 @@ import type { NewsListGovernmentT } from '@/types/news'
 
 const p = defineProps({
   newsCategory: {
-    type: String as PropType<NewsListGovernmentT>,
+    type: String as PropType<NewsListGovernmentT | 'all'>,
     required: true
   }
 })
 
-const { data: spaceNews, error } = await useFetch(`/api/news/${p.newsCategory}`)
+const filterBy = computed(() =>
+  p.newsCategory === 'all'
+    ? null
+    : {
+        columnName: 'source',
+        operator: 'eq',
+        value: p.newsCategory
+      }
+)
+
+const { data: spaceNews, error } = await useAsyncData(
+  'blog-news-cards',
+  async () =>
+    await $fetch('/api/news/select/many', {
+      method: 'GET',
+      params: {
+        filterBy: filterBy.value,
+        dto: 'select:news:card',
+        limit: 6
+      }
+    })
+)
+
+console.log('dataReturned', spaceNews, error)
 
 if (error.value) {
   console.error(error.value)
@@ -16,17 +39,15 @@ if (error.value) {
 </script>
 <template>
   <div>
-    <h2
-      class="text-3xl font-bold pb-10 underline underline-offset-8 decoration-primary-500 text-center"
-    >
-      {{ newsCategory.toUpperCase() }} NEWS
+    <h2 class="text-3xl font-bold pb-10 underline underline-offset-8 decoration-primary-500">
+      LATEST NEWS
     </h2>
     <div
-      v-if="spaceNews?.news"
+      v-if="spaceNews?.data"
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
     >
       <NewsCard
-        v-for="(news, i) in spaceNews.news"
+        v-for="(news, i) in spaceNews.data"
         :key="`news-${news.source}-${i}`"
         :news="news"
       />
