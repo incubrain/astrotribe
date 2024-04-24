@@ -5,8 +5,11 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // check:critical - user should only be able to update their own profile
   // todo:high - allow user to update their profile info
   // todo:high - allow user to update their profile/cover pictures
-  const userId = computed(() => currentUser.value?.id)
-  const profile = ref(null as ProfileFullFormatted | null)
+
+  const userId = useCookie('userId')
+  userId.value = currentUser.value?.id
+
+  const profile = ref(null)
 
   async function fetchUserProfile(): Promise<any> {
     logger.info('fetchUserProfile: start')
@@ -46,6 +49,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // cycle through identities check identities_data for picture
 
   return {
+    isLoggedIn: computed(() => !!currentUser.value),
     profile,
     userId,
     userFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)

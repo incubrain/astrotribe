@@ -10,8 +10,7 @@ export default defineEventHandler(async (event) => {
     const news = await newsRepository.selectNewsCards({
       tableName: 'news',
       selectStatement: '*',
-      pagination: parsedQuery.pagination,
-      filterBy: parsedQuery.filterBy
+      ...parsedQuery
     })
 
     return {

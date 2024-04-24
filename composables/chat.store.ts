@@ -33,6 +33,7 @@ const ChatCompletionSchema = z.object({
 type Chat = z.infer<typeof ChatCompletionSchema>
 
 export const useChatStore = defineStore('chatStore', () => {
+  const { fetch } = useBaseFetch()
   const storeKey = 'chatStore'
   const logger = useLogger(storeKey)
   const loading = useLoadingStore()
@@ -90,7 +91,7 @@ export const useChatStore = defineStore('chatStore', () => {
     loading.setLoading(storeKey, true)
 
     try {
-      const questionResponse = await $fetch('/api/groq', {
+      const questionResponse = await fetch('/api/groq', {
         method: 'GET',
         params: { question: question.value }
       })

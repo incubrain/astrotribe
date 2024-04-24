@@ -42,8 +42,6 @@ export function useAuth() {
   const toast = useToast()
   const supabase = useSupabaseClient()
 
-  const isLoggedIn = computed(() => !!useSupabaseSession() || !!useSupabaseUser())
-
   async function registerWithEmail(email: string, password: string) {
     const { error } = await supabase.auth.signUp({
       email,
@@ -127,7 +125,6 @@ export function useAuth() {
   }
 
   return {
-    isLoggedIn,
     registerWithEmail,
     loginWithEmail,
     loginSocial,
