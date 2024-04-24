@@ -1,8 +1,8 @@
 // import type { NewsCardT } from '@/types/news'
 import type { FetchInput } from '../base/fetch.base.composable'
 
-export const useNewsStore = defineStore('storeNews', () => {
-  const logger = useLogger('storeNews')
+export const useNewsStore = defineStore('newsStore', () => {
+  const logger = useLogger('newsStore')
   const baseFetch = useBaseFetch()
 
   const news = ref([])

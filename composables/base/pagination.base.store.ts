@@ -6,6 +6,7 @@ export type StoreKey =
   | 'researchStore'
   | 'companiesStore'
   | 'chatStore'
+  | 'feedbackStore'
 
 type PaginationKey = 'from' | 'to' | undefined
 
@@ -20,8 +21,8 @@ export interface PaginationInput {
   force?: boolean
 }
 
-export const usePaginationStore = defineStore('usePaginationStore', () => {
-  const logger = useLogger('usePaginationStore')
+export const usePaginationStore = defineStore('paginationStore', () => {
+  const logger = useLogger('paginationStore')
   const stores = reactive({} as Record<StoreKey, Ref<{ page: number; limit: number }>>)
   const dataFinished = ref({} as Record<StoreKey, boolean>)
 

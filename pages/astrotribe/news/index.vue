@@ -56,16 +56,7 @@ definePageMeta({
         v-if="haveNews"
         class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]"
       >
-        <div class="w-full">
-          <div class="md:sticky top-0 flex justify-center md:justify-start p-8">
-            <PrimeInlineMessage
-              severity="info"
-              :pt="{ root: '', text: 'text-sm text-left' }"
-            >
-              News Filters Coming Soon
-            </PrimeInlineMessage>
-          </div>
-        </div>
+        <BaseSidebar />
         <div class="flex flex-col max-w-sm md:col-start-2 mx-auto">
           <NewsCard
             v-for="(item, i) in news"
@@ -78,3 +69,5 @@ definePageMeta({
     </BaseInfiniteScroll>
   </div>
 </template>
+
+<style scoped></style>

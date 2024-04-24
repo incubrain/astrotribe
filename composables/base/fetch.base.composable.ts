@@ -29,7 +29,6 @@ export function useBaseFetch() {
       504 // Gateway Timeout
     ],
     headers: {
-      'X-CORRELATION-ID': useId(),
       'X-USER-ID': useCookie('userId').value ?? 'no-user-id',
       cookie: useRequestHeaders(['cookie']).cookie ?? ''
     },
@@ -110,9 +109,7 @@ export function useBaseFetch() {
         paginationStore.setDataFinished(storeKey)
       }
 
-      // console.log('fetchResponse', response.data)
-
-      loading.setLoadingInterval(storeKey, false, 5000)
+      await loading.setLoadingInterval(storeKey, false, 1500)
       paginationStore.incrementPagination(storeKey)
 
       return res.data

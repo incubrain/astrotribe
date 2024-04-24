@@ -34,7 +34,12 @@ useHead({
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <PrimeToast position="bottom-right" />
+    <PrimeToast
+      position="bottom-right"
+      :pt="{
+        content: 'border border-color rounded-md shadow-md flex'
+      }"
+    />
   </div>
 </template>
 
