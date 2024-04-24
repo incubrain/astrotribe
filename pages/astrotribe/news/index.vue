@@ -7,6 +7,9 @@
 const newsStore = useNewsStore()
 const { news } = storeToRefs(newsStore)
 const haveNews = computed(() => news.value !== null && news.value.length > 0)
+const loading = useLoadingStore()
+
+const isLoading = computed(() => loading.isLoading('newsStore'))
 
 const fetchInput = ref({
   storeKey: 'newsStore',
@@ -42,7 +45,7 @@ definePageMeta({
 
 <template>
   <div class="flex flex-col relative h-full w-full md:gap-4 xl:gap-8">
-    <BaseFilter data-type="news" />
+    <!-- <BaseFilter data-type="news" /> -->
     <!-- <NewsSummaryLevel /> -->
     <BaseInfiniteScroll
       :store-key="fetchInput.storeKey"
@@ -51,13 +54,26 @@ definePageMeta({
     >
       <div
         v-if="haveNews"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8"
+        class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]"
       >
-        <NewsCard
-          v-for="(item, i) in news"
-          :key="`news-post-${i}`"
-          :news="item"
-        />
+        <div class="w-full">
+          <div class="md:sticky top-0 flex justify-center md:justify-start p-8">
+            <PrimeInlineMessage
+              severity="info"
+              :pt="{ root: '', text: 'text-sm text-left' }"
+            >
+              News Filters Coming Soon
+            </PrimeInlineMessage>
+          </div>
+        </div>
+        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto">
+          <NewsCard
+            v-for="(item, i) in news"
+            :key="`news-post-${i}`"
+            :news="item"
+          />
+          <NewsCardSkeleton v-show="isLoading" />
+        </div>
       </div>
     </BaseInfiniteScroll>
   </div>
