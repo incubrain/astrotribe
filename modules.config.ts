@@ -13,11 +13,43 @@ export const MODULES: NuxtConfig['modules'] = [
   '@nuxtjs/color-mode',
   '@nuxthq/studio',
   '@nuxtjs/supabase',
-  'nuxt-icon'
+  'nuxt-icon',
+  'nuxt-security'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
   autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
+}
+
+// !infra:med:hard:12 - look into and configure nuxt security module
+// https://nuxt-security.vercel.app/documentation/getting-started/configuration
+const SECURITY_OPTIONS: NuxtConfig['security'] = {
+  headers: {
+    contentSecurityPolicy: {
+      'img-src': [
+        "'self'",
+        'http://localhost:54321',
+        'http://localhost:3000',
+        'https://www.nasa.gov',
+        'https://science.nasa.gov'
+      ],
+      'script-src': ["'self'", "'nonce-{{nonce}}'", "'unsafe-inline'", 'http://localhost:3000']
+    },
+    // needed for devtools
+    crossOriginEmbedderPolicy:
+      process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
+  },
+  requestSizeLimiter: false,
+  xssValidator: false,
+  corsHandler: false,
+  allowedMethodsRestricter: false,
+  hidePoweredBy: false,
+  basicAuth: false,
+  csrf: false,
+  nonce: true,
+  removeLoggers: false,
+  ssg: false,
+  sri: false
 }
 
 const SEO_OPTIONS: NuxtConfig['seo'] = {
@@ -108,6 +140,7 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   pinia: PINIA_OPTIONS,
+  security: SECURITY_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,

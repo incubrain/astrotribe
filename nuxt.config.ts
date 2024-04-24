@@ -11,15 +11,23 @@ const og = {
 }
 
 export default defineNuxtConfig({
-  // routeRules: {
-  //   '/auth/**': {
-  //     swr: 60 * 60
-  //   }
-  // },
+  experimental: {
+    // https://nuxt.com/docs/guide/going-further/experimental-features
+    // cookieStore: true,
+    // viewTransition: true,
+    // typedPages: true,
+    // sharedPrerenderData: true,
+    inlineRouteRules: true,
+    asyncContext: true
+  },
   nitro: {
     experimental: {
-      tasks: true,
-      asyncContext: true
+      tasks: true
+    },
+    storage: {
+      rateLimit: {
+        driver: 'memory',
+      },
     },
     scheduledTasks: {
       // every 12 hours
