@@ -1,7 +1,5 @@
 import { ChatCompletionResponseMessage } from 'openai'
 import { z } from 'zod'
-import categories from './categories.json'
-import tags from './tags.json'
 import callOpenAI from './callOpenAI'
 
 // !ignore for now:
