@@ -103,6 +103,10 @@ export abstract class BaseRepository<T> {
       query = query.limit(input.limit)
     }
 
+    if (input.isSingle) {
+      query = query.single()
+    }
+
     return await query
   }
 
@@ -112,25 +116,18 @@ export abstract class BaseRepository<T> {
     this.logger.info(`selectOne ${input.filterBy}`)
     const response = await this.clientQuery(
       async (client) =>
-        await client
-          .from(input.tableName)
-          .select(input.selectStatement)
-          .filter(input.filterBy.columnName, input.filterBy.operator, input.filterBy.value)
-          .single()
+        await this.constructSelectQuery<K>(client, input)
     )
-    const data = this.handleDBErrors(response)
-    return new this.Model(data) as T
+    this.logger.info('selectOne data retrieved')
+    return new this.Model(this.handleDBErrors(response)) as T
   }
 
   async selectMany<K extends TableKey>(input: SelectInput<T, K>): Promise<T[]> {
     this.logger.info(`selectMany ${input.tableName}`)
-    const response = await this.clientQuery(async (client) => {
-      const query = this.constructSelectQuery<K>(client, input)
-      return await query
-    })
-    const data = this.handleDBErrors(response)
-    console.log('initial response', data)
-    return this.processResponse(data) as T[]
+    const response = await this.clientQuery(
+      async (client) => await this.constructSelectQuery<K>(client, input)
+    )
+    return this.processResponse(this.handleDBErrors(response)) as T[]
   }
 
   async insertOne<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
@@ -141,8 +138,17 @@ export abstract class BaseRepository<T> {
     return this.handleDBErrors(response)
   }
 
-  async insertOneRestricted<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+  async updateOne<K extends TableKey>(input: UpdateInput<T, K>): Promise<T> {
     this.logger.info('insert')
+    const response = await this.clientQuery(
+      async (client) => await this.constructSelectQuery<K>(client, input)
+    )
+    return this.handleDBErrors(response)
+  }
+
+  // convention:low:easy:1 use admin prefix for any admin queries
+  async adminInsertOne<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
+    this.logger.info('adminInsertOne')
     const response = await this.clientQueryAdmin(
       async (client) => await client.from(input.tableName).insert(input.data).select()
     )
@@ -150,7 +156,7 @@ export abstract class BaseRepository<T> {
   }
 
   async inserteMany<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
-    this.logger.info('insert')
+    this.logger.info('inserteMany')
     const response = await this.clientQuery(
       async (client) => await client.from(input.tableName).insert(input.data).select()
     )

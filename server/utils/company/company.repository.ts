@@ -1,5 +1,5 @@
 import { BaseRepository } from '../base.repository'
-import type { SelectInput, SelectInput } from '../base.interface'
+import type { SelectInput } from '../base.interface'
 import { ICompanyRepository } from './company.interface'
 import { Company } from './company.model'
 import { CompanyDTO } from './company.dto'
@@ -20,7 +20,7 @@ export class CompanyRepository extends BaseRepository<Company> implements ICompa
   }
 
   async selectCompanyById(config: SelectInput<{}>): Promise<Company> {
-    this.logger.info('selectCompanyCards')
+    this.logger.info('selectCompanyById')
 
     const data = await this.selectOne<'companies'>({
       tableName: 'companies',
