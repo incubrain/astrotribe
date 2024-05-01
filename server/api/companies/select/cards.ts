@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       pagination: parsedQuery.pagination
     })
 
-    console.log('api companies', companies)
+    // console.log('api companies', companies)
     return {
       status: 200,
       message: 'Company retrieved from supabase',

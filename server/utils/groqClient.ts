@@ -17,7 +17,7 @@ export async function getGroqChatCompletion(message: string) {
         content: message
       }
     ],
-    model: 'llama2-70b-4096',
+    model: 'llama3-70b-8192',
     //
     // Optional parameters
     //
