@@ -11,7 +11,7 @@ const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
   storeKey: 'companiesStore',
-  endpoint: '/api/companies/select/many',
+  endpoint: '/api/companies/select/cards',
   criteria: {
     dto: 'select:company:card',
     pagination: paginationStore.getPaginationRange('companiesStore')
@@ -41,12 +41,15 @@ definePageMeta({ name: 'Companies', layout: 'app' })
       }"
       @update:scroll-end="companiesStore.loadCompanies(fetchInput)"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-4 xl:gap-8">
-        <CompanyCard
-          v-for="(company, i) in localCompanies"
-          :key="`companies-post-${i}`"
-          :company="company"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
+        <BaseSidebar />
+        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
+          <CompanyCard
+            v-for="(company, i) in localCompanies"
+            :key="`companies-post-${i}`"
+            :company="company"
+          />
+        </div>
       </div>
     </BaseInfiniteScroll>
   </div>

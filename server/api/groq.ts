@@ -1,3 +1,5 @@
+
+// middleware: rateLimiter('llamaEndpoint'), readValidatedBody
 export default defineEventHandler({
   onRequest: [rateLimiter],
   onBeforeResponse: [],

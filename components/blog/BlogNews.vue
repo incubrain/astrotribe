@@ -21,7 +21,7 @@ const filterBy = computed(() =>
 const { data: spaceNews, error } = await useAsyncData(
   'blog-news-cards',
   async () =>
-    await $fetch('/api/news/select/many', {
+    await $fetch('/api/news/select/cards', {
       method: 'GET',
       params: {
         filterBy: filterBy.value,

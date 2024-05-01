@@ -4,6 +4,7 @@ export const useUsersStore = defineStore('usersStore', () => {
   const logger = useLogger('useUsersStore')
   const users = ref([])
   const baseFetch = useBaseFetch()
+  const errors = useBaseError()
 
   async function loadUsers(input: FetchInput) {
     logger.log('loadUsers start')
@@ -26,24 +27,20 @@ export const useUsersStore = defineStore('usersStore', () => {
       return
     }
 
-    const {
-      message,
-      status,
-      data: user
-    } = await $fetch('/api/users/select/single', {
+    const response = await baseFetch.fetch('/api/users/select/profile', {
       method: 'GET',
-      headers: useRequestHeaders(['cookie']),
-      query: {
+      params: {
         userId
       }
     })
 
-    if (status !== 200) {
-      logger.error(`error getting user: ${message}`)
-      throw createError({ message })
-    }
+    const user = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `getUserById error for user profile for ${userId}`,
+      userMessage: 'There was an error fetching the user profile'
+    })
 
-    userCurrent.value = user
+    userCurrent.value = user ?? null
   }
 
   const userById = () => {

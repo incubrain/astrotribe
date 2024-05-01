@@ -8,7 +8,7 @@ const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
   storeKey: 'eventsStore',
-  endpoint: '/api/events/select/many',
+  endpoint: '/api/events/select/cards',
   criteria: {
     dto: 'select:events:card',
     pagination: paginationStore.getPaginationRange('eventsStore')

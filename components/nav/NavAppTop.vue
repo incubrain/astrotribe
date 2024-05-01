@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const userStore = useCurrentUser()
-const { profile } = storeToRefs(userStore)
+const { profile, permissions } = storeToRefs(userStore)
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -41,7 +41,10 @@ const items = ref([
       <SearchBar class="w-full" />
     </div>
     <!-- end -->
-    <div class="flex items-center justify-center gap-4">
+    <div
+      class="flex items-center justify-center gap-4"
+      v-if="profile"
+    >
       <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
         <Icon
           :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
@@ -49,6 +52,9 @@ const items = ref([
           @click="toggle"
         />
       </AppThemeToggle> -->
+      <PrimeTag v-if="profile.role">
+        {{ profile.role }}
+      </PrimeTag>
       <PrimeAvatar
         v-if="profile?.avatar"
         :image="profile?.avatar"
