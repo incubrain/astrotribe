@@ -1,17 +1,18 @@
 import { z } from 'zod'
 import { datetimeOffset } from '../formatter'
 
+const AppPlanEnum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom']);
+const AppRoleEnum = z.enum(['guest', 'user', 'astroguide', 'mentor', 'moderator', 'tenant_member', 'tenant_admin', 'tenant_super_admin', 'admin', 'super_admin']);
+const UserStatus = z.enum(['ONLINE', 'OFFLINE']);
+
+export type AppPlanEnum = z.infer<typeof AppPlanEnum>;
+export type AppRoleEnum = z.infer<typeof AppRoleEnum>;
+export type UserStatus = z.infer<typeof UserStatus>;
+
 export const userFollowerInsertSchema = z.object({
   followed_id: z.string().uuid({ message: 'Invalid UUID' }),
   follower_id: z.string().uuid({ message: 'Invalid UUID' }),
   id: z.string().uuid({ message: 'Invalid UUID' })
-})
-
-export const roleSchema = z.object({
-  id: z.number(),
-  created_at: datetimeOffset('test in role schema created_at').optional,
-  name: z.string().min(1, 'Name is required'),
-  body: z.string().min(1, 'Body is required').nullish()
 })
 
 export const userSchema = z.object({
@@ -19,7 +20,6 @@ export const userSchema = z.object({
   dob: z.string().nullish(),
   email: z.string().nullish(),
   gender_id: z.number().gte(0, 'Gender is required').nullish(),
-  role_id: z.number().gte(0, 'Role is required').nullish(),
   given_name: z.string().min(1, 'Given Name is required').nullish(),
   surname: z.string().min(1, 'Surname is required').nullish(),
   introduction: z.string().min(1, 'Introduction is required').nullish(),
@@ -30,7 +30,8 @@ export const userSchema = z.object({
   created_at: datetimeOffset('user_profile:created_at incorrect datetime format').optional,
   updated_at: datetimeOffset('user_profile:updated_at incorrect datetime format').optional,
   last_seen: datetimeOffset('user_profile:last_seen incorrect datetime format').optional,
-  roles: roleSchema.optional()
+  plan: AppPlanEnum,
+  role: AppRoleEnum
 })
 
 // !todo:med - we will always return the role, should create a sql function for this
@@ -49,20 +50,6 @@ export class Follower {
   }
 }
 
-export class Role {
-  id: number
-  created_at: Date
-  name: string
-  body: string
-
-  constructor(role: any) {
-    this.id = role.id
-    this.created_at = role.created_at
-    this.name = role.name
-    this.body = role.body
-  }
-}
-
 export class User {
   id: string
   dob: Date
@@ -78,8 +65,8 @@ export class User {
   created_at: Date
   updated_at: Date
   last_seen: string
-  role_id: number
-  roles: Role | null
+  plan: AppPlanEnum | undefined
+  role: AppRoleEnum | undefined
 
   constructor(user: User) {
     this.id = user.id
@@ -96,7 +83,7 @@ export class User {
     this.introduction = user.introduction
     this.quote = user.quote
     this.username = user.username
-    this.role_id = user.role_id
-    this.roles = user.roles ? new Role(user.roles) : null
+    this.plan = user.plan
+    this.role = user.role
   }
 }

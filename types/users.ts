@@ -73,7 +73,7 @@ export const UserRowSchema = z.object({
   avatar: z.string().nullable(),
   cover_image: z.string().nullable(),
   introduction: z.string().nullable(),
-  role_id: z.number(),
+  plan: z.string().nullish(),
   dob: z.string().nullable(),
   quote: z.string().nullable(),
   gender_id: z.number().nullable()

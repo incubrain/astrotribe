@@ -61,6 +61,8 @@ export interface BaseOperationInput<T, K extends TableKey> {
   filterBy?: FilterBy<K>
   pagination?: Pagination
   limit?: number
+  isSingle?: boolean
+  isReturned?: boolean
   conflictFields?: string[]
   ignoreDuplicates?: boolean
 }

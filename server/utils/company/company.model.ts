@@ -43,19 +43,18 @@ export const companySchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1).optional(),
   description: z.string().optional(),
-  logo_url: z.string().url().optional(),
+  logo_url: z.string().optional(),
   website_url: z.string().url().optional(),
   email: z.string().email().optional(),
   phone: z.string().optional(),
-  social_media_id: z.number().optional(),
-  last_scraped_at: datetimeOffset().optional,
+  last_scraped_at: datetimeOffset().nullish,
   scrape_frequency: ScrapeFrequencySchema.optional(),
   is_government: z.boolean().optional(),
   category_id: z.number().optional(),
   created_at: datetimeOffset().nullish,
   updated_at: datetimeOffset().nullish,
   addresses: z.array(addressSchema).optional(),
-  social_media: socialSchema.optional(),
+  social_media: socialSchema.nullish(),
   contacts: z.array(contactSchema).optional(),
   employees: z.array(companyEmployeesSchema).optional(),
   news: z.array(companyNewsSchema).optional()
@@ -145,7 +144,9 @@ export class Company {
     this.created_at = parsedData.created_at ?? undefined
     this.updated_at = parsedData.updated_at ?? undefined
     this.social_media = parsedData.social_media ? new Social(parsedData.social_media) : undefined
-    this.addresses = parsedData.addresses ? parsedData.addresses.map((address: any) => new Address(address)) : undefined
+    this.addresses = parsedData.addresses
+      ? parsedData.addresses.map((address: any) => new Address(address))
+      : undefined
     this.contacts = parsedData.contacts
       ? parsedData.contacts.map((contact: any) => new Contact(contact))
       : undefined

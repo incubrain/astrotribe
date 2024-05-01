@@ -26,8 +26,13 @@ interface RateLimitInfo {
   expiresAt: number
 }
 
-export const rateLimiter = async (event: H3Event) => {
-  const userID = getRequestHeader(event, 'X-USER-ID')
+// pass the required context from another general session middleware.
+// add user roles, permissions, privellages.
+export const rateLimiter = async (feature: string) => {
+  console.log('feature', feature)
+  const { userID } = useEvent().context
+  // test this
+  console.log('userId', userID, useEvent())
   const userRole: RoleKey = (getRequestHeader(event, 'X-USER-ROLE') as RoleKey) || 'user'
   const storage = useStorage<RateLimitInfo>('rateLimit')
   const storageKey = `requests:${userRole}:${userID}`
