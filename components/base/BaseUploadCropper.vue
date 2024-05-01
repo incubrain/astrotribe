@@ -8,7 +8,6 @@ type CropperConfigTypes = 'avatar' | 'cover_image' | 'default'
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 
 const uploadInput = ref(null as HTMLInputElement | null)
-const errorMessage = ref<string>('')
 const image = ref<string>('')
 
 const props = defineProps({
@@ -97,7 +96,6 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
 
 // Checks & Utils
 type Compression = 'lossy' | 'lossless' | 'alpha' | 'animation'
-
 function checkWebpFeature(feature: Compression): Promise<boolean> {
   return new Promise((resolve) => {
     const kTestImages = {
@@ -116,6 +114,7 @@ function checkWebpFeature(feature: Compression): Promise<boolean> {
   })
 }
 
+
 const webpSupport = ref(false)
 onMounted(async () => {
   for (const feature of ['lossy', 'lossless', 'alpha', 'animation'] as Compression[]) {
@@ -127,34 +126,18 @@ onMounted(async () => {
   }
 })
 
+
 const userStore = useCurrentUser()
-const { userId, userFullName } = storeToRefs(userStore)
-async function uploadImage(blob: Blob) {
-  const fileName = userFullName.value.replace(' ', '-').toLowerCase()
+const { userId } = storeToRefs(userStore)
 
-  console.log('isUndefined', userId, fileName)
-  const formData = new FormData()
-  formData.append('file', blob)
-  formData.append('userId', userId.value!) // Include the user ID
-  formData.append('fileType', props.cropperType)
-  formData.append('fileName', fileName)
 
-  const response = await $fetch('/api/upload', {
-    method: 'POST',
-    body: formData
-  })
-
-  console.log('response', response)
-}
-
-function convertImage(canvas: HTMLCanvasElement, mimeType: string) {
-  canvas.toBlob(
+function convertThenUploadImage(canvas: HTMLCanvasElement, mimeType: string) {
+  return canvas.toBlob(
     (blob) => {
       if (!blob) {
         setError('Failed to convert canvas to blob.')
         return
       }
-
       uploadImage(blob)
     },
     mimeType,
@@ -164,21 +147,24 @@ function convertImage(canvas: HTMLCanvasElement, mimeType: string) {
 
 // Cropper
 const cropper = ref(null as typeof Cropper | null)
-const crop = () => {
+const crop = (toggleModalOpen: () => void) => {
   if (!cropper.value) {
     setError('No cropper instance in crop function.')
+    toggleModalOpen()
     return
   }
-
+  
   const { canvas } = cropper.value.getResult()
   if (!canvas) {
     setError('Cropper failed to get canvas')
+    toggleModalOpen()
     return
   }
-
+  
   const exportMimeType = webpSupport.value ? 'image/webp' : 'image/jpeg'
-
-  convertImage(canvas, exportMimeType)
+  
+  convertThenUploadImage(canvas, exportMimeType)
+  toggleModalOpen()
 }
 
 const preview = reactive<CropperResult>({
@@ -226,6 +212,7 @@ function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes)
     const img = new Image()
     img.onload = () => {
       const { minWidth, minHeight } = dimensions[cropperType]
+      console.log('cropper mins', minHeight, minWidth, img.width, img.height)
       if (img.width >= minWidth && img.height >= minHeight) {
         resolve(true)
       } else {
@@ -266,7 +253,6 @@ function validateFileSize(fileSize: number): boolean {
 async function handleFileChange(e: Event, toggleModalOpen: () => void) {
   const input = e.target as HTMLInputElement
   if (!input.files?.length) return
-  errorMessage.value = ''
 
   const file = input.files[0]
 
@@ -290,32 +276,33 @@ async function handleFileChange(e: Event, toggleModalOpen: () => void) {
 }
 
 // Errors
+const toast = useToast()
 const setError = (error: string) => {
   // probably a notification
-  errorMessage.value = error
+
+  toast.add({
+    life: 0,
+    severity: 'error',
+    closable: true,
+    summary: 'error uploading image',
+    detail: error
+  })
 }
 </script>
 
 <template>
   <div class="space-y-24">
-    <div
-      v-if="errorMessage"
-      class="text-red-500"
-    >
-      {{ errorMessage }}
-    </div>
-
     <BaseModal>
       <template #button="{ toggleModalOpen }">
         <label
           v-ripple
-          for="myFile"
+          :for="`myFile-${cropperType}`"
           class="border border-color bg-primary-600 rounded-lg px-2 py-1 text-sm"
         >
           Upload {{ cropperType }}
         </label>
         <input
-          id="myFile"
+          :id="`myFile-${cropperType}`"
           ref="uploadInput"
           type="file"
           accept="image/jpg, image/jpeg, image/png, image/webp"
@@ -326,12 +313,6 @@ const setError = (error: string) => {
       </template>
       <template #modal:header>
         <h2 class="text-xl font-semibold">Crop your image</h2>
-        <div
-          v-if="errorMessage"
-          class="text-red-500"
-        >
-          {{ errorMessage }}
-        </div>
       </template>
       <template #modal:default>
         <Cropper
@@ -346,7 +327,7 @@ const setError = (error: string) => {
           @error="setError('error loading image')"
         />
       </template>
-      <template #modal:footer>
+      <template #modal:footer="{ toggleModalOpen }">
         <div class="flex gap-4 justify-center items-center">
           <p>Image preview</p>
           <Preview
@@ -357,7 +338,7 @@ const setError = (error: string) => {
             :image="preview.image"
             :coordinates="preview.coordinates"
           />
-          <PrimeButton @click="crop"> Crop </PrimeButton>
+          <PrimeButton @click="crop(toggleModalOpen)"> Crop </PrimeButton>
         </div>
       </template>
     </BaseModal>

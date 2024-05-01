@@ -26,7 +26,7 @@ defineProps({
 </script>
 
 <template>
-  <BaseHoverCard>
+  <div class="border-b border-color p-4">
     <NuxtLink
       :to="`users/${user.id}`"
       class="flex items-center gap-3 transition-transform origin-top"
@@ -44,10 +44,10 @@ defineProps({
         </h2>
         <p class="text-sm font-light">
           <Icon
-            :name="user.roles.icon"
+            :name="user.roleIcon"
             class="w-5 h-5 text-primary-500 dark:text-primary-700 mr-1"
           />
-          @{{ user.username }} | {{ user.roles.name }}
+          @{{ user.username }} | {{ user.role }}
         </p>
       </div>
     </NuxtLink>
@@ -57,7 +57,7 @@ defineProps({
     >
       {{ user.introduction }}
     </p>
-  </BaseHoverCard>
+  </div>
 </template>
 
 <style scoped>

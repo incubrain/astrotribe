@@ -20,7 +20,7 @@ const schema = [
     value: 'email',
     label: 'Email',
     tip: 'Your email address',
-    placeholder: 'Contace support to update your email',
+    placeholder: 'Contact support to update your email',
     type: 'email',
     disabled: true
   },

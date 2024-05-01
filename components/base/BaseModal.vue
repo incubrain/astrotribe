@@ -9,6 +9,7 @@ const options = ref({
   isOpen,
   toggleModalOpen
 })
+
 </script>
 
 <template>
@@ -30,7 +31,10 @@ const options = ref({
       </template>
       <slot name="modal:default" />
       <template #footer>
-        <slot name="modal:footer" />
+        <slot
+          name="modal:footer"
+          v-bind="options"
+        />
       </template>
     </PrimeDialog>
   </div>
