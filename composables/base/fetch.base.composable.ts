@@ -1,6 +1,7 @@
 import type { StoreKey } from './pagination.base.store'
 import { useCookie, useRequestHeaders, useId } from '#imports'
 import type { FilterBy, DBTable } from '@/server/utils/base.interface'
+import type { FetchResult } from '#app'
 
 export interface FetchInput {
   storeKey: StoreKey
@@ -15,9 +16,14 @@ export interface FetchInput {
   }
 }
 
+
+
 export function useBaseFetch() {
-  // Generalized fetch function for any data type
-  const toast = useToast()
+  const errors = useBaseError()
+  const paginationStore = usePaginationStore()
+  const loading = useLoadingStore()
+  const logger = useLogger('useBaseFetch')
+
   const fetch = $fetch.create({
     retryStatusCodes: [
       408, // Request Timeout
@@ -36,39 +42,12 @@ export function useBaseFetch() {
       console.log('[fetch request]', request, options)
     },
     onRequestError({ error, request, options }) {
-      console.error('[fetch request error]', error, request, options)
-      toast.add({
-        summary: 'REQUEST ERROR:',
-        detail: error.message,
-        severity: 'error',
-        life: 0,
-        closable: true
-      })
+      console.error('onRequestError', error)
     },
     onResponseError({ error, response, request, options }) {
-      toast.add({
-        severity: 'error',
-        summary: 'RESPONSE ERROR: ' + response.statusText,
-        detail:
-          error?.message ??
-          response._data.message ??
-          `An unknown error occurred with ${response.url}`,
-        life: 0,
-        closable: true
-      })
-      console.error('[fetch response error]', error, response, request, options)
+      console.error('onResponseError', error)
     }
   })
-
-  const paginationStore = usePaginationStore()
-  const loading = useLoadingStore()
-  const logger = useLogger('useBaseFetch')
-
-  function handleError(error: any, context: string) {
-    logger.error(`Error in ${context}: ${error.message || JSON.stringify(error)}`)
-    // Additional error handling logic here, e.g., sending error details to a monitoring service
-    throw createError({ message: error.message || 'An unknown error occurred' })
-  }
 
   async function fetchPaginatedData(params: FetchInput) {
     const { storeKey, endpoint, criteria, pagination } = params
@@ -89,7 +68,7 @@ export function useBaseFetch() {
 
     try {
       logger.log('fetchPaginatedData for', storeKey, endpoint, criteria)
-      const res = await fetch(endpoint, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         params: {
           ...criteria,
@@ -97,24 +76,30 @@ export function useBaseFetch() {
         }
       })
 
-      if (res.status !== 200) {
-        throw createError({ message: `Error getting data: ${res.message}` })
-      }
+      console.log('fetchPaginatedData RESPONSE', response)
 
-      if (
-        !res.data ||
-        !res.data.length ||
-        res.data.length < paginationStore.getPagination(storeKey)!.limit
-      ) {
+      const data = errors.handleFetchErrors(response, {
+        critical: false,
+        userMessage: `Sorry there was an error getting ${storeKey} from ${endpoint}`,
+        devMessage: `fetchPaginatedData errored selecting paginated ${storeKey} data from ${endpoint}`
+      })
+
+      if (!data || !data.length || data.length < paginationStore.getPagination(storeKey)!.limit) {
         paginationStore.setDataFinished(storeKey)
       }
 
       await loading.setLoadingInterval(storeKey, false, 1500)
       paginationStore.incrementPagination(storeKey)
 
-      return res.data
+      return data
     } catch (error) {
-      handleError(error, 'fetchPaginatedData')
+      errors.handleError(error, {
+        critical: false,
+        dataType: 'paginated',
+        operation: 'select',
+        userMessage: `Sorry there was an error getting ${storeKey} from ${endpoint}`,
+        devMessage: `fetchPaginatedData client error for ${storeKey}`
+      })
     }
   }
 
