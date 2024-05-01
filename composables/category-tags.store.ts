@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-type LocalStorageKey = 'astron-categories' | 'astron-tags'
-
 const CategorySchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -25,57 +23,13 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
   const logger = useLogger('categoryTagStore')
   const categories = ref([{}] as Category[])
   const tags = ref([{}] as Tag[])
+  const localStorage = useBaseLocalStorage()
+  const errors = useBaseError()
 
   const client = useSupabaseClient()
 
-  function handleDBErrors(response: { data?: any; error?: any }) {
-    if (response.error) {
-      logger.error(`handleDBErrors - Supabase Error: ${response.error.message}`)
-      throw createError({ message: response.error.message })
-    } else if (response.data) {
-      return response.data
-    }
-    return null
-  }
-
-  // util:low:easy:1 - extract to useLocalStorage composable
-
-  function clearLocalStorage(key: LocalStorageKey) {
-    localStorage.removeItem(key)
-  }
-
-  function checkLocalStorage(key: LocalStorageKey) {
-    logger.debug(`Checking local storage for: ${key}`)
-
-    const localStorageData = localStorage.getItem(key)
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData)
-      const currentTime = new Date().getTime()
-      const maxAge = 30 * 24 * 60 * 60 * 1000 // 1 month in milliseconds
-      if (currentTime - parsedData.timestamp <= maxAge) {
-        logger.debug(`Local storage is valid: ${key}`)
-        return parsedData.data
-      }
-      logger.debug(`Local storage is too old: ${key}`)
-      clearLocalStorage(key)
-    }
-    return false
-  }
-
-  function storeInLocalStorage(key: string, data: any) {
-    logger.debug(`Storing data in local storage: ${key}`)
-
-    const dataToStore = {
-      timestamp: new Date().getTime(),
-      data
-    }
-    localStorage.setItem(key, JSON.stringify(dataToStore))
-  }
-
-  //
-
   async function getCategories() {
-    const localStorageData = await checkLocalStorage('astron-categories')
+    const localStorageData = await localStorage.check('astron-categories')
 
     if (localStorageData) {
       logger.debug('Retrieved categories from local storage', localStorageData)
@@ -84,13 +38,17 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     }
 
     const response = await client.from('categories').select('id, name, body')
-    const cat = handleDBErrors(response)
+    const cat = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error Fetching Categories from DB`,
+      userMessage: `There was an error getting Categories from the database`
+    })
     categories.value.push(...cat)
-    storeInLocalStorage('astron-categories', { categories: cat })
+    localStorage.store('astron-categories', { categories: cat })
   }
 
   async function getTags() {
-    const localStorageData = await checkLocalStorage('astron-tags')
+    const localStorageData = await localStorage.check('astron-tags')
 
     if (localStorageData) {
       logger.debug('Retrieved tags from local storage', localStorageData)
@@ -99,13 +57,18 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     }
 
     const response = await client.from('tags').select('id, name, body')
-    const cat = handleDBErrors(response)
+    const cat = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error Fetching Tags from DB`,
+      userMessage: `There was an error getting Tags from the database`
+    })
     tags.value.push(...cat)
-    storeInLocalStorage('astron-tags', { tags: cat })
+    localStorage.store('astron-tags', { tags: cat })
   }
 
-  const getCategoryName = (cateogryId: number) => {
-    return categories.value.find((category) => category.id === cateogryId)?.name
+  const getCategoryName = (categoryId: number) => {
+    console.log('categories', categories, categoryId)
+    return categories.value.find((category) => category.id === categoryId)?.name
   }
 
   const getTagName = (tagId: number) => {
