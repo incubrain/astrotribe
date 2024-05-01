@@ -9,7 +9,7 @@ export const useVenuesStore = defineStore('venuesStore', () => {
     try {
       const data = await baseFetch.fetchPaginatedData({
         storeKey: 'venuesStore',
-        endpoint: '/api/venues/many',
+        endpoint: '/api/venues/cards',
         pagination: { page: 1, limit: 20 },
         config: {
           shape: dataShape

@@ -13,7 +13,7 @@ const isLoading = computed(() => loading.isLoading('newsStore'))
 
 const fetchInput = ref({
   storeKey: 'newsStore',
-  endpoint: '/api/news/select/many',
+  endpoint: '/api/news/select/cards',
   pagination: {
     page: 1,
     limit: 10
@@ -52,12 +52,9 @@ definePageMeta({
       :pagination="fetchInput.pagination"
       @update:scroll-end="newsStore.loadNews(fetchInput)"
     >
-      <div
-        v-if="haveNews"
-        class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
         <BaseSidebar />
-        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto">
+        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
           <NewsCard
             v-for="(item, i) in news"
             :key="`news-post-${i}`"

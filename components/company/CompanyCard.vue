@@ -30,51 +30,58 @@ const { getCategoryName } = useCategoryTagStore()
 </script>
 
 <template>
-  <BaseHoverCard>
+  <div class="border-b-2 border-color px-4 py-8">
     <div>
-      <div class="space-y-4">
+      <div class="space-y-4 pb-4">
         <div class="flex gap-4 items-center">
           <BaseImage
             v-if="company.logo_url"
             :img="{
               src: `images/companies/${company.logo_url}`
             }"
-            class="w-12 h-12 rounded-full"
+            class="w-12 h-12 rounded-full border border-color"
           />
-          <PrimeTag>
-            {{ getCategoryName(company.category_id) }}
-          </PrimeTag>
+          <div>
+            <h3 class="text-balance text-xl md:max-h-16 font-semibold">
+              {{ company.name }}
+            </h3>
+            <p class="text-sm">
+              {{ getCategoryName(company.category_id) }}
+            </p>
+          </div>
           <!-- <span class="text-sm w-auto">
             Scraped: {{ useTimeAgo(company.last_scraped_at).value }}
           </span> -->
         </div>
       </div>
     </div>
-    <div
-      class="flex flex-col gap-2 pb-4 group-hover:max-h-none group-hover:overflow-scroll overflow-hidden"
-    >
-      <h4
-        class="text-balance text-xl md:max-h-16 group-hover:max-h-none group-hover:overflow-visible overflow-hidden"
-      >
-        {{ company.name }}
-      </h4>
+    <div class="flex flex-col gap-4">
+      <div class="flex gap-2 items-center">
+        <PrimeTag severity="info"> founded: {{ company.founding_year }} </PrimeTag>
+      </div>
       <p
         v-if="company.description"
-        class="text-sm max-h-none md:max-h-4 overflow-hidden group-hover:max-h-none group-hover:overflow-visible"
+        class="text-sm"
       >
         {{ company.description }}
       </p>
-      <NuxtLink
-        :to="company.website_url"
-        target="_blank"
-        rel="noopener"
-      >
-        <PrimeButton
-          label="Company Website"
-          size="small"
-          text
+      <div class="w-full flex justify-between items-center pt-4">
+        <BaseSocialBlock
+          v-if="company.social_media"
+          :socials="company.social_media"
         />
-      </NuxtLink>
+        <NuxtLink
+          :to="company.website_url"
+          target="_blank"
+          rel="noopener"
+        >
+          <PrimeButton
+            label="Website"
+            size="small"
+            outlined
+          />
+        </NuxtLink>
+      </div>
     </div>
-  </BaseHoverCard>
+  </div>
 </template>

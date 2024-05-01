@@ -7,7 +7,7 @@ const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
   storeKey: 'researchStore',
-  endpoint: '/api/research/select/many',
+  endpoint: '/api/research/select/cards',
   criteria: {
     dto: 'select:research:card',
     pagination: paginationStore.getPaginationRange('researchStore')
