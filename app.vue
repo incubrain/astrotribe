@@ -1,10 +1,13 @@
 <script setup lang="ts">
 const catTagStore = useCategoryTagStore()
+const currentUser = useCurrentUser()
 
 onMounted(async () => {
   await catTagStore.getCategories()
   await catTagStore.getTags()
+  await currentUser.loadSession()
 })
+
 useHead({
   htmlAttrs: {
     lang: 'en'

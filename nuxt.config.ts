@@ -26,8 +26,12 @@ export default defineNuxtConfig({
     },
     storage: {
       rateLimit: {
-        driver: 'memory',
+        driver: 'memory'
       },
+      companies: {
+        driver: 'fs',
+        base: './data/db'
+      }
     },
     scheduledTasks: {
       // every 12 hours
