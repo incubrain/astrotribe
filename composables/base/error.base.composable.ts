@@ -36,6 +36,10 @@ export function useBaseError() {
       // Here you could navigate to an error page, log out the user, etc.
       console.log('Handling critical error for:', context.devMessage)
     }
+
+    throw createError({
+      message: `${isServer ? 'SERVER' : 'CLIENT'} ERROR ${errorMessage}`
+    })
   }
 
   function handleFetchErrors(response: { data?: any; error?: any }, context: ErrorContext) {
