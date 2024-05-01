@@ -28,6 +28,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
     contentSecurityPolicy: {
       'img-src': [
         "'self'",
+        'data:',
         'http://localhost:54321',
         'http://localhost:3000',
         'https://www.nasa.gov',
@@ -39,7 +40,11 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
     crossOriginEmbedderPolicy:
       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
   },
-  requestSizeLimiter: false,
+  requestSizeLimiter: {
+    maxUploadFileRequestInBytes: 2000000, // 2 MB
+    throwError: true,
+    maxRequestSizeInBytes: 2000000 // 2 MB
+  },
   xssValidator: false,
   corsHandler: false,
   allowedMethodsRestricter: false,
