@@ -10,7 +10,7 @@
     "postinstall": "",
     "gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:lint": "supabase db lint",
-    "supa:migrate": "supabase db diff -f",
+    "supa:migrate": "supabase db diff --schema auth,public,storage,extensions -f",
     "lint": "eslint . --ext .ts,.js,.vue",
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
   },
@@ -39,6 +39,7 @@
     "eslint": "^9.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.25.0",
+    "jwt-decode": "^3.1.2",
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",
     "nuxt-primevue": "^0.3.1",

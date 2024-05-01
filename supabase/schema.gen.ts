@@ -579,6 +579,24 @@ export type Database = {
           }
         ]
       }
+      plan_permissions: {
+        Row: {
+          feature: string
+          id: number
+          plan: Database['public']['Enums']['app_plan_enum']
+        }
+        Insert: {
+          feature: string
+          id?: number
+          plan: Database['public']['Enums']['app_plan_enum']
+        }
+        Update: {
+          feature?: string
+          id?: number
+          plan?: Database['public']['Enums']['app_plan_enum']
+        }
+        Relationships: []
+      }
       research: {
         Row: {
           author: string | null
@@ -653,24 +671,33 @@ export type Database = {
           }
         ]
       }
-      roles: {
+      role_permissions: {
         Row: {
-          body: string | null
-          created_at: string
+          delete: boolean | null
           id: number
-          name: string
+          insert: boolean | null
+          role: Database['public']['Enums']['app_role_enum']
+          select: boolean | null
+          table_name: string
+          update: boolean | null
         }
         Insert: {
-          body?: string | null
-          created_at?: string
+          delete?: boolean | null
           id?: number
-          name: string
+          insert?: boolean | null
+          role: Database['public']['Enums']['app_role_enum']
+          select?: boolean | null
+          table_name: string
+          update?: boolean | null
         }
         Update: {
-          body?: string | null
-          created_at?: string
+          delete?: boolean | null
           id?: number
-          name?: string
+          insert?: boolean | null
+          role?: Database['public']['Enums']['app_role_enum']
+          select?: boolean | null
+          table_name?: string
+          update?: boolean | null
         }
         Relationships: []
       }
@@ -795,8 +822,9 @@ export type Database = {
           id: string
           introduction: string | null
           last_seen: string | null
+          plan: Database['public']['Enums']['app_plan_enum'] | null
           quote: string | null
-          role_id: number
+          role: Database['public']['Enums']['app_role_enum']
           surname: string | null
           updated_at: string | null
           username: string | null
@@ -814,8 +842,9 @@ export type Database = {
           id?: string
           introduction?: string | null
           last_seen?: string | null
+          plan?: Database['public']['Enums']['app_plan_enum'] | null
           quote?: string | null
-          role_id?: number
+          role?: Database['public']['Enums']['app_role_enum']
           surname?: string | null
           updated_at?: string | null
           username?: string | null
@@ -833,8 +862,9 @@ export type Database = {
           id?: string
           introduction?: string | null
           last_seen?: string | null
+          plan?: Database['public']['Enums']['app_plan_enum'] | null
           quote?: string | null
-          role_id?: number
+          role?: Database['public']['Enums']['app_role_enum']
           surname?: string | null
           updated_at?: string | null
           username?: string | null
@@ -846,13 +876,6 @@ export type Database = {
             isOneToOne: true
             referencedRelation: 'users'
             referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'public_user_profiles_role_id_fkey'
-            columns: ['role_id']
-            isOneToOne: false
-            referencedRelation: 'roles'
-            referencedColumns: ['id']
           }
         ]
       }
@@ -861,6 +884,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_authorize_rls_policies: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      assign_role_permissions_from_config: {
+        Args: {
+          json_config: Json
+        }
+        Returns: undefined
+      }
+      authorize: {
+        Args: {
+          requested_permission: string
+        }
+        Returns: boolean
+      }
+      custom_access_token_hook: {
+        Args: {
+          event: Json
+        }
+        Returns: Json
+      }
       hnswhandler: {
         Args: {
           '': unknown
@@ -913,16 +958,28 @@ export type Database = {
     Enums: {
       access_level: 'Viewer' | 'Editor' | 'Admin' | 'Super Admin'
       address_type:
-        | 'Residential'
-        | 'Headquarters'
-        | 'Office'
-        | 'Factory'
-        | 'Lab'
-        | 'Warehouse'
-        | 'R&D'
-        | 'Retail'
-        | 'Showroom'
-        | 'Branch'
+        | 'residential'
+        | 'headquarters'
+        | 'office'
+        | 'factory'
+        | 'lab'
+        | 'warehouse'
+        | 'research'
+        | 'retail'
+        | 'showroom'
+        | 'branch'
+      app_plan_enum: 'free' | 'basic' | 'intermediate' | 'premium' | 'enterprise' | 'custom'
+      app_role_enum:
+        | 'guest'
+        | 'user'
+        | 'astroguide'
+        | 'mentor'
+        | 'moderator'
+        | 'tenant_member'
+        | 'tenant_admin'
+        | 'tenant_super_admin'
+        | 'admin'
+        | 'super_admin'
       contact_type: 'Personal' | 'Company' | 'Professional' | 'Recruitment' | 'Founder'
       feedback_status:
         | 'new'
@@ -939,7 +996,7 @@ export type Database = {
         | 'performance_issue'
         | 'documentation'
       news_importance_level: 'High' | 'Medium' | 'Low'
-      news_relation_type: 'Source' | 'Topic' | 'Mention'
+      news_relation_type: 'source' | 'topic' | 'mention'
       privacy_level: 'Private' | 'Connected' | 'Public'
       scrape_frequency:
         | 'FourTimesDaily'
@@ -948,6 +1005,7 @@ export type Database = {
         | 'Weekly'
         | 'BiWeekly'
         | 'Monthly'
+      user_status: 'ONLINE' | 'OFFLINE'
     }
     CompositeTypes: {
       [_ in never]: never
