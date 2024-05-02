@@ -39,12 +39,13 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     loading.setLoading(domainKey, true)
 
-    const { data: userSession } = await fetch('/api/permissions', {
+    const { data: userSession, error: sessionError } = await fetch('/api/users/session', {
       query: {
         forceRefresh
       }
     })
 
+    console.log('sessionEx', userSession, sessionError)
     currentUser.value = userSession
     userId.value = userSession.user.id
     loading.setLoading(domainKey, false)
@@ -59,7 +60,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     const response = await fetch('/api/users/select/profile', {
       method: 'GET',
-      params: {
+      query: {
         userId: userId.value
       }
     })
