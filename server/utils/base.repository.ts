@@ -82,11 +82,35 @@ export abstract class BaseRepository<T> {
     }
   }
 
-  private async constructSelectQuery<K extends TableKey>(
+  private async constructQuery<K extends TableKey>(
     client: SupabaseClient<Database>,
-    input: BaseOperationInput<T, K>
+    input: BaseOperationInput<T, K>,
+    operation: 'select' | 'insert' | 'update' | 'delete'
   ) {
-    let query = client.from(input.tableName).select(input.selectStatement)
+    let query
+
+    switch (operation) {
+      case 'select':
+        query = client.from(input.tableName).select(input.selectStatement)
+        break
+        
+        case 'insert':
+          // might need to handle array of data
+        query = client.from(input.tableName).insert(input.data)
+        break
+        
+        case 'update':
+        query = client.from(input.tableName).update(input.data)
+        break
+        
+        case 'delete':
+        query = client.from(input.tableName).delete()
+        break
+
+      default:
+        throw createError({ message: `Invalid constructQuery operation input ${operation}` })
+    }
+
     if (input.filterBy) {
       query = query.filter(
         String(input.filterBy.columnName),
@@ -107,6 +131,10 @@ export abstract class BaseRepository<T> {
       query = query.single()
     }
 
+    if (input.isReturned) {
+      query = query.select()
+    }
+
     return await query
   }
 
@@ -115,8 +143,7 @@ export abstract class BaseRepository<T> {
   async selectOne<K extends TableKey>(input: SelectInput<T, K>): Promise<T | T[]> {
     this.logger.info(`selectOne ${input.filterBy}`)
     const response = await this.clientQuery(
-      async (client) =>
-        await this.constructSelectQuery<K>(client, input)
+      async (client) => await this.constructQuery<K>(client, input, 'select')
     )
     this.logger.info('selectOne data retrieved')
     return new this.Model(this.handleDBErrors(response)) as T
@@ -125,7 +152,7 @@ export abstract class BaseRepository<T> {
   async selectMany<K extends TableKey>(input: SelectInput<T, K>): Promise<T[]> {
     this.logger.info(`selectMany ${input.tableName}`)
     const response = await this.clientQuery(
-      async (client) => await this.constructSelectQuery<K>(client, input)
+      async (client) => await this.constructQuery<K>(client, input, 'select')
     )
     return this.processResponse(this.handleDBErrors(response)) as T[]
   }
@@ -139,10 +166,12 @@ export abstract class BaseRepository<T> {
   }
 
   async updateOne<K extends TableKey>(input: UpdateInput<T, K>): Promise<T> {
-    this.logger.info('insert')
+    this.logger.info('updateOne')
     const response = await this.clientQuery(
-      async (client) => await this.constructSelectQuery<K>(client, input)
+      async (client) => await this.constructQuery<K>(client, input, 'update')
     )
+
+    this.logger.info('updateOne return', response)
     return this.handleDBErrors(response)
   }
 
