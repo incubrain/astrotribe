@@ -32,10 +32,20 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://localhost:54321',
         'http://localhost:3000',
         'https://www.nasa.gov',
-        'https://science.nasa.gov'
+        'https://science.nasa.gov',
+        'https://www.youtube.com',
+        'https://s.ytimg.com'
       ],
-      'script-src': ["'self'", "'nonce-{{nonce}}'", "'unsafe-inline'", 'http://localhost:3000']
+      'script-src': [
+        "'self'",
+        "'nonce-{{nonce}}'",
+        "'unsafe-inline'",
+        'http://localhost:3000',
+        'https://www.youtube.com',
+        'https://s.ytimg.com'
+      ]
     },
+    xFrameOptions: false,
     // needed for devtools
     crossOriginEmbedderPolicy:
       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
