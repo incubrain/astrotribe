@@ -1519,8 +1519,9 @@ INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "r
 -- Data for Name: key; Type: TABLE DATA; Schema: pgsodium; Owner: supabase_admin
 --
 
-INSERT INTO "pgsodium"."key" ("id", "status", "created", "expires", "key_type", "key_id", "key_context", "name", "associated_data", "raw_key", "raw_key_nonce", "parent_key", "comment", "user_data") VALUES
-	('c44e57ae-8e6c-47d2-8ae6-d7c9366c829f', 'default', '2022-12-14 11:06:04.092341+00', NULL, NULL, 1, '\x7067736f6469756d', NULL, 'associated', NULL, NULL, NULL, 'This is the default key used for vault.secrets', NULL);
+-- May need for local dev, causing error on migration
+-- INSERT INTO "pgsodium"."key" ("id", "status", "created", "expires", "key_type", "key_id", "key_context", "name", "associated_data", "raw_key", "raw_key_nonce", "parent_key", "comment", "user_data") VALUES
+	-- ('c44e57ae-8e6c-47d2-8ae6-d7c9366c829f', 'default', '2022-12-14 11:06:04.092341+00', NULL, NULL, 1, '\x7067736f6469756d', NULL, 'associated', NULL, NULL, NULL, 'This is the default key used for vault.secrets', NULL);
 
 
 --
