@@ -7,19 +7,20 @@
 </script>
 <template>
   <div class="w-full p-8 min-h-screen flex justify-center items-center">
-    <NavTop is-compact />
     <div class="relative z-20 p-4 min-w-[340px] w-full max-w-[480px]">
       <slot />
     </div>
     <div class="h-full flex absolute top-0 left-0 w-full overflow-hidden">
       <div class="bg-black/40 absolute w-full h-full left-0 top-0" />
-      <BaseImage
-        :img="{
-          src: '/astron-era-hero.jpg',
-          alt: ''
-        }"
-        class="w-full object-cover object-center"
-      />
+      <NuxtLink to="/">
+        <BaseImage
+          :img="{
+            src: '/astron-era-hero.jpg',
+            alt: ''
+          }"
+          class="w-full object-cover object-center"
+        />
+      </NuxtLink>
     </div>
   </div>
 </template>
