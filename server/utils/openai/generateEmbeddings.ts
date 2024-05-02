@@ -1,23 +1,43 @@
-import { CreateEmbeddingRequest } from 'openai'
+import OpenAI from 'openai'
 import openaiClient from './openaiClient'
 // import { z } from 'zod'
 
-// !ignore for now:
-// later we will use embeddings for article search, recommendation, and similarity checks when scraping new articles
+const openai = new OpenAI()
 
-export interface Embedding {
-  // Define the structure of your embedding here. For example:
-  // embeddings: number[]
-  // ...other fields
+export async function generateEmbedding(inputText: string) {
+  const embedding = await openai.embeddings.create({
+    model: 'text-embedding-3-small', // 62,500 pages per dollar
+    input: inputText,
+    encoding_format: 'float'
+  })
+  
+  // console.log(embedding)
+  return embedding
+  // 1 May 24 Mac
+  // returns
+  // {
+  //   "object": "list",
+  //   "data": [
+  //     {
+  //       "object": "embedding",
+  //       "index": 0,
+  //       "embedding": [
+  //         -0.006929283495992422,
+  //         -0.005336422007530928,
+  //         ... (omitted for spacing)
+  //         -4.547132266452536e-05,
+  //         -0.024047505110502243
+  //       ],
+  //     }
+  //   ],
+  //   "model": "text-embedding-3-small",
+  //   "usage": {
+  //     "prompt_tokens": 5,
+  //     "total_tokens": 5
+  //   }
+  // }
 }
 
-async function generateEmbeddings(article: string): Promise<Embedding> {
-  const { data: embed } = await openaiClient.createEmbedding({
-    input: article,
-    model: 'text-embedding-ada-002'
-  } as CreateEmbeddingRequest)
-  const [{ embedding }] = embed.data
-  return embedding as number[]
-}
 
-export default generateEmbeddings
+
+

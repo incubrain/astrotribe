@@ -54,9 +54,10 @@ const userSettingsStore = useUserSettingsStore()
 const { settings } = storeToRefs(userSettingsStore)
 
 const user = useCurrentUser()
+const { profile } = storeToRefs(user)
 
-// if (user.value && String(id) !== user.value.id) {
-//   push(`/astrotribe/users/${user.value.id}/settings`)
+// if (value && String(id) !== value.id) {
+//   push(`/astrotribe/users/${value.id}/settings`)
 // }
 
 definePageMeta({
@@ -69,6 +70,7 @@ definePageMeta({
 <template>
   <div>
     <UserSettingsCard
+      v-if="profile"
       :title="{
         main: 'Account Profile',
         subtitle: 'Update your account information'
@@ -76,14 +78,14 @@ definePageMeta({
     >
       <div class="relative w-full max-w-[1200px] h-64">
         <BaseImage
-          v-if="user.profile?.cover_image"
           :img="{
-            src: user.profile.cover_image
+            src: profile.cover_image ?? undefined
           }"
           class="w-full h-full rounded-md overflow-hidden border border-color"
         />
         <BaseUploadCropper
           cropper-type="cover_image"
+          :has-image="!!profile.cover_image"
           class="absolute top-2 left-2"
         />
 
@@ -91,9 +93,9 @@ definePageMeta({
           class="w-32 h-32 absolute -bottom-16 left-16 bg-red-50 flex justify-center items-center rounded-full overflow-hidden"
         >
           <BaseImage
-            v-if="user.profile?.avatar"
+            v-if="profile?.avatar"
             :img="{
-              src: user.profile.avatar
+              src: profile.avatar
             }"
             class="w-full h-full"
           />
