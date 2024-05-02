@@ -1,31 +1,53 @@
 export const useCurrentUser = defineStore('currentUserStore', () => {
+  const domainKey = 'currentUser'
   const logger = useLogger('currentUserStore')
+  const loading = useLoadingStore()
   const { fetch } = useBaseFetch()
+  const errors = useBaseError()
 
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile
   // todo:high - allow user to update their profile info
+  // todo:med - merge currentUser and profile into one, store all required data everything in their session
+  // Things we should try to avoid storing in session
+  // Date of birth
+  // Place of birth
+  // Race or ethnicity
+  // Religion
+  // Employment information
+  // School or educational institute attended
+  // Medical, financial, and other personal records that are unique or can be linked to specific individuals
+  // Direct Identifiers / Contact Methods
+  // Socials and IPs
+  // Employment & Education history
+  // DoB
   // todo:high - allow user to update their profile/cover pictures
   const userId = useCookie('userId')
   const profile = ref(null)
   const currentUser = ref(null)
-  const permissions = reactive({
-    userRole: null,
-    userPlan: null,
-    role: null,
-    plan: null
-  })
+  // const permissions = reactive({
+  //   userRole: null,
+  //   userPlan: null,
+  //   role: null,
+  //   plan: null
+  // })
 
-  async function loadSession() {
-    const { data: userSession } = await fetch('/api/permissions')
+  async function loadSession(forceRefresh = false) {
+    if (loading.isLoading(domainKey) || currentUser.value) {
+      return
+    }
+
+    loading.setLoading(domainKey, true)
+
+    const { data: userSession } = await fetch('/api/permissions', {
+      query: {
+        forceRefresh
+      }
+    })
+
     currentUser.value = userSession
-    console.log('userSession', userSession)
     userId.value = userSession.user.id
-
-    permissions.plan = userSession.planPermissions
-    permissions.role = userSession.rolePermissions
-    permissions.userPlan = userSession.userPlan
-    permissions.userRole = userSession.userRole
+    loading.setLoading(domainKey, false)
   }
 
   async function fetchUserProfile(): Promise<any> {
@@ -35,14 +57,18 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       return
     }
 
-    const { message, status, data } = await fetch('/api/users/select/profile', {
+    const response = await fetch('/api/users/select/profile', {
       method: 'GET',
       params: {
         userId: userId.value
       }
     })
 
-    console.log('fetchUserProfile:', 'message: ', message, 'status: ', status)
+    const data = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: 'error fetching user proofile',
+      userMessage: 'something went wrong when getting your profile'
+    })
 
     if (data) {
       logger.info('fetchUserProfile: user stored', data)
@@ -60,10 +86,35 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     { immediate: true }
   )
 
+  async function updateProfile(newData: any) {
+    const response = await fetch(`/api/users/update/${userId.value}`, {
+      method: 'POST',
+      body: newData
+    })
+
+    const validData = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error updating user profile`,
+      userMessage: `There was an error updating your profile after action`
+    })
+
+    // update state
+    console.log('updating user', validData)
+    for (const key in validData[0]) {
+      if (validData.hasOwnProperty(key) && profile.value[key] !== validData[key]) {
+        profile.value[key] = validData[key]
+      }
+    }
+
+    currentUser.value = validData
+
+    // might need to force refresh of session
+  }
+
   async function uploadImage(fileType: string, blob: Blob) {
     const formData = new FormData()
     formData.append('file', blob)
-  
+
     const response = await $fetch('/api/users/insert/image', {
       method: 'POST',
       body: formData,
@@ -72,32 +123,30 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
         userId: userId.value
       }
     })
-  
-    let dataToUpdate = {}
-  
-      if (fileType === 'avatar') {
-        dataToUpdate = {
-          avatar: `${fileName}.${fileExtention}`
-        }
-      } else if (fileType === 'cover_image') {
-        dataToUpdate = {
-          cover_image: `${fileName}.${fileExtention}`
-        }
+
+    console.log('fileName', response)
+
+    const fileName = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error uploading ${fileType} image`,
+      userMessage: `There was an error uploading your ${fileType}`
+    })
+
+    let newData = {}
+
+    console.log('fileName', fileName)
+
+    if (fileType === 'avatar') {
+      newData = {
+        avatar: fileName
       }
-      // update account with new avatar
-      console.log('attempting to update', dataToUpdate)
-      const { error: updateError, data } = await client
-        .from('user_profiles')
-        .update(dataToUpdate)
-        .eq('id', userId)
-        .select()
-  
-      if (updateError) {
-        console.error('error', updateError)
-        throw createError({ statusMessage: updateError.message })
+    } else if (fileType === 'cover_image') {
+      newData = {
+        cover_image: fileName
       }
-  
-    console.log('response', response)
+    }
+
+    updateProfile(newData)
   }
 
   // first check if the user has an avatar in their profile
@@ -106,10 +155,10 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
   return {
     isLoggedIn: computed(() => !!currentUser.value),
-    permissions,
     profile,
     userId,
     loadSession,
+    uploadImage,
     userFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)
   }
 })

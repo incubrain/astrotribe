@@ -1,6 +1,8 @@
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  const { forceRefresh } = getQuery(event)
+
   try {
-    const permissions = await getUserPermissions()
+    const permissions = await getUserSession(Boolean(forceRefresh))
 
     if (!permissions) {
       console.log('No user permissions found')
