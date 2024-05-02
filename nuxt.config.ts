@@ -66,11 +66,12 @@ export default defineNuxtConfig({
         { name: 'twitter:title', content: og.title },
         { name: 'twitter:description', content: og.description },
         { name: 'twitter:image', content: og.image }
-      ]
-      // script: [
+      ],
+      script: [
       // Insert your Google Tag Manager Script here
       // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-      //   ]
+      { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' },
+        ]
     }
   },
   css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
@@ -118,6 +119,7 @@ export default defineNuxtConfig({
       supabaseKey: ''
     },
     // server
+    supabaseServiceKey: '',
     adminEmails: '',
     nasaApiKey: '',
     openaiApiKey: '',

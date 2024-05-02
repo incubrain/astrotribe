@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const userStore = useCurrentUser()
-const { profile, permissions } = storeToRefs(userStore)
+const { profile } = storeToRefs(userStore)
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -24,6 +24,8 @@ const items = ref([
   }
 ])
 
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading('currentUser'))
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -42,8 +44,19 @@ const items = ref([
     </div>
     <!-- end -->
     <div
+      v-if="isLoading"
+      class="flex gap-4 justify-end items-center"
+    >
+      <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
+      <PrimeSkeleton
+        :pt="{
+          root: 'min-w-10 min-h-10 rounded-full'
+        }"
+      />
+    </div>
+    <div
       class="flex items-center justify-center gap-4"
-      v-if="profile"
+      v-else-if="profile"
     >
       <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
         <Icon
