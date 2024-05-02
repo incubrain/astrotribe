@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <NuxtImg
-    :src="img.src"
+    :src="img.src ?? 'fallback.jpg'"
     :alt="img.alt"
     :width="img.width"
     :height="img.height"
