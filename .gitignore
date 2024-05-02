@@ -16,3 +16,4 @@ data/seed
 /blob-report/
 /playwright/.cache/
 .DS_Store
+/docs/**

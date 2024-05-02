@@ -1,6 +1,7 @@
 type LocalStorageKey = 'astron-categories' | 'astron-tags'
 
 export function useBaseLocalStorage() {
+  const logger = useLogger()
 
   function clearLocalStorage(key: LocalStorageKey) {
     localStorage.removeItem(key)

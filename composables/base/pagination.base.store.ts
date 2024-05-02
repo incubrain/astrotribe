@@ -1,12 +1,13 @@
-export type StoreKey =
-  | 'usersStore'
-  | 'newsStore'
-  | 'eventsStore'
-  | 'venuesStore'
-  | 'researchStore'
-  | 'companiesStore'
-  | 'chatStore'
-  | 'feedbackStore'
+export type DomainKey =
+  | 'users'
+  | 'news'
+  | 'events'
+  | 'venues'
+  | 'research'
+  | 'companies'
+  | 'chats'
+  | 'feedbacks'
+  | 'currentUser'
 
 type PaginationKey = 'from' | 'to' | undefined
 
@@ -16,35 +17,35 @@ export type PaginationType = {
 }
 
 export interface PaginationInput {
-  storeKey: StoreKey
+  domainKey: DomainKey
   pagination: PaginationType
   force?: boolean
 }
 
 export const usePaginationStore = defineStore('paginationStore', () => {
   const logger = useLogger('paginationStore')
-  const stores = reactive({} as Record<StoreKey, Ref<{ page: number; limit: number }>>)
-  const dataFinished = ref({} as Record<StoreKey, boolean>)
+  const stores = reactive({} as Record<DomainKey, Ref<{ page: number; limit: number }>>)
+  const dataFinished = ref({} as Record<DomainKey, boolean>)
 
   function initPagination(input: PaginationInput) {
-    if (!stores[input.storeKey] || input.force) {
+    if (!stores[input.domainKey] || input.force) {
       // -1 for supabase because it is 0 indexed
       console.log('initPagination', input.force)
-      stores[input.storeKey] = { page: input.pagination.page, limit: input.pagination.limit - 1 }
+      stores[input.domainKey] = { page: input.pagination.page, limit: input.pagination.limit - 1 }
     }
   }
 
-  function getPagination(storeKey: StoreKey) {
-    if (!stores[storeKey]) {
-      logger.warn(`Pagination settings for '${storeKey}' is not initialized.`)
-      initPagination({ storeKey, pagination: { page: 1, limit: 10 } })
-      return stores[storeKey]
+  function getPagination(domainKey: DomainKey) {
+    if (!stores[domainKey]) {
+      logger.warn(`Pagination settings for '${domainKey}' is not initialized.`)
+      initPagination({ domainKey, pagination: { page: 1, limit: 10 } })
+      return stores[domainKey]
     }
-    return stores[storeKey]
+    return stores[domainKey]
   }
 
-  function getPaginationRange(storeKey: StoreKey) {
-    const pagination = getPagination(storeKey)
+  function getPaginationRange(domainKey: DomainKey) {
+    const pagination = getPagination(domainKey)
     if (pagination) {
       logger.log('getPaginationRange', pagination.limit, (pagination.page - 1) * pagination.limit)
       return {
@@ -55,22 +56,22 @@ export const usePaginationStore = defineStore('paginationStore', () => {
     return undefined
   }
 
-  function incrementPagination(storeKey: StoreKey) {
-    const currentPagination = getPagination(storeKey)
+  function incrementPagination(domainKey: DomainKey) {
+    const currentPagination = getPagination(domainKey)
     if (currentPagination) {
       currentPagination.page++
     } else {
-      logger.warn(`Attempted to increment pagination for an uninitialized store '${storeKey}'.`)
+      logger.warn(`Attempted to increment pagination for an uninitialized store '${domainKey}'.`)
     }
   }
 
-  function setDataFinished(storeKey: StoreKey) {
-    if (stores[storeKey]) {
-      dataFinished.value[storeKey] = true
+  function setDataFinished(domainKey: DomainKey) {
+    if (stores[domainKey]) {
+      dataFinished.value[domainKey] = true
     }
   }
 
-  const isDataFinished = (storeKey: StoreKey) => dataFinished.value[storeKey]
+  const isDataFinished = (domainKey: DomainKey) => dataFinished.value[domainKey]
 
   return {
     stores,

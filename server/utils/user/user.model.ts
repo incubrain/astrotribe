@@ -68,7 +68,7 @@ export class User {
   plan: AppPlanEnum | undefined
   role: AppRoleEnum | undefined
 
-  constructor(user: User) {
+  constructor(user: Partial<User>) {
     this.id = user.id
     this.dob = user.dob
     this.email = user.email
