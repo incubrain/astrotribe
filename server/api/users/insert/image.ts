@@ -1,8 +1,24 @@
 // import { decode } from 'base64-arraybuffer'
 import { z } from 'zod'
+import { v1 as uuidv1 } from 'uuid'
 import { readFormData, readMultipartFormData } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import { Database } from '#imports'
+
+
+type FileType = 'avatar' | 'post' | 'cover_image' | 'video' | 'audio' | 'document'
+
+interface FileNameOptions {
+  userId: string
+  fileType: FileType
+  extension: string
+}
+
+function formatFileName(options: FileNameOptions): string {
+  const { userId, fileType, extension } = options
+  const uuid = uuidv1() // UUIDv1 stores timestamps, great for user generated content
+  return `${fileType}-${userId}-${uuid}.${extension}`
+}
 
 const fileTypeEnum = z.enum(['avatar', 'cover_image'])
 const userIdSchema = z.string().uuid()
@@ -22,8 +38,12 @@ export default defineEventHandler(async (event) => {
     return console.log('no form data')
   }
 
-  const fileName = `${fileType}-${userId}`
-  const fileExtention = form[0].type?.split('/')[1]
+  const fileExtention = form[0].type?.split('/')[1]!
+  const fileName = formatFileName({
+    userId: userId,
+    fileType: fileType,
+    extension: fileExtention
+  })
 
   console.log('formData', userId, fileType, fileName, fileExtention)
 
