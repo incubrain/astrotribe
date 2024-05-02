@@ -30,7 +30,7 @@ async function fetchPermissions(event: H3Event, userPlan: string, userRole: stri
   }
 }
 
-export async function getUserPermissions() {
+export async function getUserSession(forceRefresh: boolean) {
   const event = useEvent()
   const sbSession = await serverSupabaseSession(event)
   if (!sbSession || !sbSession.access_token) {
@@ -55,13 +55,18 @@ export async function getUserPermissions() {
     return null
   }
 
+  console.log('sbMetadata', payload.value.app_metadata)
   const { user_role, user_plan } = payload.value.app_metadata
+
+  if (!user_role) {
+    throw createError({ message: 'no user_role found, unable to fetch permissions' })
+  }
 
   if (
     session &&
     session.accessToken === sbSession.access_token &&
-    session.userRole === user_role &&
-    session.userPlan === user_plan
+    session.user.role === user_role &&
+    session.user.plan === user_plan
   ) {
     console.log('Session data matches, using stored permissions')
     return session.data
@@ -77,26 +82,47 @@ export async function getUserPermissions() {
 
   // Update session with new permissions and user details
   await session.update({
+    accessToken: sbSession.access_token,
     user: {
       ...sbSession.user,
-      userRole: user_role,
-      userPlan: user_plan,
+      role: user_role,
+      plan: user_plan
     },
-    accessToken: sbSession.access_token,
-    rolePermissions: permissions.role,
-    planPermissions: permissions.plan
+    permissions: {
+      role: permissions.role,
+      plan: permissions.plan
+    }
   })
 
   return session.data
 }
 
-export async function hasDBPermission(tableName: string, operation: 'select' | 'update' | 'insert' | 'delete'): Promise<boolean> {
-  const permissions = await getUserPermissions()
+export async function getUserPermissions(userId: string) {
+  const session = await useSession(useEvent(), {
+    password: `app_permissions_${userId}`,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7
+    }
+  })
+
+  return session.data.permissions ?? null
+}
+
+export async function hasDBPermission(
+  tableName: string,
+  operation: 'select' | 'update' | 'insert' | 'delete',
+  userId: string
+): Promise<boolean> {
+  const permissions = await getUserPermissions(userId)
 
   if (!permissions) {
     return false
   }
 
-  const tablePermissions = permissions.rolePermissions.find(item => item.tableName === tableName)
+  const tablePermissions = permissions.role.find((item) => item.tableName === tableName)
+
   return tablePermissions[operation]
 }

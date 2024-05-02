@@ -5,7 +5,13 @@ const currentUser = useCurrentUser()
 onMounted(async () => {
   await catTagStore.getCategories()
   await catTagStore.getTags()
-  await currentUser.loadSession()
+})
+
+const supabase = useSupabaseClient()
+supabase.auth.onAuthStateChange(async (event, session) => {
+  if (session) {
+    await currentUser.loadSession()
+  }
 })
 
 useHead({
