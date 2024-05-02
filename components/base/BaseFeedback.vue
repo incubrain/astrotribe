@@ -83,6 +83,7 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
         <PrimeButton
           label="Submit Feedback"
           :disabled="isMessageInvalid"
+          :outlined="isMessageInvalid"
           @click="feedbackStore.submitFeedback(feedback)"
         />
       </div>
