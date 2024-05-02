@@ -29,7 +29,7 @@ export const useUsersStore = defineStore('usersStore', () => {
 
     const response = await baseFetch.fetch('/api/users/select/profile', {
       method: 'GET',
-      params: {
+      query: {
         userId
       }
     })

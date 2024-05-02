@@ -150,7 +150,8 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
       persistSession: true,
       autoRefreshToken: true
     }
-  }
+  },
+  cookieName: 'sb'
 }
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {

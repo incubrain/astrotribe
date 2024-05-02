@@ -2,24 +2,24 @@ export default defineEventHandler(async (event) => {
   const { forceRefresh } = getQuery(event)
 
   try {
-    const permissions = await getUserSession(Boolean(forceRefresh))
+    const session = await getUserSession(Boolean(forceRefresh))
 
-    if (!permissions) {
-      console.log('No user permissions found')
+    if (!session) {
+      console.log('No user session found')
       return {
         status: 404,
-        message: 'No user permissions found',
+        message: 'No user session found',
         data: null
       }
     }
 
     return {
       status: 200,
-      message: 'User permissions fetched from session',
-      data: permissions
+      message: 'User session fetched from session',
+      data: session
     }
   } catch (error: any) {
-    console.error('permissions error', error.message)
+    console.error('session error', error.message)
     return {
       status: 500,
       message: error.message,
