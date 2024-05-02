@@ -15,7 +15,7 @@ const pickUserCard = {
 const userCardSchema = z.array(
   userSchema.pick(pickUserCard).transform((user) => ({
     ...user,
-    avatar: user.avatar ? formatAvatarUrl(user) : undefined,
+    avatar: formatAvatarUrl(user),
     last_seen: user.last_seen ? datetimeOffset(user.last_seen) : undefined,
     roleIcon: user.role ? roleIconMapping(user.role) : undefined
   }))
@@ -55,11 +55,13 @@ export default defineEventHandler({
 
       console.log('have users', users)
 
+      // handle no data more gracefully
+
       return {
         error: null,
         statusCode: 200,
         message: 'user cards retrieved from database',
-        data: userCardSchema.parse(users)
+        data: users.length > 0 ? userCardSchema.parse(users) : null
       }
     } catch (error) {
       console.log('error', error)

@@ -1,17 +1,17 @@
-import type { StoreKey } from './pagination.base.store'
+import type { DomainKey } from './pagination.base.store'
 
 type Loaders = {
-  [K in StoreKey]?: boolean
+  [K in DomainKey]?: boolean
 }
 
 export const useLoadingStore = defineStore('storeLoading', () => {
   const loaders = ref({} as Loaders)
 
-  function setLoading(key: StoreKey, isLoading: boolean) {
+  function setLoading(key: DomainKey, isLoading: boolean) {
     loaders.value[key] = isLoading
   }
 
-  async function setLoadingInterval(key: StoreKey, isLoading: boolean, time: number) {
+  async function setLoadingInterval(key: DomainKey, isLoading: boolean, time: number) {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
         setLoading(key, isLoading)
@@ -20,7 +20,7 @@ export const useLoadingStore = defineStore('storeLoading', () => {
     })
   }
 
-  function isLoading(key: StoreKey) {
+  function isLoading(key: DomainKey) {
     return !!loaders.value[key]
   }
 

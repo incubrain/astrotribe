@@ -10,7 +10,7 @@ export function useBaseError() {
   const isAdmin = true
 
   function formatErrorMessage(error: any, context: ErrorContext) {
-    const devError = `${context.devMessage}: ${error.message || JSON.stringify(error)}`
+    const devError = `${context.devMessage}: ${error?.message || JSON.stringify(error)}`
     logger.error(devError)
 
     const userError = context.userMessage || 'An unexpected error occurred. Please try again later.'
@@ -48,10 +48,10 @@ export function useBaseError() {
       const errorMessage = formatErrorMessage(response.error, context)
       handleError(response.error, context, true)
     } else if (response.data) {
-      logger.info(`Successfully fetched ${response.data.length} ${response}`)
+      logger.info(`Successfully fetched ${response.data.length} ${response.data}`)
       return response.data
     }
-    logger.info(`No ${context.dataType} returned from database`)
+    logger.info(`Nothing returned from database`)
     return null
   }
 
