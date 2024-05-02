@@ -1,5 +1,5 @@
 import { H3Event, useSession } from 'h3'
-import { serverSupabaseClient, serverSupabaseSession } from '#supabase/server'
+import { serverSupabaseClient } from '#supabase/server'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
 async function fetchPermissions(event: H3Event, userPlan: string, userRole: string) {
@@ -32,14 +32,30 @@ async function fetchPermissions(event: H3Event, userPlan: string, userRole: stri
 
 export async function getUserSession(forceRefresh: boolean) {
   const event = useEvent()
-  const sbSession = await serverSupabaseSession(event)
-  if (!sbSession || !sbSession.access_token) {
-    console.log('No Supabase session or access token found')
+  const supabase = await serverSupabaseClient(event)
+
+  const { data: newSession, error: sessionError } = await supabase.auth.getSession()
+  const newAccessToken = newSession.session?.access_token ?? null
+  // const newSession = await serverSupabaseUser(event)
+
+  if (!newAccessToken || sessionError) {
+    console.log(
+      'No Supabase session or access token found: ',
+      JSON.stringify(sessionError ?? { message: 'unknown error' })
+    )
+    return null
+  }
+
+  const { payload } = useJwt(newAccessToken)
+
+  // Validate JWT and extract payload
+  if (!payload.value || !payload.value.app_metadata) {
+    console.error('Invalid JWT payload')
     return null
   }
 
   const session = await useSession(event, {
-    password: `app_permissions_${sbSession.user.id}`,
+    password: `app_permissions_${newSession.session?.user.id}`,
     cookie: {
       httpOnly: true,
       secure: true,
@@ -47,13 +63,6 @@ export async function getUserSession(forceRefresh: boolean) {
       maxAge: 60 * 60 * 24 * 7 // 7 days
     }
   })
-
-  // Validate JWT and extract payload
-  const { payload } = useJwt(sbSession.access_token)
-  if (!payload.value || !payload.value.app_metadata) {
-    console.error('Invalid JWT payload')
-    return null
-  }
 
   console.log('sbMetadata', payload.value.app_metadata)
   const { user_role, user_plan } = payload.value.app_metadata
@@ -63,10 +72,10 @@ export async function getUserSession(forceRefresh: boolean) {
   }
 
   if (
-    session &&
-    session.accessToken === sbSession.access_token &&
-    session.user.role === user_role &&
-    session.user.plan === user_plan
+    session.data &&
+    session.data.storedAccessToken === newAccessToken &&
+    session.data.user.role === user_role &&
+    session.data.user.plan === user_plan
   ) {
     console.log('Session data matches, using stored permissions')
     return session.data
@@ -82,9 +91,9 @@ export async function getUserSession(forceRefresh: boolean) {
 
   // Update session with new permissions and user details
   await session.update({
-    accessToken: sbSession.access_token,
+    storedAccessToken: newAccessToken,
     user: {
-      ...sbSession.user,
+      ...newSession.session?.user,
       role: user_role,
       plan: user_plan
     },
@@ -93,6 +102,8 @@ export async function getUserSession(forceRefresh: boolean) {
       plan: permissions.plan
     }
   })
+
+  console.log('returning session data', session.data)
 
   return session.data
 }

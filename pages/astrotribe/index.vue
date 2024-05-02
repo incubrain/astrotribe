@@ -9,7 +9,7 @@ const { profile } = storeToRefs(userStore)
 </script>
 
 <template>
-  <div class="grid w-full grid-cols-1 gap-8 lg:grid-cols-3">
+  <div class="grid w-full grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-3">
     <div class="p-8 rounded-md background border border-color">
       <h1 class="pb-4 text-4xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
       <h3 class="pb-4 text-xl font-semibold"> AstroTribe Is Currently In Open Alpha </h3>
