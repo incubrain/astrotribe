@@ -58,6 +58,9 @@ const { getCategoryName } = useCategoryTagStore()
     <div class="flex flex-col gap-4">
       <div class="flex gap-2 items-center">
         <PrimeTag severity="info"> founded: {{ company.founding_year }} </PrimeTag>
+        <PrimeTag severity="info">
+          {{ company.is_government ? 'Government' : 'Private' }}
+        </PrimeTag>
       </div>
       <p
         v-if="company.description"
@@ -66,10 +69,12 @@ const { getCategoryName } = useCategoryTagStore()
         {{ company.description }}
       </p>
       <div class="w-full flex justify-between items-center pt-4">
-        <BaseSocialBlock
-          v-if="company.social_media"
-          :socials="company.social_media"
-        />
+        <div>
+          <BaseSocialBlock
+            v-if="company.social_media"
+            :socials="company.social_media"
+          />
+        </div>
         <NuxtLink
           :to="company.website_url"
           target="_blank"

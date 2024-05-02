@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { StoreKey } from '@/composables/base/pagination.base.store'
+import type { DomainKey } from '@/composables/base/pagination.base.store'
 
 const props = defineProps({
   pagination: {
     type: Object as PropType<{ page: number; limit: number }>,
     required: true
   },
-  storeKey: {
-    type: String as PropType<StoreKey>,
+  domainKey: {
+    type: String as PropType<DomainKey>,
     required: true
   }
 })
@@ -18,7 +18,7 @@ watch(
   props,
   () => {
     paginationStore.initPagination({
-      storeKey: props.storeKey,
+      domainKey: props.domainKey,
       pagination: props.pagination,
       force: true
     })
