@@ -1,22 +1,22 @@
 <script setup lang="ts">
 // !todo:critical - add summaries for news articles
 // !todo:high - allow news to toggle summary level
-// !todo:med - add loaders for news posts
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
 
+const domainKey = 'news'
 const newsStore = useNewsStore()
 const { news } = storeToRefs(newsStore)
 const haveNews = computed(() => news.value !== null && news.value.length > 0)
-const loading = useLoadingStore()
 
-const isLoading = computed(() => loading.isLoading('newsStore'))
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading(domainKey))
 
 const fetchInput = ref({
-  storeKey: 'newsStore',
+  domainKey,
   endpoint: '/api/news/select/cards',
   pagination: {
     page: 1,
-    limit: 10
+    limit: 20
   },
   criteria: {
     dto: 'select:news:card',
@@ -48,8 +48,8 @@ definePageMeta({
     <!-- <BaseFilter data-type="news" /> -->
     <!-- <NewsSummaryLevel /> -->
     <BaseInfiniteScroll
-      :store-key="fetchInput.storeKey"
-      :pagination="fetchInput.pagination"
+      :domain-key="domainKey"
+      :pagination="fetchInput.pagination!"
       @update:scroll-end="newsStore.loadNews(fetchInput)"
     >
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">

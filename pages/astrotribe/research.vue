@@ -1,16 +1,18 @@
 <script setup lang="ts">
 const researchStore = useResearchStore()
+const domainKey = 'research'
+
 const { research } = storeToRefs(researchStore)
 const haveResearch = computed(() => research.value !== null && research.value.length > 0)
 
 const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
-  storeKey: 'researchStore',
+  domainKey,
   endpoint: '/api/research/select/cards',
   criteria: {
     dto: 'select:research:card',
-    pagination: paginationStore.getPaginationRange('researchStore')
+    pagination: paginationStore.getPaginationRange(domainKey)
   }
 })
 
@@ -33,7 +35,7 @@ definePageMeta({
   <div class="flex flex-col relative h-full w-full">
     <!-- <SummaryLevel /> -->
     <BaseInfiniteScroll
-      store-key="researchStore"
+      :domain-key="domainKey"
       :pagination="{
         page: 1,
         limit: 10

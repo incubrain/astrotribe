@@ -114,7 +114,6 @@ function checkWebpFeature(feature: Compression): Promise<boolean> {
   })
 }
 
-
 const webpSupport = ref(false)
 onMounted(async () => {
   for (const feature of ['lossy', 'lossless', 'alpha', 'animation'] as Compression[]) {
@@ -126,10 +125,8 @@ onMounted(async () => {
   }
 })
 
-
 const userStore = useCurrentUser()
 const { userId } = storeToRefs(userStore)
-
 
 function convertThenUploadImage(canvas: HTMLCanvasElement, mimeType: string) {
   return canvas.toBlob(
@@ -138,7 +135,7 @@ function convertThenUploadImage(canvas: HTMLCanvasElement, mimeType: string) {
         setError('Failed to convert canvas to blob.')
         return
       }
-      uploadImage(blob)
+      userStore.uploadImage(props.cropperType, blob)
     },
     mimeType,
     1
@@ -153,16 +150,16 @@ const crop = (toggleModalOpen: () => void) => {
     toggleModalOpen()
     return
   }
-  
+
   const { canvas } = cropper.value.getResult()
   if (!canvas) {
     setError('Cropper failed to get canvas')
     toggleModalOpen()
     return
   }
-  
+
   const exportMimeType = webpSupport.value ? 'image/webp' : 'image/jpeg'
-  
+
   convertThenUploadImage(canvas, exportMimeType)
   toggleModalOpen()
 }
@@ -216,7 +213,9 @@ function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes)
       if (img.width >= minWidth && img.height >= minHeight) {
         resolve(true)
       } else {
-        setError(`Image dimensions must be at least ${minWidth}x${minHeight}px for ${cropperType}.`)
+        setError(
+          `Image dimensions must be at least ${minWidth}x${minHeight}px for ${cropperType}. (dimensions ${img.width}x${img.height})`
+        )
         resolve(false)
       }
     }

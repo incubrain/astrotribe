@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const domainKey = 'events'
 const eventsStore = useEventsStore()
 const { events } = storeToRefs(eventsStore)
 
@@ -7,13 +8,13 @@ const haveEvents = computed(() => events.value !== null && events.value.length >
 const paginationStore = usePaginationStore()
 
 const fetchInput = ref({
-  storeKey: 'eventsStore',
+  domainKey,
   endpoint: '/api/events/select/cards',
   criteria: {
     dto: 'select:events:card',
-    pagination: paginationStore.getPaginationRange('eventsStore')
+    pagination: paginationStore.getPaginationRange(domainKey)
   }
-})
+}) as Ref<FetchInput>
 
 watchEffect(() => {
   if (haveEvents.value === false) {
@@ -22,13 +23,16 @@ watchEffect(() => {
   }
 })
 
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading(domainKey))
+
 definePageMeta({ name: 'Events', layout: 'app' })
 </script>
 
 <template>
   <div>
     <BaseInfiniteScroll
-      store-key="eventsStore"
+      :domain-key="domainKey"
       :pagination="{
         page: 1,
         limit: 10

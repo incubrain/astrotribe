@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import localCompanies from '@/supabase/seed/companies.json'
 const companiesStore = useCompaniesStore()
 const { companies } = storeToRefs(companiesStore)
+const domainKey = 'companies'
 
 const haveCompanies = computed(() => companiesStore !== null && companiesStore.length > 0)
 
@@ -10,13 +10,13 @@ const paginationStore = usePaginationStore()
 // jobs_page_url: 'https://agnikul.in/#/career', // annoying dropdowns to select job type and job, no clear date
 
 const fetchInput = ref({
-  storeKey: 'companiesStore',
+  domainKey,
   endpoint: '/api/companies/select/cards',
   criteria: {
     dto: 'select:company:card',
-    pagination: paginationStore.getPaginationRange('companiesStore')
+    pagination: paginationStore.getPaginationRange(domainKey)
   }
-})
+}) as Ref<FetchInput>
 
 watchEffect(() => {
   if (haveCompanies.value === false) {
@@ -25,16 +25,16 @@ watchEffect(() => {
   }
 })
 
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading(domainKey))
+
 definePageMeta({ name: 'Companies', layout: 'app' })
 </script>
 
 <template>
   <div>
-    <div class="w-full">
-      <!-- <PrimeButton @click="companiesStore.insertCompany(firstCompany)"> Add Company </PrimeButton> -->
-    </div>
     <BaseInfiniteScroll
-      store-key="companiesStore"
+      :domain-key="domainKey"
       :pagination="{
         page: 1,
         limit: 10
@@ -45,10 +45,11 @@ definePageMeta({ name: 'Companies', layout: 'app' })
         <BaseSidebar />
         <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
           <CompanyCard
-            v-for="(company, i) in localCompanies"
+            v-for="(company, i) in companies"
             :key="`companies-post-${i}`"
             :company="company"
           />
+          <CompanyCardSkeleton v-show="isLoading" />
         </div>
       </div>
     </BaseInfiniteScroll>
