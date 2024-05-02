@@ -1,23 +1,27 @@
 <script setup lang="ts">
+const domainKey = 'users'
+
 const userStore = useUsersStore()
 const { users } = storeToRefs(userStore)
-const haveUsers = computed(() => users.value !== null && users.value.length > 0)
 
-const paginationStore = usePaginationStore()
+const haveUsers = computed(() => users.value !== null && users.value.length > 0)
 
 const fetchInput = ref({
   endpoint: '/api/users/select/cards',
-  storeKey: 'usersStore',
+  domainKey,
+  pagination: {
+    page: 1,
+    limit: 20
+  },
   criteria: {
     dto: 'select:user:card',
-    pagination: paginationStore.getPaginationRange('usersStore'),
     filterBy: {
       columnName: 'role',
       operator: 'eq',
       value: 'user'
     }
   }
-})
+}) as Ref<FetchInput>
 
 watchEffect(() => {
   if (haveUsers.value === false) {
@@ -26,7 +30,8 @@ watchEffect(() => {
   }
 })
 
-console.log('users', users)
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading(domainKey))
 
 definePageMeta({ name: 'Users', layout: 'app' })
 </script>
@@ -34,22 +39,23 @@ definePageMeta({ name: 'Users', layout: 'app' })
 <template>
   <div>
     <BaseInfiniteScroll
-      store-key="usersStore"
+      :domain-key="domainKey"
       :pagination="{
         page: 1,
         limit: 20
       }"
       @update:scroll-end="userStore.loadUsers(fetchInput)"
     >
-      <div
-        v-if="haveUsers"
-        class="grid grid-cols-1 max-w-sm mx-auto border border-color"
-      >
-        <UserCard
-          v-for="(user, index) in users"
-          :key="user.id"
-          :user="user"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
+        <BaseSidebar />
+        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
+          <UserCard
+            v-for="(user, index) in users"
+            :key="user.id"
+            :user="user"
+          />
+          <UserCardSkeleton v-show="isLoading" />
+        </div>
       </div>
     </BaseInfiniteScroll>
   </div>

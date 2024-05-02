@@ -26,10 +26,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="border-b border-color p-4">
+  <div class="border-b border-color px-4 py-6 space-y-4">
     <NuxtLink
       :to="`users/${user.id}`"
-      class="flex items-center gap-3 transition-transform origin-top"
+      class="flex items-center gap-4 transition-transform origin-top"
     >
       <BaseImage
         :img="{
@@ -53,7 +53,7 @@ defineProps({
     </NuxtLink>
     <p
       v-if="user.introduction"
-      class="text-sm max-h-24 pb-4 lg:group-hover:max-h-none lg:group-hover:overflow-scroll overflow-hidden"
+      class="text-sm max-h-24 lg:group-hover:max-h-none lg:group-hover:overflow-scroll overflow-hidden"
     >
       {{ user.introduction }}
     </p>
