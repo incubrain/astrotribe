@@ -1,11 +1,9 @@
 export default defineEventHandler(async (event) => {
-  const { forceRefresh } = getQuery(event)
-
   try {
-    const session = await getUserSession(Boolean(forceRefresh))
+    const session = await validateAndUpdateSession()
 
     if (!session) {
-      console.log('No user session found')
+      console.log('No user user session found')
       return {
         status: 404,
         message: 'No user session found',

@@ -48,7 +48,6 @@ export const constructUrl = (options: UrlConstructorOptions) => {
   } = options
 
   let filePath = `${folderPath}/${file}`
-  console.log('filePath:', filePath)
   if (stringIsNull(file) && fileType) {
     console.log('No file provided, using default file for', fileType)
     filePath = `defaults/${defaultFileOptions[fileType]}`
