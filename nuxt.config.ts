@@ -25,7 +25,7 @@ export default defineNuxtConfig({
       tasks: true
     },
     storage: {
-      rateLimit: {
+      session: {
         driver: 'memory'
       },
       companies: {
