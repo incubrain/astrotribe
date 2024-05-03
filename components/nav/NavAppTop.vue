@@ -44,7 +44,7 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
     </div>
     <!-- end -->
     <div
-      v-if="isLoading"
+      v-if="isLoading || !profile?.role"
       class="flex gap-4 justify-end items-center"
     >
       <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
@@ -56,7 +56,7 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
     </div>
     <div
       class="flex items-center justify-center gap-4"
-      v-else-if="profile"
+      v-else-if="profile?.role"
     >
       <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
         <Icon

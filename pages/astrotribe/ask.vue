@@ -6,9 +6,9 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
+  <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,600px)_1fr]">
     <BaseSidebar />
-    <div class="flex flex-col max-w-sm md:col-start-2 gap-6 mx-auto w-full">
+    <div class="flex flex-col w-full md:col-start-2 gap-4 xl:gap-8 mx-auto">
       <div class="space-y-2">
         <h1 class="text-4xl font-semibold text-center">Your Galactic Guide </h1>
         <p class="text-lg font-semibold text-center">
@@ -38,11 +38,10 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
           </PrimeInlineMessage>
         </div>
         <div class="p-4 bg-primary-900 rounded-md w-full">
-          <!-- <MDC
+          <MDC
             :value="chat.choices[0]?.message?.content"
             class="prose-invert prose"
-          ></MDC> -->
-          {{ chat }}
+          ></MDC>
         </div>
       </div>
     </div>
