@@ -1,5 +1,8 @@
 # A string used to distinguish different Supabase projects on the same host. Defaults to the
 
+# ISSUE TRACKER
+# DB MIGRATION BUG - migrations/20221208132122_backfill_email_last_sign_in_at - https://github.com/orgs/supabase/discussions/20722
+
 # working directory name when running `supabase init`.
 project_id = "astrotribe"
 
