@@ -21,14 +21,16 @@ defineProps({
   <div class="space-y-4">
     <div class="flex gap-2 flex-col py-8 w-full justify-center items-center text-white">
       <div class="p-4 bg-white rounded-full border border-color">
-        <BaseImage
-          :img="{
-            src: 'astronera-logo.jpg',
-            alt: 'Shweta Kulkarni is the CEO / Founder of AstronEra',
-            width: '60',
-            height: '60'
-          }"
-        />
+        <NuxtLink to="/">
+          <BaseImage
+            :img="{
+              src: 'astronera-logo.jpg',
+              alt: 'AstronEra Logo',
+              width: '60',
+              height: '60'
+            }"
+          />
+        </NuxtLink>
       </div>
       <h2 class="text-3xl font-extrabold">{{ title.main }}</h2>
       <span class="text-center font-bold">
