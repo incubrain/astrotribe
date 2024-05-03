@@ -119,6 +119,7 @@ export default defineNuxtConfig({
       supabaseKey: ''
     },
     // server
+    googleApiKey: '',
     supabaseServiceKey: '',
     adminEmails: '',
     nasaApiKey: '',
