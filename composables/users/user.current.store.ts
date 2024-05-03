@@ -32,22 +32,19 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   //   plan: null
   // })
 
-  async function loadSession(forceRefresh = false) {
+  async function loadSession() {
+    console.log('loadSession')
     if (loading.isLoading(domainKey) || currentUser.value) {
       return
     }
 
     loading.setLoading(domainKey, true)
 
-    const { data: userSession, error: sessionError } = await fetch('/api/users/session', {
-      query: {
-        forceRefresh
-      }
-    })
+    const { data: userSession, error: sessionError } = await fetch('/api/users/session')
 
     console.log('sessionEx', userSession, sessionError)
     currentUser.value = userSession
-    userId.value = userSession.user.id
+    userId.value = userSession.id
     loading.setLoading(domainKey, false)
   }
 

@@ -1,8 +1,9 @@
 import { H3Event, useSession } from 'h3'
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
-async function fetchPermissions(event: H3Event, userPlan: string, userRole: string) {
+async function fetchPermissions(userPlan: string, userRole: string) {
+  const event = useEvent()
   const supabase = await serverSupabaseClient(event)
   try {
     console.log('fetching permissions for: ', userPlan, userRole)
@@ -30,110 +31,205 @@ async function fetchPermissions(event: H3Event, userPlan: string, userRole: stri
   }
 }
 
-export async function getUserSession(forceRefresh: boolean) {
+async function getSession() {
+  console.log('gettingSession')
   const event = useEvent()
-  const supabase = await serverSupabaseClient(event)
+  const session = await serverSupabaseSession(event)
+  console.log('session', session)
+  const newAccessToken = session?.access_token ?? null
 
-  const { data: newSession, error: sessionError } = await supabase.auth.getSession()
-  const newAccessToken = newSession.session?.access_token ?? null
-  // const newSession = await serverSupabaseUser(event)
-
-  if (!newAccessToken || sessionError) {
-    console.log(
-      'No Supabase session or access token found: ',
-      JSON.stringify(sessionError ?? { message: 'unknown error' })
-    )
-    return null
+  if (!newAccessToken) {
+    throw createError({ message: 'no supabase newAccessToken returned from serverSupabaseSession' })
   }
+  return session
+}
 
-  const { payload } = useJwt(newAccessToken)
+function decodeSession(accessToken: string) {
+  const { payload } = useJwt(accessToken)
 
-  // Validate JWT and extract payload
   if (!payload.value || !payload.value.app_metadata) {
-    console.error('Invalid JWT payload')
-    return null
+    throw createError({
+      message: `missing session payload: ${payload.value}, unable to validate user`
+    })
   }
 
-  const session = await useSession(event, {
-    password: `app_permissions_${newSession.session?.user.id}`,
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7 // 7 days
-    }
-  })
-
-  console.log('sbMetadata', payload.value.app_metadata)
   const { user_role, user_plan } = payload.value.app_metadata
 
-  if (!user_role) {
-    throw createError({ message: 'no user_role found, unable to fetch permissions' })
+  console.log(payload.value)
+
+  if (!user_role || !user_plan) {
+    throw createError({
+      message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`
+    })
   }
 
+  return {
+    user_role: user_role as string,
+    user_plan: user_plan as string
+  }
+}
+
+interface StoredSession {
+  access_token: string
+  expires_at: number
+  user: any
+}
+
+interface Permission {
+  role: string
+  table_name: string
+  insert: boolean
+  select: boolean
+  update: boolean
+  delete: boolean
+}
+
+interface StoredPermissions {
+  access_token: string
+  expires_at: number
+  user_id: string
+  user_role: string
+  user_plan: string
+  plan_permissions: Permission[]
+  role_permissions: Permission[]
+}
+
+export async function validateAndUpdateSession() {
+  const session = await getSession()
+  if (!session) {
+    throw createError({ message: 'unable to fetch valid accessToken' })
+  }
+
+  const { user, access_token } = session
+
+  if (!user || !access_token) {
+    throw createError({ message: 'user or access_token undefined in session' })
+  }
+
+  const userData = decodeSession(access_token)
+  if (!userData || !userData.user_role || !userData.user_plan) {
+    throw createError({ message: 'unable to decode accessToken' })
+  }
+
+  const { user_role, user_plan } = userData
+  const storage = useStorage('session')
+  const secretKey = getCurrentSecret()
+  const storageKey = `${user.id}:${secretKey}`
+
+  // SESSION
+  const storedSession = await storage.getItem<StoredSession>(`user:${storageKey}`)
   if (
-    session.data &&
-    session.data.storedAccessToken === newAccessToken &&
-    session.data.user.role === user_role &&
-    session.data.user.plan === user_plan
+    !storedSession ||
+    storedSession.expires_at < Date.now() ||
+    storedSession.access_token !== access_token
   ) {
-    console.log('Session data matches, using stored permissions')
-    return session.data
+    console.log('Session expired or token mismatch, updating session.')
+    await storage.setItem<StoredSession>(`user:${storageKey}`, {
+      access_token,
+      expires_at: Date.now() + 60 * 60 * 24 * 7, // 1 week
+      user
+    })
+  } else {
+    console.info('Current session is valid and does not need updates.')
   }
 
-  console.log('Fetching new permissions due to session data mismatch or missing session')
-  const permissions = await fetchPermissions(event, user_plan, user_role)
+  // PERMISSIONS
+  const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
+  if (
+    !storedPermissions ||
+    storedPermissions.expires_at < Date.now() ||
+    storedPermissions.access_token !== access_token
+  ) {
+    console.log('Permissions expired or token mismatch, fetching new permissions.')
+    const permissions = await fetchPermissions(user_plan, user_role)
 
-  if (!permissions) {
-    console.error('Failed to fetch new permissions')
-    return null
+    if (!permissions) {
+      console.error('Failed to fetch new permissions')
+      return
+    }
+
+    await storage.setItem<StoredPermissions>(`permissions:${storageKey}`, {
+      access_token,
+      expires_at: Date.now() + 60 * 60 * 24 * 7, // 1 week in milliseconds
+      user_id: user.id,
+      user_role,
+      user_plan,
+      plan_permissions: permissions.plan,
+      role_permissions: permissions.role
+    })
+  } else {
+    console.log('Current permissions are valid and do not need updates.')
   }
 
-  // Update session with new permissions and user details
-  await session.update({
-    storedAccessToken: newAccessToken,
-    user: {
-      ...newSession.session?.user,
-      role: user_role,
-      plan: user_plan
-    },
-    permissions: {
-      role: permissions.role,
-      plan: permissions.plan
-    }
-  })
-
-  console.log('returning session data', session.data)
-
-  return session.data
+  return {
+    ...user,
+    user_role,
+    user_plan
+  }
 }
 
-export async function getUserPermissions(userId: string) {
-  const session = await useSession(useEvent(), {
-    password: `app_permissions_${userId}`,
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7
-    }
-  })
+export async function getUserRolePlan() {
+  const secretKey = getCurrentSecret()
+  const storageKey = `${userId}:${secretKey}`
 
-  return session.data.permissions ?? null
+  console.log('getting user role plan', storageKey)
+  const storage = useStorage('session')
+
+  return await storage.getItem<StoredSession>(`user:${storageKey}`)
 }
+
+export async function getUserPermissions() {
+  const secretKey = getCurrentSecret()
+  const storageKey = `${userId}:${secretKey}`
+
+  console.log('getting user permissions', storageKey)
+  const storage = useStorage('session')
+
+  return await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
+}
+
+// these belong somewhere else
 
 export async function hasDBPermission(
   tableName: string,
-  operation: 'select' | 'update' | 'insert' | 'delete',
-  userId: string
+  operation: 'select' | 'update' | 'insert' | 'delete'
 ): Promise<boolean> {
-  const permissions = await getUserPermissions(userId)
+  const permissions = await getUserPermissions()
 
-  if (!permissions) {
+  if (!permissions?.role_permissions) {
+    console.log('no role permissions found')
     return false
   }
 
-  const tablePermissions = permissions.role.find((item) => item.tableName === tableName)
+  const tablePermissions = permissions.role_permissions.find((item) => item.table_name === tableName)
+
+  if (!tablePermissions) {
+    throw createError({
+      message: `${tableName} is not a valid table_name`
+    })
+  }
 
   return tablePermissions[operation]
+}
+
+export async function hasFeaturePermission(
+  feature: string,
+  action: 'select' | 'update' | 'insert' | 'delete'
+): Promise<boolean> {
+  const permissions = await getUserPermissions()
+
+  if (!permissions?.plan_permissions) {
+    console.log('no plan permissions found')
+    return false
+  }
+
+  const featurePermissions = permissions.plan_permissions.find((item) => item.feature === feature)
+
+  if (!featurePermissions) {
+    throw createError({
+      message: `${feature} is not a valid table_name`
+    })
+  }
+
+  return featurePermissions[action]
 }

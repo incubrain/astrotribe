@@ -9,8 +9,17 @@ onMounted(async () => {
 
 const supabase = useSupabaseClient()
 supabase.auth.onAuthStateChange(async (event, session) => {
-  if (session) {
+  if (event === 'TOKEN_REFRESHED') {
+    console.log('TOKEN_REFRESHED: TRIGGER')
     await currentUser.loadSession()
+    // use webhooks/database for role/plan changes to trigger new session
+  } else if (event === 'SIGNED_OUT') {
+    // handle sign out event, remove session from storage
+  } else if (event === 'PASSWORD_RECOVERY') {
+    // handle password recovery event
+  } else if (event === 'INITIAL_SESSION') {
+    await currentUser.loadSession()
+    console.log('INITIAL_SESSION: TRIGGER')
   }
 })
 

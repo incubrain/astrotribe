@@ -1,13 +1,19 @@
-import type { H3Event } from 'h3'
-
 const rateLimitConfig = {
-  user: {
+  free: {
     interval: 1800000,
-    maxRequests: 5
+    maxRequests: 3
+  },
+  basic: {
+    interval: 1800000,
+    maxRequests: 10
+  },
+  intermediate: {
+    interval: 1800000,
+    maxRequests: 20
   },
   premium: {
     interval: 1800000,
-    maxRequests: 20
+    maxRequests: 30
   }
 }
 
@@ -28,21 +34,23 @@ interface RateLimitInfo {
 
 // pass the required context from another general session middleware.
 // add user roles, permissions, privellages.
-export const rateLimiter = async (feature: string) => {
-  console.log('feature', feature)
-  const { userID } = useEvent().context
-  // test this
-  console.log('userId', userID, useEvent())
-  const userRole: RoleKey = (getRequestHeader(event, 'X-USER-ROLE') as RoleKey) || 'user'
-  const storage = useStorage<RateLimitInfo>('rateLimit')
-  const storageKey = `requests:${userRole}:${userID}`
-  const settings = rateLimitConfig[userRole]
+export const rateLimiter = async () => {
+  const event = useEvent()
+  const user = await getUserFromSession()
 
-  if (!userID) {
+  // test this
+  console.log('rateLimiter', user, event.path)
+
+  const userPlan: RoleKey = user.plan
+  const storage = useStorage('session')
+  const storageKey = `rateLimit:endpoint:${userPlan}:${user.id}`
+  const settings = rateLimitConfig[userPlan]
+
+  if (!user.id) {
     throw createError({ message: 'UserID not found, You must be logged in to use this endpoint' })
   }
 
-  let rateLimit = await storage.getItem(storageKey)
+  let rateLimit = await storage.getItem<RateLimitInfo>(storageKey)
   if (!rateLimit || rateLimit.expiresAt < Date.now()) {
     // first api call, or it has expired
     console.log('No rate limit found, or it has expired')
