@@ -33,7 +33,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     loading.setLoading(domainKey, true)
 
-    const response = await fetch('/api/usewrs/session')
+    const response = await fetch('/api/users/session')
 
     const data = errors.handleFetchErrors(response, {
       critical: true,
@@ -155,7 +155,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // cycle through identities check identities_data for picture
 
   return {
-    isLoggedIn: computed(() => !!currentUser.value),
+    haveUserSession: computed(() => !!currentUser.value),
     profile,
     userId,
     loadSession,

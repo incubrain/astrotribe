@@ -21,8 +21,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const redirectUrl = computed(() => `${window.location.origin}/astrotribe`)
-  console.log('redirect', { redirectUrl: redirectUrl.value })
-  
+
   // !todo:bug - I believe there is an issue where the token expires for Social login but it doesn't refresh
   // !todo:high - retrieve current user profile
 
@@ -32,7 +31,6 @@ export function useAuth() {
     confirmNewPassword: 'confirm new password'
   })
 
-  const baseUrl = computed(() => window.location.origin ?? null)
   const toast = useToast()
   const supabase = useSupabaseClient()
 
@@ -60,6 +58,8 @@ export function useAuth() {
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
+    console.log('redirect', redirectUrl.value)
+
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: redirectUrl.value }
@@ -79,7 +79,7 @@ export function useAuth() {
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${baseUrl.value}/auth/update-password`
+      redirectTo: `${redirectUrl.value}/settings/password`
     })
 
     if (error) {

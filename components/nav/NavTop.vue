@@ -139,9 +139,8 @@ onUnmounted(() => {
   })
 })
 
-const auth = useAuth()
 const currentUser = useCurrentUser()
-const { isLoggedIn } = storeToRefs(currentUser)
+const { haveUserSession } = storeToRefs(currentUser)
 
 // !design:high:easy:1 - auto detect session and show AstroTribe button
 </script>
@@ -232,48 +231,52 @@ const { isLoggedIn } = storeToRefs(currentUser)
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
           </NuxtLink>
-          <div class="gap-4 flex items-center justify-center h-auto min-w-24 pr-2">
-            <NuxtLink
-              v-if="isLoggedIn"
-              v-ripple
-              to="/astrotribe"
-            >
-              <PrimeButton
-                :pt="{
-                  root: 'border'
-                }"
-                @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
-              >
-                Dashboard
-              </PrimeButton>
-            </NuxtLink>
-            <div
-              v-else
-              class="space-x-4"
-            >
+          <ClientOnly>
+            <div class="gap-4 flex items-center justify-center h-auto min-w-24 pr-2">
               <NuxtLink
+                v-if="haveUserSession"
                 v-ripple
-                to="/auth/login"
+                to="/astrotribe"
               >
                 <PrimeButton
-                  severity="secondary"
-                  outlined
-                  @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
+                  :pt="{
+                    root: 'border'
+                  }"
+                  @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
                 >
-                  login
+                  Dashboard
                 </PrimeButton>
               </NuxtLink>
-
-              <NuxtLink
-                v-ripple
-                to="/auth/register"
+              <div
+                v-else
+                class="space-x-4"
               >
-                <PrimeButton @click="$posthog()?.capture('register_app', { location: 'top_nav' })">
-                  Astronomy Hub
-                </PrimeButton>
-              </NuxtLink>
+                <NuxtLink
+                  v-ripple
+                  to="/auth/login"
+                >
+                  <PrimeButton
+                    severity="secondary"
+                    outlined
+                    @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
+                  >
+                    login
+                  </PrimeButton>
+                </NuxtLink>
+
+                <NuxtLink
+                  v-ripple
+                  to="/auth/register"
+                >
+                  <PrimeButton
+                    @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
+                  >
+                    Astronomy Hub
+                  </PrimeButton>
+                </NuxtLink>
+              </div>
             </div>
-          </div>
+          </ClientOnly>
         </div>
       </template>
     </PrimeMenubar>

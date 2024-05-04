@@ -43,47 +43,49 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
       <SearchBar class="w-full" />
     </div>
     <!-- end -->
-    <div
-      v-if="isLoading || !profile?.role"
-      class="flex gap-4 justify-end items-center"
-    >
-      <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
-      <PrimeSkeleton
-        :pt="{
-          root: 'min-w-10 min-h-10 rounded-full'
-        }"
-      />
-    </div>
-    <div
-      class="flex items-center justify-center gap-4"
-      v-else-if="profile?.role"
-    >
-      <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
-        <Icon
-          :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-          class="w-6 h-6 cursor-pointer"
-          @click="toggle"
+    <ClientOnly>
+      <div
+        v-if="isLoading || !profile?.role"
+        class="flex gap-4 justify-end items-center"
+      >
+        <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
+        <PrimeSkeleton
+          :pt="{
+            root: 'min-w-10 min-h-10 rounded-full'
+          }"
         />
-      </AppThemeToggle> -->
-      <PrimeTag v-if="profile.role">
-        {{ profile.role }}
-      </PrimeTag>
-      <PrimeAvatar
-        v-if="profile?.avatar"
-        :image="profile?.avatar"
-        size="normal"
-        shape="circle"
-        class="cursor-pointer"
-        aria-haspopup="true"
-        aria-controls="overlay_menu"
-        @click="toggleMenu"
-      />
-      <PrimeMenu
-        id="overlay_menu"
-        ref="profileMenu"
-        :model="items"
-        :popup="true"
-      />
-    </div>
+      </div>
+      <div
+        class="flex items-center justify-center gap-4"
+        v-else-if="profile?.role"
+      >
+        <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
+          <Icon
+            :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
+            class="w-6 h-6 cursor-pointer"
+            @click="toggle"
+          />
+        </AppThemeToggle> -->
+        <PrimeTag v-if="profile.role">
+          {{ profile.role }}
+        </PrimeTag>
+        <PrimeAvatar
+          v-if="profile?.avatar"
+          :image="profile?.avatar"
+          size="normal"
+          shape="circle"
+          class="cursor-pointer"
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+          @click="toggleMenu"
+        />
+        <PrimeMenu
+          id="overlay_menu"
+          ref="profileMenu"
+          :model="items"
+          :popup="true"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>
