@@ -57,8 +57,16 @@ const { getCategoryName } = useCategoryTagStore()
     </div>
     <div class="flex flex-col gap-4">
       <div class="flex gap-2 items-center">
-        <PrimeTag severity="info"> founded: {{ company.founding_year }} </PrimeTag>
-        <PrimeTag severity="info">
+        <PrimeTag
+          v-if="company.founding_year"
+          severity="info"
+        >
+          founded: {{ company.founding_year }}
+        </PrimeTag>
+        <PrimeTag
+          v-if="company.is_government"
+          severity="info"
+        >
           {{ company.is_government ? 'Government' : 'Private' }}
         </PrimeTag>
       </div>
