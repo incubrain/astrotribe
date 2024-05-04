@@ -35,12 +35,6 @@ async function getSession() {
   console.log('gettingSession')
   const event = useEvent()
   const session = await serverSupabaseSession(event)
-  console.log('session', session)
-  const newAccessToken = session?.access_token ?? null
-
-  if (!newAccessToken) {
-    throw createError({ message: 'no supabase newAccessToken returned from serverSupabaseSession' })
-  }
   return session
 }
 
@@ -97,23 +91,21 @@ interface StoredPermissions {
 export async function validateAndUpdateSession() {
   const session = await getSession()
   if (!session) {
-    throw createError({ message: 'unable to fetch valid accessToken' })
+    return
   }
 
   const { user, access_token } = session
-
   if (!user || !access_token) {
-    throw createError({ message: 'user or access_token undefined in session' })
+    throw createError({
+      message: `user: ${user.id} or access_token: ${access_token.length} undefined in session`
+    })
   }
 
-  const userData = decodeSession(access_token)
-  if (!userData || !userData.user_role || !userData.user_plan) {
-    throw createError({ message: 'unable to decode accessToken' })
-  }
+  const { user_plan, user_role } = decodeSession(access_token)
 
-  const { user_role, user_plan } = userData
   const storage = useStorage('session')
   const secretKey = getCurrentSecret()
+  console.log('secretKey', secretKey, user, user_plan, user_role)
   const storageKey = `${user.id}:${secretKey}`
 
   // SESSION
@@ -201,7 +193,9 @@ export async function hasDBPermission(
     return false
   }
 
-  const tablePermissions = permissions.role_permissions.find((item) => item.table_name === tableName)
+  const tablePermissions = permissions.role_permissions.find(
+    (item) => item.table_name === tableName
+  )
 
   if (!tablePermissions) {
     throw createError({

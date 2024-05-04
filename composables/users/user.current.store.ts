@@ -21,30 +21,33 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // Socials and IPs
   // Employment & Education history
   // DoB
-  // todo:high - allow user to update their profile/cover pictures
   const userId = useCookie('userId')
   const profile = ref(null)
   const currentUser = ref(null)
-  // const permissions = reactive({
-  //   userRole: null,
-  //   userPlan: null,
-  //   role: null,
-  //   plan: null
-  // })
 
   async function loadSession() {
-    console.log('loadSession')
+    logger.info('loadSession')
     if (loading.isLoading(domainKey) || currentUser.value) {
       return
     }
 
     loading.setLoading(domainKey, true)
 
-    const { data: userSession, error: sessionError } = await fetch('/api/users/session')
+    const response = await fetch('/api/usewrs/session')
 
-    console.log('sessionEx', userSession, sessionError)
-    currentUser.value = userSession
-    userId.value = userSession.id
+    const data = errors.handleFetchErrors(response, {
+      critical: true,
+      devMessage: 'error fetching user session',
+      userMessage: 'something went wrong when getting your session'
+    })
+
+    console.log('sessionEx', data)
+    if (data) {
+      currentUser.value = data
+      userId.value = data.id
+    } else {
+      logger.info('no session found')
+    }
     loading.setLoading(domainKey, false)
   }
 
@@ -156,7 +159,6 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     profile,
     userId,
     loadSession,
-    uploadImage,
-    userFullName: computed(() => `${profile.value?.given_name} ${profile.value?.surname}`)
+    uploadImage
   }
 })
