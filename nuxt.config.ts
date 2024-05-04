@@ -20,6 +20,11 @@ export default defineNuxtConfig({
     inlineRouteRules: true,
     asyncContext: true
   },
+
+  routeRules: {
+    // Admin dashboard renders only on client-side
+    '/astrotribe/**': { ssr: false }
+  },
   nitro: {
     experimental: {
       tasks: true
@@ -68,10 +73,10 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: og.image }
       ],
       script: [
-      // Insert your Google Tag Manager Script here
-      // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-      { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' },
-        ]
+        // Insert your Google Tag Manager Script here
+        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+        { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' }
+      ]
     }
   },
   css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
