@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const nonce = useNonce()
+// const nonce = useNonce()
 
 defineProps({
   img: {
@@ -18,7 +18,7 @@ defineProps({
     :format="img.format"
     :quality="img.quality"
     :loading="img.loading"
-    :nonce="nonce"
     crossorigin="anonymous"
-  />
+    />
+    <!-- :nonce="nonce" -->
 </template>
