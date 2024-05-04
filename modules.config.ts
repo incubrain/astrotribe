@@ -156,7 +156,7 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   pinia: PINIA_OPTIONS,
-  security: SECURITY_OPTIONS,
+  // security: SECURITY_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,
