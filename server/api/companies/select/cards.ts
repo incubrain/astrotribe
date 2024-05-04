@@ -1,4 +1,35 @@
-import { CompanyRepository } from '~/server/utils/company/company.repository'
+import { z } from 'zod'
+import { datetimeOffset, companySchema, CompanyRepository, socialSchema } from '#imports'
+
+const pickCompanyCard = {
+  id: true,
+  name: true,
+  description: true,
+  logo_url: true,
+  website_url: true,
+  is_government: true,
+  category_id: true,
+  last_scraped_at: true,
+  scrape_frequency: true,
+  addresses: true,
+  social_media: true,
+  contacts: true
+} as const
+
+const companyCardSchema = z.array(
+  companySchema.pick(pickCompanyCard).extend({
+    last_scraped_at: datetimeOffset().optional,
+    social_media: socialSchema
+      .pick({
+        facebook_url: true,
+        twitter_url: true,
+        linkedin_url: true,
+        instagram_url: true,
+        youtube_url: true
+      })
+      .optional()
+  })
+)
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -7,7 +38,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const companyRepository = new CompanyRepository()
-    const companies = await companyRepository.selectCompanyCards({
+    const companies = await companyRepository.selectMany<'companies'>({
       tableName: 'companies',
       selectStatement: `
       id,
@@ -20,7 +51,7 @@ export default defineEventHandler(async (event) => {
       scrape_frequency,
       description,
       addresses(*),
-      social_media(*)
+      social_media(facebook_url, twitter_url, linkedin_url, instagram_url, youtube_url),
       contacts(*)`,
       filterBy: parsedQuery.filterBy,
       pagination: parsedQuery.pagination
@@ -30,7 +61,7 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'Company retrieved from supabase',
-      data: companyRepository.dto.validateAndFormatData({ data: companies, dto: parsedQuery.dto })
+      data: companyCardSchema.parse(companies)
     }
   } catch (error: any) {
     console.error('get-company error', error.message)
