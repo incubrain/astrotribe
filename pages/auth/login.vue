@@ -20,7 +20,7 @@ definePageMeta({
       subtitle: 'Don\'t have an account?',
       label: 'Sign up.'
     }"
-    help-url="/auth/login"
+    help-url="/auth/register"
   >
     <template #content>
       <PrimeFloatLabel class="flex flex-col w-full">
