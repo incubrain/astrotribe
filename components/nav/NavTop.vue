@@ -88,57 +88,6 @@ const props = defineProps({
   }
 })
 
-const screenHeight = ref(0)
-const screenWidth = ref(null as number | null)
-const scrollPercentage = ref(0)
-const compactOnScroll = computed(() => props.compactOnScroll)
-const isSmall = ref(false)
-const navbarMaxWidth = computed(() => (isSmall.value ? '70px' : '100%'))
-
-watchEffect(() => {
-  if (compactOnScroll.value && scrollPercentage.value >= 100) {
-    isSmall.value = true
-  }
-
-  if (screenWidth.value) {
-    if (screenWidth.value < 1020) {
-      isSmall.value = false
-    }
-  }
-})
-
-const toggleIsSmall = () => {
-  isSmall.value = !isSmall.value
-}
-
-onMounted(() => {
-  screenHeight.value = window.innerHeight
-  screenWidth.value = window.innerWidth
-  isSmall.value = props.isCompact
-  window.addEventListener('resize', () => {
-    screenHeight.value = window.innerHeight
-    screenWidth.value = window.innerWidth
-  })
-
-  const { y } = useScroll(window)
-  watch(
-    y,
-    (newY) => {
-      // Calculate the scroll percentage
-      const percentage = (y.value / screenHeight.value) * 100
-      scrollPercentage.value = Math.min(100, Math.max(0, percentage)) // Clamps the value between 0% and 100%
-    },
-    { immediate: true }
-  )
-})
-
-// Clean up the event listener when the component unmounts
-onUnmounted(() => {
-  window.removeEventListener('resize', () => {
-    screenHeight.value = window.innerHeight
-  })
-})
-
 const currentUser = useCurrentUser()
 const { haveUserSession } = storeToRefs(currentUser)
 
@@ -147,10 +96,7 @@ const { haveUserSession } = storeToRefs(currentUser)
 
 <template>
   <div
-    :class="[
-      'flex origin-top-left w-full wrapper',
-      isSmall ? 'lg:justify-left lg:items-left' : 'lg:justify-center lg:items-center lg:padded-x'
-    ]"
+    class="'flex origin-top-left w-full wrapper lg:justify-center lg:items-center lg:padded-x',"
     :style="{
       position: 'fixed',
       top: '0',
@@ -163,11 +109,6 @@ const { haveUserSession } = storeToRefs(currentUser)
     <PrimeMenubar
       :model="links"
       class="rounded-none lg:rounded-b-md w-full"
-      :style="{
-        maxWidth: navbarMaxWidth,
-        maxHeight: navbarMaxWidth,
-        overflow: isSmall ? 'hidden' : 'visible'
-      }"
     >
       <template #start>
         <div class="gap-4 hidden lg:flex rounded-md p-1">
@@ -180,16 +121,8 @@ const { haveUserSession } = storeToRefs(currentUser)
               }"
               class="w-full h-full dark:opacity-90"
             />
-            <div class="absolute text-black z-50">
-              <Icon
-                :name="isSmall ? 'mdi:menu' : 'mdi:chevron-left'"
-                size="32"
-                @click="toggleIsSmall"
-              />
-            </div>
           </div>
           <NuxtLink
-            v-show="!isSmall"
             to="/"
             class="flex items-center justify-center min-h-full"
           >
