@@ -14,7 +14,7 @@ export const MODULES: NuxtConfig['modules'] = [
   '@nuxthq/studio',
   '@nuxtjs/supabase',
   'nuxt-icon',
-  'nuxt-security'
+  // 'nuxt-security'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
@@ -23,49 +23,49 @@ const PINIA_OPTIONS: NuxtConfig['pinia'] = {
 
 // !infra:med:hard:12 - look into and configure nuxt security module
 // https://nuxt-security.vercel.app/documentation/getting-started/configuration
-const SECURITY_OPTIONS: NuxtConfig['security'] = {
-  headers: {
-    contentSecurityPolicy: {
-      'img-src': [
-        "'self'",
-        'data:',
-        'http://localhost:54321',
-        'http://localhost:3000',
-        'https://www.nasa.gov',
-        'https://science.nasa.gov',
-        'https://www.youtube.com',
-        'https://s.ytimg.com'
-      ],
-      'script-src': [
-        "'self'",
-        "'nonce-{{nonce}}'",
-        "'unsafe-inline'",
-        'http://localhost:3000',
-        'https://www.youtube.com',
-        'https://s.ytimg.com'
-      ]
-    },
-    xFrameOptions: false,
-    // needed for devtools
-    crossOriginEmbedderPolicy:
-      process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
-  },
-  requestSizeLimiter: {
-    maxUploadFileRequestInBytes: 2000000, // 2 MB
-    throwError: true,
-    maxRequestSizeInBytes: 2000000 // 2 MB
-  },
-  xssValidator: false,
-  corsHandler: false,
-  allowedMethodsRestricter: false,
-  hidePoweredBy: false,
-  basicAuth: false,
-  csrf: false,
-  nonce: true,
-  removeLoggers: false,
-  ssg: false,
-  sri: false
-}
+// const SECURITY_OPTIONS: NuxtConfig['security'] = {
+//   headers: {
+//     contentSecurityPolicy: {
+//       'img-src': [
+//         "'self'",
+//         'data:',
+//         'http://localhost:54321',
+//         'http://localhost:3000',
+//         'https://www.nasa.gov',
+//         'https://science.nasa.gov',
+//         'https://www.youtube.com',
+//         'https://s.ytimg.com'
+//       ],
+//       'script-src': [
+//         "'self'",
+//         "'nonce-{{nonce}}'",
+//         "'unsafe-inline'",
+//         'http://localhost:3000',
+//         'https://www.youtube.com',
+//         'https://s.ytimg.com'
+//       ]
+//     },
+//     xFrameOptions: false,
+//     // needed for devtools
+//     crossOriginEmbedderPolicy:
+//       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
+//   },
+//   requestSizeLimiter: {
+//     maxUploadFileRequestInBytes: 2000000, // 2 MB
+//     throwError: true,
+//     maxRequestSizeInBytes: 2000000 // 2 MB
+//   },
+//   xssValidator: false,
+//   corsHandler: false,
+//   allowedMethodsRestricter: false,
+//   hidePoweredBy: false,
+//   basicAuth: false,
+//   csrf: false,
+//   nonce: true,
+//   removeLoggers: false,
+//   ssg: false,
+//   sri: false
+// }
 
 const SEO_OPTIONS: NuxtConfig['seo'] = {
   redirectToCanonicalSiteUrl: true
