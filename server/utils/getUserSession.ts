@@ -41,6 +41,7 @@ async function getSession() {
 function decodeSession(accessToken: string) {
   const { payload } = useJwt(accessToken)
 
+  console.log('payload', payload.value)
   if (!payload.value || !payload.value.app_metadata) {
     throw createError({
       message: `missing session payload: ${payload.value}, unable to validate user`
@@ -101,6 +102,7 @@ export async function validateAndUpdateSession() {
     })
   }
 
+  console.log('accessToken', access_token)
   const { user_plan, user_role } = decodeSession(access_token)
 
   const storage = useStorage('session')
