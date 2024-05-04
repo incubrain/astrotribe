@@ -3,12 +3,12 @@ export default defineEventHandler(async (event) => {
 
   try {
     let session: any
-    if (deleteSession) {
+    if (deleteSession === 'true') {
+      console.log('Deleting user session', deleteSession)
       // remove session cookie
       await removeSession()
     } else {
       session = await validateAndUpdateSession()
-
     }
 
     if (!session) {
@@ -20,7 +20,8 @@ export default defineEventHandler(async (event) => {
         data: null
       }
     }
-    
+
+    console.log('User session fetched from session', session)
     return {
       error: null,
       status: 200,
@@ -28,6 +29,7 @@ export default defineEventHandler(async (event) => {
       data: session
     }
   } catch (error: any) {
+    console.error('session error', error.message)
     return {
       error,
       status: 500,

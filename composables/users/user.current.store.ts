@@ -23,11 +23,11 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // DoB
   const userId = useCookie('userId')
   const profile = ref(null)
-  const currentUser = ref(null)
+  const userSession = ref(null)
 
   async function loadSession(deleteSession = false) {
     logger.info('loadSession')
-    if (loading.isLoading(domainKey) || currentUser.value) {
+    if (loading.isLoading(domainKey) || userSession.value) {
       return
     }
 
@@ -48,8 +48,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     console.log('sessionEx', data)
     if (data) {
-      currentUser.value = data
-      userId.value = data.id
+      userSession.value = data
+      console.log('SETTING USER_ID', data.user_id)
+      userId.value = data.user_id
     } else {
       logger.info('no session found')
     }
@@ -83,13 +84,13 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   }
 
   watch(
-    () => currentUser.value,
+    () => userSession.value,
     (newUser, oldUser) => {
       if (newUser && newUser !== oldUser) {
         fetchUserProfile()
       }
     },
-    { immediate: true }
+    { immediate: true, deep: true }
   )
 
   async function updateProfile(newData: any) {
@@ -112,7 +113,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       }
     }
 
-    currentUser.value = validData
+    userSession.value = validData
 
     // might need to force refresh of session
   }
@@ -160,7 +161,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // cycle through identities check identities_data for picture
 
   return {
-    haveUserSession: computed(() => !!currentUser.value),
+    haveUserSession: computed(() => !!userSession.value),
     profile,
     userId,
     loadSession,

@@ -35,6 +35,7 @@ async function getSession() {
   console.log('gettingSession')
   const event = useEvent()
   const session = await serverSupabaseSession(event)
+  console.log('serverSupabaseSession', session)
   return session
 }
 
@@ -156,11 +157,7 @@ export async function validateAndUpdateSession() {
     console.log('Current permissions are valid and do not need updates.')
   }
 
-  return {
-    ...user,
-    user_role,
-    user_plan
-  }
+  return await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
 }
 
 export async function removeSession() {

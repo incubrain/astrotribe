@@ -34,22 +34,15 @@ type Chat = z.infer<typeof ChatCompletionSchema>
 
 export const useChatStore = defineStore('chatStore', () => {
   const { fetch } = useBaseFetch()
-  const storeKey = 'chatStore'
-  const logger = useLogger(storeKey)
   const loading = useLoadingStore()
+  const client = useSupabaseClient()
+  const errors = useBaseError()
+
+  const domainKey = 'chatStore'
+  const logger = useLogger(domainKey)
+
   const chat = ref({} as Chat)
   const question = ref('' as string)
-  const client = useSupabaseClient()
-
-  function handleDBErrors(response: { data?: any; error?: any }) {
-    if (response.error) {
-      logger.error(`handleDBErrors - Supabase Error: ${response.error.message}`)
-      throw createError({ message: response.error.message })
-    } else if (response.data) {
-      return response.data
-    }
-    return null
-  }
 
   function handleNavigation() {
     const route = useRoute()
@@ -69,7 +62,11 @@ export const useChatStore = defineStore('chatStore', () => {
       })
       .select()
 
-    return handleDBErrors(response)
+    return errors.handleFetchErrors(response, {
+      critical: true,
+      devMessage: 'error inserting search data',
+      userMessage: 'something went wrong when inserting search data'
+    })
   }
 
   async function insertResponseData(searchId: number, questionResponseData: Chat) {
@@ -78,17 +75,21 @@ export const useChatStore = defineStore('chatStore', () => {
       output: questionResponseData.choices[0]?.message?.content,
       created_at: new Date().toISOString()
     })
-    return handleDBErrors(response)
+    return errors.handleFetchErrors(response, {
+      critical: true,
+      devMessage: 'error inserting response data',
+      userMessage: 'something went wrong when inserting response data'
+    })
   }
 
   async function submitQuestion(userId: string) {
     console.log('searchMessage', question.value, userId)
 
-    if (loading.isLoading(storeKey)) {
+    if (loading.isLoading(domainKey)) {
       return null
     }
 
-    loading.setLoading(storeKey, true)
+    loading.setLoading(domainKey, true)
 
     try {
       const questionResponse = await fetch('/api/groq', {
@@ -96,7 +97,11 @@ export const useChatStore = defineStore('chatStore', () => {
         params: { question: question.value }
       })
 
-      const questionResponseData: Chat = handleDBErrors(questionResponse)
+      const questionResponseData: Chat = errors.handleFetchErrors(questionResponse, {
+        critical: true,
+        devMessage: 'error fetching question response',
+        userMessage: 'something went wrong when fetching question response'
+      })
 
       chat.value = questionResponseData
       const search = await insertSearchData(userId)
@@ -106,12 +111,12 @@ export const useChatStore = defineStore('chatStore', () => {
     } catch (error) {
       console.error('Error submitting question and handling response:', error)
     } finally {
-      await loading.setLoadingInterval(storeKey, false, 1000)
+      await loading.setLoadingInterval(domainKey, false, 1000)
     }
   }
 
   return {
-    isLoading: computed(() => loading.isLoading(storeKey)),
+    isLoading: computed(() => loading.isLoading(domainKey)),
     chat,
     question,
     submitQuestion
