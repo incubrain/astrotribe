@@ -25,6 +25,11 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   const profile = ref(null)
   const userSession = ref(null)
 
+  async function removeSession() {
+    const response = await fetch('/api/auth/logout')
+    console.log('removeSession', response)
+  }
+
   async function loadSession(deleteSession = false) {
     logger.info('loadSession')
     if (loading.isLoading(domainKey) || userSession.value) {
@@ -33,7 +38,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     loading.setLoading(domainKey, true)
 
-    const response = await fetch('/api/users/session', {
+    const response = await fetch('/api/auth/session', {
       method: 'GET',
       query: {
         deleteSession
@@ -165,6 +170,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     profile,
     userId,
     loadSession,
+    removeSession,
     uploadImage
   }
 })
