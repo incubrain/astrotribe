@@ -53,7 +53,7 @@ definePageMeta({
       @update:scroll-end="newsStore.loadNews(fetchInput)"
     >
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
-        <BaseSidebar />
+        <BaseSidebar class="mx-auto" />
         <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
           <NewsCard
             v-for="(item, i) in news"
