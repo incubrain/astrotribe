@@ -35,6 +35,7 @@ interface RateLimitInfo {
 // pass the required context from another general session middleware.
 // add user roles, permissions, privellages.
 export const rateLimiter = async () => {
+  console.log('RATE-LIMITER TRIGGERED')
   const event = useEvent()
   const user = await getUserPermissions()
 
