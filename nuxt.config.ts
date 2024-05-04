@@ -108,7 +108,7 @@ export default defineNuxtConfig({
     // client
     public: {
       nodeEnv: process.env.NODE_ENV,
-      logLevel: process.env.LOG_LEVEL || '0',
+      logLevel: '0',
       testMode: '',
       posthogKey: '',
       testingUserame: '',
