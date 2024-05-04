@@ -25,7 +25,7 @@ const rateLimitConfig = {
 // this can probably be improved once we have role based access implmented
 // all info can be appended to the event.context object
 
-type RoleKey = keyof typeof rateLimitConfig
+type PlanKey = keyof typeof rateLimitConfig
 
 interface RateLimitInfo {
   requestCount: number
@@ -36,19 +36,19 @@ interface RateLimitInfo {
 // add user roles, permissions, privellages.
 export const rateLimiter = async () => {
   const event = useEvent()
-  const user = await getUserFromSession()
+  const user = await getUserPermissions()
+
+  if (!user?.user_id) {
+    throw createError({ message: 'User not found, You must be logged in to use this endpoint' })
+  }
 
   // test this
   console.log('rateLimiter', user, event.path)
 
-  const userPlan: RoleKey = user.plan
+  const userPlan: PlanKey = (user.user_plan as PlanKey) ?? 'free'
   const storage = useStorage('session')
-  const storageKey = `rateLimit:endpoint:${userPlan}:${user.id}`
+  const storageKey = `rateLimit:endpoint:${userPlan}:${user.user_id}`
   const settings = rateLimitConfig[userPlan]
-
-  if (!user.id) {
-    throw createError({ message: 'UserID not found, You must be logged in to use this endpoint' })
-  }
 
   let rateLimit = await storage.getItem<RateLimitInfo>(storageKey)
   if (!rateLimit || rateLimit.expiresAt < Date.now()) {
