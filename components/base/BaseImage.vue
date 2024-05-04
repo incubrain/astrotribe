@@ -19,5 +19,6 @@ defineProps({
     :quality="img.quality"
     :loading="img.loading"
     :nonce="nonce"
+    crossorigin="anonymous"
   />
 </template>
