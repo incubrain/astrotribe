@@ -22,7 +22,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    // Admin dashboard renders only on client-side
     '/astrotribe/**': { ssr: false }
   },
   nitro: {
