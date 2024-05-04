@@ -114,19 +114,14 @@ export default defineNuxtConfig({
     public: {
       nodeEnv: process.env.NODE_ENV,
       logLevel: '',
-      testMode: '',
       posthogKey: '',
-      testingUserame: '',
-      testingPassword: '',
       studioTokens: '',
-      supabaseBucketUrl: '',
       supabaseUrl: '',
       supabaseKey: ''
     },
     // server
     googleApiKey: '',
     supabaseServiceKey: '',
-    adminEmails: '',
     nasaApiKey: '',
     openaiApiKey: '',
     openaiOrg: ''
