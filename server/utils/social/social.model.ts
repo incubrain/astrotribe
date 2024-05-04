@@ -18,7 +18,7 @@ const socialUpdateSchema = socialInsertSchema
 type SocialRow = z.infer<typeof socialSchema>
 
 export class Social {
-  id?: number
+  id?: number | null
   created_at: string | null
   updated_at: string | null
   linkedin_url: string | null
@@ -28,7 +28,7 @@ export class Social {
   instagram_url: string | null
 
   constructor(data: Partial<Social>) {
-    this.id = data.id
+    this.id = data.id ?? null
     this.created_at = data.created_at ?? null
     this.updated_at = data.created_at ?? null
     this.linkedin_url = data.linkedin_url ?? null
