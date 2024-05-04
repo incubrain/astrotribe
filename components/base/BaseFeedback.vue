@@ -67,19 +67,21 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
 </script>
 
 <template>
-  <div class="p-4">
-    <h2 class="text-lg font-bold mb-4">{{ cta }}</h2>
+  <div class="w-52">
+    <h2 class="text-lg font-bold mb-4 text-center">{{ cta }}</h2>
     <form
-      class="min-w-full flex flex-col gap-4"
+      class="space-y-4 w-52"
       @submit.prevent=""
     >
       <PrimeDropdown
+        :pt="{ root: 'flex text-left pl-1' }"
         v-model="feedback.feedback_type"
         :options="feedbackTypes"
         option-label="name"
-        placeholder="Select a Feedback Type"
+        placeholder="Feedback Type"
       />
       <PrimeTextarea
+        class="w-full"
         v-show="feedback.feedback_type"
         v-model="feedback.message"
         :rows="5"
@@ -89,11 +91,15 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
       />
       <div>
         <PrimeButton
-          label="Submit Feedback"
+          class="w-full flex justify-between"
+          v-show="feedback.feedback_type"
           :disabled="isMessageInvalid"
           :outlined="isMessageInvalid"
           @click="feedbackStore.submitFeedback(feedback)"
-        />
+        >
+          Submit Feedback
+          <Icon name="mdi:send" />
+        </PrimeButton>
       </div>
     </form>
   </div>

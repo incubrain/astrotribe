@@ -5,14 +5,14 @@ const isSideVisible = ref(true)
   <div class="md:sticky top-0 p-8 space-y-4">
     <div class="flex flex-col justify-center md:justify-start">
       <div class="flex gap-4">
-        <PrimeToggleButton
+        <!-- <PrimeToggleButton
           v-model="isSideVisible"
           on-label="Hide"
           off-label="Show"
         >
           <Icon :name="isSideVisible ? 'mdi:eye' : 'mdi:sun'" />
-        </PrimeToggleButton>
-        <Transition name="slide-fade">
+        </PrimeToggleButton> -->
+        <!-- <Transition name="slide-fade">
           <PrimeInlineMessage
             v-show="isSideVisible"
             severity="info"
@@ -20,11 +20,9 @@ const isSideVisible = ref(true)
           >
             Filters Coming Soon
           </PrimeInlineMessage>
-        </Transition>
+        </Transition> -->
       </div>
-      <Transition name="slide-top">
         <BaseFeedback v-show="isSideVisible" />
-      </Transition>
     </div>
   </div>
 </template>
