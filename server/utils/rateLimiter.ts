@@ -34,10 +34,12 @@ interface RateLimitInfo {
 
 // pass the required context from another general session middleware.
 // add user roles, permissions, privellages.
-export const rateLimiter = async () => {
+export async function rateLimiter() {
   console.log('RATE-LIMITER TRIGGERED')
   const event = useEvent()
   const user = await getUserPermissions()
+
+  console.log('rateLimiter', user)
 
   if (!user?.user_id) {
     throw createError({ message: 'User not found, You must be logged in to use this endpoint' })
