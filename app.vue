@@ -8,20 +8,25 @@ onMounted(async () => {
 })
 
 const supabase = useSupabaseClient()
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'TOKEN_REFRESHED') {
-    console.log('TOKEN_REFRESHED: TRIGGER')
-    await currentUser.loadSession()
-    // use webhooks/database for role/plan changes to trigger new session
-  } else if (event === 'SIGNED_OUT') {
-    console.log('SIGNED_OUT: TRIGGER')
-    currentUser.removeSession()
-  } else if (event === 'PASSWORD_RECOVERY') {
-    // handle password recovery event
-  } else if (event === 'INITIAL_SESSION') {
-    await currentUser.loadSession()
-    console.log('INITIAL_SESSION: TRIGGER')
-  }
+supabase.auth.onAuthStateChange((event, session) => {
+  setTimeout(async () => {
+    if (event === 'TOKEN_REFRESHED') {
+      console.log('TOKEN_REFRESHED');
+      await currentUser.loadSession();
+      // Use webhooks/database for role/plan changes to trigger new session
+    } else if (event === 'SIGNED_OUT') {
+      console.log('SIGNED_OUT');
+      currentUser.removeSession();
+    } else if (event === 'PASSWORD_RECOVERY') {
+      console.log('PASSWORD_RECOVERY: TRIGGER');
+      // Handle password recovery event
+    } else if (event === 'INITIAL_SESSION') {
+      console.log('INITIAL_SESSION');
+      // await currentUser.loadSession();
+    } else if (event === 'SIGNED_IN') {
+      console.log('SIGNED_IN: TRIGGER');
+    }
+  }, 0);
 })
 
 useHead({
