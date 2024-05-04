@@ -1,6 +1,15 @@
 export default defineEventHandler(async (event) => {
+  const { deleteSession } = getQuery(event)
+
   try {
-    const session = await validateAndUpdateSession()
+    let session: any
+    if (deleteSession) {
+      // remove session cookie
+      await removeSession()
+    } else {
+      session = await validateAndUpdateSession()
+
+    }
 
     if (!session) {
       console.log('No user user session found')

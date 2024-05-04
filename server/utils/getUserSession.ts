@@ -120,7 +120,7 @@ export async function validateAndUpdateSession() {
     console.log('Session expired or token mismatch, updating session.')
     await storage.setItem<StoredSession>(`user:${storageKey}`, {
       access_token,
-      expires_at: Date.now() + 60 * 60 * 24 * 7, // 1 week
+      expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week
       user
     })
   } else {
@@ -129,6 +129,7 @@ export async function validateAndUpdateSession() {
 
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
+  console.log('storeingSession', storageKey)
   if (
     !storedPermissions ||
     storedPermissions.expires_at < Date.now() ||
@@ -144,7 +145,7 @@ export async function validateAndUpdateSession() {
 
     await storage.setItem<StoredPermissions>(`permissions:${storageKey}`, {
       access_token,
-      expires_at: Date.now() + 60 * 60 * 24 * 7, // 1 week in milliseconds
+      expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week in milliseconds
       user_id: user.id,
       user_role,
       user_plan,
@@ -162,7 +163,21 @@ export async function validateAndUpdateSession() {
   }
 }
 
+export async function removeSession() {
+  const event = useEvent()
+  const userId = getRequestHeader(event, 'X-USER-ID')
+  const storage = useStorage('session')
+  const secretKey = getCurrentSecret()
+  const storageKey = `${userId}:${secretKey}`
+
+  console.log('removing session', storageKey)
+  await storage.removeItem(`user:${storageKey}`)
+  await storage.removeItem(`permissions:${storageKey}`)
+}
+
 export async function getUserRolePlan() {
+  const event = useEvent()
+  const userId = getRequestHeader(event, 'X-USER-ID')
   const secretKey = getCurrentSecret()
   const storageKey = `${userId}:${secretKey}`
 
@@ -173,6 +188,8 @@ export async function getUserRolePlan() {
 }
 
 export async function getUserPermissions() {
+  const event = useEvent()
+  const userId = getRequestHeader(event, 'X-USER-ID')
   const secretKey = getCurrentSecret()
   const storageKey = `${userId}:${secretKey}`
 

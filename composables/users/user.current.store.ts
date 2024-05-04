@@ -25,7 +25,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   const profile = ref(null)
   const currentUser = ref(null)
 
-  async function loadSession() {
+  async function loadSession(deleteSession = false) {
     logger.info('loadSession')
     if (loading.isLoading(domainKey) || currentUser.value) {
       return
@@ -33,7 +33,12 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     loading.setLoading(domainKey, true)
 
-    const response = await fetch('/api/users/session')
+    const response = await fetch('/api/users/session', {
+      method: 'GET',
+      query: {
+        deleteSession
+      }
+    })
 
     const data = errors.handleFetchErrors(response, {
       critical: true,
