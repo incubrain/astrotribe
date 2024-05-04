@@ -50,7 +50,7 @@ export function useBaseFetch() {
       errors.handleError(error, {
         critical: false,
         userMessage: 'there was an error fetching the data',
-        devMessage: `onResponseError for ${response.url}`
+        devMessage: `onResponseError for ${JSON.stringify(response)}`
       })
     }
   })
