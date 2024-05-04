@@ -15,8 +15,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
     // use webhooks/database for role/plan changes to trigger new session
   } else if (event === 'SIGNED_OUT') {
     console.log('SIGNED_OUT: TRIGGER')
-    currentUser.loadSession(true) // removing session, make func
-    // handle sign out event, remove session from storage
+    currentUser.removeSession()
   } else if (event === 'PASSWORD_RECOVERY') {
     // handle password recovery event
   } else if (event === 'INITIAL_SESSION') {
