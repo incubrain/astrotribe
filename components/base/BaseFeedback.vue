@@ -2,6 +2,14 @@
 import { z } from 'zod'
 const feedbackStore = useFeedbackStore()
 
+defineProps({
+  cta: {
+    type: String,
+    required: true,
+    default: 'How could we improve?'
+  }
+})
+
 interface FeedbackType {
   name: string
   value: string
@@ -60,7 +68,7 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
 
 <template>
   <div class="p-4">
-    <h2 class="text-lg font-bold mb-4">How could we Improve?</h2>
+    <h2 class="text-lg font-bold mb-4">{{ cta }}</h2>
     <form
       class="min-w-full flex flex-col gap-4"
       @submit.prevent=""
