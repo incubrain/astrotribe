@@ -17,10 +17,10 @@ const pickUserProfile = {
 
 const userProfileSchema = userSchema.pick(pickUserProfile).transform((user) => ({
   ...user,
-  avatar: user.avatar ? formatAvatarUrl(user) : undefined,
+  avatar: formatAvatarUrl(user),
   last_seen: user.last_seen ? datetimeOffset(user.last_seen) : undefined,
   role_icon: user.role ? roleIconMapping(user.role) : undefined,
-  cover_image: user.cover_image ? formatCoverUrl(user) : undefined,
+  cover_image: formatCoverUrl(user),
   dob: user.dob ? formatDob(user.dob) : undefined
 }))
 
