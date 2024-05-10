@@ -1,6 +1,11 @@
+<script setup lang="ts">
+const { appLinks } = usePages()
+const route = useRoute()
+</script>
+
 <template>
   <PrimeMenu
-    :model="pages"
+    :model="appLinks"
     :pt="{
       root: 'h-full flex flex-col rounded-none border-none p-0',
       menu: 'pt-8'
@@ -46,10 +51,5 @@
     </template>
   </PrimeMenu>
 </template>
-
-<script setup lang="ts">
-const { pages } = usePages()
-const route = useRoute()
-</script>
 
 <style scoped></style>

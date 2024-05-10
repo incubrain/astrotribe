@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import type { PageType } from '@/types/pages'
 
-const pages = ref([
+const appLinks = ref([
   {
     id: 1,
     label: 'Home',
@@ -97,11 +97,90 @@ const socials = ref([
   }
 ])
 
+const websiteLinks = [
+  {
+    key: 'about-us',
+    label: 'About Us',
+    icon: 'material-symbols:info',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'about',
+        label: 'About',
+        icon: 'material-symbols:info',
+        url: '/about',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'team',
+        label: 'Team',
+        icon: 'material-symbols:emoji-people',
+        url: '/team',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'contact',
+        label: 'Contact',
+        icon: 'material-symbols:call',
+        url: '/contact',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'events',
+    label: 'Events',
+    icon: 'material-symbols:event',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'conference',
+        label: 'Conference',
+        icon: 'material-symbols:emoji-people',
+        url: '/conference',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'blog',
+    label: 'Blog',
+    icon: 'material-symbols:menu-book-outline',
+    visible: true,
+    disabled: false,
+    items: [
+      {
+        key: 'blog-home',
+        label: 'All',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-isro',
+        label: 'ISRO',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/isro',
+        visible: true,
+        disabled: false
+      }
+    ]
+  }
+]
+
 export default function usePages() {
   return {
-    pages,
+    websiteLinks,
+    appLinks,
     socials,
     tabs: (currentPage: string) =>
-      pages.value.find((p: PageType) => p.label.toLocaleLowerCase() === currentPage)
+      appLinks.value.find((page: PageType) => page.label.toLocaleLowerCase() === currentPage)
   }
 }
