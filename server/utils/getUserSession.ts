@@ -69,7 +69,7 @@ function decodeSession(accessToken: string) {
 }
 
 interface StoredSession {
-  access_token: string
+  refresh_token: string
   expires_at: number
   user: any
 }
@@ -84,7 +84,7 @@ interface Permission {
 }
 
 interface StoredPermissions {
-  access_token: string
+  refresh_token: string
   expires_at: number
   user_id: string
   user_role: string
@@ -99,34 +99,17 @@ export async function validateAndUpdateSession() {
     return
   }
 
-  const { user, access_token } = session
-  if (!user || !access_token) {
+  const { user, refresh_token, access_token } = session
+  if (!user || !refresh_token) {
     throw createError({
-      message: `user: ${user.id} or access_token: ${access_token.length} undefined in session`
+      message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`
     })
   }
 
   // SESSION
   const storage = useStorage('session')
   const secretKey = getCurrentSecret()
-  const storageKey = `${user.id}:${secretKey}`
-  // console.log('secretKey', secretKey, user)
-  // if (
-  //   !storedSession ||
-  //   storedSession.expires_at < Date.now() ||
-  //   storedSession.access_token !== access_token
-  // ) {
-  //   console.log('Session expired or token mismatch, updating session.')
-  //   await storage.setItem<StoredSession>(`user:${storageKey}`, {
-  //     access_token,
-  //     expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week
-  //     user
-  //   })
-  // } else {
-  //   console.info('Current session is valid and does not need updates.')
-  // }
-
-  
+  const storageKey = `${user.id}:${secretKey}`  
   
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
@@ -134,7 +117,7 @@ export async function validateAndUpdateSession() {
   if (
     !storedPermissions ||
     storedPermissions.expires_at < Date.now() ||
-    storedPermissions.access_token !== access_token
+    storedPermissions.refresh_token !== refresh_token
   ) {
     console.log('Permissions expired or token mismatch, fetching new permissions.')
     const { user_plan, user_role } = decodeSession(access_token)
@@ -148,21 +131,21 @@ export async function validateAndUpdateSession() {
     }
 
     await storage.setItem<StoredPermissions>(`permissions:${storageKey}`, {
-      access_token,
+      refresh_token,
       expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week in milliseconds
       user: {
         ...user,
         user_id: user.id,
         user_role,
         user_plan,
-      },
+      }
       plan_permissions: permissions.plan,
       role_permissions: permissions.role
     })
   } else {
     console.log('Current permissions are valid and do not need updates.')
   }
-  
+
   return await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
 }
 
