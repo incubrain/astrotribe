@@ -57,6 +57,9 @@ function decodeSession(accessToken: string) {
     throw createError({
       message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`
     })
+
+    // redirect to login page
+    // clear the cookies
   }
 
   return {
@@ -103,31 +106,28 @@ export async function validateAndUpdateSession() {
     })
   }
 
-  console.log('accessToken', access_token)
-  const { user_plan, user_role } = decodeSession(access_token)
-
+  // SESSION
   const storage = useStorage('session')
   const secretKey = getCurrentSecret()
-  console.log('secretKey', secretKey, user, user_plan, user_role)
   const storageKey = `${user.id}:${secretKey}`
+  // console.log('secretKey', secretKey, user)
+  // if (
+  //   !storedSession ||
+  //   storedSession.expires_at < Date.now() ||
+  //   storedSession.access_token !== access_token
+  // ) {
+  //   console.log('Session expired or token mismatch, updating session.')
+  //   await storage.setItem<StoredSession>(`user:${storageKey}`, {
+  //     access_token,
+  //     expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week
+  //     user
+  //   })
+  // } else {
+  //   console.info('Current session is valid and does not need updates.')
+  // }
 
-  // SESSION
-  const storedSession = await storage.getItem<StoredSession>(`user:${storageKey}`)
-  if (
-    !storedSession ||
-    storedSession.expires_at < Date.now() ||
-    storedSession.access_token !== access_token
-  ) {
-    console.log('Session expired or token mismatch, updating session.')
-    await storage.setItem<StoredSession>(`user:${storageKey}`, {
-      access_token,
-      expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week
-      user
-    })
-  } else {
-    console.info('Current session is valid and does not need updates.')
-  }
-
+  
+  
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
   console.log('storeingSession', storageKey)
@@ -137,6 +137,9 @@ export async function validateAndUpdateSession() {
     storedPermissions.access_token !== access_token
   ) {
     console.log('Permissions expired or token mismatch, fetching new permissions.')
+    const { user_plan, user_role } = decodeSession(access_token)
+    console.log('decodedInfo', user_plan, user_role)
+
     const permissions = await fetchPermissions(user_plan, user_role)
 
     if (!permissions) {
@@ -147,16 +150,19 @@ export async function validateAndUpdateSession() {
     await storage.setItem<StoredPermissions>(`permissions:${storageKey}`, {
       access_token,
       expires_at: Date.now() + 60 * 60 * 24 * 7 * 1000, // 1 week in milliseconds
-      user_id: user.id,
-      user_role,
-      user_plan,
+      user: {
+        ...user,
+        user_id: user.id,
+        user_role,
+        user_plan,
+      },
       plan_permissions: permissions.plan,
       role_permissions: permissions.role
     })
   } else {
     console.log('Current permissions are valid and do not need updates.')
   }
-
+  
   return await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
 }
 
