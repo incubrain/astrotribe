@@ -2,6 +2,11 @@
 const catTagStore = useCategoryTagStore()
 const currentUser = useCurrentUser()
 
+onMounted(() => {
+  // FORCE DARK MODE
+  document.documentElement.classList.add('dark');
+});
+
 onMounted(async () => {
   await catTagStore.getCategories()
   await catTagStore.getTags()
