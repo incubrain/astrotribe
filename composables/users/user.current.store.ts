@@ -52,7 +52,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     if (data) {
       userSession.value = data
       console.log('SETTING USER_ID', data.user_id)
-      userId.value = data.user_id
+      userId.value = data.user.user_id
     } else {
       logger.info('no session found')
     }
