@@ -1,14 +1,18 @@
 <script setup lang="ts">
 const form = reactive({
   email: '',
-  password: '',
-  confirmPassword: ''
+  password: null as string | null,
+  confirmPassword: null as string | null
 })
 
 const auth = useAuth()
 
-const isPasswordInvalid = computed(() => {
-  return form.password !== form.confirmPassword
+const isPasswordEntered = computed(() => {
+  return !!form.password && !!form.confirmPassword
+})
+
+const isPasswordValid = computed(() => {
+  return form.password === form.confirmPassword && !!form.password && !!form.confirmPassword
 })
 
 definePageMeta({
@@ -28,24 +32,6 @@ definePageMeta({
   >
     <template #content>
       <div class="flex flex-col gap-4">
-        <div class="flex gap-4 w-full">
-          <PrimeFloatLabel class="w-full">
-            <PrimeInputText
-              class="w-full"
-              id="given_name"
-              v-model="form.given_name"
-            />
-            <label for="given_name">Given Name</label>
-          </PrimeFloatLabel>
-          <PrimeFloatLabel class="w-full">
-            <PrimeInputText
-              id="surname"
-              v-model="form.surname"
-              class="w-full"
-            />
-            <label for="surname">Surname</label>
-          </PrimeFloatLabel>
-        </div>
         <PrimeFloatLabel class="flex flex-col w-full">
           <PrimeInputText
             id="email"
@@ -58,7 +44,7 @@ definePageMeta({
             <PrimePassword
               id="password"
               v-model="form.password"
-              class="w-full"
+              :pt="{ root: 'w-full', input: { root: 'w-full' } }"
             >
               <template #footer>
                 <PrimeDivider />
@@ -81,18 +67,25 @@ definePageMeta({
               id="confirmPassword"
               v-model="form.confirmPassword"
               :feedback="false"
-              :pt="{ root: 'w-full', input: 'w-full' }"
+              :invalid="!isPasswordValid && isPasswordEntered"
+              :pt="{ root: 'w-full', input: { root: 'w-full' } }"
             />
             <label for="confirmPassword">Confirm password</label>
           </PrimeFloatLabel>
         </div>
         <PrimeButton
           class="justify-center"
-          :disabled="isPasswordInvalid"
+          :disabled="!isPasswordValid"
           @click="auth.registerWithEmail(form.email, form.password)"
         >
           Sign up with email
         </PrimeButton>
+        <PrimeInlineMessage
+          severity="error"
+          v-show="!isPasswordValid && isPasswordEntered"
+        >
+          Passwords do not match
+        </PrimeInlineMessage>
       </div>
     </template>
     <template #footer>

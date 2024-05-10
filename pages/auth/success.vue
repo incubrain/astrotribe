@@ -11,10 +11,10 @@ definePageMeta({
 <template>
   <PrimeCard>
     <template #title>
-      <h2 class="text-xl font-semibold text-primary-500 dark:text-primary-700"> SUCCESS! </h2>
+      <h2 class="text-2xl font-semibold text-primary-500 dark:text-primary-700"> SUCCESS! </h2>
     </template>
     <template #subtitle>
-      <p> Please confirm your email</p>
+      <p class="text-xl"> Please confirm your email</p>
     </template>
     <template #content>
       <div>
@@ -43,11 +43,9 @@ definePageMeta({
             </a>
           </PrimeTag>
         </div>
+        <p>Didn’t get an email? Please check your spam folder.</p>
+        <p>Still nothing? Try to register again</p>
       </div>
-    </template>
-    <template #footer>
-      <p>Didn’t get an email? Please check your spam folder.</p>
-      <p>Still nothing? Try to register again</p>
     </template>
   </PrimeCard>
 </template>

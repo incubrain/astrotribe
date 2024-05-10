@@ -15,10 +15,12 @@ definePageMeta({
 </script>
 
 <template>
-  <PrimeCard class="flex flex-col items-center justify-center w-full h-full">
-    <template #title>
-      <h2 class="text-2xl text-center"> Forgot Your Password?</h2>
-    </template>
+  <AuthCard
+    :title="{
+      main: 'Forgot Your Password?',
+      subtitle: 'Don\'t worry, get a reset link to your email.'
+    }"
+  >
     <template #content>
       <div class="flex flex-col gap-4 xl:gap-6">
         <PrimeFloatLabel class="flex flex-col w-full">
@@ -28,13 +30,15 @@ definePageMeta({
           />
           <label for="username">Email</label>
         </PrimeFloatLabel>
-        <PrimeButton
-          class="justify-center"
-          @click="auth.password.forgot(form.email)"
-        >
-          Send Reset Email
-        </PrimeButton>
       </div>
     </template>
-  </PrimeCard>
+    <template #footer>
+      <PrimeButton
+        class="w-full flex justify-center"
+        @click="auth.password.forgot(form.email)"
+      >
+        Send Reset Email
+      </PrimeButton>
+    </template>
+  </AuthCard>
 </template>
