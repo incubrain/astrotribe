@@ -13,7 +13,7 @@ CREATE SCHEMA IF NOT EXISTS "public";
 
 ALTER SCHEMA "public" OWNER TO "postgres";
 
-create EXTENSION if not exists "vector" with schema "public" version '0.6.2';
+create EXTENSION if not exists "vector" with schema "public";
 
 CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
 
@@ -29,62 +29,197 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
-create type "public"."access_level" as enum ('Viewer', 'Editor', 'Admin', 'Super Admin');
-
-create type "public"."address_type" as enum ('residential', 'headquarters', 'office', 'factory', 'lab', 'warehouse', 'research', 'retail', 'showroom', 'branch');
+create type "public"."access_level" as enum ('viewer', 'editor', 'admin', 'super_admin');
 
 create type "public"."app_plan_enum" as enum ('free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom');
 
 create type "public"."app_role_enum" as enum ('guest', 'user', 'astroguide', 'mentor', 'moderator', 'tenant_member', 'tenant_admin', 'tenant_super_admin', 'admin', 'super_admin');
 
-create type "public"."contact_type" as enum ('Personal', 'Company', 'Professional', 'Recruitment', 'Founder');
+create type "public"."contact_type" as enum ('personal', 'company', 'professional', 'recruitment', 'founder');
 
 create type "public"."feedback_status" as enum ('new', 'under_review', 'backlog', 'working_on', 'resolved', 'rejected', 'deferred');
 
 create type "public"."feedback_type" as enum ('bug_report', 'feature_request', 'user_interface_issue', 'performance_issue', 'documentation');
 
-create type "public"."news_importance_level" as enum ('High', 'Medium', 'Low');
+create type "public"."news_importance_level" as enum ('high', 'medium', 'low');
 
 create type "public"."news_relation_type" as enum ('source', 'topic', 'mention');
 
-create type "public"."privacy_level" as enum ('Private', 'Connected', 'Public');
+create type "public"."privacy_level" as enum ('private', 'connected', 'public');
 
-create type "public"."scrape_frequency" as enum ('FourTimesDaily', 'TwiceDaily', 'Daily', 'Weekly', 'BiWeekly', 'Monthly');
+create type "public"."scrape_frequency" as enum ('four_times_daily', 'twice_daily', 'daily', 'weekly', 'bi_weekly', 'monthly');
 
-create type "public"."user_status" as enum ('ONLINE', 'OFFLINE');
+create type "public"."user_status" as enum ('online', 'offline');
 
-create sequence "public"."addresses_id_seq";
+create type "public"."address_type" as enum ('residential', 'headquarters', 'office', 'factory', 'lab', 'warehouse', 'research', 'retail', 'showroom', 'branch');
 
-create sequence "public"."categories_id_seq";
 
-create sequence "public"."cities_id_seq";
+create table "public"."categories" (
+    "id" bigint not null,
+    "created_at" timestamp(6) with time zone not null default CURRENT_TIMESTAMP,
+    "body" character varying(255),
+    "name" character varying(255) not null,
+    "updated_at" timestamp with time zone default now()
+);
 
-create sequence "public"."companies_id_seq";
+CREATE SEQUENCE IF NOT EXISTS "public"."categories_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-create sequence "public"."contacts_id_seq";
+ALTER TABLE "public"."categories_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."categories_id_seq" OWNED BY "public"."categories"."id";
+ALTER TABLE "public"."categories" OWNER TO "postgres";
 
-create sequence "public"."countries_id_seq";
 
-create sequence "public"."embeddings_id_seq";
+create table "public"."companies" (
+    "id" integer not null,
+    "name" character varying(255) not null,
+    "description" text,
+    "logo_url" character varying(255),
+    "website_url" character varying(255) not null,
+    "social_media_id" integer,
+    "last_scraped_at" timestamp with time zone,
+    "scrape_frequency" public.scrape_frequency,
+    "category_id" integer,
+    "created_at" timestamp with time zone,
+    "updated_at" timestamp with time zone,
+    "founding_year" smallint,
+    "is_government" boolean not null default false
+);
 
-create sequence "public"."feedback_id_seq";
+CREATE SEQUENCE IF NOT EXISTS "public"."companies_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-create sequence "public"."news_embeddings_id_seq";
+ALTER TABLE "public"."companies_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."companies_id_seq" OWNED BY "public"."companies"."id";
+ALTER TABLE "public"."companies" OWNER TO "postgres";
 
-create sequence "public"."news_id_seq";
 
-create sequence "public"."news_tags_id_seq";
+create table "public"."company_employees" (
+    "id" bigint not null,
+    "user_profile_id" uuid not null,
+    "company_id" integer not null,
+    "role" text not null,
+    "job_description" text,
+    "start_date" timestamp with time zone default CURRENT_TIMESTAMP,
+    "end_date" timestamp with time zone,
+    "status" boolean,
+    "access_level" public.access_level not null default 'viewer'::public.access_level,
+    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
+    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
+);
 
-create sequence "public"."responses_id_seq";
+CREATE SEQUENCE IF NOT EXISTS "public"."company_employees_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-create sequence "public"."searches_id_seq";
+ALTER TABLE "public"."company_employees_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."company_employees_id_seq" OWNED BY "public"."company_employees"."id";
+ALTER TABLE "public"."company_employees" OWNER TO "postgres";
 
-create sequence "public"."social_media_id_seq";
 
-create sequence "public"."tags_id_seq";
+
+create table "public"."company_news" (
+    "id" bigint not null,
+    "company_id" integer not null,
+    "news_id" integer not null,
+    "relation_type" public.news_relation_type not null default 'source'::public.news_relation_type,
+    "importance_level" public.news_importance_level,
+    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
+    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
+);
+
+CREATE SEQUENCE IF NOT EXISTS "public"."company_news_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE "public"."company_news_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."company_news_id_seq" OWNED BY "public"."company_news"."id";
+ALTER TABLE "public"."company_news" OWNER TO "postgres";
+
+
+
+create table "public"."contacts" (
+    "id" integer not null,
+    "title" character varying(100),
+    "is_primary" boolean default false,
+    "email" character varying(255),
+    "contact_type" public.contact_type,
+    "privacy_level" public.privacy_level,
+    "user_id" uuid,
+    "company_id" integer,
+    "created_at" timestamp without time zone default CURRENT_TIMESTAMP,
+    "updated_at" timestamp without time zone default CURRENT_TIMESTAMP,
+    "phone" character varying(50)
+);
+
+CREATE SEQUENCE IF NOT EXISTS "public"."contacts_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE "public"."contacts_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."contacts_id_seq" OWNED BY "public"."contacts"."id";
+ALTER TABLE "public"."contacts" OWNER TO "postgres";
+
+
+
+create table "public"."countries" (
+    "id" integer not null,
+    "name" character varying(100) not null,
+    "code" character varying(2) not null
+);
+
+CREATE SEQUENCE IF NOT EXISTS "public"."countries_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE "public"."countries_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."countries_id_seq" OWNED BY "public"."countries"."id";
+ALTER TABLE "public"."countries" OWNER TO "postgres";
+
+
+
+
+create table "public"."cities" (
+    "id" integer not null,
+    "name" character varying(100) not null,
+    "country_id" integer not null,
+    "state" character varying
+);
+
+CREATE SEQUENCE IF NOT EXISTS "public"."cities_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE "public"."cities_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."cities_id_seq" OWNED BY "public"."cities"."id";
+ALTER TABLE "public"."cities" OWNER TO "postgres";
+
 
 create table "public"."addresses" (
-    "id" integer not null default nextval('addresses_id_seq'::regclass),
+    "id" integer not null,
     "street1" character varying(255) not null,
     "street2" character varying(255),
     "city_id" integer not null,
@@ -93,136 +228,73 @@ create table "public"."addresses" (
     "company_id" integer,
     "user_id" uuid,
     "is_primary" boolean default false,
-    "address_type" address_type,
+    "address_type" public.address_type,
     "created_at" timestamp with time zone default now(),
     "updated_at" timestamp with time zone default now()
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."addresses_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."addresses" enable row level security;
-
-create table "public"."categories" (
-    "id" bigint not null default nextval('categories_id_seq'::regclass),
-    "created_at" timestamp(6) with time zone not null default CURRENT_TIMESTAMP,
-    "body" character varying(255),
-    "name" character varying(255) not null,
-    "updated_at" timestamp with time zone default now()
-);
-
-
-alter table "public"."categories" enable row level security;
-
-create table "public"."cities" (
-    "id" integer not null default nextval('cities_id_seq'::regclass),
-    "name" character varying(100) not null,
-    "country_id" integer not null,
-    "state" character varying
-);
+ALTER TABLE "public"."addresses_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."addresses_id_seq" OWNED BY "public"."addresses"."id";
+ALTER TABLE "public"."addresses" OWNER TO "postgres";
 
 
-alter table "public"."cities" enable row level security;
 
-create table "public"."companies" (
-    "id" integer not null default nextval('companies_id_seq'::regclass),
-    "name" character varying(255) not null,
-    "description" text,
-    "logo_url" character varying(255),
-    "website_url" character varying(255) not null,
-    "social_media_id" integer,
-    "last_scraped_at" timestamp with time zone,
-    "scrape_frequency" scrape_frequency,
-    "category_id" integer,
-    "created_at" timestamp with time zone,
-    "updated_at" timestamp with time zone,
-    "founding_year" smallint,
-    "is_government" boolean not null default false
-);
-
-
-alter table "public"."companies" enable row level security;
-
-create table "public"."company_employees" (
-    "user_profile_id" uuid not null,
-    "company_id" integer not null,
-    "role" text not null,
-    "job_description" text,
-    "start_date" timestamp with time zone default CURRENT_TIMESTAMP,
-    "end_date" timestamp with time zone,
-    "status" boolean,
-    "access_level" access_level not null default 'Viewer'::access_level,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
-);
-
-
-alter table "public"."company_employees" enable row level security;
-
-create table "public"."company_news" (
-    "company_id" integer not null,
-    "news_id" integer not null,
-    "relation_type" news_relation_type not null,
-    "importance_level" news_importance_level,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
-);
-
-
-alter table "public"."company_news" enable row level security;
-
-create table "public"."contacts" (
-    "id" integer not null default nextval('contacts_id_seq'::regclass),
-    "title" character varying(100),
-    "is_primary" boolean default false,
-    "email" character varying(255),
-    "contact_type" contact_type,
-    "privacy_level" privacy_level,
-    "user_id" uuid,
-    "company_id" integer,
-    "created_at" timestamp without time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp without time zone default CURRENT_TIMESTAMP,
-    "phone" character varying(50)
-);
-
-
-alter table "public"."contacts" enable row level security;
-
-create table "public"."countries" (
-    "id" integer not null default nextval('countries_id_seq'::regclass),
-    "name" character varying(100) not null,
-    "code" character varying(2) not null
-);
-
-
-alter table "public"."countries" enable row level security;
 
 create table "public"."embeddings" (
-    "id" bigint not null default nextval('embeddings_id_seq'::regclass),
-    "vector" vector(1536),
+    "id" bigint not null,
+    "vector" public.vector(1536),
     "type" text not null,
     "created_at" timestamp(6) with time zone default CURRENT_TIMESTAMP
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."embeddings_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."embeddings" enable row level security;
+ALTER TABLE "public"."embeddings_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."embeddings_id_seq" OWNED BY "public"."embeddings"."id";
+ALTER TABLE "public"."embeddings" OWNER TO "postgres";
+
+
 
 create table "public"."feedbacks" (
-    "id" integer not null default nextval('feedback_id_seq'::regclass),
+    "id" integer not null,
     "user_id" uuid,
     "page_identifier" character varying(255) not null,
-    "feedback_type" feedback_type,
+    "feedback_type" public.feedback_type,
     "message" text not null,
     "created_at" timestamp with time zone not null default CURRENT_TIMESTAMP,
     "updated_at" timestamp with time zone not null default CURRENT_TIMESTAMP,
     "device_info" text,
-    "status" feedback_status default 'new'::feedback_status,
+    "status" public.feedback_status default 'new'::public.feedback_status,
     "resolution_comment" text
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."feedbacks_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."feedbacks" enable row level security;
+ALTER TABLE "public"."feedbacks_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."feedbacks_id_seq" OWNED BY "public"."feedbacks"."id";
+ALTER TABLE "public"."feedbacks" OWNER TO "postgres";
+
+
 
 create table "public"."news" (
-    "id" bigint not null default nextval('news_id_seq'::regclass),
+    "id" bigint not null,
     "created_at" timestamp(6) with time zone not null default CURRENT_TIMESTAMP,
     "updated_at" timestamp(6) with time zone not null default now(),
     "title" character varying(255) not null,
@@ -237,38 +309,78 @@ create table "public"."news" (
     "url" text not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."news_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."news" enable row level security;
+ALTER TABLE "public"."news_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."news_id_seq" OWNED BY "public"."news"."id";
+ALTER TABLE "public"."news" OWNER TO "postgres";
+
+
 
 create table "public"."news_embeddings" (
-    "id" bigint not null default nextval('news_embeddings_id_seq'::regclass),
+    "id" bigint not null,
     "news_id" bigint not null,
     "embedding_id" bigint not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."news_embeddings_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."news_embeddings" enable row level security;
+ALTER TABLE "public"."news_embeddings_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."news_embeddings_id_seq" OWNED BY "public"."news_embeddings"."id";
+ALTER TABLE "public"."news_embeddings" OWNER TO "postgres";
+
+
 
 create table "public"."news_tags" (
-    "id" integer not null default nextval('news_tags_id_seq'::regclass),
+    "id" integer not null,
     "news_id" bigint not null,
     "tag_id" integer not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."news_tags_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."news_tags" enable row level security;
+ALTER TABLE "public"."news_tags_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."news_tags_id_seq" OWNED BY "public"."news_tags"."id";
+ALTER TABLE "public"."news_tags" OWNER TO "postgres";
+
+
 
 create table "public"."plan_permissions" (
-    "id" integer generated by default as identity not null,
-    "plan" app_plan_enum not null,
+    "id" integer not null,
+    "plan" public.app_plan_enum not null,
     "feature" character varying not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."plan_permissions_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."plan_permissions" enable row level security;
+ALTER TABLE "public"."plan_permissions_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."plan_permissions_id_seq" OWNED BY "public"."plan_permissions"."id";
+ALTER TABLE "public"."plan_permissions" OWNER TO "postgres";
+
+
 
 create table "public"."research" (
-    "id" uuid not null default gen_random_uuid(),
+    "id" bigint not null,
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone default now(),
     "published_at" timestamp with time zone,
@@ -280,11 +392,21 @@ create table "public"."research" (
     "version" smallint
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."research_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."research" enable row level security;
+ALTER TABLE "public"."research_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."research_id_seq" OWNED BY "public"."research"."id";
+ALTER TABLE "public"."research" OWNER TO "postgres";
+
+
 
 create table "public"."responses" (
-    "id" bigint generated by default as identity not null,
+    "id" bigint not null,
     "search_id" bigint not null,
     "output" text not null,
     "upvotes" integer default 0,
@@ -292,12 +414,22 @@ create table "public"."responses" (
     "created_at" timestamp with time zone default CURRENT_TIMESTAMP
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."responses_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."responses" enable row level security;
+ALTER TABLE "public"."responses_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."responses_id_seq" OWNED BY "public"."responses"."id";
+ALTER TABLE "public"."responses" OWNER TO "postgres";
+
+
 
 create table "public"."role_permissions" (
-    "id" integer generated by default as identity not null,
-    "role" app_role_enum not null,
+    "id" integer not null,
+    "role" public.app_role_enum not null,
     "select" boolean default false,
     "insert" boolean default false,
     "update" boolean default false,
@@ -305,21 +437,41 @@ create table "public"."role_permissions" (
     "table_name" character varying not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."role_permissions_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."role_permissions" enable row level security;
+ALTER TABLE "public"."role_permissions_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."role_permissions_id_seq" OWNED BY "public"."role_permissions"."id";
+ALTER TABLE "public"."role_permissions" OWNER TO "postgres";
+
+
 
 create table "public"."searches" (
-    "id" bigint generated by default as identity not null,
+    "id" bigint not null,
     "user_id" uuid,
     "input" text not null,
     "created_at" timestamp with time zone default CURRENT_TIMESTAMP
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."searches_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."searches" enable row level security;
+ALTER TABLE "public"."searches_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."searches_id_seq" OWNED BY "public"."searches"."id";
+ALTER TABLE "public"."searches" OWNER TO "postgres";
 
-create table "public"."social_media" (
-    "id" integer not null default nextval('social_media_id_seq'::regclass),
+
+
+CREATE TABLE "public"."social_media" (
+    "id" integer not null,
     "facebook_url" character varying(255),
     "twitter_url" character varying(255),
     "linkedin_url" character varying(255),
@@ -329,31 +481,62 @@ create table "public"."social_media" (
     "updated_at" timestamp with time zone default now()
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."social_media_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."social_media" enable row level security;
+ALTER TABLE "public"."social_media_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."social_media_id_seq" OWNED BY "public"."social_media"."id";
+ALTER TABLE "public"."social_media" OWNER TO "postgres";
+
+
 
 create table "public"."tags" (
-    "id" integer not null default nextval('tags_id_seq'::regclass),
+    "id" integer not null,
     "body" text,
     "created_at" time with time zone default now(),
     "updated_at" time with time zone default now(),
     "name" text not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."tags_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."tags" enable row level security;
+ALTER TABLE "public"."tags_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."tags_id_seq" OWNED BY "public"."tags"."id";
+ALTER TABLE "public"."tags" OWNER TO "postgres";
+
+
 
 create table "public"."user_followers" (
-    "id" uuid not null,
+    "id" bigint not null,
     "created_at" timestamp(6) with time zone default CURRENT_TIMESTAMP,
     "follower_id" uuid not null,
     "followed_id" uuid not null
 );
 
+CREATE SEQUENCE IF NOT EXISTS "public"."user_followers_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-alter table "public"."user_followers" enable row level security;
+ALTER TABLE "public"."user_followers_id_seq" OWNER TO "postgres";
+ALTER SEQUENCE "public"."user_followers_id_seq" OWNED BY "public"."user_followers"."id";
+ALTER TABLE "public"."user_followers" OWNER TO "postgres";
+
+
 
 create table "public"."user_profiles" (
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "email" text not null,
     "given_name" text,
     "surname" text,
@@ -369,43 +552,13 @@ create table "public"."user_profiles" (
     "quote" text,
     "followed_count" integer default 0,
     "followers_count" integer default 0,
-    "id" uuid not null default uuid_generate_v4(),
-    "plan" app_plan_enum default 'free'::app_plan_enum,
-    "role" app_role_enum not null default 'user'::app_role_enum
+    "plan" public.app_plan_enum default 'free'::public.app_plan_enum,
+    "role" public.app_role_enum not null default 'user'::public.app_role_enum
 );
 
+ALTER TABLE "public"."user_profiles" OWNER TO "postgres";
 
-alter table "public"."user_profiles" enable row level security;
 
-alter sequence "public"."addresses_id_seq" owned by "public"."addresses"."id";
-
-alter sequence "public"."categories_id_seq" owned by "public"."categories"."id";
-
-alter sequence "public"."cities_id_seq" owned by "public"."cities"."id";
-
-alter sequence "public"."companies_id_seq" owned by "public"."companies"."id";
-
-alter sequence "public"."contacts_id_seq" owned by "public"."contacts"."id";
-
-alter sequence "public"."countries_id_seq" owned by "public"."countries"."id";
-
-alter sequence "public"."embeddings_id_seq" owned by "public"."embeddings"."id";
-
-alter sequence "public"."feedback_id_seq" owned by "public"."feedbacks"."id";
-
-alter sequence "public"."news_embeddings_id_seq" owned by "public"."news_embeddings"."id";
-
-alter sequence "public"."news_id_seq" owned by "public"."news"."id";
-
-alter sequence "public"."news_tags_id_seq" owned by "public"."news_tags"."id";
-
-alter sequence "public"."responses_id_seq" owned by "public"."responses"."id";
-
-alter sequence "public"."searches_id_seq" owned by "public"."searches"."id";
-
-alter sequence "public"."social_media_id_seq" owned by "public"."social_media"."id";
-
-alter sequence "public"."tags_id_seq" owned by "public"."tags"."id";
 
 CREATE UNIQUE INDEX addresses_pkey ON public.addresses USING btree (id);
 
@@ -523,87 +676,87 @@ alter table "public"."user_followers" add constraint "user_followers_pkey" PRIMA
 
 alter table "public"."user_profiles" add constraint "user_profiles_pkey" PRIMARY KEY using index "user_profiles_pkey";
 
-alter table "public"."addresses" add constraint "fk_city" FOREIGN KEY (city_id) REFERENCES cities(id) not valid;
+alter table "public"."addresses" add constraint "fk_city" FOREIGN KEY (city_id) REFERENCES public.cities(id) not valid;
 
 alter table "public"."addresses" validate constraint "fk_city";
 
-alter table "public"."addresses" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES countries(id) not valid;
+alter table "public"."addresses" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES public.countries(id) not valid;
 
 alter table "public"."addresses" validate constraint "fk_country";
 
-alter table "public"."addresses" add constraint "public_addresses_company_id_fkey" FOREIGN KEY (company_id) REFERENCES companies(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."addresses" add constraint "public_addresses_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."addresses" validate constraint "public_addresses_company_id_fkey";
 
-alter table "public"."addresses" add constraint "public_addresses_user_id_fkey" FOREIGN KEY (user_id) REFERENCES user_profiles(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."addresses" add constraint "public_addresses_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."addresses" validate constraint "public_addresses_user_id_fkey";
 
 alter table "public"."cities" add constraint "cities_name_key" UNIQUE using index "cities_name_key";
 
-alter table "public"."cities" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES countries(id) not valid;
+alter table "public"."cities" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES public.countries(id) not valid;
 
 alter table "public"."cities" validate constraint "fk_country";
 
 alter table "public"."companies" add constraint "companies_website_url_key" UNIQUE using index "companies_website_url_key";
 
-alter table "public"."companies" add constraint "fk_category" FOREIGN KEY (category_id) REFERENCES categories(id) not valid;
+alter table "public"."companies" add constraint "fk_category" FOREIGN KEY (category_id) REFERENCES public.categories(id) not valid;
 
 alter table "public"."companies" validate constraint "fk_category";
 
-alter table "public"."companies" add constraint "fk_social_media" FOREIGN KEY (social_media_id) REFERENCES social_media(id) not valid;
+alter table "public"."companies" add constraint "fk_social_media" FOREIGN KEY (social_media_id) REFERENCES public.social_media(id) not valid;
 
 alter table "public"."companies" validate constraint "fk_social_media";
 
-alter table "public"."company_employees" add constraint "company_employees_company_id_fkey" FOREIGN KEY (company_id) REFERENCES companies(id) not valid;
+alter table "public"."company_employees" add constraint "company_employees_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
 
 alter table "public"."company_employees" validate constraint "company_employees_company_id_fkey";
 
-alter table "public"."company_employees" add constraint "company_employees_user_profile_id_fkey" FOREIGN KEY (user_profile_id) REFERENCES user_profiles(id) not valid;
+alter table "public"."company_employees" add constraint "company_employees_user_profile_id_fkey" FOREIGN KEY (user_profile_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."company_employees" validate constraint "company_employees_user_profile_id_fkey";
 
-alter table "public"."company_news" add constraint "company_news_company_id_fkey" FOREIGN KEY (company_id) REFERENCES companies(id) not valid;
+alter table "public"."company_news" add constraint "company_news_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
 
 alter table "public"."company_news" validate constraint "company_news_company_id_fkey";
 
-alter table "public"."company_news" add constraint "company_news_news_id_fkey" FOREIGN KEY (news_id) REFERENCES news(id) not valid;
+alter table "public"."company_news" add constraint "company_news_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) not valid;
 
 alter table "public"."company_news" validate constraint "company_news_news_id_fkey";
 
-alter table "public"."contacts" add constraint "fk_company" FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE not valid;
+alter table "public"."contacts" add constraint "fk_company" FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE not valid;
 
 alter table "public"."contacts" validate constraint "fk_company";
 
-alter table "public"."contacts" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES user_profiles(id) ON DELETE CASCADE not valid;
+alter table "public"."contacts" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON DELETE CASCADE not valid;
 
 alter table "public"."contacts" validate constraint "fk_user";
 
 alter table "public"."countries" add constraint "countries_name_key" UNIQUE using index "countries_name_key";
 
-alter table "public"."feedbacks" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES user_profiles(id) not valid;
+alter table "public"."feedbacks" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."feedbacks" validate constraint "fk_user";
 
-alter table "public"."news" add constraint "news_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
+alter table "public"."news" add constraint "news_category_id_fkey" FOREIGN KEY (category_id) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news" validate constraint "news_category_id_fkey";
 
 alter table "public"."news" add constraint "news_url_key" UNIQUE using index "news_url_key";
 
-alter table "public"."news_embeddings" add constraint "news_embeddings_embedding_id_fkey" FOREIGN KEY (embedding_id) REFERENCES embeddings(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
+alter table "public"."news_embeddings" add constraint "news_embeddings_embedding_id_fkey" FOREIGN KEY (embedding_id) REFERENCES public.embeddings(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_embeddings" validate constraint "news_embeddings_embedding_id_fkey";
 
-alter table "public"."news_embeddings" add constraint "news_embeddings_news_id_fkey" FOREIGN KEY (news_id) REFERENCES news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
+alter table "public"."news_embeddings" add constraint "news_embeddings_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_embeddings" validate constraint "news_embeddings_news_id_fkey";
 
-alter table "public"."news_tags" add constraint "news_tags_news_id_fkey" FOREIGN KEY (news_id) REFERENCES news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
+alter table "public"."news_tags" add constraint "news_tags_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_tags" validate constraint "news_tags_news_id_fkey";
 
-alter table "public"."news_tags" add constraint "news_tags_tag_id_fkey" FOREIGN KEY (tag_id) REFERENCES tags(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
+alter table "public"."news_tags" add constraint "news_tags_tag_id_fkey" FOREIGN KEY (tag_id) REFERENCES public.tags(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_tags" validate constraint "news_tags_tag_id_fkey";
 
@@ -611,13 +764,13 @@ alter table "public"."research" add constraint "research_url_key" UNIQUE using i
 
 alter table "public"."responses" add constraint "responses_id_key" UNIQUE using index "responses_id_key";
 
-alter table "public"."responses" add constraint "responses_search_id_fkey" FOREIGN KEY (search_id) REFERENCES searches(id) not valid;
+alter table "public"."responses" add constraint "responses_search_id_fkey" FOREIGN KEY (search_id) REFERENCES public.searches(id) not valid;
 
 alter table "public"."responses" validate constraint "responses_search_id_fkey";
 
 alter table "public"."role_permissions" add constraint "role_permission_unique" UNIQUE using index "role_permission_unique";
 
-alter table "public"."searches" add constraint "searches_user_id_fkey" FOREIGN KEY (user_id) REFERENCES user_profiles(id) not valid;
+alter table "public"."searches" add constraint "searches_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."searches" validate constraint "searches_user_id_fkey";
 
@@ -642,15 +795,15 @@ BEGIN
         EXECUTE format('ALTER TABLE %I.%I ENABLE ROW LEVEL SECURITY', 'public', table_info.tablename);
 
         -- Create or replace policies for INSERT
-        EXECUTE format('CREATE POLICY insert_policy ON %I.%I FOR INSERT WITH CHECK (authorize(%L))', 
+        EXECUTE format('CREATE POLICY insert_policy ON %I.%I FOR INSERT WITH CHECK (public.authorize(%L))', 
             'public', table_info.tablename, table_info.tablename || '.insert');
 
         -- Create or replace policies for UPDATE
-        EXECUTE format('CREATE POLICY update_policy ON %I.%I FOR UPDATE USING (authorize(%L))', 
+        EXECUTE format('CREATE POLICY update_policy ON %I.%I FOR UPDATE USING (public.authorize(%L))', 
             'public', table_info.tablename, table_info.tablename || '.update');
 
         -- Create or replace policies for DELETE
-        EXECUTE format('CREATE POLICY delete_policy ON %I.%I FOR DELETE USING (authorize(%L))', 
+        EXECUTE format('CREATE POLICY delete_policy ON %I.%I FOR DELETE USING (public.authorize(%L))', 
             'public', table_info.tablename, table_info.tablename || '.delete');
     END LOOP;
 END;
@@ -805,7 +958,7 @@ END;
 $function$
 ;
 
-CREATE TRIGGER create_user_profile AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION create_user_profile();
+CREATE TRIGGER create_user_profile AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.create_user_profile();
 
 CREATE OR REPLACE FUNCTION public.custom_access_token_hook(event jsonb)
  RETURNS jsonb
@@ -1607,7 +1760,7 @@ on "public"."addresses"
 as permissive
 for delete
 to public
-using (authorize('addresses.delete'::text));
+using (public.authorize('addresses.delete'::text));
 
 
 create policy "insert_policy"
@@ -1615,7 +1768,7 @@ on "public"."addresses"
 as permissive
 for insert
 to public
-with check (authorize('addresses.insert'::text));
+with check (public.authorize('addresses.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1631,7 +1784,7 @@ on "public"."addresses"
 as permissive
 for update
 to public
-using (authorize('addresses.update'::text));
+using (public.authorize('addresses.update'::text));
 
 
 create policy "delete_policy"
@@ -1639,7 +1792,7 @@ on "public"."categories"
 as permissive
 for delete
 to public
-using (authorize('categories.delete'::text));
+using (public.authorize('categories.delete'::text));
 
 
 create policy "insert_policy"
@@ -1647,7 +1800,7 @@ on "public"."categories"
 as permissive
 for insert
 to public
-with check (authorize('categories.insert'::text));
+with check (public.authorize('categories.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1663,7 +1816,7 @@ on "public"."categories"
 as permissive
 for update
 to public
-using (authorize('categories.update'::text));
+using (public.authorize('categories.update'::text));
 
 
 create policy "delete_policy"
@@ -1671,7 +1824,7 @@ on "public"."cities"
 as permissive
 for delete
 to public
-using (authorize('cities.delete'::text));
+using (public.authorize('cities.delete'::text));
 
 
 create policy "insert_policy"
@@ -1679,7 +1832,7 @@ on "public"."cities"
 as permissive
 for insert
 to public
-with check (authorize('cities.insert'::text));
+with check (public.authorize('cities.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1695,7 +1848,7 @@ on "public"."cities"
 as permissive
 for update
 to public
-using (authorize('cities.update'::text));
+using (public.authorize('cities.update'::text));
 
 
 create policy "delete_policy"
@@ -1703,7 +1856,7 @@ on "public"."companies"
 as permissive
 for delete
 to public
-using (authorize('companies.delete'::text));
+using (public.authorize('companies.delete'::text));
 
 
 create policy "insert_policy"
@@ -1711,7 +1864,7 @@ on "public"."companies"
 as permissive
 for insert
 to public
-with check (authorize('companies.insert'::text));
+with check (public.authorize('companies.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1727,7 +1880,7 @@ on "public"."companies"
 as permissive
 for update
 to public
-using (authorize('companies.update'::text));
+using (public.authorize('companies.update'::text));
 
 
 create policy "delete_policy"
@@ -1735,7 +1888,7 @@ on "public"."company_employees"
 as permissive
 for delete
 to public
-using (authorize('company_employees.delete'::text));
+using (public.authorize('company_employees.delete'::text));
 
 
 create policy "insert_policy"
@@ -1743,7 +1896,7 @@ on "public"."company_employees"
 as permissive
 for insert
 to public
-with check (authorize('company_employees.insert'::text));
+with check (public.authorize('company_employees.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1759,7 +1912,7 @@ on "public"."company_employees"
 as permissive
 for update
 to public
-using (authorize('company_employees.update'::text));
+using (public.authorize('company_employees.update'::text));
 
 
 create policy "delete_policy"
@@ -1767,7 +1920,7 @@ on "public"."company_news"
 as permissive
 for delete
 to public
-using (authorize('company_news.delete'::text));
+using (public.authorize('company_news.delete'::text));
 
 
 create policy "insert_policy"
@@ -1775,7 +1928,7 @@ on "public"."company_news"
 as permissive
 for insert
 to public
-with check (authorize('company_news.insert'::text));
+with check (public.authorize('company_news.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1791,7 +1944,7 @@ on "public"."company_news"
 as permissive
 for update
 to public
-using (authorize('company_news.update'::text));
+using (public.authorize('company_news.update'::text));
 
 
 create policy "delete_policy"
@@ -1799,7 +1952,7 @@ on "public"."contacts"
 as permissive
 for delete
 to public
-using (authorize('contacts.delete'::text));
+using (public.authorize('contacts.delete'::text));
 
 
 create policy "insert_policy"
@@ -1807,7 +1960,7 @@ on "public"."contacts"
 as permissive
 for insert
 to public
-with check (authorize('contacts.insert'::text));
+with check (public.authorize('contacts.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1823,7 +1976,7 @@ on "public"."contacts"
 as permissive
 for update
 to public
-using (authorize('contacts.update'::text));
+using (public.authorize('contacts.update'::text));
 
 
 create policy "delete_policy"
@@ -1831,7 +1984,7 @@ on "public"."countries"
 as permissive
 for delete
 to public
-using (authorize('countries.delete'::text));
+using (public.authorize('countries.delete'::text));
 
 
 create policy "insert_policy"
@@ -1839,7 +1992,7 @@ on "public"."countries"
 as permissive
 for insert
 to public
-with check (authorize('countries.insert'::text));
+with check (public.authorize('countries.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1855,7 +2008,7 @@ on "public"."countries"
 as permissive
 for update
 to public
-using (authorize('countries.update'::text));
+using (public.authorize('countries.update'::text));
 
 
 create policy "delete_policy"
@@ -1863,7 +2016,7 @@ on "public"."embeddings"
 as permissive
 for delete
 to public
-using (authorize('embeddings.delete'::text));
+using (public.authorize('embeddings.delete'::text));
 
 
 create policy "insert_policy"
@@ -1871,7 +2024,7 @@ on "public"."embeddings"
 as permissive
 for insert
 to public
-with check (authorize('embeddings.insert'::text));
+with check (public.authorize('embeddings.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1887,7 +2040,7 @@ on "public"."embeddings"
 as permissive
 for update
 to public
-using (authorize('embeddings.update'::text));
+using (public.authorize('embeddings.update'::text));
 
 
 create policy "delete_policy"
@@ -1895,7 +2048,7 @@ on "public"."feedbacks"
 as permissive
 for delete
 to public
-using (authorize('feedbacks.delete'::text));
+using (public.authorize('feedbacks.delete'::text));
 
 
 create policy "insert_policy"
@@ -1903,7 +2056,7 @@ on "public"."feedbacks"
 as permissive
 for insert
 to authenticated
-with check (authorize('feedbacks.insert'::text));
+with check (public.authorize('feedbacks.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1919,7 +2072,7 @@ on "public"."feedbacks"
 as permissive
 for update
 to public
-using (authorize('feedbacks.update'::text));
+using (public.authorize('feedbacks.update'::text));
 
 
 create policy "delete_policy"
@@ -1927,7 +2080,7 @@ on "public"."news"
 as permissive
 for delete
 to public
-using (authorize('news.delete'::text));
+using (public.authorize('news.delete'::text));
 
 
 create policy "insert_policy"
@@ -1935,7 +2088,7 @@ on "public"."news"
 as permissive
 for insert
 to public
-with check (authorize('news.insert'::text));
+with check (public.authorize('news.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1951,7 +2104,7 @@ on "public"."news"
 as permissive
 for update
 to public
-using (authorize('news.update'::text));
+using (public.authorize('news.update'::text));
 
 
 create policy "delete_policy"
@@ -1959,7 +2112,7 @@ on "public"."news_embeddings"
 as permissive
 for delete
 to public
-using (authorize('news_embeddings.delete'::text));
+using (public.authorize('news_embeddings.delete'::text));
 
 
 create policy "insert_policy"
@@ -1967,7 +2120,7 @@ on "public"."news_embeddings"
 as permissive
 for insert
 to public
-with check (authorize('news_embeddings.insert'::text));
+with check (public.authorize('news_embeddings.insert'::text));
 
 
 create policy "read_all_policy"
@@ -1983,7 +2136,7 @@ on "public"."news_embeddings"
 as permissive
 for update
 to public
-using (authorize('news_embeddings.update'::text));
+using (public.authorize('news_embeddings.update'::text));
 
 
 create policy "delete_policy"
@@ -1991,7 +2144,7 @@ on "public"."news_tags"
 as permissive
 for delete
 to public
-using (authorize('news_tags.delete'::text));
+using (public.authorize('news_tags.delete'::text));
 
 
 create policy "insert_policy"
@@ -1999,7 +2152,7 @@ on "public"."news_tags"
 as permissive
 for insert
 to public
-with check (authorize('news_tags.insert'::text));
+with check (public.authorize('news_tags.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2015,7 +2168,7 @@ on "public"."news_tags"
 as permissive
 for update
 to public
-using (authorize('news_tags.update'::text));
+using (public.authorize('news_tags.update'::text));
 
 
 create policy "delete_policy"
@@ -2023,7 +2176,7 @@ on "public"."plan_permissions"
 as permissive
 for delete
 to public
-using (authorize('plan_permissions.delete'::text));
+using (public.authorize('plan_permissions.delete'::text));
 
 
 create policy "insert_policy"
@@ -2031,7 +2184,7 @@ on "public"."plan_permissions"
 as permissive
 for insert
 to public
-with check (authorize('plan_permissions.insert'::text));
+with check (public.authorize('plan_permissions.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2047,7 +2200,7 @@ on "public"."plan_permissions"
 as permissive
 for update
 to public
-using (authorize('plan_permissions.update'::text));
+using (public.authorize('plan_permissions.update'::text));
 
 
 create policy "delete_policy"
@@ -2055,7 +2208,7 @@ on "public"."research"
 as permissive
 for delete
 to public
-using (authorize('research.delete'::text));
+using (public.authorize('research.delete'::text));
 
 
 create policy "insert_policy"
@@ -2063,7 +2216,7 @@ on "public"."research"
 as permissive
 for insert
 to public
-with check (authorize('research.insert'::text));
+with check (public.authorize('research.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2079,7 +2232,7 @@ on "public"."research"
 as permissive
 for update
 to public
-using (authorize('research.update'::text));
+using (public.authorize('research.update'::text));
 
 
 create policy "delete_policy"
@@ -2087,7 +2240,7 @@ on "public"."responses"
 as permissive
 for delete
 to public
-using (authorize('responses.delete'::text));
+using (public.authorize('responses.delete'::text));
 
 
 create policy "insert_policy"
@@ -2095,7 +2248,7 @@ on "public"."responses"
 as permissive
 for insert
 to public
-with check (authorize('responses.insert'::text));
+with check (public.authorize('responses.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2111,7 +2264,7 @@ on "public"."responses"
 as permissive
 for update
 to public
-using (authorize('responses.update'::text));
+using (public.authorize('responses.update'::text));
 
 
 create policy "delete_policy"
@@ -2119,7 +2272,7 @@ on "public"."role_permissions"
 as permissive
 for delete
 to public
-using (authorize('role_permissions.delete'::text));
+using (public.authorize('role_permissions.delete'::text));
 
 
 create policy "insert_policy"
@@ -2127,7 +2280,7 @@ on "public"."role_permissions"
 as permissive
 for insert
 to public
-with check (authorize('role_permissions.insert'::text));
+with check (public.authorize('role_permissions.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2143,7 +2296,7 @@ on "public"."role_permissions"
 as permissive
 for update
 to public
-using (authorize('role_permissions.update'::text));
+using (public.authorize('role_permissions.update'::text));
 
 
 create policy "delete_policy"
@@ -2151,7 +2304,7 @@ on "public"."searches"
 as permissive
 for delete
 to public
-using (authorize('searches.delete'::text));
+using (public.authorize('searches.delete'::text));
 
 
 create policy "insert_policy"
@@ -2159,7 +2312,7 @@ on "public"."searches"
 as permissive
 for insert
 to public
-with check (authorize('searches.insert'::text));
+with check (public.authorize('searches.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2175,7 +2328,7 @@ on "public"."searches"
 as permissive
 for update
 to public
-using (authorize('searches.update'::text));
+using (public.authorize('searches.update'::text));
 
 
 create policy "delete_policy"
@@ -2183,7 +2336,7 @@ on "public"."social_media"
 as permissive
 for delete
 to public
-using (authorize('social_media.delete'::text));
+using (public.authorize('social_media.delete'::text));
 
 
 create policy "insert_policy"
@@ -2191,7 +2344,7 @@ on "public"."social_media"
 as permissive
 for insert
 to public
-with check (authorize('social_media.insert'::text));
+with check (public.authorize('social_media.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2207,7 +2360,7 @@ on "public"."social_media"
 as permissive
 for update
 to public
-using (authorize('social_media.update'::text));
+using (public.authorize('social_media.update'::text));
 
 
 create policy "delete_policy"
@@ -2215,7 +2368,7 @@ on "public"."tags"
 as permissive
 for delete
 to public
-using (authorize('tags.delete'::text));
+using (public.authorize('tags.delete'::text));
 
 
 create policy "insert_policy"
@@ -2223,7 +2376,7 @@ on "public"."tags"
 as permissive
 for insert
 to public
-with check (authorize('tags.insert'::text));
+with check (public.authorize('tags.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2239,7 +2392,7 @@ on "public"."tags"
 as permissive
 for update
 to public
-using (authorize('tags.update'::text));
+using (public.authorize('tags.update'::text));
 
 
 create policy "delete_policy"
@@ -2247,7 +2400,7 @@ on "public"."user_followers"
 as permissive
 for delete
 to public
-using (authorize('user_followers.delete'::text));
+using (public.authorize('user_followers.delete'::text));
 
 
 create policy "insert_policy"
@@ -2255,7 +2408,7 @@ on "public"."user_followers"
 as permissive
 for insert
 to public
-with check (authorize('user_followers.insert'::text));
+with check (public.authorize('user_followers.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2271,7 +2424,7 @@ on "public"."user_followers"
 as permissive
 for update
 to public
-using (authorize('user_followers.update'::text));
+using (public.authorize('user_followers.update'::text));
 
 
 create policy "Enable read access for all users"
@@ -2295,7 +2448,7 @@ on "public"."user_profiles"
 as permissive
 for delete
 to public
-using (authorize('user_profiles.delete'::text));
+using (public.authorize('user_profiles.delete'::text));
 
 
 create policy "insert_policy"
@@ -2303,7 +2456,7 @@ on "public"."user_profiles"
 as permissive
 for insert
 to public
-with check (authorize('user_profiles.insert'::text));
+with check (public.authorize('user_profiles.insert'::text));
 
 
 create policy "read_all_policy"
@@ -2319,10 +2472,10 @@ on "public"."user_profiles"
 as permissive
 for update
 to public
-using (authorize('user_profiles.update'::text));
+using (public.authorize('user_profiles.update'::text));
 
 
-CREATE TRIGGER columns_updateable BEFORE UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION users_columns_updateable();
+CREATE TRIGGER columns_updateable BEFORE UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.users_columns_updateable();
 
 
 create policy "Give users access to own folder yuafil_0"

@@ -1971,21 +1971,21 @@ INSERT INTO "public"."social_media" ("id", "facebook_url", "twitter_url", "linke
 --
 
 INSERT INTO "public"."companies" ("id", "name", "description", "logo_url", "website_url", "social_media_id", "last_scraped_at", "scrape_frequency", "category_id", "created_at", "updated_at", "founding_year", "is_government") VALUES
-	(1, 'Agnikul Cosmos', 'Agnikul Cosmos is a space tech company building small satellite launch vehicles. We are building a full stack launch vehicle to take small satellites to space.', 'agnikul-logo.jpg', 'https://agnikul.in/#/', 1, NULL, 'BiWeekly', 1, NULL, NULL, 2017, false),
-	(2, 'NASA', 'The National Aeronautics and Space Administration is an independent agency of the U.S. federal government responsible for the civilian space program, as well as aeronautics and aerospace research.', 'nasa-logo.jpg', 'https://www.nasa.gov/', 2, NULL, 'TwiceDaily', 1, NULL, NULL, 1958, true),
-	(3, 'ISRO', 'The Indian Space Research Organisation is the space agency of the Government of India and the main body in India to perform space research and exploration.', 'isro-logo.jpg', 'https://www.isro.gov.in/', 3, NULL, 'Daily', 1, NULL, NULL, 1969, true),
-	(4, 'ESA', 'The European Space Agency is an intergovernmental organisation dedicated to the exploration of space. It was established in 1975 and headquartered in Paris, France.', 'esa-logo.jpg', 'https://www.esa.int/', 4, NULL, 'TwiceDaily', 1, NULL, NULL, 1975, true),
-	(5, 'CSA', 'The Canadian Space Agency is the national space agency of Canada, established in 1989. The agency is responsible for coordinating all civil, space-related policies and programs on behalf of the Government of Canada.', 'csa-logo.jpg', 'https://www.asc-csa.gc.ca/eng/', 5, NULL, 'TwiceDaily', 1, NULL, NULL, 1989, true),
-	(6, 'CNSA', 'The China National Space Administration is the national space agency of China. It is responsible for the planning and development of space activities.', 'cnsa-logo.jpg', 'http://www.cnsa.gov.cn/', NULL, NULL, 'Daily', 1, NULL, NULL, 1993, true),
-	(7, 'JAXA', 'The Japan Aerospace Exploration Agency is the Japanese national aerospace and space agency. Through the merger of three previously independent organizations, JAXA was formed on 1 October 2003.', 'jaxa-logo.jpg', 'https://www.jaxa.jp/', 6, NULL, 'Daily', 1, NULL, NULL, 2003, true),
-	(8, 'ROSCOSMOS', 'The Roscosmos State Corporation for Space Activities, commonly known as Roscosmos, is the governmental body responsible for the space science program of the Russian Federation and general aerospace research.', 'roscosmos-logo.jpg', 'https://www.roscosmos.ru/', 7, NULL, 'TwiceDaily', 1, NULL, NULL, 1992, true),
-	(9, 'Skyroot Aerospace', 'Skyroot Aerospace is a space startup based in Hyderabad, India. It is the first private company in India to build a homegrown rocket engine. The company is working on developing a small satellite launch vehicle.', 'skyroot-aerospace-logo.jpg', 'https://skyroot.in/index.html', 8, NULL, 'BiWeekly', 1, NULL, NULL, 2018, false),
-	(10, 'Pixxel Space', 'Pixxel is a space startup based in Bangalore, India. The company is building a constellation of earth observation satellites to provide global coverage every 24 hours.', 'pixxel-logo.jpg', 'https://www.pixxel.space', 9, NULL, 'BiWeekly', 1, NULL, NULL, 2019, false),
-	(11, 'Bellatrix Aerospace', 'Bellatrix Aerospace is a space startup based in Bangalore, India. The company is developing satellite propulsion systems using green propellants.', 'bellatrix-aerospace-logo.jpg', 'https://bellatrix.aero', 10, NULL, 'BiWeekly', 1, NULL, NULL, 2015, false),
-	(12, 'Dhruva Space', 'Dhruva Space is a space startup based in Bangalore, India. The company is building small satellites for earth observation and communication.', 'dhruva-space-logo.jpg', 'https://www.dhruvaspace.com/', 11, NULL, 'BiWeekly', 1, NULL, NULL, 2012, false),
-	(13, 'Aeroin Spacetech', 'Aeroin Space is a space startup based in Bangalore, India. The company is focused on research and development in the space sector, as well as providing educational programs for students and professionals.', 'aeroin-space-logo.jpg', 'https://www.aeroin.space/', 12, NULL, 'BiWeekly', 1, NULL, NULL, 2018, false),
-	(14, 'Aadyah Aerospace', 'Aadyah Aerospace is a space startup based in Bangalore, India. The company is developing small satellite launch vehicles and satellite propulsion systems.', 'aadyah-aerospace-logo.jpg', 'https://aadyah.com/', 13, NULL, 'BiWeekly', 1, NULL, NULL, 2019, false),
-	(15, 'Astrogate Labs', 'Astrogate Labs is a space startup based in Bangalore, India. The company is building a network of ground stations for satellite communication and data transfer.', 'astrogate-labs-logo.jpg', 'https://astrogatelabs.com/', 14, NULL, 'BiWeekly', 1, NULL, NULL, 2018, false);
+	(1, 'Agnikul Cosmos', 'Agnikul Cosmos is a space tech company building small satellite launch vehicles. We are building a full stack launch vehicle to take small satellites to space.', 'agnikul-logo.jpg', 'https://agnikul.in/#/', 1, NULL, 'bi_weekly', 1, NULL, NULL, 2017, false),
+	(2, 'NASA', 'The National Aeronautics and Space Administration is an independent agency of the U.S. federal government responsible for the civilian space program, as well as aeronautics and aerospace research.', 'nasa-logo.jpg', 'https://www.nasa.gov/', 2, NULL, 'twice_daily', 1, NULL, NULL, 1958, true),
+	(3, 'ISRO', 'The Indian Space Research Organisation is the space agency of the Government of India and the main body in India to perform space research and exploration.', 'isro-logo.jpg', 'https://www.isro.gov.in/', 3, NULL, 'daily', 1, NULL, NULL, 1969, true),
+	(4, 'ESA', 'The European Space Agency is an intergovernmental organisation dedicated to the exploration of space. It was established in 1975 and headquartered in Paris, France.', 'esa-logo.jpg', 'https://www.esa.int/', 4, NULL, 'twice_daily', 1, NULL, NULL, 1975, true),
+	(5, 'CSA', 'The Canadian Space Agency is the national space agency of Canada, established in 1989. The agency is responsible for coordinating all civil, space-related policies and programs on behalf of the Government of Canada.', 'csa-logo.jpg', 'https://www.asc-csa.gc.ca/eng/', 5, NULL, 'twice_daily', 1, NULL, NULL, 1989, true),
+	(6, 'CNSA', 'The China National Space Administration is the national space agency of China. It is responsible for the planning and development of space activities.', 'cnsa-logo.jpg', 'http://www.cnsa.gov.cn/', NULL, NULL, 'daily', 1, NULL, NULL, 1993, true),
+	(7, 'JAXA', 'The Japan Aerospace Exploration Agency is the Japanese national aerospace and space agency. Through the merger of three previously independent organizations, JAXA was formed on 1 October 2003.', 'jaxa-logo.jpg', 'https://www.jaxa.jp/', 6, NULL, 'daily', 1, NULL, NULL, 2003, true),
+	(8, 'ROSCOSMOS', 'The Roscosmos State Corporation for Space Activities, commonly known as Roscosmos, is the governmental body responsible for the space science program of the Russian Federation and general aerospace research.', 'roscosmos-logo.jpg', 'https://www.roscosmos.ru/', 7, NULL, 'twice_daily', 1, NULL, NULL, 1992, true),
+	(9, 'Skyroot Aerospace', 'Skyroot Aerospace is a space startup based in Hyderabad, India. It is the first private company in India to build a homegrown rocket engine. The company is working on developing a small satellite launch vehicle.', 'skyroot-aerospace-logo.jpg', 'https://skyroot.in/index.html', 8, NULL, 'bi_weekly', 1, NULL, NULL, 2018, false),
+	(10, 'Pixxel Space', 'Pixxel is a space startup based in Bangalore, India. The company is building a constellation of earth observation satellites to provide global coverage every 24 hours.', 'pixxel-logo.jpg', 'https://www.pixxel.space', 9, NULL, 'bi_weekly', 1, NULL, NULL, 2019, false),
+	(11, 'Bellatrix Aerospace', 'Bellatrix Aerospace is a space startup based in Bangalore, India. The company is developing satellite propulsion systems using green propellants.', 'bellatrix-aerospace-logo.jpg', 'https://bellatrix.aero', 10, NULL, 'bi_weekly', 1, NULL, NULL, 2015, false),
+	(12, 'Dhruva Space', 'Dhruva Space is a space startup based in Bangalore, India. The company is building small satellites for earth observation and communication.', 'dhruva-space-logo.jpg', 'https://www.dhruvaspace.com/', 11, NULL, 'bi_weekly', 1, NULL, NULL, 2012, false),
+	(13, 'Aeroin Spacetech', 'Aeroin Space is a space startup based in Bangalore, India. The company is focused on research and development in the space sector, as well as providing educational programs for students and professionals.', 'aeroin-space-logo.jpg', 'https://www.aeroin.space/', 12, NULL, 'bi_weekly', 1, NULL, NULL, 2018, false),
+	(14, 'Aadyah Aerospace', 'Aadyah Aerospace is a space startup based in Bangalore, India. The company is developing small satellite launch vehicles and satellite propulsion systems.', 'aadyah-aerospace-logo.jpg', 'https://aadyah.com/', 13, NULL, 'bi_weekly', 1, NULL, NULL, 2019, false),
+	(15, 'Astrogate Labs', 'Astrogate Labs is a space startup based in Bangalore, India. The company is building a network of ground stations for satellite communication and data transfer.', 'astrogate-labs-logo.jpg', 'https://astrogatelabs.com/', 14, NULL, 'bi_weekly', 1, NULL, NULL, 2018, false);
 
 
 --
@@ -2683,7 +2683,7 @@ SELECT pg_catalog.setval('"public"."embeddings_id_seq"', 1, false);
 -- Name: feedback_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."feedback_id_seq"', 1, false);
+SELECT pg_catalog.setval('"public"."feedbacks_id_seq"', 1, false);
 
 
 --
@@ -2722,10 +2722,10 @@ SELECT pg_catalog.setval('"public"."responses_id_seq"', 1, false);
 
 
 --
--- Name: responses_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: responses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."responses_id_seq1"', 1, false);
+SELECT pg_catalog.setval('"public"."responses_id_seq"', 1, false);
 
 
 --
@@ -2743,10 +2743,10 @@ SELECT pg_catalog.setval('"public"."searches_id_seq"', 1, false);
 
 
 --
--- Name: searches_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: searches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."searches_id_seq1"', 1, false);
+SELECT pg_catalog.setval('"public"."searches_id_seq"', 1, false);
 
 
 --
