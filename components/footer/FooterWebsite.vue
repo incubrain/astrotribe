@@ -1,25 +1,23 @@
 <script setup>
-const p = usePages()
-const { socials, pages } = storeToRefs(p)
+const { socials, websiteLinks } = usePages()
 
-// ui:critical:easy:1 add the correct links, should not be app pages
 // again use the categories to consolidate the links, but list them all vertically under categories
 </script>
 
 <template>
-  <footer class="foreground flex flex-col justify-center items-center relative overflow-hidden">
+  <footer class="foreground flex flex-col justify-start items-start relative overflow-hidden">
     <div
-      class="relative wrapper padded-x py-4 lg:py-8 flex justify-between rounded-md w-full items-center"
+      class="relative wrapper padded-x py-4 lg:py-8 flex justify-between rounded-md w-full items-start"
     >
       <div
-        class="grid grid-cols-3 grid-rows-1 rounded-md w-full h-auto gap-4 lg:gap-8 p-4 xl:p-8 mx-auto border border-color background"
+        class="grid grid-cols-2 lg:grid-cols-3 rounded-md w-full h-full gap-4 lg:gap-8 p-4 xl:p-8 mx-auto border border-color background"
       >
         <div
-          class="flex flex-shrink-0 row-start-1 col-start-2 lg:col-start-1 justify-center lg:justify-start md:pr-4"
+          class="flex flex-shrink-0 row-start-2 lg:row-start-1 col-start-2 lg:col-start-1 justify-center items-start lg:justify-start lg:pr-4"
         >
           <NuxtLink
             to="/"
-            class="h-full flex justify-center flex-col lg:flex-row items-center gap-4 font-semibold"
+            class="flex lg:flex-row items-center justify-center gap-4 font-semibold"
           >
             <BaseImage
               :img="{
@@ -34,23 +32,28 @@ const { socials, pages } = storeToRefs(p)
           </NuxtLink>
         </div>
         <ul
-          class="flex flex-col row-start-1 col-start-1 lg:col-start-2 lg:flex-row gap-2 items-start lg:items-center text-sm"
+          class="flex row-start-1 justify-between col-start-1 col-span-2 lg:col-span-1 lg:col-start-2 gap-2 items-start lg:items-start text-sm"
         >
-          <li
-            v-for="link in pages"
+          <div
+            v-for="link in websiteLinks"
             :key="link.label"
-            class="lg:border-r border-color last:border-none last:pr-0 pb-2 md:pr-2 md:pb-0"
+            class=" last:pr-0 pb-2 lg:pb-0 space-y-2 px-3"
           >
-            <NuxtLink
-              :to="link.slug"
-              class="flex items-center"
-            >
+            <h4 class="font-bold text-base underline underline-offset-4 decoration-primary-600 pb-2">
               {{ link.label }}
+            </h4>
+            <NuxtLink
+              v-for="child in link.items"
+              :key="child.label"
+              :to="child.url"
+              class="flex items-center text-sm font-normal"
+            >
+              {{ child.label }}
             </NuxtLink>
-          </li>
+          </div>
         </ul>
         <div
-          class="flex flex-col items-end lg:justify-end lg:items-center row-start-1 col-start-3 lg:flex-row gap-2"
+          class="flex items-end lg:justify-end lg:items-start lg:row-start-1 col-start-1 lg:col-start-3 gap-2"
         >
           <NuxtLink
             v-for="social in socials"
