@@ -9,6 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "",
     "gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
+    "gen:seed": " supabase db dump -f supabase/seed.sql --data-only",
     "supa:lint": "supabase db lint",
     "supa:migrate": "supabase db diff --schema auth,public,storage,extensions -f",
     "lint": "eslint . --ext .ts,.js,.vue",
