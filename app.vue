@@ -27,7 +27,7 @@ supabase.auth.onAuthStateChange((event, session) => {
       // Handle password recovery event
     } else if (event === 'INITIAL_SESSION') {
       console.log('INITIAL_SESSION');
-      // await currentUser.loadSession();
+      await currentUser.loadSession();
     } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER');
     }
