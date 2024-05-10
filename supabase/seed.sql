@@ -2587,9 +2587,12 @@ INSERT INTO "public"."role_permissions" ("id", "role", "select", "insert", "upda
 -- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
-INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
-	('profile-public', 'profile-public', NULL, '2023-03-02 05:08:03.279807+00', '2023-03-02 05:08:03.279807+00', true, false, NULL, NULL, NULL),
-	('posts', 'posts', NULL, '2023-06-20 08:29:35.287069+00', '2023-06-20 08:29:35.287069+00', true, false, NULL, NULL, NULL);
+INSERT INTO "storage"."buckets" 
+("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
+('profile-public', 'profile-public', NULL, '2023-03-02 05:08:03.279807+00', '2023-03-02 05:08:03.279807+00', true, false, NULL, NULL, NULL),
+('posts', 'posts', NULL, '2023-06-20 08:29:35.287069+00', '2023-06-20 08:29:35.287069+00', true, false, NULL, NULL, NULL)
+ON CONFLICT (id) DO NOTHING;
+
 
 
 --
