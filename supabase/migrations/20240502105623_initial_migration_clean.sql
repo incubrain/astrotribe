@@ -54,627 +54,369 @@ create type "public"."user_status" as enum ('online', 'offline');
 create type "public"."address_type" as enum ('residential', 'headquarters', 'office', 'factory', 'lab', 'warehouse', 'research', 'retail', 'showroom', 'branch');
 
 
-create table "public"."categories" (
-    "id" bigint not null,
-    "created_at" timestamp(6) with time zone not null default CURRENT_TIMESTAMP,
-    "body" character varying(255),
-    "name" character varying(255) not null,
-    "updated_at" timestamp with time zone default now()
+CREATE TABLE "public"."categories" (
+    "id" bigserial NOT NULL,
+    "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "body" VARCHAR(255),
+    "name" VARCHAR(255) NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    PRIMARY KEY ("id"),
+    UNIQUE ("name")
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."categories_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."categories_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."categories_id_seq" OWNED BY "public"."categories"."id";
 ALTER TABLE "public"."categories" OWNER TO "postgres";
 
 
-create table "public"."companies" (
-    "id" integer not null,
-    "name" character varying(255) not null,
-    "description" text,
-    "logo_url" character varying(255),
-    "website_url" character varying(255) not null,
-    "social_media_id" integer,
-    "last_scraped_at" timestamp with time zone,
-    "scrape_frequency" public.scrape_frequency,
-    "category_id" integer,
-    "created_at" timestamp with time zone,
-    "updated_at" timestamp with time zone,
-    "founding_year" smallint,
-    "is_government" boolean not null default false
+-- Create tags table
+CREATE TABLE "public"."tags" (
+    "id" serial NOT NULL,
+    "body" TEXT,
+    "created_at" TIME WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIME WITH TIME ZONE DEFAULT now(),
+    "name" TEXT NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE ("name")
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."companies_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE "public"."tags" OWNER TO "postgres";
 
-ALTER TABLE "public"."companies_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."companies_id_seq" OWNED BY "public"."companies"."id";
-ALTER TABLE "public"."companies" OWNER TO "postgres";
-
-
-create table "public"."company_employees" (
-    "id" bigint not null,
-    "user_profile_id" uuid not null,
-    "company_id" integer not null,
-    "role" text not null,
-    "job_description" text,
-    "start_date" timestamp with time zone default CURRENT_TIMESTAMP,
-    "end_date" timestamp with time zone,
-    "status" boolean,
-    "access_level" public.access_level not null default 'viewer'::public.access_level,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
+-- Create news table
+CREATE TABLE "public"."news" (
+    "id" bigserial NOT NULL,
+    "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT now(),
+    "title" VARCHAR(255) NOT NULL,
+    "body" TEXT NOT NULL,
+    "category_id" BIGINT NOT NULL DEFAULT '31'::BIGINT,
+    "author" TEXT,
+    "description" TEXT,
+    "featured_image" TEXT,
+    "has_summary" BOOLEAN NOT NULL DEFAULT FALSE,
+    "published_at" TIMESTAMP WITH TIME ZONE,
+    "source" VARCHAR NOT NULL,
+    "url" TEXT NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE ("url"),
+    FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."company_employees_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."company_employees_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."company_employees_id_seq" OWNED BY "public"."company_employees"."id";
-ALTER TABLE "public"."company_employees" OWNER TO "postgres";
-
-
-
-create table "public"."company_news" (
-    "id" bigint not null,
-    "company_id" integer not null,
-    "news_id" integer not null,
-    "relation_type" public.news_relation_type not null default 'source'::public.news_relation_type,
-    "importance_level" public.news_importance_level,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp with time zone default CURRENT_TIMESTAMP
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."company_news_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."company_news_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."company_news_id_seq" OWNED BY "public"."company_news"."id";
-ALTER TABLE "public"."company_news" OWNER TO "postgres";
-
-
-
-create table "public"."contacts" (
-    "id" integer not null,
-    "title" character varying(100),
-    "is_primary" boolean default false,
-    "email" character varying(255),
-    "contact_type" public.contact_type,
-    "privacy_level" public.privacy_level,
-    "user_id" uuid,
-    "company_id" integer,
-    "created_at" timestamp without time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp without time zone default CURRENT_TIMESTAMP,
-    "phone" character varying(50)
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."contacts_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."contacts_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."contacts_id_seq" OWNED BY "public"."contacts"."id";
-ALTER TABLE "public"."contacts" OWNER TO "postgres";
-
-
-
-create table "public"."countries" (
-    "id" integer not null,
-    "name" character varying(100) not null,
-    "code" character varying(2) not null
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."countries_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."countries_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."countries_id_seq" OWNED BY "public"."countries"."id";
-ALTER TABLE "public"."countries" OWNER TO "postgres";
-
-
-
-
-create table "public"."cities" (
-    "id" integer not null,
-    "name" character varying(100) not null,
-    "country_id" integer not null,
-    "state" character varying
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."cities_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."cities_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."cities_id_seq" OWNED BY "public"."cities"."id";
-ALTER TABLE "public"."cities" OWNER TO "postgres";
-
-
-create table "public"."addresses" (
-    "id" integer not null,
-    "street1" character varying(255) not null,
-    "street2" character varying(255),
-    "city_id" integer not null,
-    "country_id" integer not null,
-    "name" character varying,
-    "company_id" integer,
-    "user_id" uuid,
-    "is_primary" boolean default false,
-    "address_type" public.address_type,
-    "created_at" timestamp with time zone default now(),
-    "updated_at" timestamp with time zone default now()
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."addresses_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."addresses_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."addresses_id_seq" OWNED BY "public"."addresses"."id";
-ALTER TABLE "public"."addresses" OWNER TO "postgres";
-
-
-
-
-create table "public"."embeddings" (
-    "id" bigint not null,
-    "vector" public.vector(1536),
-    "type" text not null,
-    "created_at" timestamp(6) with time zone default CURRENT_TIMESTAMP
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."embeddings_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."embeddings_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."embeddings_id_seq" OWNED BY "public"."embeddings"."id";
-ALTER TABLE "public"."embeddings" OWNER TO "postgres";
-
-
-
-create table "public"."feedbacks" (
-    "id" integer not null,
-    "user_id" uuid,
-    "page_identifier" character varying(255) not null,
-    "feedback_type" public.feedback_type,
-    "message" text not null,
-    "created_at" timestamp with time zone not null default CURRENT_TIMESTAMP,
-    "updated_at" timestamp with time zone not null default CURRENT_TIMESTAMP,
-    "device_info" text,
-    "status" public.feedback_status default 'new'::public.feedback_status,
-    "resolution_comment" text
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."feedbacks_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."feedbacks_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."feedbacks_id_seq" OWNED BY "public"."feedbacks"."id";
-ALTER TABLE "public"."feedbacks" OWNER TO "postgres";
-
-
-
-create table "public"."news" (
-    "id" bigint not null,
-    "created_at" timestamp(6) with time zone not null default CURRENT_TIMESTAMP,
-    "updated_at" timestamp(6) with time zone not null default now(),
-    "title" character varying(255) not null,
-    "body" text not null,
-    "category_id" bigint not null default '31'::bigint,
-    "author" text,
-    "description" text,
-    "featured_image" text,
-    "has_summary" boolean not null default false,
-    "published_at" timestamp with time zone,
-    "source" character varying not null,
-    "url" text not null
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."news_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."news_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."news_id_seq" OWNED BY "public"."news"."id";
 ALTER TABLE "public"."news" OWNER TO "postgres";
 
-
-
-create table "public"."news_embeddings" (
-    "id" bigint not null,
-    "news_id" bigint not null,
-    "embedding_id" bigint not null
+-- Create countries table
+CREATE TABLE "public"."countries" (
+    "id" serial NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "code" VARCHAR(2) NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE ("name")
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."news_embeddings_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE "public"."countries" OWNER TO "postgres";
 
-ALTER TABLE "public"."news_embeddings_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."news_embeddings_id_seq" OWNED BY "public"."news_embeddings"."id";
-ALTER TABLE "public"."news_embeddings" OWNER TO "postgres";
-
-
-
-create table "public"."news_tags" (
-    "id" integer not null,
-    "news_id" bigint not null,
-    "tag_id" integer not null
+CREATE TABLE "public"."cities" (
+    "id" serial NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "country_id" INTEGER NOT NULL,
+    "state" VARCHAR,
+    PRIMARY KEY ("id"),
+    UNIQUE ("name"),
+    FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id")
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."news_tags_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE "public"."cities" OWNER TO "postgres";
 
-ALTER TABLE "public"."news_tags_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."news_tags_id_seq" OWNED BY "public"."news_tags"."id";
-ALTER TABLE "public"."news_tags" OWNER TO "postgres";
-
-
-
-create table "public"."plan_permissions" (
-    "id" integer not null,
-    "plan" public.app_plan_enum not null,
-    "feature" character varying not null
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."plan_permissions_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."plan_permissions_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."plan_permissions_id_seq" OWNED BY "public"."plan_permissions"."id";
-ALTER TABLE "public"."plan_permissions" OWNER TO "postgres";
-
-
-
-create table "public"."research" (
-    "id" bigint not null,
-    "created_at" timestamp with time zone not null default now(),
-    "updated_at" timestamp with time zone default now(),
-    "published_at" timestamp with time zone,
-    "title" text,
-    "url" character varying not null,
-    "body" text,
-    "author" character varying,
-    "description" text,
-    "version" smallint
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."research_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."research_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."research_id_seq" OWNED BY "public"."research"."id";
-ALTER TABLE "public"."research" OWNER TO "postgres";
-
-
-
-create table "public"."responses" (
-    "id" bigint not null,
-    "search_id" bigint not null,
-    "output" text not null,
-    "upvotes" integer default 0,
-    "downvotes" integer default 0,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."responses_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."responses_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."responses_id_seq" OWNED BY "public"."responses"."id";
-ALTER TABLE "public"."responses" OWNER TO "postgres";
-
-
-
-create table "public"."role_permissions" (
-    "id" integer not null,
-    "role" public.app_role_enum not null,
-    "select" boolean default false,
-    "insert" boolean default false,
-    "update" boolean default false,
-    "delete" boolean default false,
-    "table_name" character varying not null
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."role_permissions_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."role_permissions_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."role_permissions_id_seq" OWNED BY "public"."role_permissions"."id";
-ALTER TABLE "public"."role_permissions" OWNER TO "postgres";
-
-
-
-create table "public"."searches" (
-    "id" bigint not null,
-    "user_id" uuid,
-    "input" text not null,
-    "created_at" timestamp with time zone default CURRENT_TIMESTAMP
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."searches_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."searches_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."searches_id_seq" OWNED BY "public"."searches"."id";
-ALTER TABLE "public"."searches" OWNER TO "postgres";
-
-
-
+-- Create social_media table
 CREATE TABLE "public"."social_media" (
-    "id" integer not null,
-    "facebook_url" character varying(255),
-    "twitter_url" character varying(255),
-    "linkedin_url" character varying(255),
-    "instagram_url" character varying(255),
-    "youtube_url" character varying,
-    "created_at" timestamp with time zone default now(),
-    "updated_at" timestamp with time zone default now()
+    "id" serial NOT NULL,
+    "facebook_url" VARCHAR(255),
+    "twitter_url" VARCHAR(255),
+    "linkedin_url" VARCHAR(255),
+    "instagram_url" VARCHAR(255),
+    "youtube_url" VARCHAR,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    PRIMARY KEY ("id")
 );
-
-CREATE SEQUENCE IF NOT EXISTS "public"."social_media_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."social_media_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."social_media_id_seq" OWNED BY "public"."social_media"."id";
 ALTER TABLE "public"."social_media" OWNER TO "postgres";
 
 
-
-create table "public"."tags" (
-    "id" integer not null,
-    "body" text,
-    "created_at" time with time zone default now(),
-    "updated_at" time with time zone default now(),
-    "name" text not null
+-- Create companies table
+CREATE TABLE "public"."companies" (
+    "id" serial NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "description" TEXT,
+    "logo_url" VARCHAR(255),
+    "website_url" VARCHAR(255) NOT NULL,
+    "social_media_id" INTEGER,
+    "last_scraped_at" TIMESTAMP WITH TIME ZONE,
+    "scrape_frequency" public.scrape_frequency,
+    "category_id" INTEGER,
+    "created_at" TIMESTAMP WITH TIME ZONE,
+    "updated_at" TIMESTAMP WITH TIME ZONE,
+    "founding_year" SMALLINT,
+    "is_government" BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY ("id"),
+    UNIQUE ("website_url"),
+    FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id"),
+    FOREIGN KEY ("social_media_id") REFERENCES "public"."social_media" ("id")
 );
 
-CREATE SEQUENCE IF NOT EXISTS "public"."tags_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE "public"."companies" OWNER TO "postgres";
 
-ALTER TABLE "public"."tags_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."tags_id_seq" OWNED BY "public"."tags"."id";
-ALTER TABLE "public"."tags" OWNER TO "postgres";
-
-
-
-create table "public"."user_followers" (
-    "id" bigint not null,
-    "created_at" timestamp(6) with time zone default CURRENT_TIMESTAMP,
-    "follower_id" uuid not null,
-    "followed_id" uuid not null
-);
-
-CREATE SEQUENCE IF NOT EXISTS "public"."user_followers_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE "public"."user_followers_id_seq" OWNER TO "postgres";
-ALTER SEQUENCE "public"."user_followers_id_seq" OWNED BY "public"."user_followers"."id";
-ALTER TABLE "public"."user_followers" OWNER TO "postgres";
-
-
-
-create table "public"."user_profiles" (
-    "id" uuid not null default extensions.uuid_generate_v4(),
-    "email" text not null,
-    "given_name" text,
-    "surname" text,
-    "username" character varying,
-    "dob" date,
-    "gender_id" smallint,
-    "created_at" timestamp(6) with time zone default CURRENT_TIMESTAMP,
-    "updated_at" timestamp(6) with time zone default CURRENT_TIMESTAMP,
-    "last_seen" timestamp(6) with time zone default CURRENT_TIMESTAMP,
-    "avatar" text,
-    "cover_image" text default ''::text,
-    "introduction" text,
-    "quote" text,
-    "followed_count" integer default 0,
-    "followers_count" integer default 0,
-    "plan" public.app_plan_enum default 'free'::public.app_plan_enum,
-    "role" public.app_role_enum not null default 'user'::public.app_role_enum
+-- Create user_profiles table
+CREATE TABLE "public"."user_profiles" (
+    "id" UUID NOT NULL DEFAULT extensions.uuid_generate_v4(),
+    "email" TEXT NOT NULL,
+    "given_name" TEXT,
+    "surname" TEXT,
+    "username" VARCHAR,
+    "dob" DATE,
+    "gender_id" SMALLINT,
+    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "last_seen" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "avatar" TEXT,
+    "cover_image" TEXT DEFAULT ''::TEXT,
+    "introduction" TEXT,
+    "quote" TEXT,
+    "followed_count" INTEGER DEFAULT 0,
+    "followers_count" INTEGER DEFAULT 0,
+    "plan" public.app_plan_enum DEFAULT 'free'::public.app_plan_enum,
+    "role" public.app_role_enum NOT NULL DEFAULT 'user'::public.app_role_enum,
+    PRIMARY KEY ("id"),
+    UNIQUE ("email"),
+    FOREIGN KEY ("id") REFERENCES "auth"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 ALTER TABLE "public"."user_profiles" OWNER TO "postgres";
 
 
+-- Create addresses table
+CREATE TABLE "public"."addresses" (
+    "id" serial NOT NULL,
+    "street1" VARCHAR(255) NOT NULL,
+    "street2" VARCHAR(255),
+    "city_id" INTEGER NOT NULL,
+    "country_id" INTEGER NOT NULL,
+    "name" VARCHAR,
+    "company_id" INTEGER,
+    "user_id" UUID,
+    "is_primary" BOOLEAN DEFAULT FALSE,
+    "address_type" public.address_type,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("city_id") REFERENCES "public"."cities" ("id"),
+    FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id"),
+    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
+    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+);
 
-CREATE UNIQUE INDEX addresses_pkey ON public.addresses USING btree (id);
+ALTER TABLE "public"."addresses" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX categories_pkey ON public.categories USING btree (id);
+-- Create user_followers table
+CREATE TABLE "public"."user_followers" (
+    "id" bigserial NOT NULL,
+    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "follower_id" UUID NOT NULL,
+    "followed_id" UUID NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("follower_id") REFERENCES "public"."user_profiles" ("id"),
+    FOREIGN KEY ("followed_id") REFERENCES "public"."user_profiles" ("id")
+);
 
-CREATE UNIQUE INDEX categories_title_key ON public.categories USING btree (name);
+ALTER TABLE "public"."user_followers" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX cities_name_key ON public.cities USING btree (name);
+-- Create company_employees table
+CREATE TABLE "public"."company_employees" (
+    "id" bigserial NOT NULL,
+    "user_profile_id" UUID NOT NULL,
+    "company_id" INTEGER NOT NULL,
+    "role" TEXT NOT NULL,
+    "job_description" TEXT,
+    "start_date" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "end_date" TIMESTAMP WITH TIME ZONE,
+    "status" BOOLEAN,
+    "access_level" public.access_level NOT NULL DEFAULT 'viewer'::public.access_level,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("user_profile_id") REFERENCES "public"."user_profiles" ("id"),
+    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id")
+);
 
-CREATE UNIQUE INDEX cities_pkey ON public.cities USING btree (id);
+ALTER TABLE "public"."company_employees" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX companies_pkey ON public.companies USING btree (id);
+-- Create company_news table
+CREATE TABLE "public"."company_news" (
+    "id" bigserial NOT NULL,
+    "company_id" INTEGER NOT NULL,
+    "news_id" INTEGER NOT NULL,
+    "relation_type" public.news_relation_type NOT NULL DEFAULT 'source'::public.news_relation_type,
+    "importance_level" public.news_importance_level,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
+    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id")
+);
 
-CREATE UNIQUE INDEX companies_website_url_key ON public.companies USING btree (website_url);
+ALTER TABLE "public"."company_news" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX company_employees_pkey ON public.company_employees USING btree (user_profile_id, company_id);
+-- Create contacts table
+CREATE TABLE "public"."contacts" (
+    "id" serial NOT NULL,
+    "title" VARCHAR(100),
+    "is_primary" BOOLEAN DEFAULT FALSE,
+    "email" VARCHAR(255),
+    "contact_type" public.contact_type,
+    "privacy_level" public.privacy_level,
+    "user_id" UUID,
+    "company_id" INTEGER,
+    "created_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "phone" VARCHAR(50),
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id") ON DELETE CASCADE,
+    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id") ON DELETE CASCADE
+);
 
-CREATE UNIQUE INDEX company_news_pkey ON public.company_news USING btree (company_id, news_id);
+ALTER TABLE "public"."contacts" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX contacts_pkey ON public.contacts USING btree (id);
+-- Create embeddings table
+CREATE TABLE "public"."embeddings" (
+    "id" bigserial NOT NULL,
+    "vector" public.vector(1536),
+    "type" TEXT NOT NULL,
+    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("id")
+);
 
-CREATE UNIQUE INDEX countries_name_key ON public.countries USING btree (name);
+ALTER TABLE "public"."embeddings" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX countries_pkey ON public.countries USING btree (id);
+-- Create feedbacks table
+CREATE TABLE "public"."feedbacks" (
+    "id" serial NOT NULL,
+    "user_id" UUID,
+    "page_identifier" VARCHAR(255) NOT NULL,
+    "feedback_type" public.feedback_type,
+    "message" TEXT NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "device_info" TEXT,
+    "status" public.feedback_status DEFAULT 'new'::public.feedback_status,
+    "resolution_comment" TEXT,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+);
 
-CREATE UNIQUE INDEX embeddings_pkey ON public.embeddings USING btree (id);
+ALTER TABLE "public"."feedbacks" OWNER TO "postgres";
 
-CREATE UNIQUE INDEX feedback_pkey ON public.feedbacks USING btree (id);
+
+
+-- Create news_embeddings table
+CREATE TABLE "public"."news_embeddings" (
+    "id" serial NOT NULL,
+    "news_id" BIGINT NOT NULL,
+    "embedding_id" BIGINT NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY ("embedding_id") REFERENCES "public"."embeddings" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+ALTER TABLE "public"."news_embeddings" OWNER TO "postgres";
+
+-- Create news_tags table
+CREATE TABLE "public"."news_tags" (
+    "id" serial NOT NULL,
+    "news_id" BIGINT NOT NULL,
+    "tag_id" INTEGER NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY ("tag_id") REFERENCES "public"."tags" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+ALTER TABLE "public"."news_tags" OWNER TO "postgres";
+
+-- Create plan_permissions table
+CREATE TABLE "public"."plan_permissions" (
+    "id" serial NOT NULL,
+    "plan" public.app_plan_enum NOT NULL,
+    "feature" VARCHAR NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+ALTER TABLE "public"."plan_permissions" OWNER TO "postgres";
+
+-- Create research table
+CREATE TABLE "public"."research" (
+    "id" bigserial NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "published_at" TIMESTAMP WITH TIME ZONE,
+    "title" TEXT,
+    "url" VARCHAR NOT NULL,
+    "body" TEXT,
+    "author" VARCHAR,
+    "description" TEXT,
+    "version" SMALLINT,
+    PRIMARY KEY ("id"),
+    UNIQUE ("url")
+);
+
+ALTER TABLE "public"."research" OWNER TO "postgres";
+
+
+-- Create searches table
+CREATE TABLE "public"."searches" (
+    "id" bigserial NOT NULL,
+    "user_id" UUID,
+    "input" TEXT NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+);
+
+ALTER TABLE "public"."searches" OWNER TO "postgres";
+
+-- Create responses table
+CREATE TABLE "public"."responses" (
+    "id" bigserial NOT NULL,
+    "search_id" BIGINT NOT NULL,
+    "output" TEXT NOT NULL,
+    "upvotes" INTEGER DEFAULT 0,
+    "downvotes" INTEGER DEFAULT 0,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("search_id") REFERENCES "public"."searches" ("id")
+);
+
+ALTER TABLE "public"."responses" OWNER TO "postgres";
+
+-- Create role_permissions table
+CREATE TABLE "public"."role_permissions" (
+    "id" serial NOT NULL,
+    "role" public.app_role_enum NOT NULL,
+    "select" BOOLEAN DEFAULT FALSE,
+    "insert" BOOLEAN DEFAULT FALSE,
+    "update" BOOLEAN DEFAULT FALSE,
+    "delete" BOOLEAN DEFAULT FALSE,
+    "table_name" VARCHAR NOT NULL,
+    PRIMARY KEY ("id"),
+    UNIQUE ("role", "table_name")
+);
+
+ALTER TABLE "public"."role_permissions" OWNER TO "postgres";
+
 
 CREATE INDEX idx_addresses_city_id ON public.addresses USING btree (city_id);
-
 CREATE INDEX idx_addresses_country_id ON public.addresses USING btree (country_id);
-
 CREATE INDEX idx_cities_country_id ON public.cities USING btree (country_id);
-
 CREATE INDEX idx_companies_category ON public.companies USING btree (category_id);
-
 CREATE INDEX idx_companies_name ON public.companies USING btree (name);
 
-CREATE UNIQUE INDEX news_embeddings_pkey ON public.news_embeddings USING btree (id);
-
-CREATE UNIQUE INDEX news_pkey ON public.news USING btree (id);
-
-CREATE UNIQUE INDEX news_tags_pkey ON public.news_tags USING btree (id);
-
-CREATE UNIQUE INDEX news_url_key ON public.news USING btree (url);
-
-CREATE UNIQUE INDEX research_pkey ON public.research USING btree (id);
-
-CREATE UNIQUE INDEX research_url_key ON public.research USING btree (url);
-
-CREATE UNIQUE INDEX responses_id_key ON public.responses USING btree (id);
-
-CREATE UNIQUE INDEX responses_pkey ON public.responses USING btree (id);
-
-CREATE UNIQUE INDEX role_permission_unique ON public.role_permissions USING btree (role, table_name);
-
-CREATE UNIQUE INDEX role_permissions_pkey ON public.role_permissions USING btree (id);
-
-CREATE UNIQUE INDEX searches_pkey ON public.searches USING btree (id);
-
-CREATE UNIQUE INDEX social_media_pkey ON public.social_media USING btree (id);
-
-CREATE UNIQUE INDEX tags_name_key ON public.tags USING btree (name);
-
-CREATE UNIQUE INDEX tags_pkey ON public.tags USING btree (id);
-
-CREATE UNIQUE INDEX user_followers_pkey ON public.user_followers USING btree (id);
-
-CREATE UNIQUE INDEX user_profiles_pkey ON public.user_profiles USING btree (id);
-
-CREATE UNIQUE INDEX users_auth_id_key ON public.user_profiles USING btree (id);
-
-CREATE UNIQUE INDEX users_email_key ON public.user_profiles USING btree (email);
-
-alter table "public"."addresses" add constraint "addresses_pkey" PRIMARY KEY using index "addresses_pkey";
-
-alter table "public"."categories" add constraint "categories_pkey" PRIMARY KEY using index "categories_pkey";
-
-alter table "public"."cities" add constraint "cities_pkey" PRIMARY KEY using index "cities_pkey";
-
-alter table "public"."companies" add constraint "companies_pkey" PRIMARY KEY using index "companies_pkey";
-
-alter table "public"."company_employees" add constraint "company_employees_pkey" PRIMARY KEY using index "company_employees_pkey";
-
-alter table "public"."company_news" add constraint "company_news_pkey" PRIMARY KEY using index "company_news_pkey";
-
-alter table "public"."contacts" add constraint "contacts_pkey" PRIMARY KEY using index "contacts_pkey";
-
-alter table "public"."countries" add constraint "countries_pkey" PRIMARY KEY using index "countries_pkey";
-
-alter table "public"."embeddings" add constraint "embeddings_pkey" PRIMARY KEY using index "embeddings_pkey";
-
-alter table "public"."feedbacks" add constraint "feedback_pkey" PRIMARY KEY using index "feedback_pkey";
-
-alter table "public"."news" add constraint "news_pkey" PRIMARY KEY using index "news_pkey";
-
-alter table "public"."news_embeddings" add constraint "news_embeddings_pkey" PRIMARY KEY using index "news_embeddings_pkey";
-
-alter table "public"."news_tags" add constraint "news_tags_pkey" PRIMARY KEY using index "news_tags_pkey";
-
-alter table "public"."research" add constraint "research_pkey" PRIMARY KEY using index "research_pkey";
-
-alter table "public"."responses" add constraint "responses_pkey" PRIMARY KEY using index "responses_pkey";
-
-alter table "public"."role_permissions" add constraint "role_permissions_pkey" PRIMARY KEY using index "role_permissions_pkey";
-
-alter table "public"."searches" add constraint "searches_pkey" PRIMARY KEY using index "searches_pkey";
-
-alter table "public"."social_media" add constraint "social_media_pkey" PRIMARY KEY using index "social_media_pkey";
-
-alter table "public"."tags" add constraint "tags_pkey" PRIMARY KEY using index "tags_pkey";
-
-alter table "public"."user_followers" add constraint "user_followers_pkey" PRIMARY KEY using index "user_followers_pkey";
-
-alter table "public"."user_profiles" add constraint "user_profiles_pkey" PRIMARY KEY using index "user_profiles_pkey";
+CREATE UNIQUE INDEX idx_unique_user_company ON public.company_employees USING btree (user_profile_id, company_id);
+CREATE UNIQUE INDEX idx_unique_company_news ON public.company_news USING btree (company_id, news_id);
 
 alter table "public"."addresses" add constraint "fk_city" FOREIGN KEY (city_id) REFERENCES public.cities(id) not valid;
 
@@ -692,13 +434,9 @@ alter table "public"."addresses" add constraint "public_addresses_user_id_fkey" 
 
 alter table "public"."addresses" validate constraint "public_addresses_user_id_fkey";
 
-alter table "public"."cities" add constraint "cities_name_key" UNIQUE using index "cities_name_key";
-
 alter table "public"."cities" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES public.countries(id) not valid;
 
 alter table "public"."cities" validate constraint "fk_country";
-
-alter table "public"."companies" add constraint "companies_website_url_key" UNIQUE using index "companies_website_url_key";
 
 alter table "public"."companies" add constraint "fk_category" FOREIGN KEY (category_id) REFERENCES public.categories(id) not valid;
 
@@ -708,19 +446,11 @@ alter table "public"."companies" add constraint "fk_social_media" FOREIGN KEY (s
 
 alter table "public"."companies" validate constraint "fk_social_media";
 
-alter table "public"."company_employees" add constraint "company_employees_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
-
 alter table "public"."company_employees" validate constraint "company_employees_company_id_fkey";
-
-alter table "public"."company_employees" add constraint "company_employees_user_profile_id_fkey" FOREIGN KEY (user_profile_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."company_employees" validate constraint "company_employees_user_profile_id_fkey";
 
-alter table "public"."company_news" add constraint "company_news_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
-
 alter table "public"."company_news" validate constraint "company_news_company_id_fkey";
-
-alter table "public"."company_news" add constraint "company_news_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) not valid;
 
 alter table "public"."company_news" validate constraint "company_news_news_id_fkey";
 
@@ -732,53 +462,27 @@ alter table "public"."contacts" add constraint "fk_user" FOREIGN KEY (user_id) R
 
 alter table "public"."contacts" validate constraint "fk_user";
 
-alter table "public"."countries" add constraint "countries_name_key" UNIQUE using index "countries_name_key";
-
 alter table "public"."feedbacks" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."feedbacks" validate constraint "fk_user";
 
-alter table "public"."news" add constraint "news_category_id_fkey" FOREIGN KEY (category_id) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
-
 alter table "public"."news" validate constraint "news_category_id_fkey";
-
-alter table "public"."news" add constraint "news_url_key" UNIQUE using index "news_url_key";
-
-alter table "public"."news_embeddings" add constraint "news_embeddings_embedding_id_fkey" FOREIGN KEY (embedding_id) REFERENCES public.embeddings(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_embeddings" validate constraint "news_embeddings_embedding_id_fkey";
 
-alter table "public"."news_embeddings" add constraint "news_embeddings_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
-
 alter table "public"."news_embeddings" validate constraint "news_embeddings_news_id_fkey";
-
-alter table "public"."news_tags" add constraint "news_tags_news_id_fkey" FOREIGN KEY (news_id) REFERENCES public.news(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
 
 alter table "public"."news_tags" validate constraint "news_tags_news_id_fkey";
 
-alter table "public"."news_tags" add constraint "news_tags_tag_id_fkey" FOREIGN KEY (tag_id) REFERENCES public.tags(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
-
 alter table "public"."news_tags" validate constraint "news_tags_tag_id_fkey";
 
-alter table "public"."research" add constraint "research_url_key" UNIQUE using index "research_url_key";
-
-alter table "public"."responses" add constraint "responses_id_key" UNIQUE using index "responses_id_key";
-
-alter table "public"."responses" add constraint "responses_search_id_fkey" FOREIGN KEY (search_id) REFERENCES public.searches(id) not valid;
-
 alter table "public"."responses" validate constraint "responses_search_id_fkey";
-
-alter table "public"."role_permissions" add constraint "role_permission_unique" UNIQUE using index "role_permission_unique";
-
-alter table "public"."searches" add constraint "searches_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
 alter table "public"."searches" validate constraint "searches_user_id_fkey";
 
 alter table "public"."user_profiles" add constraint "public_user_profiles_id_fkey" FOREIGN KEY (id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."user_profiles" validate constraint "public_user_profiles_id_fkey";
-
-alter table "public"."user_profiles" add constraint "users_email_key" UNIQUE using index "users_email_key";
 
 set check_function_bodies = off;
 
