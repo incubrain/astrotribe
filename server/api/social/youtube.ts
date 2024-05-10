@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   console.log('channelName', channelName)
 
   try {
-    const videos = await getYoutubeContent(channelName)
+    const videos = await getYoutubeContent(String(channelName))
 
     console.log('returnedData', videos)
     return {
