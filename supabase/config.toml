@@ -36,7 +36,7 @@ port = 54329
 # Configure one of the supported pooler modes: `transaction`, `session`.
 pool_mode = "transaction"
 # How many server connections to allow per user/database pair.
-default_pool_size = 20
+default_pool_size = 15
 # Maximum number of client connections allowed.
 max_client_conn = 100
 
@@ -73,14 +73,6 @@ file_size_limit = "50MiB"
 
 # db:med:hard:4 add the ability for users to view as guests, 
 # bug:med:med:2 - when setting boolean default and nullable it always sets NULL if value is not present
-
-# design:critical:hard:12 - add role based access control to the database for the user roles
-# https://mannylara.medium.com/rbac-enforced-by-rls-in-supabase-bc6e98ff9cc3
-# https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac
-# https://lasse-skaalum.medium.com/implementing-rbac-with-next-js-and-supabase-5dd20adaaeba
-# https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-slack-clone
-# https://github.com/supabase-community/supabase-custom-claims
-
 
 # logic:high:med:2 - use social login metadata to populate user profiles (twitter is done)
 #  Linkedin returns this metadata:

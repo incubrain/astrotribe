@@ -67,6 +67,11 @@ export const configNewsPrivate: ScraperT[] = [
 // https://www.nss-mumbai.org/ - low priority
 // https://www.spaceskool.com/ - medium priority | funded by Indian Gov
 // https://hexstaruniverse.com/ - medium priority | Social education
+// https://astroverse.in/
+// https://genex.space/
+// https://astro-phile.com/
+// https://www.vyomikaspace.com/
+// https://www.himalayanspacecentre.org/
 
 
 // Research & Development
@@ -103,6 +108,7 @@ export const configNewsPrivate: ScraperT[] = [
 
 // Space Tourism 
 // https://spaceaura.com/ - medium priority
+// https://www.inspecity.com/
 
 // Mission Support
 // https://deltavanalytics.com/
@@ -116,9 +122,21 @@ export const configNewsPrivate: ScraperT[] = [
 // https://www.orbitx.in/ - high priority | in early stages, first launch 2024 of Atal Yaan Rocket
 // https://www.etherealx.space/ medium priority | appears to be in the very early stages, funded
 // https://abyom.com/ - medium priority | in early stages
+// https://urvyam.com/
+// https://spacetaxi.in/
+
+// Stargazing Equipment / Telescopes
+// https://tejraj.com/
+// https://aperturetelescopes.com/
 
 // Manufacturing
 // https://astramwp.com/ - low priority | communications
+
+// investing
+// https://kicksky.space/
+
+// Tourism
+// https://astroportglobal.com/
 
 // Comming Soon or Website Down
 // https://vellon.in/
@@ -139,3 +157,8 @@ export const configNewsPrivate: ScraperT[] = [
 // Location Unknown
 // https://www.korrai.com/
 // 
+
+
+
+// New
+// https://www.omspace.in/
