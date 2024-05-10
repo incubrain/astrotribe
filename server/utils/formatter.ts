@@ -35,14 +35,17 @@ export const formatAvatarUrl = (user: any) => {
       })
 }
 
-export const formatCoverUrl = (user: any) =>
-  getImageURL({
-    bucket: 'profile-public',
-    folderPath: `${user.id}/cover_image`,
-    fileType: 'user-cover_image',
-    file: user.cover_image,
-    isPrivate: false
-  })
+export const formatCoverUrl = (user: any) => {
+  return user.cover_image.startsWith('http')
+    ? user.cover_image
+    : getImageURL({
+        bucket: 'profile-public',
+        folderPath: `${user.id}/cover_image`,
+        fileType: 'user-cover_image',
+        file: user.cover_image,
+        isPrivate: false
+      })
+}
 
 export const formatDob = (date: string) => new Date(date).toISOString()
 

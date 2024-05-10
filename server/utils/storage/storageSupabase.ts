@@ -8,6 +8,7 @@ type FileType =
   | 'user-cover_image'
 
 // Map this to supabase storage bucket structures
+// todo:med:1 - add these defaults in public folder
 const defaultFileOptions: Record<FileType, string> = {
   'venue-logo': 'logo.jpg',
   'venue-featured-image': 'featured-image.jpg',
@@ -81,6 +82,12 @@ export const getImageURL = ({
   transform
 }: GetImageUrlOptions): string => {
   const baseURL = useRuntimeConfig().public.supabaseUrl
+
+  if (!baseURL) {
+    throw createError({
+      message: 'baseURL not defined in getImageURL'
+    })
+  }
 
   return constructUrl({
     baseURL,
