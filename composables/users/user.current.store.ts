@@ -30,7 +30,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     console.log('removeSession', response)
   }
 
-  async function loadSession(deleteSession = false) {
+  async function loadSession() {
     logger.info('loadSession')
     if (loading.isLoading(domainKey) || userSession.value) {
       return
@@ -40,9 +40,6 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     const response = await fetch('/api/auth/session', {
       method: 'GET',
-      query: {
-        deleteSession
-      }
     })
 
     const data = errors.handleFetchErrors(response, {
