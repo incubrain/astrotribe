@@ -55,7 +55,7 @@ create type "public"."address_type" as enum ('residential', 'headquarters', 'off
 
 
 CREATE TABLE "public"."categories" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "body" VARCHAR(255),
     "name" VARCHAR(255) NOT NULL,
@@ -69,7 +69,7 @@ ALTER TABLE "public"."categories" OWNER TO "postgres";
 
 -- Create tags table
 CREATE TABLE "public"."tags" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "body" TEXT,
     "created_at" TIME WITH TIME ZONE DEFAULT now(),
     "updated_at" TIME WITH TIME ZONE DEFAULT now(),
@@ -82,7 +82,7 @@ ALTER TABLE "public"."tags" OWNER TO "postgres";
 
 -- Create news table
 CREATE TABLE "public"."news" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT now(),
     "title" VARCHAR(255) NOT NULL,
@@ -104,7 +104,7 @@ ALTER TABLE "public"."news" OWNER TO "postgres";
 
 -- Create countries table
 CREATE TABLE "public"."countries" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "name" VARCHAR(100) NOT NULL,
     "code" VARCHAR(2) NOT NULL,
     PRIMARY KEY ("id"),
@@ -114,7 +114,7 @@ CREATE TABLE "public"."countries" (
 ALTER TABLE "public"."countries" OWNER TO "postgres";
 
 CREATE TABLE "public"."cities" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "name" VARCHAR(100) NOT NULL,
     "country_id" INTEGER NOT NULL,
     "state" VARCHAR,
@@ -127,7 +127,7 @@ ALTER TABLE "public"."cities" OWNER TO "postgres";
 
 -- Create social_media table
 CREATE TABLE "public"."social_media" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "facebook_url" VARCHAR(255),
     "twitter_url" VARCHAR(255),
     "linkedin_url" VARCHAR(255),
@@ -142,7 +142,7 @@ ALTER TABLE "public"."social_media" OWNER TO "postgres";
 
 -- Create companies table
 CREATE TABLE "public"."companies" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "name" VARCHAR(255) NOT NULL,
     "description" TEXT,
     "logo_url" VARCHAR(255),
@@ -193,7 +193,7 @@ ALTER TABLE "public"."user_profiles" OWNER TO "postgres";
 
 -- Create addresses table
 CREATE TABLE "public"."addresses" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "street1" VARCHAR(255) NOT NULL,
     "street2" VARCHAR(255),
     "city_id" INTEGER NOT NULL,
@@ -216,7 +216,7 @@ ALTER TABLE "public"."addresses" OWNER TO "postgres";
 
 -- Create user_followers table
 CREATE TABLE "public"."user_followers" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     "follower_id" UUID NOT NULL,
     "followed_id" UUID NOT NULL,
@@ -229,7 +229,7 @@ ALTER TABLE "public"."user_followers" OWNER TO "postgres";
 
 -- Create company_employees table
 CREATE TABLE "public"."company_employees" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "user_profile_id" UUID NOT NULL,
     "company_id" INTEGER NOT NULL,
     "role" TEXT NOT NULL,
@@ -249,7 +249,7 @@ ALTER TABLE "public"."company_employees" OWNER TO "postgres";
 
 -- Create company_news table
 CREATE TABLE "public"."company_news" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "company_id" INTEGER NOT NULL,
     "news_id" INTEGER NOT NULL,
     "relation_type" public.news_relation_type NOT NULL DEFAULT 'source'::public.news_relation_type,
@@ -265,7 +265,7 @@ ALTER TABLE "public"."company_news" OWNER TO "postgres";
 
 -- Create contacts table
 CREATE TABLE "public"."contacts" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "title" VARCHAR(100),
     "is_primary" BOOLEAN DEFAULT FALSE,
     "email" VARCHAR(255),
@@ -285,7 +285,7 @@ ALTER TABLE "public"."contacts" OWNER TO "postgres";
 
 -- Create embeddings table
 CREATE TABLE "public"."embeddings" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "vector" public.vector(1536),
     "type" TEXT NOT NULL,
     "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -296,7 +296,7 @@ ALTER TABLE "public"."embeddings" OWNER TO "postgres";
 
 -- Create feedbacks table
 CREATE TABLE "public"."feedbacks" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "user_id" UUID,
     "page_identifier" VARCHAR(255) NOT NULL,
     "feedback_type" public.feedback_type,
@@ -307,6 +307,7 @@ CREATE TABLE "public"."feedbacks" (
     "status" public.feedback_status DEFAULT 'new'::public.feedback_status,
     "resolution_comment" TEXT,
     PRIMARY KEY ("id"),
+    UNIQUE ("id"),
     FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
 );
 
@@ -316,7 +317,7 @@ ALTER TABLE "public"."feedbacks" OWNER TO "postgres";
 
 -- Create news_embeddings table
 CREATE TABLE "public"."news_embeddings" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "news_id" BIGINT NOT NULL,
     "embedding_id" BIGINT NOT NULL,
     PRIMARY KEY ("id"),
@@ -328,7 +329,7 @@ ALTER TABLE "public"."news_embeddings" OWNER TO "postgres";
 
 -- Create news_tags table
 CREATE TABLE "public"."news_tags" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "news_id" BIGINT NOT NULL,
     "tag_id" INTEGER NOT NULL,
     PRIMARY KEY ("id"),
@@ -340,7 +341,7 @@ ALTER TABLE "public"."news_tags" OWNER TO "postgres";
 
 -- Create plan_permissions table
 CREATE TABLE "public"."plan_permissions" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "plan" public.app_plan_enum NOT NULL,
     "feature" VARCHAR NOT NULL,
     PRIMARY KEY ("id")
@@ -350,7 +351,7 @@ ALTER TABLE "public"."plan_permissions" OWNER TO "postgres";
 
 -- Create research table
 CREATE TABLE "public"."research" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "published_at" TIMESTAMP WITH TIME ZONE,
@@ -369,7 +370,7 @@ ALTER TABLE "public"."research" OWNER TO "postgres";
 
 -- Create searches table
 CREATE TABLE "public"."searches" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "user_id" UUID,
     "input" TEXT NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -381,7 +382,7 @@ ALTER TABLE "public"."searches" OWNER TO "postgres";
 
 -- Create responses table
 CREATE TABLE "public"."responses" (
-    "id" bigserial NOT NULL,
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "search_id" BIGINT NOT NULL,
     "output" TEXT NOT NULL,
     "upvotes" INTEGER DEFAULT 0,
@@ -395,7 +396,7 @@ ALTER TABLE "public"."responses" OWNER TO "postgres";
 
 -- Create role_permissions table
 CREATE TABLE "public"."role_permissions" (
-    "id" serial NOT NULL,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "role" public.app_role_enum NOT NULL,
     "select" BOOLEAN DEFAULT FALSE,
     "insert" BOOLEAN DEFAULT FALSE,
