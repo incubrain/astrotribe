@@ -63,10 +63,7 @@ const { getCategoryName } = useCategoryTagStore()
         >
           founded: {{ company.founding_year }}
         </PrimeTag>
-        <PrimeTag
-          v-if="company.is_government"
-          severity="info"
-        >
+        <PrimeTag severity="info">
           {{ company.is_government ? 'Government' : 'Private' }}
         </PrimeTag>
       </div>
