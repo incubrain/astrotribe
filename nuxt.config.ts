@@ -39,8 +39,7 @@ export default defineNuxtConfig({
     },
     scheduledTasks: {
       // every 12 hours
-      '0 */2 * * *': ['scrape:news']
-      // '*/50 * * * *': ['scrape:papers']
+      // '0 */2 * * *': ['scrape:news']
     }
   },
 
