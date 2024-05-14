@@ -128,7 +128,7 @@ const { haveUserSession } = storeToRefs(currentUser)
                   <PrimeButton
                     @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
                   >
-                    Astronomy Hub
+                    Join Astronomy Hub
                   </PrimeButton>
                 </NuxtLink>
               </div>
