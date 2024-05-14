@@ -55,7 +55,7 @@ export type Database = {
           company_id?: number | null
           country_id: number
           created_at?: string | null
-          id?: number
+          id?: never
           is_primary?: boolean | null
           name?: string | null
           street1: string
@@ -69,7 +69,7 @@ export type Database = {
           company_id?: number | null
           country_id?: number
           created_at?: string | null
-          id?: number
+          id?: never
           is_primary?: boolean | null
           name?: string | null
           street1?: string
@@ -79,28 +79,28 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_city"
+            foreignKeyName: "fk_city_id"
             columns: ["city_id"]
             isOneToOne: false
             referencedRelation: "cities"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_country"
-            columns: ["country_id"]
-            isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_addresses_company_id_fkey"
+            foreignKeyName: "fk_company_id"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_addresses_user_id_fkey"
+            foreignKeyName: "fk_country_id"
+            columns: ["country_id"]
+            isOneToOne: false
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user_id"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
@@ -111,22 +111,22 @@ export type Database = {
       categories: {
         Row: {
           body: string | null
-          created_at: string
+          created_at: string | null
           id: number
           name: string
           updated_at: string | null
         }
         Insert: {
           body?: string | null
-          created_at?: string
-          id?: number
+          created_at?: string | null
+          id?: never
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
-          created_at?: string
-          id?: number
+          created_at?: string | null
+          id?: never
           name?: string
           updated_at?: string | null
         }
@@ -141,19 +141,19 @@ export type Database = {
         }
         Insert: {
           country_id: number
-          id?: number
+          id?: never
           name: string
           state?: string | null
         }
         Update: {
           country_id?: number
-          id?: number
+          id?: never
           name?: string
           state?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_country"
+            foreignKeyName: "fk_country_id"
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
@@ -184,7 +184,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: number
+          id?: never
           is_government?: boolean
           last_scraped_at?: string | null
           logo_url?: string | null
@@ -201,7 +201,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: number
+          id?: never
           is_government?: boolean
           last_scraped_at?: string | null
           logo_url?: string | null
@@ -215,14 +215,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_category"
+            foreignKeyName: "fk_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_social_media"
+            foreignKeyName: "fk_social_media_id"
             columns: ["social_media_id"]
             isOneToOne: false
             referencedRelation: "social_media"
@@ -236,6 +236,7 @@ export type Database = {
           company_id: number
           created_at: string | null
           end_date: string | null
+          id: number
           job_description: string | null
           role: string
           start_date: string | null
@@ -248,6 +249,7 @@ export type Database = {
           company_id: number
           created_at?: string | null
           end_date?: string | null
+          id?: never
           job_description?: string | null
           role: string
           start_date?: string | null
@@ -260,6 +262,7 @@ export type Database = {
           company_id?: number
           created_at?: string | null
           end_date?: string | null
+          id?: never
           job_description?: string | null
           role?: string
           start_date?: string | null
@@ -269,14 +272,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "company_employees_company_id_fkey"
+            foreignKeyName: "fk_company_id"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "company_employees_user_profile_id_fkey"
+            foreignKeyName: "fk_user_id"
             columns: ["user_profile_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
@@ -288,6 +291,7 @@ export type Database = {
         Row: {
           company_id: number
           created_at: string | null
+          id: number
           importance_level:
             | Database["public"]["Enums"]["news_importance_level"]
             | null
@@ -298,16 +302,18 @@ export type Database = {
         Insert: {
           company_id: number
           created_at?: string | null
+          id?: never
           importance_level?:
             | Database["public"]["Enums"]["news_importance_level"]
             | null
           news_id: number
-          relation_type: Database["public"]["Enums"]["news_relation_type"]
+          relation_type?: Database["public"]["Enums"]["news_relation_type"]
           updated_at?: string | null
         }
         Update: {
           company_id?: number
           created_at?: string | null
+          id?: never
           importance_level?:
             | Database["public"]["Enums"]["news_importance_level"]
             | null
@@ -317,14 +323,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "company_news_company_id_fkey"
+            foreignKeyName: "fk_company_id"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "company_news_news_id_fkey"
+            foreignKeyName: "fk_news_id"
             columns: ["news_id"]
             isOneToOne: false
             referencedRelation: "news"
@@ -351,7 +357,7 @@ export type Database = {
           contact_type?: Database["public"]["Enums"]["contact_type"] | null
           created_at?: string | null
           email?: string | null
-          id?: number
+          id?: never
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database["public"]["Enums"]["privacy_level"] | null
@@ -364,7 +370,7 @@ export type Database = {
           contact_type?: Database["public"]["Enums"]["contact_type"] | null
           created_at?: string | null
           email?: string | null
-          id?: number
+          id?: never
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database["public"]["Enums"]["privacy_level"] | null
@@ -374,14 +380,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_company"
+            foreignKeyName: "fk_company_id"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "fk_user"
+            foreignKeyName: "fk_user_id"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
@@ -397,12 +403,12 @@ export type Database = {
         }
         Insert: {
           code: string
-          id?: number
+          id?: never
           name: string
         }
         Update: {
           code?: string
-          id?: number
+          id?: never
           name?: string
         }
         Relationships: []
@@ -416,13 +422,13 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          id?: number
+          id?: never
           type: string
           vector?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: number
+          id?: never
           type?: string
           vector?: string | null
         }
@@ -445,7 +451,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database["public"]["Enums"]["feedback_type"] | null
-          id?: number
+          id?: never
           message: string
           page_identifier: string
           resolution_comment?: string | null
@@ -457,7 +463,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database["public"]["Enums"]["feedback_type"] | null
-          id?: number
+          id?: never
           message?: string
           page_identifier?: string
           resolution_comment?: string | null
@@ -467,7 +473,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_user"
+            foreignKeyName: "fk_user_id"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
@@ -480,7 +486,7 @@ export type Database = {
           author: string | null
           body: string
           category_id: number
-          created_at: string
+          created_at: string | null
           description: string | null
           featured_image: string | null
           has_summary: boolean
@@ -488,42 +494,42 @@ export type Database = {
           published_at: string | null
           source: string
           title: string
-          updated_at: string
+          updated_at: string | null
           url: string
         }
         Insert: {
           author?: string | null
           body: string
           category_id?: number
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: number
+          id?: never
           published_at?: string | null
           source: string
           title: string
-          updated_at?: string
+          updated_at?: string | null
           url: string
         }
         Update: {
           author?: string | null
           body?: string
           category_id?: number
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: number
+          id?: never
           published_at?: string | null
           source?: string
           title?: string
-          updated_at?: string
+          updated_at?: string | null
           url?: string
         }
         Relationships: [
           {
-            foreignKeyName: "news_category_id_fkey"
+            foreignKeyName: "fk_category_id"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
@@ -539,24 +545,24 @@ export type Database = {
         }
         Insert: {
           embedding_id: number
-          id?: number
+          id?: never
           news_id: number
         }
         Update: {
           embedding_id?: number
-          id?: number
+          id?: never
           news_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "news_embeddings_embedding_id_fkey"
+            foreignKeyName: "fk_embedding_id"
             columns: ["embedding_id"]
             isOneToOne: false
             referencedRelation: "embeddings"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "news_embeddings_news_id_fkey"
+            foreignKeyName: "fk_news_id"
             columns: ["news_id"]
             isOneToOne: false
             referencedRelation: "news"
@@ -571,25 +577,25 @@ export type Database = {
           tag_id: number
         }
         Insert: {
-          id?: number
+          id?: never
           news_id: number
           tag_id: number
         }
         Update: {
-          id?: number
+          id?: never
           news_id?: number
           tag_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "news_tags_news_id_fkey"
+            foreignKeyName: "fk_news_id"
             columns: ["news_id"]
             isOneToOne: false
             referencedRelation: "news"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "news_tags_tag_id_fkey"
+            foreignKeyName: "fk_tag_id"
             columns: ["tag_id"]
             isOneToOne: false
             referencedRelation: "tags"
@@ -605,12 +611,12 @@ export type Database = {
         }
         Insert: {
           feature: string
-          id?: number
+          id?: never
           plan: Database["public"]["Enums"]["app_plan_enum"]
         }
         Update: {
           feature?: string
-          id?: number
+          id?: never
           plan?: Database["public"]["Enums"]["app_plan_enum"]
         }
         Relationships: []
@@ -621,7 +627,7 @@ export type Database = {
           body: string | null
           created_at: string
           description: string | null
-          id: string
+          id: number
           published_at: string | null
           title: string | null
           updated_at: string | null
@@ -633,7 +639,7 @@ export type Database = {
           body?: string | null
           created_at?: string
           description?: string | null
-          id?: string
+          id?: never
           published_at?: string | null
           title?: string | null
           updated_at?: string | null
@@ -645,7 +651,7 @@ export type Database = {
           body?: string | null
           created_at?: string
           description?: string | null
-          id?: string
+          id?: never
           published_at?: string | null
           title?: string | null
           updated_at?: string | null
@@ -666,7 +672,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           downvotes?: number | null
-          id?: number
+          id?: never
           output: string
           search_id: number
           upvotes?: number | null
@@ -674,14 +680,14 @@ export type Database = {
         Update: {
           created_at?: string | null
           downvotes?: number | null
-          id?: number
+          id?: never
           output?: string
           search_id?: number
           upvotes?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "responses_search_id_fkey"
+            foreignKeyName: "fk_search_id"
             columns: ["search_id"]
             isOneToOne: false
             referencedRelation: "searches"
@@ -701,7 +707,7 @@ export type Database = {
         }
         Insert: {
           delete?: boolean | null
-          id?: number
+          id?: never
           insert?: boolean | null
           role: Database["public"]["Enums"]["app_role_enum"]
           select?: boolean | null
@@ -710,7 +716,7 @@ export type Database = {
         }
         Update: {
           delete?: boolean | null
-          id?: number
+          id?: never
           insert?: boolean | null
           role?: Database["public"]["Enums"]["app_role_enum"]
           select?: boolean | null
@@ -728,19 +734,19 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          id?: number
+          id?: never
           input: string
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: number
+          id?: never
           input?: string
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "searches_user_id_fkey"
+            foreignKeyName: "fk_user_id"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
@@ -762,7 +768,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: number
+          id?: never
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
@@ -772,7 +778,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: number
+          id?: never
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
@@ -792,14 +798,14 @@ export type Database = {
         Insert: {
           body?: string | null
           created_at?: string | null
-          id?: number
+          id?: never
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string | null
-          id?: number
+          id?: never
           name?: string
           updated_at?: string | null
         }
@@ -810,21 +816,36 @@ export type Database = {
           created_at: string | null
           followed_id: string
           follower_id: string
-          id: string
+          id: number
         }
         Insert: {
           created_at?: string | null
           followed_id: string
           follower_id: string
-          id: string
+          id?: never
         }
         Update: {
           created_at?: string | null
           followed_id?: string
           follower_id?: string
-          id?: string
+          id?: never
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_followers_followed_id_fkey"
+            columns: ["followed_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_followers_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_profiles: {
         Row: {
@@ -857,7 +878,7 @@ export type Database = {
           followers_count?: number | null
           gender_id?: number | null
           given_name?: string | null
-          id?: string
+          id: string
           introduction?: string | null
           last_seen?: string | null
           plan?: Database["public"]["Enums"]["app_plan_enum"] | null
@@ -889,7 +910,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_user_profiles_id_fkey"
+            foreignKeyName: "fk_auth_id"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
@@ -918,13 +939,80 @@ export type Database = {
         }
         Returns: boolean
       }
+      binary_quantize:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
       custom_access_token_hook: {
         Args: {
           event: Json
         }
         Returns: Json
       }
+      halfvec_avg: {
+        Args: {
+          "": number[]
+        }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: {
+          "": unknown
+        }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: {
+          "": unknown[]
+        }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
       hnswhandler: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
         Args: {
           "": unknown
         }
@@ -936,18 +1024,75 @@ export type Database = {
         }
         Returns: unknown
       }
+      l2_norm:
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
+      l2_normalize:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: unknown
+          }
+      sparsevec_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: {
+          "": unknown
+        }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: {
+          "": unknown[]
+        }
+        Returns: number
+      }
       vector_avg: {
         Args: {
           "": number[]
         }
         Returns: string
       }
-      vector_dims: {
-        Args: {
-          "": string
-        }
-        Returns: number
-      }
+      vector_dims:
+        | {
+            Args: {
+              "": string
+            }
+            Returns: number
+          }
+        | {
+            Args: {
+              "": unknown
+            }
+            Returns: number
+          }
       vector_norm: {
         Args: {
           "": string
@@ -974,7 +1119,7 @@ export type Database = {
       }
     }
     Enums: {
-      access_level: "Viewer" | "Editor" | "Admin" | "Super Admin"
+      access_level: "viewer" | "editor" | "admin" | "super_admin"
       address_type:
         | "residential"
         | "headquarters"
@@ -1005,11 +1150,11 @@ export type Database = {
         | "admin"
         | "super_admin"
       contact_type:
-        | "Personal"
-        | "Company"
-        | "Professional"
-        | "Recruitment"
-        | "Founder"
+        | "personal"
+        | "company"
+        | "professional"
+        | "recruitment"
+        | "founder"
       feedback_status:
         | "new"
         | "under_review"
@@ -1024,17 +1169,17 @@ export type Database = {
         | "user_interface_issue"
         | "performance_issue"
         | "documentation"
-      news_importance_level: "High" | "Medium" | "Low"
+      news_importance_level: "high" | "medium" | "low"
       news_relation_type: "source" | "topic" | "mention"
-      privacy_level: "Private" | "Connected" | "Public"
+      privacy_level: "private" | "connected" | "public"
       scrape_frequency:
-        | "FourTimesDaily"
-        | "TwiceDaily"
-        | "Daily"
-        | "Weekly"
-        | "BiWeekly"
-        | "Monthly"
-      user_status: "ONLINE" | "OFFLINE"
+        | "four_times_daily"
+        | "twice_daily"
+        | "daily"
+        | "weekly"
+        | "bi_weekly"
+        | "monthly"
+      user_status: "online" | "offline"
     }
     CompositeTypes: {
       [_ in never]: never
