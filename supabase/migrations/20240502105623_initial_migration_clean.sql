@@ -56,10 +56,10 @@ create type "public"."address_type" as enum ('residential', 'headquarters', 'off
 
 CREATE TABLE "public"."categories" (
     "id" INT GENERATED ALWAYS AS IDENTITY,
-    "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "body" VARCHAR(255),
     "name" VARCHAR(255) NOT NULL,
-    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
     UNIQUE ("name")
 );
@@ -83,11 +83,11 @@ ALTER TABLE "public"."tags" OWNER TO "postgres";
 -- Create news table
 CREATE TABLE "public"."news" (
     "id" BIGINT GENERATED ALWAYS AS IDENTITY,
-    "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT now(),
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "title" VARCHAR(255) NOT NULL,
     "body" TEXT NOT NULL,
-    "category_id" BIGINT NOT NULL DEFAULT '16'::INT,
+    "category_id" INT NOT NULL DEFAULT '16'::INT,
     "author" TEXT,
     "description" TEXT,
     "featured_image" TEXT,
@@ -97,7 +97,7 @@ CREATE TABLE "public"."news" (
     "url" TEXT NOT NULL,
     PRIMARY KEY ("id"),
     UNIQUE ("url"),
-    FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT "fk_category_id" FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 ALTER TABLE "public"."news" OWNER TO "postgres";
@@ -120,7 +120,7 @@ CREATE TABLE "public"."cities" (
     "state" VARCHAR,
     PRIMARY KEY ("id"),
     UNIQUE ("name"),
-    FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id")
+    CONSTRAINT "fk_country_id" FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id")
 );
 
 ALTER TABLE "public"."cities" OWNER TO "postgres";
@@ -157,26 +157,26 @@ CREATE TABLE "public"."companies" (
     "is_government" BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY ("id"),
     UNIQUE ("website_url"),
-    FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id"),
-    FOREIGN KEY ("social_media_id") REFERENCES "public"."social_media" ("id")
+    CONSTRAINT "fk_category_id" FOREIGN KEY ("category_id") REFERENCES "public"."categories" ("id"),
+    CONSTRAINT "fk_social_media_id" FOREIGN KEY ("social_media_id") REFERENCES "public"."social_media" ("id")
 );
 
 ALTER TABLE "public"."companies" OWNER TO "postgres";
 
 -- Create user_profiles table
 CREATE TABLE "public"."user_profiles" (
-    "id" UUID NOT NULL DEFAULT extensions.uuid_generate_v4(),
+    "id" UUID,
     "email" TEXT NOT NULL,
     "given_name" TEXT,
     "surname" TEXT,
     "username" VARCHAR,
     "dob" DATE,
     "gender_id" SMALLINT,
-    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "last_seen" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "last_seen" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "avatar" TEXT,
-    "cover_image" TEXT DEFAULT ''::TEXT,
+    "cover_image" TEXT,
     "introduction" TEXT,
     "quote" TEXT,
     "followed_count" INTEGER DEFAULT 0,
@@ -185,7 +185,8 @@ CREATE TABLE "public"."user_profiles" (
     "role" public.app_role_enum NOT NULL DEFAULT 'user'::public.app_role_enum,
     PRIMARY KEY ("id"),
     UNIQUE ("email"),
-    FOREIGN KEY ("id") REFERENCES "auth"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT "fk_auth_id" FOREIGN KEY ("id") REFERENCES "auth"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+    
 );
 
 ALTER TABLE "public"."user_profiles" OWNER TO "postgres";
@@ -206,10 +207,10 @@ CREATE TABLE "public"."addresses" (
     "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("city_id") REFERENCES "public"."cities" ("id"),
-    FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id"),
-    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
-    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+    CONSTRAINT "fk_city_id" FOREIGN KEY ("city_id") REFERENCES "public"."cities" ("id"),
+    CONSTRAINT "fk_country_id" FOREIGN KEY ("country_id") REFERENCES "public"."countries" ("id"),
+    CONSTRAINT "fk_company_id" FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
+    CONSTRAINT "fk_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
 );
 
 ALTER TABLE "public"."addresses" OWNER TO "postgres";
@@ -217,7 +218,7 @@ ALTER TABLE "public"."addresses" OWNER TO "postgres";
 -- Create user_followers table
 CREATE TABLE "public"."user_followers" (
     "id" BIGINT GENERATED ALWAYS AS IDENTITY,
-    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "follower_id" UUID NOT NULL,
     "followed_id" UUID NOT NULL,
     PRIMARY KEY ("id"),
@@ -234,15 +235,15 @@ CREATE TABLE "public"."company_employees" (
     "company_id" INTEGER NOT NULL,
     "role" TEXT NOT NULL,
     "job_description" TEXT,
-    "start_date" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "start_date" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     "end_date" TIMESTAMP WITH TIME ZONE,
     "status" BOOLEAN,
     "access_level" public.access_level NOT NULL DEFAULT 'viewer'::public.access_level,
-    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("user_profile_id") REFERENCES "public"."user_profiles" ("id"),
-    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id")
+    CONSTRAINT "fk_user_id" FOREIGN KEY ("user_profile_id") REFERENCES "public"."user_profiles" ("id"),
+    CONSTRAINT "fk_company_id" FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id")
 );
 
 ALTER TABLE "public"."company_employees" OWNER TO "postgres";
@@ -254,11 +255,11 @@ CREATE TABLE "public"."company_news" (
     "news_id" INTEGER NOT NULL,
     "relation_type" public.news_relation_type NOT NULL DEFAULT 'source'::public.news_relation_type,
     "importance_level" public.news_importance_level,
-    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
-    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id")
+    CONSTRAINT "fk_company_id" FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id"),
+    CONSTRAINT "fk_news_id" FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id")
 );
 
 ALTER TABLE "public"."company_news" OWNER TO "postgres";
@@ -273,12 +274,12 @@ CREATE TABLE "public"."contacts" (
     "privacy_level" public.privacy_level,
     "user_id" UUID,
     "company_id" INTEGER,
-    "created_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    "updated_at" TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     "phone" VARCHAR(50),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id") ON DELETE CASCADE,
-    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id") ON DELETE CASCADE
+    CONSTRAINT "fk_company_id" FOREIGN KEY ("company_id") REFERENCES "public"."companies" ("id") ON DELETE CASCADE,
+    CONSTRAINT "fk_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id") ON DELETE CASCADE
 );
 
 ALTER TABLE "public"."contacts" OWNER TO "postgres";
@@ -288,7 +289,7 @@ CREATE TABLE "public"."embeddings" (
     "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "vector" public.vector(1536),
     "type" TEXT NOT NULL,
-    "created_at" TIMESTAMP(6) WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id")
 );
 
@@ -301,14 +302,14 @@ CREATE TABLE "public"."feedbacks" (
     "page_identifier" VARCHAR(255) NOT NULL,
     "feedback_type" public.feedback_type,
     "message" TEXT NOT NULL,
-    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     "device_info" TEXT,
     "status" public.feedback_status DEFAULT 'new'::public.feedback_status,
     "resolution_comment" TEXT,
     PRIMARY KEY ("id"),
     UNIQUE ("id"),
-    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+    CONSTRAINT "fk_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
 );
 
 ALTER TABLE "public"."feedbacks" OWNER TO "postgres";
@@ -321,8 +322,8 @@ CREATE TABLE "public"."news_embeddings" (
     "news_id" BIGINT NOT NULL,
     "embedding_id" BIGINT NOT NULL,
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY ("embedding_id") REFERENCES "public"."embeddings" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT "fk_news_id" FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT "fk_embedding_id" FOREIGN KEY ("embedding_id") REFERENCES "public"."embeddings" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 ALTER TABLE "public"."news_embeddings" OWNER TO "postgres";
@@ -333,8 +334,8 @@ CREATE TABLE "public"."news_tags" (
     "news_id" BIGINT NOT NULL,
     "tag_id" INTEGER NOT NULL,
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
-    FOREIGN KEY ("tag_id") REFERENCES "public"."tags" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT "fk_news_id" FOREIGN KEY ("news_id") REFERENCES "public"."news" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT "fk_tag_id" FOREIGN KEY ("tag_id") REFERENCES "public"."tags" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 ALTER TABLE "public"."news_tags" OWNER TO "postgres";
@@ -373,9 +374,9 @@ CREATE TABLE "public"."searches" (
     "id" BIGINT GENERATED ALWAYS AS IDENTITY,
     "user_id" UUID,
     "input" TEXT NOT NULL,
-    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
+    CONSTRAINT "fk_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user_profiles" ("id")
 );
 
 ALTER TABLE "public"."searches" OWNER TO "postgres";
@@ -387,9 +388,9 @@ CREATE TABLE "public"."responses" (
     "output" TEXT NOT NULL,
     "upvotes" INTEGER DEFAULT 0,
     "downvotes" INTEGER DEFAULT 0,
-    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("search_id") REFERENCES "public"."searches" ("id")
+    CONSTRAINT "fk_search_id" FOREIGN KEY ("search_id") REFERENCES "public"."searches" ("id")
 );
 
 ALTER TABLE "public"."responses" OWNER TO "postgres";
@@ -419,71 +420,49 @@ CREATE INDEX idx_companies_name ON public.companies USING btree (name);
 CREATE UNIQUE INDEX idx_unique_user_company ON public.company_employees USING btree (user_profile_id, company_id);
 CREATE UNIQUE INDEX idx_unique_company_news ON public.company_news USING btree (company_id, news_id);
 
-alter table "public"."addresses" add constraint "fk_city" FOREIGN KEY (city_id) REFERENCES public.cities(id) not valid;
+alter table "public"."addresses" validate constraint "fk_city_id";
 
-alter table "public"."addresses" validate constraint "fk_city";
+alter table "public"."addresses" validate constraint "fk_country_id";
 
-alter table "public"."addresses" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES public.countries(id) not valid;
+alter table "public"."addresses" validate constraint "fk_company_id";
 
-alter table "public"."addresses" validate constraint "fk_country";
+alter table "public"."addresses" validate constraint "fk_user_id";
 
-alter table "public"."addresses" add constraint "public_addresses_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."cities" validate constraint "fk_country_id";
 
-alter table "public"."addresses" validate constraint "public_addresses_company_id_fkey";
+alter table "public"."companies" validate constraint "fk_category_id";
 
-alter table "public"."addresses" add constraint "public_addresses_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."companies" validate constraint "fk_social_media_id";
 
-alter table "public"."addresses" validate constraint "public_addresses_user_id_fkey";
+alter table "public"."company_employees" validate constraint "fk_company_id";
 
-alter table "public"."cities" add constraint "fk_country" FOREIGN KEY (country_id) REFERENCES public.countries(id) not valid;
+alter table "public"."company_employees" validate constraint "fk_user_id";
 
-alter table "public"."cities" validate constraint "fk_country";
+alter table "public"."company_news" validate constraint "fk_company_id";
 
-alter table "public"."companies" add constraint "fk_category" FOREIGN KEY (category_id) REFERENCES public.categories(id) not valid;
+alter table "public"."company_news" validate constraint "fk_news_id";
 
-alter table "public"."companies" validate constraint "fk_category";
+alter table "public"."contacts" validate constraint "fk_company_id";
 
-alter table "public"."companies" add constraint "fk_social_media" FOREIGN KEY (social_media_id) REFERENCES public.social_media(id) not valid;
+alter table "public"."contacts" validate constraint "fk_user_id";
 
-alter table "public"."companies" validate constraint "fk_social_media";
+alter table "public"."feedbacks" validate constraint "fk_user_id";
 
-alter table "public"."company_employees" validate constraint "company_employees_company_id_fkey";
+alter table "public"."news" validate constraint "fk_category_id";
 
-alter table "public"."company_employees" validate constraint "company_employees_user_profile_id_fkey";
+alter table "public"."news_embeddings" validate constraint "fk_embedding_id";
 
-alter table "public"."company_news" validate constraint "company_news_company_id_fkey";
+alter table "public"."news_embeddings" validate constraint "fk_news_id";
 
-alter table "public"."company_news" validate constraint "company_news_news_id_fkey";
+alter table "public"."news_tags" validate constraint "fk_news_id";
 
-alter table "public"."contacts" add constraint "fk_company" FOREIGN KEY (company_id) REFERENCES public.companies(id) ON DELETE CASCADE not valid;
+alter table "public"."news_tags" validate constraint "fk_tag_id";
 
-alter table "public"."contacts" validate constraint "fk_company";
+alter table "public"."responses" validate constraint "fk_search_id";
 
-alter table "public"."contacts" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON DELETE CASCADE not valid;
+alter table "public"."searches" validate constraint "fk_user_id";
 
-alter table "public"."contacts" validate constraint "fk_user";
-
-alter table "public"."feedbacks" add constraint "fk_user" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
-
-alter table "public"."feedbacks" validate constraint "fk_user";
-
-alter table "public"."news" validate constraint "news_category_id_fkey";
-
-alter table "public"."news_embeddings" validate constraint "news_embeddings_embedding_id_fkey";
-
-alter table "public"."news_embeddings" validate constraint "news_embeddings_news_id_fkey";
-
-alter table "public"."news_tags" validate constraint "news_tags_news_id_fkey";
-
-alter table "public"."news_tags" validate constraint "news_tags_tag_id_fkey";
-
-alter table "public"."responses" validate constraint "responses_search_id_fkey";
-
-alter table "public"."searches" validate constraint "searches_user_id_fkey";
-
-alter table "public"."user_profiles" add constraint "public_user_profiles_id_fkey" FOREIGN KEY (id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
-
-alter table "public"."user_profiles" validate constraint "public_user_profiles_id_fkey";
+alter table "public"."user_profiles" validate constraint "fk_auth_id";
 
 set check_function_bodies = off;
 
