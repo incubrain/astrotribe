@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    console.log('User session fetched from session', session)
     return {
       error: null,
       status: 200,
