@@ -10,8 +10,8 @@ const userStore = useCurrentUser()
 const { profile } = storeToRefs(userStore)
 
 const comingSoon = [
-  'Company social media showcase',
-  'Follow users and companies',
+  'Add images to news articles',
+  'Create and store text embeddings for News',
   'All Indian astronomy companies added',
   'AI generated summaries for news',
   'Admin dashboard'
@@ -46,7 +46,9 @@ const comingSoon = [
         </div>
       </template>
       <template #footer>
-        <PrimeButton outlined> Explore the Hub </PrimeButton>
+        <NuxtLink to="/astrotribe/news">
+          <PrimeButton outlined> Explore the Hub </PrimeButton>
+        </NuxtLink>
       </template>
     </PrimeCard>
     <PrimeCard
@@ -63,7 +65,9 @@ const comingSoon = [
         </div>
       </template>
       <template #footer>
-        <PrimeButton outlined> Search Companies </PrimeButton>
+        <NuxtLink to="/astrotribe/companies">
+          <PrimeButton outlined> Search Companies </PrimeButton>
+        </NuxtLink>
       </template>
     </PrimeCard>
     <PrimeCard
@@ -80,7 +84,9 @@ const comingSoon = [
         </div>
       </template>
       <template #footer>
-        <PrimeButton outlined> Start Connecting </PrimeButton>
+        <NuxtLink to="/astrotribe/users">
+          <PrimeButton outlined> Start Connecting </PrimeButton>
+        </NuxtLink>
       </template>
     </PrimeCard>
     <div class="md:col-start-2 row-span-2 lg:col-start-3 md:row-start-1 space-y-4">
