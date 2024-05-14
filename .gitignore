@@ -8,12 +8,8 @@ node_modules
 dist
 .unlighthouse
 private-data
-data/kv
-data/blogs/serp
-data/seed
+data/**
 /test-results/
-/playwright-report/
 /blob-report/
-/playwright/.cache/
 .DS_Store
-/docs/**
+docs/**
