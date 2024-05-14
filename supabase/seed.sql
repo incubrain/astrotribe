@@ -1676,7 +1676,8 @@ INSERT INTO "public"."categories" ("id", "created_at", "body", "name", "updated_
 	(12, '2023-12-04 14:22:18.437603+00', NULL, 'Space Agencies and Organizations', '2024-05-03 05:35:54.092885+00'),
 	(13, '2023-12-04 14:22:18.437603+00', NULL, 'Technology and Innovation', '2024-05-03 05:35:54.092885+00'),
 	(14, '2023-12-04 14:22:18.437603+00', NULL, 'Historical Astronomy', '2024-05-03 05:35:54.092885+00'),
-	(15, '2023-12-04 14:22:18.437603+00', NULL, 'Public Engagement and Media', '2024-05-03 05:35:54.092885+00');
+	(15, '2023-12-04 14:22:18.437603+00', NULL, 'Public Engagement and Media', '2024-05-03 05:35:54.092885+00'),
+	(16, '2023-12-04 14:22:18.437603+00', NULL, 'Uncategorized', '2024-05-03 05:35:54.092885+00');
 
 
 --
@@ -2615,175 +2616,23 @@ ON CONFLICT (id) DO NOTHING;
 
 
 
---
--- Data for Name: objects; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
---
-
-
-
---
--- Data for Name: s3_multipart_uploads; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
---
-
-
-
---
--- Data for Name: s3_multipart_uploads_parts; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
---
-
-
-
---
--- Data for Name: secrets; Type: TABLE DATA; Schema: vault; Owner: supabase_admin
---
-
-
-
---
--- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
---
-
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 349, true);
-
-
---
--- Name: key_key_id_seq; Type: SEQUENCE SET; Schema: pgsodium; Owner: supabase_admin
---
-
-SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
-
-
---
--- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."addresses_id_seq"', 1, false);
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."categories_id_seq"', 1, false);
-
-
---
--- Name: cities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."cities_id_seq"', 1, false);
-
-
---
--- Name: companies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."companies_id_seq"', 1, false);
-
-
---
--- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."contacts_id_seq"', 1, false);
-
-
---
--- Name: countries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."countries_id_seq"', 1, false);
-
-
---
--- Name: embeddings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."embeddings_id_seq"', 1, false);
-
-
---
--- Name: feedback_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."feedbacks_id_seq"', 1, false);
-
-
---
--- Name: news_embeddings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."news_embeddings_id_seq"', 1, false);
-
-
---
--- Name: news_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."news_id_seq"', 1, false);
-
-
---
--- Name: news_tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."news_tags_id_seq"', 1, false);
-
-
---
--- Name: plan_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."plan_permissions_id_seq"', 1, false);
-
-
---
--- Name: responses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."responses_id_seq"', 1, false);
-
-
---
--- Name: responses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."responses_id_seq"', 1, false);
-
-
---
--- Name: role_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."role_permissions_id_seq"', 88, true);
-
-
---
--- Name: searches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."searches_id_seq"', 1, false);
-
-
---
--- Name: searches_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."searches_id_seq"', 1, false);
-
-
---
--- Name: social_media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."social_media_id_seq"', 1, false);
-
--- https://fwuwxknrxpzxcbwkwicp.supabase.co/auth/v1/authorize?provider=linkedin_oidc&redirect_to=https%3A%2F%2Fastrotribe.vercel.app%2Fastrotribe&code_challenge=sHAR9T-yP-7xxSzBfgSSl9iUK6BKm8jr65UPkCKokwM&code_challenge_method=s256
---
--- Name: tags_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."tags_id_seq"', 1, false);
+-- Automatically adjust sequences after seeding data in the 'public' schema
+DO
+$$
+DECLARE
+    table_record RECORD;
+BEGIN
+    FOR table_record IN SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+    LOOP
+        -- Check if there's an associated sequence and an 'id' column of type 'integer' or 'bigint'
+        PERFORM column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = table_record.table_name AND column_name = 'id' AND data_type IN ('integer', 'bigint');
+        IF FOUND THEN
+            -- Dynamically set the sequence value based on the maximum id present
+            EXECUTE format('SELECT setval(pg_get_serial_sequence(''%I.%I'', ''id''), COALESCE((SELECT MAX(id) FROM %I.%I), 0) + 1, false)', 'public', table_record.table_name, 'public', table_record.table_name);
+        END IF;
+    END LOOP;
+END
+$$;
 
 
 --
