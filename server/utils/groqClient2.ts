@@ -6,13 +6,6 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
 })
 
-// Define the schema for business data using Zod
-const BusinessDataSchema = z.object({
-  companyName: z.string(),
-  websiteUrl: z.string().url(),
-  sitemapUrl: z.string().url().optional()
-})
-
 async function fetchHTML(url: string): Promise<string> {
   return await $fetch(url, {
     method: 'GET'

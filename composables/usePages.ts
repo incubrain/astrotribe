@@ -162,14 +162,6 @@ const websiteLinks = [
         url: '/blog',
         visible: true,
         disabled: false
-      },
-      {
-        key: 'blog-isro',
-        label: 'ISRO',
-        icon: 'material-symbols:menu-book-outline',
-        url: '/blog/isro',
-        visible: true,
-        disabled: false
       }
     ]
   }

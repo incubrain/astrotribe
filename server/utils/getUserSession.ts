@@ -138,7 +138,7 @@ export async function validateAndUpdateSession() {
         user_id: user.id,
         user_role,
         user_plan,
-      }
+      },
       plan_permissions: permissions.plan,
       role_permissions: permissions.role
     })
