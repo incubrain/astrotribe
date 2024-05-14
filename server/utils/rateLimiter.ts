@@ -37,13 +37,13 @@ interface RateLimitInfo {
 export async function rateLimiter() {
   console.log('RATE-LIMITER TRIGGERED')
   const event = useEvent()
-  const user = await getUserPermissions()
+  const permissions = await getUserPermissions()
 
-  console.log('rateLimiter', user)
-
-  if (!user?.user_id) {
+  if (!permissions) {
     throw createError({ message: 'User not found, You must be logged in to use this endpoint' })
   }
+
+  const user = permissions.user
 
   // test this
   console.log('rateLimiter', user, event.path)

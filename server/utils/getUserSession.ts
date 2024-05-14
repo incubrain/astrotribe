@@ -86,9 +86,11 @@ interface Permission {
 interface StoredPermissions {
   refresh_token: string
   expires_at: number
-  user_id: string
-  user_role: string
-  user_plan: string
+  user: {
+    user_id: string
+    user_role: string
+    user_plan: string
+  }
   plan_permissions: Permission[]
   role_permissions: Permission[]
 }
