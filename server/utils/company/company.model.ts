@@ -31,12 +31,12 @@ const companyNewsSchema = z.object({
 })
 
 const ScrapeFrequencySchema = z.enum([
-  'FourTimesDaily',
-  'TwiceDaily',
-  'Daily',
-  'Weekly',
-  'BiWeekly',
-  'Monthly'
+  'four_times_daily',
+  'twice_daily',
+  'daily',
+  'weekly',
+  'bi_weekly',
+  'monthly'
 ])
 
 export const companySchema = z.object({
@@ -68,7 +68,7 @@ class CompanyEmployees {
   start_date: Date
   end_date?: Date
   status: boolean
-  access_level: 'Viewer' | 'Editor' | 'Admin' | 'Super Admin'
+  access_level: 'viewer' | 'editor' | 'admin' | 'super_admin'
   created_at: Date
   updated_at: Date
 
@@ -116,7 +116,7 @@ export class Company {
   phone?: string
   social_media_id?: number
   last_scraped_at?: string
-  scrape_frequency?: 'FourTimesDaily' | 'TwiceDaily' | 'Daily' | 'Weekly' | 'BiWeekly' | 'Monthly'
+  scrape_frequency?: z.infer<typeof ScrapeFrequencySchema>
   is_government?: boolean
   category_id?: number
   created_at?: string
