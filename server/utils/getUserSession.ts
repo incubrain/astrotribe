@@ -1,4 +1,3 @@
-import { H3Event, useSession } from 'h3'
 import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 import { useJwt } from '@vueuse/integrations/useJwt'
 
