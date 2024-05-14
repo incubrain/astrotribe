@@ -55,7 +55,7 @@ create type "public"."address_type" as enum ('residential', 'headquarters', 'off
 
 
 CREATE TABLE "public"."categories" (
-    "id" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "id" INT GENERATED ALWAYS AS IDENTITY,
     "created_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "body" VARCHAR(255),
     "name" VARCHAR(255) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE "public"."news" (
     "updated_at" TIMESTAMP(6) WITH TIME ZONE NOT NULL DEFAULT now(),
     "title" VARCHAR(255) NOT NULL,
     "body" TEXT NOT NULL,
-    "category_id" BIGINT NOT NULL DEFAULT '31'::BIGINT,
+    "category_id" BIGINT NOT NULL DEFAULT '16'::INT,
     "author" TEXT,
     "description" TEXT,
     "featured_image" TEXT,
@@ -150,7 +150,7 @@ CREATE TABLE "public"."companies" (
     "social_media_id" INTEGER,
     "last_scraped_at" TIMESTAMP WITH TIME ZONE,
     "scrape_frequency" public.scrape_frequency,
-    "category_id" INTEGER,
+    "category_id" INT,
     "created_at" TIMESTAMP WITH TIME ZONE,
     "updated_at" TIMESTAMP WITH TIME ZONE,
     "founding_year" SMALLINT,
