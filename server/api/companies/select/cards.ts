@@ -11,10 +11,7 @@ const pickCompanyCard = {
   founding_year: true,
   category_id: true,
   last_scraped_at: true,
-  scrape_frequency: true,
-  addresses: true,
-  social_media: true,
-  contacts: true
+  scrape_frequency: true
 } as const
 
 const companyCardSchema = z.array(
@@ -52,9 +49,8 @@ export default defineEventHandler(async (event) => {
       last_scraped_at,
       scrape_frequency,
       description,
-      addresses(*),
-      social_media(facebook_url, twitter_url, linkedin_url, instagram_url, youtube_url),
-      contacts(*)`,
+      social_media(facebook_url, twitter_url, linkedin_url, instagram_url, youtube_url)
+      `,
       filterBy: parsedQuery.filterBy,
       pagination: parsedQuery.pagination
     })

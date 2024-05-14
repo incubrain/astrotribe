@@ -48,7 +48,6 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       userMessage: 'something went wrong when getting your session'
     })
 
-    console.log('sessionEx', data)
     if (data) {
       userSession.value = data
       console.log('SETTING USER_ID', data.user_id)

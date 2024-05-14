@@ -123,7 +123,8 @@ export default defineNuxtConfig({
     supabaseServiceKey: '',
     nasaApiKey: '',
     openaiApiKey: '',
-    openaiOrg: ''
+    openaiOrg: '',
+    scraperKey: ''
   },
 
   typescript: {
