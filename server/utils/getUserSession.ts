@@ -159,7 +159,6 @@ export async function removeSession() {
   const storageKey = `${userId}:${secretKey}`
 
   console.log('removing session', storageKey)
-  await storage.removeItem(`user:${storageKey}`)
   await storage.removeItem(`permissions:${storageKey}`)
 }
 
