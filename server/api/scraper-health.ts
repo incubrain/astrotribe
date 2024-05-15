@@ -1,13 +1,14 @@
-import { useJwt } from '@vueuse/integrations/useJwt'
+import jwt from 'jsonwebtoken'
 
 export default defineEventHandler(async (event) => {
-  // todo:critical:easy:1 - use JWT for token
-  const authorization = useRuntimeConfig().scraperKey
+  var token = jwt.sign({ sender: 'AstronEra' }, useRuntimeConfig().scraperKey, {
+    algorithm: 'HS256'
+  })
 
-  const response = await $fetch('http://localhost:8080/health', {
+  const response = await $fetch('https://seashell-app-awo7z.ondigitalocean.app/health', {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${authorization}`
+      Authorization: `Bearer ${token}`
     }
   })
 
