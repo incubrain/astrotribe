@@ -72,7 +72,7 @@ defineProps({
     <template #footer>
       <div class="w-full flex justify-end">
         <NuxtLink :to="article._path">
-          <PrimeButton> Read More </PrimeButton>
+          <PrimeButton outlined> Read More </PrimeButton>
         </NuxtLink>
       </div>
     </template>
