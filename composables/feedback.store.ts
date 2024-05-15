@@ -1,6 +1,6 @@
 export const useFeedbackStore = defineStore('feedbackStore', () => {
   const { fetch } = useBaseFetch()
-  const storeKey = 'feedbackStore'
+  const storeKey = 'feedbacks'
   const logger = useLogger(storeKey)
   const loading = useLoadingStore()
   const toast = useToast()
