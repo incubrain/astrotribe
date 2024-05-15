@@ -1,32 +1,9 @@
-<template>
-  <div class="flex flex-col items-center justify-center w-full h-full">
-    <h2 class="mb-6 text-2xl text-center"> Forgot Your Password? test </h2>
-    <FormDynamic
-      :schema="schema"
-      :validation-schema="ForgotPasswordForm"
-      has-labels
-      button-label="Request Reset Email"
-      class="w-full"
-      @submit-form="auth.forgotPassword"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ForgotPasswordForm } from '@/types/forms'
-import type { FormFieldType } from '@/types/forms'
+// If you use PKCE (default), this link only works on the device or browser where the original reset request was made. Display a message to the user to make sure they don't change devices or browsers.
+// redirectTo page (password reset) should require auth to view (should be secure)
 
-const schema = computed(() => {
-  return [
-    {
-      name: 'email',
-      width: 'full',
-      props: {
-        label: 'Email',
-        type: 'email'
-      }
-    }
-  ] as FormFieldType[]
+const form = reactive({
+  email: ''
 })
 
 const auth = useAuth()
@@ -36,3 +13,32 @@ definePageMeta({
   layout: 'auth'
 })
 </script>
+
+<template>
+  <AuthCard
+    :title="{
+      main: 'Forgot Your Password?',
+      subtitle: 'Don\'t worry, get a reset link to your email.'
+    }"
+  >
+    <template #content>
+      <div class="flex flex-col gap-4 xl:gap-6">
+        <PrimeFloatLabel class="flex flex-col w-full">
+          <PrimeInputText
+            id="username"
+            v-model="form.email"
+          />
+          <label for="username">Email</label>
+        </PrimeFloatLabel>
+      </div>
+    </template>
+    <template #footer>
+      <PrimeButton
+        class="w-full flex justify-center"
+        @click="auth.password.forgot(form.email)"
+      >
+        Send Reset Email
+      </PrimeButton>
+    </template>
+  </AuthCard>
+</template>

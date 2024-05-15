@@ -122,11 +122,11 @@ defineOgImageComponent('OgImageDefault', {
       position="center"
       invert
     />
-    <div class="wrapper p-4 lg:p-8">
+    <div class="wrapper p-4 xl:p-8">
       <BlogFilter />
     </div>
     <div
-      class="wrapper md:px-4 lg:px-8 lg:pb-8 grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] items-start w-full md:gap-4 lg:gap-8 relative"
+      class="wrapper md:px-4 lg:px-8 xl:pb-8 grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] items-start w-full md:gap-4 lg:gap-8 relative"
     >
       <BlogAdFloat />
 

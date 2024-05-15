@@ -8,6 +8,8 @@ node_modules
 dist
 .unlighthouse
 private-data
-data/kv
-data/blogs
-data/seed
+data/**
+/test-results/
+/blob-report/
+.DS_Store
+docs/**

@@ -27,19 +27,17 @@ if (error.value) {
   console.error(error.value)
 }
 
-const env = useRuntimeConfig().public
-
 if (article.value) {
   useSeoMeta({
     title: article.value.title,
     ogTitle: article.value.title,
     description: article.value.description,
     ogDescription: article.value.description,
-    ogImage: `${env.baseURL}images/blog/${article.value.featured_image}`,
+    ogImage: `images/blog/${article.value.featured_image}`,
     twitterCard: 'summary_large_image',
     twitterTitle: article.value.title,
     twitterDescription: article.value.description,
-    twitterImage: `${env.baseURL}images/blog/${article.value.featured_image}`
+    twitterImage: `images/blog/${article.value.featured_image}`
   })
 
   defineOgImageComponent('OgImageDefault', {

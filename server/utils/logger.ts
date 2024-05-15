@@ -24,26 +24,19 @@ winston.addColors(logColors)
 
 const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-  winston.format.colorize({ all: true }),
-  winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
+  winston.format.cli(),
+  winston.format.printf(
+    (info) => `${info.timestamp} ${info.level}: [${info.loggerPrefix}] ${info.message}`
+  )
 )
 
-// Creating a logger instance
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   levels: logLevels,
+  level: 'silly',
   format,
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: './data/logs/combined.log' })
+    // new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
+    // new winston.transports.File({ filename: './data/logs/combined.log' })
   ]
-})
-
-// If we're not in production then log to the `console`
-// if (process.env.NODE_ENV !== 'production') {
-//   logger.add(new winston.transports.Console({
-//     format: winston.format.simple(),
-//   }))
-// }
-
-export default logger
+}) as winston.Logger & Record<keyof typeof logLevels, winston.LeveledLogMethod>

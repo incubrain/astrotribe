@@ -1,17 +1,38 @@
-<template>
-  <div class="w-full h-full foreground">
-    <NavTop />
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <TestingPopover />
-    <FooterWebsite v-if="!noFooter.some((noFooterPath) => $route.path.startsWith(noFooterPath))" />
-    <UNotifications :timeout="4000" />
-  </div>
-</template>
-
 <script setup lang="ts">
-const noFooter = ['/contact', '/auth', '/astrotribe']
+const catTagStore = useCategoryTagStore()
+const currentUser = useCurrentUser()
+
+onMounted(() => {
+  // FORCE DARK MODE
+  document.documentElement.classList.add('dark');
+});
+
+onMounted(async () => {
+  await catTagStore.getCategories()
+  await catTagStore.getTags()
+})
+
+const supabase = useSupabaseClient()
+supabase.auth.onAuthStateChange((event, session) => {
+  setTimeout(async () => {
+    if (event === 'TOKEN_REFRESHED') {
+      console.log('TOKEN_REFRESHED', session);
+      await currentUser.loadSession();
+      // Use webhooks/database for role/plan changes to trigger new session
+    } else if (event === 'SIGNED_OUT') {
+      console.log('SIGNED_OUT');
+      currentUser.removeSession();
+    } else if (event === 'PASSWORD_RECOVERY') {
+      console.log('PASSWORD_RECOVERY: TRIGGER');
+      // Handle password recovery event
+    } else if (event === 'INITIAL_SESSION') {
+      console.log('INITIAL_SESSION', session);
+      await currentUser.loadSession();
+    } else if (event === 'SIGNED_IN') {
+      console.log('SIGNED_IN: TRIGGER');
+    }
+  }, 0);
+})
 
 useHead({
   htmlAttrs: {
@@ -31,7 +52,26 @@ useHead({
     }
   ]
 })
+
+// infra:med:med:2 setup feature flags for posthog
+// ui:low:easy:1 - add styling to the toasts, specifically dark mode
+// !infra:med:hard:4 - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
 </script>
+
+<template>
+  <div class="w-full h-full">
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <PrimeToast
+      position="bottom-right"
+      :pt="{
+        content: 'border border-color rounded-md shadow-md flex'
+      }"
+    />
+  </div>
+</template>
 
 <style>
 html {
@@ -44,5 +84,16 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
 }
 </style>

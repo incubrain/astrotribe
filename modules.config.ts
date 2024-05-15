@@ -3,19 +3,69 @@ import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
   '@nuxt/devtools',
-  '@nuxt/ui',
   '@vueuse/nuxt',
   '@nuxt/image',
   '@pinia/nuxt',
   '@nuxtjs/seo',
   '@nuxt/content',
   'nuxt-primevue',
-  '@nuxthq/studio'
+  '@nuxtjs/tailwindcss',
+  '@nuxtjs/color-mode',
+  '@nuxthq/studio',
+  '@nuxtjs/supabase',
+  'nuxt-icon',
+  // 'nuxt-security'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
   autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
 }
+
+// !infra:med:hard:12 - look into and configure nuxt security module
+// https://nuxt-security.vercel.app/documentation/getting-started/configuration
+// const SECURITY_OPTIONS: NuxtConfig['security'] = {
+//   headers: {
+//     contentSecurityPolicy: {
+//       'img-src': [
+//         "'self'",
+//         'data:',
+//         'http://localhost:54321',
+//         'http://localhost:3000',
+//         'https://www.nasa.gov',
+//         'https://science.nasa.gov',
+//         'https://www.youtube.com',
+//         'https://s.ytimg.com'
+//       ],
+//       'script-src': [
+//         "'self'",
+//         "'nonce-{{nonce}}'",
+//         "'unsafe-inline'",
+//         'http://localhost:3000',
+//         'https://www.youtube.com',
+//         'https://s.ytimg.com'
+//       ]
+//     },
+//     xFrameOptions: false,
+//     // needed for devtools
+//     crossOriginEmbedderPolicy:
+//       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
+//   },
+//   requestSizeLimiter: {
+//     maxUploadFileRequestInBytes: 2000000, // 2 MB
+//     throwError: true,
+//     maxRequestSizeInBytes: 2000000 // 2 MB
+//   },
+//   xssValidator: false,
+//   corsHandler: false,
+//   allowedMethodsRestricter: false,
+//   hidePoweredBy: false,
+//   basicAuth: false,
+//   csrf: false,
+//   nonce: true,
+//   removeLoggers: false,
+//   ssg: false,
+//   sri: false
+// }
 
 const SEO_OPTIONS: NuxtConfig['seo'] = {
   redirectToCanonicalSiteUrl: true
@@ -40,9 +90,9 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
 
 const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   components: {
+    prefix: 'Prime',
     include: '*',
-    exclude: ['Editor', 'Chart', 'Toast'],
-    prefix: 'Prime'
+    exclude: ['Editor', 'Chart']
   },
   directives: {
     include: '*',
@@ -50,12 +100,11 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   },
   composables: {
     include: '*',
-    exclude: ['useToast']
+    exclude: []
   },
   options: {
     ripple: true
   },
-  importPT: { as: 'Tailwind', from: 'primevue/passthrough/tailwind' },
   cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
 }
 
@@ -86,19 +135,35 @@ const COLOR_MODE_OPTIONS: NuxtConfig['colorMode'] = {
   classSuffix: ''
 }
 
-const UI_OPTIONS: NuxtConfig['ui'] = {
-  icons: ['mdi', 'heroicons', 'material-symbols']
+const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
+  redirectOptions: {
+    login: '/auth/login',
+    callback: '/auth/confirm',
+    include: ['/astrotribe/**'],
+    exclude: [],
+    cookieRedirect: true
+  },
+  clientOptions: {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  },
+  cookieName: 'sb'
 }
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   pinia: PINIA_OPTIONS,
+  // security: SECURITY_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,
   content: CONTENT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
-  ui: UI_OPTIONS
+  supabase: SUPABASE_OPTIONS
 }
 
-export const MODULE_DEV_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}
+export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}

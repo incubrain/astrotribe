@@ -12,14 +12,16 @@
       <template #default="{ item }: { item: Testimonial }">
         <div class="p-6 border border-color rounded-md h-full">
           <div class="flex items-center h-auto">
-            <NuxtImg
-              :src="item.image"
-              :alt="item.name"
-              width="60px"
-              height="60px"
-              loading="lazy"
-              quality="80"
-              format="webp"
+            <BaseImage
+              :img="{
+                src: item.image,
+                alt: item.name,
+                width: '60px',
+                height: '60px',
+                loading: 'lazy',
+                quality: '80',
+                format: 'webp'
+              }"
               class="rounded-full w-14 h-14"
             />
             <div class="flex flex-col items-start pl-4">

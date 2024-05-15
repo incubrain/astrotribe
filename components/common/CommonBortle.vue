@@ -1,11 +1,13 @@
 <template>
   <div class="flex items-center gap-4">
     <div class="w-[60px] h-[60px] object-contain rounded-full overflow-hidden relative">
-      <NuxtImg
-        :src="bortle.find((b) => b.id === p.rating)?.src"
-        width="80"
-        height="80"
-        alt="bortle dark sky rating"
+      <BaseImage
+        :img="{
+          src: bortle.find((b) => b.id === p.rating)?.src,
+          width: '80',
+          height: '80',
+          alt: 'bortle dark sky rating'
+        }"
       />
       <p
         class="absolute top-0 left-0 flex items-center justify-center w-full h-full text-lg font-bold text-white"
@@ -13,9 +15,7 @@
         {{ p.rating }}
       </p>
     </div>
-    <h3 class="text-lg font-semibold md:text-xl xl:text-2xl">
-      Bortle rating
-    </h3>
+    <h3 class="text-lg font-semibold md:text-xl xl:text-2xl"> Bortle rating </h3>
   </div>
 </template>
 

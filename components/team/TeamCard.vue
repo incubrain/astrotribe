@@ -32,33 +32,35 @@
 
     <div class="relative px-10 flex items-start justify-center pb-4">
       <div class="w-20 overflow-hidden border rounded-full md:w-24">
-        <NuxtImg
-          :src="member.avatar"
-          loading="lazy"
-          :alt="member.name"
+        <BaseImage
+          :img="{
+            src: member.avatar,
+            alt: member.name,
+            loading: 'lazy',
+            width: '100',
+            height: '100'
+          }"
         />
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center space-y-5">
+    <div class="flex flex-col items-center justify-center space-y-3">
       <p class="text-base font-semibold leading-none text-center rounded-sm">
         {{ member.name }}
       </p>
       <p class="text-sm font-semibold leading-none text-center">
         {{ member.position.title }}
       </p>
-      <div class="space-y-2 pt-12 z-10">
+      <div class="space-y-3 pt-12 z-10">
         <SocialBlock
           :socials="member.socials"
           :has-title="false"
           class="flex items-center justify-center space-x-2"
         />
-        <UButton
-          :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`"
-          variant="outline"
-          color="black"
-        >
-          View Profile
-        </UButton>
+        <div>
+          <NuxtLink :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`">
+            <PrimeButton> View Profile </PrimeButton>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
