@@ -38,35 +38,6 @@ async function getSession() {
   return session
 }
 
-function decodeSession(accessToken: string) {
-  const { payload } = useJwt(accessToken)
-
-  console.log('payload', payload.value)
-  if (!payload.value || !payload.value.app_metadata) {
-    throw createError({
-      message: `missing session payload: ${payload.value}, unable to validate user`
-    })
-  }
-
-  const { user_role, user_plan } = payload.value.app_metadata
-
-  console.log(payload.value)
-
-  if (!user_role || !user_plan) {
-    throw createError({
-      message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`
-    })
-
-    // redirect to login page
-    // clear the cookies
-  }
-
-  return {
-    user_role: user_role as string,
-    user_plan: user_plan as string
-  }
-}
-
 interface StoredSession {
   refresh_token: string
   expires_at: number
@@ -86,6 +57,18 @@ interface StoredPermissions {
   refresh_token: string
   expires_at: number
   user: {
+    email: string
+    auth_role: string
+    confirmation_sent_at: string
+    confirmed_at: string
+    provider: string
+    providers: string[]
+    identities: string[]
+    avatar: string
+    full_name: string
+    given_name: string
+    surname: string
+    username: string
     user_id: string
     user_role: string
     user_plan: string
@@ -101,6 +84,7 @@ export async function validateAndUpdateSession() {
   }
 
   const { user, refresh_token, access_token } = session
+  console.log('session', user, refresh_token, access_token)
   if (!user || !refresh_token) {
     throw createError({
       message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`
@@ -110,8 +94,8 @@ export async function validateAndUpdateSession() {
   // SESSION
   const storage = useStorage('session')
   const secretKey = getCurrentSecret()
-  const storageKey = `${user.id}:${secretKey}`  
-  
+  const storageKey = `${user.id}:${secretKey}`
+
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
   console.log('storeingSession', storageKey)
@@ -120,9 +104,16 @@ export async function validateAndUpdateSession() {
     storedPermissions.expires_at < Date.now() ||
     storedPermissions.refresh_token !== refresh_token
   ) {
-    console.log('Permissions expired or token mismatch, fetching new permissions.')
-    const { user_plan, user_role } = decodeSession(access_token)
-    console.log('decodedInfo', user_plan, user_role)
+    const { role: user_role, plan: user_plan } = user.app_metadata
+
+    if (!user_role || !user_plan) {
+      throw createError({
+        message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`
+      })
+
+      // redirect to login page
+      // clear the cookies
+    }
 
     const permissions = await fetchPermissions(user_plan, user_role)
 
@@ -139,6 +130,18 @@ export async function validateAndUpdateSession() {
         user_id: user.id,
         user_role,
         user_plan,
+        email: user.email,
+        auth_role: user.role,
+        confirmation_sent_at: user.confirmation_sent_at,
+        confirmed_at: user.confirmed_at,
+        provider: user.app_metadata.provider,
+        providers: user.app_metadata.providers,
+        identities: user.identities,
+        avatar: formatAvatarUrl({ avatar: user.user_metadata.avatar, id: user.id }),
+        full_name: user.user_metadata.full_name,
+        given_name: user.user_metadata.given_name ?? user.user_metadata.full_name.split(' ')[0],
+        surname: user.user_metadata.surname ?? user.user_metadata.full_name.split(' ')[1],
+        username: user.user_metadata.username
       },
       plan_permissions: permissions.plan,
       role_permissions: permissions.role

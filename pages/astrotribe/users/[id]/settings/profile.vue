@@ -54,7 +54,7 @@ const userSettingsStore = useUserSettingsStore()
 const { settings } = storeToRefs(userSettingsStore)
 
 const user = useCurrentUser()
-const { profile } = storeToRefs(user)
+const { fullProfile: profile } = storeToRefs(user)
 
 // if (value && String(id) !== value.id) {
 //   push(`/astrotribe/users/${value.id}/settings`)

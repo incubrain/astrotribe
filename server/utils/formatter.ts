@@ -24,6 +24,7 @@ export const datetimeOffset = (
 })
 
 export const formatAvatarUrl = (user: any) => {
+  console.log('formatAvatarUrl', user)
   return user.avatar.startsWith('http')
     ? user.avatar
     : getImageURL({
