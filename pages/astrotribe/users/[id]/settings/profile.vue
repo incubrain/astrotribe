@@ -54,17 +54,15 @@ const userSettingsStore = useUserSettingsStore()
 const { settings } = storeToRefs(userSettingsStore)
 
 const user = useCurrentUser()
+await user.fetchUserProfile()
 const { fullProfile: profile } = storeToRefs(user)
-
-// if (value && String(id) !== value.id) {
-//   push(`/astrotribe/users/${value.id}/settings`)
-// }
 
 definePageMeta({
   name: 'SettingsProfile',
   layout: 'app-settings',
   middleware: 'is-current-user'
 })
+
 </script>
 
 <template>

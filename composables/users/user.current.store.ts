@@ -62,7 +62,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   const fullProfile = ref(null)
   async function fetchUserProfile(): Promise<any> {
     logger.info('fetchUserProfile: start', userId.value)
-    if (profile.value) {
+    if (fullProfile.value) {
       logger.info('fetchUserProfile: Returning cached user')
       return
     }
@@ -86,16 +86,6 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     }
   }
 
-  // watch(
-  //   () => profile.value,
-  //   (newUser, oldUser) => {
-  //     if (newUser && newUser !== oldUser) {
-  //       fetchUserProfile()
-  //     }
-  //   },
-  //   { immediate: true, deep: true }
-  // )
-
   async function updateProfile(newData: any) {
     const response = await fetch(`/api/users/update/${userId.value}`, {
       method: 'POST',
@@ -111,8 +101,8 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     // update state
     console.log('updating user', validData)
     for (const key in validData[0]) {
-      if (validData.hasOwnProperty(key) && profile.value[key] !== validData[key]) {
-        profile.value[key] = validData[key]
+      if (validData.hasOwnProperty(key) && fullProfile.value[key] !== validData[key]) {
+        fullProfile.value[key] = validData[key]
       }
     }
     // might need to force refresh of session
@@ -167,6 +157,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     userId,
     loadSession,
     removeSession,
-    uploadImage
+    uploadImage,
+    fetchUserProfile
   }
 })
