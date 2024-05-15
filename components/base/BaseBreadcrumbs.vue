@@ -57,7 +57,7 @@ const formattedLinks = computed(() => {
     v-if="formattedLinks"
     :model="formattedLinks"
     :pt="{
-      root: 'foreground p-0 flex items-center justify-center',
+      root: 'foreground p-0 flex items-center justify-start',
       menu: '!mb-0'
     }"
   >

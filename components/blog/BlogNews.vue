@@ -52,6 +52,12 @@ if (error.value) {
         :news="news"
       />
     </div>
+    <NuxtLink class="flex gap-2 w-full justify-end items-center pt-10 hover:text-primary-500" to="/auth/register">
+      <h2 class="text-3xl font-bold underline text-end underline-offset-8 decoration-primary-500">
+        JOIN FREE FOR MORE
+      </h2>
+      <Icon name="mdi:chevron-right" class="w-10 h-10" />
+    </NuxtLink>
   </div>
 </template>
 
