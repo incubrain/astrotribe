@@ -58,10 +58,12 @@ await user.fetchUserProfile()
 const { fullProfile: profile } = storeToRefs(user)
 
 definePageMeta({
+  layoutTransition: false,
   name: 'SettingsProfile',
   layout: 'app-settings',
   middleware: 'is-current-user'
 })
+
 
 </script>
 
