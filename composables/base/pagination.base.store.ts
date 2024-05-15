@@ -8,7 +8,7 @@ export type DomainKey =
   | 'chats'
   | 'feedbacks'
   | 'currentUser'
-  | 'chatStore'
+  | 'chat'
 
 type PaginationKey = 'from' | 'to' | undefined
 

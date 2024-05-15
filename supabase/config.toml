@@ -2,7 +2,7 @@
 
 # ISSUE TRACKER
 # DB MIGRATION BUG - migrations/20221208132122_backfill_email_last_sign_in_at - https://github.com/orgs/supabase/discussions/20722
-# Temporary fix: Run insert into auth.schema_migrations values ('20221208132122'); via the sql editor to fix the issue.
+# Temporary fix: insert into auth.schema_migrations values ('20221208132122'); run via the sql editor to fix the issue.
 
 
 # working directory name when running `supabase init`.

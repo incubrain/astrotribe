@@ -38,7 +38,7 @@ export const useChatStore = defineStore('chatStore', () => {
   const client = useSupabaseClient()
   const errors = useBaseError()
 
-  const domainKey = 'chatStore'
+  const domainKey = 'chat'
   const logger = useLogger(domainKey)
 
   const chat = ref({} as Chat)
