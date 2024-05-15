@@ -12,11 +12,11 @@ const auth = useAuth()
 const items = ref([
   {
     label: 'Profile',
-    command: () => router.push(`/astrotribe/users/${profile.value.id}`)
+    command: () => router.push(`/astrotribe/users/${profile.value.user_id}`)
   },
   {
     label: 'Settings',
-    command: () => router.push(`/astrotribe/users/${profile.value.id}/settings/profile`)
+    command: () => router.push(`/astrotribe/users/${profile.value.user_id}/settings/profile`)
   },
   {
     label: 'Logout',
@@ -45,7 +45,7 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
     <!-- end -->
     <ClientOnly>
       <div
-        v-if="isLoading || !profile?.role"
+        v-if="isLoading || !profile?.user_role"
         class="flex gap-4 justify-end items-center"
       >
         <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
@@ -57,7 +57,7 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
       </div>
       <div
         class="flex items-center justify-center gap-4"
-        v-else-if="profile?.role"
+        v-else-if="profile?.user_role"
       >
         <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
           <Icon
@@ -66,8 +66,8 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
             @click="toggle"
           />
         </AppThemeToggle> -->
-        <PrimeTag v-if="profile.role">
-          {{ profile.role }}
+        <PrimeTag v-if="profile.user_role">
+          {{ profile.user_role }}
         </PrimeTag>
         <PrimeAvatar
           v-if="profile?.avatar"

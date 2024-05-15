@@ -16,7 +16,7 @@ const supabase = useSupabaseClient()
 supabase.auth.onAuthStateChange((event, session) => {
   setTimeout(async () => {
     if (event === 'TOKEN_REFRESHED') {
-      console.log('TOKEN_REFRESHED');
+      console.log('TOKEN_REFRESHED', session);
       await currentUser.loadSession();
       // Use webhooks/database for role/plan changes to trigger new session
     } else if (event === 'SIGNED_OUT') {
@@ -26,7 +26,7 @@ supabase.auth.onAuthStateChange((event, session) => {
       console.log('PASSWORD_RECOVERY: TRIGGER');
       // Handle password recovery event
     } else if (event === 'INITIAL_SESSION') {
-      console.log('INITIAL_SESSION');
+      console.log('INITIAL_SESSION', session);
       await currentUser.loadSession();
     } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER');

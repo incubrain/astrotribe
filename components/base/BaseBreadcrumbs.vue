@@ -37,7 +37,7 @@ const formattedLinks = computed(() => {
         return { ...link, label: 'Q&A', ariaLabel: 'Q&A' }
       }
 
-      if (link.label.toLowerCase().replaceAll(' ', '-') === profile.value?.id) {
+      if (link.label.toLowerCase().replaceAll(' ', '-') === profile.value?.user_id) {
         console.log('userIdReplace', link)
         return {
           ...link,
