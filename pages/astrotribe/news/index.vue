@@ -1,74 +1,70 @@
-<template>
-  <div class="flex flex-col relative h-full w-full">
-    <div class="w-full flex gap-2">
-      <UButton @click="news.getBlogs">Get Blogs</UButton>
-      <div class="w-full flex justify-end gap-2 mb-4">
-        <UDropdown
-          :items="summaryLevels"
-          mode="hover"
-          :popper="{ placement: 'bottom-start' }"
-        >
-          <UButton
-            color="white"
-            :label="news.summaryLevel"
-            trailing-icon="i-heroicons-chevron-down-20-solid"
-          />
-        </UDropdown>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
-      <NewsCard
-        v-for="(p, i) in news.posts"
-        :key="i"
-        :post="p"
-        :summary-level="news.summaryLevel"
-        />
-        <!-- <LazyUModal v-model="isModalOpen">
-        @open-news-modal="news.toggleModal(i)"
-        <LazyNewsModal
-          :posts="posts"
-          :current-index="currentIndex"
-          :summary-level="summaryLevel"
-          :next-index="nextIndex"
-          :next-post="nextPost"
-          :previous-index="previousIndex"
-          :previous-post="previousPost"
-          @close-news-modal="isModalOpen = false"
-        />
-      </LazyUModal> -->
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-const news = useNewsStore()
+// !todo:critical - add summaries for news articles
+// !todo:high - allow news to toggle summary level
+// !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
 
-const summaryLevels = [
-  [
-    {
-      label: 'Beginner',
-      value: 'beginner',
-      click: () => news.changeSummaryLevel('beginner')
+const domainKey = 'news'
+const newsStore = useNewsStore()
+const { news } = storeToRefs(newsStore)
+const haveNews = computed(() => news.value !== null && news.value.length > 0)
+
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading(domainKey))
+
+const fetchInput = ref({
+  domainKey,
+  endpoint: '/api/news/select/cards',
+  pagination: {
+    page: 1,
+    limit: 20
+  },
+  criteria: {
+    dto: 'select:news:card',
+    filterBy: {
+      columnName: 'source',
+      operator: 'eq',
+      value: 'nasa'
     }
-  ],
-  [
-    {
-      label: 'Intermediate',
-      value: 'intermediate',
-      click: () => news.changeSummaryLevel('intermediate')
-    }
-  ],
-  [
-    {
-      label: 'Expert',
-      value: 'expert',
-      click: () => news.changeSummaryLevel('expert')
-    }
-  ]
-]
+  }
+}) as Ref<FetchInput>
+
+watchEffect(() => {
+  if (haveNews.value === false) {
+    console.log('Fetching news')
+    newsStore.loadNews(fetchInput.value)
+  }
+})
+
+console.log('news', news)
 
 definePageMeta({
-  name: 'Feed',
+  name: 'News',
   layout: 'app'
 })
 </script>
+
+<template>
+  <div class="flex flex-col relative h-full w-full md:gap-4 xl:gap-8">
+    <!-- <BaseFilter data-type="news" /> -->
+    <!-- <NewsSummaryLevel /> -->
+    <BaseInfiniteScroll
+      :domain-key="domainKey"
+      :pagination="fetchInput.pagination!"
+      @update:scroll-end="newsStore.loadNews(fetchInput)"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
+        <BaseSidebar class="mx-auto" />
+        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
+          <NewsCard
+            v-for="(item, i) in news"
+            :key="`news-post-${i}`"
+            :news="item"
+          />
+          <NewsCardSkeleton v-show="isLoading" />
+        </div>
+      </div>
+    </BaseInfiniteScroll>
+  </div>
+</template>
+
+<style scoped></style>

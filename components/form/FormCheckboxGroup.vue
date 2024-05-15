@@ -7,7 +7,7 @@
       :class="{ 'bg-primary-500 text-white': isSelected(option.value) }"
       @click="toggleSelection(option.value)"
     >
-      <UIcon
+      <Icon
         v-show="option.icon"
         :name="option.icon"
         class="w-16 h-16"

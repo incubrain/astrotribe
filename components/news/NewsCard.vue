@@ -1,64 +1,78 @@
+<script setup lang="ts">
+import type { NewsCardT } from '@/types/news'
+
+defineProps({
+  news: {
+    type: Object as () => NewsCardT,
+    required: true
+  }
+  // summaryLevel: {
+  //   type: String,
+  //   required: true
+  // }
+})
+</script>
+
 <template>
-  <div
-    class="flex flex-col gap-4 lg:rounded-md border p-4 foreground border-color origin-left animate-swipe-in"
-  >
-    <h3 class="text-2xl"> {{ post.title }}</h3>
-    <div class="flex gap-2 text-sm whitespace-nowrap flex-wrap">
-      <UBadge>{{ post.category.name }}</UBadge>
-      <UBadge
-        v-for="tag in post.tags?.slice(0, 2)"
-        :key="tag.id"
-        color="rose"
-      >
-        {{ tag.name }}
-      </UBadge>
-    </div>
-    <UTooltip :text="post.media ? post.media[0].caption?.substring(0, 240) + '...' : 'No caption'">
-      <div
-        class="h-64 w-full overflow-hidden"
-      >
-        <ImageWithFallback
-          :image="post.media ? post.media[0] : undefined"
-          :sizes="{ width: 500, height: 280, sizes: undefined }"
-        />
+  <div class="border-b border-color pt-4">
+    <div class="p-6 flex gap-4">
+      <BaseImage
+        :img="{
+          src: `images/companies/nasa-logo.jpg`,
+          alt: news.title,
+          width: '60',
+          height: '60'
+        }"
+        class="rounded-full"
+      />
+      <div class="flex flex-col gap-2 justify-center-center">
+        <PrimeTag>
+          {{ news.source.toUpperCase() }}
+        </PrimeTag>
+        <span class="text-sm w-auto">
+          {{ useTimeAgo(news.published_at ?? news.created_at).value }}
+        </span>
       </div>
-    </UTooltip>
-    <div class="flex gap-2 text-sm">
-      <p class="font-semibold">Credit:</p>
-      <p>{{ post.author.name }},</p>
-      <p>{{ post.published || '12th Dec, 2023' }}</p>
     </div>
-    <div v-if="post.summary[summaryLevel]">
-      <ul class="space-y-2">
-        <li
-          v-for="sum in post.summary[summaryLevel]"
-          :key="sum"
-          class="flex gap-2 items-start"
+    <!-- <div
+      v-if="news.featured_image"
+      class="overflow-hidden w-full"
+    >
+      <BaseImage
+        :img="{
+          src: news.featured_image,
+          alt: news.title,
+          fit: 'cover',
+          width: '220',
+          height: '220'
+        }"
+        class="rounded-t-md object-cover object-center w-full h-full"
+      />
+    </div> -->
+    <div class="flex flex-col gap-2 px-4 pb-4">
+      <div class="w-full"> </div>
+      <h4 class="text-balance text-xl">
+        {{ news.title }}
+      </h4>
+      <p
+        v-if="news.description"
+        class="text-sm"
+      >
+        {{ news.description }}
+      </p>
+      <div class="w-full flex justify-end p-2">
+        <NuxtLink
+          :to="news.url"
+          target="_blank"
+          rel="noopener"
         >
-          <UIcon
-            name="i-mdi-star"
-            class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
+          <PrimeButton
+            label="Read more"
+            size="small"
+            outlined
           />
-          <p class="flex-grow leading-snug text-sm">
-            {{ sum }}
-          </p>
-        </li>
-      </ul>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { NewsType } from '@/types/news'
-
-defineProps({
-  post: {
-    type: Object as () => News,
-    required: true
-  },
-  summaryLevel: {
-    type: String,
-    required: true
-  }
-})
-</script>

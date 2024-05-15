@@ -1,49 +1,3 @@
-<template>
-  <div
-    v-if="article.body"
-    class="max-w-full"
-  >
-    <main>
-      <BlogArticleHero :article="article" />
-      <div
-        class="grid grid-cols-[minmax(300px,700px)] xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8 pt-8 padded-x justify-center"
-      >
-        <div class="w-full xl:col-start-1">
-          <BlogArticleToc
-            class="background p-4 xl:p-0 rounded-md border border-color xl:border-none xl:sticky xl:top-24 xl:left-0"
-            :toc="article.body.toc.links"
-            :updated-at="article.updatedAt"
-            :version="article.version"
-            :expanded="expandToc"
-          />
-        </div>
-        <div class="xl:col-start-2 xl:padded-x">
-          <ContentRenderer :value="article">
-            <div class="pb-12">
-              <div
-                class="mx-auto space-y-8"
-                ref="articleContent"
-              >
-                <ContentRendererMarkdown
-                  :value="article.body"
-                  class="nuxt-content"
-                >
-                  {{ article.body }}
-                </ContentRendererMarkdown>
-              </div>
-              <BlogArticleShare
-                :link="article._id.replaceAll(':', '/')"
-                :summary="article.description"
-              />
-              <BlogArticleAuthorCard :author-id="article.authorIds[0]" />
-            </div>
-          </ContentRenderer>
-        </div>
-      </div>
-    </main>
-  </div>
-</template>
-
 <script setup lang="ts">
 import type { ArticleFullT } from '~/types/articles'
 
@@ -74,7 +28,59 @@ const p = defineProps({
     required: true
   }
 })
+
+// !todo:low add full width images
+// !todo:fun - add full width image grids with text
+// !todo:med - add a read time to the article
+// !todo:med - add social links to author block and links to profile
+// !todo:med - add links to the tags and category
 </script>
+
+<template>
+  <div
+    v-if="article.body"
+    class="max-w-full"
+  >
+    <main>
+      <BlogArticleHero :article="article" />
+      <div
+        class="grid grid-cols-[minmax(300px,700px)] xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8 pt-8 padded-x justify-center"
+      >
+        <div class="w-full xl:col-start-1">
+          <BlogArticleToc
+            class="background p-4 xl:p-0 rounded-md border border-color xl:border-none xl:sticky xl:top-24 xl:left-0"
+            :toc="article.body.toc.links"
+            :updated-at="article.updatedAt"
+            :version="article.version"
+            :expanded="expandToc"
+          />
+        </div>
+        <div class="xl:col-start-2 xl:padded-x">
+          <ContentRenderer :value="article">
+            <div class="pb-12">
+              <div
+                ref="articleContent"
+                class="mx-auto space-y-8"
+              >
+                <ContentRendererMarkdown
+                  :value="article.body"
+                  class="nuxt-content"
+                >
+                  {{ article.body }}
+                </ContentRendererMarkdown>
+              </div>
+              <BlogArticleShare
+                :link="article._id.replaceAll(':', '/')"
+                :summary="article.description"
+              />
+              <BlogArticleAuthorCard :author-id="article.authorIds[0]" />
+            </div>
+          </ContentRenderer>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
 
 <style>
 .nuxt-content p {

@@ -1,7 +1,7 @@
 import { Role } from '@/types/roles'
 
 export default defineEventHandler(async (event) => {
-  const client = useClient()
+  const client = dbClient(event)
 
   const { roles }: { roles: Role[] } = await readBody(event)
   // const env = useRuntimeConfig().public

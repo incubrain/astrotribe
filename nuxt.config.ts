@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
-import { MODULE_OPTIONS, MODULES } from './modules.config'
+import { MODULE_OPTIONS, MODULES, DEV_MODULE_OPTIONS } from './modules.config'
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -10,42 +10,50 @@ const og = {
   url: 'https://astronera.com'
 }
 
-// const authExclude =
-//   '',
-//     ? ['/*']
-//     : ['/', '/auth/*', '/contact', '/about', '/team/*', '/team']
-
 export default defineNuxtConfig({
-  // routeRules: {
-  //   '/auth/**': {
-  //     swr: 60 * 60
-  //   }
-  // },
+  experimental: {
+    // https://nuxt.com/docs/guide/going-further/experimental-features
+    // cookieStore: true,
+    // viewTransition: true,
+    // typedPages: true,
+    // sharedPrerenderData: true,
+    inlineRouteRules: true,
+    asyncContext: true
+  },
+
+  routeRules: {
+    '/astrotribe/**': { ssr: false }
+  },
   nitro: {
-    // Production
+    experimental: {
+      tasks: true
+    },
     storage: {
-      data: {
-        driver: 'vercelKV',
-        base: 'astrotribe:'
+      session: {
+        driver: 'memory'
+      },
+      companies: {
+        driver: 'fs',
+        base: './data/db'
       }
     },
-    // Development
-    devStorage: {
-      data: {
-        driver: 'fs',
-        base: './data/kv'
-      },
-      blogs: {
-        driver: 'fs',
-        base: './data/blogs'
-      }
+    scheduledTasks: {
+      // every 12 hours
+      // '0 */2 * * *': ['scrape:news']
     }
   },
 
   app: {
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        {
+          id: 'theme-link',
+          rel: 'stylesheet',
+          href: '/themes/aura-dark-teal/theme.css'
+        }
+      ],
       htmlAttrs: {
         lang: 'en'
       },
@@ -61,11 +69,12 @@ export default defineNuxtConfig({
         { name: 'twitter:title', content: og.title },
         { name: 'twitter:description', content: og.description },
         { name: 'twitter:image', content: og.image }
+      ],
+      script: [
+        // Insert your Google Tag Manager Script here
+        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+        { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' }
       ]
-      // script: [
-      // Insert your Google Tag Manager Script here
-      // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-      //   ]
     }
   },
   css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
@@ -77,36 +86,44 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['stores', 'data']
+    dirs: ['composables/**']
   },
 
   modules: MODULES,
   ...MODULE_OPTIONS,
 
+  $development: {
+    ...DEV_MODULE_OPTIONS
+  },
+
   devtools: {
     enabled: true,
+
     // inclued vscode to enable element selection to open vscode related file
-    vscode: {}
+    vscode: {},
+
+    timeline: {
+      enabled: true
+    }
   },
 
   runtimeConfig: {
     // client
     public: {
-      baseUrl: '',
-      testMode: '',
+      nodeEnv: process.env.NODE_ENV,
+      logLevel: '',
       posthogKey: '',
+      studioTokens: '',
       supabaseUrl: '',
-      supabaseKey: '',
-      testingUserame: '',
-      testingPassword: '',
-      studioTokens: ''
+      supabaseKey: ''
     },
     // server
-    adminEmails: '',
+    googleApiKey: '',
     supabaseServiceKey: '',
     nasaApiKey: '',
     openaiApiKey: '',
-    openaiOrg: ''
+    openaiOrg: '',
+    scraperKey: ''
   },
 
   typescript: {

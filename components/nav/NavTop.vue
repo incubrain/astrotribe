@@ -1,173 +1,143 @@
+<script setup lang="ts">
+const { websiteLinks } = usePages()
+
+const props = defineProps({
+  isCompact: {
+    type: Boolean,
+    default: false
+  },
+  compactOnScroll: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const currentUser = useCurrentUser()
+const { haveUserSession } = storeToRefs(currentUser)
+
+// !design:high:easy:1 - auto detect session and show AstroTribe button
+</script>
+
 <template>
-  <nav
-    class="flex sticky top-0 left-0 items-center md:items-stretch w-full justify-end md:justify-between background z-50 border-b border-color h-[var(--nav-height-sm)] lg:h-[var(--nav-height-lg)]"
+  <div
+    class="'flex origin-top-left w-full wrapper lg:justify-center lg:items-center lg:padded-x',"
+    :style="{
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      right: '0',
+      transition: 'transform 0.5s ease, left 0.5s ease',
+      zIndex: '50'
+    }"
   >
-    <div
-      class="grid lg:grid-cols-nav items-center w-full md:flex justify-between text-zinc-900 dark:text-zinc-100"
+    <PrimeMenubar
+      :model="websiteLinks"
+      class="rounded-none lg:rounded-b-md w-full"
     >
-      <div
-        class="border-color lg:w-[240px] lg:border-r h-full pl-3 md:pl-4 flex flex-shrink-0 justify-between items-center col-start-1"
-      >
-        <NavMobiSlideover
-          :links="links"
-          class="lg:hidden pl-3 md:pl-4 flex items-center"
-        />
-        <NuxtLink
-          to="/"
-          class="items-center gap-2 nav-link hidden lg:flex"
-        >
+      <template #start>
+        <div class="gap-4 hidden lg:flex rounded-md p-1">
           <div
-            class="p-1 h-[26px] w-[26px] md:h-[34px] md:w-[34px] bg-white rounded-full overflow-hidden border border-color"
+            class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-md overflow-hidden relative flex justify-center items-center border"
           >
-            <NuxtImg
-              src="/astronera-logo.jpg"
+            <BaseImage
+              :img="{
+                src: '/astronera-logo.jpg'
+              }"
               class="w-full h-full dark:opacity-90"
             />
           </div>
-          <h1 class="block px-4 mr-4 text-xl font-semibold"> AstronEra </h1>
-        </NuxtLink>
-      </div>
-      <div class="lg:flex hidden items-center h-full w-full col-span-2 col-start-2 md:col-span-1">
-        <div
-          class="items-center justify-center hidden h-full gap-4 pl-4 text-sm font-semibold leading-none lg:flex whitespace-nowrap"
-        >
           <NuxtLink
-            v-for="link in links"
-            :key="link.id"
-            :to="link.slug"
-            class="nav-link"
+            to="/"
+            class="flex items-center justify-center min-h-full"
           >
-            {{ link.name }}
+            <h1
+              class="pr-2 uppercase text-sm font-bold cursor-pointer flex tracking-normal justify-start items-start mt-[2px] leading-none flex-col"
+            >
+              Astron
+              <strong class="text-primary-600 dark:text-primary-700 font-extrabold"> Era </strong>
+            </h1>
           </NuxtLink>
         </div>
-      </div>
-      <div class="relative flex col-span-1 col-start-3 pr-3 md:pr-6 flex-shrink-0">
-        <div class="flex items-center justify-center w-full gap-4">
+      </template>
+      <template #item="{ item, hasSubmenu, root }">
+        <div class="px-4 py-2">
+          <NuxtLink
+            v-ripple
+            :to="item.url"
+            class="cursor-pointer"
+          >
+            <p class="flex items-center gap-1">
+              {{ item.label }}
+              <Icon
+                v-if="hasSubmenu"
+                :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
+              />
+            </p>
+          </NuxtLink>
+        </div>
+      </template>
+      <template #end>
+        <div class="flex items-center justify-center gap-4 flex-nowrap">
           <NuxtLink
             to="https://github.com/incubrain/astrotribe"
             target="_blank"
             class="flex justify-center items-center"
           >
-            <UIcon
-              name="i-mdi-github"
+            <Icon
+              name="mdi:github"
               class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
             />
           </NuxtLink>
-          <DarkToggle v-slot="{ toggle, isDark }">
-            <UIcon
-              :name="isDark ? 'i-heroicons-moon' : 'i-heroicons-sun'"
-              class="w-6 h-6 cursor-pointer"
-              @click="toggle"
-            />
-          </DarkToggle>
-          <!-- <div
-            v-if="isLoggedIn"
-            class="flex gap-4"
-          >
-            <UDropdown
-              :items="[dropdownItems]"
-              :popper="{ placement: 'bottom-start' }"
-              mode="hover"
-            >
-              <UButton
-                color="white"
-                class="flex items-center justify-center"
+          <ClientOnly>
+            <div class="gap-4 flex items-center justify-center h-auto min-w-24 pr-2">
+              <NuxtLink
+                v-if="haveUserSession"
+                v-ripple
+                to="/astrotribe"
               >
-                Logged in {{ auth.isLoggedIn }}
-                <UIcon
-                  name="i-heroicons-chevron-down-20-solid"
-                  class="flex justify-center items-center w-5 h-5"
-                />
-              </UButton>
-            </UDropdown>
-          </div> -->
-          <div>
-            <div class="space-x-2">
-              <UButton
-                variant="link"
-                to="/auth/login"
-                @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
+                <PrimeButton
+                  :pt="{
+                    root: 'border'
+                  }"
+                  @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
+                >
+                  Dashboard
+                </PrimeButton>
+              </NuxtLink>
+              <div
+                v-else
+                class="space-x-4"
               >
-                login
-              </UButton>
-              <UButton
-                to="/auth/register"
-                @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
-              >
-                Join Free
-              </UButton>
+                <NuxtLink
+                  v-ripple
+                  to="/auth/login"
+                >
+                  <PrimeButton
+                    severity="secondary"
+                    outlined
+                    @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
+                  >
+                    login
+                  </PrimeButton>
+                </NuxtLink>
+
+                <NuxtLink
+                  v-ripple
+                  to="/auth/register"
+                >
+                  <PrimeButton
+                    @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
+                  >
+                    Join Astronomy Hub
+                  </PrimeButton>
+                </NuxtLink>
+              </div>
             </div>
-          </div>
+          </ClientOnly>
         </div>
-      </div>
-    </div>
-  </nav>
+      </template>
+    </PrimeMenubar>
+  </div>
 </template>
 
-<script setup lang="ts">
-const links = [
-  {
-    id: 0,
-    name: 'About',
-    slug: '/about',
-    icon: 'i-material-symbols-info',
-    children: []
-  },
-  {
-    id: 1,
-    name: 'Contact',
-    slug: '/contact',
-    icon: 'i-material-symbols-call',
-    children: []
-  },
-  {
-    id: 2,
-    name: 'Team',
-    slug: '/team',
-    icon: 'i-material-symbols-emoji-people',
-    children: []
-  },
-  {
-    id: 3,
-    name: 'Conference',
-    slug: '/conference',
-    icon: 'i-material-symbols-emoji-people',
-    children: []
-  },
-  {
-    id: 5,
-    name: 'Community',
-    slug: '/astrotribe',
-    icon: 'i-material-symbols-globe-asia',
-    children: []
-  }
-  // {
-  //   id: 6,
-  //   name: 'Blog',
-  //   slug: '/blog',
-  //   icon: 'i-material-symbols-menu-book-outline',
-  //   children: [
-  //     {
-  //       id: 61,
-  //       name: 'ISRO',
-  //       slug: '/blog/isro'
-  //     }
-  //   ]
-  // }
-]
-
-// const dropdownItems = computed(() => [
-//   {
-//     label: 'Profile',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}`)
-//   },
-//   {
-//     label: 'Settings',
-//     onClick: () => router.push(`/astrotribe/users/${user.value?.id}/settings`)
-//   },
-//   {
-//     label: 'Logout',
-//     onClick: () => auth.logout()
-//   }
-// ])
-</script>
+<style></style>

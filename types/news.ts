@@ -7,25 +7,45 @@ const MediaSchema = z.object({
   credit: z.string().optional()
 })
 
-const NewsScrapedSchema = z.object({
-  title: z.string(),
-  link: z.string(),
-  body: z.string(),
-  category: z.string(),
-  images: z.array(MediaSchema).nullable(),
-  videos: z.array(MediaSchema).nullable(),
-  author: z.string().nullable(),
-  created_at: z.string().optional(),
-  updated_at: z.string().optional()
+const AuthorSchema = z.object({
+  name: z.string(),
+  url: z.string().nullable(),
+  image: MediaSchema.nullable()
 })
 
-export const NewsSchema = z.object({
-  id: z.number().optional(),
-  created_at: z.string(),
-  updated_at: z.string().optional(),
+const NewsScrapedArticleSchema = z.object({
+  body: z.string(),
+  featured_image: z.string().optional(),
+  published_at: z.string().optional(),
+  description: z.string().optional(),
+  author: z.string().optional()
+})
+
+const NewsCardScrapedSchema = z.object({
+  published_at: z.string().optional(),
   title: z.string(),
-  link: z.string(),
-  categoryId: z.number().optional()
+  description: z.string(),
+  url: z.string(),
+  source: z.string(),
+  featured_image: z.string()
+})
+
+export const NewsCardSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  url: z.string(),
+  source: z.string(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
+  published_at: z.string().nullable(),
+  description: z.string().nullable(),
+  featured_image: z.string().nullable()
+})
+
+export const NewsArticleSchema = NewsCardSchema.extend({
+  author: z.string(),
+  body: z.string(),
+  images: z.array(MediaSchema)
 })
 
 export const NewsEmbeddingSchema = z.object({
@@ -35,7 +55,28 @@ export const NewsEmbeddingSchema = z.object({
   created_at: z.string().nullable()
 })
 
-export type NewsType = z.infer<typeof NewsSchema>
-export type MediaType = z.infer<typeof MediaSchema>
-export type NewsEmbeddingType = z.infer<typeof NewsEmbeddingSchema>
-export type NewsScrapedType = z.infer<typeof NewsScrapedSchema>
+export type NewsListGovernmentT =
+  | 'isro'
+  | 'nasa'
+  | 'ula'
+  | 'esa'
+  | 'jaxa'
+  | 'cnsa'
+  | 'roscosmos'
+  | 'csa'
+
+export const newsListGovernment: NewsListGovernmentT[] = [
+  'nasa',
+  'jaxa',
+  'isro',
+  'esa',
+  'roscosmos',
+  'csa'
+]
+
+export type NewsCardT = z.infer<typeof NewsCardSchema>
+export type ScrapedLinkT = z.infer<typeof NewsCardScrapedSchema>
+export type NewsArticleT = z.infer<typeof NewsArticleSchema>
+export type MediaT = z.infer<typeof MediaSchema>
+export type NewsEmbeddingT = z.infer<typeof NewsEmbeddingSchema>
+export type ScrapedPageT = z.infer<typeof NewsScrapedArticleSchema>

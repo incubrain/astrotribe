@@ -16,7 +16,8 @@ export const UserRoleSchema = z.object({
   id: z.number(),
   name: z.string().nullable(),
   body: z.string().nullable().optional(),
-  created_at: z.string().optional()
+  created_at: z.string().optional(),
+  icon: z.string()
 })
 
 export const IdName = z.object({
@@ -48,12 +49,10 @@ export const UserBasicSchema = z.object({
   username: z.string().nullable(),
   avatar: z.string().nullable(),
   introduction: z.string().nullable(),
-  follow_count: z.number().nullable(),
+  followers_count: z.number().nullable(),
   followed_count: z.number().nullable(),
   is_following: z.boolean().nullable(),
-  main_role: IdName,
-  user_roles: z.array(UserRoleSchema),
-  last_seen: z.string()
+  role: z.number()
 })
 
 export const UserFullSchema = UserBasicSchema.extend({
@@ -63,9 +62,21 @@ export const UserFullSchema = UserBasicSchema.extend({
   created_at: z.string(),
   updated_at: z.string().nullable(),
   cover_image: z.string().nullable(),
+  quote: z.string().nullable()
+})
+
+export const UserRowSchema = z.object({
+  given_name: z.string(),
+  email: z.string(),
+  surname: z.string().nullable(),
+  username: z.string().nullable(),
+  avatar: z.string().nullable(),
+  cover_image: z.string().nullable(),
+  introduction: z.string().nullable(),
+  plan: z.string().nullish(),
+  dob: z.string().nullable(),
   quote: z.string().nullable(),
-  user_skills: z.array(UserSkillSchema),
-  user_socials: z.array(UserSocialSchema)
+  gender_id: z.number().nullable()
 })
 
 export const UserRolesSchema = z.array(UserRoleSchema)
@@ -73,4 +84,5 @@ export const UserRolesSchema = z.array(UserRoleSchema)
 export type UserType = z.infer<typeof UserBasicSchema>
 export type UserFullType = z.infer<typeof UserFullSchema>
 export type UserRoleType = z.infer<typeof UserRoleSchema>
+export type UserRowType = z.infer<typeof UserRowSchema>
 export type UserSocialType = z.infer<typeof UserSocialSchema>

@@ -1,0 +1,90 @@
+import { z } from 'zod'
+
+const CategorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  body: z.string().nullish(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional()
+})
+
+const TagSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  body: z.string().nullish(),
+  created_at: z.string().optional(),
+  updated_at: z.string().optional()
+})
+
+type Category = z.infer<typeof CategorySchema>
+type Tag = z.infer<typeof TagSchema>
+
+export const useCategoryTagStore = defineStore('categoryTagStore', () => {
+  const logger = useLogger('categoryTagStore')
+  const categories = ref([{}] as Category[])
+  const tags = ref([{}] as Tag[])
+  const localStorage = useBaseLocalStorage()
+  const errors = useBaseError()
+
+  const client = useSupabaseClient()
+
+  async function getCategories() {
+    const localStorageData = await localStorage.check('astron-categories')
+
+    if (localStorageData) {
+      logger.debug('Retrieved categories from local storage', localStorageData)
+      categories.value.push(...localStorageData.categories)
+      return
+    }
+
+    const response = await client.from('categories').select('id, name, body')
+    const cat = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error Fetching Categories from DB`,
+      userMessage: `There was an error getting Categories from the database`
+    })
+    categories.value.push(...cat)
+    localStorage.store('astron-categories', { categories: cat })
+  }
+
+  async function getTags() {
+    const localStorageData = await localStorage.check('astron-tags')
+
+    if (localStorageData) {
+      logger.debug('Retrieved tags from local storage', localStorageData)
+      tags.value.push(...localStorageData.tags)
+      return
+    }
+
+    const response = await client.from('tags').select('id, name, body')
+    const cat = errors.handleFetchErrors(response, {
+      critical: false,
+      devMessage: `Error Fetching Tags from DB`,
+      userMessage: `There was an error getting Tags from the database`
+    })
+    tags.value.push(...cat)
+    localStorage.store('astron-tags', { tags: cat })
+  }
+
+  const getCategoryName = (categoryId: number) => {
+    console.log('categories', categories, categoryId)
+    return categories.value.find((category) => category.id === categoryId)?.name
+  }
+
+  const getTagName = (tagId: number) => {
+    return tags.value.find((tag) => tag.id === tagId)
+  }
+
+  return {
+    categories,
+    tags,
+    getCategories,
+    getTags,
+    getCategoryName,
+    getTagName
+  }
+})
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useCategoryTagStore, import.meta.hot))
+}

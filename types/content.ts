@@ -18,6 +18,6 @@ export const imageSchema = z.object({
   height: z.number().optional()
 })
 
-export type ImageT = z.infer<typeof imageSchema>
-export type TitleT = z.infer<typeof titleSchema>
+export type ImageType = z.infer<typeof imageSchema>
+export type TitleType = z.infer<typeof titleSchema>
 export type FaqType = z.infer<typeof faqSchema>

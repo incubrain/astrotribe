@@ -1,13 +1,15 @@
 <template>
   <article>
     <div class="relative">
-      <NuxtImg
-        :src="event.featured_image"
-        loading="lazy"
-        width="400"
-        height="400"
-        quality="80"
-        :alt="`${event.title} featured image on AstroTribe`"
+      <BaseImage
+        :img="{
+          src: event.featured_image,
+          alt: `${event.title} featured image on AstroTribe`,
+          loading: 'lazy',
+          width: '400',
+          height: '400',
+          quality: '80'
+        }"
         class="w-full"
       />
       <div
@@ -15,7 +17,9 @@
       >
         <span class="block uppercase">{{ time.month }}</span>
         <span class="block">{{ time.day }}</span>
-        <span class="block text-success-600 dark:text-success-700">{{ time.time }} {{ time.ampm }}</span>
+        <span class="block text-success-600 dark:text-success-700"
+          >{{ time.time }} {{ time.ampm }}</span
+        >
       </div>
     </div>
     <section class="relative p-4">
@@ -23,9 +27,13 @@
         {{ event.title }}
       </h2>
       <p class="text-sm py-4"> {{ event.body }}</p>
-      <UButton variant="outline" block color="white">
+      <PrimeButton
+        variant="outline"
+        block
+        color="white"
+      >
         Create Free Event
-      </UButton>
+      </PrimeButton>
     </section>
   </article>
 </template>
