@@ -1,8 +1,10 @@
 import { ChatCompletionResponseMessage } from 'openai'
 import { z } from 'zod'
-import categories from './categories.json'
-import tags from './tags.json'
-import callOpenAI from './callOpenAI' // Import your new function
+import callOpenAI from './callOpenAI'
+
+// !ignore for now:
+// Initially we will manually categorize and tag articles, but later we will use the OpenAI API to generate categories and tags for new articles.
+// they've also improved their JSON API responses since I wrote this code, so it will need to be updated to reflect the new format.
 
 // Schema and validation for category and tags
 const categoryTagsSchema = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto dark:bg-success-test">
+  <div class="py-[40px] md:py-[80px] lg:py-[160px] mx-auto">
     <div class="mx-auto">
       <HomeHeading
         class="pb-16 md:pb-24"
@@ -14,18 +14,20 @@
           :key="feature.id"
           class="relative h-full p-8 mx-auto overflow-hidden rounded-lg shadow-md"
         >
-          <NuxtImg
+          <BaseImage
+            :img="{
+              src: feature.bgImg,
+              alt: `${feature.title} background image`,
+              height: '366px',
+              width: '290px',
+              quality: '70',
+              format: 'webp'
+            }"
             class="absolute top-0 left-0 object-cover w-full h-full"
-            :src="feature.bgImg"
-            height="366px"
-            width="290px"
-            quality="70"
-            format="webp"
-            :alt="`${feature.title} background image`"
           />
           <div class="absolute top-0 left-0 w-full h-full bg-gray-900/50 dark:bg-zinc-900/80" />
           <div class="relative z-50 text-light">
-            <UIcon
+            <Icon
               :name="feature.icon"
               class="w-[26px] h-[26px]"
             />
@@ -55,14 +57,13 @@ import features from '@/data/home/features.json'
 
 // must list out icons for them to work, for some reason they don't load directly from JSON (nuxthq/ui bug)
 const icons = [
-  'i-material-symbols-group-add',
-  'i-material-symbols-calendar-month',
-  'i-material-symbols-android-messages-outline',
-  'i-mdi-briefcase',
-  'i-mdi-telescope',
-  'i-material-symbols-circle-notifications'
+  'material-symbols:group-add',
+  'material-symbols:calendar-month',
+  'material-symbols:android-messages-outline',
+  'mdi:briefcase',
+  'mdi:telescope',
+  'material-symbols:circle-notifications'
 ]
-
 </script>
 
 <style scoped></style>

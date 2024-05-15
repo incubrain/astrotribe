@@ -15,7 +15,7 @@
     <!-- NuxtImg Skeleton -->
     <div class="rounded-md w-full h-48 foreground mb-4" />
 
-    <div class="flex flex-col gap-2 items-start w-full p-2 lg:p-4 justify-center">
+    <div class="flex flex-col gap-2 items-start w-full p-2 xl:p-4 justify-center">
       <!-- article.title Skeleton -->
       <div class="h-6 w-3/4 foreground mb-2 rounded" />
 

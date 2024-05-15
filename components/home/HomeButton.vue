@@ -1,14 +1,14 @@
 <template>
-  <UButton
+  <PrimeButton
     color="primary"
     size="large"
   >
-    <UIcon
+    <Icon
       :class="hasIcon ? 'flex' : 'hidden absolute'"
       :name="icon"
     />
     {{ cta }}
-  </UButton>
+  </PrimeButton>
 </template>
 
 <script setup lang="ts">

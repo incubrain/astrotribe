@@ -1,3 +1,14 @@
+<script setup lang="ts">
+type Category = {
+  title: string
+  links: string[]
+}
+
+defineProps<{
+  category: Category
+}>()
+</script>
+
 <template>
   <ul>
     <li>
@@ -19,16 +30,5 @@
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-type Category = {
-  title: string
-  links: string[]
-}
-
-defineProps<{
-  category: Category
-}>()
-</script>
 
 <style scoped></style>

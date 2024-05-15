@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
-  const client = useClient()
+  const client = dbClient(event)
   let message
   let status
 
@@ -18,7 +18,10 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    await client.users.createMany({ data: [...mappedUsers] })
+    const { data, error } = await client
+      .from('user_profiles')
+      .createMany({ data: [...mappedUsers] })
+      .select('*')
 
     status = 200
     message = 'Users have been inserted successfully'
