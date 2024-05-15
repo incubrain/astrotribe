@@ -27,6 +27,7 @@ const userSettingsStore = useUserSettingsStore()
 const { settings } = storeToRefs(userSettingsStore)
 
 definePageMeta({
+  layoutTransition: false,
   name: 'SettingsPassword',
   layout: 'app-settings',
   middleware: 'is-current-user'
