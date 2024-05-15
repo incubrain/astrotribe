@@ -26,7 +26,7 @@ const feedbackTypes = [
 const route = useRoute()
 const { userId } = useCurrentUser()
 
-const feedback = ref({
+const initialFeedback = () => ({
   user_id: userId,
   page_identifier: route.fullPath,
   feedback_type: null,
@@ -34,6 +34,8 @@ const feedback = ref({
   device_info: '',
   status: 'new'
 })
+
+const feedback = ref(initialFeedback())
 
 const messagePlaceholder = computed(() => {
   if (!feedback.value.feedback_type) {
@@ -64,6 +66,15 @@ const isMessageDisabled = computed(() => !feedback.value.feedback_type)
 const messageLength = z.string().min(10)
 
 const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.message).success)
+
+const resetFeedback = () => {
+  feedback.value = initialFeedback()
+}
+
+const submitFeedback = async () => {
+  await feedbackStore.submitFeedback(feedback.value)
+  resetFeedback()
+}
 </script>
 
 <template>
@@ -71,7 +82,7 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
     <h2 class="text-lg font-bold mb-4 text-center">{{ cta }}</h2>
     <form
       class="space-y-4 w-52"
-      @submit.prevent=""
+      @submit.prevent="submitFeedback"
     >
       <PrimeDropdown
         :pt="{ root: 'flex text-left pl-1' }"
@@ -95,7 +106,7 @@ const isMessageInvalid = computed(() => !messageLength.safeParse(feedback.value.
           v-show="feedback.feedback_type"
           :disabled="isMessageInvalid"
           :outlined="isMessageInvalid"
-          @click="feedbackStore.submitFeedback(feedback)"
+          @click="submitFeedback"
         >
           Submit Feedback
           <Icon name="mdi:send" />
