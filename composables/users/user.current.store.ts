@@ -21,19 +21,19 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // Socials and IPs
   // Employment & Education history
   // DoB
+
   const userId = useCookie('userId')
-  const profile = ref(null)
-  const userSession = ref(null)
 
   async function removeSession() {
     const response = await fetch('/api/auth/logout')
     console.log('removeSession', response)
-    userSession.value = null
+    profile.value = null
   }
 
+  const profile = ref(null)
   async function loadSession() {
     logger.info('loadSession')
-    if (loading.isLoading(domainKey) || userSession.value) {
+    if (loading.isLoading(domainKey) || profile.value) {
       return
     }
 
@@ -50,15 +50,16 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     })
 
     if (data) {
-      userSession.value = data
-      console.log('SETTING USER_ID', data.user_id)
-      userId.value = data.user.user_id
+      logger.info(`SETTING USER_ID' ${data.user_id}`)
+      profile.value = data
+      userId.value = data.user_id
     } else {
       logger.info('no session found')
     }
     loading.setLoading(domainKey, false)
   }
 
+  const fullProfile = ref(null)
   async function fetchUserProfile(): Promise<any> {
     logger.info('fetchUserProfile: start', userId.value)
     if (profile.value) {
@@ -81,19 +82,19 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     if (data) {
       logger.info('fetchUserProfile: user stored', data)
-      profile.value = data
+      fullProfile.value = data
     }
   }
 
-  watch(
-    () => userSession.value,
-    (newUser, oldUser) => {
-      if (newUser && newUser !== oldUser) {
-        fetchUserProfile()
-      }
-    },
-    { immediate: true, deep: true }
-  )
+  // watch(
+  //   () => profile.value,
+  //   (newUser, oldUser) => {
+  //     if (newUser && newUser !== oldUser) {
+  //       fetchUserProfile()
+  //     }
+  //   },
+  //   { immediate: true, deep: true }
+  // )
 
   async function updateProfile(newData: any) {
     const response = await fetch(`/api/users/update/${userId.value}`, {
@@ -114,9 +115,6 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
         profile.value[key] = validData[key]
       }
     }
-
-    userSession.value = validData
-
     // might need to force refresh of session
   }
 
@@ -163,8 +161,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // cycle through identities check identities_data for picture
 
   return {
-    haveUserSession: computed(() => !!userSession.value),
+    haveUserSession: computed(() => !!profile.value),
     profile,
+    fullProfile,
     userId,
     loadSession,
     removeSession,

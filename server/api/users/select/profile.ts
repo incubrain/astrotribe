@@ -15,7 +15,7 @@ const pickUserProfile = {
   role: true
 } as const
 
-const userProfileSchema = userSchema.pick(pickUserProfile).transform((user) => ({
+export const userProfileSchema = userSchema.pick(pickUserProfile).transform((user) => ({
   ...user,
   avatar: formatAvatarUrl(user),
   last_seen: user.last_seen ? datetimeOffset(user.last_seen) : undefined,
