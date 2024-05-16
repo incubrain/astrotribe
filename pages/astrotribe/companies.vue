@@ -5,16 +5,11 @@ const domainKey = 'companies'
 
 const haveCompanies = computed(() => companiesStore !== null && companiesStore.length > 0)
 
-const paginationStore = usePaginationStore()
-// blog_url: 'https://agnikul.in/#/news', // external blogs, just title, link and description
-// jobs_page_url: 'https://agnikul.in/#/career', // annoying dropdowns to select job type and job, no clear date
-
 const fetchInput = ref({
   domainKey,
   endpoint: '/api/companies/select/cards',
   criteria: {
     dto: 'select:company:card',
-    pagination: paginationStore.getPaginationRange(domainKey)
   }
 }) as Ref<FetchInput>
 
@@ -37,7 +32,7 @@ definePageMeta({ name: 'Companies', layout: 'app' })
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 10
+        limit: 20
       }"
       @update:scroll-end="companiesStore.loadCompanies(fetchInput)"
     >

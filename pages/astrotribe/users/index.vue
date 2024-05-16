@@ -9,17 +9,8 @@ const haveUsers = computed(() => users.value !== null && users.value.length > 0)
 const fetchInput = ref({
   endpoint: '/api/users/select/cards',
   domainKey,
-  pagination: {
-    page: 1,
-    limit: 20
-  },
   criteria: {
     dto: 'select:user:card',
-    filterBy: {
-      columnName: 'role',
-      operator: 'eq',
-      value: 'user'
-    }
   }
 }) as Ref<FetchInput>
 
