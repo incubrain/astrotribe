@@ -7,7 +7,7 @@
     "website_url": "",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "",
       "twitter_url": "",

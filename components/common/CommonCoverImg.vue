@@ -3,7 +3,8 @@
     <BaseImage
       :img="{
         src: url,
-        alt: 'AstroTribe feature'
+        alt: 'AstroTribe feature',
+        type: 'cover'
       }"
       class="object-cover object-center w-full h-full overflow-hidden"
     />

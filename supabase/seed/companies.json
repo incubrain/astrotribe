@@ -8,7 +8,7 @@
     "website_url": "https://agnikul.in/#/",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/agnikul-cosmos/",
       "twitter_url": "https://twitter.com/@agnikulcosmos",
@@ -25,7 +25,7 @@
     "website_url": "https://www.nasa.gov/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "TwiceDaily",
+    "scrape_frequency": "twice_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/nasa/",
       "twitter_url": "https://twitter.com/NASA",
@@ -43,7 +43,7 @@
     "website_url": "https://www.isro.gov.in/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "Daily",
+    "scrape_frequency": "daily",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/isro/",
       "twitter_url": "https://twitter.com/isro",
@@ -61,7 +61,7 @@
     "website_url": "https://www.esa.int/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "TwiceDaily",
+    "scrape_frequency": "twice_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/european-space-agency/",
       "twitter_url": "https://twitter.com/esa",
@@ -79,7 +79,7 @@
     "website_url": "https://www.asc-csa.gc.ca/eng/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "TwiceDaily",
+    "scrape_frequency": "twice_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/canadian-space-agency/",
       "twitter_url": "https://twitter.com/CSA_ASC",
@@ -97,7 +97,7 @@
     "website_url": "http://www.cnsa.gov.cn/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "Daily"
+    "scrape_frequency": "daily"
   },
   {
     "id": 7,
@@ -108,7 +108,7 @@
     "website_url": "https://www.jaxa.jp/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "Daily",
+    "scrape_frequency": "daily",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/jaxanasdanalisas/",
       "twitter_url": "https://twitter.com/jaxa_en",
@@ -126,7 +126,7 @@
     "website_url": "https://www.roscosmos.ru/",
     "is_government": true,
     "category_id": 1,
-    "scrape_frequency": "TwiceDaily",
+    "scrape_frequency": "twice_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/roscosmos/",
       "twitter_url": "https://twitter.com/roscosmos",
@@ -143,7 +143,7 @@
     "website_url": "https://skyroot.in/index.html",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/skyroot-aerospace/",
       "twitter_url": "https://twitter.com/SkyrootA",
@@ -160,7 +160,7 @@
     "website_url": "https://www.pixxel.space",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/pixxelspace/",
       "twitter_url": "https://twitter.com/pixxelspace",
@@ -176,7 +176,7 @@
     "website_url": "https://bellatrix.aero",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/bellatrix-aerospace/",
       "twitter_url": "https://twitter.com/bellatrixaero",
@@ -193,7 +193,7 @@
     "website_url": "https://www.dhruvaspace.com/",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/dhruva-space/",
       "twitter_url": "https://twitter.com/dhruvaspace",
@@ -210,7 +210,7 @@
     "website_url": "https://www.aeroin.space/",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/aeroinspacetech/",
       "twitter_url": "https://twitter.com/aerodotin",
@@ -226,7 +226,7 @@
     "website_url": "https://aadyah.com/",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/aadyah-aerospace-private-limited/",
       "twitter_url": "https://twitter.com/AadyahAerospace",
@@ -242,7 +242,7 @@
     "website_url": "https://astrogatelabs.com/",
     "is_government": false,
     "category_id": 1,
-    "scrape_frequency": "BiWeekly",
+    "scrape_frequency": "bi_weekly",
     "social_media": {
       "linkedin_url": "https://www.linkedin.com/company/astrogate-labs/",
       "twitter_url": "https://twitter.com/astrogatelabs",
