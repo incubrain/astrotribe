@@ -86,10 +86,43 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     }
   }
 
+  // extract as util func
+  function hasValueChanged(newValue: any, currentValue: any): boolean {
+    console.log('hasValueChanged', newValue, currentValue)
+    if (
+      typeof newValue === 'string' ||
+      typeof newValue === 'boolean' ||
+      typeof newValue === 'number'
+    ) {
+      return newValue !== currentValue
+    } else if (Array.isArray(newValue)) {
+      return JSON.stringify(newValue) !== JSON.stringify(currentValue)
+    } else if (typeof newValue === 'object' && newValue !== null) {
+      return JSON.stringify(newValue) !== JSON.stringify(currentValue)
+    } else {
+      return newValue !== currentValue
+    }
+  }
+
   async function updateProfile(newData: any) {
+    const updatedData: any = {}
+
+    // Compare newData with fullProfile and only include changed values
+    for (const key in newData) {
+      if (newData.hasOwnProperty(key) && hasValueChanged(newData[key], fullProfile.value[key])) {
+        updatedData[key] = newData[key]
+      }
+    }
+
+    // If there are no changes, return early
+    if (Object.keys(updatedData).length === 0) {
+      console.log('No changes detected, no update necessary')
+      return
+    }
+
     const response = await fetch(`/api/users/update/${userId.value}`, {
       method: 'POST',
-      body: newData
+      body: updatedData
     })
 
     const validData = errors.handleFetchErrors(response, {
@@ -158,6 +191,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     loadSession,
     removeSession,
     uploadImage,
-    fetchUserProfile
+    fetchUserProfile,
+    updateProfile
   }
 })

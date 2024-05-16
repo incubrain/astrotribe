@@ -13,7 +13,6 @@ const imageUrl = ref(null)
 watch(
   () => props.img.src,
   (newVal) => {
-    console.log('newVal', newVal)
     imageUrl.value = newVal
   },
   { immediate: true }

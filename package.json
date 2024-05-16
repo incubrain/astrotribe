@@ -11,7 +11,7 @@
     "supa:gen:seed": " supabase db dump -f supabase/seed.sql --data-only",
     "supa:gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:lint": "supabase db lint",
-    "supa:migrate": "supabase db diff --schema auth,public,storage,extensions -f && npm run supa:gen:types",
+    "supa:migrate": "supabase db diff --schema auth,public,storage,extensions -f",
     "supa:migrate:repair": "supabase migration repair --status applied --debug",
     "lint": "eslint . --ext .ts,.js,.vue",
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
