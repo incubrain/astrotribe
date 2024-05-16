@@ -24,28 +24,24 @@ export const datetimeOffset = (
 })
 
 export const formatAvatarUrl = (user: any) => {
-  console.log('formatAvatarUrl', user)
-  return user.avatar.startsWith('http')
-    ? user.avatar
-    : getImageURL({
-        bucket: 'profile-public',
-        folderPath: `${user.id}/avatar`,
-        fileType: 'user-avatar',
-        file: user.avatar,
-        isPrivate: false
-      })
+  return getImageURL({
+    bucket: 'profile-public',
+    folderPath: `${user.id}/avatar`,
+    fileType: 'user-avatar',
+    file: user.avatar,
+    isPrivate: false
+  })
 }
 
 export const formatCoverUrl = (user: any) => {
-  return user.cover_image.startsWith('http')
-    ? user.cover_image
-    : getImageURL({
-        bucket: 'profile-public',
-        folderPath: `${user.id}/cover_image`,
-        fileType: 'user-cover_image',
-        file: user.cover_image,
-        isPrivate: false
-      })
+  console.log('formatCoverUrl', user)
+  return getImageURL({
+    bucket: 'profile-public',
+    folderPath: `${user.id}/cover_image`,
+    fileType: 'user-cover_image',
+    file: user.cover_image,
+    isPrivate: false
+  })
 }
 
 export const formatDob = (date: string) => new Date(date).toISOString()

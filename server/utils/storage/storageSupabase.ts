@@ -46,15 +46,19 @@ export const constructUrl = (options: UrlConstructorOptions) => {
     transform = null
   } = options
 
-  if (!fileType) {
-    throw createError({ message: 'fileType is required in constructUrl' })
-  }
+  console.log('constructUrl', file)
 
   if (stringIsNull(file)) {
     console.log('No file provided, using default file for', fileType)
     return `images/default/${defaultFileOptions[fileType]}`
   }
-  
+
+  console.log('constructUrl2', file)
+
+  if (file && file.startsWith('http')) {
+    return file
+  }
+
   const filePath = `${folderPath}/${file}`
   const accessType = isPrivate ? 'private' : 'public'
   const path = transform
@@ -89,6 +93,10 @@ export const getImageURL = ({
     throw createError({
       message: 'baseURL not defined in getImageURL'
     })
+  }
+
+  if (!fileType) {
+    throw createError({ message: 'fileType is required in constructUrl' })
   }
 
   return constructUrl({

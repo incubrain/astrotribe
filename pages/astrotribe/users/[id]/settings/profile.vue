@@ -48,14 +48,11 @@ const SettingsAccountValidation = z.object({
   quote: z.string().min(10, 'At least 10 characters required').optional()
 })
 
-type SettingsAccountType = z.infer<typeof SettingsAccountValidation>
+const currentUser = useCurrentUser()
+await currentUser.fetchUserProfile()
+const { fullProfile } = storeToRefs(currentUser)
 
-const userSettingsStore = useUserSettingsStore()
-const { settings } = storeToRefs(userSettingsStore)
-
-const user = useCurrentUser()
-await user.fetchUserProfile()
-const { fullProfile: profile } = storeToRefs(user)
+const profileCopy = shallowRef({ ...fullProfile.value })
 
 definePageMeta({
   layoutTransition: false,
@@ -63,14 +60,12 @@ definePageMeta({
   layout: 'app-settings',
   middleware: 'is-current-user'
 })
-
-
 </script>
 
 <template>
   <div>
     <UserSettingsCard
-      v-if="profile"
+      v-if="fullProfile"
       :title="{
         main: 'Account Profile',
         subtitle: 'Update your account information'
@@ -79,14 +74,14 @@ definePageMeta({
       <div class="relative w-full max-w-[1200px] h-64">
         <BaseImage
           :img="{
-            src: profile.cover_image,
+            src: fullProfile.cover_image,
             type: 'cover'
           }"
           class="w-full h-full rounded-md overflow-hidden border border-color"
         />
         <BaseUploadCropper
           cropper-type="cover_image"
-          :has-image="!!profile.cover_image"
+          :has-image="!!fullProfile.cover_image"
           class="absolute top-2 left-2"
         />
 
@@ -94,9 +89,9 @@ definePageMeta({
           class="w-32 h-32 absolute -bottom-16 left-16 bg-red-50 flex justify-center items-center rounded-full overflow-hidden"
         >
           <BaseImage
-            v-if="profile?.avatar"
+            v-if="fullProfile?.avatar"
             :img="{
-              src: profile.avatar,
+              src: fullProfile.avatar,
               type: 'avatar'
             }"
             class="w-full h-full"
@@ -117,25 +112,28 @@ definePageMeta({
           <div class="w-full">
             <PrimeTextarea
               v-if="item.type === 'textarea'"
-              v-model="settings[item.value]"
+              v-model="profileCopy[item.value]"
               rows="5"
               :pt="{
                 root: 'w-full'
               }"
-              :placeholder="item.placeholder"
+              :placeholder="profileCopy[item.value] || item.placeholder"
             />
             <PrimeInputText
               v-else
-              v-model="settings[item.value]"
+              v-model="profileCopy[item.value]"
               :type="item.type"
               :pt="{
                 root: 'w-full'
               }"
               :disabled="item.disabled"
-              :placeholder="item.placeholder"
+              :placeholder="profileCopy[item.value] || item.placeholder"
             />
           </div>
         </UserSettingsItem>
+        <div class="p-8">
+          <PrimeButton @click="currentUser.updateProfile(profileCopy)">Save</PrimeButton>
+        </div>
       </div>
     </UserSettingsCard>
   </div>

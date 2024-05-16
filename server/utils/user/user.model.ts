@@ -1,13 +1,24 @@
 import { z } from 'zod'
 import { datetimeOffset } from '../formatter'
 
-const AppPlanEnum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom']);
-const AppRoleEnum = z.enum(['guest', 'user', 'astroguide', 'mentor', 'moderator', 'tenant_member', 'tenant_admin', 'tenant_super_admin', 'admin', 'super_admin']);
-const UserStatus = z.enum(['ONLINE', 'OFFLINE']);
+const AppPlanEnum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])
+const AppRoleEnum = z.enum([
+  'guest',
+  'user',
+  'astroguide',
+  'mentor',
+  'moderator',
+  'tenant_member',
+  'tenant_admin',
+  'tenant_super_admin',
+  'admin',
+  'super_admin'
+])
+const UserStatus = z.enum(['online', 'offline'])
 
-export type AppPlanEnum = z.infer<typeof AppPlanEnum>;
-export type AppRoleEnum = z.infer<typeof AppRoleEnum>;
-export type UserStatus = z.infer<typeof UserStatus>;
+export type AppPlanEnum = z.infer<typeof AppPlanEnum>
+export type AppRoleEnum = z.infer<typeof AppRoleEnum>
+export type UserStatus = z.infer<typeof UserStatus>
 
 export const userFollowerInsertSchema = z.object({
   followed_id: z.string().uuid({ message: 'Invalid UUID' }),
@@ -26,7 +37,7 @@ export const userSchema = z.object({
   quote: z.string().min(1, 'Quote is required').nullish(),
   username: z.string().min(1, 'Username is required').nullish(),
   avatar: z.string().min(1, 'Avatar is required').nullish(),
-  cover_image: z.string().min(1, 'Cover Image is required').nullish(),
+  cover_image: z.string().nullish(),
   created_at: datetimeOffset('user_profile:created_at incorrect datetime format').optional,
   updated_at: datetimeOffset('user_profile:updated_at incorrect datetime format').optional,
   last_seen: datetimeOffset('user_profile:last_seen incorrect datetime format').optional,
