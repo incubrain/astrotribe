@@ -14,17 +14,8 @@ const isLoading = computed(() => loading.isLoading(domainKey))
 const fetchInput = ref({
   domainKey,
   endpoint: '/api/news/select/cards',
-  pagination: {
-    page: 1,
-    limit: 20
-  },
   criteria: {
-    dto: 'select:news:card',
-    filterBy: {
-      columnName: 'source',
-      operator: 'eq',
-      value: 'nasa'
-    }
+    dto: 'select:news:card'
   }
 }) as Ref<FetchInput>
 
@@ -49,7 +40,10 @@ definePageMeta({
     <!-- <NewsSummaryLevel /> -->
     <BaseInfiniteScroll
       :domain-key="domainKey"
-      :pagination="fetchInput.pagination!"
+      :pagination="{
+        page: 1,
+        limit: 20
+      }"
       @update:scroll-end="newsStore.loadNews(fetchInput)"
     >
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">

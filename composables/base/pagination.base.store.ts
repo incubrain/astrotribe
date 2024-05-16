@@ -39,9 +39,9 @@ export const usePaginationStore = defineStore('paginationStore', () => {
   function getPagination(domainKey: DomainKey) {
     if (!stores[domainKey]) {
       logger.warn(`Pagination settings for '${domainKey}' is not initialized.`)
-      initPagination({ domainKey, pagination: { page: 1, limit: 10 } })
-      return stores[domainKey]
+      return null
     }
+
     return stores[domainKey]
   }
 

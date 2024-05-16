@@ -36,7 +36,7 @@ export const userSchema = z.object({
   introduction: z.string().min(1, 'Introduction is required').nullish(),
   quote: z.string().min(1, 'Quote is required').nullish(),
   username: z.string().min(1, 'Username is required').nullish(),
-  avatar: z.string().min(1, 'Avatar is required').nullish(),
+  avatar: z.string().nullish(),
   cover_image: z.string().nullish(),
   created_at: datetimeOffset('user_profile:created_at incorrect datetime format').optional,
   updated_at: datetimeOffset('user_profile:updated_at incorrect datetime format').optional,
