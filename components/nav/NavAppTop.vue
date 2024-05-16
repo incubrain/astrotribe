@@ -26,6 +26,17 @@ const items = ref([
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading('currentUser'))
+
+const avatarUrl = ref(null)
+
+watch(profile, (newProfile) => {
+  avatarUrl.value = newProfile?.avatar
+})
+
+const logError = (error) => {
+  console.info('Error loading image, default image rendered', error)
+  avatarUrl.value = '/images/defaults/avatar.jpg'
+}
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -70,14 +81,15 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
           {{ profile.user_role }}
         </PrimeTag>
         <PrimeAvatar
-          v-if="profile?.avatar"
-          :image="profile?.avatar"
+          v-if="avatarUrl"
+          :image="avatarUrl"
           size="normal"
           shape="circle"
           class="cursor-pointer"
           aria-haspopup="true"
           aria-controls="overlay_menu"
           @click="toggleMenu"
+          @error="logError"
         />
         <PrimeMenu
           id="overlay_menu"
