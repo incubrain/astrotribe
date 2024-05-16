@@ -56,7 +56,7 @@ export function useBaseFetch() {
   })
 
   async function fetchPaginatedData(params: FetchInput) {
-    const { domainKey, endpoint, criteria, pagination } = params
+    const { domainKey, endpoint, criteria } = params
 
     if (loading.isLoading(domainKey)) {
       return null
@@ -66,8 +66,8 @@ export function useBaseFetch() {
       return null
     }
 
-    if (!paginationStore.getPagination(domainKey) && pagination) {
-      paginationStore.initPagination({ domainKey, pagination })
+    if (!paginationStore.getPagination(domainKey)) {
+      return null
     }
 
     loading.setLoading(domainKey, true)
