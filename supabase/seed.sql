@@ -2617,22 +2617,22 @@ ON CONFLICT (id) DO NOTHING;
 
 
 -- Automatically adjust sequences after seeding data in the 'public' schema
--- DO
--- $$
--- DECLARE
---     table_record RECORD;
--- BEGIN
---     FOR table_record IN SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
---     LOOP
---         -- Check if there's an associated sequence and an 'id' column of type 'integer' or 'bigint'
---         PERFORM column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = table_record.table_name AND column_name = 'id' AND data_type IN ('integer', 'bigint');
---         IF FOUND THEN
---             -- Dynamically set the sequence value based on the maximum id present
---             EXECUTE format('SELECT setval(pg_get_serial_sequence(''%I.%I'', ''id''), COALESCE((SELECT MAX(id) FROM %I.%I), 0) + 1, false)', 'public', table_record.table_name, 'public', table_record.table_name);
---         END IF;
---     END LOOP;
--- END
--- $$;
+DO
+$$
+DECLARE
+    table_record RECORD;
+BEGIN
+    FOR table_record IN SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+    LOOP
+        -- Check if there's an associated sequence and an 'id' column of type 'integer' or 'bigint'
+        PERFORM column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = table_record.table_name AND column_name = 'id' AND data_type IN ('integer', 'bigint');
+        IF FOUND THEN
+            -- Dynamically set the sequence value based on the maximum id present
+            EXECUTE format('SELECT setval(pg_get_serial_sequence(''%I.%I'', ''id''), COALESCE((SELECT MAX(id) FROM %I.%I), 0) + 1, false)', 'public', table_record.table_name, 'public', table_record.table_name);
+        END IF;
+    END LOOP;
+END
+$$;
 
 
 --
