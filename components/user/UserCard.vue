@@ -34,6 +34,7 @@ defineProps({
       <BaseImage
         :img="{
           src: user.avatar,
+          type: 'avatar',
           alt: 'User Avatar'
         }"
         class="rounded-full w-12 h-12"

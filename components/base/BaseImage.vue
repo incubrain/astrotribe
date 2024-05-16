@@ -8,25 +8,34 @@ const props = defineProps({
   }
 })
 
+const imageUrl = ref(null)
 
-const imageUrl = ref(props.img.src)
-function handleError() {
-  imageUrl.value = 'fallback.jpg'
+watch(
+  () => props.img.src,
+  (newVal) => {
+    console.log('newVal', newVal)
+    imageUrl.value = newVal
+  },
+  { immediate: true }
+)
+
+function loadFallbackImage() {
+  imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`
 }
-
 </script>
 
 <template>
   <NuxtImg
-    :src="img.src"
+    v-if="imageUrl"
+    :src="imageUrl"
     :alt="img.alt"
     :width="img.width"
     :height="img.height"
     :format="img.format"
     :quality="img.quality"
     :loading="img.loading"
-    @error="handleError"
+    @error="loadFallbackImage"
     crossorigin="anonymous"
-    />
-    <!-- :nonce="nonce" -->
+  />
+  <!-- :nonce="nonce" -->
 </template>

@@ -7,8 +7,6 @@ type FileType =
   | 'user-avatar'
   | 'user-cover_image'
 
-// Map this to supabase storage bucket structures
-// todo:med:1 - add these defaults in public folder
 const defaultFileOptions: Record<FileType, string> = {
   'venue-logo': 'logo.jpg',
   'venue-featured-image': 'featured-image.jpg',
@@ -48,12 +46,16 @@ export const constructUrl = (options: UrlConstructorOptions) => {
     transform = null
   } = options
 
-  let filePath = `${folderPath}/${file}`
-  if (stringIsNull(file) && fileType) {
-    console.log('No file provided, using default file for', fileType)
-    filePath = `defaults/${defaultFileOptions[fileType]}`
+  if (!fileType) {
+    throw createError({ message: 'fileType is required in constructUrl' })
   }
 
+  if (stringIsNull(file)) {
+    console.log('No file provided, using default file for', fileType)
+    return `images/default/${defaultFileOptions[fileType]}`
+  }
+  
+  const filePath = `${folderPath}/${file}`
   const accessType = isPrivate ? 'private' : 'public'
   const path = transform
     ? `/render/image/${accessType}/${bucket}/${filePath}`

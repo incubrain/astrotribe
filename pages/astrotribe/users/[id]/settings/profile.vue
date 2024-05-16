@@ -79,7 +79,8 @@ definePageMeta({
       <div class="relative w-full max-w-[1200px] h-64">
         <BaseImage
           :img="{
-            src: profile.cover_image ?? undefined
+            src: profile.cover_image,
+            type: 'cover'
           }"
           class="w-full h-full rounded-md overflow-hidden border border-color"
         />
@@ -95,7 +96,8 @@ definePageMeta({
           <BaseImage
             v-if="profile?.avatar"
             :img="{
-              src: profile.avatar
+              src: profile.avatar,
+              type: 'avatar'
             }"
             class="w-full h-full"
           />
