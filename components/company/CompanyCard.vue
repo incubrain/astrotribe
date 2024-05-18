@@ -69,6 +69,10 @@ const { getCategoryName } = useCategoryTagStore()
         >
           founded: {{ company.founding_year }}
         </PrimeTag>
+        <BaseNewLabel
+          :date="company.created_at!"
+          :max-age="14"
+        />
       </div>
       <p
         v-if="company.description"
