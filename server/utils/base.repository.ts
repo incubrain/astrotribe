@@ -74,7 +74,17 @@ export abstract class BaseRepository<T> {
 
   protected processResponse(data: any): T | T[] {
     try {
-      return Array.isArray(data) ? data.map((item) => new this.Model(item)) : new this.Model(data)
+      if (Array.isArray(data)) {
+        logger.silly(`processResponse Array[0] BEFORE ${JSON.stringify(data[0])}`)
+        const processedArray = data.map((item) => new this.Model(item))
+        logger.silly(`processResponse Array[0] AFTER ${JSON.stringify(processedArray[0])}`)
+        return processedArray
+      } else {
+        logger.silly(`processResponse Object ${JSON.stringify(data)}`)
+        const processedObject = new this.Model(data)
+        logger.silly(`processResponse Object ${JSON.stringify(processedObject)}`)
+        return processedObject
+      }
     } catch (error) {
       this.logger.error('Data validation failed', error)
       throw createError({ message: 'Data validation failed: ' + error.message })
@@ -159,6 +169,7 @@ export abstract class BaseRepository<T> {
     const response = await this.clientQuery(
       async (client) => await this.constructQuery<K>(client, input, 'select')
     )
+    // this.logger.info(`selectMany data retrieved ${JSON.stringify(response)}`)
     return this.processResponse(this.handleDBErrors(response)) as T[]
   }
 
