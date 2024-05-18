@@ -57,6 +57,8 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
+    "@vueuse/integrations": "^10.9.0",
+    "change-case": "^4.1.2",
     "groq-sdk": "^0.3.2",
     "jsonwebtoken": "^9.0.2",
     "playwright": "^1.43.1",
