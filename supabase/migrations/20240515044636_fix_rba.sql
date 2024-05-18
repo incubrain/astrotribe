@@ -35,7 +35,7 @@ END;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.update_user_personal_data()
+CREATE OR REPLACE FUNCTION public.update_user_metadata()
  RETURNS trigger
  LANGUAGE plpgsql
 AS $function$
@@ -56,6 +56,8 @@ $function$
 
 CREATE TRIGGER update_user_app_metadata_trigger AFTER UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.update_user_app_metadata();
 
-CREATE TRIGGER update_user_personal_data_trigger AFTER UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.update_user_personal_data();
+CREATE TRIGGER update_user_metadata_trigger AFTER UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.update_user_metadata();
 
+GRANT EXECUTE ON FUNCTION public.update_user_metadata() TO authenticator;
+GRANT EXECUTE ON FUNCTION public.update_user_app_metadata() TO authenticator;
 

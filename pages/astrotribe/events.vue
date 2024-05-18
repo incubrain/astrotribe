@@ -5,14 +5,11 @@ const { events } = storeToRefs(eventsStore)
 
 const haveEvents = computed(() => events.value !== null && events.value.length > 0)
 
-const paginationStore = usePaginationStore()
-
 const fetchInput = ref({
   domainKey,
   endpoint: '/api/events/select/cards',
   criteria: {
-    dto: 'select:events:card',
-    pagination: paginationStore.getPaginationRange(domainKey)
+    dto: 'select:events:card'
   }
 }) as Ref<FetchInput>
 
@@ -35,7 +32,7 @@ definePageMeta({ name: 'Events', layout: 'app' })
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 10
+        limit: 20
       }"
       @update:scroll-end="eventsStore.loadEvents(fetchInput)"
     >

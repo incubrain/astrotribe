@@ -79,7 +79,7 @@ const submitFeedback = async () => {
 
 <template>
   <div class="w-52">
-    <h2 class="text-lg font-bold mb-4 text-center">{{ cta }}</h2>
+    <h2 class="text-lg font-bold mb-4 text-left">{{ cta }}</h2>
     <form
       class="space-y-4 w-52"
       @submit.prevent="submitFeedback"

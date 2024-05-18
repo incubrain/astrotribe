@@ -45,7 +45,10 @@ const { getCategoryName } = useCategoryTagStore()
             <h3 class="text-balance text-xl md:max-h-16 font-semibold">
               {{ company.name }}
             </h3>
-            <p class="text-sm">
+            <p
+              v-if="company.category_id !== 16"
+              class="text-sm"
+            >
               {{ getCategoryName(company.category_id) }}
             </p>
           </div>
@@ -57,14 +60,14 @@ const { getCategoryName } = useCategoryTagStore()
     </div>
     <div class="flex flex-col gap-4">
       <div class="flex gap-2 items-center">
+        <PrimeTag severity="info">
+          {{ company.is_government ? 'Government' : 'Private' }}
+        </PrimeTag>
         <PrimeTag
           v-if="company.founding_year"
           severity="info"
         >
           founded: {{ company.founding_year }}
-        </PrimeTag>
-        <PrimeTag severity="info">
-          {{ company.is_government ? 'Government' : 'Private' }}
         </PrimeTag>
       </div>
       <p

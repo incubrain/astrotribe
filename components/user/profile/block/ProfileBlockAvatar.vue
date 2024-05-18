@@ -13,6 +13,7 @@
     <BaseImage
       :img="{
         src: avatar,
+        type: 'avatar',
         width: '80',
         height: '80'
       }"
