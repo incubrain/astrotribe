@@ -29,9 +29,13 @@ const isLoading = computed(() => loading.isLoading('currentUser'))
 
 const avatarUrl = ref(null)
 
-watch(profile, (newProfile) => {
-  avatarUrl.value = newProfile?.avatar
-})
+watch(
+  profile,
+  (newProfile) => {
+    avatarUrl.value = newProfile?.avatar
+  },
+  { immediate: true }
+)
 
 const logError = (error) => {
   console.info('Error loading image, default image rendered', error)
