@@ -10,6 +10,10 @@ export default defineEventHandler(async (event) => {
     const news = await newsRepository.selectNewsCards({
       tableName: 'news',
       selectStatement: '*',
+      orderBy: {
+        columnNames: ['published_at'],
+        ascending: false
+      },
       ...parsedQuery
     })
 

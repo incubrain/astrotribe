@@ -1,7 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type {
   DeleteInput,
-  SelectInput,
   BaseOperationInput,
   SelectInput,
   InsertInput,
@@ -93,17 +92,17 @@ export abstract class BaseRepository<T> {
       case 'select':
         query = client.from(input.tableName).select(input.selectStatement)
         break
-        
-        case 'insert':
-          // might need to handle array of data
+
+      case 'insert':
+        // might need to handle array of data
         query = client.from(input.tableName).insert(input.data)
         break
-        
-        case 'update':
+
+      case 'update':
         query = client.from(input.tableName).update(input.data)
         break
-        
-        case 'delete':
+
+      case 'delete':
         query = client.from(input.tableName).delete()
         break
 
@@ -117,6 +116,12 @@ export abstract class BaseRepository<T> {
         input.filterBy.operator,
         input.filterBy.value
       )
+    }
+
+    if (input.orderBy) {
+      input.orderBy.columnNames.forEach((columnName) => {
+        query = query.order(columnName, { ascending: input.orderBy.ascending })
+      })
     }
 
     if (input.pagination) {

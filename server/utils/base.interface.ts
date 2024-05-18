@@ -3,6 +3,7 @@ import type { NewsDTOKey } from './news/news.dto'
 import type { ResearchDTOKey } from './research/research.dto'
 import type { CompanyDTOKey } from './company/company.dto'
 import type { Database, Tables } from '~/supabase/schema.gen'
+import { boolean } from 'zod'
 
 type DBTable = keyof Database['public']['Tables'] | keyof Database['public']['Views']
 type DBColumns<T extends DBTable> = keyof Tables<T>
@@ -54,11 +55,18 @@ export type FilterBy<T extends TableKey> = {
   value: string | boolean | number
 }
 
+type OrderBy<T extends TableKey> = {
+  columnNames: TableSpecificColumns<T>[]
+  ascending: boolean
+  referenceTable?: string
+}
+
 export interface BaseOperationInput<T, K extends TableKey> {
   tableName: K
   data?: T | T[]
   selectStatement?: string
   filterBy?: FilterBy<K>
+  orderBy?: OrderBy<K>
   pagination?: Pagination
   limit?: number
   isSingle?: boolean

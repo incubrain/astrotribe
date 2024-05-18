@@ -8,7 +8,7 @@ export class CompanyRepository extends BaseRepository<Company> implements ICompa
     super({ loggerPrefix: 'CompanyRepository', Model: Company })
   }
 
-  async selectCompanyById(config: SelectInput<{}>): Promise<Company> {
+  async selectCompanyById(config: SelectInput<{}, 'companies'>): Promise<Company> {
     this.logger.info('selectCompanyById')
 
     const data = await this.selectOne<'companies'>({
