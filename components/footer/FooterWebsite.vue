@@ -5,12 +5,10 @@ const { socials, websiteLinks } = usePages()
 </script>
 
 <template>
-  <footer class="foreground flex flex-col justify-start items-start relative overflow-hidden">
-    <div
-      class="relative wrapper padded-x py-4 lg:py-8 flex justify-between rounded-md w-full items-start"
-    >
+  <footer class="flex flex-col justify-start items-start relative overflow-hidden">
+    <div class="relative wrapper padded-x flex justify-between rounded-md w-full items-start">
       <div
-        class="grid grid-cols-2 lg:grid-cols-3 rounded-md w-full h-full gap-4 lg:gap-8 p-4 xl:p-8 mx-auto border border-color background"
+        class="grid grid-cols-2 lg:grid-cols-3 rounded-t-md w-full h-full gap-4 lg:gap-8 p-4 xl:p-8 mx-auto background"
       >
         <div
           class="flex flex-shrink-0 row-start-2 lg:row-start-1 col-start-2 lg:col-start-1 justify-center items-start lg:justify-start lg:pr-4"
@@ -37,9 +35,11 @@ const { socials, websiteLinks } = usePages()
           <div
             v-for="link in websiteLinks"
             :key="link.label"
-            class=" last:pr-0 pb-2 lg:pb-0 space-y-2 px-3"
+            class="last:pr-0 pb-2 lg:pb-0 space-y-2 px-3"
           >
-            <h4 class="font-bold text-base underline underline-offset-4 decoration-primary-600 pb-2">
+            <h4
+              class="font-bold text-base underline underline-offset-4 decoration-primary-600 pb-2"
+            >
               {{ link.label }}
             </h4>
             <NuxtLink
@@ -70,6 +70,8 @@ const { socials, websiteLinks } = usePages()
         </div>
       </div>
     </div>
-    <FooterBottomBar class="w-full" />
+    <div class="wrapper padded-x w-full">
+      <FooterBottomBar class="min-w-full  border-t border-color" />
+    </div>
   </footer>
 </template>

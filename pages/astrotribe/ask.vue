@@ -11,17 +11,11 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
       <div class="space-y-2">
         <h1 class="text-4xl font-semibold text-center">Your Galactic Guide </h1>
         <p class="text-lg font-semibold text-center">
-          What've you always wanted to know?
+          Ask AI What you've always wanted to know!
         </p>
       </div>
 
-      <!-- <PrimeInlineMessage
-        severity="info"
-        :pt="{ root: 'flex justify-start', text: 'text-sm text-left' }"
-      >
-        Storing chat history and follow-up questions is coming as a premium feature.
-      </PrimeInlineMessage> -->
-      <div class="flex gap-4">
+      <div class="flex gap-4 px-4">
         <SearchBar />
       </div>
       <div

@@ -15,6 +15,9 @@ const isPasswordValid = computed(() => {
   return form.password === form.confirmPassword && !!form.password && !!form.confirmPassword
 })
 
+const currentUser = useCurrentUser()
+const { haveUserSession } = storeToRefs(currentUser)
+
 definePageMeta({
   name: 'Register',
   layout: 'auth'
@@ -26,10 +29,24 @@ definePageMeta({
     :title="{
       main: 'Create an Account',
       subtitle: 'Already have an account?',
-      label: 'Login here.'
+      label: 'Login'
     }"
     help-url="/auth/login"
   >
+    <template #title>
+      <div v-if="haveUserSession">
+        <AuthVerifiedWith class="w-full" />
+
+        <div class="w-full pt-4">
+          <PrimeDivider
+            layout="horizontal"
+            class="flex justify-left items-center"
+          >
+            <p>Or Login with</p>
+          </PrimeDivider>
+        </div>
+      </div>
+    </template>
     <template #content>
       <div class="flex flex-col gap-4">
         <PrimeFloatLabel class="flex flex-col w-full">

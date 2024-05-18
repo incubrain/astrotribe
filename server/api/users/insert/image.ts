@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
     const client = await serverSupabaseClient<Database>(event)
     const { error } = await client.storage
       .from('profile-public')
-      .upload(`${userId}/${fileType}/${fileName}.${fileExtention}`, form[0].data, {
+      .upload(`${userId}/${fileType}/${fileName}`, form[0].data, {
         contentType: form[0].type,
         cacheControl: '3600',
         upsert: true

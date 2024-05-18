@@ -5,14 +5,11 @@ const domainKey = 'research'
 const { research } = storeToRefs(researchStore)
 const haveResearch = computed(() => research.value !== null && research.value.length > 0)
 
-const paginationStore = usePaginationStore()
-
 const fetchInput = ref({
   domainKey,
   endpoint: '/api/research/select/cards',
   criteria: {
     dto: 'select:research:card',
-    pagination: paginationStore.getPaginationRange(domainKey)
   }
 })
 
@@ -38,7 +35,7 @@ definePageMeta({
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 10
+        limit: 20
       }"
       @update:scroll-end="researchStore.loadResearch('select:venue:card')"
     >

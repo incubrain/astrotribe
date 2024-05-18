@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-// const nonce = useNonce()
+const nonce = useNonce()
+const uuid = useId()
 
 const props = defineProps({
   img: {
@@ -8,25 +9,35 @@ const props = defineProps({
   }
 })
 
+const imageUrl = ref(null)
 
-const imageUrl = ref(props.img.src)
-function handleError() {
-  imageUrl.value = 'fallback.jpg'
+watch(
+  () => props.img.src,
+  (newVal) => {
+    imageUrl.value = newVal
+  },
+  { immediate: true }
+)
+
+function loadFallbackImage() {
+  imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`
 }
-
 </script>
 
 <template>
   <NuxtImg
-    :src="img.src"
+    v-bind="$attrs"
+    v-if="imageUrl"
+    :src="imageUrl"
     :alt="img.alt"
     :width="img.width"
     :height="img.height"
     :format="img.format"
     :quality="img.quality"
     :loading="img.loading"
-    @error="handleError"
+    @error="loadFallbackImage"
+    :nonce="nonce"
+    :key="`image-${uuid}`"
     crossorigin="anonymous"
-    />
-    <!-- :nonce="nonce" -->
+  />
 </template>

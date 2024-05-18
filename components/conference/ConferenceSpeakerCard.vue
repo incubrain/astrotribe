@@ -45,7 +45,7 @@
       <div
         v-if="speaker.abstract"
         class="flex flex-col gap-2 p-4 justify-end w-full h-full rounded-md border border-color"
-        :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-50 dark:bg-primary-950'"
+        :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-100 dark:bg-primary-950'"
         @click="isOpen = true"
       >
         <h5 class="font-semibold"> Abstract </h5>

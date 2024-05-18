@@ -39,7 +39,7 @@ defineProps({
       class="absolute z-10 flex flex-col lg:flex-row text-white gap-8 lg:gap-16 px-4 xl:px-8 justify-center items-center"
     >
       <slot />
-      <div class="space-y-4 block">
+      <div class="block">
         <h2
           class="text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-4 xl:px-8 rounded-md shadow-xl"
         >
@@ -47,7 +47,7 @@ defineProps({
         </h2>
         <h4
           v-if="title.subtitle"
-          class="text-xl w-auto inline-block font-semibold lg:text-3xl bg-black/30 py-1 px-2 rounded-sm"
+          class="text-xl w-auto inline-block font-semibold lg:text-3xl bg-black/30 pb-4 px-4 xl:px-8 rounded-sm"
         >
           {{ title.subtitle }}
         </h4>
