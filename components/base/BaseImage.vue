@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-// const nonce = useNonce()
+const nonce = useNonce()
+const uuid = useId()
 
 const props = defineProps({
   img: {
@@ -25,6 +26,7 @@ function loadFallbackImage() {
 
 <template>
   <NuxtImg
+    v-bind="$attrs"
     v-if="imageUrl"
     :src="imageUrl"
     :alt="img.alt"
@@ -34,7 +36,8 @@ function loadFallbackImage() {
     :quality="img.quality"
     :loading="img.loading"
     @error="loadFallbackImage"
+    :nonce="nonce"
+    :key="`image-${uuid}`"
     crossorigin="anonymous"
   />
-  <!-- :nonce="nonce" -->
 </template>
