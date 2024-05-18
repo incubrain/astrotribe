@@ -50,7 +50,7 @@ export const constructUrl = (options: UrlConstructorOptions) => {
 
   if (stringIsNull(file)) {
     console.log('No file provided, using default file for', fileType)
-    return `images/default/${defaultFileOptions[fileType]}`
+    return `images/defaults/${defaultFileOptions[fileType]}`
   }
 
   console.log('constructUrl2', file)
