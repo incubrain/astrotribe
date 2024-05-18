@@ -5,7 +5,7 @@ const currentYear = new Date().getFullYear()
 </script>
 
 <template>
-  <div class="py-5 background border-t border-color flex flex-col justify-center gap-4 text-sm">
+  <div class="py-5 background flex flex-col justify-center gap-4 text-sm w-full">
     <div class="flex gap-2 mx-auto">
       <NuxtLink
         v-for="policy in policies"

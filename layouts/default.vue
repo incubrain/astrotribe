@@ -17,7 +17,7 @@ const showTopNav = computed(
 
 <template>
   <div class="w-full min-h-screen foreground relative">
-    <NavTop v-if="showTopNav" />
+    <NavTop v-if="showTopNav" class="wrapper padded-x" />
     <AppBackButton
       v-else
       class="fixed bottom-2 left-2 z-50"

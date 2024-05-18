@@ -185,6 +185,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
   return {
     haveUserSession: computed(() => !!profile.value),
+    registeredWithProvider: computed(() => profile.value?.provider),
     profile,
     fullProfile,
     userId,

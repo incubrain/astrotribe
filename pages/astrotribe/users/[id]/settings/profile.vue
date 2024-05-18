@@ -131,8 +131,8 @@ definePageMeta({
             />
           </div>
         </UserSettingsItem>
-        <div class="p-8">
-          <PrimeButton @click="currentUser.updateProfile(profileCopy)">Save</PrimeButton>
+        <div class="py-8">
+          <PrimeButton @click="currentUser.updateProfile(profileCopy)" class="text-white">Save changes</PrimeButton>
         </div>
       </div>
     </UserSettingsCard>

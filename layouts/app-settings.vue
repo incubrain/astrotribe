@@ -54,7 +54,7 @@ const settingsRoutes = computed(() => [
               v-if="item.url"
               v-ripple
               :to="item.url"
-              exact-active-class="link-active background "
+              exact-active-class="bg-primary-950 text-white"
               class="flex gap-2 py-2 px-3 rounded-md"
             >
               <span class="md:mr-4 text-nowrap">{{ item.label }}</span>
