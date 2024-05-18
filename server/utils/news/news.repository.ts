@@ -10,14 +10,14 @@ export class NewsRepository extends BaseRepository<News> implements INewsReposit
     super({ loggerPrefix: 'NewsRepository', Model: News })
   }
 
-  async selectNewsCards(input: SelectInput<{}>): Promise<News[]> {
+  async selectNewsCards(input: SelectInput<{}, 'news'>): Promise<News[]> {
     this.logger.info('selectNewsCards')
 
     const news = await this.selectMany<'news'>(input)
     return news.map((news) => new News(news))
   }
 
-  async upsertNewsCards(config: UpsertInput<News>): Promise<News[]> {
+  async upsertNewsCards(config: UpsertInput<News, 'news'>): Promise<News[]> {
     const formattedData = config.data.forEach((news) =>
       this.dto.validateAndFormatData({ data: new News(news), dto: config.dto })
     )
