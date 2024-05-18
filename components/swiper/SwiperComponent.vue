@@ -27,8 +27,8 @@ const swiperConfig = computed(() => ({
       }
     },
     1280: {
-      slidesPerView: 2,
-      spaceBetween: 48,
+      slidesPerView: 3,
+      spaceBetween: 24,
       grid: {
         rows: 2,
         fill: 'row'

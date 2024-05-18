@@ -15,13 +15,7 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
         </p>
       </div>
 
-      <!-- <PrimeInlineMessage
-        severity="info"
-        :pt="{ root: 'flex justify-start', text: 'text-sm text-left' }"
-      >
-        Storing chat history and follow-up questions is coming as a premium feature.
-      </PrimeInlineMessage> -->
-      <div class="flex gap-4">
+      <div class="flex gap-4 px-4">
         <SearchBar />
       </div>
       <div

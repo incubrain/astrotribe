@@ -1,7 +1,7 @@
 <template>
   <div
     ref="navbar"
-    class="flex origin-top-left w-full wrapper lg:justify-center lg:items-center lg:padded-x"
+    class="flex w-full wrapper paddex-x lg:justify-center lg:items-center lg:padded-x"
     :class="navbarClasses"
     :style="{
       position: 'fixed',
