@@ -23,8 +23,9 @@ const schema = [
   }
 ]
 
-const userSettingsStore = useUserSettingsStore()
-const { settings } = storeToRefs(userSettingsStore)
+const currentUser = useCurrentUser()
+await currentUser.fetchUserProfile()
+const { profile } = storeToRefs(currentUser)
 
 definePageMeta({
   layoutTransition: false,
@@ -32,29 +33,45 @@ definePageMeta({
   layout: 'app-settings',
   middleware: 'is-current-user'
 })
+
+const settings = reactive({
+  password: '',
+  new_password: '',
+  confirm_new_password: ''
+})
+
+const isPasswordUpdatable = computed(() => profile.value?.providers.includes('email'))
 </script>
 
 <template>
   <div>
     <UserSettingsCard
       :title="{
-        main: 'Account Profile',
-        subtitle: 'Update your account information'
+        main: 'Update Password',
+        subtitle: 'Change your password here'
       }"
     >
-      <UserSettingsItem
-        v-for="item in schema"
-        :key="item.value"
-        :item="item"
+      <div v-if="isPasswordUpdatable">
+        <UserSettingsItem
+          v-for="item in schema"
+          :key="item.value"
+          :item="item"
+        >
+          <FormPassword
+            v-model="settings[item.value]"
+            :pt="{
+              root: 'w-full'
+            }"
+            :placeholder="item.placeholder"
+          />
+        </UserSettingsItem>
+      </div>
+      <PrimeInlineMessage
+        severity="info"
+        v-else-if="profile"
       >
-        <FormPassword
-          v-model="settings[item.value]"
-          :pt="{
-            root: 'w-full'
-          }"
-          :placeholder="item.placeholder"
-        />
-      </UserSettingsItem>
+        You used {{ profile.provider }} to authenticate
+      </PrimeInlineMessage>
     </UserSettingsCard>
   </div>
 </template>

@@ -7,6 +7,9 @@ const form = reactive({
 
 const auth = useAuth()
 
+const currentUser = useCurrentUser()
+const { haveUserSession } = storeToRefs(currentUser)
+
 definePageMeta({
   name: 'Login',
   layout: 'auth'
@@ -22,6 +25,20 @@ definePageMeta({
     }"
     help-url="/auth/register"
   >
+    <template #title>
+      <div v-if="haveUserSession">
+        <AuthVerifiedWith class="w-full" />
+
+        <div class="w-full pt-4">
+          <PrimeDivider
+            layout="horizontal"
+            class="flex justify-left items-center"
+          >
+            <p>Or Login with</p>
+          </PrimeDivider>
+        </div>
+      </div>
+    </template>
     <template #content>
       <PrimeFloatLabel class="flex flex-col w-full">
         <PrimeInputText
@@ -63,23 +80,28 @@ definePageMeta({
       </PrimeButton>
     </template>
     <template #footer>
-      <div class="w-full">
-        <PrimeDivider
-          layout="horizontal"
-          class="flex justify-left items-center"
-        >
-          <p>Or continue with</p>
-        </PrimeDivider>
-      </div>
-      <div class="flex gap-4 xl:gap-6 w-full pt-4">
-        <AuthSocialButton
-          provider="twitter"
-          @social-login="auth.loginSocial('twitter')"
-        />
-        <AuthSocialButton
-          provider="linkedin"
-          @social-login="auth.loginSocial('linkedin_oidc')"
-        />
+      <div class="w-full flex justify-center items-center"> </div>
+      <div>
+        <div class="w-full">
+          <PrimeDivider
+            layout="horizontal"
+            class="flex justify-left items-center"
+          >
+            <p>Or continue with</p>
+          </PrimeDivider>
+        </div>
+        <div class="flex w-full h-auto items-center justify-between pt-4">
+          <div class="flex gap-4 xl:gap-6">
+            <AuthSocialButton
+              provider="twitter"
+              @social-login="auth.loginSocial('twitter')"
+            />
+            <AuthSocialButton
+              provider="linkedin"
+              @social-login="auth.loginSocial('linkedin_oidc')"
+            />
+          </div>
+        </div>
       </div>
     </template>
   </AuthCard>
