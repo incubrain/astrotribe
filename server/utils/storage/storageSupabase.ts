@@ -46,14 +46,11 @@ export const constructUrl = (options: UrlConstructorOptions) => {
     transform = null
   } = options
 
-  console.log('constructUrl', file)
 
   if (stringIsNull(file)) {
     console.log('No file provided, using default file for', fileType)
     return `images/defaults/${defaultFileOptions[fileType]}`
   }
-
-  console.log('constructUrl2', file)
 
   if (file && file.startsWith('http')) {
     return file
