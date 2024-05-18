@@ -18,7 +18,7 @@ defineProps({
     <div class="p-6 flex gap-4">
       <BaseImage
         :img="{
-          src: `images/companies/nasa-logo.jpg`,
+          src: `images/companies/${news.source}-logo.jpg`,
           alt: news.title,
           width: '60',
           height: '60'
