@@ -1,38 +1,19 @@
-<script setup lang="ts">
-const { websiteLinks } = usePages()
-
-const props = defineProps({
-  isCompact: {
-    type: Boolean,
-    default: false
-  },
-  compactOnScroll: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const currentUser = useCurrentUser()
-const { haveUserSession } = storeToRefs(currentUser)
-
-// !design:high:easy:1 - auto detect session and show AstroTribe button
-</script>
-
 <template>
   <div
-    class="'flex origin-top-left w-full wrapper lg:justify-center lg:items-center lg:padded-x',"
+    ref="navbar"
+    class="flex origin-top-left w-full wrapper lg:justify-center lg:items-center lg:padded-x"
+    :class="navbarClasses"
     :style="{
       position: 'fixed',
       top: '0',
       left: '0',
       right: '0',
-      transition: 'transform 0.5s ease, left 0.5s ease',
       zIndex: '50'
     }"
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="rounded-none lg:rounded-b-md w-full"
+      class="rounded-none lg:rounded-b-md w-full backdrop-white/20 backdrop:blur-lg"
     >
       <template #start>
         <div class="gap-4 hidden lg:flex rounded-md p-1">
@@ -90,20 +71,12 @@ const { haveUserSession } = storeToRefs(currentUser)
           </NuxtLink>
           <ClientOnly>
             <div class="gap-4 flex items-center justify-center h-auto min-w-24 pr-2">
-              <NuxtLink
+              <div
                 v-if="haveUserSession"
-                v-ripple
-                to="/astrotribe"
+                class="flex gap-2"
               >
-                <PrimeButton
-                  :pt="{
-                    root: 'border'
-                  }"
-                  @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
-                >
-                  Dashboard
-                </PrimeButton>
-              </NuxtLink>
+                <AuthVerifiedWith />
+              </div>
               <div
                 v-else
                 class="space-x-4"
@@ -140,4 +113,73 @@ const { haveUserSession } = storeToRefs(currentUser)
   </div>
 </template>
 
-<style></style>
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useWindowScroll } from '@vueuse/core'
+
+const { websiteLinks } = usePages()
+
+const props = defineProps({
+  isCompact: {
+    type: Boolean,
+    default: false
+  },
+  compactOnScroll: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const currentUser = useCurrentUser()
+const { haveUserSession, registeredWithProvider } = storeToRefs(currentUser)
+
+const { y } = useWindowScroll()
+const lastScrollY = ref(y.value)
+const isScrollingDown = ref(false)
+
+const navbarClasses = ref('animate-bounce-in')
+
+watch(y, (newY) => {
+  if (newY > lastScrollY.value) {
+    isScrollingDown.value = true
+  } else if (newY < lastScrollY.value) {
+    isScrollingDown.value = false
+  }
+  lastScrollY.value = newY
+  navbarClasses.value = isScrollingDown.value ? 'animate-bounce-out' : 'animate-bounce-in'
+})
+</script>
+
+<style scoped>
+canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-out {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.7s ease-out forwards;
+}
+
+.animate-bounce-out {
+  animation: bounce-out 0.7s ease-in forwards;
+}
+</style>
