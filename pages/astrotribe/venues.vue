@@ -5,14 +5,11 @@ const domainKey = 'venues'
 const { venues } = storeToRefs(venuesStore)
 const haveVenues = computed(() => venues.value !== null && venues.value.length > 0)
 
-const paginationStore = usePaginationStore()
-
 const fetchInput = ref({
   domainKey,
   endpoint: '/api/venues/select/cards',
   criteria: {
-    dto: 'select:venues:card',
-    pagination: paginationStore.getPaginationRange(domainKey)
+    dto: 'select:venues:card'
   }
 })
 
@@ -34,7 +31,7 @@ definePageMeta({ name: 'Venues', layout: 'app' })
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 10
+        limit: 20
       }"
       @update:scroll-end="venuesStore.loadVenues('select:venue:card')"
     >

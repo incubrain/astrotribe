@@ -53,16 +53,20 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    console.log('parsing data: ', user)
+    const parsedData = userProfileSchema.parse(user)
+
     return {
       status: 200,
       message: 'User fetched',
-      data: userProfileSchema.parse(user)
+      data: parsedData
     }
   } catch (error: any) {
-    console.error('get-user-[id] error', error.message)
+    console.error('users/select/profile-[id] error', error.message)
     return {
       status: 500,
-      message: error.message,
+      error,
+      message: 'Error fetching user profile',
       data: null
     }
   }

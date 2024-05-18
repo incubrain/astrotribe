@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center relative justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl ring-1 ring-primary-100 dark:ring-primary-950 transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+    class="flex flex-col items-center relative justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl border border-color transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
     <div class="absolute w-full h-full animate-pulse">
       <SvgStars

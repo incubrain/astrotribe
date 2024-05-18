@@ -15,19 +15,24 @@ export default <Partial<Config>>{
       '5xl': '4.052rem'
     },
     extend: {
+      colors: {
+        'primary-50': 'rgb(var(--primary-50), <alpha-value>)',
+        'primary-100': 'rgb(var(--primary-100), <alpha-value>)',
+        'primary-200': 'rgb(var(--primary-200), <alpha-value>)',
+        'primary-300': 'rgb(var(--primary-300), <alpha-value>)',
+        'primary-400': 'rgb(var(--primary-400), <alpha-value>)',
+        'primary-500': 'rgb(var(--primary-500), <alpha-value>)',
+        'primary-600': 'rgb(var(--primary-600), <alpha-value>)',
+        'primary-700': 'rgb(var(--primary-700), <alpha-value>)',
+        'primary-800': 'rgb(var(--primary-800), <alpha-value>)',
+        'primary-900': 'rgb(var(--primary-900), <alpha-value>)',
+        'primary-950': 'rgb(var(--primary-950), <alpha-value>)'
+      },
       screens: {
         '2xl': '1536px'
       },
       gridTemplateColumns: {
         nav: 'minmax(240px, 1fr) minmax(420px, 2fr) minmax(300px,1fr)'
-      },
-      colors: {
-        primary: c.cyan,
-        secondary: c.indigo,
-        error: c.red,
-        success: c.green,
-        warning: c.yellow,
-        info: c.cyan
       },
       animation: {
         'spin-slow': 'spin 300s linear infinite',
