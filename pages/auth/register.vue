@@ -25,8 +25,6 @@ const isFormValid = computed(() => {
   return isPasswordValid.value && isEmailValid.value && !!form.given_name && !!form.surname
 })
 
-const currentUser = useCurrentUser()
-const { haveUserSession } = storeToRefs(currentUser)
 
 definePageMeta({
   name: 'Register',
@@ -43,20 +41,6 @@ definePageMeta({
     }"
     help-url="/auth/login"
   >
-    <template #title>
-      <div v-if="haveUserSession">
-        <AuthVerifiedWith class="w-full" />
-
-        <div class="w-full pt-4">
-          <PrimeDivider
-            layout="horizontal"
-            class="flex justify-left items-center"
-          >
-            <p>Or Login with</p>
-          </PrimeDivider>
-        </div>
-      </div>
-    </template>
     <template #content>
       <div class="flex flex-col gap-4">
         <div class="flex gap-4 w-full">
@@ -134,24 +118,7 @@ definePageMeta({
       </div>
     </template>
     <template #footer>
-      <div class="w-full">
-        <PrimeDivider
-          layout="horizontal"
-          class="flex justify-left items-center"
-        >
-          <p>Or continue with</p>
-        </PrimeDivider>
-      </div>
-      <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
-        <AuthSocialButton
-          provider="twitter"
-          @social-login="auth.loginSocial('twitter')"
-        />
-        <AuthSocialButton
-          provider="linkedin"
-          @social-login="auth.loginSocial('linkedin_oidc')"
-        />
-      </div>
+      <AuthRegisterWith />
     </template>
   </AuthCard>
 </template>

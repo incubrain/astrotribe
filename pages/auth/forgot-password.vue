@@ -16,9 +16,10 @@ definePageMeta({
 
 <template>
   <AuthCard
+    :show-title="false"
     :title="{
-      main: 'Forgot Your Password?',
-      subtitle: 'Don\'t worry, get a reset link to your email.'
+      main: 'Request Magic Link',
+      subtitle: 'Enter your email to get a reset link.'
     }"
   >
     <template #content>
@@ -28,7 +29,7 @@ definePageMeta({
             id="username"
             v-model="form.email"
           />
-          <label for="username">Email</label>
+          <label for="username">Your Regeistered Email</label>
         </PrimeFloatLabel>
       </div>
     </template>
@@ -37,7 +38,7 @@ definePageMeta({
         class="w-full flex justify-center"
         @click="auth.password.forgot(form.email)"
       >
-        Send Reset Email
+        Request Reset Email
       </PrimeButton>
     </template>
   </AuthCard>
