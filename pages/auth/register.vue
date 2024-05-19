@@ -93,7 +93,7 @@ definePageMeta({
         <PrimeButton
           class="justify-center"
           :disabled="!isPasswordValid"
-          @click="auth.registerWithEmail(form.email, form.password)"
+          @click="auth.registerWithEmail(form.email, form.password!)"
         >
           Sign up with email
         </PrimeButton>

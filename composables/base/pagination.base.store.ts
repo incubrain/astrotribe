@@ -9,6 +9,7 @@ export type DomainKey =
   | 'feedbacks'
   | 'currentUser'
   | 'chat'
+  | 'auth'
 
 type PaginationKey = 'from' | 'to' | undefined
 
