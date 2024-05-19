@@ -41,6 +41,9 @@ const logError = (error) => {
   console.info('Error loading image, default image rendered', error)
   avatarUrl.value = '/images/defaults/avatar.jpg'
 }
+
+const nonce = useNonce()
+
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -94,6 +97,8 @@ const logError = (error) => {
           aria-controls="overlay_menu"
           @click="toggleMenu"
           @error="logError"
+          :nonce="nonce"
+          crossorigin="anonymous"
         />
         <PrimeMenu
           id="overlay_menu"
