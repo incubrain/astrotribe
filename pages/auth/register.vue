@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const form = reactive({
+  given_name: '',
+  surname: '',
   email: '',
-  password: null as string | null,
+  password: '',
   confirmPassword: null as string | null
 })
 
@@ -13,6 +15,14 @@ const isPasswordEntered = computed(() => {
 
 const isPasswordValid = computed(() => {
   return form.password === form.confirmPassword && !!form.password && !!form.confirmPassword
+})
+
+const isEmailValid = computed(() => {
+  return form.email.includes('@') && form.email.includes('.')
+})
+
+const isFormValid = computed(() => {
+  return isPasswordValid.value && isEmailValid.value && !!form.given_name && !!form.surname
 })
 
 const currentUser = useCurrentUser()
@@ -49,6 +59,24 @@ definePageMeta({
     </template>
     <template #content>
       <div class="flex flex-col gap-4">
+        <div class="flex gap-4 w-full">
+          <PrimeFloatLabel class="flex flex-col w-full">
+            <PrimeInputText
+              id="given_name"
+              v-model="form.given_name"
+              :pt="{ root: 'w-full' }"
+            />
+            <label for="given_name">Given Name</label>
+          </PrimeFloatLabel>
+          <PrimeFloatLabel class="flex flex-col w-full">
+            <PrimeInputText
+              id="surname"
+              v-model="form.surname"
+              :pt="{ root: 'w-full' }"
+            />
+            <label for="surname">Surname</label>
+          </PrimeFloatLabel>
+        </div>
         <PrimeFloatLabel class="flex flex-col w-full">
           <PrimeInputText
             id="email"
@@ -92,8 +120,8 @@ definePageMeta({
         </div>
         <PrimeButton
           class="justify-center"
-          :disabled="!isPasswordValid"
-          @click="auth.registerWithEmail(form.email, form.password!)"
+          :disabled="!isFormValid"
+          @click="auth.registerWithEmail(form!)"
         >
           Sign up with email
         </PrimeButton>
