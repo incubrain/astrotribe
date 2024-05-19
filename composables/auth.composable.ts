@@ -37,16 +37,30 @@ export function useAuth() {
   const toast = useToast()
   const supabase = useSupabaseClient()
 
-  async function registerWithEmail(email: string, password: string) {
+  interface RegisterWithEmail {
+    email: string
+    password: string
+    confirmPassword: string
+    given_name: string
+    surname: string
+  }
+
+  async function registerWithEmail({ email, password, given_name, surname }: RegisterWithEmail) {
     if (loading.isLoading('auth')) {
       return
     }
 
     loading.setLoading('auth', true)
-    console.log('registerWithEmail', email, password)
+    console.log('registerWithEmail', email, password, given_name, surname)
     const { error } = await supabase.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        data: {
+          given_name,
+          surname
+        }
+      }
     })
 
     if (error) {
@@ -57,11 +71,13 @@ export function useAuth() {
       navigateTo('/auth/success')
     }
     loading.setLoading('auth', false)
-
   }
 
   async function loginWithEmail(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
     if (error) {
       console.error(error.message)
       toast.add({ severity: 'error', summary: 'Login with password error', detail: error.message })

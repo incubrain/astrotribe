@@ -139,8 +139,8 @@ export async function validateAndUpdateSession() {
         identities: user.identities,
         avatar: formatAvatarUrl({ avatar: user.user_metadata.avatar, id: user.id }),
         full_name: user.user_metadata.full_name,
-        given_name: user.user_metadata.given_name ?? user.user_metadata.full_name.split(' ')[0],
-        surname: user.user_metadata.surname ?? user.user_metadata.full_name.split(' ')[1],
+        given_name: user.user_metadata.given_name ?? user.user_metadata.given_name,
+        surname: user.user_metadata.surname ?? user.user_metadata.surname,
         username: user.user_metadata.username
       },
       plan_permissions: permissions.plan,
