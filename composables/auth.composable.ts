@@ -21,6 +21,9 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const redirectUrl = computed(() => `${window.location.origin}/astrotribe`)
+  const logger = useLogger('auth')
+
+  const loading = useLoadingStore()
 
   // !todo:bug - I believe there is an issue where the token expires for Social login but it doesn't refresh
   // !todo:high - retrieve current user profile
@@ -35,18 +38,26 @@ export function useAuth() {
   const supabase = useSupabaseClient()
 
   async function registerWithEmail(email: string, password: string) {
+    if (loading.isLoading('auth')) {
+      return
+    }
+
+    loading.setLoading('auth', true)
+    console.log('registerWithEmail', email, password)
     const { error } = await supabase.auth.signUp({
       email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl.value
-      }
+      password
     })
 
     if (error) {
       console.error(error.message)
       toast.add({ severity: 'error', summary: 'Register with email error', detail: error.message })
+    } else {
+      console.log('success')
+      navigateTo('/auth/success')
     }
+    loading.setLoading('auth', false)
+
   }
 
   async function loginWithEmail(email: string, password: string) {
