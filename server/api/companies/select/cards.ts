@@ -55,8 +55,8 @@ export default defineEventHandler(async (event) => {
       `,
       filterBy: parsedQuery.filterBy,
       orderBy: {
-        columnNames: ['created_at'],
-        ascending: false
+        columnNames: ['name'],
+        ascending: true
       },
       pagination: parsedQuery.pagination
     })
