@@ -34,13 +34,13 @@ defineProps({
       </div>
       <div>
         <h2 class="text-3xl font-extrabold">{{ title.main }}</h2>
-        <span class="text-center font-bold flex items-center">
+        <span class="text-center font-bold flex items-center gap-4">
           {{ title.subtitle }}
           <NuxtLink
             :to="helpUrl"
             class="text-primary-500 underline"
           >
-          <PrimeButton link class="underline underline-offset-4">
+          <PrimeButton>
             {{ title.label }}
           </PrimeButton>
           </NuxtLink>
