@@ -36,8 +36,8 @@ function loadFallbackImage() {
     :quality="img.quality"
     :loading="img.loading"
     @error="loadFallbackImage"
-    :nonce="nonce"
     :key="`image-${uuid}`"
+    :nonce="nonce"
     crossorigin="anonymous"
   />
 </template>

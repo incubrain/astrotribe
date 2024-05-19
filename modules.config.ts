@@ -47,7 +47,9 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://s.ytimg.com'
       ]
     },
-    xFrameOptions: false,
+    xFrameOptions: 'DENY', // Prevents clickjacking
+    crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
+    crossOriginOpenerPolicy: 'same-origin',
     // needed for devtools
     crossOriginEmbedderPolicy:
       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
