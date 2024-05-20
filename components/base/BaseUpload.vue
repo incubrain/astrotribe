@@ -1,27 +1,49 @@
 <script setup lang="ts">
-const onUpload = (event: any) => {
-  console.log(event)
-}
+const toast = useNotification()
 
-const handleSelect = (event) => {
-  console.log('selectEvent', event)
+const props = defineProps({
+  name: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  multiple: {
+    type: Boolean,
+    default: false
+  },
+  accept: {
+    type: String,
+    default: ''
+  },
+  maxFileSize: {
+    type: Number,
+    default: 1000000
+  }
+})
+
+const onAdvancedUpload = () => {
+  toast.success({ summary: 'File Uploaded', message: `${props.name} files uploaded` })
 }
 </script>
-<template>
-  <div>
-    <PrimeFileUpload
-      name="demo[]"
-      url="/api/upload"
-      accept="image/*"
-      :max-file-size="1000000"
-      @select="handleSelect"
-      @upload="onUpload"
-    >
-      <template #empty>
-        <p>Drag and drop files to here to upload.</p>
-      </template>
-    </PrimeFileUpload>
-  </div>
-</template>
 
-<style scoped></style>
+<template>
+  <PrimeCard>
+    <template #content>
+      <PrimeFileUpload
+        :name="name"
+        :multiple="multiple"
+        :accept="accept"
+        :url="url"
+        :maxFileSize="maxFileSize"
+        @upload="onAdvancedUpload()"
+      >
+        <template #empty>
+          <p>Drag and drop files to here to upload.</p>
+        </template>
+      </PrimeFileUpload>
+    </template>
+  </PrimeCard>
+</template>

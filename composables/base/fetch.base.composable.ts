@@ -47,10 +47,7 @@ export function useBaseFetch() {
     // },
     onResponseError({ error, response, request, options }) {
       console.error('onResponseError', response, response._data)
-      const code = response._data.statusCode
-      if (code === 429) {
-        errors.feature(response._data)
-      }
+      errors.withCode(response._data)
     }
   })
 
