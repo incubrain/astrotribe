@@ -5,7 +5,7 @@ interface ErrorContext {
 }
 
 export function useBaseError() {
-  const toast = useToast()
+  const toast = useNotification()
   const logger = useLogger('useBaseError')
   const isAdmin = true
 
@@ -23,12 +23,9 @@ export function useBaseError() {
     const errorMessage = formatErrorMessage(error, context)
 
     // Add an error toast notification with an option to retry if an action is provided
-    toast.add({
+    toast.error({
       summary: `${isServer ? 'SERVER' : 'CLIENT'} ERROR`,
-      detail: errorMessage,
-      severity: 'error',
-      life: 0,
-      closable: true
+      message: errorMessage,
     })
 
     // Handle critical errors specifically if needed
