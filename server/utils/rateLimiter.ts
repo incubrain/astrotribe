@@ -1,19 +1,32 @@
+type PlanKey = 'free' | 'basic' | 'intermediate' | 'premium'
+type FeatureKey = 'ask'
+
+interface FeatureConfig {}
+
 const rateLimitConfig = {
   free: {
-    interval: 1800000,
-    maxRequests: 3
+    ask: {
+      interval: 1800000,
+      maxRequests: 3
+    }
   },
   basic: {
-    interval: 1800000,
-    maxRequests: 10
+    ask: {
+      interval: 1800000,
+      maxRequests: 10
+    }
   },
   intermediate: {
-    interval: 1800000,
-    maxRequests: 20
+    ask: {
+      interval: 1800000,
+      maxRequests: 20
+    }
   },
   premium: {
-    interval: 1800000,
-    maxRequests: 30
+    ask: {
+      interval: 1800000,
+      maxRequests: 30
+    }
   }
 }
 
@@ -25,18 +38,20 @@ const rateLimitConfig = {
 // this can probably be improved once we have role based access implmented
 // all info can be appended to the event.context object
 
-type PlanKey = keyof typeof rateLimitConfig
-
 interface RateLimitInfo {
   requestCount: number
   expiresAt: number
 }
 
-// pass the required context from another general session middleware.
-// add user roles, permissions, privellages.
+const getFeatureFromPath = (path: string): FeatureKey => {
+  const feature = path.split('/').pop()?.split('?')[0] as FeatureKey
+  console.log('getFeatureFromPath', feature)
+  return feature
+}
+
 export async function rateLimiter() {
-  console.log('RATE-LIMITER TRIGGERED')
   const event = useEvent()
+  const feature = getFeatureFromPath(event.path)
   const permissions = await getUserPermissions()
 
   if (!permissions) {
@@ -45,18 +60,14 @@ export async function rateLimiter() {
 
   const user = permissions.user
 
-  // test this
-  console.log('rateLimiter', user, event.path)
-
   const userPlan: PlanKey = (user.user_plan as PlanKey) ?? 'free'
   const storage = useStorage('session')
   const storageKey = `rateLimit:endpoint:${userPlan}:${user.user_id}`
-  const settings = rateLimitConfig[userPlan]
+  const settings = rateLimitConfig[userPlan][feature]
 
   let rateLimit = await storage.getItem<RateLimitInfo>(storageKey)
   if (!rateLimit || rateLimit.expiresAt < Date.now()) {
-    // first api call, or it has expired
-    console.log('No rate limit found, or it has expired')
+    console.info('Rate limit not found, or it has expired')
     rateLimit = {
       requestCount: 1,
       expiresAt: Date.now() + settings.interval
@@ -64,13 +75,11 @@ export async function rateLimiter() {
   }
 
   if (rateLimit.requestCount > settings.maxRequests) {
-    console.log('THROWING ERROR')
     throw createError({
       statusCode: 429,
-      statusMessage: 'Too many requests',
-      message: `You have exceeded your limit of ${settings.maxRequests} calls to ${
-        event.path.split('?')[0]
-      } in the last ${settings.interval / 60000} minutes`
+      statusMessage: `Exceeded ${feature.charAt(0).toUpperCase()}${feature.slice(1)} Limits`,
+      message: `You have exceeded your limit of ${settings.maxRequests}
+       requests in the last ${settings.interval / 60000} minutes`
     })
   }
 
