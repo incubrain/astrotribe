@@ -34,8 +34,9 @@ export const useUsersStore = defineStore('usersStore', () => {
       }
     })
 
-    const user = errors.handleFetchErrors(response, {
-      critical: false,
+    const user = errors.server({
+      response, 
+      devOnly: false,
       devMessage: `getUserById error for user profile for ${userId}`,
       userMessage: 'There was an error fetching the user profile'
     })
