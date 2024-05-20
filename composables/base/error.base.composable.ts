@@ -1,51 +1,87 @@
-interface ErrorContext {
+interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
   devMessage: string // Make bugfixing easy!
-  critical: boolean // Flag to indicate if the error is critical
+  error: any
+}
+
+interface ErrorServer extends Omit<ErrorMessage, 'error'> {
+  devOnly: boolean // default true - don't show toasts in production
+  featureRelated?: boolean // default false - log to feature-specific log
+  response: { data: any; error: any }
+}
+
+interface ErrorClient extends ErrorMessage {
+  isServer?: boolean // default false
+  featureRelated?: boolean // default false - log to feature-specific log
+  devOnly: boolean
 }
 
 export function useBaseError() {
   const toast = useNotification()
   const logger = useLogger('useBaseError')
-  const isAdmin = true
+  // todo:high:easy:1 connect to isUserAdmin func
+  const isAdmin = useRuntimeConfig().public.nodeEnv === 'development'
 
-  function formatErrorMessage(error: any, context: ErrorContext) {
-    const devError = `${context.devMessage}: ${error?.message || JSON.stringify(error)}`
+  function handleFeatureError(error: any) {
+    switch (error.statusCode) {
+      case 429:
+        toast.feature({
+          summary: error.statusMessage,
+          message: error.message
+        })
+        break
+      default:
+        console.error('Unhandled feature error:', error)
+    }
+  }
+
+  function formatErrorMessage({ userMessage, devMessage, error }: ErrorMessage) {
+    const devError = `${devMessage}: ${JSON.stringify(error)}`
     logger.error(devError)
-
-    const userError = context.userMessage || 'An unexpected error occurred. Please try again later.'
-
+    const userError = userMessage || 'An unexpected error occurred. Please try again later.'
     return isAdmin ? devError : userError
   }
 
-  function handleError(error: any, context: ErrorContext, isServer = false) {
+  function handleError({
+    userMessage,
+    devMessage,
+    devOnly = true,
+    isServer = false,
+    error
+  }: ErrorClient) {
     // Determine the appropriate user message
-    const errorMessage = formatErrorMessage(error, context)
+    const errorMessage = formatErrorMessage({ error, userMessage, devMessage })
 
     // Add an error toast notification with an option to retry if an action is provided
-    toast.error({
-      summary: `${isServer ? 'SERVER' : 'CLIENT'} ERROR`,
-      message: errorMessage,
-    })
 
     // Handle critical errors specifically if needed
-    if (context.critical) {
+    if (!devOnly || isAdmin) {
+      toast.error({
+        summary: 'Error',
+        message: errorMessage
+      })
       // Here you could navigate to an error page, log out the user, etc.
-      console.log('Handling critical error for:', context.devMessage)
+      console.log('Handling critical error for:', devMessage)
     }
 
     throw createError({
-      message: `${isServer ? 'SERVER' : 'CLIENT'} ERROR ${errorMessage}`
+      message: `${isServer ? 'SERVER' : 'CLIENT'} ERROR: ${errorMessage}`
     })
   }
 
-  function handleFetchErrors(response: { data?: any; error?: any }, context: ErrorContext) {
+  function handleServerError({ response, devMessage, devOnly, userMessage }: ErrorServer) {
     if (response.error) {
-      // Log the error with more context
-      const errorMessage = formatErrorMessage(response.error, context)
-      handleError(response.error, context, true)
+      console.log('FeatError', response.error)
+      handleError({
+        error: response.error,
+        devOnly,
+        userMessage,
+        isServer: true,
+        devMessage,
+        featureRelated
+      })
     } else if (response.data) {
-      logger.info(`Successfully fetched ${response.data.length} ${response.data}`)
+      logger.info(`Successfully fetched ${response.data.length} items`)
       return response.data
     }
     logger.info(`Nothing returned from database`)
@@ -53,7 +89,8 @@ export function useBaseError() {
   }
 
   return {
-    handleFetchErrors,
-    handleError
+    feature: handleFeatureError,
+    server: handleServerError,
+    client: handleError
   }
 }

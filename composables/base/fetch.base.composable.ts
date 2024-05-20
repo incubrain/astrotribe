@@ -36,22 +36,21 @@ export function useBaseFetch() {
       'X-USER-ID': useCookie('userId').value ?? 'no-user-id',
       cookie: useRequestHeaders(['cookie']).cookie ?? ''
     },
-    onRequest({ request, options }) {},
-    onRequestError({ error, request, options }) {
-      console.error('onRequestError', error)
-      errors.handleError(error, {
-        critical: false,
-        userMessage: 'there was an error fetching the data',
-        devMessage: `onResponseError for`
-      })
-    },
+    // onRequest({ request, options }) {},
+    // onRequestError({ error, request, options }) {
+    //   console.error('onRequestError', error)
+    //   errors.handleError(error, {
+    //     devOnly: true,
+    //     userMessage: 'there was an error fetching the data',
+    //     devMessage: `onResponseError for`
+    //   })
+    // },
     onResponseError({ error, response, request, options }) {
-      console.error('onResponseError', error)
-      errors.handleError(error, {
-        critical: false,
-        userMessage: `ERROR: ${JSON.stringify(error)}`,
-        devMessage: `onResponseError for ${JSON.stringify(response)}`
-      })
+      console.error('onResponseError', response, response._data)
+      const code = response._data.statusCode
+      if (code === 429) {
+        errors.feature(response._data)
+      }
     }
   })
 
@@ -84,8 +83,9 @@ export function useBaseFetch() {
 
       console.log('fetchPaginatedData RESPONSE', response)
 
-      const data = errors.handleFetchErrors(response, {
-        critical: false,
+      const data = errors.server({
+        response,
+        devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
         devMessage: `fetchPaginatedData errored selecting paginated ${domainKey} data from ${endpoint}`
       })
