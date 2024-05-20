@@ -13,7 +13,7 @@
     </div>
     <div class="h-full flex absolute top-0 left-0 w-full">
       <div class="bg-black/40 absolute w-full h-full left-0 top-0" />
-      <AppBackground class="fixed z-0 top-0 left-0" />
+      <AppBackground class="hidden lg:fixed z-0 top-0 left-0" />
 
       <BaseImage
         :img="{
