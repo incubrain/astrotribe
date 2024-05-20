@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const currentUser = useCurrentUser()
-const { haveUserSession, registeredWithProvider } = storeToRefs(currentUser)
+const { haveUserSession } = storeToRefs(currentUser)
 
 const { y } = useWindowScroll()
 const lastScrollY = ref(y.value)

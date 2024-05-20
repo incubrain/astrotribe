@@ -44,7 +44,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     })
 
     const data = errors.server({
-      response, 
+      response,
       devOnly: false,
       devMessage: 'error fetching user session',
       userMessage: 'something went wrong when getting your session'
@@ -76,7 +76,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     })
 
     const data = errors.server({
-      response, 
+      response,
       devOnly: false,
       devMessage: 'error fetching user proofile',
       userMessage: 'something went wrong when getting your profile'
@@ -128,7 +128,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     })
 
     const validData = errors.server({
-      response, 
+      response,
       devOnly: false,
       devMessage: `Error updating user profile`,
       userMessage: `There was an error updating your profile after action`
@@ -144,7 +144,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     // might need to force refresh of session
   }
 
-  async function uploadImage(fileType: string, blob: Blob) {
+  type FileType = 'avatar' | 'cover_image'
+  async function uploadImage(fileType: FileType, blob: Blob) {
+    // currentFileName is the current file name in the database eg. avatar-drew-macgibbon.jpg
     const formData = new FormData()
     formData.append('file', blob)
 
@@ -160,7 +162,7 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     console.log('fileName', response)
 
     const fileName = errors.server({
-      response, 
+      response,
       devOnly: false,
       devMessage: `Error uploading ${fileType} image`,
       userMessage: `There was an error uploading your ${fileType}`
@@ -189,6 +191,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
   return {
     haveUserSession: computed(() => !!profile.value),
+    isAdmin: computed(
+      () => profile.value?.user_role === 'admin' || profile.value?.user_role === 'super_admin'
+    ),
     registeredWithProvider: computed(() => profile.value?.provider),
     profile,
     fullProfile,

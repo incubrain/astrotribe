@@ -22,10 +22,16 @@ export function useBaseError() {
   // todo:high:easy:1 connect to isUserAdmin func
   const isAdmin = useRuntimeConfig().public.nodeEnv === 'development'
 
-  function handleFeatureError(error: any) {
+  function handleErrorWithCodes(error: any) {
     switch (error.statusCode) {
       case 429:
         toast.feature({
+          summary: error.statusMessage,
+          message: error.message
+        })
+        break
+      case 403:
+        toast.error({
           summary: error.statusMessage,
           message: error.message
         })
@@ -77,8 +83,7 @@ export function useBaseError() {
         devOnly,
         userMessage,
         isServer: true,
-        devMessage,
-        featureRelated
+        devMessage
       })
     } else if (response.data) {
       logger.info(`Successfully fetched ${response.data.length} items`)
@@ -89,7 +94,7 @@ export function useBaseError() {
   }
 
   return {
-    feature: handleFeatureError,
+    withCode: handleErrorWithCodes,
     server: handleServerError,
     client: handleError
   }
