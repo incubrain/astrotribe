@@ -44,7 +44,7 @@ const verifiedIcon = computed(() => {
               :name="verifiedIcon"
               class="w-5 h-5 text-primary-700"
             />
-            <p> Verified </p>
+            <p class="hidden lg:block"> Verified </p>
           </PrimeButton>
 
           <PrimeButton
