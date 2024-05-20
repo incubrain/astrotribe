@@ -2,8 +2,6 @@ type FileType =
   | 'venue-logo'
   | 'venue-featured-image'
   | 'venue-images'
-  | 'event-featured-image'
-  | 'event-images'
   | 'user-avatar'
   | 'user-cover_image'
 
@@ -11,15 +9,23 @@ const defaultFileOptions: Record<FileType, string> = {
   'venue-logo': 'logo.jpg',
   'venue-featured-image': 'featured-image.jpg',
   'venue-images': 'images/',
-  'event-featured-image': 'events/featured-image.jpg',
-  'event-images': 'images/',
   'user-avatar': 'avatar.jpg',
   'user-cover_image': 'cover.jpg'
 }
 
+type BucketKey = 'profile-public' | 'posts' | 'venues'
+
+const selectBucket: Record<FileType, BucketKey> = {
+  'venue-logo': 'venues',
+  'venue-images': 'venues',
+  'venue-featured-image': 'venues',
+  'user-avatar': 'profile-public',
+  'user-cover_image': 'profile-public'
+}
+
 interface UrlConstructorOptions {
   baseURL: string
-  bucket: 'profile-public' | 'posts' | 'venues'
+  bucket: BucketKey
   file: string | null
   folderPath: string
   fileType: FileType
@@ -45,7 +51,6 @@ export const constructUrl = (options: UrlConstructorOptions) => {
     isPrivate = false,
     transform = null
   } = options
-
 
   if (stringIsNull(file)) {
     console.log('No file provided, using default file for', fileType)
@@ -74,18 +79,44 @@ export const constructUrl = (options: UrlConstructorOptions) => {
   return url.href
 }
 
-export interface GetImageUrlOptions extends Omit<UrlConstructorOptions, 'baseURL'> {}
+export interface GetImageUrlOptions
+  extends Omit<UrlConstructorOptions, 'baseURL' | 'bucket' | 'isPrivate' | 'folderPath'> {
+  data: any
+}
 
-export const getImageURL = ({
-  bucket,
-  file,
-  fileType,
-  folderPath,
-  isPrivate,
-  transform
-}: GetImageUrlOptions): string => {
+function getFileProperty(fileType: FileType, data: any) {
+  switch (fileType) {
+    case 'user-avatar':
+      return {
+        file: data.avatar,
+        fileCategory: 'avatar'
+      }
+    case 'user-cover_image':
+      return {
+        file: data.cover_image,
+        fileCategory: 'cover_image'
+      }
+    default:
+      throw createError({ message: 'Invalid fileType in getFileProperty' })
+  }
+}
+
+function formatImageInput(fileType: FileType, data: any) {
+  const { file, fileCategory } = getFileProperty(fileType, data)
+  return {
+    bucket: selectBucket[fileType],
+    folderPath: `${data.id}/${fileCategory}`,
+    isPrivate: false,
+    file
+  }
+}
+
+export const getImageURL = ({ data, fileType, transform }: GetImageUrlOptions): string => {
   const baseURL = useRuntimeConfig().public.supabaseUrl
-
+  const { bucket, folderPath, isPrivate, file } = formatImageInput(fileType, data)
+  //     folderPath: `${user.id}/cover_image`,
+  // file: user.cover_image,
+  // isPrivate: false
   if (!baseURL) {
     throw createError({
       message: 'baseURL not defined in getImageURL'
