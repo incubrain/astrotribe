@@ -25,22 +25,16 @@ export const datetimeOffset = (
 
 export const formatAvatarUrl = (user: any) => {
   return getImageURL({
-    bucket: 'profile-public',
-    folderPath: `${user.id}/avatar`,
     fileType: 'user-avatar',
-    file: user.avatar,
-    isPrivate: false
+    data: user
   })
 }
 
 export const formatCoverUrl = (user: any) => {
   console.log('formatCoverUrl', user)
   return getImageURL({
-    bucket: 'profile-public',
-    folderPath: `${user.id}/cover_image`,
     fileType: 'user-cover_image',
-    file: user.cover_image,
-    isPrivate: false
+    data: user
   })
 }
 
