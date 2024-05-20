@@ -1,61 +1,40 @@
 [
   {
     "id": 1,
+    "given_name": "Shweta",
     "name": "Shweta Kulkarni",
     "position": {
       "title": "CEO"
     },
     "avatar": "/images/team/shweta-kulkarni.jpg",
     "bio": [
-      "Shweta Kulkarni is the founder and CEO of AstronEra. She has experience in Science Communication for more than a decade.",
-      "She was selected as one of the top 100 women astronomers in India (2018) under the women’s startup program supported by DST GOI. She was awarded a fellowship from the Royal Astronomical Society of England to appreciate her work. She has worked on various State, national and international projects to popularise astronomy.",
-      "She is currently pursuing her education part-time at the university of central Lancashire in England while working full-time with her startup."
+      "Introducing Shweta Kulkarni, the dynamic Director of AstronEra and an 'AstroPreneur' committed to democratizing astronomy.",
+      "Shweta seamlessly blends creativity with scientific rigor, making complex astronomical concepts accessible through engaging stargazing events, educational programs, and dark sky conservation efforts.",
+      "Supported by esteemed institutions like the International Astronomical Union and the Government of India, Shweta's AstroTribe has achieved global acclaim. She led India's first Dark Sky Preservation and AstroTourism Conference and has spoken at prestigious international forums. Her advocacy has established dark sky reserves and eco-friendly tourism in tribal regions.",
+      "Shweta became CEO of Astron-SHK Trust at 18, leading stargazing sessions and educational workshops. As Director of AstronEra, she has reached over 120 countries and 10,000 students, earning a fellowship from the Royal Astronomical Society of England in 2018.",
+      "Beyond astronomy, Shweta is an accomplished artist, filmmaker, photographer, and actress. Her passion for literature, music, and cultural exploration complements her astronomical pursuits. With a telescope in one hand and a camera in the other, Shweta inspires others to reach for the stars."
     ],
     "socials": [
       {
         "id": 1,
         "platform": "twitter",
-        "url": "https://twitter.com/AstronEra",
-        "username": "uk"
+        "url": "https://twitter.com/AstronEra"
       },
       {
         "id": 2,
         "platform": "linkedin",
-        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
-        "username": "uk"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"
       },
       {
         "id": 3,
         "platform": "instagram",
-        "url": "https://www.instagram.com/astronera",
-        "username": "uk"
-      }
-    ],
-    "achievements": [
-      {
-        "id": 1,
-        "title": "Add highest education here if wanted",
-        "body": "elaborate",
-        "url": "optional"
-      },
-      {
-        "id": 2,
-        "title": "Previous experience as well",
-        "body": "elaborate",
-        "url": "optional"
-      }
-    ],
-    "publicity": [
-      {
-        "id": 1,
-        "title": "",
-        "body": "elaborate",
-        "url": "optional"
+        "url": "https://www.instagram.com/astronera"
       }
     ]
   },
   {
     "id": 2,
+    "given_name": "Drew",
     "name": "Drew MacGibbon",
     "position": {
       "title": "CTO"
@@ -72,47 +51,23 @@
       {
         "id": 1,
         "platform": "twitter",
-        "url": "https://twitter.com/AstronEra",
-        "username": "uk"
+        "url": "https://twitter.com/AstronEra"
       },
       {
         "id": 2,
         "platform": "linkedin",
-        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
-        "username": "uk"
+        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b"
       },
       {
         "id": 3,
         "platform": "instagram",
-        "url": "https://www.instagram.com/astronera",
-        "username": "uk"
-      }
-    ],
-    "achievements": [
-      {
-        "id": 1,
-        "title": "Add highest education here if wanted",
-        "body": "elaborate",
-        "url": "optional"
-      },
-      {
-        "id": 2,
-        "title": "Previous experience as well",
-        "body": "elaborate",
-        "url": "optional"
-      }
-    ],
-    "publicity": [
-      {
-        "id": 1,
-        "title": "",
-        "body": "elaborate",
-        "url": "optional"
+        "url": "https://www.instagram.com/astronera"
       }
     ]
   },
   {
     "id": 3,
+    "given_name": "Ruchira",
     "name": "Ruchira Huchgol",
     "position": {
       "title": "Operations Manager"
@@ -137,79 +92,6 @@
         "platform": "instagram",
         "url": "https://www.instagram.com/astronera",
         "username": "uk"
-      }
-    ],
-    "achievements": [
-      {
-        "id": 1,
-        "title": "Add highest education here if wanted",
-        "body": "elaborate",
-        "url": "optional"
-      },
-      {
-        "id": 2,
-        "title": "Previous experience as well",
-        "body": "elaborate",
-        "url": "optional"
-      }
-    ],
-    "publicity": [
-      {
-        "id": 1,
-        "title": "",
-        "body": "elaborate",
-        "url": "optional"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "name": "Atharva Joshi",
-    "position": {
-      "title": "Project Coordinator"
-    },
-    "avatar": "/images/team/atharva-joshi.jpg",
-    "bio": ["coming soon"],
-    "socials": [
-      {
-        "id": 1,
-        "platform": "twitter",
-        "url": "https://twitter.com/AstronEra",
-        "username": "uk"
-      },
-      {
-        "id": 2,
-        "platform": "linkedin",
-        "url": "https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b",
-        "username": "uk"
-      },
-      {
-        "id": 3,
-        "platform": "instagram",
-        "url": "https://www.instagram.com/astronera",
-        "username": "uk"
-      }
-    ],
-    "achievements": [
-      {
-        "id": 1,
-        "title": "Add highest education here if wanted",
-        "body": "elaborate",
-        "url": "optional"
-      },
-      {
-        "id": 2,
-        "title": "Previous experience as well",
-        "body": "elaborate",
-        "url": "optional"
-      }
-    ],
-    "publicity": [
-      {
-        "id": 1,
-        "title": "",
-        "body": "elaborate",
-        "url": "optional"
       }
     ]
   }
