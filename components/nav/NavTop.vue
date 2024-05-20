@@ -1,7 +1,52 @@
+<script setup lang="ts">
+const { websiteLinks } = usePages()
+
+const props = defineProps({
+  isCompact: {
+    type: Boolean,
+    default: false
+  },
+  compactOnScroll: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const currentUser = useCurrentUser()
+const { haveUserSession, registeredWithProvider } = storeToRefs(currentUser)
+
+const { y } = useWindowScroll()
+const lastScrollY = ref(y.value)
+const navbarClasses = computed(() => {
+  if (navPosition.value === 'fixed') {
+    return ''
+  } else {
+    return navPosition.value === 'hidden' ? 'animate-bounce-out' : 'animate-bounce-in'
+  }
+})
+
+const navPosition = ref('fixed')
+
+watch(
+  y,
+  (newY) => {
+    if (window?.innerWidth < 1024) {
+      navPosition.value = 'fixed'
+    } else if (newY > lastScrollY.value) {
+      navPosition.value = 'hidden'
+    } else if (newY < lastScrollY.value) {
+      navPosition.value = 'visible'
+    }
+    lastScrollY.value = newY
+  },
+  { immediate: true }
+)
+</script>
+
 <template>
   <div
     ref="navbar"
-    class="flex w-full wrapper paddex-x lg:justify-center lg:items-center lg:padded-x"
+    class="flex w-full wrapper lg:justify-center lg:items-center lg:padded-x"
     :class="navbarClasses"
     :style="{
       position: 'fixed',
@@ -58,11 +103,11 @@
         </div>
       </template>
       <template #end>
-        <div class="flex items-center justify-center gap-4 flex-nowrap">
+        <div class="flex items-center justify-center gap-4 flex-nowrap lg:pr-2">
           <NuxtLink
             to="https://github.com/incubrain/astrotribe"
             target="_blank"
-            class="flex justify-center items-center"
+            class="justify-center items-center hidden lg:flex"
           >
             <Icon
               name="mdi:github"
@@ -70,16 +115,16 @@
             />
           </NuxtLink>
           <ClientOnly>
-            <div class="gap-4 flex items-center justify-center h-auto min-w-24 pr-2">
+            <div class="gap-2 lg:gap-4 flex items-center justify-center h-auto min-w-24">
               <div
                 v-if="haveUserSession"
-                class="flex gap-2"
+                class="flex gap-2 lg:gap-4"
               >
                 <AuthVerifiedWith />
               </div>
               <div
                 v-else
-                class="space-x-4"
+                class="space-x-2 lg:space-x-4"
               >
                 <NuxtLink
                   v-ripple
@@ -101,7 +146,7 @@
                   <PrimeButton
                     @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
                   >
-                    Join Astronomy Hub
+                    Join AstronEra
                   </PrimeButton>
                 </NuxtLink>
               </div>
@@ -112,43 +157,6 @@
     </PrimeMenubar>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useWindowScroll } from '@vueuse/core'
-
-const { websiteLinks } = usePages()
-
-const props = defineProps({
-  isCompact: {
-    type: Boolean,
-    default: false
-  },
-  compactOnScroll: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const currentUser = useCurrentUser()
-const { haveUserSession, registeredWithProvider } = storeToRefs(currentUser)
-
-const { y } = useWindowScroll()
-const lastScrollY = ref(y.value)
-const isScrollingDown = ref(false)
-
-const navbarClasses = ref('animate-bounce-in')
-
-watch(y, (newY) => {
-  if (newY > lastScrollY.value) {
-    isScrollingDown.value = true
-  } else if (newY < lastScrollY.value) {
-    isScrollingDown.value = false
-  }
-  lastScrollY.value = newY
-  navbarClasses.value = isScrollingDown.value ? 'animate-bounce-out' : 'animate-bounce-in'
-})
-</script>
 
 <style scoped>
 canvas {
