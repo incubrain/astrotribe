@@ -14,9 +14,21 @@ const UUIDSchema = z.string().refine(isUUID, {
 })
 
 // ARTICLE CATEGORIES
-export const articleCategorySchema = z.enum(['isro', 'nasa', 'spacex', 'esa', 'ula'])
+export const articleCategorySchema = z.enum([
+  'all',
+  'people-of-space',
+  'space-exploration',
+  'dark-skies',
+  'sustainable-development'
+])
 export type ArticleCategoriesT = z.infer<typeof articleCategorySchema>
-export const CATEGORIES: ArticleCategoriesT[] = ['isro', 'nasa', 'spacex', 'esa', 'ula']
+export const CATEGORIES: ArticleCategoriesT[] = [
+  'all',
+  'people-of-space',
+  'space-exploration',
+  'dark-skies',
+  'sustainable-development'
+]
 
 // ARTICLE TAGS
 export const articleTagSchema = z.enum([
