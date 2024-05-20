@@ -275,16 +275,13 @@ async function handleFileChange(e: Event, toggleModalOpen: () => void) {
 }
 
 // Errors
-const toast = useToast()
+const toast = useNotification()
 const setError = (error: string) => {
   // probably a notification
 
-  toast.add({
-    life: 0,
-    severity: 'error',
-    closable: true,
-    summary: 'error uploading image',
-    detail: error
+  toast.error({
+    summary: 'Uploading image',
+    message: error
   })
 }
 </script>
