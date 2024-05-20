@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import type { TeamMemberType } from '@/types/team'
+
+defineProps({
+  member: {
+    type: Object as PropType<TeamMemberType>,
+    required: true
+  }
+})
+</script>
+
 <template>
   <div
     class="flex flex-col items-center relative justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl border border-color transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
@@ -65,16 +76,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { TeamMemberType } from '@/types/team'
-
-defineProps({
-  member: {
-    type: Object as PropType<TeamMemberType>,
-    required: true
-  }
-})
-</script>
 
 <style scoped></style>

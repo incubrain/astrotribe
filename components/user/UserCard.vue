@@ -35,9 +35,11 @@ defineProps({
         :img="{
           src: user.avatar,
           type: 'avatar',
-          alt: 'User Avatar'
+          alt: 'User Avatar',
+          width: '60',
+          height: '60'
         }"
-        class="rounded-full w-12 h-12"
+        class="rounded-full"
       />
       <div class="space-y-1">
         <h2 class="font-semibold md:text-lg hover:underline hover:underline-offset-2">
