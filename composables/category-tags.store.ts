@@ -38,8 +38,9 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     }
 
     const response = await client.from('categories').select('id, name, body')
-    const cat = errors.handleFetchErrors(response, {
-      critical: false,
+    const cat = errors.server({
+      response,
+      devOnly: true,
       devMessage: `Error Fetching Categories from DB`,
       userMessage: `There was an error getting Categories from the database`
     })
@@ -57,8 +58,9 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     }
 
     const response = await client.from('tags').select('id, name, body')
-    const cat = errors.handleFetchErrors(response, {
-      critical: false,
+    const cat = errors.server({
+      response,
+      devOnly: true,
       devMessage: `Error Fetching Tags from DB`,
       userMessage: `There was an error getting Tags from the database`
     })

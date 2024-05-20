@@ -43,8 +43,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       method: 'GET'
     })
 
-    const data = errors.handleFetchErrors(response, {
-      critical: true,
+    const data = errors.server({
+      response, 
+      devOnly: false,
       devMessage: 'error fetching user session',
       userMessage: 'something went wrong when getting your session'
     })
@@ -74,8 +75,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       }
     })
 
-    const data = errors.handleFetchErrors(response, {
-      critical: false,
+    const data = errors.server({
+      response, 
+      devOnly: false,
       devMessage: 'error fetching user proofile',
       userMessage: 'something went wrong when getting your profile'
     })
@@ -125,8 +127,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       body: updatedData
     })
 
-    const validData = errors.handleFetchErrors(response, {
-      critical: false,
+    const validData = errors.server({
+      response, 
+      devOnly: false,
       devMessage: `Error updating user profile`,
       userMessage: `There was an error updating your profile after action`
     })
@@ -156,8 +159,9 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
 
     console.log('fileName', response)
 
-    const fileName = errors.handleFetchErrors(response, {
-      critical: false,
+    const fileName = errors.server({
+      response, 
+      devOnly: false,
       devMessage: `Error uploading ${fileType} image`,
       userMessage: `There was an error uploading your ${fileType}`
     })

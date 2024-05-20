@@ -11,7 +11,7 @@ export function useNotification() {
       severity: 'success',
       summary: `Success: ${summary}`,
       detail: message,
-      life: 3000,
+      life: 5000,
       closable: true
     })
   }
@@ -21,7 +21,7 @@ export function useNotification() {
       severity: 'error',
       summary: `Error: ${summary}`,
       detail: message,
-      life: 3000,
+      life: 0,
       closable: true
     })
   }
@@ -31,7 +31,7 @@ export function useNotification() {
       severity: 'info',
       summary: `Info: ${summary}`,
       detail: message,
-      life: 3000,
+      life: 5000,
       closable: true
     })
   }
@@ -41,12 +41,12 @@ export function useNotification() {
       severity: 'warn',
       summary: `Warning: ${summary}`,
       detail: message,
-      life: 3000,
+      life: 5000,
       closable: true
     })
   }
 
-  const premium = ({ summary, message }: BaseNotification) => {
+  const feature = ({ summary, message }: BaseNotification) => {
     toast.add({
       severity: 'warn',
       group: 'cta',
@@ -62,6 +62,6 @@ export function useNotification() {
     error,
     info,
     warn,
-    premium
+    feature
   }
 }
