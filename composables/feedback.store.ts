@@ -3,7 +3,7 @@ export const useFeedbackStore = defineStore('feedbackStore', () => {
   const storeKey = 'feedbacks'
   const logger = useLogger(storeKey)
   const loading = useLoadingStore()
-  const toast = useToast()
+  const toast = useNotification()
 
   async function submitFeedback(newFeedback: any) {
     console.log('newFeedback', newFeedback)
@@ -20,8 +20,9 @@ export const useFeedbackStore = defineStore('feedbackStore', () => {
         body: newFeedback
       })
 
-      toast.add({ severity: 'info', summary: response.message })
-    } catch (error) {
+      toast.info({ summary: 'Feedback Sent', message: response.message })
+    } catch (error: any) {
+      toast.error({ summary: 'Feedback Not Sent', message: error.message })
       logger.error('Error submitting question and handling response:', error)
     } finally {
       await loading.setLoadingInterval(storeKey, false, 1000)
