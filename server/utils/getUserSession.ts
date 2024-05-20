@@ -31,10 +31,8 @@ async function fetchPermissions(userPlan: string, userRole: string) {
 }
 
 async function getSession() {
-  console.log('gettingSession')
   const event = useEvent()
   const session = await serverSupabaseSession(event)
-  console.log('serverSupabaseSession', session)
   return session
 }
 
@@ -83,8 +81,7 @@ export async function validateAndUpdateSession() {
     return
   }
 
-  const { user, refresh_token, access_token } = session
-  console.log('session', user, refresh_token, access_token)
+  const { user, refresh_token } = session
   if (!user || !refresh_token) {
     throw createError({
       message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`
