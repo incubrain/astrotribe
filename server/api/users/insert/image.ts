@@ -5,7 +5,6 @@ import { readFormData, readMultipartFormData } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import { Database } from '#imports'
 
-
 type FileType = 'avatar' | 'post' | 'cover_image' | 'video' | 'audio' | 'document'
 
 interface FileNameOptions {
@@ -17,7 +16,7 @@ interface FileNameOptions {
 function formatFileName(options: FileNameOptions): string {
   const { userId, fileType, extension } = options
   const uuid = uuidv1() // UUIDv1 stores timestamps, great for user generated content
-  return `${fileType}-${userId}-${uuid}.${extension}`
+  return `${fileType}_${userId}-${uuid}.${extension}`
 }
 
 const fileTypeEnum = z.enum(['avatar', 'cover_image'])
@@ -49,11 +48,20 @@ export default defineEventHandler(async (event) => {
 
   try {
     // validate user hase ability to insert this file
-    // if they already have a file of this type, delete it
     const client = await serverSupabaseClient<Database>(event)
+
+    const persistantFileName = `${fileType}_${userId}${fileExtention}`
+    const persistantFilePath = `${userId}/${fileType}/${persistantFileName}`
+    const newFilePath = `${userId}/${fileType}/${fileName}`
+    const { data, error: copyError } = await client.storage
+      .from('profile_public')
+      .move(persistantFilePath, newFilePath)
+
+    console.log('moving original file', data, copyError)
+
     const { error } = await client.storage
       .from('profile-public')
-      .upload(`${userId}/${fileType}/${fileName}`, form[0].data, {
+      .upload(persistantFilePath, form[0].data, {
         contentType: form[0].type,
         cacheControl: '3600',
         upsert: true
