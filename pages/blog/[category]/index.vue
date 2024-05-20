@@ -4,7 +4,7 @@ import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 import { ARTICLE_CARD_PROPERTIES, articleCardSchema } from '~/types/articles'
 
 const route = useRoute()
-const categoryParam = ref(String(route.params.category) as ArticleCategoriesT)
+const categoryParam = computed(() => String(route.params.category) as ArticleCategoriesT)
 
 const allArticles = ref<ArticleCardT[]>([])
 const pagination = reactive({ skip: 0, limit: 10 })
@@ -23,7 +23,7 @@ const {
 } = useAsyncData(
   `article-cards-${categoryParam.value}`,
   () =>
-    queryContent('/blog', categoryParam.value)
+    queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
       .where(whereOptions)
       .only(ARTICLE_CARD_PROPERTIES)
       .sort({ publishedAt: -1 })
@@ -62,25 +62,25 @@ function isValidArticleCard(article: ArticleCardT): boolean {
 }
 
 const category = {
-  isro: {
-    title: 'ISRO',
-    description: 'Indian Space Research Organisation'
+  all: {
+    title: 'All',
+    description: 'All Articles'
   },
-  nasa: {
-    title: 'NASA',
-    description: 'National Aeronautics and Space Administration'
+  'people-of-space': {
+    title: 'People of Space',
+    description: 'Articles about notable individuals in the space industry'
   },
-  spacex: {
-    title: 'SpaceX',
-    description: 'Space Exploration Technologies Corp.'
+  'space-exploration': {
+    title: 'Space Exploration',
+    description: 'Articles about space missions and exploration efforts'
   },
-  esa: {
-    title: 'ESA',
-    description: 'European Space Agency'
+  'dark-skies': {
+    title: 'Dark Skies',
+    description: 'Articles about the preservation of dark skies'
   },
-  ula: {
-    title: 'ULA',
-    description: 'United Launch Alliance'
+  'sustainable-development': {
+    title: 'Sustainable Development',
+    description: 'Articles about sustainable practices in space activities'
   }
 }
 
