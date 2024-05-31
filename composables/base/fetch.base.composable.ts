@@ -1,5 +1,5 @@
 import type { DomainKey } from './pagination.base.store'
-import { useCookie, useRequestHeaders, useId } from '#imports'
+import { useCookie, useRequestHeaders } from '#imports'
 import type { FilterBy, DBTable } from '@/server/utils/base.interface'
 import type { FetchResult } from '#app'
 
@@ -47,7 +47,7 @@ export function useBaseFetch() {
     // },
     onResponseError({ error, response, request, options }) {
       console.error('onResponseError', response, response._data)
-      errors.withCode(response._data)
+      // errors.withCode(response._data)
     }
   })
 
@@ -96,8 +96,9 @@ export function useBaseFetch() {
 
       return data
     } catch (error) {
-      errors.handleError(error, {
-        critical: false,
+      errors.client({
+        error,
+        devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
         devMessage: `fetchPaginatedData error for ${domainKey}`
       })
