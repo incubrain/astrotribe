@@ -1,9 +1,11 @@
-export const useCurrentUser = defineStore('currentUserStore', () => {
-  const domainKey = 'currentUser'
-  const logger = useLogger('currentUserStore')
+const DOMAIN_KEY = 'currentUser'
+
+export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
+  const logger = useLogger(DOMAIN_KEY)
+  const errors = useBaseError()
   const loading = useLoadingStore()
   const { fetch } = useBaseFetch()
-  const errors = useBaseError()
+  // const analytics = useAnalytics()
 
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile
@@ -23,21 +25,28 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
   // DoB
 
   const userId = useCookie('userId')
+  // assign Posthog identify
 
   async function removeSession() {
     const response = await fetch('/api/auth/logout')
     console.log('removeSession', response)
     profile.value = null
+    // analytics.reset()
   }
 
   const profile = ref(null)
   async function loadSession() {
     logger.info('loadSession')
-    if (loading.isLoading(domainKey) || profile.value) {
+    if (loading.isLoading(DOMAIN_KEY) || profile.value) {
       return
     }
 
-    loading.setLoading(domainKey, true)
+    if (!!profile.value) {
+      logger.info('loadSession: Returning cached user')
+      return
+    }
+
+    loading.setLoading(DOMAIN_KEY, true)
 
     const response = await fetch('/api/auth/session', {
       method: 'GET'
@@ -54,10 +63,14 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
       logger.info(`SETTING USER_ID' ${data.user_id}`)
       profile.value = data
       userId.value = data.user_id
+      // console.log('sendingIdentify', analytics)
+      // analytics?.identify(
+      //   data.user_id
+      // )
     } else {
       logger.info('no session found')
     }
-    loading.setLoading(domainKey, false)
+    loading.setLoading(DOMAIN_KEY, false)
   }
 
   const fullProfile = ref(null)
@@ -106,25 +119,31 @@ export const useCurrentUser = defineStore('currentUserStore', () => {
     }
   }
 
-  async function updateProfile(newData: any) {
+  function cleanDataForUpdate(newData: any, previousData: any) {
     const updatedData: any = {}
-
-    // Compare newData with fullProfile and only include changed values
     for (const key in newData) {
-      if (newData.hasOwnProperty(key) && hasValueChanged(newData[key], fullProfile.value[key])) {
+      if (newData.hasOwnProperty(key) && hasValueChanged(newData[key], previousData[key])) {
         updatedData[key] = newData[key]
       }
     }
 
-    // If there are no changes, return early
-    if (Object.keys(updatedData).length === 0) {
+    return { data: updatedData, noDataUpdated: Object.keys(updatedData).length === 0 }
+  }
+
+  async function updateProfile(newData: any) {
+    const updatedData: any = {}
+
+    // Compare newData with fullProfile and only include changed values
+    const { noDataUpdated, data } = cleanDataForUpdate(newData, fullProfile.value)
+
+    if (noDataUpdated) {
       console.log('No changes detected, no update necessary')
       return
     }
 
     const response = await fetch(`/api/users/update/${userId.value}`, {
       method: 'POST',
-      body: updatedData
+      body: data
     })
 
     const validData = errors.server({

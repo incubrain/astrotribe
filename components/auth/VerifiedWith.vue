@@ -32,6 +32,7 @@ const verifiedIcon = computed(() => {
     <div class="flex flex-col items-center">
       <NuxtLink
         v-ripple
+        @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
         to="/astrotribe"
       >
         <PrimeButtonGroup class="flex relative">
@@ -47,10 +48,7 @@ const verifiedIcon = computed(() => {
             <p class="hidden lg:block"> Verified </p>
           </PrimeButton>
 
-          <PrimeButton
-            @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
-            class="pl-5"
-          >
+          <PrimeButton class="pl-5">
             Dashboard
             <Icon
               name="mdi:play"

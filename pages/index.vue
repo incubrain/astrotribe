@@ -16,7 +16,7 @@ definePageMeta({
         subheading="We Have Some Big Plans!"
         class="pb-16 md:pb-24"
       />
-      <BaseTab class="pb-16 md:pb-24" />
+      <!-- <LazyHomeFeatureTabs class="pb-16 md:pb-24" /> -->
     </div>
     <LazyHomeCtaMain
       class="py-16 md:py-24 border-y border-color"
@@ -24,9 +24,7 @@ definePageMeta({
       body="The first 50 people will get exclusive life-time free use of our platform"
       cta="Claim your spot"
     />
-    <div
-      class="wrapper padded-x mx-auto flex flex-col py-16 md:py-24"
-    >
+    <div class="wrapper padded-x mx-auto flex flex-col py-16 md:py-24">
       <LazyHomeTestimonial class="pb-6 xl:pb-12" />
     </div>
   </div>
