@@ -17,9 +17,10 @@ interface ErrorClient extends ErrorMessage {
 }
 
 export function useBaseError() {
+  // !todo:med:easy - add prefix to base error
+
   const toast = useNotification()
   const logger = useLogger('useBaseError')
-  // todo:high:easy:1 connect to isUserAdmin func
   const isAdmin = useRuntimeConfig().public.nodeEnv === 'development'
 
   function handleErrorWithCodes(error: any) {

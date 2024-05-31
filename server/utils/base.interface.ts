@@ -61,6 +61,13 @@ type OrderBy<T extends TableKey> = {
   referenceTable?: string
 }
 
+type Conflict = {
+  onConflict: string[]
+  ignoreDuplicates: boolean
+  count?: 'exact' | 'planned' | 'estimated'
+  defaultToNull?: boolean
+}
+
 export interface BaseOperationInput<T, K extends TableKey> {
   tableName: K
   data?: T | T[]
@@ -71,8 +78,7 @@ export interface BaseOperationInput<T, K extends TableKey> {
   limit?: number
   isSingle?: boolean
   isReturned?: boolean
-  conflictFields?: string[]
-  ignoreDuplicates?: boolean
+  conflict?: Conflict
 }
 
 export interface SelectInput<T, K extends TableKey> extends BaseOperationInput<T, K> {
@@ -85,8 +91,7 @@ export interface InsertInput<T, K extends DBTable> extends BaseOperationInput<T,
 
 export interface UpsertInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   data: T | T[]
-  onConflict: string[]
-  ignoreDuplicates: boolean
+  conflict: Conflict
 }
 
 export interface UpdateInput<T, K extends DBTable> extends BaseOperationInput<T, K> {

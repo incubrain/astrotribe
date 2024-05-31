@@ -1,10 +1,12 @@
-import * as time from '../utils/time'
-import * as strings from '../utils/strings'
-import * as objects from '../utils/objects'
-import * as arrays from '../utils/arrays'
+import { wasRowDataUpdated } from './utils/hasValueChanged'
+import * as time from './utils/time'
+import * as strings from './utils/strings'
+import * as objects from './utils/objects'
+import * as arrays from './utils/arrays'
 
 export function useUtils() {
   return {
+    wasRowDataUpdated,
     time: {
       format: time.toDateObject,
       lastSeen: time.lastSeen
