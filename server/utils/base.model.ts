@@ -1,5 +1,5 @@
 import { ZodSchema, ZodError } from 'zod'
-import { logger } from './logger'
+import { logger } from './base.logger'
 
 export abstract class BaseModel {
   private logger
