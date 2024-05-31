@@ -1,10 +1,11 @@
+import { get } from 'http'
 import type { FetchInput } from '../base/fetch.base.composable'
 
 export const useUsersStore = defineStore('usersStore', () => {
   const logger = useLogger('useUsersStore')
+  const errors = useBaseError()
   const users = ref([])
   const baseFetch = useBaseFetch()
-  const errors = useBaseError()
 
   async function loadUsers(input: FetchInput) {
     logger.log('loadUsers start')
@@ -35,7 +36,7 @@ export const useUsersStore = defineStore('usersStore', () => {
     })
 
     const user = errors.server({
-      response, 
+      response,
       devOnly: false,
       devMessage: `getUserById error for user profile for ${userId}`,
       userMessage: 'There was an error fetching the user profile'
@@ -44,16 +45,42 @@ export const useUsersStore = defineStore('usersStore', () => {
     userCurrent.value = user ?? null
   }
 
+  const userProfiles = ref([])
+  async function getManyUserProfiles() {
+    const response = await baseFetch.fetch('/api/users/select/profiles', {
+      method: 'GET'
+    })
+
+    const users = errors.server({
+      response,
+      devOnly: true,
+      devMessage: `getManyUserProfiles error`,
+      userMessage: 'There was an error retrieving user profiles'
+    })
+
+    userProfiles.value = users ?? null
+  }
+
+  function updateUserProfileState(data: any, newData: any) {
+    const index = userProfiles.value.findIndex((user) => user.id === data.id)
+    if (index !== -1) {
+      userProfiles.value[index] = newData
+    }
+  }
+
   const userById = () => {
     return (id: string) => users.value.find((user) => user.id === id)
   }
 
   return {
     users,
+    userProfiles,
     userCurrent,
     loadUsers,
     userById,
-    getUserById
+    getUserById,
+    getManyUserProfiles,
+    updateUserProfileState
   }
 })
 

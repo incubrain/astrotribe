@@ -25,8 +25,10 @@ export class NewsRepository extends BaseRepository<News> implements INewsReposit
     const insertedData = await this.upsertMany({
       tableName: 'news',
       data: formattedData,
-      conflictFields: ['id'],
-      ignoreDuplicates: false
+      conflict: {
+        onConflict: ['id'],
+        ignoreDuplicates: false
+      }
     })
 
     return insertedData

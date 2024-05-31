@@ -19,8 +19,10 @@ const TagSchema = z.object({
 type Category = z.infer<typeof CategorySchema>
 type Tag = z.infer<typeof TagSchema>
 
+const DOMAIN_KEY = 'categoryTag'
+
 export const useCategoryTagStore = defineStore('categoryTagStore', () => {
-  const logger = useLogger('categoryTagStore')
+  const logger = useLogger(DOMAIN_KEY)
   const categories = ref([{}] as Category[])
   const tags = ref([{}] as Tag[])
   const localStorage = useBaseLocalStorage()
