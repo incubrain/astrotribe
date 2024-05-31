@@ -1,25 +1,88 @@
 <script setup lang="ts">
+import { FilterMatchMode } from 'primevue/api'
+
+const usersStore = useUsersStore()
+const { userProfiles } = storeToRefs(usersStore)
+const admin = useAdmin()
+
+const roles = [
+  { label: 'User', value: 'user' },
+  { label: 'Admin', value: 'admin' },
+  { label: 'Super Admin', value: 'super_admin' }
+]
+interface Column {
+  field: string
+  header: string
+  style: string
+  editor?: string
+  editorProps?: Record<string, unknown>
+}
+
+const columns: Column[] = [
+  { field: 'id', header: 'ID', style: 'width: 5%' },
+  { field: 'email', header: 'Email', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'given_name', header: 'First Name', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'surname', header: 'Last Name', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'username', header: 'Username', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'dob', header: 'Date of Birth', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'gender_id', header: 'Gender ID', style: 'width: 5%', editor: 'PrimeInputNumber' },
+  { field: 'created_at', header: 'Created At', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'last_seen', header: 'Last Seen', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'avatar', header: 'Avatar', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'cover_image', header: 'Cover Image', style: 'width: 10%', editor: 'PrimeInputText' },
+  { field: 'plan', header: 'Plan', style: 'width: 10%', editor: 'PrimeInputText' },
+  {
+    field: 'role',
+    header: 'Role',
+    style: 'width: 10%',
+    editor: 'PrimeDropdown',
+    editorProps: {
+      options: roles,
+      optionLabel: 'label',
+      optionValue: 'value',
+      placeholder: 'Select a Role'
+    }
+  }
+]
+
+onMounted(async () => {
+  await usersStore.getManyUserProfiles()
+})
+
+const handleRowEditSave = async ({ data, newData }) => {
+  console.log('handleRowEditSave', data, newData)
+  await admin.updateUser(newData, data.id)
+  usersStore.updateUserProfileState(data, newData)
+}
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  given_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  surname: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  role: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+})
+
 definePageMeta({
   layoutTransition: false,
   name: 'Manage-Users',
-  layout: 'app',
   middleware: 'is-admin'
 })
 </script>
 
 <template>
-  <div class="space-y-4">
-    <h2 class="text-xl font-semibold">Upload User Images</h2>
-    <PrimeInlineMessage severity="info">
-      File names should match users given_name and surname in the database. eg. john-doe.jpg
-    </PrimeInlineMessage>
-    <BaseUpload
-      name="user-images"
-      url="/api/admin/users/bulk-upload"
-      accept="image/*"
-      :maxFileSize="50000000"
-      :multiple="true"
-    />
+  <div class="overflow-scroll h-full border border-color rounded-lg">
+    <BaseTable
+      :columns="columns"
+      :tableData="userProfiles"
+      :filters="filters"
+      :filter-fields="['given_name', 'surname', 'email', 'role']"
+      @saved-edit="handleRowEditSave"
+    >
+      <template #header>
+        <h3 class="text-lg font-semibold"> Manage Users</h3>
+      </template>
+    </BaseTable>
   </div>
 </template>
 
