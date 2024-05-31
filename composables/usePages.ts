@@ -73,6 +73,64 @@ const appLinks = ref([
   // }
 ] as PageType[])
 
+const adminLinks = ref([
+  {
+    id: 0,
+    label: 'App',
+    slug: '/astrotribe',
+    icon: 'mdi:application'
+  },
+  {
+    id: 1,
+    label: 'Dashboard',
+    slug: '/astrotribe/admin',
+    icon: 'mdi:view-dashboard',
+    children: []
+  },
+  {
+    id: 2,
+    label: 'Users',
+    slug: '/astrotribe/admin/users',
+    icon: 'mdi:account',
+    children: []
+  },
+  {
+    id: 3,
+    label: 'Upload',
+    slug: '/astrotribe/admin/upload',
+    icon: 'mdi:upload',
+    children: []
+  },
+  {
+    id: 3,
+    label: 'Chunks',
+    slug: '/astrotribe/admin/chunks',
+    icon: 'mdi:card-text',
+    children: []
+  },
+  {
+    id: 4,
+    label: 'Analytics',
+    slug: '/astrotribe/admin/analytics',
+    icon: 'mdi:chart-bar',
+    children: []
+  },
+  {
+    id: 5,
+    label: 'Socials',
+    slug: '/astrotribe/admin/socials',
+    icon: 'mdi:chart-bar',
+    children: []
+  },
+  {
+    id: 6,
+    label: 'Chat',
+    slug: '/astrotribe/admin/chat',
+    icon: 'mdi:chat',
+    children: []
+  }
+])
+
 const socials = ref([
   {
     id: 1,
@@ -171,6 +229,7 @@ export default function usePages() {
   return {
     websiteLinks,
     appLinks,
+    adminLinks,
     socials,
     tabs: (currentPage: string) =>
       appLinks.value.find((page: PageType) => page.label.toLocaleLowerCase() === currentPage)
