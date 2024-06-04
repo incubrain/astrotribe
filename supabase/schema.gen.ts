@@ -80,24 +80,10 @@ export type Database = {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'fk_company_id'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
             foreignKeyName: 'fk_country_id'
             columns: ['country_id']
             isOneToOne: false
             referencedRelation: 'countries'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_user_id'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
             referencedColumns: ['id']
           }
         ]
@@ -105,21 +91,21 @@ export type Database = {
       categories: {
         Row: {
           body: string | null
-          created_at: string | null
+          created_at: string
           id: number
           name: string
           updated_at: string | null
         }
         Insert: {
           body?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: never
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: never
           name?: string
           updated_at?: string | null
@@ -201,22 +187,7 @@ export type Database = {
           updated_at?: string | null
           website_url?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_category_id'
-            columns: ['category_id']
-            isOneToOne: false
-            referencedRelation: 'categories'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_social_media_id'
-            columns: ['social_media_id']
-            isOneToOne: false
-            referencedRelation: 'social_media'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       company_employees: {
         Row: {
@@ -258,22 +229,7 @@ export type Database = {
           updated_at?: string | null
           user_profile_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_company_id'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_user_id'
-            columns: ['user_profile_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       company_news: {
         Row: {
@@ -291,7 +247,7 @@ export type Database = {
           id?: never
           importance_level?: Database['public']['Enums']['news_importance_level'] | null
           news_id: number
-          relation_type?: Database['public']['Enums']['news_relation_type']
+          relation_type: Database['public']['Enums']['news_relation_type']
           updated_at?: string | null
         }
         Update: {
@@ -303,22 +259,7 @@ export type Database = {
           relation_type?: Database['public']['Enums']['news_relation_type']
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_company_id'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_news_id'
-            columns: ['news_id']
-            isOneToOne: false
-            referencedRelation: 'news'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       contacts: {
         Row: {
@@ -360,22 +301,7 @@ export type Database = {
           updated_at?: string | null
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_company_id'
-            columns: ['company_id']
-            isOneToOne: false
-            referencedRelation: 'companies'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_user_id'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       countries: {
         Row: {
@@ -395,24 +321,30 @@ export type Database = {
         }
         Relationships: []
       }
-      embeddings: {
+      embedding_review: {
         Row: {
-          created_at: string | null
+          agent_review: boolean | null
+          created_at: string
+          human_review: boolean | null
           id: number
-          type: string
-          vector: string | null
+          notes: string | null
+          updated_at: string | null
         }
         Insert: {
-          created_at?: string | null
-          id?: never
-          type: string
-          vector?: string | null
+          agent_review?: boolean | null
+          created_at?: string
+          human_review?: boolean | null
+          id?: number
+          notes?: string | null
+          updated_at?: string | null
         }
         Update: {
-          created_at?: string | null
-          id?: never
-          type?: string
-          vector?: string | null
+          agent_review?: boolean | null
+          created_at?: string
+          human_review?: boolean | null
+          id?: number
+          notes?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -453,22 +385,14 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_user_id'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       news: {
         Row: {
           author: string | null
           body: string
           category_id: number
-          created_at: string | null
+          created_at: string
           description: string | null
           featured_image: string | null
           has_summary: boolean
@@ -476,14 +400,14 @@ export type Database = {
           published_at: string | null
           source: string
           title: string
-          updated_at: string | null
+          updated_at: string
           url: string
         }
         Insert: {
           author?: string | null
           body: string
           category_id?: number
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
@@ -491,14 +415,14 @@ export type Database = {
           published_at?: string | null
           source: string
           title: string
-          updated_at?: string | null
+          updated_at?: string
           url: string
         }
         Update: {
           author?: string | null
           body?: string
           category_id?: number
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
@@ -506,51 +430,28 @@ export type Database = {
           published_at?: string | null
           source?: string
           title?: string
-          updated_at?: string | null
+          updated_at?: string
           url?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_category_id'
-            columns: ['category_id']
-            isOneToOne: false
-            referencedRelation: 'categories'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       news_embeddings: {
         Row: {
-          embedding_id: number
+          chunk: string | null
           id: number
           news_id: number
         }
         Insert: {
-          embedding_id: number
+          chunk?: string | null
           id?: never
           news_id: number
         }
         Update: {
-          embedding_id?: number
+          chunk?: string | null
           id?: never
           news_id?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_embedding_id'
-            columns: ['embedding_id']
-            isOneToOne: false
-            referencedRelation: 'embeddings'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_news_id'
-            columns: ['news_id']
-            isOneToOne: false
-            referencedRelation: 'news'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       news_tags: {
         Row: {
@@ -568,22 +469,7 @@ export type Database = {
           news_id?: number
           tag_id?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_news_id'
-            columns: ['news_id']
-            isOneToOne: false
-            referencedRelation: 'news'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'fk_tag_id'
-            columns: ['tag_id']
-            isOneToOne: false
-            referencedRelation: 'tags'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       plan_permissions: {
         Row: {
@@ -605,40 +491,372 @@ export type Database = {
       }
       research: {
         Row: {
-          author: string | null
-          body: string | null
+          abstract: string | null
+          chunk_success: boolean | null
           created_at: string
-          description: string | null
-          id: number
+          facilities: string | null
+          id: string
+          journal: string | null
+          keywords: string | null
+          month: string | null
           published_at: string | null
           title: string | null
           updated_at: string | null
           url: string
           version: number | null
+          year: string | null
         }
         Insert: {
-          author?: string | null
-          body?: string | null
+          abstract?: string | null
+          chunk_success?: boolean | null
           created_at?: string
-          description?: string | null
-          id?: never
+          facilities?: string | null
+          id: string
+          journal?: string | null
+          keywords?: string | null
+          month?: string | null
           published_at?: string | null
           title?: string | null
           updated_at?: string | null
           url: string
           version?: number | null
+          year?: string | null
         }
         Update: {
-          author?: string | null
-          body?: string | null
+          abstract?: string | null
+          chunk_success?: boolean | null
           created_at?: string
-          description?: string | null
-          id?: never
+          facilities?: string | null
+          id?: string
+          journal?: string | null
+          keywords?: string | null
+          month?: string | null
           published_at?: string | null
           title?: string | null
           updated_at?: string | null
           url?: string
           version?: number | null
+          year?: string | null
+        }
+        Relationships: []
+      }
+      research_authors: {
+        Row: {
+          affiliations: string[] | null
+          created_at: string
+          email: string | null
+          id: string
+          is_flagged: boolean | null
+          name: string
+          research_urls: string[] | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          affiliations?: string[] | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          name: string
+          research_urls?: string[] | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          affiliations?: string[] | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          name?: string
+          research_urls?: string[] | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      research_citations: {
+        Row: {
+          author: string | null
+          created_at: string
+          id: string
+          is_flagged: boolean | null
+          research_urls: string[] | null
+          title: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          author?: string | null
+          created_at?: string
+          id: string
+          is_flagged?: boolean | null
+          research_urls?: string[] | null
+          title?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          author?: string | null
+          created_at?: string
+          id?: string
+          is_flagged?: boolean | null
+          research_urls?: string[] | null
+          title?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      research_embeddings: {
+        Row: {
+          chunk: string | null
+          created_at: string | null
+          embedding: string | null
+          embedding_review_id: number | null
+          id: number
+          is_flagged: boolean | null
+          research_id: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          chunk?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          embedding_review_id?: number | null
+          id?: number
+          is_flagged?: boolean | null
+          research_id: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          chunk?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          embedding_review_id?: number | null
+          id?: number
+          is_flagged?: boolean | null
+          research_id?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'public_research_embeddings_embedding_review_id_fkey'
+            columns: ['embedding_review_id']
+            isOneToOne: false
+            referencedRelation: 'embedding_review'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'research_embeddings_research_id_fkey'
+            columns: ['research_id']
+            isOneToOne: false
+            referencedRelation: 'research'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      research_figures: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          is_flagged: boolean | null
+          research_url: string | null
+          src: string
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id: string
+          is_flagged?: boolean | null
+          research_url?: string | null
+          src: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          is_flagged?: boolean | null
+          research_url?: string | null
+          src?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_math: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_flagged: boolean | null
+          latex: string
+          research_urls: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id: string
+          is_flagged?: boolean | null
+          latex: string
+          research_urls?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          latex?: string
+          research_urls?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_metrics: {
+        Row: {
+          chunks: Json
+          count: Json | null
+          created_at: string
+          error_count: number | null
+          errors: Json | null
+          id: number
+          length: Json | null
+          performance: Json | null
+          research_id: string
+          updated_at: string
+        }
+        Insert: {
+          chunks: Json
+          count?: Json | null
+          created_at?: string
+          error_count?: number | null
+          errors?: Json | null
+          id?: number
+          length?: Json | null
+          performance?: Json | null
+          research_id: string
+          updated_at?: string
+        }
+        Update: {
+          chunks?: Json
+          count?: Json | null
+          created_at?: string
+          error_count?: number | null
+          errors?: Json | null
+          id?: number
+          length?: Json | null
+          performance?: Json | null
+          research_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'research_metrics_research_id_fkey'
+            columns: ['research_id']
+            isOneToOne: true
+            referencedRelation: 'research'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      research_notes: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          is_flagged: boolean | null
+          research_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id: string
+          is_flagged?: boolean | null
+          research_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          is_flagged?: boolean | null
+          research_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_tables: {
+        Row: {
+          caption: string | null
+          columns: Json
+          created_at: string
+          hash: string | null
+          id: string
+          is_flagged: boolean | null
+          research_urls: string[] | null
+          rows: Json
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          columns: Json
+          created_at?: string
+          hash?: string | null
+          id: string
+          is_flagged?: boolean | null
+          research_urls?: string[] | null
+          rows: Json
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          columns?: Json
+          created_at?: string
+          hash?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          research_urls?: string[] | null
+          rows?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      research_tools: {
+        Row: {
+          created_at: string
+          id: string
+          is_flagged: boolean | null
+          name: string | null
+          research_urls: string[] | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_flagged?: boolean | null
+          name?: string | null
+          research_urls?: string[] | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_flagged?: boolean | null
+          name?: string | null
+          research_urls?: string[] | null
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -667,15 +885,7 @@ export type Database = {
           search_id?: number
           upvotes?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_search_id'
-            columns: ['search_id']
-            isOneToOne: false
-            referencedRelation: 'searches'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       role_permissions: {
         Row: {
@@ -726,15 +936,7 @@ export type Database = {
           input?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_user_id'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       social_media: {
         Row: {
@@ -798,36 +1000,21 @@ export type Database = {
           created_at: string | null
           followed_id: string
           follower_id: string
-          id: number
+          id: string
         }
         Insert: {
           created_at?: string | null
           followed_id: string
           follower_id: string
-          id?: never
+          id: string
         }
         Update: {
           created_at?: string | null
           followed_id?: string
           follower_id?: string
-          id?: never
+          id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'user_followers_followed_id_fkey'
-            columns: ['followed_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'user_followers_follower_id_fkey'
-            columns: ['follower_id']
-            isOneToOne: false
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       user_profiles: {
         Row: {
@@ -890,29 +1077,67 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'fk_auth_id'
-            columns: ['id']
-            isOneToOne: true
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
     }
     Views: {
-      [_ in never]: never
+      research_metrics_monthly_totals: {
+        Row: {
+          avg_chunk_length: number | null
+          largest_chunk_length: number | null
+          month_start: string | null
+          row_count: number | null
+          smallest_chunk_length: number | null
+          total_abstract_length: number | null
+          total_authors: number | null
+          total_authors_length: number | null
+          total_chunk_length: number | null
+          total_chunks: number | null
+          total_citations: number | null
+          total_citations_length: number | null
+          total_figures: number | null
+          total_figures_length: number | null
+          total_math: number | null
+          total_math_length: number | null
+          total_notes: number | null
+          total_notes_length: number | null
+          total_tables: number | null
+          total_tables_length: number | null
+          total_tools: number | null
+          total_tools_length: number | null
+        }
+        Relationships: []
+      }
+      research_metrics_totals: {
+        Row: {
+          avg_chunk_length: number | null
+          largest_chunk_length: number | null
+          row_count: number | null
+          smallest_chunk_length: number | null
+          total_abstract_length: number | null
+          total_authors: number | null
+          total_authors_length: number | null
+          total_chunk_length: number | null
+          total_chunks: number | null
+          total_citations: number | null
+          total_citations_length: number | null
+          total_figures: number | null
+          total_figures_length: number | null
+          total_math: number | null
+          total_math_length: number | null
+          total_notes: number | null
+          total_notes_length: number | null
+          total_tables: number | null
+          total_tables_length: number | null
+          total_tools: number | null
+          total_tools_length: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_authorize_rls_policies: {
         Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      assign_role_permissions_from_config: {
-        Args: {
-          json_config: Json
-        }
         Returns: undefined
       }
       authorize: {
@@ -934,6 +1159,105 @@ export type Database = {
             }
             Returns: unknown
           }
+      calculate_monthly_research_metrics_totals: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          month_start: string
+          row_count: number
+          total_chunks: number
+          avg_chunk_length: number
+          smallest_chunk_length: number
+          largest_chunk_length: number
+          total_citations: number
+          total_figures: number
+          total_math: number
+          total_tables: number
+          total_notes: number
+          total_tools: number
+          total_authors: number
+          total_chunk_length: number
+          total_math_length: number
+          total_tools_length: number
+          total_authors_length: number
+          total_notes_length: number
+          total_tables_length: number
+          total_abstract_length: number
+          total_citations_length: number
+          total_figures_length: number
+        }[]
+      }
+      calculate_research_metrics_totals: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          row_count: number
+          total_chunks: number
+          avg_chunk_length: number
+          smallest_chunk_length: number
+          largest_chunk_length: number
+          total_citations: number
+          total_figures: number
+          total_math: number
+          total_tables: number
+          total_notes: number
+          total_tools: number
+          total_authors: number
+          total_chunk_length: number
+          total_math_length: number
+          total_tools_length: number
+          total_authors_length: number
+          total_notes_length: number
+          total_tables_length: number
+          total_abstract_length: number
+          total_citations_length: number
+          total_figures_length: number
+        }[]
+      }
+      get_citation_ids_by_url:
+        | {
+            Args: {
+              urls: string[]
+            }
+            Returns: {
+              id: string
+              url: string
+            }[]
+          }
+        | {
+            Args: {
+              urls: string[]
+            }
+            Returns: {
+              id: string
+              url: string
+            }[]
+          }
+      get_math_ids_by_latex: {
+        Args: {
+          latexes: string[]
+        }
+        Returns: {
+          id: string
+          latex: string
+        }[]
+      }
+      get_note_ids_by_body: {
+        Args: {
+          bodies: string[]
+        }
+        Returns: {
+          id: string
+          body: string
+        }[]
+      }
+      get_table_ids_by_hashes: {
+        Args: {
+          hashes: string[]
+        }
+        Returns: {
+          id: string
+          hash: string
+        }[]
+      }
       halfvec_avg: {
         Args: {
           '': number[]
@@ -981,6 +1305,13 @@ export type Database = {
           '': unknown
         }
         Returns: unknown
+      }
+      insert_company_news_by_source: {
+        Args: {
+          p_company_id: number
+          p_source: string
+        }
+        Returns: undefined
       }
       ivfflat_bit_support: {
         Args: {
@@ -1032,6 +1363,30 @@ export type Database = {
             }
             Returns: unknown
           }
+      match_research: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          chunk: string | null
+          created_at: string | null
+          embedding: string | null
+          embedding_review_id: number | null
+          id: number
+          is_flagged: boolean | null
+          research_id: string
+          updated_at: string
+          url: string | null
+        }[]
+      }
+      remove_placeholders: {
+        Args: {
+          text_array: string[]
+        }
+        Returns: string[]
+      }
       sparsevec_out: {
         Args: {
           '': unknown
@@ -1475,12 +1830,12 @@ export type Tables<
     ? R
     : never
   : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] & PublicSchema['Views'])
-  ? (PublicSchema['Tables'] & PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+    ? (PublicSchema['Tables'] & PublicSchema['Views'])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
@@ -1494,12 +1849,12 @@ export type TablesInsert<
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends keyof PublicSchema['Tables'] | { schema: keyof Database },
@@ -1513,12 +1868,12 @@ export type TablesUpdate<
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends keyof PublicSchema['Enums'] | { schema: keyof Database },
@@ -1528,5 +1883,5 @@ export type Enums<
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
-  : never
+    ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+    : never
