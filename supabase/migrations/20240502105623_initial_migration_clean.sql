@@ -494,47 +494,6 @@ END;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.assign_role_permissions_from_config(json_config json)
- RETURNS void
- LANGUAGE plpgsql
-AS $function$
-DECLARE
-    config_element json;
-    table_exists boolean;
-BEGIN
-    FOR config_element IN SELECT * FROM json_array_elements(json_config)
-    LOOP
-        -- Check if the table exists in the public schema
-        SELECT EXISTS (
-            SELECT 1 FROM information_schema.tables
-            WHERE table_schema = 'public'
-              AND table_name = config_element->>'table_name'
-        ) INTO table_exists;
-
-        IF table_exists THEN
-            INSERT INTO role_permissions ("role", "table_name", "select", "insert", "update", "delete")
-            VALUES (
-                (config_element->>'role')::app_role_enum, 
-                config_element->>'table_name', 
-                (config_element->>'select')::boolean, 
-                (config_element->>'insert')::boolean, 
-                (config_element->>'update')::boolean, 
-                (config_element->>'delete')::boolean
-            )
-            ON CONFLICT ON CONSTRAINT role_permission_unique DO UPDATE 
-            SET 
-                "select" = EXCLUDED."select",
-                "insert" = EXCLUDED."insert",
-                "update" = EXCLUDED."update",
-                "delete" = EXCLUDED."delete";
-        ELSE
-            RAISE NOTICE 'Table "%" does not exist in the public schema.', config_element->>'table_name';
-        END IF;
-    END LOOP;
-END;
-$function$
-;
-
 CREATE OR REPLACE FUNCTION public.authorize(requested_permission text)
  RETURNS boolean
  LANGUAGE plpgsql
