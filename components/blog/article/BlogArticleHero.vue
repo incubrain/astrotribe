@@ -1,29 +1,29 @@
 <template>
-  <div class="relative w-full flex justify-center items-center foreground pb-12 pt-16">
-    <div class="flex flex-col max-w-4xl">
-      <BaseBreadcrumbs class="py-10 px-4" />
+  <div class="foreground relative flex w-full items-center justify-center pb-12 pt-16">
+    <div class="flex max-w-[1140px] flex-col w-full">
+      <BaseBreadcrumbs class="px-4 py-10" />
       <BaseImage
         :img="{
           src: `images/blog/${article.category}/${article.featured_image}`,
-          width: '900px',
-          height: '506px'
+          width: '1140px',
+          height: '700px'
         }"
-        class="md:rounded-md relative"
+        class="relative md:rounded-md"
       />
       <div
-        class="flex flex-col md:flex-row-reverse gap-12 items-start p-3 rounded-md w-full justify-between"
+        class="flex w-full flex-col items-start justify-between gap-12 rounded-md p-3 md:flex-row-reverse"
       >
-        <div class="flex gap-4 flex-wrap">
-          <PrimeTag
+        <div class="flex flex-wrap gap-4">
+        <PrimeTag
             :value="article.category"
-            class="text-sm text-nowrap"
+            class="text-nowrap text-sm"
           />
           <PrimeTag
             v-for="tag in article.tags"
             :key="tag"
             :value="tag"
             severity="secondary"
-            class="text-sm text-nowrap"
+            class="text-nowrap text-sm"
           />
         </div>
         <BlogArticleAuthor
@@ -32,13 +32,13 @@
         />
       </div>
       <div
-        class="flex relative z-10 gap-8 flex-col items-start mx-auto w-full rounded-md max-w-[740px] pt-8 padded-x"
+        class="padded-x relative z-10 mx-auto flex w-full max-w-[740px] flex-col items-start gap-8 rounded-md pt-8"
       >
-        <h1 class="text-4xl xl:text-5xl font-semibold font-[Oswald] lg:text-center">
+        <h1 class="font-[Oswald] text-4xl font-semibold lg:text-center xl:text-5xl">
           {{ article.title }}
         </h1>
         <div
-          class="w-full p-4 xl:p-8 rounded-md border border-color bg-primary-50 dark:bg-primary-950"
+          class="border-color w-full rounded-md border bg-primary-50 p-4 xl:p-8 dark:bg-primary-950"
         >
           <p class="text-xl">
             {{ article.description }}
