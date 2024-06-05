@@ -230,10 +230,10 @@ const websiteLinks = [
         disabled: false
       },
       {
-        key: 'blog-peoples-of-space',
+        key: 'blog-people-of-space',
         label: 'Peoples of Space',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/peoples-of-space',
+        url: '/blog/people-of-space',
         visible: true,
         disabled: false
       },
