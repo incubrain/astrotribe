@@ -1,3 +1,5 @@
+import { useServerError } from '#imports'
+
 // user tweet timeline
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-tweets
 
@@ -11,9 +13,8 @@
 
 // MANAGE ACCOUNTS
 // https://github.com/linkedin-developers/linkedin-api-js-client
-// NON OFFICIAL API: https://github.com/tomquirk/linkedin-api
 
-import { useServerError } from '#imports'
+// NON OFFICIAL API: https://github.com/tomquirk/linkedin-api
 
 const TWITTER_API_URL = 'https://api.twitter.com/2/tweets'
 const BEARER_TOKEN = 'YOUR_TWITTER_BEARER_TOKEN'

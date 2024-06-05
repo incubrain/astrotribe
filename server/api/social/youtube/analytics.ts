@@ -1,9 +1,9 @@
-import { useYoutubeChannel, useLogger, useServerError } from '#imports'
+import { useYoutubeChannel, useServerLogger, useServerError } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'
 
 export default defineEventHandler(async (event) => {
-  const log = useLogger(PREFIX)
+  const log = useServerLogger(PREFIX)
   const errors = useServerError(PREFIX)
 
   const { channelName } = getQuery(event) as { channelName: string }
