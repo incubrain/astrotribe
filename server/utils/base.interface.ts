@@ -5,7 +5,7 @@ import type { CompanyDTOKey } from './company/company.dto'
 import type { Database, Tables } from '~/supabase/schema.gen'
 import { boolean } from 'zod'
 
-type DBTable = keyof Database['public']['Tables'] | keyof Database['public']['Views']
+type DBTable = keyof Database['public']['Tables'] & keyof Database['public']['Views']
 type DBColumns<T extends DBTable> = keyof Tables<T>
 type TableSpecificColumns<T extends DBTable> = Partial<DBColumns<T>>
 
@@ -49,13 +49,13 @@ export type GenericReturn<T> = Promise<T[] | T | null>
 
 export type TableKey = keyof Database['public']['Tables'] | keyof Database['public']['Views']
 
-export type FilterBy<T extends TableKey> = {
+export type FilterBy<T extends DBTable> = {
   columnName: TableSpecificColumns<T>
   operator: FilterKey
   value: string | boolean | number
 }
 
-type OrderBy<T extends TableKey> = {
+type OrderBy<T extends DBTable> = {
   columnNames: TableSpecificColumns<T>[]
   ascending: boolean
   referenceTable?: string
@@ -71,7 +71,7 @@ type Conflict = {
 
 // todo: refactor to have options under select/insert/update/delete
 // for instance we can group limit, pagination, selectStatement all under select
-export interface BaseOperationInput<T, K extends TableKey> {
+export interface BaseOperationInput<T, K extends DBTable> {
   tableName: K
   data?: T | T[]
   selectStatement?: string
@@ -84,7 +84,7 @@ export interface BaseOperationInput<T, K extends TableKey> {
   conflict?: Conflict
 }
 
-export interface SelectInput<T, K extends TableKey> extends BaseOperationInput<T, K> {
+export interface SelectInput<T, K extends DBTable> extends BaseOperationInput<T, K> {
   selectStatement: string
 }
 
