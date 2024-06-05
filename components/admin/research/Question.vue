@@ -2,11 +2,24 @@
 const chunksStore = useChunksStore()
 const { similarChunks } = storeToRefs(chunksStore)
 
+const researchStore = useResearchStore()
+
 const config = reactive({
   search: '',
   matchThreshold: 0.8,
   matchCount: 5
 })
+
+const chunkIds = computed(() => similarChunks.value.map((doc) => doc.id) ?? null)
+const chunkMetrics = ref(null as null | ResearchMetric[])
+
+onMounted(async () => {
+  await chunksStore.fetchSimilarDocuments(config)
+  chunkMetrics.value = await researchStore.getResearchMetricsById(chunkIds.value)
+})
+
+const currentChunkMetrics = (id: string) =>
+  chunkMetrics.value?.find((metric) => metric.research_id === id)
 </script>
 
 <template>
@@ -18,7 +31,7 @@ const config = reactive({
         class="min-w-72"
       />
       <div class="flex flex-col items-start">
-        <div class="flex gap-4 items-center justify-center">
+        <div class="flex items-center justify-center gap-4">
           <p class="text-sm">Min Threshold:</p>
           <PrimeSlider
             v-model="config.matchThreshold"
@@ -29,7 +42,7 @@ const config = reactive({
           />
           <p>{{ config.matchThreshold.toFixed(2) }}</p>
         </div>
-        <div class="flex gap-4 items-center justify-center">
+        <div class="flex items-center justify-center gap-4">
           <p class="text-sm">Max Documents:</p>
           <PrimeSlider
             v-model="config.matchCount"
@@ -47,7 +60,7 @@ const config = reactive({
     </AdminResearchHeader>
     <div
       v-if="similarChunks.length"
-      class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8"
+      class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8"
     >
       <AdminResearchCard
         v-for="doc in similarChunks"
@@ -62,6 +75,16 @@ const config = reactive({
           >
             {{ doc.is_flagged ? 'unflag' : 'Flag' }}
           </PrimeButton>
+        </template>
+        <template #footer>
+          <PrimeAccordion>
+            <PrimeAccordionTab header="Metrics">
+              <AdminResearchMetricsChunk
+                v-if="chunkMetrics?.length"
+                :metrics="currentChunkMetrics(doc.id)"
+              />
+            </PrimeAccordionTab>
+          </PrimeAccordion>
         </template>
       </AdminResearchCard>
     </div>
