@@ -3,7 +3,7 @@
     <div class="flex flex-wrap gap-4">
       <PrimeTag
         :id="`${articleLink}-${category}`"
-        :value="category"
+        :value="useChangeCase(category, 'capitalCase').value"
         :class="`${badgeColor(category)}`"
       />
       <PrimeTag
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import type { ArticleTagsT, ArticleCategoriesT } from '~/types/articles'
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 // TODO: Add full article as prop and types for article
 defineProps({
@@ -39,18 +40,16 @@ defineProps({
 
 const badgeColor = (badge: ArticleCategoriesT | ArticleTagsT): string => {
   switch (badge) {
-    case 'isro':
+    case 'people-of-space':
       return 'primary'
-    case 'spacex':
+    case 'sustainable-development':
       return 'amber'
-    case 'nasa':
+    case 'space-exploration':
       return 'purple'
-    case 'esa':
+    case 'dark-sky-conservation':
       return 'blue'
-    case 'ula':
-      return 'green'
     default:
-      return 'gray'
+      return 'secondary'
   }
 }
 </script>

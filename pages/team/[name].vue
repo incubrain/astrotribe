@@ -29,7 +29,7 @@
         </div>
         <div class="p-4 xl:p-8 grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div class="flex flex-col gap-3">
-            <h4 class="mb-4 text-xl font-semibold">About</h4>
+            <h4 class="mb-4 text-xl font-semibold">About {{ user.given_name }}</h4>
             <p
               v-for="(section, i) in user.bio"
               :key="i"
@@ -38,7 +38,7 @@
               {{ section }}
             </p>
           </div>
-          <div v-if="user.achievements.length > 0">
+          <!-- <div v-if="user.achievements.length > 0">
             <h4 class="mb-4 text-xl font-semibold">Achievements</h4>
             <div
               v-for="(achievement, i) in user?.achievements"
@@ -48,9 +48,9 @@
               <p class="font-semibold text-base">{{ achievement.title }}</p>
               <p class="text-sm">{{ achievement.body }}</p>
             </div>
-          </div>
+          </div> -->
           <div>
-            <h4 class="mb-4 text-xl font-semibold">Connect with {{ user.name }}</h4>
+            <h4 class="mb-4 text-xl font-semibold">Connect with {{ user.given_name }}</h4>
             <SocialBlock
               :socials="user.socials"
               :has-title="false"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const userStore = useCurrentUser()
-const { profile } = storeToRefs(userStore)
+const { profile, isAdmin } = storeToRefs(userStore)
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -9,20 +9,31 @@ const toggleMenu = (e) => {
 }
 
 const auth = useAuth()
-const items = ref([
-  {
-    label: 'Profile',
-    command: () => router.push(`/astrotribe/users/${profile.value.user_id}`)
-  },
-  {
-    label: 'Settings',
-    command: () => router.push(`/astrotribe/users/${profile.value.user_id}/settings/profile`)
-  },
-  {
-    label: 'Logout',
-    command: () => auth.logout()
+const items = computed(() => {
+  const menuItems = [
+    {
+      label: 'Profile',
+      command: () => router.push(`/astrotribe/users/${profile.value.user_id}`)
+    },
+    {
+      label: 'Settings',
+      command: () => router.push(`/astrotribe/users/${profile.value.user_id}/settings/profile`)
+    },
+    {
+      label: 'Logout',
+      command: () => auth.logout()
+    }
+  ]
+
+  if (isAdmin.value) {
+    menuItems.splice(2, 0, {
+      label: 'Admin',
+      command: () => router.push(`/astrotribe/admin/users`)
+    })
   }
-])
+
+  return menuItems
+})
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading('currentUser'))
@@ -41,6 +52,9 @@ const logError = (error) => {
   console.info('Error loading image, default image rendered', error)
   avatarUrl.value = '/images/defaults/avatar.jpg'
 }
+
+const nonce = useNonce()
+
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -94,6 +108,8 @@ const logError = (error) => {
           aria-controls="overlay_menu"
           @click="toggleMenu"
           @error="logError"
+          :nonce="nonce"
+          crossorigin="anonymous"
         />
         <PrimeMenu
           id="overlay_menu"

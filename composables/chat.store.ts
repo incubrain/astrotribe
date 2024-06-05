@@ -62,8 +62,9 @@ export const useChatStore = defineStore('chatStore', () => {
       })
       .select()
 
-    return errors.handleFetchErrors(response, {
-      critical: true,
+    return errors.server({
+      response,
+      devOnly: true,
       devMessage: 'error inserting search data',
       userMessage: 'something went wrong when inserting search data'
     })
@@ -75,8 +76,9 @@ export const useChatStore = defineStore('chatStore', () => {
       output: questionResponseData.choices[0]?.message?.content,
       created_at: new Date().toISOString()
     })
-    return errors.handleFetchErrors(response, {
-      critical: true,
+    return errors.server({
+      response,
+      devOnly: true,
       devMessage: 'error inserting response data',
       userMessage: 'something went wrong when inserting response data'
     })
@@ -92,13 +94,15 @@ export const useChatStore = defineStore('chatStore', () => {
     loading.setLoading(domainKey, true)
 
     try {
-      const questionResponse = await fetch('/api/groq', {
+      const questionResponse = await fetch('/api/ai/ask', {
         method: 'GET',
         params: { question: question.value }
       })
 
-      const questionResponseData: Chat = errors.handleFetchErrors(questionResponse, {
-        critical: true,
+      console.log('handling ask error', questionResponse)
+      const questionResponseData: Chat = errors.server({
+        response: questionResponse,
+        devOnly: true,
         devMessage: 'error fetching question response',
         userMessage: 'something went wrong when fetching question response'
       })

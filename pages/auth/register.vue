@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const form = reactive({
+  given_name: '',
+  surname: '',
   email: '',
-  password: null as string | null,
+  password: '',
   confirmPassword: null as string | null
 })
 
@@ -15,8 +17,14 @@ const isPasswordValid = computed(() => {
   return form.password === form.confirmPassword && !!form.password && !!form.confirmPassword
 })
 
-const currentUser = useCurrentUser()
-const { haveUserSession } = storeToRefs(currentUser)
+const isEmailValid = computed(() => {
+  return form.email.includes('@') && form.email.includes('.')
+})
+
+const isFormValid = computed(() => {
+  return isPasswordValid.value && isEmailValid.value && !!form.given_name && !!form.surname
+})
+
 
 definePageMeta({
   name: 'Register',
@@ -33,22 +41,26 @@ definePageMeta({
     }"
     help-url="/auth/login"
   >
-    <template #title>
-      <div v-if="haveUserSession">
-        <AuthVerifiedWith class="w-full" />
-
-        <div class="w-full pt-4">
-          <PrimeDivider
-            layout="horizontal"
-            class="flex justify-left items-center"
-          >
-            <p>Or Login with</p>
-          </PrimeDivider>
-        </div>
-      </div>
-    </template>
     <template #content>
       <div class="flex flex-col gap-4">
+        <div class="flex gap-4 w-full">
+          <PrimeFloatLabel class="flex flex-col w-full">
+            <PrimeInputText
+              id="given_name"
+              v-model="form.given_name"
+              :pt="{ root: 'w-full' }"
+            />
+            <label for="given_name">Given Name</label>
+          </PrimeFloatLabel>
+          <PrimeFloatLabel class="flex flex-col w-full">
+            <PrimeInputText
+              id="surname"
+              v-model="form.surname"
+              :pt="{ root: 'w-full' }"
+            />
+            <label for="surname">Surname</label>
+          </PrimeFloatLabel>
+        </div>
         <PrimeFloatLabel class="flex flex-col w-full">
           <PrimeInputText
             id="email"
@@ -92,8 +104,8 @@ definePageMeta({
         </div>
         <PrimeButton
           class="justify-center"
-          :disabled="!isPasswordValid"
-          @click="auth.registerWithEmail(form.email, form.password)"
+          :disabled="!isFormValid"
+          @click="auth.registerWithEmail(form!)"
         >
           Sign up with email
         </PrimeButton>
@@ -106,24 +118,7 @@ definePageMeta({
       </div>
     </template>
     <template #footer>
-      <div class="w-full">
-        <PrimeDivider
-          layout="horizontal"
-          class="flex justify-left items-center"
-        >
-          <p>Or continue with</p>
-        </PrimeDivider>
-      </div>
-      <div class="flex flex-col md:flex-row gap-4 xl:gap-6 w-full">
-        <AuthSocialButton
-          provider="twitter"
-          @social-login="auth.loginSocial('twitter')"
-        />
-        <AuthSocialButton
-          provider="linkedin"
-          @social-login="auth.loginSocial('linkedin_oidc')"
-        />
-      </div>
+      <AuthRegisterWith />
     </template>
   </AuthCard>
 </template>

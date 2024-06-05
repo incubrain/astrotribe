@@ -31,10 +31,8 @@ async function fetchPermissions(userPlan: string, userRole: string) {
 }
 
 async function getSession() {
-  console.log('gettingSession')
   const event = useEvent()
   const session = await serverSupabaseSession(event)
-  console.log('serverSupabaseSession', session)
   return session
 }
 
@@ -83,8 +81,7 @@ export async function validateAndUpdateSession() {
     return
   }
 
-  const { user, refresh_token, access_token } = session
-  console.log('session', user, refresh_token, access_token)
+  const { user, refresh_token } = session
   if (!user || !refresh_token) {
     throw createError({
       message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`
@@ -139,8 +136,8 @@ export async function validateAndUpdateSession() {
         identities: user.identities,
         avatar: formatAvatarUrl({ avatar: user.user_metadata.avatar, id: user.id }),
         full_name: user.user_metadata.full_name,
-        given_name: user.user_metadata.given_name ?? user.user_metadata.full_name.split(' ')[0],
-        surname: user.user_metadata.surname ?? user.user_metadata.full_name.split(' ')[1],
+        given_name: user.user_metadata.given_name ?? user.user_metadata.given_name,
+        surname: user.user_metadata.surname ?? user.user_metadata.surname,
         username: user.user_metadata.username
       },
       plan_permissions: permissions.plan,

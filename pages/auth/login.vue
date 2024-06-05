@@ -21,7 +21,7 @@ definePageMeta({
     :title="{
       main: 'Login to AstronEra',
       subtitle: 'Don\'t have an account?',
-      label: 'Sign up.'
+      label: 'Sign up'
     }"
     help-url="/auth/register"
   >
@@ -80,29 +80,7 @@ definePageMeta({
       </PrimeButton>
     </template>
     <template #footer>
-      <div class="w-full flex justify-center items-center"> </div>
-      <div>
-        <div class="w-full">
-          <PrimeDivider
-            layout="horizontal"
-            class="flex justify-left items-center"
-          >
-            <p>Or continue with</p>
-          </PrimeDivider>
-        </div>
-        <div class="flex w-full h-auto items-center justify-between pt-4">
-          <div class="flex gap-4 xl:gap-6">
-            <AuthSocialButton
-              provider="twitter"
-              @social-login="auth.loginSocial('twitter')"
-            />
-            <AuthSocialButton
-              provider="linkedin"
-              @social-login="auth.loginSocial('linkedin_oidc')"
-            />
-          </div>
-        </div>
-      </div>
+      <AuthRegisterWith />
     </template>
   </AuthCard>
 </template>

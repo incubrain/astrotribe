@@ -1,6 +1,5 @@
 import { ZodSchema } from 'zod'
 import { AllDTOKey } from './base.interface'
-import { logger } from './logger'
 
 type DTODefinition<T> = {
   name: AllDTOKey
@@ -14,7 +13,7 @@ type InputDTO = {
 
 export class BaseDTO<T> {
   protected dtos: DTODefinition<T>[]
-  protected logger = logger.child({ loggerPrefix: 'BaseDTO' })
+  protected log = useServerLogger('BaseDTO')
 
   constructor(dtos: DTODefinition<T>[]) {
     this.dtos = dtos
@@ -22,7 +21,7 @@ export class BaseDTO<T> {
 
   private getSchema(dtoName: AllDTOKey): ZodSchema<T> | undefined {
     const dto = this.dtos.find((d) => d.name === dtoName)
-    this.logger.info(`Retrieved DTO schema for: ${dto?.name}`)
+    this.log.info(`Retrieved DTO schema for: ${dto?.name}`)
     return dto?.schema
   }
 
@@ -30,7 +29,7 @@ export class BaseDTO<T> {
     const schema = this.getSchema(input.dto)
 
     if (!schema) {
-      this.logger.error(`DTO schema not found for: ${input.dto}`)
+      this.log.error(`DTO schema not found for: ${input.dto}`)
       return null
     }
 
@@ -39,10 +38,10 @@ export class BaseDTO<T> {
         return input.data.map((item: T) => schema.parse(item))
       }
 
-      this.logger.info('parsing single DTO', input.dto)
+      this.log.info('parsing single DTO', input.dto)
       return schema.parse(input.data)
     } catch (error) {
-      this.logger.error(`Error parsing data for: ${input.dto} - ${error}`)
+      this.log.error(`Error parsing data for: ${input.dto} - ${error}`)
       return null
     }
   }

@@ -10,23 +10,25 @@ export class NewsRepository extends BaseRepository<News> implements INewsReposit
     super({ loggerPrefix: 'NewsRepository', Model: News })
   }
 
-  async selectNewsCards(input: SelectInput<{}>): Promise<News[]> {
-    this.logger.info('selectNewsCards')
+  async selectNewsCards(input: SelectInput<{}, 'news'>): Promise<News[]> {
+    this.log.info('selectNewsCards')
 
     const news = await this.selectMany<'news'>(input)
     return news.map((news) => new News(news))
   }
 
-  async upsertNewsCards(config: UpsertInput<News>): Promise<News[]> {
+  async upsertNewsCards(config: UpsertInput<News, 'news'>): Promise<News[]> {
     const formattedData = config.data.forEach((news) =>
       this.dto.validateAndFormatData({ data: new News(news), dto: config.dto })
     )
-    this.logger.info('upsertNewsCards')
+    this.log.info('upsertNewsCards')
     const insertedData = await this.upsertMany({
       tableName: 'news',
       data: formattedData,
-      conflictFields: ['id'],
-      ignoreDuplicates: false
+      conflict: {
+        onConflict: ['id'],
+        ignoreDuplicates: false
+      }
     })
 
     return insertedData

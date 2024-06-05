@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { CATEGORIES } from '~/types/articles'
 import type { ArticleCategoriesT } from '~/types/articles'
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 const selectedCategory = ref<ArticleCategoriesT>(
   String(useRoute().params.category) as ArticleCategoriesT
 )
-const upperFirstCategory = (cat: string) => cat.charAt(0).toUpperCase() + cat.slice(1)
+const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 
 // !todo: low priority - add a search bar to filter articles
 // !todo: low priority - color code the categories
@@ -15,21 +16,23 @@ const upperFirstCategory = (cat: string) => cat.charAt(0).toUpperCase() + cat.sl
 </script>
 
 <template>
-  <PrimeCard class="space-y-4 h-auto md:rounded-md">
-    <template #content>
-      <div class="flex gap-4 flex-wrap">
+  <div class="h-auto space-y-4 md:rounded-md">
+    <div class="flex flex-wrap items-center gap-4">
+      <h3 class="flex h-full items-center text-xl font-semibold leading-none"> Categories: </h3>
+      <NuxtLink
+        v-for="cat in CATEGORIES"
+        :key="`astronera-blog-${cat}`"
+        :to="`/blog/${cat}`"
+      >
         <PrimeButton
-          v-for="cat in CATEGORIES"
-          :key="`astronera-blog-${cat}`"
           color="primary"
-          :aria-label="`${cat} articles`"
-          :variant="selectedCategory === cat ? 'solid' : 'outline'"
-          :to="`/blog/${cat}`"
-          :label="upperFirstCategory(cat)"
-          size="sm"
+          :aria-label="`${formatCategory(cat)} articles`"
+          :outlined="selectedCategory === cat ? false : true"
+          :label="formatCategory(cat)"
+          size="small"
           class="cursor-pointer"
         />
-      </div>
-    </template>
-  </PrimeCard>
+      </NuxtLink>
+    </div>
+  </div>
 </template>

@@ -18,6 +18,25 @@ const authors = [
          She has been closely following the developments in space exploration and has
          been an advocate for the same. She is also a part of the AstronEra team 
          and has been contributing to the blog for a while now.`
+    },
+  },
+  {
+    id: 2,
+    name: {
+      given: 'Srishti',
+      surname: 'Bharadwaj',
+      full: 'Srishti Bharadwaj'
+    },
+    avatar: 'images/team/srishti-bharadwaj.jpg',
+    bio: {
+      short: 'Astroguide & Poet',
+      full: `
+        Srishti is an astronomy, poetry, and literature enthusiast and a fellow astroguide at Astronera.
+        She has been writing poetry and short stories since she was 10, finds peace in stargazing and joy in writing about them.
+      `
+    },
+    socials: {
+      instagram: 'https://www.instagram.com/__srishtispoetry__/'
     }
   }
 ]
