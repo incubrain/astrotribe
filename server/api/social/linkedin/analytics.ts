@@ -1,9 +1,9 @@
-import { useLinkedinAnalytics, useLogger, useServerError } from '#imports';
+import { useLinkedinAnalytics, useServerLogger, useServerError } from '#imports';
 
 const PREFIX = 'social/linkedin/analytics';
 
 export default defineEventHandler(async (event) => {
-  const log = useLogger(PREFIX);
+  const log = useServerLogger(PREFIX);
   const errors = useServerError(PREFIX);
 
   const { postId } = getQuery(event) as { postId: string };
