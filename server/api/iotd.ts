@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { logger } from '../utils/base.logger'
+import { useServerLogger } from '../utils/base.logger'
 
 export const NasaImgSchema = z.object({
   title: z.string(),
@@ -15,6 +15,7 @@ export const NasaImgSchema = z.object({
 export type NasaImgT = z.infer<typeof NasaImgSchema>
 
 export default defineEventHandler(async (event) => {
+  const log = useServerLogger('nasa-iotd')
   // use date for KV storage
   const date = new Date().toISOString().split('T')[0]
   const cacheKey = `nasa-iotd:${date}`
@@ -23,11 +24,11 @@ export default defineEventHandler(async (event) => {
   // Check if item exists in storage
   let nasaImg: NasaImgT | null = null
   const isItemInStorage = await storage.hasItem(cacheKey)
-  logger.info(`Is ${cacheKey} in storage: ${isItemInStorage}`)
+  log.info(`Is ${cacheKey} in storage: ${isItemInStorage}`)
   if (isItemInStorage) {
     // Get item from storage
     nasaImg = await storage.getItem<NasaImgT>(cacheKey)!
-    logger.info(`Got ${cacheKey} from storage: `, nasaImg)
+    log.info(`Got ${cacheKey} from storage: `, nasaImg)
   } else {
     // Get the item for the previous day
     const previousDay = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]
@@ -36,12 +37,12 @@ export default defineEventHandler(async (event) => {
     const isPreviousItemInStorage = await storage.hasItem(previousCacheKey)
     if (isPreviousItemInStorage) {
       nasaImg = await storage.getItem<NasaImgT>(previousCacheKey)!
-      logger.info(`Got ${previousCacheKey} from storage: `, nasaImg)
+      log.info(`Got ${previousCacheKey} from storage: `, nasaImg)
     }
   }
 
   if (!nasaImg) {
-    logger.info('No iotd in storage')
+    log.info('No iotd in storage')
     return false
   }
 

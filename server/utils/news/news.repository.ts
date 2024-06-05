@@ -11,7 +11,7 @@ export class NewsRepository extends BaseRepository<News> implements INewsReposit
   }
 
   async selectNewsCards(input: SelectInput<{}, 'news'>): Promise<News[]> {
-    this.logger.info('selectNewsCards')
+    this.log.info('selectNewsCards')
 
     const news = await this.selectMany<'news'>(input)
     return news.map((news) => new News(news))
@@ -21,7 +21,7 @@ export class NewsRepository extends BaseRepository<News> implements INewsReposit
     const formattedData = config.data.forEach((news) =>
       this.dto.validateAndFormatData({ data: new News(news), dto: config.dto })
     )
-    this.logger.info('upsertNewsCards')
+    this.log.info('upsertNewsCards')
     const insertedData = await this.upsertMany({
       tableName: 'news',
       data: formattedData,
