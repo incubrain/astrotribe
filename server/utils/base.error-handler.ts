@@ -1,4 +1,4 @@
-import { useLogger } from './base.logger'
+import { useServerLogger } from './base.logger'
 
 interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
@@ -12,7 +12,7 @@ interface ErrorServer extends Omit<ErrorMessage, 'error'> {
 }
 
 export function useServerError(loggerPrefix = 'useServerError') {
-  const log = useLogger(loggerPrefix)
+  const log = useServerLogger(loggerPrefix)
   const isDev = process.env.NODE_ENV === 'development'
 
   function formatErrorMessage({ userMessage, devMessage, error }: ErrorMessage) {
