@@ -33,7 +33,7 @@ defineProps({
           height: '300',
           quality: '80'
         }"
-        class="w-full object-cover aspect-video border border-color"
+        class="w-full object-cover aspect-video"
       />
     </template>
     <template #title>
