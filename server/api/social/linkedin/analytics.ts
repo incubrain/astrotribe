@@ -1,4 +1,6 @@
-import { useLinkedinAnalytics, useServerLogger, useServerError } from '#imports';
+import { useLinkedinAnalytics, useServerError } from '#imports';
+import { useServerLogger } from '~/server/utils/base.logger'
+
 
 const PREFIX = 'social/linkedin/analytics';
 

@@ -1,5 +1,7 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useTwitterAnalytics, useServerLogger, useServerError } from '#imports'
+import { useTwitterAnalytics, useServerError } from '#imports'
+import { useServerLogger } from '~/server/utils/base.logger'
+
 
 const PREFIX = 'social/twitter/analytics'
 
