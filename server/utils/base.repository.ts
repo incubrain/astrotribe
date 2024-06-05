@@ -10,7 +10,7 @@ import type {
   TableKey
 } from './base.interface'
 
-import { useLogger } from './base.logger'
+import { useServerLogger } from './base.logger'
 import { serverSupabaseClient } from '#supabase/server'
 import { handleDBErrors } from './base.error-handler'
 import { constructQuery } from './base.construct-query'
@@ -32,7 +32,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
 
   constructor({ loggerPrefix, Model }: BaseConstructor<T>) {
     super(Model)
-    this.log = useLogger(loggerPrefix)
+    this.log = useServerLogger(loggerPrefix)
     this.Model = Model
   }
 

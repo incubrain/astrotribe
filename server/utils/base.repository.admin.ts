@@ -13,6 +13,7 @@ import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import { handleDBErrors } from './base.error-handler'
 import { constructQuery } from './base.construct-query'
 import { processResponse } from './base.process-response'
+import { useServerLogger } from '#imports'
 
 interface ModelConstructor<T> {
   new (data: T): T
@@ -21,7 +22,7 @@ interface ModelConstructor<T> {
 export abstract class BaseRepositoryAdmin<T> {
   private clientAdmin!: SupabaseClient<Database>
   protected Model: ModelConstructor<T>
-  protected log = useLogger('BaseRepositoryAdmin')
+  protected log = useServerLogger('BaseRepositoryAdmin')
 
   constructor(Model: ModelConstructor<T>) {
     this.Model = Model
