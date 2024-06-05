@@ -12,8 +12,8 @@ defineProps<{
 <template>
   <LazyPrimeTabView
     :pt="{
-      nav: 'bg-transparent gap-4',
-      panelContainer: 'bg-transparent p-0 h-full'
+      nav: 'bg-transparent gap-4 sticky top-0 left-0 z-50 overflow-x-scroll',
+      panelContainer: 'bg-transparent p-0 h-full overflow-scroll'
     }"
   >
     <PrimeTabPanel
@@ -22,7 +22,7 @@ defineProps<{
       :header="tab.tabTitle"
       :pt="{
         headeraction: 'bg-transparent',
-        content: 'h-full min-h-full'
+        content: 'h-full'
       }"
     >
       <slot :name="tab.tabName" />

@@ -2,7 +2,7 @@
 const isSideVisible = ref(true)
 </script>
 <template>
-  <div class="md:sticky top-0 p-8 space-y-4">
+  <div class="top-0 space-y-4 p-8 md:sticky">
     <div class="flex flex-col justify-center md:justify-start">
       <div class="flex gap-4">
         <!-- <PrimeToggleButton
@@ -22,7 +22,7 @@ const isSideVisible = ref(true)
           </PrimeInlineMessage>
         </Transition> -->
       </div>
-        <BaseFeedback v-show="isSideVisible" />
+      <BaseFeedback v-show="isSideVisible" />
     </div>
   </div>
 </template>
