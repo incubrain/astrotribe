@@ -68,13 +68,16 @@ type Conflict = {
   defaultToNull?: boolean
 }
 
+
+// todo: refactor to have options under select/insert/update/delete
+// for instance we can group limit, pagination, selectStatement all under select
 export interface BaseOperationInput<T, K extends TableKey> {
   tableName: K
   data?: T | T[]
   selectStatement?: string
-  filterBy?: FilterBy<K>
-  orderBy?: OrderBy<K>
-  pagination?: Pagination
+  filterBy?: FilterBy<K> | false
+  orderBy?: OrderBy<K> | false
+  pagination?: Pagination | false
   limit?: number
   isSingle?: boolean
   isReturned?: boolean
