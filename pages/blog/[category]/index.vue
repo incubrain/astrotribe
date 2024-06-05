@@ -63,26 +63,27 @@ function isValidArticleCard(article: ArticleCardT): boolean {
 
 const category = {
   all: {
-    title: 'All',
-    description: 'All Articles'
+    title: 'AstronEra Blog',
+    description: 'Discover all our articles spanning the wonders and advancements of space.'
   },
   'people-of-space': {
     title: 'People of Space',
-    description: 'Articles about notable individuals in the space industry'
+    description: 'Meet the trailblazers and visionaries propelling humanity into the cosmos.'
   },
   'space-exploration': {
     title: 'Space Exploration',
-    description: 'Articles about space missions and exploration efforts'
+    description: 'Embark on thrilling journeys through our latest missions and cosmic discoveries.'
   },
-  'dark-skies': {
-    title: 'Dark Skies',
-    description: 'Articles about the preservation of dark skies'
+  'dark-sky-conservation': {
+    title: 'Dark Sky Conservation',
+    description: 'Uncover efforts to preserve our celestial vistas and protect night skies.'
   },
   'sustainable-development': {
     title: 'Sustainable Development',
-    description: 'Articles about sustainable practices in space activities'
+    description: 'Explore innovations for a sustainable future in space and on Earth.'
   }
 }
+
 
 const websiteUrl = 'https://astronera.org'
 
@@ -100,9 +101,26 @@ useSeoMeta({
 })
 
 defineOgImageComponent('OgImageDefault', {
-  title: `AstronEra ${categoryParam.value} Articles`,
+  title: `${categoryParam.value} Articles`,
   description: category[categoryParam.value].description,
   image: './'
+})
+
+const heroImage = computed(() => {
+  let src = `images/blog/${categoryParam.value}/`
+
+  switch (categoryParam.value) {
+    case 'people-of-space':
+      return (src += '1.20-people-who-influenced-the-space-industry.webp')
+    case 'space-exploration':
+      return (src += '1.starship-lands-on-mars.webp')
+    case 'dark-sky-conservation':
+      return (src += '1.landscape-painting-of-dark-skies-and-mountains.webp')
+    case 'sustainable-development':
+      return (src += '1.sustainable-global-space-development.webp')
+    default:
+      return (src += 'astronera-blog.jpg')
+  }
 })
 </script>
 
@@ -110,14 +128,14 @@ defineOgImageComponent('OgImageDefault', {
   <div>
     <CommonHero
       :img="{
-        src: 'images/blog/category-pages/isro-rocket-launch.png',
-        alt: `AstronEra blog icon`,
+        src: heroImage,
+        alt: `AstronEra ${categoryParam} Hero Image`,
         width: 1080,
         height: 720
       }"
       :title="{
-        main: 'AstronEra BLOG',
-        subtitle: 'Space awaits'
+        main: category[categoryParam].title,
+        subtitle: category[categoryParam].description
       }"
       position="center"
       invert
@@ -126,11 +144,11 @@ defineOgImageComponent('OgImageDefault', {
       <BlogFilter />
     </div>
     <div
-      class="wrapper md:px-4 lg:px-8 xl:pb-8 grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] items-start w-full md:gap-4 lg:gap-8 relative"
+      class="wrapper relative grid w-full grid-cols-1 items-start md:gap-4 md:px-4 lg:grid-cols-[0.5fr_1fr] lg:gap-8 lg:px-8 xl:pb-8"
     >
       <BlogAdFloat />
 
-      <div class="grid md:gap-4 grid-cols-1 lg:gap-8 md:grid-cols-2 h-full">
+      <div class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8">
         <BlogCard
           v-for="article in allArticles"
           :key="`astronera-${categoryParam}-article-${article.id}`"
@@ -142,7 +160,7 @@ defineOgImageComponent('OgImageDefault', {
           <BlogCardSkeleton v-show="pending" />
           <div
             v-if="articlesFinished"
-            class="flex justify-center items-center w-full border border-primary-500 md:rounded-md background p-8"
+            class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
           >
             <p class="foreground px-2">No more articles...</p>
           </div>
