@@ -70,16 +70,16 @@ const selectedRows = ref([])
           style: state['d_editing'] && 'padding-top: 0.6rem; padding-bottom: 0.6rem text-nowrap'
         })
       },
-      paginator: { paginatorwrapper: 'border-color', root: 'rounded-none' },
+      paginator: { paginatorwrapper: 'border-color', root: 'rounded-none' }
     }"
   >
     <template #header>
-      <div class="flex justify-start gap-4 items-center">
+      <div class="flex items-center justify-start gap-4">
         <PrimeInputText
           v-model="filters['global'].value"
           placeholder="Search"
           size="small"
-          class="flex justify-center items-center rounded-lg"
+          class="flex items-center justify-center rounded-lg"
         />
         <slot name="header" />
       </div>
@@ -133,7 +133,7 @@ const selectedRows = ref([])
         <PrimeInputText
           type="text"
           @input="filterCallback()"
-          class="w-full j-6"
+          class="h-6 w-full"
           placeholder="Search by name"
         />
       </template>

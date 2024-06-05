@@ -26,6 +26,7 @@ const navbarClasses = computed(() => {
 })
 
 const navPosition = ref('fixed')
+const userSession = computed(() => haveUserSession.value ?? false)
 
 watch(
   y,
@@ -117,7 +118,7 @@ watch(
           <ClientOnly>
             <div class="gap-2 lg:gap-4 flex items-center justify-center h-auto min-w-24">
               <div
-                v-if="haveUserSession"
+                v-if="userSession"
                 class="flex gap-2 lg:gap-4"
               >
                 <AuthVerifiedWith />
