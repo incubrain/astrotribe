@@ -1,11 +1,17 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { BaseOperationInput, TableKey, Database } from './base.interface'
 
-export async function constructQuery<T, K extends TableKey>(
-  client: SupabaseClient<Database>,
-  input: BaseOperationInput<T, K>,
+interface ConstructQueryInput<T, K extends TableKey> {
+  client: SupabaseClient<Database>
+  input: BaseOperationInput<T, K>
   operation: 'select' | 'insert' | 'update' | 'delete' | 'upsert'
-) {
+}
+
+export async function constructQuery<T, K extends TableKey>({
+  client,
+  input,
+  operation
+}: ConstructQueryInput<T, K>) {
   let query
 
   switch (operation) {
