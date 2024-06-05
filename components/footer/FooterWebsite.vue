@@ -8,7 +8,7 @@ const { socials, websiteLinks } = usePages()
   <footer class="relative flex flex-col items-start justify-start overflow-hidden pt-4 lg:pt-8">
     <div class="wrapper relative flex w-full items-start justify-between rounded-md lg:px-8">
       <div
-        class="background mx-auto grid h-full w-full grid-cols-2 gap-4 rounded-t-md p-4 lg:grid-cols-[1ft_2fr_1fr] lg:gap-8 xl:p-8"
+        class="background mx-auto grid h-full w-full grid-cols-2 gap-4 rounded-t-md p-4 lg:grid-cols-[220px_2fr_220px] lg:gap-8 xl:p-8"
       >
         <div
           class="col-start-2 row-start-2 flex flex-shrink-0 items-start justify-center lg:col-start-1 lg:row-start-1 lg:justify-start lg:pr-4"

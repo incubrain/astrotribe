@@ -5,7 +5,6 @@ definePageMeta({
 
 // !todo: low priority - reduce the amount of text at the beginning of the page
 // !todo: low priority - fix the styling of the conference schedule
-// !todo
 // consider: creating a 20-30 second video of the conference to use as the Hero Section
 </script>
 
@@ -17,6 +16,7 @@ definePageMeta({
         alt: 'Featured image for the Dark Sky Conservation India Conference'
       }"
       :title="{
+        centered: false,
         main: 'Dark Sky Conservation India Conference',
         subtitle: '24th-26th November 2023'
       }"
@@ -29,21 +29,21 @@ definePageMeta({
           src: 'conference/conference-logo.png',
           alt: 'Conference logo'
         }"
-        class="rounded-full overflow-hidden"
+        class="overflow-hidden rounded-full"
       />
       <BaseImage
         :img="{
           src: 'images/trusted/dst.png'
         }"
-        class="h-16 mx-auto lg:h-20"
+        class="mx-auto h-16 lg:h-20"
       />
     </CommonHero>
-    <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
+    <div class="wrapper padded-x flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
       <ConferenceAbout />
       <div class="flex flex-col gap-6 xl:gap-12">
-        <div class="flex flex-col lg:flex-row items-start gap-6 xl:gap-12">
+        <div class="flex flex-col items-start gap-6 lg:flex-row xl:gap-12">
           <div class="space-y-4">
-            <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase">
+            <p class="text-sm font-bold uppercase text-primary-500 dark:text-primary-700">
               Conference Summary
             </p>
             <p>
@@ -85,10 +85,10 @@ definePageMeta({
               width: '900',
               height: '460'
             }"
-            class="rounded-md mx-auto w-full"
+            class="mx-auto w-full rounded-md"
           />
-          <p class="p-4 w-full text-center">Thank you to everyone who made this possible! ❤️</p>
-          <div class="flex justify-center items-center">
+          <p class="w-full p-4 text-center">Thank you to everyone who made this possible! ❤️</p>
+          <div class="flex items-center justify-center">
             <a
               href="/conference/full-conference-report.pdf"
               target="_blank"
@@ -99,7 +99,7 @@ definePageMeta({
         </div>
       </div>
     </div>
-    <div class="wrapper padded-x flex flex-col gap-6 xl:gap-12 py-6 xl:py-12">
+    <div class="wrapper padded-x flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
       <ConferenceVenue class="py-16" />
       <ConferenceScheduleTabs />
       <ConferenceSpeakers />

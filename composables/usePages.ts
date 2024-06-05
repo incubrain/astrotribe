@@ -155,6 +155,16 @@ const socials = ref([
   }
 ])
 
+
+// Events -
+// Under these we display our star gazing programs that we have done along with locations and a page to book us for future star gazing events.
+
+// Our projects -
+// This section should display all our projects 
+// Astrotribe 2022
+// Astro tribe 2023 
+// Dst + conference 2023
+
 const websiteLinks = [
   {
     key: 'about-us',
@@ -190,18 +200,43 @@ const websiteLinks = [
     ]
   },
   {
-    key: 'events',
-    label: 'Events',
-    icon: 'material-symbols:event',
+    key: 'projects',
+    label: 'Projects',
+    icon: 'material-symbols:work',
     visible: true,
     disabled: false,
     items: [
       {
-        key: 'conference',
-        label: 'Conference',
-        icon: 'material-symbols:emoji-people',
-        url: '/conference',
+        key: 'astrotribe',
+        label: 'Astrotribe',
+        icon: 'material-symbols:groups',
+        url: 'projects/astrotribe',
         visible: true,
+        disabled: false
+      },
+      {
+        key: 'dark-sky-conference-2023',
+        label: 'Dark Sky Conference',
+        icon: 'material-symbols:mic-rounded',
+        url: 'projects/dark-sky-conference-2023',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'events',
+    label: 'Events',
+    icon: 'material-symbols:event',
+    visible: false,
+    disabled: false,
+    items: [
+      {
+        key: 'stargazing',
+        label: 'Stargazing',
+        icon: 'material-symbols:dark-mode',
+        url: 'events/stargazing',
+        visible: false,
         disabled: false
       }
     ]
