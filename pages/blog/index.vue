@@ -17,7 +17,7 @@
       invert
     />
     <div class="space-y-10 wrapper py-16 padded-x">
-      <BlogShowcase article-category="isro">
+      <BlogShowcase article-category="all">
         <template #title>
           <CommonTitle
             :title="{

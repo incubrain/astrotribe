@@ -220,6 +220,38 @@ const websiteLinks = [
         url: '/blog',
         visible: true,
         disabled: false
+      },
+      {
+        key: 'blog-dark-sky-conservation',
+        label: 'Dark Sky Conservation',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/dark-sky-conservation',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-peoples-of-space',
+        label: 'Peoples of Space',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/peoples-of-space',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-space-exploration',
+        label: 'Space Exploration',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/space-exploration',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-sustainable-development',
+        label: 'Sustainable Development',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/sustainable-development',
+        visible: true,
+        disabled: false
       }
     ]
   }
