@@ -1,7 +1,7 @@
 <template>
-  <div class="relative w-full flex justify-center items-center foreground pb-12 pt-28">
+  <div class="relative w-full flex justify-center items-center foreground pb-12 pt-16">
     <div class="flex flex-col max-w-4xl">
-      <BaseBreadcrumbs class="py-4 px-4" />
+      <BaseBreadcrumbs class="py-10 px-4" />
       <BaseImage
         :img="{
           src: `images/blog/${article.category}/${article.featured_image}`,
@@ -13,17 +13,17 @@
       <div
         class="flex flex-col md:flex-row-reverse gap-12 items-start p-3 rounded-md w-full justify-between"
       >
-        <div class="space-x-2">
+        <div class="flex gap-4 flex-wrap">
           <PrimeTag
             :value="article.category"
-            class="text-sm"
+            class="text-sm text-nowrap"
           />
           <PrimeTag
             v-for="tag in article.tags"
             :key="tag"
             :value="tag"
             severity="secondary"
-            class="text-sm"
+            class="text-sm text-nowrap"
           />
         </div>
         <BlogArticleAuthor
