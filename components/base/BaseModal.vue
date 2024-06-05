@@ -9,7 +9,6 @@ const options = ref({
   isOpen,
   toggleModalOpen
 })
-
 </script>
 
 <template>
