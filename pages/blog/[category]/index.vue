@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 import { ARTICLE_CARD_PROPERTIES, articleCardSchema } from '~/types/articles'
 
 const route = useRoute()
-const categoryParam = computed(() => String(route.params.category) as ArticleCategoriesT)
+const categoryParam = computed(() => (String(route.params.category) as ArticleCategoriesT) ?? null)
 
 const allArticles = ref<ArticleCardT[]>([])
 const pagination = reactive({ skip: 0, limit: 10 })
@@ -15,21 +16,22 @@ const whereOptions: QueryBuilderParams = {
   // tags: { $in: selectedTags.value },
   status: { $eq: 'published' }
 }
+
 const {
   error,
   data: newArticles,
   refresh,
   pending
-} = useAsyncData(
-  `article-cards-${categoryParam.value}`,
-  () =>
-    queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
-      .where(whereOptions)
-      .only(ARTICLE_CARD_PROPERTIES)
-      .sort({ publishedAt: -1 })
-      .skip(pagination.skip)
-      .limit(pagination.limit)
-      .find() as Promise<ArticleCardT[]>
+} = useAsyncData(`article-cards-${categoryParam.value}`, () =>
+  categoryParam.value
+    ? (queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
+        .where(whereOptions)
+        .only(ARTICLE_CARD_PROPERTIES)
+        .sort({ publishedAt: -1 })
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+        .find() as Promise<ArticleCardT[]>)
+    : Promise.resolve([])
 )
 
 watchEffect(async () => {
@@ -56,7 +58,7 @@ function isValidArticleCard(article: ArticleCardT): boolean {
     articleCardSchema.parse(article)
     return true
   } catch (error) {
-    console.error(`Error parsing article: ${article.title}`, error)
+    console.error(`Error parsing article: ${article?.title}`, error)
     return false
   }
 }
@@ -84,27 +86,28 @@ const category = {
   }
 }
 
-
 const websiteUrl = 'https://astronera.org'
 
 // SEO
-useSeoMeta({
-  title: 'AstronEra Blog',
-  ogTitle: 'AstronEra Blog',
-  description: 'AstronEra Blog',
-  ogDescription: 'AstronEra Blog',
-  ogImage: '/images/icons/blog-icon.svg',
-  twitterCard: 'summary_large_image',
-  twitterTitle: 'AstronEra Blog',
-  twitterDescription: 'AstronEra Blog',
-  twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`
-})
+if (categoryParam.value) {
+  useSeoMeta({
+    title: 'AstronEra Blog',
+    ogTitle: 'AstronEra Blog',
+    description: 'AstronEra Blog',
+    ogDescription: 'AstronEra Blog',
+    ogImage: '/images/icons/blog-icon.svg',
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'AstronEra Blog',
+    twitterDescription: 'AstronEra Blog',
+    twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`
+  })
 
-defineOgImageComponent('OgImageDefault', {
-  title: `${categoryParam.value} Articles`,
-  description: category[categoryParam.value].description,
-  image: './'
-})
+  defineOgImageComponent('OgImageDefault', {
+    title: `${categoryParam.value} Articles`,
+    description: category[categoryParam.value]?.description,
+    image: './'
+  })
+}
 
 const heroImage = computed(() => {
   let src = `images/blog/${categoryParam.value}/`
@@ -127,9 +130,10 @@ const heroImage = computed(() => {
 <template>
   <div>
     <CommonHero
+      v-if="categoryParam"
       :img="{
         src: heroImage,
-        alt: `AstronEra ${categoryParam} Hero Image`,
+        alt: `AstronEra ${useChangeCase(categoryParam, 'capitalCase').value} Hero Image`,
         width: 1080,
         height: 720
       }"
