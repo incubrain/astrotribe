@@ -10,19 +10,20 @@ const toggleClean = () => {
 
 <template>
   <div class="relative">
-    <AdminChunksHeader>
+    <AdminResearchHeader>
       <PrimeButton @click="chunksStore.fetchChunks()"> Get Chunks </PrimeButton>
       <PrimeButton @click="toggleClean"> {{ showClean ? 'Show Raw' : 'Show Clean' }} </PrimeButton>
       <p>Total Chunks: {{ chunks.length }}</p>
-    </AdminChunksHeader>
+    </AdminResearchHeader>
     <div
       v-if="chunks.length"
       class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8"
     >
-      <AdminChunksCard
+      <AdminResearchCard
         v-for="doc in chunks"
         :key="doc.id"
         :doc="doc"
+        :body="doc.chunk"
         :show-clean="showClean"
       >
         <template #header>
@@ -33,7 +34,10 @@ const toggleClean = () => {
             {{ doc.is_flagged ? 'Unflag' : 'Flag' }}
           </PrimeButton>
         </template>
-      </AdminChunksCard>
+        <template #footer>
+          <AdminResearchMetricsChunk :chunk="doc" />
+        </template>
+      </AdminResearchCard>
     </div>
   </div>
 </template>
