@@ -50,7 +50,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.youtube.com',
-        'https://s.ytimg.com'
+        'https://s.ytimg.com',
+        'https://www.google.com/maps'
       ]
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
