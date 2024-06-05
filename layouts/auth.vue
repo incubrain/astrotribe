@@ -5,22 +5,22 @@
 // !todo:med:2 - handle session expired, redirect to login with explanation
 </script>
 <template>
-  <div class="w-full px-8 min-h-screen flex justify-center items-center relative">
-    <div class="relative z-20 p-4 min-w-[340px] w-full max-w-[480px]">
+  <div class="relative flex min-h-screen w-full items-center justify-center px-8">
+    <div class="relative z-20 w-full min-w-[340px] max-w-[480px] p-4">
       <ClientOnly>
         <slot />
       </ClientOnly>
     </div>
-    <div class="h-full flex absolute top-0 left-0 w-full">
-      <div class="bg-black/40 absolute w-full h-full left-0 top-0" />
-      <AppBackground class="hidden lg:fixed z-0 top-0 left-0" />
+    <div class="absolute left-0 top-0 flex h-full w-full">
+      <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
+      <AppBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block" />
 
       <BaseImage
         :img="{
           src: '/astron-era-hero.jpg',
           alt: ''
         }"
-        class="w-full object-cover object-center min-h-full"
+        class="min-h-full w-full object-cover object-center"
       />
     </div>
   </div>
