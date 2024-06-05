@@ -1,7 +1,7 @@
 import { serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const log = logger.child({ loggerPrefix: 'SERVER-IS-ADMIN' })
+  const log = useServerLogger('is-admin-middleware')
   if (event.path.includes('api/admin')) {
     const user = await serverSupabaseUser(event)
 
