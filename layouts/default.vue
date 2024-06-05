@@ -16,7 +16,7 @@ const showTopNav = computed(
 </script>
 
 <template>
-  <div class="w-full min-h-screen foreground relative">
+  <div class="foreground relative min-h-screen w-full">
     <NavTop
       v-if="showTopNav"
       class="wrapper lg:padded-x"
@@ -29,7 +29,7 @@ const showTopNav = computed(
       <div class="relative z-10">
         <slot />
       </div>
-      <AppBackground class="hidden lg:fixed z-0 top-0 left-0 opacity-50" />
+      <AppBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block opacity-50" />
     </div>
 
     <FooterWebsite v-if="showFooter" />

@@ -21,7 +21,7 @@ definePageMeta({
     :title="{
       main: 'Login to AstronEra',
       subtitle: 'Don\'t have an account?',
-      label: 'Sign up.'
+      label: 'Sign up'
     }"
     help-url="/auth/register"
   >
