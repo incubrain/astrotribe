@@ -10,7 +10,6 @@ import type {
   TableKey
 } from './base.interface'
 
-import { useServerLogger } from './base.logger'
 import { serverSupabaseClient } from '#supabase/server'
 import { handleDBErrors } from './base.error-handler'
 import { constructQuery } from './base.construct-query'
