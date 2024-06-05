@@ -11,7 +11,7 @@ const config = reactive({
 
 <template>
   <div>
-    <AdminChunksHeader>
+    <AdminResearchHeader>
       <PrimeInputText
         v-model="config.search"
         placeholder="Search for similar documents"
@@ -40,19 +40,20 @@ const config = reactive({
           <p>{{ config.matchCount }}</p>
         </div>
       </div>
-  
+
       <PrimeButton @click="chunksStore.fetchSimilarDocuments(config)">
         Embedding Search
       </PrimeButton>
-    </AdminChunksHeader>
+    </AdminResearchHeader>
     <div
       v-if="similarChunks.length"
       class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8"
     >
-      <AdminChunksCard
+      <AdminResearchCard
         v-for="doc in similarChunks"
         :key="doc.id"
         :doc="doc"
+        :body="doc.chunk"
       >
         <template #header>
           <PrimeButton
@@ -62,7 +63,7 @@ const config = reactive({
             {{ doc.is_flagged ? 'unflag' : 'Flag' }}
           </PrimeButton>
         </template>
-      </AdminChunksCard>
+      </AdminResearchCard>
     </div>
   </div>
 </template>

@@ -103,8 +103,8 @@ const adminLinks = ref([
   },
   {
     id: 3,
-    label: 'Chunks',
-    slug: '/astrotribe/admin/chunks',
+    label: 'Research',
+    slug: '/astrotribe/admin/research',
     icon: 'mdi:card-text',
     children: []
   },
