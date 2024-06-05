@@ -19,9 +19,17 @@ const schema = [
   {
     value: 'email',
     label: 'Email',
-    tip: 'Your email address',
-    placeholder: 'Contact support to update your email',
+    tip: 'Contact support to update your email',
+    placeholder: 'Your email address',
     type: 'email',
+    disabled: true
+  },
+  {
+    value: 'username',
+    label: 'username',
+    tip: 'Contact support to update your username',
+    placeholder: 'Your username',
+    type: 'username',
     disabled: true
   },
   {
@@ -43,6 +51,7 @@ const schema = [
 const SettingsAccountValidation = z.object({
   given_name: z.string().min(1, 'Given Name is required'),
   surname: z.string().min(1, 'Surname is required'),
+  username: z.string(),
   email: z.string().email(),
   introduction: z.string().min(240, 'At least 240 characters required').optional(),
   quote: z.string().min(10, 'At least 10 characters required').optional()
@@ -132,7 +141,11 @@ definePageMeta({
           </div>
         </UserSettingsItem>
         <div class="py-8">
-          <PrimeButton @click="currentUser.updateProfile(profileCopy)" class="text-white">Save changes</PrimeButton>
+          <PrimeButton
+            @click="currentUser.updateProfile(profileCopy)"
+            class="text-white"
+            >Save changes</PrimeButton
+          >
         </div>
       </div>
     </UserSettingsCard>

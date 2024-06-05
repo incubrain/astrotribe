@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import teamMembers from '@/data/home/team.json'
+
+definePageMeta({
+  name: 'Team'
+})
+</script>
+
 <template>
   <div>
     <ImageHero
@@ -33,11 +41,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import teamMembers from '@/data/home/team.json'
-
-definePageMeta({
-  name: 'Team'
-})
-</script>

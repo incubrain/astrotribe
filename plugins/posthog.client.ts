@@ -2,14 +2,16 @@ import { posthog } from 'posthog-js'
 
 export default defineNuxtPlugin(() => {
   const pubkey = useRuntimeConfig().public.posthogKey
-  if (!pubkey) return
+  if (!pubkey) {
+    throw createError({ message: 'posthog key not defined' })
+  }
   const posthogClient = posthog.init(pubkey, {
     api_host: 'https://app.posthog.com',
     rageclick: true,
     loaded: (posthog) => {
-      // get_property() can only be called after the PostHog library has finished loading.
-
-      if (import.meta.env.MODE === 'development') posthog.debug()
+      if (import.meta.env.MODE === 'development') {
+        posthog.debug()
+      }
     }
   })
 
@@ -35,6 +37,7 @@ export default defineNuxtPlugin(() => {
   //     // do something with early access feature
   // })
   // posthog.updateEarlyAccessFeatureEnrollment(flagKey, 'true')
+
   return {
     provide: {
       posthog: () => posthogClient

@@ -8,8 +8,8 @@ export class CompanyRepository extends BaseRepository<Company> implements ICompa
     super({ loggerPrefix: 'CompanyRepository', Model: Company })
   }
 
-  async selectCompanyById(config: SelectInput<{}>): Promise<Company> {
-    this.logger.info('selectCompanyById')
+  async selectCompanyById(config: SelectInput<{}, 'companies'>): Promise<Company> {
+    this.log.info('selectCompanyById')
 
     const data = await this.selectOne<'companies'>({
       tableName: 'companies',
@@ -30,6 +30,6 @@ export class CompanyRepository extends BaseRepository<Company> implements ICompa
       filterBy: config.filterBy
     })
 
-    this.logger.info(`have data ${JSON.stringify(data)}`)
+    this.log.info(`have data ${JSON.stringify(data)}`)
   }
 }

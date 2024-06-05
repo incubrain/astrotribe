@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const titleSchema = z.object({
+  centered: z.boolean().optional(),
   label: z.string().optional(),
   main: z.string(),
   subtitle: z.string().optional()

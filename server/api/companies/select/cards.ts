@@ -30,6 +30,7 @@ const companyCardSchema = z.array(
 )
 
 export default defineEventHandler(async (event) => {
+  const log = useServerLogger('get-company')
   const query = getQuery(event)
 
   const parsedQuery = handleQueryParams(query)
@@ -40,6 +41,7 @@ export default defineEventHandler(async (event) => {
       tableName: 'companies',
       selectStatement: `
       id,
+      created_at,
       name,
       logo_url,
       website_url,
@@ -52,10 +54,15 @@ export default defineEventHandler(async (event) => {
       social_media(facebook_url, twitter_url, linkedin_url, instagram_url, youtube_url)
       `,
       filterBy: parsedQuery.filterBy,
+      orderBy: {
+        columnNames: ['name'],
+        ascending: true
+      },
       pagination: parsedQuery.pagination
     })
 
-    // console.log('api companies', companies)
+    log.debug(`company structure ${JSON.stringify(companies[0])}`)
+
     return {
       status: 200,
       message: 'Company retrieved from supabase',

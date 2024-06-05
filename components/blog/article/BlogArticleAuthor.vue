@@ -22,9 +22,9 @@ defineProps<{
           class="border border-color rounded-full"
         />
         <div class="flex flex-col">
-          <p class="font-semibold"> {{ author.name.given }} {{ author.name.surname }} </p>
+          <p class="font-semibold text-nowrap"> {{ author.name.given }} {{ author.name.surname }} </p>
           <div>
-            <p class="text-xs"> Pub: {{ useDateFormat(publishedAt, 'DD MMM YYYY').value }} </p>
+            <p class="text-sm"> Published: {{ useDateFormat(publishedAt, 'DD MMM YYYY').value }} </p>
           </div>
         </div>
       </div>

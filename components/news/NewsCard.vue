@@ -26,9 +26,15 @@ defineProps({
         class="rounded-full"
       />
       <div class="flex flex-col gap-2 justify-center-center">
-        <PrimeTag>
-          {{ news.source.toUpperCase() }}
-        </PrimeTag>
+        <div class="flex gap-2">
+          <PrimeTag>
+            {{ news.source.toUpperCase() }}
+          </PrimeTag>
+          <BaseNewLabel
+            :date="news.published_at ?? news.created_at!"
+            :max-age="2"
+          />
+        </div>
         <span class="text-sm w-auto">
           {{ useTimeAgo(news.published_at ?? news.created_at).value }}
         </span>

@@ -1,5 +1,5 @@
 import type { DomainKey } from './pagination.base.store'
-import { useCookie, useRequestHeaders, useId } from '#imports'
+import { useCookie, useRequestHeaders } from '#imports'
 import type { FilterBy, DBTable } from '@/server/utils/base.interface'
 import type { FetchResult } from '#app'
 
@@ -36,22 +36,18 @@ export function useBaseFetch() {
       'X-USER-ID': useCookie('userId').value ?? 'no-user-id',
       cookie: useRequestHeaders(['cookie']).cookie ?? ''
     },
-    onRequest({ request, options }) {},
-    onRequestError({ error, request, options }) {
-      console.error('onRequestError', error)
-      errors.handleError(error, {
-        critical: false,
-        userMessage: 'there was an error fetching the data',
-        devMessage: `onResponseError for`
-      })
-    },
+    // onRequest({ request, options }) {},
+    // onRequestError({ error, request, options }) {
+    //   console.error('onRequestError', error)
+    //   errors.handleError(error, {
+    //     devOnly: true,
+    //     userMessage: 'there was an error fetching the data',
+    //     devMessage: `onResponseError for`
+    //   })
+    // },
     onResponseError({ error, response, request, options }) {
-      console.error('onResponseError', error)
-      errors.handleError(error, {
-        critical: false,
-        userMessage: `ERROR: ${JSON.stringify(error)}`,
-        devMessage: `onResponseError for ${JSON.stringify(response)}`
-      })
+      console.error('onResponseError', response, response._data)
+      // errors.withCode(response._data)
     }
   })
 
@@ -84,8 +80,9 @@ export function useBaseFetch() {
 
       console.log('fetchPaginatedData RESPONSE', response)
 
-      const data = errors.handleFetchErrors(response, {
-        critical: false,
+      const data = errors.server({
+        response,
+        devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
         devMessage: `fetchPaginatedData errored selecting paginated ${domainKey} data from ${endpoint}`
       })
@@ -99,8 +96,9 @@ export function useBaseFetch() {
 
       return data
     } catch (error) {
-      errors.handleError(error, {
-        critical: false,
+      errors.client({
+        error,
+        devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
         devMessage: `fetchPaginatedData error for ${domainKey}`
       })

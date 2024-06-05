@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 import { ARTICLE_CARD_PROPERTIES, articleCardSchema } from '~/types/articles'
 
 const route = useRoute()
-const categoryParam = ref(String(route.params.category) as ArticleCategoriesT)
+const categoryParam = computed(() => (String(route.params.category) as ArticleCategoriesT) ?? null)
 
 const allArticles = ref<ArticleCardT[]>([])
 const pagination = reactive({ skip: 0, limit: 10 })
@@ -15,21 +16,22 @@ const whereOptions: QueryBuilderParams = {
   // tags: { $in: selectedTags.value },
   status: { $eq: 'published' }
 }
+
 const {
   error,
   data: newArticles,
   refresh,
   pending
-} = useAsyncData(
-  `article-cards-${categoryParam.value}`,
-  () =>
-    queryContent('/blog', categoryParam.value)
-      .where(whereOptions)
-      .only(ARTICLE_CARD_PROPERTIES)
-      .sort({ publishedAt: -1 })
-      .skip(pagination.skip)
-      .limit(pagination.limit)
-      .find() as Promise<ArticleCardT[]>
+} = useAsyncData(`article-cards-${categoryParam.value}`, () =>
+  categoryParam.value
+    ? (queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
+        .where(whereOptions)
+        .only(ARTICLE_CARD_PROPERTIES)
+        .sort({ publishedAt: -1 })
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+        .find() as Promise<ArticleCardT[]>)
+    : Promise.resolve([])
 )
 
 watchEffect(async () => {
@@ -56,68 +58,88 @@ function isValidArticleCard(article: ArticleCardT): boolean {
     articleCardSchema.parse(article)
     return true
   } catch (error) {
-    console.error(`Error parsing article: ${article.title}`, error)
+    console.error(`Error parsing article: ${article?.title}`, error)
     return false
   }
 }
 
 const category = {
-  isro: {
-    title: 'ISRO',
-    description: 'Indian Space Research Organisation'
+  all: {
+    title: 'AstronEra Blog',
+    description: 'Discover all our articles spanning the wonders and advancements of space.'
   },
-  nasa: {
-    title: 'NASA',
-    description: 'National Aeronautics and Space Administration'
+  'people-of-space': {
+    title: 'People of Space',
+    description: 'Meet the trailblazers and visionaries propelling humanity into the cosmos.'
   },
-  spacex: {
-    title: 'SpaceX',
-    description: 'Space Exploration Technologies Corp.'
+  'space-exploration': {
+    title: 'Space Exploration',
+    description: 'Embark on thrilling journeys through our latest missions and cosmic discoveries.'
   },
-  esa: {
-    title: 'ESA',
-    description: 'European Space Agency'
+  'dark-sky-conservation': {
+    title: 'Dark Sky Conservation',
+    description: 'Uncover efforts to preserve our celestial vistas and protect night skies.'
   },
-  ula: {
-    title: 'ULA',
-    description: 'United Launch Alliance'
+  'sustainable-development': {
+    title: 'Sustainable Development',
+    description: 'Explore innovations for a sustainable future in space and on Earth.'
   }
 }
 
-const websiteUrl = 'https://astronera.com'
+const websiteUrl = 'https://astronera.org'
 
 // SEO
-useSeoMeta({
-  title: 'AstronEra Blog',
-  ogTitle: 'AstronEra Blog',
-  description: 'AstronEra Blog',
-  ogDescription: 'AstronEra Blog',
-  ogImage: '/images/icons/blog-icon.svg',
-  twitterCard: 'summary_large_image',
-  twitterTitle: 'AstronEra Blog',
-  twitterDescription: 'AstronEra Blog',
-  twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`
-})
+if (categoryParam.value) {
+  useSeoMeta({
+    title: 'AstronEra Blog',
+    ogTitle: 'AstronEra Blog',
+    description: 'AstronEra Blog',
+    ogDescription: 'AstronEra Blog',
+    ogImage: '/images/icons/blog-icon.svg',
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'AstronEra Blog',
+    twitterDescription: 'AstronEra Blog',
+    twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`
+  })
 
-defineOgImageComponent('OgImageDefault', {
-  title: `AstronEra ${categoryParam.value} Articles`,
-  description: category[categoryParam.value].description,
-  image: './'
+  defineOgImageComponent('OgImageDefault', {
+    title: `${categoryParam.value} Articles`,
+    description: category[categoryParam.value]?.description,
+    image: './'
+  })
+}
+
+const heroImage = computed(() => {
+  let src = `images/blog/${categoryParam.value}/`
+
+  switch (categoryParam.value) {
+    case 'people-of-space':
+      return (src += '1.20-people-who-influenced-the-space-industry.webp')
+    case 'space-exploration':
+      return (src += '1.starship-lands-on-mars.webp')
+    case 'dark-sky-conservation':
+      return (src += '1.landscape-painting-of-dark-skies-and-mountains.webp')
+    case 'sustainable-development':
+      return (src += '1.sustainable-global-space-development.webp')
+    default:
+      return (src += 'astronera-blog.jpg')
+  }
 })
 </script>
 
 <template>
   <div>
     <CommonHero
+      v-if="categoryParam"
       :img="{
-        src: 'images/blog/category-pages/isro-rocket-launch.png',
-        alt: `AstronEra blog icon`,
+        src: heroImage,
+        alt: `AstronEra ${useChangeCase(categoryParam, 'capitalCase').value} Hero Image`,
         width: 1080,
         height: 720
       }"
       :title="{
-        main: 'AstronEra BLOG',
-        subtitle: 'Space awaits'
+        main: category[categoryParam].title,
+        subtitle: category[categoryParam].description
       }"
       position="center"
       invert
@@ -126,11 +148,11 @@ defineOgImageComponent('OgImageDefault', {
       <BlogFilter />
     </div>
     <div
-      class="wrapper md:px-4 lg:px-8 xl:pb-8 grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] items-start w-full md:gap-4 lg:gap-8 relative"
+      class="wrapper relative grid w-full grid-cols-1 items-start md:gap-4 md:px-4 lg:grid-cols-[0.5fr_1fr] lg:gap-8 lg:px-8"
     >
       <BlogAdFloat />
 
-      <div class="grid md:gap-4 grid-cols-1 lg:gap-8 md:grid-cols-2 h-full">
+      <div class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8">
         <BlogCard
           v-for="article in allArticles"
           :key="`astronera-${categoryParam}-article-${article.id}`"
@@ -142,7 +164,7 @@ defineOgImageComponent('OgImageDefault', {
           <BlogCardSkeleton v-show="pending" />
           <div
             v-if="articlesFinished"
-            class="flex justify-center items-center w-full border border-primary-500 md:rounded-md background p-8"
+            class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
           >
             <p class="foreground px-2">No more articles...</p>
           </div>

@@ -9,19 +9,17 @@
   },
   "editor.detectIndentation": false,
   "files.associations": {
-      "*.css": "tailwindcss"
+    "*.css": "tailwindcss"
   },
   "editor.quickSuggestions": {
-      "strings": true
+    "strings": true
   },
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
-  "tailwindCSS.experimental.classRegex": [
-    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ],
-  "tailwindCSS.classAttributes": [
-    "class",
-    "className",
-    "ngClass",
-    "ui"
-  ]
+  "tailwindCSS.experimental.classRegex": [["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"]],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "ui"],
+  "deno.enable": true,
+  "deno.enablePaths": ["./supabase/functions"],
+  "deno.importMap": "./supabase/functions/import_map.json",
+  "deno.lint": true,
+  "deno.unstable": true
 }

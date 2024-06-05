@@ -73,6 +73,64 @@ const appLinks = ref([
   // }
 ] as PageType[])
 
+const adminLinks = ref([
+  {
+    id: 0,
+    label: 'App',
+    slug: '/astrotribe',
+    icon: 'mdi:application'
+  },
+  {
+    id: 1,
+    label: 'Dashboard',
+    slug: '/astrotribe/admin',
+    icon: 'mdi:view-dashboard',
+    children: []
+  },
+  {
+    id: 2,
+    label: 'Users',
+    slug: '/astrotribe/admin/users',
+    icon: 'mdi:account',
+    children: []
+  },
+  {
+    id: 3,
+    label: 'Upload',
+    slug: '/astrotribe/admin/upload',
+    icon: 'mdi:upload',
+    children: []
+  },
+  {
+    id: 3,
+    label: 'Research',
+    slug: '/astrotribe/admin/research',
+    icon: 'mdi:card-text',
+    children: []
+  },
+  {
+    id: 4,
+    label: 'Analytics',
+    slug: '/astrotribe/admin/analytics',
+    icon: 'mdi:chart-bar',
+    children: []
+  },
+  {
+    id: 5,
+    label: 'Socials',
+    slug: '/astrotribe/admin/socials',
+    icon: 'mdi:chart-bar',
+    children: []
+  },
+  {
+    id: 6,
+    label: 'Chat',
+    slug: '/astrotribe/admin/chat',
+    icon: 'mdi:chat',
+    children: []
+  }
+])
+
 const socials = ref([
   {
     id: 1,
@@ -96,6 +154,16 @@ const socials = ref([
     username: 'uk'
   }
 ])
+
+
+// Events -
+// Under these we display our star gazing programs that we have done along with locations and a page to book us for future star gazing events.
+
+// Our projects -
+// This section should display all our projects 
+// Astrotribe 2022
+// Astro tribe 2023 
+// Dst + conference 2023
 
 const websiteLinks = [
   {
@@ -132,18 +200,43 @@ const websiteLinks = [
     ]
   },
   {
-    key: 'events',
-    label: 'Events',
-    icon: 'material-symbols:event',
+    key: 'projects',
+    label: 'Projects',
+    icon: 'material-symbols:work',
     visible: true,
     disabled: false,
     items: [
       {
-        key: 'conference',
-        label: 'Conference',
-        icon: 'material-symbols:emoji-people',
-        url: '/conference',
+        key: 'astrotribe',
+        label: 'Astrotribe',
+        icon: 'material-symbols:groups',
+        url: 'projects/astrotribe',
         visible: true,
+        disabled: false
+      },
+      {
+        key: 'dark-sky-conference-2023',
+        label: 'Dark Sky Conference',
+        icon: 'material-symbols:mic-rounded',
+        url: 'projects/dark-sky-conference-2023',
+        visible: true,
+        disabled: false
+      }
+    ]
+  },
+  {
+    key: 'events',
+    label: 'Events',
+    icon: 'material-symbols:event',
+    visible: false,
+    disabled: false,
+    items: [
+      {
+        key: 'stargazing',
+        label: 'Stargazing',
+        icon: 'material-symbols:dark-mode',
+        url: 'events/stargazing',
+        visible: false,
         disabled: false
       }
     ]
@@ -162,6 +255,38 @@ const websiteLinks = [
         url: '/blog',
         visible: true,
         disabled: false
+      },
+      {
+        key: 'blog-dark-sky-conservation',
+        label: 'Dark Sky Conservation',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/dark-sky-conservation',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-people-of-space',
+        label: 'Peoples of Space',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/people-of-space',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-space-exploration',
+        label: 'Space Exploration',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/space-exploration',
+        visible: true,
+        disabled: false
+      },
+      {
+        key: 'blog-sustainable-development',
+        label: 'Sustainable Development',
+        icon: 'material-symbols:menu-book-outline',
+        url: '/blog/sustainable-development',
+        visible: true,
+        disabled: false
       }
     ]
   }
@@ -171,6 +296,7 @@ export default function usePages() {
   return {
     websiteLinks,
     appLinks,
+    adminLinks,
     socials,
     tabs: (currentPage: string) =>
       appLinks.value.find((page: PageType) => page.label.toLocaleLowerCase() === currentPage)
