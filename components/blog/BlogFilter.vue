@@ -16,20 +16,23 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 </script>
 
 <template>
-  <div class="space-y-4 h-auto md:rounded-md">
-    <div class="flex gap-4 flex-wrap items-center">
-      <h3 class="text-xl font-semibold h-full flex items-center leading-none"> Categories: </h3>
-      <PrimeButton
+  <div class="h-auto space-y-4 md:rounded-md">
+    <div class="flex flex-wrap items-center gap-4">
+      <h3 class="flex h-full items-center text-xl font-semibold leading-none"> Categories: </h3>
+      <NuxtLink
         v-for="cat in CATEGORIES"
         :key="`astronera-blog-${cat}`"
-        color="primary"
-        :aria-label="`${formatCategory(cat)} articles`"
-        :variant="selectedCategory === cat ? 'solid' : 'outline'"
         :to="`/blog/${cat}`"
-        :label="formatCategory(cat)"
-        size="small"
-        class="cursor-pointer"
-      />
+      >
+        <PrimeButton
+          color="primary"
+          :aria-label="`${formatCategory(cat)} articles`"
+          :outlined="selectedCategory === cat ? false : true"
+          :label="formatCategory(cat)"
+          size="small"
+          class="cursor-pointer"
+        />
+      </NuxtLink>
     </div>
   </div>
 </template>

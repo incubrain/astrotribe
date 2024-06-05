@@ -60,6 +60,9 @@ watch(
     <PrimeMenubar
       :model="websiteLinks"
       class="rounded-none lg:rounded-b-md w-full backdrop-white/20 backdrop:blur-lg"
+      :pt="{
+        submenu: 'text-sm font-semibold max-w-xl w-[220px]'
+      }"
     >
       <template #start>
         <div class="gap-4 hidden lg:flex rounded-md p-1">

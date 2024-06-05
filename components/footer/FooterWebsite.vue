@@ -5,17 +5,17 @@ const { socials, websiteLinks } = usePages()
 </script>
 
 <template>
-  <footer class="flex flex-col justify-start items-start relative overflow-hidden">
-    <div class="relative wrapper padded-x flex justify-between rounded-md w-full items-start">
+  <footer class="relative flex flex-col items-start justify-start overflow-hidden pt-4 lg:pt-8">
+    <div class="wrapper relative flex w-full items-start justify-between rounded-md lg:px-8">
       <div
-        class="grid grid-cols-2 lg:grid-cols-3 rounded-t-md w-full h-full gap-4 lg:gap-8 p-4 xl:p-8 mx-auto background"
+        class="background mx-auto grid h-full w-full grid-cols-2 gap-4 rounded-t-md p-4 lg:grid-cols-[1ft_2fr_1fr] lg:gap-8 xl:p-8"
       >
         <div
-          class="flex flex-shrink-0 row-start-2 lg:row-start-1 col-start-2 lg:col-start-1 justify-center items-start lg:justify-start lg:pr-4"
+          class="col-start-2 row-start-2 flex flex-shrink-0 items-start justify-center lg:col-start-1 lg:row-start-1 lg:justify-start lg:pr-4"
         >
           <NuxtLink
             to="/"
-            class="flex lg:flex-row items-center justify-center gap-4 font-semibold"
+            class="flex items-center justify-center gap-4 font-semibold lg:flex-row"
           >
             <BaseImage
               :img="{
@@ -24,21 +24,21 @@ const { socials, websiteLinks } = usePages()
                 width: '48',
                 height: '48'
               }"
-              class="dark:bg-white rounded-full overflow-hidden p-1"
+              class="overflow-hidden rounded-full p-1 dark:bg-white"
             />
             AstronEra
           </NuxtLink>
         </div>
         <ul
-          class="flex row-start-1 justify-between col-start-1 col-span-2 lg:col-span-1 lg:col-start-2 gap-2 items-start lg:items-start text-sm"
+          class="col-span-2 col-start-1 row-start-1 flex mx-auto items-start justify-between gap-2 text-sm lg:col-span-1 lg:col-start-2 lg:items-start"
         >
           <div
             v-for="link in websiteLinks"
             :key="link.label"
-            class="last:pr-0 pb-2 lg:pb-0 space-y-2 px-3"
+            class="space-y-2 px-3 pb-2 last:pr-0 lg:pb-0"
           >
             <h4
-              class="font-bold text-base underline underline-offset-4 decoration-primary-600 pb-2"
+              class="pb-2 text-base font-bold underline decoration-primary-600 underline-offset-4"
             >
               {{ link.label }}
             </h4>
@@ -48,12 +48,14 @@ const { socials, websiteLinks } = usePages()
               :to="child.url"
               class="flex items-center text-sm font-normal"
             >
+            <li>
               {{ child.label }}
+            </li>
             </NuxtLink>
           </div>
         </ul>
         <div
-          class="flex items-end lg:justify-end lg:items-start lg:row-start-1 col-start-1 lg:col-start-3 gap-2"
+          class="col-start-1 flex items-end gap-2 lg:col-start-3 lg:row-start-1 lg:items-start lg:justify-end"
         >
           <NuxtLink
             v-for="social in socials"
@@ -64,14 +66,14 @@ const { socials, websiteLinks } = usePages()
           >
             <Icon
               :name="social.icon"
-              class="flex-shrink-0 h-5 w-5 dark:text-white"
+              class="h-5 w-5 flex-shrink-0 dark:text-white"
             />
           </NuxtLink>
         </div>
       </div>
     </div>
-    <div class="wrapper padded-x w-full">
-      <FooterBottomBar class="min-w-full  border-t border-color" />
+    <div class="wrapper w-full lg:px-8">
+      <FooterBottomBar class="border-color min-w-full border-t" />
     </div>
   </footer>
 </template>
