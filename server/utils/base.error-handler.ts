@@ -1,4 +1,3 @@
-import { useServerLogger } from './base.logger'
 
 interface ErrorMessage {
   userMessage: string // User-friendly error message if needed

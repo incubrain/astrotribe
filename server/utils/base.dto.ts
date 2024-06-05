@@ -1,6 +1,5 @@
 import { ZodSchema } from 'zod'
 import { AllDTOKey } from './base.interface'
-import { useServerLogger } from './base.logger'
 
 type DTODefinition<T> = {
   name: AllDTOKey

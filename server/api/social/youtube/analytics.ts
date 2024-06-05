@@ -1,5 +1,4 @@
 import { useYoutubeChannel, useServerError } from '#imports'
-import { useServerLogger } from '~/server/utils/base.logger'
 
 const PREFIX = 'social/youtube/analytics'
 

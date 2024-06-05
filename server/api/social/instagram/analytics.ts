@@ -1,6 +1,5 @@
 import { defineEventHandler, getQuery } from 'h3'
 import { useInstagramAnalytics, useServerError } from '#imports'
-import { useServerLogger } from '~/server/utils/base.logger'
 
 const PREFIX = 'social/instagram/insights'
 

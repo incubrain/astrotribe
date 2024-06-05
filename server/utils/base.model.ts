@@ -1,5 +1,4 @@
 import { ZodSchema, ZodError } from 'zod'
-import { useServerLogger } from './base.logger'
 
 export abstract class BaseModel {
   private log
