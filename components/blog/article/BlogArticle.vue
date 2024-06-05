@@ -39,7 +39,7 @@ const p = defineProps({
 <template>
   <div
     v-if="article.body"
-    class="max-w-full"
+    class="max-w-full pb-10"
   >
     <main>
       <BlogArticleHero :article="article" />

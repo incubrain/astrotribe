@@ -1,6 +1,6 @@
 node_modules
-*.log*
 .nuxt
+.vercel
 .nitro
 .cache
 .output
@@ -13,3 +13,4 @@ data/**
 /blob-report/
 .DS_Store
 docs/**
+content/bp

@@ -36,10 +36,12 @@ const { getCategoryName } = useCategoryTagStore()
         <div class="flex gap-4 items-center">
           <BaseImage
             v-if="company.logo_url"
+            class="rounded-full border border-color"
             :img="{
-              src: `images/companies/${company.logo_url}`
+              src: `images/companies/${company.logo_url}`,
+              width: '60',
+              height: '60'
             }"
-            class="w-12 h-12 rounded-full border border-color"
           />
           <div>
             <h3 class="text-balance text-xl md:max-h-16 font-semibold">
@@ -69,6 +71,10 @@ const { getCategoryName } = useCategoryTagStore()
         >
           founded: {{ company.founding_year }}
         </PrimeTag>
+        <BaseNewLabel
+          :date="company.created_at!"
+          :max-age="14"
+        />
       </div>
       <p
         v-if="company.description"

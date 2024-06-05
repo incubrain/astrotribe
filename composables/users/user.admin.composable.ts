@@ -1,5 +1,4 @@
 import { emailUnvalidatedUserSchema } from '@/types/auth'
-// import users from '@/data/seed/manali-users.json'
 import type { UserRowType } from '~/types/users'
 
 interface NewUser {
@@ -7,8 +6,14 @@ interface NewUser {
   password: string
 }
 
-export default function useAdmin() {
+const DOMAIN_KEY = 'useAdmin'
+
+export function useAdmin() {
+  const errors = useBaseError()
+  const log = useLogger(DOMAIN_KEY)
+  const utils = useUtils()
   const client = useSupabaseClient()
+  const toast = useNotification()
   const createdUsers = ref([] as NewUser[])
 
   const register = async ({ email, password }: { email: string; password: string }) => {
@@ -118,35 +123,61 @@ export default function useAdmin() {
       } else {
         // update the user profile
         console.log('updating user:', user)
-        await updateSingle(user, existingUser.id)
+        await updateUser(user, existingUser.id)
       }
     }
   }
 
-  async function updateSingle(userData: UserRowType, userId: string) {
+  async function updateUser(newData: any, oldData: any) {
+    log.info(`Updating user with email ${newData.email}`)
+    // we should first parse the data to check if anything has changed and then filter out any undefined values
     try {
-      const { data, error } = await client
-        .from('user_profiles')
-        .update({ given_name: userData.given_name, surname: userData.surname })
-        .eq('id', userId)
-        .select()
+      const { noDataUpdated, data: updatedData } = utils.wasRowDataUpdated(newData, oldData)
 
-      console.log('data:', data)
-      console.log('error:', error)
-
-      if (error) {
-        throw createError(`error updating users: ${error.value}`)
+      if (noDataUpdated) {
+        log.info('No changes detected, no update necessary')
+        return
       }
 
-      console.log(`User with email ${data.email} updated successfully`)
+      const response = await $fetch('/api/admin/users/update', {
+        method: 'POST',
+        body: {
+          data: updatedData,
+          id: newData.id
+        }
+      })
+
+      console.log('data:', response)
+
+      const data = errors.server({
+        response,
+        devOnly: false,
+        showSuccess: true,
+        devMessage: `Error updating user with email ${newData.email}`,
+        userMessage: `There was an error updating user with email ${newData.email}`
+      })
+
+      log.info(`User with email ${data.email} updated successfully`)
+      toast.success({
+        summary: 'Success',
+        message: `User with email ${data.email} updated successfully`
+      })
+
+      // maybe update state here
     } catch (error) {
-      console.error(`Error updating user with email ${userData.email}:`, error)
+      errors.client({
+        error,
+        devOnly: false,
+        devMessage: `Error updating user with email ${newData.email}`,
+        userMessage: `There was an error updating user with email ${newData.email}`
+      })
     }
   }
 
   return {
     registerManyUsers,
     updateManyUsers,
+    updateUser,
     createdUsers
   }
 }

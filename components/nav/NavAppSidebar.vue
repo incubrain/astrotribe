@@ -1,13 +1,15 @@
 <script setup lang="ts">
 const { appLinks } = usePages()
 const route = useRoute()
+
+const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development')
 </script>
 
 <template>
   <PrimeMenu
     :model="appLinks"
     :pt="{
-      root: 'h-full flex flex-col rounded-none border-none p-0',
+      root: 'min-h-full flex flex-col rounded-none border-none p-0',
       menu: 'pt-8'
     }"
   >
@@ -47,6 +49,11 @@ const route = useRoute()
             />
           </span>
         </NuxtLink>
+      </div>
+    </template>
+    <template #end>
+      <div class="h-full flex justify-end items-end">
+        <BaseDevHelpers v-if="isDev" />
       </div>
     </template>
   </PrimeMenu>

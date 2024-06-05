@@ -50,6 +50,7 @@ export const companySchema = z.object({
   last_scraped_at: datetimeOffset().nullish,
   scrape_frequency: ScrapeFrequencySchema.optional(),
   is_government: z.boolean().optional(),
+  founding_year: z.number().optional(),
   category_id: z.number().optional(),
   created_at: datetimeOffset().nullish,
   updated_at: datetimeOffset().nullish,
@@ -77,7 +78,8 @@ class CompanyEmployees {
     this.user_profile_id = parsedData.user_profile_id
     this.company_id = parsedData.company_id
     this.role = parsedData.role
-    this.job_description = parsedData.job_description
+    this.job_description = parsedData.
+    
     this.start_date = parsedData.start_date
     this.end_date = parsedData.end_date
     this.status = parsedData.status
@@ -115,6 +117,7 @@ export class Company {
   email?: string
   phone?: string
   social_media_id?: number
+  founding_year?: number
   last_scraped_at?: string
   scrape_frequency?: z.infer<typeof ScrapeFrequencySchema>
   is_government?: boolean
@@ -136,6 +139,7 @@ export class Company {
     this.website_url = parsedData.website_url ?? undefined
     this.email = parsedData.email ?? undefined
     this.phone = parsedData.phone ?? undefined
+    this.founding_year = parsedData.founding_year ?? undefined
     this.social_media_id = parsedData.social_media_id ?? undefined
     this.last_scraped_at = parsedData.last_scraped_at ?? undefined
     this.scrape_frequency = parsedData.scrape_frequency ?? undefined

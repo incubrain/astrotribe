@@ -6,7 +6,7 @@ defineProps<{
 <template>
   <BlogAuthor
     :author-id="authorId"
-    class="rounded-xl border border-color p-4 xl:p-8 foreground"
+    class="border-color foreground rounded-xl border p-4 xl:p-8"
   >
     <template #default="{ author }">
       <div
@@ -20,10 +20,17 @@ defineProps<{
             width: '100px',
             height: '100px'
           }"
-          class="rounded-full sm:max-w-[100px] h-full"
+          class="h-full rounded-full sm:max-w-[100px]"
         />
-        <div class="text-left space-y-1 w-full">
-          <h4 class="font-semibold"> About {{ author.name.full }} </h4>
+        <div class="w-full space-y-1 text-left">
+          <div class="flex gap-2 items-center">
+            <h4 class="text-xl font-semibold"> About {{ author.name.full }} </h4>
+            <PrimeTag class="text-primary-600 text-xs uppercase">follow</PrimeTag>
+            <BaseSocialBlock
+              v-if="author.socials"
+              :socials="author.socials"
+            />
+          </div>
           <p class="text-sm">
             {{ author.bio.full }}
           </p>

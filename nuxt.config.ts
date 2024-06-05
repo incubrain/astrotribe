@@ -7,7 +7,7 @@ const og = {
   description:
     'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
-  url: 'https://astronera.com'
+  url: 'https://www.astronera.org'
 }
 
 export default defineNuxtConfig({
@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '/astrotribe/**': { ssr: false }
   },
   nitro: {
+    preset: 'vercel',
     experimental: {
       tasks: true
     },
@@ -44,6 +45,9 @@ export default defineNuxtConfig({
   },
 
   app: {
+    site: {
+      url: og.url
+    },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       link: [

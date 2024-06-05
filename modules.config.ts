@@ -14,11 +14,16 @@ export const MODULES: NuxtConfig['modules'] = [
   '@nuxthq/studio',
   '@nuxtjs/supabase',
   'nuxt-icon',
-  'nuxt-security'
+  'nuxt-security',
+  'nuxt-tiptap-editor'
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
   autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
+}
+
+const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
+  prefix: 'Tiptap'
 }
 
 // !infra:med:hard:12 - look into and configure nuxt security module
@@ -43,11 +48,15 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         "'nonce-{{nonce}}'",
         "'unsafe-inline'",
         'http://localhost:3000',
+        'http://localhost:54321',
         'https://www.youtube.com',
-        'https://s.ytimg.com'
+        'https://s.ytimg.com',
+        'https://www.google.com/maps'
       ]
     },
-    xFrameOptions: false,
+    xFrameOptions: 'DENY', // Prevents clickjacking
+    crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
+    crossOriginOpenerPolicy: 'same-origin',
     // needed for devtools
     crossOriginEmbedderPolicy:
       process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
@@ -58,7 +67,17 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
     maxRequestSizeInBytes: 2000000 // 2 MB
   },
   xssValidator: false,
-  corsHandler: false,
+  corsHandler: {
+    origin: ['http://localhost:3000', 'http://localhost:54321'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-client-info', 'apikey'],
+    exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
+    credentials: true,
+    maxAge: '86400', // 24 hours in seconds
+    preflight: {
+      statusCode: 204
+    }
+  },
   allowedMethodsRestricter: false,
   hidePoweredBy: false,
   basicAuth: false,
@@ -94,7 +113,7 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   components: {
     prefix: 'Prime',
     include: '*',
-    exclude: ['Editor', 'Chart']
+    exclude: ['Editor']
   },
   directives: {
     include: '*',
@@ -165,7 +184,8 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   content: CONTENT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
-  supabase: SUPABASE_OPTIONS
+  supabase: SUPABASE_OPTIONS,
+  tiptap: TIP_TAP_OPTIONS
 }
 
 export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}

@@ -21,6 +21,11 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const redirectUrl = computed(() => `${window.location.origin}/astrotribe`)
+  const logger = useLogger('auth')
+  const toast = useNotification()
+  const supabase = useSupabaseClient()
+
+  const loading = useLoadingStore()
 
   // !todo:bug - I believe there is an issue where the token expires for Social login but it doesn't refresh
   // !todo:high - retrieve current user profile
@@ -31,29 +36,50 @@ export function useAuth() {
     confirmNewPassword: 'confirm new password'
   })
 
-  const toast = useToast()
-  const supabase = useSupabaseClient()
+  interface RegisterWithEmail {
+    email: string
+    password: string
+    confirmPassword: string
+    given_name: string
+    surname: string
+  }
 
-  async function registerWithEmail(email: string, password: string) {
+  async function registerWithEmail({ email, password, given_name, surname }: RegisterWithEmail) {
+    if (loading.isLoading('auth')) {
+      return
+    }
+
+    loading.setLoading('auth', true)
+    console.log('registerWithEmail', email, password, given_name, surname)
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl.value
+        data: {
+          given_name,
+          surname
+        }
       }
     })
 
     if (error) {
       console.error(error.message)
-      toast.add({ severity: 'error', summary: 'Register with email error', detail: error.message })
+      toast.error({ summary: 'Register with email', message: error.message })
+    } else {
+      console.log('success')
+      navigateTo('/auth/success')
     }
+    loading.setLoading('auth', false)
   }
 
   async function loginWithEmail(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
     if (error) {
       console.error(error.message)
-      toast.add({ severity: 'error', summary: 'Login with password error', detail: error.message })
+      toast.error({ summary: 'Login with password', message: error.message })
     }
   }
 
@@ -67,12 +93,15 @@ export function useAuth() {
 
     if (error?.message) {
       console.error({ message: error.message })
-      toast.add({ severity: 'error', summary: `${provider} login error:`, detail: error.message })
+      toast.error({ summary: `${provider} login:`, message: error.message })
     }
 
     if (!user) {
       console.error({ message: 'Login failed' })
-      toast.add({ severity: 'error', summary: `Login with ${provider} failed` })
+      toast.error({
+        summary: 'Login failed',
+        message: `there was an error logging in with ${provider}, no user returned`
+      })
     }
   }
 
@@ -84,12 +113,11 @@ export function useAuth() {
 
     if (error) {
       console.error('Forgot password failed:', error)
-      toast.add({ severity: 'error', summary: 'Forgot password failed', detail: error.message })
+      toast.error({ summary: 'Password Reset Failed', message: error.message })
     } else {
-      toast.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Check your email for a password reset link'
+      toast.success({
+        summary: 'Email Sent',
+        message: 'Check your email for a password reset link'
       })
     }
   }
@@ -99,9 +127,9 @@ export function useAuth() {
 
     if (error) {
       console.error('Password update failed:', error)
-      toast.add({ severity: 'error', summary: 'Password update failed', detail: error.message })
+      toast.error({ summary: 'Password Update Failed', message: error.message })
     } else {
-      toast.add({ severity: 'success', summary: 'Password update successful' })
+      toast.success({ summary: 'Password Updated', message: 'Your password has been updated' })
     }
   }
 
@@ -109,9 +137,9 @@ export function useAuth() {
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error('Logout failed:', error)
-      toast.add({ severity: 'error', summary: 'Logout failed', detail: error.message })
+      toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
-      toast.add({ severity: 'success', summary: 'Logout successful' })
+      toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
       navigateTo('/')
     }
   }

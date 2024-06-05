@@ -30,24 +30,24 @@ const comingSoon = [
           AstroTribe Is Currently In Open Alpha
         </h3>
         <p>
-          This means we have limited functionality, navigate around to preview the application The
-          good news is that we will be rolling out new features every month!
+          This means we have limited functionality for now, but be sure to check back often as we
+          will roll out new features regularly!
         </p>
       </template>
     </PrimeCard>
     <PrimeCard class="border border-color">
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> News Hub </h3>
+          <h3 class="text-xl font-semibold"> Latest News </h3>
           <p class="text-base text-slate-200">
-            Stay updated with the latest developments in astronomy from leading agencies like NASA,
-            ISRO, ESA, and private sector companies like Dhruva Space and SpaceX.
+            Stay current with leading government space agencies and private sector companies from
+            around the globe.
           </p>
         </div>
       </template>
       <template #footer>
         <NuxtLink to="/astrotribe/news">
-          <PrimeButton outlined> Explore the Hub </PrimeButton>
+          <PrimeButton outlined> Explore Now </PrimeButton>
         </NuxtLink>
       </template>
     </PrimeCard>
@@ -57,10 +57,10 @@ const comingSoon = [
     >
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Business Zone </h3>
+          <h3 class="text-xl font-semibold"> Companies </h3>
           <p class="text-base text-slate-200">
-            Explore the universe's frontiers with our comprehensive directory of space agencies and
-            private companies. India is our first focus, then we go global!
+            Follow the companies that will take us to the Moon, Mars, and beyond. India is our first
+            focus, then we go global!
           </p>
         </div>
       </template>
@@ -78,8 +78,7 @@ const comingSoon = [
         <div class="space-y-4">
           <h3 class="text-xl font-semibold"> Community </h3>
           <p class="text-base text-slate-200">
-            Connect, learn, and collaborate with astronomy enthusiasts and professionals worldwide
-            in our vibrant global community.
+            Connect, learn, and collaborate with astronomy enthusiasts and professionals worldwide.
           </p>
         </div>
       </template>
