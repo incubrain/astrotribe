@@ -41,13 +41,13 @@ defineProps({
       <slot />
       <div class="flex flex-col gap-4">
         <h2
-          class="text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-4 xl:px-8 rounded-md shadow-xl text-center"
+          :class="`text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-4 xl:px-8 rounded-md shadow-xl text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.main }}
         </h2>
         <h4
           v-if="title.subtitle"
-          class="text-xl w-auto inline-block font-semibold lg:text-3xl pb-4 px-4 xl:px-8 rounded-sm max-w-2xl text-center mx-auto"
+          :class="`text-xl w-auto inline-block font-semibold lg:text-3xl pb-4 px-4 xl:px-8 rounded-sm max-w-2xl text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.subtitle }}
         </h4>
