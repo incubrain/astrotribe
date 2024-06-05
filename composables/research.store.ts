@@ -18,7 +18,7 @@ export type ResearchDataKey =
   | 'research_metrics_totals'
   | 'research_metrics_monthly_totals'
 
-export interface ResearchMetrics {
+export interface ResearchMetricTotal {
   month_start: string
   row_count: number
   total_chunks: number
@@ -42,6 +42,62 @@ export interface ResearchMetrics {
   total_citations_length: number
   total_figures_length: number
 }
+
+export interface MetricDetail {
+  start: number;
+  end: number;
+  total_duration: number;
+  memory_usage_start: number;
+  memory_usage_end: number;
+  memory_usage_diff: number;
+  processing_time?: number;
+}
+
+export interface ResearchMetric {
+  research_id: string;
+  error_count: number;
+  errors: any;
+  chunks: {
+    avg_length: number;
+    smallest: number | null;
+    largest: number;
+    lengths: number[];
+    undersized: number[];
+    oversized: number[];
+  };
+  performance: {
+    start: number;
+    end: number;
+    total_duration: number;
+    memory_usage_diff: number;
+    memory_usage_start: number;
+    memory_usage_end: number;
+    processing_time: number;
+    chunking: MetricDetail;
+  };
+  count: {
+    chunks: number;
+    tables: number;
+    notes: number;
+    tools: number;
+    authors: number;
+    citations: number;
+    figures: number;
+    math: number;
+  };
+  length: {
+    chunks: number;
+    math: number;
+    tools: number;
+    authors: number;
+    notes: number;
+    tables: number;
+    abstract: number;
+    citations: number;
+    figures: number;
+  };
+}
+
 // Initialize reactive data with flagged property
 
 export const useResearchStore = defineStore('storeResearch', () => {
@@ -205,16 +261,32 @@ export const useResearchStore = defineStore('storeResearch', () => {
     }
   }
 
-  // add ability to merge chunks of data
+  async function getResearchMetricsById(researchIds: number[]) {
+    if (!Array.isArray(researchIds) || researchIds.length === 0) {
+      throw new Error('Invalid input: researchIds must be a non-empty array.')
+    }
+
+    const { data, error } = await client
+      .from('research_metrics')
+      .select('*')
+      .in('research_id', researchIds)
+
+    if (error) {
+      console.error('Error fetching research metrics:', error)
+      throw error
+    }
+
+    return data as ResearchMetric[]
+  }
 
   return {
     fetchFromResearchTables,
+    getResearchMetricsById,
     researchData,
     researchMetrics,
     fetchNRows,
     flagItem,
     deleteItem,
     lastNRows
-    // loadResearch
   }
 })
