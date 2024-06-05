@@ -31,7 +31,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   protected log
 
   constructor({ loggerPrefix, Model }: BaseConstructor<T>) {
-    super(Model);
+    super(Model)
     this.log = useLogger(loggerPrefix)
     this.Model = Model
   }
@@ -48,7 +48,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async selectOne<K extends TableKey>(input: SelectInput<T, K>): Promise<T | T[]> {
     this.log.info(`selectOne ${input.filterBy}`)
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'select')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'select' })
     )
     this.log.info('selectOne data retrieved')
     return processResponse(handleDBErrors(response, this.log), this.Model, this.log) as T
@@ -57,7 +57,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async selectMany<K extends TableKey>(input: SelectInput<T, K>): Promise<T[]> {
     this.log.info(`selectMany ${input.tableName}`)
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'select')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'select' })
     )
     return processResponse(handleDBErrors(response, this.log), this.Model, this.log) as T[]
   }
@@ -65,7 +65,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async updateOne<K extends TableKey>(input: UpdateInput<T, K>): Promise<T> {
     this.log.info('updateOne')
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'update')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'update' })
     )
 
     this.log.info('updateOne return', response)
@@ -76,7 +76,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
     this.log.info('update')
 
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'update')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'update' })
     )
 
     return handleDBErrors(response, this.log)
@@ -85,7 +85,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async insertOne<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
     this.log.info('insert')
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'insert')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'insert' })
     )
     return handleDBErrors(response, this.log)
   }
@@ -93,7 +93,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async inserteMany<K extends TableKey>(input: InsertInput<T, K>): Promise<T> {
     this.log.info('inserteMany')
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'insert')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'insert' })
     )
     return handleDBErrors(response, this.log)
   }
@@ -102,7 +102,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
     this.log.info('upsert')
 
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'upsert')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'upsert' })
     )
 
     return handleDBErrors(response, this.log)
@@ -111,7 +111,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
   async upsertMany<K extends TableKey>(input: UpsertInput<T, K>): Promise<T> {
     this.log.info('upsertMany')
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'upsert')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'upsert' })
     )
 
     return handleDBErrors(response, this.log)
@@ -119,7 +119,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
 
   async deleteOne<K extends TableKey>(input: DeleteInput<T, K>): Promise<void> {
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'delete')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'delete' })
     )
 
     return handleDBErrors(response, this.log)
@@ -127,7 +127,7 @@ export abstract class BaseRepository<T> extends BaseRepositoryAdmin<T> {
 
   async deleteMany<K extends TableKey>(input: DeleteInput<T, K>): Promise<void> {
     const response = await this.clientQuery(
-      async (client) => await constructQuery<T, K>(client, input, 'delete')
+      async (client) => await constructQuery<T, K>({ client, input, operation: 'delete' })
     )
 
     return handleDBErrors(response, this.log)
