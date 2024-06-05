@@ -24,12 +24,12 @@ const route = useRoute()
     }"
   >
     <template #start>
-      <div class="min-h-[60px] flex justify-end items-center p-3">
+      <div class="flex min-h-[60px] items-center justify-end p-3">
         <NuxtLink
           to="/"
-          class="items-center justify-end gap-2 flex"
+          class="flex items-center justify-end gap-2"
         >
-          <h1 class="text-lg font-bold cursor-pointer leading-none tracking-normal flex">
+          <h1 class="text-lg flex cursor-pointer font-bold leading-none tracking-normal">
             ASTRO
             <strong class="text-highlight"> TRIBE </strong>
           </h1>
@@ -46,36 +46,36 @@ const route = useRoute()
           class="w-full"
         >
           <span
-            class="relative w-full p-3 flex items-center gap-3 rounded-[.5rem_0_0_.5rem] text-sm"
-            :class="route.path === item.slug ? 'foreground justify-end' : ' justify-end '"
+            class="relative flex w-full items-center gap-3 rounded-[.5rem_0_0_.5rem] p-3 text-sm"
+            :class="route.path === item.slug ? 'foreground justify-end' : 'justify-end'"
           >
             <div
               v-if="route.path === item.slug"
-              class="absolute -bottom-4 right-0 h-4 w-4 background rounded-tr-xl z-10"
+              class="background absolute -bottom-4 right-0 z-10 h-4 w-4 rounded-tr-xl"
             ></div>
             <div
               v-if="route.path === item.slug"
-              class="absolute -bottom-4 right-0 h-4 w-4 foreground"
+              class="foreground absolute -bottom-4 right-0 h-4 w-4"
             ></div>
             <div
               v-if="route.path === item.slug"
-              class="absolute -top-4 right-0 h-4 w-4 background rounded-br-xl z-10"
+              class="background absolute -top-4 right-0 z-10 h-4 w-4 rounded-br-xl"
             ></div>
             <div
               v-if="route.path === item.slug"
-              class="absolute -top-4 right-0 h-4 w-4 foreground"
+              class="foreground absolute -top-4 right-0 h-4 w-4"
             ></div>
             {{ item.label }}
             <Icon
               :name="item.icon"
-              class="w-[20px] h-[20px]"
+              class="h-[20px] w-[20px]"
             />
           </span>
         </NuxtLink>
       </div>
     </template>
     <template #end>
-      <div class="h-full flex justify-end items-end">
+      <div class="flex h-full items-end justify-end">
         <BaseDevHelpers v-if="isDev && showDevHelpers" />
       </div>
     </template>

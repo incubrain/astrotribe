@@ -13,3 +13,4 @@ data/**
 /blob-report/
 .DS_Store
 docs/**
+content/bp
