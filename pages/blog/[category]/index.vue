@@ -84,7 +84,7 @@ const category = {
   }
 }
 
-const websiteUrl = 'https://astronera.com'
+const websiteUrl = 'https://astronera.org'
 
 // SEO
 useSeoMeta({
