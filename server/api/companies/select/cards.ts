@@ -30,7 +30,7 @@ const companyCardSchema = z.array(
 )
 
 export default defineEventHandler(async (event) => {
-  logger.child({ loggerPrefix: 'company/select/cards' })
+  const log = useServerLogger('get-company')
   const query = getQuery(event)
 
   const parsedQuery = handleQueryParams(query)
@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
       pagination: parsedQuery.pagination
     })
 
-    logger.debug(`company structure ${JSON.stringify(companies[0])}`)
+    log.debug(`company structure ${JSON.stringify(companies[0])}`)
 
     return {
       status: 200,
