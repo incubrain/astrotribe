@@ -13,7 +13,7 @@ import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import { handleDBErrors } from './base.error-handler'
 import { constructQuery } from './base.construct-query'
 import { processResponse } from './base.process-response'
-import { useServerLogger } from '#imports'
+import { useServerLogger } from '~/server/utils/base.logger'
 
 interface ModelConstructor<T> {
   new (data: T): T
