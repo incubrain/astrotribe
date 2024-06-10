@@ -128,6 +128,13 @@ const adminLinks = ref([
     slug: '/astrotribe/admin/chat',
     icon: 'mdi:chat',
     children: []
+  },
+  {
+    id: 7,
+    label: 'BP',
+    slug: '/astrotribe/admin/business-plan',
+    icon: 'mdi:chat',
+    children: []
   }
 ])
 
