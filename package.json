@@ -66,6 +66,7 @@
     "change-case": "^4.1.2",
     "groq-sdk": "^0.3.2",
     "jsonwebtoken": "^9.0.2",
+    "mermaid": "^10.9.1",
     "primevue": "^3.51.0",
     "sass": "^1.63.4",
     "winston": "^3.13.0"
