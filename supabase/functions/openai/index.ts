@@ -4,12 +4,12 @@
 import OpenAI from 'https://deno.land/x/openai@v4.24.0/mod.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.0.0'
 
-const apiKey = Deno.env.get('OPENAI_API_KEY')
-const supabaseUrl = Deno.env.get('SB_URL')
-const supabaseKey = Deno.env.get('SB_KEY')
+const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
+const supabaseUrl = Deno.env.get('SUPABASE_URL')
+const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
 
 // Check if environment variables are set
-if (!apiKey) {
+if (!openAiApiKey) {
   console.error('Error: OpenAI API key not set in environment variables')
   throw new Error('OpenAI API key not set in environment variables')
 }
@@ -27,7 +27,7 @@ if (!supabaseKey) {
 console.log('Hello from Functions!')
 
 const openai = new OpenAI({
-  apiKey: apiKey
+  apiKey: openAiApiKey
 })
 
 const headers = {
