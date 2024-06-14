@@ -49,7 +49,7 @@ export type Database = {
           company_id?: number | null
           country_id: number
           created_at?: string | null
-          id?: never
+          id: number
           is_primary?: boolean | null
           name?: string | null
           street1: string
@@ -63,7 +63,7 @@ export type Database = {
           company_id?: number | null
           country_id?: number
           created_at?: string | null
-          id?: never
+          id?: number
           is_primary?: boolean | null
           name?: string | null
           street1?: string
@@ -73,17 +73,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'fk_city_id'
+            foreignKeyName: 'fk_city'
             columns: ['city_id']
             isOneToOne: false
             referencedRelation: 'cities'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'fk_country_id'
+            foreignKeyName: 'fk_country'
             columns: ['country_id']
             isOneToOne: false
             referencedRelation: 'countries'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
             referencedColumns: ['id']
           }
         ]
@@ -99,14 +113,14 @@ export type Database = {
         Insert: {
           body?: string | null
           created_at?: string
-          id?: never
+          id: number
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string
-          id?: never
+          id?: number
           name?: string
           updated_at?: string | null
         }
@@ -121,19 +135,19 @@ export type Database = {
         }
         Insert: {
           country_id: number
-          id?: never
+          id: number
           name: string
           state?: string | null
         }
         Update: {
           country_id?: number
-          id?: never
+          id?: number
           name?: string
           state?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'fk_country_id'
+            foreignKeyName: 'fk_country'
             columns: ['country_id']
             isOneToOne: false
             referencedRelation: 'countries'
@@ -162,7 +176,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: never
+          id: number
           is_government?: boolean
           last_scraped_at?: string | null
           logo_url?: string | null
@@ -177,7 +191,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: never
+          id?: number
           is_government?: boolean
           last_scraped_at?: string | null
           logo_url?: string | null
@@ -187,7 +201,22 @@ export type Database = {
           updated_at?: string | null
           website_url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_category'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_social_media'
+            columns: ['social_media_id']
+            isOneToOne: false
+            referencedRelation: 'social_media'
+            referencedColumns: ['id']
+          }
+        ]
       }
       company_employees: {
         Row: {
@@ -195,7 +224,6 @@ export type Database = {
           company_id: number
           created_at: string | null
           end_date: string | null
-          id: number
           job_description: string | null
           role: string
           start_date: string | null
@@ -208,7 +236,6 @@ export type Database = {
           company_id: number
           created_at?: string | null
           end_date?: string | null
-          id?: never
           job_description?: string | null
           role: string
           start_date?: string | null
@@ -221,7 +248,6 @@ export type Database = {
           company_id?: number
           created_at?: string | null
           end_date?: string | null
-          id?: never
           job_description?: string | null
           role?: string
           start_date?: string | null
@@ -229,13 +255,27 @@ export type Database = {
           updated_at?: string | null
           user_profile_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'company_employees_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_user_profile_id_fkey'
+            columns: ['user_profile_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       company_news: {
         Row: {
           company_id: number
           created_at: string | null
-          id: number
           importance_level: Database['public']['Enums']['news_importance_level'] | null
           news_id: number
           relation_type: Database['public']['Enums']['news_relation_type']
@@ -244,7 +284,6 @@ export type Database = {
         Insert: {
           company_id: number
           created_at?: string | null
-          id?: never
           importance_level?: Database['public']['Enums']['news_importance_level'] | null
           news_id: number
           relation_type: Database['public']['Enums']['news_relation_type']
@@ -253,13 +292,27 @@ export type Database = {
         Update: {
           company_id?: number
           created_at?: string | null
-          id?: never
           importance_level?: Database['public']['Enums']['news_importance_level'] | null
           news_id?: number
           relation_type?: Database['public']['Enums']['news_relation_type']
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'company_news_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_news_news_id_fkey'
+            columns: ['news_id']
+            isOneToOne: false
+            referencedRelation: 'news'
+            referencedColumns: ['id']
+          }
+        ]
       }
       contacts: {
         Row: {
@@ -280,7 +333,7 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          id?: never
+          id: number
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
@@ -293,7 +346,7 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          id?: never
+          id?: number
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
@@ -301,7 +354,22 @@ export type Database = {
           updated_at?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       countries: {
         Row: {
@@ -311,12 +379,12 @@ export type Database = {
         }
         Insert: {
           code: string
-          id?: never
+          id: number
           name: string
         }
         Update: {
           code?: string
-          id?: never
+          id?: number
           name?: string
         }
         Relationships: []
@@ -365,7 +433,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database['public']['Enums']['feedback_type'] | null
-          id?: never
+          id?: number
           message: string
           page_identifier: string
           resolution_comment?: string | null
@@ -377,7 +445,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database['public']['Enums']['feedback_type'] | null
-          id?: never
+          id?: number
           message?: string
           page_identifier?: string
           resolution_comment?: string | null
@@ -385,7 +453,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       news: {
         Row: {
@@ -411,7 +487,7 @@ export type Database = {
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: never
+          id: number
           published_at?: string | null
           source: string
           title: string
@@ -426,14 +502,22 @@ export type Database = {
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: never
+          id?: number
           published_at?: string | null
           source?: string
           title?: string
           updated_at?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'news_category_id_fkey'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          }
+        ]
       }
       news_embeddings: {
         Row: {
@@ -443,15 +527,23 @@ export type Database = {
         }
         Insert: {
           chunk?: string | null
-          id?: never
+          id: number
           news_id: number
         }
         Update: {
           chunk?: string | null
-          id?: never
+          id?: number
           news_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'news_embeddings_news_id_fkey'
+            columns: ['news_id']
+            isOneToOne: false
+            referencedRelation: 'news'
+            referencedColumns: ['id']
+          }
+        ]
       }
       news_tags: {
         Row: {
@@ -460,16 +552,31 @@ export type Database = {
           tag_id: number
         }
         Insert: {
-          id?: never
+          id: number
           news_id: number
           tag_id: number
         }
         Update: {
-          id?: never
+          id?: number
           news_id?: number
           tag_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'news_tags_news_id_fkey'
+            columns: ['news_id']
+            isOneToOne: false
+            referencedRelation: 'news'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'news_tags_tag_id_fkey'
+            columns: ['tag_id']
+            isOneToOne: false
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
+          }
+        ]
       }
       plan_permissions: {
         Row: {
@@ -479,12 +586,12 @@ export type Database = {
         }
         Insert: {
           feature: string
-          id?: never
+          id?: number
           plan: Database['public']['Enums']['app_plan_enum']
         }
         Update: {
           feature?: string
-          id?: never
+          id?: number
           plan?: Database['public']['Enums']['app_plan_enum']
         }
         Relationships: []
@@ -492,49 +599,70 @@ export type Database = {
       research: {
         Row: {
           abstract: string | null
-          chunk_success: boolean | null
+          abstract_url: string
+          authors: string[] | null
+          category: string | null
           created_at: string
+          doi_url: string | null
           facilities: string | null
+          figure_count: number | null
+          has_embedding: boolean | null
           id: string
-          journal: string | null
           keywords: string | null
           month: string | null
+          page_count: number | null
+          pdf_url: string | null
           published_at: string | null
+          published_in: string | null
+          table_count: number | null
           title: string | null
           updated_at: string | null
-          url: string
           version: number | null
           year: string | null
         }
         Insert: {
           abstract?: string | null
-          chunk_success?: boolean | null
+          abstract_url: string
+          authors?: string[] | null
+          category?: string | null
           created_at?: string
+          doi_url?: string | null
           facilities?: string | null
-          id: string
-          journal?: string | null
+          figure_count?: number | null
+          has_embedding?: boolean | null
+          id?: string
           keywords?: string | null
           month?: string | null
+          page_count?: number | null
+          pdf_url?: string | null
           published_at?: string | null
+          published_in?: string | null
+          table_count?: number | null
           title?: string | null
           updated_at?: string | null
-          url: string
           version?: number | null
           year?: string | null
         }
         Update: {
           abstract?: string | null
-          chunk_success?: boolean | null
+          abstract_url?: string
+          authors?: string[] | null
+          category?: string | null
           created_at?: string
+          doi_url?: string | null
           facilities?: string | null
+          figure_count?: number | null
+          has_embedding?: boolean | null
           id?: string
-          journal?: string | null
           keywords?: string | null
           month?: string | null
+          page_count?: number | null
+          pdf_url?: string | null
           published_at?: string | null
+          published_in?: string | null
+          table_count?: number | null
           title?: string | null
           updated_at?: string | null
-          url?: string
           version?: number | null
           year?: string | null
         }
@@ -652,7 +780,7 @@ export type Database = {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'research_embeddings_research_id_fkey'
+            foreignKeyName: 'public_research_embeddings_research_id_fkey'
             columns: ['research_id']
             isOneToOne: false
             referencedRelation: 'research'
@@ -872,7 +1000,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           downvotes?: number | null
-          id?: never
+          id?: number
           output: string
           search_id: number
           upvotes?: number | null
@@ -880,12 +1008,20 @@ export type Database = {
         Update: {
           created_at?: string | null
           downvotes?: number | null
-          id?: never
+          id?: number
           output?: string
           search_id?: number
           upvotes?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'responses_search_id_fkey'
+            columns: ['search_id']
+            isOneToOne: false
+            referencedRelation: 'searches'
+            referencedColumns: ['id']
+          }
+        ]
       }
       role_permissions: {
         Row: {
@@ -899,7 +1035,7 @@ export type Database = {
         }
         Insert: {
           delete?: boolean | null
-          id?: never
+          id?: number
           insert?: boolean | null
           role: Database['public']['Enums']['app_role_enum']
           select?: boolean | null
@@ -908,7 +1044,7 @@ export type Database = {
         }
         Update: {
           delete?: boolean | null
-          id?: never
+          id?: number
           insert?: boolean | null
           role?: Database['public']['Enums']['app_role_enum']
           select?: boolean | null
@@ -926,17 +1062,25 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          id?: never
+          id?: number
           input: string
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: never
+          id?: number
           input?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'searches_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       social_media: {
         Row: {
@@ -952,7 +1096,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: never
+          id: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
@@ -962,7 +1106,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: never
+          id?: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
@@ -982,14 +1126,14 @@ export type Database = {
         Insert: {
           body?: string | null
           created_at?: string | null
-          id?: never
+          id: number
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string | null
-          id?: never
+          id?: number
           name?: string
           updated_at?: string | null
         }
@@ -1047,7 +1191,7 @@ export type Database = {
           followers_count?: number | null
           gender_id?: number | null
           given_name?: string | null
-          id: string
+          id?: string
           introduction?: string | null
           last_seen?: string | null
           plan?: Database['public']['Enums']['app_plan_enum'] | null
@@ -1077,7 +1221,15 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'public_user_profiles_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
     Views: {
