@@ -3,13 +3,6 @@ import {
   AdminResearchReview,
   AdminResearchQuestion,
   AdminResearchMetrics,
-  AdminResearchNotes,
-  AdminResearchCitations,
-  AdminResearchTools,
-  AdminResearchAuthors,
-  AdminResearchFigures,
-  AdminResearchTables,
-  AdminResearchMath,
   AdminResearchMetricsDashboard
 } from '#components'
 
@@ -39,41 +32,6 @@ const analyticsTabs = [
     tabTitle: 'Chunks',
     tabName: 'chunks',
     component: AdminResearchReview
-  },
-  {
-    tabTitle: 'Notes',
-    tabName: 'notes',
-    component: AdminResearchNotes
-  },
-  {
-    tabTitle: 'Math',
-    tabName: 'math',
-    component: AdminResearchMath
-  },
-  {
-    tabTitle: 'Citations',
-    tabName: 'citations',
-    component: AdminResearchCitations
-  },
-  {
-    tabTitle: 'Tools',
-    tabName: 'tools',
-    component: AdminResearchTools
-  },
-  {
-    tabTitle: 'Authors',
-    tabName: 'authors',
-    component: AdminResearchAuthors
-  },
-  {
-    tabTitle: 'Figures',
-    tabName: 'figures',
-    component: AdminResearchFigures
-  },
-  {
-    tabTitle: 'Tables',
-    tabName: 'tables',
-    component: AdminResearchTables
   }
 ]
 </script>

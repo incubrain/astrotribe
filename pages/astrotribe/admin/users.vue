@@ -10,6 +10,7 @@ const roles = [
   { label: 'Admin', value: 'admin' },
   { label: 'Super Admin', value: 'super_admin' }
 ]
+
 interface Column {
   field: string
   header: string
@@ -71,8 +72,8 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="overflow-scroll h-full border border-color rounded-lg">
-    <BaseTable
+  <div class="border-color h-full overflow-scroll rounded-lg border">
+    <BaseTableAdmin
       :columns="columns"
       :tableData="userProfiles"
       :filters="filters"
@@ -82,7 +83,7 @@ definePageMeta({
       <template #header>
         <h3 class="text-lg font-semibold"> Manage Users</h3>
       </template>
-    </BaseTable>
+    </BaseTableAdmin>
   </div>
 </template>
 

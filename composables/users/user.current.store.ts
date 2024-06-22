@@ -224,3 +224,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     updateProfile
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useCurrentUser, import.meta.hot))
+}

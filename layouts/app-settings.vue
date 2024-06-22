@@ -12,7 +12,7 @@ const settingsRoutes = computed(() => [
   },
   {
     key: 'settings-password',
-    label: 'Reset Password',
+    label: 'Update Password',
     url: `/astrotribe/users/${currentUserId}/settings/password`,
     icon: 'material-symbols:key',
     visible: true,
