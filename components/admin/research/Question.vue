@@ -13,13 +13,9 @@ const config = reactive({
 const chunkIds = computed(() => similarChunks.value.map((doc) => doc.id) ?? null)
 const chunkMetrics = ref(null as null | ResearchMetric[])
 
-onMounted(async () => {
-  await chunksStore.fetchSimilarDocuments(config)
-  chunkMetrics.value = await researchStore.getResearchMetricsById(chunkIds.value)
-})
 
-const currentChunkMetrics = (id: string) =>
-  chunkMetrics.value?.find((metric) => metric.research_id === id)
+// const currentChunkMetrics = (id: string) =>
+//   chunkMetrics.value?.find((metric) => metric.research_id === id)
 </script>
 
 <template>
@@ -65,8 +61,11 @@ const currentChunkMetrics = (id: string) =>
       <AdminResearchCard
         v-for="doc in similarChunks"
         :key="doc.id"
-        :doc="doc"
-        :body="doc.chunk"
+        :doc="{
+          body: doc.chunk,
+          id: doc.research_id,
+          url: doc.url,
+        }"
       >
         <template #header>
           <PrimeButton
@@ -79,10 +78,10 @@ const currentChunkMetrics = (id: string) =>
         <template #footer>
           <PrimeAccordion>
             <PrimeAccordionTab header="Metrics">
-              <AdminResearchMetricsChunk
+              <!-- <AdminResearchMetricsChunk
                 v-if="chunkMetrics?.length"
                 :metrics="currentChunkMetrics(doc.id)"
-              />
+              /> -->
             </PrimeAccordionTab>
           </PrimeAccordion>
         </template>

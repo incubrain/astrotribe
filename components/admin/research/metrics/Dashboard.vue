@@ -1,7 +1,7 @@
 <template>
   <div class="p-4">
     <h2 class="mb-4 text-2xl font-bold">Metrics Dashboard</h2>
-    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-8">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:gap-8">
       <Chart
         :chart-type="'pie'"
         :chart-data="chartData"

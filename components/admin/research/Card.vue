@@ -1,56 +1,96 @@
 <script setup lang="ts">
-defineProps({
+// remove /n from all abstracts, replace with space
+import katex from 'katex'
+
+const renderLatex = (latex: string) => {
+  try {
+    return katex.renderToString(latex, {
+      throwOnError: false
+    })
+  } catch (error) {
+    console.error('Error rendering LaTeX:', error)
+    return ''
+  }
+}
+
+interface Doc {
+  body: string
+  id: string
+  url: string
+  title?: string
+  published_at?: string
+}
+
+const props = defineProps({
   doc: {
-    type: Object,
+    type: Object as PropType<Doc>,
     required: true
   },
-  body: {
-    type: String,
-    required: true
-  },
-  showClean: {
+  showLatex: {
     type: Boolean,
     default: false
   }
 })
 
 const chunksStore = useChunksStore()
+
+const processedBody = computed(() => {
+  return props.showLatex
+    ? props.doc.body.replace(/\$(.*?)\$/g, (match, p1) => renderLatex(p1))
+    : props.doc.body
+})
 </script>
 
 <template>
   <PrimeCard>
     <template #header>
-      <div class="px-6 pt-4 flex gap-4">
+      <div class="flex gap-4 px-6 pt-4">
         <slot name="header" />
+        <NuxtLink
+          :to="doc.url"
+          target="_blank"
+          external
+        >
+          <PrimeButton outlined>Source</PrimeButton>
+        </NuxtLink>
       </div>
     </template>
     <template #content>
       <div class="flex flex-col gap-4">
-        <div class="flex gap-2 items-center">
-          <PrimeTag>id: {{ doc.research_id }}</PrimeTag>
+        <div class="flex items-center gap-2 flex-wrap">
           <PrimeTag>
-            raw length:
-            {{ body.length }}
+            length:
+            {{ doc.body.length }}
           </PrimeTag>
           <PrimeTag>
-            clean length:
-            {{ chunksStore.cleanText(body).length }}
+            {{ useDateFormat(doc.published_at, 'YYYY-MM-DD').value }}
           </PrimeTag>
+          <slot name="tags" />
         </div>
-        <p>{{ showClean ? chunksStore.cleanText(body) : body }}</p>
-        <div> 
+        <h4
+          v-if="doc.title"
+          class="text-xl font-semibold"
+        >
+          {{ doc.title }}</h4
+        >
+        <p
+          v-html="processedBody"
+          class="text-sm"
+        ></p>
+        <div>
           <slot name="content" />
         </div>
-        <NuxtLink
-          class="text-primary py-2 px-3 border border-primary-700 bg-primary-950/50 rounded-lg"
-          :to="doc.url"
-          target="_blank"
-          external
-          >Ref: {{ doc?.url }}</NuxtLink
-        >
       </div>
     </template>
   </PrimeCard>
 </template>
 
-<style scoped></style>
+<style>
+.katex {
+  text-decoration: underline;
+}
+
+.katex .katex-html {
+  display: none;
+}
+</style>
