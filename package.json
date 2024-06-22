@@ -37,7 +37,7 @@
     "@types/katex": "^0.16.7",
     "@types/node": "^20.12.7",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/parser": "^7.7.0",
+    "@typescript-eslint/parser": "^7.13.1",
     "@vueuse/nuxt": "^10.9.0",
     "chart.js": "^4.4.3",
     "eslint": "^9.1.0",
