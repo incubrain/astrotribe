@@ -19,14 +19,14 @@ const comingSoon = [
 </script>
 
 <template>
-  <div class="grid w-full grid-cols-1 md:grid-cols-2 p-4 md:p-0 gap-4 xl:gap-8 lg:grid-cols-3">
+  <div class="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:p-0 lg:grid-cols-3 xl:gap-8">
     <PrimeCard
-      class="border border-color"
+      class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
     >
       <template #content>
         <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
-        <h3 class="pb-4 text-lg font-semibold text-primary-600">
+        <h3 class="text-lg pb-4 font-semibold text-primary-600">
           AstroTribe Is Currently In Open Alpha
         </h3>
         <p>
@@ -35,7 +35,7 @@ const comingSoon = [
         </p>
       </template>
     </PrimeCard>
-    <PrimeCard class="border border-color">
+    <PrimeCard class="border-color border">
       <template #content>
         <div class="space-y-4">
           <h3 class="text-xl font-semibold"> Latest News </h3>
@@ -52,7 +52,7 @@ const comingSoon = [
       </template>
     </PrimeCard>
     <PrimeCard
-      class="border border-color"
+      class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
     >
       <template #content>
@@ -71,7 +71,7 @@ const comingSoon = [
       </template>
     </PrimeCard>
     <PrimeCard
-      class="border border-color"
+      class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
     >
       <template #content>
@@ -88,8 +88,8 @@ const comingSoon = [
         </NuxtLink>
       </template>
     </PrimeCard>
-    <div class="md:col-start-2 row-span-2 lg:col-start-3 md:row-start-1 space-y-4">
-      <PrimeInlineMessage severity="info"> Features Coming in May 2024! </PrimeInlineMessage>
+    <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
+      <PrimeInlineMessage severity="info"> Features Coming Soon! </PrimeInlineMessage>
       <ul>
         <li
           v-for="item in comingSoon"
