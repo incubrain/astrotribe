@@ -1,9 +1,16 @@
+import { agents } from '~/server/utils/agents'
+import { openAI } from '~/server/utils/openai/callOpenAI'
+import { serverSupabaseUser } from '#supabase/server'
+
+const log = useServerLogger('API:ASK')
 
 export default defineEventHandler({
   onRequest: [rateLimiter],
   onBeforeResponse: [],
   handler: async (event) => {
-    const { question } = getQuery(event)
+    const { question, selectedAgent } = getQuery(event)
+
+    const user = await serverSupabaseUser(event)
 
     if (!question) {
       return {
@@ -15,7 +22,20 @@ export default defineEventHandler({
     }
 
     try {
-      const chatCompletion = await getGroqChatCompletion(String(question))
+      let chatCompletion
+
+      const plan = user?.app_metadata?.plan
+
+      if (plan === 'free') {
+        chatCompletion = await getGroqChatCompletion(String(question))
+      } else if (plan === 'pro' || plan === 'expert') {
+        chatCompletion = openAI.createChatCompletion({
+          prompt: String(question),
+          systemMessage: agents[0].systemMessage
+        })
+      } else {
+        log.warn('no user plan', plan)
+      }
 
       return {
         error: null,
@@ -23,7 +43,7 @@ export default defineEventHandler({
         data: chatCompletion || ''
       }
     } catch (error) {
-      console.log('error', error)
+      log.error('error', error)
       return {
         data: null,
         error,

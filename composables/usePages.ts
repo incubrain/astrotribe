@@ -135,6 +135,42 @@ const adminLinks = ref([
     slug: '/astrotribe/admin/business-plan',
     icon: 'mdi:chat',
     children: []
+  },
+  {
+    id: 7,
+    label: 'Systems',
+    slug: '/astrotribe/admin/business-systems',
+    icon: 'mdi:chat',
+    children: [
+      {
+        id: 71,
+        label: 'Users',
+        slug: '/astrotribe/admin/business-systems/users',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 72,
+        label: 'Companies',
+        slug: '/astrotribe/admin/business-systems/companies',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 73,
+        label: 'Events',
+        slug: '/astrotribe/admin/business-systems/events',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 74,
+        label: 'Content',
+        slug: '/astrotribe/admin/business-systems/content',
+        icon: 'mdi:account',
+        children: []
+      },
+    ]
   }
 ])
 

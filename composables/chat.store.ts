@@ -96,7 +96,7 @@ export const useChatStore = defineStore('chatStore', () => {
     try {
       const questionResponse = await fetch('/api/ai/ask', {
         method: 'GET',
-        params: { question: question.value }
+        params: { question: question.value, selectedAgent: 'summarizer' }
       })
 
       console.log('handling ask error', questionResponse)
