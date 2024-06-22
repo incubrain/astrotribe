@@ -630,7 +630,7 @@ export type Database = {
       news: {
         Row: {
           author: string | null
-          body: string
+          body: string | null
           category_id: number
           created_at: string
           description: string | null
@@ -646,14 +646,14 @@ export type Database = {
         }
         Insert: {
           author?: string | null
-          body: string
+          body?: string | null
           category_id?: number
           created_at?: string
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
           hash?: number | null
-          id: string
+          id?: string
           published_at?: string | null
           source: string
           title: string
@@ -662,7 +662,7 @@ export type Database = {
         }
         Update: {
           author?: string | null
-          body?: string
+          body?: string | null
           category_id?: number
           created_at?: string
           description?: string | null
