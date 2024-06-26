@@ -101,6 +101,7 @@ const adminLinks = ref([
     icon: 'mdi:upload',
     children: []
   },
+
   {
     id: 3,
     label: 'Research',
@@ -169,8 +170,15 @@ const adminLinks = ref([
         slug: '/astrotribe/admin/business-systems/content',
         icon: 'mdi:account',
         children: []
-      },
+      }
     ]
+  },
+  {
+    id: 8,
+    label: 'Scraper',
+    slug: '/astrotribe/admin/scraper',
+    icon: 'mdi:spider',
+    children: []
   }
 ])
 
@@ -198,14 +206,13 @@ const socials = ref([
   }
 ])
 
-
 // Events -
 // Under these we display our star gazing programs that we have done along with locations and a page to book us for future star gazing events.
 
 // Our projects -
-// This section should display all our projects 
+// This section should display all our projects
 // Astrotribe 2022
-// Astro tribe 2023 
+// Astro tribe 2023
 // Dst + conference 2023
 
 const websiteLinks = [
