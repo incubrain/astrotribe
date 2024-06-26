@@ -13,10 +13,21 @@ const handleKeyUp = (event: KeyboardEvent) => {
   }
 }
 
+type SearchType = 'fts' | 'vector'
+const textSearchType = ref('fts' as SearchType)
+
+const toggleTextSearchType = () => {
+  if (textSearchType.value === 'fts') {
+    textSearchType.value = 'vector'
+  } else {
+    textSearchType.value = 'fts'
+  }
+}
+
 const sendMessage = () => {
   if (message.value.trim()) {
     console.log('Sending message:', message.value)
-    chunksStore.fetchSimilarDocuments({ search: message.value })
+    chunksStore.fetchSimilarDocuments({ search: message.value, searchType: textSearchType.value })
     message.value = ''
   }
 }
@@ -31,8 +42,12 @@ const sendMessage = () => {
         rounded
         :pt="{ root: 'p-5 flex justify-center items-center relative' }"
         severity="secondary"
+        @click="toggleTextSearchType"
       >
-        <Icon name="mdi:attachment" class="absolute w-5 h-5" />
+        <Icon
+          :name="textSearchType === 'fts' ? 'mdi:card-text-outline' : 'mdi:format-list-numbered'"
+          class="absolute h-5 w-5"
+        />
       </PrimeButton>
       <PrimeTextarea
         ref="messageInput"
