@@ -497,9 +497,11 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: number
+          is_outdated: boolean | null
+          last_scraped: string | null
+          link_scraper_id: number | null
           name: string
           scrape_frequency: Database['public']['Enums']['scrape_frequency']
-          scraper_id: number | null
           updated_at: string | null
           url: string
         }
@@ -508,9 +510,11 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: number
+          is_outdated?: boolean | null
+          last_scraped?: string | null
+          link_scraper_id?: number | null
           name: string
           scrape_frequency: Database['public']['Enums']['scrape_frequency']
-          scraper_id?: number | null
           updated_at?: string | null
           url: string
         }
@@ -519,16 +523,18 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: number
+          is_outdated?: boolean | null
+          last_scraped?: string | null
+          link_scraper_id?: number | null
           name?: string
           scrape_frequency?: Database['public']['Enums']['scrape_frequency']
-          scraper_id?: number | null
           updated_at?: string | null
           url?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'content_sources_scraper_id_fkey'
-            columns: ['scraper_id']
+            foreignKeyName: 'public_content_sources_link_scraper_id_fkey'
+            columns: ['link_scraper_id']
             isOneToOne: false
             referencedRelation: 'scraper_configs'
             referencedColumns: ['id']
@@ -762,6 +768,7 @@ export type Database = {
           created_at: string
           doi_url: string | null
           figure_count: number | null
+          fts: unknown | null
           has_embedding: boolean | null
           id: string
           is_flagged: boolean
@@ -787,6 +794,7 @@ export type Database = {
           created_at?: string
           doi_url?: string | null
           figure_count?: number | null
+          fts?: unknown | null
           has_embedding?: boolean | null
           id?: string
           is_flagged?: boolean
@@ -812,6 +820,7 @@ export type Database = {
           created_at?: string
           doi_url?: string | null
           figure_count?: number | null
+          fts?: unknown | null
           has_embedding?: boolean | null
           id?: string
           is_flagged?: boolean
@@ -1211,32 +1220,32 @@ export type Database = {
       }
       scraper_configs: {
         Row: {
-          config: Json
+          base_selector: string | null
           created_at: string | null
           error: boolean | null
-          frequency: Database['public']['Enums']['scrape_frequency']
+          fields: Json
           id: number
-          last_scraped_at: string | null
+          pagination: Json | null
           scraper_type: string
           updated_at: string | null
         }
         Insert: {
-          config: Json
+          base_selector?: string | null
           created_at?: string | null
           error?: boolean | null
-          frequency: Database['public']['Enums']['scrape_frequency']
+          fields: Json
           id?: number
-          last_scraped_at?: string | null
+          pagination?: Json | null
           scraper_type: string
           updated_at?: string | null
         }
         Update: {
-          config?: Json
+          base_selector?: string | null
           created_at?: string | null
           error?: boolean | null
-          frequency?: Database['public']['Enums']['scrape_frequency']
+          fields?: Json
           id?: number
-          last_scraped_at?: string | null
+          pagination?: Json | null
           scraper_type?: string
           updated_at?: string | null
         }

@@ -86,11 +86,5 @@ const processedBody = computed(() => {
 </template>
 
 <style>
-.katex {
-  text-decoration: underline;
-}
 
-.katex .katex-html {
-  display: none;
-}
 </style>

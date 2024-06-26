@@ -82,29 +82,38 @@ export const useChunksStore = defineStore('chunksStore', () => {
   const similarChunks = ref<any[]>([])
   interface SimilarDocs {
     search: string
+    searchType: 'fts' | 'vector'
     matchThreshold?: number
     matchCount?: number
   }
 
   async function fetchSimilarDocuments({
     search,
+    searchType,
     matchThreshold = 0.41,
     matchCount = 25
   }: SimilarDocs) {
     try {
       const userId = useCookie('userId').value!
-      const response = await client.functions.invoke('openai', {
-        method: 'POST',
-        body: {
-          query: search,
-          match_threshold: matchThreshold,
-          match_count: matchCount,
-          user_id: userId
-        }
-      })
+      let response
 
-      if (!response.data) {
-        return
+      if (searchType === 'vector') {
+        response = await client.functions.invoke('openai', {
+          method: 'POST',
+          body: {
+            query: search,
+            match_threshold: matchThreshold,
+            match_count: matchCount,
+            user_id: userId
+          }
+        })
+
+        if (!response.data) {
+          return
+        }
+      } else {
+        const formattedSearch = search.replaceAll(' ', ' & ')
+        response = await client.from('research').select().textSearch('fts', formattedSearch)
       }
 
       console.log('response:', response)

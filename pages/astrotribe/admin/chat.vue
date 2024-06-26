@@ -37,9 +37,7 @@ const { similarChunks } = storeToRefs(chunksStore)
         </PrimeButton>
       </div>
     </div>
-    <div class="border-color h-full w-full flex-grow rounded-md border">
-      <p>{{ similarChunks }}</p>
-    </div>
+    <AdminChatSearchResponse />
     <AdminChatMessageBar class="flex-shrink" />
   </div>
 </template>
