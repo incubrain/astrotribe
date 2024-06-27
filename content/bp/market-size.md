@@ -197,8 +197,6 @@ This estimation provides a reasonable range, considering India's significant pop
      broadcasting, and disaster communication.
 
 
-
-
 ### Market Size and Growth Potential
 
 1. **Market Size:**
