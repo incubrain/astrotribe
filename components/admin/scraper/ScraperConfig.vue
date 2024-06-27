@@ -202,21 +202,18 @@ const extractDataFromHtml = async (input: CreateConfig) => {
           class="border-color h-full max-h-[460px] w-full rounded border p-2"
         />
 
-        <label class="text-900 mb-2 block font-medium"> Pagination </label>
-        <PrimeTextarea
-          v-model="selectedConfig.pagination"
-          cols="60"
-          rows="12"
-          class="border-color h-full max-h-[460px] w-full rounded border p-2"
-        />
-        <label class="text-900 mb-2 block font-medium"> Fields </label>
-
-        <PrimeTextarea
-          v-model="selectedConfig.fields"
-          cols="60"
-          rows="24"
-          class="border-color h-full max-h-[460px] w-full rounded border p-2"
-        />
+        <div class="space-y-2">
+          <label class="text-900 block font-medium"> Fields </label>
+          <PrimeInlineMessage severity="info">
+            Only extract url/title/published_at properties
+          </PrimeInlineMessage>
+          <PrimeTextarea
+            v-model="selectedConfig.fields"
+            cols="60"
+            rows="24"
+            class="border-color h-full max-h-[460px] w-full rounded border p-2"
+          />
+        </div>
       </div>
     </div>
   </div>
