@@ -32,7 +32,6 @@ const selectConfig = (source) => {
       id: cfg.id,
       type: cfg.scraper_type,
       base_selector: cfg.base_selector,
-      pagination: JSON.stringify(cfg.pagination),
       fields: JSON.stringify(cfg.fields, null, 2)
     }
   } else {
@@ -42,13 +41,11 @@ const selectConfig = (source) => {
 
 const saveAllConfigs = async () => {
   const updatedFields = JSON.parse(selectedConfig.value.fields)
-  const updatedPagination = JSON.parse(selectedConfig.value.pagination)
 
   const { error } = await client
     .from('scraper_configs')
     .update({
       fields: updatedFields,
-      pagination: updatedPagination,
       base_selector: selectedConfig.value.base_selector
     })
     .eq('id', config.id)

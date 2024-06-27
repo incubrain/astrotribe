@@ -14,6 +14,7 @@ const newContentSource = ref({
   name: '',
   description: '',
   url: '',
+  paginated_url: '',
   scrape_frequency: 'daily',
   content_type: 'news'
 })
@@ -52,6 +53,7 @@ const addNewContentSource = async () => {
     name: '',
     description: '',
     url: '',
+    paginated_url: '',
     scrape_frequency: 'daily',
     content_type: 'news'
   }
@@ -94,11 +96,25 @@ const addNewContentSource = async () => {
       <label
         for="content-source-url"
         class="text-900 mb-2 block font-medium"
-        >URL</label
       >
+        URL
+      </label>
       <PrimeInputText
         v-model="newContentSource.url"
         id="content-source-url"
+        class="w-full"
+      />
+    </div>
+    <div class="mb-4">
+      <label
+        for="content-source-url"
+        class="text-900 mb-2 block font-medium"
+      >
+        Paginated URL
+      </label>
+      <PrimeInputText
+        v-model="newContentSource.paginated_url"
+        id="content-source-paginated_url"
         class="w-full"
       />
     </div>

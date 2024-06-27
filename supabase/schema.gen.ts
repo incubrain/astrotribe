@@ -496,11 +496,13 @@ export type Database = {
           content_type: Database['public']['Enums']['content_type']
           created_at: string | null
           description: string | null
+          has_errors: boolean
           id: number
           is_outdated: boolean | null
           last_scraped: string | null
           link_scraper_id: number | null
           name: string
+          paginated_url: string | null
           scrape_frequency: Database['public']['Enums']['scrape_frequency']
           updated_at: string | null
           url: string
@@ -509,11 +511,13 @@ export type Database = {
           content_type: Database['public']['Enums']['content_type']
           created_at?: string | null
           description?: string | null
+          has_errors?: boolean
           id?: number
           is_outdated?: boolean | null
           last_scraped?: string | null
           link_scraper_id?: number | null
           name: string
+          paginated_url?: string | null
           scrape_frequency: Database['public']['Enums']['scrape_frequency']
           updated_at?: string | null
           url: string
@@ -522,11 +526,13 @@ export type Database = {
           content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           description?: string | null
+          has_errors?: boolean
           id?: number
           is_outdated?: boolean | null
           last_scraped?: string | null
           link_scraper_id?: number | null
           name?: string
+          paginated_url?: string | null
           scrape_frequency?: Database['public']['Enums']['scrape_frequency']
           updated_at?: string | null
           url?: string
@@ -1222,30 +1228,24 @@ export type Database = {
         Row: {
           base_selector: string | null
           created_at: string | null
-          error: boolean | null
           fields: Json
           id: number
-          pagination: Json | null
           scraper_type: string
           updated_at: string | null
         }
         Insert: {
           base_selector?: string | null
           created_at?: string | null
-          error?: boolean | null
           fields: Json
           id?: number
-          pagination?: Json | null
           scraper_type: string
           updated_at?: string | null
         }
         Update: {
           base_selector?: string | null
           created_at?: string | null
-          error?: boolean | null
           fields?: Json
           id?: number
-          pagination?: Json | null
           scraper_type?: string
           updated_at?: string | null
         }
@@ -1630,6 +1630,18 @@ export type Database = {
               url: string
             }[]
           }
+      get_latest_articles: {
+        Args: {
+          base_urls: string[]
+          return_limit: number
+        }
+        Returns: {
+          id: string
+          title: string
+          url: string
+          created_at: string
+        }[]
+      }
       get_math_ids_by_latex: {
         Args: {
           latexes: string[]
