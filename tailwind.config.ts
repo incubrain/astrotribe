@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import c from 'tailwindcss/colors'
 
 export default <Partial<Config>>{
   darkMode: 'selector',
@@ -91,5 +90,5 @@ export default <Partial<Config>>{
       }
     }
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')]
 }

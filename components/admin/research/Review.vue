@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { FilterMatchMode } from 'primevue/api'
-
 const researchStore = useResearchStore()
 const { researchData } = storeToRefs(researchStore)
 
@@ -47,10 +45,10 @@ const columns: Column[] = [
 ]
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  title: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  abstract: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  abstract_url: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
+  global: { value: null, matchMode: 'contains' },
+  title: { value: null, matchMode: 'startsWith' },
+  abstract: { value: null, matchMode: 'startsWith' },
+  abstract_url: { value: null, matchMode: 'startsWith' }
 })
 
 const showLatex = ref(false)
@@ -133,7 +131,7 @@ const toggleLatex = () => {
           </template>
           <template #content>
             <p class="font-semibold"> {{ doc.published_in }} </p>
-            <p class="text-sm pt-4"> {{ doc.comments }} </p>
+            <p class="pt-4 text-sm"> {{ doc.comments }} </p>
           </template>
         </AdminResearchCard>
       </div>

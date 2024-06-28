@@ -66,12 +66,12 @@ const isPasswordUpdatable = computed(() => profile.value?.providers.includes('em
           />
         </UserSettingsItem>
       </div>
-      <PrimeInlineMessage
+      <PrimeMessage
         severity="info"
         v-else-if="profile"
       >
         You used {{ profile.provider }} to authenticate
-      </PrimeInlineMessage>
+      </PrimeMessage>
     </UserSettingsCard>
   </div>
 </template>

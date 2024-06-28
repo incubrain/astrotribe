@@ -7,7 +7,7 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,600px)_1fr]">
-    <div class="flex flex-col w-full md:col-start-2 gap-4 xl:gap-8 mx-auto">
+    <div class="mx-auto flex w-full flex-col gap-4 md:col-start-2 xl:gap-8">
       <div class="space-y-2">
         <h1 class="text-4xl font-semibold">Your Galactic Guide </h1>
         <p class="text-lg font-semibold"> Ask AI What you've always wanted to know! </p>
@@ -15,19 +15,19 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
 
       <div class="space-y-4">
         <div>
-          <PrimeInlineMessage
+          <PrimeMessage
             severity="info"
             :pt="{ root: '', text: 'text-sm' }"
           >
             3 question limit in 30 minutes
-          </PrimeInlineMessage>
+          </PrimeMessage>
         </div>
-        <PrimeInlineMessage
+        <PrimeMessage
           severity="warn"
           :pt="{ root: '', text: 'text-sm' }"
         >
           Experimental, please always validate answers.
-        </PrimeInlineMessage>
+        </PrimeMessage>
       </div>
 
       <SearchBar />
@@ -35,10 +35,10 @@ definePageMeta({ name: 'Q&A', layout: 'app' })
         v-if="chat.choices"
         class="space-y-4 xl:space-y-8"
       >
-        <div class="p-4 bg-primary-900 rounded-md w-full">
+        <div class="w-full rounded-md bg-primary-900 p-4">
           <MDC
             :value="chat.choices[0]?.message?.content"
-            class="prose-invert prose"
+            class="prose prose-invert"
           />
         </div>
       </div>

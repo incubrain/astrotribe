@@ -1,4 +1,5 @@
 import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
+import { DarkPreset } from './themes/dark-theme'
 
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
@@ -8,7 +9,7 @@ export const MODULES: NuxtConfig['modules'] = [
   '@pinia/nuxt',
   '@nuxtjs/seo',
   '@nuxt/content',
-  'nuxt-primevue',
+  '@primevue/nuxt-module',
   '@nuxtjs/tailwindcss',
   '@nuxtjs/color-mode',
   '@nuxthq/studio',
@@ -148,9 +149,23 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
     exclude: []
   },
   options: {
-    ripple: true
-  },
-  cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
+    ripple: true,
+    theme: {
+      preset: DarkPreset,
+      options: {
+        cssLayer: {
+          name: 'primevue',
+          order: 'tailwind-base, primevue, tailwind-utilities'
+        }
+      }
+    }
+  }
+  // can configure global pass throughs
+  // importPT: { from: '@/passthrough/mycustompt.js')}
+
+  // importTheme: { from: '' }
+
+  // cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
 }
 
 const IMAGE_OPTIONS: NuxtConfig['image'] = {

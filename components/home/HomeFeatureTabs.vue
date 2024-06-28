@@ -137,11 +137,11 @@ const getDummyData = (type) => {
         v-for="feat in productSteps"
         v-slot:[feat.tabName]
       >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="rounded-md background p-4 lg:p-8 space-y-4 border border-color">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div class="background border-color space-y-4 rounded-md border p-4 lg:p-8">
             <h3 class="text-2xl"> {{ feat.title }}</h3>
             <!-- <p> {{ feat.body }}</p> -->
-            <ul class="list-disc list-inside">
+            <ul class="list-inside list-disc">
               <li
                 v-for="point in feat.points"
                 :key="point"
@@ -149,9 +149,9 @@ const getDummyData = (type) => {
                 {{ point }}</li
               >
             </ul>
-            <PrimeInlineMessage severity="info">
+            <PrimeMessage severity="info">
               {{ feat.info }}
-            </PrimeInlineMessage>
+            </PrimeMessage>
           </div>
           <div class="space-y-4">
             <NewsCard
@@ -167,9 +167,9 @@ const getDummyData = (type) => {
               :user="getDummyData('user')"
             />
             <div v-else>
-              <PrimeInlineMessage severity="info">Coming Very Soon</PrimeInlineMessage>
+              <PrimeMessage severity="info">Coming Very Soon</PrimeMessage>
             </div>
-            <PrimeButton class="w-full flex justify-center"> Join to see more </PrimeButton>
+            <PrimeButton class="flex w-full justify-center"> Join to see more </PrimeButton>
           </div>
         </div>
       </template>
