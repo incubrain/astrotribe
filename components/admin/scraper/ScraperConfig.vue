@@ -46,7 +46,7 @@ const addNewScraper = async () => {
   }
 
   const { data, error } = await client
-    .from('scraper_configs')
+    .from('scraper_configs_links')
     .insert({
       scraper_type: createConfig.scraperType,
       base_selector: createConfig.base_selector,
@@ -125,7 +125,7 @@ const extractDataFromHtml = async (input: CreateConfig) => {
           >
             Content Type
           </label>
-          <PrimeDropdown
+          <PrimeSelect
             v-model="createConfig.contentType"
             :options="contentTypes"
             optionLabel="label"
@@ -141,7 +141,7 @@ const extractDataFromHtml = async (input: CreateConfig) => {
             class="text-900 mb-2 block font-medium"
             >Scraper Type</label
           >
-          <PrimeDropdown
+          <PrimeSelect
             v-model="createConfig.scraperType"
             :options="scraperTypes"
             optionLabel="label"
@@ -204,9 +204,9 @@ const extractDataFromHtml = async (input: CreateConfig) => {
 
         <div class="space-y-2">
           <label class="text-900 block font-medium"> Fields </label>
-          <PrimeInlineMessage severity="info">
+          <PrimeMessage severity="info">
             Only extract url/title/published_at properties
-          </PrimeInlineMessage>
+          </PrimeMessage>
           <PrimeTextarea
             v-model="selectedConfig.fields"
             cols="60"

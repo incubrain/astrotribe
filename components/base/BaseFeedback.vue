@@ -79,12 +79,12 @@ const submitFeedback = async () => {
 
 <template>
   <div class="w-52">
-    <h2 class="text-lg font-bold mb-4 text-left">{{ cta }}</h2>
+    <h2 class="text-lg mb-4 text-left font-bold">{{ cta }}</h2>
     <form
-      class="space-y-4 w-52"
+      class="w-52 space-y-4"
       @submit.prevent="submitFeedback"
     >
-      <PrimeDropdown
+      <PrimeSelect
         :pt="{ root: 'flex text-left pl-1' }"
         v-model="feedback.feedback_type"
         :options="feedbackTypes"
@@ -102,7 +102,7 @@ const submitFeedback = async () => {
       />
       <div>
         <PrimeButton
-          class="w-full flex justify-between"
+          class="flex w-full justify-between"
           v-show="feedback.feedback_type"
           :disabled="isMessageInvalid"
           :outlined="isMessageInvalid"

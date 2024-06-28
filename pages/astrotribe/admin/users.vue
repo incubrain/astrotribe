@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FilterMatchMode } from 'primevue/api'
 
 const usersStore = useUsersStore()
 const { userProfiles } = storeToRefs(usersStore)
@@ -36,7 +35,7 @@ const columns: Column[] = [
     field: 'role',
     header: 'Role',
     style: 'width: 10%',
-    editor: 'PrimeDropdown',
+    editor: 'PrimeSelect',
     editorProps: {
       options: roles,
       optionLabel: 'label',
@@ -57,12 +56,12 @@ const handleRowEditSave = async ({ data, newData }) => {
 }
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  given_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  surname: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  role: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
-})
+  global: { value: null, matchMode: 'contains' },
+  given_name: { value: null, matchMode: 'startsWith' },
+  surname: { value: null, matchMode: 'startsWith' },
+  email: { value: null, matchMode: 'startsWith' },
+  role: { value: null, matchMode: 'startsWith' }
+});
 
 definePageMeta({
   layoutTransition: false,

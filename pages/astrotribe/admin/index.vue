@@ -48,9 +48,7 @@ const businessPlan = [
         </div>
       </template>
     </BaseTabView> -->
-    <PrimeInlineMessage severity="info">
-      We will have an adming dashboard here soon.
-    </PrimeInlineMessage>
+    <PrimeMessage severity="info"> We will have an adming dashboard here soon. </PrimeMessage>
   </div>
 </template>
 

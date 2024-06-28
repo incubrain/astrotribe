@@ -89,7 +89,7 @@ const comingSoon = [
       </template>
     </PrimeCard>
     <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
-      <PrimeInlineMessage severity="info"> Features Coming Soon! </PrimeInlineMessage>
+      <PrimeMessage severity="info"> Features Coming Soon! </PrimeMessage>
       <ul>
         <li
           v-for="item in comingSoon"
