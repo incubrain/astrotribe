@@ -124,7 +124,7 @@ const addNewContentSource = async () => {
         class="text-900 mb-2 block font-medium"
         >Scrape Frequency</label
       >
-      <PrimeDropdown
+      <PrimeSelect
         v-model="newContentSource.scrape_frequency"
         :options="scrapeFrequencies"
         optionLabel="label"
@@ -140,7 +140,7 @@ const addNewContentSource = async () => {
         class="text-900 mb-2 block font-medium"
         >Content Type</label
       >
-      <PrimeDropdown
+      <PrimeSelect
         v-model="newContentSource.content_type"
         :options="contentTypes"
         optionLabel="label"

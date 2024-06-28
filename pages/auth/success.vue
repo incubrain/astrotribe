@@ -11,15 +11,15 @@ definePageMeta({
 <template>
   <PrimeCard>
     <template #title>
-      <h2 class="text-3xl font-semibold text-primary-500 dark:text-primary-700 pb-2"> SUCCESS! </h2>
+      <h2 class="pb-2 text-3xl font-semibold text-primary-500 dark:text-primary-700"> SUCCESS! </h2>
     </template>
     <template #subtitle>
-      <PrimeInlineMessage
+      <PrimeMessage
         severity="info"
         class="text-white"
       >
         Please confirm your email
-      </PrimeInlineMessage>
+      </PrimeMessage>
     </template>
     <template #content>
       <div class="pt-2">
@@ -28,7 +28,7 @@ definePageMeta({
           <strong>{{ profile?.email }}</strong>
         </p>
         <p> with a link to activate your account. </p>
-        <div class="space-x-2 py-4 w-auto">
+        <div class="w-auto space-x-2 py-4">
           <PrimeTag>
             <a
               target="_blank"

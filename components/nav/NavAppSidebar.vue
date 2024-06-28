@@ -14,12 +14,12 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
     }"
   >
     <template #start>
-      <div class="min-h-[60px] flex justify-end items-center p-3">
+      <div class="flex min-h-[60px] items-center justify-end p-3">
         <NuxtLink
           to="/"
-          class="items-center justify-end gap-2 flex"
+          class="flex items-center justify-end gap-2"
         >
-          <h1 class="text-lg font-bold cursor-pointer leading-none tracking-normal flex">
+          <h1 class="text-lg flex cursor-pointer font-bold leading-none tracking-normal">
             ASTRO
             <strong class="text-highlight"> TRIBE </strong>
           </h1>
@@ -38,21 +38,21 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
           <span
             :class="
               route.path.split('/')[2] === item.slug.split('/')[2]
-                ? 'w-full foreground p-3 flex items-center justify-end gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
-                : 'w-full p-3 flex items-center justify-end gap-3 rounded-[.5rem_0_0_.5rem] text-sm'
+                ? 'foreground flex w-full items-center justify-end gap-3 rounded-[.5rem_0_0_.5rem] p-3 text-sm'
+                : 'flex w-full items-center justify-end gap-3 rounded-[.5rem_0_0_.5rem] p-3 text-sm'
             "
           >
             {{ item.label }}
             <Icon
               :name="item.icon"
-              class="w-[20px] h-[20px]"
+              class="h-[20px] w-[20px]"
             />
           </span>
         </NuxtLink>
       </div>
     </template>
     <template #end>
-      <div class="h-full flex justify-end items-end">
+      <div class="flex h-full items-end justify-end">
         <BaseDevHelpers v-if="isDev" />
       </div>
     </template>

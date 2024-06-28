@@ -50,14 +50,7 @@ export default defineNuxtConfig({
     },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      link: [
-        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
-        {
-          id: 'theme-link',
-          rel: 'stylesheet',
-          href: '/themes/aura-dark-teal/theme.css'
-        }
-      ],
+      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
       htmlAttrs: {
         lang: 'en'
       },

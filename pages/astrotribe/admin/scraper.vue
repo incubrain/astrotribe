@@ -12,7 +12,7 @@ const fetchContentSources = async () => {
   isLoading.value = true
   const { data, error } = await client.from('content_sources').select(`
               *,             
-      scraper_configs:scraper_configs!public_content_sources_link_scraper_id_fkey(*)
+      scraper_configs_links:scraper_configs_links!public_content_sources_link_scraper_id_fkey(*)
             `)
 
   if (error) {
@@ -26,8 +26,8 @@ const fetchContentSources = async () => {
 const selectConfig = (source) => {
   selectedSource.value = source
   console.log('source', source)
-  if (source.scraper_configs) {
-    const cfg = source.scraper_configs
+  if (source.scraper_configs_links) {
+    const cfg = source.scraper_configs_links
     selectedConfig.value = {
       id: cfg.id,
       type: cfg.scraper_type,
@@ -43,7 +43,7 @@ const saveAllConfigs = async () => {
   const updatedFields = JSON.parse(selectedConfig.value.fields)
 
   const { error } = await client
-    .from('scraper_configs')
+    .from('scraper_configs_links')
     .update({
       fields: updatedFields,
       base_selector: selectedConfig.value.base_selector

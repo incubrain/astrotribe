@@ -3,7 +3,6 @@ const catTagStore = useCategoryTagStore()
 const currentUser = useCurrentUser()
 
 onMounted(() => {
-  // FORCE DARK MODE
   document.documentElement.classList.add('dark')
 })
 
