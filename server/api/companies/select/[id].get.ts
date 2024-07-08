@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       id,
       name,
       logo_url,
-      website_url,
+      url,
       is_government,
       category_id,
       last_scraped_at,
