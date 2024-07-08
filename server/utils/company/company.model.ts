@@ -44,7 +44,7 @@ export const companySchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().optional(),
   logo_url: z.string().optional(),
-  website_url: z.string().url().optional(),
+  url: z.string().url().optional(),
   email: z.string().email().optional(),
   phone: z.string().optional(),
   last_scraped_at: datetimeOffset().nullish,
@@ -78,9 +78,7 @@ class CompanyEmployees {
     this.user_profile_id = parsedData.user_profile_id
     this.company_id = parsedData.company_id
     this.role = parsedData.role
-    this.job_description = parsedData.
-    
-    this.start_date = parsedData.start_date
+    this.job_description = parsedData.this.start_date = parsedData.start_date
     this.end_date = parsedData.end_date
     this.status = parsedData.status
     this.access_level = parsedData.access_level
@@ -113,7 +111,7 @@ export class Company {
   name?: string
   description?: string
   logo_url?: string
-  website_url?: string
+  url?: string
   email?: string
   phone?: string
   social_media_id?: number
@@ -136,7 +134,7 @@ export class Company {
     this.name = parsedData.name ?? undefined
     this.description = parsedData.description ?? undefined
     this.logo_url = parsedData.logo_url ?? undefined
-    this.website_url = parsedData.website_url ?? undefined
+    this.url = parsedData.url ?? undefined
     this.email = parsedData.email ?? undefined
     this.phone = parsedData.phone ?? undefined
     this.founding_year = parsedData.founding_year ?? undefined

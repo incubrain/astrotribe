@@ -30,13 +30,13 @@ const { getCategoryName } = useCategoryTagStore()
 </script>
 
 <template>
-  <div class="border-b-2 border-color px-4 py-8">
+  <div class="border-color border-b-2 px-4 py-8">
     <div>
       <div class="space-y-4 pb-4">
-        <div class="flex gap-4 items-center">
+        <div class="flex items-center gap-4">
           <BaseImage
             v-if="company.logo_url"
-            class="rounded-full border border-color"
+            class="border-color rounded-full border"
             :img="{
               src: `images/companies/${company.logo_url}`,
               width: '60',
@@ -44,7 +44,7 @@ const { getCategoryName } = useCategoryTagStore()
             }"
           />
           <div>
-            <h3 class="text-balance text-xl md:max-h-16 font-semibold">
+            <h3 class="text-balance text-xl font-semibold md:max-h-16">
               {{ company.name }}
             </h3>
             <p
@@ -61,7 +61,7 @@ const { getCategoryName } = useCategoryTagStore()
       </div>
     </div>
     <div class="flex flex-col gap-4">
-      <div class="flex gap-2 items-center">
+      <div class="flex items-center gap-2">
         <PrimeTag severity="info">
           {{ company.is_government ? 'Government' : 'Private' }}
         </PrimeTag>
@@ -82,7 +82,7 @@ const { getCategoryName } = useCategoryTagStore()
       >
         {{ company.description }}
       </p>
-      <div class="w-full flex justify-between items-center pt-4">
+      <div class="flex w-full items-center justify-between pt-4">
         <div>
           <BaseSocialBlock
             v-if="company.social_media"
@@ -90,7 +90,7 @@ const { getCategoryName } = useCategoryTagStore()
           />
         </div>
         <NuxtLink
-          :to="company.website_url"
+          :to="company.url"
           target="_blank"
           rel="noopener"
         >
