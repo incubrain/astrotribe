@@ -92,7 +92,7 @@ const dummyData = {
       'Agnikul Cosmos is a space tech company building small satellite launch vehicles. We are building a full stack launch vehicle to take small satellites to space.',
     founding_year: 2017,
     logo_url: 'agnikul-logo.jpg',
-    website_url: 'https://agnikul.in/#/',
+    url: 'https://agnikul.in/#/',
     is_government: false,
     category_id: 1,
     scrape_frequency: 'bi_weekly',

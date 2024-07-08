@@ -170,7 +170,7 @@ export type Database = {
           scrape_frequency: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id: number | null
           updated_at: string | null
-          website_url: string
+          url: string
         }
         Insert: {
           category?: string | null
@@ -186,7 +186,7 @@ export type Database = {
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url: string
+          url: string
         }
         Update: {
           category?: string | null
@@ -202,7 +202,7 @@ export type Database = {
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url?: string
+          url?: string
         }
         Relationships: [
           {
