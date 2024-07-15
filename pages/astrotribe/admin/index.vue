@@ -1,54 +1,76 @@
 <script setup lang="ts">
-definePageMeta({
-  layoutTransition: false,
-  name: 'Admin',
-  middleware: 'is-admin'
-})
+import {
+  AdminFinancialGrowth,
+  AdminFinancialOperations,
+  AdminFinancialMetrics,
+  AdminFinancialTotals,
+  AdminFinancialData,
+  AdminFinancialEmployees
+} from '#components'
 
-// const doc = await queryContent('bp')
-//   .where({ id: { $eq: 1 } })
-//   .findOne()
-
-// console.log('financials: ', financials)
-
-// const { data: financials2 } = await useAsyncData('financials-2', () =>
-//   queryContent('/bp/financials-2').findOne()
-// )
-
-const businessPlan = [
-  { tabTitle: 'Overview', tabName: 'overview' },
-  { tabTitle: 'Vision', tabName: 'vision' },
-  { tabTitle: 'Financials', tabName: 'financials' },
-  { tabTitle: 'Ideas', tabName: 'ideas' }
+const financialTabs = [
+  {
+    title: 'Metrics',
+    slotName: 'metrics',
+    value: 0,
+    component: AdminFinancialMetrics
+  },
+  {
+    title: 'Totals',
+    slotName: 'totals',
+    value: 1,
+    component: AdminFinancialTotals
+  },
+  {
+    title: 'Growth',
+    slotName: 'growth',
+    value: 2,
+    component: AdminFinancialGrowth
+  },
+  {
+    title: 'Operations',
+    slotName: 'operations',
+    value: 3,
+    component: AdminFinancialOperations
+  },
+  {
+    title: 'Employees',
+    slotName: 'employees',
+    value: 4,
+    component: AdminFinancialEmployees
+  },
+  {
+    title: 'Data',
+    slotName: 'data',
+    value: 5,
+    component: AdminFinancialData
+  }
 ]
 
-// "Failed to send a request to the Edge Function"
-// "FunctionsFetchError: Failed to send a request to the Edge Function\n    at http://localhost:3000/_nuxt/node_modules/.cache/vite/client/deps/chunk-3VNI2S2B.js?v=0fbc9ea7:140:17"
+definePageMeta({
+  layoutTransition: false,
+  name: 'AdminDashboard',
+  middleware: 'is-admin'
+})
 </script>
 
 <template>
-  <div class="p-4">
-    <!-- <BaseTabView :tabs="businessPlan">
+  <div class="h-full max-h-full">
+    <BaseTabView
+      ref="financialsTabView"
+      :tabs="financialTabs"
+      class="h-full w-full"
+    >
       <template
-        v-for="tab in businessPlan"
-        v-slot:[tab.tabName]
+        v-for="tab in financialTabs"
+        v-slot:[tab.slotName]
       >
-        <div class="mx-auto max-w-xl py-12">
-          <ContentDoc
-            :path="`/bp/${tab.tabName}`"
-            v-slot="{ doc }"
-          >
-            <article>
-              <ContentRenderer
-                :value="doc"
-                class="prose prose-invert prose-lg"
-              />
-            </article>
-          </ContentDoc>
-        </div>
+        <component
+          :is="tab.component"
+          class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
+        />
       </template>
-    </BaseTabView> -->
-    <PrimeMessage severity="info"> We will have an adming dashboard here soon. </PrimeMessage>
+    </BaseTabView>
   </div>
 </template>
 

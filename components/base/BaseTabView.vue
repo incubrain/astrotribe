@@ -1,7 +1,8 @@
 <script setup lang="ts">
 interface Tab {
-  tabTitle: string
-  tabName: string
+  title: string
+  slotName: string
+  value: number
 }
 
 defineProps<{
@@ -10,24 +11,35 @@ defineProps<{
 </script>
 
 <template>
-  <LazyPrimeTabView
-    :pt="{
-      nav: 'bg-transparent gap-4 sticky top-0 left-0 z-50 overflow-x-scroll',
-      panelContainer: 'bg-transparent p-0 h-full overflow-scroll'
-    }"
+  <PrimeTabs
+    :value="0"
+    class="relative"
   >
-    <PrimeTabPanel
-      v-for="(tab, index) in tabs"
-      :key="`tab-index-${index}`"
-      :header="tab.tabTitle"
+    <PrimeTabList
       :pt="{
-        headeraction: 'bg-transparent',
-        content: 'h-full'
+        tabs: 'bg-transparent gap-4 sticky top-0 left-0 z-50 overflow-x-scroll '
       }"
     >
-      <slot :name="tab.tabName" />
+      <PrimeTab
+        v-for="tab in tabs"
+        :key="tab.title"
+        :value="tab.value"
+        >{{ tab.title }}</PrimeTab
+      >
+    </PrimeTabList>
+    <PrimeTabPanel
+      v-for="(tab, index) in tabs"
+      :key="`tab-index-${tab.title}`"
+      :value="tab.value"
+      :pt="{
+        root: 'h-full h-full overflow-scroll'
+      }"
+    >
+    <div class="pb-4">
+      <slot :name="tab.slotName" />
+    </div>
     </PrimeTabPanel>
-  </LazyPrimeTabView>
+  </PrimeTabs>
 </template>
 
 <style></style>
