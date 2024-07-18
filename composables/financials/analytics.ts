@@ -1,4 +1,4 @@
-import { USD2INR } from './totals'
+import { USD2INR } from './helpers'
 
 export interface AnalyticsResult {
   total: number
@@ -89,13 +89,12 @@ function calculateSurveysCost(responses: number) {
 export function calculateAnalyticsCost({
   MAU,
   month,
-  avgMauMonthlyUsage
+  avgMauUsage
 }: UsageEstimationParams): AnalyticsResult {
-
   const { events, recordings, featureRequests, surveyResponses } = estimateUsage({
     MAU,
     month,
-    avgMauMonthlyUsage
+    avgMauUsage
   })
 
   const eventsCost = calculateProductAnalyticsCost(events)
@@ -109,7 +108,7 @@ export function calculateAnalyticsCost({
     total: USD2INR(totalCost),
     events: {
       usage: events,
-      cost: USD2INR(eventsCost),
+      cost: USD2INR(eventsCost)
     },
     recordings: {
       cost: USD2INR(recordingsCost),
@@ -117,7 +116,7 @@ export function calculateAnalyticsCost({
     },
     featureRequests: {
       cost: USD2INR(featureRequestsCost),
-      usage: featureRequests,
+      usage: featureRequests
     },
     surveyResponses: {
       cost: USD2INR(surveysCost),
@@ -129,7 +128,7 @@ export function calculateAnalyticsCost({
 type UsageEstimationParams = {
   MAU: number
   month: number
-  avgMauMonthlyUsage: number
+  avgMauUsage: number
 }
 
 type EstimatedUsage = {
@@ -141,11 +140,11 @@ type EstimatedUsage = {
 
 const FREE_TIER_MONTHS = 6
 
-function estimateUsage({ MAU, month, avgMauMonthlyUsage }: UsageEstimationParams): EstimatedUsage {
+function estimateUsage({ MAU, month, avgMauUsage }: UsageEstimationParams): EstimatedUsage {
   const isFreeTier = month < FREE_TIER_MONTHS
   const scaleFactor = isFreeTier ? 0.1 : 1
 
-  const events = Math.min(MAU * avgMauMonthlyUsage * scaleFactor, 1000000 * (month + 1))
+  const events = Math.min(MAU * avgMauUsage * scaleFactor, 1000000 * (month + 1))
   const recordings = Math.min(MAU * 0.01 * scaleFactor, 5000 * (month + 1))
   const featureRequests = Math.min(MAU * 0.05 * scaleFactor, 1000000 * (month + 1))
   const surveyResponses = Math.min(MAU * 0.02 * scaleFactor, 250 * (month + 1))

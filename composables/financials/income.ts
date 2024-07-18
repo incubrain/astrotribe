@@ -1,58 +1,47 @@
-import { USD2INR, ROUND0 } from './totals'
+import { USD2INR, ROUND0, EFFICIENCY_FACTOR } from './helpers'
+import { metricConfig } from './totals'
 
-export const subscription = {
-  pro: {
-    price: 25, // USD
-    conversion: {
-      current: 0,
-      pessimistic: 0.02,
-      optimistic: 0.06
-    },
-    churn: {
-      yearly: {
-        pessimistic: 0.3, // Yearly churn rate
-        optimistic: 0.15
+export const INCOME_STREAMS = {
+  subscription: {
+    pro: {
+      price: 20, // USD
+      conversion: {
+        current: 0,
+        pessimistic: 0.018,
+        optimistic: 0.05
+      },
+      refund: {
+        yearly: {
+          pessimistic: 0.12, // Yearly refund rate
+          optimistic: 0.06
+        }
       }
     },
-    refund: {
-      yearly: {
-        pessimistic: 0.12, // Yearly refund rate
-        optimistic: 0.06
+    expert: {
+      price: 50, // USD
+      conversion: {
+        current: 0,
+        pessimistic: 0.005,
+        optimistic: 0.025
+      },
+      refund: {
+        yearly: {
+          pessimistic: 0.12, // Yearly refund rate
+          optimistic: 0.06
+        }
       }
     }
   },
-  expert: {
-    price: 50, // USD
-    conversion: {
-      current: 0,
-      pessimistic: 0.005,
-      optimistic: 0.025
-    },
-    churn: {
-      yearly: {
-        pessimistic: 0.3, // Yearly churn rate
-        optimistic: 0.15
-      }
-    },
-    refund: {
-      yearly: {
-        pessimistic: 0.12, // Yearly refund rate
-        optimistic: 0.06
-      }
-    }
-  }
-}
-
-const streams = {
   advertising: 0.04, // USD per MAU
-  promotion: 0.02, // USD per MAU
+  promotion: 0.03, // USD per MAU
   affiliate: 0.02 // USD per MAU
 }
 
 function adjustConversionRates(MAU: number) {
+  const { subscription } = INCOME_STREAMS
   subscription.pro.conversion.current = Math.min(
     subscription.pro.conversion.pessimistic +
-      (MAU / 100000) *
+      (MAU / 150000) *
         (subscription.pro.conversion.optimistic - subscription.pro.conversion.pessimistic),
     subscription.pro.conversion.optimistic
   )
@@ -70,6 +59,7 @@ function adjustConversionRates(MAU: number) {
 }
 
 function calculatePayingUsers(MAU: number) {
+  const { subscription } = INCOME_STREAMS
   let proCustomers = ROUND0(MAU * subscription.pro.conversion.current)
   const expertFromMau = ROUND0(MAU * subscription.expert.conversion.current) // Small percentage directly from MAU
   const proUpgrades = ROUND0(proCustomers * subscription.expert.conversion.current) // Small percentage from Pro users upgrading
@@ -79,27 +69,11 @@ function calculatePayingUsers(MAU: number) {
 }
 
 function calculateRevenueFromCustomers(proCustomers: number, expertCustomers: number) {
+  const { subscription } = INCOME_STREAMS
   const proRevenue = proCustomers * subscription.pro.price
   const expertRevenue = expertCustomers * subscription.expert.price
   const totalSubscriptionRevenue = proRevenue + expertRevenue
   return { proRevenue, expertRevenue, totalSubscriptionRevenue }
-}
-
-interface RefundEfficiencyParams {
-  currentMonth: number
-  pessimistic: number
-  optimistic: number
-}
-
-function churnRefundEfficiencyFactor({
-  currentMonth,
-  pessimistic,
-  optimistic
-}: RefundEfficiencyParams): number {
-  const midpoint = 12 // Midpoint of 12 months for gradual change
-  const steepness = 0.1 // Steepness of the curve
-  const factor = 1 / (1 + Math.exp(-steepness * (currentMonth - midpoint))) // S-curve scaling
-  return pessimistic - factor * (pessimistic - optimistic)
 }
 
 interface ChurnRefundParams {
@@ -117,31 +91,29 @@ function calculateChurnAndRefunds({
   proRevenue,
   expertRevenue
 }: ChurnRefundParams) {
-  const proChurn = churnRefundEfficiencyFactor({
+  const { subscription } = INCOME_STREAMS
+  const { PESSIMISTIC, OPTIMISTIC } = metricConfig.YEARLY_CHURN.CUSTOMERS
+
+  const customerChurn = EFFICIENCY_FACTOR({
     currentMonth,
-    pessimistic: subscription.pro.churn.yearly.pessimistic,
-    optimistic: subscription.pro.churn.yearly.optimistic
+    pessimistic: PESSIMISTIC,
+    optimistic: OPTIMISTIC
   })
-  const proRefund = churnRefundEfficiencyFactor({
+  const proRefund = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: subscription.pro.refund.yearly.pessimistic,
     optimistic: subscription.pro.refund.yearly.optimistic
   })
 
-  const expertChurn = churnRefundEfficiencyFactor({
-    currentMonth,
-    pessimistic: subscription.expert.churn.yearly.pessimistic,
-    optimistic: subscription.expert.churn.yearly.optimistic
-  })
-  const expertRefund = churnRefundEfficiencyFactor({
+  const expertRefund = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: subscription.expert.refund.yearly.pessimistic,
     optimistic: subscription.expert.refund.yearly.optimistic
   })
 
-  const proChurnedUsers = proCustomers * proChurn
+  const proChurnedUsers = proCustomers * customerChurn
 
-  const expertChurnedUsers = expertCustomers * expertChurn
+  const expertChurnedUsers = expertCustomers * customerChurn
 
   const churnUsers = proChurnedUsers + expertChurnedUsers
 
@@ -151,7 +123,7 @@ function calculateChurnAndRefunds({
 
   const refundUsers = proRefundUsers + expertRefundUsers
 
-  const churnAmount = proRevenue * proChurn + expertRevenue * expertChurn
+  const churnAmount = proRevenue * customerChurn + expertRevenue * customerChurn
   const refundAmount = proRevenue * proRefund + expertRevenue * expertRefund
   const effectiveRevenue = proRevenue + expertRevenue - (churnAmount + refundAmount)
 
@@ -165,17 +137,16 @@ function calculateChurnAndRefunds({
     },
     churn: {
       cost: churnAmount,
-      pro: proChurn,
-      expert: expertChurn,
+      rate: customerChurn,
       count: churnUsers
     }
   }
 }
 
 function calculateAdditionalRevenue(MAU: number) {
-  const advertisingRevenue = MAU * streams.advertising
-  const affiliateRevenue = MAU * streams.affiliate
-  const promotionRevenue = MAU * streams.promotion
+  const advertisingRevenue = MAU * INCOME_STREAMS.advertising
+  const affiliateRevenue = MAU * INCOME_STREAMS.affiliate
+  const promotionRevenue = MAU * INCOME_STREAMS.promotion
   return { advertisingRevenue, affiliateRevenue, promotionRevenue }
 }
 
@@ -220,8 +191,7 @@ export interface RevenueResult {
     }
     churn: {
       cost: number
-      pro: number
-      expert: number
+      rate: number
       count: number
     }
     refund: {
@@ -246,6 +216,7 @@ export interface RevenueResult {
 
 export function calculateRevenue({ mau, customers, month }: RevenueParams): RevenueResult {
   adjustConversionRates(mau.total)
+  const { subscription } = INCOME_STREAMS
 
   const { proCustomers, expertCustomers } = calculatePayingUsers(mau.new)
 
@@ -274,11 +245,6 @@ export function calculateRevenue({ mau, customers, month }: RevenueParams): Reve
   const totalRevenue =
     proRevenue + expertRevenue + advertisingRevenue + affiliateRevenue + promotionRevenue
 
-  // console.log(
-  //   'totalEffectiveRevenue:',
-  //   USD2INR(effectiveRevenue),
-  //   USD2INR(proRevenue + expertRevenue)
-  // )
   const totalConversionRate = ((proCustomers + expertCustomers) / mau.new) * 100
 
   return {
@@ -307,8 +273,7 @@ export function calculateRevenue({ mau, customers, month }: RevenueParams): Reve
       },
       churn: {
         cost: USD2INR(churn.cost),
-        pro: churn.pro,
-        expert: churn.expert,
+        rate: churn.rate,
         count: parseInt(churn.count.toFixed(0))
       },
       refund: {

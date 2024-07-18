@@ -118,7 +118,7 @@ function formatINR(amount: number): string {
   } else if (absAmount >= 1_000) {
     formattedAmount = (absAmount / 1_000).toFixed(2) + 'K'
   } else {
-    formattedAmount = absAmount.toString()
+    formattedAmount = absAmount.toFixed(2)
   }
 
   return amount < 0 ? '-' + formattedAmount : formattedAmount
@@ -168,7 +168,8 @@ const defaultChartOptions = computed(() => ({
       callbacks: {
         label: function (tooltipItem: any) {
           const label = tooltipItem.dataset.label ?? tooltipItem.label ?? ''
-          const value = getFirstNumber(tooltipItem.raw, tooltipItem.parsed)
+          console.log('tooltipzzz', tooltipItem)
+          const value = getFirstNumber(tooltipItem.raw, tooltipItem.raw.value, tooltipItem.parsed)
           return `${label}: ${formatINR(value)}`
         },
         labelColor: function (context: any) {
@@ -194,6 +195,18 @@ const defaultChartOptions = computed(() => ({
     },
     y: {
       display: true,
+      ticks: {
+        callback: function (value) {
+          return formatINR(value)
+        }
+      },
+      grid: {
+        color: gridColor
+      }
+    },
+    'y-axis-2': {
+      display: true,
+      position: 'right',
       ticks: {
         callback: function (value) {
           return formatINR(value)

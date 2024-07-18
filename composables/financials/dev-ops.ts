@@ -1,33 +1,36 @@
-import { USD2INR, ROUND2 } from './totals'
+import { USD2INR, ROUND2 } from './helpers'
+import { metricConfig } from './totals'
 
-const HOURS_PER_MONTH = 730 // 24 hours * 30 days
-const AWS_EC2_COST_PER_HOUR = 0.24 // $0.24 per hour per instance
-const AWS_S3_COST_PER_GB = 0.021 // $0.021 per GB
-const AWS_DATA_TRANSFER_COST_PER_GB = 0.07 // $0.07 per GB
-const EKS_CLUSTER_COST_PER_HOUR = 0.2 // $0.20 per hour for EKS cluster
-const PROMETHEUS_GRAFANA_COST_PER_MONTH = 7000 // $7,000 per month
-const CLOUD_FLARE_COST_PER_GB = 0.015 // $0.015 per GB
+const DEVOPS = {
+  HOURS_PER_MONTH: 730, // 24 hours * 30 days
+  AWS_EC2_COST_PER_HOUR: 0.24, // $0.24 per hour per instance
+  AWS_S3_COST_PER_GB: 0.021, // $0.021 per GB
+  AWS_DATA_TRANSFER_COST_PER_GB: 0.07, // $0.07 per GB
+  EKS_CLUSTER_COST_PER_HOUR: 0.2, // $0.20 per hour for EKS cluster
+  PROMETHEUS_GRAFANA_COST_PER_MONTH: 7000, // $7,000 per month
+  CLOUD_FLARE_COST_PER_GB: 0.015 // $0.015 per GB
+}
 
 function calculateEC2Cost(mau: number): number {
   const instancesNeeded = Math.ceil(mau / 5000) // More instances for redundancy
-  return instancesNeeded * AWS_EC2_COST_PER_HOUR * HOURS_PER_MONTH
+  return instancesNeeded * DEVOPS.AWS_EC2_COST_PER_HOUR * DEVOPS.HOURS_PER_MONTH
 }
 
 function calculateS3Cost(storageGB: number): number {
-  return storageGB * AWS_S3_COST_PER_GB
+  return storageGB * DEVOPS.AWS_S3_COST_PER_GB
 }
 
 function calculateDataTransferCost(dataTransferGB: number): number {
-  return dataTransferGB * AWS_DATA_TRANSFER_COST_PER_GB
+  return dataTransferGB * DEVOPS.AWS_DATA_TRANSFER_COST_PER_GB
 }
 
 function calculateEKSCost(mau: number): number {
   const clustersNeeded = Math.ceil(mau / 25000) // More clusters for redundancy
-  return clustersNeeded * EKS_CLUSTER_COST_PER_HOUR * HOURS_PER_MONTH
+  return clustersNeeded * DEVOPS.EKS_CLUSTER_COST_PER_HOUR * DEVOPS.HOURS_PER_MONTH
 }
 
 function calculateCloudflareCDNCost(dataTransferGB: number): number {
-  return dataTransferGB * CLOUD_FLARE_COST_PER_GB
+  return dataTransferGB * DEVOPS.CLOUD_FLARE_COST_PER_GB
 }
 
 interface DevopsInhouseResult {
@@ -52,7 +55,7 @@ function calculateInHouseCosts(
   const s3Cost = calculateS3Cost(storageGB)
   const dataTransferCost = calculateDataTransferCost(dataTransferGB)
   const eksCost = calculateEKSCost(mau)
-  const prometheusGrafanaCost = PROMETHEUS_GRAFANA_COST_PER_MONTH
+  const prometheusGrafanaCost = DEVOPS.PROMETHEUS_GRAFANA_COST_PER_MONTH
   const cloudflareCost = calculateCloudflareCDNCost(dataTransferGB)
 
   const total =
@@ -148,6 +151,39 @@ export const vercelConfig = {
   }
 }
 
+/**
+ * Calculate the cost for serverless function executions.
+ *
+ * @param {number} memoryInMB - The memory allocated to the function in MB.
+ * @param {number} invocations - Number of times the function is invoked.
+ * @param {number} durationInSeconds - Duration of each invocation in seconds.
+ * @param {number} pricePerGBHour - Cost per GB-hour as specified by the provider.
+ * @returns {number} - The cost of executions in USD.
+ */
+function calculateFunctionCost(
+  memoryInMB: number,
+  invocations: number,
+  durationInSeconds: number,
+  pricePerGBHour: number
+): number {
+  // Convert memory from MB to GB
+  const memoryInGB = memoryInMB / 1024
+
+  // Calculate total seconds of execution
+  const totalSeconds = invocations * durationInSeconds
+
+  // Convert total execution time to GB-seconds
+  const totalGBSeconds = memoryInGB * totalSeconds
+
+  // Convert GB-seconds to GB-hours
+  const totalGBHours = totalGBSeconds / 3600
+
+  // Calculate the cost
+  const cost = totalGBHours * pricePerGBHour
+
+  return cost
+}
+
 const usageByHour = {
   dataTransferGB: 0.015, // 15 MB per hour per user
   originTransferGB: 0.001, // 1 MB per hour per user
@@ -155,7 +191,7 @@ const usageByHour = {
   middlewareInvocations: 75, // 75 middleware invocations per hour per user
   sourceImages: 0, // Assume no usage, handled by supabase
   functionInvocations: 75, // 75 function invocations per hour per user
-  functionDurationGBHours: 0.08, // Adjusted to 0.08 GB-hours per hour per user
+  functionDurationGBHours: 0.025596, // Assuming 360 calls/hour of a 256MB Ram Function (1 every 10 seconds per user)
   edgeFunctionExecutions: 75, // 75 edge function executions per hour per user
   dataCacheReads: 800, // Adjusted to 800 data cache reads per hour per user
   dataCacheWrites: 75, // 75 data cache writes per hour per user
@@ -219,14 +255,10 @@ function calculateEfficiencyFactor(mau: number) {
   return efficiencyFactor
 }
 
-const BASE_HOURS_PER_DAY = 0.10 // Base usage of 0.10 hours (6 minutes) per day per user
-const BASE_HOURS_GROWTH_FACTOR = 0.010 // Daily usage increases by 0.010 hours (6 minutes) for every 5,000 MAU
-const MAX_DAILY_HOUR_USAGE = 1.5 // Upper cap of 1:30 hours per day per user, IG/X avg ~2 per day
-
 function calculateDailyUsagePerUser(mau: number) {
-  const additionalHours = (mau / 5000) * BASE_HOURS_GROWTH_FACTOR
-  const dailyUsage = BASE_HOURS_PER_DAY + additionalHours
-  return Math.min(dailyUsage, MAX_DAILY_HOUR_USAGE) * 30
+  const additionalHours = (mau / 5000) * metricConfig.PROJECTION.USAGE_GROWTH_FACTOR
+  const dailyUsage = metricConfig.PROJECTION.USAGE_HOURS_PER_DAY + additionalHours
+  return Math.min(dailyUsage, metricConfig.PROJECTION.MAX_DAILY_USAGE) * 30
 }
 
 function calculateVercelUsage(mau: number): VercelUsageParams {
@@ -234,6 +266,11 @@ function calculateVercelUsage(mau: number): VercelUsageParams {
   const avgUserMonthlyHours = calculateDailyUsagePerUser(mau)
 
   const calcTotal = (usage: number) => usage * avgUserMonthlyHours * mau * efficiencyFactor
+
+  const invocationsPerMonthPerUser = (0.08 * avgUserMonthlyHours * 3600) / (0.256 * 1)
+  console.log(
+    `Estimated Function Invocations per Month per User: ${invocationsPerMonthPerUser} in Hours: ${avgUserMonthlyHours}`
+  )
 
   return {
     efficiencyFactor: ROUND2(efficiencyFactor),
@@ -421,7 +458,7 @@ function calculateVercelCost(params: VercelUsageParams): VercelResult {
 
 export interface DevopsResult {
   vercel: {
-    cost: number
+    cost: VercelResult
     usage: VercelUsageParams
   }
   inhouse: {
@@ -433,7 +470,7 @@ export interface DevopsResult {
   }
 }
 
-export function calculateDevopsCosts(mau: number) {
+export function calculateDevopsCosts(mau: number): DevopsResult {
   const { dataTransferGB, storageGB } = calculateUsageByMAU(mau)
   const vercelUsage = calculateVercelUsage(mau)
   return {
@@ -478,6 +515,16 @@ export function generateDevOpsSummaries() {
 
   addConfigSummary(vercelConfig, 'vercelPricing')
   addConfigSummary(usageByHour, 'vercel')
+
+  const {
+    AWS_DATA_TRANSFER_COST_PER_GB,
+    AWS_EC2_COST_PER_HOUR,
+    AWS_S3_COST_PER_GB,
+    CLOUD_FLARE_COST_PER_GB,
+    EKS_CLUSTER_COST_PER_HOUR,
+    HOURS_PER_MONTH,
+    PROMETHEUS_GRAFANA_COST_PER_MONTH
+  } = DEVOPS
 
   addConfigSummary(
     {

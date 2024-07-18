@@ -1,11 +1,19 @@
 <script setup lang="ts">
+const { refreshData, months } = useFinancials()
+
 import {
   AdminFinancialGrowth,
   AdminFinancialOperations,
   AdminFinancialMetrics,
   AdminFinancialTotals,
   AdminFinancialData,
-  AdminFinancialEmployees
+  AdminFinancialEmployees,
+  AdminFinancialStorage,
+  AdminFinancialAnalytics,
+  AdminFinancialDevOps,
+  AdminFinancialOpenAI,
+  AdminFinancialPayments,
+  AdminFinancialLogging
 } from '#components'
 
 const financialTabs = [
@@ -40,9 +48,45 @@ const financialTabs = [
     component: AdminFinancialEmployees
   },
   {
+    title: 'Storage',
+    slotName: 'storage',
+    value: 5,
+    component: AdminFinancialStorage
+  },
+  {
+    title: 'Analytics',
+    slotName: 'analytics',
+    value: 6,
+    component: AdminFinancialAnalytics
+  },
+  {
+    title: 'DevOps',
+    slotName: 'devops',
+    value: 7,
+    component: AdminFinancialDevOps
+  },
+  {
+    title: 'OpenAI',
+    slotName: 'openai',
+    value: 8,
+    component: AdminFinancialOpenAI
+  },
+  {
+    title: 'Payments',
+    slotName: 'payments',
+    value: 9,
+    component: AdminFinancialPayments
+  },
+  {
+    title: 'Logging',
+    slotName: 'logging',
+    value: 10,
+    component: AdminFinancialLogging
+  },
+  {
     title: 'Data',
     slotName: 'data',
-    value: 5,
+    value: 11,
     component: AdminFinancialData
   }
 ]
@@ -55,8 +99,15 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="h-full max-h-full">
+  <div class="relative h-full max-h-full">
+    <button
+      @click="refreshData"
+      class="absolute right-4 top-4 rounded-lg bg-blue-500 px-3 py-1"
+    >
+      Refresh
+    </button>
     <BaseTabView
+      v-if="months.length > 0"
       ref="financialsTabView"
       :tabs="financialTabs"
       class="h-full w-full"
