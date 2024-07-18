@@ -1,21 +1,25 @@
-import { ROUND0 } from './totals'
-import { subscription } from './income'
+import { ROUND0, USD2INR, CHURN_TO_LIFESPAN_MONTHS, EFFICIENCY_FACTOR } from './helpers'
+import { INCOME_STREAMS } from './income'
+import { metricConfig } from './totals'
 
 function calculateRecurringRevenue(revenue: number) {
-  const MRR = revenue
-  const ARR = MRR * 12
-  return { MRR: ROUND0(MRR), ARR: ROUND0(ARR) }
+  const monthlyRecurringRevenue = revenue
+  const annualRecurringRevenue = monthlyRecurringRevenue * 12
+  return {
+    monthlyRecurringRevenue: ROUND0(monthlyRecurringRevenue),
+    annualRecurringRevenue: ROUND0(annualRecurringRevenue)
+  }
 }
 
-function calculateARPU(MRR: number, totalUsers: number) {
-  return totalUsers > 0 ? ROUND0(MRR / totalUsers) : 0
+function calculateAverageRevenuePerUser(monthlyRecurringRevenue: number, totalUsers: number) {
+  return totalUsers > 0 ? ROUND0(monthlyRecurringRevenue / totalUsers) : 0
 }
 
-function calculateLTV(ARPU: number, customerLifespan: number) {
-  return ROUND0(ARPU * customerLifespan)
+function calculateCustomerLifetimeValue(averageRevenuePerUser: number, customerLifespan: number) {
+  return ROUND0(averageRevenuePerUser * customerLifespan)
 }
 
-function calculateCAC(totalMarketingCosts: number, newCustomers: number) {
+function calculateCustomerAcquisitionCost(totalMarketingCosts: number, newCustomers: number) {
   return newCustomers > 0 ? ROUND0(totalMarketingCosts / newCustomers) : 0
 }
 
@@ -23,40 +27,41 @@ function calculateRetentionRate(churnRate: number) {
   return 100 - churnRate * 100
 }
 
-function calculateTotalConversionRate(customers: number, MAU: number) {
-  return MAU > 0 ? parseInt(((customers / MAU) * 100).toFixed(0)) : 0
+function calculateTotalConversionRate(customers: number, monthlyActiveUsers: number) {
+  return monthlyActiveUsers > 0 ? parseInt(((customers / monthlyActiveUsers) * 100).toFixed(0)) : 0
 }
 
-function calculateGrossMargin(revenue: number, COGS: number) {
-  return revenue > 0 ? parseInt((((revenue - COGS) / revenue) * 100).toFixed(0)) : 0
+function calculateGrossMargin(revenue: number, costOfGoodsSold: number) {
+  return revenue > 0 ? parseInt((((revenue - costOfGoodsSold) / revenue) * 100).toFixed(0)) : 0
 }
 
 function calculateMarketingSpendEfficiency(totalMarketingCosts: number, revenue: number) {
   return revenue > 0 ? parseInt(((revenue / totalMarketingCosts) * 100).toFixed(0)) : 0
 }
 
+
 interface AllMetricsParams {
   MAU: number
+  currentMonth: number
   marketingCost: number
   leads: number
-  customerLifespan: number
   currentBalance: number
   expenses: number
   effectiveRevenue: number
   customers: {
     all: number
     new: number
-    existing: number
     churned: number
   }
 }
 
 export interface AllMetrics {
-  MRR: number
-  ARR: number
-  ARPU: number
-  LTV: number
-  CAC: number
+  monthlyRecurringRevenue: number
+  annualRecurringRevenue: number
+  averageRevenuePerUser: number
+  customerLifetimeValue: number
+  customerAcquisitionCost: number
+  customerLifespan: number
   retentionRate: number
   totalConversionRate: number
   grossMargin: number
@@ -65,31 +70,41 @@ export interface AllMetrics {
 }
 
 export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
-  const { MAU, marketingCost, leads, customerLifespan, expenses, effectiveRevenue, customers } =
-    params
+  const { MAU, marketingCost, expenses, effectiveRevenue, customers, currentMonth } = params
 
-  const { MRR, ARR } = calculateRecurringRevenue(effectiveRevenue)
+  const churnRate = EFFICIENCY_FACTOR({
+    currentMonth,
+    pessimistic: metricConfig.YEARLY_CHURN.CUSTOMERS.PESSIMISTIC,
+    optimistic: metricConfig.YEARLY_CHURN.CUSTOMERS.OPTIMISTIC
+  })
 
-  const ARPU = calculateARPU(MRR, customers.all)
-  const LTV = calculateLTV(ARPU, customerLifespan)
-  const CAC = calculateCAC(marketingCost, customers.new)
-  const retentionRate = calculateRetentionRate(subscription.pro.churn.yearly)
-
+  const { monthlyRecurringRevenue, annualRecurringRevenue } =
+    calculateRecurringRevenue(effectiveRevenue)
+  const customerLifespan = CHURN_TO_LIFESPAN_MONTHS(churnRate)
+  const averageRevenuePerUser = calculateAverageRevenuePerUser(
+    monthlyRecurringRevenue,
+    customers.all
+  )
+  const customerLifetimeValue = calculateCustomerLifetimeValue(
+    averageRevenuePerUser,
+    customerLifespan
+  )
+  const customerAcquisitionCost = calculateCustomerAcquisitionCost(marketingCost, customers.new)
+  const retentionRate = calculateRetentionRate(churnRate)
   const totalConversionRate = calculateTotalConversionRate(customers.all, MAU)
-
   const grossMargin = calculateGrossMargin(effectiveRevenue, expenses)
-
   const marketingSpendEfficiency = calculateMarketingSpendEfficiency(
     marketingCost,
     effectiveRevenue
   )
 
   return {
-    MRR,
-    ARR,
-    ARPU,
-    LTV,
-    CAC,
+    monthlyRecurringRevenue,
+    annualRecurringRevenue,
+    averageRevenuePerUser,
+    customerLifetimeValue,
+    customerAcquisitionCost,
+    customerLifespan,
     retentionRate,
     totalConversionRate,
     grossMargin,

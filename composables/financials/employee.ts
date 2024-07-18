@@ -1,79 +1,4 @@
-import { USD2INR, ROUND0 } from './totals'
-
-type Subscription = {
-  name: string
-  baseCost: number
-  seatCost: number
-  annualDiscount: number
-  seatRatio: number
-}
-
-const subscriptions: Subscription[] = [
-  {
-    name: 'ChatGPT',
-    baseCost: 30,
-    seatCost: 30,
-    annualDiscount: 5,
-    seatRatio: 1
-  },
-  {
-    name: 'GitHub Teams',
-    baseCost: 4,
-    seatCost: 4,
-    annualDiscount: 0,
-    seatRatio: 0.65
-  },
-  {
-    name: 'GitHub Copilot',
-    baseCost: 19,
-    seatCost: 19,
-    annualDiscount: 0,
-    seatRatio: 0.65
-  },
-  {
-    name: 'Adobe',
-    baseCost: 25,
-    seatCost: 25,
-    annualDiscount: 0,
-    seatRatio: 0.15
-  },
-  {
-    name: 'Google Business',
-    baseCost: 7.2,
-    seatCost: 7.2,
-    annualDiscount: 0,
-    seatRatio: 1
-  },
-  {
-    name: 'Posthog',
-    baseCost: 0,
-    seatCost: 19,
-    annualDiscount: 0,
-    seatRatio: 0.15
-  }
-]
-
-function calculateMonthlyCost(subscription: Subscription, seats: number): number {
-  return USD2INR(subscription.baseCost + subscription.seatCost * seats)
-}
-
-function calculateAnnualCost(subscription: Subscription, seats: number): number {
-  return (subscription.seatCost - subscription.annualDiscount) * seats
-}
-
-function calculateSubscriptionCosts(totalEmployees: number) {
-  const serviceCosts = []
-  let totalCost = 0
-  for (const subscription of subscriptions) {
-    const numberOfSeats = ROUND0(Math.ceil(totalEmployees * subscription.seatRatio))
-    const cost = calculateMonthlyCost(subscription, numberOfSeats)
-    totalCost += cost
-    serviceCosts.push({ name: subscription.name, seats: numberOfSeats, cost: ROUND0(cost) })
-    // const annualCost = calculateAnnualCost(subscription, numberOfSeats);
-  }
-
-  return { totalCost: ROUND0(totalCost), serviceCosts }
-}
+import { USD2INR, ROUND0 } from './helpers'
 
 const BASE_EMPLOYEE_COUNT = {
   support: 2,
@@ -191,20 +116,84 @@ export type EmployeeResult = {
   core: EmployeeConfig
   experts: EmployeeConfig
   founders: EmployeeConfig
-  software: {
-    totalCost: number
-    serviceCosts: { name: string; seats: number; cost: number }[]
-  }
 }
 
-export function calculateEmployeeCost(
-  mau: number,
+interface EmployeeCostParams {
+  mau: number
   stage: keyof typeof EMPLOYEE_CONFIG
-): EmployeeResult {
+  month: number
+  bootstrapMonths: number
+}
+
+export function calculateEmployeeCost({
+  mau,
+  stage,
+  month,
+  bootstrapMonths
+}: EmployeeCostParams): EmployeeResult {
   const baseCount = BASE_EMPLOYEE_COUNT
   const stageConfig = EMPLOYEE_CONFIG[stage]
 
-  // EXTRACT IF POSSIBLE
+  if (month < bootstrapMonths) {
+    return {
+      totalCost: 0,
+      efficiency: 0,
+      totalEmployees: 0,
+      support: {
+        employeeCount: 0,
+        total: 0,
+        totalSalary: 0,
+        totalExtras: 0,
+        salary: 0,
+        turnover: 0,
+        legal: 0,
+        benefits: 0,
+        recruitment: 0,
+        technology: 0,
+        mauRatio: 0,
+      },
+      core: {
+        employeeCount: 0,
+        total: 0,
+        totalSalary: 0,
+        totalExtras: 0,
+        salary: 0,
+        turnover: 0,
+        legal: 0,
+        benefits: 0,
+        recruitment: 0,
+        technology: 0,
+        mauRatio: 0,
+      },
+      experts: {
+        employeeCount: 0,
+        total: 0,
+        totalSalary: 0,
+        totalExtras: 0,
+        salary: 0,
+        turnover: 0,
+        legal: 0,
+        benefits: 0,
+        recruitment: 0,
+        technology: 0,
+        mauRatio: 0,
+      },
+      founders: {
+        employeeCount: 0,
+        total: 0,
+        totalSalary: 0,
+        totalExtras: 0,
+        salary: 0,
+        turnover: 0,
+        legal: 0,
+        benefits: 0,
+        recruitment: 0,
+        technology: 0,
+        mauRatio: 0,
+      },
+    }
+  }
+
   const efficiency = (mau / 1000) * 0.01
   const supportRatio = 7000 + 2500 * efficiency
   const coreRatio = 8500 + 5000 * efficiency
@@ -214,10 +203,6 @@ export function calculateEmployeeCost(
   const coreCount = baseCount.core + Math.round(mau / coreRatio)
   const expertsCount = baseCount.experts + Math.round(mau / expertsRatio)
   const totalEmployees = supportCount + coreCount + expertsCount + baseCount.founders
-
-  const software = calculateSubscriptionCosts(
-    supportCount + coreCount + expertsCount + baseCount.founders
-  )
 
   const calculateCost = (count: number, salary: number, mauRatio?: number) => {
     const totalSalary = count * salary
@@ -248,7 +233,7 @@ export function calculateEmployeeCost(
   const experts = calculateCost(expertsCount, stageConfig.experts.salary, expertsRatio)
   const founders = calculateCost(baseCount.founders, stageConfig.founders.salary)
 
-  const totalCost = support.total + core.total + experts.total + founders.total + software.totalCost
+  const totalCost = support.total + core.total + experts.total + founders.total
 
   return {
     totalCost,
@@ -258,6 +243,5 @@ export function calculateEmployeeCost(
     core,
     experts,
     founders,
-    software
   }
 }

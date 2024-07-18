@@ -1,4 +1,4 @@
-import { USD2INR } from './totals'
+import { USD2INR } from './helpers'
 
 // Updated configuration to include metrics and analytics pricing
 export const LOGS_CONFIG = {
@@ -21,7 +21,7 @@ export const LOGS_ANALYTICS_CONFIG = {
 type LogsCostParams = {
   MAU: number
   month: number
-  avgMauMonthlyUsage: number
+  avgMauUsage: number
   teamMembers: number
 }
 
@@ -36,7 +36,7 @@ export interface LoggingResult {
 type UsageParams = {
   MAU: number
   month: number
-  avgMauMonthlyUsage: number
+  avgMauUsage: number
   teamMembers: number
   ingestedGB: number
   additionalIngestedGB: number
@@ -46,9 +46,9 @@ type UsageParams = {
 }
 
 function estimateUsage(params: LogsCostParams): UsageParams {
-  const { MAU, month, avgMauMonthlyUsage, teamMembers } = params
+  const { MAU, month, avgMauUsage, teamMembers } = params
 
-  const ingestedGB = MAU * avgMauMonthlyUsage
+  const ingestedGB = MAU * avgMauUsage
   const additionalIngestedGB =
     ingestedGB > LOGS_CONFIG.includedGB ? ingestedGB - LOGS_CONFIG.includedGB : 0
 
@@ -63,7 +63,7 @@ function estimateUsage(params: LogsCostParams): UsageParams {
   return {
     MAU,
     month,
-    avgMauMonthlyUsage,
+    avgMauUsage,
     teamMembers,
     ingestedGB,
     additionalIngestedGB,
@@ -105,7 +105,8 @@ export function calculateLogsCost(params: LogsCostParams): LoggingResult {
       analytics: USD2INR(analyticsCost)
     }
   } else {
-    const { includedGB, additionalGBPrice, retentionPricePerGBPerMonth, minimumCharge } = LOGS_CONFIG
+    const { includedGB, additionalGBPrice, retentionPricePerGBPerMonth, minimumCharge } =
+      LOGS_CONFIG
 
     // Calculate ingested cost
     const ingestedCost = additionalIngestedGB * additionalGBPrice

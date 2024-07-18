@@ -1,13 +1,15 @@
 <script setup lang="ts">
-
 const {
-  expenses,
-  growth,
+  advertising,
+  analytics,
+  capital,
+  employees,
+  logging,
   metrics,
-  info,
-  months,
-  stages,
-  chartRanges,
+  openAI,
+  payments,
+  storage,
+  totals,
   formatINR,
   filteredData,
   toggleChartRange,
@@ -15,23 +17,16 @@ const {
 } = useFinancials()
 
 const allDatasets = [
-  expenses.devOps.value,
-  expenses.employees.value,
-  expenses.totals.value,
-  expenses.office.value,
-  expenses.openAI.value,
-  expenses.devOps.value,
-  expenses.storage.value,
-  expenses.logging.value,
-  expenses.digitalOcean.value,
-  growth.mau.value,
-  growth.revenue.value,
-  growth.capital.value,
-  growth.customers.value,
-  growth.affiliate.value,
-  growth.advertising.value,
-  growth.promotion.value,
-  growth.churn.value,
+  advertising.value,
+  analytics.value,
+  capital.value,
+  employees.value,
+  logging.value,
+  metrics.value,
+  openAI.value,
+  payments.value,
+  storage.value,
+  totals.value
 ]
 </script>
 
@@ -42,7 +37,10 @@ const allDatasets = [
       :key="`metrics-datasets-${index}`"
       class="border-color space-y-2 rounded-lg border p-4"
     >
-      <div v-for="dataset in datasets" class="pb-2 border-b border-color">
+      <div
+        v-for="dataset in datasets"
+        class="border-color border-b pb-2"
+      >
         <p class="text-xl font-semibold text-primary-950">{{ dataset.name }}</p>
         <span
           v-for="(value, index) in dataset.values"

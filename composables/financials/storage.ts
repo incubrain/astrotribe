@@ -1,5 +1,5 @@
-import type { Content } from './totals'
-import { USD2INR } from './totals'
+import type { Content, ContentParams } from './totals'
+import { USD2INR } from './helpers'
 
 export const SUPABASE_CONFIG = {
   pro: {
@@ -151,7 +151,6 @@ export function calculateVectorStorage(
   return parseFloat(totalGB.toFixed(3))
 }
 
-
 export function calculateContentStorage(numItems: number, contentWords: number): number {
   const contentChars = contentWords * AVG_CHARS_PER_WORD
   const bytesPerItem = contentChars
@@ -260,17 +259,6 @@ function determineComputePlan(dbStorageGB: number): SBPlan {
   return '16xl'
 }
 
-type ContentParams = {
-  total: number
-  words: {
-    prompt: number
-    content: number
-    output: number
-    chunks: number
-  }
-  contentType: string
-}
-
 interface StorageResult {
   total: number
   db: number
@@ -290,26 +278,31 @@ interface StorageResult {
   }[]
 }
 
-function calculateStorageUsage(contentParams: ContentParams[]): StorageResult {
+
+function calculateStorageUsage(
+  contentParams: ContentParams[],
+  currentMonth: number
+): StorageResult {
   let totalDbStorageGB = 0
   let totalVectorStorageGB = 0
+
   const details = []
 
-  for (const { contentType, total, words } of contentParams) {
-    const contentStorage = calculateContentStorage(total, words.content + words.output)
-
-    const vectorStorage = calculateVectorStorage(VECTOR_SIZES.large, words.chunks * total)
+  for (const { CONTENT_TYPE, TOTAL, WORDS, PROCESSED } of contentParams) {
+    // console.log('DATABASE', CONTENT_TYPE, TOTAL, WORDS, PROCESSED)
+    const contentStorage = calculateContentStorage(TOTAL, WORDS.CONTENT + WORDS.OUTPUT)
+    const vectorStorage = calculateVectorStorage(VECTOR_SIZES.large, WORDS.CHUNKS * PROCESSED)
 
     totalDbStorageGB += contentStorage
     totalVectorStorageGB += vectorStorage
 
     details.push({
       content: {
-        type: contentType,
-        count: total,
-        avgWords: words.content,
-        totalWords: words.content * total,
-        totalChunks: words.chunks * total
+        type: CONTENT_TYPE,
+        count: TOTAL,
+        avgWords: WORDS.CONTENT,
+        totalWords: WORDS.CONTENT * TOTAL,
+        totalChunks: WORDS.CHUNKS * TOTAL
       },
       storage: {
         total: contentStorage + vectorStorage,
@@ -352,10 +345,11 @@ export interface StorageCostResult {
 
 export function calculateSupabaseCosts(
   mau: number,
+  currentMonth: number,
   contentParams: ContentParams[]
 ): StorageCostResult {
   console.log('Content Params:', contentParams, mau)
-  const storage = calculateStorageUsage(contentParams)
+  const storage = calculateStorageUsage(contentParams, currentMonth)
   const computePlan = determineComputePlan(storage.total)
 
   console.log('Compute Plan:', computePlan)
@@ -369,6 +363,7 @@ export function calculateSupabaseCosts(
   // EXTRACT
   const bandwidthGB = Math.max(250, mau * 0.05)
   const fileStorageGB = Math.max(100, mau * 0.01)
+
   const storageCost = calculateStorageCost({
     monthlyActiveUsers: mau,
     dbStorageGB: storage.total,
