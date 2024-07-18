@@ -1,28 +1,33 @@
 <script setup lang="ts">
 const analyticsTabs = [
   {
-    tabTitle: 'Realtime',
-    tabName: 'realtime',
+    title: 'Realtime',
+    slotName: 'realtime',
+    value: 0,
     src: 'https://us.posthog.com/embedded/qZ7aQk6ZyuCEp0npTLkWkOu3geB5eA?whitelabel'
   },
   {
-    tabTitle: 'Dashboard',
-    tabName: 'dashboard',
+    title: 'Dashboard',
+    slotName: 'dashboard',
+    value: 1,
     src: 'https://us.posthog.com/embedded/Za4dgg7lpaDSZhmoPIlJE8-724hqiw?whitelabel'
   },
   {
-    tabTitle: 'Landing Page',
-    tabName: 'landingPage',
+    title: 'Landing Page',
+    slotName: 'landingPage',
+    value: 2,
     src: 'https://us.posthog.com/embedded/6suXX7B2fY6uvr1oCCVo-KsU3g--1A?whitelabel'
   },
   {
-    tabTitle: 'Growth',
-    tabName: 'growth',
+    title: 'Growth',
+    slotName: 'growth',
+    value: 3,
     src: 'https://us.posthog.com/embedded/5U8l5Qu1ougk0m5i_RvLgMAPWnXx5A?whitelabel'
   },
   {
-    tabTitle: 'Users',
-    tabName: 'users',
+    title: 'Users',
+    slotName: 'users',
+    value: 4,
     src: 'https://us.posthog.com/embedded/5_O5m7upw1QjlBHMIcr0MVp_Q_HX8w?whitelabel'
   }
 ]
@@ -55,17 +60,17 @@ definePageMeta({
 })
 </script>
 <template>
-  <div class="w-full h-full">
+  <div class="w-full min-h-full">
     <BaseTabView
       ref="analyticsTabView"
       :tabs="analyticsTabs"
-      class="w-full h-full pb-4"
+      class="w-full min-h-full pb-4"
     >
       <template
         v-for="tab in analyticsTabs"
-        v-slot:[tab.tabName]
+        v-slot:[tab.slotName]
       >
-      <div class="h-full p-4">
+      <div class="min-h-full h-[100vh] p-4">
         <iframe
           class="invert h-full"
           width="100%"
