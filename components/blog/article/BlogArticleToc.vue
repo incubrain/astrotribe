@@ -7,51 +7,56 @@
         severity="secondary"
       />
     </div>
-    <PrimeAccordion>
-      <PrimeAccordionTab header="Table of Contents">
-        <ul>
-          <li
-            v-for="item in toc"
-            :key="item.id"
-            class="py-1"
-          >
-            <NuxtLink
-              class="text-lg font-[Oswald]"
-              :class="{ 'text-primary-500 dark:text-primary-600': isActiveSection(item.id) }"
-              :to="`#${item.id}`"
+    <PrimeAccordion value="0">
+      <PrimeAccordionPanel value="0">
+        <PrimeAccordionHeader>
+          <h3 class="text-lg font-semibold">Table of Contents</h3>
+        </PrimeAccordionHeader>
+        <PrimeAccordionContent>
+          <ul>
+            <li
+              v-for="item in toc"
+              :key="item.id"
+              class="py-1"
             >
-              <h4>
-                {{ item.text }}
-              </h4>
-            </NuxtLink>
-            <ul
-              v-if="item.children"
-              :class="[
-                'transition-all duration-700 ease-out overflow-hidden space-y-2 text-sm',
-                isSectionOrChildActive(item) || expanded
-                  ? `max-h-[${Math.floor((item.children.length + 1) * 31)}px] pt-2`
-                  : 'max-h-[0px] py-0'
-              ]"
-            >
-              <li
-                v-for="child in item.children"
-                :key="`toc-child${child.id}`"
-                :class="{
-                  'ml-4 max-w-[80%]': child.depth === 3,
-                  'text-primary-500 dark:text-primary-600': isActiveSection(child.id)
-                }"
-                class="leading-tight"
+              <NuxtLink
+                class="text-lg font-[Oswald]"
+                :class="{ 'text-primary-500 dark:text-primary-600': isActiveSection(item.id) }"
+                :to="`#${item.id}`"
               >
-                <NuxtLink :to="`#${child.id}`">
-                  <h5>
-                    {{ child.text }}
-                  </h5>
-                </NuxtLink>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </PrimeAccordionTab>
+                <h4>
+                  {{ item.text }}
+                </h4>
+              </NuxtLink>
+              <ul
+                v-if="item.children"
+                :class="[
+                  'space-y-2 overflow-hidden text-sm transition-all duration-700 ease-out',
+                  isSectionOrChildActive(item) || expanded
+                    ? `max-h-[${Math.floor((item.children.length + 1) * 31)}px] pt-2`
+                    : 'max-h-[0px] py-0'
+                ]"
+              >
+                <li
+                  v-for="child in item.children"
+                  :key="`toc-child${child.id}`"
+                  :class="{
+                    'ml-4 max-w-[80%]': child.depth === 3,
+                    'text-primary-500 dark:text-primary-600': isActiveSection(child.id)
+                  }"
+                  class="leading-tight"
+                >
+                  <NuxtLink :to="`#${child.id}`">
+                    <h5>
+                      {{ child.text }}
+                    </h5>
+                  </NuxtLink>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </PrimeAccordionContent>
+      </PrimeAccordionPanel>
     </PrimeAccordion>
   </div>
 </template>
