@@ -13,7 +13,6 @@ const config = reactive({
 const chunkIds = computed(() => similarChunks.value.map((doc) => doc.id) ?? null)
 const chunkMetrics = ref(null as null | ResearchMetric[])
 
-
 // const currentChunkMetrics = (id: string) =>
 //   chunkMetrics.value?.find((metric) => metric.research_id === id)
 </script>
@@ -64,7 +63,7 @@ const chunkMetrics = ref(null as null | ResearchMetric[])
         :doc="{
           body: doc.chunk,
           id: doc.research_id,
-          url: doc.url,
+          url: doc.url
         }"
       >
         <template #header>
@@ -76,13 +75,18 @@ const chunkMetrics = ref(null as null | ResearchMetric[])
           </PrimeButton>
         </template>
         <template #footer>
-          <PrimeAccordion>
-            <PrimeAccordionTab header="Metrics">
-              <!-- <AdminResearchMetricsChunk
-                v-if="chunkMetrics?.length"
-                :metrics="currentChunkMetrics(doc.id)"
-              /> -->
-            </PrimeAccordionTab>
+          <PrimeAccordion value="0">
+            <PrimeAccordionPanel value="0">
+              <PrimeAccordionHeader>
+                <p class="font-semibold">Metrics</p>
+              </PrimeAccordionHeader>
+              <PrimeAccordionContent>
+                <!-- <AdminResearchMetricsChunk
+                  v-if="chunkMetrics?.length"
+                  :metrics="currentChunkMetrics(doc.id)"
+                /> -->
+              </PrimeAccordionContent>
+            </PrimeAccordionPanel>
           </PrimeAccordion>
         </template>
       </AdminResearchCard>
