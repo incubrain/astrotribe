@@ -1,4 +1,4 @@
-import { ROUND0 } from './totals'
+import { ROUND0 } from './helpers'
 
 interface InitialLoanParams {
   loan: number
@@ -7,7 +7,7 @@ interface InitialLoanParams {
 }
 
 export interface LoanResult {
-  loanStart: number
+  principal: number
   termInYears: number
   annualInterestRate: number
   monthlyInterestOnlyPayment: number
@@ -40,7 +40,7 @@ export function calculateInitialLoan({
   const monthlyPrincipalPayment = monthlyTotalPayment - monthlyInterestOnlyPayment
 
   return {
-    loanStart: loan,
+    principal: loan,
     termInYears,
     annualInterestRate,
     monthlyInterestOnlyPayment: Math.round(monthlyInterestOnlyPayment * 100) / 100,
@@ -49,21 +49,6 @@ export function calculateInitialLoan({
   }
 }
 
-interface LoanRepaymentParams {
-  month: number
-  loan: number
-  expenses: number
-  income: number
-}
-
-export interface CapitalResult {
-  runway: number
-  burnRate: number
-  balance: {
-    start: number
-    end: number
-  }
-}
 function calculateBurnRate(totalExpenses: number, MRR: number) {
   return ROUND0(totalExpenses - MRR)
 }
@@ -75,18 +60,59 @@ function calculateRunway(currentBalance: number, burnRate: number): number {
   return parseInt((currentBalance / Math.abs(burnRate)).toFixed(0))
 }
 
+export interface CapitalResult {
+  loan: LoanResult
+  runway: number
+  burnRate: number
+  balance: {
+    start: number
+    end: number
+  }
+}
+
+interface LoanRepaymentParams {
+  month: number
+  loan: {
+    AMOUNT: number
+    ANNUAL_INTEREST_RATE: number
+    TERM_IN_YEARS: number
+  }
+  expenses: number
+  income: number
+  bootstrapMonths: number
+  initialCapital: number
+}
+
 let balanceRemaining = 0
+let loanStarted = {
+  principal: 0,
+  termInYears: 0,
+  annualInterestRate: 0,
+  monthlyInterestOnlyPayment: 0,
+  monthlyTotalPayment: 0,
+  monthlyPrincipalPayment: 0
+}
+
 export function calculateRemainingBalance({
   month,
-  loan,
   expenses,
-  income
+  income,
+  bootstrapMonths,
+  initialCapital,
+  loan
 }: LoanRepaymentParams): CapitalResult {
   if (month === 1) {
-    balanceRemaining = loan
+    balanceRemaining = initialCapital
   }
 
-  console.log('balance remaining', balanceRemaining)
+  if (month === bootstrapMonths) {
+    balanceRemaining += loan.AMOUNT
+    loanStarted = calculateInitialLoan({
+      loan: loan.AMOUNT,
+      annualInterestRate: loan.ANNUAL_INTEREST_RATE,
+      termInYears: loan.TERM_IN_YEARS
+    })
+  }
 
   const burnRate = calculateBurnRate(expenses, income)
   balanceRemaining -= burnRate
@@ -94,8 +120,8 @@ export function calculateRemainingBalance({
   const adjustedBurn = burnRate < 0 ? 0 : burnRate
   const runway = calculateRunway(balanceRemaining, adjustedBurn)
 
-  console.log('BALANCE END', month, balanceRemaining, runway, burnRate)
   return {
+    loan: loanStarted,
     runway,
     burnRate,
     balance: {

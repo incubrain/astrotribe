@@ -1,4 +1,4 @@
-import { USD2INR } from './totals'
+import { USD2INR } from './helpers'
 
 type DOPlan = '1vcpu-1gb' | '2vcpu-2gb' | '4vcpu-8gb' | '8vcpu-16gb' | '16vcpu-32gb'
 
@@ -50,9 +50,7 @@ export interface DigitalOceanResult {
 }
 
 function calculatePlan(bandwidthGB: number): DOPlan {
-  if (bandwidthGB <= 150) {
-    return '1vcpu-1gb'
-  } else if (bandwidthGB <= 200) {
+  if (bandwidthGB <= 200) {
     return '2vcpu-2gb'
   } else if (bandwidthGB <= 300) {
     return '4vcpu-8gb'
@@ -64,7 +62,6 @@ function calculatePlan(bandwidthGB: number): DOPlan {
 }
 
 export function calculateDigitalOceanCost(params: DigitalOceanCostParams): DigitalOceanResult {
-  // pass in the bandwidthGB to calculate the plan
   const plan = calculatePlan(params.bandwidthGB || 150)
   console.log('digital ocean storage: ', params.bandwidthGB, plan)
   const planDetails = digitalOceanConfig.plans[plan]
