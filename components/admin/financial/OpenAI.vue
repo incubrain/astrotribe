@@ -1,52 +1,76 @@
 <script setup lang="ts">
-const { months, openAI, chartRanges, filteredData, rgba } = useFinancials()
+const { months, openAI, rgba } = useFinancials()
 
-const charts = ref([] as any[])
+const embeddingDetails = computed(() =>
+  openAI.value.map((month) =>
+    month.breakdown.reduce(
+      (acc, detail) => {
+        acc.totalCost += detail.embedding.totalCost
+        acc.totalTokens += detail.embedding.tokens.total
+        return acc
+      },
+      {
+        totalCost: 0,
+        totalTokens: 0,
+        model: '',
+        batch: ''
+      }
+    )
+  )
+)
 
-watchEffect(() => {
-  if (!openAI.value.totalCost || !months.value.length) {
-    charts.value = []
-    return
+const summaryDetails = computed(() =>
+  openAI.value.map((month) =>
+    month.breakdown.reduce(
+      (acc, detail) => {
+        acc.totalCost += detail.summary.cost.total
+        acc.inputCost += detail.summary.cost.input
+        acc.outputCost += detail.summary.cost.output
+        acc.totalTokens += detail.summary.tokens.total
+        acc.inputTokens += detail.summary.tokens.input
+        acc.outputTokens += detail.summary.tokens.output
+        return acc
+      },
+      {
+        totalCost: 0,
+        inputCost: 0,
+        outputCost: 0,
+        totalTokens: 0,
+        inputTokens: 0,
+        outputTokens: 0,
+        model: '',
+        batch: ''
+      }
+    )
+  )
+)
+
+console.log('details', summaryDetails.value)
+// embeddingDetails.value.flatMap((detail) =>
+//   detail.map((d) => d.totalCost).reduce((a, b) => a + b, 0)
+// )
+
+const charts = computed(() => {
+  if (!months.value.length) {
+    return []
   }
 
-  charts.value = [
+  return [
     {
-      id: 0,
-      title: 'Logging Costs Breakdown',
-      subtitle: 'Shows the breakdown of logging costs for the selected timeperiod.',
+      title: 'OpenAI Costs Breakdown',
+      subtitle: 'Shows the breakdown of OpenAI costs for the selected time period.',
       type: 'bar',
       data: {
-        labels: [
-          openAI.value.embedding.name,
-          openAI.value.summary.name,
-          openAI.value.chatFreeCost.name,
-          openAI.value.chatProCost.name,
-          openAI.value.chatExpertCost.name
-        ],
+        labels: ['Total Cost', 'Embedding Cost', 'Summary Cost', 'Chat Cost'],
         datasets: [
           {
-            label: 'Total Logging Costs',
+            label: 'Total OpenAI Costs',
+            valueType: 'currency',
             data: [
-              filteredData(openAI.value.embedding.values, chartRanges.value[0]).value.reduce(
-                (a, b) => a + b,
-                0
-              ),
-              filteredData(
-                openAI.value.summary.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0),
-              filteredData(
-                openAI.value.chatFreeCost.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0),
-              filteredData(
-                openAI.value.chatProCost.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0),
-              filteredData(
-                openAI.value.chatExpertCost.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0)
+              openAI.value.map((month) => month.cost.total).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.embedding).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.summary).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.chat).reduce((a, b) => a + b, 0)
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
@@ -57,505 +81,379 @@ watchEffect(() => {
             ]
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Costs',
-      id: 0,
+      title: 'OpenAI Token Breakdown',
+      subtitle: 'Shows the breakdown of OpenAI token usage for the selected time period.',
+      type: 'bar',
+      data: {
+        labels: [
+          'Free Chat Input',
+          'Free Chat Output',
+          'Pro Chat Input',
+          'Pro Chat Output',
+          'Expert Chat Input',
+          'Expert Chat Output',
+          'Embeddings',
+          'Summary Input',
+          'Summary Output'
+        ],
+        datasets: [
+          {
+            label: 'Token Usage',
+            valueType: 'number',
+            data: [
+              openAI.value
+                .flatMap((month) => month.chat.free.tokens.input)
+                .reduce((a, b) => a + b, 0),
+              openAI.value
+                .flatMap((month) => month.chat.free.tokens.output)
+                .reduce((a, b) => a + b, 0),
+              openAI.value
+                .flatMap((month) => month.chat.pro.tokens.input)
+                .reduce((a, b) => a + b, 0),
+              openAI.value
+                .flatMap((month) => month.chat.pro.tokens.output)
+                .reduce((a, b) => a + b, 0),
+              openAI.value
+                .flatMap((month) => month.chat.expert.tokens.input)
+                .reduce((a, b) => a + b, 0),
+              openAI.value
+                .flatMap((month) => month.chat.expert.tokens.output)
+                .reduce((a, b) => a + b, 0),
+              embeddingDetails.value.map((d) => d.totalTokens).reduce((a, b) => a + b, 0),
+              summaryDetails.value.map((d) => d.inputTokens).reduce((a, b) => a + b, 0),
+              summaryDetails.value.map((d) => d.outputTokens).reduce((a, b) => a + b, 0)
+            ],
+            backgroundColor: [
+              rgba('lightGreen', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('darkBlue', 0.5)
+            ]
+          }
+        ]
+      }
+    },
+    {
       title: 'OpenAI Cost Breakdown',
       subtitle: 'Shows the total cost breakdown for OpenAI services over time.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[0]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Cost',
+            valueType: 'currency',
             type: 'line',
-            data: filteredData(openAI.value.totalCost.values, chartRanges.value[0]).value,
+            data: openAI.value.flatMap((month) => month.cost.total),
             borderColor: rgba('lightBlue', 0.5)
           },
           {
             label: 'Embedding Cost',
-            data: filteredData(openAI.value.embedding.values, chartRanges.value[0]).value,
+            stack: 'stack1',
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             backgroundColor: rgba('lightGreen', 0.5)
           },
           {
             label: 'Summary Cost',
-            data: filteredData(openAI.value.summary.values, chartRanges.value[0]).value,
+            valueType: 'currency',
+            stack: 'stack1',
+            data: openAI.value.flatMap((month) => month.cost.summary),
             backgroundColor: rgba('lightRed', 0.5)
           },
           {
             label: 'Free Chat Cost',
-            data: filteredData(openAI.value.chatFreeCost.values, chartRanges.value[0]).value,
+            valueType: 'currency',
+            stack: 'stack2',
+            data: openAI.value.flatMap((month) => month.chat.free.cost.total),
             backgroundColor: rgba('darkBlue', 0.5)
           },
           {
             label: 'Pro Chat Cost',
-            data: filteredData(openAI.value.chatProCost.values, chartRanges.value[0]).value,
-            backgroundColor: rgba('darkGreen', 0.5)
+            valueType: 'currency',
+            stack: 'stack2',
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.total),
+            backgroundColor: rgba('darkPink', 0.5)
           },
           {
             label: 'Expert Chat Cost',
-            data: filteredData(openAI.value.chatExpertCost.values, chartRanges.value[0]).value,
-            backgroundColor: rgba('darkGreen', 0.5)
+            valueType: 'currency',
+            stack: 'stack2',
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.total),
+            backgroundColor: rgba('darkPurple', 0.5)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Embedding',
-      id: 1,
       title: 'Embedding Details',
       subtitle: 'Shows detailed embedding costs and usage over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[1]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Embedding Total Cost',
-            data: filteredData(
-              openAI.value.embeddingDetails.values.map((d) => d.totalCost),
-              chartRanges.value[1]
-            ).value,
+            valueType: 'currency',
+            data: embeddingDetails.value.map((detail) => detail.totalCost),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Token Cost',
-            data: filteredData(
-              openAI.value.embeddingDetails.values.map((d) => d.tokenCost),
-              chartRanges.value[1]
-            ).value,
-            borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            label: 'Token Usage',
+            valueType: 'number',
+            type: 'bar',
+            data: embeddingDetails.value.map((detail) => detail.totalTokens),
+            backgroundColor: rgba('darkOrange', 0.3)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Summary',
-      id: 2,
       title: 'Summary Details',
       subtitle: 'Shows detailed summary costs and usage over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[2]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Summary Total Cost',
-            data: filteredData(
-              openAI.value.summaryDetails.values.map((d) => d.totalCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: summaryDetails.value.map((d) => d.totalCost),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2)
           },
           {
             label: 'Input Cost',
-            data: filteredData(
-              openAI.value.summaryDetails.values.map((d) => d.inputCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: summaryDetails.value.map((d) => d.inputCost),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2)
           },
           {
             label: 'Output Cost',
-            data: filteredData(
-              openAI.value.summaryDetails.values.map((d) => d.outputCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: summaryDetails.value.map((d) => d.outputCost),
             borderColor: rgba('darkPurple', 0.5),
             backgroundColor: rgba('darkPurple', 0.2)
           },
           {
             label: 'Tokens Used',
-            data: filteredData(
-              openAI.value.summaryDetails.values.map((d) => d.tokens),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'number',
+            type: 'bar',
+            data: summaryDetails.value.map((d) => d.totalTokens),
             borderColor: rgba('darkBlue', 0.5),
             backgroundColor: rgba('darkBlue', 0.2)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Chat Costs',
-      id: 3,
       title: 'Chat Cost Breakdown',
       subtitle: 'Shows the breakdown of chat costs for free, pro, and expert users over time.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[3]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Free Chat Total Cost',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(openAI.value.chatFreeCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.free.cost.total),
             borderColor: rgba('lightBlue', 0.5)
           },
           {
             label: 'Pro Chat Total Cost',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(openAI.value.chatProCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.total),
             borderColor: rgba('darkOrange', 0.5)
           },
           {
             label: 'Expert Chat Total Cost',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(openAI.value.chatExpertCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.total),
             borderColor: rgba('darkOrange', 0.5)
           },
           {
             label: 'Pro Chat Input Cost',
-            data: filteredData(openAI.value.chatProInputCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.input),
             backgroundColor: rgba('darkPurple', 0.5)
           },
           {
             label: 'Pro Chat Output Cost',
-            data: filteredData(openAI.value.chatProOutputCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.output),
             backgroundColor: rgba('darkBlue', 0.5)
           },
           {
             label: 'Expert Chat Input Cost',
-            data: filteredData(openAI.value.chatExpertInputCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.input),
             backgroundColor: rgba('darkPurple', 0.5)
           },
           {
             label: 'Expert Chat Output Cost',
-            data: filteredData(openAI.value.chatExpertOutputCost.values, chartRanges.value[3])
-              .value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.output),
             backgroundColor: rgba('darkBlue', 0.5)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Chat Usage',
-      id: 4,
       title: 'Chat Usage',
       subtitle:
         'Shows the token usage and request counts for free, pro, and expert chat users over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[4]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Free Chat Tokens',
-            data: filteredData(openAI.value.chatFreeTokens.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.free.tokens.total),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('lightBlue', 0.2)
           },
           {
             label: 'Free Chat Requests',
-            data: filteredData(openAI.value.chatFreeRequests.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.free.requests.total),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('lightGreen', 0.2)
           },
           {
             label: 'Pro Chat Tokens',
-            data: filteredData(openAI.value.chatProTokens.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.pro.tokens.total),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2)
           },
           {
             label: 'Pro Chat Requests',
-            data: filteredData(openAI.value.chatProRequests.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.pro.requests.total),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2)
           },
           {
             label: 'Expert Chat Tokens',
-            data: filteredData(openAI.value.chatExpertTokens.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.expert.tokens.total),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2)
           },
           {
             label: 'Expert Chat Requests',
-            data: filteredData(openAI.value.chatExpertRequests.values, chartRanges.value[4]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.chat.expert.requests.total),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Usage'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Token Usage',
-      id: 5,
       title: 'Monthly Token Usage Comparison',
       subtitle:
         'Compares the token usage across embeddings, summaries, and chat services over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[5]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Embedding Tokens',
-            data: filteredData(
-              openAI.value.embeddingDetails.values.map((d) => d.tokenCost),
-              chartRanges.value[5]
-            ).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((detail) => detail.tokens.embedding),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Summary Tokens',
-            data: filteredData(
-              openAI.value.summaryDetails.values.map((d) => d.tokens),
-              chartRanges.value[5]
-            ).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((detail) => detail.tokens.summary),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Chat Tokens',
-            data: filteredData(openAI.value.chatProTokens.values, chartRanges.value[5]).value,
+            valueType: 'number',
+            data: openAI.value.flatMap((month) => month.tokens.chat),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('lightRed', 0.2)
+            backgroundColor: rgba('black', 1)
+          },
+          {
+            label: 'Total Tokens',
+            valueType: 'number',
+            type: 'bar',
+            data: openAI.value.flatMap((month) => month.tokens.total),
+            backgroundColor: rgba('darkOrange', 0.3)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Tokens Used'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Costs Comparison',
-      id: 6,
       title: 'Embedding Cost vs. Summary Cost',
       subtitle: 'Compares the costs of embeddings and summaries over time.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[6]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Embedding Cost',
-            data: filteredData(openAI.value.embedding.values, chartRanges.value[6]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             backgroundColor: rgba('lightBlue', 0.5)
           },
           {
             label: 'Summary Cost',
-            data: filteredData(openAI.value.summary.values, chartRanges.value[6]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.summary),
             backgroundColor: rgba('lightGreen', 0.5)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
     {
-      category: 'OpenAI Chat',
-      id: 8,
-      title: 'Chat Cost and Token Usage Correlation',
-      subtitle: 'Shows the correlation between chat costs and the number of tokens used.',
-      type: 'scatter',
-      data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[8]
-        ).value,
-        datasets: [
-          {
-            label: 'Free Chat Tokens vs. Cost',
-            data: filteredData(openAI.value.chatFreeCost.values, chartRanges.value[8]).value.map(
-              (cost, index) => ({
-                x: cost,
-                y: openAI.value.chatFreeTokens.values[index]
-              })
-            ),
-            backgroundColor: rgba('lightBlue', 0.5)
-          },
-          {
-            label: 'Pro Chat Tokens vs. Cost',
-            data: filteredData(openAI.value.chatProCost.values, chartRanges.value[8]).value.map(
-              (cost, index) => ({
-                x: cost,
-                y: openAI.value.chatProTokens.values[index]
-              })
-            ),
-            backgroundColor: rgba('lightRed', 0.5)
-          },
-          {
-            label: 'Expert Chat Tokens vs. Cost',
-            data: filteredData(openAI.value.chatExpertCost.values, chartRanges.value[8]).value.map(
-              (cost, index) => ({
-                x: cost,
-                y: openAI.value.chatExpertTokens.values[index]
-              })
-            ),
-            backgroundColor: rgba('lightOrange', 0.5)
-          }
-        ]
-      },
-      options: {
-        scales: {
-          x: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Tokens Used'
-            }
-          }
-        }
-      }
-    },
-    {
-      category: 'OpenAI Monthly Costs',
-      id: 9,
       title: 'Monthly OpenAI Service Costs',
       subtitle: 'Shows the monthly costs for each OpenAI service.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[9]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Embedding Cost',
-            data: filteredData(openAI.value.embedding.values, chartRanges.value[9]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('lightBlue', 0.2)
           },
           {
             label: 'Summary Cost',
-            data: filteredData(openAI.value.summary.values, chartRanges.value[9]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.summary),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('lightGreen', 0.2)
           },
           {
             label: 'Chat Cost',
-            data: filteredData(openAI.value.chatTotalCost.values, chartRanges.value[9]).value,
+            valueType: 'currency',
+            data: openAI.value.flatMap((month) => month.cost.chat),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     }
   ]

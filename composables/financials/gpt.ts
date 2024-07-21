@@ -5,7 +5,7 @@ import { USD2INR } from './helpers'
 
 type EmbeddingModel = 'text-embedding-3-small' | 'text-embedding-3-large'
 
-type ChatModel = 'gpt-4o' | 'gpt-3.5-turbo-0125' | 'gpt-3.5-turbo-instruct'
+type ChatModel = 'gpt-4o' | 'gpt-4o-mini' | 'gpt-3.5-turbo-0125'
 
 const PERCENTAGE_MAU_USING_CHAT = 0.5 // 50%
 const AVG_FREE_REQUESTS_PER_USER = 50
@@ -118,12 +118,6 @@ function determineGroqModel(
   const peakRequestsPerHour = Math.max(...hourlyRates.requestsPerHour)
   const peakTokensPerHour = Math.max(...hourlyRates.tokensPerHour)
 
-  console.log(
-    'Peak hourly requests:',
-    peakRequestsPerHour,
-    'Peak hourly tokens:',
-    peakTokensPerHour
-  )
   // Find a model that can handle the peak hourly request and token rates
   const suitableModel = models.find(
     (model) =>
@@ -158,6 +152,16 @@ export const COST_CONFIG: CostConfig = {
         output: 7.5
       }
     },
+    'gpt-4o-mini': {
+      live: {
+        input: 0.15,
+        output: 0.6
+      },
+      batch: {
+        input: 0.075,
+        output: 0.3
+      }
+    },
     'gpt-3.5-turbo-0125': {
       live: {
         input: 0.5,
@@ -166,16 +170,6 @@ export const COST_CONFIG: CostConfig = {
       batch: {
         input: 0.25,
         output: 0.75
-      }
-    },
-    'gpt-3.5-turbo-instruct': {
-      live: {
-        input: 1.5,
-        output: 2.0
-      },
-      batch: {
-        input: 0.75,
-        output: 1.0
       }
     }
   }
@@ -188,7 +182,7 @@ type CostParams = {
   charsPerOutput?: number
   modelType: EmbeddingModel | ChatModel
   costType: 'live' | 'batch'
-  taskType: 'embedding' | 'chat'
+  taskType: 'embedding' | 'chat' | 'summary'
   isPremium: boolean
 }
 
@@ -203,7 +197,7 @@ function calculateCostPerMillionTokens(tokens: number, pricePerMillionTokens: nu
 
 function calculateEmbeddingCost(params: CostParams): {
   total: number
-  tokens: number
+  tokens: { total: number }
 } {
   const { numItems, charsPerItem, modelType, costType } = params
   const totalTokens = numItems * calculateTokens(charsPerItem)
@@ -211,7 +205,7 @@ function calculateEmbeddingCost(params: CostParams): {
   const totalCostUSD = calculateCostPerMillionTokens(totalTokens, pricePerMillionTokens)
   return {
     total: USD2INR(totalCostUSD),
-    tokens: totalTokens
+    tokens: { total: totalTokens }
   }
 }
 
@@ -292,6 +286,8 @@ function calculateTotalCost(params: CostParams): any {
     return calculateEmbeddingCost(params)
   } else if (params.taskType === 'chat') {
     return calculateTotalChatCost(params)
+  } else if (params.taskType === 'summary') {
+    return calculateTotalChatCost(params)
   } else {
     throw new Error('Unsupported task type')
   }
@@ -299,6 +295,7 @@ function calculateTotalCost(params: CostParams): any {
 
 export interface ChatGPTResult {
   totalCost: number
+  totalTokens: number
   free: {
     cost: {
       total: number
@@ -359,13 +356,13 @@ function calculateChatGPTUsageCost(
   const totalProRequests = customers.pro * PRO_REQUESTS_CAP
 
   const freeModel: ChatModel = 'gpt-3.5-turbo-0125'
-  const premiumModel: ChatModel = 'gpt-4o'
+  const premiumModel: ChatModel = 'gpt-4o-mini'
 
   const freeCost = calculateTotalChatCost({
     numItems: totalFreeRequests,
-    charsPerItem: 1000,
-    charsForPrompt: 500,
-    charsPerOutput: 500,
+    charsPerItem: 0,
+    charsForPrompt: 240,
+    charsPerOutput: 1000,
     modelType: freeModel,
     costType: 'live',
     taskType: 'chat',
@@ -374,9 +371,9 @@ function calculateChatGPTUsageCost(
 
   const proCost = calculateTotalChatCost({
     numItems: totalProRequests,
-    charsPerItem: 1000,
-    charsForPrompt: 500,
-    charsPerOutput: 500,
+    charsPerItem: 0,
+    charsForPrompt: 240,
+    charsPerOutput: 1200,
     modelType: premiumModel,
     costType: 'live',
     taskType: 'chat',
@@ -385,9 +382,9 @@ function calculateChatGPTUsageCost(
 
   const expertCost = calculateTotalChatCost({
     numItems: totalExpertRequests,
-    charsPerItem: 1000,
-    charsForPrompt: 500,
-    charsPerOutput: 500,
+    charsPerItem: 0,
+    charsForPrompt: 240,
+    charsPerOutput: 1600,
     modelType: premiumModel,
     costType: 'live',
     taskType: 'chat',
@@ -395,9 +392,11 @@ function calculateChatGPTUsageCost(
   })
 
   const totalCost = freeCost.cost.total + proCost.cost.total + expertCost.cost.total
+  const totalTokens = freeCost.tokens.total + proCost.tokens.total + expertCost.tokens.total
 
   return {
     totalCost: totalCost,
+    totalTokens: totalTokens,
     free: {
       ...freeCost,
       model: freeModel,
@@ -420,15 +419,23 @@ interface AiBreakdown {
   type: string
   embedding: {
     totalCost: number
-    tokenCost: number
+    tokens: {
+      total: number
+    }
     model: EmbeddingModel
     batch: 'batch' | 'live'
   }
   summary: {
-    totalCost: number
-    inputCost: number
-    outputCost: number
-    tokens: number
+    cost: {
+      total: number
+      input: number
+      output: number
+    }
+    tokens: {
+      total: number
+      input: number
+      output: number
+    }
     model: ChatModel
     batch: 'batch' | 'live'
   }
@@ -441,12 +448,18 @@ export interface AiCostResult {
     summary: number
     chat: number
   }
+  tokens: {
+    total: number
+    embedding: number
+    summary: number
+    chat: number
+  }
   breakdown: AiBreakdown[]
   chat: ChatGPTResult
 }
 
 const EMBEDDING_MODEL: EmbeddingModel = 'text-embedding-3-small'
-const SUMMARY_MODEL: ChatModel = 'gpt-3.5-turbo-0125'
+const SUMMARY_MODEL: ChatModel = 'gpt-4o-mini'
 
 interface CalculateAiCostParams {
   mau: number
@@ -469,7 +482,9 @@ export function calculateAiCost({
 
   const breakdown = [] as AiBreakdown[]
   let totalEmbeddingsCost = 0
+  let totalEmbeddingTokens = 0
   let totalSummaryCost = 0
+  let totalSummaryTokens = 0
 
   for (const contentType in CONTENT_CONFIG) {
     const content = CONTENT_CONFIG[contentType as keyof typeof CONTENT_CONFIG]
@@ -477,7 +492,7 @@ export function calculateAiCost({
     // Calculate embedding cost
     const contentEmbeddingCost = calculateTotalCost({
       numItems: content.PROCESSED_MONTHLY,
-      charsPerItem: content.WORDS.CHUNKS,
+      charsPerItem: content.CHARS.CONTENT,
       modelType: EMBEDDING_MODEL,
       costType: isBatch ? 'batch' : 'live',
       taskType: 'embedding',
@@ -485,38 +500,45 @@ export function calculateAiCost({
     })
 
     const contentSummaryCost = calculateTotalCost({
-      numItems: content.PER_SOURCE_ADDITIONS * content.SOURCES,
-      charsPerItem: content.WORDS.CHUNKS,
-      charsForPrompt: content.WORDS.PROMPT,
-      charsPerOutput: content.WORDS.OUTPUT,
+      numItems: content.PROCESSED_MONTHLY,
+      charsPerItem: content.CHARS.CONTENT,
+      charsForPrompt: content.CHARS.PROMPT,
+      charsPerOutput: content.CHARS.OUTPUT,
       modelType: SUMMARY_MODEL,
       costType: isBatch ? 'batch' : 'live',
-      taskType: 'chat',
+      taskType: 'summary',
       isPremium: true
     })
 
     totalEmbeddingsCost += contentEmbeddingCost.total
+    totalEmbeddingTokens += contentEmbeddingCost.tokens.total
+    totalSummaryTokens += contentSummaryCost.tokens.total
     totalSummaryCost += contentSummaryCost.cost.total
 
     breakdown.push({
       type: contentType,
       embedding: {
         totalCost: contentEmbeddingCost.total,
-        tokenCost: contentEmbeddingCost.tokens,
+        tokens: {
+          total: contentEmbeddingCost.tokens.total
+        },
         model: EMBEDDING_MODEL,
         batch: isBatch ? 'batch' : 'live'
       },
       summary: {
-        totalCost: contentSummaryCost.cost.total,
-        inputCost: contentSummaryCost.cost.input,
-        outputCost: contentSummaryCost.cost.output,
+        cost: {
+          total: contentSummaryCost.cost.total,
+          input: contentSummaryCost.cost.input,
+          output: contentSummaryCost.cost.output
+        },
         tokens: contentSummaryCost.tokens,
         model: SUMMARY_MODEL,
         batch: isBatch ? 'batch' : 'live'
       }
     })
   }
-  console.log('GPT-COST', totalEmbeddingsCost, totalSummaryCost)
+
+  console.log('Total Costs:', totalEmbeddingsCost.toFixed(0), totalSummaryCost.toFixed(0), chat.totalCost.toFixed(0))
 
   return {
     cost: {
@@ -524,6 +546,12 @@ export function calculateAiCost({
       embedding: totalEmbeddingsCost,
       summary: totalSummaryCost,
       chat: chat.totalCost
+    },
+    tokens: {
+      total: totalEmbeddingTokens + totalSummaryTokens + chat.totalTokens,
+      embedding: totalEmbeddingTokens,
+      summary: totalSummaryTokens,
+      chat: chat.totalTokens
     },
     breakdown,
     chat

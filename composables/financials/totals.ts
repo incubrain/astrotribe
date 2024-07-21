@@ -7,14 +7,13 @@ import { calculateEmployeeCost } from './employee'
 import { calculateSubscriptionCosts, type SoftwareCosts } from './software'
 import { calculateOfficeCosts } from './office'
 import { calculateInitialLoan, calculateRemainingBalance } from './capital'
-import { calculateRevenue, INCOME_STREAMS } from './income'
+import { calculateRevenue, INCOME_STREAMS } from './customers'
 import { calculateAllMetrics } from './metrics'
 import { generateInfo } from './gen-info'
-import { calculateCostPerUser } from './users'
+import { calculateCostPerUser } from './metrics-users'
 import { calculateMarketingCost } from './marketing'
 import { simulateRealWorldPurchases, type TransactionDetails } from './payments'
 import { calculateAnalyticsCost, type AnalyticsResult } from './analytics'
-import { CONTENT_TO_CHUNKS } from '#imports'
 
 import type { AllMetrics } from './metrics'
 import type { CapitalResult, LoanResult } from './capital'
@@ -24,10 +23,15 @@ import type { DevopsResult } from './dev-ops'
 import type { OfficeResult } from './office'
 import type { EmployeeResult } from './employee'
 import type { AiCostResult } from './gpt'
-import type { RevenueResult } from './income'
+import type { RevenueResult } from './customers'
 import type { InfoResult } from './gen-info'
 
-import { EFFICIENCY_FACTOR, CHURN_TO_LIFESPAN_MONTHS } from './helpers'
+import {
+  EFFICIENCY_FACTOR,
+  CHURN_TO_LIFESPAN_MONTHS,
+  WORDS_TO_CHAR_CHUNKS,
+  WORDS_TO_CHARS
+} from './helpers'
 
 // set hard limits for devops usage
 
@@ -72,45 +76,6 @@ export type ContentScalingRules = {
     sourceGrowthRate: number // Growth rate for sources
     additionsGrowthRate: number // Growth rate for per source additions
     monthlyProcessingGrowthRate: number // Growth rate for monthly processed items
-  }
-}
-
-const scalingRules: ContentScalingRules = {
-  // 0.1 = 10%
-  NEWS: {
-    totalContentStored: 0,
-    totalVectorStored: 0,
-    sourceGrowthRate: 0.15,
-    additionsGrowthRate: 0.15,
-    monthlyProcessingGrowthRate: 0.10
-  },
-  RESEARCH_ABSTRACTS: {
-    totalContentStored: 0,
-    totalVectorStored: 0,
-    sourceGrowthRate: 0.02,
-    additionsGrowthRate: 0.02,
-    monthlyProcessingGrowthRate: 0.07
-  },
-  RESEARCH_PAPERS: {
-    totalContentStored: 0,
-    totalVectorStored: 0,
-    sourceGrowthRate: 0.01,
-    additionsGrowthRate: 0.01,
-    monthlyProcessingGrowthRate: 0.02
-  },
-  COMPANIES: {
-    totalContentStored: 0,
-    totalVectorStored: 0,
-    sourceGrowthRate: 0.005,
-    additionsGrowthRate: 0.06,
-    monthlyProcessingGrowthRate: 0.05
-  },
-  JOBS: {
-    totalContentStored: 0,
-    totalVectorStored: 0,
-    sourceGrowthRate: 0.05,
-    additionsGrowthRate: 0.1,
-    monthlyProcessingGrowthRate: 0.05
   }
 }
 
@@ -186,7 +151,7 @@ interface AllCost {
     digitalOcean: number
     logging: number
     devOps: number
-    openAi: number
+    openAI: number
     loan: number
     analytics: number
     marketing: number
@@ -210,7 +175,7 @@ export type ContentParams = {
   CONTENT_TYPE: Content
   TOTAL: number
   PROCESSED: number
-  WORDS: {
+  CHARS: {
     CONTENT: number
     CHUNKS: number
     PROMPT: number
@@ -218,76 +183,107 @@ export type ContentParams = {
   }
 }
 
-interface TotalsResult {
-  stages: CompanyStage[]
-  months: number[]
-  info: InfoResult[]
-  cost: AllCost[]
-  growth: Growth[]
-  metrics: AllMetrics[]
-  capital: CapitalResult[]
-}
-
 const AVG_MAU_USAGE = 0.01
 
-interface AllData {
-  cost: AllCost[]
-  growth: Growth[]
-  metrics: AllMetrics[]
+export interface AllData {
+  mau: any[]
+  customers: any[]
   capital: CapitalResult[]
+  revenue: RevenueResult[]
+  affiliate: any[]
+  advertising: any[]
+  promotion: any[]
+  totals: any[]
+  employees: any[]
+  office: any[]
+  storage: any[]
+  digitalOcean: any[]
+  logging: any[]
+  analytics: any[]
+  software: SoftwareCosts[]
+  devOps: any[]
+  payments: any[]
+  openAI: any[]
+  metrics: AllMetrics[]
   months: number[]
   stages: CompanyStage[]
 }
 
-export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsResult {
+export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData {
   const allData: AllData = {
-    cost: [],
-    growth: [],
-    metrics: [],
+    mau: [],
+    customers: [],
     capital: [],
+    revenue: [],
+    affiliate: [],
+    advertising: [],
+    promotion: [],
+    totals: [],
+    employees: [],
+    office: [],
+    storage: [],
+    digitalOcean: [],
+    logging: [],
+    analytics: [],
+    devOps: [],
+    software: [],
+    payments: [],
+    openAI: [],
+    metrics: [],
     months: [],
     stages: []
   }
 
-  let mau = params.CURRENT.MAU
-  let balanceRemaining = params.LOAN.AMOUNT
-  let existingMAU = 0
-  let newMAU = params.CURRENT.MAU
-  let proUsers = 0
-  let expertUsers = 0
-
-  const info = generateInfo()
+  let previousMonth = {
+    revenue: 0,
+    effectiveRevenue: 0,
+    expenses: 0,
+    balance: 0,
+    mau: {
+      total: 0,
+      new: 0,
+      churned: 0,
+      churnRate: 0
+    },
+    customers: {
+      all: 0,
+      pro: 0,
+      expert: 0
+    }
+  }
 
   for (let month = 1; month <= params.PROJECTION.MONTHS; month++) {
-    const scaledContentConfig = scaleContentConfig(metricConfig.CONTENT_CONFIG, month, scalingRules)
-    const churnRate = EFFICIENCY_FACTOR({
-      currentMonth: month,
-      pessimistic: params.YEARLY_CHURN.MAU.PESSIMISTIC,
-      optimistic: params.YEARLY_CHURN.MAU.OPTIMISTIC
+    const marketingCost = calculateMarketingCost({
+      mrr: previousMonth.revenue,
+      percentage: params.MRR_MARKETING_PERCENTAGE_SPEND
     })
 
-    mau = Math.ceil(
-      mau * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE) +
+    const scaledContentConfig = scaleContentConfig(
+      params.CONTENT_CONFIG,
+      month,
+      params.SCALING_RULES
+    )
+
+    // Calculate new MAU
+    let mau = Math.ceil(
+      previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE) +
         params.PROJECTION.MANUAL_GROWTH_RATE * month
     )
-    const companyStage = determineCompanyStage(mau)
 
-    const churnedMAU = Math.ceil(existingMAU * churnRate)
-    newMAU = mau - (existingMAU - churnedMAU)
-    existingMAU = existingMAU - churnedMAU + newMAU
+    const churnedMAU = Math.ceil(previousMonth.mau.total * previousMonth.mau.churnRate)
+    let newMAU = mau - (previousMonth.mau.total - churnedMAU)
+    mau -= churnedMAU
+
+    const companyStage = determineCompanyStage(previousMonth.mau.total)
 
     const revenue = calculateRevenue({
-      month,
       mau: {
         total: mau,
-        new: newMAU,
-        existing: existingMAU,
-        churned: churnedMAU
+        new: newMAU
       },
       customers: {
-        existing: proUsers + expertUsers,
-        pro: proUsers,
-        expert: expertUsers
+        pro: previousMonth.customers.pro,
+        expert: previousMonth.customers.expert
       }
     })
 
@@ -319,7 +315,7 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsR
     const contentParams = Object.entries(scaledContentConfig).map(
       ([contentType, contentConfig]) => ({
         CONTENT_TYPE: contentType as Content,
-        WORDS: contentConfig.WORDS,
+        CHARS: contentConfig.CHARS,
         TOTAL: contentConfig.TOTAL,
         PROCESSED: contentConfig.PROCESSED
       })
@@ -329,7 +325,7 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsR
     const analytics = calculateAnalyticsCost({
       MAU: mau,
       month,
-      avgMauUsage: AVG_MAU_USAGE
+      avgMauUsage: 300
     })
 
     const employees = calculateEmployeeCost({
@@ -339,14 +335,18 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsR
       bootstrapMonths: params.BOOTSTRAP_MONTHS
     })
 
-    const office = calculateOfficeCosts(employees.totalEmployees)
+    const office = calculateOfficeCosts(employees.totalCount)
     const digitalOcean = calculateDigitalOceanCost({ bandwidthGB: supabase.storage.data.total * 2 })
     const devOpsCost = mau > 100_000 ? devOps.inhouse.cost.total : devOps.vercel.cost.total
-    const software = calculateSubscriptionCosts(employees.totalEmployees)
-    const marketingCost = calculateMarketingCost({
-      mrr: revenue.total.effective,
-      percentage: params.MRR_MARKETING_PERCENTAGE_SPEND
-    })
+    const software = calculateSubscriptionCosts(employees.totalCount)
+
+    const userExpenses =
+      supabase.totalCost +
+      digitalOcean.cost +
+      logging.total +
+      devOpsCost +
+      analytics.total +
+      marketingCost
 
     const monthlyExpenses =
       employees.totalCost +
@@ -361,26 +361,47 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsR
       marketingCost +
       payments.totalCost
 
-    const userExpenses =
-      supabase.totalCost +
-      digitalOcean.cost +
-      logging.total +
-      devOpsCost +
-      analytics.total +
-      marketingCost
+      console.log('Monthly Expenses:', {
+        employees: employees.totalCost,
+        supabase: supabase.totalCost,
+        devOps: devOpsCost,
+        digitalOcean: digitalOcean.cost,
+        logging: logging.total,
+        openAI: openAI.cost.total,
+        office: office.total,
+        analytics: analytics.total,
+        software: software.totalCost,
+        marketing: marketingCost,
+        payments: payments.totalCost
+      })
 
-    const userCost = calculateCostPerUser({
-      users: {
-        free: mau,
-        pro: revenue.customers.pro.count,
-        expert: revenue.customers.expert.count
+    const totalCustomers = revenue.customers.pro.count + revenue.customers.expert.count
+    const metrics = calculateAllMetrics({
+      marketing: {
+        cost: marketingCost,
+        leads: 0
       },
-      totalCosts: {
+      currentMonth: month,
+      expenses: {
+        total: monthlyExpenses,
         free: userExpenses + openAI.chat.free.cost.total,
         pro: userExpenses + openAI.chat.pro.cost.total,
         expert: userExpenses + openAI.chat.expert.cost.total
       },
-      totalIncome: revenue.total.effective
+      revenue: {
+        free: revenue.total.free,
+        pro: revenue.customers.pro.revenue,
+        expert: revenue.customers.expert.revenue
+      },
+      users: {
+        mau,
+        free: mau - totalCustomers,
+        pro: revenue.customers.pro.count,
+        expert: revenue.customers.expert.count,
+        totalCustomers: totalCustomers,
+        new: newMAU,
+        newCustomers: revenue.customers.pro.new + revenue.customers.expert.new
+      }
     })
 
     const capital = calculateRemainingBalance({
@@ -389,84 +410,76 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): TotalsR
       initialCapital: params.INITIAL_CAPITAL,
       bootstrapMonths: params.BOOTSTRAP_MONTHS,
       expenses: monthlyExpenses,
-      income: revenue.total.effective
+      income: metrics.monthlyRecurringRevenue.effective
     })
 
-    const metrics = calculateAllMetrics({
-      MAU: mau,
-      marketingCost,
-      currentMonth: month,
-      leads: 0,
-      currentBalance: balanceRemaining,
-      expenses: monthlyExpenses,
-      effectiveRevenue: revenue.total.effective,
-      customers: {
-        all: revenue.customers.totalCount,
-        new: revenue.customers.newCount,
-        churned: revenue.customers.churn.count
-      }
+    allData.totals.push({
+      expenses: {
+        total: parseInt(monthlyExpenses.toFixed(0))
+      },
+      income: {
+        total: revenue.total.revenue,
+        effective: metrics.monthlyRecurringRevenue.effective
+      },
+      employees: employees.totalCost,
+      office: office.total,
+      storage: supabase.totalCost,
+      digitalOcean: digitalOcean.cost,
+      logging: logging.total,
+      devOps: devOpsCost,
+      openAI: openAI.cost.total,
+      loan: capital.loan.monthlyInterestOnlyPayment,
+      analytics: analytics.total,
+      marketing: marketingCost,
+      software: software.totalCost,
+      payments: payments.totalCost
     })
-
-    allData.metrics.push({
-      ...metrics,
-      users: {
-        ...userCost,
-        lifespanMonths: CHURN_TO_LIFESPAN_MONTHS(churnRate),
-        churnRate
-      }
-    })
-
+    allData.metrics.push(metrics)
+    allData.employees.push(employees)
+    allData.office.push(office)
+    allData.storage.push(supabase)
+    allData.digitalOcean.push(digitalOcean)
+    allData.logging.push(logging)
+    allData.devOps.push(devOps)
+    allData.openAI.push(openAI)
     allData.capital.push(capital)
-
-    allData.cost.push({
-      totals: {
-        monthlyINR: parseInt(monthlyExpenses.toFixed(0)),
-        employees: employees.totalCost,
-        office: office.total,
-        storage: supabase.totalCost,
-        digitalOcean: digitalOcean.cost,
-        logging: logging.total,
-        devOps: devOpsCost,
-        openAi: openAI.cost.total,
-        loan: capital.loan.monthlyInterestOnlyPayment,
-        analytics: analytics.total,
-        marketing: marketingCost,
-        software: software.totalCost,
-        payments: payments.totalCost
-      },
-      employees,
-      office,
-      storage: supabase,
-      digitalOcean,
-      logging,
-      devOps,
-      openAI,
-      loan: capital.loan,
-      analytics,
-      software,
-      payments
-    })
-
-    allData.growth.push({
-      mau: {
-        total: mau,
-        new: newMAU,
-        existing: existingMAU,
-        churned: churnedMAU
-      },
-      revenue
-    })
-
+    allData.analytics.push(analytics)
+    allData.software.push(software)
+    allData.payments.push(payments)
+    allData.revenue.push(revenue)
+    allData.customers.push(revenue.customers)
     allData.months.push(month)
     allData.stages.push(companyStage)
 
-    proUsers = revenue.customers.pro.count
-    expertUsers = revenue.customers.expert.count
+    previousMonth = {
+      revenue: metrics.monthlyRecurringRevenue.effective,
+      effectiveRevenue: metrics.monthlyRecurringRevenue.effective,
+      expenses: monthlyExpenses,
+      balance: capital.balance.end,
+      mau: {
+        total: mau,
+        new: newMAU,
+        churned: churnedMAU,
+        churnRate: metrics.churn.free.rate
+      },
+      customers: {
+        all: totalCustomers,
+        pro: revenue.customers.pro.count,
+        expert: revenue.customers.expert.count
+      }
+    }
   }
 
-  return {
-    ...allData,
-    info
+  return allData
+}
+
+type ScalingRules = {
+  [key in Content]: {
+    totalContentStored: number
+    totalVectorStored: number
+    sourceGrowthRate: number
+    additionsGrowthRate: number
+    monthlyProcessingGrowthRate: number
   }
 }
 
@@ -474,7 +487,7 @@ type BusinessMetricsConfig = {
   BOOTSTRAP_MONTHS: number
   INITIAL_CAPITAL: number
   MRR_MARKETING_PERCENTAGE_SPEND: number
-  YEARLY_CHURN: {
+  MONTHLY_CHURN: {
     MAU: {
       PESSIMISTIC: number
       OPTIMISTIC: number
@@ -527,6 +540,7 @@ type BusinessMetricsConfig = {
     COMPANIES: ProcessdContentConfig
     JOBS: ProcessdContentConfig
   }
+  SCALING_RULES: ScalingRules
 }
 
 export type ProcessdContentConfig = {
@@ -535,7 +549,7 @@ export type ProcessdContentConfig = {
   SOURCES: number
   PER_SOURCE_ADDITIONS: number
   PROCESSED_MONTHLY: number
-  WORDS: {
+  CHARS: {
     CONTENT: number
     CHUNKS: number
     PROMPT: number
@@ -544,17 +558,21 @@ export type ProcessdContentConfig = {
 }
 
 export const metricConfig = {
-  BOOTSTRAP_MONTHS: 5,
+  BOOTSTRAP_MONTHS: 1,
   INITIAL_CAPITAL: 1_00_000,
   MRR_MARKETING_PERCENTAGE_SPEND: 0.1,
-  YEARLY_CHURN: {
+  MONTHLY_CHURN: {
     MAU: {
-      PESSIMISTIC: 0.3,
-      OPTIMISTIC: 0.1
+      PESSIMISTIC: 0.15,
+      OPTIMISTIC: 0.08
     },
-    CUSTOMERS: {
-      PESSIMISTIC: 0.12,
-      OPTIMISTIC: 0.05
+    PRO: {
+      PESSIMISTIC: 0.11,
+      OPTIMISTIC: 0.04
+    },
+    EXPERT: {
+      PESSIMISTIC: 0.11,
+      OPTIMISTIC: 0.04
     }
   },
   CURRENT: {
@@ -599,11 +617,11 @@ export const metricConfig = {
       SOURCES: 15,
       PER_SOURCE_ADDITIONS: 30,
       PROCESSED_MONTHLY: 2_000,
-      WORDS: {
-        CONTENT: 1000,
-        CHUNKS: CONTENT_TO_CHUNKS(1000),
-        PROMPT: 100,
-        OUTPUT: 240
+      CHARS: {
+        CONTENT: WORDS_TO_CHARS(1000),
+        CHUNKS: WORDS_TO_CHAR_CHUNKS(1000),
+        PROMPT: WORDS_TO_CHARS(100),
+        OUTPUT: WORDS_TO_CHARS(240)
       }
     },
     RESEARCH_ABSTRACTS: {
@@ -612,11 +630,11 @@ export const metricConfig = {
       SOURCES: 2,
       PER_SOURCE_ADDITIONS: 1_300,
       PROCESSED_MONTHLY: 10_000,
-      WORDS: {
-        CONTENT: 280,
-        CHUNKS: CONTENT_TO_CHUNKS(280),
-        PROMPT: 50,
-        OUTPUT: 60
+      CHARS: {
+        CONTENT: WORDS_TO_CHARS(280),
+        CHUNKS: WORDS_TO_CHAR_CHUNKS(280),
+        PROMPT: WORDS_TO_CHARS(50),
+        OUTPUT: WORDS_TO_CHARS(60)
       }
     },
     RESEARCH_PAPERS: {
@@ -625,11 +643,11 @@ export const metricConfig = {
       SOURCES: 2,
       PER_SOURCE_ADDITIONS: 10_000,
       PROCESSED_MONTHLY: 10_000,
-      WORDS: {
-        CONTENT: 10_000,
-        CHUNKS: CONTENT_TO_CHUNKS(10_000),
-        PROMPT: 100,
-        OUTPUT: 400
+      CHARS: {
+        CONTENT: WORDS_TO_CHARS(10_000),
+        CHUNKS: WORDS_TO_CHAR_CHUNKS(10_000),
+        PROMPT: WORDS_TO_CHARS(100),
+        OUTPUT: WORDS_TO_CHARS(400)
       }
     },
     COMPANIES: {
@@ -638,11 +656,11 @@ export const metricConfig = {
       SOURCES: 1,
       PER_SOURCE_ADDITIONS: 150,
       PROCESSED_MONTHLY: 500,
-      WORDS: {
-        CONTENT: 20_000,
-        CHUNKS: CONTENT_TO_CHUNKS(20_000),
-        PROMPT: 200,
-        OUTPUT: 1_000
+      CHARS: {
+        CONTENT: WORDS_TO_CHARS(20_000),
+        CHUNKS: WORDS_TO_CHAR_CHUNKS(20_000),
+        PROMPT: WORDS_TO_CHARS(200),
+        OUTPUT: WORDS_TO_CHARS(1_000)
       }
     },
     JOBS: {
@@ -651,12 +669,50 @@ export const metricConfig = {
       SOURCES: 5,
       PER_SOURCE_ADDITIONS: 30,
       PROCESSED_MONTHLY: 2_000,
-      WORDS: {
-        CONTENT: 1_000,
-        CHUNKS: CONTENT_TO_CHUNKS(1_000),
-        PROMPT: 120,
-        OUTPUT: 100
+      CHARS: {
+        CONTENT: WORDS_TO_CHARS(1_000),
+        CHUNKS: WORDS_TO_CHAR_CHUNKS(1_000),
+        PROMPT: WORDS_TO_CHARS(120),
+        OUTPUT: WORDS_TO_CHARS(100)
       }
+    }
+  },
+  SCALING_RULES: {
+    // 0.1 = 10%
+    NEWS: {
+      totalContentStored: 0,
+      totalVectorStored: 0,
+      sourceGrowthRate: 0.15,
+      additionsGrowthRate: 0.15,
+      monthlyProcessingGrowthRate: 0.1
+    },
+    RESEARCH_ABSTRACTS: {
+      totalContentStored: 0,
+      totalVectorStored: 0,
+      sourceGrowthRate: 0.02,
+      additionsGrowthRate: 0.02,
+      monthlyProcessingGrowthRate: 0.07
+    },
+    RESEARCH_PAPERS: {
+      totalContentStored: 0,
+      totalVectorStored: 0,
+      sourceGrowthRate: 0.01,
+      additionsGrowthRate: 0.01,
+      monthlyProcessingGrowthRate: 0.02
+    },
+    COMPANIES: {
+      totalContentStored: 0,
+      totalVectorStored: 0,
+      sourceGrowthRate: 0.005,
+      additionsGrowthRate: 0.06,
+      monthlyProcessingGrowthRate: 0.05
+    },
+    JOBS: {
+      totalContentStored: 0,
+      totalVectorStored: 0,
+      sourceGrowthRate: 0.05,
+      additionsGrowthRate: 0.1,
+      monthlyProcessingGrowthRate: 0.05
     }
   }
 }

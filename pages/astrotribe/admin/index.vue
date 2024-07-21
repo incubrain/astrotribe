@@ -1,95 +1,99 @@
 <script setup lang="ts">
-const { refreshData, months } = useFinancials()
+const { refreshData, updateGlobalRange, months } = useFinancials()
 
 import {
-  AdminFinancialGrowth,
-  AdminFinancialOperations,
-  AdminFinancialMetrics,
-  AdminFinancialTotals,
-  AdminFinancialData,
-  AdminFinancialEmployees,
-  AdminFinancialStorage,
-  AdminFinancialAnalytics,
-  AdminFinancialDevOps,
-  AdminFinancialOpenAI,
-  AdminFinancialPayments,
-  AdminFinancialLogging
+  LazyAdminFinancialEmployees,
+  LazyAdminFinancialDevOps,
+  LazyAdminFinancialOperations,
+  LazyAdminFinancialTotals,
+  LazyAdminFinancialData,
+  LazyAdminFinancialStorage,
+  LazyAdminFinancialAnalytics,
+  LazyAdminFinancialOpenAI,
+  LazyAdminFinancialPayments,
+  LazyAdminFinancialLogging
 } from '#components'
 
 const financialTabs = [
   {
-    title: 'Metrics',
-    slotName: 'metrics',
-    value: 0,
-    component: AdminFinancialMetrics
-  },
-  {
     title: 'Totals',
     slotName: 'totals',
-    value: 1,
-    component: AdminFinancialTotals
-  },
-  {
-    title: 'Growth',
-    slotName: 'growth',
-    value: 2,
-    component: AdminFinancialGrowth
+    value: '0',
+    component: LazyAdminFinancialTotals
   },
   {
     title: 'Operations',
     slotName: 'operations',
-    value: 3,
-    component: AdminFinancialOperations
+    value: '2',
+    component: LazyAdminFinancialOperations
   },
   {
     title: 'Employees',
     slotName: 'employees',
-    value: 4,
-    component: AdminFinancialEmployees
+    value: '4',
+    component: LazyAdminFinancialEmployees
   },
   {
     title: 'Storage',
     slotName: 'storage',
-    value: 5,
-    component: AdminFinancialStorage
+    value: '5',
+    component: LazyAdminFinancialStorage
   },
   {
     title: 'Analytics',
     slotName: 'analytics',
-    value: 6,
-    component: AdminFinancialAnalytics
+    value: '6',
+    component: LazyAdminFinancialAnalytics
   },
   {
     title: 'DevOps',
     slotName: 'devops',
-    value: 7,
-    component: AdminFinancialDevOps
+    value: '7',
+    component: LazyAdminFinancialDevOps
   },
   {
     title: 'OpenAI',
     slotName: 'openai',
-    value: 8,
-    component: AdminFinancialOpenAI
+    value: '8',
+    component: LazyAdminFinancialOpenAI
   },
   {
     title: 'Payments',
     slotName: 'payments',
-    value: 9,
-    component: AdminFinancialPayments
+    value: '9',
+    component: LazyAdminFinancialPayments
   },
   {
     title: 'Logging',
     slotName: 'logging',
-    value: 10,
-    component: AdminFinancialLogging
+    value: '10',
+    component: LazyAdminFinancialLogging
   },
   {
     title: 'Data',
     slotName: 'data',
-    value: 11,
-    component: AdminFinancialData
+    value: '11',
+    component: LazyAdminFinancialData
   }
 ]
+const dataIsReady = ref(false)
+
+onMounted(async () => {
+  if (!months.value.length) {
+    await refreshData()
+  }
+  dataIsReady.value = true
+})
+
+const sliderValue = ref([0, 12])
+
+watch(
+  sliderValue,
+  (newVal) => {
+    updateGlobalRange({ start: newVal[0], end: newVal[1] })
+  },
+  { deep: true }
+)
 
 definePageMeta({
   layoutTransition: false,
@@ -100,14 +104,8 @@ definePageMeta({
 
 <template>
   <div class="relative h-full max-h-full">
-    <button
-      @click="refreshData"
-      class="absolute right-4 top-4 rounded-lg bg-blue-500 px-3 py-1"
-    >
-      Refresh
-    </button>
     <BaseTabView
-      v-if="months.length > 0"
+      v-if="dataIsReady"
       ref="financialsTabView"
       :tabs="financialTabs"
       class="h-full w-full"
@@ -116,10 +114,46 @@ definePageMeta({
         v-for="tab in financialTabs"
         v-slot:[tab.slotName]
       >
-        <component
-          :is="tab.component"
-          class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
-        />
+        <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">
+          <div class="flex gap-4 h-full">
+            <div class="flex gap-2 items-center flex-col">
+              <p class="text-sm font-semibold">Start</p>
+              <PrimeInputNumber
+                showButtons
+                buttonLayout="vertical"
+                style="width: 3rem"
+                v-model="sliderValue[0]"
+                inputId="minmax"
+                :min="1"
+                :max="23"
+              />
+            </div>
+            <div class="flex flex-col gap-2 items-center">
+              <p class="text-sm font-semibold">End</p>
+              <PrimeInputNumber
+                showButtons
+                buttonLayout="vertical"
+                style="width: 3rem"
+                v-model="sliderValue[1]"
+                inputId="minmax"
+                :min="2"
+                :max="24"
+              />
+            </div>
+            <div class="flex flex-col gap-4">
+              <p class="text-sm font-semibold">Month Range Selector</p>
+              <PrimeSlider
+                v-model="sliderValue"
+                range
+                class="w-56"
+                :min="0"
+                :max="24"
+                :step="1"
+              />
+            </div>
+          </div>
+          <component :is="tab.component" />
+        </div>
       </template>
     </BaseTabView>
   </div>

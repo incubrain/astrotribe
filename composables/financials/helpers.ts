@@ -12,8 +12,10 @@ export function ROUND0(value: number) {
 export function ROUND2(value: number) {
   return parseFloat(value.toFixed(2))
 }
-export const CONTENT_TO_CHUNKS = (words: number) =>
+export const WORDS_TO_CHAR_CHUNKS = (words: number) =>
   Math.ceil((words * AVG_CHAR_PER_WORD) / CHAR_CHUNK_SIZE)
+
+export const WORDS_TO_CHARS = (words: number) => Math.ceil(words * AVG_CHAR_PER_WORD)
 
 interface RefundEfficiencyParams {
   currentMonth: number
