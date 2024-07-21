@@ -3,25 +3,25 @@ const analyticsTabs = [
   {
     title: 'Realtime',
     slotName: 'realtime',
-    value: 0,
+    value: '0',
     src: 'https://us.posthog.com/embedded/qZ7aQk6ZyuCEp0npTLkWkOu3geB5eA?whitelabel'
   },
   {
     title: 'Dashboard',
     slotName: 'dashboard',
-    value: 1,
+    value: '1',
     src: 'https://us.posthog.com/embedded/Za4dgg7lpaDSZhmoPIlJE8-724hqiw?whitelabel'
   },
   {
     title: 'Landing Page',
     slotName: 'landingPage',
-    value: 2,
+    value: '2',
     src: 'https://us.posthog.com/embedded/6suXX7B2fY6uvr1oCCVo-KsU3g--1A?whitelabel'
   },
   {
     title: 'Growth',
     slotName: 'growth',
-    value: 3,
+    value: '3',
     src: 'https://us.posthog.com/embedded/5U8l5Qu1ougk0m5i_RvLgMAPWnXx5A?whitelabel'
   },
   {
@@ -39,7 +39,6 @@ const wrapperHeight = computed(() => {
     return analyticsTabView.value?.clientHeight
   } else return 0
 })
-// const analyticsIframe = ref(null as HTMLIFrameElement | null)
 const analyticsHeight = ref(0)
 
 watch(wrapperHeight, (newHeight) => {
@@ -47,9 +46,10 @@ watch(wrapperHeight, (newHeight) => {
   console.log('wrapperHeight', newHeight, analyticsHeight.value)
 })
 
+// const analyticsIframe = ref(null as HTMLIFrameElement | null)
 // const onChange = (e) => {
 //   if (e.data.event === 'posthog:dimensions' && e.data.name === 'AstronEraAnalytics') {
-//     height.value = e.data.height
+//     analyticsHeight.value = e.data.height
 //   }
 // }
 
@@ -60,26 +60,26 @@ definePageMeta({
 })
 </script>
 <template>
-  <div class="w-full min-h-full">
+  <div class="relative h-full max-h-full">
     <BaseTabView
       ref="analyticsTabView"
       :tabs="analyticsTabs"
-      class="w-full min-h-full pb-4"
+      class="h-full min-h-full w-full pb-4"
     >
       <template
         v-for="tab in analyticsTabs"
         v-slot:[tab.slotName]
       >
-      <div class="min-h-full h-[100vh] p-4">
-        <iframe
-          class="invert h-full"
-          width="100%"
-          height="100%"
-          :src="tab.src"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-      </div>
+        <div class="h-full min-h-full p-4">
+          <iframe
+            class="invert"
+            width="100%"
+            :height="`${analyticsHeight}px`"
+            :src="tab.src"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
       </template>
     </BaseTabView>
   </div>

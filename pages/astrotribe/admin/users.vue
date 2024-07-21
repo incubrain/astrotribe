@@ -74,7 +74,7 @@ definePageMeta({
   <div class="border-color h-full overflow-scroll rounded-lg border">
     <BaseTableAdmin
       :columns="columns"
-      :tableData="userProfiles"
+      :table-data="userProfiles"
       :filters="filters"
       :filter-fields="['given_name', 'surname', 'email', 'role']"
       @saved-edit="handleRowEditSave"
