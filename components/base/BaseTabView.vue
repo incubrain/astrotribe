@@ -2,7 +2,7 @@
 interface Tab {
   title: string
   slotName: string
-  value: number
+  value: string
 }
 
 defineProps<{
@@ -12,8 +12,11 @@ defineProps<{
 
 <template>
   <PrimeTabs
-    :value="0"
-    class="relative"
+    value="0"
+    class="h-full"
+    :pt="{
+      root: 'min-h-full w-full'
+    }"
   >
     <PrimeTabList
       :pt="{
@@ -32,7 +35,7 @@ defineProps<{
       :key="`tab-index-${tab.title}`"
       :value="tab.value"
       :pt="{
-        root: 'h-full h-full overflow-scroll'
+        root: 'h-full overflow-scroll'
       }"
     >
     <div class="pb-4">

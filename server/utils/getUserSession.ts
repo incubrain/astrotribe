@@ -95,7 +95,6 @@ export async function validateAndUpdateSession() {
 
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
-  console.log('storeingSession', storageKey)
   if (
     !storedPermissions ||
     storedPermissions.expires_at < Date.now() ||

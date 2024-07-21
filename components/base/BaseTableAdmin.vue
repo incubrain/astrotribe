@@ -44,7 +44,7 @@ const selectedRows = ref([])
 
 <template>
   <PrimeDataTable
-    v-if="columns.length > 1 && dataRows.length > 1"
+    v-if="dataRows.length > 1"
     v-model:editingRows="editingRows"
     v-model:selection="selectedRows"
     v-model:filters="tableFilters"
@@ -76,7 +76,7 @@ const selectedRows = ref([])
     <template #header>
       <div class="flex items-center justify-start gap-4">
         <PrimeInputText
-          v-model="filters['global'].value"
+          v-model="filters['global']"
           placeholder="Search"
           size="small"
           class="flex items-center justify-center rounded-lg"
@@ -89,10 +89,10 @@ const selectedRows = ref([])
 
     <template #loading> Loading data. Please wait. </template>
 
-    <!-- <PrimeColumn
-        selectionMode="multiple"
-        headerStyle="width: 3rem"
-      ></PrimeColumn> -->
+    <PrimeColumn
+      selectionMode="multiple"
+      headerStyle="width: 3rem"
+    ></PrimeColumn>
 
     <PrimeColumn
       :frozen="true"
