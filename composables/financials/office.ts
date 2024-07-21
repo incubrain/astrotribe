@@ -27,7 +27,7 @@ const OFFICE_EXPENSES = {
   supplies: 800,
   utilities: 400,
   snacks: 300,
-  misc: 2000,
+  misc: 1000,
 };
 
 export interface OfficeResult {
@@ -44,6 +44,8 @@ export interface OfficeResult {
 }
 
 export function calculateOfficeCosts(employees: number): OfficeResult {
+
+  console.log('officeCost1', employees)
   const minEmployeesForCoworking = 10;
   const minEmployeesForOffice = 20;
   const haveOffice = employees > minEmployeesForOffice;
@@ -75,6 +77,19 @@ export function calculateOfficeCosts(employees: number): OfficeResult {
     cleaningServicesCost +
     insuranceCost +
     maintenanceCost;
+
+    console.log('officeCost', {
+      total,
+      spaceCost,
+      officeSuppliesCost,
+      utilitiesCost,
+      snacksCoffeeCost,
+      miscellaneousCost,
+      internetPhoneCost,
+      cleaningServicesCost,
+      insuranceCost,
+      maintenanceCost
+    })
 
   return {
     total: parseInt(total.toFixed(0)),

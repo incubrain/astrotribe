@@ -96,19 +96,38 @@ export function calculateAnalyticsCost({
     month,
     avgMauUsage
   })
-
+  
   const eventsCost = calculateProductAnalyticsCost(events)
   const recordingsCost = calculateSessionReplayCost(recordings)
   const featureRequestsCost = calculateFeatureFlagsCost(featureRequests)
   const surveysCost = calculateSurveysCost(surveyResponses)
-
+  
+  console.log(
+    'Calculate Analytics Cost:',
+    MAU,
+    eventsCost,
+    recordingsCost,
+    featureRequestsCost,
+    surveysCost
+  )
+  
   const totalCost = eventsCost + recordingsCost + featureRequestsCost + surveysCost
+  console.log(
+    'Calculate Analytics Cost:',
+    MAU,
+    eventsCost,
+    recordingsCost,
+    featureRequestsCost,
+    surveysCost,
+    totalCost,
+    USD2INR(totalCost)
+  )
 
   return {
     total: USD2INR(totalCost),
     events: {
+      cost: USD2INR(eventsCost),
       usage: events,
-      cost: USD2INR(eventsCost)
     },
     recordings: {
       cost: USD2INR(recordingsCost),
@@ -131,28 +150,31 @@ type UsageEstimationParams = {
   avgMauUsage: number
 }
 
-type EstimatedUsage = {
-  events: number
-  recordings: number
-  featureRequests: number
-  surveyResponses: number
-}
-
-const FREE_TIER_MONTHS = 6
+const FREE_TIER_MONTHS = 4
 
 function estimateUsage({ MAU, month, avgMauUsage }: UsageEstimationParams): EstimatedUsage {
   const isFreeTier = month < FREE_TIER_MONTHS
   const scaleFactor = isFreeTier ? 0.1 : 1
 
-  const events = Math.min(MAU * avgMauUsage * scaleFactor, 1000000 * (month + 1))
-  const recordings = Math.min(MAU * 0.01 * scaleFactor, 5000 * (month + 1))
-  const featureRequests = Math.min(MAU * 0.05 * scaleFactor, 1000000 * (month + 1))
-  const surveyResponses = Math.min(MAU * 0.02 * scaleFactor, 250 * (month + 1))
+  const events = Math.min(MAU * avgMauUsage * scaleFactor, 1000000 * (month + 1)) || 0
+  const recordings = Math.min(MAU * 0.1 * scaleFactor, 5000 * (month + 1)) || 0
+  const featureRequests = Math.min(MAU * 0.05 * scaleFactor, 100000 * (month + 1)) || 0
+  const surveyResponses = Math.min(MAU * 0.08 * scaleFactor, 1000 * (month + 1)) || 0
 
+  console.log('Estimate Usage:', MAU, events, recordings, featureRequests, surveyResponses)
   return {
+    total: Math.round(events + recordings + featureRequests + surveyResponses),
     events: Math.round(events),
     recordings: Math.round(recordings),
     featureRequests: Math.round(featureRequests),
     surveyResponses: Math.round(surveyResponses)
   }
+}
+
+type EstimatedUsage = {
+  total: number
+  events: number
+  recordings: number
+  featureRequests: number
+  surveyResponses: number
 }

@@ -1,9 +1,9 @@
 import { USD2INR, ROUND0 } from './helpers'
 
 const BASE_EMPLOYEE_COUNT = {
-  support: 2,
-  core: 2,
-  experts: 1,
+  support: 1,
+  core: 1,
+  experts: 0,
   founders: 2
 }
 
@@ -19,7 +19,7 @@ export const EMPLOYEE_CONFIG = {
       salary: 30_000
     },
     founders: {
-      salary: 30_000
+      salary: 25_000
     }
   },
   growth: {
@@ -67,10 +67,14 @@ export const EMPLOYEE_CONFIG = {
 }
 
 const EMPLOYEE_EXTRAS = {
-  recruitment: 1500,
+  recruitment: 500,
   turnover: 2000,
   legal: 2000,
   technology: 2000
+}
+
+const EMPLOYEE_ONCE_OFF_COSTS = {
+  legal: 2000
 }
 
 // Function to calculate benefits as a percentage of salary
@@ -108,16 +112,6 @@ export type EmployeeConfig = {
   mauRatio?: number
 }
 
-export type EmployeeResult = {
-  totalCost: number
-  totalEmployees: number
-  efficiency: number
-  support: EmployeeConfig
-  core: EmployeeConfig
-  experts: EmployeeConfig
-  founders: EmployeeConfig
-}
-
 interface EmployeeCostParams {
   mau: number
   stage: keyof typeof EMPLOYEE_CONFIG
@@ -150,7 +144,7 @@ export function calculateEmployeeCost({
         benefits: 0,
         recruitment: 0,
         technology: 0,
-        mauRatio: 0,
+        mauRatio: 0
       },
       core: {
         employeeCount: 0,
@@ -163,7 +157,7 @@ export function calculateEmployeeCost({
         benefits: 0,
         recruitment: 0,
         technology: 0,
-        mauRatio: 0,
+        mauRatio: 0
       },
       experts: {
         employeeCount: 0,
@@ -176,7 +170,7 @@ export function calculateEmployeeCost({
         benefits: 0,
         recruitment: 0,
         technology: 0,
-        mauRatio: 0,
+        mauRatio: 0
       },
       founders: {
         employeeCount: 0,
@@ -189,8 +183,8 @@ export function calculateEmployeeCost({
         benefits: 0,
         recruitment: 0,
         technology: 0,
-        mauRatio: 0,
-      },
+        mauRatio: 0
+      }
     }
   }
 
@@ -238,10 +232,20 @@ export function calculateEmployeeCost({
   return {
     totalCost,
     efficiency,
-    totalEmployees,
+    totalCount: totalEmployees,
     support,
     core,
     experts,
-    founders,
+    founders
   }
+}
+
+export type EmployeeResult = {
+  totalCost: number
+  totalCount: number
+  efficiency: number
+  support: EmployeeConfig
+  core: EmployeeConfig
+  experts: EmployeeConfig
+  founders: EmployeeConfig
 }

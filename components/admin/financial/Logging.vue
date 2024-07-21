@@ -1,47 +1,27 @@
 <script setup lang="ts">
-const { months, logging, chartRanges, filteredData, rgba } = useFinancials()
+const { months, logging, rgba } = useFinancials()
 
-const charts = ref([] as any[])
-
-watchEffect(() => {
-  if (!logging.value.ingestedCost || !months.value.length) {
-    charts.value = []
-    return
+const charts = computed(() => {
+  if (!months.value.length) {
+    return []
   }
 
-  charts.value = [
+  return [
     {
-      id: 0,
       title: 'Logging Costs Breakdown',
-      subtitle: 'Shows the breakdown of logging costs for the selected timeperiod.',
+      subtitle: 'Shows the breakdown of logging costs for the selected time period.',
       type: 'bar',
       data: {
-        labels: [
-          logging.value.ingestedCost.name,
-          logging.value.retentionCost.name,
-          logging.value.metricsCost.name,
-          logging.value.analyticsCost.name
-        ],
+        labels: ['Ingested Cost', 'Retention Cost', 'Metrics Cost', 'Analytics Cost'],
         datasets: [
           {
             label: 'Total Logging Costs',
+            valueType: 'currency',
             data: [
-              filteredData(logging.value.ingestedCost.values, chartRanges.value[0]).value.reduce(
-                (a, b) => a + b,
-                0
-              ),
-              filteredData(logging.value.retentionCost.values, chartRanges.value[0]).value.reduce(
-                (a, b) => a + b,
-                0
-              ),
-              filteredData(logging.value.metricsCost.values, chartRanges.value[0]).value.reduce(
-                (a, b) => a + b,
-                0
-              ),
-              filteredData(logging.value.analyticsCost.values, chartRanges.value[0]).value.reduce(
-                (a, b) => a + b,
-                0
-              )
+              logging.value.flatMap((month) => month.ingested).reduce((a, b) => a + b, 0),
+              logging.value.flatMap((month) => month.retention).reduce((a, b) => a + b, 0),
+              logging.value.flatMap((month) => month.metrics).reduce((a, b) => a + b, 0),
+              logging.value.flatMap((month) => month.analytics).reduce((a, b) => a + b, 0)
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
@@ -51,139 +31,91 @@ watchEffect(() => {
             ]
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost'
-            }
-          }
-        }
       }
     },
     {
-      category: 'Logging Costs',
-      id: 1,
       title: 'Ingested vs. Retention Costs',
       subtitle: 'Comparison of ingested and retention costs over time.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[1]
-        ).value,
+        labels: months.value,
         datasets: [
           {
+            label: 'Total Cost',
+            type: 'line',
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.total),
+            backgroundColor: rgba('black', 1),
+            borderColor: rgba('lightYellow', 0.5)
+          },
+          {
             label: 'Ingested Cost',
-            data: filteredData(logging.value.ingestedCost.values, chartRanges.value[1]).value,
+            valueType: 'currency',
+            stack: 'stack1',
+            data: logging.value.flatMap((cost) => cost.ingested),
             backgroundColor: rgba('lightBlue', 0.5)
           },
           {
             label: 'Retention Cost',
-            data: filteredData(logging.value.retentionCost.values, chartRanges.value[1]).value,
+            valueType: 'currency',
+            stack: 'stack1',
+            data: logging.value.flatMap((cost) => cost.retention),
             backgroundColor: rgba('darkBlue', 0.5)
-          }
-        ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
-      }
-    },
-    {
-      category: 'Logging Costs',
-      id: 2,
-      title: 'Metrics and Analytics Costs',
-      subtitle: 'Breakdown of metrics and analytics costs over time.',
-      type: 'bar',
-      data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[2]
-        ).value,
-        datasets: [
+          },
           {
             label: 'Metrics Cost',
-            data: filteredData(logging.value.metricsCost.values, chartRanges.value[2]).value,
+            valueType: 'currency',
+            stack: 'stack2',
+            data: logging.value.flatMap((cost) => cost.metrics),
             backgroundColor: rgba('lightOrange', 0.5)
           },
           {
             label: 'Analytics Cost',
-            data: filteredData(logging.value.analyticsCost.values, chartRanges.value[2]).value,
+            stack: 'stack2',
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.analytics),
             backgroundColor: rgba('darkOrange', 0.5)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     },
+
     {
-      category: 'Logging Costs',
-      id: 3,
       title: 'Detailed Breakdown of Logging Costs',
       subtitle: 'Shows detailed breakdown of logging costs over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[3]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Ingested Cost',
-            data: filteredData(logging.value.ingestedCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.ingested),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('darkBlue', 0.5)
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Retention Cost',
-            data: filteredData(logging.value.retentionCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.retention),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('darkGreen', 0.5)
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Metrics Cost',
-            data: filteredData(logging.value.metricsCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.metrics),
             borderColor: rgba('lightOrange', 0.5),
-            backgroundColor: rgba('darkOrange', 0.5)
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Analytics Cost',
-            data: filteredData(logging.value.analyticsCost.values, chartRanges.value[3]).value,
+            valueType: 'currency',
+            data: logging.value.flatMap((cost) => cost.analytics),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('darkRed', 0.5)
+            backgroundColor: rgba('black', 1)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          }
-        }
       }
     }
   ]

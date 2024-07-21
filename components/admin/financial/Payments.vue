@@ -1,827 +1,624 @@
 <script setup lang="ts">
-const { months, payments, totals, metrics, chartRanges, filteredData, rgba } = useFinancials()
+const { months, payments, totals, metrics, rgba } = useFinancials()
 
-const charts = ref([] as any[])
+const stripePaymentTypes = ['InternationalCard', 'AmericanExpress', 'MasterCardVisa']
 
-watchEffect(() => {
-  if (!metrics.value.profitLossMargin || !months.value.length) {
-    charts.value = []
-    return
+const stripeTransactions = computed(() => {
+  return stripePaymentTypes.reduce((acc, type) => {
+    const transactions = payments.value.flatMap((month) =>
+      month.stripe.transactions.flatMap((transaction) =>
+        transaction.paymentMethod === type
+          ? [
+              {
+                totalCost: transaction.pro.totalCost + transaction.expert.totalCost || 0,
+                totalTransactions: transaction.methodCustomers || 0,
+                additionalFees:
+                  transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0,
+                gst: transaction.pro.fees.gst + transaction.expert.fees.gst || 0,
+                subscription:
+                  transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0,
+                platform: transaction.pro.fees.platform + transaction.expert.fees.platform || 0
+              }
+            ]
+          : []
+      )
+    )
+
+    acc[type] = {
+      transactions,
+      totals: transactions.reduce(
+        (totals, transaction) => {
+          totals.totalCost += transaction.totalCost
+          totals.totalTransactions += transaction.totalTransactions
+          totals.additionalFees += transaction.additionalFees
+          totals.gst += transaction.gst
+          totals.subscription += transaction.subscription
+          totals.platform += transaction.platform
+          return totals
+        },
+        {
+          totalCost: 0,
+          totalTransactions: 0,
+          additionalFees: 0,
+          gst: 0,
+          subscription: 0,
+          platform: 0
+        }
+      )
+    }
+
+    return acc
+  }, {})
+})
+
+const totalStripeTransactions = computed(() => {
+  const initialTotals = {
+    totalCost: 0,
+    totalTransactions: 0,
+    additionalFees: 0,
+    gst: 0,
+    subscription: 0,
+    platform: 0
   }
 
-  charts.value = [
+  return payments.value.reduce((totals, month) => {
+    month.stripe.transactions.forEach((transaction) => {
+      totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
+      totals.totalTransactions += transaction.methodCustomers || 0
+      totals.additionalFees +=
+        transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
+      totals.gst += transaction.pro.fees.gst + transaction.expert.fees.gst || 0
+      totals.subscription +=
+        transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
+      totals.platform += transaction.pro.fees.platform + transaction.expert.fees.platform || 0
+    })
+    return totals
+  }, initialTotals)
+})
+
+console.log('totalStripeTransactions', payments.value)
+
+const razorpayPaymentTypes = ['Visa', 'MasterCard', 'UPI']
+
+const razorpayTransactions = computed(() => {
+  return razorpayPaymentTypes.reduce((acc, type) => {
+    const transactions = payments.value.flatMap((month) =>
+      month.razorpay.transactions.flatMap((transaction) =>
+        transaction.paymentMethod === type
+          ? [
+              {
+                totalCost: transaction.pro?.totalCost + transaction.expert?.totalCost || 0,
+                totalTransactions: transaction.methodCustomers || 0,
+                additionalFees:
+                  transaction.pro?.fees?.additionalFees +
+                    transaction.expert?.fees?.additionalFees || 0,
+                gst: transaction.pro?.fees?.gst + transaction.expert?.fees?.gst || 0,
+                subscription:
+                  transaction.pro?.fees?.subscription + transaction.expert?.fees?.subscription || 0,
+                platform: transaction.pro?.fees?.platform + transaction.expert?.fees?.platform || 0
+              }
+            ]
+          : []
+      )
+    )
+
+    // Calculate totals for each type and store them in the accumulator
+    acc[type] = {
+      transactions,
+      totals: transactions.reduce(
+        (totals, transaction) => {
+          totals.totalCost += transaction.totalCost
+          totals.totalTransactions += transaction.totalTransactions
+          totals.additionalFees += transaction.additionalFees
+          totals.gst += transaction.gst
+          totals.subscription += transaction.subscription
+          totals.platform += transaction.platform
+          return totals
+        },
+        {
+          totalCost: 0,
+          totalTransactions: 0,
+          additionalFees: 0,
+          gst: 0,
+          subscription: 0,
+          platform: 0
+        }
+      )
+    }
+
+    return acc
+  }, {})
+})
+
+console.log('razorpayTransactions', razorpayTransactions)
+
+const totalRazorpayTransactions = computed(() => {
+  const initialTotals = {
+    totalCost: 0,
+    totalTransactions: 0,
+    additionalFees: 0,
+    gst: 0,
+    subscription: 0,
+    platform: 0
+  }
+
+  return payments.value.reduce((totals, month) => {
+    month.razorpay.transactions.forEach((transaction) => {
+      totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
+      totals.totalTransactions += transaction.methodCustomers || 0
+      totals.additionalFees +=
+        transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
+      totals.gst += transaction.pro.fees.gst + transaction.expert.fees.gst || 0
+      totals.subscription +=
+        transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
+      totals.platform += transaction.pro.fees.platform + transaction.expert.fees.platform || 0
+    })
+    return totals
+  }, initialTotals)
+})
+
+const stripe = computed(() => {
+  return payments.value.flatMap((month) => month.stripe)
+})
+
+const razorpay = computed(() => {
+  return payments.value.flatMap((month) => month.razorpay)
+})
+
+const charts = computed(() => {
+  if (!months.value.length) {
+    return []
+  }
+
+  return [
     {
-      id: 0,
-      title: 'Payments Costs Breakdown',
-      subtitle: 'Shows the breakdown of payments costs between Stripe and Razorpay.',
-      type: 'pie',
+      title: 'Payment Fee Breakdown',
+      subtitle:
+        'Shows the breakdown of payment fee costs by provider for the selected time period.',
+      type: 'bar',
       data: {
-        labels: ['Razorpay', 'Stripe'],
+        labels: [
+          'Stripe Platform Fees',
+          'Stripe Subscription Fees',
+          'Stripe Extra Fees',
+          'Razorpay Platform Fees',
+          'Razorpay Subscription Fees',
+          'Razorpay Extra Fees'
+        ],
         datasets: [
           {
-            label: ['Razorpay Fees', 'Stripe Fee'],
+            label: 'Total Fees',
+            valueType: 'currency',
             data: [
-              filteredData(
-                payments.value.razorpayTotalCost.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0),
-              filteredData(
-                payments.value.stripeTotalCost.values,
-                chartRanges.value[0]
-              ).value.reduce((a, b) => a + b, 0)
+              totalStripeTransactions.value.platform,
+              totalStripeTransactions.value.subscription,
+              totalStripeTransactions.value.additionalFees,
+              totalRazorpayTransactions.value.platform,
+              totalRazorpayTransactions.value.subscription,
+              totalRazorpayTransactions.value.additionalFees
             ],
-            hoverOffset: 40,
-            backgroundColor: [rgba('darkOrange', 0.4), rgba('darkBlue', 0.4)],
-            borderColor: rgba('black', 1),
-            borderWidth: 8,
-            borderRadius: 20
+            backgroundColor: [
+              rgba('lightGreen', 0.5),
+              rgba('darkBlue', 0.5),
+              rgba('lightBlue', 0.5),
+              rgba('darkRed', 0.5),
+              rgba('lightRed', 0.5),
+              rgba('darkCyan', 0.5)
+            ]
           }
         ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top'
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: true
-          }
-        },
-        grid: {
-          display: false
-        },
-        scales: {
-          x: {
-            display: false
-          },
-          y: {
-            display: false
-          },
-          'y-axis-2': {
-            display: false
-          }
-        }
       }
     },
     {
-      category: 'Payment Costs',
-      id: 0,
       title: 'Total Payment Costs by Provider',
       subtitle: 'Shows the total payment costs for Razorpay and Stripe over time.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[0]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Razorpay Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.razorpayTotalTransactions.values,
-              chartRanges.value[0]
-            ).value,
-            borderColor: rgba('darkOrange', 0.5)
+            valueType: 'number',
+            data: razorpay.value.flatMap((month) => month.totalCustomers),
+            borderColor: rgba('darkOrange', 0.8),
+            backgroundColor: rgba('black', 1),
           },
           {
             label: 'Stripe Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(payments.value.stripeTotalTransactions.values, chartRanges.value[0])
-              .value,
-            borderColor: rgba('darkBlue', 0.5)
+            valueType: 'number',
+            data: stripe.value.flatMap((month) => month.totalCustomers),
+            borderColor: rgba('darkBlue', 0.8),
+            backgroundColor: rgba('black', 1),
+
           },
           {
             label: 'Razorpay Total Cost',
-            data: filteredData(payments.value.razorpayTotalCost.values, chartRanges.value[0]).value,
-            backgroundColor: rgba('darkOrange', 0.5)
+            valueType: 'currency',
+            data: razorpay.value.flatMap((month) => month.totalCost),
+            backgroundColor: rgba('darkOrange', 0.3)
           },
           {
             label: 'Stripe Total Cost',
-            data: filteredData(payments.value.stripeTotalCost.values, chartRanges.value[0]).value,
-            backgroundColor: rgba('darkBlue', 0.5)
-          },
-          {
-            label: 'Combined Total Cost',
-            data: filteredData(totals.value.paymentsCost.values, chartRanges.value[0]).value,
-            backgroundColor: rgba('darkCyan', 0.5)
+            valueType: 'currency',
+            data: stripe.value.flatMap((month) => month.totalCost),
+            backgroundColor: rgba('darkBlue', 0.3)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 1,
-      title: 'Total Transaction Costs by Provider',
-      subtitle: 'Shows the annual payment costs for Razorpay and Stripe over time.',
-      type: 'line',
-      data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[1]
-        ).value,
-        datasets: [
-          {
-            label: 'Razorpay Avg Cost',
-            data: filteredData(payments.value.razorpayAvgCost.values, chartRanges.value[1]).value,
-            borderColor: rgba('darkPurple', 0.8)
-          },
-          {
-            label: 'Stripe Avg Cost',
-            data: filteredData(payments.value.stripeAvgCost.values, chartRanges.value[1]).value,
-            borderColor: rgba('darkGreen', 0.8)
-          },
-          {
-            label: 'Razorpay Total Transactions',
-            type: 'bar',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.razorpayTotalTransactions.values,
-              chartRanges.value[1]
-            ).value,
-            backgroundColor: rgba('lightRed', 0.5)
-          },
-          {
-            label: 'Stripe Total Transactions',
-            type: 'bar',
-            yAxisID: 'y-axis-2',
-            data: filteredData(payments.value.stripeTotalTransactions.values, chartRanges.value[1])
-              .value,
-            backgroundColor: rgba('lightBlue', 0.5)
-          }
-        ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Avg. Cost'
-            }
-          },
-          'y-axis-2': {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
-      }
-    },
-    {
-      id: 2,
-      title: 'Domestic Payment Method Costs - Razorpay',
+      title: 'Domestic Payment Costs - Razorpay Totals',
       subtitle: 'Shows the costs for different domestic payment methods over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[2]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Visa Cost',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((month) => month.totalCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
+            backgroundColor: rgba('black', 1),
           },
           {
             label: 'MasterCard Cost',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((month) => month.totalCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.MasterCard.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            backgroundColor: rgba('black', 1),
           },
           {
             label: 'UPI Cost',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((month) => month.totalCost),
-              chartRanges.value[2]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('lightRed', 0.2)
+            backgroundColor: rgba('black', 1),
           },
           {
             label: 'Domestic Transactions',
             type: 'bar',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.razorpayTotalTransactions.values,
-              chartRanges.value[2]
-            ).value,
+            valueType: 'number',
+            data: razorpay.value.map((m) => m.totalCustomers),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 3,
       title: 'Razorpay UPI Fees',
       subtitle: 'Domestic payment fees for UPI transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[3]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((cost) => cost.totalTransactions),
-              chartRanges.value[3]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.totalTransactions),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((cost) => cost.base),
-              chartRanges.value[3]
-            ).value,
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.5)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((cost) => cost.subscription),
-              chartRanges.value[3]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((cost) => cost.gst),
-              chartRanges.value[3]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.domesticUPI.values.flatMap((cost) => cost.additionalFees),
-              chartRanges.value[3]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 4,
       title: 'Razorpay Visa Fees',
       subtitle: 'Domestic payment fees for Visa transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[4]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((cost) => cost.totalTransactions),
-              chartRanges.value[4]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.totalTransactions),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((cost) => cost.base),
-              chartRanges.value[4]
-            ).value,
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.5)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((cost) => cost.subscription),
-              chartRanges.value[4]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((cost) => cost.gst),
-              chartRanges.value[4]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.domesticVisa.values.flatMap((cost) => cost.additionalFees),
-              chartRanges.value[4]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 5,
       title: 'Razorpay MasterCard Fees',
       subtitle: 'International payment fees for MasterCard transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[5]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((cost) => cost.totalTransactions),
-              chartRanges.value[5]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap(
+              (m) => m.totalTransactions
+            ),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((cost) => cost.base),
-              chartRanges.value[5]
-            ).value,
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.7)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((cost) => cost.subscription),
-              chartRanges.value[5]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((cost) => cost.gst),
-              chartRanges.value[5]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.domesticMasterCard.values.flatMap((cost) => cost.additionalFees),
-              chartRanges.value[5]
-            ).value,
+            valueType: 'currency',
+            data: razorpayTransactions.value.Visa.transactions.flatMap((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 6,
       title: 'Stripe International Payments - Total Costs',
       subtitle: 'Shows the costs for different international payment methods over time.',
       type: 'line',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[6]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'MasterCard/Visa Cost',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap((cost) => cost.totalCost),
-              chartRanges.value[6]
-            ).value,
-            backgroundColor: rgba('darkBlue', 0.5),
-            borderColor: rgba('lightBlue', 0.5)
+            valueType: 'currency',
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((m) => m.totalCost),
+            backgroundColor: rgba('black', 1),
+            borderColor: rgba('darkBlue', 0.6)
           },
           {
             label: 'American Express Cost',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap((cost) => cost.totalCost),
-              chartRanges.value[6]
-            ).value,
-            backgroundColor: rgba('darkGreen', 0.5),
+            valueType: 'currency',
+            data: stripeTransactions.value.AmericanExpress.transactions.map((m) => m.totalCost),
+            backgroundColor: rgba('black', 1),
             borderColor: rgba('lightGreen', 0.5)
           },
           {
             label: 'International Card Cost',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.totalCost),
-              chartRanges.value[6]
-            ).value,
-            backgroundColor: rgba('darkRed', 0.5),
+            valueType: 'currency',
+            data: stripeTransactions.value.InternationalCard.transactions.map((m) => m.totalCost),
+            backgroundColor: rgba('black', 1),
             borderColor: rgba('lightRed', 0.5)
           },
           {
             label: 'International Transactions',
             type: 'bar',
-            yAxisID: 'y-axis-2',
-            data: filteredData(payments.value.stripeTotalTransactions.values, chartRanges.value[6])
-              .value,
+            valueType: 'number',
+            data: stripe.value.map((m) => m.totalCustomers),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2)
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 7,
       title: 'Stripe International Card Fees',
       subtitle:
         'International payment fees from all non Visa/MasterCard/AmericanExpress transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[7]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.totalTransactions),
-              chartRanges.value[7]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: stripeTransactions.value.InternationalCard.transactions.flatMap(
+              (m) => m.totalTransactions
+            ),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.base),
-              chartRanges.value[7]
-            ).value,
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.InternationalCard.transactions.map(
+              (cost) => cost.platform
+            ),
             backgroundColor: rgba('darkRed', 0.5)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.subscription),
-              chartRanges.value[7]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.InternationalCard.transactions.map(
+              (cost) => cost.subscription
+            ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.gst),
-              chartRanges.value[7]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.InternationalCard.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.internationalCard.values.flatMap((cost) => cost.additionalFees),
-              chartRanges.value[7]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.InternationalCard.transactions.map(
+              (cost) => cost.additionalFees
+            ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 8,
       title: 'Stripe MasterCard / Visa Fees',
       subtitle: 'International payment fees from all Visa MasterCard transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[8]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap(
-                (cost) => cost.totalTransactions
-              ),
-              chartRanges.value[8]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: stripeTransactions.value.MasterCardVisa.transactions.flatMap(
+              (m) => m.totalTransactions
+            ),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap((cost) => cost.base),
-              chartRanges.value[8]
-            ).value,
-            backgroundColor: rgba('darkRed', 0.5)
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((cost) => cost.platform),
+            backgroundColor: rgba('darkRed', 0.7)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap(
-                (cost) => cost.subscription
-              ),
-              chartRanges.value[8]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.MasterCardVisa.transactions.map(
+              (cost) => cost.subscription
+            ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap((cost) => cost.gst),
-              chartRanges.value[8]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.internationalMasterCardVisa.values.flatMap(
-                (cost) => cost.additionalFees
-              ),
-              chartRanges.value[8]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.MasterCardVisa.transactions.map(
+              (cost) => cost.additionalFees
+            ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     },
     {
-      id: 9,
       title: 'Stripe AmericanExpress Fees',
       subtitle: 'International payment fees for AmericanExpress transactions.',
       type: 'bar',
       data: {
-        labels: filteredData(
-          months.value.map((month) => `M${month}`),
-          chartRanges.value[9]
-        ).value,
+        labels: months.value,
         datasets: [
           {
             label: 'Total Transactions',
             type: 'line',
-            yAxisID: 'y-axis-2',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap(
-                (cost) => cost.totalTransactions
-              ),
-              chartRanges.value[9]
-            ).value,
-            borderColor: rgba('darkGray', 0.5)
+            valueType: 'number',
+            data: stripeTransactions.value.AmericanExpress.transactions.flatMap(
+              (m) => m.totalTransactions
+            ),
+            borderColor: rgba('darkGray', 0.5),
+            backgroundColor: rgba('black', 1)
           },
           {
-            label: 'Base Fees',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap((cost) => cost.base),
-              chartRanges.value[9]
-            ).value,
+            label: 'Platform Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.AmericanExpress.transactions.map(
+              (cost) => cost.platform
+            ),
             backgroundColor: rgba('darkRed', 0.5)
           },
           {
             label: 'Subscription Fees',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap(
-                (cost) => cost.subscription
-              ),
-              chartRanges.value[9]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.AmericanExpress.transactions.map(
+              (cost) => cost.subscription
+            ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1'
           },
           {
-            label: 'Gst Fees',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap((cost) => cost.gst),
-              chartRanges.value[9]
-            ).value,
+            label: 'GST Fees',
+            valueType: 'currency',
+            data: stripeTransactions.value.AmericanExpress.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1'
           },
           {
             label: 'Extra Fees',
-            data: filteredData(
-              payments.value.internationalAmericanExpress.values.flatMap(
-                (cost) => cost.additionalFees
-              ),
-              chartRanges.value[9]
-            ).value,
+            valueType: 'currency',
+            data: stripeTransactions.value.AmericanExpress.transactions.map(
+              (cost) => cost.additionalFees
+            ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1'
           }
         ]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cost (INR)'
-            }
-          },
-          'y-axis-2': {
-            display: true,
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Transactions'
-            }
-          }
-        }
       }
     }
   ]

@@ -151,8 +151,7 @@ export function calculateVectorStorage(
   return parseFloat(totalGB.toFixed(3))
 }
 
-export function calculateContentStorage(numItems: number, contentWords: number): number {
-  const contentChars = contentWords * AVG_CHARS_PER_WORD
+export function calculateContentStorage(numItems: number, contentChars: number): number {
   const bytesPerItem = contentChars
   const totalBytes = bytesPerItem * numItems
   const totalGB = totalBytes / BYTES_PER_GB
@@ -267,8 +266,8 @@ interface StorageResult {
     content: {
       type: string
       count: number
-      avgWords: number
-      totalWords: number
+      avgChars: number
+      totalChars: number
     }
     storage: {
       total: number
@@ -277,7 +276,6 @@ interface StorageResult {
     }
   }[]
 }
-
 
 function calculateStorageUsage(
   contentParams: ContentParams[],
@@ -288,10 +286,10 @@ function calculateStorageUsage(
 
   const details = []
 
-  for (const { CONTENT_TYPE, TOTAL, WORDS, PROCESSED } of contentParams) {
+  for (const { CONTENT_TYPE, TOTAL, CHARS, PROCESSED } of contentParams) {
     // console.log('DATABASE', CONTENT_TYPE, TOTAL, WORDS, PROCESSED)
-    const contentStorage = calculateContentStorage(TOTAL, WORDS.CONTENT + WORDS.OUTPUT)
-    const vectorStorage = calculateVectorStorage(VECTOR_SIZES.large, WORDS.CHUNKS * PROCESSED)
+    const contentStorage = calculateContentStorage(TOTAL, CHARS.CONTENT + CHARS.OUTPUT)
+    const vectorStorage = calculateVectorStorage(VECTOR_SIZES.large, CHARS.CHUNKS * PROCESSED)
 
     totalDbStorageGB += contentStorage
     totalVectorStorageGB += vectorStorage
@@ -300,9 +298,9 @@ function calculateStorageUsage(
       content: {
         type: CONTENT_TYPE,
         count: TOTAL,
-        avgWords: WORDS.CONTENT,
-        totalWords: WORDS.CONTENT * TOTAL,
-        totalChunks: WORDS.CHUNKS * TOTAL
+        avgChars: CHARS.CONTENT,
+        totalChars: CHARS.CONTENT * TOTAL,
+        totalChunks: CHARS.CHUNKS * TOTAL
       },
       storage: {
         total: contentStorage + vectorStorage,
@@ -317,29 +315,6 @@ function calculateStorageUsage(
     db: parseFloat(totalDbStorageGB.toFixed(3)),
     vector: parseFloat(totalVectorStorageGB.toFixed(3)),
     details
-  }
-}
-
-export interface StorageCostResult {
-  totalCost: number
-  storage: {
-    cost: {
-      total: number
-      base: number
-      mau: number
-      db: number
-      bandwidth: number
-      fileStorage: number
-    }
-    data: StorageResult
-  }
-  compute: {
-    plan: SBPlan
-    cost: {
-      total: number
-      hourly: number
-      monthly: number
-    }
   }
 }
 
@@ -391,6 +366,29 @@ export function calculateSupabaseCosts(
         hourly: USD2INR(computeCost.hourly),
         monthly: USD2INR(computeCost.monthly)
       }
+    }
+  }
+}
+
+export interface StorageCostResult {
+  totalCost: number
+  storage: {
+    cost: {
+      total: number
+      base: number
+      mau: number
+      db: number
+      bandwidth: number
+      fileStorage: number
+    }
+    data: StorageResult
+  }
+  compute: {
+    plan: SBPlan
+    cost: {
+      total: number
+      hourly: number
+      monthly: number
     }
   }
 }
