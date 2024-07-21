@@ -31,18 +31,22 @@ function distributeCustomers(
 ): Record<string, number> {
   let result: Record<string, number> = {}
   let totalAssigned = 0
+  let fractionalPart = 0
 
-  for (const method in distribution) {
-    const count = Math.floor(numCustomers * (distribution[method] / 100))
+  Object.keys(distribution).forEach((method, index, array) => {
+    let proportion = distribution[method] / 100
+    let calculated = numCustomers * proportion + fractionalPart
+    let count = Math.floor(calculated)
+
+    fractionalPart = calculated - count // Keep track of fractional part for more precise distribution
     result[method] = count
     totalAssigned += count
-  }
 
-  // Handle rounding differences by adjusting the last method's count
-  if (totalAssigned < numCustomers) {
-    const lastMethod = Object.keys(distribution).pop()!
-    result[lastMethod] += numCustomers - totalAssigned
-  }
+    // Distribute any remaining customers more evenly
+    if (index === array.length - 1 && totalAssigned < numCustomers) {
+      result[method] += numCustomers - totalAssigned
+    }
+  })
 
   return result
 }
@@ -114,7 +118,7 @@ interface PaymentCosts {
   totalCost: number
   percentage: number
   fees: {
-    base: number
+    platform: number
     subscription: number
     gst: number
     additionalFees: number
@@ -150,7 +154,7 @@ function calculatePaymentCosts({
     totalCost: costPerCustomer * numCustomers,
     percentage: (costPerCustomer / priceInUSD) * 100,
     fees: {
-      base: platformCost * numCustomers,
+      platform: platformCost * numCustomers,
       subscription: subscriptionCost * numCustomers,
       gst: gstCost * numCustomers,
       additionalFees: extraCost * numCustomers
@@ -217,13 +221,6 @@ interface HandleSubscriptionParams {
   frequency: PaymentFrequency
 }
 
-export interface ProviderChunk {
-  provider: PaymentProvider
-  totalCustomers: number
-  totalCost: number
-  transactions: TransactionChunk[]
-}
-
 export function handleSubscriptions({
   numCustomers,
   isInternational,
@@ -236,16 +233,29 @@ export function handleSubscriptions({
   const proDistribution = distributeCustomers(numCustomers.pro, paymentDistribution)
   const expertDistribution = distributeCustomers(numCustomers.expert, paymentDistribution)
 
-  console.log('Customer Input', numCustomers)
   let totalCost = 0
   let totalCustomers = 0
   const provider = isInternational ? 'Stripe' : 'Razorpay'
 
   const combinedResults: TransactionChunk[] = []
 
+  console.log('Distributed Customers:', proDistribution, expertDistribution)
+
   Object.keys(paymentDistribution).forEach((paymentMethod) => {
     const proCount = proDistribution[paymentMethod] || 0
     const expertCount = expertDistribution[paymentMethod] || 0
+
+    let blankTransaction = {
+      totalCost: 0,
+      numCustomers: 0,
+      percentage: 0,
+      fees: {
+        platform: 0,
+        subscription: 0,
+        gst: 0,
+        additionalFees: 0
+      }
+    }
 
     if (proCount > 0 || expertCount > 0) {
       const transactionDetailsPro = calculateFees({
@@ -272,10 +282,17 @@ export function handleSubscriptions({
         pro: transactionDetailsPro,
         expert: transactionDetailsExpert
       })
+    } else {
+      combinedResults.push({
+        paymentMethod: paymentMethod as DomesticPaymentMethod | InternationalPaymentMethod,
+        methodCost: 0,
+        methodCustomers: 0,
+        frequency,
+        pro: blankTransaction,
+        expert: blankTransaction
+      })
     }
   })
-
-  console.log('Customer Output', totalCustomers)
 
   return {
     provider,
@@ -291,22 +308,6 @@ interface SimulatePurchasesParams {
     expert: number
   }
   frequency: PaymentFrequency
-}
-
-export interface TransactionChunk {
-  paymentMethod: DomesticPaymentMethod | InternationalPaymentMethod
-  frequency: PaymentFrequency
-  methodCost: number
-  methodCustomers: number
-  pro: PaymentCosts
-  expert: PaymentCosts
-}
-
-export interface TransactionDetails {
-  totalCost: number
-  totalCustomers: number
-  razorpay: ProviderChunk
-  stripe: ProviderChunk
 }
 
 export function simulateRealWorldPurchases({
@@ -340,17 +341,33 @@ export function simulateRealWorldPurchases({
     frequency
   })
 
-  console.log(
-    'Razorpay Customers',
-    razorpayProCustomers,
-    razorpayExpertCustomers,
-    razorpayTransactions
-  )
-
   return {
     totalCost: razorpayTransactions.totalCost + stripeTransaction.totalCost,
     totalCustomers: razorpayTransactions.totalCustomers + stripeTransaction.totalCustomers,
     razorpay: razorpayTransactions,
     stripe: stripeTransaction
   }
+}
+
+export interface TransactionDetails {
+  totalCost: number
+  totalCustomers: number
+  razorpay: ProviderChunk
+  stripe: ProviderChunk
+}
+
+export interface ProviderChunk {
+  provider: PaymentProvider
+  totalCustomers: number
+  totalCost: number
+  transactions: TransactionChunk[]
+}
+
+export interface TransactionChunk {
+  paymentMethod: DomesticPaymentMethod | InternationalPaymentMethod
+  frequency: PaymentFrequency
+  methodCost: number
+  methodCustomers: number
+  pro: PaymentCosts
+  expert: PaymentCosts
 }

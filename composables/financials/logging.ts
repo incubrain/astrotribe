@@ -54,7 +54,7 @@ function estimateUsage(params: LogsCostParams): UsageParams {
 
   const retentionGB = ingestedGB * (month > 6 ? 1 : 0) // Retention is applied only after the first 6 months
 
-  const metricsIngestedDataPoints = MAU * 100_000 // Assuming 100 data points per MAU
+  const metricsIngestedDataPoints = MAU * 300 // Assuming 300 data points per MAU, 30 per day
   const additionalMetricsDataPoints =
     metricsIngestedDataPoints > LOGS_METRIC_CONFIG.includedDataPoints
       ? metricsIngestedDataPoints - LOGS_METRIC_CONFIG.includedDataPoints

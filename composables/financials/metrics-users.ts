@@ -24,19 +24,15 @@ interface AllocateCostParams {
     pro: number
     expert: number
   }
-  freeUsers: number
-  proCustomers: number
-  expertCustomers: number
+  users: {
+    free: number
+    pro: number
+    expert: number
+  }
 }
 
-function allocateCostsToTiers({
-  totalCosts,
-  freeUsers,
-  proCustomers,
-  expertCustomers
-}: AllocateCostParams): UserTierCost {
-  console.log('allocateCostsToTiers', freeUsers, proCustomers, expertCustomers)
-  const totalUsers = freeUsers + proCustomers + expertCustomers
+function allocateCostsToTiers({ totalCosts, users }: AllocateCostParams): UserTierCost {
+  const totalUsers = users.free + users.pro + users.expert
 
   const costs: UserTierCost = {
     free: { total: 0, singleCost: 0 },
@@ -49,9 +45,9 @@ function allocateCostsToTiers({
   const costPerProUser = totalCosts.pro / totalUsers
   const costPerExpertUser = totalCosts.expert / totalUsers
 
-  costs.free.total = costPerFreeUser * freeUsers
-  costs.pro.total = costPerProUser * proCustomers
-  costs.expert.total = costPerExpertUser * expertCustomers
+  costs.free.total = costPerFreeUser * users.free
+  costs.pro.total = costPerProUser * users.pro
+  costs.expert.total = costPerExpertUser * users.expert
 
   costs.free.singleCost = costPerFreeUser
   costs.pro.singleCost = costPerProUser
@@ -71,22 +67,20 @@ export interface CalculateCostParams {
     pro: number
     expert: number
   }
-  totalIncome: number
 }
 
-export function calculateCostPerUser({ users, totalCosts, totalIncome }: CalculateCostParams) {
-  const freeUsers = users.free
-
+export function calculateCostPerUser({ users, totalCosts }: CalculateCostParams): CostPerUser {
   const costs = allocateCostsToTiers({
     totalCosts,
-    freeUsers,
-    proCustomers: users.pro,
-    expertCustomers: users.expert
+    users
   })
 
   return {
+    total: totalCosts.free + totalCosts.pro + totalCosts.expert,
+    totalCount: users.free + users.pro + users.expert,
+    customerCount: users.pro + users.expert,
     free: {
-      count: freeUsers,
+      count: users.free,
       totalCost: costs.free.total,
       singleCost: costs.free.singleCost
     },
@@ -100,5 +94,26 @@ export function calculateCostPerUser({ users, totalCosts, totalIncome }: Calcula
       totalCost: costs.expert.total,
       singleCost: costs.expert.singleCost
     }
+  }
+}
+
+export interface CostPerUser {
+  total: number
+  totalCount: number
+  customerCount: number
+  free: {
+    count: number
+    totalCost: number
+    singleCost: number
+  }
+  pro: {
+    count: number
+    totalCost: number
+    singleCost: number
+  }
+  expert: {
+    count: number
+    totalCost: number
+    singleCost: number
   }
 }
