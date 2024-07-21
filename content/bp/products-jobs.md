@@ -20,6 +20,13 @@
    - Search by location/type/salary
 
 
+
+### MVP
+
+- Listing card for each job will have to have displaying the: position / location / published_at / link
+- 
+
+
 ### Jobs Portal
 
 AstronEra’s dedicated jobs portal lists a variety of opportunities in science communication, engineering, startups, academia, and citizen science. Sourced from LinkedIn and company websites, the portal allows users to bookmark listings and search by location, type, and salary, ensuring they can find the most relevant job opportunities.

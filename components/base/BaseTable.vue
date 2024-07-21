@@ -35,7 +35,7 @@ const selectedRows = ref([])
 
 <template>
   <PrimeDataTable
-    v-if="columns.length > 1 && dataRows.length > 1"
+    v-if="columns.length > 0 && dataRows.length > 0"
     v-model:selection="selectedRows"
     v-model:filters="tableFilters"
     :value="dataRows"

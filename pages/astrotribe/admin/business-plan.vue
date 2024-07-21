@@ -1,23 +1,3 @@
-<template>
-  <div class="relative h-full max-h-full overflow-hidden pb-4 xl:pb-8">
-    <BaseTabView
-      ref="businessPlanTabView"
-      :tabs="businessPlanTabs"
-      class="relative h-full w-full pb-4"
-    >
-      <template
-        v-for="tab in businessPlanTabs"
-        v-slot:[tab.tabName]
-      >
-        <AdminBusinessPlan
-          :bp-section="tab.tabName"
-          class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
-        />
-      </template>
-    </BaseTabView>
-  </div>
-</template>
-
 <script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
@@ -40,10 +20,31 @@ const businessPlanSections = [
   'ideas'
 ]
 
-const businessPlanTabs = businessPlanSections.map((section) => ({
-  tabTitle: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-  tabName: section
+const businessPlanTabs = businessPlanSections.map((section, index) => ({
+  value: `${index}`,
+  title: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+  slotName: section
 }))
 </script>
+
+<template>
+  <div class="relative h-full max-h-full overflow-hidden pb-4 xl:pb-8">
+    <BaseTabView
+      ref="businessPlanTabView"
+      :tabs="businessPlanTabs"
+      class="relative h-full w-full pb-4"
+    >
+      <template
+        v-for="tab in businessPlanTabs"
+        v-slot:[tab.slotName]
+      >
+        <AdminBusinessPlan
+          :bp-section="tab.slotName"
+          class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
+        />
+      </template>
+    </BaseTabView>
+  </div>
+</template>
 
 <style scoped></style>
