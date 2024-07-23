@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     algorithm: 'HS256'
   })
 
-  const response = await $fetch('https://seashell-app-awo7z.ondigitalocean.app/health', {
+  const response = await $fetch('https://seashell-app-awo7z.ondigitalocean.app/metrics', {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`
@@ -16,11 +16,11 @@ export default defineEventHandler(async (event) => {
 
   if (response.error) {
     console.log(response)
-    throw createError('there was an error with the /health endpoint')
+    throw createError('there was an error with the /metrics endpoint')
   }
 
   return {
     data: response,
-    message: 'healthy scraper'
+    message: 'metrics returned from scraper'
   }
 })
