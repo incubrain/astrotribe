@@ -3,6 +3,96 @@ definePageMeta({
   name: 'Home'
 })
 // !todo:low look into subtle black and white images or patterns to give the background some flair
+
+const features = [
+  {
+    icon: 'mdi:comment-text-outline',
+    title: 'Comments',
+    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:chat-outline',
+    title: 'Unlimited Chat',
+    description:
+      'Drive interaction among your users with live messaging features on your video streams.',
+    link: '#',
+    linkText: 'Explore more'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:comment-text-outline',
+    title: 'Comments',
+    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:chat-outline',
+    title: 'Unlimited Chat',
+    description:
+      'Drive interaction among your users with live messaging features on your video streams.',
+    link: '#',
+    linkText: 'Explore more'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:comment-text-outline',
+    title: 'Comments',
+    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:chat-outline',
+    title: 'Unlimited Chat',
+    description:
+      'Drive interaction among your users with live messaging features on your video streams.',
+    link: '#',
+    linkText: 'Explore more'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+  {
+    icon: 'mdi:share-variant',
+    title: 'Share Media',
+    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
+    link: '#',
+    linkText: 'Explore More'
+  },
+]
 </script>
 
 <template>
@@ -16,10 +106,16 @@ definePageMeta({
         subheading="We Have Some Big Plans!"
         class="pb-16 md:pb-24"
       />
-      <!-- <LazyHomeFeatureTabs class="pb-16 md:pb-24" /> -->
+      <HomeFeatureGroup
+        title="Supercharge Live Streams With On-brand Features"
+        description="OnTheFly gives you all the tools to engage your audience with captivating streams."
+        :features="features"
+      />
+
+      <LazyHomeFeatureTabs class="pb-16 md:pb-24" />
     </div>
     <LazyHomeCtaMain
-      class="py-16 md:py-24 border-y border-color"
+      class="border-color border-y py-16 md:py-24"
       title="Earlybird Exclusive Benefits"
       body="The first 50 people will get exclusive life-time free use of our platform"
       cta="Claim your spot"

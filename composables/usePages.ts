@@ -138,7 +138,7 @@ const adminLinks = ref([
     children: []
   },
   {
-    id: 7,
+    id: 8,
     label: 'Systems',
     slug: '/astrotribe/admin/business-systems',
     icon: 'mdi:chat',
@@ -175,6 +175,13 @@ const adminLinks = ref([
   },
   {
     id: 8,
+    label: 'Financials',
+    slug: '/astrotribe/admin/financials',
+    icon: 'material-symbols:attach-money',
+    children: []
+  },
+  {
+    id: 9,
     label: 'Scraper',
     slug: '/astrotribe/admin/scraper',
     icon: 'mdi:spider',
