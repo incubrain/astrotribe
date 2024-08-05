@@ -55,7 +55,7 @@ const { getCategoryName } = useCategoryTagStore()
             </p>
           </div>
           <!-- <span class="text-sm w-auto">
-            Scraped: {{ useTimeAgo(company.last_scraped_at).value }}
+            Scraped: {{ useTimeAgo(company.scraped_at).value }}
           </span> -->
         </div>
       </div>

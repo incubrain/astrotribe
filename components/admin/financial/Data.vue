@@ -34,19 +34,59 @@ function getType(value: any): string {
 }
 
 function traverseObject(
+  obj: any
+): Record<string, Array<{ path: string; value: any; type: string }>> {
+  let result: Record<string, Array<{ path: string; value: any; type: string }>> = {}
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key]
+      if (
+        Array.isArray(value) &&
+        value.length > 0 &&
+        typeof value[0] === 'object' &&
+        value[0] !== null
+      ) {
+        const childResults = traverseNestedObject(value[0], key)
+        result[key] = childResults
+      } else if (typeof value === 'object' && value !== null) {
+        const childResults = traverseNestedObject(value, key)
+        result[key] = childResults
+      } else {
+        if (!result['Root']) {
+          result['Root'] = []
+        }
+        result['Root'].push({
+          path: key,
+          value: value,
+          type: getType(value)
+        })
+      }
+    }
+  }
+  return result
+}
+
+function traverseNestedObject(
   obj: any,
-  path: string[] = []
+  parentKey: string
 ): Array<{ path: string; value: any; type: string }> {
   let result: Array<{ path: string; value: any; type: string }> = []
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
-      const newPath = path.concat(key)
+      const newPath = `${parentKey}.${key}`
       const value = obj[key]
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        result = result.concat(traverseObject(value, newPath))
+      if (
+        Array.isArray(value) &&
+        value.length > 0 &&
+        typeof value[0] === 'object' &&
+        value[0] !== null
+      ) {
+        result = result.concat(traverseNestedObject(value[0], newPath))
+      } else if (typeof value === 'object' && value !== null) {
+        result = result.concat(traverseNestedObject(value, newPath))
       } else {
         result.push({
-          path: newPath.join('.'),
+          path: newPath,
           value: value,
           type: getType(value)
         })
@@ -65,7 +105,16 @@ const columns = computed(() => {
   return result
 })
 
-const expandedIndex = ref(-1)
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      console.log(`Copied to clipboard: ${text}`)
+    },
+    (err) => {
+      console.error('Could not copy text: ', err)
+    }
+  )
+}
 </script>
 
 <template>
@@ -88,14 +137,32 @@ const expandedIndex = ref(-1)
         </PrimeAccordionHeader>
         <PrimeAccordionContent>
           <div
-            v-for="(entry, idx) in traverseObject(dataset.data[0])"
-            :key="`dataset-${dataset.name}-${idx}`"
-            class="border-color border-b pb-2 last:border-b-0 last:pb-0"
+            v-for="(group, parent) in traverseObject(dataset.data[0])"
+            :key="`group-${dataset.name}-${parent}`"
+            class="border-color border-b pb-4 pt-2 last:border-b-0 last:pb-0"
           >
-            <p class="text-xl font-semibold text-primary-950">{{ entry.path }}</p>
-            <span class="text-lg text-primary-700">
-              Type: {{ entry.type }} | Value {{ formatNumber(entry.value) }}
-            </span>
+            <p class="text-xl font-semibold text-primary-950">{{ parent || 'Total' }}</p>
+            <div
+              v-for="(entry, idx) in group"
+              :key="`entry-${dataset.name}-${idx}`"
+              class="flex items-center justify-between"
+            >
+              <span class="text-sm text-primary-700">
+                <strong class="font-semibold text-primary-950">
+                  {{ entry.path.replace(`${entry.path.split('.')[0]}.`, '') }} -
+                </strong>
+                {{ entry.type }} | {{ formatNumber(entry.value) }}
+              </span>
+              <button
+                @click="copyToClipboard(entry.path)"
+                class=""
+              >
+                <Icon
+                  class="h-4 w-4"
+                  name="mdi:content-copy"
+                />
+              </button>
+            </div>
           </div>
         </PrimeAccordionContent>
       </PrimeAccordionPanel>

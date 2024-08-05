@@ -20,7 +20,7 @@ export class CompanyRepository extends BaseRepository<Company> implements ICompa
         url,
         is_government,
         category_id,
-        last_scraped_at,
+        scraped_at,
         scrape_frequency,
         description,
         addresses(*),
