@@ -8,12 +8,6 @@ alter table "public"."content_sources" add column "last_scraped" timestamp with 
 
 alter table "public"."content_sources" add column "link_scraper_id" integer;
 
-ALTER TABLE "public"."research" 
-ADD COLUMN "fts" tsvector 
-GENERATED ALWAYS AS (
-  to_tsvector('english'::regconfig, (((title || ' ') || abstract) || ' ') || keywords)
-) STORED;
-
 alter table "public"."scraper_configs" drop column "config";
 
 alter table "public"."scraper_configs" drop column "frequency";
