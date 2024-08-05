@@ -1,4 +1,5 @@
 import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
+import { DarkPreset } from './themes/dark-theme'
 
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
@@ -8,7 +9,7 @@ export const MODULES: NuxtConfig['modules'] = [
   '@pinia/nuxt',
   '@nuxtjs/seo',
   '@nuxt/content',
-  'nuxt-primevue',
+  '@primevue/nuxt-module',
   '@nuxtjs/tailwindcss',
   '@nuxtjs/color-mode',
   '@nuxthq/studio',
@@ -31,6 +32,26 @@ const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
 const SECURITY_OPTIONS: NuxtConfig['security'] = {
   headers: {
     contentSecurityPolicy: {
+      'default-src': [
+        "'self'",
+        'http://localhost:3000',
+        'http://localhost:54321',
+        'https://www.astronera.org',
+        'https://idsifamzvzlpgnmlnldw.supabase.co'
+      ],
+      'connect-src': [
+        "'self'",
+        'http://localhost:3000',
+        'http://localhost:8080',
+        'http://host.docker.internal:8080',
+        'http://localhost:54321',
+        'https://o1175094.ingest.sentry.io',
+        'https://us.i.posthog.com',
+        'https://api.iconify.design',
+        'https://api.unisvg.com',
+        'https://api.simplesvg.com',
+        'ws://localhost:4000'
+      ],
       'img-src': [
         "'self'",
         'data:',
@@ -52,7 +73,9 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://www.youtube.com',
         'https://s.ytimg.com',
         'https://www.google.com/maps'
-      ]
+      ],
+      'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      'frame-src': ["'self'", 'https://www.youtube.com', 'https://us.posthog.com/']
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
     crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
@@ -68,7 +91,13 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
   },
   xssValidator: false,
   corsHandler: {
-    origin: ['http://localhost:3000', 'http://localhost:54321'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:8080',
+      'http://host.docker.internal:8080',
+      'http://localhost:54321',
+      'https://idsifamzvzlpgnmlnldw.supabase.co'
+    ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-client-info', 'apikey'],
     exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
@@ -124,9 +153,23 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
     exclude: []
   },
   options: {
-    ripple: true
-  },
-  cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
+    ripple: true,
+    theme: {
+      preset: DarkPreset,
+      options: {
+        cssLayer: {
+          name: 'primevue',
+          order: 'tailwind-base, primevue, tailwind-utilities'
+        }
+      }
+    }
+  }
+  // can configure global pass throughs
+  // importPT: { from: '@/passthrough/mycustompt.js')}
+
+  // importTheme: { from: '' }
+
+  // cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
 }
 
 const IMAGE_OPTIONS: NuxtConfig['image'] = {

@@ -13,13 +13,13 @@ const isSideVisible = ref(true)
           <Icon :name="isSideVisible ? 'mdi:eye' : 'mdi:sun'" />
         </PrimeToggleButton> -->
         <!-- <Transition name="slide-fade">
-          <PrimeInlineMessage
+          <PrimeMessage
             v-show="isSideVisible"
             severity="info"
             :pt="{ root: '', text: 'text-sm text-left' }"
           >
             Filters Coming Soon
-          </PrimeInlineMessage>
+          </PrimeMessage>
         </Transition> -->
       </div>
       <BaseFeedback v-show="isSideVisible" />

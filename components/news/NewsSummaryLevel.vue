@@ -26,12 +26,12 @@ const summaryLevels = [
 const selectedLevel = ref('beginner')
 </script>
 <template>
-  <div class="w-full flex gap-2">
+  <div class="flex w-full gap-2">
     <PrimeButton @click="news.scrapeBlogs">Scrape Blogs</PrimeButton>
     <PrimeButton @click="storeImage">Store Image</PrimeButton>
     <PrimeButton @click="news.getBlogs">Get Blogs</PrimeButton>
-    <div class="w-full flex justify-end gap-2 mb-4">
-      <PrimeDropdown
+    <div class="mb-4 flex w-full justify-end gap-2">
+      <PrimeSelect
         v-model="selectedLevel"
         :options="summaryLevels"
         option-label="label"
@@ -46,7 +46,7 @@ const selectedLevel = ref('beginner')
           :label="news.summaryLevel"
           trailing-icon="heroicons:chevron-down-20-solid"
         />
-      </PrimeDropdown>
+      </PrimeSelect>
     </div>
   </div>
 </template>

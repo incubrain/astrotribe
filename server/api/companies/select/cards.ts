@@ -6,17 +6,17 @@ const pickCompanyCard = {
   name: true,
   description: true,
   logo_url: true,
-  website_url: true,
+  url: true,
   is_government: true,
   founding_year: true,
   category_id: true,
-  last_scraped_at: true,
+  scraped_at: true,
   scrape_frequency: true
 } as const
 
 const companyCardSchema = z.array(
   companySchema.pick(pickCompanyCard).extend({
-    last_scraped_at: datetimeOffset().optional,
+    scraped_at: datetimeOffset().optional,
     social_media: socialSchema
       .pick({
         facebook_url: true,
@@ -44,11 +44,11 @@ export default defineEventHandler(async (event) => {
       created_at,
       name,
       logo_url,
-      website_url,
+      url,
       is_government,
       founding_year,
       category_id,
-      last_scraped_at,
+      scraped_at,
       scrape_frequency,
       description,
       social_media(facebook_url, twitter_url, linkedin_url, instagram_url, youtube_url)

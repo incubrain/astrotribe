@@ -1,4 +1,5 @@
 /* @import './scrollbar.css'; */
+@layer tailwind-base, primevue, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;
@@ -9,6 +10,16 @@
     --max-width-sm: 840px;
     --max-width-md: 1040px;
     --max-width-lg: 1140px;
+
+    /* imported from old theme */
+    --surface-ground: #09090b;
+    --surface-section: #18181b;
+    --surface-card: #18181b;
+    --surface-overlay: #18181b;
+    --surface-border: #27272a;
+    --surface-hover: rgba(255, 255, 255, 0.03);
+    --primary-color: #2471b3;
+    --primary-color-text: #020617;
   }
 
   h1,
@@ -25,10 +36,10 @@
   @tailwind utilities;
 
   .wrapper {
-    @apply max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)] mx-auto;
+    @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)];
   }
   .container {
-    @apply max-w-[1240px] mx-auto flex flex-col px-[20px] md:px-[80px] lg:px-[160px];
+    @apply mx-auto flex max-w-[1240px] flex-col px-[20px] md:px-[80px] lg:px-[160px];
   }
   .text-light {
     @apply text-zinc-100 dark:text-zinc-300;
@@ -46,7 +57,7 @@
     @apply bg-[var(--surface-section)];
   }
   .foreground {
-    @apply text-zinc-800  dark:text-zinc-300  bg-[var(--surface-ground)];
+    @apply bg-[var(--surface-ground)] text-zinc-800 dark:text-zinc-300;
   }
 
   .link-active {
@@ -57,30 +68,3 @@
     @apply text-[var(--primary-color)];
   }
 }
-
-/* @layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
-  
- 
-
-  .inverted {
-    @apply text-[#fff];
-  }
-} */
-
-/* .cropper-view-box,
-.cropper-face {
-  border-radius: 50%;
-}
-
-.cropper-point.point-se {
-  right: -6px;
-  bottom: -6px;
-}
-
-.bg-radial::before {
-  background: radial-gradient(75.61% 75.61% at 50% 24.39%, #352e53 0%, #b4530900 100%);
-  z-index: -1;
-  overflow: hidden;
-} */
