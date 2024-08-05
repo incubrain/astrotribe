@@ -42,6 +42,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'connect-src': [
         "'self'",
         'http://localhost:3000',
+        'http://localhost:8080',
+        'http://host.docker.internal:8080',
         'http://localhost:54321',
         'https://o1175094.ingest.sentry.io',
         'https://us.i.posthog.com',
@@ -91,6 +93,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
   corsHandler: {
     origin: [
       'http://localhost:3000',
+      'http://localhost:8080',
+      'http://host.docker.internal:8080',
       'http://localhost:54321',
       'https://idsifamzvzlpgnmlnldw.supabase.co'
     ],
