@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FilterMatchMode } from 'primevue/api'
 
 const usersStore = useUsersStore()
 const { userProfiles } = storeToRefs(usersStore)
@@ -10,6 +9,7 @@ const roles = [
   { label: 'Admin', value: 'admin' },
   { label: 'Super Admin', value: 'super_admin' }
 ]
+
 interface Column {
   field: string
   header: string
@@ -35,7 +35,7 @@ const columns: Column[] = [
     field: 'role',
     header: 'Role',
     style: 'width: 10%',
-    editor: 'PrimeDropdown',
+    editor: 'PrimeSelect',
     editorProps: {
       options: roles,
       optionLabel: 'label',
@@ -56,12 +56,12 @@ const handleRowEditSave = async ({ data, newData }) => {
 }
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  given_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  surname: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  role: { value: null, matchMode: FilterMatchMode.STARTS_WITH }
-})
+  global: { value: null, matchMode: 'contains' },
+  given_name: { value: null, matchMode: 'startsWith' },
+  surname: { value: null, matchMode: 'startsWith' },
+  email: { value: null, matchMode: 'startsWith' },
+  role: { value: null, matchMode: 'startsWith' }
+});
 
 definePageMeta({
   layoutTransition: false,
@@ -71,10 +71,10 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="overflow-scroll h-full border border-color rounded-lg">
-    <BaseTable
+  <div class="border-color h-full overflow-scroll rounded-lg border">
+    <BaseTableAdmin
       :columns="columns"
-      :tableData="userProfiles"
+      :table-data="userProfiles"
       :filters="filters"
       :filter-fields="['given_name', 'surname', 'email', 'role']"
       @saved-edit="handleRowEditSave"
@@ -82,7 +82,7 @@ definePageMeta({
       <template #header>
         <h3 class="text-lg font-semibold"> Manage Users</h3>
       </template>
-    </BaseTable>
+    </BaseTableAdmin>
   </div>
 </template>
 

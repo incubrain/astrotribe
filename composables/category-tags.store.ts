@@ -39,7 +39,8 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
       return
     }
 
-    const response = await client.from('categories').select('id, name, body')
+    const response = await client.from('categories').select('id, name')
+    console.log('category response', response)
     const cat = errors.server({
       response,
       devOnly: true,
@@ -59,7 +60,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
       return
     }
 
-    const response = await client.from('tags').select('id, name, body')
+    const response = await client.from('tags').select('id, name')
     const cat = errors.server({
       response,
       devOnly: true,

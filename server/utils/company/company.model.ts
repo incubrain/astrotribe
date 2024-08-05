@@ -10,7 +10,7 @@ const NewsImportanceLevelEnum = z.enum(['High', 'Medium', 'Low'])
 
 const companyEmployeesSchema = z.object({
   user_profile_id: z.string().uuid(),
-  company_id: z.number().int(),
+  company_id: z.string(),
   role: z.string(),
   job_description: z.string().optional(),
   start_date: datetimeOffset().optional,
@@ -40,14 +40,14 @@ const ScrapeFrequencySchema = z.enum([
 ])
 
 export const companySchema = z.object({
-  id: z.number().optional(),
+  id: z.string().optional(),
   name: z.string().min(1).optional(),
   description: z.string().optional(),
   logo_url: z.string().optional(),
-  website_url: z.string().url().optional(),
+  url: z.string().url().optional(),
   email: z.string().email().optional(),
   phone: z.string().optional(),
-  last_scraped_at: datetimeOffset().nullish,
+  scraped_at: datetimeOffset().nullish,
   scrape_frequency: ScrapeFrequencySchema.optional(),
   is_government: z.boolean().optional(),
   founding_year: z.number().optional(),
@@ -78,9 +78,7 @@ class CompanyEmployees {
     this.user_profile_id = parsedData.user_profile_id
     this.company_id = parsedData.company_id
     this.role = parsedData.role
-    this.job_description = parsedData.
-    
-    this.start_date = parsedData.start_date
+    this.job_description = parsedData.this.start_date = parsedData.start_date
     this.end_date = parsedData.end_date
     this.status = parsedData.status
     this.access_level = parsedData.access_level
@@ -113,12 +111,12 @@ export class Company {
   name?: string
   description?: string
   logo_url?: string
-  website_url?: string
+  url?: string
   email?: string
   phone?: string
   social_media_id?: number
   founding_year?: number
-  last_scraped_at?: string
+  scraped_at?: string
   scrape_frequency?: z.infer<typeof ScrapeFrequencySchema>
   is_government?: boolean
   category_id?: number
@@ -136,12 +134,12 @@ export class Company {
     this.name = parsedData.name ?? undefined
     this.description = parsedData.description ?? undefined
     this.logo_url = parsedData.logo_url ?? undefined
-    this.website_url = parsedData.website_url ?? undefined
+    this.url = parsedData.url ?? undefined
     this.email = parsedData.email ?? undefined
     this.phone = parsedData.phone ?? undefined
     this.founding_year = parsedData.founding_year ?? undefined
     this.social_media_id = parsedData.social_media_id ?? undefined
-    this.last_scraped_at = parsedData.last_scraped_at ?? undefined
+    this.scraped_at = parsedData.scraped_at ?? undefined
     this.scrape_frequency = parsedData.scrape_frequency ?? undefined
     this.is_government = parsedData.is_government ?? undefined
     this.category_id = parsedData.category_id ?? undefined

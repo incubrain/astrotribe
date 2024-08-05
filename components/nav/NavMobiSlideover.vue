@@ -7,24 +7,24 @@
     >
       <Icon
         name="mdi:menu"
-        class="w-6 h-6 text-black dark:text-white"
+        class="h-6 w-6 text-black dark:text-white"
       />
     </PrimeButton>
-    <PrimeSidebar v-model:visible="isOpen">
-      <div class="border-r border-color">
-        <div class="foreground w-full flex items-center justify-between p-8">
+    <PrimeDrawer v-model:visible="isOpen">
+      <div class="border-color border-r">
+        <div class="foreground flex w-full items-center justify-between p-8">
           <NuxtLink
             class="flex items-center gap-4"
             to="/"
             @click="isOpen = false"
           >
-            <div class="p-2 bg-white rounded-full aspect-square flex">
+            <div class="flex aspect-square rounded-full bg-white p-2">
               <BaseImage
                 :img="{
                   src: '/astronera-logo.jpg',
                   alt: 'Astron Era Logo'
                 }"
-                class="w-8 h-8 md:w-12 md:h-12"
+                class="h-8 w-8 md:h-12 md:w-12"
               />
             </div>
             <h3 class="text-xl">AstronEra</h3>
@@ -42,18 +42,18 @@
             v-for="link in links"
             :key="link.id"
             :to="link.slug"
-            class="w-full flex justify-end items-center border-b border-color py-3 px-8 text-sm font-medium"
+            class="border-color flex w-full items-center justify-end border-b px-8 py-3 text-sm font-medium"
             @click="isOpen = false"
           >
             {{ link.name }}
             <Icon
               :name="getIcon(link.name)"
-              class="ml-2 w-4 h-4"
+              class="ml-2 h-4 w-4"
             />
           </NuxtLink>
         </div>
       </div>
-    </PrimeSidebar>
+    </PrimeDrawer>
   </div>
 </template>
 

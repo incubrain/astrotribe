@@ -25,7 +25,6 @@ const isFormValid = computed(() => {
   return isPasswordValid.value && isEmailValid.value && !!form.given_name && !!form.surname
 })
 
-
 definePageMeta({
   name: 'Register',
   layout: 'auth'
@@ -43,8 +42,8 @@ definePageMeta({
   >
     <template #content>
       <div class="flex flex-col gap-4">
-        <div class="flex gap-4 w-full">
-          <PrimeFloatLabel class="flex flex-col w-full">
+        <div class="flex w-full gap-4">
+          <PrimeFloatLabel class="flex w-full flex-col">
             <PrimeInputText
               id="given_name"
               v-model="form.given_name"
@@ -52,7 +51,7 @@ definePageMeta({
             />
             <label for="given_name">Given Name</label>
           </PrimeFloatLabel>
-          <PrimeFloatLabel class="flex flex-col w-full">
+          <PrimeFloatLabel class="flex w-full flex-col">
             <PrimeInputText
               id="surname"
               v-model="form.surname"
@@ -61,14 +60,14 @@ definePageMeta({
             <label for="surname">Surname</label>
           </PrimeFloatLabel>
         </div>
-        <PrimeFloatLabel class="flex flex-col w-full">
+        <PrimeFloatLabel class="flex w-full flex-col">
           <PrimeInputText
             id="email"
             v-model="form.email"
           />
           <label for="email">Email</label>
         </PrimeFloatLabel>
-        <div class="flex gap-4 w-full">
+        <div class="flex w-full gap-4">
           <PrimeFloatLabel class="w-full">
             <PrimePassword
               id="password"
@@ -79,7 +78,7 @@ definePageMeta({
                 <PrimeDivider />
                 <p class="mt-2">Suggestions</p>
                 <ul
-                  class="pl-2 ml-2 mt-0"
+                  class="ml-2 mt-0 pl-2"
                   style="line-height: 1.5"
                 >
                   <li>At least one lowercase</li>
@@ -109,12 +108,12 @@ definePageMeta({
         >
           Sign up with email
         </PrimeButton>
-        <PrimeInlineMessage
+        <PrimeMessage
           severity="error"
           v-show="!isPasswordValid && isPasswordEntered"
         >
           Passwords do not match
-        </PrimeInlineMessage>
+        </PrimeMessage>
       </div>
     </template>
     <template #footer>

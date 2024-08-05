@@ -101,6 +101,7 @@ const adminLinks = ref([
     icon: 'mdi:upload',
     children: []
   },
+
   {
     id: 3,
     label: 'Research',
@@ -127,6 +128,63 @@ const adminLinks = ref([
     label: 'Chat',
     slug: '/astrotribe/admin/chat',
     icon: 'mdi:chat',
+    children: []
+  },
+  {
+    id: 7,
+    label: 'BP',
+    slug: '/astrotribe/admin/business-plan',
+    icon: 'mdi:chat',
+    children: []
+  },
+  {
+    id: 8,
+    label: 'Systems',
+    slug: '/astrotribe/admin/business-systems',
+    icon: 'mdi:chat',
+    children: [
+      {
+        id: 71,
+        label: 'Users',
+        slug: '/astrotribe/admin/business-systems/users',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 72,
+        label: 'Companies',
+        slug: '/astrotribe/admin/business-systems/companies',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 73,
+        label: 'Events',
+        slug: '/astrotribe/admin/business-systems/events',
+        icon: 'mdi:account',
+        children: []
+      },
+      {
+        id: 74,
+        label: 'Content',
+        slug: '/astrotribe/admin/business-systems/content',
+        icon: 'mdi:account',
+        children: []
+      }
+    ]
+  },
+  {
+    id: 8,
+    label: 'Financials',
+    slug: '/astrotribe/admin/financials',
+    icon: 'material-symbols:attach-money',
+    children: []
+  },
+  {
+    id: 9,
+    label: 'Scraper',
+    slug: '/astrotribe/admin/scraper',
+    icon: 'mdi:spider',
     children: []
   }
 ])
@@ -155,14 +213,13 @@ const socials = ref([
   }
 ])
 
-
 // Events -
 // Under these we display our star gazing programs that we have done along with locations and a page to book us for future star gazing events.
 
 // Our projects -
-// This section should display all our projects 
+// This section should display all our projects
 // Astrotribe 2022
-// Astro tribe 2023 
+// Astro tribe 2023
 // Dst + conference 2023
 
 const websiteLinks = [

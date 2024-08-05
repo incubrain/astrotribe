@@ -112,7 +112,7 @@ interface BasicInfo {
   name: string | null
   description: string | null
   founding_year: number | null
-  website_url: string | null
+  url: string | null
 }
 
 interface ContactDetails {
@@ -191,7 +191,7 @@ function initializeCompanyData(): CompanyData {
       name: null,
       description: null,
       founding_year: null,
-      website_url: null
+      url: null
     },
     contactDetails: {
       addresses: [],
@@ -243,7 +243,7 @@ const systemMessages = {
     name: null,
     description: null,
     founding_year: null,
-    website_url: null
+    url: null
   }.`,
 
   contactDetails: `
@@ -396,7 +396,7 @@ export async function fetchBusinessInfo(url: string) {
       const linkResponse = await getGroqChatCompletionTest(filterLinksSystemMessage, message)
       console.log('linkResponse', linkResponse.choices[0].message.content)
       const newLinks = JSON.parse(linkResponse.choices[0].message.content)
-      
+
       if (!Array.isArray(newLinks)) {
         console.log('LINKS ARE NOT ARRAY')
         break
