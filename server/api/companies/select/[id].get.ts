@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
       url,
       is_government,
       category_id,
-      last_scraped_at,
+      scraped_at,
       scrape_frequency,
       description,
       addresses(*),

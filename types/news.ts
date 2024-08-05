@@ -31,7 +31,7 @@ const NewsCardScrapedSchema = z.object({
 })
 
 export const NewsCardSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   title: z.string(),
   url: z.string(),
   source: z.string(),
@@ -51,7 +51,7 @@ export const NewsArticleSchema = NewsCardSchema.extend({
 export const NewsEmbeddingSchema = z.object({
   id: z.number(),
   vector: z.array(z.number()),
-  news_id: z.number().optional(),
+  news_id: z.string().optional(),
   created_at: z.string().nullable()
 })
 
