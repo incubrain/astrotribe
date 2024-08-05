@@ -61,7 +61,7 @@ watch(
       :model="websiteLinks"
       class="rounded-none lg:rounded-b-md w-full backdrop-white/20 backdrop:blur-lg"
       :pt="{
-        submenu: 'text-sm font-semibold max-w-xl w-[220px]'
+        submenu: 'text-sm font-semibold max-w-xl w-[220px] foreground border-color shadow-2xl',
       }"
     >
       <template #start>
