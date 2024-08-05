@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 export default defineEventHandler(async (event) => {
-  var token = jwt.sign({ sender: 'AstronEra' }, useRuntimeConfig().scraperKey, {
+  const token = jwt.sign({ sender: 'AstronEra' }, useRuntimeConfig().scraperKey, {
     algorithm: 'HS256'
   })
 

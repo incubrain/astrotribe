@@ -1,51 +1,61 @@
 <script setup lang="ts">
 const message = ref('')
-const inputHeight = ref(24)
+const inputHeight = ref(36)
+const maxHeight = 120
 const textareaHeight = computed(() => `${inputHeight.value}px`)
-const maxHeight = ref(120)
 const messageInput = ref<Ref | null>(null)
+
+const chunksStore = useChunksStore()
+
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    sendMessage()
+  }
+}
+
+type SearchType = 'fts' | 'vector'
+const textSearchType = ref('fts' as SearchType)
+
+const toggleTextSearchType = () => {
+  if (textSearchType.value === 'fts') {
+    textSearchType.value = 'vector'
+  } else {
+    textSearchType.value = 'fts'
+  }
+}
 
 const sendMessage = () => {
   if (message.value.trim()) {
     console.log('Sending message:', message.value)
+    chunksStore.fetchSimilarDocuments({ search: message.value, searchType: textSearchType.value })
     message.value = ''
-    adjustHeight()
   }
 }
-
-const adjustHeight = () => {
-  if (messageInput.value) {
-    console.log('Adjusting height', messageInput.value)
-    inputHeight.value = messageInput.value.$el.scrollHeight
-  }
-}
-
-// Watch for changes in the message input to adjust the height dynamically
-watch(message, adjustHeight)
 </script>
 
 <template>
-  <div class="w-full flex items-center max-w-3xl mx-auto">
+  <div class="mx-auto flex w-full max-w-3xl items-center">
     <div
-      class="flex items-center foreground rounded-full w-full pr-2 border border-color px-2 py-1"
+      class="foreground border-color flex w-full items-center rounded-full border px-2 py-1 pr-2"
     >
       <PrimeButton
         rounded
         :pt="{ root: 'p-5 flex justify-center items-center relative' }"
         severity="secondary"
+        @click="toggleTextSearchType"
       >
         <Icon
-          name="mdi:attachment"
-          class="text-white w-5 h-5 absolute"
+          :name="textSearchType === 'fts' ? 'mdi:card-text-outline' : 'mdi:format-list-numbered'"
+          class="absolute h-5 w-5"
         />
       </PrimeButton>
       <PrimeTextarea
         ref="messageInput"
         v-model="message"
-        @input="adjustHeight"
-        placeholder="Message ChatGPT"
-        :style="{ height: textareaHeight, maxHeight: '120px' }"
-        class="w-full px-4 py-2 bg-transparent outline-none flex items-center justify-center overflow-scroll"
+        @keyup.enter="handleKeyUp"
+        autoResize
+        placeholder="Ask Your Question..."
+        class="flex max-h-[120px] w-full items-center justify-center bg-transparent px-4 py-2 outline-none"
         :pt="{ root: 'border-none' }"
       />
       <PrimeButton
@@ -55,7 +65,7 @@ watch(message, adjustHeight)
       >
         <Icon
           name="mdi:send"
-          class="text-white w-5 h-5 absolute"
+          class="absolute h-5 w-5 text-white"
         />
       </PrimeButton>
     </div>
@@ -63,5 +73,7 @@ watch(message, adjustHeight)
 </template>
 
 <style scoped>
-/* Custom styles if needed */
+.p-inputtextarea {
+  overflow: scroll !important;
+}
 </style>

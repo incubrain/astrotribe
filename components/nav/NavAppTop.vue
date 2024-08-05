@@ -61,23 +61,23 @@ const nonce = useNonce()
 
 <template>
   <div
-    class="z-50 w-full foreground sticky top-0 left-0 px-4 py-1 flex flex-row items-center justify-between gap-4 border-b border-color min-h-[60px]"
+    class="foreground border-color sticky left-0 top-0 z-50 flex min-h-[60px] w-full flex-row items-center justify-between gap-4 border-b px-4 py-1"
   >
     <!-- start -->
     <div>
-      <BaseBreadcrumbs class="text-sm hidden lg:block" />
+      <BaseBreadcrumbs class="hidden text-sm lg:block" />
     </div>
     <!-- center -->
-    <div class="px-4 py-2 flex gap-4 w-full max-w-[70%] lg:max-w-xl">
+    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl">
       <SearchBar class="w-full" />
     </div>
     <!-- end -->
     <ClientOnly>
       <div
         v-if="isLoading || !profile?.user_role"
-        class="flex gap-4 justify-end items-center"
+        class="flex items-center justify-end gap-4"
       >
-        <PrimeSkeleton class="min-w-10 min-h-4 rounded-md" />
+        <PrimeSkeleton class="min-h-4 min-w-10 rounded-md" />
         <PrimeSkeleton
           :pt="{
             root: 'min-w-10 min-h-10 rounded-full'
@@ -106,8 +106,8 @@ const nonce = useNonce()
           class="cursor-pointer"
           aria-haspopup="true"
           aria-controls="overlay_menu"
-          @click="toggleMenu"
           @error="logError"
+          @click="toggleMenu"
           :nonce="nonce"
           crossorigin="anonymous"
         />

@@ -49,7 +49,7 @@ export type Database = {
           company_id?: number | null
           country_id: number
           created_at?: string | null
-          id?: never
+          id: number
           is_primary?: boolean | null
           name?: string | null
           street1: string
@@ -63,7 +63,7 @@ export type Database = {
           company_id?: number | null
           country_id?: number
           created_at?: string | null
-          id?: never
+          id?: number
           is_primary?: boolean | null
           name?: string | null
           street1?: string
@@ -73,17 +73,31 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'fk_city_id'
+            foreignKeyName: 'fk_city'
             columns: ['city_id']
             isOneToOne: false
             referencedRelation: 'cities'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'fk_country_id'
+            foreignKeyName: 'fk_country'
             columns: ['country_id']
             isOneToOne: false
             referencedRelation: 'countries'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'public_addresses_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
             referencedColumns: ['id']
           }
         ]
@@ -99,14 +113,14 @@ export type Database = {
         Insert: {
           body?: string | null
           created_at?: string
-          id?: never
+          id: number
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string
-          id?: never
+          id?: number
           name?: string
           updated_at?: string | null
         }
@@ -121,19 +135,19 @@ export type Database = {
         }
         Insert: {
           country_id: number
-          id?: never
+          id: number
           name: string
           state?: string | null
         }
         Update: {
           country_id?: number
-          id?: never
+          id?: number
           name?: string
           state?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'fk_country_id'
+            foreignKeyName: 'fk_country'
             columns: ['country_id']
             isOneToOne: false
             referencedRelation: 'countries'
@@ -143,51 +157,108 @@ export type Database = {
       }
       companies: {
         Row: {
+          category: string | null
           category_id: number | null
           created_at: string | null
           description: string | null
           founding_year: number | null
           id: number
           is_government: boolean
-          last_scraped_at: string | null
+          keywords: string[] | null
           logo_url: string | null
           name: string
           scrape_frequency: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id: number | null
           updated_at: string | null
-          website_url: string
+          url: string
         }
         Insert: {
+          category?: string | null
           category_id?: number | null
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: never
+          id?: number
           is_government?: boolean
-          last_scraped_at?: string | null
+          keywords?: string[] | null
           logo_url?: string | null
           name: string
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url: string
+          url: string
         }
         Update: {
+          category?: string | null
           category_id?: number | null
           created_at?: string | null
           description?: string | null
           founding_year?: number | null
-          id?: never
+          id?: number
           is_government?: boolean
-          last_scraped_at?: string | null
+          keywords?: string[] | null
           logo_url?: string | null
           name?: string
           scrape_frequency?: Database['public']['Enums']['scrape_frequency'] | null
           social_media_id?: number | null
           updated_at?: string | null
-          website_url?: string
+          url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_category'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_social_media'
+            columns: ['social_media_id']
+            isOneToOne: false
+            referencedRelation: 'social_media'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_contacts: {
+        Row: {
+          company_id: number
+          contact_id: number
+          created_at: string
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          company_id: number
+          contact_id: number
+          created_at?: string
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: number
+          contact_id?: number
+          created_at?: string
+          id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_contact'
+            columns: ['contact_id']
+            isOneToOne: false
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
+          }
+        ]
       }
       company_employees: {
         Row: {
@@ -195,7 +266,6 @@ export type Database = {
           company_id: number
           created_at: string | null
           end_date: string | null
-          id: number
           job_description: string | null
           role: string
           start_date: string | null
@@ -208,7 +278,6 @@ export type Database = {
           company_id: number
           created_at?: string | null
           end_date?: string | null
-          id?: never
           job_description?: string | null
           role: string
           start_date?: string | null
@@ -221,7 +290,6 @@ export type Database = {
           company_id?: number
           created_at?: string | null
           end_date?: string | null
-          id?: never
           job_description?: string | null
           role?: string
           start_date?: string | null
@@ -229,13 +297,68 @@ export type Database = {
           updated_at?: string | null
           user_profile_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'company_employees_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_user_profile_id_fkey'
+            columns: ['user_profile_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_extras: {
+        Row: {
+          category: string
+          company_id: number
+          created_at: string
+          id: number
+          level: number
+          success: boolean
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category: string
+          company_id: number
+          created_at?: string
+          id?: number
+          level: number
+          success: boolean
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          company_id?: number
+          created_at?: string
+          id?: number
+          level?: number
+          success?: boolean
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          }
+        ]
       }
       company_news: {
         Row: {
           company_id: number
           created_at: string | null
-          id: number
           importance_level: Database['public']['Enums']['news_importance_level'] | null
           news_id: number
           relation_type: Database['public']['Enums']['news_relation_type']
@@ -244,7 +367,6 @@ export type Database = {
         Insert: {
           company_id: number
           created_at?: string | null
-          id?: never
           importance_level?: Database['public']['Enums']['news_importance_level'] | null
           news_id: number
           relation_type: Database['public']['Enums']['news_relation_type']
@@ -253,13 +375,64 @@ export type Database = {
         Update: {
           company_id?: number
           created_at?: string | null
-          id?: never
           importance_level?: Database['public']['Enums']['news_importance_level'] | null
           news_id?: number
           relation_type?: Database['public']['Enums']['news_relation_type']
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'company_news_company_id_fkey'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      company_urls: {
+        Row: {
+          category: string
+          company_id: number
+          created_at: string
+          data: Json | null
+          id: number
+          level: number
+          success: boolean
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category: string
+          company_id: number
+          created_at?: string
+          data?: Json | null
+          id?: number
+          level: number
+          success: boolean
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          company_id?: number
+          created_at?: string
+          data?: Json | null
+          id?: number
+          level?: number
+          success?: boolean
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          }
+        ]
       }
       contacts: {
         Row: {
@@ -280,7 +453,7 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          id?: never
+          id: number
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
@@ -293,7 +466,7 @@ export type Database = {
           contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
-          id?: never
+          id?: number
           is_primary?: boolean | null
           phone?: string | null
           privacy_level?: Database['public']['Enums']['privacy_level'] | null
@@ -301,7 +474,78 @@ export type Database = {
           updated_at?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
+            isOneToOne: false
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      content_sources: {
+        Row: {
+          content_type: Database['public']['Enums']['content_type']
+          created_at: string | null
+          description: string | null
+          has_errors: boolean
+          id: number
+          is_outdated: boolean | null
+          last_scraped: string | null
+          link_scraper_id: number | null
+          name: string
+          paginated_url: string | null
+          scrape_frequency: Database['public']['Enums']['scrape_frequency']
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          content_type: Database['public']['Enums']['content_type']
+          created_at?: string | null
+          description?: string | null
+          has_errors?: boolean
+          id?: number
+          is_outdated?: boolean | null
+          last_scraped?: string | null
+          link_scraper_id?: number | null
+          name: string
+          paginated_url?: string | null
+          scrape_frequency: Database['public']['Enums']['scrape_frequency']
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          content_type?: Database['public']['Enums']['content_type']
+          created_at?: string | null
+          description?: string | null
+          has_errors?: boolean
+          id?: number
+          is_outdated?: boolean | null
+          last_scraped?: string | null
+          link_scraper_id?: number | null
+          name?: string
+          paginated_url?: string | null
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency']
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'public_content_sources_link_scraper_id_fkey'
+            columns: ['link_scraper_id']
+            isOneToOne: false
+            referencedRelation: 'scraper_configs'
+            referencedColumns: ['id']
+          }
+        ]
       }
       countries: {
         Row: {
@@ -311,12 +555,12 @@ export type Database = {
         }
         Insert: {
           code: string
-          id?: never
+          id: number
           name: string
         }
         Update: {
           code?: string
-          id?: never
+          id?: number
           name?: string
         }
         Relationships: []
@@ -365,7 +609,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database['public']['Enums']['feedback_type'] | null
-          id?: never
+          id?: number
           message: string
           page_identifier: string
           resolution_comment?: string | null
@@ -377,7 +621,7 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_type?: Database['public']['Enums']['feedback_type'] | null
-          id?: never
+          id?: number
           message?: string
           page_identifier?: string
           resolution_comment?: string | null
@@ -385,18 +629,27 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       news: {
         Row: {
           author: string | null
-          body: string
+          body: string | null
           category_id: number
           created_at: string
           description: string | null
           featured_image: string | null
           has_summary: boolean
-          id: number
+          hash: number | null
+          id: string
           published_at: string | null
           source: string
           title: string
@@ -405,13 +658,14 @@ export type Database = {
         }
         Insert: {
           author?: string | null
-          body: string
+          body?: string | null
           category_id?: number
           created_at?: string
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: never
+          hash?: number | null
+          id?: string
           published_at?: string | null
           source: string
           title: string
@@ -420,35 +674,47 @@ export type Database = {
         }
         Update: {
           author?: string | null
-          body?: string
+          body?: string | null
           category_id?: number
           created_at?: string
           description?: string | null
           featured_image?: string | null
           has_summary?: boolean
-          id?: never
+          hash?: number | null
+          id?: string
           published_at?: string | null
           source?: string
           title?: string
           updated_at?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'news_category_id_fkey'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          }
+        ]
       }
       news_embeddings: {
         Row: {
           chunk: string | null
+          embedding: string | null
           id: number
           news_id: number
         }
         Insert: {
           chunk?: string | null
-          id?: never
+          embedding?: string | null
+          id: number
           news_id: number
         }
         Update: {
           chunk?: string | null
-          id?: never
+          embedding?: string | null
+          id?: number
           news_id?: number
         }
         Relationships: []
@@ -460,16 +726,24 @@ export type Database = {
           tag_id: number
         }
         Insert: {
-          id?: never
+          id: number
           news_id: number
           tag_id: number
         }
         Update: {
-          id?: never
+          id?: number
           news_id?: number
           tag_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'news_tags_tag_id_fkey'
+            columns: ['tag_id']
+            isOneToOne: false
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
+          }
+        ]
       }
       plan_permissions: {
         Row: {
@@ -479,12 +753,12 @@ export type Database = {
         }
         Insert: {
           feature: string
-          id?: never
+          id?: number
           plan: Database['public']['Enums']['app_plan_enum']
         }
         Update: {
           feature?: string
-          id?: never
+          id?: number
           plan?: Database['public']['Enums']['app_plan_enum']
         }
         Relationships: []
@@ -492,49 +766,79 @@ export type Database = {
       research: {
         Row: {
           abstract: string | null
-          chunk_success: boolean | null
+          abstract_url: string
+          affiliations: string[] | null
+          authors: Json | null
+          category: string | null
+          comments: string | null
           created_at: string
-          facilities: string | null
+          doi_url: string | null
+          figure_count: number | null
+          fts: unknown | null
+          has_embedding: boolean | null
           id: string
-          journal: string | null
+          is_flagged: boolean
           keywords: string | null
           month: string | null
+          page_count: number | null
+          pdf_url: string | null
           published_at: string | null
+          published_in: string | null
+          table_count: number | null
           title: string | null
           updated_at: string | null
-          url: string
           version: number | null
           year: string | null
         }
         Insert: {
           abstract?: string | null
-          chunk_success?: boolean | null
+          abstract_url: string
+          affiliations?: string[] | null
+          authors?: Json | null
+          category?: string | null
+          comments?: string | null
           created_at?: string
-          facilities?: string | null
-          id: string
-          journal?: string | null
+          doi_url?: string | null
+          figure_count?: number | null
+          fts?: unknown | null
+          has_embedding?: boolean | null
+          id?: string
+          is_flagged?: boolean
           keywords?: string | null
           month?: string | null
+          page_count?: number | null
+          pdf_url?: string | null
           published_at?: string | null
+          published_in?: string | null
+          table_count?: number | null
           title?: string | null
           updated_at?: string | null
-          url: string
           version?: number | null
           year?: string | null
         }
         Update: {
           abstract?: string | null
-          chunk_success?: boolean | null
+          abstract_url?: string
+          affiliations?: string[] | null
+          authors?: Json | null
+          category?: string | null
+          comments?: string | null
           created_at?: string
-          facilities?: string | null
+          doi_url?: string | null
+          figure_count?: number | null
+          fts?: unknown | null
+          has_embedding?: boolean | null
           id?: string
-          journal?: string | null
+          is_flagged?: boolean
           keywords?: string | null
           month?: string | null
+          page_count?: number | null
+          pdf_url?: string | null
           published_at?: string | null
+          published_in?: string | null
+          table_count?: number | null
           title?: string | null
           updated_at?: string | null
-          url?: string
           version?: number | null
           year?: string | null
         }
@@ -611,7 +915,7 @@ export type Database = {
       }
       research_embeddings: {
         Row: {
-          chunk: string | null
+          chunk: string
           created_at: string | null
           embedding: string | null
           embedding_review_id: number | null
@@ -622,7 +926,7 @@ export type Database = {
           url: string | null
         }
         Insert: {
-          chunk?: string | null
+          chunk: string
           created_at?: string | null
           embedding?: string | null
           embedding_review_id?: number | null
@@ -633,7 +937,7 @@ export type Database = {
           url?: string | null
         }
         Update: {
-          chunk?: string | null
+          chunk?: string
           created_at?: string | null
           embedding?: string | null
           embedding_review_id?: number | null
@@ -652,9 +956,9 @@ export type Database = {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'research_embeddings_research_id_fkey'
+            foreignKeyName: 'public_research_embeddings_research_id_fkey'
             columns: ['research_id']
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: 'research'
             referencedColumns: ['id']
           }
@@ -730,7 +1034,8 @@ export type Database = {
           id: number
           length: Json | null
           performance: Json | null
-          research_id: string
+          token_usage: Json | null
+          type: string | null
           updated_at: string
         }
         Insert: {
@@ -742,7 +1047,8 @@ export type Database = {
           id?: number
           length?: Json | null
           performance?: Json | null
-          research_id: string
+          token_usage?: Json | null
+          type?: string | null
           updated_at?: string
         }
         Update: {
@@ -754,18 +1060,11 @@ export type Database = {
           id?: number
           length?: Json | null
           performance?: Json | null
-          research_id?: string
+          token_usage?: Json | null
+          type?: string | null
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'research_metrics_research_id_fkey'
-            columns: ['research_id']
-            isOneToOne: true
-            referencedRelation: 'research'
-            referencedColumns: ['id']
-          }
-        ]
+        Relationships: []
       }
       research_notes: {
         Row: {
@@ -872,7 +1171,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           downvotes?: number | null
-          id?: never
+          id?: number
           output: string
           search_id: number
           upvotes?: number | null
@@ -880,12 +1179,20 @@ export type Database = {
         Update: {
           created_at?: string | null
           downvotes?: number | null
-          id?: never
+          id?: number
           output?: string
           search_id?: number
           upvotes?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'responses_search_id_fkey'
+            columns: ['search_id']
+            isOneToOne: false
+            referencedRelation: 'searches'
+            referencedColumns: ['id']
+          }
+        ]
       }
       role_permissions: {
         Row: {
@@ -899,7 +1206,7 @@ export type Database = {
         }
         Insert: {
           delete?: boolean | null
-          id?: never
+          id?: number
           insert?: boolean | null
           role: Database['public']['Enums']['app_role_enum']
           select?: boolean | null
@@ -908,7 +1215,7 @@ export type Database = {
         }
         Update: {
           delete?: boolean | null
-          id?: never
+          id?: number
           insert?: boolean | null
           role?: Database['public']['Enums']['app_role_enum']
           select?: boolean | null
@@ -917,24 +1224,57 @@ export type Database = {
         }
         Relationships: []
       }
+      scraper_configs: {
+        Row: {
+          base_selector: string | null
+          created_at: string | null
+          fields: Json
+          id: number
+          scraper_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          base_selector?: string | null
+          created_at?: string | null
+          fields: Json
+          id?: number
+          scraper_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          base_selector?: string | null
+          created_at?: string | null
+          fields?: Json
+          id?: number
+          scraper_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       searches: {
         Row: {
           created_at: string | null
+          embedding: string | null
           id: number
           input: string
-          user_id: string | null
+          tokens_used: number | null
+          user_ids: string[] | null
         }
         Insert: {
           created_at?: string | null
-          id?: never
+          embedding?: string | null
+          id?: number
           input: string
-          user_id?: string | null
+          tokens_used?: number | null
+          user_ids?: string[] | null
         }
         Update: {
           created_at?: string | null
-          id?: never
+          embedding?: string | null
+          id?: number
           input?: string
-          user_id?: string | null
+          tokens_used?: number | null
+          user_ids?: string[] | null
         }
         Relationships: []
       }
@@ -952,7 +1292,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: never
+          id: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
@@ -962,12 +1302,63 @@ export type Database = {
         Update: {
           created_at?: string | null
           facebook_url?: string | null
-          id?: never
+          id?: number
           instagram_url?: string | null
           linkedin_url?: string | null
           twitter_url?: string | null
           updated_at?: string | null
           youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      spider_metrics: {
+        Row: {
+          average_content_size: number
+          average_time_per_url: number
+          category_counts: Json
+          created_at: string
+          error_count: number
+          failed_urls: Json
+          id: number
+          ignored_count: number
+          total_content_size: number
+          total_pages_attempted: number
+          total_time: number
+          total_urls_ignored: number
+          total_urls_scraped: number
+          unique_domains: number
+        }
+        Insert: {
+          average_content_size: number
+          average_time_per_url: number
+          category_counts: Json
+          created_at?: string
+          error_count: number
+          failed_urls: Json
+          id?: number
+          ignored_count: number
+          total_content_size: number
+          total_pages_attempted: number
+          total_time: number
+          total_urls_ignored: number
+          total_urls_scraped: number
+          unique_domains: number
+        }
+        Update: {
+          average_content_size?: number
+          average_time_per_url?: number
+          category_counts?: Json
+          created_at?: string
+          error_count?: number
+          failed_urls?: Json
+          id?: number
+          ignored_count?: number
+          total_content_size?: number
+          total_pages_attempted?: number
+          total_time?: number
+          total_urls_ignored?: number
+          total_urls_scraped?: number
+          unique_domains?: number
         }
         Relationships: []
       }
@@ -982,14 +1373,14 @@ export type Database = {
         Insert: {
           body?: string | null
           created_at?: string | null
-          id?: never
+          id: number
           name: string
           updated_at?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string | null
-          id?: never
+          id?: number
           name?: string
           updated_at?: string | null
         }
@@ -1047,7 +1438,7 @@ export type Database = {
           followers_count?: number | null
           gender_id?: number | null
           given_name?: string | null
-          id: string
+          id?: string
           introduction?: string | null
           last_seen?: string | null
           plan?: Database['public']['Enums']['app_plan_enum'] | null
@@ -1077,7 +1468,15 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'public_user_profiles_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
     Views: {
@@ -1231,6 +1630,18 @@ export type Database = {
               url: string
             }[]
           }
+      get_latest_articles: {
+        Args: {
+          base_urls: string[]
+          return_limit: number
+        }
+        Returns: {
+          id: string
+          title: string
+          url: string
+          created_at: string
+        }[]
+      }
       get_math_ids_by_latex: {
         Args: {
           latexes: string[]
@@ -1370,7 +1781,7 @@ export type Database = {
           match_count: number
         }
         Returns: {
-          chunk: string | null
+          chunk: string
           created_at: string | null
           embedding: string | null
           embedding_review_id: number | null
@@ -1475,6 +1886,7 @@ export type Database = {
         | 'admin'
         | 'super_admin'
       contact_type: 'personal' | 'company' | 'professional' | 'recruitment' | 'founder'
+      content_type: 'news' | 'events' | 'jobs' | 'research'
       feedback_status:
         | 'new'
         | 'under_review'

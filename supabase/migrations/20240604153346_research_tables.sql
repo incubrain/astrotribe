@@ -152,7 +152,7 @@ revoke select on table "public"."embeddings" from "service_role";
 
 revoke update on table "public"."embeddings" from "service_role";
 
-alter table "public"."embeddings" drop constraint "embeddings_pkey";
+alter table "public"."embeddings" drop constraint "embeddings_pkey" CASCADE;
 
 drop index if exists "public"."embeddings_pkey";
 

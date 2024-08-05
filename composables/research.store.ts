@@ -4,15 +4,16 @@ interface ResearchData {
   flagged: any[]
 }
 
+// | 'research_notes'
+// | 'research_math'
+// | 'research_figures'
+// | 'research_tables'
+// | 'research_authors'
+// | 'research_citations'
+// | 'research_tools'
+
 export type ResearchDataKey =
   | 'research'
-  | 'research_notes'
-  | 'research_math'
-  | 'research_figures'
-  | 'research_tables'
-  | 'research_authors'
-  | 'research_citations'
-  | 'research_tools'
   | 'research_metrics'
   | 'research_embeddings'
   | 'research_metrics_totals'
@@ -44,58 +45,58 @@ export interface ResearchMetricTotal {
 }
 
 export interface MetricDetail {
-  start: number;
-  end: number;
-  total_duration: number;
-  memory_usage_start: number;
-  memory_usage_end: number;
-  memory_usage_diff: number;
-  processing_time?: number;
+  start: number
+  end: number
+  total_duration: number
+  memory_usage_start: number
+  memory_usage_end: number
+  memory_usage_diff: number
+  processing_time?: number
 }
 
 export interface ResearchMetric {
-  research_id: string;
-  error_count: number;
-  errors: any;
+  research_id: string
+  error_count: number
+  errors: any
   chunks: {
-    avg_length: number;
-    smallest: number | null;
-    largest: number;
-    lengths: number[];
-    undersized: number[];
-    oversized: number[];
-  };
+    avg_length: number
+    smallest: number | null
+    largest: number
+    lengths: number[]
+    undersized: number[]
+    oversized: number[]
+  }
   performance: {
-    start: number;
-    end: number;
-    total_duration: number;
-    memory_usage_diff: number;
-    memory_usage_start: number;
-    memory_usage_end: number;
-    processing_time: number;
-    chunking: MetricDetail;
-  };
+    start: number
+    end: number
+    total_duration: number
+    memory_usage_diff: number
+    memory_usage_start: number
+    memory_usage_end: number
+    processing_time: number
+    chunking: MetricDetail
+  }
   count: {
-    chunks: number;
-    tables: number;
-    notes: number;
-    tools: number;
-    authors: number;
-    citations: number;
-    figures: number;
-    math: number;
-  };
+    chunks: number
+    tables: number
+    notes: number
+    tools: number
+    authors: number
+    citations: number
+    figures: number
+    math: number
+  }
   length: {
-    chunks: number;
-    math: number;
-    tools: number;
-    authors: number;
-    notes: number;
-    tables: number;
-    abstract: number;
-    citations: number;
-    figures: number;
-  };
+    chunks: number
+    math: number
+    tools: number
+    authors: number
+    notes: number
+    tables: number
+    abstract: number
+    citations: number
+    figures: number
+  }
 }
 
 // Initialize reactive data with flagged property
@@ -108,14 +109,14 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
   const researchMetrics = ref<any[]>([])
 
+  // research_notes: { data: [], flagged: [] },
+  // research_math: { data: [], flagged: [] },
+  // research_figures: { data: [], flagged: [] },
+  // research_tables: { data: [], flagged: [] },
+  // research_authors: { data: [], flagged: [] },
+  // research_citations: { data: [], flagged: [] },
+  // research_tools: { data: [], flagged: [] },
   const researchData = reactive<Record<ResearchDataKey, ResearchData>>({
-    research_notes: { data: [], flagged: [] },
-    research_math: { data: [], flagged: [] },
-    research_figures: { data: [], flagged: [] },
-    research_tables: { data: [], flagged: [] },
-    research_authors: { data: [], flagged: [] },
-    research_citations: { data: [], flagged: [] },
-    research_tools: { data: [], flagged: [] },
     research_embeddings: { data: [], flagged: [] },
     research: { data: [], flagged: [] },
     research_metrics: { data: [] }
@@ -126,18 +127,18 @@ export const useResearchStore = defineStore('storeResearch', () => {
     isFlagged?: boolean
     limit?: number
   }
+  // research_authors: [],
+  // research_citations: [],
+  // research_figures: [],
+  // research_math: [],
+  // research_notes: [],
+  // research_tables: [],
+  // research_tools: [],
 
   const lastNRows = ref({
     research: [],
     research_metrics: [],
-    research_authors: [],
-    research_citations: [],
     research_embeddings: [],
-    research_figures: [],
-    research_math: [],
-    research_notes: [],
-    research_tables: [],
-    research_tools: [],
     research_metrics_monthly_totals: [],
     research_metrics_totals: []
   }) as Ref<Record<ResearchDataKey, ResearchMetrics[]>>
@@ -169,6 +170,10 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
   async function fetchFromResearchTables({ tableName, isFlagged, limit = 100 }: ResearchInput) {
     try {
+      const start = isFlagged
+        ? researchData[tableName].flagged.length
+        : researchData[tableName].data.length
+        
       let query = client.from(tableName).select('*')
 
       if (isFlagged !== undefined) {
@@ -177,7 +182,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
         query = query.order('created_at', { ascending: false })
       }
 
-      const { data, error } = await query.range(0, limit)
+      const { data, error } = await query.range(start, limit)
 
       if (error) {
         throw new Error(error.message)

@@ -55,10 +55,10 @@ function submitFilters() {
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row justify-between gap-4 p-4 lg:p-0">
+  <div class="flex flex-col justify-between gap-4 p-4 lg:flex-row lg:p-0">
     <div>
-      <h2 class="text-lg font-semibold pb-2">Filters</h2>
-      <div class="flex flex-row gap-4 xl:gap-8 lg:justify-between">
+      <h2 class="text-lg pb-2 font-semibold">Filters</h2>
+      <div class="flex flex-row gap-4 lg:justify-between xl:gap-8">
         <!-- Source filter with PrimeVue Select -->
         <div
           v-if="filterOptions.sources"
@@ -71,7 +71,7 @@ function submitFilters() {
             placeholder="Select Source(s)"
             :max-selected-labels="3"
             multiple
-            class="max-w-48 w-full"
+            class="w-full max-w-48"
           />
         </div>
 
@@ -88,20 +88,20 @@ function submitFilters() {
               placeholder="Select Category(s)"
               :max-selected-labels="3"
               multiple
-              class="max-w-48 w-full"
+              class="w-full max-w-48"
             />
           </div>
         </div>
       </div>
     </div>
-    <div class="min-h-full flex flex-row gap-4 lg:flex-col lg:justify-between w-auto">
+    <div class="flex min-h-full w-auto flex-row gap-4 lg:flex-col lg:justify-between">
       <PrimeButton
         :pt="{ root: 'text-center items-center justify-center' }"
         @click="submitFilters"
       >
         Apply Filters
       </PrimeButton>
-      <PrimeInlineMessage severity="info">More filters soon</PrimeInlineMessage>
+      <PrimeMessage severity="info">More filters soon</PrimeMessage>
     </div>
   </div>
 </template>
