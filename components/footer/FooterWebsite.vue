@@ -60,13 +60,13 @@ const { socials, websiteLinks } = usePages()
           <NuxtLink
             v-for="social in socials"
             :key="social.label"
-            :to="social.slug"
+            :to="social.url"
             target="_blank"
             class="flex items-center"
           >
             <Icon
               :name="social.icon"
-              class="h-5 w-5 flex-shrink-0 dark:text-white"
+              class="h-7 w-7 flex-shrink-0 dark:text-white"
             />
           </NuxtLink>
         </div>
