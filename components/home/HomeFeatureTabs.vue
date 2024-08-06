@@ -10,7 +10,7 @@ const productSteps = [
     points: [
       'News from NASA, ISRO, and more',
       'Daily updates',
-      'AI-powered article summaries (coming soon)',
+      'AI-powered article summaries',
       'Comprehensive coverage of private companies'
     ],
     cta: 'Check it out',
