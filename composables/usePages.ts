@@ -201,7 +201,7 @@ const socials = ref([
     id: 2,
     icon: 'mdi:linkedin',
     platform: 'linkedin',
-    url: 'https://www.linkedin.com/in/shweta-kulkarni-1b1b1b1b',
+    url: 'https://www.linkedin.com/company/astronera',
     username: 'uk'
   },
   {
