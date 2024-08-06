@@ -91,7 +91,7 @@ const features = [
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
     linkText: 'Explore More'
-  },
+  }
 ]
 </script>
 
@@ -106,13 +106,13 @@ const features = [
         subheading="We Have Some Big Plans!"
         class="pb-16 md:pb-24"
       />
-      <HomeFeatureGroup
+      <!-- <HomeFeatureGroup
         title="Supercharge Live Streams With On-brand Features"
         description="OnTheFly gives you all the tools to engage your audience with captivating streams."
         :features="features"
       />
 
-      <LazyHomeFeatureTabs class="pb-16 md:pb-24" />
+      <LazyHomeFeatureTabs class="pb-16 md:pb-24" /> -->
     </div>
     <LazyHomeCtaMain
       class="border-color border-y py-16 md:py-24"
