@@ -10,7 +10,7 @@
         v-for="tag in tags"
         :key="`${articleLink}-${tag}`"
         :value="tag"
-        severity="secondary"
+        severity="contrast"
       />
     </div>
   </div>

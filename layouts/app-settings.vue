@@ -5,7 +5,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-account',
     label: 'Account Profile',
-    url: `/astrotribe/users/${currentUserId}/settings/profile`,
+    url: `/astrotribe/profile/settings/profile`,
     icon: 'material-symbols:home',
     visible: true,
     disabled: false
@@ -13,7 +13,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-password',
     label: 'Update Password',
-    url: `/astrotribe/users/${currentUserId}/settings/password`,
+    url: `/astrotribe/profile/settings/password`,
     icon: 'material-symbols:key',
     visible: true,
     disabled: false
@@ -21,7 +21,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-application',
     label: 'Application',
-    url: `/astrotribe/users/${currentUserId}/settings/application`,
+    url: `/astrotribe/profile/settings/application`,
     icon: 'material-symbols:laptop-mac-outline',
     visible: true,
     disabled: true
@@ -29,7 +29,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-notifications',
     label: 'Notifications',
-    url: `/astrotribe/users/${currentUserId}/settings/notifications`,
+    url: `/astrotribe/profile/settings/notifications`,
     icon: 'material-symbols:notifications',
     visible: true,
     disabled: true
@@ -49,15 +49,15 @@ const settingsRoutes = computed(() => [
             menuitem: 'rounded-full'
           }"
         >
-          <template #item="{ item }">
+          <template #item="{ item, disabled }">
             <NuxtLink
-              v-if="item.url"
+              v-if="item.url && !item.disabled"
               v-ripple
               :to="item.url"
               exact-active-class="bg-primary-950 text-white"
-              class="flex gap-2 py-2 px-3 rounded-md"
+              class="flex gap-2 rounded-md px-3 py-2 justify-between"
             >
-              <span class="md:mr-4 text-nowrap">{{ item.label }}</span>
+              <span class="text-nowrap md:mr-4">{{ item.label }}</span>
               <div class="hidden md:block">
                 <Icon
                   v-if="item.icon"

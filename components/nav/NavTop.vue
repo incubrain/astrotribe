@@ -47,7 +47,7 @@ watch(
 <template>
   <div
     ref="navbar"
-    class="flex w-full wrapper lg:justify-center lg:items-center lg:padded-x"
+    class="flex min-w-full"
     :class="navbarClasses"
     :style="{
       position: 'fixed',
@@ -59,32 +59,35 @@ watch(
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="rounded-none lg:rounded-b-md w-full backdrop-white/20 backdrop:blur-lg"
+      class="backdrop-white/20 w-full rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
-        submenu: 'text-sm font-semibold max-w-xl w-[220px] foreground border-color shadow-2xl',
+        submenu: {
+          class: '!text-sm !font-bold'
+        }
       }"
+      :ptOptions="{ mergeSections: true, mergeProps: true }"
     >
       <template #start>
-        <div class="gap-4 hidden lg:flex rounded-md p-1">
+        <div class="hidden gap-4 rounded-md p-1 lg:flex">
           <div
-            class="p-1 h-[36px] w-[36px] md:h-[44px] md:w-[44px] bg-white rounded-md overflow-hidden relative flex justify-center items-center border"
+            class="relative flex h-[36px] w-[36px] items-center justify-center overflow-hidden rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
           >
             <BaseImage
               :img="{
                 src: '/astronera-logo.jpg'
               }"
-              class="w-full h-full dark:opacity-90"
+              class="h-full w-full dark:opacity-90"
             />
           </div>
           <NuxtLink
             to="/"
-            class="flex items-center justify-center min-h-full"
+            class="flex min-h-full items-center justify-center"
           >
             <h1
-              class="pr-2 uppercase text-sm font-bold cursor-pointer flex tracking-normal justify-start items-start mt-[2px] leading-none flex-col"
+              class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
             >
               Astron
-              <strong class="text-primary-600 dark:text-primary-700 font-extrabold"> Era </strong>
+              <strong class="font-extrabold text-primary-600 dark:text-primary-700"> Era </strong>
             </h1>
           </NuxtLink>
         </div>
@@ -107,19 +110,19 @@ watch(
         </div>
       </template>
       <template #end>
-        <div class="flex items-center justify-center gap-4 flex-nowrap lg:pr-2">
+        <div class="flex flex-nowrap items-center justify-center gap-4 lg:pr-2">
           <NuxtLink
             to="https://github.com/incubrain/astrotribe"
             target="_blank"
-            class="justify-center items-center hidden lg:flex"
+            class="hidden items-center justify-center lg:flex"
           >
             <Icon
               name="mdi:github"
-              class="w-5 h-5 md:w-6 md:h-6 cursor-pointer flex justify-center items-center"
+              class="flex h-5 w-5 cursor-pointer items-center justify-center md:h-6 md:w-6"
             />
           </NuxtLink>
           <ClientOnly>
-            <div class="gap-2 lg:gap-4 flex items-center justify-center h-auto min-w-24">
+            <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
               <div
                 v-if="userSession"
                 class="flex gap-2 lg:gap-4"
@@ -135,7 +138,7 @@ watch(
                   to="/auth/login"
                 >
                   <PrimeButton
-                    severity="secondary"
+                    severity="contrast"
                     outlined
                     @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
                   >
@@ -188,10 +191,10 @@ canvas {
 }
 
 .animate-bounce-in {
-  animation: bounce-in 0.7s ease-out forwards;
+  animation: bounce-in 0.5s ease-out forwards;
 }
 
 .animate-bounce-out {
-  animation: bounce-out 0.7s ease-in forwards;
+  animation: bounce-out 1s ease-in forwards;
 }
 </style>

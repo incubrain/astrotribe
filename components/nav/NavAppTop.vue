@@ -12,12 +12,8 @@ const auth = useAuth()
 const items = computed(() => {
   const menuItems = [
     {
-      label: 'Profile',
-      command: () => router.push(`/astrotribe/users/${profile.value.user_id}`)
-    },
-    {
       label: 'Settings',
-      command: () => router.push(`/astrotribe/users/${profile.value.user_id}/settings/profile`)
+      command: () => router.push(`/astrotribe/profile/settings/profile`)
     },
     {
       label: 'Logout',
@@ -69,7 +65,6 @@ const nonce = useNonce()
     </div>
     <!-- center -->
     <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl">
-      <SearchBar class="w-full" />
     </div>
     <!-- end -->
     <ClientOnly>

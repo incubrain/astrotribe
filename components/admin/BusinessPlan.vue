@@ -1,13 +1,3 @@
-<template>
-  <div class="max-w-4xl mx-auto">
-    <MDC
-      :value="bpMarkdown"
-      tag="article"
-      class="wrapper prose prose-xl prose-invert w-full p-4 xl:p-8 decoration-primary-700 list-item-primary-700 marker:text-primary-700 marker:w-3 marker:h-3 prose-table:border prose-table:border-color"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 const props = defineProps({
   bpSection: {
@@ -30,6 +20,14 @@ if (error.value) {
 console.log('bpMarkdown', bpMarkdown)
 </script>
 
-<style scoped>
+<template>
+  <div class="mx-auto max-w-4xl">
+    <MDC
+      :value="bpMarkdown"
+      tag="article"
+      class="wrapper list-item-primary-700 prose-table:border-color prose prose-xl prose-invert w-full p-4 decoration-primary-700 marker:h-3 marker:w-3 marker:text-primary-700 prose-table:border xl:p-8"
+    />
+  </div>
+</template>
 
-</style>
+<style scoped></style>

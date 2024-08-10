@@ -3,7 +3,7 @@ import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 
-type CropperConfigTypes = 'avatar' | 'cover_image' | 'default'
+type CropperConfigTypes = 'avatar' | 'default'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 
@@ -74,21 +74,6 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
     },
     stencilProps: {
       aspectRatio: 1,
-      movable: true
-    }
-  },
-  cover_image: {
-    name: 'cover_image',
-    minWidth: 1300,
-    minHeight: 400,
-    canvas: {
-      minHeight: 0,
-      minWidth: 0,
-      maxWidth: 1200,
-      maxHeight: 3900
-    },
-    stencilProps: {
-      aspectRatio: 3.25,
       movable: true
     }
   }
@@ -201,8 +186,7 @@ type CropperConfigDimensions = {
 function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes): Promise<boolean> {
   const dimensions: CropperConfigDimensions = {
     default: { minWidth: 800, minHeight: 600 },
-    avatar: { minWidth: 160, minHeight: 160 },
-    cover_image: { minWidth: 1300, minHeight: 400 }
+    avatar: { minWidth: 160, minHeight: 160 }
   }
 
   return new Promise((resolve) => {
@@ -293,7 +277,7 @@ const setError = (error: string) => {
         <label
           v-ripple
           :for="`myFile-${cropperType}`"
-          class="border border-color bg-primary-600 rounded-lg px-2 py-1 text-sm"
+          class="border-color rounded-lg border bg-primary-600 px-2 py-1 text-sm"
         >
           Upload {{ cropperType }}
         </label>
@@ -324,7 +308,7 @@ const setError = (error: string) => {
         />
       </template>
       <template #modal:footer="{ toggleModalOpen }">
-        <div class="flex gap-4 justify-center items-center">
+        <div class="flex items-center justify-center gap-4">
           <p>Image preview</p>
           <Preview
             v-if="preview.image && config.minWidth"

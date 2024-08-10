@@ -16,15 +16,10 @@ const socialLogin = () => {
 </script>
 
 <template>
-  <PrimeButton
-    :pt="{
-      root: 'p-2'
-    }"
-    @click="socialLogin"
-  >
+  <PrimeButton @click="socialLogin">
     <span>
       <Icon
-        class="flex justify-center items-center"
+        class="flex items-center justify-center"
         :name="`mdi:${provider}`"
         width="30px"
         height="30px"

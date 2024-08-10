@@ -5,6 +5,7 @@
       body: 'justify-between h-full',
       root: 'overflow-hidden relative'
     }"
+    :ptOptions="{ mergeProps: true, mergeSections: true }"
   >
     <template #header>
       <div class="hidden dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />

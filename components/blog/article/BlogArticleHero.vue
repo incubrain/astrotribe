@@ -22,7 +22,7 @@
             v-for="tag in article.tags"
             :key="tag"
             :value="tag"
-            severity="secondary"
+            severity="contrast"
             class="text-nowrap text-sm"
           />
         </div>

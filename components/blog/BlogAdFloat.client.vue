@@ -2,9 +2,9 @@
   <PrimeCard
     v-if="adVisible"
     :pt="{
-      root: 'rounded-t-lg rounded-b-none lg:rounded-lg'
+      root: 'rounded-t-lg rounded-b-none lg:rounded-lg highlight' 
     }"
-    class="fixed bottom-0 right-0 z-20 lg:sticky lg:top-24 w-full bg-primary-50 dark:bg-primary-950 flex flex-col justify-between border border-primary-200 dark:border-primary-800"
+    class="fixed bottom-0 right-0 z-20 lg:sticky lg:top-24 w-full  flex flex-col justify-between border border-color"
   >
     <template #header>
       <div class="flex justify-start items-center gap-2 flex-shrink-0 p-2 pb-0">

@@ -48,7 +48,7 @@ definePageMeta({
         <label for="username">Username</label>
       </PrimeFloatLabel>
 
-      <PrimeFloatLabel>
+      <PrimeFloatLabel class="flex flex-col w-full">
         <FormPassword v-model="form.password" />
         <label for="password">Password</label>
       </PrimeFloatLabel>
@@ -73,7 +73,7 @@ definePageMeta({
       </div>
 
       <PrimeButton
-        class="justify-center"
+        class="justify-center link"
         @click="auth.loginWithEmail(form.email, form.password)"
       >
         Sign in with email

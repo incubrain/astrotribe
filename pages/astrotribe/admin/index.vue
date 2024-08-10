@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const dataIsReady = ref(false)
 
 definePageMeta({
@@ -12,6 +11,8 @@ definePageMeta({
 <template>
   <div class="relative h-full max-h-full">
     <AdminScraperMetrics />
+
+    <AdminStatus />
   </div>
 </template>
 

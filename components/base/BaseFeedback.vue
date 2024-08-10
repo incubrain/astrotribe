@@ -86,6 +86,7 @@ const submitFeedback = async () => {
     >
       <PrimeSelect
         :pt="{ root: 'flex text-left pl-1' }"
+        :ptOptions="{ mergeProps: true, mergeSections: true }"
         v-model="feedback.feedback_type"
         :options="feedbackTypes"
         option-label="name"

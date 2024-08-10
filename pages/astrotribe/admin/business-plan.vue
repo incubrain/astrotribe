@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
-  name: 'Business-Plan',
+  name: 'BusinessPlan',
   middleware: 'is-admin'
 })
 
@@ -25,6 +25,7 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
   title: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
   slotName: section
 }))
+
 </script>
 
 <template>

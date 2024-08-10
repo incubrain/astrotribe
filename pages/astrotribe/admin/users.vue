@@ -1,7 +1,4 @@
 <script setup lang="ts">
-
-const usersStore = useUsersStore()
-const { userProfiles } = storeToRefs(usersStore)
 const admin = useAdmin()
 
 const roles = [
@@ -29,7 +26,6 @@ const columns: Column[] = [
   { field: 'created_at', header: 'Created At', style: 'width: 10%', editor: 'PrimeInputText' },
   { field: 'last_seen', header: 'Last Seen', style: 'width: 10%', editor: 'PrimeInputText' },
   { field: 'avatar', header: 'Avatar', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'cover_image', header: 'Cover Image', style: 'width: 10%', editor: 'PrimeInputText' },
   { field: 'plan', header: 'Plan', style: 'width: 10%', editor: 'PrimeInputText' },
   {
     field: 'role',
@@ -45,14 +41,12 @@ const columns: Column[] = [
   }
 ]
 
-onMounted(async () => {
-  await usersStore.getManyUserProfiles()
-})
+const userProfiles = false
+
 
 const handleRowEditSave = async ({ data, newData }) => {
   console.log('handleRowEditSave', data, newData)
   await admin.updateUser(newData, data.id)
-  usersStore.updateUserProfileState(data, newData)
 }
 
 const filters = ref({
@@ -61,7 +55,7 @@ const filters = ref({
   surname: { value: null, matchMode: 'startsWith' },
   email: { value: null, matchMode: 'startsWith' },
   role: { value: null, matchMode: 'startsWith' }
-});
+})
 
 definePageMeta({
   layoutTransition: false,
@@ -73,8 +67,9 @@ definePageMeta({
 <template>
   <div class="border-color h-full overflow-scroll rounded-lg border">
     <BaseTableAdmin
+      v-if="userProfiles"
       :columns="columns"
-      :table-data="userProfiles"
+      :table-data="userProfiles"1
       :filters="filters"
       :filter-fields="['given_name', 'surname', 'email', 'role']"
       @saved-edit="handleRowEditSave"

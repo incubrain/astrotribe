@@ -10,8 +10,8 @@ defineProps({
 </script>
 
 <template>
-  <div
-    class="flex flex-col items-center relative justify-between w-full p-4 xl:p-8 rounded-md shadow-md background backdrop-filter backdrop-blur-lg hadow-xl border border-color transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+  <BaseGlass
+    class="flex flex-col items-center justify-between w-full rounded-md background backdrop-filter backdrop-blur-lg border border-color transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
     <div class="absolute w-full h-full animate-pulse">
       <SvgStars
@@ -65,7 +65,7 @@ defineProps({
         <SocialBlock
           :socials="member.socials"
           :has-title="false"
-          class="flex items-center justify-center space-x-2"
+          class="flex items-center justify-center space-x-2 relative"
         />
         <div>
           <NuxtLink :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`">
@@ -74,7 +74,7 @@ defineProps({
         </div>
       </div>
     </div>
-  </div>
+  </BaseGlass>
 </template>
 
 <style scoped></style>

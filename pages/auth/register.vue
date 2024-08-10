@@ -48,6 +48,7 @@ definePageMeta({
               id="given_name"
               v-model="form.given_name"
               :pt="{ root: 'w-full' }"
+              :ptOptions="{ mergeProps: true, mergeSections: true }"
             />
             <label for="given_name">Given Name</label>
           </PrimeFloatLabel>
@@ -56,6 +57,7 @@ definePageMeta({
               id="surname"
               v-model="form.surname"
               :pt="{ root: 'w-full' }"
+              :ptOptions="{ mergeProps: true, mergeSections: true }"
             />
             <label for="surname">Surname</label>
           </PrimeFloatLabel>
@@ -67,40 +69,18 @@ definePageMeta({
           />
           <label for="email">Email</label>
         </PrimeFloatLabel>
-        <div class="flex w-full gap-4">
-          <PrimeFloatLabel class="w-full">
-            <PrimePassword
-              id="password"
-              v-model="form.password"
-              :pt="{ root: 'w-full', input: { root: 'w-full' } }"
-            >
-              <template #footer>
-                <PrimeDivider />
-                <p class="mt-2">Suggestions</p>
-                <ul
-                  class="ml-2 mt-0 pl-2"
-                  style="line-height: 1.5"
-                >
-                  <li>At least one lowercase</li>
-                  <li>At least one uppercase</li>
-                  <li>At least one numeric</li>
-                  <li>Minimum 8 characters</li>
-                </ul>
-              </template>
-            </PrimePassword>
-            <label for="password">Password</label>
-          </PrimeFloatLabel>
-          <PrimeFloatLabel class="w-full">
-            <PrimePassword
-              id="confirmPassword"
-              v-model="form.confirmPassword"
-              :feedback="false"
-              :invalid="!isPasswordValid && isPasswordEntered"
-              :pt="{ root: 'w-full', input: { root: 'w-full' } }"
-            />
-            <label for="confirmPassword">Confirm password</label>
-          </PrimeFloatLabel>
-        </div>
+        <FormPassword
+          v-model="form.password"
+          label="Enter your password"
+          id="user-password"
+        />
+        <FormPassword
+          v-model="form.confirmPassword"
+          label="Confirm password"
+          :invalid="!isPasswordValid && isPasswordEntered"
+          :feedback="false"
+          id="confirm-password"
+        />
         <PrimeButton
           class="justify-center"
           :disabled="!isFormValid"
