@@ -1,5 +1,5 @@
 import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
-import { DarkPreset } from './themes/dark-theme'
+import path from 'path'
 
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
@@ -72,10 +72,17 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://localhost:54321',
         'https://www.youtube.com',
         'https://s.ytimg.com',
-        'https://www.google.com/maps'
+        'https://www.google.com/maps',
+        'https://uptime.betterstack.com/widgets/announcement.js'
       ],
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      'frame-src': ["'self'", 'https://www.youtube.com', 'https://us.posthog.com/']
+      'frame-src': [
+        "'self'",
+        'https://www.youtube.com',
+        'https://us.posthog.com/',
+        'https://www.google.com/',
+        'https://status.astronera.org/'
+      ]
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
     crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
@@ -139,37 +146,21 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
 }
 
 const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
+  importPT: { from: path.resolve(__dirname, './theme/index.js') },
   components: {
     prefix: 'Prime',
-    include: '*',
     exclude: ['Editor']
   },
-  directives: {
-    include: '*',
-    exclude: []
-  },
-  composables: {
-    include: '*',
-    exclude: []
-  },
+
   options: {
     ripple: true,
+    unstyled: true,
     theme: {
-      preset: DarkPreset,
       options: {
-        cssLayer: {
-          name: 'primevue',
-          order: 'tailwind-base, primevue, tailwind-utilities'
-        }
+        cssLayer: false
       }
     }
   }
-  // can configure global pass throughs
-  // importPT: { from: '@/passthrough/mycustompt.js')}
-
-  // importTheme: { from: '' }
-
-  // cssLayerOrder: 'tailwind-base, primevue, tailwind-utilities'
 }
 
 const IMAGE_OPTIONS: NuxtConfig['image'] = {

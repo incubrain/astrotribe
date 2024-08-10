@@ -2,6 +2,18 @@ import type { Config } from 'tailwindcss'
 
 export default <Partial<Config>>{
   darkMode: 'selector',
+  safelist: [
+    '-inset-[10%]',
+    '-inset-[30%]',
+    {
+      pattern:
+        /(bg|border|text|from|to)-(primary|amber|blue|red|green|purple)-(100|400|500|700|800|900)/,
+      variants: ['hover']
+    },
+    {
+      pattern: /backdrop-blur-(sm|md|lg|xl)/
+    }
+  ],
   theme: {
     fontSize: {
       xs: '0.625rem',
@@ -14,19 +26,6 @@ export default <Partial<Config>>{
       '5xl': '4.052rem'
     },
     extend: {
-      colors: {
-        'primary-50': 'rgb(var(--primary-50), <alpha-value>)',
-        'primary-100': 'rgb(var(--primary-100), <alpha-value>)',
-        'primary-200': 'rgb(var(--primary-200), <alpha-value>)',
-        'primary-300': 'rgb(var(--primary-300), <alpha-value>)',
-        'primary-400': 'rgb(var(--primary-400), <alpha-value>)',
-        'primary-500': 'rgb(var(--primary-500), <alpha-value>)',
-        'primary-600': 'rgb(var(--primary-600), <alpha-value>)',
-        'primary-700': 'rgb(var(--primary-700), <alpha-value>)',
-        'primary-800': 'rgb(var(--primary-800), <alpha-value>)',
-        'primary-900': 'rgb(var(--primary-900), <alpha-value>)',
-        'primary-950': 'rgb(var(--primary-950), <alpha-value>)'
-      },
       screens: {
         '2xl': '1536px'
       },
@@ -90,5 +89,12 @@ export default <Partial<Config>>{
       }
     }
   },
+  content: [
+    './theme/**/*.{js,vue,ts}',
+    './components/**/*.{js,vue,ts}',
+    './pages/**/*.{js,vue,ts}',
+    './assets/**/*.{js,vue,ts}',
+    './layouts/**/*.{js,vue,ts}'
+  ],
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')]
 }
