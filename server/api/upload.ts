@@ -14,9 +14,7 @@ export default defineEventHandler(async (event) => {
   console.log('file', form)
 
   const userId = form.find((item) => item.name === 'userId')?.data.toString()
-  const fileType = form.find((item) => item.name === 'fileType')?.data.toString() as
-    | 'avatar'
-    | 'cover_image'
+  const fileType = form.find((item) => item.name === 'fileType')?.data.toString() as 'avatar'
   const fileName = `${fileType}-${crypto.randomUUID()}`
   const fileExtention = form[0].type?.split('/')[1]
   console.log('formData', userId, fileType, fileName, fileExtention)

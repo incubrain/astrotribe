@@ -1,4 +1,3 @@
-import { agents } from '~/server/utils/agents'
 import { openAI } from '~/server/utils/openai/callOpenAI'
 import { serverSupabaseUser } from '#supabase/server'
 
@@ -8,31 +7,46 @@ export default defineEventHandler({
   onRequest: [rateLimiter],
   onBeforeResponse: [],
   handler: async (event) => {
-    const { question, selectedAgent } = getQuery(event)
+    const { messages } = await readBody(event)
 
-    const user = await serverSupabaseUser(event)
-
-    if (!question) {
+    if (!Array.isArray(messages) || messages.length === 0) {
       return {
         statusCode: 400,
         error: {
-          message: 'question is required'
+          message: 'messages must be a non-empty array'
         }
       }
     }
 
+    const isValidMessage = (msg) =>
+      msg &&
+      typeof msg === 'object' &&
+      ['system', 'user', 'assistant'].includes(msg.role) &&
+      typeof msg.content === 'string'
+
+    if (!messages.every(isValidMessage)) {
+      return {
+        statusCode: 400,
+        error: {
+          message: 'Invalid message format'
+        }
+      }
+    }
+
+    console.log('messages', messages)
+
     try {
+      const user = await serverSupabaseUser(event)
       let chatCompletion
 
       const plan = user?.app_metadata?.plan
 
       if (plan === 'free') {
-        chatCompletion = await getGroqChatCompletion(String(question))
+        console.log('getGroqChatCompletion')
+        chatCompletion = await getGroqChatCompletion(messages)
       } else if (plan === 'pro' || plan === 'expert') {
-        chatCompletion = openAI.createChatCompletion({
-          prompt: String(question),
-          systemMessage: agents[0].systemMessage
-        })
+        console.log('openAI.createChatCompletion')
+        chatCompletion = openAI.createChatCompletion(messages)
       } else {
         log.warn('no user plan', plan)
       }

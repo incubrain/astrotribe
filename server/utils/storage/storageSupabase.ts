@@ -1,16 +1,10 @@
-type FileType =
-  | 'venue-logo'
-  | 'venue-featured-image'
-  | 'venue-images'
-  | 'user-avatar'
-  | 'user-cover_image'
+type FileType = 'venue-logo' | 'venue-featured-image' | 'venue-images' | 'user-avatar'
 
 const defaultFileOptions: Record<FileType, string> = {
   'venue-logo': 'logo.jpg',
   'venue-featured-image': 'featured-image.jpg',
   'venue-images': 'images/',
-  'user-avatar': 'avatar.jpg',
-  'user-cover_image': 'cover.jpg'
+  'user-avatar': 'avatar.jpg'
 }
 
 type BucketKey = 'profile-public' | 'posts' | 'venues'
@@ -19,8 +13,7 @@ const selectBucket: Record<FileType, BucketKey> = {
   'venue-logo': 'venues',
   'venue-images': 'venues',
   'venue-featured-image': 'venues',
-  'user-avatar': 'profile-public',
-  'user-cover_image': 'profile-public'
+  'user-avatar': 'profile-public'
 }
 
 interface UrlConstructorOptions {
@@ -91,11 +84,6 @@ function getFileProperty(fileType: FileType, data: any) {
         file: data.avatar,
         fileCategory: 'avatar'
       }
-    case 'user-cover_image':
-      return {
-        file: data.cover_image,
-        fileCategory: 'cover_image'
-      }
     default:
       throw createError({ message: 'Invalid fileType in getFileProperty' })
   }
@@ -114,9 +102,6 @@ function formatImageInput(fileType: FileType, data: any) {
 export const getImageURL = ({ data, fileType, transform }: GetImageUrlOptions): string => {
   const baseURL = useRuntimeConfig().public.supabaseUrl
   const { bucket, folderPath, isPrivate, file } = formatImageInput(fileType, data)
-  //     folderPath: `${user.id}/cover_image`,
-  // file: user.cover_image,
-  // isPrivate: false
   if (!baseURL) {
     throw createError({
       message: 'baseURL not defined in getImageURL'

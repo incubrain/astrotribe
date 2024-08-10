@@ -41,6 +41,12 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
 
     const response = await client.from('categories').select('id, name')
     console.log('category response', response)
+
+    // "TypeError: Failed to fetch\n
+    // at http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:23:25\n
+    // at http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:44:16\n
+    // at Generator.next (<anonymous>)\n    at fulfilled (http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:4:58)"
+
     const cat = errors.server({
       response,
       devOnly: true,

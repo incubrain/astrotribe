@@ -24,8 +24,9 @@ export default defineNuxtConfig({
   routeRules: {
     '/astrotribe/**': { ssr: false }
   },
+
   nitro: {
-    preset: 'vercel',
+    preset: 'node-server',
     experimental: {
       tasks: true
     },
@@ -74,6 +75,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
 
   vue: {
@@ -133,5 +135,6 @@ export default defineNuxtConfig({
     }
   },
 
-  ssr: true
+  ssr: true,
+  compatibilityDate: '2024-08-06'
 })

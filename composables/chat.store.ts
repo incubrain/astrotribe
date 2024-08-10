@@ -42,15 +42,17 @@ export const useChatStore = defineStore('chatStore', () => {
   const logger = useLogger(domainKey)
 
   const chat = ref({} as Chat)
+  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system'; content: string }>>([])
+
   const question = ref('' as string)
 
-  function handleNavigation() {
-    const route = useRoute()
-    if (route.path === '/astrotribe/ask') {
-      return
-    }
-    navigateTo('/astrotribe/ask')
-  }
+  // function handleNavigation() {
+  //   const route = useRoute()
+  //   if (route.path === '/astrotribe/ask') {
+  //     return
+  //   }
+  //   navigateTo('/astrotribe/ask')
+  // }
 
   async function insertSearchData(userId: string) {
     const response = await client
@@ -84,8 +86,12 @@ export const useChatStore = defineStore('chatStore', () => {
     })
   }
 
-  async function submitQuestion(userId: string) {
-    console.log('searchMessage', question.value, userId)
+  function addMessage(role: 'user' | 'assistant' | 'system', content: string) {
+    messages.value.push({ role, content })
+  }
+
+  async function submitQuestion(args: { question: string; systemPrompt: string }) {
+    console.log('searchMessage', args)
 
     if (loading.isLoading(domainKey)) {
       return null
@@ -94,9 +100,20 @@ export const useChatStore = defineStore('chatStore', () => {
     loading.setLoading(domainKey, true)
 
     try {
+      addMessage('user', args.question)
+
+      const messageHistory = messages.value.slice(-5) // Get last 5 messages
+
+      const formattedMessages = [{ role: 'system', content: args.systemPrompt }, ...messageHistory]
+
       const questionResponse = await fetch('/api/ai/ask', {
-        method: 'GET',
-        params: { question: question.value, selectedAgent: 'summarizer' }
+        method: 'POST',
+        body: JSON.stringify({
+          messages: formattedMessages
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
 
       console.log('handling ask error', questionResponse)
@@ -107,11 +124,10 @@ export const useChatStore = defineStore('chatStore', () => {
         userMessage: 'something went wrong when fetching question response'
       })
 
-      chat.value = questionResponseData
-      const search = await insertSearchData(userId)
-      console.log('search', search)
-      insertResponseData(search[0].id, questionResponseData)
-      handleNavigation()
+      addMessage('assistant', questionResponseData.choices[0]?.message?.content)
+
+      // const search = await insertSearchData(userId)
+      // insertResponseData(search[0].id, questionResponseData)
     } catch (error) {
       console.error('Error submitting question and handling response:', error)
     } finally {
@@ -123,6 +139,8 @@ export const useChatStore = defineStore('chatStore', () => {
     isLoading: computed(() => loading.isLoading(domainKey)),
     chat,
     question,
+    messages,
+    addMessage,
     submitQuestion
   }
 })
