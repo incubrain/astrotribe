@@ -1,4 +1,4 @@
-import { useServerError } from './base.error-handler'
+import { useServerError } from '../base.error-handler'
 
 interface YouTubeVideo {
   title: string

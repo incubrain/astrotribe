@@ -61,7 +61,6 @@ export const UserFullSchema = UserBasicSchema.extend({
   gender_id: z.number().nullable(),
   created_at: z.string(),
   updated_at: z.string().nullable(),
-  cover_image: z.string().nullable(),
   quote: z.string().nullable()
 })
 
@@ -71,7 +70,6 @@ export const UserRowSchema = z.object({
   surname: z.string().nullable(),
   username: z.string().nullable(),
   avatar: z.string().nullable(),
-  cover_image: z.string().nullable(),
   introduction: z.string().nullable(),
   plan: z.string().nullish(),
   dob: z.string().nullable(),

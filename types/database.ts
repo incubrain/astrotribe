@@ -12,7 +12,6 @@ export type RowNews = Tables<'news'>
 export type RowNewsTag = Tables<'news_tags'>
 
 export type RowEmbedding = Tables<'embeddings'>
-export type RowNewsEmbedding = Tables<'news_embeddings'>
 
 export type RowPaper = Tables<'papers'>
 

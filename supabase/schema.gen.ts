@@ -1410,7 +1410,6 @@ export type Database = {
       user_profiles: {
         Row: {
           avatar: string | null
-          cover_image: string | null
           created_at: string | null
           dob: string | null
           email: string
@@ -1430,7 +1429,6 @@ export type Database = {
         }
         Insert: {
           avatar?: string | null
-          cover_image?: string | null
           created_at?: string | null
           dob?: string | null
           email: string
@@ -1450,7 +1448,6 @@ export type Database = {
         }
         Update: {
           avatar?: string | null
-          cover_image?: string | null
           created_at?: string | null
           dob?: string | null
           email?: string

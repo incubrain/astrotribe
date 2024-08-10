@@ -13,12 +13,12 @@ const appLinks = ref([
   },
   {
     id: 2,
-    label: 'Users',
-    slug: '/astrotribe/users',
-    icon: 'material-symbols:account-circle',
-    children: [
-      // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
-    ]
+    label: 'News',
+    slug: '/astrotribe/news',
+    icon: 'mdi:newspaper-variant-outline'
+    //   children: [
+    //     // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
+    //   ]
   },
   {
     id: 3,
@@ -29,6 +29,21 @@ const appLinks = ref([
     //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
     // ],
   },
+  {
+    id: 4,
+    label: 'Q&A',
+    slug: '/astrotribe/ask',
+    icon: 'mdi:information-slab-box'
+  }
+  // {
+  //   id: 2,
+  //   label: 'Users',
+  //   slug: '/astrotribe/users',
+  //   icon: 'material-symbols:account-circle',
+  //   children: [
+  //     // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
+  //   ]
+  // },
   // {
   //   id: 3,
   //   label: 'Events',
@@ -47,18 +62,7 @@ const appLinks = ref([
   //       { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
   //   ],
   // },
-  {
-    id: 5,
-    label: 'News',
-    slug: '/astrotribe/news',
-    icon: 'mdi:newspaper-variant-outline'
-  },
-  {
-    id: 6,
-    label: 'Q&A',
-    slug: '/astrotribe/ask',
-    icon: 'mdi:information-slab-box'
-  }
+
   // {
   //   id: 6,
   //   label: 'Research',
@@ -99,14 +103,6 @@ const adminLinks = ref([
     label: 'Upload',
     slug: '/astrotribe/admin/upload',
     icon: 'mdi:upload',
-    children: []
-  },
-
-  {
-    id: 3,
-    label: 'Research',
-    slug: '/astrotribe/admin/research',
-    icon: 'mdi:card-text',
     children: []
   },
   {
@@ -178,13 +174,6 @@ const adminLinks = ref([
     label: 'Financials',
     slug: '/astrotribe/admin/financials',
     icon: 'material-symbols:attach-money',
-    children: []
-  },
-  {
-    id: 9,
-    label: 'Scraper',
-    slug: '/astrotribe/admin/scraper',
-    icon: 'mdi:spider',
     children: []
   }
 ])
@@ -263,14 +252,14 @@ const websiteLinks = [
     visible: true,
     disabled: false,
     items: [
-      {
-        key: 'astrotribe',
-        label: 'Astrotribe',
-        icon: 'material-symbols:groups',
-        url: 'projects/astrotribe',
-        visible: true,
-        disabled: false
-      },
+      // {
+      //   key: 'astrotribe',
+      //   label: 'Astrotribe',
+      //   icon: 'material-symbols:groups',
+      //   url: 'projects/astrotribe',
+      //   visible: true,
+      //   disabled: false
+      // },
       {
         key: 'dark-sky-conference-2023',
         label: 'Dark Sky Conference',
@@ -281,23 +270,23 @@ const websiteLinks = [
       }
     ]
   },
-  {
-    key: 'events',
-    label: 'Events',
-    icon: 'material-symbols:event',
-    visible: false,
-    disabled: false,
-    items: [
-      {
-        key: 'stargazing',
-        label: 'Stargazing',
-        icon: 'material-symbols:dark-mode',
-        url: 'events/stargazing',
-        visible: false,
-        disabled: false
-      }
-    ]
-  },
+  // {
+  //   key: 'events',
+  //   label: 'Events',
+  //   icon: 'material-symbols:event',
+  //   visible: false,
+  //   disabled: false,
+  //   items: [
+  //     {
+  //       key: 'stargazing',
+  //       label: 'Stargazing',
+  //       icon: 'material-symbols:dark-mode',
+  //       url: 'events/stargazing',
+  //       visible: false,
+  //       disabled: false
+  //     }
+  //   ]
+  // },
   {
     key: 'blog',
     label: 'Blog',

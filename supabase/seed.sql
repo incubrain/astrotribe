@@ -2147,10 +2147,6 @@ ON CONFLICT (id) DO UPDATE SET
 
 
 
---
--- Data for Name: news_embeddings; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
 
 
 --
