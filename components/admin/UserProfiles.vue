@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const editingRows = ref([])
-const usersStore = useUsersStore()
 const { userProfiles } = storeToRefs(usersStore)
 const admin = useAdmin()
 

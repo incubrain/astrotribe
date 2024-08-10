@@ -13,16 +13,26 @@
       frameborder="0"
       scrolling="no"
     ></iframe>
-
-    <script
-      src="https://uptime.betterstack.com/widgets/announcement.js"
-      data-id="188389"
-      async="async"
-      type="text/javascript"
-    ></script>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useHead({
+  title: 'AstronEra Status',
+  meta: [
+    {
+      name: 'description',
+      content: 'AstronEra status page'
+    }
+  ],
+  script: [
+    {
+      src: 'https://uptime.betterstack.com/widgets/announcement.js',
+      async: true,
+      type: 'text/javascript'
+    }
+  ]
+})
+</script>
 
 <style scoped></style>

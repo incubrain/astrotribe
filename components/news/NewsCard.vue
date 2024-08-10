@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTimeAgo } from '#imports'
 import type { NewsCardT } from '@/types/news'
 
 defineProps({
@@ -6,16 +7,12 @@ defineProps({
     type: Object as () => NewsCardT,
     required: true
   }
-  // summaryLevel: {
-  //   type: String,
-  //   required: true
-  // }
 })
 </script>
 
 <template>
-  <div class="border-b border-color pt-4">
-    <div class="p-6 flex gap-4">
+  <div class="border-color border-b pt-4">
+    <div class="flex gap-4 p-6">
       <BaseImage
         :img="{
           src: `images/companies/${news.source}-logo.jpg`,
@@ -25,17 +22,17 @@ defineProps({
         }"
         class="rounded-full"
       />
-      <div class="flex flex-col gap-2 justify-center-center">
+      <div class="justify-center-center flex flex-col gap-2">
         <div class="flex gap-2">
           <PrimeTag>
-            {{ news.source.toUpperCase() }}
+            {{ news.companies.name }}
           </PrimeTag>
           <BaseNewLabel
             :date="news.published_at ?? news.created_at!"
             :max-age="2"
           />
         </div>
-        <span class="text-sm w-auto">
+        <span class="w-auto text-sm">
           {{ useTimeAgo(news.published_at ?? news.created_at).value }}
         </span>
       </div>
@@ -66,7 +63,7 @@ defineProps({
       >
         {{ news.description }}
       </p>
-      <div class="w-full flex justify-end p-2">
+      <div class="flex w-full justify-end p-2">
         <NuxtLink
           :to="news.url"
           target="_blank"

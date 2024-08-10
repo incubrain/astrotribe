@@ -35,7 +35,7 @@
         <div>
           <NuxtLink to="auth/register">
             <PrimeButton @click="$posthog()?.capture('register_app', { location: 'hero_cta' })">
-              Join AstronEra Today!
+              Signup, it's FREE!
             </PrimeButton>
           </NuxtLink>
         </div>

@@ -17,10 +17,7 @@ const showTopNav = computed(
 
 <template>
   <div class="foreground relative min-h-screen w-full">
-    <NavTop
-      v-if="showTopNav"
-      class="wrapper lg:padded-x"
-    />
+    <NavTop v-if="showTopNav" />
     <AppBackButton
       v-else
       class="fixed bottom-2 left-2 z-50"
@@ -29,7 +26,7 @@ const showTopNav = computed(
       <div class="relative z-10">
         <slot />
       </div>
-      <AppBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block opacity-50" />
+      <AppBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
     </div>
 
     <FooterWebsite v-if="showFooter" />

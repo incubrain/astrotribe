@@ -6,9 +6,10 @@
       :pt="{
         root: 'flex flex-col md:flex-row w-full h-full overflow-hidden relative'
       }"
+      :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
       <template #header>
-        <div class="hidden dark:visible absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
+        <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 dark:visible" />
         <BaseImage
           :img="{
             src: `conference/speakers/${host.avatar}.jpg`,
@@ -19,17 +20,17 @@
             quality: '80',
             format: 'webp'
           }"
-          class="object-cover aspect-square h-full grayscale-[20%] min-w-[180px] w-full"
+          class="aspect-square h-full w-full min-w-[180px] object-cover grayscale-[20%]"
         />
       </template>
       <template #content>
-        <div class="flex flex-col gap-4 justify-between">
-          <div class="text-sm flex flex-col gap-4">
+        <div class="flex flex-col justify-between gap-4">
+          <div class="flex flex-col gap-4 text-sm">
             <h3 class="text-2xl font-semibold"> {{ host.given_name }} {{ host.surname }} </h3>
-            <p class="flex gap-2 items-center text-primary-500 dark:text-primary-600 font-semibold">
+            <p class="flex items-center gap-2 font-semibold text-primary-500 dark:text-primary-600">
               <Icon
                 name="mdi:account"
-                class="w-4 h-4 flex-shrink-0"
+                class="h-4 w-4 flex-shrink-0"
               />
               {{ host.professional_title }}
             </p>

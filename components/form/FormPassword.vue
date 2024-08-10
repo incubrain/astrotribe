@@ -1,24 +1,102 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface Props {
+  modelValue: string
+  label?: string
+  id?: string
+  suggestions?: string[]
+  invalid?: boolean
+  feedback?: boolean
+  toggleMask?: boolean
+  placeholder?: string
+  disabled?: boolean
+  required?: boolean
+  inputClass?: string
+  weakLabel?: string
+  mediumLabel?: string
+  strongLabel?: string
+  promptLabel?: string
+  mediumRegex?: string
+  strongRegex?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
+  id: 'password',
+  suggestions: () => [
+    'At least one lowercase',
+    'At least one uppercase',
+    'At least one numeric',
+    'Minimum 8 characters'
+  ],
+  invalid: false,
+  feedback: true,
+  toggleMask: true,
+  placeholder: undefined,
+  disabled: false,
+  required: false,
+  inputClass: '',
+  weakLabel: 'Weak',
+  mediumLabel: 'Medium',
+  strongLabel: 'Strong',
+  promptLabel: 'Please enter a password',
+  mediumRegex:
+    '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
+  strongRegex: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})'
+})
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
+
+
+const onPasswordChange = (value: string) => {
+  emit('update:modelValue', value)
+}
+</script>
+
 <template>
+  <label
+    v-if="label"
+    :for="id"
+    >{{ label }}</label
+  >
   <PrimePassword
-    id="password"
-    class="flex flex-col relative"
+    :id="id"
+    class="w-full"
+    :inputClass="inputClass"
+    :modelValue="modelValue"
+    @update:modelValue="onPasswordChange"
+    :invalid="invalid"
+    :feedback="feedback"
+    :toggleMask="toggleMask"
+    :disabled="disabled"
+    :required="required"
+    :weakLabel="weakLabel"
+    :mediumLabel="mediumLabel"
+    :strongLabel="strongLabel"
+    :placeholder="placeholder"
+    :promptLabel="promptLabel"
+    :mediumRegex="mediumRegex"
+    :strongRegex="strongRegex"
   >
     <template #footer>
       <PrimeDivider />
       <p class="mt-2">Suggestions</p>
       <ul
-        class="pl-2 ml-2 mt-0"
+        class="ml-2 mt-0 pl-2"
         style="line-height: 1.5"
       >
-        <li>At least one lowercase</li>
-        <li>At least one uppercase</li>
-        <li>At least one numeric</li>
-        <li>Minimum 8 characters</li>
+        <li
+          v-for="suggestion in suggestions"
+          :key="suggestion"
+        >
+          {{ suggestion }}
+        </li>
       </ul>
     </template>
   </PrimePassword>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped></style>

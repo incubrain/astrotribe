@@ -4,29 +4,21 @@
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
 
 const domainKey = 'news'
-const newsStore = useNewsStore()
-const { news } = storeToRefs(newsStore)
-const haveNews = computed(() => news.value !== null && news.value.length > 0)
+const { store, loadMore, refresh } = await useSelectData<User>('news', {
+  columns:
+    'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*)',
+  filters: { status: 'agent_action' },
+  orderBy: { column: 'created_at', ascending: false },
+  initialFetch: true,
+  pagination: { page: 1, limit: 20 }
+})
+
+const { items: news } = storeToRefs(store)
+
+console.log('news', news)
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
-
-const fetchInput = ref({
-  domainKey,
-  endpoint: '/api/news/select/cards',
-  criteria: {
-    dto: 'select:news:card'
-  }
-}) as Ref<FetchInput>
-
-watchEffect(() => {
-  if (haveNews.value === false) {
-    console.log('Fetching news')
-    newsStore.loadNews(fetchInput.value)
-  }
-})
-
-console.log('news', news)
 
 definePageMeta({
   name: 'News',
@@ -35,20 +27,13 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex flex-col relative h-full w-full md:gap-4 xl:gap-8">
+  <div class="relative flex h-full w-full flex-col md:gap-4 xl:gap-8">
     <!-- <BaseFilter data-type="news" /> -->
     <!-- <NewsSummaryLevel /> -->
-    <BaseInfiniteScroll
-      :domain-key="domainKey"
-      :pagination="{
-        page: 1,
-        limit: 20
-      }"
-      @update:scroll-end="newsStore.loadNews(fetchInput)"
-    >
+    <BaseInfiniteScroll @update:scroll-end="loadMore()">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
         <BaseSidebar class="mx-auto" />
-        <div class="flex flex-col max-w-sm md:col-start-2 mx-auto w-full">
+        <div class="mx-auto flex w-full max-w-sm flex-col md:col-start-2">
           <NewsCard
             v-for="(item, i) in news"
             :key="`news-post-${i}`"

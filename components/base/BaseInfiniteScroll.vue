@@ -1,35 +1,10 @@
 <script setup lang="ts">
-import type { DomainKey } from '@/composables/base/pagination.base.store'
-
-const props = defineProps({
-  pagination: {
-    type: Object as PropType<{ page: number; limit: number }>,
-    required: true
-  },
-  domainKey: {
-    type: String as PropType<DomainKey>,
-    required: true
-  }
-})
-
-const paginationStore = usePaginationStore()
-
-watch(
-  props,
-  () => {
-    paginationStore.initPagination({
-      domainKey: props.domainKey,
-      pagination: props.pagination,
-      force: true
-    })
-  },
-  { immediate: true, deep: true }
-)
-
 const emit = defineEmits(['update:scrollEnd'])
 const scrollContainer = ref(null)
+const observer = ref(null as IntersectionObserver | null)
+
 onMounted(() => {
-  const observer = new IntersectionObserver(
+  observer.value = new IntersectionObserver(
     (entries) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         emit('update:scrollEnd')
@@ -42,15 +17,14 @@ onMounted(() => {
   )
 
   if (scrollContainer.value) {
-    observer.observe(scrollContainer.value)
+    observer.value.observe(scrollContainer.value)
   }
+})
 
-  // Cleanup observer on component unmount
-  onUnmounted(() => {
-    if (scrollContainer.value) {
-      observer.unobserve(scrollContainer.value)
-    }
-  })
+onUnmounted(() => {
+  if (scrollContainer.value) {
+    observer.value?.unobserve(scrollContainer.value)
+  }
 })
 </script>
 

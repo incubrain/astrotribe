@@ -23,6 +23,7 @@ const comingSoon = [
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
+      :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
         <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
@@ -54,6 +55,7 @@ const comingSoon = [
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
+      :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
         <div class="space-y-4">
@@ -73,6 +75,7 @@ const comingSoon = [
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
+      :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
         <div class="space-y-4">

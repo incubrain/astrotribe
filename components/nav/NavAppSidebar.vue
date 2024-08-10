@@ -51,11 +51,11 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
         </NuxtLink>
       </div>
     </template>
-    <template #end>
+    <!-- <template #end>
       <div class="flex h-full items-end justify-end">
         <BaseDevHelpers v-if="isDev" />
       </div>
-    </template>
+    </template> -->
   </PrimeMenu>
 </template>
 

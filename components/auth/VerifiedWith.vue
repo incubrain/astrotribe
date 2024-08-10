@@ -35,27 +35,13 @@ const verifiedIcon = computed(() => {
         @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
         to="/astrotribe"
       >
-        <PrimeButtonGroup class="flex relative">
-          <PrimeButton
-            v-if="registeredWithProvider"
-            class="flex relative overflow-visible gap-3"
-            outlined
-          >
-            <Icon
-              :name="verifiedIcon"
-              class="w-5 h-5 text-primary-700"
-            />
-            <p class="hidden lg:block"> Verified </p>
-          </PrimeButton>
-
-          <PrimeButton class="pl-5">
-            Dashboard
-            <Icon
-              name="mdi:play"
-              class="w-5 h-5"
-            />
-          </PrimeButton>
-        </PrimeButtonGroup>
+        <PrimeButton>
+          Visit Dashboard
+          <Icon
+            name="mdi:play"
+            class="h-5 w-5"
+          />
+        </PrimeButton>
       </NuxtLink>
     </div>
   </div>

@@ -1,37 +1,49 @@
 <script setup lang="ts">
 const schema = [
   {
-    value: 'password',
+    id: 'password',
     label: 'Current Password',
     tip: 'Your first name',
     placeholder: 'Your current password',
+    value: ref(''),
     type: 'password'
   },
   {
-    value: 'new_password',
+    id: 'new_password',
     label: 'New Password',
     tip: 'New password must be at least 8 characters long',
     placeholder: 'Your new password',
+    value: ref(''),
     type: 'password'
   },
   {
-    value: 'confirm_new_password',
+    id: 'confirm_new_password',
     label: 'Confirm Password',
     tip: 'Please confirm your new password',
     placeholder: 'Confirm Your password',
+    value: ref(''),
     type: 'password'
   }
 ]
 
 const currentUser = useCurrentUser()
-await currentUser.fetchUserProfile()
-const { profile } = storeToRefs(currentUser)
+
+const userId = useCookie('userId')
+const {
+  store: userProfile,
+  loadMore,
+  refresh
+} = await useSelectData<User>('user_profiles', {
+  columns: 'id, given_name, surname, email, avatar, dob, username',
+  filters: { id: userId.value },
+  initialFetch: true,
+  limit: 1
+})
 
 definePageMeta({
   layoutTransition: false,
-  name: 'SettingsPassword',
-  layout: 'app-settings',
-  middleware: 'is-current-user'
+  name: 'Password',
+  layout: 'app-settings'
 })
 
 const settings = reactive({
@@ -40,7 +52,9 @@ const settings = reactive({
   confirm_new_password: ''
 })
 
-const isPasswordUpdatable = computed(() => profile.value?.providers.includes('email'))
+const isPasswordUpdatable = computed(() =>
+  currentUser.profile ? currentUser.profile?.providers.includes('email') : false
+)
 </script>
 
 <template>
@@ -54,23 +68,27 @@ const isPasswordUpdatable = computed(() => profile.value?.providers.includes('em
       <div v-if="isPasswordUpdatable">
         <UserSettingsItem
           v-for="item in schema"
-          :key="item.value"
+          :key="item.id"
           :item="item"
         >
           <FormPassword
-            v-model="settings[item.value]"
-            :pt="{
-              root: 'w-full'
-            }"
-            :placeholder="item.placeholder"
+            :id="item.id"
+            v-model="item.value.value"
+            :feedback="false"
           />
         </UserSettingsItem>
+        <div class="flex justify-start pt-12">
+          <PrimeButton
+            label="Update Password"
+            @click="updatePassword"
+          />
+        </div>
       </div>
       <PrimeMessage
         severity="info"
-        v-else-if="profile"
+        v-else-if="currentUser.profile"
       >
-        You used {{ profile.provider }} to authenticate
+        You used {{ currentUser.profile.provider }} to authenticate
       </PrimeMessage>
     </UserSettingsCard>
   </div>

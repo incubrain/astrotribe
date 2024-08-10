@@ -5,63 +5,79 @@
         main: 'Conference Schedule'
       }"
     />
-    <PrimeTabView>
-      <PrimeTabPanel
-        v-for="(day, i) in schedule"
-        :key="`tab-${i}`"
-        :header="`${day.label} ${day.day}th Nov`"
-      >
-        <div class="border border-color rounded-md">
-          <PrimeDataTable
-            :value="day.items"
-            table-style="min-width: 40rem"
-          >
-            <PrimeColumn
-              style="width: 20%"
-              field="time"
-              :header="`Time ${timezone}`"
+    <PrimeTabs
+      value="0"
+      select-on-focus
+    >
+      <PrimeTabList pt:tablist:class="flex gap-4 pl-4 pb-4 text-lg">
+        <PrimeTab
+          v-for="(day, i) in schedule"
+          :key="`tab-${i}`"
+          :value="`${day.value}`"
+        >
+          <span>
+            {{ `${day.label} ${day.day}th Nov` }}
+          </span>
+        </PrimeTab>
+      </PrimeTabList>
+      <PrimeTabPanels>
+        <PrimeTabPanel
+          v-for="(day, i) in schedule"
+          :key="`tab-${i}`"
+          :value="`${i}`"
+        >
+          <div class="border-color rounded-md border">
+            <PrimeDataTable
+              :value="day.items"
+              table-style="min-width: 40rem"
             >
-              <template #body="{ data }">
-                <span class="flex items-center gap-2 text-sm">
-                  <Icon
-                    :name="data.icon"
-                    class="w-5 h-5"
-                  />
+              <PrimeColumn
+                style="width: 20%"
+                field="time"
+                :header="`Time ${timezone}`"
+              >
+                <template #body="{ data }">
+                  <span class="flex items-center gap-2 text-sm">
+                    <Icon
+                      :name="data.icon"
+                      class="h-5 w-5"
+                    />
 
-                  {{ convertISTtoLocal(day.day, data.time) }}
-                </span>
-              </template>
-            </PrimeColumn>
-            <PrimeColumn
-              style="width: 35%"
-              field="speaker"
-              header="Speaker"
-            >
-              <template #body="slotProps">
-                <span class="flex leading-none items-center text-sm">
-                  <div
-                    v-if="slotProps.data.online"
-                    class="w-3 h-3 rounded-full bg-emerald-500 mr-1"
-                  />
-                  {{ slotProps.data.speaker }}
-                </span>
-              </template>
-            </PrimeColumn>
-            <PrimeColumn
-              style="width: 40%"
-              field="topic"
-              header="Topic"
-            >
-              <template #body="slotProps">
-                <div class="text-sm">
-                  {{ slotProps.data.topic }}
-                </div>
-              </template>
-            </PrimeColumn>
-          </PrimeDataTable>
-        </div>
-      </PrimeTabPanel>
-    </PrimeTabView>
+                    {{ convertISTtoLocal(day.day, data.time) }}
+                  </span>
+                </template>
+              </PrimeColumn>
+              <PrimeColumn
+                style="width: 35%"
+                field="speaker"
+                header="Speaker"
+              >
+                <template #body="slotProps">
+                  <span class="flex items-center text-sm leading-none">
+                    <div
+                      v-if="slotProps.data.online"
+                      class="mr-1 h-3 w-3 rounded-full bg-emerald-500"
+                    />
+                    {{ slotProps.data.speaker }}
+                  </span>
+                </template>
+              </PrimeColumn>
+              <PrimeColumn
+                style="width: 40%"
+                field="topic"
+                header="Topic"
+              >
+                <template #body="slotProps">
+                  <div class="text-sm">
+                    {{ slotProps.data.topic }}
+                  </div>
+                </template>
+              </PrimeColumn>
+            </PrimeDataTable>
+          </div>
+        </PrimeTabPanel>
+      </PrimeTabPanels>
+    </PrimeTabs>
   </div>
 </template>
 
@@ -95,6 +111,7 @@ const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone
 const schedule = [
   {
     slot: 'friday',
+    value: '0',
     label: 'Friday',
     day: 24,
     items: [
@@ -235,6 +252,7 @@ const schedule = [
   {
     slot: 'saturday',
     label: 'Saturday',
+    value: '1',
     day: 25,
     items: [
       {
@@ -354,6 +372,7 @@ const schedule = [
   {
     slot: 'sunday',
     label: 'Sunday',
+    value: '2',
     day: 26,
     items: [
       {

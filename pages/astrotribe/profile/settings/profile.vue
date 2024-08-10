@@ -31,20 +31,6 @@ const schema = [
     placeholder: 'Your username',
     type: 'username',
     disabled: true
-  },
-  {
-    value: 'introduction',
-    label: 'Introduction',
-    tip: 'Share some information about yourself',
-    placeholder: 'Tell us about yourself',
-    type: 'textarea'
-  },
-  {
-    value: 'quote',
-    label: 'Quote',
-    tip: 'Your favorite quote',
-    placeholder: 'Your favorite quote',
-    type: 'textarea'
   }
 ]
 
@@ -58,52 +44,48 @@ const SettingsAccountValidation = z.object({
 })
 
 const currentUser = useCurrentUser()
-await currentUser.fetchUserProfile()
-const { fullProfile } = storeToRefs(currentUser)
 
-const profileCopy = shallowRef({ ...fullProfile.value })
+const userId = useCookie('userId')
+const {
+  store: userProfile,
+  loadMore,
+  refresh
+} = await useSelectData<User>('user_profiles', {
+  columns: 'id, given_name, surname, email, avatar, dob, username',
+  filters: { id: userId.value },
+  initialFetch: true,
+  limit: 1
+})
+
+const profileCopy = shallowRef({ ...userProfile })
 
 definePageMeta({
   layoutTransition: false,
-  name: 'SettingsProfile',
-  layout: 'app-settings',
-  middleware: 'is-current-user'
+  name: 'Profile',
+  layout: 'app-settings'
 })
 </script>
 
 <template>
   <div>
     <UserSettingsCard
-      v-if="fullProfile"
+      v-if="userProfile"
       :title="{
         main: 'Account Profile',
         subtitle: 'Update your account information'
       }"
     >
-      <div class="relative w-full max-w-[1200px] h-64">
-        <BaseImage
-          :img="{
-            src: fullProfile.cover_image,
-            type: 'cover'
-          }"
-          class="w-full h-full rounded-md overflow-hidden border border-color"
-        />
-        <BaseUploadCropper
-          cropper-type="cover_image"
-          :has-image="!!fullProfile.cover_image"
-          class="absolute top-2 left-2"
-        />
-
+      <div class="relative w-full max-w-[1200px]">
         <div
-          class="w-32 h-32 absolute -bottom-16 left-16 bg-red-50 flex justify-center items-center rounded-full overflow-hidden"
+          class="left-16 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-red-50"
         >
           <BaseImage
-            v-if="fullProfile?.avatar"
+            v-if="userProfile?.avatar"
             :img="{
-              src: fullProfile.avatar,
+              src: userProfile.avatar,
               type: 'avatar'
             }"
-            class="w-full h-full"
+            class="h-full w-full"
           />
           <BaseUploadCropper
             cropper-type="avatar"

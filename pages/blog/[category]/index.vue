@@ -21,7 +21,7 @@ const {
   error,
   data: newArticles,
   refresh,
-  pending
+  status
 } = useAsyncData(`article-cards-${categoryParam.value}`, () =>
   categoryParam.value
     ? (queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
@@ -159,9 +159,9 @@ const heroImage = computed(() => {
           :article="article"
         />
         <ClientOnly>
-          <BlogCardSkeleton v-show="pending" />
-          <BlogCardSkeleton v-show="pending" />
-          <BlogCardSkeleton v-show="pending" />
+          <BlogCardSkeleton v-show="status === 'pending'" />
+          <BlogCardSkeleton v-show="status === 'pending'" />
+          <BlogCardSkeleton v-show="status === 'pending'" />
           <div
             v-if="articlesFinished"
             class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
@@ -175,7 +175,7 @@ const heroImage = computed(() => {
       </div>
     </div>
     <BlogArticleInfinateScroll
-      v-show="!articlesFinished && !pending"
+      v-show="!articlesFinished && status === 'success'"
       @infinate-trigger="refresh"
     />
   </div>

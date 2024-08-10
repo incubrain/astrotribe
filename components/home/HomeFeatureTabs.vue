@@ -115,7 +115,6 @@ const dummyData = {
     updated_at: '2023-08-11 16:49:09.163+00',
     last_seen: '2023-08-11 16:49:09.163+00',
     avatar: 'shweta-kulkarni.jpg',
-    cover_image: null,
     introduction: null,
     quote: null,
     followed_count: 1,

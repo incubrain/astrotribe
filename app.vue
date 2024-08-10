@@ -57,18 +57,13 @@ useHead({
 </script>
 
 <template>
-  <div class="w-full h-full">
+  <div class="h-full w-full">
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <PrimeToast
-      position="bottom-right"
-      :pt="{
-        content: 'border border-color rounded-md shadow-md flex'
-      }"
-    />
-    <Notification />
+    <PrimeToast position="bottom-right" />
+    <!-- <Notification /> -->
   </div>
 </template>
 

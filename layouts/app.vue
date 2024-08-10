@@ -7,7 +7,7 @@
     >
       <NavAppTop />
       <div class="md:p-4 xl:p-8 overflow-y-scroll h-full foreground">
-        <div>
+        <div class="h-full">
           <slot />
         </div>
       </div>

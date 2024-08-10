@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useDateFormat } from '#imports'
+
 defineProps({
   article: {
     type: Object,
@@ -13,12 +15,7 @@ defineProps({
 </script>
 
 <template>
-  <PrimeCard
-    :pt="{
-      root: 'rounded-none md:rounded-md border-b md:border border-color',
-      body: 'justify-between h-full'
-    }"
-  >
+  <PrimeCard>
     <template #header>
       <BlogCatTag
         :tags="article.tags"
@@ -33,12 +30,12 @@ defineProps({
           height: '300',
           quality: '80'
         }"
-        class="w-full object-cover aspect-video"
+        class="aspect-video w-full object-cover"
       />
     </template>
     <template #title>
       <NuxtLink :to="article._path">
-        <h3 class="text-xl lg:text-xl font-bold">
+        <h3 class="text-xl font-bold lg:text-xl">
           {{ article.title }}
         </h3>
       </NuxtLink>
@@ -63,14 +60,14 @@ defineProps({
       </div>
     </template>
     <template #content>
-      <div class="flex flex-col gap-2 items-start w-full justify-center">
+      <div class="flex w-full flex-col items-start justify-center gap-2">
         <p class="text-sm">
           {{ article.description }}
         </p>
       </div>
     </template>
     <template #footer>
-      <div class="w-full flex justify-end">
+      <div class="flex w-full justify-end">
         <NuxtLink :to="article._path">
           <PrimeButton outlined> Read More </PrimeButton>
         </NuxtLink>

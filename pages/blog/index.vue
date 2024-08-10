@@ -30,7 +30,7 @@
           <PrimeButton to="/blog/all">All Articles</PrimeButton>
         </NuxtLink>
       </BlogShowcase>
-      <BlogNews :news-category="'all'" />
+      <!-- <BlogNews :news-category="'all'" /> -->
     </div>
   </div>
 </template>

@@ -25,8 +25,8 @@ const { haveUserSession } = storeToRefs(currentUser)
 </script>
 
 <template>
-  <div class="space-y-4">
-    <div class="flex gap-4 flex-row lg:flex-col py-8 w-full justify-center items-center text-white">
+  <div class="space-y-4 min-h-full flex flex-col space-between">
+    <div class="flex gap-4 flex-row py-8 w-full justify-center items-center text-white h-full">
       <div class="p-4 bg-white rounded-full border border-color group hover:invert relative">
         <NuxtLink
           to="/"

@@ -11,7 +11,7 @@ const { socials, websiteLinks } = usePages()
         class="background mx-auto grid h-full w-full grid-cols-2 gap-4 rounded-t-md p-4 lg:grid-cols-[220px_2fr_220px] lg:gap-8 xl:p-8"
       >
         <div
-          class="col-start-2 row-start-2 flex flex-shrink-0 items-start justify-center lg:col-start-1 lg:row-start-1 lg:justify-start lg:pr-4"
+          class="col-start-2 row-start-2 flex flex-shrink-0 items-start  lg:col-start-1 lg:row-start-1 lg:justify-start lg:pr-4"
         >
           <NuxtLink
             to="/"
@@ -38,7 +38,7 @@ const { socials, websiteLinks } = usePages()
             class="space-y-2 px-3 pb-2 last:pr-0 lg:pb-0"
           >
             <h4
-              class="pb-2 text-base font-bold underline decoration-primary-600 underline-offset-4"
+              class="pb-2 text-base font-bold underline decoration-primary-600 underline-offset-4 text-nowrap"
             >
               {{ link.label }}
             </h4>
@@ -55,7 +55,7 @@ const { socials, websiteLinks } = usePages()
           </div>
         </ul>
         <div
-          class="col-start-1 flex items-end gap-2 lg:col-start-3 lg:row-start-1 lg:items-start lg:justify-end"
+          class="col-start-1 flex gap-2 lg:col-start-3 lg:row-start-1 items-center lg:items-start justify-end"
         >
           <NuxtLink
             v-for="social in socials"
