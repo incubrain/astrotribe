@@ -11,9 +11,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
     :pt="{
       root: 'min-h-full flex flex-col rounded-none border-none p-0',
       menu: 'pt-8',
-      list: {
-        root: 'h-full',
-      }
+      end: 'flex items-end justify-end h-full'
     }"
     :ptOptions="{ mergeSections: true, mergeProps: true }"
   >
@@ -56,15 +54,17 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
       </div>
     </template>
     <template #end>
-      <div class="flex h-full items-end justify-end">
+      <div class="flex h-full items-end justify-end p-2">
         <!-- <BaseDevHelpers v-if="isDev" /> -->
-        <iframe
-          src="https://status.astronera.org/badge?theme=dark"
-          width="180"
-          height="30"
-          frameborder="0"
-          scrolling="no"
-        ></iframe>
+         <div class="flex items-center justify-center foreground rounded-md p-2 gap-2">
+           <iframe
+             src="https://status.astronera.org/badge?theme=dark"
+             width="120"
+             height="30"
+             frameborder="0"
+             scrolling="no"
+           ></iframe>
+         </div>
       </div>
     </template>
   </PrimeMenu>
