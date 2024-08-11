@@ -10,16 +10,17 @@ const userStore = useCurrentUser()
 const { profile } = storeToRefs(userStore)
 
 const comingSoon = [
-  'Add images to news articles',
-  'Create and store text embeddings for News',
-  'All Indian astronomy companies added',
-  'AI generated summaries for news',
-  'Admin dashboard'
+  'Adding all major companies',
+  'Adding all major news sources',
+  'Improving the quality of news/company data',
+  'AI generated Weekly/Monthly newsletter'
 ]
 </script>
 
 <template>
-  <div class="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:p-0 lg:grid-cols-3 xl:gap-8">
+  <div
+    class="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:p-0 lg:grid-cols-3 xl:gap-8 xl:p-8"
+  >
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
@@ -72,27 +73,9 @@ const comingSoon = [
         </NuxtLink>
       </template>
     </PrimeCard>
-    <PrimeCard
-      class="border-color border"
-      :pt="{ body: 'justify-between h-full' }"
-      :ptOptions="{ mergeProps: true, mergeSections: true }"
-    >
-      <template #content>
-        <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Community </h3>
-          <p class="text-base text-slate-200">
-            Connect, learn, and collaborate with astronomy enthusiasts and professionals worldwide.
-          </p>
-        </div>
-      </template>
-      <template #footer>
-        <NuxtLink to="/astrotribe/users">
-          <PrimeButton outlined> Start Connecting </PrimeButton>
-        </NuxtLink>
-      </template>
-    </PrimeCard>
+
     <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
-      <PrimeMessage severity="info"> Features Coming Soon! </PrimeMessage>
+      <PrimeMessage severity="info"> What we're working on </PrimeMessage>
       <ul>
         <li
           v-for="item in comingSoon"
