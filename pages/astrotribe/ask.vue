@@ -283,13 +283,13 @@ const isMessageSendable = computed(() => {
 </script>
 
 <template>
-  <div class="flex h-[calc(100vh-125px)] flex-col">
+  <div class="flex h-[calc(100vh-92px)] flex-col">
     <!-- Header and Carousel -->
 
     <!-- Scrollable Message Area -->
 
     <div
-      class="mx-auto grid h-full max-w-[1000px] grid-cols-1 overflow-scroll md:grid-cols-[1fr_minmax(200px,700px)_1fr]"
+      class="mx-auto grid h-full max-w-[1000px] grid-cols-1 overflow-scroll md:grid-cols-[1fr_minmax(200px,700px)_1fr] p-4"
     >
       <div class="w-full md:col-span-3 md:col-start-1 md:row-start-1">
         <div class="space-y-2 pb-6 text-center">

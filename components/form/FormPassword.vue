@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   disabled: false,
   required: false,
-  inputClass: '',
+  inputClass: 'w-full',
   weakLabel: 'Weak',
   mediumLabel: 'Medium',
   strongLabel: 'Strong',

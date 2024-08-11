@@ -10,8 +10,12 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
     :model="appLinks"
     :pt="{
       root: 'min-h-full flex flex-col rounded-none border-none p-0',
-      menu: 'pt-8'
+      menu: 'pt-8',
+      list: {
+        root: 'h-full',
+      }
     }"
+    :ptOptions="{ mergeSections: true, mergeProps: true }"
   >
     <template #start>
       <div class="flex min-h-[60px] items-center justify-end p-3">
@@ -51,11 +55,18 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
         </NuxtLink>
       </div>
     </template>
-    <!-- <template #end>
+    <template #end>
       <div class="flex h-full items-end justify-end">
-        <BaseDevHelpers v-if="isDev" />
+        <!-- <BaseDevHelpers v-if="isDev" /> -->
+        <iframe
+          src="https://status.astronera.org/badge?theme=dark"
+          width="180"
+          height="30"
+          frameborder="0"
+          scrolling="no"
+        ></iframe>
       </div>
-    </template> -->
+    </template>
   </PrimeMenu>
 </template>
 
