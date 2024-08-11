@@ -19,7 +19,7 @@ const comingSoon = [
 
 <template>
   <div
-    class="grid w-full grid-cols-1 gap-4 p-4 md:grid-cols-2 md:p-0 lg:grid-cols-3 xl:gap-8 xl:p-8"
+    class="grid w-full grid-cols-1 gap-4 p-0 md:grid-cols-2 md:p-4 lg:grid-cols-3 xl:gap-8 xl:p-8"
   >
     <PrimeCard
       class="border-color border"
