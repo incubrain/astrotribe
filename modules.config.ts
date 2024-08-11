@@ -37,7 +37,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.astronera.org',
-        'https://idsifamzvzlpgnmlnldw.supabase.co'
+        'https://*.supabase.co'
       ],
       'connect-src': [
         "'self'",
@@ -50,7 +50,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://api.iconify.design',
         'https://api.unisvg.com',
         'https://api.simplesvg.com',
-        'ws://localhost:4000'
+        'ws://localhost:4000',
+        'https://*.supabase.co'
       ],
       'img-src': [
         "'self'",
@@ -81,7 +82,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://www.youtube.com',
         'https://us.posthog.com/',
         'https://www.google.com/',
-        'https://status.astronera.org/'
+        'https://*.astronera.org/'
       ]
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
