@@ -289,11 +289,24 @@ const isMessageSendable = computed(() => {
     <!-- Scrollable Message Area -->
 
     <div
-      class="mx-auto grid h-full max-w-[1000px] grid-cols-1 overflow-scroll md:grid-cols-[1fr_minmax(200px,700px)_1fr] p-4"
+      class="mx-auto grid h-full max-w-[1000px] grid-cols-1 overflow-scroll p-4 md:grid-cols-[1fr_minmax(200px,700px)_1fr]"
     >
       <div class="w-full md:col-span-3 md:col-start-1 md:row-start-1">
         <div class="space-y-2 pb-6 text-center">
           <h1 class="text-5xl font-semibold">Galactic Guide </h1>
+          <div class="flex gap-2 pt-2">
+            <PrimeMessage
+              severity="info"
+              class="flex w-full justify-center"
+              >3 question limit per 30 min
+            </PrimeMessage>
+            <PrimeMessage
+              severity="warn"
+              class="flex w-full justify-center"
+            >
+              Always validate answers.
+            </PrimeMessage>
+          </div>
         </div>
         <PrimeCarousel
           :value="agents"
@@ -388,19 +401,6 @@ const isMessageSendable = computed(() => {
           :selected-prompt="message"
           :system-prompt="selectedAgent?.systemMessage"
         />
-        <div class="flex gap-2 pt-2">
-          <PrimeMessage
-            severity="info"
-            class="flex w-full justify-center"
-            >3 question limit per 30 min
-          </PrimeMessage>
-          <PrimeMessage
-            severity="warn"
-            class="flex w-full justify-center"
-          >
-            Always validate answers.
-          </PrimeMessage>
-        </div>
       </div>
     </div>
   </div>

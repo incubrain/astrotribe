@@ -14,7 +14,7 @@ defineProps<{
       <div
         class="border-color w-full min-w-[260px] space-y-4 rounded-lg border p-4 lg:max-w-[360px]"
       >
-        <h3 class="text-2xl font-semibold text-primary-900">{{ chart.title }}</h3>
+        <h3 class="text-2xl font-semibold text-primary-600">{{ chart.title }}</h3>
         <p class="text-lg">{{ chart.subtitle }}</p>
       </div>
       <Chart
