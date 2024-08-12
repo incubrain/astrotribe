@@ -24,6 +24,7 @@ const options = ref({
         root: 'max-w-2xl w-full',
         content: 'w-full aspect-square'
       }"
+      :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
       <template #header>
         <slot name="modal:header" />

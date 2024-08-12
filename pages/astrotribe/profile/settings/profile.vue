@@ -50,14 +50,18 @@ const {
   store: userProfile,
   loadMore,
   refresh
-} = await useSelectData<User>('user_profiles', {
+} = useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
   filters: { id: userId.value },
   initialFetch: true,
   limit: 1
 })
 
-const profileCopy = shallowRef({ ...userProfile })
+const profileCopy = ref({})
+
+watch(userProfile, () => {
+  profileCopy.value = { ...userProfile.items[0] }
+})
 
 definePageMeta({
   layoutTransition: false,
@@ -102,6 +106,7 @@ definePageMeta({
         >
           <div class="w-full">
             <PrimeInputText
+              class="w-96"
               v-model="profileCopy[item.value]"
               :type="item.type"
               :disabled="item.disabled"
