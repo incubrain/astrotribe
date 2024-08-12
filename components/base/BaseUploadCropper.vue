@@ -17,8 +17,6 @@ const props = defineProps({
   }
 })
 
-// from other file
-
 const config = computed(() => cropperConfigs[props.cropperType])
 
 export interface CropperConfig {
