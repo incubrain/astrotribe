@@ -72,6 +72,7 @@
     "katex": "^0.16.10",
     "mermaid": "^10.9.1",
     "sass": "^1.63.4",
+    "sharp": "^0.33.4",
     "tailwindcss-primeui": "^0.3.4",
     "winston": "^3.13.0"
   }
