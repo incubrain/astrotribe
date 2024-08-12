@@ -264,7 +264,7 @@ const websiteLinks = [
         key: 'dark-sky-conference-2023',
         label: 'Dark Sky Conference',
         icon: 'material-symbols:mic-rounded',
-        url: 'projects/dark-sky-conference-2023',
+        url: '/projects/dark-sky-conference-2023',
         visible: true,
         disabled: false
       }
@@ -281,7 +281,7 @@ const websiteLinks = [
   //       key: 'stargazing',
   //       label: 'Stargazing',
   //       icon: 'material-symbols:dark-mode',
-  //       url: 'events/stargazing',
+  //       url: '/events/stargazing',
   //       visible: false,
   //       disabled: false
   //     }
