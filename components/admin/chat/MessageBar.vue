@@ -1,8 +1,5 @@
 <script setup lang="ts">
 const message = ref('')
-const inputHeight = ref(36)
-const maxHeight = 120
-const textareaHeight = computed(() => `${inputHeight.value}px`)
 const messageInput = ref<Ref | null>(null)
 
 const chunksStore = useChunksStore()

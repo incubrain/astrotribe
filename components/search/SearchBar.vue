@@ -29,23 +29,29 @@ const submitQuestion = async () => {
 
 <template>
   <div class="w-full">
-    <PrimeInputGroup icon-position="left">
-      <PrimeInputGroupAddon>
-        <Icon
-          name="material-symbols:school-rounded"
-          class="hidden h-6 w-6 font-bold lg:block"
+    <div class="mx-auto flex w-full max-w-3xl items-center">
+      <div
+        class="foreground border-color flex w-full items-center rounded-lg border px-2 py-1 pr-2"
+      >
+        <!-- <PrimeButton
+          rounded
+          :pt="{ root: 'p-5 flex justify-center items-center relative' }"
+          severity="secondary"
+        >
+          <Icon
+            :name="textSearchType === 'fts' ? 'mdi:card-text-outline' : 'mdi:format-list-numbered'"
+            class="absolute h-5 w-5"
+          />
+        </PrimeButton> -->
+        <PrimeTextarea
+          ref="messageInput"
+          v-model="question"
+          @keyup.enter="submitQuestion"
+          autoResize
+          placeholder="Ask Your Question..."
+          class="flex max-h-[120px] w-full items-center justify-center bg-transparent px-4 py-2 outline-none"
+          :pt="{ root: 'border-none' }"
         />
-      </PrimeInputGroupAddon>
-      <PrimeInputText
-        v-model="question"
-        class="w-full"
-        placeholder="Ask a question..."
-        pt:root:class="border-none"
-        :ptOptions="{ mergeProps: true, mergeSections: true }"
-        type="text"
-        @keydown.enter="submitQuestion"
-      />
-      <PrimeInputGroupAddon>
         <PrimeButton
           pt:root:class="p-0"
           link
@@ -57,8 +63,8 @@ const submitQuestion = async () => {
             :class="isLoading ? 'animate-spin' : ''"
           />
         </PrimeButton>
-      </PrimeInputGroupAddon>
-    </PrimeInputGroup>
+      </div>
+    </div>
   </div>
 </template>
 
