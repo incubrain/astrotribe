@@ -36,7 +36,7 @@
         <div class="text-xl font-bold">
           Heap Total: {{ formatBytes(metrics.system.memory.usage.heapTotal) }}
         </div>
-      </AdminMetricCard>  
+      </AdminMetricCard>
     </div>
   </div>
 </template>
@@ -46,7 +46,8 @@ const metrics = ref(null)
 let eventSource: EventSource | null = null
 
 const connectToMetrics = () => {
-  const metricsUrl = 'http://localhost:8080/metrics?maxCount=10&maxAge=600000'
+  const scraperUrl = useRuntimeConfig().scraperUrl
+  const metricsUrl = `${scraperUrl}/metrics?maxCount=10&maxAge=600000`
 
   eventSource = new EventSource(metricsUrl)
 

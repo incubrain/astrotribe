@@ -1,4 +1,3 @@
-import { insert } from '@sentry/browser/types/transports/offline'
 import type { FetchInput } from '../base/fetch.base.composable'
 
 type CompanyType = {

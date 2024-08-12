@@ -68,7 +68,7 @@ export function useBaseError() {
         message: errorMessage
       })
       // Here you could navigate to an error page, log out the user, etc.
-      console.log('Handling critical error for:', devMessage)
+      console.error('Handling critical error for:', devMessage)
     }
 
     throw createError({

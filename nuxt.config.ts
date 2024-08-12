@@ -114,7 +114,8 @@ export default defineNuxtConfig({
       posthogKey: '',
       studioTokens: '',
       supabaseUrl: '',
-      supabaseKey: ''
+      supabaseKey: '',
+      scraperUrl: ''
     },
     // server
     googleApiKey: '',

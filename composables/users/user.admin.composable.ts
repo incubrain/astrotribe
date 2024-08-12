@@ -53,21 +53,6 @@ export function useAdmin() {
     }
   }
 
-  async function addCoverPicture(userId: string, file: File) {
-    try {
-      const { data, error } = await client.storage
-        .from('profile-public')
-        .upload(`${userId}/cover/${file.name}`, file)
-      if (error) {
-        throw createError(
-          `Error uploading cover picture for user with ID ${userId}: ${error.message}`
-        )
-      }
-      console.log(`cover picture uploaded successfully for user with ID ${userId}`)
-    } catch (error) {
-      console.error(`Error uploading cover picture for user with ID ${userId}:`, error)
-    }
-  }
 
   async function registerManyUsers() {
     const users: UserRowType[] = []
@@ -105,28 +90,6 @@ export function useAdmin() {
     }
   }
 
-  async function updateManyUsers() {
-    // first fetch all users from the database
-    const { data, error } = await client.from('user_profiles').select('*')
-    if (error) {
-      throw createError(`error fetching users: ${error.message}`)
-    }
-
-    console.log('users fetched:', data)
-
-    // then we should match the emails to the users json file and update the user profiles
-    for (const user of users) {
-      const existingUser = data.find((u) => u.email === user.email)
-      if (!existingUser) {
-        console.error(`User with email ${user.email} not found`)
-        continue
-      } else {
-        // update the user profile
-        console.log('updating user:', user)
-        await updateUser(user, existingUser.id)
-      }
-    }
-  }
 
   async function updateUser(newData: any, oldData: any) {
     log.info(`Updating user with email ${newData.email}`)
@@ -176,7 +139,6 @@ export function useAdmin() {
 
   return {
     registerManyUsers,
-    updateManyUsers,
     updateUser,
     createdUsers
   }

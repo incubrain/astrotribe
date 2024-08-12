@@ -1,17 +1,21 @@
 <script setup lang="ts">
 const editingRows = ref([])
-const { userProfiles } = storeToRefs(usersStore)
+
 const admin = useAdmin()
 
-await usersStore.getManyUserProfiles()
+const { store: userProfiles, loadMore, refresh } = await useSelectData<User>('user_profiles', {
+  columns: 'id, given_name, surname, avatar, email, created_at, updated_at',
+  filters: { status: 'agent_action' },
+  orderBy: { column: 'created_at', ascending: false },
+  initialFetch: true,
+  pagination: { page: 1, limit: 20 }
+})
 
 const onRowEditSave = async (event) => {
   const { data, newData } = event
 
   // Update the user profile in Supabase
   await admin.updateUser(newData, data.id)
-
-  usersStore.updateUserProfileState(data, newData)
 }
 </script>
 

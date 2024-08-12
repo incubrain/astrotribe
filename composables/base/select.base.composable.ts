@@ -1,8 +1,15 @@
-import { usePaginationStore } from './pagination.base.store'
-import { useBaseError } from './useBaseError'
+import {
+  useErrorHandler,
+  AppError,
+  ErrorType,
+  ErrorSeverity
+} from './error-handler.base.composable'
+import { useHttpHandler } from './http-handler.base.composable'
+import { useLogger } from './logger.base.composable'
 import { getOrCreateStore } from './utils.base.composable'
+import { usePaginationStore, type PaginationType } from './pagination.base.store'
 
-export async function useSelectData<T>(
+export function useSelectData<T extends { id: string | number }>(
   tableName: string,
   options: {
     columns?: string
@@ -11,12 +18,17 @@ export async function useSelectData<T>(
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number
+    refreshRelated?: () => Promise<void>
+    rateLimitMs?: number
+    auditLog?: (action: string, details: any) => Promise<void>
   } = {}
 ) {
-  const supabase = useSupabaseClient()
-  const handle = useBaseError()
+  const { select } = useHttpHandler()
+  const { handleError } = useErrorHandler()
   const logger = useLogger('useSelectData')
   const store = getOrCreateStore<T>(tableName)()
+  const isSelecting: Ref<boolean> = ref(false)
+  let lastSelectTime = 0
 
   let paginationStore: ReturnType<typeof usePaginationStore> | null = null
 
@@ -30,39 +42,63 @@ export async function useSelectData<T>(
   }
 
   const fetchData = async (forceFetch = false) => {
-    let query = supabase.from(tableName).select(options.columns || '*')
+    isSelecting.value = true
+    const startTime = Date.now()
 
-    if (options.filters) {
-      Object.entries(options.filters).forEach(([key, value]) => {
-        query = query.eq(key, value)
-      })
-    }
-
-    if (options.orderBy) {
-      query = query.order(options.orderBy.column, {
-        ascending: options.orderBy.ascending ?? true
-      })
-    }
-
-    if (paginationStore) {
-      const pagination = paginationStore.getPaginationRange(tableName)
-      if (pagination) {
-        query = query.range(pagination.from, pagination.to)
-      } else {
-        throw new Error(`Pagination not initialized for ${tableName}`)
+    try {
+      // Rate limiting
+      if (options.rateLimitMs && !forceFetch) {
+        const timeSinceLastSelect = startTime - lastSelectTime
+        if (timeSinceLastSelect < options.rateLimitMs) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastSelect)
+          )
+        }
       }
-    } else if (options.limit) {
-      query = query.limit(options.limit)
+
+      let queryOptions: any = {
+        columns: options.columns || '*',
+        filters: options.filters
+      }
+
+      if (options.orderBy) {
+        queryOptions.order = {
+          column: options.orderBy.column,
+          ascending: options.orderBy.ascending ?? true
+        }
+      }
+
+      if (paginationStore) {
+        const pagination = paginationStore.getPaginationRange(tableName)
+        if (pagination) {
+          queryOptions.range = { from: pagination.from, to: pagination.to }
+        } else {
+          throw new AppError({
+            type: ErrorType.VALIDATION_ERROR,
+            message: `Pagination not initialized for ${tableName}`,
+            severity: ErrorSeverity.MEDIUM,
+            context: 'Data Fetching'
+          })
+        }
+      } else if (options.limit) {
+        queryOptions.limit = options.limit
+      }
+
+      const result = await select<T>(tableName, queryOptions)
+
+      // Audit logging
+      if (options.auditLog) {
+        await options.auditLog('SELECT', { tableName, options: queryOptions })
+      }
+
+      lastSelectTime = Date.now()
+      return result
+    } catch (error: any) {
+      handleError(error, 'Error selecting data')
+      throw error
+    } finally {
+      isSelecting.value = false
     }
-
-    const response = await query
-
-    return handle.server({
-      response,
-      devOnly: true,
-      userMessage: `Failed to fetch ${tableName} data`,
-      devMessage: `Error fetching ${tableName} data from ${tableName}`
-    }) as T[]
   }
 
   const loadMore = async () => {
@@ -77,6 +113,11 @@ export async function useSelectData<T>(
     } else {
       const data = await fetchData()
       store.setItems(data)
+    }
+
+    // Refresh related data if needed
+    if (options.refreshRelated) {
+      await options.refreshRelated()
     }
   }
 
@@ -93,12 +134,13 @@ export async function useSelectData<T>(
   }
 
   if (options.initialFetch) {
-    await loadMore()
+    loadMore()
   }
 
   return {
     store,
     loadMore,
-    refresh
+    refresh,
+    isSelecting
   }
 }

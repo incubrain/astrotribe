@@ -42,13 +42,13 @@ interface StoredSession {
   user: any
 }
 
+type Operation = 'select' | 'update' | 'insert' | 'delete'
+
 interface Permission {
   role: string
   table_name: string
-  insert: boolean
-  select: boolean
-  update: boolean
-  delete: boolean
+  conditions: any
+  permissions: Operation[]
 }
 
 interface StoredPermissions {
@@ -207,7 +207,9 @@ export async function hasDBPermission(
     })
   }
 
-  return tablePermissions[operation]
+
+
+  return tablePermissions.permissions.includes(operation)
 }
 
 export async function hasFeaturePermission(
@@ -225,7 +227,7 @@ export async function hasFeaturePermission(
 
   if (!featurePermissions) {
     throw createError({
-      message: `${feature} is not a valid table_name`
+      message: `${feature} is not a valid feature name`
     })
   }
 

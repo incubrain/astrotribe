@@ -101,22 +101,9 @@ definePageMeta({
           :item="item"
         >
           <div class="w-full">
-            <PrimeTextarea
-              v-if="item.type === 'textarea'"
-              v-model="profileCopy[item.value]"
-              rows="5"
-              :pt="{
-                root: 'w-full'
-              }"
-              :placeholder="profileCopy[item.value] || item.placeholder"
-            />
             <PrimeInputText
-              v-else
               v-model="profileCopy[item.value]"
               :type="item.type"
-              :pt="{
-                root: 'w-full'
-              }"
               :disabled="item.disabled"
               :placeholder="profileCopy[item.value] || item.placeholder"
             />

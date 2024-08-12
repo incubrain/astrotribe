@@ -116,7 +116,6 @@ export const useChatStore = defineStore('chatStore', () => {
         }
       })
 
-      console.log('handling ask error', questionResponse)
       const questionResponseData: Chat = errors.server({
         response: questionResponse,
         devOnly: true,
