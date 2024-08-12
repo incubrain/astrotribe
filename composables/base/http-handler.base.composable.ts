@@ -106,14 +106,29 @@ export function useHttpHandler() {
 
   async function select<T>(
     tableName: string,
-    options: { columns?: string; filters?: Record<string, any> } = {}
+    options: {
+      columns?: string
+      filters?: Record<string, any>
+      range?: { from: number; to: number }
+      order?: { column: string; ascending: boolean }
+    } = {}
   ): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')
+
     if (options.filters) {
       Object.entries(options.filters).forEach(([key, value]) => {
         query = query.eq(key, value)
       })
     }
+
+    if (options.range) {
+      query = query.range(options.range.from, options.range.to)
+    }
+
+    if (options.order) {
+      query = query.order(options.order.column, { ascending: options.order.ascending })
+    }
+
     return handleDatabaseOperation(() => query, `Select from ${tableName}`)
   }
 

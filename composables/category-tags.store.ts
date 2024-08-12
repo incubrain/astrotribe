@@ -78,7 +78,6 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
   }
 
   const getCategoryName = (categoryId: number) => {
-    console.log('categories', categories, categoryId)
     return categories.value.find((category) => category.id === categoryId)?.name
   }
 
