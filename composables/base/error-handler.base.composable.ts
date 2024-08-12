@@ -177,18 +177,18 @@ export function useErrorHandler() {
   }
 
   function logToSentry(error: AppError) {
-    Sentry.captureException(error, {
-      tags: {
-        errorType: error.details.type,
-        severity: error.details.severity,
-        context: error.details.context
-      },
-      extra: {
-        code: error.details.code,
-        pgError: error.details.pgError,
-        operation: error.details.operation
-      }
-    })
+    // Sentry.attachErrorHandler(error, {
+    //   tags: {
+    //     errorType: error.details.type,
+    //     severity: error.details.severity,
+    //     context: error.details.context
+    //   },
+    //   extra: {
+    //     code: error.details.code,
+    //     pgError: error.details.pgError,
+    //     operation: error.details.operation
+    //   }
+    // })
   }
 
   function showNotification(error: AppError) {

@@ -71,7 +71,8 @@ export function useSelectData<T extends { id: string | number }>(
       if (paginationStore) {
         const pagination = paginationStore.getPaginationRange(tableName)
         if (pagination) {
-          queryOptions.range = { from: pagination.from, to: pagination.to }
+          console.log('pagination', pagination)
+          queryOptions.range = pagination
         } else {
           throw new AppError({
             type: ErrorType.VALIDATION_ERROR,
@@ -81,7 +82,7 @@ export function useSelectData<T extends { id: string | number }>(
           })
         }
       } else if (options.limit) {
-        queryOptions.limit = options.limit
+        queryOptions.range = { from: 0, to: options.limit - 1 }
       }
 
       const result = await select<T>(tableName, queryOptions)
@@ -103,6 +104,7 @@ export function useSelectData<T extends { id: string | number }>(
 
   const loadMore = async () => {
     if (paginationStore) {
+      console.log('loading more data')
       const newData = await fetchData()
       if (newData.length === 0) {
         paginationStore.setDataFinished(tableName)
