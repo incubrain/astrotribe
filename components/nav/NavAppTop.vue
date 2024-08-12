@@ -24,7 +24,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => router.push(`/astrotribe/admin/users`)
+      command: () => router.push(`/astrotribe/admin/`)
     })
   }
 

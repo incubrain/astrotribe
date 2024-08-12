@@ -1,83 +1,131 @@
 <script setup lang="ts">
-const admin = useAdmin()
+import {
+  createCRUDComposable,
+  type CRUDOptions
+} from '@/composables/base/crud-factory.base.composable'
+import { createAdminDashboard } from '@/components/base/createAdminDashboard'
+import Select from 'primevue/select'
+import DatePicker from 'primevue/datepicker'
 
-const roles = [
-  { label: 'User', value: 'user' },
-  { label: 'Admin', value: 'admin' },
-  { label: 'Super Admin', value: 'super_admin' }
-]
+import { z } from 'zod'
 
-interface Column {
-  field: string
-  header: string
-  style: string
-  editor?: string
-  editorProps?: Record<string, unknown>
+const app_plan_enum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])
+
+const app_role_enum = z.enum([
+  'guest',
+  'user',
+  'astroguide',
+  'mentor',
+  'moderator',
+  'tenant_member',
+  'tenant_admin',
+  'tenant_super_admin',
+  'admin',
+  'super_admin'
+])
+
+const userProfileSchema = z.object({
+  id: z.string(),
+  email: z.string().email().optional(),
+  given_name: z.string().nullable().optional(),
+  surname: z.string().nullable().optional(),
+  username: z.string().nullable().optional(),
+  dob: z.date().nullable().optional(),
+  gender_id: z.string().nullable().optional(),
+  created_at: z.date().nullable().optional(),
+  updated_at: z.date().nullable().optional(),
+  last_seen: z.date().nullable().optional(),
+  avatar: z.string().nullable().optional(),
+  introduction: z.string().nullable().optional(),
+  quote: z.string().nullable().optional(),
+  followed_count: z.number().nullable().optional(),
+  followers_count: z.number().nullable().optional(),
+  plan: app_plan_enum.nullable().optional(),
+  role: app_role_enum.optional()
+})
+
+// Infer TypeScript type from Zod schema
+type UserProfile = z.infer<typeof userProfileSchema>
+
+const userProfileOptions: CRUDOptions<UserProfile> = {
+  orderBy: { column: 'created_at' as keyof UserProfile, ascending: false },
+  customSelectLogic: (data: UserProfile[]) => data.filter((user) => user.role !== 'super_admin'),
+  validateInsert: (data: Omit<UserProfile, 'id'>) => {
+    const result = userProfileSchema.omit({ id: true }).safeParse(data)
+    return result.success
+  },
+  validateUpdate: (data: Partial<UserProfile>) => {
+    const result = userProfileSchema.partial().safeParse(data)
+    return result.success
+  },
+  afterUpdate: async (updatedUser: UserProfile) => {
+    // Perform actions after update, e.g., send notification
+    console.log('User updated:', updatedUser)
+  }
 }
 
-const columns: Column[] = [
-  { field: 'id', header: 'ID', style: 'width: 5%' },
-  { field: 'email', header: 'Email', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'given_name', header: 'First Name', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'surname', header: 'Last Name', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'username', header: 'Username', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'dob', header: 'Date of Birth', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'gender_id', header: 'Gender ID', style: 'width: 5%', editor: 'PrimeInputNumber' },
-  { field: 'created_at', header: 'Created At', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'last_seen', header: 'Last Seen', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'avatar', header: 'Avatar', style: 'width: 10%', editor: 'PrimeInputText' },
-  { field: 'plan', header: 'Plan', style: 'width: 10%', editor: 'PrimeInputText' },
+const useUserProfiles = createCRUDComposable<UserProfile>('user_profiles', userProfileOptions)
+
+const userColumns = [
+  { field: 'email', header: 'Email', sortable: true },
+  { field: 'given_name', header: 'First Name', sortable: true },
+  { field: 'surname', header: 'Last Name', sortable: true },
+  { field: 'username', header: 'Username', sortable: true },
+  {
+    field: 'dob',
+    header: 'Date of Birth',
+    sortable: true,
+    editComponent: (item: UserProfile, field: keyof UserProfile) =>
+      h(DatePicker, {
+        modelValue: item[field] as Date,
+        'onUpdate:modelValue': (value: Date) => (item[field] = value),
+        dateFormat: 'yy-mm-dd'
+      })
+  },
+  { field: 'gender_id', header: 'Gender ID', sortable: true },
+  { field: 'created_at', header: 'Created At', sortable: true },
+  { field: 'last_seen', header: 'Last Seen', sortable: true },
+  { field: 'avatar', header: 'Avatar' },
+  { field: 'introduction', header: 'Introduction' },
+  { field: 'quote', header: 'Quote' },
+  { field: 'followed_count', header: 'Followed Count', sortable: true },
+  { field: 'followers_count', header: 'Followers Count', sortable: true },
+  {
+    field: 'plan',
+    header: 'Plan',
+    sortable: true,
+    editComponent: (item: UserProfile, field: keyof UserProfile) =>
+      h(Select, {
+        modelValue: item[field],
+        'onUpdate:modelValue': (value: typeof app_plan_enum._type | null) => (item[field] = value),
+        options: app_plan_enum.options,
+        placeholder: 'Select a Plan'
+      })
+  },
   {
     field: 'role',
     header: 'Role',
-    style: 'width: 10%',
-    editor: 'PrimeSelect',
-    editorProps: {
-      options: roles,
-      optionLabel: 'label',
-      optionValue: 'value',
-      placeholder: 'Select a Role'
-    }
+    sortable: true,
+    editComponent: (item: UserProfile, field: keyof UserProfile) =>
+      h(Select, {
+        modelValue: item[field],
+        'onUpdate:modelValue': (value: typeof app_role_enum._type) => (item[field] = value),
+        options: app_role_enum.options,
+        placeholder: 'Select a Role'
+      })
   }
 ]
 
-const userProfiles = false
-
-
-const handleRowEditSave = async ({ data, newData }) => {
-  console.log('handleRowEditSave', data, newData)
-  await admin.updateUser(newData, data.id)
-}
-
-const filters = ref({
-  global: { value: null, matchMode: 'contains' },
-  given_name: { value: null, matchMode: 'startsWith' },
-  surname: { value: null, matchMode: 'startsWith' },
-  email: { value: null, matchMode: 'startsWith' },
-  role: { value: null, matchMode: 'startsWith' }
-})
-
-definePageMeta({
-  layoutTransition: false,
-  name: 'Manage-Users',
-  middleware: 'is-admin'
-})
+const UserProfilesAdminDashboard = createAdminDashboard(
+  'userProfiles',
+  userColumns,
+  useUserProfiles
+)
 </script>
 
 <template>
   <div class="border-color h-full overflow-scroll rounded-lg border">
-    <BaseTableAdmin
-      v-if="userProfiles"
-      :columns="columns"
-      :table-data="userProfiles"1
-      :filters="filters"
-      :filter-fields="['given_name', 'surname', 'email', 'role']"
-      @saved-edit="handleRowEditSave"
-    >
-      <template #header>
-        <h3 class="text-lg font-semibold"> Manage Users</h3>
-      </template>
-    </BaseTableAdmin>
+    <UserProfilesAdminDashboard />
   </div>
 </template>
 

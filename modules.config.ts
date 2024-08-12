@@ -32,11 +32,13 @@ const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
 const SECURITY_OPTIONS: NuxtConfig['security'] = {
   headers: {
     contentSecurityPolicy: {
+      'worker-src': ["'self'", "blob:"],
       'default-src': [
         "'self'",
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.astronera.org',
+        'https://*.up.railway.app',
         'https://*.supabase.co'
       ],
       'connect-src': [
@@ -51,19 +53,22 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://api.unisvg.com',
         'https://api.simplesvg.com',
         'ws://localhost:4000',
-        'https://*.supabase.co'
+        'https://*.supabase.co',
+        'https://*.up.railway.app',
       ],
       'img-src': [
         "'self'",
         'data:',
         'http://localhost:54321',
         'http://localhost:3000',
+        'https://*.up.railway.app',
         'https://www.nasa.gov',
         'https://science.nasa.gov',
         'https://www.youtube.com',
         'https://s.ytimg.com',
         'https://pbs.twimg.com',
-        'https://media.licdn.com'
+        'https://media.licdn.com',
+        'https://*.supabase.co'
       ],
       'script-src': [
         "'self'",
@@ -74,7 +79,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://www.youtube.com',
         'https://s.ytimg.com',
         'https://www.google.com/maps',
-        'https://uptime.betterstack.com/widgets/announcement.js'
+        'https://*.betterstack.com'
       ],
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'frame-src': [
@@ -82,7 +87,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://www.youtube.com',
         'https://us.posthog.com/',
         'https://www.google.com/',
-        'https://*.astronera.org/'
+        'https://*.astronera.org/',
+        'https://*.betterstack.com'
       ]
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
