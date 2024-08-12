@@ -59,7 +59,7 @@ watch(
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="backdrop-white/20 w-full rounded-none backdrop:blur-lg lg:rounded-b-md"
+      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
           class: '!text-sm !font-bold'
