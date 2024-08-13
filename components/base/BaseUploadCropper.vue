@@ -2,6 +2,9 @@
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
+import { useFileUpload } from '@/composables/base/upload.base.composable'
+import { useNotification } from '@/composables/base/notification.base.composable'
+import { useCurrentUser } from '@/composables/useCurrentUser'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
@@ -14,6 +17,18 @@ const props = defineProps({
   cropperType: {
     type: String as PropType<CropperConfigTypes>,
     required: true
+  },
+  bucket: {
+    type: String,
+    required: true
+  },
+  path: {
+    type: String,
+    required: true
+  },
+  requireCropping: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -76,6 +91,10 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
     }
   }
 }
+const { uploadFile, isUploading, uploadProgress } = useFileUpload()
+const userStore = useCurrentUser()
+const { userId } = storeToRefs(userStore)
+const toast = useNotification()
 
 // Checks & Utils
 type Compression = 'lossy' | 'lossless' | 'alpha' | 'animation'
@@ -108,26 +127,38 @@ onMounted(async () => {
   }
 })
 
-const userStore = useCurrentUser()
-const { userId } = storeToRefs(userStore)
-
-function convertThenUploadImage(canvas: HTMLCanvasElement, mimeType: string) {
-  return canvas.toBlob(
-    (blob) => {
-      if (!blob) {
-        setError('Failed to convert canvas to blob.')
-        return
+async function uploadImage(blob: Blob) {
+  try {
+    const result = await uploadFile(new File([blob], 'image.webp', { type: 'image/webp' }), {
+      bucket: props.bucket,
+      path: props.path,
+      fileType: 'image',
+      userId: userId.value,
+      serverSideOptimize: true,
+      maxWidth: 1200,
+      maxHeight: 1200,
+      quality: 90,
+      format: 'webp',
+      maxFileSize: MAX_FILE_SIZE,
+      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+      onProgress: (progress) => {
+        console.log(`Upload progress: ${progress}%`)
       }
-      userStore.uploadImage(props.cropperType, blob)
-    },
-    mimeType,
-    1
-  )
+    })
+    toast.success({
+      summary: 'Image uploaded',
+      message: 'Your image has been successfully uploaded and processed.'
+    })
+    return result
+  } catch (error: any) {
+    setError(`Failed to upload image: ${error.message}`)
+    throw error
+  }
 }
 
 // Cropper
 const cropper = ref(null as typeof Cropper | null)
-const crop = (toggleModalOpen: () => void) => {
+const crop = async (toggleModalOpen: () => void) => {
   if (!cropper.value) {
     setError('No cropper instance in crop function.')
     toggleModalOpen()
@@ -143,8 +174,49 @@ const crop = (toggleModalOpen: () => void) => {
 
   const exportMimeType = webpSupport.value ? 'image/webp' : 'image/jpeg'
 
-  convertThenUploadImage(canvas, exportMimeType)
-  toggleModalOpen()
+  canvas.toBlob(
+    async (blob) => {
+      if (!blob) {
+        setError('Failed to convert canvas to blob.')
+        return
+      }
+      try {
+        await uploadImage(blob)
+        toggleModalOpen()
+      } catch (error) {
+        console.error('Error uploading cropped image:', error)
+      }
+    },
+    exportMimeType,
+    0.9
+  )
+}
+
+async function handleFileChange(e: Event, toggleModalOpen: () => void) {
+  const input = e.target as HTMLInputElement
+  if (!input.files?.length) return
+
+  const file = input.files[0]
+
+  if (!validateFileSize(file.size)) {
+    return
+  }
+
+  try {
+    if (props.requireCropping) {
+      image.value = await readFileAsDataURL(file)
+      if (!(await checkImageDimensions(image.value, props.cropperType))) {
+        return
+      }
+      toggleModalOpen()
+    } else {
+      await uploadImage(file)
+    }
+  } catch (error: any) {
+    setError(`An error occurred while processing the file: ${error.message}`)
+  } finally {
+    if (input) input.value = ''
+  }
 }
 
 const preview = reactive<CropperResult>({
@@ -231,38 +303,9 @@ function validateFileSize(fileSize: number): boolean {
   return true
 }
 
-async function handleFileChange(e: Event, toggleModalOpen: () => void) {
-  const input = e.target as HTMLInputElement
-  if (!input.files?.length) return
-
-  const file = input.files[0]
-
-  if (!validateFileSize(file.size)) {
-    return
-  }
-
-  try {
-    console.log('readFileAsDataURL', file)
-    image.value = await readFileAsDataURL(file)
-    if (!(await checkImageDimensions(image.value, props.cropperType))) {
-      return
-    }
-    toggleModalOpen()
-  } catch (error: any) {
-    setError(`An error occurred while reading the file: ${error.message}`)
-  } finally {
-    // reset the input value
-    if (input) input.value = ''
-  }
-}
-
-// Errors
-const toast = useNotification()
 const setError = (error: string) => {
-  // probably a notification
-
   toast.error({
-    summary: 'Uploading image',
+    summary: 'Error',
     message: error
   })
 }
@@ -294,6 +337,7 @@ const setError = (error: string) => {
       </template>
       <template #modal:default>
         <Cropper
+          v-if="requireCropping"
           ref="cropper"
           :src="image"
           :min-width="config.minWidth"
@@ -304,9 +348,19 @@ const setError = (error: string) => {
           @change="onChange"
           @error="setError('error loading image')"
         />
+        <div
+          v-else-if="isUploading"
+          class="text-center"
+        >
+          <p>Uploading: {{ uploadProgress }}%</p>
+          <ProgressBar :value="uploadProgress" />
+        </div>
       </template>
       <template #modal:footer="{ toggleModalOpen }">
-        <div class="flex items-center justify-center gap-4">
+        <div
+          v-if="requireCropping"
+          class="flex items-center justify-center gap-4"
+        >
           <p>Image preview</p>
           <Preview
             v-if="preview.image && config.minWidth"
@@ -316,7 +370,12 @@ const setError = (error: string) => {
             :image="preview.image"
             :coordinates="preview.coordinates"
           />
-          <PrimeButton @click="crop(toggleModalOpen)"> Crop </PrimeButton>
+          <PrimeButton
+            @click="crop(toggleModalOpen)"
+            :disabled="isUploading"
+          >
+            {{ isUploading ? 'Uploading...' : 'Crop & Upload' }}
+          </PrimeButton>
         </div>
       </template>
     </BaseModal>
