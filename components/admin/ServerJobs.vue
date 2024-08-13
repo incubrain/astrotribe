@@ -8,14 +8,14 @@
       <div
         v-for="(queue, queueName) in jobMetrics"
         :key="queueName"
-        class="rounded-lg bg-white p-4 shadow"
+        class="rounded-lg background p-4 shadow"
       >
         <h2 class="mb-2 text-xl font-semibold capitalize">{{ queueName }} Queue</h2>
         <div class="grid grid-cols-2 gap-2">
           <div
             v-for="(value, key) in queue"
             :key="key"
-            class="rounded bg-gray-100 p-2"
+            class="rounded foreground p-2"
           >
             <span class="font-medium capitalize">{{ key }}:</span> {{ value }}
           </div>
@@ -31,26 +31,36 @@
   </div>
 </template>
 
-<script setup lang="ts">
-const jobMetrics = ref<any>(null)
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 
-let eventSource: EventSource | null = null
+const jobMetrics = ref(null)
+let socket = null
 
 onMounted(() => {
-  eventSource = new EventSource('/api/admin/server-jobs')
+  socket = new WebSocket(`ws://${window.location.host}/api/admin/server-jobs`)
 
-  eventSource.onmessage = (event) => {
-    jobMetrics.value = JSON.parse(event.data)
+  socket.onopen = () => {
+    console.log('WebSocket connected')
   }
 
-  eventSource.onerror = (error) => {
-    console.error('EventSource failed:', error)
+  socket.onmessage = (event) => {
+    jobMetrics.value = JSON.parse(event.data)
+    console.log('jobMetrics', jobMetrics.value)
+  }
+
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error)
+  }
+
+  socket.onclose = () => {
+    console.log('WebSocket disconnected')
   }
 })
 
 onUnmounted(() => {
-  if (eventSource) {
-    eventSource.close()
+  if (socket) {
+    socket.close()
   }
 })
 </script>
