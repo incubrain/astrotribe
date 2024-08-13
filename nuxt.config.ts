@@ -28,6 +28,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server',
     experimental: {
+      websocket: true,
       tasks: true
     },
     storage: {
@@ -123,6 +124,7 @@ export default defineNuxtConfig({
     nasaApiKey: '',
     openaiApiKey: '',
     openaiOrg: '',
+    redisFlushKey: '',
     scraperKey: ''
   },
 
