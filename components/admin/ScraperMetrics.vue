@@ -46,7 +46,7 @@ const metrics = ref(null)
 let eventSource: EventSource | null = null
 
 const connectToMetrics = () => {
-  const scraperUrl = useRuntimeConfig().scraperUrl
+  const scraperUrl = useRuntimeConfig().public.scraperUrl
   const metricsUrl = `${scraperUrl}/metrics?maxCount=10&maxAge=600000`
 
   eventSource = new EventSource(metricsUrl)
