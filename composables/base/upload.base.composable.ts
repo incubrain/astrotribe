@@ -5,7 +5,7 @@ import {
   ErrorSeverity
 } from './error-handler.base.composable'
 import { useLogger } from './logger.base.composable'
-import Sharp from 'sharp'
+import { useRateLimit } from './rate-limit.composable'
 import { v4 as uuidv4 } from 'uuid'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
@@ -26,6 +26,8 @@ interface UploadOptions {
   onProgress?: (progress: number) => void
   maxFileSize?: number
   allowedMimeTypes?: string[]
+  serverSideOptimize?: boolean
+  useServerUpload?: boolean
 }
 
 interface UploadResult {
@@ -40,6 +42,7 @@ export function useFileUpload() {
   const supabase = useSupabaseClient()
   const { handleError } = useErrorHandler()
   const logger = useLogger('useFileUpload')
+  const { checkRateLimit } = useRateLimit()
   const isUploading: Ref<boolean> = ref(false)
   const uploadProgress: Ref<number> = ref(0)
   const lastUploadTime = ref(0)
@@ -47,16 +50,6 @@ export function useFileUpload() {
   const currentUpload: Ref<File | null> = ref(null)
 
   const isProcessing = computed(() => uploadQueue.value.length > 0 || currentUpload.value !== null)
-
-  const optimizeImage = async (file: File, options: UploadOptions): Promise<Buffer> => {
-    const { maxWidth = 1200, maxHeight = 1200, quality = 80, format = 'webp' } = options
-    const buffer = await file.arrayBuffer()
-
-    return Sharp(buffer)
-      .resize(maxWidth, maxHeight, { fit: 'inside', withoutEnlargement: true })
-      [format]({ quality })
-      .toBuffer()
-  }
 
   const getFilePath = (fileName: string, options: UploadOptions): string => {
     const { bucket, path, fileType, userId } = options
@@ -86,6 +79,54 @@ export function useFileUpload() {
     }
   }
 
+  const serverSideUpload = async (file: File, options: UploadOptions): Promise<UploadResult> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('userId', options.userId || '')
+    formData.append('fileType', options.fileType)
+    formData.append('bucket', options.bucket)
+    formData.append('path', options.path)
+    formData.append(
+      'optimizationOptions',
+      JSON.stringify({
+        maxWidth: options.maxWidth,
+        maxHeight: options.maxHeight,
+        quality: options.quality,
+        format: options.format
+      })
+    )
+
+    const response = await $fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          uploadProgress.value = progress
+          options.onProgress?.(progress)
+        }
+      }
+    })
+
+    if (!response || !response.fileName) {
+      throw new Error('Failed to upload file on server')
+    }
+
+    const publicUrl = supabase.storage.from(options.bucket).getPublicUrl(response.fileName)
+      .data.publicUrl
+
+    return {
+      path: response.fileName,
+      publicUrl,
+      size: file.size,
+      mimeType: file.type,
+      metadata: {
+        originalName: file.name,
+        ...options.metadata
+      }
+    }
+  }
+
   const uploadFile = async (file: File, options: UploadOptions): Promise<UploadResult> => {
     isUploading.value = true
     uploadProgress.value = 0
@@ -96,70 +137,57 @@ export function useFileUpload() {
 
       // Rate limiting
       if (options.rateLimitMs) {
-        const timeSinceLastUpload = Date.now() - lastUploadTime.value
-        if (timeSinceLastUpload < options.rateLimitMs) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastUpload)
-          )
+        await checkRateLimit('fileUpload', { limitMs: options.rateLimitMs })
+      }
+
+      let result: UploadResult
+
+      if (options.useServerUpload) {
+        result = await serverSideUpload(file, options)
+      } else {
+        const filePath = getFilePath(file.name, options)
+        const { data, error } = await supabase.storage.from(options.bucket).upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type
+        })
+
+        if (error) {
+          throw new AppError({
+            type: ErrorType.UPLOAD_ERROR,
+            message: `Error uploading file: ${error.message}`,
+            severity: ErrorSeverity.HIGH,
+            context: 'File Upload'
+          })
+        }
+
+        const {
+          data: { publicUrl }
+        } = supabase.storage.from(options.bucket).getPublicUrl(data.path)
+
+        result = {
+          path: data.path,
+          publicUrl,
+          size: file.size,
+          mimeType: file.type,
+          metadata: {
+            originalName: file.name,
+            ...options.metadata
+          }
         }
       }
 
-      let fileToUpload: File | Buffer = file
-      let mimeType = file.type
-
-      if (options.optimizeImage && file.type.startsWith('image/')) {
-        fileToUpload = await optimizeImage(file, options)
-        mimeType = `image/${options.format || 'webp'}`
-      }
-
-      const filePath = getFilePath(file.name, options)
-
-      const metadata = {
-        ...options.metadata,
-        originalName: file.name,
-        size: fileToUpload instanceof Buffer ? fileToUpload.length : file.size,
-        mimeType,
-        uploadedBy: options.userId || 'anonymous'
-      }
-
-      const { data, error } = await supabase.storage
-        .from(options.bucket)
-        .upload(filePath, fileToUpload, {
-          cacheControl: '3600',
-          upsert: false,
-          contentType: mimeType,
-          duplex: 'half'
-          // metadata waiting on merge of https://github.com/supabase/storage-js/pull/207
-        })
-
-      if (error) {
-        throw new AppError({
-          type: ErrorType.UPLOAD_ERROR,
-          message: `Error uploading file: ${error.message}`,
-          severity: ErrorSeverity.HIGH,
-          context: 'File Upload'
-        })
-      }
-
-      // Get public URL
-      const {
-        data: { publicUrl }
-      } = supabase.storage.from(options.bucket).getPublicUrl(data.path)
-
-      // Audit logging
-      if (options.auditLog) {
-        await options.auditLog('UPLOAD', { filePath, options, metadata })
-      }
+      await logEvent('FILE_UPLOAD', {
+        filePath: result.path,
+        bucket: options.bucket,
+        fileType: options.fileType,
+        size: result.size,
+        mimeType: result.mimeType
+      })
 
       lastUploadTime.value = Date.now()
 
-      return {
-        path: data.path,
-        publicUrl,
-        size: metadata.size,
-        mimeType,
-        metadata
-      }
+      return result
     } catch (error: any) {
       handleError(error, 'Error uploading file')
       throw error

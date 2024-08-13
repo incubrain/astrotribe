@@ -7,6 +7,8 @@ import {
 import { useHttpHandler } from './http-handler.base.composable'
 import { useLogger } from './logger.base.composable'
 import { getOrCreateStore } from './utils.base.composable'
+import { useRateLimit } from './rate-limit.composable'
+
 
 export function useUpdateData<T extends { id: string | number }>(
   tableName: string,
@@ -23,6 +25,8 @@ export function useUpdateData<T extends { id: string | number }>(
   const { handleError } = useErrorHandler()
   const logger = useLogger('useUpdateData')
   const store = getOrCreateStore<T>(tableName)()
+  const { checkRateLimit } = useRateLimit()
+
   const isUpdating: Ref<boolean> = ref(false)
   let lastUpdateTime = 0
 
@@ -34,12 +38,7 @@ export function useUpdateData<T extends { id: string | number }>(
     try {
       // Rate limiting
       if (options.rateLimitMs) {
-        const timeSinceLastUpdate = startTime - lastUpdateTime
-        if (timeSinceLastUpdate < options.rateLimitMs) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastUpdate)
-          )
-        }
+        await checkRateLimit('useUpdateData', { limitMs: options.rateLimitMs })
       }
 
       // Validation
