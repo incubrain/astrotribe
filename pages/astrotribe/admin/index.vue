@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 definePageMeta({
   layoutTransition: false,
   name: 'AdminDashboard',
@@ -11,6 +10,7 @@ definePageMeta({
   <div class="relative h-full max-h-full">
     <AdminScraperMetrics />
 
+    <AdminServerJobs />
   </div>
 </template>
 
