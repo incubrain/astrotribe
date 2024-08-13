@@ -4,7 +4,7 @@ import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import { useFileUpload } from '@/composables/base/upload.base.composable'
 import { useNotification } from '@/composables/base/notification.base.composable'
-import { useCurrentUser } from '@/composables/useCurrentUser'
+import { useCurrentUser } from '@/composables/users/user.current.store'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
