@@ -7,6 +7,8 @@ import {
 import { useHttpHandler } from './http-handler.base.composable'
 import { useLogger } from './logger.base.composable'
 import { getOrCreateStore } from './utils.base.composable'
+import { useRateLimit } from './rate-limit.composable'
+
 
 export function useDeleteData<T extends { id: string | number }>(
   tableName: string,
@@ -21,6 +23,7 @@ export function useDeleteData<T extends { id: string | number }>(
   const { handleError } = useErrorHandler()
   const logger = useLogger('useDeleteData')
   const store = getOrCreateStore<T>(tableName)()
+  const { checkRateLimit } = useRateLimit()
   const isDeleting: Ref<boolean> = ref(false)
   let lastDeleteTime = 0
 
@@ -32,12 +35,7 @@ export function useDeleteData<T extends { id: string | number }>(
       try {
         // Rate limiting
         if (options.rateLimitMs) {
-          const timeSinceLastDelete = startTime - lastDeleteTime
-          if (timeSinceLastDelete < options.rateLimitMs) {
-            await new Promise((resolve) =>
-              setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastDelete)
-            )
-          }
+          await checkRateLimit('useDeleteData', { limitMs: options.rateLimitMs })
         }
 
         // Validation

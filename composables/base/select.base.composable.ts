@@ -8,6 +8,7 @@ import { useHttpHandler } from './http-handler.base.composable'
 import { useLogger } from './logger.base.composable'
 import { getOrCreateStore } from './utils.base.composable'
 import { usePaginationStore, type PaginationType } from './pagination.base.store'
+import { useRateLimit } from './rate-limit.composable'
 
 export function useSelectData<T extends { id: string | number }>(
   tableName: string,
@@ -27,6 +28,9 @@ export function useSelectData<T extends { id: string | number }>(
   const { handleError } = useErrorHandler()
   const logger = useLogger('useSelectData')
   const store = getOrCreateStore<T>(tableName)()
+  const { checkRateLimit } = useRateLimit()
+    
+
   const isSelecting: Ref<boolean> = ref(false)
   let lastSelectTime = 0
 
@@ -48,12 +52,7 @@ export function useSelectData<T extends { id: string | number }>(
     try {
       // Rate limiting
       if (options.rateLimitMs && !forceFetch) {
-        const timeSinceLastSelect = startTime - lastSelectTime
-        if (timeSinceLastSelect < options.rateLimitMs) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastSelect)
-          )
-        }
+        await checkRateLimit('useSelectData', { limitMs: options.rateLimitMs })
       }
 
       let queryOptions: any = {

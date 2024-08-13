@@ -7,6 +7,7 @@ import {
 import { useHttpHandler } from './http-handler.base.composable'
 import { useLogger } from './logger.base.composable'
 import { getOrCreateStore } from './utils.base.composable'
+import { useRateLimit } from './rate-limit.composable'
 
 type InsertError =
   | 'VALIDATION_ERROR'
@@ -34,6 +35,7 @@ export function useInsertData<T extends { id: string | number }>(
   const { handleError } = useErrorHandler()
   const log = useLogger('useInsertData')
   const store = getOrCreateStore<T>(tableName)()
+  const { checkRateLimit } = useRateLimit()
   const isInserting: Ref<boolean> = ref(false)
   let lastInsertTime = 0
 
@@ -45,12 +47,7 @@ export function useInsertData<T extends { id: string | number }>(
       try {
         // Rate limiting
         if (options.rateLimitMs) {
-          const timeSinceLastInsert = startTime - lastInsertTime
-          if (timeSinceLastInsert < options.rateLimitMs) {
-            await new Promise((resolve) =>
-              setTimeout(resolve, options.rateLimitMs ?? 0 - timeSinceLastInsert)
-            )
-          }
+          await checkRateLimit('useInsertData', { limitMs: options.rateLimitMs })
         }
 
         // Validation
