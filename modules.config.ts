@@ -32,7 +32,7 @@ const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
 const SECURITY_OPTIONS: NuxtConfig['security'] = {
   headers: {
     contentSecurityPolicy: {
-      'worker-src': ["'self'", "blob:"],
+      'worker-src': ["'self'", 'blob:'],
       'default-src': [
         "'self'",
         'http://localhost:3000',
@@ -55,6 +55,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'ws://localhost:4000',
         'https://*.supabase.co',
         'https://*.up.railway.app',
+        'https://*.railway.internal'
       ],
       'img-src': [
         "'self'",
