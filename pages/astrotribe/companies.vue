@@ -3,7 +3,7 @@ const domainKey = 'companies'
 const { store, loadMore, refresh } = await useSelectData<Companies>('companies', {
   columns:
     'id, name, description, logo_url, url, scrape_frequency, founding_year, created_at, updated_at, is_government, category_id, social_media_id, scrape_rating, status, scraped_at, keywords',
-  filters: { status: 'draft' },
+  filters: { content_status: 'draft' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 }
