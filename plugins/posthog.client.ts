@@ -1,46 +1,80 @@
-import { posthog } from 'posthog-js'
+import { defineNuxtPlugin } from '#app'
+import posthog from 'posthog-js'
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
   const pubkey = useRuntimeConfig().public.posthogKey
   if (!pubkey) {
     throw createError({ message: 'posthog key not defined' })
   }
-  const posthogClient = posthog.init(pubkey, {
+
+  // Initialize PostHog
+  posthog.init(pubkey, {
     api_host: 'https://app.posthog.com',
-    rageclick: true,
+    autocapture: false, // Disable autocapture as we'll handle events manually
+    capture_pageview: false, // We'll capture pageviews manually for more control
+    persistence: 'localStorage+cookie',
+    // bootstrap: {
+    //   distinctID: runtimeConfig.public.posthogDistinctId // Set this in your runtime config if you have a user ID
+    // },
     loaded: (posthog) => {
+      // This function is called once PostHog is loaded
       if (import.meta.env.MODE === 'development') {
+        // Log to console in development mode
         posthog.debug()
       }
-    }
+    },
   })
 
-  // Make sure that pageviews are captured with each route change
-  const router = useRouter()
-  router.afterEach((to) => {
-    posthog.capture('$pageview', {
-      current_url: to.fullPath
-    })
+  // Capture page views
+  nuxtApp.hook('page:finish', () => {
+    posthog.capture('$pageview')
   })
 
-  // Ensure flags are loaded before usage.
-  // You'll only need to call this on the code the first time a user visits.
-  // See this doc for more details: https://posthog.com/docs/feature-flags/manual#ensuring-flags-are-loaded-before-usage
-  // posthog.onFeatureFlags(function() {
-  //     // feature flags should be available at this point
-  //     if (posthog.getFeatureFlag('experiment-feature-flag-key')  == 'variant-name') {
-  //         // do something
-  //     }
-  // })
-
-  // posthog.getEarlyAccessFeatures((previewItemData) => {
-  //     // do something with early access feature
-  // })
-  // posthog.updateEarlyAccessFeatureEnrollment(flagKey, 'true')
-
+  // Expose PostHog instance and utility functions
   return {
     provide: {
-      posthog: () => posthogClient
+      posthog: {
+        // Expose the raw PostHog instance
+        raw: posthog,
+
+        // Utility function to capture events
+        capture: (eventName: string, properties?: Record<string, any>) => {
+          posthog.capture(eventName, properties)
+        },
+
+        // Utility function for A/B testing
+        getFeatureFlag: (flagName: string, defaultValue?: any) => {
+          return posthog.getFeatureFlag(flagName, defaultValue)
+        },
+
+        // Utility function to identify users
+        identify: (distinctId: string, properties?: Record<string, any>) => {
+          posthog.identify(distinctId, properties)
+        },
+
+        // Utility function to reset user identity
+        reset: () => {
+          posthog.reset()
+        },
+
+        // Utility function to opt in/out of tracking
+        optIn: () => {
+          posthog.opt_in_capturing()
+        },
+        optOut: () => {
+          posthog.opt_out_capturing()
+        },
+
+        // Utility function for registering super properties
+        register: (properties: Record<string, any>) => {
+          posthog.register(properties)
+        },
+
+        // Utility function for registering one-time super properties
+        registerOnce: (properties: Record<string, any>) => {
+          posthog.register_once(properties)
+        }
+      }
     }
   }
 })
