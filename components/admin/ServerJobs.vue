@@ -1,66 +1,129 @@
-<template>
-  <div class="p-4">
-    <h1 class="mb-4 text-2xl font-bold">Jobs Dashboard</h1>
-    <div
-      v-if="jobMetrics"
-      class="grid grid-cols-1 gap-4 md:grid-cols-2"
-    >
-      <div
-        v-for="(queue, queueName) in jobMetrics"
-        :key="queueName"
-        class="rounded-lg background p-4 shadow"
-      >
-        <h2 class="mb-2 text-xl font-semibold capitalize">{{ queueName }} Queue</h2>
-        <div class="grid grid-cols-2 gap-2">
-          <div
-            v-for="(value, key) in queue"
-            :key="key"
-            class="rounded foreground p-2"
-          >
-            <span class="font-medium capitalize">{{ key }}:</span> {{ value }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-else
-      class="text-center text-gray-500"
-    >
-      Loading job metrics...
-    </div>
-  </div>
-</template>
+<script setup lang="ts">
+import { useServerAnalytics } from '@/composables/useServerAnalytics'
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+interface FlatMetric {
+  key: string
+  value: any
+  path: string[]
+}
 
-const jobMetrics = ref(null)
-let socket = null
+function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
+  let flattened: FlatMetric[] = []
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const value = obj[key]
+      const newPrefix = [...prefix, key]
+
+      if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
+        flattened = flattened.concat(flattenMetrics(value, newPrefix))
+      } else {
+        flattened.push({
+          key: key,
+          value: value,
+          path: newPrefix
+        })
+      }
+    }
+  }
+
+  return flattened
+}
+
+const {
+  metrics,
+  availableMetrics,
+  isConnected,
+  connectWebSocket,
+  disconnectWebSocket,
+  subscribeToMetrics,
+  unsubscribeFromMetrics
+} = useServerAnalytics()
 
 onMounted(() => {
-  socket = new WebSocket(`ws://${window.location.host}/api/admin/server-jobs`)
-
-  socket.onopen = () => {
-    console.log('WebSocket connected')
-  }
-
-  socket.onmessage = (event) => {
-    jobMetrics.value = JSON.parse(event.data)
-    console.log('jobMetrics', jobMetrics.value)
-  }
-
-  socket.onerror = (error) => {
-    console.error('WebSocket error:', error)
-  }
-
-  socket.onclose = () => {
-    console.log('WebSocket disconnected')
-  }
+  console.log('Component mounted, connecting WebSocket...')
+  connectWebSocket()
+  // Subscribe to initial metrics if needed
+  subscribeToMetrics(['jobMetrics', 'spiderMetrics'])
 })
 
 onUnmounted(() => {
-  if (socket) {
-    socket.close()
-  }
+  console.log('Component unmounted, disconnecting WebSocket...')
+  disconnectWebSocket()
 })
+
+const flatMetrics = computed<FlatMetric[]>(() => {
+  console.log('Computing flatMetrics with:', metrics)
+  return flattenMetrics(metrics)
+})
+
+// Add a watcher for metrics
+watch(
+  metrics,
+  (newMetrics) => {
+    console.log('Metrics updated:', newMetrics)
+  },
+  { deep: true }
+)
+
+const formatPath = (path: string[]): string => {
+  return path
+    .map((segment) => segment.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase()))
+    .join(' > ')
+}
+
+const formatValue = (value: any): string => {
+  if (typeof value === 'number') {
+    return value.toLocaleString()
+  }
+  if (value instanceof Date) {
+    return value.toLocaleString()
+  }
+  return String(value)
+}
+
+const getValueClass = (value: any): string => {
+  if (typeof value === 'number') {
+    return 'text-blue-600 font-semibold'
+  }
+  if (value instanceof Date) {
+    return 'text-green-600 italic'
+  }
+  return 'text-gray-800'
+}
 </script>
+
+<template>
+  <div class="metrics-display">
+    {{ isConnected ? 'Connected' : 'Disconnected' }}
+
+    {{ metrics }}
+    <PrimeDataTable
+      :value="flatMetrics"
+      :paginator="true"
+      :rows="100"
+      responsive-layout="scroll"
+    >
+      <PrimeColumn
+        field="path"
+        header="Metric"
+        :sortable="true"
+      >
+        <template #body="slotProps">
+          {{ formatPath(slotProps.data.path) }}
+        </template>
+      </PrimeColumn>
+      <PrimeColumn
+        field="value"
+        header="Value"
+        :sortable="true"
+      >
+        <template #body="slotProps">
+          <span :class="getValueClass(slotProps.data.value)">
+            {{ formatValue(slotProps.data.value) }}
+          </span>
+        </template>
+      </PrimeColumn>
+    </PrimeDataTable>
+  </div>
+</template>

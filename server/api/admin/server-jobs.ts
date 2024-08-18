@@ -1,5 +1,4 @@
 import { defineWebSocketHandler } from 'h3'
-import { $fetch } from 'ofetch'
 import { WebSocket } from 'ws'
 import jwt from 'jsonwebtoken'
 
@@ -12,21 +11,28 @@ export default defineWebSocketHandler({
     clients.add(peer)
 
     if (!serverWs) {
-      const token = jwt.sign({ sender: 'AstronEra' }, useRuntimeConfig().scraperKey, {
+      const scraperKey = useRuntimeConfig().scraperKey
+      console.log('scraperKey', scraperKey)
+      const token = jwt.sign({ sender: 'AstronEra' }, scraperKey, {
         algorithm: 'HS256'
       })
-
       const scraperBaseURL = useRuntimeConfig().public.scraperUrl
-      const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/api/jobs`
+      console.log('scraperBaseURL', scraperBaseURL)
+      const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
 
       serverWs = new WebSocket(wsUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
 
       serverWs.on('open', () => {
-        console.log('Connected to Express WebSocket server')
+        console.log('Connected to Analytics WebSocket server')
+        // Send initial subscription
+        serverWs.send(
+          JSON.stringify({
+            action: 'subscribe',
+            metrics: ['jobMetrics', 'spiderMetrics']
+          })
+        )
       })
 
       serverWs.on('message', (data) => {
@@ -37,20 +43,24 @@ export default defineWebSocketHandler({
       })
 
       serverWs.on('close', () => {
-        console.log('Disconnected from Express WebSocket server')
+        console.log('Disconnected from Analytics WebSocket server')
         serverWs = null
       })
 
       serverWs.on('error', (error) => {
-        console.error('Error with Express WebSocket connection:', error)
+        console.error('Error with Analytics WebSocket connection:', error)
       })
     }
   },
 
   message(peer, message) {
     console.log('Received message from Nuxt client:', message)
-    // If you need to handle messages from the client to the server,
-    // you can implement that logic here
+    // Forward the message to the Analytics server
+    if (serverWs && serverWs.readyState === WebSocket.OPEN) {
+      serverWs.send(message)
+    } else {
+      console.log('Cannot forward message: serverWs not ready')
+    }
   },
 
   close(peer) {

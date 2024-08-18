@@ -107,6 +107,12 @@ export default defineNuxtConfig({
     }
   },
 
+  // websocket: {
+  //   server: {
+  //     url: '/api/admin/server-jobs'
+  //   }
+  // },
+
   runtimeConfig: {
     // client
     public: {

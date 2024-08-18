@@ -7,7 +7,7 @@ const domainKey = 'news'
 const { store, loadMore, refresh } = await useSelectData<User>('news', {
   columns:
     'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*)',
-  filters: { status: 'agent_action' },
+  filters: { content_status: 'agent_action' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 }

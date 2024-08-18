@@ -32,7 +32,7 @@ const initialFeedback = () => ({
   feedback_type: null,
   message: '',
   device_info: '',
-  status: 'new'
+  content_status: 'new'
 })
 
 const feedback = ref(initialFeedback())
