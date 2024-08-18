@@ -10,6 +10,7 @@ definePageMeta({
   <div class="relative h-full max-h-full">
     <!-- <AdminScraperMetrics /> -->
 
+    <AdminDatabaseMetrics />
     <AdminServerJobs />
   </div>
 </template>
