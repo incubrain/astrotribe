@@ -119,6 +119,7 @@ export default defineNuxtConfig({
       nodeEnv: process.env.NODE_ENV,
       logLevel: '',
       posthogKey: '',
+      posthogUrl: '',
       studioTokens: '',
       supabaseUrl: '',
       supabaseKey: '',
@@ -131,7 +132,11 @@ export default defineNuxtConfig({
     openaiApiKey: '',
     openaiOrg: '',
     redisFlushKey: '',
-    scraperKey: ''
+    scraperKey: '',
+    razorpayKey: '',
+    razorpaySecret: '',
+    razorpayTestKey: '',
+    razorpayTestSecret: ''
   },
 
   typescript: {

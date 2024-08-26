@@ -140,7 +140,6 @@ watch(
                   <PrimeButton
                     severity="contrast"
                     outlined
-                    @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
                   >
                     login
                   </PrimeButton>
@@ -150,11 +149,7 @@ watch(
                   v-ripple
                   to="/auth/register"
                 >
-                  <PrimeButton
-                    @click="$posthog()?.capture('register_app', { location: 'top_nav' })"
-                  >
-                    Join AstronEra
-                  </PrimeButton>
+                  <PrimeButton> Join AstronEra </PrimeButton>
                 </NuxtLink>
               </div>
             </div>

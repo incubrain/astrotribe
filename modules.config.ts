@@ -48,14 +48,15 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://host.docker.internal:8080',
         'http://localhost:54321',
         'https://o1175094.ingest.sentry.io',
-        'https://us.i.posthog.com',
         'https://api.iconify.design',
         'https://api.unisvg.com',
         'https://api.simplesvg.com',
         'ws://localhost:4000',
         'https://*.supabase.co',
         'https://*.up.railway.app',
-        'https://*.railway.internal'
+        'https://*.railway.internal',
+        'https://*.razorpay.com',
+        'https://*.posthog.com'
       ],
       'img-src': [
         "'self'",
@@ -75,12 +76,15 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         "'self'",
         "'nonce-{{nonce}}'",
         "'unsafe-inline'",
+        "'wasm-unsafe-eval'",
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.youtube.com',
         'https://s.ytimg.com',
         'https://www.google.com/maps',
-        'https://*.betterstack.com'
+        'https://*.betterstack.com',
+        'https://*.razorpay.com',
+        'https://*.posthog.com'
       ],
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'frame-src': [
@@ -89,7 +93,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://us.posthog.com/',
         'https://www.google.com/',
         'https://*.astronera.org/',
-        'https://*.betterstack.com'
+        'https://*.betterstack.com',
+        'https://*.razorpay.com'
       ]
     },
     xFrameOptions: 'DENY', // Prevents clickjacking

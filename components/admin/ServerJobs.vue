@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useServerAnalytics } from '@/composables/useServerAnalytics'
+const { metrics, haveMetrics, availableMetrics, isConnected } = useServerAnalytics()
 
 interface FlatMetric {
   key: string
@@ -30,100 +31,74 @@ function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
   return flattened
 }
 
-const {
-  metrics,
-  availableMetrics,
-  isConnected,
-  connectWebSocket,
-  disconnectWebSocket,
-  subscribeToMetrics,
-  unsubscribeFromMetrics
-} = useServerAnalytics()
-
-onMounted(() => {
-  console.log('Component mounted, connecting WebSocket...')
-  connectWebSocket()
-  // Subscribe to initial metrics if needed
-  subscribeToMetrics(['jobMetrics', 'spiderMetrics'])
-})
-
-onUnmounted(() => {
-  console.log('Component unmounted, disconnecting WebSocket...')
-  disconnectWebSocket()
-})
-
 const flatMetrics = computed<FlatMetric[]>(() => {
-  console.log('Computing flatMetrics with:', metrics)
   return flattenMetrics(metrics)
 })
 
-// Add a watcher for metrics
-watch(
-  metrics,
-  (newMetrics) => {
-    console.log('Metrics updated:', newMetrics)
-  },
-  { deep: true }
-)
+const metricCategories = computed(() => {
+  return [...new Set(flatMetrics.value.map((metric) => metric.path[0]))]
+})
 
-const formatPath = (path: string[]): string => {
-  return path
-    .map((segment) => segment.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase()))
-    .join(' > ')
+function getCategoryMetrics(category: string): FlatMetric[] {
+  return flatMetrics.value.filter((metric) => metric.path[0] === category)
 }
 
-const formatValue = (value: any): string => {
-  if (typeof value === 'number') {
-    return value.toLocaleString()
-  }
-  if (value instanceof Date) {
-    return value.toLocaleString()
-  }
-  return String(value)
+function formatCategoryName(name: string): string {
+  return name.replace(/([A-Z])/g, ' $1').trim()
 }
 
-const getValueClass = (value: any): string => {
+function formatMetricName(name: string): string {
+  return name.replace(/([A-Z])/g, ' $1').trim()
+}
+
+function formatMetricValue(value: any): string {
   if (typeof value === 'number') {
-    return 'text-blue-600 font-semibold'
+    return value.toLocaleString()
+  } else if (value instanceof Date) {
+    return value.toLocaleString()
+  } else {
+    return String(value)
   }
-  if (value instanceof Date) {
-    return 'text-green-600 italic'
-  }
-  return 'text-gray-800'
 }
 </script>
 
 <template>
   <div class="metrics-display">
-    {{ isConnected ? 'Connected' : 'Disconnected' }}
-
-    {{ metrics }}
-    <PrimeDataTable
-      :value="flatMetrics"
-      :paginator="true"
-      :rows="100"
-      responsive-layout="scroll"
+    <div
+      v-if="isConnected"
+      class="text-green-500"
+      >Connected</div
     >
-      <PrimeColumn
-        field="path"
-        header="Metric"
-        :sortable="true"
+    <div
+      v-else
+      class="text-red-500"
+      >Disconnected</div
+    >
+    {{ metrics }}
+    <div
+      v-if="haveMetrics"
+      class="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-8"
+    >
+      <div
+        v-for="category in metricCategories"
+        :key="category"
+        class="mb-8"
       >
-        <template #body="slotProps">
-          {{ formatPath(slotProps.data.path) }}
-        </template>
-      </PrimeColumn>
-      <PrimeColumn
-        field="value"
-        header="Value"
-        :sortable="true"
-      >
-        <template #body="slotProps">
-          <span :class="getValueClass(slotProps.data.value)">
-            {{ formatValue(slotProps.data.value) }}
-          </span>
-        </template>
-      </PrimeColumn>
-    </PrimeDataTable>
+        <h2 class="mb-4 text-2xl font-semibold capitalize">{{ formatCategoryName(category) }}</h2>
+        <PrimeCard class="shadow-md">
+          <template #title>{{ formatCategoryName(category) }}</template>
+          <template #content>
+            <div
+              v-for="metric in getCategoryMetrics(category)"
+              :key="metric.path.join('.')"
+              class="mb-2"
+            >
+              <strong>{{ formatMetricName(metric.key) }}:</strong>
+              {{ formatMetricValue(metric.value) }}
+            </div>
+          </template>
+        </PrimeCard>
+      </div>
+    </div>
   </div>
 </template>

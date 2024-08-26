@@ -165,11 +165,11 @@ export default {
 
       // Danger Button
       {
-        'text-white dark:text-surface-300':
+        'text-white font-semibold':
           props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-        'bg-red-500 dark:bg-red-400':
+        'bg-red-400/80':
           props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-        'border border-red-500 dark:border-red-400':
+        'border border-red-900 dark:border-red-900':
           props.severity === 'danger' && !props.text && !props.outlined && !props.plain
       },
       // Danger Text Button

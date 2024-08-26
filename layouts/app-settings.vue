@@ -17,12 +17,12 @@ const settingsRoutes = computed(() => [
     disabled: false
   },
   {
-    key: 'settings-application',
-    label: 'Application',
-    url: `/astrotribe/profile/settings/application`,
-    icon: 'material-symbols:laptop-mac-outline',
+    key: 'settings-payments',
+    label: 'Payments',
+    url: `/astrotribe/profile/settings/payments`,
+    icon: 'mdi:credit-card',
     visible: true,
-    disabled: true
+    disabled: false
   },
   {
     key: 'settings-notifications',
@@ -47,7 +47,6 @@ const settingsRoutes = computed(() => [
             item: 'w-full'
           }"
           :ptOptions="{ mergeSections: true, mergeProps: true }"
-
         >
           <template #item="{ item, disabled }">
             <NuxtLink
@@ -55,7 +54,7 @@ const settingsRoutes = computed(() => [
               v-ripple
               :to="item.url"
               exact-active-class="bg-primary-950 text-white w-full"
-              class="flex justify-between gap-2 rounded-md px-3 py-2 w-full"
+              class="flex w-full justify-between gap-2 rounded-md px-3 py-2"
             >
               <span class="text-nowrap md:mr-4">{{ item.label }}</span>
               <div class="hidden md:block">

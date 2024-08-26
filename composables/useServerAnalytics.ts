@@ -5,10 +5,15 @@ export function useServerAnalytics() {
     spiderMetrics: {},
     paginationMetrics: {},
     blogPostScraperMetrics: {},
-    resourceAnalytics: {}
+    resourceAnalytics: {},
+    pageToMarkdownAnalytics: {}
   })
   const availableMetrics = ref<string[]>([])
   const isConnected = ref(false)
+  const haveMetrics = ref(false)
+  const reconnectAttempts = ref(0)
+  const maxReconnectAttempts = 5
+  const reconnectInterval = 3000 // 3 seconds
 
   const connectWebSocket = () => {
     console.log('Attempting to connect WebSocket...')
@@ -22,6 +27,7 @@ export function useServerAnalytics() {
     socket.value.onopen = () => {
       console.log('WebSocket connection established')
       isConnected.value = true
+      reconnectAttempts.value = 0
     }
 
     socket.value.onmessage = (event) => {
@@ -34,7 +40,8 @@ export function useServerAnalytics() {
         console.error('WebSocket error:', data.message)
       } else {
         console.log('Updating metrics with:', data)
-        Object.assign(metrics, data)
+        updateMetrics(data)
+        haveMetrics.value = true
       }
     }
 
@@ -45,6 +52,17 @@ export function useServerAnalytics() {
     socket.value.onclose = () => {
       console.log('WebSocket connection closed')
       isConnected.value = false
+      reconnect()
+    }
+  }
+
+  const reconnect = () => {
+    if (reconnectAttempts.value < maxReconnectAttempts) {
+      reconnectAttempts.value++
+      console.log(`Attempting to reconnect (${reconnectAttempts.value}/${maxReconnectAttempts})...`)
+      setTimeout(connectWebSocket, reconnectInterval)
+    } else {
+      console.log('Max reconnect attempts reached. Please refresh the page.')
     }
   }
 
@@ -78,16 +96,25 @@ export function useServerAnalytics() {
     }
   }
 
-  const subscribeToAllMetrics = () => {
-    if (socket.value && socket.value.readyState === WebSocket.OPEN) {
-      socket.value.send(
-        JSON.stringify({
-          action: 'subscribe',
-          metrics: ['jobMetrics', 'spiderMetrics']
+  const updateMetrics = (newData: any) => {
+    Object.keys(newData).forEach((key) => {
+      if (key in metrics) {
+        Object.keys(newData[key]).forEach((subKey) => {
+          if (typeof newData[key][subKey] === 'object' && newData[key][subKey] !== null) {
+            metrics[key][subKey] = { ...metrics[key][subKey], ...newData[key][subKey] }
+          } else {
+            metrics[key][subKey] = newData[key][subKey]
+          }
         })
-      )
-    }
+      }
+    })
   }
+
+  watchEffect(() => {
+    if (!socket.value || socket.value.readyState !== WebSocket.OPEN) {
+      connectWebSocket()
+    }
+  })
 
   onUnmounted(() => {
     disconnectWebSocket()
@@ -97,6 +124,7 @@ export function useServerAnalytics() {
     metrics,
     availableMetrics,
     isConnected,
+    haveMetrics,
     connectWebSocket,
     disconnectWebSocket,
     subscribeToMetrics,

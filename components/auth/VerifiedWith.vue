@@ -32,7 +32,6 @@ const verifiedIcon = computed(() => {
     <div class="flex flex-col items-center">
       <NuxtLink
         v-ripple
-        @click="$posthog()?.capture('login_app', { location: 'top_nav' })"
         to="/astrotribe"
       >
         <PrimeButton>

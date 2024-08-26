@@ -128,6 +128,27 @@ const adminLinks = ref([
   },
   {
     id: 7,
+    label: 'Spider',
+    slug: '/astrotribe/admin/spider',
+    icon: 'mdi:chat',
+    children: []
+  },
+  {
+    id: 8,
+    label: 'Cache',
+    slug: '/astrotribe/admin/redis',
+    icon: 'mdi:chat',
+    children: []
+  },
+  {
+    id: 9,
+    label: 'Errors',
+    slug: '/astrotribe/admin/errors',
+    icon: 'mdi:bug',
+    children: []
+  },
+  {
+    id: 10,
     label: 'Systems',
     slug: '/astrotribe/admin/business-systems',
     icon: 'mdi:chat',
@@ -163,7 +184,7 @@ const adminLinks = ref([
     ]
   },
   {
-    id: 8,
+    id: 11,
     label: 'Financials',
     slug: '/astrotribe/admin/financials',
     icon: 'material-symbols:attach-money',
