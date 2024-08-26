@@ -108,26 +108,58 @@ export type Database = {
           },
         ]
       }
+      blacklisted_domains: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       blacklisted_urls: {
         Row: {
+          company_id: string | null
           created_at: string | null
           id: number
           reason: string | null
           url: string
         }
         Insert: {
+          company_id?: string | null
           created_at?: string | null
           id?: number
           reason?: string | null
           url: string
         }
         Update: {
+          company_id?: string | null
           created_at?: string | null
           id?: number
           reason?: string | null
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_blacklisted_urls_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       categories: {
         Row: {
@@ -194,7 +226,6 @@ export type Database = {
           id: string
           is_english: boolean | null
           is_government: boolean | null
-          is_valid: boolean | null
           keywords: string[] | null
           logo_url: string | null
           name: string | null
@@ -218,7 +249,6 @@ export type Database = {
           id: string
           is_english?: boolean | null
           is_government?: boolean | null
-          is_valid?: boolean | null
           keywords?: string[] | null
           logo_url?: string | null
           name?: string | null
@@ -242,7 +272,6 @@ export type Database = {
           id?: string
           is_english?: boolean | null
           is_government?: boolean | null
-          is_valid?: boolean | null
           keywords?: string[] | null
           logo_url?: string | null
           name?: string | null
@@ -718,6 +747,379 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_payments: {
+        Row: {
+          acquirer_data: Json | null
+          amount: number
+          amount_refunded: number | null
+          amount_transferred: number | null
+          bank: string | null
+          captured: boolean | null
+          created_at: string | null
+          currency: string
+          description: string | null
+          error_code: string | null
+          error_description: string | null
+          error_reason: string | null
+          error_source: string | null
+          error_step: string | null
+          external_order_id: string | null
+          external_payment_id: string
+          fee: number | null
+          id: number
+          international: boolean | null
+          invoice_id: string | null
+          method: string | null
+          notes: Json | null
+          order_id: string | null
+          payment_provider_id: number
+          refund_status: string | null
+          status: string
+          subscription_id: number | null
+          tax: number | null
+          user_id: string
+          vpa: string | null
+          wallet: string | null
+        }
+        Insert: {
+          acquirer_data?: Json | null
+          amount: number
+          amount_refunded?: number | null
+          amount_transferred?: number | null
+          bank?: string | null
+          captured?: boolean | null
+          created_at?: string | null
+          currency: string
+          description?: string | null
+          error_code?: string | null
+          error_description?: string | null
+          error_reason?: string | null
+          error_source?: string | null
+          error_step?: string | null
+          external_order_id?: string | null
+          external_payment_id: string
+          fee?: number | null
+          id?: number
+          international?: boolean | null
+          invoice_id?: string | null
+          method?: string | null
+          notes?: Json | null
+          order_id?: string | null
+          payment_provider_id: number
+          refund_status?: string | null
+          status: string
+          subscription_id?: number | null
+          tax?: number | null
+          user_id: string
+          vpa?: string | null
+          wallet?: string | null
+        }
+        Update: {
+          acquirer_data?: Json | null
+          amount?: number
+          amount_refunded?: number | null
+          amount_transferred?: number | null
+          bank?: string | null
+          captured?: boolean | null
+          created_at?: string | null
+          currency?: string
+          description?: string | null
+          error_code?: string | null
+          error_description?: string | null
+          error_reason?: string | null
+          error_source?: string | null
+          error_step?: string | null
+          external_order_id?: string | null
+          external_payment_id?: string
+          fee?: number | null
+          id?: number
+          international?: boolean | null
+          invoice_id?: string | null
+          method?: string | null
+          notes?: Json | null
+          order_id?: string | null
+          payment_provider_id?: number
+          refund_status?: string | null
+          status?: string
+          subscription_id?: number | null
+          tax?: number | null
+          user_id?: string
+          vpa?: string | null
+          wallet?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_payments_payment_provider_id_fkey"
+            columns: ["payment_provider_id"]
+            isOneToOne: false
+            referencedRelation: "payment_providers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_payments_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "customer_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_payments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_processed_webhooks: {
+        Row: {
+          event_id: string
+          event_type: string
+          id: number
+          processed_at: string
+        }
+        Insert: {
+          event_id: string
+          event_type: string
+          id?: number
+          processed_at: string
+        }
+        Update: {
+          event_id?: string
+          event_type?: string
+          id?: number
+          processed_at?: string
+        }
+        Relationships: []
+      }
+      customer_refunds: {
+        Row: {
+          acquirer_data: Json | null
+          amount: number
+          batch_id: string | null
+          created_at: string | null
+          currency: string | null
+          external_refund_id: string
+          id: number
+          notes: Json | null
+          payment_id: number
+          receipt: string | null
+          speed_processed: string | null
+          speed_requested: string | null
+          status: string
+        }
+        Insert: {
+          acquirer_data?: Json | null
+          amount: number
+          batch_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          external_refund_id: string
+          id?: number
+          notes?: Json | null
+          payment_id: number
+          receipt?: string | null
+          speed_processed?: string | null
+          speed_requested?: string | null
+          status: string
+        }
+        Update: {
+          acquirer_data?: Json | null
+          amount?: number
+          batch_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          external_refund_id?: string
+          id?: number
+          notes?: Json | null
+          payment_id?: number
+          receipt?: string | null
+          speed_processed?: string | null
+          speed_requested?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_refunds_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "customer_payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_subscription_plans: {
+        Row: {
+          annual_amount: number
+          created_at: string | null
+          currency: string
+          description: string | null
+          external_plan_id: string | null
+          features: Json | null
+          id: number
+          interval: number
+          interval_type: string
+          is_active: boolean | null
+          monthly_amount: number
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          annual_amount: number
+          created_at?: string | null
+          currency: string
+          description?: string | null
+          external_plan_id?: string | null
+          features?: Json | null
+          id?: number
+          interval: number
+          interval_type: string
+          is_active?: boolean | null
+          monthly_amount: number
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          annual_amount?: number
+          created_at?: string | null
+          currency?: string
+          description?: string | null
+          external_plan_id?: string | null
+          features?: Json | null
+          id?: number
+          interval?: number
+          interval_type?: string
+          is_active?: boolean | null
+          monthly_amount?: number
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      customer_subscriptions: {
+        Row: {
+          auth_attempts: number | null
+          cancel_at_period_end: boolean | null
+          cancel_initiated_by: string | null
+          change_scheduled_at: string | null
+          charge_at: string | null
+          created_at: string | null
+          current_end: string
+          current_start: string
+          customer_notify: boolean | null
+          end_at: string | null
+          ended_at: string | null
+          expire_by: string | null
+          external_subscription_id: string
+          has_scheduled_changes: boolean | null
+          id: number
+          notes: Json | null
+          offer_id: string | null
+          paid_count: number | null
+          pause_initiated_by: string | null
+          payment_provider_id: number
+          plan_id: number
+          quantity: number | null
+          remaining_count: number | null
+          short_url: string | null
+          source: string | null
+          start_at: string | null
+          status: string
+          total_count: number | null
+          type: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          auth_attempts?: number | null
+          cancel_at_period_end?: boolean | null
+          cancel_initiated_by?: string | null
+          change_scheduled_at?: string | null
+          charge_at?: string | null
+          created_at?: string | null
+          current_end: string
+          current_start: string
+          customer_notify?: boolean | null
+          end_at?: string | null
+          ended_at?: string | null
+          expire_by?: string | null
+          external_subscription_id: string
+          has_scheduled_changes?: boolean | null
+          id?: number
+          notes?: Json | null
+          offer_id?: string | null
+          paid_count?: number | null
+          pause_initiated_by?: string | null
+          payment_provider_id: number
+          plan_id: number
+          quantity?: number | null
+          remaining_count?: number | null
+          short_url?: string | null
+          source?: string | null
+          start_at?: string | null
+          status: string
+          total_count?: number | null
+          type?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          auth_attempts?: number | null
+          cancel_at_period_end?: boolean | null
+          cancel_initiated_by?: string | null
+          change_scheduled_at?: string | null
+          charge_at?: string | null
+          created_at?: string | null
+          current_end?: string
+          current_start?: string
+          customer_notify?: boolean | null
+          end_at?: string | null
+          ended_at?: string | null
+          expire_by?: string | null
+          external_subscription_id?: string
+          has_scheduled_changes?: boolean | null
+          id?: number
+          notes?: Json | null
+          offer_id?: string | null
+          paid_count?: number | null
+          pause_initiated_by?: string | null
+          payment_provider_id?: number
+          plan_id?: number
+          quantity?: number | null
+          remaining_count?: number | null
+          short_url?: string | null
+          source?: string | null
+          start_at?: string | null
+          status?: string
+          total_count?: number | null
+          type?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_subscriptions_payment_provider_id_fkey"
+            columns: ["payment_provider_id"]
+            isOneToOne: false
+            referencedRelation: "payment_providers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "customer_subscription_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       embedding_reviews: {
         Row: {
           agent_review: boolean | null
@@ -862,7 +1264,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "news_category_id_fkey"
+            foreignKeyName: "public_news_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
@@ -982,6 +1384,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      payment_providers: {
+        Row: {
+          created_at: string | null
+          id: number
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       plan_permissions: {
         Row: {
@@ -1356,6 +1782,120 @@ export type Database = {
         }
         Relationships: []
       }
+      table_maintenance_log: {
+        Row: {
+          detail: string | null
+          id: number
+          logged_at: string | null
+          operation: string | null
+        }
+        Insert: {
+          detail?: string | null
+          id?: number
+          logged_at?: string | null
+          operation?: string | null
+        }
+        Update: {
+          detail?: string | null
+          id?: number
+          logged_at?: string | null
+          operation?: string | null
+        }
+        Relationships: []
+      }
+      table_query_performance: {
+        Row: {
+          avg_duration: unknown | null
+          capture_time: string | null
+          execution_count: number | null
+          query: string | null
+        }
+        Insert: {
+          avg_duration?: unknown | null
+          capture_time?: string | null
+          execution_count?: number | null
+          query?: string | null
+        }
+        Update: {
+          avg_duration?: unknown | null
+          capture_time?: string | null
+          execution_count?: number | null
+          query?: string | null
+        }
+        Relationships: []
+      }
+      table_sequence_usage: {
+        Row: {
+          capture_time: string | null
+          current_value: number | null
+          max_value: number | null
+          sequence_name: string | null
+        }
+        Insert: {
+          capture_time?: string | null
+          current_value?: number | null
+          max_value?: number | null
+          sequence_name?: string | null
+        }
+        Update: {
+          capture_time?: string | null
+          current_value?: number | null
+          max_value?: number | null
+          sequence_name?: string | null
+        }
+        Relationships: []
+      }
+      table_statistics: {
+        Row: {
+          buffer_cache_hit_ratio: number | null
+          capture_time: string
+          dead_tuples: number | null
+          estimated_bloat_ratio: number | null
+          index_scan_count: number | null
+          index_size: number | null
+          index_usage: Json | null
+          last_analyze: string | null
+          last_vacuum: string | null
+          live_tuples: number | null
+          row_count: number | null
+          seq_scan_count: number | null
+          table_name: string
+          table_size: number | null
+        }
+        Insert: {
+          buffer_cache_hit_ratio?: number | null
+          capture_time: string
+          dead_tuples?: number | null
+          estimated_bloat_ratio?: number | null
+          index_scan_count?: number | null
+          index_size?: number | null
+          index_usage?: Json | null
+          last_analyze?: string | null
+          last_vacuum?: string | null
+          live_tuples?: number | null
+          row_count?: number | null
+          seq_scan_count?: number | null
+          table_name: string
+          table_size?: number | null
+        }
+        Update: {
+          buffer_cache_hit_ratio?: number | null
+          capture_time?: string
+          dead_tuples?: number | null
+          estimated_bloat_ratio?: number | null
+          index_scan_count?: number | null
+          index_size?: number | null
+          index_usage?: Json | null
+          last_analyze?: string | null
+          last_vacuum?: string | null
+          live_tuples?: number | null
+          row_count?: number | null
+          seq_scan_count?: number | null
+          table_name?: string
+          table_size?: number | null
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           body: string | null
@@ -1415,7 +1955,6 @@ export type Database = {
           introduction: string | null
           last_seen: string | null
           plan: Database["public"]["Enums"]["app_plan_enum"] | null
-          quote: string | null
           role: Database["public"]["Enums"]["app_role_enum"]
           surname: string | null
           updated_at: string | null
@@ -1434,7 +1973,6 @@ export type Database = {
           introduction?: string | null
           last_seen?: string | null
           plan?: Database["public"]["Enums"]["app_plan_enum"] | null
-          quote?: string | null
           role?: Database["public"]["Enums"]["app_role_enum"]
           surname?: string | null
           updated_at?: string | null
@@ -1453,7 +1991,6 @@ export type Database = {
           introduction?: string | null
           last_seen?: string | null
           plan?: Database["public"]["Enums"]["app_plan_enum"] | null
-          quote?: string | null
           role?: Database["public"]["Enums"]["app_role_enum"]
           surname?: string | null
           updated_at?: string | null
@@ -1493,6 +2030,23 @@ export type Database = {
             }
             Returns: unknown
           }
+      calculate_table_growth: {
+        Args: {
+          p_table_name: string
+          p_time_period: unknown
+          p_num_periods: number
+        }
+        Returns: {
+          period_end_time: string
+          row_count: number
+          growth_count: number
+          growth_percentage: number
+        }[]
+      }
+      cleanup_table_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       enable_rls_on_all_tables: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1502,6 +2056,10 @@ export type Database = {
           p_full_url: string
         }
         Returns: string
+      }
+      gather_database_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       get_latest_articles: {
         Args: {
@@ -1631,6 +2189,10 @@ export type Database = {
           url: string | null
         }[]
       }
+      perform_weekly_maintenance: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       sparsevec_out: {
         Args: {
           "": unknown
@@ -1747,6 +2309,10 @@ export type Database = {
         | "unpublished"
         | "archived"
         | "published"
+        | "failed"
+        | "crawled"
+        | "scraped"
+        | "outdated"
       content_type: "news" | "events" | "jobs" | "research" | "companies"
       feedback_status:
         | "new"

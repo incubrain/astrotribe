@@ -121,6 +121,12 @@ const UserProfilesAdminDashboard = createAdminDashboard(
   userColumns,
   useUserProfiles
 )
+
+definePageMeta({
+  layoutTransition: false,
+  name: 'Users',
+  middleware: 'is-admin'
+})
 </script>
 
 <template>
