@@ -39,7 +39,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://localhost:54321',
         'https://www.astronera.org',
         'https://*.up.railway.app',
-        'https://*.supabase.co'
+        'https://*.supabase.co',
+        'https://*.posthog.com'
       ],
       'connect-src': [
         "'self'",
@@ -70,7 +71,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://s.ytimg.com',
         'https://pbs.twimg.com',
         'https://media.licdn.com',
-        'https://*.supabase.co'
+        'https://*.supabase.co',
+        'https://*.posthog.com'
       ],
       'script-src': [
         "'self'",
@@ -86,7 +88,12 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.razorpay.com',
         'https://*.posthog.com'
       ],
-      'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      'style-src': [
+        "'self'",
+        "'unsafe-inline'",
+        'https://fonts.googleapis.com',
+        'https://*.posthog.com'
+      ],
       'frame-src': [
         "'self'",
         'https://www.youtube.com',
