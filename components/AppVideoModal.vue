@@ -8,7 +8,6 @@
       <PrimeButton
         class="relative flex items-center justify-center"
         link
-        @click="handleClicked($posthog)"
       >
         <BaseImage
           :img="{
@@ -21,7 +20,7 @@
         />
         <Icon
           name="mdi:play"
-          class="absolute w-[72px] h-[72px]"
+          class="absolute h-[72px] w-[72px]"
         />
       </PrimeButton>
 
@@ -32,14 +31,14 @@
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
       >
         <template #header>
-          <h2 class="font-semibold text-2xl">Watch the video</h2>
+          <h2 class="text-2xl font-semibold">Watch the video</h2>
         </template>
-        <div class="relative max-w-[1140px] w-full aspect-[16/9] flex">
+        <div class="relative flex aspect-[16/9] w-full max-w-[1140px]">
           <iframe
             :src="video.url"
             title="YouTube video player"
             frameborder="0"
-            class="w-full aspect-video"
+            class="aspect-video w-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>

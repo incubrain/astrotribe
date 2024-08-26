@@ -2,14 +2,14 @@ import { defineNuxtPlugin } from '#app'
 import posthog from 'posthog-js'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const pubkey = useRuntimeConfig().public.posthogKey
-  if (!pubkey) {
-    throw createError({ message: 'posthog key not defined' })
+  const env = useRuntimeConfig().public
+  if (!env.posthogKey || !env.posthogUrl) {
+    throw createError({ message: 'posthog key or url not defined' })
   }
 
   // Initialize PostHog
-  posthog.init(pubkey, {
-    api_host: 'https://app.posthog.com',
+  posthog.init(env.posthogKey, {
+    api_host: env.posthogUrl,
     autocapture: false, // Disable autocapture as we'll handle events manually
     capture_pageview: false, // We'll capture pageviews manually for more control
     persistence: 'localStorage+cookie',
@@ -22,7 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         // Log to console in development mode
         posthog.debug()
       }
-    },
+    }
   })
 
   // Capture page views

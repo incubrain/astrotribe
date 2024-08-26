@@ -1,15 +1,14 @@
 <script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
-  name: 'AdminDashboard',
+  name: 'Spider',
   middleware: 'is-admin'
 })
 </script>
 
 <template>
   <div class="relative h-full max-h-full">
-    <AdminDatabaseMetrics />
-    <AdminServerJobs />
+    <AdminSpiderMetrics />
   </div>
 </template>
 
