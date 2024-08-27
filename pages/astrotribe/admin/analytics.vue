@@ -27,31 +27,40 @@ const analyticsTabs = [
   {
     title: 'Users',
     slotName: 'users',
-    value: 4,
+    value: '4',
     src: 'https://us.posthog.com/embedded/5_O5m7upw1QjlBHMIcr0MVp_Q_HX8w?whitelabel'
   }
 ]
 
-const analyticsTabView = ref(null as HTMLElement | null)
-const wrapperHeight = computed(() => {
-  if (document && analyticsTabView.value) {
-    console.log('analyticsTabView', analyticsTabView.value)
-    return analyticsTabView.value?.clientHeight
-  } else return 0
-})
-const analyticsHeight = ref(0)
+const analyticsTabView = ref<HTMLElement | null>(null)
+const activeTab = ref('0')
+const analyticsHeight = ref(500) // Start with a default height
 
-watch(wrapperHeight, (newHeight) => {
-  analyticsHeight.value = newHeight || 0
-  console.log('wrapperHeight', newHeight, analyticsHeight.value)
-})
+const updateHeight = async () => {
+  await nextTick()
+  if (analyticsTabView.value) {
+    const newHeight = analyticsTabView.value.clientHeight
+    analyticsHeight.value = newHeight > 0 ? newHeight : analyticsHeight.value
+  }
+}
 
-// const analyticsIframe = ref(null as HTMLIFrameElement | null)
-// const onChange = (e) => {
-//   if (e.data.event === 'posthog:dimensions' && e.data.name === 'AstronEraAnalytics') {
-//     analyticsHeight.value = e.data.height
-//   }
-// }
+const handleIframeLoad = (event: Event) => {
+  const iframe = event.target as HTMLIFrameElement
+  updateHeight()
+
+  // Set up a MutationObserver to watch for changes in the iframe content
+  const observer = new MutationObserver(updateHeight)
+  observer.observe(iframe.contentDocument?.body || iframe, { childList: true, subtree: true })
+}
+
+// Update height when tab changes
+watch(activeTab, updateHeight)
+
+// Initial height update
+onMounted(() => {
+  updateHeight()
+  window.addEventListener('resize', updateHeight)
+})
 
 definePageMeta({
   layoutTransition: false,
@@ -60,21 +69,20 @@ definePageMeta({
 })
 </script>
 <template>
-  <div class="relative h-full max-h-full">
     <BaseTabView
       ref="analyticsTabView"
       :tabs="analyticsTabs"
-      class="h-full min-h-full w-full pb-4"
+      class="h-full min-h-full w-full"
     >
       <template
         v-for="tab in analyticsTabs"
         v-slot:[tab.slotName]
       >
-        <div class="h-full min-h-full p-4">
+        <div class="h-full min-h-full">
           <iframe
-            class="invert"
+            class="p-4 invert"
             width="100%"
-            :height="`${analyticsHeight}px`"
+            height="100%"
             :src="tab.src"
             frameborder="0"
             allowfullscreen
@@ -82,7 +90,6 @@ definePageMeta({
         </div>
       </template>
     </BaseTabView>
-  </div>
 </template>
 
 <style scoped></style>

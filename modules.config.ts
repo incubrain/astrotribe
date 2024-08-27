@@ -57,7 +57,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.up.railway.app',
         'http://*.railway.internal',
         'https://*.razorpay.com',
-        'https://*.posthog.com'
+        'https://*.posthog.com',
+        'https://us.i.posthog.com'
       ],
       'img-src': [
         "'self'",
@@ -73,6 +74,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://media.licdn.com',
         'https://*.supabase.co',
         'https://*.posthog.com',
+        'https://us.i.posthog.com',
         'http://*.railway.internal'
       ],
       'script-src': [
@@ -87,7 +89,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://www.google.com/maps',
         'https://*.betterstack.com',
         'https://*.razorpay.com',
-        'https://*.posthog.com'
+        'https://*.posthog.com',
+        'https://us.i.posthog.com'
       ],
       'style-src': [
         "'self'",
@@ -98,19 +101,19 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'frame-src': [
         "'self'",
         'https://www.youtube.com',
-        'https://us.posthog.com/',
-        'https://www.google.com/',
-        'https://*.astronera.org/',
+        'https://us.i.posthog.com',
+        'https://*.posthog.com',
+        'https://www.google.com',
+        'https://*.astronera.org',
         'https://*.betterstack.com',
         'https://*.razorpay.com'
-      ]
+      ],
+      'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com']
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
     crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
     crossOriginOpenerPolicy: 'same-origin',
-    // needed for devtools
-    crossOriginEmbedderPolicy:
-      process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp'
+    crossOriginEmbedderPolicy: 'unsafe-none'
   },
   requestSizeLimiter: {
     maxUploadFileRequestInBytes: 2000000, // 2 MB
@@ -125,7 +128,9 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'http://host.docker.internal:8080',
       'http://*.railway.internal',
       'http://localhost:54321',
-      'https://*.supabase.co'
+      'https://*.supabase.co',
+      'https://us.i.posthog.com',
+      'https://*.posthog.com'
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-client-info', 'apikey'],
