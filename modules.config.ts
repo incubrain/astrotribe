@@ -55,7 +55,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'ws://localhost:4000',
         'https://*.supabase.co',
         'https://*.up.railway.app',
-        'https://*.railway.internal',
+        'http://*.railway.internal',
         'https://*.razorpay.com',
         'https://*.posthog.com'
       ],
@@ -72,7 +72,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://pbs.twimg.com',
         'https://media.licdn.com',
         'https://*.supabase.co',
-        'https://*.posthog.com'
+        'https://*.posthog.com',
+        'http://*.railway.internal'
       ],
       'script-src': [
         "'self'",
@@ -122,8 +123,9 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'http://localhost:3000',
       'http://localhost:8080',
       'http://host.docker.internal:8080',
+      'http://*.railway.internal',
       'http://localhost:54321',
-      'https://idsifamzvzlpgnmlnldw.supabase.co'
+      'https://*.supabase.co'
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-client-info', 'apikey'],
