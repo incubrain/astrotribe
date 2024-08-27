@@ -5,7 +5,6 @@ const props = defineProps<{
   logs: string
 }>()
 
-
 const formattedLogs = computed(() => {
   console.log(props.logs)
   // const parsedLogs = JSON.parse(props.logs)
@@ -17,15 +16,6 @@ const formattedLogs = computed(() => {
 })
 </script>
 
-<style scoped>
-.truncate-2-lines {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
 <template>
   <div class="border-color overflow-x-auto rounded-lg border p-4">
     <div
@@ -104,3 +94,13 @@ const formattedLogs = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.truncate-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

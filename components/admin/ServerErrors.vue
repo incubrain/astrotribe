@@ -6,8 +6,8 @@
     >
       <template #logStream>
         <div class="flex h-full flex-col">
-          <div class="flex gap-4 p-4">
-            <h2 class="mb-4 text-2xl font-bold">Error Log Stream</h2>
+          <div class="flex gap-4 p-4 items-center">
+            <h2 class="mb-4 text-2xl font-bold">{{ logStream.length }} Error Logs</h2>
             <PrimeButton
               @click="refreshData"
               label="Refresh"

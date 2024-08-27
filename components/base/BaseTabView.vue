@@ -16,15 +16,15 @@ defineProps<{
     class="h-full"
     scrollable
     :pt="{
-      root: 'min-h-full w-full'
+      root: 'w-full'
     }"
     :ptOptions="{ mergeSections: true }"
   >
     <PrimeTabList
       :pt="{
-        root: 'gap-4 sticky top-0 left-0 z-50 flex text-nowrap flex-grow w-full overflow-scroll no-scrollbar border-b border-color'
+        root: 'gap-4 sticky top-0 left-0 z-50 flex text-nowrap flex-grow w-full overflow-scroll bg-black no-scrollbar border-b border-color'
       }"
-      :ptOptions="{ mergeSections: true }"
+      :ptOptions="{ mergeSections: true, mergeProps: true }"
     >
       <PrimeTab
         v-for="tab in tabs"
@@ -38,7 +38,7 @@ defineProps<{
             ]
           })
         }"
-        :ptOptions="{ mergeSections: true }"
+        :ptOptions="{ mergeSections: true, mergeProps: true }"
       >
         {{ tab.title }}
       </PrimeTab>
@@ -48,13 +48,11 @@ defineProps<{
       :key="`tab-index-${tab.title}`"
       :value="tab.value"
       :pt="{
-        root: 'h-full overflow-scroll'
+        root: 'h-full'
       }"
       :ptOptions="{ mergeProps: true, mergeSections: true }"
     >
-      <div class="pb-4">
-        <slot :name="tab.slotName" />
-      </div>
+      <slot :name="tab.slotName" />
     </PrimeTabPanel>
   </PrimeTabs>
 </template>
