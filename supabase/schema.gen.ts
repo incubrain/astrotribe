@@ -161,6 +161,38 @@ export type Database = {
           },
         ]
       }
+      bookmarks: {
+        Row: {
+          content_id: string
+          content_type: Database["public"]["Enums"]["content_type"]
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content_id: string
+          content_type: Database["public"]["Enums"]["content_type"]
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content_id?: string
+          content_type?: Database["public"]["Enums"]["content_type"]
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           body: string | null
@@ -210,6 +242,54 @@ export type Database = {
             columns: ["country_id"]
             isOneToOne: false
             referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          content: string
+          content_id: string
+          content_type: Database["public"]["Enums"]["content_type"]
+          created_at: string | null
+          id: string
+          parent_comment_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          content_id: string
+          content_type: Database["public"]["Enums"]["content_type"]
+          created_at?: string | null
+          id?: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          content_id?: string
+          content_type?: Database["public"]["Enums"]["content_type"]
+          created_at?: string | null
+          id?: string
+          parent_comment_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -480,7 +560,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_company"
+            foreignKeyName: "public_company_urls_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
@@ -1192,6 +1272,38 @@ export type Database = {
           {
             foreignKeyName: "fk_user"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follows: {
+        Row: {
+          created_at: string | null
+          followed_entity: Database["public"]["Enums"]["followed_entity"]
+          followed_id: string
+          follower_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          followed_entity: Database["public"]["Enums"]["followed_entity"]
+          followed_id: string
+          follower_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          followed_entity?: Database["public"]["Enums"]["followed_entity"]
+          followed_id?: string
+          follower_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follows_follower_id_fkey"
+            columns: ["follower_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
@@ -2051,6 +2163,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      execute_weekly_maintenance: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       extract_base_url: {
         Args: {
           p_full_url: string
@@ -2191,7 +2307,10 @@ export type Database = {
       }
       perform_weekly_maintenance: {
         Args: Record<PropertyKey, never>
-        Returns: undefined
+        Returns: {
+          operation: string
+          detail: string
+        }[]
       }
       sparsevec_out: {
         Args: {
@@ -2328,6 +2447,7 @@ export type Database = {
         | "user_interface_issue"
         | "performance_issue"
         | "documentation"
+      followed_entity: "company" | "user"
       news_importance_level: "high" | "medium" | "low"
       news_relation_type: "source" | "topic" | "mention"
       priority: "very_low" | "low" | "medium" | "high" | "critical"
