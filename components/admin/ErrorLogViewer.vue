@@ -4,22 +4,49 @@ import { useTimeAgo } from '@vueuse/core'
 const props = defineProps<{
   logs: string
 }>()
-
-const formattedLogs = computed(() => {
-  console.log(props.logs)
-  // const parsedLogs = JSON.parse(props.logs)
-
-  return props.logs
-    .split('\n')
-    .filter(Boolean)
-    .map((log) => JSON.parse(log))
+const uniqueLogs = computed(() => {
+  const logMap = new Map()
+  props.logs.forEach((log) => {
+    const key = `${log.message}-${log.metadata?.context?.error}`
+    if (logMap.has(key)) {
+      logMap.get(key).count++
+      if (new Date(log.timestamp) > new Date(logMap.get(key).timestamp)) {
+        logMap.get(key).timestamp = log.timestamp
+      }
+    } else {
+      logMap.set(key, { ...log, count: 1 })
+    }
+  })
+  return Array.from(logMap.values()).sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count
+    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  })
 })
+
+const copyErrorContext = (log: any) => {
+  const context = JSON.stringify(
+    {
+      message: log.message,
+      error: log.metadata?.context?.error,
+      stack: log.metadata?.context?.errorStack,
+      domain: log.metadata?.context?.domain,
+      action: log.metadata?.context?.action,
+      severity: log.metadata?.context?.severity,
+      status: log.metadata?.context?.status,
+      timestamp: log.timestamp
+    },
+    null,
+    2
+  )
+  navigator.clipboard.writeText(context)
+  // You might want to add a toast notification here to inform the user that the context has been copied
+}
 </script>
 
 <template>
   <div class="border-color overflow-x-auto rounded-lg border p-4">
     <div
-      v-for="(log, index) in formattedLogs"
+      v-for="(log, index) in uniqueLogs"
       :key="index"
       class="log-entry background border-color mb-4 rounded-md border p-4"
     >
@@ -31,9 +58,22 @@ const formattedLogs = computed(() => {
             {{ log.level.toUpperCase() }}
           </PrimeTag>
           <span class="log-label font-bold text-primary">{{ log.label }}</span>
+          <PrimeTag
+            severity="info"
+            v-if="log.count > 1"
+            >{{ log.count }} occurrences</PrimeTag
+          >
         </div>
-        <div v-if="log.metadata?.context?.errorStack">
-          <BasePopover buttonLabel="Error Stack">
+        <div class="flex items-center gap-2">
+          <PrimeButton
+            icon="pi pi-copy"
+            @click="copyErrorContext(log)"
+            tooltip="Copy error context"
+          />
+          <BasePopover
+            v-if="log.metadata?.context?.errorStack"
+            buttonLabel="Error Stack"
+          >
             <div class="w-full max-w-lg">
               <h3 class="text-lg mb-2 font-semibold">Error Stack</h3>
               <pre

@@ -13,7 +13,7 @@
     "supa:gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:func": "supabase functions serve --env-file ./supabase/.env.local --no-verify-jwt",
     "supa:lint": "supabase db lint",
-    "supa:migrate": "supabase db diff --schema auth,public,storage,extensions -f",
+    "supa:migrate": "supabase db diff --schema auth,public,storage,extensions,pg_catelog -f",
     "supa:migrate:repair": "supabase migration repair --status applied --debug",
     "lint": "eslint . --ext .ts,.js,.vue",
     "lint:fix": "eslint . --ext .ts,.js,.vue --fix"
