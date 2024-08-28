@@ -524,6 +524,117 @@ export type Database = {
           },
         ]
       }
+      company_metrics: {
+        Row: {
+          allowed_urls: number
+          category_distribution: Json | null
+          certification_mentions: number | null
+          crawl_id: string
+          created_at: string | null
+          disallowed_urls: number
+          discovery_timestamps: number[] | null
+          domain: string
+          event_pages: number
+          external_urls: number
+          file_type_distribution: Json
+          filtered_urls: number
+          id: number
+          internal_urls: number
+          investor_relations_presence: boolean
+          job_listings: number
+          keyword_presence_in_urls: Json | null
+          language_versions: Json | null
+          linked_domains: Json
+          max_depth: number
+          modern_tech_usage: Json | null
+          partnership_mentions: number | null
+          patent_pages: number
+          press_releases: number
+          product_service_patterns: Json
+          protocol_distribution: Json
+          recent_dates_mentioned: number | null
+          research_papers: number
+          social_media_profiles: Json | null
+          sustainability_mentions: number | null
+          total_urls: number
+          url_depth_distribution: Json
+          url_lengths: number[] | null
+          user_forums: boolean | null
+        }
+        Insert: {
+          allowed_urls?: number
+          category_distribution?: Json | null
+          certification_mentions?: number | null
+          crawl_id: string
+          created_at?: string | null
+          disallowed_urls?: number
+          discovery_timestamps?: number[] | null
+          domain: string
+          event_pages: number
+          external_urls: number
+          file_type_distribution: Json
+          filtered_urls?: number
+          id?: number
+          internal_urls: number
+          investor_relations_presence: boolean
+          job_listings: number
+          keyword_presence_in_urls?: Json | null
+          language_versions?: Json | null
+          linked_domains: Json
+          max_depth: number
+          modern_tech_usage?: Json | null
+          partnership_mentions?: number | null
+          patent_pages: number
+          press_releases: number
+          product_service_patterns: Json
+          protocol_distribution: Json
+          recent_dates_mentioned?: number | null
+          research_papers: number
+          social_media_profiles?: Json | null
+          sustainability_mentions?: number | null
+          total_urls: number
+          url_depth_distribution: Json
+          url_lengths?: number[] | null
+          user_forums?: boolean | null
+        }
+        Update: {
+          allowed_urls?: number
+          category_distribution?: Json | null
+          certification_mentions?: number | null
+          crawl_id?: string
+          created_at?: string | null
+          disallowed_urls?: number
+          discovery_timestamps?: number[] | null
+          domain?: string
+          event_pages?: number
+          external_urls?: number
+          file_type_distribution?: Json
+          filtered_urls?: number
+          id?: number
+          internal_urls?: number
+          investor_relations_presence?: boolean
+          job_listings?: number
+          keyword_presence_in_urls?: Json | null
+          language_versions?: Json | null
+          linked_domains?: Json
+          max_depth?: number
+          modern_tech_usage?: Json | null
+          partnership_mentions?: number | null
+          patent_pages?: number
+          press_releases?: number
+          product_service_patterns?: Json
+          protocol_distribution?: Json
+          recent_dates_mentioned?: number | null
+          research_papers?: number
+          social_media_profiles?: Json | null
+          sustainability_mentions?: number | null
+          total_urls?: number
+          url_depth_distribution?: Json
+          url_lengths?: number[] | null
+          user_forums?: boolean | null
+        }
+        Relationships: []
+      }
       company_urls: {
         Row: {
           category: string
@@ -1310,6 +1421,60 @@ export type Database = {
           },
         ]
       }
+      metrics_spider: {
+        Row: {
+          average_crawl_speed: number
+          average_response_time: number
+          bandwidth_used: number | null
+          cpu_usage_average: number | null
+          crawl_depth_reached: number
+          crawl_frontier_size: number
+          crawl_id: string
+          end_time: string
+          error_rate: number
+          id: number
+          memory_usage_peak: number | null
+          robots_txt_disallowed: number
+          start_time: string
+          total_urls_crawled: number
+          unique_domains_discovered: number
+        }
+        Insert: {
+          average_crawl_speed: number
+          average_response_time: number
+          bandwidth_used?: number | null
+          cpu_usage_average?: number | null
+          crawl_depth_reached: number
+          crawl_frontier_size?: number
+          crawl_id: string
+          end_time: string
+          error_rate: number
+          id?: number
+          memory_usage_peak?: number | null
+          robots_txt_disallowed: number
+          start_time: string
+          total_urls_crawled: number
+          unique_domains_discovered: number
+        }
+        Update: {
+          average_crawl_speed?: number
+          average_response_time?: number
+          bandwidth_used?: number | null
+          cpu_usage_average?: number | null
+          crawl_depth_reached?: number
+          crawl_frontier_size?: number
+          crawl_id?: string
+          end_time?: string
+          error_rate?: number
+          id?: number
+          memory_usage_peak?: number | null
+          robots_txt_disallowed?: number
+          start_time?: string
+          total_urls_crawled?: number
+          unique_domains_discovered?: number
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           author: string | null
@@ -1843,57 +2008,6 @@ export type Database = {
         }
         Relationships: []
       }
-      spider_metrics: {
-        Row: {
-          average_content_size: number
-          average_time_per_url: number
-          category_counts: Json
-          created_at: string
-          error_count: number
-          failed_urls: Json
-          id: number
-          ignored_count: number
-          total_content_size: number
-          total_pages_attempted: number
-          total_time: number
-          total_urls_ignored: number
-          total_urls_scraped: number
-          unique_domains: number
-        }
-        Insert: {
-          average_content_size: number
-          average_time_per_url: number
-          category_counts: Json
-          created_at?: string
-          error_count: number
-          failed_urls: Json
-          id?: number
-          ignored_count: number
-          total_content_size: number
-          total_pages_attempted: number
-          total_time: number
-          total_urls_ignored: number
-          total_urls_scraped: number
-          unique_domains: number
-        }
-        Update: {
-          average_content_size?: number
-          average_time_per_url?: number
-          category_counts?: Json
-          created_at?: string
-          error_count?: number
-          failed_urls?: Json
-          id?: number
-          ignored_count?: number
-          total_content_size?: number
-          total_pages_attempted?: number
-          total_time?: number
-          total_urls_ignored?: number
-          total_urls_scraped?: number
-          unique_domains?: number
-        }
-        Relationships: []
-      }
       table_maintenance_log: {
         Row: {
           detail: string | null
@@ -2419,19 +2533,21 @@ export type Database = {
         | "founder"
       content_status:
         | "draft"
-        | "agent_action"
-        | "agent_review"
-        | "human_review"
-        | "trash"
-        | "ready"
+        | "pending_agent_action"
+        | "pending_agent_review"
+        | "pending_human_review"
+        | "pending_relevance_check"
+        | "irrelevant"
         | "scheduled"
         | "unpublished"
         | "archived"
         | "published"
         | "failed"
-        | "crawled"
+        | "pending_crawl"
         | "scraped"
         | "outdated"
+        | "updated"
+        | "new"
       content_type: "news" | "events" | "jobs" | "research" | "companies"
       feedback_status:
         | "new"
