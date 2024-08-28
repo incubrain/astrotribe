@@ -111,19 +111,19 @@ const isSpiderActive = computed(() => !!metrics.spiderMetrics.crawlDuration)
 </script>
 
 <template>
-  <div class="metrics-display">
+  <div class="p-4">
     <div v-if="isConnected">Connected</div>
     <div v-else>Disconnected</div>
 
     <div v-if="haveMetrics && isSpiderActive">
       <div class="mb-8">
         <h2 class="mb-4 text-2xl font-semibold">Spider Metrics</h2>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <PrimeCard class="shadow-md">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 pb-4">
+          <PrimeCard class="foreground">
             <template #title>Crawl Duration</template>
             <template #content>
               <div class="text-4xl font-bold"
-                >{{ (metrics.spiderMetrics.crawlDuration / 1000).toFixed(2) }}s</div
+                >{{ (metrics.spiderMetrics.crawlDuration / 1000) }}s</div
               >
             </template>
           </PrimeCard>
@@ -131,7 +131,7 @@ const isSpiderActive = computed(() => !!metrics.spiderMetrics.crawlDuration)
             <template #title>URLs per Second</template>
             <template #content>
               <div class="text-4xl font-bold">{{
-                metrics.spiderMetrics.urlsPerSecond.toFixed(2)
+                metrics.spiderMetrics.urlsPerSecond
               }}</div>
             </template>
           </PrimeCard>
@@ -139,7 +139,7 @@ const isSpiderActive = computed(() => !!metrics.spiderMetrics.crawlDuration)
             <template #title>Avg Response Time</template>
             <template #content>
               <div class="text-4xl font-bold"
-                >{{ metrics.spiderMetrics.responseTimeStats.average.toFixed(2) }}ms</div
+                >{{ metrics.spiderMetrics.responseTimeStats.average }}ms</div
               >
             </template>
           </PrimeCard>
