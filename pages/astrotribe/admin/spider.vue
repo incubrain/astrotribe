@@ -8,7 +8,7 @@ definePageMeta({
 
 <template>
   <div class="relative h-full max-h-full">
-    <AdminSpiderMetrics />
+    <AdminSpiderAnalytics />
   </div>
 </template>
 
