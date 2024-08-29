@@ -65,7 +65,7 @@ export default {
         'border-t-0',
 
         // Color
-        'bg-surface-0 dark:bg-surface-400',
+        'foreground',
         'border border-surface-200 dark:border-surface-700',
         'text-surface-100 dark:text-surface-0/80'
       ]

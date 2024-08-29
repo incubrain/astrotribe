@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 
 const useErrorDashboard = defineStore('errorDashboard', () => {
   const errorReport = ref(null)
+  const errorTrends = ref([])
   const errorLogs = ref([])
   const totalLogs = ref(0)
   const currentPage = ref(1)
@@ -16,10 +17,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
 
   const errorsByDomain = computed(() => errorReport.value?.domainDistribution || {})
   const errorsBySeverity = computed(() => errorReport.value?.severityDistribution || {})
-  const errorTrends = computed(() => errorReport.value?.historicalAnalysis?.errorTrends || [])
-  const errorReduction = computed(
-    () => errorReport.value?.historicalAnalysis?.dailyComparison?.errorReduction || 0
-  )
+  const errorReduction = computed(() => errorReport.value?.errorReduction || 0)
   const mostFrequentErrors = computed(
     () => errorReport.value?.mostFrequentErrors?.slice(0, 5) || []
   )
@@ -33,7 +31,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     )
   })
   const averageErrorsPerDay = computed(() => {
-    const trends = errorReport.value?.historicalAnalysis?.errorTrends || []
+    const trends = errorReport.value?.historicalTrends?.errorTrends || []
     if (trends.length === 0) return 0
     const total = trends.reduce((sum, day) => sum + day.totalErrors, 0)
     return total / trends.length
@@ -54,6 +52,26 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
       console.error('Failed to fetch error report', err)
       error.value = 'Failed to load error report. Please try again later.'
       errorReport.value = null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function fetchErrorTrends() {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await $fetch('/api/admin/error/trends', {
+        query: { date: selectedDate.value.toISOString() }
+      })
+      if (!response || !response.data) {
+        throw new Error('No data returned from the server')
+      }
+      errorTrends.value = response.data.trends || []
+    } catch (error: any) {
+      console.error('Failed to fetch error trends', err)
+      error.value = 'Failed to load error trends. Please try again later.'
+      errorTrends.value = []
     } finally {
       loading.value = false
     }
@@ -182,6 +200,55 @@ const chartOptions = {
   maintainAspectRatio: false
 }
 
+// Computed properties for chart data
+const hourlyErrorChartData = computed(() => ({
+  labels:
+    errorReport.value?.errorTrends?.map((trend) => trend.interval.split(' ')[1].slice(0, 5)) || [],
+  datasets: [
+    {
+      label: 'Hourly Errors',
+      data: errorReport.value?.errorTrends?.map((trend) => trend.count) || [],
+      backgroundColor: '#FF6384',
+      borderColor: '#FF6384',
+      valueType: 'number',
+      type: 'bar'
+    }
+  ]
+}))
+
+const dailyErrorChartData = computed(() => ({
+  labels: errorReport.value?.historicalTrends?.map((trend) => trend.date) || [],
+  datasets: [
+    {
+      label: 'Daily Errors',
+      data: errorReport.value?.historicalTrends?.map((trend) => trend.totalErrors) || [],
+      backgroundColor: '#36A2EB',
+      borderColor: '#36A2EB',
+      valueType: 'number',
+      type: 'line'
+    }
+  ]
+}))
+
+// Chart configurations
+const hourlyErrorChart = computed(() => ({
+  id: 1,
+  scaleType: 'linear',
+  title: 'Hourly Error Trends',
+  subtitle: 'Number of errors per hour in the last 24 hours',
+  type: 'bar',
+  data: hourlyErrorChartData.value
+}))
+
+const dailyErrorChart = computed(() => ({
+  id: 2,
+  scaleType: 'linear',
+  title: 'Daily Error Trends',
+  subtitle: 'Total errors per day over time',
+  type: 'line',
+  data: dailyErrorChartData.value
+}))
+
 onMounted(errorDashboard.refreshData)
 </script>
 
@@ -194,17 +261,25 @@ onMounted(errorDashboard.refreshData)
       <template #logStream>
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-4 p-4">
-            <h2 class="text-2xl font-bold">{{ totalLogs }} Error Logs</h2>
+            <h2 class="text-xl font-bold">{{ totalLogs }} Error Logs</h2>
             <div class="flex items-center gap-2">
               <PrimeDatePicker
                 v-model="errorDashboard.selectedDate"
                 @date-select="errorDashboard.setDate"
               />
+              <PrimeSelect
+                v-model="pageSize"
+                :options="[{ value: 10 }, { value: 20 }, { value: 50 }]"
+                optionLabel="value"
+                placeholder="To load"
+              />
               <PrimeButton
                 @click="errorDashboard.refreshData"
-                label="Refresh"
                 :loading="loading"
-              />
+                class="h-full" 
+              >
+                <Icon name="mdi:refresh"/>
+              </PrimeButton>
             </div>
           </div>
           <AdminErrorLogViewer
@@ -227,21 +302,6 @@ onMounted(errorDashboard.refreshData)
             class="text-gray-500"
             >No logs available for the selected date.</p
           >
-          <div class="mt-4 flex items-center justify-between">
-            <PrimePaginator
-              v-if="totalPages > 1"
-              :rows="pageSize"
-              :totalRecords="totalLogs"
-              :first="(currentPage - 1) * pageSize"
-              @page="(e) => errorDashboard.setPage(e.page + 1)"
-            />
-            <PrimeSelect
-              v-model="pageSize"
-              :options="[{ value: 10 }, { value: 20 }, { value: 50 }]"
-              optionLabel="value"
-              placeholder="Items per page"
-            />
-          </div>
         </div>
       </template>
       <template #errorMetrics>
@@ -332,6 +392,20 @@ onMounted(errorDashboard.refreshData)
               />
             </template>
           </PrimeCard>
+          <div class="mb-4 grid grid-cols-1 gap-4">
+            <PrimeCard>
+              <template #title>Hourly Error Trends</template>
+              <template #content>
+                <Chart :chart="hourlyErrorChart" />
+              </template>
+            </PrimeCard>
+            <PrimeCard>
+              <template #title>Daily Error Trends</template>
+              <template #content>
+                <Chart :chart="dailyErrorChart" />
+              </template>
+            </PrimeCard>
+          </div>
         </div>
         <p
           v-else-if="error"
