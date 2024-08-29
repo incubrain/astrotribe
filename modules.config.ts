@@ -56,6 +56,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.supabase.co',
         'https://*.up.railway.app',
         'http://*.railway.internal',
+        'http://scrapers.railway.internal:8080',
         'https://*.razorpay.com',
         'https://*.posthog.com',
         'https://us.i.posthog.com'
@@ -127,6 +128,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'http://localhost:8080',
       'http://host.docker.internal:8080',
       'http://*.railway.internal',
+      'http://scrapers.railway.internal:8080',
       'http://localhost:54321',
       'https://*.supabase.co',
       'https://us.i.posthog.com',
