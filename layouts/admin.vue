@@ -21,9 +21,9 @@ const { adminLinks } = usePages()
 </script>
 
 <template>
-  <div class="background relative flex h-screen w-full overflow-scroll lg:p-4">
+  <div class="background relative flex h-screen w-full lg:p-4">
     <BaseSideNav :links="adminLinks" />
-    <div class="foreground relative flex h-full w-full flex-col overflow-scroll rounded-lg">
+    <div class="foreground relative flex h-full w-full flex-col overflow-y-scroll rounded-lg">
       <div class="foreground h-full">
         <slot />
       </div>

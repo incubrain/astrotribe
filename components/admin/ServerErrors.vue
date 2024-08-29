@@ -276,9 +276,9 @@ onMounted(errorDashboard.refreshData)
               <PrimeButton
                 @click="errorDashboard.refreshData"
                 :loading="loading"
-                class="h-full" 
+                class="h-full"
               >
-                <Icon name="mdi:refresh"/>
+                <Icon name="mdi:refresh" />
               </PrimeButton>
             </div>
           </div>
@@ -368,28 +368,6 @@ onMounted(errorDashboard.refreshData)
                   {{ error.message }} ({{ error.count }} occurrences)
                 </li>
               </ul>
-            </template>
-          </PrimeCard>
-          <PrimeCard
-            v-if="Object.keys(errorsByHour).length > 0"
-            class="mb-4"
-          >
-            <template #title>Errors by Hour</template>
-            <template #content>
-              <PrimeChart
-                type="bar"
-                :data="{
-                  labels: Object.keys(errorsByHour),
-                  datasets: [
-                    {
-                      label: 'Errors',
-                      data: Object.values(errorsByHour),
-                      backgroundColor: '#4BC0C0'
-                    }
-                  ]
-                }"
-                :options="chartOptions"
-              />
             </template>
           </PrimeCard>
           <div class="mb-4 grid grid-cols-1 gap-4">

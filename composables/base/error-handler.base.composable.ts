@@ -177,20 +177,7 @@ export function useErrorHandler() {
     return mapErrorSeverity(error)
   }
 
-  function logToSentry(error: AppError) {
-    // Sentry.attachErrorHandler(error, {
-    //   tags: {
-    //     errorType: error.details.type,
-    //     severity: error.details.severity,
-    //     context: error.details.context
-    //   },
-    //   extra: {
-    //     code: error.details.code,
-    //     pgError: error.details.pgError,
-    //     operation: error.details.operation
-    //   }
-    // })
-  }
+  function logToSentry(error: AppError) {}
 
   function showNotification(error: AppError) {
     const message = isAdmin
