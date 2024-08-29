@@ -264,17 +264,17 @@ const dataFormatters = {
     >
       <template #header>
         <div class="flex flex-col gap-3">
-          <h2 class="text-xl font-bold">{{ chart.content.title }}</h2>
-          <p class="text-sm">{{ chart.content.subtitle }}</p>
+          <h2 class="text-xl font-bold">{{ chart.title }}</h2>
+          <p class="text-sm">{{ chart.subtitle }}</p>
         </div>
       </template>
       <div
         class="border-color w-full max-w-xs rounded-lg border p-4"
-        v-if="chart.content.info"
+        v-if="chart.info"
       >
         <ul class="pt-4">
           <li
-            v-for="info in chart.content.info"
+            v-for="info in chart.info"
             :key="info.name"
             class="w-full py-1 text-sm"
           >
