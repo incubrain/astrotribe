@@ -2256,19 +2256,35 @@ export type Database = {
             }
             Returns: unknown
           }
-      calculate_table_growth: {
-        Args: {
-          p_table_name: string
-          p_time_period: unknown
-          p_num_periods: number
-        }
-        Returns: {
-          period_end_time: string
-          row_count: number
-          growth_count: number
-          growth_percentage: number
-        }[]
-      }
+      calculate_table_growth:
+        | {
+            Args: {
+              p_table_name: string
+              p_end_date?: string
+            }
+            Returns: {
+              period: string
+              start_date: string
+              end_date: string
+              start_row_count: number
+              end_row_count: number
+              row_growth: number
+              growth_percentage: number
+            }[]
+          }
+        | {
+            Args: {
+              p_table_name: string
+              p_time_period: unknown
+              p_num_periods: number
+            }
+            Returns: {
+              period_end_time: string
+              row_count: number
+              growth_count: number
+              growth_percentage: number
+            }[]
+          }
       cleanup_table_stats: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2291,6 +2307,61 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      get_autovacuum_candidates: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          table_name: string
+          dead_tuples: number
+          threshold: number
+        }[]
+      }
+      get_connection_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          max_connections: number
+          used_connections: number
+          available_connections: number
+          connection_ratio: number
+        }[]
+      }
+      get_connection_usage: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          usage_percentage: number
+          current_connections: number
+          max_connections: number
+        }[]
+      }
+      get_duplicate_indexes: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          index1: string
+          index2: string
+          table_name: string
+        }[]
+      }
+      get_fragmented_objects: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          object_name: string
+          fragmentation: number
+        }[]
+      }
+      get_high_sequence_usage: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          sequence_name: string
+          usage_percentage: number
+        }[]
+      }
+      get_indexes_to_reindex: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          indexname: string
+          tablename: string
+          index_size: number
+        }[]
+      }
       get_latest_articles: {
         Args: {
           base_urls: string[]
@@ -2301,6 +2372,35 @@ export type Database = {
           title: string
           url: string
           created_at: string
+        }[]
+      }
+      get_long_running_transactions: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          pid: number
+          duration: unknown
+          query: string
+        }[]
+      }
+      get_maintenance_objects: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          object_type: string
+          object_name: string
+        }[]
+      }
+      get_suboptimal_queries: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          query_detail: string
+        }[]
+      }
+      get_tables_to_vacuum: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          tablename: string
+          dead_tuples: number
+          live_tuples: number
         }[]
       }
       halfvec_avg: {
@@ -2424,6 +2524,7 @@ export type Database = {
         Returns: {
           operation: string
           detail: string
+          additional_info: Json
         }[]
       }
       sparsevec_out: {
