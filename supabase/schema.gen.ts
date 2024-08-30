@@ -526,114 +526,38 @@ export type Database = {
       }
       company_metrics: {
         Row: {
-          allowed_urls: number
-          category_distribution: Json | null
-          certification_mentions: number | null
+          company_id: string
           crawl_id: string
-          created_at: string | null
-          disallowed_urls: number
-          discovery_timestamps: number[] | null
-          domain: string
-          event_pages: number
-          external_urls: number
-          file_type_distribution: Json
-          filtered_urls: number
           id: number
-          internal_urls: number
-          investor_relations_presence: boolean
-          job_listings: number
-          keyword_presence_in_urls: Json | null
-          language_versions: Json | null
-          linked_domains: Json
-          max_depth: number
-          modern_tech_usage: Json | null
-          partnership_mentions: number | null
-          patent_pages: number
-          press_releases: number
-          product_service_patterns: Json
-          protocol_distribution: Json
-          recent_dates_mentioned: number | null
-          research_papers: number
-          social_media_profiles: Json | null
-          sustainability_mentions: number | null
-          total_urls: number
-          url_depth_distribution: Json
-          url_lengths: number[] | null
-          user_forums: boolean | null
+          metric_id: number | null
+          timestamp: string
+          value: Json
         }
         Insert: {
-          allowed_urls?: number
-          category_distribution?: Json | null
-          certification_mentions?: number | null
+          company_id: string
           crawl_id: string
-          created_at?: string | null
-          disallowed_urls?: number
-          discovery_timestamps?: number[] | null
-          domain: string
-          event_pages: number
-          external_urls: number
-          file_type_distribution: Json
-          filtered_urls?: number
           id?: number
-          internal_urls: number
-          investor_relations_presence: boolean
-          job_listings: number
-          keyword_presence_in_urls?: Json | null
-          language_versions?: Json | null
-          linked_domains: Json
-          max_depth: number
-          modern_tech_usage?: Json | null
-          partnership_mentions?: number | null
-          patent_pages: number
-          press_releases: number
-          product_service_patterns: Json
-          protocol_distribution: Json
-          recent_dates_mentioned?: number | null
-          research_papers: number
-          social_media_profiles?: Json | null
-          sustainability_mentions?: number | null
-          total_urls: number
-          url_depth_distribution: Json
-          url_lengths?: number[] | null
-          user_forums?: boolean | null
+          metric_id?: number | null
+          timestamp: string
+          value: Json
         }
         Update: {
-          allowed_urls?: number
-          category_distribution?: Json | null
-          certification_mentions?: number | null
+          company_id?: string
           crawl_id?: string
-          created_at?: string | null
-          disallowed_urls?: number
-          discovery_timestamps?: number[] | null
-          domain?: string
-          event_pages?: number
-          external_urls?: number
-          file_type_distribution?: Json
-          filtered_urls?: number
           id?: number
-          internal_urls?: number
-          investor_relations_presence?: boolean
-          job_listings?: number
-          keyword_presence_in_urls?: Json | null
-          language_versions?: Json | null
-          linked_domains?: Json
-          max_depth?: number
-          modern_tech_usage?: Json | null
-          partnership_mentions?: number | null
-          patent_pages?: number
-          press_releases?: number
-          product_service_patterns?: Json
-          protocol_distribution?: Json
-          recent_dates_mentioned?: number | null
-          research_papers?: number
-          social_media_profiles?: Json | null
-          sustainability_mentions?: number | null
-          total_urls?: number
-          url_depth_distribution?: Json
-          url_lengths?: number[] | null
-          user_forums?: boolean | null
+          metric_id?: number | null
+          timestamp?: string
+          value?: Json
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "company_metrics_metric_id_fkey"
+            columns: ["metric_id"]
+            isOneToOne: false
+            referencedRelation: "metric_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       company_urls: {
         Row: {
@@ -1421,57 +1345,33 @@ export type Database = {
           },
         ]
       }
-      metrics_spider: {
+      metric_definitions: {
         Row: {
-          average_crawl_speed: number
-          average_response_time: number
-          bandwidth_used: number | null
-          cpu_usage_average: number | null
-          crawl_depth_reached: number
-          crawl_frontier_size: number
-          crawl_id: string
-          end_time: string
-          error_rate: number
+          category: string | null
+          description: string | null
           id: number
-          memory_usage_peak: number | null
-          robots_txt_disallowed: number
-          start_time: string
-          total_urls_crawled: number
-          unique_domains_discovered: number
+          is_dimensional: boolean | null
+          name: string
+          type: string
+          unit: string | null
         }
         Insert: {
-          average_crawl_speed: number
-          average_response_time: number
-          bandwidth_used?: number | null
-          cpu_usage_average?: number | null
-          crawl_depth_reached: number
-          crawl_frontier_size?: number
-          crawl_id: string
-          end_time: string
-          error_rate: number
+          category?: string | null
+          description?: string | null
           id?: number
-          memory_usage_peak?: number | null
-          robots_txt_disallowed: number
-          start_time: string
-          total_urls_crawled: number
-          unique_domains_discovered: number
+          is_dimensional?: boolean | null
+          name: string
+          type: string
+          unit?: string | null
         }
         Update: {
-          average_crawl_speed?: number
-          average_response_time?: number
-          bandwidth_used?: number | null
-          cpu_usage_average?: number | null
-          crawl_depth_reached?: number
-          crawl_frontier_size?: number
-          crawl_id?: string
-          end_time?: string
-          error_rate?: number
+          category?: string | null
+          description?: string | null
           id?: number
-          memory_usage_peak?: number | null
-          robots_txt_disallowed?: number
-          start_time?: string
-          total_urls_crawled?: number
-          unique_domains_discovered?: number
+          is_dimensional?: boolean | null
+          name?: string
+          type?: string
+          unit?: string | null
         }
         Relationships: []
       }
@@ -1906,48 +1806,6 @@ export type Database = {
         }
         Relationships: []
       }
-      scraping_metrics: {
-        Row: {
-          batch_size: number
-          created_at: string | null
-          end_time: string
-          error_rate: number
-          errors: Json
-          id: number
-          more: Json | null
-          scraper_name: string
-          start_time: string
-          time_per_task: number
-          total_errors: number
-        }
-        Insert: {
-          batch_size: number
-          created_at?: string | null
-          end_time: string
-          error_rate: number
-          errors: Json
-          id?: number
-          more?: Json | null
-          scraper_name: string
-          start_time: string
-          time_per_task: number
-          total_errors: number
-        }
-        Update: {
-          batch_size?: number
-          created_at?: string | null
-          end_time?: string
-          error_rate?: number
-          errors?: Json
-          id?: number
-          more?: Json | null
-          scraper_name?: string
-          start_time?: string
-          time_per_task?: number
-          total_errors?: number
-        }
-        Relationships: []
-      }
       searches: {
         Row: {
           created_at: string | null
@@ -2007,6 +1865,38 @@ export type Database = {
           youtube_url?: string | null
         }
         Relationships: []
+      }
+      spider_metrics: {
+        Row: {
+          crawl_id: string
+          id: number
+          metric_id: number | null
+          timestamp: string
+          value: Json
+        }
+        Insert: {
+          crawl_id: string
+          id?: number
+          metric_id?: number | null
+          timestamp: string
+          value: Json
+        }
+        Update: {
+          crawl_id?: string
+          id?: number
+          metric_id?: number | null
+          timestamp?: string
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spider_metrics_metric_id_fkey"
+            columns: ["metric_id"]
+            isOneToOne: false
+            referencedRelation: "metric_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       table_maintenance_log: {
         Row: {
