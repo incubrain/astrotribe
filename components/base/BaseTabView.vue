@@ -48,7 +48,7 @@ defineProps<{
       :key="`tab-index-${tab.title}`"
       :value="tab.value"
       :pt="{
-        root: 'h-full'
+        root: 'h-full overflow-scroll'
       }"
       :ptOptions="{ mergeProps: true, mergeSections: true }"
     >

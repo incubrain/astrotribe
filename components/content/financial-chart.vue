@@ -1,25 +1,23 @@
 <template>
   <div>
-    <h3 class="pb-2 text-center">{{ title }}</h3>
     <Chart
-      :chartType="chartType"
-      :chartData="currentChartData"
+      v-if="chartDataKey"
+      :chart="currentChartData"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-type ChartDataKey = 'users' | 'revenue' | 'globalMarket' | 'indianMarket'
+type ChartDataKey =
+  | 'users'
+  | 'revenue'
+  | 'globalMarket'
+  | 'indianMarket'
+  | 'affiliateRevenue'
+  | 'useOfFunds'
+  | 'financialProgress'
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: 'chart'
-  },
-  chartType: {
-    type: String,
-    default: 'bar'
-  },
   chartDataKey: {
     type: String as PropType<ChartDataKey>,
     required: true
@@ -207,9 +205,168 @@ const chartStyleExpertUsers = {
   borderWidth: 1
 }
 
+const financialProgressChart = {
+  id: 2,
+  title: 'Financial and User Growth Over 12 Months',
+  subtitle: 'Revenue, Expenses, User Base, and Capital',
+  scaleType: 'logarithmic',
+  type: 'bar',
+  data: {
+    labels: [
+      'Month 1',
+      'Month 2',
+      'Month 3',
+      'Month 4',
+      'Month 5',
+      'Month 6',
+      'Month 7',
+      'Month 8',
+      'Month 9',
+      'Month 10',
+      'Month 11',
+      'Month 12'
+    ],
+    datasets: [
+      {
+        label: 'Basic Plan Revenue',
+        data: [0, 0, 24000, 46200, 79200, 124800, 189000, 241800, 288000, 326700, 367200, 420000],
+        backgroundColor: 'rgba(249, 115, 22, 0.6)',
+        borderColor: 'rgb(249, 115, 22)',
+        borderWidth: 1,
+        stack: 'stack1',
+        valueType: 'currency' as const
+      },
+      {
+        label: 'Medium Plan Revenue',
+        data: [0, 0, 48000, 92400, 158400, 249600, 378000, 483600, 576000, 653400, 734400, 840000],
+        backgroundColor: 'rgba(6, 182, 212, 0.6)',
+        borderColor: 'rgb(6, 182, 212)',
+        borderWidth: 1,
+        valueType: 'currency' as const,
+        stack: 'stack1'
+      },
+      {
+        label: 'Pro Plan Revenue',
+        data: [0, 0, 0, 0, 0, 249600, 378000, 483600, 576000, 653400, 734400, 840000],
+        backgroundColor: 'rgba(107, 114, 128, 0.6)',
+        borderColor: 'rgb(107, 114, 128)',
+        borderWidth: 1,
+        valueType: 'currency' as const,
+        stack: 'stack1'
+      },
+      {
+        label: 'B2B Plan Revenue',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 50000, 100000, 150000, 200000],
+        backgroundColor: 'rgba(139, 92, 246, 0.6)',
+        borderColor: 'rgb(139, 92, 246)',
+        borderWidth: 1,
+        valueType: 'currency' as const,
+        stack: 'stack1'
+      },
+      {
+        label: 'Ad Revenue',
+        data: [
+          0, 10000, 20000, 35000, 55000, 80000, 105000, 130000, 150000, 165000, 180000, 200000
+        ],
+        backgroundColor: 'rgba(34, 197, 94, 0.6)',
+        borderColor: 'rgb(34, 197, 94)',
+        borderWidth: 1,
+        valueType: 'currency' as const,
+        stack: 'stack1'
+      },
+      {
+        label: 'Expenses',
+        data: [
+          200000, 200000, 200000, 200000, 200000, 200000, 200000, 200000, 200000, 200000, 200000,
+          200000
+        ],
+        backgroundColor: 'rgba(239, 68, 68, 0.6)',
+        borderColor: 'rgb(239, 68, 68)',
+        borderWidth: 1,
+        valueType: 'currency' as const
+      },
+      {
+        label: 'Total Users',
+        data: [500, 2000, 4000, 7000, 11000, 16000, 21000, 26000, 30000, 33000, 36000, 40000],
+        borderColor: 'rgb(59, 130, 246)',
+        borderWidth: 2,
+        valueType: 'number' as const,
+        type: 'line'
+      },
+      {
+        label: 'Paid Users',
+        data: [0, 0, 80, 154, 264, 416, 630, 806, 960, 1089, 1224, 1400],
+        borderColor: 'rgb(147, 51, 234)',
+        borderWidth: 2,
+        valueType: 'number' as const,
+        type: 'line'
+      },
+      {
+        label: 'Capital',
+        data: [
+          790000, 610000, 502000, 475600, 568200, 1072200, 1922200, 3061200, 4501200, 6199700,
+          8165700, 10365700
+        ],
+        borderColor: 'rgb(234, 179, 8)',
+        borderWidth: 2,
+        valueType: 'currency' as const
+      }
+    ]
+  },
+  info: [
+    { name: 'Final Month Revenue', value: '₹24,00,000' },
+    { name: 'User Growth', value: '5,000 to 40,000' },
+    { name: 'Capital Growth', value: '₹7,90,000 to ₹1,03,65,700' },
+    { name: 'Conversion Rate Growth', value: '2.0% to 3.5%' }
+  ]
+}
+
 const currentChartData = computed(() => chartData[props.chartDataKey])
 
+const useOfFundsChart = {
+  id: 1,
+  scaleType: 'linear' as const,
+  title: 'Use of Funds Breakdown',
+  subtitle: 'Allocation of 10,00,000 INR initial investment',
+  type: 'pie',
+  data: {
+    labels: [
+      'Product Development',
+      'Marketing and User Acquisition',
+      'Team Expansion',
+      'Operational Costs'
+    ],
+    datasets: [
+      {
+        label: 'Cost',
+        data: [400000, 300000, 200000, 100000],
+        backgroundColor: [
+          'rgba(249, 115, 22, 0.6)',
+          'rgba(6, 182, 212, 0.6)',
+          'rgba(107, 114, 128, 0.6)',
+          'rgba(139, 92, 246, 0.6)'
+        ],
+        borderColor: [
+          'rgb(249, 115, 22)',
+          'rgb(6, 182, 212)',
+          'rgb(107, 114, 128)',
+          'rgb(139, 92, 246)'
+        ],
+        borderWidth: 1,
+        valueType: 'currency' as const
+      }
+    ]
+  },
+  info: [
+    { name: 'Total Investment', value: '₹10,00,000' },
+    { name: 'Largest Allocation', value: 'Product Development (₹4,00,000)' },
+    { name: 'Smallest Allocation', value: 'Operational Costs (₹1,00,000)' }
+  ]
+}
+
 const chartData = {
+  financialProgress: financialProgressChart,
+  useOfFunds: useOfFundsChart,
   users: {
     labels: labels.years,
     datasets: [

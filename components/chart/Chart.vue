@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TooltipOptions, ChartOptions, TooltipItem, LegendOptions, LabelItem } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 const componentId = useId()
 
@@ -38,6 +39,8 @@ interface Chart {
   title: string
   subtitle: string
   type: string
+  horizontal?: boolean
+  hideAxes?: boolean
   data: ChartData
 }
 
@@ -48,12 +51,16 @@ const props = defineProps({
   }
 })
 
+console.log('chart', props.chart)
+
 const preformattedCharts = computed(() => {
+  if (!isChartDataReady.value) return null
+
   return {
     ...props.chart,
     data: {
       ...props.chart.data,
-      datasets: props.chart.data.datasets.map((dataset: Dataset) => {
+      datasets: props.chart.data.datasets?.map((dataset: Dataset) => {
         const yAxisID = dataset.type ? 'y-2' : 'y'
         return {
           yAxisID,
@@ -87,47 +94,78 @@ function getFirstNumber(...values: any[]): number {
   return 0
 }
 
-const chartOptions = computed(
-  () =>
-    ({
-      interaction: {
-        mode: 'index'
-      },
-      plugins: {
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          padding: 10,
-          callbacks: {
-            label: formatTooltipLabel,
-            labelColor: (context: any) => {
-              return {
-                borderColor: 'black',
-                backgroundColor: context.dataset.backgroundColor,
-                borderWidth: 2,
-                borderRadius: 2
-              }
+const chartOptions = computed(() => {
+  if (!isChartDataReady.value) return {}
+
+  const isPieChart = props.chart.type === 'pie' || props.chart.type === 'doughnut'
+
+  return {
+    indexAxis: props.chart.horizontal ? 'y' : 'x', // Apply horizontal layout if specified
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        padding: 10,
+        callbacks: {
+          label: formatTooltipLabel,
+          labelColor: (context: any) => {
+            return {
+              borderColor: 'black',
+              backgroundColor: context.dataset.backgroundColor,
+              borderWidth: 2,
+              borderRadius: 2
             }
           }
-        },
-        legend: generateLegend
+        }
       },
-      scales: generateScales(preformattedCharts.value.data.datasets, props.chart.scaleType),
-      animations: {
-        y: {
-          easing: 'easeInOutElastic',
-          from: (ctx: any) => {
-            if (ctx.type === 'data') {
-              if (ctx.mode === 'default' && !ctx.dropped) {
-                ctx.dropped = true
-                return 0
-              }
+      legend: generateLegend,
+      datalabels: isPieChart
+        ? {
+            color: '#00000',
+            font: {
+              weight: 'bold',
+              size: 14
+            },
+            formatter: (value: number, context: any) => {
+              return dataFormatters[dataset.valueType](value)
+            },
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent black background
+            borderRadius: 4, // Rounded corners
+            padding: {
+              top: 4,
+              right: 6,
+              bottom: 4,
+              left: 6
+            },
+            anchor: 'end', // Position anchor at the end (outside) of the slice
+            align: 'end', // Align to the end (outside) of the slice
+            offset: 8, // Distance from the edge of the pie
+            textAlign: 'center'
+          }
+        : false // Disable for non-pie charts
+    },
+    scales: generateScales(
+      preformattedCharts.value.data.datasets,
+      props.chart.scaleType,
+      isPieChart || props.chart.hideAxes
+    ),
+    animations: {
+      y: {
+        easing: 'easeInOutElastic',
+        from: (ctx: any) => {
+          if (ctx.type === 'data') {
+            if (ctx.mode === 'default' && !ctx.dropped) {
+              ctx.dropped = true
+              return 0
             }
           }
         }
       }
-    }) as ChartOptions
-)
+    }
+  } as ChartOptions
+})
 
 function generateLegend(): Partial<LegendOptions<'line'>> {
   return {
@@ -151,7 +189,18 @@ function generateLegend(): Partial<LegendOptions<'line'>> {
 }
 
 const gridColor = 'rgba(255, 255, 255, 0.1)'
-function generateScales(datasets: Dataset[], scaleType: ScaleType = 'linear'): Record<string, any> {
+function generateScales(
+  datasets: Dataset[],
+  scaleType: ScaleType = 'linear',
+  hideAxes: boolean
+): Record<string, any> {
+  if (hideAxes) {
+    return {
+      x: { display: false },
+      y: { display: false }
+    }
+  }
+
   const scales: Record<string, any> = {
     x: {
       ticks: { color: '#fff' },
@@ -161,7 +210,9 @@ function generateScales(datasets: Dataset[], scaleType: ScaleType = 'linear'): R
     }
   }
 
-  datasets.forEach((dataset: Dataset) => {
+  if (!datasets) return scales
+
+  datasets?.forEach((dataset: Dataset) => {
     const axisId = dataset.yAxisID
 
     switch (axisId) {
@@ -234,6 +285,17 @@ function formatTooltipLabel(tooltipItem: TooltipItem<'line'>) {
   return `${dataset.label}: ${formattedValue}`
 }
 
+const isChartDataReady = computed(() => {
+  return (
+    props.chart &&
+    props.chart.data &&
+    props.chart.data.datasets &&
+    props.chart.data.datasets.length > 0
+  )
+})
+
+console.log('preformattedCharts', props)
+
 const dataFormatters = {
   currency: (value: number) => formatCurrency(value, 'INR'), // Example default, can be dynamic
   storage: (value: number) => formatStorage(value),
@@ -255,7 +317,7 @@ const dataFormatters = {
 <template>
   <div
     class="relative flex w-full flex-col gap-4"
-    v-if="chart"
+    v-if="isChartDataReady"
   >
     <PrimeDrawer
       v-model:visible="isFullScreen"
@@ -287,7 +349,7 @@ const dataFormatters = {
         :id="`chart-${componentId}-fullscreen`"
         :type="chart.type"
         :data="preformattedCharts.data"
-        :plugins="[customPaddingPlugin]"
+        :plugins="[customPaddingPlugin, ChartDataLabels]"
         :options="chartOptions"
       />
     </PrimeDrawer>
@@ -296,7 +358,7 @@ const dataFormatters = {
       :id="`chart-${componentId}`"
       :type="chart.type"
       :data="preformattedCharts.data"
-      :plugins="[customPaddingPlugin]"
+      :plugins="[customPaddingPlugin, ChartDataLabels]"
       :options="chartOptions"
     />
     <div class="border-color flex w-full gap-2 rounded-lg border px-3 py-2">
