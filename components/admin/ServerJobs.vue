@@ -1,6 +1,17 @@
 <script setup lang="ts">
-import { useServerAnalytics } from '@/composables/useServerAnalytics'
-const { metrics, haveMetrics, availableMetrics, isConnected } = useServerAnalytics()
+
+const store = useServerAnalyticsStore()
+const {
+  jobMetrics,
+  spiderMetrics,
+  paginationMetrics,
+  blogPostScraperMetrics,
+  resourceAnalytics,
+  pageToMarkdownAnalytics,
+  availableMetrics,
+  isConnected,
+  haveMetrics
+} = storeToRefs(store)
 
 interface FlatMetric {
   key: string
@@ -31,8 +42,17 @@ function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
   return flattened
 }
 
+const allMetrics = computed(() => ({
+  jobMetrics: jobMetrics.value,
+  spiderMetrics: spiderMetrics.value,
+  paginationMetrics: paginationMetrics.value,
+  blogPostScraperMetrics: blogPostScraperMetrics.value,
+  resourceAnalytics: resourceAnalytics.value,
+  pageToMarkdownAnalytics: pageToMarkdownAnalytics.value
+}))
+
 const flatMetrics = computed<FlatMetric[]>(() => {
-  return flattenMetrics(metrics)
+  return flattenMetrics(allMetrics.value)
 })
 
 const metricCategories = computed(() => {
@@ -74,7 +94,7 @@ function formatMetricValue(value: any): string {
       class="text-red-500"
       >Disconnected</div
     >
-    {{ metrics }}
+    {{ allMetrics }}
     <div
       v-if="haveMetrics"
       class="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-8"

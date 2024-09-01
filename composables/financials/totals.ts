@@ -361,19 +361,19 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
       marketingCost +
       payments.totalCost
 
-      console.log('Monthly Expenses:', {
-        employees: employees.totalCost,
-        supabase: supabase.totalCost,
-        devOps: devOpsCost,
-        digitalOcean: digitalOcean.cost,
-        logging: logging.total,
-        openAI: openAI.cost.total,
-        office: office.total,
-        analytics: analytics.total,
-        software: software.totalCost,
-        marketing: marketingCost,
-        payments: payments.totalCost
-      })
+    console.log('Monthly Expenses:', {
+      employees: employees.totalCost,
+      supabase: supabase.totalCost,
+      devOps: devOpsCost,
+      digitalOcean: digitalOcean.cost,
+      logging: logging.total,
+      openAI: openAI.cost.total,
+      office: office.total,
+      analytics: analytics.total,
+      software: software.totalCost,
+      marketing: marketingCost,
+      payments: payments.totalCost
+    })
 
     const totalCustomers = revenue.customers.pro.count + revenue.customers.expert.count
     const metrics = calculateAllMetrics({
@@ -535,8 +535,8 @@ type BusinessMetricsConfig = {
   }
   CONTENT_CONFIG: {
     NEWS: ProcessdContentConfig
-    RESEARCH_ABSTRACTS: ProcessdContentConfig
-    RESEARCH_PAPERS: ProcessdContentConfig
+    // RESEARCH_ABSTRACTS: ProcessdContentConfig
+    // RESEARCH_PAPERS: ProcessdContentConfig
     COMPANIES: ProcessdContentConfig
     JOBS: ProcessdContentConfig
   }
@@ -563,52 +563,52 @@ export const metricConfig = {
   MRR_MARKETING_PERCENTAGE_SPEND: 0.1,
   MONTHLY_CHURN: {
     MAU: {
-      PESSIMISTIC: 0.15,
-      OPTIMISTIC: 0.08
+      PESSIMISTIC: 0.10,
+      OPTIMISTIC: 0.05
     },
     PRO: {
-      PESSIMISTIC: 0.11,
+      PESSIMISTIC: 0.10,
       OPTIMISTIC: 0.04
     },
     EXPERT: {
-      PESSIMISTIC: 0.11,
+      PESSIMISTIC: 0.09,
       OPTIMISTIC: 0.04
     }
   },
   CURRENT: {
-    MAU: 200, // Initial MAU
-    USD_TO_INR: 83.4, // 5TH JULY 2024
-    REVENUE: 0 // Initial Revenue
+    MAU: 100,
+    USD_TO_INR: 83.4,
+    REVENUE: 0
   },
   LOAN: {
-    AMOUNT: 20_00_000, // Initial Loan Amount
-    ANNUAL_INTEREST_RATE: 0.12, // Annual Interest Rate
-    TERM_IN_YEARS: 4 // Term in Years
+    AMOUNT: 10_00_000,
+    ANNUAL_INTEREST_RATE: 0.0,
+    TERM_IN_YEARS: 4
   },
   PROJECTION: {
-    MONTHS: 24, // Number of Months to Project
-    MONTHLY_GROWTH_RATE: 0.2, // Monthly Growth Rate (50%)
-    MANUAL_GROWTH_RATE: 100, // Manual Growth Rate
-    USAGE_HOURS_PER_DAY: 0.1, // Base Usage Hours per Day
-    USAGE_GROWTH_FACTOR: 0.1, // Base Hours Growth Factor
-    MAX_DAILY_USAGE: 1.5 // Max Daily Hour Usage
+    MONTHS: 12,
+    MONTHLY_GROWTH_RATE: 0.2,
+    MANUAL_GROWTH_RATE: 100,
+    USAGE_HOURS_PER_DAY: 0.1,
+    USAGE_GROWTH_FACTOR: 0.1,
+    MAX_DAILY_USAGE: 1.5
   },
   DEVOPS_USAGE: {
-    DATA_TRANSFER_GB: 0.015, // 15 MB per hour per user
-    ORIGIN_TRANSFER_GB: 0.001, // 1 MB per hour per user
-    EDGE_REQUESTS: 150, // 150 requests per hour per user
-    MIDDLEWARE_INVOCATIONS: 75, // 75 middleware invocations per hour per user
-    SOURCE_IMAGES: 0, // Assume no usage, handled by supabase
-    FUNCTION_INVOCATIONS: 75, // 75 function invocations per hour per user
-    FUNCTION_DURATION_GB_HOURS: 0.08, // Adjusted to 0.08 GB-hours per hour per user
-    EDGE_FUNCTION_EXECUTIONS: 75, // 75 edge function executions per hour per user
-    DATA_CACHE_READS: 800, // Adjusted to 800 data cache reads per hour per user
-    DATA_CACHE_WRITES: 75, // 75 data cache writes per hour per user
-    EDGE_CONFIG_READS: 50, // Adjusted to 50 edge config reads per hour per user
-    EDGE_CONFIG_WRITES: 0.1, // Adjusted to 0.1 edge config writes per hour per user
-    MONITORING_EVENTS: 0, // Use posthog instead
-    SPEED_INSIGHTS_DATA_POINTS: 0, // Not using
-    WEB_ANALYTICS_EVENTS: 0 // Not using
+    DATA_TRANSFER_GB: 0.015,
+    ORIGIN_TRANSFER_GB: 0.001,
+    EDGE_REQUESTS: 150,
+    MIDDLEWARE_INVOCATIONS: 75,
+    SOURCE_IMAGES: 0,
+    FUNCTION_INVOCATIONS: 75,
+    FUNCTION_DURATION_GB_HOURS: 0.08,
+    EDGE_FUNCTION_EXECUTIONS: 75,
+    DATA_CACHE_READS: 800,
+    DATA_CACHE_WRITES: 75,
+    EDGE_CONFIG_READS: 50,
+    EDGE_CONFIG_WRITES: 0.1,
+    MONITORING_EVENTS: 0,
+    SPEED_INSIGHTS_DATA_POINTS: 0,
+    WEB_ANALYTICS_EVENTS: 0
   },
   CONTENT_CONFIG: {
     NEWS: {
@@ -624,32 +624,32 @@ export const metricConfig = {
         OUTPUT: WORDS_TO_CHARS(240)
       }
     },
-    RESEARCH_ABSTRACTS: {
-      PROCESSED: 0,
-      TOTAL: 2_400_000,
-      SOURCES: 2,
-      PER_SOURCE_ADDITIONS: 1_300,
-      PROCESSED_MONTHLY: 10_000,
-      CHARS: {
-        CONTENT: WORDS_TO_CHARS(280),
-        CHUNKS: WORDS_TO_CHAR_CHUNKS(280),
-        PROMPT: WORDS_TO_CHARS(50),
-        OUTPUT: WORDS_TO_CHARS(60)
-      }
-    },
-    RESEARCH_PAPERS: {
-      PROCESSED: 0,
-      TOTAL: 1000,
-      SOURCES: 2,
-      PER_SOURCE_ADDITIONS: 10_000,
-      PROCESSED_MONTHLY: 10_000,
-      CHARS: {
-        CONTENT: WORDS_TO_CHARS(10_000),
-        CHUNKS: WORDS_TO_CHAR_CHUNKS(10_000),
-        PROMPT: WORDS_TO_CHARS(100),
-        OUTPUT: WORDS_TO_CHARS(400)
-      }
-    },
+    // RESEARCH_ABSTRACTS: {
+    //   PROCESSED: 0,
+    //   TOTAL: 2_400_000,
+    //   SOURCES: 2,
+    //   PER_SOURCE_ADDITIONS: 1_300,
+    //   PROCESSED_MONTHLY: 10_000,
+    //   CHARS: {
+    //     CONTENT: WORDS_TO_CHARS(280),
+    //     CHUNKS: WORDS_TO_CHAR_CHUNKS(280),
+    //     PROMPT: WORDS_TO_CHARS(50),
+    //     OUTPUT: WORDS_TO_CHARS(60)
+    //   }
+    // },
+    // RESEARCH_PAPERS: {
+    //   PROCESSED: 0,
+    //   TOTAL: 1000,
+    //   SOURCES: 2,
+    //   PER_SOURCE_ADDITIONS: 10_000,
+    //   PROCESSED_MONTHLY: 10_000,
+    //   CHARS: {
+    //     CONTENT: WORDS_TO_CHARS(10_000),
+    //     CHUNKS: WORDS_TO_CHAR_CHUNKS(10_000),
+    //     PROMPT: WORDS_TO_CHARS(100),
+    //     OUTPUT: WORDS_TO_CHARS(400)
+    //   }
+    // },
     COMPANIES: {
       PROCESSED: 0,
       TOTAL: 4_500,
@@ -686,20 +686,20 @@ export const metricConfig = {
       additionsGrowthRate: 0.15,
       monthlyProcessingGrowthRate: 0.1
     },
-    RESEARCH_ABSTRACTS: {
-      totalContentStored: 0,
-      totalVectorStored: 0,
-      sourceGrowthRate: 0.02,
-      additionsGrowthRate: 0.02,
-      monthlyProcessingGrowthRate: 0.07
-    },
-    RESEARCH_PAPERS: {
-      totalContentStored: 0,
-      totalVectorStored: 0,
-      sourceGrowthRate: 0.01,
-      additionsGrowthRate: 0.01,
-      monthlyProcessingGrowthRate: 0.02
-    },
+    // RESEARCH_ABSTRACTS: {
+    //   totalContentStored: 0,
+    //   totalVectorStored: 0,
+    //   sourceGrowthRate: 0.02,
+    //   additionsGrowthRate: 0.02,
+    //   monthlyProcessingGrowthRate: 0.07
+    // },
+    // RESEARCH_PAPERS: {
+    //   totalContentStored: 0,
+    //   totalVectorStored: 0,
+    //   sourceGrowthRate: 0.01,
+    //   additionsGrowthRate: 0.01,
+    //   monthlyProcessingGrowthRate: 0.02
+    // },
     COMPANIES: {
       totalContentStored: 0,
       totalVectorStored: 0,
