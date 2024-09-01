@@ -4,6 +4,7 @@ import { useTimeAgo } from '@vueuse/core'
 const props = defineProps<{
   logs: string
 }>()
+
 const uniqueLogs = computed(() => {
   const logMap = new Map()
   props.logs.forEach((log) => {

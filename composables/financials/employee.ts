@@ -1,22 +1,22 @@
 import { USD2INR, ROUND0 } from './helpers'
 
 const BASE_EMPLOYEE_COUNT = {
-  support: 1,
-  core: 1,
-  experts: 0,
+  support: 0,
+  core: 0,
+  experts: 3,
   founders: 2
 }
 
 export const EMPLOYEE_CONFIG = {
   start: {
     support: {
-      salary: 16_000
+      salary: 10_000
     },
     core: {
-      salary: 20_000
+      salary: 10_000
     },
     experts: {
-      salary: 30_000
+      salary: 25_000
     },
     founders: {
       salary: 25_000
@@ -24,7 +24,7 @@ export const EMPLOYEE_CONFIG = {
   },
   growth: {
     support: {
-      salary: 18_000
+      salary: 15_000
     },
     core: {
       salary: 24_000
@@ -38,7 +38,7 @@ export const EMPLOYEE_CONFIG = {
   },
   scaling: {
     support: {
-      salary: 23_000
+      salary: 20_000
     },
     core: {
       salary: 36_000
@@ -68,13 +68,9 @@ export const EMPLOYEE_CONFIG = {
 
 const EMPLOYEE_EXTRAS = {
   recruitment: 500,
-  turnover: 2000,
-  legal: 2000,
-  technology: 2000
-}
-
-const EMPLOYEE_ONCE_OFF_COSTS = {
-  legal: 2000
+  turnover: 1000,
+  legal: 1000,
+  technology: 1000
 }
 
 // Function to calculate benefits as a percentage of salary

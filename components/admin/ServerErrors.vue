@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { defineStore } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-
 const useErrorDashboard = defineStore('errorDashboard', () => {
   const errorReport = ref(null)
   const errorTrends = ref([])
@@ -158,6 +154,7 @@ const {
   error,
   errorLogs,
   errorReport,
+  errorTrends,
   mostFrequentErrors,
   errorReduction,
   averageErrorsPerDay,
@@ -250,6 +247,13 @@ const dailyErrorChart = computed(() => ({
 }))
 
 onMounted(errorDashboard.refreshData)
+
+const rawDataArray = computed(() => [
+  { title: 'Error Trends', data: errorTrends.value },
+  { title: 'Error Logs', data: errorLogs.value },
+  { title: 'Error Report', data: errorReport.value }
+])
+
 </script>
 
 <template>
@@ -263,16 +267,6 @@ onMounted(errorDashboard.refreshData)
           <div class="flex items-center justify-between gap-4 p-4">
             <h2 class="text-xl font-bold">{{ totalLogs }} Error Logs</h2>
             <div class="flex items-center gap-2">
-              <PrimeDatePicker
-                v-model="errorDashboard.selectedDate"
-                @date-select="errorDashboard.setDate"
-              />
-              <PrimeSelect
-                v-model="pageSize"
-                :options="[{ value: 10 }, { value: 20 }, { value: 50 }]"
-                optionLabel="value"
-                placeholder="To load"
-              />
               <PrimeButton
                 @click="errorDashboard.refreshData"
                 :loading="loading"
@@ -280,6 +274,12 @@ onMounted(errorDashboard.refreshData)
               >
                 <Icon name="mdi:refresh" />
               </PrimeButton>
+              <BaseRawDataDialog
+                ref="rawDataPopupRef"
+                dialogTitle="Raw Error Data"
+                buttonText="Raw"
+                :dataArray="rawDataArray"
+              />
             </div>
           </div>
           <AdminErrorLogViewer

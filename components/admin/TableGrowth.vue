@@ -20,7 +20,7 @@ const tables = [
 
 const growthData = ref<Record<string, any>>({})
 const isLoading = ref(true)
-const useFakeData = ref(true)
+const useFakeData = ref(false)
 
 const fetchGrowthData = async (table: string) => {
   if (useFakeData.value) {

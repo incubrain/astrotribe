@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const { connectWebSocket, disconnectWebSocket, subscribeToMetrics } = useServerAnalytics()
+const serverAnalyticsStore = useServerAnalyticsStore()
 
 onMounted(() => {
-  connectWebSocket()
-  subscribeToMetrics([
+  serverAnalyticsStore.connectWebSocket()
+  serverAnalyticsStore.subscribeToMetrics([
     'spiderMetrics',
     'jobMetrics',
     'paginationMetrics',
@@ -14,7 +14,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  disconnectWebSocket()
+  serverAnalyticsStore.disconnectWebSocket()
 })
 
 const { adminLinks } = usePages()

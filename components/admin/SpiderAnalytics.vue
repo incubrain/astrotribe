@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useServerAnalytics } from '@/composables/useServerAnalytics'
-
-const { metrics, haveMetrics, isConnected } = useServerAnalytics()
+const store = useServerAnalyticsStore()
+const { spiderMetrics, isConnected, haveMetrics } = storeToRefs(store)
 
 watch(
-  metrics,
+  spiderMetrics,
   (newMetrics) => {
-    console.log('Metrics updated:', newMetrics)
+    console.log('Spider Metrics updated:', newMetrics)
   },
   { deep: true }
 )
@@ -76,7 +75,7 @@ const protocolChartOptions = {
 }
 
 const urlDepthChartData = computed(() => {
-  const depthStats = metrics.spiderMetrics?.depthStats ?? {}
+  const depthStats = spiderMetrics.value?.depthStats ?? {}
   return {
     labels: Object.keys(depthStats),
     datasets: [
@@ -99,67 +98,93 @@ const protocolChartData = computed(() => ({
   datasets: [
     {
       data: [
-        metrics.spiderMetrics?.protocolDistribution?.http ?? 0,
-        metrics.spiderMetrics?.protocolDistribution?.https ?? 0
+        spiderMetrics.value?.protocolDistribution?.http ?? 0,
+        spiderMetrics.value?.protocolDistribution?.https ?? 0
       ],
       backgroundColor: ['#FF6384', '#36A2EB']
     }
   ]
 }))
 
-const isSpiderActive = computed(() => !!metrics.spiderMetrics.crawlDuration)
+const isSpiderActive = computed(() => !!spiderMetrics.value?.crawlDuration)
+
+const rawDataArray = computed(() =>
+  isSpiderActive.value
+    ? [
+        {
+          title: 'Spider Metrics',
+          data: {
+            crawlDuration: spiderMetrics.value.crawlDuration,
+            urlsPerSecond: spiderMetrics.value.urlsPerSecond,
+            responseTimeStats: spiderMetrics.value.responseTimeStats,
+            urlCounts: spiderMetrics.value.urlCounts,
+            depthStats: spiderMetrics.value.depthStats,
+            protocolDistribution: spiderMetrics.value.protocolDistribution
+          }
+        },
+        {
+          title: 'URL Depth Data',
+          data: urlDepthChartData.value
+        },
+        {
+          title: 'Protocol Distribution Data',
+          data: protocolChartData.value
+        }
+      ]
+    : []
+)
 </script>
 
 <template>
   <div class="p-4">
     <div v-if="isConnected">Connected</div>
     <div v-else>Disconnected</div>
+    <BaseRawDataDialog
+      ref="rawDataPopupRef"
+      dialogTitle="Raw Spider Data"
+      buttonText="Raw"
+      :dataArray="rawDataArray"
+    />
 
     <div v-if="haveMetrics && isSpiderActive">
       <div class="mb-8">
         <h2 class="mb-4 text-2xl font-semibold">Spider Metrics</h2>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 pb-4">
+        <div class="grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 lg:grid-cols-3">
           <PrimeCard class="foreground">
             <template #title>Crawl Duration</template>
             <template #content>
-              <div class="text-4xl font-bold"
-                >{{ (metrics.spiderMetrics.crawlDuration / 1000) }}s</div
-              >
+              <div class="text-4xl font-bold">{{ spiderMetrics.crawlDuration / 1000 }}s</div>
             </template>
           </PrimeCard>
           <PrimeCard class="shadow-md">
             <template #title>URLs per Second</template>
             <template #content>
-              <div class="text-4xl font-bold">{{
-                metrics.spiderMetrics.urlsPerSecond
-              }}</div>
+              <div class="text-4xl font-bold">{{ spiderMetrics.urlsPerSecond }}</div>
             </template>
           </PrimeCard>
           <PrimeCard class="shadow-md">
             <template #title>Avg Response Time</template>
             <template #content>
-              <div class="text-4xl font-bold"
-                >{{ metrics.spiderMetrics.responseTimeStats.average }}ms</div
-              >
+              <div class="text-4xl font-bold">{{ spiderMetrics.responseTimeStats.average }}ms</div>
             </template>
           </PrimeCard>
         </div>
         <PrimeCard class="shadow-md">
           <template #title>Total URLs</template>
           <template #content>
-            <div class="text-4xl font-bold">{{ metrics.spiderMetrics.urlCounts.total }}</div>
+            <div class="text-4xl font-bold">{{ spiderMetrics.urlCounts.total }}</div>
           </template>
         </PrimeCard>
         <PrimeCard class="shadow-md">
           <template #title>New URLs</template>
           <template #content>
-            <div class="text-4xl font-bold">{{ metrics.spiderMetrics.urlCounts.new }}</div>
+            <div class="text-4xl font-bold">{{ spiderMetrics.urlCounts.new }}</div>
           </template>
         </PrimeCard>
         <PrimeCard class="shadow-md">
           <template #title>Allowed URLs</template>
           <template #content>
-            <div class="text-4xl font-bold">{{ metrics.spiderMetrics.urlCounts.allowed }}</div>
+            <div class="text-4xl font-bold">{{ spiderMetrics.urlCounts.allowed }}</div>
           </template>
         </PrimeCard>
       </div>
