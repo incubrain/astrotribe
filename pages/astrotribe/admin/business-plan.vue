@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 const businessPlanSections = [
-  'full-bp',
+  'executive-summary',
   'summary',
   'description',
   'market-analysis',
@@ -25,7 +25,6 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
   title: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
   slotName: section
 }))
-
 </script>
 
 <template>
