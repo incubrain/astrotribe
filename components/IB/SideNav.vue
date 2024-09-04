@@ -76,7 +76,7 @@ const route = useRoute()
     </template>
     <template #end>
       <div class="flex h-full items-end justify-end">
-        <BaseDevHelpers v-if="isDev && showDevHelpers" />
+        <IBDevHelpers v-if="isDev && showDevHelpers" />
       </div>
     </template>
   </PrimeMenu>

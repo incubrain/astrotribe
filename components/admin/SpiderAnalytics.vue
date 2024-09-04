@@ -137,6 +137,7 @@ const rawDataArray = computed(() =>
 
 <template>
   <div class="p-4">
+    {{ spiderMetrics }}
     <div v-if="isConnected">Connected</div>
     <div v-else>Disconnected</div>
     <div v-if="haveMetrics && isSpiderActive">

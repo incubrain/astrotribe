@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseFeedback from '~/components/base/BaseFeedback.vue'
+import BaseFeedback from '~/components/IB/BaseFeedback.vue
 
 definePageMeta({
   name: 'AstroTribe',
@@ -90,7 +90,7 @@ const comingSoon = [
           <span class="pl-2">{{ item }}</span>
         </li>
       </ul>
-      <BaseFeedback cta="Have an idea? We would love to hear it!" />
+      <IBFeedback cta="Have an idea? We would love to hear it!" />
     </div>
   </div>
 </template>

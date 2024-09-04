@@ -25,14 +25,14 @@ const { haveUserSession } = storeToRefs(currentUser)
 </script>
 
 <template>
-  <div class="space-y-4 min-h-full flex flex-col space-between">
-    <div class="flex gap-4 flex-row py-8 w-full justify-center items-center text-white h-full">
-      <div class="p-4 bg-white rounded-full border border-color group hover:invert relative">
+  <div class="space-between flex min-h-full flex-col space-y-4">
+    <div class="flex h-full w-full flex-row items-center justify-center gap-4 py-8 text-white">
+      <div class="border-color group relative rounded-full border bg-white p-4 hover:invert">
         <NuxtLink
           to="/"
-          class="flex justify-center items-center"
+          class="flex items-center justify-center"
         >
-          <BaseImage
+          <IBImage
             class="group-hover:opacity-0"
             :img="{
               src: 'astronera-logo.jpg',
@@ -41,12 +41,12 @@ const { haveUserSession } = storeToRefs(currentUser)
               height: '60'
             }"
           />
-          <p class="hidden absolute group-hover:flex mx-auto my-auto text-black"> Go Home </p>
+          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex"> Go Home </p>
         </NuxtLink>
       </div>
       <div class="w-full">
-        <h2 class="lg:text-center text-3xl font-extrabold">{{ title.main }}</h2>
-        <span class="text-center font-bold flex items-center gap-4 lg:justify-center">
+        <h2 class="text-3xl font-extrabold lg:text-center">{{ title.main }}</h2>
+        <span class="flex items-center gap-4 text-center font-bold lg:justify-center">
           {{ title.subtitle }}
           <NuxtLink
             v-if="helpUrl && title.label"
@@ -72,7 +72,7 @@ const { haveUserSession } = storeToRefs(currentUser)
             <div class="w-full pt-4">
               <PrimeDivider
                 layout="horizontal"
-                class="flex justify-left items-center"
+                class="justify-left flex items-center"
               >
                 <p>Or Login with</p>
               </PrimeDivider>

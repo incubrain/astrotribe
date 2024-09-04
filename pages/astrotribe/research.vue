@@ -9,7 +9,7 @@ const fetchInput = ref({
   domainKey,
   endpoint: '/api/research/select/cards',
   criteria: {
-    dto: 'select:research:card',
+    dto: 'select:research:card'
   }
 })
 
@@ -29,9 +29,9 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex flex-col relative h-full w-full">
+  <div class="relative flex h-full w-full flex-col">
     <!-- <SummaryLevel /> -->
-    <BaseInfiniteScroll
+    <IBInfiniteScroll
       :domain-key="domainKey"
       :pagination="{
         page: 1,
@@ -39,13 +39,13 @@ definePageMeta({
       }"
       @update:scroll-end="researchStore.loadResearch('select:venue:card')"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mx-auto md:gap-4 xl:gap-8">
+      <div class="mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-4 xl:grid-cols-3 xl:gap-8">
         <ResearchCard
           v-for="(item, index) in research"
           :key="`research-post-${index}`"
           :research="item"
         />
       </div>
-    </BaseInfiniteScroll>
+    </IBInfiniteScroll>
   </div>
 </template>

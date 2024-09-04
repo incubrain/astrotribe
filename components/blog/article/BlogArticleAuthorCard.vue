@@ -13,7 +13,7 @@ defineProps<{
         v-if="author"
         class="flex flex-row items-center gap-4 xl:gap-8"
       >
-        <BaseImage
+        <IBImage
           :img="{
             src: author.avatar,
             alt: `${author.name.full} is an author on the AstronEra Blog`,
@@ -23,10 +23,10 @@ defineProps<{
           class="h-full rounded-full sm:max-w-[100px]"
         />
         <div class="w-full space-y-1 text-left">
-          <div class="flex gap-2 items-center">
+          <div class="flex items-center gap-2">
             <h4 class="text-xl font-semibold"> About {{ author.name.full }} </h4>
-            <PrimeTag class="text-primary-600 text-xs uppercase">follow</PrimeTag>
-            <BaseSocialBlock
+            <PrimeTag class="text-xs uppercase text-primary-600">follow</PrimeTag>
+            <IBSocialBlock
               v-if="author.socials"
               :socials="author.socials"
             />

@@ -206,7 +206,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="table-growth-dashboard overflow-hidden p-4 bg-gray-900 text-white">
+  <div class="table-growth-dashboard overflow-hidden bg-gray-900 p-4 text-white">
     <h1 class="mb-8 py-12 text-center text-5xl font-bold">Table Growth Dashboard</h1>
     <div
       v-if="isLoading"
@@ -216,17 +216,17 @@ onMounted(async () => {
     </div>
     <div v-else>
       <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <BaseGlass class="lg:col-start-2">
+        <IBGlass class="lg:col-start-2">
           <template #header>
             <h2 class="mb-2 text-2xl font-semibold">Total Row Count</h2>
           </template>
           <template #default>
             <div class="text-5xl font-bold">{{ formatNumber(totalRowCount) }}</div>
           </template>
-        </BaseGlass>
+        </IBGlass>
       </div>
       <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <BaseGlass
+        <IBGlass
           v-for="table in tables"
           :key="table"
         >
@@ -273,7 +273,7 @@ onMounted(async () => {
               >No data available</div
             >
           </template>
-        </BaseGlass>
+        </IBGlass>
       </div>
     </div>
   </div>

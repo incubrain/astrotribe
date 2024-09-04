@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-4 p-4">
-    <!-- <BaseUpload
+    <!-- <IBUpload
       name="user-images"
       url="/api/admin/users/bulk-upload"
       accept="image/*"

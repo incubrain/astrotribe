@@ -23,7 +23,7 @@ defineProps({
         :article-link="article._path.split('/')[2]"
         class="p-4"
       />
-      <BaseImage
+      <IBImage
         :img="{
           src: `images/blog/${article.category}/${article.featured_image}`,
           width: '400',

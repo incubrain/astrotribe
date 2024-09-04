@@ -9,7 +9,7 @@
         class="relative flex items-center justify-center"
         link
       >
-        <BaseImage
+        <IBImage
           :img="{
             src: video.thumbnail,
             alt: video.alt,

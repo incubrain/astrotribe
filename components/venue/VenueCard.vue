@@ -4,11 +4,11 @@
       body: 'h-full',
       footer: 'flex justify-end'
     }"
-    class="relative flex flex-col text-left origin-left md:rounded-lg md:overflow-hidden animate-swipe-in border border-color background"
+    class="border-color background relative flex origin-left animate-swipe-in flex-col border text-left md:overflow-hidden md:rounded-lg"
   >
     <template #header>
       <div>
-        <BaseImage
+        <IBImage
           :img="{
             src: venue.featured_image,
             alt: `${venue.name} AstroTribe featured image`,
@@ -16,13 +16,13 @@
             width: '340',
             height: '250'
           }"
-          class="object-cover w-full h-full aspect-video"
+          class="aspect-video h-full w-full object-cover"
         />
         <div
-          class="absolute w-12 h-12 p-1 overflow-hidden rounded-full left-2 top-2"
+          class="absolute left-2 top-2 h-12 w-12 overflow-hidden rounded-full p-1"
           :class="getBG(venue.id)"
         >
-          <BaseImage
+          <IBImage
             :img="{
               src: venue.logo,
               alt: `${venue.name} AstroTribe featured image`,
@@ -31,7 +31,7 @@
               height: '60',
               quality: '80'
             }"
-            class="object-contain w-full aspect-square"
+            class="aspect-square w-full object-contain"
           />
         </div>
       </div>
@@ -46,7 +46,7 @@
       <p>{{ venue.location.state }}, {{ venue.location.country }}</p>
     </template>
     <template #content>
-      <div class="flex flex-col gap-2 md:h-full justify-between">
+      <div class="flex flex-col justify-between gap-2 md:h-full">
         <div class="flex flex-col">
           <!-- <span
               v-if="venue.avg_rating"
@@ -68,7 +68,7 @@
       <a
         :href="venue.website"
         target="_blank"
-        class="w-full flex justify-end"
+        class="flex w-full justify-end"
       >
         <PrimeButton
           variant="outline"

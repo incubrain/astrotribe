@@ -49,23 +49,23 @@ definePageMeta({
 })
 </script>
 <template>
-  <div class="w-full h-full">
-    <BaseTabView
+  <div class="h-full w-full">
+    <IBTabView
       :tabs="socialsTabs"
-      class="w-full h-full"
+      class="h-full w-full"
     >
       <template
         v-for="tab in socialsTabs"
         v-slot:[tab.tabName]
       >
-        <div class="p-4 h-full">
+        <div class="h-full p-4">
           <component
             :is="tab.component"
             :id="tab.id"
           />
         </div>
       </template>
-    </BaseTabView>
+    </IBTabView>
   </div>
 </template>
 
