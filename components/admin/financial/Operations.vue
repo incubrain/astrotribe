@@ -1,13 +1,14 @@
 <script setup lang="ts">
 const { months, metrics, capital, customers, rgba } = useFinancials()
 
-
-console.log('dataMetrics', metrics.value.map((m) => m))
+console.log('dataMetrics', metrics.value)
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !metrics.value) {
     return []
   }
+
+  console.log('should not fire', metrics.value)
 
   return [
     {

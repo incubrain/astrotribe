@@ -33,6 +33,9 @@ import {
   WORDS_TO_CHARS
 } from './helpers'
 
+import fs from 'fs/promises'
+import path from 'path'
+
 // set hard limits for devops usage
 
 // we should cap free users usage wherever possible, removing any paid services if possible.
@@ -558,16 +561,16 @@ export type ProcessdContentConfig = {
 }
 
 export const metricConfig = {
-  BOOTSTRAP_MONTHS: 1,
-  INITIAL_CAPITAL: 1_00_000,
+  BOOTSTRAP_MONTHS: 12,
+  INITIAL_CAPITAL: 1_40_000,
   MRR_MARKETING_PERCENTAGE_SPEND: 0.1,
   MONTHLY_CHURN: {
     MAU: {
-      PESSIMISTIC: 0.10,
+      PESSIMISTIC: 0.1,
       OPTIMISTIC: 0.05
     },
     PRO: {
-      PESSIMISTIC: 0.10,
+      PESSIMISTIC: 0.1,
       OPTIMISTIC: 0.04
     },
     EXPERT: {
@@ -583,7 +586,8 @@ export const metricConfig = {
   LOAN: {
     AMOUNT: 10_00_000,
     ANNUAL_INTEREST_RATE: 0.0,
-    TERM_IN_YEARS: 4
+    TERM_IN_YEARS: 2,
+    GRACE_PERIOD: 7
   },
   PROJECTION: {
     MONTHS: 12,
@@ -718,5 +722,21 @@ export const metricConfig = {
 }
 
 export async function generateBusinessMetrics() {
-  return calculateBusinessMetrics(metricConfig)
+  const data = calculateBusinessMetrics(metricConfig)
+
+  try {
+    // Ensure the directory exists
+    await fs.mkdir(path.dirname('./assets/business-financials.json'), { recursive: true })
+
+    // Write the data to a JSON file
+    await fs.writeFile('./financials/business-financials.json', JSON.stringify(data, null, 2))
+    console.log('Business metrics data has been written to business-metrics.json')
+  } catch (error) {
+    console.error('Error writing business metrics data to file:', error)
+  }
+}
+
+// Only run this when called directly
+if (require.main === module) {
+  generateBusinessMetrics()
 }

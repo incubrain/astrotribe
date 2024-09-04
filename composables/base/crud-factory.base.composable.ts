@@ -1,4 +1,3 @@
-// composables/useCRUD.ts
 import { useUpdateData } from './update.base.composable'
 import { useSelectData } from './select.base.composable'
 import { useDeleteData } from './delete.base.composable'
@@ -64,7 +63,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             context: `${entityName} insert`
           })
         }
-        const insertedItem = await insertData(data as T)
+        const insertedItem = await insertData(data as T) as T
         if (options.afterInsert) {
           await options.afterInsert(insertedItem)
         }

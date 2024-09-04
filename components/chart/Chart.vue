@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { TooltipOptions, ChartOptions, TooltipItem, LegendOptions, LabelItem } from 'chart.js'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 const componentId = useId()
 
@@ -51,8 +50,6 @@ const props = defineProps({
   }
 })
 
-console.log('chart', props.chart)
-
 const preformattedCharts = computed(() => {
   if (!isChartDataReady.value) return null
 
@@ -74,7 +71,6 @@ const preformattedCharts = computed(() => {
 const customPaddingPlugin = {
   id: 'customPaddingPlugin',
   beforeInit: (chart: any) => {
-    console.log('Fitting legend')
     const originalFit = chart.legend.fit
     chart.legend.fit = function fit() {
       // Call the original function and bind scope in order to use `this` correctly inside it
@@ -121,30 +117,7 @@ const chartOptions = computed(() => {
         }
       },
       legend: generateLegend,
-      datalabels: isPieChart
-        ? {
-            color: '#00000',
-            font: {
-              weight: 'bold',
-              size: 14
-            },
-            formatter: (value: number, context: any) => {
-              return dataFormatters[dataset.valueType](value)
-            },
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Semi-transparent black background
-            borderRadius: 4, // Rounded corners
-            padding: {
-              top: 4,
-              right: 6,
-              bottom: 4,
-              left: 6
-            },
-            anchor: 'end', // Position anchor at the end (outside) of the slice
-            align: 'end', // Align to the end (outside) of the slice
-            offset: 8, // Distance from the edge of the pie
-            textAlign: 'center'
-          }
-        : false // Disable for non-pie charts
+      datalabels: false
     },
     scales: generateScales(
       preformattedCharts.value.data.datasets,
@@ -290,11 +263,11 @@ const isChartDataReady = computed(() => {
     props.chart &&
     props.chart.data &&
     props.chart.data.datasets &&
-    props.chart.data.datasets.length > 0
+    props.chart.data.datasets.length > 0 &&
+    props.chart.data.labels &&
+    props.chart.data.labels.length > 0
   )
 })
-
-console.log('preformattedCharts', props)
 
 const dataFormatters = {
   currency: (value: number) => formatCurrency(value, 'INR'), // Example default, can be dynamic
@@ -349,7 +322,6 @@ const dataFormatters = {
         :id="`chart-${componentId}-fullscreen`"
         :type="chart.type"
         :data="preformattedCharts.data"
-        :plugins="[customPaddingPlugin, ChartDataLabels]"
         :options="chartOptions"
       />
     </PrimeDrawer>
@@ -358,7 +330,7 @@ const dataFormatters = {
       :id="`chart-${componentId}`"
       :type="chart.type"
       :data="preformattedCharts.data"
-      :plugins="[customPaddingPlugin, ChartDataLabels]"
+      :plugins="[customPaddingPlugin]"
       :options="chartOptions"
     />
     <div class="border-color flex w-full gap-2 rounded-lg border px-3 py-2">

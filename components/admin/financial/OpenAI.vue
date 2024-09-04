@@ -1,8 +1,11 @@
 <script setup lang="ts">
 const { months, openAI, rgba } = useFinancials()
 
-const embeddingDetails = computed(() =>
-  openAI.value.map((month) =>
+const embeddingDetails = computed(() => {
+  if (!months.value || !openAI.value) {
+    return []
+  }
+  return openAI.value.map((month) =>
     month.breakdown.reduce(
       (acc, detail) => {
         acc.totalCost += detail.embedding.totalCost
@@ -17,10 +20,14 @@ const embeddingDetails = computed(() =>
       }
     )
   )
-)
+})
 
-const summaryDetails = computed(() =>
-  openAI.value.map((month) =>
+const summaryDetails = computed(() => {
+  if (!months.value || !openAI.value) {
+    return []
+  }
+
+  return openAI.value.map((month) =>
     month.breakdown.reduce(
       (acc, detail) => {
         acc.totalCost += detail.summary.cost.total
@@ -43,7 +50,7 @@ const summaryDetails = computed(() =>
       }
     )
   )
-)
+})
 
 console.log('details', summaryDetails.value)
 // embeddingDetails.value.flatMap((detail) =>
@@ -51,7 +58,7 @@ console.log('details', summaryDetails.value)
 // )
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !openAI.value) {
     return []
   }
 

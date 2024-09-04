@@ -4,6 +4,10 @@ const { months, payments, totals, metrics, rgba } = useFinancials()
 const stripePaymentTypes = ['InternationalCard', 'AmericanExpress', 'MasterCardVisa']
 
 const stripeTransactions = computed(() => {
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   return stripePaymentTypes.reduce((acc, type) => {
     const transactions = payments.value.flatMap((month) =>
       month.stripe.transactions.flatMap((transaction) =>
@@ -61,6 +65,10 @@ const totalStripeTransactions = computed(() => {
     platform: 0
   }
 
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   return payments.value.reduce((totals, month) => {
     month.stripe.transactions.forEach((transaction) => {
       totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
@@ -81,6 +89,10 @@ console.log('totalStripeTransactions', payments.value)
 const razorpayPaymentTypes = ['Visa', 'MasterCard', 'UPI']
 
 const razorpayTransactions = computed(() => {
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   return razorpayPaymentTypes.reduce((acc, type) => {
     const transactions = payments.value.flatMap((month) =>
       month.razorpay.transactions.flatMap((transaction) =>
@@ -142,6 +154,11 @@ const totalRazorpayTransactions = computed(() => {
     platform: 0
   }
 
+  if (!months.value || !payments.value) {
+    return []
+  }
+
+
   return payments.value.reduce((totals, month) => {
     month.razorpay.transactions.forEach((transaction) => {
       totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
@@ -158,14 +175,26 @@ const totalRazorpayTransactions = computed(() => {
 })
 
 const stripe = computed(() => {
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   return payments.value.flatMap((month) => month.stripe)
 })
 
 const razorpay = computed(() => {
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   return payments.value.flatMap((month) => month.razorpay)
 })
 
 const charts = computed(() => {
+  if (!months.value || !payments.value) {
+    return []
+  }
+
   if (!months.value.length) {
     return []
   }
@@ -222,7 +251,7 @@ const charts = computed(() => {
             valueType: 'number',
             data: razorpay.value.flatMap((month) => month.totalCustomers),
             borderColor: rgba('darkOrange', 0.8),
-            backgroundColor: rgba('black', 1),
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Stripe Total Transactions',
@@ -230,8 +259,7 @@ const charts = computed(() => {
             valueType: 'number',
             data: stripe.value.flatMap((month) => month.totalCustomers),
             borderColor: rgba('darkBlue', 0.8),
-            backgroundColor: rgba('black', 1),
-
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Razorpay Total Cost',
@@ -260,21 +288,21 @@ const charts = computed(() => {
             valueType: 'currency',
             data: razorpayTransactions.value.Visa.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('black', 1),
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'MasterCard Cost',
             valueType: 'currency',
             data: razorpayTransactions.value.MasterCard.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('black', 1),
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'UPI Cost',
             valueType: 'currency',
             data: razorpayTransactions.value.UPI.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('black', 1),
+            backgroundColor: rgba('black', 1)
           },
           {
             label: 'Domestic Transactions',

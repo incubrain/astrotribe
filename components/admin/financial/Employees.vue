@@ -14,7 +14,7 @@ const {
 } = useFinancials()
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !employees.value) {
     return []
   }
 

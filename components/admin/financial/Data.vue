@@ -129,26 +129,26 @@ function copyToClipboard(text: string) {
       <PrimeAccordionPanel
         v-for="(dataset, index) in column"
         :key="`metrics-dataset-${columnIndex}-${index}`"
-        class="border-color rounded-lg border"
+        class="border-color rounded-lg border p-4"
         :value="`${index}`"
       >
         <PrimeAccordionHeader>
-          <h2 class="text-2xl font-bold text-primary-950">{{ dataset.name }}</h2>
+          <h2 class="text-2xl font-bold text-primary-600">{{ dataset.name }}</h2>
         </PrimeAccordionHeader>
-        <PrimeAccordionContent>
+        <PrimeAccordionContent v-if="!!dataset.data">
           <div
             v-for="(group, parent) in traverseObject(dataset.data[0])"
             :key="`group-${dataset.name}-${parent}`"
             class="border-color border-b pb-4 pt-2 last:border-b-0 last:pb-0"
           >
-            <p class="text-xl font-semibold text-primary-950">{{ parent || 'Total' }}</p>
+            <p class="text-xl font-semibold text-primary-600">{{ parent || 'Total' }}</p>
             <div
               v-for="(entry, idx) in group"
               :key="`entry-${dataset.name}-${idx}`"
               class="flex items-center justify-between"
             >
-              <span class="text-sm text-primary-700">
-                <strong class="font-semibold text-primary-950">
+              <span class="text-sm">
+                <strong class="font-semibold">
                   {{ entry.path.replace(`${entry.path.split('.')[0]}.`, '') }} -
                 </strong>
                 {{ entry.type }} | {{ formatNumber(entry.value) }}

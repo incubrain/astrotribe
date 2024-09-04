@@ -16,38 +16,41 @@ export interface FetchInput {
   }
 }
 
+function getDataStructure(obj: any): any {
+  if (Array.isArray(obj)) {
+    return obj.length > 0 ? [getDataStructure(obj[0])] : []
+  } else if (typeof obj === 'object' && obj !== null) {
+    const structure: Record<string, any> = {}
+    for (const key in obj) {
+      structure[key] = getDataStructure(obj[key])
+    }
+    return structure
+  } else {
+    return typeof obj
+  }
+}
+
 export function useBaseFetch() {
   const errors = useBaseError()
   const paginationStore = usePaginationStore()
   const loading = useLoadingStore()
   const logger = useLogger('useBaseFetch')
+  const apiDataStore = useApiDataStore()
 
   const fetch = $fetch.create({
-    retryStatusCodes: [
-      408, // Request Timeout
-      409, // Conflict
-      425, // Too Early
-      500, // Internal Server Error
-      502, // Bad Gateway
-      503, // Service Unavailable
-      504 // Gateway Timeout
-    ],
+    retryStatusCodes: [408, 409, 425, 500, 502, 503, 504],
     headers: {
       'X-USER-ID': useCookie('userId').value ?? 'no-user-id',
       cookie: useRequestHeaders(['cookie']).cookie ?? ''
     },
-    // onRequest({ request, options }) {},
-    // onRequestError({ error, request, options }) {
-    //   console.error('onRequestError', error)
-    //   errors.handleError(error, {
-    //     devOnly: true,
-    //     userMessage: 'there was an error fetching the data',
-    //     devMessage: `onResponseError for`
-    //   })
-    // },
     onResponseError({ error, response, request, options }) {
       console.error('onResponseError', response, response._data)
-      // errors.withCode(response._data)
+    },
+    async onResponse({ request, response, options }) {
+      const url = request.toString()
+      const structure = getDataStructure(response._data)
+      console.log('Captured data structure for:', url, structure)
+      apiDataStore.setData(url, structure)
     }
   })
 

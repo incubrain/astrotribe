@@ -10,11 +10,13 @@ const {
   affiliate,
   promotion,
   customers,
+  filteredData,
   rgba
 } = useFinancials()
 
 const charts = computed(() => {
-  if (!capital.value.flatMap((month) => month.burnRate || !months.value.length)) {
+  console.log('computed data', capital.value)
+  if (!capital.value) {
     return []
   }
 

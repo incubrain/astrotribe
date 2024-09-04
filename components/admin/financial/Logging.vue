@@ -2,7 +2,7 @@
 const { months, logging, rgba } = useFinancials()
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !logging.value) {
     return []
   }
 

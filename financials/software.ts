@@ -1,4 +1,4 @@
-import { ROUND0 } from './helpers'
+import { ROUND0, USD2INR } from './helpers'
 
 type Subscription = {
   name: string

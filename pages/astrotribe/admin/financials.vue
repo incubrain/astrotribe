@@ -1,17 +1,17 @@
 <script setup lang="ts">
-const { refreshData, updateGlobalRange, months } = useFinancials()
+const { updateGlobalRange, months, haveData } = useFinancials()
 
 import {
-  LazyAdminFinancialEmployees,
-  LazyAdminFinancialDevOps,
+  AdminFinancialTotals,
   LazyAdminFinancialOperations,
-  LazyAdminFinancialTotals,
-  LazyAdminFinancialData,
+  LazyAdminFinancialEmployees,
   LazyAdminFinancialStorage,
   LazyAdminFinancialAnalytics,
   LazyAdminFinancialOpenAI,
   LazyAdminFinancialPayments,
-  LazyAdminFinancialLogging
+  LazyAdminFinancialLogging,
+  LazyAdminFinancialDevOps,
+  // LazyAdminFinancialData
 } from '#components'
 
 const financialTabs = [
@@ -19,7 +19,7 @@ const financialTabs = [
     title: 'Totals',
     slotName: 'totals',
     value: '0',
-    component: LazyAdminFinancialTotals
+    component: AdminFinancialTotals
   },
   {
     title: 'Operations',
@@ -69,27 +69,20 @@ const financialTabs = [
     value: '10',
     component: LazyAdminFinancialLogging
   },
-  {
-    title: 'Data',
-    slotName: 'data',
-    value: '11',
-    component: LazyAdminFinancialData
-  }
+  // {
+  //   title: 'Data',
+  //   slotName: 'data',
+  //   value: '11',
+  //   component: LazyAdminFinancialData
+  // }
 ]
-const dataIsReady = ref(false)
 
-onMounted(async () => {
-  if (!months.value.length) {
-    await refreshData()
-  }
-  dataIsReady.value = true
-})
-
-const sliderValue = ref([0, 12])
+const range = ref([0, 12])
 
 watch(
-  sliderValue,
+  range,
   (newVal) => {
+    console.log('range', newVal)
     updateGlobalRange({ start: newVal[0], end: newVal[1] })
   },
   { deep: true }
@@ -100,12 +93,14 @@ definePageMeta({
   name: 'AdminFinancials',
   middleware: 'is-admin'
 })
+
+const visibleRight = ref(false)
 </script>
 
 <template>
   <div class="relative h-full max-h-full">
     <BaseTabView
-      v-if="dataIsReady"
+      v-if="haveData"
       ref="financialsTabView"
       :tabs="financialTabs"
       class="h-full w-full"
@@ -115,43 +110,42 @@ definePageMeta({
         v-slot:[tab.slotName]
       >
         <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">
-          <div class="flex gap-4 h-full">
-            <div class="flex gap-2 items-center flex-col">
-              <p class="text-sm font-semibold">Start</p>
-              <PrimeInputNumber
-                showButtons
-                buttonLayout="vertical"
-                style="width: 3rem"
-                v-model="sliderValue[0]"
-                inputId="minmax"
-                :min="1"
-                :max="23"
-              />
-            </div>
-            <div class="flex flex-col gap-2 items-center">
-              <p class="text-sm font-semibold">End</p>
-              <PrimeInputNumber
-                showButtons
-                buttonLayout="vertical"
-                style="width: 3rem"
-                v-model="sliderValue[1]"
-                inputId="minmax"
-                :min="2"
-                :max="24"
-              />
-            </div>
-            <div class="flex flex-col gap-4">
-              <p class="text-sm font-semibold">Month Range Selector</p>
-              <PrimeSlider
-                v-model="sliderValue"
-                range
-                class="w-56"
-                :min="0"
-                :max="24"
-                :step="1"
-              />
-            </div>
+          <div>
+            <PrimeButton @click="visibleRight = true"> Options </PrimeButton>
           </div>
+
+          <PrimeDrawer
+            v-model:visible="visibleRight"
+            header="Right Drawer"
+            position="right"
+          >
+            <div class="flex h-full gap-4">
+              <div class="flex flex-col items-center gap-2">
+                <p class="text-sm font-semibold">Start</p>
+                <PrimeInputNumber
+                  showButtons
+                  buttonLayout="vertical"
+                  style="width: 3rem"
+                  v-model="range[0]"
+                  inputId="minmax"
+                  :min="1"
+                  :max="23"
+                />
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                <p class="text-sm font-semibold">End</p>
+                <PrimeInputNumber
+                  showButtons
+                  buttonLayout="vertical"
+                  style="width: 3rem"
+                  v-model="range[1]"
+                  inputId="minmax"
+                  :min="2"
+                  :max="24"
+                />
+              </div>
+            </div>
+          </PrimeDrawer>
           <component :is="tab.component" />
         </div>
       </template>
