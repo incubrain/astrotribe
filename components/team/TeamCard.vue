@@ -10,10 +10,10 @@ defineProps({
 </script>
 
 <template>
-  <BaseGlass
-    class="flex flex-col items-center justify-between w-full rounded-md background backdrop-filter backdrop-blur-lg border border-color transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+  <IBGlass
+    class="background border-color flex w-full flex-col items-center justify-between rounded-md border backdrop-blur-lg backdrop-filter transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
-    <div class="absolute w-full h-full animate-pulse">
+    <div class="absolute h-full w-full animate-pulse">
       <SvgStars
         class="bottom-46 left-12"
         :size="15"
@@ -25,7 +25,7 @@ defineProps({
         svg-color="#303030"
       />
       <SvgStars
-        class="top-24 right-14"
+        class="right-14 top-24"
         :size="12"
         svg-color="#303030"
       />
@@ -35,15 +35,15 @@ defineProps({
         svg-color="#303030"
       />
       <SvgStars
-        class="top-52 left-12"
+        class="left-12 top-52"
         :size="14"
         svg-color="#303030"
       />
     </div>
 
-    <div class="relative px-10 flex items-start justify-center pb-4">
-      <div class="w-20 overflow-hidden border rounded-full md:w-24">
-        <BaseImage
+    <div class="relative flex items-start justify-center px-10 pb-4">
+      <div class="w-20 overflow-hidden rounded-full border md:w-24">
+        <IBImage
           :img="{
             src: member.avatar,
             alt: member.name,
@@ -55,17 +55,17 @@ defineProps({
       </div>
     </div>
     <div class="flex flex-col items-center justify-center space-y-3">
-      <p class="text-base font-semibold leading-none text-center rounded-sm">
+      <p class="rounded-sm text-center text-base font-semibold leading-none">
         {{ member.name }}
       </p>
-      <p class="text-sm font-semibold leading-none text-center">
+      <p class="text-center text-sm font-semibold leading-none">
         {{ member.position.title }}
       </p>
-      <div class="space-y-3 pt-12 z-10">
+      <div class="z-10 space-y-3 pt-12">
         <SocialBlock
           :socials="member.socials"
           :has-title="false"
-          class="flex items-center justify-center space-x-2 relative"
+          class="relative flex items-center justify-center space-x-2"
         />
         <div>
           <NuxtLink :to="`/team/${member.name.toLowerCase().replaceAll(' ', '-')}`">
@@ -74,7 +74,7 @@ defineProps({
         </div>
       </div>
     </div>
-  </BaseGlass>
+  </IBGlass>
 </template>
 
 <style scoped></style>

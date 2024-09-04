@@ -34,7 +34,7 @@ const { getCategoryName } = useCategoryTagStore()
     <div>
       <div class="space-y-4 pb-4">
         <div class="flex items-center gap-4">
-          <BaseImage
+          <IBImage
             v-if="company.logo_url"
             class="border-color rounded-full border"
             :img="{
@@ -71,7 +71,7 @@ const { getCategoryName } = useCategoryTagStore()
         >
           founded: {{ company.founding_year }}
         </PrimeTag>
-        <BaseNewLabel
+        <IBNewLabel
           :date="company.created_at!"
           :max-age="14"
         />
@@ -84,7 +84,7 @@ const { getCategoryName } = useCategoryTagStore()
       </p>
       <div class="flex w-full items-center justify-between pt-4">
         <div>
-          <BaseSocialBlock
+          <IBSocialBlock
             v-if="company.social_media"
             :socials="company.social_media"
           />

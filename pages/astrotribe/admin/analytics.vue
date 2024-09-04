@@ -69,27 +69,27 @@ definePageMeta({
 })
 </script>
 <template>
-    <BaseTabView
-      ref="analyticsTabView"
-      :tabs="analyticsTabs"
-      class="h-full min-h-full w-full"
+  <IBTabView
+    ref="analyticsTabView"
+    :tabs="analyticsTabs"
+    class="h-full min-h-full w-full"
+  >
+    <template
+      v-for="tab in analyticsTabs"
+      v-slot:[tab.slotName]
     >
-      <template
-        v-for="tab in analyticsTabs"
-        v-slot:[tab.slotName]
-      >
-        <div class="h-full min-h-full">
-          <iframe
-            class="p-4 invert"
-            width="100%"
-            height="100%"
-            :src="tab.src"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </template>
-    </BaseTabView>
+      <div class="h-full min-h-full">
+        <iframe
+          class="p-4 invert"
+          width="100%"
+          height="100%"
+          :src="tab.src"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </template>
+  </IBTabView>
 </template>
 
 <style scoped></style>

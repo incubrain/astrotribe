@@ -10,9 +10,9 @@
       type="testimonial"
     >
       <template #default="{ item }: { item: Testimonial }">
-        <div class="p-6 border border-color rounded-md h-full foreground">
-          <div class="flex items-center h-auto">
-            <BaseImage
+        <div class="border-color foreground h-full rounded-md border p-6">
+          <div class="flex h-auto items-center">
+            <IBImage
               :img="{
                 src: item.image,
                 alt: item.name,
@@ -22,7 +22,7 @@
                 quality: '80',
                 format: 'webp'
               }"
-              class="rounded-full w-14 h-14"
+              class="h-14 w-14 rounded-full"
             />
             <div class="flex flex-col items-start pl-4">
               <h3 class="text-xl font-semibold">
@@ -34,15 +34,15 @@
             </div>
           </div>
           <div class="pt-8">
-            <p class="h-auto text-sm italic bg-primary-950 p-3 rounded-sm m-2 relative">
+            <p class="relative m-2 h-auto rounded-sm bg-primary-950 p-3 text-sm italic">
               <Icon
                 name="mdi:format-quote-open"
-                class="w-8 h-8 text-white absolute -top-4 left-4"
+                class="absolute -top-4 left-4 h-8 w-8 text-white"
               />
               {{ item.quote }}
               <Icon
                 name="mdi:format-quote-close"
-                class="w-8 h-8 text-white absolute -bottom-4 right-4"
+                class="absolute -bottom-4 right-4 h-8 w-8 text-white"
               />
             </p>
           </div>

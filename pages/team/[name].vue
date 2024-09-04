@@ -16,18 +16,18 @@
 
     <div class="wrapper padded-x flex flex-wrap items-start justify-center xl:pb-12">
       <div
-        class="background border border-color rounded-b-md w-full transform duration-200 easy-in-out backdrop-filter backdrop-blur-lg"
+        class="background border-color easy-in-out w-full transform rounded-b-md border backdrop-blur-lg backdrop-filter duration-200"
       >
-        <div class="flex justify-start items-center -mt-16 lg:-mt-24">
-          <BaseImage
+        <div class="-mt-16 flex items-center justify-start lg:-mt-24">
+          <IBImage
             :img="{
               src: user.avatar,
               alt: user.name
             }"
-            class="w-32 h-32 lg:w-48 lg:h-48 rounded-full p-2 background"
+            class="background h-32 w-32 rounded-full p-2 lg:h-48 lg:w-48"
           />
         </div>
-        <div class="p-4 xl:p-8 grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <div class="grid grid-cols-1 gap-20 p-4 lg:grid-cols-2 xl:p-8">
           <div class="flex flex-col gap-3">
             <h3 class="mb-4 text-2xl font-semibold">About {{ user.given_name }}</h3>
             <p

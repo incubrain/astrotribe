@@ -313,7 +313,7 @@ const setError = (error: string) => {
 
 <template>
   <div class="space-y-24">
-    <BaseModal>
+    <IBModal>
       <template #button="{ toggleModalOpen }">
         <label
           v-ripple
@@ -378,7 +378,7 @@ const setError = (error: string) => {
           </PrimeButton>
         </div>
       </template>
-    </BaseModal>
+    </IBModal>
   </div>
 </template>
 

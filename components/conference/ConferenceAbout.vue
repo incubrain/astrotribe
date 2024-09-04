@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2">
+    <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
       <CommonTitle
         class="col-start-1"
         :title="about.title"
@@ -18,7 +18,7 @@
           collaboration.
         </p>
       </CommonTitle>
-      <div class="col-start-1 lg:col-start-2 flex-col flex gap-2">
+      <div class="col-start-1 flex flex-col gap-2 lg:col-start-2">
         <p>
           The inception of this conference can be traced back to the transformative experience of
           Ms. Shweta Kulkarni, the esteemed founder and Director of AstronEra, during her visit to
@@ -42,24 +42,24 @@
         </p>
       </div>
       <div
-        class="row-start-3 lg:row-start-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-12"
+        class="row-start-3 grid grid-cols-1 gap-6 lg:col-span-2 lg:row-start-2 lg:grid-cols-2 xl:gap-12"
       >
-        <BaseImage
+        <IBImage
           :img="{
             src: themes.img.src,
             alt: themes.img.alt
           }"
-          class="rounded-md w-full"
+          class="w-full rounded-md"
         />
-        <div class="flex flex-col pb-3 w-full justify-center rounded-md">
-          <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase pb-4">
+        <div class="flex w-full flex-col justify-center rounded-md pb-3">
+          <p class="pb-4 text-sm font-bold uppercase text-primary-500 dark:text-primary-700">
             {{ themes.title }}
           </p>
           <ul>
             <li
               v-for="(point, i2) in themes.points"
               :key="`about-conference-point-${i2}`"
-              class="ml-4 pb-2 list-disc"
+              class="ml-4 list-disc pb-2"
             >
               {{ point }}
             </li>

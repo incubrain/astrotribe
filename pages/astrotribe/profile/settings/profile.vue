@@ -2,7 +2,6 @@
 import { z } from 'zod'
 import { useFileUpload } from '@/composables/base/upload.base.composable'
 
-
 const schema = [
   {
     value: 'given_name',
@@ -113,7 +112,7 @@ definePageMeta({
         <div
           class="left-16 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-red-50"
         >
-          <BaseImage
+          <IBImage
             v-if="userProfile?.avatar"
             :img="{
               src: userProfile.avatar,
@@ -121,7 +120,7 @@ definePageMeta({
             }"
             class="h-full w-full"
           />
-          <BaseUploadCropper
+          <IBUploadCropper
             cropper-type="avatar"
             class="absolute z-20"
           />

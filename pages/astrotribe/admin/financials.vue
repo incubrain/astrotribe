@@ -10,7 +10,7 @@ import {
   LazyAdminFinancialOpenAI,
   LazyAdminFinancialPayments,
   LazyAdminFinancialLogging,
-  LazyAdminFinancialDevOps,
+  LazyAdminFinancialDevOps
   // LazyAdminFinancialData
 } from '#components'
 
@@ -68,7 +68,7 @@ const financialTabs = [
     slotName: 'logging',
     value: '10',
     component: LazyAdminFinancialLogging
-  },
+  }
   // {
   //   title: 'Data',
   //   slotName: 'data',
@@ -99,7 +99,7 @@ const visibleRight = ref(false)
 
 <template>
   <div class="relative h-full max-h-full">
-    <BaseTabView
+    <IBTabView
       v-if="haveData"
       ref="financialsTabView"
       :tabs="financialTabs"
@@ -149,7 +149,7 @@ const visibleRight = ref(false)
           <component :is="tab.component" />
         </div>
       </template>
-    </BaseTabView>
+    </IBTabView>
   </div>
 </template>
 

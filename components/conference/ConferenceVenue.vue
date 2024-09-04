@@ -1,10 +1,10 @@
 <template>
-  <div class="grid items-start grid-cols-1 gap-6 xl:gap-12 lg:grid-cols-2 relative">
+  <div class="relative grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
     <CommonTitle
       class="row-start-1"
       :title="venue.title"
     >
-      <div class="w-full leading-6 space-y-4 text-left row-start-2 h-full">
+      <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
         <p class="font-normal">
           {{ venue.about }}
         </p>
@@ -16,15 +16,15 @@
         </PrimeButton>
       </div>
     </CommonTitle>
-    <div class="w-full h-full">
-      <BaseImage
+    <div class="h-full w-full">
+      <IBImage
         :img="{
           src: image.src,
           alt: image.alt,
           width: '440',
           height: '520'
         }"
-        class="rounded-md mx-auto w-full"
+        class="mx-auto w-full rounded-md"
       />
     </div>
   </div>

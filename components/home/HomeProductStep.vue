@@ -2,31 +2,31 @@
   <div
     :class="
       imageRight
-        ? 'flex flex-col md:flex-row-reverse justify-between items-center w-full mx-auto gap-10'
-        : 'flex flex-col md:flex-row justify-between items-center w-full mx-auto gap-10'
+        ? 'mx-auto flex w-full flex-col items-center justify-between gap-10 md:flex-row-reverse'
+        : 'mx-auto flex w-full flex-col items-center justify-between gap-10 md:flex-row'
     "
   >
-    <div class="md:w-[70%] h-[360px] aspect-auto shadow-2xl relative">
-      <BaseImage
+    <div class="relative aspect-auto h-[360px] shadow-2xl md:w-[70%]">
+      <IBImage
         :img="{
           src: imgSrc,
           alt: `${title} AstroTribe feature`,
           format: 'webp'
         }"
-        class="object-cover object-left w-full h-full overflow-hidden rounded-lg"
+        class="h-full w-full overflow-hidden rounded-lg object-cover object-left"
       />
       <div
-        class="absolute top-0 left-0 hidden w-full h-full rounded-lg dark:block bg-zinc-900/10"
+        class="absolute left-0 top-0 hidden h-full w-full rounded-lg bg-zinc-900/10 dark:block"
       ></div>
     </div>
-    <div class="md:w-[50%] px-4">
+    <div class="px-4 md:w-[50%]">
       <h4 class="mb-4 text-xl font-bold">
         {{ title }}
       </h4>
       <p class="pb-2 text-sm">
         {{ body }}
       </p>
-      <a class="text-sm font-semibold text-success-600">{{ cta }}</a>
+      <a class="text-success-600 text-sm font-semibold">{{ cta }}</a>
     </div>
   </div>
 </template>

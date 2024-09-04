@@ -26,7 +26,7 @@ defineProps({
 
 <template>
   <div class="relative flex items-center justify-center">
-    <BaseImage
+    <IBImage
       :img="{
         src: img.src,
         alt: img.alt,
@@ -36,24 +36,24 @@ defineProps({
       :class="`w-full object-${fit} ${objectPosition} h-screen`"
     />
     <div
-      class="absolute z-10 flex flex-col lg:flex-row text-white gap-8 lg:gap-16 px-4 xl:px-8 justify-center items-center"
+      class="absolute z-10 flex flex-col items-center justify-center gap-8 px-4 text-white lg:flex-row lg:gap-16 xl:px-8"
     >
       <slot />
       <div class="flex flex-col gap-4">
         <h2
-          :class="`text-3xl font-bold lg:text-5xl bg-black/30 py-1 px-4 xl:px-8 rounded-md shadow-xl text-${title.centered ? 'center' : 'left'}`"
+          :class="`rounded-md bg-black/30 px-4 py-1 text-3xl font-bold shadow-xl lg:text-5xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.main }}
         </h2>
         <h4
           v-if="title.subtitle"
-          :class="`text-xl w-auto inline-block font-semibold lg:text-3xl pb-4 px-4 xl:px-8 rounded-sm max-w-2xl text-${title.centered ? 'center' : 'left'}`"
+          :class="`inline-block w-auto max-w-2xl rounded-sm px-4 pb-4 text-xl font-semibold lg:text-3xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.subtitle }}
         </h4>
       </div>
     </div>
-    <div class="absolute top-0 left-0 w-full h-full bg-black/50" />
+    <div class="absolute left-0 top-0 h-full w-full bg-black/50" />
   </div>
 </template>
 

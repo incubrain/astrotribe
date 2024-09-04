@@ -16,18 +16,12 @@ const appLinks = ref([
     label: 'News',
     slug: '/astrotribe/news',
     icon: 'mdi:newspaper-variant-outline'
-    //   children: [
-    //     // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
-    //   ]
   },
   {
     id: 3,
     label: 'Companies',
     slug: '/astrotribe/companies',
     icon: 'material-symbols:location-on-rounded'
-    // children: [
-    //     { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
-    // ],
   },
   {
     id: 4,
@@ -35,46 +29,6 @@ const appLinks = ref([
     slug: '/astrotribe/ask',
     icon: 'mdi:information-slab-box'
   }
-  // {
-  //   id: 2,
-  //   label: 'Users',
-  //   slug: '/astrotribe/users',
-  //   icon: 'material-symbols:account-circle',
-  //   children: [
-  //     // { id: 21, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'ri:compass-discover-line' },
-  //   ]
-  // },
-  // {
-  //   id: 3,
-  //   label: 'Events',
-  //   slug: '/astrotribe/events',
-  //   icon: 'material-symbols:event',
-  //   children: [
-  //     // { id: 31, label: 'Popular', slug: '/astrotribe/popular', icon: 'ph:fire-simple-bold' },
-  //   ]
-  // },
-  // {
-  //   id: 4,
-  //   label: 'Venues',
-  //   slug: '/astrotribe/venues',
-  //   icon: 'material-symbols:location-on-rounded'
-  //   children: [
-  //       { id: 41, label: 'In Orbit', slug: '/astrotribe/in-orbit', icon: 'tabler:building-church' },
-  //   ],
-  // },
-
-  // {
-  //   id: 6,
-  //   label: 'Research',
-  //   slug: '/astrotribe/research',
-  //   icon: 'mdi:library-books'
-  // }
-  // {
-  //   id: 5,
-  //   label: 'Serp',
-  //   slug: '/astrotribe/serp',
-  //   icon: 'mdi:newspaper-variant-outline'
-  // }
 ] as PageType[])
 
 const adminLinks = ref([
@@ -99,26 +53,12 @@ const adminLinks = ref([
     children: []
   },
   {
-    id: 3,
-    label: 'Upload',
-    slug: '/astrotribe/admin/upload',
-    icon: 'mdi:upload',
-    children: []
-  },
-  {
     id: 4,
     label: 'Analytics',
     slug: '/astrotribe/admin/analytics',
     icon: 'mdi:chart-bar',
     children: []
   },
-  // {
-  //   id: 5,
-  //   label: 'Socials',
-  //   slug: '/astrotribe/admin/socials',
-  //   icon: 'mdi:chart-bar',
-  //   children: []
-  // },
   {
     id: 6,
     label: 'BP',
@@ -154,6 +94,27 @@ const adminLinks = ref([
     icon: 'mdi:account',
     children: []
   },
+  {
+    id: 11,
+    label: 'Financials',
+    slug: '/astrotribe/admin/financials',
+    icon: 'material-symbols:attach-money',
+    children: []
+  }
+  // {
+  //   id: 3,
+  //   label: 'Upload',
+  //   slug: '/astrotribe/admin/upload',
+  //   icon: 'mdi:upload',
+  //   children: []
+  // },
+  // {
+  //   id: 5,
+  //   label: 'Socials',
+  //   slug: '/astrotribe/admin/socials',
+  //   icon: 'mdi:chart-bar',
+  //   children: []
+  // },
   // {
   //   id: 11,
   //   label: 'Systems',
@@ -167,36 +128,8 @@ const adminLinks = ref([
   //       icon: 'mdi:account',
   //       children: []
   //     },
-  //     {
-  //       id: 72,
-  //       label: 'Companies',
-  //       slug: '/astrotribe/admin/business-systems/companies',
-  //       icon: 'mdi:account',
-  //       children: []
-  //     },
-  //     {
-  //       id: 73,
-  //       label: 'Events',
-  //       slug: '/astrotribe/admin/business-systems/events',
-  //       icon: 'mdi:account',
-  //       children: []
-  //     },
-  //     {
-  //       id: 74,
-  //       label: 'Content',
-  //       slug: '/astrotribe/admin/business-systems/content',
-  //       icon: 'mdi:account',
-  //       children: []
-  //     }
   //   ]
   // },
-  {
-    id: 11,
-    label: 'Financials',
-    slug: '/astrotribe/admin/financials',
-    icon: 'material-symbols:attach-money',
-    children: []
-  }
 ])
 
 const socials = ref([
@@ -222,15 +155,6 @@ const socials = ref([
     username: 'uk'
   }
 ])
-
-// Events -
-// Under these we display our star gazing programs that we have done along with locations and a page to book us for future star gazing events.
-
-// Our projects -
-// This section should display all our projects
-// Astrotribe 2022
-// Astro tribe 2023
-// Dst + conference 2023
 
 const websiteLinks = [
   {
@@ -273,14 +197,6 @@ const websiteLinks = [
     visible: true,
     disabled: false,
     items: [
-      // {
-      //   key: 'astrotribe',
-      //   label: 'Astrotribe',
-      //   icon: 'material-symbols:groups',
-      //   url: 'projects/astrotribe',
-      //   visible: true,
-      //   disabled: false
-      // },
       {
         key: 'dark-sky-conference-2023',
         label: 'Dark Sky Conference',
@@ -289,6 +205,14 @@ const websiteLinks = [
         visible: true,
         disabled: false
       }
+      // {
+      //   key: 'astrotribe',
+      //   label: 'Astrotribe',
+      //   icon: 'material-symbols:groups',
+      //   url: 'projects/astrotribe',
+      //   visible: true,
+      //   disabled: false
+      // },
     ]
   },
   // {

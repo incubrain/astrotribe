@@ -5,8 +5,8 @@
 // !todo:med:2 - handle session expired, redirect to login with explanation
 </script>
 <template>
-  <div class="relative flex min-h-screen w-full h-full items-center justify-start">
-    <div class="relative z-20 w-full min-w-[340px] max-w-[480px] min-h-lvh foreground p-4">
+  <div class="relative flex h-full min-h-screen w-full items-center justify-start">
+    <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[480px] p-4">
       <ClientOnly>
         <slot />
       </ClientOnly>
@@ -15,7 +15,7 @@
       <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
       <AppBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block" />
 
-      <BaseImage
+      <IBImage
         :img="{
           src: '/astron-era-hero.jpg',
           alt: ''
