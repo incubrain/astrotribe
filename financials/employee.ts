@@ -125,62 +125,42 @@ export function calculateEmployeeCost({
   const stageConfig = EMPLOYEE_CONFIG[stage]
 
   if (month < bootstrapMonths) {
-    return {
-      totalCost: 0,
-      efficiency: 0,
-      totalEmployees: 0,
-      support: {
-        employeeCount: 0,
-        total: 0,
-        totalSalary: 0,
-        totalExtras: 0,
-        salary: 0,
+    // Return base employees and their expenses during bootstrap months
+    const calculateBaseCost = (count: number, salary: number) => {
+      const totalSalary = count * salary
+      const legal = calculateLegalFees(count)
+      const technology = EMPLOYEE_EXTRAS.technology * count
+      const totalExtras = legal + technology
+
+      return {
+        employeeCount: count,
+        total: totalSalary + totalExtras,
+        totalSalary,
+        totalExtras,
+        salary,
         turnover: 0,
-        legal: 0,
+        legal: legal / count,
         benefits: 0,
         recruitment: 0,
-        technology: 0,
-        mauRatio: 0
-      },
-      core: {
-        employeeCount: 0,
-        total: 0,
-        totalSalary: 0,
-        totalExtras: 0,
-        salary: 0,
-        turnover: 0,
-        legal: 0,
-        benefits: 0,
-        recruitment: 0,
-        technology: 0,
-        mauRatio: 0
-      },
-      experts: {
-        employeeCount: 0,
-        total: 0,
-        totalSalary: 0,
-        totalExtras: 0,
-        salary: 0,
-        turnover: 0,
-        legal: 0,
-        benefits: 0,
-        recruitment: 0,
-        technology: 0,
-        mauRatio: 0
-      },
-      founders: {
-        employeeCount: 0,
-        total: 0,
-        totalSalary: 0,
-        totalExtras: 0,
-        salary: 0,
-        turnover: 0,
-        legal: 0,
-        benefits: 0,
-        recruitment: 0,
-        technology: 0,
-        mauRatio: 0
+        technology: technology / count,
+        mauRatio: undefined
       }
+    }
+
+    const experts = calculateBaseCost(baseCount.experts, stageConfig.experts.salary)
+    const founders = calculateBaseCost(baseCount.founders, stageConfig.founders.salary)
+
+    const totalCost = experts.total + founders.total
+    const totalEmployees = baseCount.experts + baseCount.founders
+
+    return {
+      totalCost,
+      efficiency: 0,
+      totalCount: totalEmployees,
+      support: calculateBaseCost(0, stageConfig.support.salary),
+      core: calculateBaseCost(0, stageConfig.core.salary),
+      experts,
+      founders
     }
   }
 

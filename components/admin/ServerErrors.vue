@@ -1,8 +1,11 @@
 <script setup lang="ts">
 const useErrorDashboard = defineStore('errorDashboard', () => {
+  const { fetch } = useBaseFetch()
+
   const errorReport = ref(null)
   const errorTrends = ref([])
   const errorLogs = ref([])
+  const errorPG = ref([])
   const totalLogs = ref(0)
   const currentPage = ref(1)
   const totalPages = ref(1)
@@ -37,7 +40,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await $fetch('/api/admin/error/report', {
+      const response = await fetch('/api/admin/error/report', {
         query: { date: selectedDate.value.toISOString() }
       })
       if (!response || !response.data) {
@@ -57,7 +60,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await $fetch('/api/admin/error/trends', {
+      const response = await fetch('/api/admin/error/trends', {
         query: { date: selectedDate.value.toISOString() }
       })
       if (!response || !response.data) {
@@ -77,7 +80,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await $fetch('/api/admin/error/logs', {
+      const response = await fetch('/api/admin/error/logs', {
         query: {
           date: selectedDate.value.toISOString(),
           page: currentPage.value,
@@ -101,8 +104,33 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     }
   }
 
+  async function fetchPostgresErrors() {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await fetch('/api/admin/error/postgres', {
+        query: { date: selectedDate.value.toISOString() }
+      })
+      if (!response || !response.data) {
+        throw new Error('No data returned from the server')
+      }
+      errorPG.value = response.data || []
+    } catch (err) {
+      console.error('Failed to fetch postgres errors', err)
+      error.value = 'Failed to load postgres errors. Please try again later.'
+      errorPG.value = []
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function refreshData() {
-    await Promise.all([fetchErrorReport(), fetchErrorLogs()])
+    await Promise.all([
+      fetchErrorReport(),
+      fetchErrorLogs(),
+      fetchPostgresErrors(),
+      fetchErrorTrends()
+    ])
   }
 
   function setDate(date: Date) {
@@ -124,6 +152,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
   return {
     errorReport,
     errorLogs,
+    errorPG,
     totalLogs,
     currentPage,
     totalPages,
@@ -153,6 +182,7 @@ const {
   errorsBySeverity,
   error,
   errorLogs,
+  errorPG,
   errorReport,
   errorTrends,
   mostFrequentErrors,
@@ -251,9 +281,9 @@ onMounted(errorDashboard.refreshData)
 const rawDataArray = computed(() => [
   { title: 'Error Trends', data: errorTrends.value },
   { title: 'Error Logs', data: errorLogs.value },
+  { title: 'Postgres Errors', data: errorPG.value },
   { title: 'Error Report', data: errorReport.value }
 ])
-
 </script>
 
 <template>

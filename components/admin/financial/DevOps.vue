@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const { months, devOps, rgba } = useFinancials()
 
-const breakdown = computed(() => devOps.value.flatMap((m) => m.vercel.cost.breakdown))
+const breakdown = computed(() => devOps?.value.flatMap((m) => m.vercel.cost.breakdown))
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !devOps.value) {
     return []
   }
 

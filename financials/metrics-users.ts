@@ -1,5 +1,3 @@
-import single from '~/server/api/feedback/insert/single'
-
 export type CostCategory =
   | 'infrastructure'
   | 'thirdPartyServices'

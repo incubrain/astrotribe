@@ -1,5 +1,4 @@
-import { generateBusinessMetrics, type AllData } from './totals'
-import type { TransactionChunk } from './payments'
+import data from '../../assets/business-financials.json'
 
 function formatNumber(value: number, style: 'INR' | 'USD' = 'INR'): string {
   const absValue = Math.abs(value)
@@ -133,25 +132,12 @@ type ColorName =
   | 'lightBrown'
   | 'black'
 
-interface ChartRange {
-  start: number
-  end: number
+interface FinancialDataItem {
+  [key: string]: any
 }
 
-// State for managing the range globally
-const globalChartRange = ref<ChartRange>({ start: 0, end: 12 })
-
-// A computed property to automatically filter data based on the global range
-function useFilteredData(data: any[]): any[] {
-  return computed(() => {
-    const range = globalChartRange.value
-    return data.slice(range.start, range.end)
-  }).value
-}
-
-// Function to update the global range, could be triggered by a range slider
-function updateGlobalRange(newRange: ChartRange): void {
-  globalChartRange.value = newRange
+interface FinancialData {
+  [key: string]: FinancialDataItem[] | number[] | string[]
 }
 
 // Function to convert RGB to RGBA
@@ -160,65 +146,42 @@ function rgba(colorName: ColorName, opacity: number = 1): string {
   return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${opacity})`
 }
 
-const rawData = reactive({
-  months: [],
-  stages: [],
-  mau: [],
-  customers: [],
-  capital: [],
-  revenue: [],
-  affiliate: [],
-  advertising: [],
-  promotion: [],
-  totals: [],
-  employees: [],
-  software: [],
-  office: [],
-  storage: [],
-  digitalOcean: [],
-  logging: [],
-  analytics: [],
-  devOps: [],
-  payments: [],
-  openAI: [],
-  metrics: []
-})
-
-const data: AllData = Object.keys(rawData).reduce<AllData>((acc, key) => {
-  acc[key] = computed(() => useFilteredData(rawData[key]))
-  return acc
-}, {})
-
 export default function useFinancials() {
-  async function refreshData() {
-    try {
-      const newMetrics = await generateBusinessMetrics()
+  const globalChartRange = reactive({ start: 0, end: 12 })
 
-      // Loop through each key in the new metrics and assign it to rawData
-      for (const key in newMetrics) {
-        if (rawData.hasOwnProperty(key)) {
-          rawData[key] = newMetrics[key]
+   const filteredData = reactive(
+      Object.entries(data).reduce((acc, [key, value]) => {
+        if (Array.isArray(value)) {
+          acc[key] = value.slice(globalChartRange.start, globalChartRange.end)
+        } else {
+          acc[key] = value
         }
-      }
-    } catch (error) {
-      console.error('Failed to fetch business metrics:', error)
-    }
-  }
+        return acc
+      }, {} as FinancialData)
+    )
 
-  console.log('formattedData', data)
+
+  // function updateGlobalRange(newRange: { start: number; end: number }): void {
+  //   globalChartRange.start = newRange.start
+  //   globalChartRange.end = newRange.end
+  //   // Re-filter data when range changes
+  // }
+
+  const haveData = computed(() => !!filteredData && filteredData.months?.length > 0)
+
+  const months = computed(() => filteredData?.months?.map((month: number) => `M${month}`) || [])
+
+  console.log('data in composable:', filteredData)
 
   return {
+    ...toRefs(filteredData),
+    haveData,
+    months,
     formatCurrency,
     formatNumber,
     formatStorage,
-    updateGlobalRange,
-    useFilteredData,
-    // filteredData,
-    // toggleChartRange,
+    updateGlobalRange: () => console.log('hi'),
     findLargestValue,
-    refreshData,
-    rgba,
-    ...data,
-    months: computed(() => data.months.value.map((month: number) => `M${month}`)),
+    rgba
   }
 }

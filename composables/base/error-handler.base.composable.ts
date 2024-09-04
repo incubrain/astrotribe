@@ -8,11 +8,13 @@ interface ErrorDetails {
   type: ErrorType
   message: string
   severity: ErrorSeverity
+  stack: string
   code?: string | number
   context?: string
   pgError?: string
   operation?: string
 }
+
 
 export function mapErrorType(error: any): ErrorType {
   // Connection errors
@@ -142,15 +144,7 @@ export enum ErrorType {
   NETWORK_ERROR = 'NETWORK_ERROR'
 }
 
-interface ErrorDetails {
-  type: ErrorType
-  message: string
-  severity: ErrorSeverity
-  code?: string | number
-  context?: string
-  pgError?: string
-  operation?: string
-}
+
 
 export class AppError extends Error {
   details: ErrorDetails
@@ -210,6 +204,7 @@ export function useErrorHandler() {
       appError = new AppError({
         type: errorType,
         message: error.message,
+        stack: error.stack || '',
         severity: severity,
         context: context,
         code: (error as any).code,

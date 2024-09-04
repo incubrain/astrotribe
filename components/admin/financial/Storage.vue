@@ -1,15 +1,11 @@
 <script setup lang="ts">
 const { months, storage, rgba } = useFinancials()
 
-const storageDetails = computed(() => storage.value.flatMap((m) => m.storage.data.details))
+const storageDetails = computed(() => storage.value?.flatMap((m) => m.storage.data.details) || [])
 
-console.log(
-  'storage',
-  storageDetails.value.map((detail) => (detail.content.type === 'JOBS' ? detail.storage.total : []))
-)
 
 const charts = computed(() => {
-  if (!months.value.length) {
+  if (!months.value || !storage.value) {
     return []
   }
 

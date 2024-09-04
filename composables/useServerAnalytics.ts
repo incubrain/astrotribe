@@ -81,10 +81,8 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
     }
 
     socket.value.onmessage = (event) => {
-      console.log('Received message:', event.data)
       const data = JSON.parse(event.data)
       if (data.type === 'availableMetrics') {
-        console.log('Received available metrics:', data.metrics)
         setAvailableMetrics(data.metrics)
       } else if (data.type === 'error') {
         console.error('WebSocket error:', data.message)

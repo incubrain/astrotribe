@@ -51,6 +51,13 @@ useHead({
   ]
 })
 
+const showPlayground = ref(true)
+
+// You might want to add a method to toggle the playground
+const togglePlayground = () => {
+  showPlayground.value = !showPlayground.value
+}
+
 // infra:med:med:2 setup feature flags for posthog
 // ui:low:easy:1 - add styling to the toasts, specifically dark mode
 // !infra:med:hard:4 - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
@@ -63,6 +70,7 @@ useHead({
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
+
     <!-- <Notification /> -->
   </div>
 </template>
