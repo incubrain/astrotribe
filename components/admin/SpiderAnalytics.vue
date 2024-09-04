@@ -139,13 +139,6 @@ const rawDataArray = computed(() =>
   <div class="p-4">
     <div v-if="isConnected">Connected</div>
     <div v-else>Disconnected</div>
-    <BaseRawDataDialog
-      ref="rawDataPopupRef"
-      dialogTitle="Raw Spider Data"
-      buttonText="Raw"
-      :dataArray="rawDataArray"
-    />
-
     <div v-if="haveMetrics && isSpiderActive">
       <div class="mb-8">
         <h2 class="mb-4 text-2xl font-semibold">Spider Metrics</h2>

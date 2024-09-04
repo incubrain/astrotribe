@@ -23,10 +23,8 @@ const { adminLinks } = usePages()
 <template>
   <div class="background relative flex h-screen w-full lg:p-4">
     <BaseSideNav :links="adminLinks" />
-    <div class="foreground relative flex h-full w-full flex-col overflow-y-scroll rounded-lg">
-      <div class="foreground h-full">
-        <slot />
-      </div>
+    <div class="w-full overflow-y-scroll h-full rounded-lg foreground">
+      <slot />
     </div>
   </div>
 </template>

@@ -2,8 +2,9 @@
 <template>
   <div v-if="showComponent">
     <div
-      class="fixed bottom-5 right-5 z-50 cursor-pointer rounded-full bg-blue-500 p-3 text-white"
+      class="fixed bottom-5 right-5 z-50 flex cursor-pointer rounded-full bg-blue-500 p-3 text-white"
       @click="showModal = true"
+      v-tooltip.left="'Page Data Structures'"
     >
       <Icon name="ic:baseline-data-object" />
     </div>
@@ -13,19 +14,23 @@
       header="API Data Structures"
       class="w-11/12 max-w-6xl"
     >
-      <PrimeAccordion :multiple="true">
+      <PrimeAccordion :multiple="true" class="flex flex-col gap-2">
         <PrimeAccordionPanel
           v-for="(structure, url, index) in apiDataStore.apiData"
           :key="url"
           :value="`${index}`"
         >
-          <PrimeAccordionHeader>
+          <PrimeAccordionHeader
+            :pt="{
+              root: 'rounded-md border gap-2 border-color flex items-center foreground p-2'
+            }"
+          >
             <p>
               {{ url }}
             </p>
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <pre class="max-h-96 overflow-auto rounded p-4">
+            <pre class="max-h-96 overflow-auto rounded p-4 foreground mt-2">
               {{ JSON.stringify(structure, null, 2) }}
             </pre>
           </PrimeAccordionContent>
