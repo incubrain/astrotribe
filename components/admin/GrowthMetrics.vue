@@ -125,7 +125,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="growth-dashboard">
+  <div>
     <h1 class="mb-6 text-3xl font-bold">Growth Dashboard</h1>
     <div
       v-if="isLoading"

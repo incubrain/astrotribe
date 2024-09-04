@@ -196,11 +196,6 @@ const {
   totalPages
 } = storeToRefs(errorDashboard)
 
-const slotItems = ref({
-  '1': 'logStream',
-  '2': 'errorMetrics'
-})
-
 const domainChartData = computed(() => ({
   labels: Object.keys(errorsByDomain.value),
   datasets: [
@@ -287,12 +282,9 @@ const rawDataArray = computed(() => [
 </script>
 
 <template>
-  <div class="flex h-screen flex-col p-4">
-    <BaseResizable
-      :slots="slotItems"
-      class="flex flex-1"
-    >
-      <template #logStream>
+  <div class="flex h-full flex-col">
+    <PrimeSplitter class="h-full">
+      <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-4 p-4">
             <h2 class="text-xl font-bold">{{ totalLogs }} Error Logs</h2>
@@ -304,17 +296,14 @@ const rawDataArray = computed(() => [
               >
                 <Icon name="mdi:refresh" />
               </PrimeButton>
-              <BaseRawDataDialog
-                ref="rawDataPopupRef"
-                dialogTitle="Raw Error Data"
-                buttonText="Raw"
-                :dataArray="rawDataArray"
-              />
             </div>
           </div>
           <AdminErrorLogViewer
-            v-if="errorLogs.length > 0"
-            :logs="errorLogs"
+            v-if="errorLogs.length > 0 && errorPG.length > 0"
+            :logs="[
+              { source: 'DB', entries: errorPG },
+              { source: 'API', entries: errorLogs }
+            ]"
             class="no-scrollbar flex-grow overflow-auto"
           />
           <p
@@ -333,8 +322,8 @@ const rawDataArray = computed(() => [
             >No logs available for the selected date.</p
           >
         </div>
-      </template>
-      <template #errorMetrics>
+      </PrimeSplitterPanel>
+      <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div
           class="h-full overflow-auto"
           v-if="!loading && !error && errorReport"
@@ -430,7 +419,7 @@ const rawDataArray = computed(() => [
           class="text-gray-500"
           >No error report available for the selected date.</p
         >
-      </template>
-    </BaseResizable>
+      </PrimeSplitterPanel>
+    </PrimeSplitter>
   </div>
 </template>

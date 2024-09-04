@@ -7,7 +7,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="relative h-full max-h-full">
+  <div>
     <!-- <AdminGrowthMetrics /> -->
     <AdminTableGrowth />
   </div>

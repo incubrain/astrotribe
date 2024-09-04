@@ -206,7 +206,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="table-growth-dashboard min-h-screen bg-gray-900 p-6 text-white">
+  <div class="table-growth-dashboard overflow-hidden p-4 bg-gray-900 text-white">
     <h1 class="mb-8 py-12 text-center text-5xl font-bold">Table Growth Dashboard</h1>
     <div
       v-if="isLoading"
@@ -263,7 +263,8 @@ onMounted(async () => {
                 />
               </div>
               <div class="mt-4">
-                <strong>Total Rows:</strong> {{ formatNumber(growthData[table].daily.latest.row_count) }}
+                <strong>Total Rows:</strong>
+                {{ formatNumber(growthData[table].daily.latest.row_count) }}
               </div>
             </div>
             <div
