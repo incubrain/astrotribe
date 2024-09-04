@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { FilterMatchMode } from '@primevue/core/api'
 
+const PAGE_SIZE = 50
+
 const scraperUrl = useRuntimeConfig().public.scraperUrl
 
 const tableData = ref([])
@@ -19,13 +21,15 @@ const selectedValue = ref('')
 const editedValue = ref('')
 const selectedKey = ref('')
 
-const loadKeys = async (page = 0, pageSize = 10) => {
+const loadKeys = async (page = 0, pageSize = PAGE_SIZE) => {
   loading.value = true
   try {
     const response = await fetch(
       `${scraperUrl}/admin/redis/keys?page=${page}&pageSize=${pageSize}&includeValues=true`
     )
+
     const data = await response.json()
+    console.log('REDIS DATA', data)
     tableData.value = data.keys.map(parseKey)
     totalRecords.value = data.total
   } catch (error) {
@@ -54,7 +58,7 @@ const onPage = (event: any) => {
 }
 
 const truncateValue = (value: string) => {
-  return value.length > 50 ? value.substring(0, 50) + '...' : value
+  return value.split(',')
 }
 
 const viewFullValue = (data: any) => {
@@ -66,7 +70,7 @@ const viewFullValue = (data: any) => {
 
 const editValue = (data: any) => {
   selectedKey.value = data.key
-  editedValue.value = data.value
+  editedValue.value = JSON.stringify(data.value, null, 2)
   dialogMode.value = 'edit'
   dialogVisible.value = true
 }
@@ -126,7 +130,7 @@ loadKeys()
     <PrimeDataTable
       :value="tableData"
       :paginator="true"
-      :rows="10"
+      :rows="PAGE_SIZE"
       v-model:filters="filters"
       filterDisplay="row"
       :globalFilterFields="['table', 'category']"
@@ -137,6 +141,7 @@ loadKeys()
       <PrimeColumn
         field="table"
         header="Table"
+        style="max-width: 8rem"
         :sortable="true"
       >
         <template #filter="{ filterModel }">
@@ -176,8 +181,17 @@ loadKeys()
         :sortable="false"
       >
         <template #body="slotProps">
+          <div class="flex flex-col text-sm max-w-64 text-wrap overflow-scroll">
+            <pre>{{ slotProps.data.value }}</pre>
+          </div>
+        </template>
+      </PrimeColumn>
+      <PrimeColumn
+        field="edit"
+        header="Edit"
+      >
+        <template #body="slotProps">
           <div class="flex flex-col">
-            <span>{{ truncateValue(slotProps.data.value) }}</span>
             <div class="mt-2 flex gap-2">
               <PrimeButton
                 @click="viewFullValue(slotProps.data)"
@@ -188,7 +202,7 @@ loadKeys()
                 @click="editValue(slotProps.data)"
                 label="Edit"
                 size="small"
-                severity="warning"
+                severity="secondary"
               />
               <PrimeButton
                 @click="deleteKey(slotProps.data.key)"
@@ -211,11 +225,11 @@ loadKeys()
         <pre>{{ selectedValue }}</pre>
       </template>
       <template v-else-if="dialogMode === 'edit'">
-        <textarea
+        <PrimeTextarea
           v-model="editedValue"
           rows="10"
           class="w-full"
-        ></textarea>
+        ></PrimeTextarea>
       </template>
       <template
         #footer
