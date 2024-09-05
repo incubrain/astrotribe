@@ -1,5 +1,5 @@
 // import * as util from './utilities'
-import type { FetchInput } from '../base/fetch.base.composable'
+import type { FetchInput } from '../ib/fetch.ib'
 import type { EventType } from '@/types/events'
 
 export const useEventsStore = defineStore('eventsStore', () => {

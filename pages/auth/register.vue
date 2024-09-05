@@ -48,7 +48,7 @@ definePageMeta({
               id="given_name"
               v-model="form.given_name"
               :pt="{ root: 'w-full' }"
-              :ptOptions="{ mergeProps: true, mergeSections: true }"
+              :pt-options="{ mergeProps: true, mergeSections: true }"
             />
             <label for="given_name">Given Name</label>
           </PrimeFloatLabel>
@@ -57,7 +57,7 @@ definePageMeta({
               id="surname"
               v-model="form.surname"
               :pt="{ root: 'w-full' }"
-              :ptOptions="{ mergeProps: true, mergeSections: true }"
+              :pt-options="{ mergeProps: true, mergeSections: true }"
             />
             <label for="surname">Surname</label>
           </PrimeFloatLabel>
@@ -70,16 +70,16 @@ definePageMeta({
           <label for="email">Email</label>
         </PrimeFloatLabel>
         <FormPassword
+          id="user-password"
           v-model="form.password"
           label="Enter your password"
-          id="user-password"
         />
         <FormPassword
+          id="confirm-password"
           v-model="form.confirmPassword"
           label="Confirm password"
           :invalid="!isPasswordValid && isPasswordEntered"
           :feedback="false"
-          id="confirm-password"
         />
         <PrimeButton
           class="justify-center"
@@ -89,8 +89,8 @@ definePageMeta({
           Sign up with email
         </PrimeButton>
         <PrimeMessage
-          severity="error"
           v-show="!isPasswordValid && isPasswordEntered"
+          severity="error"
         >
           Passwords do not match
         </PrimeMessage>

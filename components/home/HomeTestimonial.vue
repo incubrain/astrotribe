@@ -5,7 +5,7 @@
       subheading="Discover How We're Making a Difference"
       class="pb-16 md:pb-24"
     />
-    <SwiperComponent
+    <AppSwiper
       :items="testimonials"
       type="testimonial"
     >
@@ -48,7 +48,7 @@
           </div>
         </div>
       </template>
-    </SwiperComponent>
+    </AppSwiper>
   </div>
 </template>
 

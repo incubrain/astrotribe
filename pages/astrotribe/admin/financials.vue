@@ -107,11 +107,13 @@ const visibleRight = ref(false)
     >
       <template
         v-for="tab in financialTabs"
-        v-slot:[tab.slotName]
+        #[tab.slotName]
       >
         <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">
           <div>
-            <PrimeButton @click="visibleRight = true"> Options </PrimeButton>
+            <PrimeButton @click="visibleRight = true">
+              Options
+            </PrimeButton>
           </div>
 
           <PrimeDrawer
@@ -121,25 +123,29 @@ const visibleRight = ref(false)
           >
             <div class="flex h-full gap-4">
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">Start</p>
+                <p class="text-sm font-semibold">
+                  Start
+                </p>
                 <PrimeInputNumber
-                  showButtons
-                  buttonLayout="vertical"
-                  style="width: 3rem"
                   v-model="range[0]"
-                  inputId="minmax"
+                  show-buttons
+                  button-layout="vertical"
+                  style="width: 3rem"
+                  input-id="minmax"
                   :min="1"
                   :max="23"
                 />
               </div>
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">End</p>
+                <p class="text-sm font-semibold">
+                  End
+                </p>
                 <PrimeInputNumber
-                  showButtons
-                  buttonLayout="vertical"
-                  style="width: 3rem"
                   v-model="range[1]"
-                  inputId="minmax"
+                  show-buttons
+                  button-layout="vertical"
+                  style="width: 3rem"
+                  input-id="minmax"
                   :min="2"
                   :max="24"
                 />

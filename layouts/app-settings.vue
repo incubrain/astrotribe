@@ -46,7 +46,7 @@ const settingsRoutes = computed(() => [
             list: 'md:sticky md:top-8 flex md:flex-col justify-left !w-full items-center md:justify-end md:items-end overflow-scroll',
             item: 'w-full'
           }"
-          :ptOptions="{ mergeSections: true, mergeProps: true }"
+          :pt-options="{ mergeSections: true, mergeProps: true }"
         >
           <template #item="{ item, disabled }">
             <NuxtLink

@@ -1,9 +1,9 @@
 <template>
   <div class="relative grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 xl:gap-8">
     <IBGlass
-      color="emerald"
       v-for="item in timeline"
       :key="item.title"
+      color="emerald"
     >
       <div class="flex w-full flex-col justify-center">
         <h2 class="text-lg font-semibold leading-7 xl:leading-9">

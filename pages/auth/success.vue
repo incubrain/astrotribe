@@ -11,7 +11,9 @@ definePageMeta({
 <template>
   <PrimeCard>
     <template #title>
-      <h2 class="pb-2 text-3xl font-semibold text-primary-500 dark:text-primary-700"> SUCCESS! </h2>
+      <h2 class="pb-2 text-3xl font-semibold text-primary-500 dark:text-primary-700">
+        SUCCESS!
+      </h2>
     </template>
     <template #subtitle>
       <PrimeMessage
@@ -49,14 +51,15 @@ definePageMeta({
           </PrimeTag>
         </div>
         <p>Didn’t get an email? Please check your spam folder.</p>
-        <p
-          >Still nothing?
+        <p>
+          Still nothing?
           <NuxtLink
             class="text-primary-500 underline"
             to="/auth/forgot-password"
-            >Request another.</NuxtLink
-          ></p
-        >
+          >
+            Request another.
+          </NuxtLink>
+        </p>
       </div>
     </template>
   </PrimeCard>

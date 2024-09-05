@@ -14,7 +14,9 @@
         class="h-5 w-5 inline-block"
       />
     </PrimeButton>
-    <p class="px-2">- or -</p>
+    <p class="px-2">
+      - or -
+    </p>
     <PrimeButton
       :to="`https://github.com/incubrain/incubrain/edit/main/${link}`"
       target="_blank"

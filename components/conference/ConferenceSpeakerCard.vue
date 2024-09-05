@@ -5,7 +5,7 @@
       body: 'justify-between h-full',
       root: 'overflow-hidden relative'
     }"
-    :ptOptions="{ mergeProps: true, mergeSections: true }"
+    :pt-options="{ mergeProps: true, mergeSections: true }"
   >
     <template #header>
       <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 dark:visible" />
@@ -49,7 +49,9 @@
         :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-100 dark:bg-primary-950'"
         @click="isOpen = true"
       >
-        <h5 class="font-semibold"> Abstract </h5>
+        <h5 class="font-semibold">
+          Abstract
+        </h5>
         <p class="text-sm">
           {{ speaker.abstract.title }}
         </p>

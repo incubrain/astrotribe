@@ -1,34 +1,26 @@
 <template>
-  <div class="skeleton-loader" :style="{ width: width, height: height }"></div>
+  <div
+    class="skeleton-loader"
+    :style="{ width: loaderWidth, height: loaderHeight }"
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue'
 
+const loaderWidth = ref('100%')
+const loaderHeight = ref('100%')
 
-// todo:med:2 make this robust and test
-// todo:consider - should I create a loading slot in my base components to show a loading state?
-const width = ref('100%');
-const height = ref('100%');
-
-// Props
-const props = defineProps({
+defineProps({
   width: {
     type: String,
-    default: '100%',
+    default: '100%'
   },
   height: {
     type: String,
-    default: '100%',
-  },
-});
-
-// Computed properties
-const skeletonLoaderStyles = computed(() => ({
-  width: props.width,
-  height: props.height,
-}));
-
+    default: '100%'
+  }
+})
 </script>
 
 <style scoped>

@@ -22,9 +22,13 @@ const reset = () => {
   <div class="relative h-full max-h-full">
     <div class="flex flex-col gap-8">
       <div class="flex gap-4 p-4">
-        <PrimeButton @click="testUrl"> Test API </PrimeButton>
+        <PrimeButton @click="testUrl">
+          Test API
+        </PrimeButton>
         <PrimeInputText v-model="urlTest" />
-        <PrimeButton @click="reset"> Clear </PrimeButton>
+        <PrimeButton @click="reset">
+          Clear
+        </PrimeButton>
       </div>
       <p> {{ outputData }}</p>
     </div>

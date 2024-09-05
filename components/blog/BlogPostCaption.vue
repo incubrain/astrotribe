@@ -3,7 +3,7 @@
     <p
       class="p-2 text-sm italic text-gray-500 dark:text-gray-400 text-center"
     >
-    <slot />
+      <slot />
     </p>
   </div>
 </template>

@@ -1,11 +1,18 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="p-fluid">
-     
     </div>
     <div class="mt-4">
-      <PrimeButton type="button" label="Previous" class="p-button-secondary mr-2" @click="$emit('prev')" />
-      <PrimeButton type="submit" label="Submit" />
+      <PrimeButton
+        type="button"
+        label="Previous"
+        class="p-button-secondary mr-2"
+        @click="$emit('prev')"
+      />
+      <PrimeButton
+        type="submit"
+        label="Submit"
+      />
     </div>
   </form>
 </template>

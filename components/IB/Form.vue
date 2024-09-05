@@ -1,7 +1,7 @@
 <template>
   <form
-    @submit.prevent="validateAndSubmit"
     class="space-y-4"
+    @submit.prevent="validateAndSubmit"
   >
     <div
       v-for="(input, name) in inputs"
@@ -10,8 +10,7 @@
       <label
         :for="name"
         class="block text-sm font-medium text-gray-700"
-        >{{ input.label }}</label
-      >
+      >{{ input.label }}</label>
       <InputText
         :id="name"
         v-model="form[name]"
@@ -21,8 +20,9 @@
       <p
         v-if="formErrors[name]"
         class="mt-1 text-xs text-red-600"
-        >{{ formErrors[name] }}</p
       >
+        {{ formErrors[name] }}
+      </p>
     </div>
     <Button
       label="Submit"

@@ -85,8 +85,8 @@ const isPasswordUpdatable = computed(() =>
         </div>
       </div>
       <PrimeMessage
-        severity="info"
         v-else-if="currentUser.profile"
+        severity="info"
       >
         You used {{ currentUser.profile.provider }} to authenticate
       </PrimeMessage>

@@ -1,29 +1,29 @@
 <template>
   <div class="component-playground">
-    <DevexpComponentList
-      :componentNames="availableComponentNames"
+    <DevComponentList
+      :component-names="availableComponentNames"
       @select="selectComponent"
     />
     <div class="main-area">
-      <DevexpPreviewArea
+      <DevPreviewArea
         v-if="false"
         :component="selectedComponentName.component"
         :props="props"
         :state="state"
         @event="logEvent"
       />
-      <DevexpPropsEditor
+      <DevPropsEditor
         :props="props"
         @update:props="updateProps"
       />
-      <DevexpStateManager
+      <DevStateManager
         v-if="hasState"
         :state="state"
         @update:state="updateState"
       />
-      <DevexpEventLogger :events="events" />
-      <DevexpResponsiveTester @change="setViewportSize" />
-      <DevexpCodePreview
+      <DevEventLogger :events="events" />
+      <DevResponsiveTester @change="setViewportSize" />
+      <DevCodePreview
         :component="selectedComponent"
         :props="props"
         :state="state"

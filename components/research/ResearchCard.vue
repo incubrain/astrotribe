@@ -7,7 +7,9 @@
             {{ useTimeAgo(research.published_at ?? research.created_at).value }}
           </span>
         </div>
-        <h4 class="text-balance text-xl"> {{ research.title.slice(0, 120) }}... </h4>
+        <h4 class="text-balance text-xl">
+          {{ research.title.slice(0, 120) }}...
+        </h4>
         <p
           v-if="research.description"
           class="text-sm"

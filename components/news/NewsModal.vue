@@ -3,7 +3,9 @@
     <div
       class="sticky top-0 left-0 z-20 w-full background flex h-auto items-center justify-between px-4 py-2"
     >
-      <h3 class="font-semibold text-sm lg:text-lg"> {{ posts[currentIndex].title }}</h3>
+      <h3 class="font-semibold text-sm lg:text-lg">
+        {{ posts[currentIndex].title }}
+      </h3>
       <div class="flex gap-2 items-center">
         <PrimeButton
           to="https://tailwindcss.com/docs/content"

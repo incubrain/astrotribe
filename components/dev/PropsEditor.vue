@@ -8,8 +8,8 @@
       <label>{{ key }}</label>
       <input
         :value="value"
-        @input="updateProp(key, $event.target.value)"
         :type="getInputType(value)"
+        @input="updateProp(key, $event.target.value)"
       />
     </div>
   </div>

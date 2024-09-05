@@ -1,5 +1,3 @@
-import { useSelectData } from '../base/select.base.composable'
-
 const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
@@ -8,7 +6,6 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   const loading = useLoadingStore()
   const { fetch } = useBaseFetch()
   const userId = useCookie('userId')
-
 
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile

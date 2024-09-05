@@ -1,6 +1,8 @@
 <template>
   <div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">Select Your Interests</h2>
+    <h2 class="text-2xl font-bold mb-4">
+      Select Your Interests
+    </h2>
     <form @submit.prevent="handleSubmit">
       <div class="p-fluid">
         <div class="p-field">
@@ -9,15 +11,22 @@
             id="interests"
             v-model="selectedInterests"
             :options="interestOptions"
-            optionLabel="name"
+            option-label="name"
             placeholder="Select your interests"
             :filter="true"
             :class="{ 'p-invalid': errors.interests }"
           />
-          <small class="p-error" v-if="errors.interests">{{ errors.interests }}</small>
+          <small
+            v-if="errors.interests"
+            class="p-error"
+          >{{ errors.interests }}</small>
         </div>
       </div>
-      <PrimeButton type="submit" label="Save Interests" class="mt-4" />
+      <PrimeButton
+        type="submit"
+        label="Save Interests"
+        class="mt-4"
+      />
     </form>
   </div>
 </template>

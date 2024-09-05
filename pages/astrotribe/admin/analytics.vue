@@ -76,7 +76,7 @@ definePageMeta({
   >
     <template
       v-for="tab in analyticsTabs"
-      v-slot:[tab.slotName]
+      #[tab.slotName]
     >
       <div class="h-full min-h-full">
         <iframe

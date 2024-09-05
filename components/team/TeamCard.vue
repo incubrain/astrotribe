@@ -62,7 +62,7 @@ defineProps({
         {{ member.position.title }}
       </p>
       <div class="z-10 space-y-3 pt-12">
-        <SocialBlock
+        <AppSocialBlock
           :socials="member.socials"
           :has-title="false"
           class="relative flex items-center justify-center space-x-2"

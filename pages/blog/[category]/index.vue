@@ -166,7 +166,9 @@ const heroImage = computed(() => {
             v-if="articlesFinished"
             class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
           >
-            <p class="foreground px-2">No more articles...</p>
+            <p class="foreground px-2">
+              No more articles...
+            </p>
           </div>
           <template #fallback>
             <p>Loading articles...</p>

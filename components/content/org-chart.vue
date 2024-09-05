@@ -14,7 +14,9 @@
               height="80"
               class="rounded-full"
             />
-            <h4 class="pb-2 text-xl font-bold">{{ slotProps.node.data.name }}</h4>
+            <h4 class="pb-2 text-xl font-bold">
+              {{ slotProps.node.data.name }}
+            </h4>
             <span>{{ slotProps.node.data.title }}</span>
           </div>
         </div>

@@ -57,7 +57,9 @@ function submitFilters() {
 <template>
   <div class="flex flex-col justify-between gap-4 p-4 lg:flex-row lg:p-0">
     <div>
-      <h2 class="text-lg pb-2 font-semibold">Filters</h2>
+      <h2 class="text-lg pb-2 font-semibold">
+        Filters
+      </h2>
       <div class="flex flex-row gap-4 lg:justify-between xl:gap-8">
         <!-- Source filter with PrimeVue Select -->
         <div
@@ -101,7 +103,9 @@ function submitFilters() {
       >
         Apply Filters
       </PrimeButton>
-      <PrimeMessage severity="info">More filters soon</PrimeMessage>
+      <PrimeMessage severity="info">
+        More filters soon
+      </PrimeMessage>
     </div>
   </div>
 </template>

@@ -133,7 +133,9 @@ function copyToClipboard(text: string) {
         :value="`${index}`"
       >
         <PrimeAccordionHeader>
-          <h2 class="text-2xl font-bold text-primary-600">{{ dataset.name }}</h2>
+          <h2 class="text-2xl font-bold text-primary-600">
+            {{ dataset.name }}
+          </h2>
         </PrimeAccordionHeader>
         <PrimeAccordionContent v-if="!!dataset.data">
           <div
@@ -141,7 +143,9 @@ function copyToClipboard(text: string) {
             :key="`group-${dataset.name}-${parent}`"
             class="border-color border-b pb-4 pt-2 last:border-b-0 last:pb-0"
           >
-            <p class="text-xl font-semibold text-primary-600">{{ parent || 'Total' }}</p>
+            <p class="text-xl font-semibold text-primary-600">
+              {{ parent || 'Total' }}
+            </p>
             <div
               v-for="(entry, idx) in group"
               :key="`entry-${dataset.name}-${idx}`"
@@ -154,8 +158,8 @@ function copyToClipboard(text: string) {
                 {{ entry.type }} | {{ formatNumber(entry.value) }}
               </span>
               <button
-                @click="copyToClipboard(entry.path)"
                 class=""
+                @click="copyToClipboard(entry.path)"
               >
                 <Icon
                   class="h-4 w-4"

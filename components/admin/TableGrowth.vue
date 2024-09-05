@@ -207,7 +207,9 @@ onMounted(async () => {
 
 <template>
   <div class="table-growth-dashboard overflow-hidden bg-gray-900 p-4 text-white">
-    <h1 class="mb-8 py-12 text-center text-5xl font-bold">Table Growth Dashboard</h1>
+    <h1 class="mb-8 py-12 text-center text-5xl font-bold">
+      Table Growth Dashboard
+    </h1>
     <div
       v-if="isLoading"
       class="flex h-64 items-center justify-center"
@@ -218,10 +220,14 @@ onMounted(async () => {
       <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <IBGlass class="lg:col-start-2">
           <template #header>
-            <h2 class="mb-2 text-2xl font-semibold">Total Row Count</h2>
+            <h2 class="mb-2 text-2xl font-semibold">
+              Total Row Count
+            </h2>
           </template>
           <template #default>
-            <div class="text-5xl font-bold">{{ formatNumber(totalRowCount) }}</div>
+            <div class="text-5xl font-bold">
+              {{ formatNumber(totalRowCount) }}
+            </div>
           </template>
         </IBGlass>
       </div>
@@ -231,7 +237,9 @@ onMounted(async () => {
           :key="table"
         >
           <template #header>
-            <h2 class="pb-4 text-2xl font-bold">{{ useChangeCase(table, 'capitalCase') }}</h2>
+            <h2 class="pb-4 text-2xl font-bold">
+              {{ useChangeCase(table, 'capitalCase') }}
+            </h2>
           </template>
           <template #default>
             <div v-if="growthData[table]">
@@ -270,8 +278,9 @@ onMounted(async () => {
             <div
               v-else
               class="italic text-gray-400"
-              >No data available</div
             >
+              No data available
+            </div>
           </template>
         </IBGlass>
       </div>

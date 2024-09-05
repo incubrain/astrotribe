@@ -41,11 +41,15 @@ const { haveUserSession } = storeToRefs(currentUser)
               height: '60'
             }"
           />
-          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex"> Go Home </p>
+          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex">
+            Go Home
+          </p>
         </NuxtLink>
       </div>
       <div class="w-full">
-        <h2 class="text-3xl font-extrabold lg:text-center">{{ title.main }}</h2>
+        <h2 class="text-3xl font-extrabold lg:text-center">
+          {{ title.main }}
+        </h2>
         <span class="flex items-center gap-4 text-center font-bold lg:justify-center">
           {{ title.subtitle }}
           <NuxtLink
@@ -62,8 +66,8 @@ const { haveUserSession } = storeToRefs(currentUser)
     </div>
     <PrimeCard>
       <template
-        #title
         v-if="showTitle && haveUserSession"
+        #title
       >
         <div class="flex flex-col gap-4 xl:gap-6">
           <div>

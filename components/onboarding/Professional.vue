@@ -7,16 +7,15 @@
           id="occupation"
           v-model="form.occupation"
           :options="occupationOptions"
-          optionLabel="name"
-          optionValue="value"
+          option-label="name"
+          option-value="value"
           placeholder="Select an occupation"
           :class="{ 'p-invalid': errors.occupation }"
         />
         <small
-          class="p-error"
           v-if="errors.occupation"
-          >{{ errors.occupation }}</small
-        >
+          class="p-error"
+        >{{ errors.occupation }}</small>
       </div>
       <div class="p-field">
         <label for="organization">Organization</label>
@@ -26,10 +25,9 @@
           :class="{ 'p-invalid': errors.organization }"
         />
         <small
-          class="p-error"
           v-if="errors.organization"
-          >{{ errors.organization }}</small
-        >
+          class="p-error"
+        >{{ errors.organization }}</small>
       </div>
       <div class="p-field">
         <label for="experience">Years of Experience</label>
@@ -41,10 +39,9 @@
           :class="{ 'p-invalid': errors.experience }"
         />
         <small
-          class="p-error"
           v-if="errors.experience"
-          >{{ errors.experience }}</small
-        >
+          class="p-error"
+        >{{ errors.experience }}</small>
       </div>
     </div>
     <div class="mt-4">

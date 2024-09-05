@@ -1,6 +1,8 @@
 <template>
   <div class="card background rounded-lg p-4 shadow-lg">
-    <h2 class="mb-4 text-2xl font-bold">Monthly Test Plan</h2>
+    <h2 class="mb-4 text-2xl font-bold">
+      Monthly Test Plan
+    </h2>
     <div class="relative h-32 w-32 overflow-hidden rounded-full bg-white p-2">
       <NuxtImg
         src="/astronera-logo.jpg"
@@ -8,13 +10,15 @@
         class="h-full w-full"
       />
     </div>
-    <p class="mb-4">Subscribe to our monthly plan for exclusive benefits!</p>
+    <p class="mb-4">
+      Subscribe to our monthly plan for exclusive benefits!
+    </p>
     <PrimeButton
       label="Pay Now"
       icon="pi pi-credit-card"
-      @click="handlePayment"
       :loading="loading"
       :disabled="!isRazorpayLoaded"
+      @click="handlePayment"
     />
   </div>
 </template>

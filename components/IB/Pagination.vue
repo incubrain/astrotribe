@@ -4,10 +4,13 @@
       <li
         v-for="item in items"
         :key="item.id"
-        >{{ item.content }}</li
       >
+        {{ item.content }}
+      </li>
     </ul>
-    <button @click="loadMore">Load More</button>
+    <button @click="loadMore">
+      Load More
+    </button>
   </div>
 </template>
 

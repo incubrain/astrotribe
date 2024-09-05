@@ -39,19 +39,19 @@ const selectedRows = ref([])
     v-model:selection="selectedRows"
     v-model:filters="tableFilters"
     :value="dataRows"
-    stripedRows
+    striped-rows
     size="small"
     :global-filter-fields="filterFields"
     paginator
     :rows="100"
     paginator-template="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-    :rowsPerPageOptions="[20, 50, 100]"
-    currentPageReportTemplate="{first} to {last} of {totalRecords}"
+    :rows-per-page-options="[20, 50, 100]"
+    current-page-report-template="{first} to {last} of {totalRecords}"
     scrollable
     scroll-height="flex"
-    stateStorage="session"
-    stateKey="admin-user-profiles-table"
-    dataKey="id"
+    state-storage="session"
+    state-key="admin-user-profiles-table"
+    data-key="id"
     :pt="{
       column: {
         bodycell: ({ state }) => ({
@@ -73,18 +73,22 @@ const selectedRows = ref([])
       </div>
     </template>
 
-    <template #empty> No data found. </template>
+    <template #empty>
+      No data found.
+    </template>
 
-    <template #loading> Loading data. Please wait. </template>
+    <template #loading>
+      Loading data. Please wait.
+    </template>
 
     <PrimeColumn
-        selectionMode="multiple"
-        headerStyle="width: 3rem"
-      ></PrimeColumn>
+      selection-mode="multiple"
+      header-style="width: 3rem"
+    ></PrimeColumn>
 
     <PrimeColumn
       :frozen="true"
-      bodyStyle="text-align:center text:nowrap"
+      body-style="text-align:center text:nowrap"
       :pt="{
         headercell: 'text-nowrap text-sm p-3 bg-primary-950 text-center w-full',
         bodycell: 'text-nowrap overflow-scroll',
@@ -106,17 +110,17 @@ const selectedRows = ref([])
       <template #body="{ data, field }">
         <component
           :is="col.component"
-          class="w-full text-sm"
           v-model="data[field]"
+          class="w-full text-sm"
           v-bind="col.componentProps"
         />
       </template>
       <template #filter="{ filterModel, filterCallback }">
         <PrimeInputText
           type="text"
-          @input="filterCallback()"
           class="h-6 w-full"
           placeholder="Search by name"
+          @input="filterCallback()"
         />
       </template>
     </PrimeColumn>

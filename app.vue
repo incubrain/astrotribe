@@ -70,8 +70,8 @@ const togglePlayground = () => {
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
-    <DevexpApiDataViewer />
-    <!-- <DevexpComponentPlayground v-if="showPlayground" /> -->
+    <DevApiDataViewer />
+    <!-- <DevComponentPlayground v-if="showPlayground" /> -->
 
     <!-- <Notification /> -->
   </div>

@@ -1,5 +1,5 @@
 // import type { NewsCardT } from '@/types/news'
-import type { FetchInput } from '../base/fetch.base.composable'
+import type { FetchInput } from '../ib/fetch.ib'
 
 export const useNewsStore = defineStore('newsStore', () => {
   const logger = useLogger('newsStore')

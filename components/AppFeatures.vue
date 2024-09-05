@@ -53,7 +53,7 @@ const selection = ref([])
 
 <template>
   <PrimeOrganizationChart
-    v-model:selectionKeys="selection"
+    v-model:selection-keys="selection"
     :value="organization"
   >
     <template #person="slotProps">

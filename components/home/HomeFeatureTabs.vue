@@ -134,19 +134,21 @@ const getDummyData = (type) => {
     <IBTabView :tabs="productSteps">
       <template
         v-for="feat in productSteps"
-        v-slot:[feat.tabName]
+        #[feat.tabName]
       >
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div class="background border-color space-y-4 rounded-md border p-4 lg:p-8">
-            <h3 class="text-2xl"> {{ feat.title }}</h3>
+            <h3 class="text-2xl">
+              {{ feat.title }}
+            </h3>
             <!-- <p> {{ feat.body }}</p> -->
             <ul class="list-inside list-disc">
               <li
                 v-for="point in feat.points"
                 :key="point"
               >
-                {{ point }}</li
-              >
+                {{ point }}
+              </li>
             </ul>
             <PrimeMessage severity="info">
               {{ feat.info }}
@@ -166,9 +168,13 @@ const getDummyData = (type) => {
               :user="getDummyData('user')"
             />
             <div v-else>
-              <PrimeMessage severity="info">Coming Very Soon</PrimeMessage>
+              <PrimeMessage severity="info">
+                Coming Very Soon
+              </PrimeMessage>
             </div>
-            <PrimeButton class="flex w-full justify-center"> Join to see more </PrimeButton>
+            <PrimeButton class="flex w-full justify-center">
+              Join to see more
+            </PrimeButton>
           </div>
         </div>
       </template>

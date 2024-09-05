@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFileUpload } from '@/composables/base/upload.base.composable'
+import { useFileUpload } from '@/composables/ib/upload.ib'
 
 const user = useSupabaseUser()
 
@@ -109,28 +109,28 @@ watch(bucket, (newBucket) => {
 
 <template>
   <div class="p-4">
-    <h2 class="mb-4 text-2xl font-bold">File Uploads</h2>
+    <h2 class="mb-4 text-2xl font-bold">
+      File Uploads
+    </h2>
     <div class="mb-4 flex flex-wrap gap-4">
       <span class="flex flex-col gap-2">
         <label
           for="bucket"
           class="pl-2"
-          >Bucket</label
-        >
+        >Bucket</label>
         <PrimeSelect
           id="bucket"
           v-model="bucket"
           :options="buckets"
-          optionLabel="label"
-          optionValue="name"
+          option-label="label"
+          option-value="name"
         />
       </span>
       <span class="flex flex-col gap-2">
         <label
           for="path"
           class="pl-2"
-          >Path</label
-        >
+        >Path</label>
         <PrimeSelect
           id="path"
           v-model="path"
@@ -141,35 +141,34 @@ watch(bucket, (newBucket) => {
         <label
           for="fileType"
           class="pl-2"
-          >File Type</label
-        >
+        >File Type</label>
         <PrimeSelect
           id="fileType"
           v-model="fileType"
           :options="fileTypes"
-          optionLabel="label"
-          optionValue="name"
+          option-label="label"
+          option-value="name"
         />
       </span>
     </div>
     <PrimeFileUpload
       name="demo[]"
       url="/api/upload"
+      :multiple="true"
+      accept="image/*,application/pdf"
+      :max-file-size="maxFileSize"
       @upload="onUpload"
       @select="onSelect"
       @remove="onRemove"
-      :multiple="true"
-      accept="image/*,application/pdf"
-      :maxFileSize="maxFileSize"
     >
       <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
         <div class="flex flex-1 flex-wrap items-center justify-between gap-4">
           <div class="flex gap-2">
             <PrimeButton
-              @click="chooseCallback()"
               rounded
               outlined
               severity="contrast"
+              @click="chooseCallback()"
             >
               <Icon
                 name="mdi:file-image"
@@ -177,11 +176,11 @@ watch(bucket, (newBucket) => {
               />
             </PrimeButton>
             <PrimeButton
-              @click="uploadEvent(uploadCallback)"
               rounded
               outlined
               severity="success"
               :disabled="!files || files.length === 0"
+              @click="uploadEvent(uploadCallback)"
             >
               <Icon
                 name="mdi:cloud-upload"
@@ -189,11 +188,11 @@ watch(bucket, (newBucket) => {
               />
             </PrimeButton>
             <PrimeButton
-              @click="clearCallback()"
               rounded
               outlined
               severity="danger"
               :disabled="!files || files.length === 0"
+              @click="clearCallback()"
             >
               <Icon
                 name="mdi:delete"
@@ -203,7 +202,7 @@ watch(bucket, (newBucket) => {
           </div>
           <PrimeProgressBar
             :value="totalSizePercent"
-            :showValue="false"
+            :show-value="false"
             class="md:w-20rem h-1 w-full md:ml-auto"
           >
             <span class="whitespace-nowrap">{{ totalSize }} / {{ formatSize(maxFileSize) }}</span>
@@ -237,8 +236,7 @@ watch(bucket, (newBucket) => {
                 </div>
                 <span
                   class="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
-                  >{{ file.name }}</span
-                >
+                >{{ file.name }}</span>
                 <div>{{ formatSize(file.size) }}</div>
                 <PrimeBadge
                   value="Pending"
@@ -246,10 +244,10 @@ watch(bucket, (newBucket) => {
                 />
                 <PrimeButton
                   icon="pi pi-times"
-                  @click="removeFileCallback(index)"
                   outlined
                   rounded
                   severity="danger"
+                  @click="removeFileCallback(index)"
                 />
               </div>
             </div>
@@ -279,8 +277,7 @@ watch(bucket, (newBucket) => {
                 </div>
                 <span
                   class="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
-                  >{{ file.name }}</span
-                >
+                >{{ file.name }}</span>
                 <div>{{ formatSize(file.size) }}</div>
                 <PrimeBadge
                   value="Completed"
@@ -288,10 +285,10 @@ watch(bucket, (newBucket) => {
                   severity="success"
                 />
                 <PrimeButton
-                  @click="removeUploadedFileCallback(index)"
                   outlined
                   rounded
                   severity="danger"
+                  @click="removeUploadedFileCallback(index)"
                 >
                   <Icon name="mdi:delete" />
                 </PrimeButton>
@@ -310,7 +307,9 @@ watch(bucket, (newBucket) => {
               class="text-4xl"
             />
           </div>
-          <p class="mb-0 mt-6">Drag and drop files here to upload.</p>
+          <p class="mb-0 mt-6">
+            Drag and drop files here to upload.
+          </p>
         </div>
       </template>
     </PrimeFileUpload>

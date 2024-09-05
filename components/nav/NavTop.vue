@@ -65,7 +65,7 @@ watch(
           class: '!text-sm !font-bold'
         }
       }"
-      :ptOptions="{ mergeSections: true, mergeProps: true }"
+      :pt-options="{ mergeSections: true, mergeProps: true }"
     >
       <template #start>
         <div class="hidden gap-4 rounded-md p-1 lg:flex">

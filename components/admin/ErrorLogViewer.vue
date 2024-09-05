@@ -107,7 +107,7 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
   <div class="border-color overflow-x-auto rounded-lg border p-4">
     <PrimeAccordion
       :multiple="true"
-      :activeIndex="[0]"
+      :active-index="[0]"
       class="w-full space-y-4"
     >
       <PrimeAccordionPanel
@@ -120,17 +120,20 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
             root: 'w-full flex items-center justify-between p-2 rounded-md background',
             toggleicon: 'mr-2'
           }"
-          :ptOptions="{ mergeSections: true, mergeProps: true }"
+          :pt-options="{ mergeSections: true, mergeProps: true }"
         >
           <template #default>
             <div class="w-full items-center justify-between rounded-md p-2">
               <div class="flex w-full items-center gap-2">
-                <PrimeTag severity="warning">{{ log.source }}</PrimeTag>
+                <PrimeTag severity="warning">
+                  {{ log.source }}
+                </PrimeTag>
                 <PrimeTag
-                  severity="info"
                   v-if="log.count > 1"
-                  >{{ log.count }} times</PrimeTag
+                  severity="info"
                 >
+                  {{ log.count }} times
+                </PrimeTag>
 
                 <div class="tags-container flex flex-wrap items-center justify-center gap-2">
                   <PrimeTag
@@ -162,11 +165,13 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
         </PrimeAccordionHeader>
         <PrimeAccordionContent>
           <div class="log-entry mb-4 rounded-md p-4">
-            <p class="log-message mr-2 text-left text-yellow-600">{{ log.message }}</p>
+            <p class="log-message mr-2 text-left text-yellow-600">
+              {{ log.message }}
+            </p>
             <PrimeButton
               severity="link"
-              @click.stop="copyErrorContext(log)"
               tooltip="Copy error context"
+              @click.stop="copyErrorContext(log)"
             >
               <Icon name="mdi:content-copy" />
             </PrimeButton>
@@ -175,11 +180,12 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
               v-if="log.stack"
               class="mb-4"
             >
-              <h3 class="text-lg mb-2 font-semibold">Error Stack</h3>
+              <h3 class="text-lg mb-2 font-semibold">
+                Error Stack
+              </h3>
               <pre
                 class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-gray-800 p-4 text-sm"
-                >{{ log.stack }}</pre
-              >
+              >{{ log.stack }}</pre>
             </div>
 
             <!-- Additional Fields -->

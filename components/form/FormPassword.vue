@@ -60,30 +60,31 @@ const onPasswordChange = (value: string) => {
   <label
     v-if="label"
     :for="id"
-    >{{ label }}</label
-  >
+  >{{ label }}</label>
   <PrimePassword
     :id="id"
     class="w-full"
-    :inputClass="inputClass"
-    :modelValue="modelValue"
-    @update:modelValue="onPasswordChange"
+    :input-class="inputClass"
+    :model-value="modelValue"
     :invalid="invalid"
     :feedback="feedback"
-    :toggleMask="toggleMask"
+    :toggle-mask="toggleMask"
     :disabled="disabled"
     :required="required"
-    :weakLabel="weakLabel"
-    :mediumLabel="mediumLabel"
-    :strongLabel="strongLabel"
+    :weak-label="weakLabel"
+    :medium-label="mediumLabel"
+    :strong-label="strongLabel"
     :placeholder="placeholder"
-    :promptLabel="promptLabel"
-    :mediumRegex="mediumRegex"
-    :strongRegex="strongRegex"
+    :prompt-label="promptLabel"
+    @update:modelValue="onPasswordChange"
+    :medium-regex="mediumRegex"
+    :strong-regex="strongRegex"
   >
     <template #footer>
       <PrimeDivider />
-      <p class="mt-2">Suggestions</p>
+      <p class="mt-2">
+        Suggestions
+      </p>
       <ul
         class="ml-2 mt-0 pl-2"
         style="line-height: 1.5"

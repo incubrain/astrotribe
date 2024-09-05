@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { DomainKey } from './pagination.base.store'
+import type { DomainKey } from './pagination.ib.store'
 import { type Ref, ref } from 'vue'
 
 export function createBaseStore<T extends object>(domainKey: DomainKey) {
@@ -48,4 +48,13 @@ export function createBaseStore<T extends object>(domainKey: DomainKey) {
       getItemById
     }
   })
+}
+
+const storeCache: Partial<Record<DomainKey, ReturnType<typeof createBaseStore>>> = {}
+
+export function getOrCreateStore<T>(domainKey: DomainKey) {
+  if (!storeCache[domainKey]) {
+    storeCache[domainKey] = createBaseStore<T>(domainKey)
+  }
+  return storeCache[domainKey] as ReturnType<typeof createBaseStore<T>>
 }

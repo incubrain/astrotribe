@@ -1,4 +1,4 @@
-import type { DomainKey } from './pagination.base.store'
+import type { DomainKey } from './pagination.ib.store'
 import { useCookie, useRequestHeaders } from '#imports'
 import type { FilterBy, DBTable } from '@/server/utils/base.interface'
 import type { FetchResult } from '#app'
