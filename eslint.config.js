@@ -10,8 +10,11 @@ export default createConfigForNuxt({
     },
   },
 }).append({
+  files: ['**/*.{js,ts,vue}'],
   rules: {
     'vue/multi-word-component-names': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     'no-global-assign': ['off', { exceptions: ['Object'] }],
     'no-undefined': 'off',
     'no-console': 'off',
@@ -23,4 +26,14 @@ export default createConfigForNuxt({
     'arrow-parens': 'off',
     'vue/html-self-closing': 'off',
   },
+  ignores: [
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/.nuxt/**',
+    '**/public/**',
+    './theme/**',
+    '**/theme/**',
+    '**/.output/**',
+  ],
 })

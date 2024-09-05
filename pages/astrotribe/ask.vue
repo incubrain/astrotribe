@@ -276,10 +276,6 @@ const responsiveOptions = ref([
     numScroll: 1,
   },
 ])
-
-const isMessageSendable = computed(() => {
-  return selectedAgent.value !== null && message.value.trim() !== ''
-})
 </script>
 
 <template>

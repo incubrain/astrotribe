@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
-import { useFileUpload } from '~/composables/ib/upload.ib
+import { useFileUpload } from '~/composables/ib/upload.ib'
 
 const schema = [
   {
@@ -8,14 +8,14 @@ const schema = [
     label: 'Given Name',
     tip: 'Your first name',
     placeholder: 'Your first name',
-    type: 'text'
+    type: 'text',
   },
   {
     value: 'surname',
     label: 'Surname',
     tip: 'Your last name',
     placeholder: 'Your last name',
-    type: 'text'
+    type: 'text',
   },
   {
     value: 'email',
@@ -23,7 +23,7 @@ const schema = [
     tip: 'Contact support to update your email',
     placeholder: 'Your email address',
     type: 'email',
-    disabled: true
+    disabled: true,
   },
   {
     value: 'username',
@@ -31,8 +31,8 @@ const schema = [
     tip: 'Contact support to update your username',
     placeholder: 'Your username',
     type: 'username',
-    disabled: true
-  }
+    disabled: true,
+  },
 ]
 
 const SettingsAccountValidation = z.object({
@@ -41,7 +41,7 @@ const SettingsAccountValidation = z.object({
   username: z.string(),
   email: z.string().email(),
   introduction: z.string().min(240, 'At least 240 characters required').optional(),
-  quote: z.string().min(10, 'At least 10 characters required').optional()
+  quote: z.string().min(10, 'At least 10 characters required').optional(),
 })
 
 const currentUser = useCurrentUser()
@@ -50,12 +50,12 @@ const userId = useCookie('userId')
 const {
   store: userProfile,
   loadMore,
-  refresh
+  refresh,
 } = useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
   filters: { id: userId.value },
   initialFetch: true,
-  limit: 1
+  limit: 1,
 })
 
 const profileCopy = ref({})
@@ -84,10 +84,11 @@ const handleFileUpload = async (event: Event) => {
       allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
       onProgress: (progress) => {
         console.log(`Upload progress: ${progress}%`)
-      }
+      },
     })
     console.log('File uploaded successfully:', result)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error uploading file:', error)
   }
 }
@@ -95,7 +96,7 @@ const handleFileUpload = async (event: Event) => {
 definePageMeta({
   layoutTransition: false,
   name: 'Profile',
-  layout: 'app-settings'
+  layout: 'app-settings',
 })
 </script>
 
@@ -105,7 +106,7 @@ definePageMeta({
       v-if="userProfile"
       :title="{
         main: 'Account Profile',
-        subtitle: 'Update your account information'
+        subtitle: 'Update your account information',
       }"
     >
       <div class="relative w-full max-w-[1200px]">
@@ -116,7 +117,7 @@ definePageMeta({
             v-if="userProfile?.avatar"
             :img="{
               src: userProfile.avatar,
-              type: 'avatar'
+              type: 'avatar',
             }"
             class="h-full w-full"
           />
@@ -135,8 +136,8 @@ definePageMeta({
         >
           <div class="w-full">
             <PrimeInputText
-              class="w-96"
               v-model="profileCopy[item.value]"
+              class="w-96"
               :type="item.type"
               :disabled="item.disabled"
               :placeholder="profileCopy[item.value] || item.placeholder"
@@ -145,10 +146,11 @@ definePageMeta({
         </UserSettingsItem>
         <div class="py-8">
           <PrimeButton
-            @click="currentUser.updateProfile(profileCopy)"
             class="text-white"
-            >Save changes</PrimeButton
+            @click="currentUser.updateProfile(profileCopy)"
           >
+            Save changes
+          </PrimeButton>
         </div>
       </div>
     </UserSettingsCard>
