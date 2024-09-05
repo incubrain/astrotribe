@@ -3,7 +3,7 @@
     <div class="p-6 flex gap-4">
       <PrimeSkeleton
         :pt="{
-          root: 'max-w-16 min-h-16 rounded-full'
+          root: 'max-w-16 min-h-16 rounded-full',
         }"
       />
     </div>

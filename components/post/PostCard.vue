@@ -10,10 +10,10 @@
           bucket: 'articles',
           folderPath: `${article.id}`,
           file: article.id,
-          isPrivate: false
+          isPrivate: false,
         }),
         alt: article.title,
-        loading: 'lazy'
+        loading: 'lazy',
       }"
     />
     <div

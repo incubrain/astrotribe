@@ -43,15 +43,15 @@ const razorpayOptions = {
   prefill: {
     name: 'Gaurav Kumar',
     email: 'gaurav.kumar@example.com',
-    contact: '+919876543210'
+    contact: '+919876543210',
   },
   notes: {
     note_key_1: 'Tea. Earl Grey. Hot',
-    note_key_2: 'Make it so.'
+    note_key_2: 'Make it so.',
   },
   theme: {
-    color: '#F37254'
-  }
+    color: '#F37254',
+  },
 }
 
 let rzp: any
@@ -64,9 +64,9 @@ useHead({
       onload: () => {
         isRazorpayLoaded.value = true
         rzp = new (window as any).Razorpay(razorpayOptions)
-      }
-    }
-  ]
+      },
+    },
+  ],
 })
 
 const handlePayment = () => {

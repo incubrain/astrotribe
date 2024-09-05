@@ -2,7 +2,7 @@
   <div class="w-full">
     <CommonTitle
       :title="{
-        main: 'Meet The IDSPC2023 Group'
+        main: 'Meet The IDSPC2023 Group',
       }"
     />
     <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase">
@@ -42,7 +42,7 @@ const hosts = [
     bio: `Ruchira Huchgol an analog astronaut with background of
     aerospace engineering has a keen intersted in human space exploration and also works to bring in new opportunities in space sector for the Indian student community
     `,
-    avatar: 'ruchira-huchgol'
+    avatar: 'ruchira-huchgol',
   },
   {
     given_name: 'Atharva',
@@ -51,8 +51,8 @@ const hosts = [
       'Organising Committee, Online Chairman, IDSPAC23 & Project Co-ordinator, AstronEra.',
     bio: `Atharva Joshi is a dedicated architect with extensive experience ranging from the Southern coast to the Himalayas.
     His profound interest in astronomy brings a unique perspective to the innovative projects at AstronEra.`,
-    avatar: 'atharva-joshi'
-  }
+    avatar: 'atharva-joshi',
+  },
 ]
 
 const speakers = [
@@ -77,19 +77,19 @@ const speakers = [
         campaign to ignite youth interest in astronomy, Wangchuk emphasized the importance of
         conserving Ladakh's dark skies while providing livelihood opportunities. Expressing concern
         over light pollution's effects on wildlife, he highlighted the "I Live Simply" movement,
-        urging simplicity to combat climate change's impact.`
+        urging simplicity to combat climate change's impact.`,
     },
     avatar: 'sonam-wangchuk',
     featured: true,
-    inPerson: true
+    inPerson: true,
   },
   {
     title: 'Dr.',
     given_name: 'Constance (Connie)',
     surname: 'Walker',
     professional_title:
-      "Head of Office of Site Protection, NSF's NOIRLab, USA and Co-Director, IAU CPS",
-    bio: "Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she's devoted two decades at NSF's National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.",
+      'Head of Office of Site Protection, NSF\'s NOIRLab, USA and Co-Director, IAU CPS',
+    bio: 'Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she\'s devoted two decades at NSF\'s National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.',
     abstract: {
       title:
         'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
@@ -104,11 +104,11 @@ const speakers = [
         astronomy and discussed the collaboration of working groups from various fields such as
         engineering, law and policy, pure sciences, astrophysics, and art. She emphasised that the
         field of space and astronomy requires contributions from individuals in every discipline and
-        is a common heritage for all.`
+        is a common heritage for all.`,
     },
     avatar: 'connie-walker',
     featured: true,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Neethu',
@@ -140,17 +140,17 @@ const speakers = [
         which actively promotes responsible outdoor lighting and the preservation of dark skies.
         Additionally, Ms. George advocated for increased involvement from stakeholders,
         companies, and government bodies to engage in discussions and collaborate on
-        implementable solutions to address the issue of light pollution.`
+        implementable solutions to address the issue of light pollution.`,
     },
     avatar: 'neethu-george',
     featured: false,
-    inPerson: true
+    inPerson: true,
   },
   {
     given_name: 'Bhakti',
     surname: 'Mithagri',
     professional_title: 'MSc Astrophysics',
-    bio: "Curious learner and astronomy enthusiast. Graduated with a Master's degree in Astrophysics from St. Xavier's College in Mumbai and currently preparing for Ph.D.",
+    bio: 'Curious learner and astronomy enthusiast. Graduated with a Master\'s degree in Astrophysics from St. Xavier\'s College in Mumbai and currently preparing for Ph.D.',
     abstract: {
       title: 'Indian successors to the Indian Gamma-Ray Observatory(IGRO) Mission',
       description: `Ms. Bhakti Mithagri, an MSc Astrophysics graduate and avid astronomy
@@ -158,20 +158,20 @@ const speakers = [
         Observatory (IGRO) Mission." Alongside her colleague Mr. Kshititj Pawar, they elucidated
         an indigenous alternative mission concept in its initial stages. The presentation also addressed
         the issue of insufficient data democratisation within the research domain, particularly for
-        students and young researchers.`
+        students and young researchers.`,
     },
     avatar: 'bhakti-mithagri',
     featured: false,
-    inPerson: true
+    inPerson: true,
   },
   {
     title: 'Dr.',
     given_name: 'Anita',
     surname: 'Gupta',
     professional_title: 'Adviser/Scientist G at DST, Govt. of India',
-    bio: "Dr. Anita Gupta, an Adviser/Scientist G at India's DST, has over 25 years of experience in innovation, entrepreneurship, and start-ups. As Associate Head of Innovation and Entrepreneurship, she leads initiatives like Startup India, fostering over 150 technology business incubators across premier institutes and engaging in Public-Private Partnerships with major MNCs to enhance India's innovation landscape.",
+    bio: 'Dr. Anita Gupta, an Adviser/Scientist G at India\'s DST, has over 25 years of experience in innovation, entrepreneurship, and start-ups. As Associate Head of Innovation and Entrepreneurship, she leads initiatives like Startup India, fostering over 150 technology business incubators across premier institutes and engaging in Public-Private Partnerships with major MNCs to enhance India\'s innovation landscape.',
     abstract: {
-      title: "Harnessing India's  potential to fight Climate Change",
+      title: 'Harnessing India\'s  potential to fight Climate Change',
       description: `Dr. Anita Gupta. Representing the Climate Change & Clean Energy (C3E) Division within
         the Department of Science and Technology, Government of India, Dr.
         Gupta underscored the government's cognizance of pressing concerns such
@@ -179,11 +179,11 @@ const speakers = [
         the readiness of governmental entities to engage in collaborative endeavors with
         organizations, corporations, and non-governmental organizations (NGOs) to explore
         alternative strategies and foster the adoption of clean energy practices and sustainable
-        initiatives.`
+        initiatives.`,
     },
     avatar: 'anita-gupta',
     featured: true,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Maria',
@@ -192,7 +192,7 @@ const speakers = [
     bio: `Alejandra, with a Physics degree from UAM, Spain, has worked at the European Space Agency and is pursuing a PhD in Turku.
     Passionate about astronomy's societal impact, she's contributed to IAU's OAD projects and operates a telescope in La Palma alongside her thesis.`,
     abstract: {
-      title: "Astronomy's Impact on Sustainability",
+      title: 'Astronomy\'s Impact on Sustainability',
       description: `Maria Alejandra Díaz is an astronomer with a Physics degree from UAM, Spain, and is
         pursuing a PhD in Turku. Passionate about astronomy's societal impact, she's contributed to
         IAU's OAD projects and operates a telescope in La Palma alongside her thesis. Her talk was
@@ -203,11 +203,11 @@ const speakers = [
         quality education, Goal 8: Decent work and economic growth, Goal 5: gender equality, Goal
         10: Reduced Inequality, and Goal 11: affordable clean energy. She also mentioned case
         studies that highlighted astronomy and its impact and relation with mental health,
-        socio-economic development and preserving indigenous roots and knowledge of the night sky.`
+        socio-economic development and preserving indigenous roots and knowledge of the night sky.`,
     },
     avatar: 'maria-alejandra-diaz',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     title: 'Dr.',
@@ -232,11 +232,11 @@ const speakers = [
         the SATCON1 report. These strategies include reducing reflectivity through the application of
         dark paint, redirecting light away, deploying fewer satellites to minimize the issue, designing
         smaller satellites to mitigate their impact, and ensuring predictability to facilitate scheduled observations
-        `
+        `,
     },
     avatar: 'priya-hasan',
     inPerson: false,
-    featured: true
+    featured: true,
   },
   {
     given_name: 'Vedvrat',
@@ -256,11 +256,11 @@ const speakers = [
         Mission.' This initiative would recognize and award villages and cities making exemplary
         efforts to raise awareness and reduce light pollution with a unique 'Dark Sky Preservation
         Award' at both state and national levels.
-        `
+        `,
     },
     avatar: 'vedvrat-bedekar',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'David',
@@ -279,11 +279,11 @@ const speakers = [
         portable domes in schools and remote areas, creating a mobile planetarium.
         This initiative aims to reinstate and enhance
         outreach efforts in the field of astronomy.
-        `
+        `,
     },
     avatar: 'david-ault',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Samyukta',
@@ -303,11 +303,11 @@ const speakers = [
         have the privilege of having dark skies, which can be leveraged by tourism companies
         through collaborations with the rural population. This, in turn, can help improve the social
         and economic conditions of these areas.
-        `
+        `,
     },
     avatar: 'samyukta-manikumar',
     inPerson: false,
-    featured: true
+    featured: true,
   },
   {
     given_name: 'Upasana',
@@ -326,10 +326,10 @@ const speakers = [
         the absence of dedicated regulations for satellite constellations and debris, underscoring their
         disruptive impact on observational astronomy by introducing additional noise into datasets,
         hindering scientific research.
-        `
+        `,
     },
     featured: false,
-    inPerson: true
+    inPerson: true,
   },
   {
     given_name: 'Dinesh',
@@ -347,11 +347,11 @@ const speakers = [
         helped understand the engineering aspect as well as the working of the observatory. His talk
         very well complemented the tone of the day's inclusion of astronomy and space science in the
         educational curriculum.
-        `
+        `,
     },
     avatar: 'dinesh-nisang',
     featured: false,
-    inPerson: true
+    inPerson: true,
   },
   {
     given_name: 'Exodus',
@@ -371,11 +371,11 @@ const speakers = [
         establishment of Dark Sky Parks. Mr. Sit emphasized the IDEAS
         framework, encompassing Immersivity, Diversity, Equity, Access, and Spreading awareness, as a strategy for advancing
         astronomy education and outreach efforts.
-        `
+        `,
     },
     avatar: 'exodus-chun-long-sit',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Nadia Makhijani',
@@ -399,17 +399,17 @@ const speakers = [
         various experiments in college laboratories, such as satellite and meteor tracking, receiving
         weather images, and collecting GPS data. The objective of their presentation was to
         emphasize how cost-effective experiments can be implemented in undergraduate labs.
-        `
+        `,
     },
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     title: 'Dr.',
     given_name: 'Kiran',
     surname: 'Kulkarni',
     professional_title: 'Indian Administrative Service Officer',
-    bio: "Dr. Kulkarni has significantly contributed to tribal development, notably as Tribal Development Commissioner. While his work doesn't directly involve astronomy, his extensive outreach in education and governance innovations hints at a potential for fostering astronomy-related initiatives within tribal communities. His campaigns like Dream Melghat showcase his commitment to community upliftment, possibly providing a platform for intertwining traditional tribal knowledge with astronomical insights.",
+    bio: 'Dr. Kulkarni has significantly contributed to tribal development, notably as Tribal Development Commissioner. While his work doesn\'t directly involve astronomy, his extensive outreach in education and governance innovations hints at a potential for fostering astronomy-related initiatives within tribal communities. His campaigns like Dream Melghat showcase his commitment to community upliftment, possibly providing a platform for intertwining traditional tribal knowledge with astronomical insights.',
     abstract: {
       title: 'Sustainable Development through Astronomy: A Tribal Perspective',
       description: `Dr. Kiran Kulkarni (IAS), former Commissioner of the
@@ -424,11 +424,11 @@ const speakers = [
         impact of pollution, including light pollution. Dr. Kulkarni suggested that these remote and
         quiet locations might be ideal for establishing dark skies, encouraging further assessment and
         consideration for similar initiatives.
-        `
+        `,
     },
     avatar: 'kiran-kulkarni',
     featured: true,
-    inPerson: true
+    inPerson: true,
   },
   {
     given_name: 'Amshu',
@@ -445,11 +445,11 @@ const speakers = [
         Amshu CR left the audience with thought-provoking insights. The presentation highlighted
         how actual sky observations, in addition to satellite imagery and mapping, can assist farmers
         in optimizing their agricultural practices.
-        `
+        `,
     },
     avatar: 'amshu-cr',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Albert',
@@ -458,7 +458,7 @@ const speakers = [
     bio: 'Albert, an engineer specializing in Radio Astronomy Instrumentation and radio interferometer designs at the University of Mauritius, holds the esteemed role of IAU-OAD National Astronomy Education Coordinator for Ghana. Additionally, he serves as the President for PRAGSAC and is highly enthusiastic about science communication.',
     abstract: {
       title:
-        "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
+        'Empowering Ghana\'s STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation',
       description: `Mr. Albert Kuntu Forson, a Ph.D. Research Student and
         the IAU-OAD National Astronomy Education Coordinator for Ghana,
         presented on "Empowering Ghana's STEM Education: Bridging the Gap
@@ -472,11 +472,11 @@ const speakers = [
         and illegal mining in Ghana. By nurturing practical skills, fostering scientific curiosity, and
         promoting collaboration, AtroPhy plays a pivotal role in advancing STEM education and
         capacity building in the region.
-        `
+        `,
     },
     avatar: 'albert-forson',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Aishwarya',
@@ -495,11 +495,11 @@ const speakers = [
         environment, allowing the children to share their indigenous tribal stories related to
         constellations. This approach also facilitated discussions about the beliefs and superstitions
         prevalent in their respective tribal communities.
-        `
+        `,
     },
     avatar: 'aishwarya-khade',
     featured: false,
-    inPerson: true
+    inPerson: true,
   },
   {
     given_name: 'Hosein',
@@ -508,11 +508,11 @@ const speakers = [
     bio: 'Affiliated with multiple astronomical unions including the IAU, Hosein Khezri is dedicated to elevating astronomy education and its cultural integration. His association with the Iranian Teachers Astronomy Union and various International Astronomical Union commissions reflects a broad engagement in promoting astronomy in diverse cultural landscapes.',
     abstract: {
       title: 'Road to Sky',
-      description: 'Cancelled due to technical issues'
+      description: 'Cancelled due to technical issues',
     },
     avatar: 'hossein-khezri',
     featured: false,
-    inPerson: false
+    inPerson: false,
   },
   {
     given_name: 'Shweta',
@@ -545,12 +545,12 @@ const speakers = [
         through the training program. They expressed heartfelt gratitude towards the AstronEra team
         for their support and guidance throughout the journey. This ceremony not only celebrated the
         achievements of the Astroguides but also highlighted the impact of empowering individuals
-        with astronomical knowledge and skills for economic sustainability in the region.`
+        with astronomical knowledge and skills for economic sustainability in the region.`,
     },
     avatar: 'shweta-kulkarni',
     featured: true,
-    inPerson: true
-  }
+    inPerson: true,
+  },
 ] as SpeakerType[]
 
 const filterSpeakers = (featured: boolean, toSort = false) => {

@@ -6,7 +6,7 @@ export default {
     class: [
       'flex flex-1',
       'bg-surface-0 dark:bg-surface-400',
-      'text-surface-900 dark:text-surface-0'
+      'text-surface-900 dark:text-surface-0',
     ],
     enterFromClass: 'max-h-0',
     enterActiveClass:
@@ -15,6 +15,6 @@ export default {
     leaveFromClass: 'max-h-[1000px]',
     leaveActiveClass:
       'overflow-hidden transition-[max-height] duration-[450ms] ease-[cubic-bezier(0,1,0,1)]',
-    leaveToClass: 'max-h-0'
-  }
+    leaveToClass: 'max-h-0',
+  },
 }

@@ -22,7 +22,7 @@
               <IBImage
                 :img="{
                   src: '/astronera-logo.jpg',
-                  alt: 'Astron Era Logo'
+                  alt: 'Astron Era Logo',
                 }"
                 class="h-8 w-8 md:h-12 md:w-12"
               />
@@ -74,9 +74,9 @@ const getIcon = (val: string) => {
 
 defineProps({
   links: {
-    type: Array as PropType<Object[]>,
-    required: true
-  }
+    type: Array as PropType<object[]>,
+    required: true,
+  },
 })
 </script>
 

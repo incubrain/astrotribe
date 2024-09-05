@@ -18,7 +18,7 @@ export interface LoanResult {
 export function calculateInitialLoan({
   loan,
   annualInterestRate,
-  termInYears
+  termInYears,
 }: InitialLoanParams): LoanResult {
   const interestRateDecimal = annualInterestRate > 1 ? annualInterestRate / 100 : annualInterestRate
 
@@ -32,9 +32,9 @@ export function calculateInitialLoan({
   const monthlyInterestOnlyPayment = loan * monthlyInterestRate
 
   // Calculate total monthly payment using the loan amortization formula
-  const monthlyTotalPayment =
-    (loan * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
-    (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
+  const monthlyTotalPayment
+    = (loan * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)))
+    / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
 
   // Calculate the principal payment
   const monthlyPrincipalPayment = monthlyTotalPayment - monthlyInterestOnlyPayment
@@ -45,7 +45,7 @@ export function calculateInitialLoan({
     annualInterestRate,
     monthlyInterestOnlyPayment: Math.round(monthlyInterestOnlyPayment * 100) / 100,
     monthlyTotalPayment: Math.round(monthlyTotalPayment * 100) / 100,
-    monthlyPrincipalPayment: Math.round(monthlyPrincipalPayment * 100) / 100
+    monthlyPrincipalPayment: Math.round(monthlyPrincipalPayment * 100) / 100,
   }
 }
 
@@ -90,7 +90,7 @@ let loanStarted = {
   annualInterestRate: 0,
   monthlyInterestOnlyPayment: 0,
   monthlyTotalPayment: 0,
-  monthlyPrincipalPayment: 0
+  monthlyPrincipalPayment: 0,
 }
 
 export function calculateRemainingBalance({
@@ -99,7 +99,7 @@ export function calculateRemainingBalance({
   income,
   bootstrapMonths,
   initialCapital,
-  loan
+  loan,
 }: LoanRepaymentParams): CapitalResult {
   if (month === 1) {
     balanceRemaining = initialCapital
@@ -110,7 +110,7 @@ export function calculateRemainingBalance({
     loanStarted = calculateInitialLoan({
       loan: loan.AMOUNT,
       annualInterestRate: loan.ANNUAL_INTEREST_RATE,
-      termInYears: loan.TERM_IN_YEARS
+      termInYears: loan.TERM_IN_YEARS,
     })
   }
 
@@ -126,7 +126,7 @@ export function calculateRemainingBalance({
     burnRate,
     balance: {
       start: balanceRemaining + burnRate,
-      end: balanceRemaining
-    }
+      end: balanceRemaining,
+    },
   }
 }

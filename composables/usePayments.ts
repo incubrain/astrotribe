@@ -14,16 +14,19 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
       if (provider === 'razorpay') {
         const razorpay = new (window as any).Razorpay({
           key: 'rzp_test_lV0OE0NDIg6Hr6',
-          ...options
+          ...options,
         })
         razorpay.open()
-      } else if (provider === 'stripe') {
+      }
+      else if (provider === 'stripe') {
         // Placeholder for Stripe implementation
         console.log('Stripe payment initialization', options)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error(`Error initializing payment with ${provider}:`, error)
-    } finally {
+    }
+    finally {
       isLoading.value = false
     }
   }
@@ -35,12 +38,14 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     try {
       const response = await $fetch(`/api/payment/${provider}/create-order`, {
         method: 'POST',
-        body: { plan_id: planId }
+        body: { plan_id: planId },
       })
       return response
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`Error creating order with ${provider}:`, error)
-    } finally {
+    }
+    finally {
       isLoading.value = false
     }
   }
@@ -52,12 +57,14 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     try {
       const response = await $fetch(`/api/payment/${provider}/verify-payment`, {
         method: 'POST',
-        body: paymentData
+        body: paymentData,
       })
       return response
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error(`Error verifying payment with ${provider}:`, error)
-    } finally {
+    }
+    finally {
       isLoading.value = false
     }
   }
@@ -69,9 +76,11 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     try {
       const response = await $fetch(`/api/payment/${provider}/subscription`)
       return response
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error(`Error verifying payment with ${provider}:`, error)
-    } finally {
+    }
+    finally {
       isLoading.value = false
     }
   }
@@ -82,6 +91,6 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     initializePayment,
     createOrder,
     verifyPayment,
-    fetchSubscription
+    fetchSubscription,
   }
 }

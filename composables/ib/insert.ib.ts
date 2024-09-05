@@ -2,7 +2,7 @@ import {
   useErrorHandler,
   AppError,
   ErrorType,
-  ErrorSeverity
+  ErrorSeverity,
 } from './error-handler.ib'
 import { useHttpHandler } from './http-handler.ib'
 import { useLogger } from './logger.ib'
@@ -28,7 +28,7 @@ export function useInsertData<T extends { id: string | number }>(
     rateLimitMs?: number
     auditLog?: (action: string, details: any) => Promise<void>
     generateClientId?: () => string | number
-  } = {}
+  } = {},
 ) {
   const supabase = useSupabaseClient()
   const { insert } = useHttpHandler()
@@ -56,7 +56,7 @@ export function useInsertData<T extends { id: string | number }>(
             type: ErrorType.VALIDATION_ERROR,
             message: 'Data validation failed',
             severity: ErrorSeverity.MEDIUM,
-            context: 'Data Validation'
+            context: 'Data Validation',
           })
         }
 
@@ -89,7 +89,8 @@ export function useInsertData<T extends { id: string | number }>(
 
         lastInsertTime = Date.now()
         return result
-      } catch (error: any) {
+      }
+      catch (error: any) {
         // Revert optimistic insert
         store.removeItem(item.id)
         throw error // error handler in the HTTP handler deals with this
@@ -101,21 +102,24 @@ export function useInsertData<T extends { id: string | number }>(
         const results = await Promise.all(data.map(insertSingle))
         isInserting.value = false
         return results
-      } else {
+      }
+      else {
         const result = await insertSingle(data)
         isInserting.value = false
         return result
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       handleError(error, 'Error inserting data')
       throw error // Re-throw to allow caller to handle if needed
-    } finally {
+    }
+    finally {
       isInserting.value = false
     }
   }
 
   return {
     insertData,
-    isInserting
+    isInserting,
   }
 }

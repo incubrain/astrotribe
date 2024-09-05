@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const { months, storage, rgba } = useFinancials()
 
-const storageDetails = computed(() => storage.value?.flatMap((m) => m.storage.data.details) || [])
-
+const storageDetails = computed(() => storage.value?.flatMap(m => m.storage.data.details) || [])
 
 const charts = computed(() => {
   if (!months.value || !storage.value) {
@@ -21,19 +20,19 @@ const charts = computed(() => {
           'Database Cost',
           'Bandwidth Cost',
           'File Storage Cost',
-          'Compute Cost'
+          'Compute Cost',
         ],
         datasets: [
           {
             label: 'Total Storage Costs',
             valueType: 'currency',
             data: [
-              storage.value.flatMap((m) => m.storage.cost.base).reduce((a, b) => a + b, 0),
-              storage.value.flatMap((m) => m.storage.cost.mau).reduce((a, b) => a + b, 0),
-              storage.value.flatMap((m) => m.storage.cost.db).reduce((a, b) => a + b, 0),
-              storage.value.flatMap((m) => m.storage.cost.bandwidth).reduce((a, b) => a + b, 0),
-              storage.value.flatMap((m) => m.storage.cost.fileStorage).reduce((a, b) => a + b, 0),
-              storage.value.flatMap((m) => m.compute.cost.total).reduce((a, b) => a + b, 0)
+              storage.value.flatMap(m => m.storage.cost.base).reduce((a, b) => a + b, 0),
+              storage.value.flatMap(m => m.storage.cost.mau).reduce((a, b) => a + b, 0),
+              storage.value.flatMap(m => m.storage.cost.db).reduce((a, b) => a + b, 0),
+              storage.value.flatMap(m => m.storage.cost.bandwidth).reduce((a, b) => a + b, 0),
+              storage.value.flatMap(m => m.storage.cost.fileStorage).reduce((a, b) => a + b, 0),
+              storage.value.flatMap(m => m.compute.cost.total).reduce((a, b) => a + b, 0),
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
@@ -41,11 +40,11 @@ const charts = computed(() => {
               rgba('lightBlue', 0.5),
               rgba('darkRed', 0.5),
               rgba('lightRed', 0.5),
-              rgba('darkCyan', 0.5)
-            ]
-          }
-        ]
-      }
+              rgba('darkCyan', 0.5),
+            ],
+          },
+        ],
+      },
     },
     {
       title: 'Storage Data Breakdown',
@@ -57,19 +56,19 @@ const charts = computed(() => {
           {
             label: 'Database Data',
             valueType: 'storage',
-            data: storage.value.flatMap((m) => m.storage.data.db),
+            data: storage.value.flatMap(m => m.storage.data.db),
             borderColor: rgba('darkBlue', 0.5),
-            backgroundColor: rgba('darkBlue', 0.2)
+            backgroundColor: rgba('darkBlue', 0.2),
           },
           {
             label: 'Vector Data',
             valueType: 'storage',
-            data: storage.value.flatMap((m) => m.storage.data.vector),
+            data: storage.value.flatMap(m => m.storage.data.vector),
             borderColor: rgba('darkRed', 0.5),
-            backgroundColor: rgba('darkRed', 0.2)
-          }
-        ]
-      }
+            backgroundColor: rgba('darkRed', 0.2),
+          },
+        ],
+      },
     },
     {
       title: 'Compute Costs',
@@ -81,19 +80,19 @@ const charts = computed(() => {
           {
             label: 'Hourly Cost',
             valueType: 'currency',
-            data: storage.value.flatMap((m) => m.compute.cost.hourly),
+            data: storage.value.flatMap(m => m.compute.cost.hourly),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            backgroundColor: rgba('lightGreen', 0.2),
           },
           {
             label: 'Monthly Cost',
             valueType: 'currency',
-            data: storage.value.flatMap((m) => m.compute.cost.monthly),
+            data: storage.value.flatMap(m => m.compute.cost.monthly),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
-          }
-        ]
-      }
+            backgroundColor: rgba('lightBlue', 0.2),
+          },
+        ],
+      },
     },
     {
       title: 'Storage Requirements by Content Type',
@@ -105,45 +104,45 @@ const charts = computed(() => {
           {
             label: 'News',
             valueType: 'storage',
-            data: storageDetails.value.flatMap((detail) =>
-              detail.content.type === 'NEWS' ? detail.storage.total : []
+            data: storageDetails.value.flatMap(detail =>
+              detail.content.type === 'NEWS' ? detail.storage.total : [],
             ),
-            borderColor: rgba('lightGreen', 0.5)
+            borderColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'Research Abstracts',
             valueType: 'storage',
-            data: storageDetails.value.flatMap((detail) =>
-              detail.content.type === 'RESEARCH_ABSTRACTS' ? detail.storage.total : []
+            data: storageDetails.value.flatMap(detail =>
+              detail.content.type === 'RESEARCH_ABSTRACTS' ? detail.storage.total : [],
             ),
-            borderColor: rgba('darkBlue', 0.5)
+            borderColor: rgba('darkBlue', 0.5),
           },
           {
             label: 'Research Papers',
             valueType: 'storage',
-            data: storageDetails.value.flatMap((detail) =>
-              detail.content.type === 'RESEARCH_PAPERS' ? detail.storage.total : []
+            data: storageDetails.value.flatMap(detail =>
+              detail.content.type === 'RESEARCH_PAPERS' ? detail.storage.total : [],
             ),
-            borderColor: rgba('lightBlue', 0.5)
+            borderColor: rgba('lightBlue', 0.5),
           },
           {
             label: 'Jobs',
             valueType: 'storage',
-            data: storageDetails.value.flatMap((detail) =>
-              detail.content.type === 'JOBS' ? detail.storage.total : []
+            data: storageDetails.value.flatMap(detail =>
+              detail.content.type === 'JOBS' ? detail.storage.total : [],
             ),
-            borderColor: rgba('darkRed', 0.5)
+            borderColor: rgba('darkRed', 0.5),
           },
           {
             label: 'Companies',
             valueType: 'storage',
-            data: storageDetails.value.flatMap((detail) =>
-              detail.content.type === 'COMPANIES' ? detail.storage.total : []
+            data: storageDetails.value.flatMap(detail =>
+              detail.content.type === 'COMPANIES' ? detail.storage.total : [],
             ),
-            borderColor: rgba('lightRed', 0.5)
-          }
-        ]
-      }
+            borderColor: rgba('lightRed', 0.5),
+          },
+        ],
+      },
     },
     {
       title: 'Storage Costs vs. Data Usage',
@@ -155,35 +154,35 @@ const charts = computed(() => {
           {
             label: 'Total Cost',
             valueType: 'number',
-            data: storage.value.flatMap((m) => m.totalCost),
+            data: storage.value.flatMap(m => m.totalCost),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('lightRed', 0.2)
+            backgroundColor: rgba('lightRed', 0.2),
           },
           {
             label: 'Compute Cost',
             valueType: 'number',
-            data: storage.value.flatMap((m) => m.compute.cost.total),
+            data: storage.value.flatMap(m => m.compute.cost.total),
             borderColor: rgba('lightOrange', 0.5),
-            backgroundColor: rgba('lightOrange', 0.2)
+            backgroundColor: rgba('lightOrange', 0.2),
           },
           {
             label: 'Storage Cost',
             valueType: 'number',
-            data: storage.value.flatMap((m) => m.storage.cost.total),
+            data: storage.value.flatMap(m => m.storage.cost.total),
             borderColor: rgba('lightYellow', 0.5),
-            backgroundColor: rgba('lightYellow', 0.2)
+            backgroundColor: rgba('lightYellow', 0.2),
           },
           {
             label: 'Total Data',
             valueType: 'storage',
             type: 'bar',
-            data: storage.value.flatMap((m) => m.storage.data.total),
+            data: storage.value.flatMap(m => m.storage.data.total),
             borderColor: rgba('darkGreen', 0.5),
-            backgroundColor: rgba('darkGreen', 0.5)
-          }
-        ]
-      }
-    }
+            backgroundColor: rgba('darkGreen', 0.5),
+          },
+        ],
+      },
+    },
   ]
 })
 </script>

@@ -2,7 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'BusinessPlan',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 
 const businessPlanSections = [
@@ -17,13 +17,13 @@ const businessPlanSections = [
   'risk-analysis',
   'roadmap',
   'appendix',
-  'ideas'
+  'ideas',
 ]
 
 const businessPlanTabs = businessPlanSections.map((section, index) => ({
   value: `${index}`,
-  title: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-  slotName: section
+  title: section.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+  slotName: section,
 }))
 </script>
 

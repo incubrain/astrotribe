@@ -19,14 +19,14 @@ function createGoal(
   title: string,
   date: string,
   category: Goal['category'],
-  completed = false
+  completed = false,
 ): Goal {
   return {
     id: nextId++,
     title,
     date,
     category,
-    completed
+    completed,
   }
 }
 
@@ -60,7 +60,7 @@ const goals = ref<Goal[]>([
   createGoal('Reach 36,000 users', '2025-08-31', 'metrics'),
   createGoal('Reach 40,000 users', '2025-09-30', 'metrics'),
   createGoal('Achieve 1,000 Patreon subscribers', '2025-09-30', 'metrics'),
-  createGoal('Achieve 4 B2B clients', '2025-09-30', 'metrics')
+  createGoal('Achieve 4 B2B clients', '2025-09-30', 'metrics'),
 ])
 
 const editingGoal = ref<Goal | null>(null)
@@ -72,16 +72,17 @@ const currentGoal = computed({
   set: (value) => {
     if (editingGoal.value) {
       Object.assign(editingGoal.value, value)
-    } else {
+    }
+    else {
       editingGoal.value = { ...value, id: goals.value.length + 1, completed: false } as Goal
     }
-  }
+  },
 })
 
 const upcomingGoals = computed(() => {
   const today = new Date()
   return goals.value
-    .filter((goal) => !goal.completed && new Date(goal.date) >= today)
+    .filter(goal => !goal.completed && new Date(goal.date) >= today)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 5)
 })
@@ -90,14 +91,14 @@ const calendarOptions = computed(() => ({
   plugins: [dayGridPlugin, interactionPlugin, multiMonthPlugin],
   initialView: 'multiMonthYear',
   multiMonthMaxColumns: 2,
-  events: goals.value.map((goal) => ({
+  events: goals.value.map(goal => ({
     id: goal.id.toString(),
     title: goal.title,
     start: goal.date,
-    classNames: [goal.category, goal.completed ? 'completed' : '']
+    classNames: [goal.category, goal.completed ? 'completed' : ''],
   })),
   dateClick: handleDateClick,
-  eventClick: handleEventClick
+  eventClick: handleEventClick,
 }))
 
 function handleDateClick(arg: { dateStr: string }) {
@@ -106,13 +107,13 @@ function handleDateClick(arg: { dateStr: string }) {
     title: '',
     date: arg.dateStr,
     category: 'financial' as const,
-    completed: false
+    completed: false,
   }
   showModal.value = true
 }
 
-function handleEventClick(info: { event: { id: string; title: string; start: Date } }) {
-  const goal = goals.value.find((g) => g.id === parseInt(info.event.id))
+function handleEventClick(info: { event: { id: string, title: string, start: Date } }) {
+  const goal = goals.value.find(g => g.id === parseInt(info.event.id))
   if (goal) {
     editingGoal.value = { ...goal }
     showModal.value = true
@@ -121,11 +122,12 @@ function handleEventClick(info: { event: { id: string; title: string; start: Dat
 
 function saveGoal() {
   if (editingGoal.value) {
-    const index = goals.value.findIndex((g) => g.id === editingGoal.value!.id)
+    const index = goals.value.findIndex(g => g.id === editingGoal.value!.id)
     if (index !== -1) {
       goals.value[index] = editingGoal.value
     }
-  } else {
+  }
+  else {
     goals.value.push(currentGoal.value as Goal)
   }
   showModal.value = false

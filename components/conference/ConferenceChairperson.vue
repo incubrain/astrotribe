@@ -4,7 +4,7 @@
       v-for="(host, i) in hosts"
       :key="`conference-host-${i}`"
       :pt="{
-        root: 'flex flex-col md:flex-row w-full h-full overflow-hidden relative'
+        root: 'flex flex-col md:flex-row w-full h-full overflow-hidden relative',
       }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >
@@ -18,7 +18,7 @@
             height: '350',
             loading: 'lazy',
             quality: '80',
-            format: 'webp'
+            format: 'webp',
           }"
           class="aspect-square h-full w-full min-w-[180px] object-cover grayscale-[20%]"
         />
@@ -52,8 +52,8 @@ import type { SpeakerType } from '@/types/conference'
 defineProps({
   hosts: {
     type: Object as PropType<SpeakerType[]>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

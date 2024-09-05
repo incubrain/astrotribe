@@ -22,7 +22,7 @@
           src: image.src,
           alt: image.alt,
           width: '440',
-          height: '520'
+          height: '520',
         }"
         class="mx-auto w-full rounded-md"
       />
@@ -34,7 +34,7 @@
 const venue = {
   title: {
     main: 'Conference Venue, Manu Allaya',
-    subtitle: 'Manali, Himachal Pradesh, India'
+    subtitle: 'Manali, Himachal Pradesh, India',
   },
   website: 'https://www.manuallaya.com/',
   about: `Nestled in the heart of Himachal Pradesh in India, ManuAllaya served as a celestial
@@ -44,10 +44,10 @@ const venue = {
     elegance. Overall, the choice of ManuAllaya as the conference venue and the thoughtful selection of
     presentation themes contributed to creating an immersive and intellectually stimulating
     environment, enabling participants to engage deeply with the subject matter and further the
-    objectives of the conference.`
+    objectives of the conference.`,
 }
 const image = {
   src: 'conference/manu-allaya-milkyway-poster.jpg',
-  alt: 'Manu Allaya resort at night with the milky way in the background'
+  alt: 'Manu Allaya resort at night with the milky way in the background',
 }
 </script>

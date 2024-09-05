@@ -35,16 +35,16 @@
 const p = defineProps({
   shareText: {
     type: String,
-    default: 'Check out this article!'
+    default: 'Check out this article!',
   },
   summary: {
     type: String,
-    default: ''
+    default: '',
   },
   link: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const currentUrl = ref()
@@ -56,13 +56,13 @@ onMounted(() => {
       {
         name: 'Twitter',
         icon: 'mdi:twitter',
-        url: `https://twitter.com/intent/tweet?url=${currentUrl.value}&text=${shareTextEncoded.value}`
+        url: `https://twitter.com/intent/tweet?url=${currentUrl.value}&text=${shareTextEncoded.value}`,
       },
       {
         name: 'Email',
         icon: 'mdi:email',
-        url: `mailto:?subject=${shareTextEncoded.value}&body=${currentUrl.value}`
-      }
+        url: `mailto:?subject=${shareTextEncoded.value}&body=${currentUrl.value}`,
+      },
     ]
   }
 })

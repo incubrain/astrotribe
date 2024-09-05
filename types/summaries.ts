@@ -6,7 +6,7 @@ const SummarySchema = z
     level: z.string(),
     content: z.string(),
     createdAt: z.string().nullable(),
-    newsId: z.number().optional()
+    newsId: z.number().optional(),
   })
   .nullable()
 

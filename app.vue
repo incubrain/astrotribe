@@ -18,15 +18,19 @@ supabase.auth.onAuthStateChange((event, session) => {
       console.log('TOKEN_REFRESHED', session)
       await currentUser.loadSession()
       // Use webhooks/database for role/plan changes to trigger new session
-    } else if (event === 'SIGNED_OUT') {
+    }
+    else if (event === 'SIGNED_OUT') {
       console.log('SIGNED_OUT')
       currentUser.removeSession()
-    } else if (event === 'PASSWORD_RECOVERY') {
+    }
+    else if (event === 'PASSWORD_RECOVERY') {
       console.log('PASSWORD_RECOVERY: TRIGGER')
       // Handle password recovery event
-    } else if (event === 'INITIAL_SESSION') {
+    }
+    else if (event === 'INITIAL_SESSION') {
       await currentUser.loadSession()
-    } else if (event === 'SIGNED_IN') {
+    }
+    else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER')
     }
   }, 0)
@@ -34,21 +38,21 @@ supabase.auth.onAuthStateChange((event, session) => {
 
 useHead({
   htmlAttrs: {
-    lang: 'en'
+    lang: 'en',
   },
   meta: [
     {
       name: 'viewport',
-      content: 'width=device-width, initial-scale=1'
-    }
+      content: 'width=device-width, initial-scale=1',
+    },
   ],
   link: [
     {
       rel: 'icon',
       type: 'image/png',
-      href: '/favicon.png'
-    }
-  ]
+      href: '/favicon.png',
+    },
+  ],
 })
 
 const showPlayground = ref(true)

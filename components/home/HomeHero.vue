@@ -4,7 +4,7 @@
       :img="{
         src: bgImg,
         quality: '80',
-        format: 'webp'
+        format: 'webp',
       }"
       class="absolute left-0 top-0 h-full w-full bg-center bg-no-repeat object-cover"
     />
@@ -21,7 +21,7 @@
         >
           <IBImage
             :img="{
-              src: '/astronera-logo.jpg'
+              src: '/astronera-logo.jpg',
             }"
           />
         </div>
@@ -49,7 +49,7 @@
 const video = {
   url: 'https://www.youtube.com/embed/x5ijmeCJ42s?si=V_t46bCe9ClaKmrN?mute=0&autoplay=1',
   thumbnail: 'images/hero-image.jpg',
-  alt: 'Astron Era Hero Video'
+  alt: 'Astron Era Hero Video',
 }
 
 const bgImg = '/astron-era-hero.jpg'

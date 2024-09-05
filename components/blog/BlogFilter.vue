@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import { CATEGORIES } from '~/types/articles'
 import type { ArticleCategoriesT } from '~/types/articles'
-import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 const selectedCategory = ref<ArticleCategoriesT>(
-  String(useRoute().params.category) as ArticleCategoriesT
+  String(useRoute().params.category) as ArticleCategoriesT,
 )
 const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 

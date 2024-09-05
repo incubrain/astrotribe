@@ -25,6 +25,6 @@ export const useApiDataStore = defineStore('apiData', () => {
     apiData,
     setData,
     getData,
-    clearData
+    clearData,
   }
 })

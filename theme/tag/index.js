@@ -1,22 +1,22 @@
 export default {
   root: ({ props }) => ({
     class: [
-      //Font
+      // Font
       'text-xs font-bold',
 
-      //Alignments
+      // Alignments
       'inline-flex items-center justify-center',
 
-      //Spacing
+      // Spacing
       'px-2 py-1',
 
-      //Shape
+      // Shape
       {
         'rounded-md': !props.rounded,
-        'rounded-full': props.rounded
+        'rounded-full': props.rounded,
       },
 
-      //Colors
+      // Colors
       'text-surface-100',
       {
         'bg-primary-800 dark:bg-primary-800':
@@ -28,14 +28,14 @@ export default {
         'bg-orange-900 dark:bg-orange-950': props.severity === 'warn',
         'bg-red-900 dark:bg-red-950': props.severity === 'danger',
         'text-surface-900 dark:text-surface-950 bg-surface-100 dark:bg-surface-100':
-          props.severity === 'contrast'
-      }
-    ]
+          props.severity === 'contrast',
+      },
+    ],
   }),
   value: {
-    class: 'leading-normal'
+    class: 'leading-normal',
   },
   icon: {
-    class: 'mr-1 text-sm'
-  }
+    class: 'mr-1 text-sm',
+  },
 }

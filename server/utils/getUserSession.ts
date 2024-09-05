@@ -1,5 +1,5 @@
-import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 import { useJwt } from '@vueuse/integrations/useJwt'
+import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 
 async function fetchPermissions(userPlan: string, userRole: string) {
   const event = useEvent()
@@ -22,9 +22,10 @@ async function fetchPermissions(userPlan: string, userRole: string) {
 
     return {
       role: rolePermissions,
-      plan: planPermissions
+      plan: planPermissions,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error fetching permissions:', error.message)
     return null // Return null to indicate failure
   }
@@ -84,7 +85,7 @@ export async function validateAndUpdateSession() {
   const { user, refresh_token } = session
   if (!user || !refresh_token) {
     throw createError({
-      message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`
+      message: `user: ${user.id} or refresh_token: ${refresh_token.length} undefined in session`,
     })
   }
 
@@ -96,15 +97,15 @@ export async function validateAndUpdateSession() {
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
   if (
-    !storedPermissions ||
-    storedPermissions.expires_at < Date.now() ||
-    storedPermissions.refresh_token !== refresh_token
+    !storedPermissions
+    || storedPermissions.expires_at < Date.now()
+    || storedPermissions.refresh_token !== refresh_token
   ) {
     const { role: user_role, plan: user_plan } = user.app_metadata
 
     if (!user_role || !user_plan) {
       throw createError({
-        message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`
+        message: `missing user_role: ${user_role} or user_plan: ${user_plan}, unable to fetch user permissions`,
       })
 
       // redirect to login page
@@ -137,12 +138,13 @@ export async function validateAndUpdateSession() {
         full_name: user.user_metadata.full_name,
         given_name: user.user_metadata.given_name ?? user.user_metadata.given_name,
         surname: user.user_metadata.surname ?? user.user_metadata.surname,
-        username: user.user_metadata.username
+        username: user.user_metadata.username,
       },
       plan_permissions: permissions.plan,
-      role_permissions: permissions.role
+      role_permissions: permissions.role,
     })
-  } else {
+  }
+  else {
     console.log('Current permissions are valid and do not need updates.')
   }
 
@@ -188,7 +190,7 @@ export async function getUserPermissions() {
 
 export async function hasDBPermission(
   tableName: string,
-  operation: 'select' | 'update' | 'insert' | 'delete'
+  operation: 'select' | 'update' | 'insert' | 'delete',
 ): Promise<boolean> {
   const permissions = await getUserPermissions()
 
@@ -198,23 +200,21 @@ export async function hasDBPermission(
   }
 
   const tablePermissions = permissions.role_permissions.find(
-    (item) => item.table_name === tableName
+    item => item.table_name === tableName,
   )
 
   if (!tablePermissions) {
     throw createError({
-      message: `${tableName} is not a valid table_name`
+      message: `${tableName} is not a valid table_name`,
     })
   }
-
-
 
   return tablePermissions.permissions.includes(operation)
 }
 
 export async function hasFeaturePermission(
   feature: string,
-  action: 'select' | 'update' | 'insert' | 'delete'
+  action: 'select' | 'update' | 'insert' | 'delete',
 ): Promise<boolean> {
   const permissions = await getUserPermissions()
 
@@ -223,11 +223,11 @@ export async function hasFeaturePermission(
     return false
   }
 
-  const featurePermissions = permissions.plan_permissions.find((item) => item.feature === feature)
+  const featurePermissions = permissions.plan_permissions.find(item => item.feature === feature)
 
   if (!featurePermissions) {
     throw createError({
-      message: `${feature} is not a valid feature name`
+      message: `${feature} is not a valid feature name`,
     })
   }
 

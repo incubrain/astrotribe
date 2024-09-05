@@ -1,10 +1,10 @@
+import crypto from 'crypto'
 import { defineEventHandler, createError } from 'h3'
-import { serverSupabaseClient } from '#supabase/server'
 import { PDFDocument } from 'pdf-lib'
 import lame from 'node-lame'
 import ffmpeg from 'fluent-ffmpeg'
 import sharp from 'sharp'
-import crypto from 'crypto'
+import { serverSupabaseClient } from '#supabase/server'
 
 // Base optimizer interface
 interface FileOptimizer {
@@ -46,14 +46,14 @@ class VideoOptimizer implements FileOptimizer {
       maxWidth = 1920,
       maxHeight = 1080,
       videoBitrate = '1000k',
-      audioBitrate = '128k'
+      audioBitrate = '128k',
     } = options
 
     return new Promise((resolve, reject) => {
       ffmpeg()
         .input(buffer)
         .videoFilters(
-          `scale='min(${maxWidth},iw)':min'(${maxHeight},ih)':force_original_aspect_ratio=decrease`
+          `scale='min(${maxWidth},iw)':min'(${maxHeight},ih)':force_original_aspect_ratio=decrease`,
         )
         .videoBitrate(videoBitrate)
         .audioBitrate(audioBitrate)
@@ -73,7 +73,7 @@ class AudioOptimizer implements FileOptimizer {
 
     const encoder = new lame.Lame({
       output: 'buffer',
-      bitrate: bitrate
+      bitrate: bitrate,
     }).setBuffer(buffer)
 
     const encodedBuffer = await encoder.encode()
@@ -108,15 +108,15 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'No form data provided' })
   }
 
-  const userId = form.find((item) => item.name === 'userId')?.data.toString()
-  const fileType = form.find((item) => item.name === 'fileType')?.data.toString()
-  const bucket = form.find((item) => item.name === 'bucket')?.data.toString()
-  const path = form.find((item) => item.name === 'path')?.data.toString()
+  const userId = form.find(item => item.name === 'userId')?.data.toString()
+  const fileType = form.find(item => item.name === 'fileType')?.data.toString()
+  const bucket = form.find(item => item.name === 'bucket')?.data.toString()
+  const path = form.find(item => item.name === 'path')?.data.toString()
   const optimizationOptions = JSON.parse(
-    form.find((item) => item.name === 'optimizationOptions')?.data.toString() || '{}'
+    form.find(item => item.name === 'optimizationOptions')?.data.toString() || '{}',
   )
 
-  const file = form.find((item) => item.name === 'file')
+  const file = form.find(item => item.name === 'file')
   if (!file) {
     throw createError({ statusCode: 400, statusMessage: 'No file provided' })
   }
@@ -136,15 +136,16 @@ export default defineEventHandler(async (event) => {
     let finalMimeType: string
 
     const optimizerKey = mimeType.split('/')[0]
-    const optimizer =
-      optimizerFactory.getOptimizer(optimizerKey) || optimizerFactory.getOptimizer(mimeType)
+    const optimizer
+      = optimizerFactory.getOptimizer(optimizerKey) || optimizerFactory.getOptimizer(mimeType)
 
     if (optimizer) {
       const result = await optimizer.optimize(file.data, optimizationOptions)
       optimizedFile = result.data
       finalExtension = result.extension
       finalMimeType = result.mimeType
-    } else {
+    }
+    else {
       console.log('No optimizer found for this file type, uploading as-is')
       optimizedFile = file.data
       finalExtension = mimeType.split('/')[1]
@@ -157,7 +158,7 @@ export default defineEventHandler(async (event) => {
       .upload(`${path}/${fileName}.${finalExtension}`, optimizedFile, {
         contentType: finalMimeType,
         cacheControl: '3600',
-        upsert: true
+        upsert: true,
       })
 
     if (error) {
@@ -174,7 +175,8 @@ export default defineEventHandler(async (event) => {
 
       if (updateError) {
         console.error('Error updating user profile:', updateError)
-      } else {
+      }
+      else {
         console.log('User profile updated:', data)
       }
     }
@@ -183,10 +185,11 @@ export default defineEventHandler(async (event) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'File successfully uploaded and optimized',
-        fileName: `${fileName}.${finalExtension}`
-      })
+        fileName: `${fileName}.${finalExtension}`,
+      }),
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('Error processing file:', error)
     throw createError({ statusCode: 500, statusMessage: error.message })
   }

@@ -12,20 +12,20 @@ type FilterFields = (string | ((data: any) => string))[] | undefined
 const props = defineProps({
   columns: {
     type: Array as PropType<Column[]>,
-    required: true
+    required: true,
   },
   tableData: {
     type: Array,
-    required: true
+    required: true,
   },
   filters: {
     type: Object as PropType<DataTableFilterMeta>,
-    required: true
+    required: true,
   },
   filterFields: {
     type: Array as PropType<FilterFields>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const dataRows = computed(() => props.tableData)
@@ -55,10 +55,10 @@ const selectedRows = ref([])
     :pt="{
       column: {
         bodycell: ({ state }) => ({
-          style: state['d_editing'] && 'padding-top: 0.6rem; padding-bottom: 0.6rem text-nowrap'
-        })
+          style: state['d_editing'] && 'padding-top: 0.6rem; padding-bottom: 0.6rem text-nowrap',
+        }),
       },
-      paginator: { paginatorwrapper: 'border-color', root: 'rounded-none' }
+      paginator: { paginatorwrapper: 'border-color', root: 'rounded-none' },
     }"
   >
     <template #header>
@@ -104,7 +104,7 @@ const selectedRows = ref([])
       :pt="{
         headercell: 'text-nowrap text-sm p-3 bg-primary-950',
         headerTitle: 'text-center w-full',
-        bodycell: 'text-nowrap overflow-scroll max-w-sm text-sm foreground min-w-24 text-center'
+        bodycell: 'text-nowrap overflow-scroll max-w-sm text-sm foreground min-w-24 text-center',
       }"
     >
       <template #body="{ data, field }">

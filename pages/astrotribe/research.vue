@@ -9,8 +9,8 @@ const fetchInput = ref({
   domainKey,
   endpoint: '/api/research/select/cards',
   criteria: {
-    dto: 'select:research:card'
-  }
+    dto: 'select:research:card',
+  },
 })
 
 watchEffect(() => {
@@ -24,7 +24,7 @@ console.log('research', research)
 
 definePageMeta({
   name: 'Research',
-  layout: 'app'
+  layout: 'app',
 })
 </script>
 
@@ -35,7 +35,7 @@ definePageMeta({
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 20
+        limit: 20,
       }"
       @update:scroll-end="researchStore.loadResearch('select:venue:card')"
     >

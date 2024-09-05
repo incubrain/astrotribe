@@ -10,11 +10,11 @@ export const SettingsPasswordValidation = z
   .object({
     currentPassword: passwordValidation,
     newPassword: passwordValidation,
-    confirmNewPassword: passwordValidation
+    confirmNewPassword: passwordValidation,
   })
-  .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "Passwords don't match",
-    path: ['confirmNewPassword']
+  .refine(data => data.newPassword === data.confirmNewPassword, {
+    message: 'Passwords don\'t match',
+    path: ['confirmNewPassword'],
   })
 
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
@@ -33,7 +33,7 @@ export function useAuth() {
   const userPasswordSettings = reactive({
     currentPassword: 'current password',
     newPassword: 'new password',
-    confirmNewPassword: 'confirm new password'
+    confirmNewPassword: 'confirm new password',
   })
 
   interface RegisterWithEmail {
@@ -57,15 +57,16 @@ export function useAuth() {
       options: {
         data: {
           given_name,
-          surname
-        }
-      }
+          surname,
+        },
+      },
     })
 
     if (error) {
       console.error(error.message)
       toast.error({ summary: 'Register with email', message: error.message })
-    } else {
+    }
+    else {
       console.log('success')
       navigateTo('/auth/success')
     }
@@ -75,7 +76,7 @@ export function useAuth() {
   async function loginWithEmail(email: string, password: string) {
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     })
     if (error) {
       console.error(error.message)
@@ -88,7 +89,7 @@ export function useAuth() {
 
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: redirectUrl.value }
+      options: { redirectTo: redirectUrl.value },
     })
 
     if (error?.message) {
@@ -100,7 +101,7 @@ export function useAuth() {
       console.error({ message: 'Login failed' })
       toast.error({
         summary: 'Login failed',
-        message: `there was an error logging in with ${provider}, no user returned`
+        message: `there was an error logging in with ${provider}, no user returned`,
       })
     }
   }
@@ -108,16 +109,17 @@ export function useAuth() {
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${redirectUrl.value}/settings/password`
+      redirectTo: `${redirectUrl.value}/settings/password`,
     })
 
     if (error) {
       console.error('Forgot password failed:', error)
       toast.error({ summary: 'Password Reset Failed', message: error.message })
-    } else {
+    }
+    else {
       toast.success({
         summary: 'Email Sent',
-        message: 'Check your email for a password reset link'
+        message: 'Check your email for a password reset link',
       })
     }
   }
@@ -128,7 +130,8 @@ export function useAuth() {
     if (error) {
       console.error('Password update failed:', error)
       toast.error({ summary: 'Password Update Failed', message: error.message })
-    } else {
+    }
+    else {
       toast.success({ summary: 'Password Updated', message: 'Your password has been updated' })
     }
   }
@@ -138,7 +141,8 @@ export function useAuth() {
     if (error) {
       console.error('Logout failed:', error)
       toast.error({ summary: 'Logout Failed', message: error.message })
-    } else {
+    }
+    else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
       navigateTo('/')
     }
@@ -151,7 +155,7 @@ export function useAuth() {
     logout,
     password: {
       forgot: forgotPassword,
-      update: updatePassword
-    }
+      update: updatePassword,
+    },
   }
 }

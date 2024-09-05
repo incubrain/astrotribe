@@ -10,7 +10,7 @@ function calculateAverageCitationDensity(totalCitations: number, totalChunks: nu
 }
 
 function calculateFigureInclusionRate(chunks: any[], totalChunks: number): number {
-  const chunksWithFigures = chunks.filter((chunk) => chunk.includesFigures)
+  const chunksWithFigures = chunks.filter(chunk => chunk.includesFigures)
   return (chunksWithFigures.length / totalChunks) * 100
 }
 
@@ -53,7 +53,7 @@ export function useResearchMetrics() {
     dataLength,
     abstractLength,
     chunkLength,
-    chunkCount
+    chunkCount,
   }: CostAndStorageParams): any {
     // OPEN AI COSTS:
     // GPT4o INPUT: US$5.00 / 1M tokens
@@ -87,21 +87,21 @@ export function useResearchMetrics() {
       abstractSumOutputCost,
       embeddingRowSize,
       dataRowSize,
-      abstractRowSize
+      abstractRowSize,
     }
   }
 
   return {
     cost: {
-      calculateCostAndStorage
+      calculateCostAndStorage,
     },
     chunks: {
-      calculateChunkSizeVariability
+      calculateChunkSizeVariability,
     },
     density: {
       calculateAverageCitationDensity,
       calculateFigureInclusionRate,
-      calculateMathExpressionDensity
+      calculateMathExpressionDensity,
     },
     performance: {
       calculateAverageProcessingTime,
@@ -109,7 +109,7 @@ export function useResearchMetrics() {
       calculatePeakMemoryUsage,
       calculateMemoryEfficiency,
       calculateTimeEfficiency,
-      calculateResourceUsageIndex
-    }
+      calculateResourceUsageIndex,
+    },
   }
 }

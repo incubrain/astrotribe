@@ -15,7 +15,7 @@ let selectedMetrics: string[] = [
   'paginationMetrics',
   'blogPostScraperMetrics',
   'resourceAnalytics',
-  'pageToMarkdownAnalytics'
+  'pageToMarkdownAnalytics',
 ] // Default metrics
 
 const connectToAnalyticsServer = () => {
@@ -26,13 +26,13 @@ const connectToAnalyticsServer = () => {
 
   const scraperKey = useRuntimeConfig().scraperKey
   const token = jwt.sign({ sender: 'AstronEra' }, scraperKey, {
-    algorithm: 'HS256'
+    algorithm: 'HS256',
   })
   const scraperBaseURL = useRuntimeConfig().public.scraperUrl
   const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
 
   serverWs = new WebSocket(wsUrl, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   })
 
   serverWs.on('open', () => {
@@ -48,8 +48,8 @@ const connectToAnalyticsServer = () => {
     serverWs.send(
       JSON.stringify({
         action: 'subscribe',
-        metrics: selectedMetrics
-      })
+        metrics: selectedMetrics,
+      }),
     )
   })
 
@@ -79,7 +79,8 @@ const scheduleReconnect = () => {
     reconnectAttempts++
     console.log(`Scheduling reconnection attempt ${reconnectAttempts}/${maxReconnectAttempts}`)
     reconnectTimeout = setTimeout(connectToAnalyticsServer, reconnectInterval)
-  } else {
+  }
+  else {
     console.log('Max reconnect attempts reached. Please check the server.')
   }
 }
@@ -106,10 +107,11 @@ export default defineWebSocketHandler({
       serverWs.send(
         JSON.stringify({
           action: 'subscribe',
-          metrics: parsedMessage.metrics
-        })
+          metrics: parsedMessage.metrics,
+        }),
       )
-    } else {
+    }
+    else {
       console.log('Cannot forward message: serverWs not ready')
     }
   },
@@ -132,5 +134,5 @@ export default defineWebSocketHandler({
   error(peer, error) {
     console.error('Error with Nuxt client connection:', error)
     clients.delete(peer)
-  }
+  },
 })

@@ -24,8 +24,8 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
       params: {
         forHandle: username,
         part: 'snippet,contentDetails,statistics',
-        key: GOOGLE_API_KEY
-      }
+        key: GOOGLE_API_KEY,
+      },
     })
 
     console.log('channelRes', channelResponse)
@@ -44,15 +44,15 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
         part: 'id,snippet,contentDetails',
         maxResults: 12,
         playlistId: uploadsPlaylistId,
-        key: GOOGLE_API_KEY
-      }
+        key: GOOGLE_API_KEY,
+      },
     })
 
     const videos = videosResponse.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
       publishedAt: item.snippet.publishedAt,
-      videoId: item.contentDetails.videoId
+      videoId: item.contentDetails.videoId,
     }))
 
     console.log('videos', videos)
@@ -61,9 +61,10 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
       name: channel.snippet.title,
       description: channel.snippet.description,
       subscriberCount: channel.statistics.subscriberCount,
-      videos
+      videos,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to fetch YouTube profile details:', error)
     return null
   }
@@ -78,7 +79,7 @@ export function useYoutubeChannel(channelId: string) {
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch channel statistics for ${channelId}`,
-      userMessage: `Failed to fetch statistics for channel ${channelId}`
+      userMessage: `Failed to fetch statistics for channel ${channelId}`,
     })
     return data.items[0].statistics
   }
@@ -89,7 +90,7 @@ export function useYoutubeChannel(channelId: string) {
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch channel videos for ${channelId}`,
-      userMessage: `Failed to fetch videos for channel ${channelId}`
+      userMessage: `Failed to fetch videos for channel ${channelId}`,
     })
 
     return data.items
@@ -101,7 +102,7 @@ export function useYoutubeChannel(channelId: string) {
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch video statistics for ${channelId}`,
-      userMessage: `Failed to fetch video statistics for channel ${channelId}`
+      userMessage: `Failed to fetch video statistics for channel ${channelId}`,
     })
     return data.items[0].statistics
   }
@@ -109,6 +110,6 @@ export function useYoutubeChannel(channelId: string) {
   return {
     fetchChannelStatistics,
     fetchChannelVideos,
-    fetchVideoStatistics
+    fetchVideoStatistics,
   }
 }

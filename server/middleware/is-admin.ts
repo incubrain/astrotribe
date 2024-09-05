@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       throw createError({
         statusCode: 403,
         statusMessage: 'Unauthorized Access',
-        message: 'You do not have permission to access this resource'
+        message: 'You do not have permission to access this resource',
       })
     }
   }

@@ -20,32 +20,32 @@ const organization = {
           label: 'Tax',
           type: 'person',
           styleClass: 'ui-person',
-          data: { name: 'Skyler White', title: 'Tax', image: 'images/organization/skyler.jpg' }
+          data: { name: 'Skyler White', title: 'Tax', image: 'images/organization/skyler.jpg' },
         },
         {
           key: '4',
           label: 'Legal',
           type: 'person',
           styleClass: 'ui-person',
-          data: { name: 'Jesse Pinkman', title: 'Legal', image: 'images/organization/jesse.jpg' }
-        }
-      ]
+          data: { name: 'Jesse Pinkman', title: 'Legal', image: 'images/organization/jesse.jpg' },
+        },
+      ],
     },
     {
       key: '5',
       label: 'COO',
       type: 'person',
       styleClass: 'ui-person',
-      data: { name: 'Mike E.', title: 'COO', image: 'images/organization/mike.jpg' }
+      data: { name: 'Mike E.', title: 'COO', image: 'images/organization/mike.jpg' },
     },
     {
       key: '6',
       label: 'CTO',
       type: 'person',
       styleClass: 'ui-person',
-      data: { name: 'Gus Fring', title: 'CTO', image: 'images/organization/gus.jpg' }
-    }
-  ]
+      data: { name: 'Gus Fring', title: 'CTO', image: 'images/organization/gus.jpg' },
+    },
+  ],
 }
 
 const selection = ref([])

@@ -7,7 +7,7 @@ watch(
   (newMetrics) => {
     console.log('Spider Metrics updated:', newMetrics)
   },
-  { deep: true }
+  { deep: true },
 )
 
 const urlDepthChart = ref(null)
@@ -21,25 +21,25 @@ const commonChartOptions = {
   transitions: {
     active: {
       animation: {
-        duration: 300
-      }
+        duration: 300,
+      },
     },
     resize: {
       animation: {
         duration: 500,
-        easing: 'easeOutQuad'
-      }
-    }
+        easing: 'easeOutQuad',
+      },
+    },
   },
   plugins: {
     legend: {
       labels: {
         font: {
-          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-        }
-      }
-    }
-  }
+          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+        },
+      },
+    },
+  },
 }
 
 const urlDepthChartOptions = {
@@ -48,19 +48,19 @@ const urlDepthChartOptions = {
     x: {
       ticks: {
         font: {
-          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-        }
-      }
+          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+        },
+      },
     },
     y: {
       beginAtZero: true,
       ticks: {
         font: {
-          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
-        }
-      }
-    }
-  }
+          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+        },
+      },
+    },
+  },
 }
 
 const protocolChartOptions = {
@@ -69,9 +69,9 @@ const protocolChartOptions = {
     ...commonChartOptions.plugins,
     legend: {
       ...commonChartOptions.plugins.legend,
-      position: 'bottom'
-    }
-  }
+      position: 'bottom',
+    },
+  },
 }
 
 const urlDepthChartData = computed(() => {
@@ -82,14 +82,14 @@ const urlDepthChartData = computed(() => {
       {
         label: 'New URLs',
         data: Object.values(depthStats).map((stat: any) => stat?.new ?? 0),
-        backgroundColor: '#36A2EB'
+        backgroundColor: '#36A2EB',
       },
       {
         label: 'Allowed URLs',
         data: Object.values(depthStats).map((stat: any) => stat?.allowed ?? 0),
-        backgroundColor: '#FFCE56'
-      }
-    ]
+        backgroundColor: '#FFCE56',
+      },
+    ],
   }
 })
 
@@ -99,11 +99,11 @@ const protocolChartData = computed(() => ({
     {
       data: [
         spiderMetrics.value?.protocolDistribution?.http ?? 0,
-        spiderMetrics.value?.protocolDistribution?.https ?? 0
+        spiderMetrics.value?.protocolDistribution?.https ?? 0,
       ],
-      backgroundColor: ['#FF6384', '#36A2EB']
-    }
-  ]
+      backgroundColor: ['#FF6384', '#36A2EB'],
+    },
+  ],
 }))
 
 const isSpiderActive = computed(() => !!spiderMetrics.value?.crawlDuration)
@@ -119,19 +119,19 @@ const rawDataArray = computed(() =>
             responseTimeStats: spiderMetrics.value.responseTimeStats,
             urlCounts: spiderMetrics.value.urlCounts,
             depthStats: spiderMetrics.value.depthStats,
-            protocolDistribution: spiderMetrics.value.protocolDistribution
-          }
+            protocolDistribution: spiderMetrics.value.protocolDistribution,
+          },
         },
         {
           title: 'URL Depth Data',
-          data: urlDepthChartData.value
+          data: urlDepthChartData.value,
         },
         {
           title: 'Protocol Distribution Data',
-          data: protocolChartData.value
-        }
+          data: protocolChartData.value,
+        },
       ]
-    : []
+    : [],
 )
 </script>
 

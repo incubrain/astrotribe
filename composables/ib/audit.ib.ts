@@ -2,7 +2,7 @@ export enum AuditLogLevel {
   INFO = 'INFO',
   WARNING = 'WARNING',
   ERROR = 'ERROR',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 
 export interface AuditLogEntry {
@@ -43,14 +43,14 @@ export function useAuditLog() {
       ipAddress: useRequestHeaders(['x-forwarded-for'])['x-forwarded-for'] || '',
       userAgent: useRequestHeaders(['user-agent'])['user-agent'] || '',
       resourceId: options.resourceId,
-      resourceType: options.resourceType
+      resourceType: options.resourceType,
     }
 
     // Remove any sensitive information from the log entry
     sanitizeLogEntry(logEntry)
 
     // Log to console in development
-    if (process.dev) {
+    if (import.meta.dev) {
       console.log('Audit Log:', logEntry)
     }
 
@@ -61,7 +61,8 @@ export function useAuditLog() {
         if (error) {
           console.error('Error logging audit event to database:', error)
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error logging audit event to database:', error)
       }
     }
@@ -71,9 +72,10 @@ export function useAuditLog() {
       try {
         await $fetch(config.public.EXTERNAL_LOGGING_SERVICE, {
           method: 'POST',
-          body: JSON.stringify(logEntry)
+          body: JSON.stringify(logEntry),
         })
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error sending log to external service:', error)
       }
     }
@@ -93,7 +95,7 @@ export function useAuditLog() {
 
   const getAuditLogs = async (
     filters: Partial<AuditLogEntry>,
-    pagination: { page: number; pageSize: number }
+    pagination: { page: number, pageSize: number },
   ) => {
     let query = supabase.from('audit_logs').select('*')
 
@@ -120,6 +122,6 @@ export function useAuditLog() {
   return {
     logEvent,
     getAuditLogs,
-    AuditLogLevel
+    AuditLogLevel,
   }
 }

@@ -12,7 +12,7 @@ export function toDateObject(inputDate = '2022-03-01T10:30:00-05:00') {
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    timeZoneName: length
+    timeZoneName: length,
   }).format(date)
 
   const dateArray = formattedDate.split(', ')
@@ -24,7 +24,7 @@ export function toDateObject(inputDate = '2022-03-01T10:30:00-05:00') {
     time: dateArray[3].split(' ')[0],
     ampm: dateArray[3].split(' ')[1],
     timezone: dateArray[3].split(' ')[2],
-    year: dateArray[2]
+    year: dateArray[2],
   }
 }
 

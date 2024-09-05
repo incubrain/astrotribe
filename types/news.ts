@@ -4,13 +4,13 @@ const MediaSchema = z.object({
   src: z.string(),
   alt: z.string().nullable(),
   caption: z.string().nullable(),
-  credit: z.string().optional()
+  credit: z.string().optional(),
 })
 
 const AuthorSchema = z.object({
   name: z.string(),
   url: z.string().nullable(),
-  image: MediaSchema.nullable()
+  image: MediaSchema.nullable(),
 })
 
 const NewsScrapedArticleSchema = z.object({
@@ -18,7 +18,7 @@ const NewsScrapedArticleSchema = z.object({
   featured_image: z.string().optional(),
   published_at: z.string().optional(),
   description: z.string().optional(),
-  author: z.string().optional()
+  author: z.string().optional(),
 })
 
 const NewsCardScrapedSchema = z.object({
@@ -27,7 +27,7 @@ const NewsCardScrapedSchema = z.object({
   description: z.string(),
   url: z.string(),
   source: z.string(),
-  featured_image: z.string()
+  featured_image: z.string(),
 })
 
 export const NewsCardSchema = z.object({
@@ -39,20 +39,20 @@ export const NewsCardSchema = z.object({
   updated_at: z.string().optional(),
   published_at: z.string().nullable(),
   description: z.string().nullable(),
-  featured_image: z.string().nullable()
+  featured_image: z.string().nullable(),
 })
 
 export const NewsArticleSchema = NewsCardSchema.extend({
   author: z.string(),
   body: z.string(),
-  images: z.array(MediaSchema)
+  images: z.array(MediaSchema),
 })
 
 export const NewsEmbeddingSchema = z.object({
   id: z.number(),
   vector: z.array(z.number()),
   news_id: z.string().optional(),
-  created_at: z.string().nullable()
+  created_at: z.string().nullable(),
 })
 
 export type NewsListGovernmentT =
@@ -71,7 +71,7 @@ export const newsListGovernment: NewsListGovernmentT[] = [
   'isro',
   'esa',
   'roscosmos',
-  'csa'
+  'csa',
 ]
 
 export type NewsCardT = z.infer<typeof NewsCardSchema>

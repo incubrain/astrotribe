@@ -2,15 +2,15 @@
 const props = defineProps({
   bpSection: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // fetch the bp section from content
 const { error, data: bpMarkdown } = await useAsyncData(`business-plan-${props.bpSection}`, () =>
   queryContent('/bp')
     .where({ section: { $eq: props.bpSection } })
-    .findOne()
+    .findOne(),
 )
 
 if (error.value) {
@@ -67,7 +67,7 @@ console.log('bpMarkdown', bpMarkdown)
 /* List items */
 .custom-content li {
   color: #c8c8c8;
- 
+
 }
 
 .custom-content ul {

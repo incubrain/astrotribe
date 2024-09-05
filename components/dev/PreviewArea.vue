@@ -28,7 +28,7 @@ const eventHandlers = computed(() => {
       acc[eventName] = (eventData: any) => emit('event', eventName, eventData)
       return acc
     },
-    {} as Record<string, (eventData: any) => void>
+    {} as Record<string, (eventData: any) => void>,
   )
 })
 </script>

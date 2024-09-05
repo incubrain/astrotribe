@@ -6,7 +6,7 @@ const schema = [
     tip: 'Your first name',
     placeholder: 'Your current password',
     value: ref(''),
-    type: 'password'
+    type: 'password',
   },
   {
     id: 'new_password',
@@ -14,7 +14,7 @@ const schema = [
     tip: 'New password must be at least 8 characters long',
     placeholder: 'Your new password',
     value: ref(''),
-    type: 'password'
+    type: 'password',
   },
   {
     id: 'confirm_new_password',
@@ -22,8 +22,8 @@ const schema = [
     tip: 'Please confirm your new password',
     placeholder: 'Confirm Your password',
     value: ref(''),
-    type: 'password'
-  }
+    type: 'password',
+  },
 ]
 
 const currentUser = useCurrentUser()
@@ -32,28 +32,28 @@ const userId = useCookie('userId')
 const {
   store: userProfile,
   loadMore,
-  refresh
+  refresh,
 } = await useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
   filters: { id: userId.value },
   initialFetch: true,
-  limit: 1
+  limit: 1,
 })
 
 definePageMeta({
   layoutTransition: false,
   name: 'Password',
-  layout: 'app-settings'
+  layout: 'app-settings',
 })
 
 const settings = reactive({
   password: '',
   new_password: '',
-  confirm_new_password: ''
+  confirm_new_password: '',
 })
 
 const isPasswordUpdatable = computed(() =>
-  currentUser.profile ? currentUser.profile?.providers.includes('email') : false
+  currentUser.profile ? currentUser.profile?.providers.includes('email') : false,
 )
 </script>
 
@@ -62,7 +62,7 @@ const isPasswordUpdatable = computed(() =>
     <UserSettingsCard
       :title="{
         main: 'Update Password',
-        subtitle: 'Change your password here'
+        subtitle: 'Change your password here',
       }"
     >
       <div v-if="isPasswordUpdatable">

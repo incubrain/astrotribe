@@ -3,7 +3,7 @@
     <ImageHero
       :img="about.images[0]"
       :title="{
-        main: 'The AstronEra Journey'
+        main: 'The AstronEra Journey',
       }"
       fit="cover"
       object-position="object-top"
@@ -60,6 +60,6 @@
 import about from '@/data/home/about.json'
 
 definePageMeta({
-  name: 'About'
+  name: 'About',
 })
 </script>

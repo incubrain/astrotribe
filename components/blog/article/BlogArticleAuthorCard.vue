@@ -3,6 +3,7 @@ defineProps<{
   authorId: number
 }>()
 </script>
+
 <template>
   <BlogAuthor
     :author-id="authorId"
@@ -18,7 +19,7 @@ defineProps<{
             src: author.avatar,
             alt: `${author.name.full} is an author on the AstronEra Blog`,
             width: '100px',
-            height: '100px'
+            height: '100px',
           }"
           class="h-full rounded-full sm:max-w-[100px]"
         />

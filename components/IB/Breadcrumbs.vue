@@ -42,7 +42,7 @@ const formattedLinks = computed(() => {
         return {
           ...link,
           label: profile.value.given_name,
-          ariaLabel: profile.value.given_name
+          ariaLabel: profile.value.given_name,
         }
       }
 
@@ -58,7 +58,7 @@ const formattedLinks = computed(() => {
     :model="formattedLinks"
     :pt="{
       root: 'foreground p-0 flex items-center justify-start',
-      menu: '!mb-0'
+      menu: '!mb-0',
     }"
   >
     <template #item="{ item }">

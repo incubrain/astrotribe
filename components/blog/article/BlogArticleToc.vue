@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDateFormat } from '#imports'
+
 type TOCItem = {
   id: string
   depth: number
@@ -10,20 +11,20 @@ type TOCItem = {
 const p = defineProps({
   toc: {
     type: Array as PropType<TOCItem[]>,
-    required: true
+    required: true,
   },
   updatedAt: {
     type: String,
-    required: true
+    required: true,
   },
   version: {
     type: Number,
-    required: true
+    required: true,
   },
   expanded: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const activeSection = ref('')
@@ -53,7 +54,7 @@ const isSectionOrChildActive = (section: TOCItem) => {
   if (isActiveSection(section.id)) {
     return true
   }
-  return section.children?.some((child) => isActiveSection(child.id)) ?? false
+  return section.children?.some(child => isActiveSection(child.id)) ?? false
 }
 
 onMounted(() => {
@@ -103,7 +104,7 @@ onUnmounted(() => {
                   'space-y-2 overflow-hidden text-sm transition-all duration-700 ease-out',
                   isSectionOrChildActive(item) || expanded
                     ? `max-h-[${Math.floor((item.children.length + 1) * 31)}px] pt-2`
-                    : 'max-h-[0px] py-0'
+                    : 'max-h-[0px] py-0',
                 ]"
               >
                 <li
@@ -111,7 +112,7 @@ onUnmounted(() => {
                   :key="`toc-child${child.id}`"
                   :class="{
                     'ml-4 max-w-[80%]': child.depth === 3,
-                    'text-primary-500 dark:text-primary-600': isActiveSection(child.id)
+                    'text-primary-500 dark:text-primary-600': isActiveSection(child.id),
                   }"
                   class="leading-tight"
                 >

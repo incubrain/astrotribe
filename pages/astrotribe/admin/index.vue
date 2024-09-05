@@ -2,7 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'AdminDashboard',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 
 const urlTest = ref('https://astrotribe-production.up.railway.app/api')

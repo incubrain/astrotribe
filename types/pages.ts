@@ -11,10 +11,10 @@ export const PageSchema = z.object({
         id: z.number(),
         label: z.string(),
         icon: z.string(),
-        slug: z.string()
-      })
+        slug: z.string(),
+      }),
     )
-    .optional()
+    .optional(),
 })
 
 export type PageType = z.infer<typeof PageSchema>

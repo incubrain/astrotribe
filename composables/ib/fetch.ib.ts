@@ -19,13 +19,15 @@ export interface FetchInput {
 function getDataStructure(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.length > 0 ? [getDataStructure(obj[0])] : []
-  } else if (typeof obj === 'object' && obj !== null) {
+  }
+  else if (typeof obj === 'object' && obj !== null) {
     const structure: Record<string, any> = {}
     for (const key in obj) {
       structure[key] = getDataStructure(obj[key])
     }
     return structure
-  } else {
+  }
+  else {
     return typeof obj
   }
 }
@@ -41,7 +43,7 @@ export function useBaseFetch() {
     retryStatusCodes: [408, 409, 425, 500, 502, 503, 504],
     headers: {
       'X-USER-ID': useCookie('userId').value ?? 'no-user-id',
-      cookie: useRequestHeaders(['cookie']).cookie ?? ''
+      'cookie': useRequestHeaders(['cookie']).cookie ?? '',
     },
     onResponseError({ error, response, request, options }) {
       console.error('onResponseError', response, response._data)
@@ -51,7 +53,7 @@ export function useBaseFetch() {
       const structure = getDataStructure(response._data)
       console.log('Captured data structure for:', url, structure)
       apiDataStore.setData(url, structure)
-    }
+    },
   })
 
   async function fetchPaginatedData(params: FetchInput) {
@@ -77,8 +79,8 @@ export function useBaseFetch() {
         method: 'POST',
         params: {
           ...criteria,
-          pagination: paginationStore.getPaginationRange(domainKey)
-        }
+          pagination: paginationStore.getPaginationRange(domainKey),
+        },
       })
 
       console.log('fetchPaginatedData RESPONSE', response)
@@ -87,7 +89,7 @@ export function useBaseFetch() {
         response,
         devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
-        devMessage: `fetchPaginatedData errored selecting paginated ${domainKey} data from ${endpoint}`
+        devMessage: `fetchPaginatedData errored selecting paginated ${domainKey} data from ${endpoint}`,
       })
 
       if (!data || !data.length || data.length < paginationStore.getPagination(domainKey)!.limit) {
@@ -98,18 +100,19 @@ export function useBaseFetch() {
       paginationStore.incrementPagination(domainKey)
 
       return data
-    } catch (error) {
+    }
+    catch (error) {
       errors.client({
         error,
         devOnly: false,
         userMessage: `Sorry there was an error getting ${domainKey} from ${endpoint}`,
-        devMessage: `fetchPaginatedData error for ${domainKey}`
+        devMessage: `fetchPaginatedData error for ${domainKey}`,
       })
     }
   }
 
   return {
     fetchPaginatedData,
-    fetch
+    fetch,
   }
 }

@@ -20,7 +20,7 @@
                 height: '60px',
                 loading: 'lazy',
                 quality: '80',
-                format: 'webp'
+                format: 'webp',
               }"
               class="h-14 w-14 rounded-full"
             />

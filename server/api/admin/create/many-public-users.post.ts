@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       user.updated_at = new Date().toISOString()
       user.last_seen = new Date().toISOString()
       return {
-        ...user
+        ...user,
       }
     })
 
@@ -25,7 +25,8 @@ export default defineEventHandler(async (event) => {
 
     status = 200
     message = 'Users have been inserted successfully'
-  } else {
+  }
+  else {
     console.error('no users to add')
     status = 200
     message = 'no users to add'
@@ -33,6 +34,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     status,
-    message
+    message,
   }
 })

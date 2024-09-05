@@ -1,5 +1,5 @@
-import { defineNuxtPlugin } from '#app'
 import posthog from 'posthog-js'
+import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const env = useRuntimeConfig().public
@@ -22,7 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         // Log to console in development mode
         posthog.debug()
       }
-    }
+    },
   })
 
   // Capture page views
@@ -73,8 +73,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         // Utility function for registering one-time super properties
         registerOnce: (properties: Record<string, any>) => {
           posthog.register_once(properties)
-        }
-      }
-    }
+        },
+      },
+    },
   }
 })

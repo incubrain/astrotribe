@@ -11,7 +11,7 @@ const totalRecords = ref(0)
 const filters = ref({
   table: { matchMode: FilterMatchMode.CONTAINS, value: null },
   category: { matchMode: FilterMatchMode.CONTAINS, value: null },
-  type: { matchMode: FilterMatchMode.CONTAINS, value: null }
+  type: { matchMode: FilterMatchMode.CONTAINS, value: null },
 })
 
 const dialogVisible = ref(false)
@@ -25,21 +25,23 @@ const loadKeys = async (page = 0, pageSize = PAGE_SIZE) => {
   loading.value = true
   try {
     const response = await fetch(
-      `${scraperUrl}/admin/redis/keys?page=${page}&pageSize=${pageSize}&includeValues=true`
+      `${scraperUrl}/admin/redis/keys?page=${page}&pageSize=${pageSize}&includeValues=true`,
     )
 
     const data = await response.json()
     console.log('REDIS DATA', data)
     tableData.value = data.keys.map(parseKey)
     totalRecords.value = data.total
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to fetch keys', error)
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
 
-const parseKey = (item: { key: string; value: string }) => {
+const parseKey = (item: { key: string, value: string }) => {
   const match = item.key.match(/\{(.+?)\}:(.+?):(.+)/)
   if (match) {
     return {
@@ -47,7 +49,7 @@ const parseKey = (item: { key: string; value: string }) => {
       table: match[1],
       category: match[2],
       type: match[3],
-      value: item.value
+      value: item.value,
     }
   }
   return { key: item.key, table: '', category: '', type: '', value: item.value }
@@ -80,11 +82,12 @@ const saveEditedValue = async () => {
     await fetch(`${scraperUrl}/admin/redis/keys/${encodeURIComponent(selectedKey.value)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ value: editedValue.value })
+      body: JSON.stringify({ value: editedValue.value }),
     })
     dialogVisible.value = false
     loadKeys() // Refresh the data
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to update value', error)
   }
 }
@@ -94,7 +97,8 @@ const deleteKey = async (key: string) => {
     try {
       await fetch(`${scraperUrl}/admin/redis/keys/${encodeURIComponent(key)}`, { method: 'DELETE' })
       loadKeys() // Refresh the data
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to delete key', error)
     }
   }
@@ -106,7 +110,8 @@ const flushDatabase = async () => {
       await fetch(`${scraperUrl}/admin/redis/flush`, { method: 'POST' })
       alert('Database flushed successfully')
       loadKeys()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to flush database', error)
     }
   }

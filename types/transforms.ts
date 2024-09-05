@@ -15,9 +15,9 @@ export const transformSchema = (data: any, config: TransformConfig) => {
       try {
         // Convert valid date strings to Date objects
         if (
-          typeof value === 'string' &&
-          !isNaN(Date.parse(value)) &&
-          config.convertStringsToDates
+          typeof value === 'string'
+          && !isNaN(Date.parse(value))
+          && config.convertStringsToDates
         ) {
           transformedObj[key] = new Date(value)
         }
@@ -30,7 +30,8 @@ export const transformSchema = (data: any, config: TransformConfig) => {
           transformedObj[key] = value.toString()
         }
         // Handle other types here...
-      } catch (error) {
+      }
+      catch (error) {
         console.error(`Error transforming key ${key}: ${error}`)
         // Optionally handle the error in some way, such as logging it or returning an error response
       }

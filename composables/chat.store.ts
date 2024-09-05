@@ -11,11 +11,11 @@ const ChatCompletionSchema = z.object({
       index: z.number(),
       message: z.object({
         role: z.string(),
-        content: z.string()
+        content: z.string(),
       }),
       finish_reason: z.string(),
-      logprobs: z.null()
-    })
+      logprobs: z.null(),
+    }),
   ),
   usage: z.object({
     prompt_tokens: z.number(),
@@ -23,11 +23,11 @@ const ChatCompletionSchema = z.object({
     total_tokens: z.number(),
     prompt_time: z.number(),
     completion_time: z.number(),
-    total_time: z.number()
+    total_time: z.number(),
   }),
   x_groq: z.object({
-    id: z.string()
-  })
+    id: z.string(),
+  }),
 })
 
 type Chat = z.infer<typeof ChatCompletionSchema>
@@ -42,7 +42,7 @@ export const useChatStore = defineStore('chatStore', () => {
   const logger = useLogger(domainKey)
 
   const chat = ref({} as Chat)
-  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system'; content: string }>>([])
+  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system', content: string }>>([])
 
   const question = ref('' as string)
 
@@ -60,7 +60,7 @@ export const useChatStore = defineStore('chatStore', () => {
       .insert({
         input: question.value,
         created_at: new Date().toISOString(),
-        user_id: userId
+        user_id: userId,
       })
       .select()
 
@@ -68,7 +68,7 @@ export const useChatStore = defineStore('chatStore', () => {
       response,
       devOnly: true,
       devMessage: 'error inserting search data',
-      userMessage: 'something went wrong when inserting search data'
+      userMessage: 'something went wrong when inserting search data',
     })
   }
 
@@ -76,13 +76,13 @@ export const useChatStore = defineStore('chatStore', () => {
     const response = await client.from('responses').insert({
       search_id: searchId,
       output: questionResponseData.choices[0]?.message?.content,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
     })
     return errors.server({
       response,
       devOnly: true,
       devMessage: 'error inserting response data',
-      userMessage: 'something went wrong when inserting response data'
+      userMessage: 'something went wrong when inserting response data',
     })
   }
 
@@ -90,7 +90,7 @@ export const useChatStore = defineStore('chatStore', () => {
     messages.value.push({ role, content })
   }
 
-  async function submitQuestion(args: { question: string; systemPrompt: string }) {
+  async function submitQuestion(args: { question: string, systemPrompt: string }) {
     console.log('searchMessage', args)
 
     if (loading.isLoading(domainKey)) {
@@ -109,27 +109,29 @@ export const useChatStore = defineStore('chatStore', () => {
       const questionResponse = await fetch('/api/ai/ask', {
         method: 'POST',
         body: JSON.stringify({
-          messages: formattedMessages
+          messages: formattedMessages,
         }),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
 
       const questionResponseData: Chat = errors.server({
         response: questionResponse,
         devOnly: true,
         devMessage: 'error fetching question response',
-        userMessage: 'something went wrong when fetching question response'
+        userMessage: 'something went wrong when fetching question response',
       })
 
       addMessage('assistant', questionResponseData.choices[0]?.message?.content)
 
       // const search = await insertSearchData(userId)
       // insertResponseData(search[0].id, questionResponseData)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error submitting question and handling response:', error)
-    } finally {
+    }
+    finally {
       await loading.setLoadingInterval(domainKey, false, 1000)
     }
   }
@@ -140,7 +142,7 @@ export const useChatStore = defineStore('chatStore', () => {
     question,
     messages,
     addMessage,
-    submitQuestion
+    submitQuestion,
   }
 })
 

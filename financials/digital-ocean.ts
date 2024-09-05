@@ -8,33 +8,33 @@ export const digitalOceanConfig = {
       monthlyCost: 12.0,
       ram: '1 GB',
       vCPU: 1,
-      bandwidthGB: 150
+      bandwidthGB: 150,
     },
     '2vcpu-2gb': {
       monthlyCost: 24.0,
       ram: '2 GB',
       vCPU: 2,
-      bandwidthGB: 200
+      bandwidthGB: 200,
     },
     '4vcpu-8gb': {
       monthlyCost: 48.0,
       ram: '8 GB',
       vCPU: 4,
-      bandwidthGB: 300
+      bandwidthGB: 300,
     },
     '8vcpu-16gb': {
       monthlyCost: 96.0,
       ram: '16 GB',
       vCPU: 8,
-      bandwidthGB: 500
+      bandwidthGB: 500,
     },
     '16vcpu-32gb': {
       monthlyCost: 192.0,
       ram: '32 GB',
       vCPU: 16,
-      bandwidthGB: 1000
-    }
-  }
+      bandwidthGB: 1000,
+    },
+  },
 }
 
 type DigitalOceanCostParams = {
@@ -52,11 +52,14 @@ export interface DigitalOceanResult {
 function calculatePlan(bandwidthGB: number): DOPlan {
   if (bandwidthGB <= 200) {
     return '2vcpu-2gb'
-  } else if (bandwidthGB <= 300) {
+  }
+  else if (bandwidthGB <= 300) {
     return '4vcpu-8gb'
-  } else if (bandwidthGB <= 500) {
+  }
+  else if (bandwidthGB <= 500) {
     return '8vcpu-16gb'
-  } else {
+  }
+  else {
     return '16vcpu-32gb'
   }
 }
@@ -75,6 +78,6 @@ export function calculateDigitalOceanCost(params: DigitalOceanCostParams): Digit
     cost: USD2INR(planDetails.monthlyCost),
     ram: planDetails.ram,
     vCPU: planDetails.vCPU,
-    bandwidthGB: planDetails.bandwidthGB
+    bandwidthGB: planDetails.bandwidthGB,
   }
 }

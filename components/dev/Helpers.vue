@@ -36,10 +36,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { clearNuxtState, clearNuxtData, refreshNuxtData, reloadNuxtApp } from '#app'
 import { getActivePinia } from 'pinia'
 import type { Store, Pinia } from 'pinia'
 import PrimeButton from 'primevue/button'
+import { clearNuxtState, clearNuxtData, refreshNuxtData, reloadNuxtApp } from '#app'
 
 interface ExtendedPinia extends Pinia {
   _s: Map<string, Store>
@@ -59,7 +59,8 @@ const refreshData = async () => {
   isRefreshing.value = true
   try {
     await refreshNuxtData()
-  } finally {
+  }
+  finally {
     isRefreshing.value = false
   }
 }
@@ -81,7 +82,7 @@ const resetPinia = (): Record<string | 'all', () => void> => {
     resetStores[name] = () => store.$reset()
   })
 
-  resetStores.all = () => pinia._s.forEach((store) => store.$reset())
+  resetStores.all = () => pinia._s.forEach(store => store.$reset())
   return resetStores
 }
 

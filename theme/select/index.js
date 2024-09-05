@@ -8,7 +8,7 @@ export default {
       // Shape
       { 'rounded-md': parent.instance.$name !== 'InputGroup' },
       {
-        'first:rounded-l-md rounded-none last:rounded-r-md': parent.instance.$name == 'InputGroup'
+        'first:rounded-l-md rounded-none last:rounded-r-md': parent.instance.$name == 'InputGroup',
       },
       { 'border-0 border-y border-l last:border-r': parent.instance.$name == 'InputGroup' },
       { 'first:ml-0 ml-[-1px]': parent.instance.$name == 'InputGroup' && !props.showButtons },
@@ -32,7 +32,7 @@ export default {
       { 'hover:border-primary': !props.invalid },
       {
         'outline-none outline-offset-0 ring ring-primary-400/50 dark:ring-primary-300/50':
-          state.focused
+          state.focused,
       },
 
       // Misc
@@ -41,13 +41,13 @@ export default {
       {
         'opacity-60': props.disabled,
         'pointer-events-none': props.disabled,
-        'cursor-default': props.disabled
-      }
-    ]
+        'cursor-default': props.disabled,
+      },
+    ],
   }),
   label: ({ props, parent }) => ({
     class: [
-      //Font
+      // Font
       'leading-[normal]',
 
       // Display
@@ -59,7 +59,7 @@ export default {
       'border-0',
       {
         'text-surface-100 dark:text-white/80': props.modelValue != undefined,
-        'text-surface-100 dark:text-surface-50': props.modelValue == undefined
+        'text-surface-100 dark:text-surface-50': props.modelValue == undefined,
       },
       'placeholder:text-surface-100 dark:placeholder:text-surface-50',
 
@@ -68,7 +68,7 @@ export default {
       'p-3',
       { 'pr-7': props.showClear },
 
-      //Shape
+      // Shape
       'rounded-none',
 
       // Transitions
@@ -86,8 +86,8 @@ export default {
       'cursor-pointer',
       'overflow-hidden overflow-ellipsis',
       'whitespace-nowrap',
-      'appearance-none'
-    ]
+      'appearance-none',
+    ],
   }),
   dropdown: {
     class: [
@@ -104,8 +104,8 @@ export default {
 
       // Shape
       'rounded-tr-md',
-      'rounded-br-md'
-    ]
+      'rounded-br-md',
+    ],
   },
   overlay: {
     class: [
@@ -120,8 +120,8 @@ export default {
       // Color
       'bg-surface-0 dark:bg-surface-400',
       'text-surface-100 dark:text-white/80',
-      'dark:border-surface-700'
-    ]
+      'dark:border-surface-700',
+    ],
   },
   listContainer: {
     class: [
@@ -129,11 +129,11 @@ export default {
       'max-h-[200px]',
 
       // Misc
-      'overflow-auto'
-    ]
+      'overflow-auto',
+    ],
   },
   list: {
-    class: 'list-none m-0'
+    class: 'list-none m-0',
   },
   option: ({ context }) => ({
     class: [
@@ -159,12 +159,12 @@ export default {
         'text-surface-100 dark:text-white/80': !context.focused && !context.selected,
         'bg-surface-200 dark:bg-surface-400': context.focused && !context.selected,
         'text-surface-100 dark:text-white/80': context.focused && !context.selected,
-        'bg-primary-950': context.selected
+        'bg-primary-950': context.selected,
       },
 
-      //States
+      // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-950': context.focused && !context.selected
+        'hover:bg-surface-100 dark:hover:bg-surface-950': context.focused && !context.selected,
       },
       { 'hover:bg-primary-800': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -177,12 +177,12 @@ export default {
       { 'pointer-events-none cursor-default': context.disabled },
       { 'cursor-pointer': !context.disabled },
       'overflow-hidden',
-      'whitespace-nowrap'
-    ]
+      'whitespace-nowrap',
+    ],
   }),
   optionGroup: {
     class: [
-      //Font
+      // Font
       'font-bold',
 
       // Spacing
@@ -194,8 +194,8 @@ export default {
       'bg-surface-0 dark:bg-surface-400/80',
 
       // Misc
-      'cursor-auto'
-    ]
+      'cursor-auto',
+    ],
   },
   optionCheckIcon: 'relative -ms-1.5 me-1.5 text-surface-100 dark:text-white/80 w-4 h-4',
   optionBlankIcon: 'w-4 h-4',
@@ -209,8 +209,8 @@ export default {
 
       // Color
       'text-surface-100 dark:text-white/80',
-      'bg-transparent'
-    ]
+      'bg-transparent',
+    ],
   },
   header: {
     class: [
@@ -218,7 +218,7 @@ export default {
       'py-3 px-5',
       'm-0',
 
-      //Shape
+      // Shape
       'border-b',
       'rounded-tl-md',
       'rounded-tr-md',
@@ -226,8 +226,8 @@ export default {
       // Color
       'text-surface-100 dark:text-white/80',
       'bg-surface-100 dark:bg-surface-400',
-      'border-surface-300 dark:border-surface-700'
-    ]
+      'border-surface-300 dark:border-surface-700',
+    ],
   },
   clearIcon: {
     class: [
@@ -240,17 +240,17 @@ export default {
       'right-12',
 
       // Spacing
-      '-mt-2'
-    ]
+      '-mt-2',
+    ],
   },
   loadingIcon: {
-    class: 'text-surface-100 dark:text-surface-50 animate-spin'
+    class: 'text-surface-100 dark:text-surface-50 animate-spin',
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',
     enterActiveClass:
       'transition-[transform,opacity] duration-[120ms] ease-[cubic-bezier(0,0,0.2,1)]',
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
-    leaveToClass: 'opacity-0'
-  }
+    leaveToClass: 'opacity-0',
+  },
 }

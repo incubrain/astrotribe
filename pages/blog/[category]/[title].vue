@@ -20,7 +20,7 @@ const { error, data: article } = await useAsyncData(
     queryContent('/blog', category.value)
       .only(ARTICLE_FULL_PROPERTIES)
       .where({ _path: route.fullPath, status: { $eq: 'published' } })
-      .findOne() as Promise<ArticleFullT>
+      .findOne() as Promise<ArticleFullT>,
 )
 
 if (error.value) {
@@ -37,14 +37,14 @@ if (article.value) {
     twitterCard: 'summary_large_image',
     twitterTitle: article.value.title,
     twitterDescription: article.value.description,
-    twitterImage: `images/blog/${article.value.featured_image}`
+    twitterImage: `images/blog/${article.value.featured_image}`,
   })
 
   defineOgImageComponent('OgImageDefault', {
     title: article.value.title,
     description: article.value.description,
     headline: 'AstronEra',
-    image: `images/blog/${article.value.featured_image}`
+    image: `images/blog/${article.value.featured_image}`,
   })
 }
 </script>

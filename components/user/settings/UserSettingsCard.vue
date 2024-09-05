@@ -4,8 +4,8 @@ import type { TitleType } from '~/types/content'
 defineProps({
   title: {
     type: Object as PropType<TitleType>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

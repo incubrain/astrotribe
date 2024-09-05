@@ -58,8 +58,8 @@
 const props = defineProps({
   id: {
     type: String,
-    default: 'AstronEra'
-  }
+    default: 'AstronEra',
+  },
 })
 const social = useSocialStore()
 const { youtube } = storeToRefs(social)

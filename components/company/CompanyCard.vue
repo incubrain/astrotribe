@@ -2,8 +2,8 @@
 defineProps({
   company: {
     type: Object as () => {},
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { getCategoryName } = useCategoryTagStore()
@@ -40,7 +40,7 @@ const { getCategoryName } = useCategoryTagStore()
             :img="{
               src: `images/companies/${company.logo_url}`,
               width: '60',
-              height: '60'
+              height: '60',
             }"
           />
           <div>

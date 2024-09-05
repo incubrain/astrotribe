@@ -25,16 +25,16 @@
 defineProps({
   title: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   body: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   cta: {
     type: String as PropType<string>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

@@ -22,7 +22,7 @@ export default {
       // Color
       'bg-surface-50 dark:bg-surface-400',
       'text-surface-600 dark:text-surface-100',
-      'border-surface-300 dark:border-surface-600'
-    ]
-  }
+      'border-surface-300 dark:border-surface-600',
+    ],
+  },
 }

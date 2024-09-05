@@ -4,12 +4,12 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
 defineProps({
   links: {
     type: Array,
-    required: true
+    required: true,
   },
   showDevHelpers: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const route = useRoute()
@@ -20,7 +20,7 @@ const route = useRoute()
     :model="links"
     :pt="{
       root: 'min-h-full flex flex-col rounded-none border-none p-0 w-full h-full max-w-[10%] min-w-[140px] hidden lg:flex',
-      menu: 'pt-8'
+      menu: 'pt-8',
     }"
   >
     <template #start>

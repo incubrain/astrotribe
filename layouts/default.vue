@@ -4,11 +4,11 @@ const noTopNav = ['/contact']
 const noFooter = ['/contact']
 
 const showFooter = computed(
-  () => !noFooter.some((noFooterPath) => route.path.startsWith(noFooterPath))
+  () => !noFooter.some(noFooterPath => route.path.startsWith(noFooterPath)),
 )
 
 const showTopNav = computed(
-  () => !noTopNav.some((noTopNavPath) => route.path.startsWith(noTopNavPath))
+  () => !noTopNav.some(noTopNavPath => route.path.startsWith(noTopNavPath)),
 )
 
 // !todo: important - add a CTA at the bottom of default layout

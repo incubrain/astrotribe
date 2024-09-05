@@ -32,7 +32,7 @@ const stars = Array.from({ length: STAR_COUNT }, () => ({
   color: COLORS[Math.floor(Math.random() * COLORS.length)],
   speed: 0.01, // Speed of movement
   initialX: 0,
-  initialY: 0
+  initialY: 0,
 }))
 
 // Initialize star positions
@@ -60,8 +60,8 @@ function drawStars() {
 
     // Update star position to follow an inverted arc path
     star.x -= star.speed
-    star.y =
-      star.initialY - Math.sin((star.x / CANVAS_WIDTH.value) * Math.PI) * (CANVAS_HEIGHT.value / 4)
+    star.y
+      = star.initialY - Math.sin((star.x / CANVAS_WIDTH.value) * Math.PI) * (CANVAS_HEIGHT.value / 4)
 
     // Wrap stars around edges
     if (star.x < 0) {

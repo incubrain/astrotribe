@@ -1,9 +1,8 @@
 import { ref, reactive } from 'vue'
-import { ZodSchema } from 'zod'
-import { z } from 'zod'
+import type { ZodSchema, z } from 'zod'
 
 const accountDetailsSchema = z.object({
-  dateOfBirth: z.date().max(new Date(), 'Date of birth cannot be in the future')
+  dateOfBirth: z.date().max(new Date(), 'Date of birth cannot be in the future'),
 })
 
 const professionalInfoSchema = z.object({
@@ -12,7 +11,7 @@ const professionalInfoSchema = z.object({
   experience: z
     .number()
     .min(0, 'Experience cannot be negative')
-    .max(100, 'Experience cannot exceed 100 years')
+    .max(100, 'Experience cannot exceed 100 years'),
 })
 
 export interface SignupForm {
@@ -38,9 +37,10 @@ export function useOnboarding() {
   const validateAndUpdate = (schema: ZodSchema) => {
     const result = schema.safeParse(form)
     if (result.success) {
-      Object.keys(errors).forEach((key) => delete errors[key as keyof SignupForm])
+      Object.keys(errors).forEach(key => delete errors[key as keyof SignupForm])
       return true
-    } else {
+    }
+    else {
       result.error.issues.forEach((issue) => {
         errors[issue.path[0] as keyof SignupForm] = issue.message
       })
@@ -53,6 +53,6 @@ export function useOnboarding() {
     errors,
     validateAndUpdate,
     professionalInfoSchema,
-    accountDetailsSchema
+    accountDetailsSchema,
   }
 }

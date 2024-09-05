@@ -36,7 +36,7 @@ const data = ref({
   data: {
     image: 'images/team/shweta-kulkarni.jpg',
     name: 'Shweta Kulkarni',
-    title: 'CEO'
+    title: 'CEO',
   },
   children: [
     {
@@ -46,34 +46,34 @@ const data = ref({
       data: {
         image: 'images/team/drew-macgibbon.jpg',
         name: 'Drew MacGibbon',
-        title: 'CTO'
+        title: 'CTO',
       },
       children: [
         {
           label: 'DevOps Engineers',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
+          styleClass: 'bg-teal-900 text-white border-round-xl',
         },
         {
           label: 'Frontend Developers',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
+          styleClass: 'bg-teal-900 text-white border-round-xl',
         },
         {
           label: 'Backend Developers',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
+          styleClass: 'bg-teal-900 text-white border-round-xl',
         },
         {
           label: 'AI Specialists',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
+          styleClass: 'bg-teal-900 text-white border-round-xl',
         },
         {
           label: 'UI/UX Developers',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
+          styleClass: 'bg-teal-900 text-white border-round-xl',
         },
         {
           label: 'Data Processors / QA',
-          styleClass: 'bg-teal-900 text-white border-round-xl'
-        }
-      ]
+          styleClass: 'bg-teal-900 text-white border-round-xl',
+        },
+      ],
     },
     {
       key: '0_1',
@@ -82,14 +82,14 @@ const data = ref({
       data: {
         image: 'images/team/gunashri-vesikar.jpg',
         name: 'Gunashri Vesikar',
-        title: 'CFO'
+        title: 'CFO',
       },
       children: [
         {
           label: 'Accountants',
-          styleClass: 'bg-purple-900 text-white border-round-xl'
-        }
-      ]
+          styleClass: 'bg-purple-900 text-white border-round-xl',
+        },
+      ],
     },
     {
       key: '0_2',
@@ -98,27 +98,27 @@ const data = ref({
       data: {
         image: 'images/team/unknown.jpg',
         name: 'Unknown',
-        title: 'COO'
+        title: 'COO',
       },
       children: [
         {
           label: 'Content Writers',
-          styleClass: 'bg-orange-900 text-white border-round-xl'
+          styleClass: 'bg-orange-900 text-white border-round-xl',
         },
         {
           label: 'Social Media Managers',
-          styleClass: 'bg-orange-900 text-white border-round-xl'
+          styleClass: 'bg-orange-900 text-white border-round-xl',
         },
         {
           label: 'Customer Support Agents',
-          styleClass: 'bg-orange-900 text-white border-round-xl'
+          styleClass: 'bg-orange-900 text-white border-round-xl',
         },
         {
           label: 'Sales People',
-          styleClass: 'bg-orange-900 text-white border-round-xl'
-        }
-      ]
-    }
-  ]
+          styleClass: 'bg-orange-900 text-white border-round-xl',
+        },
+      ],
+    },
+  ],
 })
 </script>

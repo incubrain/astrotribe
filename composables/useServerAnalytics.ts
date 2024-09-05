@@ -25,7 +25,7 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
         paginationMetrics,
         blogPostScraperMetrics,
         resourceAnalytics,
-        pageToMarkdownAnalytics
+        pageToMarkdownAnalytics,
       }[key]
 
       if (targetMetric) {
@@ -50,7 +50,7 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       paginationMetrics,
       blogPostScraperMetrics,
       resourceAnalytics,
-      pageToMarkdownAnalytics
+      pageToMarkdownAnalytics,
     }[type]
   }
 
@@ -61,7 +61,7 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       paginationMetrics,
       blogPostScraperMetrics,
       resourceAnalytics,
-      pageToMarkdownAnalytics
+      pageToMarkdownAnalytics,
     }
   }
 
@@ -84,9 +84,11 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       const data = JSON.parse(event.data)
       if (data.type === 'availableMetrics') {
         setAvailableMetrics(data.metrics)
-      } else if (data.type === 'error') {
+      }
+      else if (data.type === 'error') {
         console.error('WebSocket error:', data.message)
-      } else {
+      }
+      else {
         console.log('Updating metrics with:', data)
         updateMetrics(data)
       }
@@ -108,7 +110,8 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       reconnectAttempts.value++
       console.log(`Attempting to reconnect (${reconnectAttempts.value}/${maxReconnectAttempts})...`)
       setTimeout(connectWebSocket, reconnectInterval)
-    } else {
+    }
+    else {
       console.log('Max reconnect attempts reached. Please refresh the page.')
     }
   }
@@ -126,8 +129,8 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       socket.value.send(
         JSON.stringify({
           action: 'subscribe',
-          metrics: metricTypes
-        })
+          metrics: metricTypes,
+        }),
       )
     }
   }
@@ -137,8 +140,8 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       socket.value.send(
         JSON.stringify({
           action: 'unsubscribe',
-          metrics: metricTypes
-        })
+          metrics: metricTypes,
+        }),
       )
     }
   }
@@ -168,6 +171,6 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
     subscribeToMetrics,
     unsubscribeFromMetrics,
     getMetricsByType,
-    getAllMetrics
+    getAllMetrics,
   }
 })

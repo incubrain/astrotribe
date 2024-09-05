@@ -1,12 +1,12 @@
+import { v4 as uuidv4 } from 'uuid'
 import {
   useErrorHandler,
   AppError,
   ErrorType,
-  ErrorSeverity
+  ErrorSeverity,
 } from './error-handler.ib'
 import { useLogger } from './logger.ib'
 import { useRateLimit } from './rate-limit.ib'
-import { v4 as uuidv4 } from 'uuid'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
 
@@ -65,7 +65,7 @@ export function useFileUpload() {
         type: ErrorType.VALIDATION_ERROR,
         message: `File size exceeds the maximum allowed size of ${options.maxFileSize} bytes`,
         severity: ErrorSeverity.MEDIUM,
-        context: 'File Upload'
+        context: 'File Upload',
       })
     }
 
@@ -74,7 +74,7 @@ export function useFileUpload() {
         type: ErrorType.VALIDATION_ERROR,
         message: `File type ${file.type} is not allowed`,
         severity: ErrorSeverity.MEDIUM,
-        context: 'File Upload'
+        context: 'File Upload',
       })
     }
   }
@@ -92,8 +92,8 @@ export function useFileUpload() {
         maxWidth: options.maxWidth,
         maxHeight: options.maxHeight,
         quality: options.quality,
-        format: options.format
-      })
+        format: options.format,
+      }),
     )
 
     const response = await $fetch('/api/upload', {
@@ -105,7 +105,7 @@ export function useFileUpload() {
           uploadProgress.value = progress
           options.onProgress?.(progress)
         }
-      }
+      },
     })
 
     if (!response || !response.fileName) {
@@ -122,8 +122,8 @@ export function useFileUpload() {
       mimeType: file.type,
       metadata: {
         originalName: file.name,
-        ...options.metadata
-      }
+        ...options.metadata,
+      },
     }
   }
 
@@ -144,12 +144,13 @@ export function useFileUpload() {
 
       if (options.useServerUpload) {
         result = await serverSideUpload(file, options)
-      } else {
+      }
+      else {
         const filePath = getFilePath(file.name, options)
         const { data, error } = await supabase.storage.from(options.bucket).upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
-          contentType: file.type
+          contentType: file.type,
         })
 
         if (error) {
@@ -157,12 +158,12 @@ export function useFileUpload() {
             type: ErrorType.UPLOAD_ERROR,
             message: `Error uploading file: ${error.message}`,
             severity: ErrorSeverity.HIGH,
-            context: 'File Upload'
+            context: 'File Upload',
           })
         }
 
         const {
-          data: { publicUrl }
+          data: { publicUrl },
         } = supabase.storage.from(options.bucket).getPublicUrl(data.path)
 
         result = {
@@ -172,8 +173,8 @@ export function useFileUpload() {
           mimeType: file.type,
           metadata: {
             originalName: file.name,
-            ...options.metadata
-          }
+            ...options.metadata,
+          },
         }
       }
 
@@ -182,16 +183,18 @@ export function useFileUpload() {
         bucket: options.bucket,
         fileType: options.fileType,
         size: result.size,
-        mimeType: result.mimeType
+        mimeType: result.mimeType,
       })
 
       lastUploadTime.value = Date.now()
 
       return result
-    } catch (error: any) {
+    }
+    catch (error: any) {
       handleError(error, 'Error uploading file')
       throw error
-    } finally {
+    }
+    finally {
       isUploading.value = false
       uploadProgress.value = 100
       currentUpload.value = null
@@ -206,7 +209,7 @@ export function useFileUpload() {
         await uploadFile(nextFile, {
           bucket: 'default',
           path: 'uploads',
-          fileType: 'other'
+          fileType: 'other',
         })
       }
     }
@@ -240,6 +243,6 @@ export function useFileUpload() {
     isProcessing,
     uploadProgress,
     currentUpload,
-    uploadQueue
+    uploadQueue,
   }
 }

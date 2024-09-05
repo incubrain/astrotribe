@@ -31,7 +31,7 @@ type TimelineObject = {
 defineProps({
   timeline: {
     type: Array as PropType<TimelineObject[]>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

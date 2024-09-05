@@ -1,5 +1,5 @@
-import { defineNuxtPlugin } from '#app'
 import * as Sentry from '@sentry/vue'
+import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const app = nuxtApp.vueApp
@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     attachProps: true,
-    trackComponents: true
+    trackComponents: true,
   })
 
   Sentry.setUser(useSupabaseUser())

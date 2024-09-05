@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const { isLoading, error, initializePayment, createOrder, verifyPayment, fetchSubscription } =
-  usePayments('razorpay')
+const { isLoading, error, initializePayment, createOrder, verifyPayment, fetchSubscription }
+  = usePayments('razorpay')
 
 const result = ref(null as any)
 
@@ -17,7 +17,7 @@ const handleInitializePayment = async () => {
       amount: order.amount,
       currency: order.currency,
       order_id: order.id,
-      handler: handleVerifyPayment
+      handler: handleVerifyPayment,
     })
   }
 }
@@ -34,15 +34,15 @@ useHead({
   script: [
     {
       src: 'https://checkout.razorpay.com/v1/checkout.js',
-      defer: true
-    }
-  ]
+      defer: true,
+    },
+  ],
 })
 
 definePageMeta({
   layoutTransition: false,
   name: 'Payments',
-  layout: 'app-settings'
+  layout: 'app-settings',
 })
 </script>
 
@@ -50,7 +50,7 @@ definePageMeta({
   <UserSettingsCard
     :title="{
       main: 'Payment Settings',
-      subtitle: 'Manage your subscription and payment options'
+      subtitle: 'Manage your subscription and payment options',
     }"
   >
     <div class="flex gap-4">

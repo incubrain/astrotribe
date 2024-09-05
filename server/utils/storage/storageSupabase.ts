@@ -4,7 +4,7 @@ const defaultFileOptions: Record<FileType, string> = {
   'venue-logo': 'logo.jpg',
   'venue-featured-image': 'featured-image.jpg',
   'venue-images': 'images/',
-  'user-avatar': 'avatar.jpg'
+  'user-avatar': 'avatar.jpg',
 }
 
 type BucketKey = 'profile-public' | 'posts' | 'venues'
@@ -13,7 +13,7 @@ const selectBucket: Record<FileType, BucketKey> = {
   'venue-logo': 'venues',
   'venue-images': 'venues',
   'venue-featured-image': 'venues',
-  'user-avatar': 'profile-public'
+  'user-avatar': 'profile-public',
 }
 
 interface UrlConstructorOptions {
@@ -42,7 +42,7 @@ export const constructUrl = (options: UrlConstructorOptions) => {
     folderPath,
     fileType,
     isPrivate = false,
-    transform = null
+    transform = null,
   } = options
 
   if (stringIsNull(file)) {
@@ -82,7 +82,7 @@ function getFileProperty(fileType: FileType, data: any) {
     case 'user-avatar':
       return {
         file: data.avatar,
-        fileCategory: 'avatar'
+        fileCategory: 'avatar',
       }
     default:
       throw createError({ message: 'Invalid fileType in getFileProperty' })
@@ -95,7 +95,7 @@ function formatImageInput(fileType: FileType, data: any) {
     bucket: selectBucket[fileType],
     folderPath: `${data.id}/${fileCategory}`,
     isPrivate: false,
-    file
+    file,
   }
 }
 
@@ -104,7 +104,7 @@ export const getImageURL = ({ data, fileType, transform }: GetImageUrlOptions): 
   const { bucket, folderPath, isPrivate, file } = formatImageInput(fileType, data)
   if (!baseURL) {
     throw createError({
-      message: 'baseURL not defined in getImageURL'
+      message: 'baseURL not defined in getImageURL',
     })
   }
 
@@ -119,7 +119,7 @@ export const getImageURL = ({ data, fileType, transform }: GetImageUrlOptions): 
     fileType,
     folderPath,
     isPrivate,
-    transform
+    transform,
   })
 }
 

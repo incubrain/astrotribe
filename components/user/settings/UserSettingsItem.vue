@@ -2,8 +2,8 @@
 defineProps({
   item: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

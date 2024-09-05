@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-
 const activeStep = ref('1')
 const { form } = useOnboarding()
 

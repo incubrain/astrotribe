@@ -2,7 +2,7 @@
   <PrimeCard
     v-if="adVisible"
     :pt="{
-      root: 'rounded-t-lg rounded-b-none lg:rounded-lg highlight'
+      root: 'rounded-t-lg rounded-b-none lg:rounded-lg highlight',
     }"
     class="border-color fixed bottom-0 right-0 z-20 flex w-full flex-col justify-between border lg:sticky lg:top-24"
   >
@@ -14,7 +14,7 @@
               src: 'images/team/shweta-kulkarni.jpg',
               alt: 'Shweta Kulkarni is the CEO / Founder of AstronEra',
               width: '60',
-              height: '60'
+              height: '60',
             }"
             class="rounded-full"
           />

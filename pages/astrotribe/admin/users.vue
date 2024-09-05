@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { createCRUDComposable, type CRUDOptions } from '~/composables/base/crud-factory.ib'
-import { createAdminDashboard } from '~/components/IB/createAdminDashboard'
 import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'
 
 import { z } from 'zod'
+import { createAdminDashboard } from '~/components/IB/createAdminDashboard'
+import { createCRUDComposable, type CRUDOptions } from '~/composables/base/crud-factory.ib'
 
 const app_plan_enum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])
 
@@ -18,7 +18,7 @@ const app_role_enum = z.enum([
   'tenant_admin',
   'tenant_super_admin',
   'admin',
-  'super_admin'
+  'super_admin',
 ])
 
 const userProfileSchema = z.object({
@@ -38,7 +38,7 @@ const userProfileSchema = z.object({
   followed_count: z.number().nullable().optional(),
   followers_count: z.number().nullable().optional(),
   plan: app_plan_enum.nullable().optional(),
-  role: app_role_enum.optional()
+  role: app_role_enum.optional(),
 })
 
 // Infer TypeScript type from Zod schema
@@ -46,7 +46,7 @@ type UserProfile = z.infer<typeof userProfileSchema>
 
 const userProfileOptions: CRUDOptions<UserProfile> = {
   orderBy: { column: 'created_at' as keyof UserProfile, ascending: false },
-  customSelectLogic: (data: UserProfile[]) => data.filter((user) => user.role !== 'super_admin'),
+  customSelectLogic: (data: UserProfile[]) => data.filter(user => user.role !== 'super_admin'),
   validateInsert: (data: Omit<UserProfile, 'id'>) => {
     const result = userProfileSchema.omit({ id: true }).safeParse(data)
     return result.success
@@ -58,7 +58,7 @@ const userProfileOptions: CRUDOptions<UserProfile> = {
   afterUpdate: async (updatedUser: UserProfile) => {
     // Perform actions after update, e.g., send notification
     console.log('User updated:', updatedUser)
-  }
+  },
 }
 
 const useUserProfiles = createCRUDComposable<UserProfile>('user_profiles', userProfileOptions)
@@ -74,10 +74,10 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(DatePicker, {
-        modelValue: item[field] as Date,
+        'modelValue': item[field] as Date,
         'onUpdate:modelValue': (value: Date) => (item[field] = value),
-        dateFormat: 'yy-mm-dd'
-      })
+        'dateFormat': 'yy-mm-dd',
+      }),
   },
   { field: 'gender_id', header: 'Gender ID', sortable: true },
   { field: 'created_at', header: 'Created At', sortable: true },
@@ -93,11 +93,11 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(Select, {
-        modelValue: item[field],
+        'modelValue': item[field],
         'onUpdate:modelValue': (value: typeof app_plan_enum._type | null) => (item[field] = value),
-        options: app_plan_enum.options,
-        placeholder: 'Select a Plan'
-      })
+        'options': app_plan_enum.options,
+        'placeholder': 'Select a Plan',
+      }),
   },
   {
     field: 'role',
@@ -105,24 +105,24 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(Select, {
-        modelValue: item[field],
+        'modelValue': item[field],
         'onUpdate:modelValue': (value: typeof app_role_enum._type) => (item[field] = value),
-        options: app_role_enum.options,
-        placeholder: 'Select a Role'
-      })
-  }
+        'options': app_role_enum.options,
+        'placeholder': 'Select a Role',
+      }),
+  },
 ]
 
 const UserProfilesAdminDashboard = createAdminDashboard(
   'userProfiles',
   userColumns,
-  useUserProfiles
+  useUserProfiles,
 )
 
 definePageMeta({
   layoutTransition: false,
   name: 'Users',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 </script>
 

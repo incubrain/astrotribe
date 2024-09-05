@@ -1,5 +1,4 @@
-
-import { SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js'
 
 /**
  * Uploads a file to a specified bucket and directory in Supabase Storage.
@@ -11,33 +10,32 @@ import { SupabaseClient } from '@supabase/supabase-js';
  * @returns Promise resolving to the upload response.
  */
 
-
 // maybe create this as a util for storage buckets
 // then import into user.service etc for use
 async function uploadFileToSupabase(
   bucketName: string,
   path: string,
   file: File,
-  fileName: string
+  fileName: string,
 ): Promise<any> {
   const supabaseClient
   // Ensure the path ends with a slash
-  const directory = path.endsWith('/') ? path : `${path}/`;
+  const directory = path.endsWith('/') ? path : `${path}/`
 
   // Full path where the file will be stored
-  const fullPath = `${directory}${fileName}`;
+  const fullPath = `${directory}${fileName}`
 
   // Perform the upload
   const { data, error } = await supabaseClient.storage
     .from(bucketName)
     .upload(fullPath, file, {
       cacheControl: '3600',
-      upsert: false
-    });
+      upsert: false,
+    })
 
   if (error) {
-    throw new Error(`Failed to upload file: ${error.message}`);
+    throw new Error(`Failed to upload file: ${error.message}`)
   }
 
-  return data;
+  return data
 }

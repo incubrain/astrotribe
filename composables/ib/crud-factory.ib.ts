@@ -6,12 +6,12 @@ import {
   useErrorHandler,
   AppError,
   ErrorType,
-  ErrorSeverity
+  ErrorSeverity,
 } from './error-handler.ib'
 
 export interface CRUDOptions<T> {
   initialFetch?: boolean
-  orderBy?: { column: keyof T; ascending: boolean }
+  orderBy?: { column: keyof T, ascending: boolean }
   limit?: number
   customSelectLogic?: (data: T[]) => T[]
   validateInsert?: (data: Omit<T, 'id'>) => boolean | Promise<boolean>
@@ -24,13 +24,13 @@ export interface CRUDOptions<T> {
 
 export function createCRUDComposable<T extends { id: string | number }>(
   entityName: string,
-  options: CRUDOptions<T> = {}
+  options: CRUDOptions<T> = {},
 ) {
   return function () {
     const { store, isSelecting, loadMore } = useSelectData<T>(entityName, {
       initialFetch: options.initialFetch ?? true,
       orderBy: options.orderBy as any,
-      limit: options.limit ?? 100
+      limit: options.limit ?? 100,
     })
 
     const { insertData, isInserting } = useInsertData<T>(entityName)
@@ -48,7 +48,8 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const fetchEntities = async () => {
       try {
         await loadMore()
-      } catch (error: any) {
+      }
+      catch (error: any) {
         handleError(error, `Error fetching ${entityName}`)
       }
     }
@@ -61,7 +62,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             message: 'Insert validation failed',
             severity: ErrorSeverity.MEDIUM,
             stack: 'no stack',
-            context: `${entityName} insert`
+            context: `${entityName} insert`,
           })
         }
         const insertedItem = await insertData(data as T) as T
@@ -70,7 +71,8 @@ export function createCRUDComposable<T extends { id: string | number }>(
         }
         await fetchEntities() // Refresh the list after insertion
         return insertedItem
-      } catch (error: any) {
+      }
+      catch (error: any) {
         handleError(error, `Error inserting ${entityName}`)
         throw error
       }
@@ -83,7 +85,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             type: ErrorType.VALIDATION_ERROR,
             message: 'Update validation failed',
             severity: ErrorSeverity.MEDIUM,
-            context: `${entityName} update`
+            context: `${entityName} update`,
           })
         }
         const updatedItem = await updateData(id, data)
@@ -91,7 +93,8 @@ export function createCRUDComposable<T extends { id: string | number }>(
           await options.afterUpdate(updatedItem)
         }
         return updatedItem
-      } catch (error: any) {
+      }
+      catch (error: any) {
         handleError(error, `Error updating ${entityName}`)
         throw error
       }
@@ -104,7 +107,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             type: ErrorType.VALIDATION_ERROR,
             message: 'Delete validation failed',
             severity: ErrorSeverity.MEDIUM,
-            context: `${entityName} delete`
+            context: `${entityName} delete`,
           })
         }
         await deleteData(id)
@@ -112,7 +115,8 @@ export function createCRUDComposable<T extends { id: string | number }>(
           await options.afterDelete(id)
         }
         await fetchEntities() // Refresh the list after deletion
-      } catch (error: any) {
+      }
+      catch (error: any) {
         handleError(error, `Error deleting ${entityName}`)
         throw error
       }
@@ -124,7 +128,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
       insertEntity,
       fetchEntities,
       updateEntity,
-      deleteEntity
+      deleteEntity,
     }
   }
 }

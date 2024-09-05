@@ -7,7 +7,7 @@ const player = ref(null)
 
 onMounted(() => {
   // Load the YouTube IFrame API dynamically if it's not already loaded
-if (!window.YT) {
+  if (!window.YT) {
     // Check if YT object is already present
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
@@ -16,7 +16,8 @@ if (!window.YT) {
 
     // Define the callback globally to initialize player when API is ready
     window.onYouTubeIframeAPIReady = initializePlayer
-  } else {
+  }
+  else {
     // Initialize the player immediately if YT is already loaded
     initializePlayer()
   }
@@ -32,8 +33,8 @@ function initializePlayer() {
       listType: 'user_uploads',
       list: 'Fireship', // Make sure 'Fireship' is a correct videoId or replace it with a valid one
       events: {
-        onReady: onPlayerReady
-      }
+        onReady: onPlayerReady,
+      },
     })
   }
 }

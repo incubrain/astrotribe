@@ -14,14 +14,14 @@ const articlesFinished = ref(false)
 
 const whereOptions: QueryBuilderParams = {
   // tags: { $in: selectedTags.value },
-  status: { $eq: 'published' }
+  status: { $eq: 'published' },
 }
 
 const {
   error,
   data: newArticles,
   refresh,
-  status
+  status,
 } = useAsyncData(`article-cards-${categoryParam.value}`, () =>
   categoryParam.value
     ? (queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
@@ -31,7 +31,7 @@ const {
         .skip(pagination.skip)
         .limit(pagination.limit)
         .find() as Promise<ArticleCardT[]>)
-    : Promise.resolve([])
+    : Promise.resolve([]),
 )
 
 watchEffect(async () => {
@@ -40,11 +40,11 @@ watchEffect(async () => {
       articlesFinished.value = true
     }
     console.log('newArticles.value', newArticles.value.length)
-    allArticles.value.filter((article) => isValidArticleCard(article))
+    allArticles.value.filter(article => isValidArticleCard(article))
     allArticles.value.push(...newArticles.value)
     pagination.skip += pagination.limit
 
-    await new Promise((resolve) => setTimeout(resolve, 1200))
+    await new Promise(resolve => setTimeout(resolve, 1200))
   }
 })
 
@@ -57,33 +57,34 @@ function isValidArticleCard(article: ArticleCardT): boolean {
   try {
     articleCardSchema.parse(article)
     return true
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`Error parsing article: ${article?.title}`, error)
     return false
   }
 }
 
 const category = {
-  all: {
+  'all': {
     title: 'AstronEra Blog',
-    description: 'Discover all our articles spanning the wonders and advancements of space.'
+    description: 'Discover all our articles spanning the wonders and advancements of space.',
   },
   'people-of-space': {
     title: 'People of Space',
-    description: 'Meet the trailblazers and visionaries propelling humanity into the cosmos.'
+    description: 'Meet the trailblazers and visionaries propelling humanity into the cosmos.',
   },
   'space-exploration': {
     title: 'Space Exploration',
-    description: 'Embark on thrilling journeys through our latest missions and cosmic discoveries.'
+    description: 'Embark on thrilling journeys through our latest missions and cosmic discoveries.',
   },
   'dark-sky-conservation': {
     title: 'Dark Sky Conservation',
-    description: 'Uncover efforts to preserve our celestial vistas and protect night skies.'
+    description: 'Uncover efforts to preserve our celestial vistas and protect night skies.',
   },
   'sustainable-development': {
     title: 'Sustainable Development',
-    description: 'Explore innovations for a sustainable future in space and on Earth.'
-  }
+    description: 'Explore innovations for a sustainable future in space and on Earth.',
+  },
 }
 
 const websiteUrl = 'https://astronera.org'
@@ -99,13 +100,13 @@ if (categoryParam.value) {
     twitterCard: 'summary_large_image',
     twitterTitle: 'AstronEra Blog',
     twitterDescription: 'AstronEra Blog',
-    twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`
+    twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`,
   })
 
   defineOgImageComponent('OgImageDefault', {
     title: `${categoryParam.value} Articles`,
     description: category[categoryParam.value]?.description,
-    image: './'
+    image: './',
   })
 }
 
@@ -135,11 +136,11 @@ const heroImage = computed(() => {
         src: heroImage,
         alt: `AstronEra ${useChangeCase(categoryParam, 'capitalCase').value} Hero Image`,
         width: 1080,
-        height: 720
+        height: 720,
       }"
       :title="{
         main: category[categoryParam].title,
-        subtitle: category[categoryParam].description
+        subtitle: category[categoryParam].description,
       }"
       position="center"
       invert

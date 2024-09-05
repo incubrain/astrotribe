@@ -4,7 +4,7 @@ const { profile } = storeToRefs(userStore)
 
 definePageMeta({
   name: 'Success',
-  layout: 'auth'
+  layout: 'auth',
 })
 </script>
 

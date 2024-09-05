@@ -4,32 +4,32 @@ const analyticsTabs = [
     title: 'Realtime',
     slotName: 'realtime',
     value: '0',
-    src: 'https://us.posthog.com/embedded/qZ7aQk6ZyuCEp0npTLkWkOu3geB5eA?whitelabel'
+    src: 'https://us.posthog.com/embedded/qZ7aQk6ZyuCEp0npTLkWkOu3geB5eA?whitelabel',
   },
   {
     title: 'Dashboard',
     slotName: 'dashboard',
     value: '1',
-    src: 'https://us.posthog.com/embedded/Za4dgg7lpaDSZhmoPIlJE8-724hqiw?whitelabel'
+    src: 'https://us.posthog.com/embedded/Za4dgg7lpaDSZhmoPIlJE8-724hqiw?whitelabel',
   },
   {
     title: 'Landing Page',
     slotName: 'landingPage',
     value: '2',
-    src: 'https://us.posthog.com/embedded/6suXX7B2fY6uvr1oCCVo-KsU3g--1A?whitelabel'
+    src: 'https://us.posthog.com/embedded/6suXX7B2fY6uvr1oCCVo-KsU3g--1A?whitelabel',
   },
   {
     title: 'Growth',
     slotName: 'growth',
     value: '3',
-    src: 'https://us.posthog.com/embedded/5U8l5Qu1ougk0m5i_RvLgMAPWnXx5A?whitelabel'
+    src: 'https://us.posthog.com/embedded/5U8l5Qu1ougk0m5i_RvLgMAPWnXx5A?whitelabel',
   },
   {
     title: 'Users',
     slotName: 'users',
     value: '4',
-    src: 'https://us.posthog.com/embedded/5_O5m7upw1QjlBHMIcr0MVp_Q_HX8w?whitelabel'
-  }
+    src: 'https://us.posthog.com/embedded/5_O5m7upw1QjlBHMIcr0MVp_Q_HX8w?whitelabel',
+  },
 ]
 
 const analyticsTabView = ref<HTMLElement | null>(null)
@@ -65,9 +65,10 @@ onMounted(() => {
 definePageMeta({
   layoutTransition: false,
   name: 'Analytics',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 </script>
+
 <template>
   <IBTabView
     ref="analyticsTabView"

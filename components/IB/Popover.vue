@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 const props = defineProps({
-  buttonLabel: { type: String, required: true }
+  buttonLabel: { type: String, required: true },
 })
 
 const popover = ref(null)

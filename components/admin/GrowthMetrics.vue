@@ -3,7 +3,7 @@ const { store, loadMore, refresh, isSelecting } = useSelectData('table_statistic
   columns: 'table_name, table_size, row_count, capture_time',
   orderBy: { column: 'capture_time', ascending: false },
   limit: 100,
-  initialFetch: true
+  initialFetch: true,
 })
 
 const { handleError } = useErrorHandler()
@@ -17,19 +17,19 @@ const chartData = ref(null)
 const chartOptions = reactive({
   plugins: {
     legend: {
-      labels: { color: '#ffffff' }
-    }
+      labels: { color: '#ffffff' },
+    },
   },
   scales: {
     x: {
       ticks: { color: '#ffffff' },
-      grid: { color: 'rgba(255, 255, 255, 0.2)' }
+      grid: { color: 'rgba(255, 255, 255, 0.2)' },
     },
     y: {
       ticks: { color: '#ffffff' },
-      grid: { color: 'rgba(255, 255, 255, 0.2)' }
-    }
-  }
+      grid: { color: 'rgba(255, 255, 255, 0.2)' },
+    },
+  },
 })
 
 const formatBytes = (bytes: number): string => {
@@ -45,26 +45,26 @@ const processData = () => {
 
   const latestData = data[0]
   const previousWeekData = data.find(
-    (d) => new Date(d.capture_time) <= new Date(latestData.capture_time - 7 * 24 * 60 * 60 * 1000)
+    d => new Date(d.capture_time) <= new Date(latestData.capture_time - 7 * 24 * 60 * 60 * 1000),
   )
 
-  const uniqueTables = new Set(data.map((d) => d.table_name))
+  const uniqueTables = new Set(data.map(d => d.table_name))
 
   metrics.value = [
     {
       name: 'Total Tables',
       value: uniqueTables.size,
-      growth: 0
+      growth: 0,
     },
     {
       name: 'Total Size',
       value: formatBytes(latestData.table_size),
-      growth: calculate.percentile([latestData.table_size, previousWeekData?.table_size || 0], 50)
+      growth: calculate.percentile([latestData.table_size, previousWeekData?.table_size || 0], 50),
     },
     {
       name: 'Total Rows',
       value: latestData.row_count.toLocaleString(),
-      growth: calculate.percentile([latestData.row_count, previousWeekData?.row_count || 0], 50)
+      growth: calculate.percentile([latestData.row_count, previousWeekData?.row_count || 0], 50),
     },
     {
       name: 'Avg Size per Table',
@@ -73,17 +73,17 @@ const processData = () => {
         [
           latestData.table_size / uniqueTables.size,
           previousWeekData
-            ? previousWeekData.table_size /
-              new Set(
-                data
-                  .filter((d) => d.capture_time <= previousWeekData.capture_time)
-                  .map((d) => d.table_name)
-              ).size
-            : 0
+            ? previousWeekData.table_size
+            / new Set(
+              data
+                .filter(d => d.capture_time <= previousWeekData.capture_time)
+                .map(d => d.table_name),
+            ).size
+            : 0,
         ],
-        50
-      )
-    }
+        50,
+      ),
+    },
   ]
 
   const chartDataMap = data.reverse().reduce((acc, curr) => {
@@ -102,9 +102,9 @@ const processData = () => {
         data: Object.values(chartDataMap),
         fill: false,
         borderColor: '#42A5F5',
-        tension: 0.4
-      }
-    ]
+        tension: 0.4,
+      },
+    ],
   }
 }
 
@@ -112,13 +112,15 @@ onMounted(async () => {
   try {
     await loadMore()
     processData()
-  } catch (error) {
+  }
+  catch (error) {
     handleError(error, 'Error loading dashboard data')
     toast.error({
       summary: 'Data Load Error',
-      message: 'Failed to load dashboard data. Please try again later.'
+      message: 'Failed to load dashboard data. Please try again later.',
     })
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 })
@@ -156,7 +158,7 @@ onMounted(async () => {
                 <span
                   :class="{
                     'text-green-500': metric.growth > 0,
-                    'text-red-500': metric.growth < 0
+                    'text-red-500': metric.growth < 0,
                   }"
                 >
                   {{ metric.growth > 0 ? '▲' : '▼' }}

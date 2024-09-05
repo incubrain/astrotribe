@@ -24,7 +24,7 @@ const normalizeDatabaseLog = (log: any): NormalizedLogEntry => ({
   count: 1,
   severity: 'CRITICAL',
   domain: 'database',
-  id: log.id || log.body?.id
+  id: log.id || log.body?.id,
   // Note: 'error' and 'stack' fields are not present in the provided structure
   // You might want to extract these from the event_message if they're embedded there
 })
@@ -38,7 +38,7 @@ const normalizeAPILog = (log: any): NormalizedLogEntry => ({
   domain: log.metadata?.service,
   action: log.endpoint,
   error: log.status_code?.toString(),
-  stack: log.stack || JSON.stringify(log.metadata.context)
+  stack: log.stack || JSON.stringify(log.metadata.context),
 })
 
 const normalizeFrontendLog = (log: any): NormalizedLogEntry => ({
@@ -50,15 +50,15 @@ const normalizeFrontendLog = (log: any): NormalizedLogEntry => ({
   domain: log.component,
   action: log.action,
   error: log.type,
-  stack: log.stack
+  stack: log.stack,
 })
 
 // Function to normalize logs from all sources
-const normalizeAllLogs = (logs: { source: string; entries: any[] }[]): NormalizedLogEntry[] => {
+const normalizeAllLogs = (logs: { source: string, entries: any[] }[]): NormalizedLogEntry[] => {
   return logs.flatMap((sourceLog) => {
     console.log('sourceLog', sourceLog)
-    const normalizer =
-      sourceLog.source === 'DB'
+    const normalizer
+      = sourceLog.source === 'DB'
         ? normalizeDatabaseLog
         : sourceLog.source === 'API'
           ? normalizeAPILog
@@ -71,7 +71,7 @@ const normalizeAllLogs = (logs: { source: string; entries: any[] }[]): Normalize
 }
 
 const props = defineProps<{
-  logs: { source: string; entries: any[] }[]
+  logs: { source: string, entries: any[] }[]
 }>()
 
 const normalizedLogs = computed(() => normalizeAllLogs(props.logs))
@@ -86,7 +86,8 @@ const uniqueLogs = computed(() => {
       if (new Date(log.timestamp) > new Date(existingLog.timestamp)) {
         existingLog.timestamp = log.timestamp
       }
-    } else {
+    }
+    else {
       logMap.set(key, { ...log })
     }
   })
@@ -118,7 +119,7 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
         <PrimeAccordionHeader
           :pt="{
             root: 'w-full flex items-center justify-between p-2 rounded-md background',
-            toggleicon: 'mr-2'
+            toggleicon: 'mr-2',
           }"
           :pt-options="{ mergeSections: true, mergeProps: true }"
         >
@@ -205,7 +206,7 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
                     'domain',
                     'action',
                     'error',
-                    'stack'
+                    'stack',
                   ].includes(key)
                 "
               >

@@ -6,7 +6,7 @@ const settingsRoutes = computed(() => [
     url: `/astrotribe/profile/settings/profile`,
     icon: 'material-symbols:home',
     visible: true,
-    disabled: false
+    disabled: false,
   },
   {
     key: 'settings-password',
@@ -14,7 +14,7 @@ const settingsRoutes = computed(() => [
     url: `/astrotribe/profile/settings/password`,
     icon: 'material-symbols:key',
     visible: true,
-    disabled: false
+    disabled: false,
   },
   {
     key: 'settings-payments',
@@ -22,7 +22,7 @@ const settingsRoutes = computed(() => [
     url: `/astrotribe/profile/settings/payments`,
     icon: 'mdi:credit-card',
     visible: true,
-    disabled: false
+    disabled: false,
   },
   {
     key: 'settings-notifications',
@@ -30,8 +30,8 @@ const settingsRoutes = computed(() => [
     url: `/astrotribe/profile/settings/notifications`,
     icon: 'material-symbols:notifications',
     visible: true,
-    disabled: true
-  }
+    disabled: true,
+  },
 ])
 </script>
 
@@ -44,7 +44,7 @@ const settingsRoutes = computed(() => [
           :pt="{
             root: 'border-none !bg-transparent relative md:w-64',
             list: 'md:sticky md:top-8 flex md:flex-col justify-left !w-full items-center md:justify-end md:items-end overflow-scroll',
-            item: 'w-full'
+            item: 'w-full',
           }"
           :pt-options="{ mergeSections: true, mergeProps: true }"
         >

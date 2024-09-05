@@ -9,34 +9,34 @@ type InternationalPaymentMethod = 'MasterCardVisa' | 'AmericanExpress' | 'Intern
 
 const subscriptionPrices: Record<SubscriptionType, number> = {
   Pro: 20,
-  Expert: 50
+  Expert: 50,
 }
 
 const paymentMethodDistribution = {
   domestic: {
     Visa: 25,
     MasterCard: 15,
-    UPI: 60
+    UPI: 60,
   },
   international: {
     MasterCardVisa: 50,
     AmericanExpress: 30,
-    InternationalCard: 20
-  }
+    InternationalCard: 20,
+  },
 }
 
 function distributeCustomers(
   numCustomers: number,
-  distribution: Record<string, number>
+  distribution: Record<string, number>,
 ): Record<string, number> {
-  let result: Record<string, number> = {}
+  const result: Record<string, number> = {}
   let totalAssigned = 0
   let fractionalPart = 0
 
   Object.keys(distribution).forEach((method, index, array) => {
-    let proportion = distribution[method] / 100
-    let calculated = numCustomers * proportion + fractionalPart
-    let count = Math.floor(calculated)
+    const proportion = distribution[method] / 100
+    const calculated = numCustomers * proportion + fractionalPart
+    const count = Math.floor(calculated)
 
     fractionalPart = calculated - count // Keep track of fractional part for more precise distribution
     result[method] = count
@@ -59,44 +59,44 @@ const razorpayConfig = {
       baseFeePercentage: 0.009,
       additionalFees1kInrPlus: {
         registration: 7,
-        autoDebit: 17
-      }
+        autoDebit: 17,
+      },
     },
     MasterCard: {
       baseFeePercentage: 0.005,
       additionalFees1kInrPlus: {
         registration: 7,
-        autoDebit: 17
-      }
+        autoDebit: 17,
+      },
     },
     UPI: {
       baseFeePercentage: 0.0099,
       additionalFees1kInrPlus: {
         registration: 7,
-        autoDebit: 17
-      }
-    }
-  }
+        autoDebit: 17,
+      },
+    },
+  },
 }
 
 const stripeConfig = {
   international: {
     MasterCardVisa: {
       platformFeePercentage: 0.03,
-      conversionFeePercentage: 0.02
+      conversionFeePercentage: 0.02,
     },
     AmericanExpress: {
       platformFeePercentage: 0.035,
-      conversionFeePercentage: 0.02
+      conversionFeePercentage: 0.02,
     },
     InternationalCard: {
       platformFeePercentage: 0.043,
-      conversionFeePercentage: 0.02
-    }
+      conversionFeePercentage: 0.02,
+    },
   },
   billing: {
-    subscriptionFeePercentage: 0.007
-  }
+    subscriptionFeePercentage: 0.007,
+  },
 }
 
 interface PaymentCostsInput {
@@ -107,9 +107,9 @@ interface PaymentCostsInput {
   gst: number
   additionalFees:
     | {
-        registration: number
-        autoDebit: number
-      }
+      registration: number
+      autoDebit: number
+    }
     | { conversionFee: number }
 }
 
@@ -131,7 +131,7 @@ function calculatePaymentCosts({
   subscriptionFee,
   platformFee,
   gst,
-  additionalFees
+  additionalFees,
 }: PaymentCostsInput): PaymentCosts {
   const platformCost = USD2INR(priceInUSD * platformFee)
   const subscriptionCost = USD2INR(priceInUSD * subscriptionFee)
@@ -144,7 +144,8 @@ function calculatePaymentCosts({
     const conversionFee = USD2INR(priceInUSD * additionalFees.conversionFee)
     extraCost += conversionFee
     costPerCustomer += conversionFee
-  } else {
+  }
+  else {
     extraCost = additionalFees.registration + additionalFees.autoDebit
     costPerCustomer += extraCost
   }
@@ -157,8 +158,8 @@ function calculatePaymentCosts({
       platform: platformCost * numCustomers,
       subscription: subscriptionCost * numCustomers,
       gst: gstCost * numCustomers,
-      additionalFees: extraCost * numCustomers
-    }
+      additionalFees: extraCost * numCustomers,
+    },
   }
 }
 
@@ -175,7 +176,7 @@ function calculateFees({
   numCustomers,
   paymentMethod,
   amountInUSD,
-  frequency
+  frequency,
 }: PlatformFeesInput): PaymentCosts {
   let subscriptionFee, platformFee, additionalFees, gst
 
@@ -186,7 +187,8 @@ function calculateFees({
     subscriptionFee = methodConfig.baseFeePercentage
     additionalFees = methodConfig.additionalFees1kInrPlus // Specific for Razorpay domestic methods
     gst = (platformFee + subscriptionFee) * razorpayConfig.gstPercentage
-  } else {
+  }
+  else {
     // Handle Stripe fees
     const methodConfig = stripeConfig.international[paymentMethod as InternationalPaymentMethod]
     platformFee = methodConfig.platformFeePercentage
@@ -202,7 +204,7 @@ function calculateFees({
     subscriptionFee,
     platformFee,
     gst,
-    additionalFees
+    additionalFees,
   })
 }
 
@@ -224,7 +226,7 @@ interface HandleSubscriptionParams {
 export function handleSubscriptions({
   numCustomers,
   isInternational,
-  frequency
+  frequency,
 }: HandleSubscriptionParams): ProviderChunk {
   const paymentDistribution = isInternational
     ? paymentMethodDistribution.international
@@ -245,7 +247,7 @@ export function handleSubscriptions({
     const proCount = proDistribution[paymentMethod] || 0
     const expertCount = expertDistribution[paymentMethod] || 0
 
-    let blankTransaction = {
+    const blankTransaction = {
       totalCost: 0,
       numCustomers: 0,
       percentage: 0,
@@ -253,8 +255,8 @@ export function handleSubscriptions({
         platform: 0,
         subscription: 0,
         gst: 0,
-        additionalFees: 0
-      }
+        additionalFees: 0,
+      },
     }
 
     if (proCount > 0 || expertCount > 0) {
@@ -262,14 +264,14 @@ export function handleSubscriptions({
         numCustomers: proCount,
         paymentMethod: paymentMethod as DomesticPaymentMethod | InternationalPaymentMethod,
         amountInUSD: subscriptionPrices.Pro,
-        frequency
+        frequency,
       })
 
       const transactionDetailsExpert = calculateFees({
         numCustomers: expertCount,
         paymentMethod: paymentMethod as DomesticPaymentMethod | InternationalPaymentMethod,
         amountInUSD: subscriptionPrices.Expert,
-        frequency
+        frequency,
       })
 
       totalCost += transactionDetailsPro.totalCost + transactionDetailsExpert.totalCost
@@ -280,16 +282,17 @@ export function handleSubscriptions({
         methodCustomers: proCount + expertCount,
         frequency,
         pro: transactionDetailsPro,
-        expert: transactionDetailsExpert
+        expert: transactionDetailsExpert,
       })
-    } else {
+    }
+    else {
       combinedResults.push({
         paymentMethod: paymentMethod as DomesticPaymentMethod | InternationalPaymentMethod,
         methodCost: 0,
         methodCustomers: 0,
         frequency,
         pro: blankTransaction,
-        expert: blankTransaction
+        expert: blankTransaction,
       })
     }
   })
@@ -298,7 +301,7 @@ export function handleSubscriptions({
     provider,
     totalCustomers,
     totalCost,
-    transactions: combinedResults
+    transactions: combinedResults,
   }
 }
 
@@ -312,7 +315,7 @@ interface SimulatePurchasesParams {
 
 export function simulateRealWorldPurchases({
   newCustomers,
-  frequency
+  frequency,
 }: SimulatePurchasesParams): TransactionDetails {
   const razorpayPercentage = getRandomInt(50, 60)
   const stripePercentage = 100 - razorpayPercentage
@@ -326,26 +329,26 @@ export function simulateRealWorldPurchases({
   const razorpayTransactions = handleSubscriptions({
     numCustomers: {
       pro: razorpayProCustomers,
-      expert: razorpayExpertCustomers
+      expert: razorpayExpertCustomers,
     },
     isInternational: false,
-    frequency
+    frequency,
   })
 
   const stripeTransaction = handleSubscriptions({
     numCustomers: {
       pro: stripeProCustomers,
-      expert: stripeExpertCustomers
+      expert: stripeExpertCustomers,
     },
     isInternational: true,
-    frequency
+    frequency,
   })
 
   return {
     totalCost: razorpayTransactions.totalCost + stripeTransaction.totalCost,
     totalCustomers: razorpayTransactions.totalCustomers + stripeTransaction.totalCustomers,
     razorpay: razorpayTransactions,
-    stripe: stripeTransaction
+    stripe: stripeTransaction,
   }
 }
 

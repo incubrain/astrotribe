@@ -2,8 +2,8 @@
 const props = defineProps({
   uploadType: {
     type: String as PropType<string>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const imageInput = ref(null) // template ref for file input
@@ -22,7 +22,7 @@ const handleImageCropped = () => {
   cropper.value
     .getCroppedCanvas({
       width: 180,
-      height: 180
+      height: 180,
     })
     .toBlob((blob) => {
       upload.avatar({ file: blob, userId, type: props.uploadType }) // !todo auth user, get id
@@ -47,7 +47,8 @@ onUnmounted(() => {})
 watchEffect(() => {
   if (selectedFile.value) {
     fileReader.readAsDataURL(selectedFile.value)
-  } else {
+  }
+  else {
     imageSrc.value = null
   }
 })
@@ -60,8 +61,8 @@ watch(
     }
   },
   {
-    flush: 'post' // watch runs after component updates
-  }
+    flush: 'post', // watch runs after component updates
+  },
 )
 </script>
 

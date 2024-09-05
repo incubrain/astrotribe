@@ -26,7 +26,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       return
     }
 
-    if (!!profile.value) {
+    if (profile.value) {
       logger.info('loadSession: Returning cached user')
       return
     }
@@ -34,14 +34,14 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     loading.setLoading(DOMAIN_KEY, true)
 
     const response = await fetch('/api/auth/session', {
-      method: 'GET'
+      method: 'GET',
     })
 
     const data = errors.server({
       response,
       devOnly: false,
       devMessage: 'error fetching user session',
-      userMessage: 'something went wrong when getting your session'
+      userMessage: 'something went wrong when getting your session',
     })
 
     if (data) {
@@ -52,7 +52,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       // analytics?.identify(
       //   data.user_id
       // )
-    } else {
+    }
+    else {
       logger.info('no session found')
     }
     loading.setLoading(DOMAIN_KEY, false)
@@ -62,16 +63,19 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   function hasValueChanged(newValue: any, currentValue: any): boolean {
     console.log('hasValueChanged', newValue, currentValue)
     if (
-      typeof newValue === 'string' ||
-      typeof newValue === 'boolean' ||
-      typeof newValue === 'number'
+      typeof newValue === 'string'
+      || typeof newValue === 'boolean'
+      || typeof newValue === 'number'
     ) {
       return newValue !== currentValue
-    } else if (Array.isArray(newValue)) {
+    }
+    else if (Array.isArray(newValue)) {
       return JSON.stringify(newValue) !== JSON.stringify(currentValue)
-    } else if (typeof newValue === 'object' && newValue !== null) {
+    }
+    else if (typeof newValue === 'object' && newValue !== null) {
       return JSON.stringify(newValue) !== JSON.stringify(currentValue)
-    } else {
+    }
+    else {
       return newValue !== currentValue
     }
   }
@@ -100,14 +104,14 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
     const response = await fetch(`/api/users/update/${userId.value}`, {
       method: 'POST',
-      body: data
+      body: data,
     })
 
     const validData = errors.server({
       response,
       devOnly: false,
       devMessage: `Error updating user profile`,
-      userMessage: `There was an error updating your profile after action`
+      userMessage: `There was an error updating your profile after action`,
     })
 
     // update state
@@ -130,8 +134,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       body: formData,
       params: {
         fileType,
-        userId: userId.value
-      }
+        userId: userId.value,
+      },
     })
 
     console.log('fileName', response)
@@ -140,7 +144,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       response,
       devOnly: false,
       devMessage: `Error uploading ${fileType} image`,
-      userMessage: `There was an error uploading your ${fileType}`
+      userMessage: `There was an error uploading your ${fileType}`,
     })
 
     let newData = {}
@@ -149,7 +153,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
     if (fileType === 'avatar') {
       newData = {
-        avatar: fileName
+        avatar: fileName,
       }
     }
 
@@ -163,14 +167,14 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   return {
     haveUserSession: computed(() => !!profile.value),
     isAdmin: computed(
-      () => profile.value?.user_role === 'admin' || profile.value?.user_role === 'super_admin'
+      () => profile.value?.user_role === 'admin' || profile.value?.user_role === 'super_admin',
     ),
     registeredWithProvider: computed(() => profile.value?.provider),
     profile,
     loadSession,
     removeSession,
     uploadImage,
-    updateProfile
+    updateProfile,
   }
 })
 

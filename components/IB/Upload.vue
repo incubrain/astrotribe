@@ -4,24 +4,24 @@ const toast = useNotification()
 const props = defineProps({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   url: {
     type: String,
-    required: true
+    required: true,
   },
   multiple: {
     type: Boolean,
-    default: false
+    default: false,
   },
   accept: {
     type: String,
-    default: ''
+    default: '',
   },
   maxFileSize: {
     type: Number,
-    default: 1000000
-  }
+    default: 1000000,
+  },
 })
 
 const onAdvancedUpload = () => {

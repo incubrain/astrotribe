@@ -4,7 +4,7 @@ import {
   LazyAdminSocialYoutube,
   LazyAdminSocialInstagram,
   LazyAdminSocialLinkedin,
-  LazyAdminSocialTwitter
+  LazyAdminSocialTwitter,
 } from '#components'
 
 // todo:med:hard:8 create tables for and store social snapshots in the database
@@ -14,40 +14,41 @@ const socialsTabs = [
     tabTitle: 'Overview',
     tabName: 'overview',
     id: 'AstronEra',
-    component: LazyAdminSocialOverview
+    component: LazyAdminSocialOverview,
   },
   {
     tabTitle: 'Youtube',
     tabName: 'youtube',
     id: 'AstronEra',
-    component: LazyAdminSocialYoutube
+    component: LazyAdminSocialYoutube,
   },
   {
     tabTitle: 'Instagram',
     tabName: 'instagram',
     id: 'AstronEra',
-    component: LazyAdminSocialInstagram
+    component: LazyAdminSocialInstagram,
   },
   {
     tabTitle: 'Linkedin',
     tabName: 'linkedin',
     id: 'AstronEra',
-    component: LazyAdminSocialLinkedin
+    component: LazyAdminSocialLinkedin,
   },
   {
     tabTitle: 'Twitter',
     tabName: 'twitter',
     id: 'AstronEra',
-    component: LazyAdminSocialTwitter
-  }
+    component: LazyAdminSocialTwitter,
+  },
 ]
 
 definePageMeta({
   layoutTransition: false,
   name: 'Socials',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 </script>
+
 <template>
   <div class="h-full w-full">
     <IBTabView

@@ -14,7 +14,7 @@ export const useUserSettingsStore = defineStore('settingsStore', () => {
   return {
     settings,
     toggleSettings,
-    isSettingsOn
+    isSettingsOn,
   }
 })
 

@@ -22,7 +22,7 @@ const { socials, websiteLinks } = usePages()
                 src: '/astronera-logo.jpg',
                 alt: 'AstronEra Logo',
                 width: '48',
-                height: '48'
+                height: '48',
               }"
               class="overflow-hidden rounded-full p-1 dark:bg-white"
             />

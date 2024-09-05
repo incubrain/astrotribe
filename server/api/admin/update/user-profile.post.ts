@@ -1,7 +1,7 @@
-import { UserRowType } from '~/types/users'
+import type { UserRowType } from '~/types/users'
 
 export default defineEventHandler(async (event) => {
-  const { userId, profile }: { userId: string; profile: UserRowType } = await readBody(event)
+  const { userId, profile }: { userId: string, profile: UserRowType } = await readBody(event)
   const client = await dbClient(event)
 
   // Function to insert users from JSON file
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     if (!profile) {
       return {
         status: 400,
-        message: 'No user profile provided'
+        message: 'No user profile provided',
       }
     }
 
@@ -34,13 +34,14 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'Users have been inserted successfully',
-      data
+      data,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`Error updating user ${userId}:`, error)
     return {
       status: 500,
-      message: 'Error updating user profile'
+      message: 'Error updating user profile',
     }
   }
 })

@@ -19,7 +19,7 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
       mouseY: 0,
       isOutside: true,
       cardWidth: 0,
-      cardHeight: 0
+      cardHeight: 0,
     }
   }
 
@@ -40,10 +40,10 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
 
     // Check if the mouse is within the gravity field
     if (
-      x >= -gravityArea &&
-      x <= cardRect.width + gravityArea &&
-      y >= -gravityArea &&
-      y <= cardRect.height + gravityArea
+      x >= -gravityArea
+      && x <= cardRect.width + gravityArea
+      && y >= -gravityArea
+      && y <= cardRect.height + gravityArea
     ) {
       state.mouseX = x
       state.mouseY = y
@@ -57,11 +57,13 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
       // Calculate tilt factor
       if (x >= 0 && x <= cardRect.width && y >= 0 && y <= cardRect.height) {
         state.tiltFactor = 1 // Cursor is directly over the card
-      } else {
+      }
+      else {
         // Smooth transition in the gravity area
         state.tiltFactor = Math.max(0, 1 - distance / gravityArea)
       }
-    } else {
+    }
+    else {
       state.tiltFactor = 0
       state.isOutside = true
     }
@@ -86,7 +88,7 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
 
     return {
       transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
-      transition: state.isOutside ? 'transform 0.3s ease-out' : 'none'
+      transition: state.isOutside ? 'transform 0.3s ease-out' : 'none',
     }
   })
 
@@ -112,32 +114,32 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
     `,
       opacity: opacity,
       transition: 'opacity 0.3s ease-out',
-      mixBlendMode: 'soft-light'
+      mixBlendMode: 'soft-light',
     }
   })
 
   const bgClasses = computed(() => [
     `bg-${props.color}-950/${props.bgOpacity}`,
-    `hover:bg-${props.color}-900/${props.bgOpacity + 10}`
+    `hover:bg-${props.color}-900/${props.bgOpacity + 10}`,
   ])
 
   const borderClasses = computed(() => [
     `border`,
     `border-${props.color}-500/30`,
-    `hover:border-${props.color}-400/40`
+    `hover:border-${props.color}-400/40`,
   ])
 
   const textClasses = computed(() => [`text-${props.color}-100`])
 
   const gradientClasses = computed(() => [
     `from-${props.color}-100/${props.gradientOpacity}`,
-    `to-${props.color}-500/${props.gradientOpacity}`
+    `to-${props.color}-500/${props.gradientOpacity}`,
   ])
 
   const hoverClasses = computed(() =>
     props.disableHover
       ? []
-      : ['hover:shadow-2xl', `hover:bg-${props.color}-800/${props.bgOpacity + 10}`]
+      : ['hover:shadow-2xl', `hover:bg-${props.color}-800/${props.bgOpacity + 10}`],
   )
 
   return {
@@ -149,6 +151,6 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
     borderClasses,
     textClasses,
     gradientClasses,
-    hoverClasses
+    hoverClasses,
   }
 }

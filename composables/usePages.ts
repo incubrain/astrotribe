@@ -9,26 +9,26 @@ const appLinks = ref([
     icon: 'material-symbols:home-rounded',
     children: [
       // { id: 11, label: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' }
-    ]
+    ],
   },
   {
     id: 2,
     label: 'News',
     slug: '/astrotribe/news',
-    icon: 'mdi:newspaper-variant-outline'
+    icon: 'mdi:newspaper-variant-outline',
   },
   {
     id: 3,
     label: 'Companies',
     slug: '/astrotribe/companies',
-    icon: 'material-symbols:location-on-rounded'
+    icon: 'material-symbols:location-on-rounded',
   },
   {
     id: 4,
     label: 'Q&A',
     slug: '/astrotribe/ask',
-    icon: 'mdi:information-slab-box'
-  }
+    icon: 'mdi:information-slab-box',
+  },
 ] as PageType[])
 
 const adminLinks = ref([
@@ -36,71 +36,71 @@ const adminLinks = ref([
     id: 0,
     label: 'App',
     slug: '/astrotribe',
-    icon: 'mdi:application'
+    icon: 'mdi:application',
   },
   {
     id: 1,
     label: 'Dashboard',
     slug: '/astrotribe/admin',
     icon: 'mdi:view-dashboard',
-    children: []
+    children: [],
   },
   {
     id: 2,
     label: 'Users',
     slug: '/astrotribe/admin/users',
     icon: 'mdi:account',
-    children: []
+    children: [],
   },
   {
     id: 4,
     label: 'Analytics',
     slug: '/astrotribe/admin/analytics',
     icon: 'mdi:chart-bar',
-    children: []
+    children: [],
   },
   {
     id: 6,
     label: 'BP',
     slug: '/astrotribe/admin/business-plan',
     icon: 'mdi:chat',
-    children: []
+    children: [],
   },
   {
     id: 7,
     label: 'Spider',
     slug: '/astrotribe/admin/spider',
     icon: 'mdi:chat',
-    children: []
+    children: [],
   },
   {
     id: 8,
     label: 'Cache',
     slug: '/astrotribe/admin/redis',
     icon: 'mdi:chat',
-    children: []
+    children: [],
   },
   {
     id: 9,
     label: 'Errors',
     slug: '/astrotribe/admin/errors',
     icon: 'mdi:bug',
-    children: []
+    children: [],
   },
   {
     id: 10,
     label: 'Growth',
     slug: '/astrotribe/admin/growth',
     icon: 'mdi:account',
-    children: []
+    children: [],
   },
   {
     id: 11,
     label: 'Financials',
     slug: '/astrotribe/admin/financials',
     icon: 'material-symbols:attach-money',
-    children: []
-  }
+    children: [],
+  },
   // {
   //   id: 3,
   //   label: 'Upload',
@@ -138,22 +138,22 @@ const socials = ref([
     platform: 'twitter',
     icon: 'mdi:twitter',
     url: 'https://twitter.com/AstronEra',
-    username: 'uk'
+    username: 'uk',
   },
   {
     id: 2,
     icon: 'mdi:linkedin',
     platform: 'linkedin',
     url: 'https://www.linkedin.com/company/astronera',
-    username: 'uk'
+    username: 'uk',
   },
   {
     id: 3,
     icon: 'mdi:instagram',
     platform: 'instagram',
     url: 'https://www.instagram.com/astronera',
-    username: 'uk'
-  }
+    username: 'uk',
+  },
 ])
 
 const websiteLinks = [
@@ -170,7 +170,7 @@ const websiteLinks = [
         icon: 'material-symbols:info',
         url: '/about',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'team',
@@ -178,7 +178,7 @@ const websiteLinks = [
         icon: 'material-symbols:emoji-people',
         url: '/team',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'contact',
@@ -186,9 +186,9 @@ const websiteLinks = [
         icon: 'material-symbols:call',
         url: '/contact',
         visible: true,
-        disabled: false
-      }
-    ]
+        disabled: false,
+      },
+    ],
   },
   {
     key: 'projects',
@@ -203,8 +203,8 @@ const websiteLinks = [
         icon: 'material-symbols:mic-rounded',
         url: '/projects/dark-sky-conference-2023',
         visible: true,
-        disabled: false
-      }
+        disabled: false,
+      },
       // {
       //   key: 'astrotribe',
       //   label: 'Astrotribe',
@@ -213,7 +213,7 @@ const websiteLinks = [
       //   visible: true,
       //   disabled: false
       // },
-    ]
+    ],
   },
   // {
   //   key: 'events',
@@ -245,7 +245,7 @@ const websiteLinks = [
         icon: 'material-symbols:menu-book-outline',
         url: '/blog',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'blog-dark-sky-conservation',
@@ -253,7 +253,7 @@ const websiteLinks = [
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/dark-sky-conservation',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'blog-people-of-space',
@@ -261,7 +261,7 @@ const websiteLinks = [
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/people-of-space',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'blog-space-exploration',
@@ -269,7 +269,7 @@ const websiteLinks = [
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/space-exploration',
         visible: true,
-        disabled: false
+        disabled: false,
       },
       {
         key: 'blog-sustainable-development',
@@ -277,10 +277,10 @@ const websiteLinks = [
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/sustainable-development',
         visible: true,
-        disabled: false
-      }
-    ]
-  }
+        disabled: false,
+      },
+    ],
+  },
 ]
 
 export default function usePages() {
@@ -290,6 +290,6 @@ export default function usePages() {
     adminLinks,
     socials,
     tabs: (currentPage: string) =>
-      appLinks.value.find((page: PageType) => page.label.toLocaleLowerCase() === currentPage)
+      appLinks.value.find((page: PageType) => page.label.toLocaleLowerCase() === currentPage),
   }
 }

@@ -4,8 +4,8 @@ import type { NewsListGovernmentT } from '@/types/news'
 const p = defineProps({
   newsCategory: {
     type: String as PropType<NewsListGovernmentT | 'all'>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const filterBy = computed(() =>
@@ -14,8 +14,8 @@ const filterBy = computed(() =>
     : {
         columnName: 'source',
         operator: 'eq',
-        value: p.newsCategory
-      }
+        value: p.newsCategory,
+      },
 )
 
 const { data: spaceNews, error } = await useAsyncData(
@@ -26,9 +26,9 @@ const { data: spaceNews, error } = await useAsyncData(
       params: {
         filterBy: filterBy.value,
         dto: 'select:news:card',
-        limit: 6
-      }
-    })
+        limit: 6,
+      },
+    }),
 )
 
 console.log('dataReturned', spaceNews, error)
@@ -37,6 +37,7 @@ if (error.value) {
   console.error(error.value)
 }
 </script>
+
 <template>
   <div>
     <h2 class="text-3xl font-bold pb-20 underline underline-offset-8 decoration-primary-500">

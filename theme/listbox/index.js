@@ -12,12 +12,12 @@ export default {
       { 'border-surface-300 dark:border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid }
-    ]
+      { 'border-red-500 dark:border-red-400': props.invalid },
+    ],
   }),
   listContainer: 'overflow-auto',
   list: {
-    class: 'py-3 list-none m-0 outline-none'
+    class: 'py-3 list-none m-0 outline-none',
   },
   option: ({ context }) => ({
     class: [
@@ -46,12 +46,12 @@ export default {
         'text-surface-100 dark:text-white/80': !context.focused && !context.selected,
         'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
         'text-surface-100 dark:text-white/80': context.focused && !context.selected,
-        'bg-highlight': context.selected
+        'bg-highlight': context.selected,
       },
 
-      //States
+      // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected
+        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -63,12 +63,12 @@ export default {
       // Misc
       'cursor-pointer',
       'overflow-hidden',
-      'whitespace-nowrap'
-    ]
+      'whitespace-nowrap',
+    ],
   }),
   optionGroup: {
     class: [
-      //Font
+      // Font
       'font-bold',
 
       // Spacing
@@ -80,8 +80,8 @@ export default {
       'bg-surface-0 dark:bg-surface-600/80',
 
       // Misc
-      'cursor-auto'
-    ]
+      'cursor-auto',
+    ],
   },
   optionCheckIcon: 'relative -ms-1.5 me-1.5 text-surface-100 dark:text-white/80 w-4 h-4',
   header: {
@@ -90,7 +90,7 @@ export default {
       'py-3 px-5',
       'm-0',
 
-      //Shape
+      // Shape
       'border-b',
       'rounded-tl-md',
       'rounded-tr-md',
@@ -100,8 +100,8 @@ export default {
       'bg-surface-100 dark:bg-surface-400',
       'border-surface-300 dark:border-surface-600',
 
-      '[&_[data-pc-name=pcfilter]]:w-full'
-    ]
+      '[&_[data-pc-name=pcfilter]]:w-full',
+    ],
   },
   emptyMessage: {
     class: [
@@ -113,7 +113,7 @@ export default {
 
       // Color
       'text-surface-100 dark:text-white/80',
-      'bg-transparent'
-    ]
-  }
+      'bg-transparent',
+    ],
+  },
 }

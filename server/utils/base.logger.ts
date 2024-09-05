@@ -7,7 +7,7 @@ const logLevels = {
   http: 3,
   verbose: 4,
   debug: 5,
-  silly: 6
+  silly: 6,
 }
 
 const logColors = {
@@ -17,7 +17,7 @@ const logColors = {
   http: 'magenta',
   verbose: 'cyan',
   debug: 'blue',
-  silly: 'white'
+  silly: 'white',
 }
 
 winston.addColors(logColors)
@@ -26,8 +26,8 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.cli(),
   winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: [${info.loggerPrefix}] ${info.message}`
-  )
+    info => `${info.timestamp} ${info.level}: [${info.loggerPrefix}] ${info.message}`,
+  ),
 )
 
 export const logger = winston.createLogger({
@@ -38,7 +38,7 @@ export const logger = winston.createLogger({
     new winston.transports.Console(),
     // new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
     // new winston.transports.File({ filename: './data/logs/combined.log' })
-  ]
+  ],
 }) as winston.Logger & Record<keyof typeof logLevels, winston.LeveledLogMethod>
 
 export function useServerLogger(loggerPrefix: string) {

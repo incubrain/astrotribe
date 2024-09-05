@@ -1,13 +1,13 @@
 export default {
   panel: {
-    class: 'mb-1'
+    class: 'mb-1',
   },
   header: {
     class: [
       'rounded-md',
       'outline-none',
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50'
-    ]
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+    ],
   },
   headerContent: ({ context, instance }) => ({
     class: [
@@ -15,7 +15,7 @@ export default {
       'rounded-t-md',
       {
         'rounded-br-md rounded-bl-md': !context.active || instance.activeItem?.items === undefined,
-        'rounded-br-0 rounded-bl-0': context.active && instance.activeItem?.items !== undefined
+        'rounded-br-0 rounded-bl-0': context.active && instance.activeItem?.items !== undefined,
       },
 
       // Color
@@ -30,8 +30,8 @@ export default {
 
       // Transition
       'transition duration-200 ease-in-out',
-      'transition-shadow duration-200'
-    ]
+      'transition-shadow duration-200',
+    ],
   }),
   headerLink: {
     class: [
@@ -48,17 +48,17 @@ export default {
       'p-5',
 
       // Misc
-      'select-none cursor-pointer no-underline'
-    ]
+      'select-none cursor-pointer no-underline',
+    ],
   },
   headerLabel: {
-    class: 'leading-none'
+    class: 'leading-none',
   },
   headerIcon: {
-    class: 'mr-2'
+    class: 'mr-2',
   },
   submenuIcon: {
-    class: 'mr-2'
+    class: 'mr-2',
   },
   content: {
     class: [
@@ -72,11 +72,11 @@ export default {
       // Color
       'text-surface-100 dark:text-white/80',
       'bg-surface-0 dark:bg-surface-400',
-      'border-surface-200 dark:border-surface-700'
-    ]
+      'border-surface-200 dark:border-surface-700',
+    ],
   },
   rootList: {
-    class: ['outline-none', 'm-0 p-0 list-none']
+    class: ['outline-none', 'm-0 p-0 list-none'],
   },
   itemContent: {
     class: [
@@ -87,8 +87,8 @@ export default {
       'text-surface-100 dark:text-white/80',
 
       // Transition
-      'transition-shadow duration-200'
-    ]
+      'transition-shadow duration-200',
+    ],
   },
   itemLink: ({ context }) => ({
     class: [
@@ -109,19 +109,19 @@ export default {
       // States
       'hover:bg-surface-100 dark:hover:bg-surface-700/80 hover:text-surface-100 dark:hover:text-white/80',
       {
-        'bg-surface-200 text-surface-100 dark:text-white/80 dark:bg-surface-600/90': context.focused
+        'bg-surface-200 text-surface-100 dark:text-white/80 dark:bg-surface-600/90': context.focused,
       },
 
       // Misc
       'cursor-pointer no-underline',
-      'select-none overflow-hidden'
-    ]
+      'select-none overflow-hidden',
+    ],
   }),
   itemIcon: {
-    class: 'mr-2'
+    class: 'mr-2',
   },
   submenu: {
-    class: 'p-0 pl-4 m-0 list-none'
+    class: 'p-0 pl-4 m-0 list-none',
   },
   transition: {
     enterFromClass: 'max-h-0',
@@ -131,6 +131,6 @@ export default {
     leaveFromClass: 'max-h-[1000px]',
     leaveActiveClass:
       'overflow-hidden transition-[max-height] duration-[450ms] ease-[cubic-bezier(0,1,0,1)]',
-    leaveToClass: 'max-h-0'
-  }
+    leaveToClass: 'max-h-0',
+  },
 }

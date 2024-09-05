@@ -12,19 +12,19 @@ const {
   isProcessing,
   uploadProgress,
   currentUpload,
-  uploadQueue
+  uploadQueue,
 } = useFileUpload()
 
 const buckets = [
   { name: 'user-profiles', label: 'User Profiles' },
   { name: 'public-assets', label: 'Public Assets' },
-  { name: 'private-documents', label: 'Private Documents' }
+  { name: 'private-documents', label: 'Private Documents' },
 ]
 
 const paths = {
   'user-profiles': ['avatars', 'cover-photos', 'galleries'],
   'public-assets': ['blog-images', 'marketing-materials'],
-  'private-documents': ['user-uploads']
+  'private-documents': ['user-uploads'],
 }
 
 const fileTypes = [
@@ -32,7 +32,7 @@ const fileTypes = [
   { name: 'cover-photo', label: 'Cover Photo' },
   { name: 'gallery-image', label: 'Gallery Image' },
   { name: 'document', label: 'Document' },
-  { name: 'other', label: 'Other' }
+  { name: 'other', label: 'Other' },
 ]
 
 const bucket = ref(buckets[0].name)
@@ -70,7 +70,7 @@ const onSelect = (event: any) => {
       auditLog: async (action, details) => {
         console.log(action, details)
         // Implement your audit logging here
-      }
+      },
     })
   })
 }

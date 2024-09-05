@@ -9,15 +9,15 @@ export default {
       'bg-surface-50 dark:bg-surface-900',
       'border border-surface-200 dark:border-surface-700',
 
-      //Shape
+      // Shape
       'rounded-tl-lg rounded-tr-lg',
 
       // Conditional Spacing
-      { 'p-5': !props.toggleable, 'py-3 px-5': props.toggleable }
-    ]
+      { 'p-5': !props.toggleable, 'py-3 px-5': props.toggleable },
+    ],
   }),
   title: {
-    class: 'leading-none font-bold'
+    class: 'leading-none font-bold',
   },
   toggler: {
     class: [
@@ -29,10 +29,10 @@ export default {
       'w-8 h-8',
       'm-0 p-0',
 
-      //Shape
+      // Shape
       'border-0 rounded-full',
 
-      //Color
+      // Color
       'bg-transparent',
       'text-surface-600 dark:text-surface-0/80',
 
@@ -46,11 +46,11 @@ export default {
 
       // Misc
       'overflow-hidden no-underline',
-      'cursor-pointer'
-    ]
+      'cursor-pointer',
+    ],
   },
   togglerIcon: {
-    class: 'inline-block'
+    class: 'inline-block',
   },
   content: {
     class: [
@@ -60,11 +60,11 @@ export default {
       // Shape
       'border border-t-0 last:rounded-br-lg last:rounded-bl-lg',
 
-      //Color
+      // Color
       'border-surface-200 dark:border-surface-700',
       'bg-surface-0 dark:bg-surface-900',
-      'text-surface-100 dark:text-surface-0/80'
-    ]
+      'text-surface-100 dark:text-surface-0/80',
+    ],
   },
   footer: {
     class: [
@@ -74,11 +74,11 @@ export default {
       // Shape
       'border border-t-0 rounded-br-lg rounded-bl-lg',
 
-      //Color
+      // Color
       'border-surface-200 dark:border-surface-700',
       'bg-surface-0 dark:bg-surface-900',
-      'text-surface-100 dark:text-surface-0/80'
-    ]
+      'text-surface-100 dark:text-surface-0/80',
+    ],
   },
   transition: {
     enterFromClass: 'max-h-0',
@@ -88,6 +88,6 @@ export default {
     leaveFromClass: 'max-h-[1000px]',
     leaveActiveClass:
       'overflow-hidden transition-[max-height] duration-[450ms] ease-[cubic-bezier(0,1,0,1)]',
-    leaveToClass: 'max-h-0'
-  }
+    leaveToClass: 'max-h-0',
+  },
 }

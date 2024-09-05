@@ -8,8 +8,8 @@ const message = ref('')
 const p = defineProps({
   articleCategory: {
     type: String as PropType<ArticleCategoriesT>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const articlesShowcase: Ref<ArticleCardT[]> = ref([])
@@ -22,7 +22,7 @@ const { error, status } = await useAsyncData(
   async (): Promise<void> => {
     const whereOptions: QueryBuilderParams = {
       // tags: { $in: selectedTags.value },
-      status: { $eq: 'published' }
+      status: { $eq: 'published' },
     }
 
     const articles = (await queryContent('/blog', category.value === 'all' ? '' : category.value)
@@ -34,10 +34,11 @@ const { error, status } = await useAsyncData(
 
     if (articles.length) {
       articlesShowcase.value.push(...articles)
-    } else {
+    }
+    else {
       message.value = 'No articles loaded...'
     }
-  }
+  },
 )
 
 if (error.value) {

@@ -9,7 +9,7 @@ export const LocationSchema = z.object({
   state: z.string(),
   address: z.string().nullable(),
   latitude: z.number().optional().nullable(),
-  longitude: z.number().optional().nullable()
+  longitude: z.number().optional().nullable(),
 })
 
 export const UserRoleSchema = z.object({
@@ -17,12 +17,12 @@ export const UserRoleSchema = z.object({
   name: z.string().nullable(),
   body: z.string().nullable().optional(),
   created_at: z.string().optional(),
-  icon: z.string()
+  icon: z.string(),
 })
 
 export const IdName = z.object({
   id: z.number(),
-  name: z.string()
+  name: z.string(),
 })
 
 export const UserSkillSchema = z.object({
@@ -32,14 +32,14 @@ export const UserSkillSchema = z.object({
   total_endorsements: z.number(),
   admin_rating: z.number().nullable(),
   avg_rating: z.number().nullable(),
-  created_at: z.string().optional()
+  created_at: z.string().optional(),
 })
 
 export const UserSocialSchema = z.object({
   id: z.number(),
   url: z.string(),
   platform: z.string(),
-  username: z.string()
+  username: z.string(),
 })
 
 export const UserBasicSchema = z.object({
@@ -52,7 +52,7 @@ export const UserBasicSchema = z.object({
   followers_count: z.number().nullable(),
   followed_count: z.number().nullable(),
   is_following: z.boolean().nullable(),
-  role: z.number()
+  role: z.number(),
 })
 
 export const UserFullSchema = UserBasicSchema.extend({
@@ -61,7 +61,7 @@ export const UserFullSchema = UserBasicSchema.extend({
   gender_id: z.number().nullable(),
   created_at: z.string(),
   updated_at: z.string().nullable(),
-  quote: z.string().nullable()
+  quote: z.string().nullable(),
 })
 
 export const UserRowSchema = z.object({
@@ -74,7 +74,7 @@ export const UserRowSchema = z.object({
   plan: z.string().nullish(),
   dob: z.string().nullable(),
   quote: z.string().nullable(),
-  gender_id: z.number().nullable()
+  gender_id: z.number().nullable(),
 })
 
 export const UserRolesSchema = z.array(UserRoleSchema)

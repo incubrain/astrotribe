@@ -17,7 +17,7 @@ defineProps<{
             src: author.avatar,
             alt: `${author.name.given} ${author.name.surname} is an author on the AstronEra Blog`,
             width: '44px',
-            height: '44px'
+            height: '44px',
           }"
           class="border-color rounded-full border"
         />
@@ -35,4 +35,5 @@ defineProps<{
     </template>
   </BlogAuthor>
 </template>
+
 <style scoped></style>

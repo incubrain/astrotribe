@@ -6,7 +6,7 @@ async function upload(path: string, file: MultiPartData) {
   const { data, error } = await supabase.storage.from('profile-public').upload(path, file.data, {
     cacheControl: '3600',
     contentType: file.type,
-    upsert: true
+    upsert: true,
   })
   console.log('uploadResponse', data, error)
 }
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     const userRepository = new UserRepository()
     const users = await userRepository.selectMany<'user_profiles'>({
       tableName: 'user_profiles',
-      selectStatement: 'id, given_name, surname'
+      selectStatement: 'id, given_name, surname',
     })
 
     form.forEach(async (file) => {
@@ -58,13 +58,14 @@ export default defineEventHandler(async (event) => {
       const newFileName = `avatar_${userId}.jpg`
       await upload(`${userId}/avatar/${newFileName}`, file)
     })
-  } catch (error) {
+  }
+  catch (error) {
     console.log('upload error', error)
     throw createError({ statusMessage: error.message })
   }
 
   return {
     statusCode: 200,
-    message: 'successfully uploaded files'
+    message: 'successfully uploaded files',
   }
 })

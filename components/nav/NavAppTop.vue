@@ -13,18 +13,18 @@ const items = computed(() => {
   const menuItems = [
     {
       label: 'Settings',
-      command: () => router.push(`/astrotribe/profile/settings/profile`)
+      command: () => router.push(`/astrotribe/profile/settings/profile`),
     },
     {
       label: 'Logout',
-      command: () => auth.logout()
-    }
+      command: () => auth.logout(),
+    },
   ]
 
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => router.push(`/astrotribe/admin/`)
+      command: () => router.push(`/astrotribe/admin/`),
     })
   }
 
@@ -41,7 +41,7 @@ watch(
   (newProfile) => {
     avatarUrl.value = newProfile?.avatar
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 const logError = (error) => {
@@ -75,7 +75,7 @@ const nonce = useNonce()
         <PrimeSkeleton class="min-h-4 min-w-10 rounded-md" />
         <PrimeSkeleton
           :pt="{
-            root: 'min-w-10 min-h-10 rounded-full'
+            root: 'min-w-10 min-h-10 rounded-full',
           }"
         />
       </div>

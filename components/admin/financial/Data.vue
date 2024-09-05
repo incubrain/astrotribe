@@ -12,7 +12,7 @@ const {
   customers,
   totals,
   rgba,
-  formatNumber
+  formatNumber,
 } = useFinancials()
 
 const allDatasets = [
@@ -26,7 +26,7 @@ const allDatasets = [
   { name: 'Advertising', data: advertising.value },
   { name: 'Logging', data: logging.value },
   { name: 'Payments', data: payments.value },
-  { name: 'Totals', data: totals.value }
+  { name: 'Totals', data: totals.value },
 ]
 
 function getType(value: any): string {
@@ -34,31 +34,33 @@ function getType(value: any): string {
 }
 
 function traverseObject(
-  obj: any
-): Record<string, Array<{ path: string; value: any; type: string }>> {
-  let result: Record<string, Array<{ path: string; value: any; type: string }>> = {}
+  obj: any,
+): Record<string, Array<{ path: string, value: any, type: string }>> {
+  const result: Record<string, Array<{ path: string, value: any, type: string }>> = {}
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key]
       if (
-        Array.isArray(value) &&
-        value.length > 0 &&
-        typeof value[0] === 'object' &&
-        value[0] !== null
+        Array.isArray(value)
+        && value.length > 0
+        && typeof value[0] === 'object'
+        && value[0] !== null
       ) {
         const childResults = traverseNestedObject(value[0], key)
         result[key] = childResults
-      } else if (typeof value === 'object' && value !== null) {
+      }
+      else if (typeof value === 'object' && value !== null) {
         const childResults = traverseNestedObject(value, key)
         result[key] = childResults
-      } else {
+      }
+      else {
         if (!result['Root']) {
           result['Root'] = []
         }
         result['Root'].push({
           path: key,
           value: value,
-          type: getType(value)
+          type: getType(value),
         })
       }
     }
@@ -68,27 +70,29 @@ function traverseObject(
 
 function traverseNestedObject(
   obj: any,
-  parentKey: string
-): Array<{ path: string; value: any; type: string }> {
-  let result: Array<{ path: string; value: any; type: string }> = []
+  parentKey: string,
+): Array<{ path: string, value: any, type: string }> {
+  let result: Array<{ path: string, value: any, type: string }> = []
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const newPath = `${parentKey}.${key}`
       const value = obj[key]
       if (
-        Array.isArray(value) &&
-        value.length > 0 &&
-        typeof value[0] === 'object' &&
-        value[0] !== null
+        Array.isArray(value)
+        && value.length > 0
+        && typeof value[0] === 'object'
+        && value[0] !== null
       ) {
         result = result.concat(traverseNestedObject(value[0], newPath))
-      } else if (typeof value === 'object' && value !== null) {
+      }
+      else if (typeof value === 'object' && value !== null) {
         result = result.concat(traverseNestedObject(value, newPath))
-      } else {
+      }
+      else {
         result.push({
           path: newPath,
           value: value,
-          type: getType(value)
+          type: getType(value),
         })
       }
     }
@@ -112,7 +116,7 @@ function copyToClipboard(text: string) {
     },
     (err) => {
       console.error('Could not copy text: ', err)
-    }
+    },
   )
 }
 </script>

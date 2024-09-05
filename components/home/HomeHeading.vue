@@ -13,12 +13,12 @@
 defineProps({
   heading: {
     type: String,
-    required: true
+    required: true,
   },
   subheading: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

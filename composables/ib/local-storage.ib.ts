@@ -30,7 +30,7 @@ export function useBaseLocalStorage() {
 
     const dataToStore = {
       timestamp: new Date().getTime(),
-      data
+      data,
     }
     localStorage.setItem(key, JSON.stringify(dataToStore))
   }
@@ -38,6 +38,6 @@ export function useBaseLocalStorage() {
   return {
     store: storeInLocalStorage,
     check: checkLocalStorage,
-    clear: clearLocalStorage
+    clear: clearLocalStorage,
   }
 }

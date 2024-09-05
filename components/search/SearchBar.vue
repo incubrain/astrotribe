@@ -13,14 +13,14 @@ watch(
     if (newPrompt) {
       question.value = newPrompt
     }
-  }
+  },
 )
 
 const submitQuestion = async () => {
   if (question.value.trim()) {
     await chatStore.submitQuestion({
       question: question.value,
-      systemPrompt: props.systemPrompt
+      systemPrompt: props.systemPrompt,
     })
     question.value = ''
   }

@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { z } from 'zod';
+import { z } from 'zod'
 
 const interestOptions = [
   { name: 'Astrophysics' },
@@ -60,26 +60,27 @@ const interestOptions = [
   { name: 'Spacecraft Engineering' },
   { name: 'Space Medicine' },
   { name: 'Asteroids and Comets' },
-];
+]
 
-const selectedInterests = ref([]);
-const errors = ref({});
+const selectedInterests = ref([])
+const errors = ref({})
 
 const interestsSchema = z.object({
   interests: z.array(z.object({ name: z.string() })).min(1, 'Please select at least one interest'),
-});
+})
 
 const handleSubmit = () => {
-  const result = interestsSchema.safeParse({ interests: selectedInterests.value });
+  const result = interestsSchema.safeParse({ interests: selectedInterests.value })
   if (result.success) {
     // Clear any previous errors
-    errors.value = {};
+    errors.value = {}
     // Submit the interests to your API
-    console.log('Interests submitted:', selectedInterests.value);
+    console.log('Interests submitted:', selectedInterests.value)
     // You can add your API call here
-  } else {
-    // Update errors
-    errors.value = result.error.flatten().fieldErrors;
   }
-};
+  else {
+    // Update errors
+    errors.value = result.error.flatten().fieldErrors
+  }
+}
 </script>

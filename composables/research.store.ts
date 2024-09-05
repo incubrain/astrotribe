@@ -119,7 +119,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
   const researchData = reactive<Record<ResearchDataKey, ResearchData>>({
     research_embeddings: { data: [], flagged: [] },
     research: { data: [], flagged: [] },
-    research_metrics: { data: [] }
+    research_metrics: { data: [] },
   })
 
   interface ResearchInput {
@@ -140,20 +140,20 @@ export const useResearchStore = defineStore('storeResearch', () => {
     research_metrics: [],
     research_embeddings: [],
     research_metrics_monthly_totals: [],
-    research_metrics_totals: []
+    research_metrics_totals: [],
   }) as Ref<Record<ResearchDataKey, ResearchMetrics[]>>
 
   const fetchNRows = async ({
     tableName,
     isFlagged = false,
-    limit = 50
+    limit = 50,
   }: ResearchInput): Promise<void> => {
     try {
       const { data, error } = (await client
         .from(tableName)
         .select('*')
         .order('month_start', { ascending: false })
-        .limit(limit)) as { data: ResearchMetrics[]; error: any }
+        .limit(limit)) as { data: ResearchMetrics[], error: any }
 
       console.log('fetchNRows:', data, error)
       if (error) {
@@ -162,7 +162,8 @@ export const useResearchStore = defineStore('storeResearch', () => {
       }
 
       lastNRows.value[tableName].push(...data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Unexpected error:', error)
       return
     }
@@ -173,12 +174,13 @@ export const useResearchStore = defineStore('storeResearch', () => {
       const start = isFlagged
         ? researchData[tableName].flagged.length
         : researchData[tableName].data.length
-        
+
       let query = client.from(tableName).select('*')
 
       if (isFlagged !== undefined) {
         query = query.eq('is_flagged', isFlagged).order('updated_at', { ascending: false })
-      } else {
+      }
+      else {
         query = query.order('created_at', { ascending: false })
       }
 
@@ -194,10 +196,12 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
       if (isFlagged) {
         researchData[tableName].flagged.push(...data)
-      } else {
+      }
+      else {
         researchData[tableName].data.push(...data)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       log.error(`fetchFromTable (${tableName}):`, error)
       toast.error({ summary: 'Error fetching data', message: error.message })
       throw new Error(error.message)
@@ -233,15 +237,17 @@ export const useResearchStore = defineStore('storeResearch', () => {
       if (updatedItem && updatedItem.is_flagged) {
         researchData[tableName].flagged.push(updatedItem)
         researchData[tableName].data = researchData[tableName].data.filter(
-          (item: any) => item.id !== updatedItem.id
+          (item: any) => item.id !== updatedItem.id,
         )
-      } else {
+      }
+      else {
         researchData[tableName].flagged = researchData[tableName].flagged.filter(
-          (item: any) => item.id !== updatedItem.id
+          (item: any) => item.id !== updatedItem.id,
         )
         researchData[tableName].data.push(updatedItem)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       throw new Error(error.message)
     }
   }
@@ -257,10 +263,11 @@ export const useResearchStore = defineStore('storeResearch', () => {
       }
 
       researchData[tableName].flagged = researchData[tableName].flagged.filter(
-        (item: any) => item.id !== itemId
+        (item: any) => item.id !== itemId,
       )
       toast.info({ summary: 'Item Deleted', message: 'The item has been deleted' })
-    } catch (error: any) {
+    }
+    catch (error: any) {
       toast.error({ summary: 'Error Deleting Item', message: error.message })
       throw new Error(error.message)
     }
@@ -292,6 +299,6 @@ export const useResearchStore = defineStore('storeResearch', () => {
     fetchNRows,
     flagItem,
     deleteItem,
-    lastNRows
+    lastNRows,
   }
 })

@@ -12,7 +12,7 @@ export function useNotification() {
       summary: `Success: ${summary}`,
       detail: message,
       life: 5000,
-      closable: true
+      closable: true,
     })
   }
 
@@ -22,7 +22,7 @@ export function useNotification() {
       summary: `Error: ${summary}`,
       detail: message,
       life: 0,
-      closable: true
+      closable: true,
     })
   }
 
@@ -32,7 +32,7 @@ export function useNotification() {
       summary: `Info: ${summary}`,
       detail: message,
       life: 5000,
-      closable: true
+      closable: true,
     })
   }
 
@@ -42,7 +42,7 @@ export function useNotification() {
       summary: `Warning: ${summary}`,
       detail: message,
       life: 5000,
-      closable: true
+      closable: true,
     })
   }
 
@@ -53,7 +53,7 @@ export function useNotification() {
       summary: summary,
       detail: message,
       life: 0,
-      closable: true
+      closable: true,
     })
   }
 
@@ -62,6 +62,6 @@ export function useNotification() {
     error,
     info,
     warn,
-    feature
+    feature,
   }
 }

@@ -29,14 +29,15 @@ export default defineEventHandler(async (event) => {
       message: 'Videos returned from youtube',
       data: {
         channelStatistics,
-        videos
-      }
+        videos,
+      },
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'error fetching youtube analytics',
-      userMessage: 'error fetching youtube analytics'
+      userMessage: 'error fetching youtube analytics',
     })
   }
 })

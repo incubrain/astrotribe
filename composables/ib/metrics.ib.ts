@@ -11,7 +11,7 @@ function calculateMedian(arr: number[]): number {
 function calculateStandardDeviation(valuesArray: number[]): number {
   const mean = valuesArray.reduce((a, b) => a + b) / valuesArray.length
   return Math.sqrt(
-    valuesArray.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / valuesArray.length
+    valuesArray.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / valuesArray.length,
   )
 }
 
@@ -42,7 +42,8 @@ function calculateMode(arr: number[]): number | number[] {
     if (frequency[value] > maxFreq) {
       maxFreq = frequency[value]
       modes = [value]
-    } else if (frequency[value] === maxFreq) {
+    }
+    else if (frequency[value] === maxFreq) {
       modes.push(value)
     }
   })
@@ -78,7 +79,7 @@ function calculatePercentile(arr: number[], percentile: number): number {
 export function useBaseMetrics() {
   return {
     format: {
-      roundToN: roundToNDecimalPlaces
+      roundToN: roundToNDecimalPlaces,
     },
     calculate: {
       median: calculateMedian,
@@ -90,7 +91,7 @@ export function useBaseMetrics() {
       mode: calculateMode,
       min: calculateMin,
       max: calculateMax,
-      percentile: calculatePercentile
-    }
+      percentile: calculatePercentile,
+    },
   }
 }

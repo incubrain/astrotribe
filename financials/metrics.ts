@@ -3,7 +3,7 @@ import { calculateCostPerUser, type CostPerUser } from './metrics-users'
 import { INCOME_STREAMS } from './customers'
 import { metricConfig } from './totals'
 
-function calculateRecurringRevenue(revenue: { free: number; pro: number; expert: number }) {
+function calculateRecurringRevenue(revenue: { free: number, pro: number, expert: number }) {
   const freeMRR = revenue.free
   const proMRR = revenue.pro
   const expertMRR = revenue.expert
@@ -17,22 +17,22 @@ function calculateRecurringRevenue(revenue: { free: number; pro: number; expert:
     totalARR: freeARR + proARR + expertARR,
     free: {
       monthly: freeMRR,
-      annual: freeARR
+      annual: freeARR,
     },
     pro: {
       monthly: proMRR,
-      annual: proARR
+      annual: proARR,
     },
     expert: {
       monthly: expertMRR,
-      annual: expertARR
-    }
+      annual: expertARR,
+    },
   }
 }
 
 interface ARPU {
-  MRR: { free: number; pro: number; expert: number }
-  users: { free: number; pro: number; expert: number }
+  MRR: { free: number, pro: number, expert: number }
+  users: { free: number, pro: number, expert: number }
 }
 function calculateAverageRevenuePerUser({ MRR, users }: ARPU) {
   const totalUsers = users.free + users.pro + users.expert
@@ -42,7 +42,7 @@ function calculateAverageRevenuePerUser({ MRR, users }: ARPU) {
     total: totalUsers > 0 ? ROUND0(monthlyRecurringRevenue / totalUsers) : 0,
     free: users.free > 0 ? ROUND0(MRR.free / users.free) : 0,
     pro: users.pro > 0 ? ROUND0(MRR.pro / users.pro) : 0,
-    expert: users.expert > 0 ? ROUND0(MRR.expert / users.expert) : 0
+    expert: users.expert > 0 ? ROUND0(MRR.expert / users.expert) : 0,
   }
 }
 interface CLVParams {
@@ -51,7 +51,7 @@ interface CLVParams {
     pro: number
     expert: number
   }
-  lifespan: { free: number; pro: number; expert: number }
+  lifespan: { free: number, pro: number, expert: number }
 }
 
 function calculateCustomerLifetimeValue(params: CLVParams) {
@@ -62,13 +62,13 @@ function calculateCustomerLifetimeValue(params: CLVParams) {
     average: ROUND2(freeCLV + proCLV + expertCLV) / 3,
     free: ROUND2(freeCLV),
     pro: ROUND2(proCLV),
-    expert: ROUND2(expertCLV)
+    expert: ROUND2(expertCLV),
   }
 }
 
 interface CACParams {
   totalMarketingCosts: number
-  newUsers: { free: number; pro: number; expert: number }
+  newUsers: { free: number, pro: number, expert: number }
 }
 
 function calculateCustomerAcquisitionCost({ totalMarketingCosts, newUsers }: CACParams) {
@@ -84,16 +84,16 @@ function calculateCustomerAcquisitionCost({ totalMarketingCosts, newUsers }: CAC
     average: averageCAC,
     free: freeCAC,
     pro: proCAC,
-    expert: expertCAC
+    expert: expertCAC,
   }
 }
 
-function calculateRetentionRate(churnRate: { free: number; pro: number; expert: number }) {
+function calculateRetentionRate(churnRate: { free: number, pro: number, expert: number }) {
   return {
     average: 100 - ((churnRate.free + churnRate.pro + churnRate.expert) * 100) / 3,
     free: 100 - churnRate.free * 100,
     pro: 100 - churnRate.pro * 100,
-    expert: 100 - churnRate.expert * 100
+    expert: 100 - churnRate.expert * 100,
   }
 }
 
@@ -107,7 +107,7 @@ function calculateConversionRates(users: {
     ? {
         total: parseInt((((users.pro + users.expert) / users.mau) * 100).toFixed(0)),
         pro: parseInt(((users.pro / users.mau) * 100).toFixed(0)),
-        expert: parseInt(((users.expert / users.mau) * 100).toFixed(0))
+        expert: parseInt(((users.expert / users.mau) * 100).toFixed(0)),
       }
     : { total: 0, pro: 0, expert: 0 }
 }
@@ -141,31 +141,31 @@ function calculateChurnAndRefunds({ currentMonth, users, revenue }: ChurnRefundP
   const freeChurnRate = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: metricConfig.MONTHLY_CHURN.MAU.PESSIMISTIC,
-    optimistic: metricConfig.MONTHLY_CHURN.MAU.OPTIMISTIC
+    optimistic: metricConfig.MONTHLY_CHURN.MAU.OPTIMISTIC,
   })
 
   const proChurnRate = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: PRO.PESSIMISTIC,
-    optimistic: PRO.OPTIMISTIC
+    optimistic: PRO.OPTIMISTIC,
   })
 
   const expertChurnRate = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: EXPERT.PESSIMISTIC,
-    optimistic: EXPERT.OPTIMISTIC
+    optimistic: EXPERT.OPTIMISTIC,
   })
 
   const proRefundRate = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: subscription.pro.refund.yearly.pessimistic,
-    optimistic: subscription.pro.refund.yearly.optimistic
+    optimistic: subscription.pro.refund.yearly.optimistic,
   })
 
   const expertRefundRate = EFFICIENCY_FACTOR({
     currentMonth,
     pessimistic: subscription.expert.refund.yearly.pessimistic,
-    optimistic: subscription.expert.refund.yearly.optimistic
+    optimistic: subscription.expert.refund.yearly.optimistic,
   })
 
   const proRefundCost = revenue.pro * proRefundRate
@@ -190,40 +190,40 @@ function calculateChurnAndRefunds({ currentMonth, users, revenue }: ChurnRefundP
       total: {
         cost: totalRefundAmount,
         rate: (proRefundRate + expertRefundRate) * 100,
-        count: totalRefundedUsers
+        count: totalRefundedUsers,
       },
       pro: {
         count: proRefundUsers,
         cost: proRefundCost,
-        rate: proRefundRate
+        rate: proRefundRate,
       },
       expert: {
         count: expertRefundUsers,
         cost: expertRefundCost,
-        rate: expertRefundRate
-      }
+        rate: expertRefundRate,
+      },
     },
     churn: {
       total: {
         cost: totalChurnCost,
         rate: (proChurnRate + expertChurnRate),
-        count: totalChurnedUsers
+        count: totalChurnedUsers,
       },
       free: {
-        rate: freeChurnRate ,
-        count: users.free * freeChurnRate
+        rate: freeChurnRate,
+        count: users.free * freeChurnRate,
       },
       pro: {
         count: proChurnedUsers,
         cost: proChurnCost,
-        rate: proChurnRate
+        rate: proChurnRate,
       },
       expert: {
         count: expertChurnedUsers,
         cost: expertChurnCost,
-        rate: expertChurnRate
-      }
-    }
+        rate: expertChurnRate,
+      },
+    },
   }
 }
 
@@ -263,12 +263,12 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     users,
     revenue: {
       pro: revenue.pro,
-      expert: revenue.expert
-    }
+      expert: revenue.expert,
+    },
   })
 
-  const effectiveRevenue =
-    revenue.free + revenue.pro + revenue.expert - refund.total.cost - churn.total.cost
+  const effectiveRevenue
+    = revenue.free + revenue.pro + revenue.expert - refund.total.cost - churn.total.cost
   const recurringRevenue = calculateRecurringRevenue(revenue)
 
   const freeLifespan = CHURN_TO_LIFESPAN_MONTHS(churn.free.rate)
@@ -279,22 +279,22 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     MRR: {
       free: recurringRevenue.free.monthly,
       pro: recurringRevenue.pro.monthly,
-      expert: recurringRevenue.expert.monthly
+      expert: recurringRevenue.expert.monthly,
     },
-    users
+    users,
   })
 
   const lifetimeValue = calculateCustomerLifetimeValue({
     avgRevenue: {
       free: avgRevenue.free,
       pro: avgRevenue.pro,
-      expert: avgRevenue.expert
+      expert: avgRevenue.expert,
     },
     lifespan: {
       free: freeLifespan,
       pro: proLifespan,
-      expert: expertLifespan
-    }
+      expert: expertLifespan,
+    },
   })
 
   const customerAcquisitionCost = calculateCustomerAcquisitionCost({
@@ -302,14 +302,14 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     newUsers: {
       free: users.free,
       pro: users.pro,
-      expert: users.expert
-    }
+      expert: users.expert,
+    },
   })
 
   const retentionRate = calculateRetentionRate({
     free: churn.free.rate,
     pro: churn.pro.rate,
-    expert: churn.expert.rate
+    expert: churn.expert.rate,
   })
 
   const totalConversionRate = calculateConversionRates(users)
@@ -318,7 +318,7 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
 
   const marketingSpendEfficiency = calculateMarketingSpendEfficiency(
     marketing.cost,
-    effectiveRevenue
+    effectiveRevenue,
   )
 
   const userCost = calculateCostPerUser({
@@ -326,11 +326,11 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     totalCosts: {
       free: expenses.free,
       pro: expenses.pro,
-      expert: expenses.expert
-    }
+      expert: expenses.expert,
+    },
   })
 
-  console.log('PLMargin',   effectiveRevenue, expenses.total)
+  console.log('PLMargin', effectiveRevenue, expenses.total)
 
   return {
     mau: {
@@ -340,25 +340,25 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
       free: users.free,
       pro: users.pro,
       expert: users.expert,
-      customers: users.totalCustomers
+      customers: users.totalCustomers,
     },
     monthlyRecurringRevenue: {
       effective: effectiveRevenue,
       free: recurringRevenue.free.monthly,
       pro: recurringRevenue.pro.monthly,
-      expert: recurringRevenue.expert.monthly
+      expert: recurringRevenue.expert.monthly,
     },
     annualRecurringRevenue: {
       effective: effectiveRevenue * 12,
       free: recurringRevenue.free.annual,
       pro: recurringRevenue.pro.annual,
-      expert: recurringRevenue.expert.annual
+      expert: recurringRevenue.expert.annual,
     },
     averageRevenuePerUser: {
       total: avgRevenue.total,
       free: avgRevenue.free,
       pro: avgRevenue.pro,
-      expert: avgRevenue.expert
+      expert: avgRevenue.expert,
     },
     customerLifetimeValue: lifetimeValue,
     customerAcquisitionCost: customerAcquisitionCost,
@@ -366,13 +366,13 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
       average: (freeLifespan + proLifespan + expertLifespan) / 3,
       free: freeLifespan,
       pro: proLifespan,
-      expert: expertLifespan
+      expert: expertLifespan,
     },
     retentionRate: {
       average: retentionRate.average,
       free: retentionRate.free,
       pro: retentionRate.pro,
-      expert: retentionRate.expert
+      expert: retentionRate.expert,
     },
     refund,
     churn,
@@ -380,13 +380,13 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     conversionRate: {
       total: totalConversionRate.total,
       pro: totalConversionRate.pro,
-      expert: totalConversionRate.expert
+      expert: totalConversionRate.expert,
     },
     grossMargin,
     marketingSpendEfficiency,
     profitLossMargin: parseFloat(
-      (((effectiveRevenue - expenses.total) / expenses.total) * 100).toFixed(1)
-    )
+      (((effectiveRevenue - expenses.total) / expenses.total) * 100).toFixed(1),
+    ),
   }
 }
 

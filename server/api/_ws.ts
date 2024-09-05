@@ -16,5 +16,5 @@ export default defineWebSocketHandler({
 
   error(peer, error) {
     console.log('[ws] error', peer, error)
-  }
+  },
 })

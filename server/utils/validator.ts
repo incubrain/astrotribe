@@ -8,7 +8,7 @@ export async function validateBody(event: H3Event, parser: AnyZodObject) {
     throw createError({
       statusCode: 422,
       statusMessage: 'Unprocessable Entity: Feedback Format',
-      message: JSON.stringify(validatedBody.error.errors)
+      message: JSON.stringify(validatedBody.error.errors),
     })
   }
 

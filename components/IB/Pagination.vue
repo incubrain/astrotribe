@@ -40,7 +40,7 @@ function restoreState() {
 function storeState() {
   const state = {
     currentPage: currentPage.value,
-    items: items.value
+    items: items.value,
   }
   sessionStorage.setItem(sessionStorageKey, JSON.stringify(state))
 }

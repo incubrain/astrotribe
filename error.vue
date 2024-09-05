@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 const props = defineProps({
-  error: Object
+  error: Object,
 })
 
 const retryAction = () => {

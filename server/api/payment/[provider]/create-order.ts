@@ -13,12 +13,14 @@ export default defineEventHandler(async (event) => {
   if (provider === 'razorpay') {
     console.log('provider is razorpay')
     backendUrl = backendUrl.concat('/api/customer/subscription/create')
-  } else if (provider === 'stripe') {
+  }
+  else if (provider === 'stripe') {
     backendUrl = backendUrl.concat('/api/customer/subscription/create')
-  } else {
+  }
+  else {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid payment provider'
+      statusMessage: 'Invalid payment provider',
     })
   }
 
@@ -31,17 +33,18 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       body,
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     console.log('response:', response)
     return response
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`Error creating order with ${provider}:`, error)
     throw createError({
       statusCode: 500,
-      statusMessage: `Failed to create order with ${provider}`
+      statusMessage: `Failed to create order with ${provider}`,
     })
   }
 })

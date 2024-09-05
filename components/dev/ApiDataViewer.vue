@@ -24,7 +24,7 @@
         >
           <PrimeAccordionHeader
             :pt="{
-              root: 'rounded-md border gap-2 border-color flex items-center foreground p-2'
+              root: 'rounded-md border gap-2 border-color flex items-center foreground p-2',
             }"
           >
             <p>
@@ -50,6 +50,6 @@ const showModal = ref(false)
 const isAdmin = ref(true)
 
 const showComponent = computed((): boolean => {
-  return process.dev || isAdmin.value
+  return import.meta.dev || isAdmin.value
 })
 </script>

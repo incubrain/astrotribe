@@ -5,8 +5,8 @@ export default {
 
       // Flex
       {
-        flex: props.fluid,
-        'inline-flex': !props.fluid
+        'flex': props.fluid,
+        'inline-flex': !props.fluid,
       },
 
       // Size
@@ -15,11 +15,11 @@ export default {
       // Color
       'text-surface-900 dark:text-surface-0',
 
-      //States
+      // States
       {
-        'opacity-60 select-none pointer-events-none cursor-default': props.disabled
-      }
-    ]
+        'opacity-60 select-none pointer-events-none cursor-default': props.disabled,
+      },
+    ],
   }),
   inputMultiple: ({ props, state }) => ({
     class: [
@@ -60,17 +60,17 @@ export default {
       'transition duration-200 ease-in-out',
 
       // Misc
-      'cursor-text overflow-hidden'
-    ]
+      'cursor-text overflow-hidden',
+    ],
   }),
   inputToken: {
-    class: ['py-1.5 px-0', 'inline-flex flex-auto']
+    class: ['py-1.5 px-0', 'inline-flex flex-auto'],
   },
   inputChip: {
-    class: 'flex-auto inline-flex pt-1 pb-1'
+    class: 'flex-auto inline-flex pt-1 pb-1',
   },
   input: {
-    class: 'border-none outline-none bg-transparent m-0 p-0 shadow-none rounded-none w-full'
+    class: 'border-none outline-none bg-transparent m-0 p-0 shadow-none rounded-none w-full',
   },
   chipItem: {
     root: {
@@ -89,9 +89,9 @@ export default {
         'text-surface-100 dark:text-white/70',
 
         // Misc
-        'cursor-default'
-      ]
-    }
+        'cursor-default',
+      ],
+    },
   },
   dropdown: {
     class: [
@@ -114,14 +114,14 @@ export default {
       // States
       'focus:outline-none focus:outline-offset-0 focus:ring',
       'hover:bg-primary-emphasis hover:border-primary-emphasis',
-      'focus:ring-primary-400/50 dark:focus:ring-primary-300/50'
-    ]
+      'focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+    ],
   },
   loader: {
     class: [
       'text-surface-50 dark:text-surface-0/70',
-      'absolute top-[50%] right-[0.5rem] -mt-2 animate-spin'
-    ]
+      'absolute top-[50%] right-[0.5rem] -mt-2 animate-spin',
+    ],
   },
   overlay: {
     class: [
@@ -135,11 +135,11 @@ export default {
       'shadow-md',
 
       // Size
-      'max-h-[200px] overflow-auto'
-    ]
+      'max-h-[200px] overflow-auto',
+    ],
   },
   list: {
-    class: 'py-3 px-0 list-none m-0'
+    class: 'py-3 px-0 list-none m-0',
   },
   option: ({ context }) => ({
     class: [
@@ -159,12 +159,12 @@ export default {
         'text-surface-100 dark:text-white/80': !context.focused && !context.selected,
         'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
         'text-surface-100 dark:text-white/80': context.focused && !context.selected,
-        'bg-highlight': context.selected
+        'bg-highlight': context.selected,
       },
 
-      //States
+      // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected
+        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -173,8 +173,8 @@ export default {
       'transition-shadow duration-200',
 
       // Misc
-      'cursor-pointer overflow-hidden whitespace-nowrap'
-    ]
+      'cursor-pointer overflow-hidden whitespace-nowrap',
+    ],
   }),
   optionGroup: {
     class: [
@@ -188,8 +188,8 @@ export default {
       'text-surface-100 dark:text-white/80',
 
       // Misc
-      'cursor-auto'
-    ]
+      'cursor-auto',
+    ],
   },
   emptyMessage: {
     class: [
@@ -201,14 +201,14 @@ export default {
 
       // Color
       'text-surface-100 dark:text-white/80',
-      'bg-transparent'
-    ]
+      'bg-transparent',
+    ],
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',
     enterActiveClass:
       'transition-[transform,opacity] duration-[120ms] ease-[cubic-bezier(0,0,0.2,1)]',
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
-    leaveToClass: 'opacity-0'
-  }
+    leaveToClass: 'opacity-0',
+  },
 }

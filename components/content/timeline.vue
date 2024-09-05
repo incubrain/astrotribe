@@ -45,7 +45,7 @@ const events = ref([
     icon: 'chart-line',
     color: '#9C27B0',
     description:
-      'Continuously improve the accuracy and capabilities of our AI models by integrating advanced machine learning techniques and user feedback.'
+      'Continuously improve the accuracy and capabilities of our AI models by integrating advanced machine learning techniques and user feedback.',
   },
   {
     status: 'Gamification and Loyalty Programs',
@@ -53,7 +53,7 @@ const events = ref([
     icon: 'star',
     color: '#673AB7',
     description:
-      'Introduce gamification elements and loyalty programs to enhance user engagement and incentivize frequent usage.'
+      'Introduce gamification elements and loyalty programs to enhance user engagement and incentivize frequent usage.',
   },
   {
     status: 'Scalability Enhancements',
@@ -61,7 +61,7 @@ const events = ref([
     icon: 'cog',
     color: '#FF9800',
     description:
-      'Optimize our cloud infrastructure to handle increased traffic and ensure smooth performance.'
+      'Optimize our cloud infrastructure to handle increased traffic and ensure smooth performance.',
   },
   {
     status: 'Educational Partnerships',
@@ -69,7 +69,7 @@ const events = ref([
     icon: 'account-group',
     color: '#607D8B',
     description:
-      'Partner with educational institutions to provide exclusive content and promote our platform among students.'
+      'Partner with educational institutions to provide exclusive content and promote our platform among students.',
   },
   {
     status: 'Progressive Web App (PWA)',
@@ -77,7 +77,7 @@ const events = ref([
     icon: 'cellphone-link',
     color: '#FF5722',
     description:
-      'Develop and launch a PWA to provide a seamless mobile experience without the need for native app development.'
+      'Develop and launch a PWA to provide a seamless mobile experience without the need for native app development.',
   },
   {
     status: 'Data Quality Improvements',
@@ -85,7 +85,7 @@ const events = ref([
     icon: 'database',
     color: '#795548',
     description:
-      'Focus on sourcing high-quality data, improving data processing, and cleaning mechanisms.'
+      'Focus on sourcing high-quality data, improving data processing, and cleaning mechanisms.',
   },
 
   // Year 2
@@ -95,7 +95,7 @@ const events = ref([
     icon: 'account',
     color: '#4CAF50',
     description:
-      'Develop AI-driven personalization features to provide tailored content and recommendations.'
+      'Develop AI-driven personalization features to provide tailored content and recommendations.',
   },
   {
     status: 'Advanced AI Agents',
@@ -103,7 +103,7 @@ const events = ref([
     icon: 'robot',
     color: '#FFC107',
     description:
-      'Introduce more sophisticated AI agents capable of handling complex queries and providing in-depth analysis.'
+      'Introduce more sophisticated AI agents capable of handling complex queries and providing in-depth analysis.',
   },
   {
     status: 'Consulting Services',
@@ -111,21 +111,21 @@ const events = ref([
     icon: 'briefcase',
     color: '#03A9F4',
     description:
-      'Offer consulting services to businesses and educational institutions leveraging our AI and data insights.'
+      'Offer consulting services to businesses and educational institutions leveraging our AI and data insights.',
   },
   {
     status: 'Multilingual Support',
     date: 'Q4 2025',
     icon: 'translate',
     color: '#E91E63',
-    description: 'Add support for multiple languages to cater to a global audience.'
+    description: 'Add support for multiple languages to cater to a global audience.',
   },
   {
     status: 'Mobile Application Development',
     date: 'Q4 2025',
     icon: 'cellphone',
     color: '#FF9800',
-    description: 'Develop and launch a native mobile application.'
+    description: 'Develop and launch a native mobile application.',
   },
 
   // Year 3
@@ -135,7 +135,7 @@ const events = ref([
     icon: 'book',
     color: '#9C27B0',
     description:
-      'Expand premium content offerings, such as exclusive webinars, research reports, and advanced data insights.'
+      'Expand premium content offerings, such as exclusive webinars, research reports, and advanced data insights.',
   },
   {
     status: 'International Partnerships',
@@ -143,7 +143,7 @@ const events = ref([
     icon: 'handshake',
     color: '#673AB7',
     description:
-      'Form partnerships with international space agencies, educational institutions, and businesses to expand our reach.'
+      'Form partnerships with international space agencies, educational institutions, and businesses to expand our reach.',
   },
 
   // Year 4
@@ -153,7 +153,7 @@ const events = ref([
     icon: 'vr',
     color: '#FF5722',
     description:
-      'Integrate AR and VR technologies to provide immersive learning experiences and interactive content.'
+      'Integrate AR and VR technologies to provide immersive learning experiences and interactive content.',
   },
   {
     status: 'IoT Integration',
@@ -161,14 +161,14 @@ const events = ref([
     icon: 'cloud',
     color: '#795548',
     description:
-      'Leverage Internet of Things (IoT) devices for real-time data collection and analysis.'
+      'Leverage Internet of Things (IoT) devices for real-time data collection and analysis.',
   },
   {
     status: 'User-Generated Content Platform',
     date: 'Q3 2027',
     icon: 'pencil',
     color: '#4CAF50',
-    description: 'Develop a platform for users to create and share their content.'
+    description: 'Develop a platform for users to create and share their content.',
   },
 
   // Year 5
@@ -178,7 +178,7 @@ const events = ref([
     icon: 'school',
     color: '#FFC107',
     description:
-      'Launch initiatives aimed at promoting space education in underprivileged communities and sustainability projects.'
+      'Launch initiatives aimed at promoting space education in underprivileged communities and sustainability projects.',
   },
   {
     status: 'Continuous Improvement Mechanisms',
@@ -186,8 +186,8 @@ const events = ref([
     icon: 'refresh',
     color: '#03A9F4',
     description:
-      'Establish continuous feedback loops with users and utilize data analytics to improve our services.'
-  }
+      'Establish continuous feedback loops with users and utilize data analytics to improve our services.',
+  },
 ])
 </script>
 

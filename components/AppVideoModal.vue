@@ -1,7 +1,7 @@
 <template>
   <PrimeCard
     :pt="{
-      body: 'py-2 px-1'
+      body: 'py-2 px-1',
     }"
   >
     <template #content>
@@ -15,7 +15,7 @@
             alt: video.alt,
             height: '480px',
             width: '840px',
-            sizes: '100vw lg:50vw'
+            sizes: '100vw lg:50vw',
           }"
         />
         <Icon
@@ -70,9 +70,9 @@ defineProps({
     default: () => ({
       url: '',
       thumbnail: '',
-      alt: ''
-    })
-  }
+      alt: '',
+    }),
+  },
 })
 
 // todo:med:easy - make the modal a base component

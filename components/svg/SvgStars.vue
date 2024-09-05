@@ -17,12 +17,12 @@
 defineProps({
   size: {
     type: Number,
-    required: true
+    required: true,
   },
   svgColor: {
     type: String,
     required: false,
-    default: '#3d3d3d'
-  }
+    default: '#3d3d3d',
+  },
 })
 </script>

@@ -2,17 +2,17 @@ export default {
   // For PrimeVue 3
   accordiontab: {
     root: {
-      class: 'mb-1'
+      class: 'mb-1',
     },
     header: ({ props }) => ({
       class: [
         // State
-        { 'select-none pointer-events-none cursor-default opacity-60': props?.disabled }
-      ]
+        { 'select-none pointer-events-none cursor-default opacity-60': props?.disabled },
+      ],
     }),
     headerAction: ({ context }) => ({
       class: [
-        //Font
+        // Font
         'font-bold',
         'leading-none',
 
@@ -27,7 +27,7 @@ export default {
         'rounded-t-md',
         {
           'rounded-br-md rounded-bl-md': !context.active,
-          'rounded-br-0 rounded-bl-0': context.active
+          'rounded-br-0 rounded-bl-0': context.active,
         },
 
         // Color
@@ -46,29 +46,29 @@ export default {
         'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 ring-inset dark:focus-visible:ring-primary-300/50', // Focus
 
         // Misc
-        'cursor-pointer no-underline select-none'
-      ]
+        'cursor-pointer no-underline select-none',
+      ],
     }),
     headerIcon: {
-      class: 'inline-block mr-2'
+      class: 'inline-block mr-2',
     },
     headerTitle: {
-      class: 'leading-none'
+      class: 'leading-none',
     },
     content: {
       class: [
         // Spacing
         'p-5',
 
-        //Shape
+        // Shape
         'rounded-tl-none rounded-tr-none rounded-br-lg rounded-bl-lg',
         'border-t-0',
 
         // Color
         'foreground',
         'border border-surface-200 dark:border-surface-700',
-        'text-surface-100 dark:text-surface-0/80'
-      ]
+        'text-surface-100 dark:text-surface-0/80',
+      ],
     },
     transition: {
       enterFromClass: 'max-h-0',
@@ -78,7 +78,7 @@ export default {
       leaveFromClass: 'max-h-[1000px]',
       leaveActiveClass:
         'overflow-hidden transition-[max-height] duration-[450ms] ease-[cubic-bezier(0,1,0,1)]',
-      leaveToClass: 'max-h-0'
-    }
-  }
+      leaveToClass: 'max-h-0',
+    },
+  },
 }

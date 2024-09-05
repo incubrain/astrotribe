@@ -79,31 +79,31 @@ import type { NewsCardT } from '@/types/news'
 defineProps({
   posts: {
     type: Array as () => NewsCardT[],
-    required: true
+    required: true,
   },
   currentIndex: {
     type: Number,
-    required: true
+    required: true,
   },
   summaryLevel: {
     type: String,
-    required: true
+    required: true,
   },
   nextIndex: {
     type: Number,
-    required: true
+    required: true,
   },
   previousIndex: {
     type: Number,
-    required: true
+    required: true,
   },
   nextPost: {
     type: Function,
-    required: true
+    required: true,
   },
   previousPost: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

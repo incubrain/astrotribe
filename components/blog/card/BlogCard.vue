@@ -4,8 +4,8 @@ import { useDateFormat } from '#imports'
 defineProps({
   article: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // !todo: add links to the tags and category
@@ -28,7 +28,7 @@ defineProps({
           src: `images/blog/${article.category}/${article.featured_image}`,
           width: '400',
           height: '300',
-          quality: '80'
+          quality: '80',
         }"
         class="aspect-video w-full object-cover"
       />

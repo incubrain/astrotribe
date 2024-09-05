@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const HostSchema = z.object({
   id: z.string(),
   given_name: z.string(),
-  avatar: z.string()
+  avatar: z.string(),
 })
 
 export const LocationSchema = z.object({
@@ -14,7 +14,7 @@ export const LocationSchema = z.object({
   state: z.string(),
   address: z.string().nullable(),
   latitude: z.number().optional().nullable(),
-  longitude: z.number().optional().nullable()
+  longitude: z.number().optional().nullable(),
 })
 
 export const VenueSchema = z.object({
@@ -27,7 +27,7 @@ export const VenueSchema = z.object({
   logo: z.string(),
   events_hosted: z.number().nullable().optional(),
   bortle_rating: z.number(),
-  location: LocationSchema
+  location: LocationSchema,
 })
 
 export const EventSchema = z.object({
@@ -37,7 +37,7 @@ export const EventSchema = z.object({
   featured_image: z.string(),
   date: z.string(),
   venue: VenueSchema,
-  hosts: z.array(HostSchema)
+  hosts: z.array(HostSchema),
 })
 
 export type VenueType = z.infer<typeof VenueSchema>

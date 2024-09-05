@@ -5,15 +5,16 @@ export default defineEventHandler(async (event) => {
       error: null,
       status: 200,
       message: 'User session removed',
-      data: null
+      data: null,
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('session error', error.message)
     return {
       error,
       status: 500,
       message: error.message,
-      data: null
+      data: null,
     }
   }
 })

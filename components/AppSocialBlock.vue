@@ -30,17 +30,17 @@ import type { UserSocialType } from '@/types/users'
 defineProps({
   socials: {
     type: Array as PropType<UserSocialType[]>,
-    required: true
+    required: true,
   },
   hasTitle: {
     type: Boolean,
-    default: true
+    default: true,
   },
   position: {
     type: String,
     required: false,
-    default: 'justify-center'
-  }
+    default: 'justify-center',
+  },
 })
 </script>
 

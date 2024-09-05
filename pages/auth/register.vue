@@ -4,7 +4,7 @@ const form = reactive({
   surname: '',
   email: '',
   password: '',
-  confirmPassword: null as string | null
+  confirmPassword: null as string | null,
 })
 
 const auth = useAuth()
@@ -27,7 +27,7 @@ const isFormValid = computed(() => {
 
 definePageMeta({
   name: 'Register',
-  layout: 'auth'
+  layout: 'auth',
 })
 </script>
 
@@ -36,7 +36,7 @@ definePageMeta({
     :title="{
       main: 'Create an Account',
       subtitle: 'Already have an account?',
-      label: 'Login'
+      label: 'Login',
     }"
     help-url="/auth/login"
   >

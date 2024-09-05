@@ -27,7 +27,7 @@ export const useLoadingStore = defineStore('storeLoading', () => {
   return {
     setLoadingInterval,
     setLoading,
-    isLoading
+    isLoading,
   }
 })
 

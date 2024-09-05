@@ -27,13 +27,13 @@ export function useTwitterAnalytics(postId: string) {
     const url = `${TWITTER_API_URL}/${postId}?tweet.fields=non_public_metrics,organic_metrics&expansions=attachments.media_keys&media.fields=non_public_metrics,organic_metrics`
     const response = await $fetch(url, {
       headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`
-      }
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
     })
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch post analytics for ${postId}`,
-      userMessage: `Failed to fetch analytics for post ${postId}`
+      userMessage: `Failed to fetch analytics for post ${postId}`,
     })
     return {
       impression_count: data.data.non_public_metrics.impression_count,
@@ -43,7 +43,7 @@ export function useTwitterAnalytics(postId: string) {
       quote_count: data.data.public_metrics.quote_count,
       url_link_clicks: data.data.non_public_metrics.url_link_clicks,
       user_profile_clicks: data.data.non_public_metrics.user_profile_clicks,
-      media: data.includes.media
+      media: data.includes.media,
     }
   }
 
@@ -51,13 +51,13 @@ export function useTwitterAnalytics(postId: string) {
     const url = `${TWITTER_API_URL}/users/${userId}?user.fields=created_at,description,entities,id,location,name,pinned_tweet_id,profile_image_url,protected,url,username,verified,withheld&expansions=pinned_tweet_id`
     const response = await $fetch(url, {
       headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`
-      }
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
     })
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch user profile for ${userId}`,
-      userMessage: `Failed to fetch profile for user ${userId}`
+      userMessage: `Failed to fetch profile for user ${userId}`,
     })
     return {
       id: data.data.id,
@@ -73,12 +73,12 @@ export function useTwitterAnalytics(postId: string) {
       url: data.data.url,
       verified: data.data.verified,
       withheld: data.data.withheld,
-      pinned_tweet: data.includes.tweets ? data.includes.tweets[0] : null
+      pinned_tweet: data.includes.tweets ? data.includes.tweets[0] : null,
     }
   }
 
   return {
     fetchPostAnalytics,
-    fetchUserProfile
+    fetchUserProfile,
   }
 }

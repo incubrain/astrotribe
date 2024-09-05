@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const policies = ['privacy-policy', 'terms-of-use', 'cookies-policy', 'refund-policy']
 const currentYear = new Date().getFullYear()
-
 </script>
 
 <template>

@@ -3,7 +3,7 @@ const trustedImages = [
   'images/trusted/dst.png',
   'images/trusted/iau-oad.png',
   'images/trusted/in-fed.png',
-  'images/trusted/iimb-nsrcel.png'
+  'images/trusted/iimb-nsrcel.png',
 ]
 </script>
 

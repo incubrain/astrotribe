@@ -7,15 +7,17 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const config = useRuntimeConfig().public
 
-  let backendUrl = config.scraperUrl
+  const backendUrl = config.scraperUrl
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription/verify-payment')
-  } else if (provider === 'stripe') {
+  }
+  else if (provider === 'stripe') {
     backendUrl.concat('/api/customer/subscription/verify-payment')
-  } else {
+  }
+  else {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid payment provider'
+      statusMessage: 'Invalid payment provider',
     })
   }
 
@@ -26,15 +28,16 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       body,
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
     return response
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`Error verifying payment with ${provider}:`, error)
     throw createError({
       statusCode: 500,
-      statusMessage: `Failed to verify payment with ${provider}`
+      statusMessage: `Failed to verify payment with ${provider}`,
     })
   }
 })

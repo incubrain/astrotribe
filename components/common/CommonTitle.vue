@@ -31,20 +31,20 @@ import type { TitleType } from '@/types/content'
 defineProps({
   title: {
     type: Object as PropType<TitleType>,
-    required: true
+    required: true,
   },
   alignment: {
     type: String,
-    default: 'left'
+    default: 'left',
   },
   isCta: {
     type: Boolean,
-    default: false
+    default: false,
   },
   labelWhite: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>
 
