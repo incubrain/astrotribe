@@ -7,27 +7,27 @@ const rateLimitConfig = {
   free: {
     ask: {
       interval: 1800000,
-      maxRequests: 3
-    }
+      maxRequests: 3,
+    },
   },
   basic: {
     ask: {
       interval: 1800000,
-      maxRequests: 10
-    }
+      maxRequests: 10,
+    },
   },
   intermediate: {
     ask: {
       interval: 1800000,
-      maxRequests: 20
-    }
+      maxRequests: 20,
+    },
   },
   premium: {
     ask: {
       interval: 1800000,
-      maxRequests: 30
-    }
-  }
+      maxRequests: 30,
+    },
+  },
 }
 
 // consider using   const ip = getRequestIP(event); // "192.0.2.0"
@@ -70,7 +70,7 @@ export async function rateLimiter() {
     console.info('Rate limit not found, or it has expired')
     rateLimit = {
       requestCount: 1,
-      expiresAt: Date.now() + settings.interval
+      expiresAt: Date.now() + settings.interval,
     }
   }
 
@@ -79,7 +79,7 @@ export async function rateLimiter() {
       statusCode: 429,
       statusMessage: `Exceeded ${feature.charAt(0).toUpperCase()}${feature.slice(1)} Limits`,
       message: `You have exceeded your limit of ${settings.maxRequests}
-       requests in the last ${settings.interval / 60000} minutes`
+       requests in the last ${settings.interval / 60000} minutes`,
     })
   }
 

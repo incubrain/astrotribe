@@ -16,13 +16,13 @@ defineProps<{
     class="h-full"
     scrollable
     :pt="{
-      root: 'w-full'
+      root: 'w-full',
     }"
     :pt-options="{ mergeSections: true }"
   >
     <PrimeTabList
       :pt="{
-        root: 'gap-4 sticky top-0 left-0 z-50 flex text-nowrap flex-grow w-full overflow-scroll bg-black no-scrollbar border-b border-color'
+        root: 'gap-4 sticky top-0 left-0 z-50 flex text-nowrap flex-grow w-full overflow-scroll bg-black no-scrollbar border-b border-color',
       }"
       :pt-options="{ mergeSections: true, mergeProps: true }"
     >
@@ -34,9 +34,9 @@ defineProps<{
           root: ({ context }) => ({
             class: [
               'text-nowrap px-6 py-4 border-x border-color',
-              { 'bg-primary-900': context.active }
-            ]
-          })
+              { 'bg-primary-900': context.active },
+            ],
+          }),
         }"
         :pt-options="{ mergeSections: true, mergeProps: true }"
       >
@@ -48,7 +48,7 @@ defineProps<{
       :key="`tab-index-${tab.title}`"
       :value="tab.value"
       :pt="{
-        root: 'overflow-scroll'
+        root: 'overflow-scroll',
       }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >

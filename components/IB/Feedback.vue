@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { z } from 'zod'
+
 const feedbackStore = useFeedbackStore()
 
 defineProps({
   cta: {
     type: String,
     required: true,
-    default: 'How could we improve?'
-  }
+    default: 'How could we improve?',
+  },
 })
 
 interface FeedbackType {
@@ -20,7 +21,7 @@ const feedbackTypes = [
   { name: 'Feature Request', value: 'feature_request' },
   { name: 'User Interface Issue', value: 'user_interface_issue' },
   { name: 'Performance Issue', value: 'performance_issue' },
-  { name: 'Documentation', value: 'documentation' }
+  { name: 'Documentation', value: 'documentation' },
 ]
 
 const route = useRoute()
@@ -32,7 +33,7 @@ const initialFeedback = () => ({
   feedback_type: null,
   message: '',
   device_info: '',
-  content_status: 'new'
+  content_status: 'new',
 })
 
 const feedback = ref(initialFeedback())

@@ -1,7 +1,7 @@
 import { Groq } from 'groq-sdk'
 
 const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY
+  apiKey: process.env.GROQ_API_KEY,
 })
 
 interface AgentInput {
@@ -38,7 +38,7 @@ export async function getGroqChatCompletion(messages: Message[]) {
 
     // If set, partial message deltas will be sent.
     // streaming is not supported in JSON mode
-    stream: false
+    stream: false,
     // Enable JSON mode by setting the response format
     // response_format: { type: 'json_object' }
   })

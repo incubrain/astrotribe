@@ -11,7 +11,7 @@ const stringOptional = z.string().optional()
 
 export const datetimeOffset = (
   errorMsg: string = 'Invalid datetime string! Must be UTC.',
-  offset?: boolean
+  offset?: boolean,
 ) => ({
   optional: z
     .string()
@@ -20,18 +20,17 @@ export const datetimeOffset = (
   nullish: z
     .string()
     .datetime({ message: errorMsg, offset: offset ?? true })
-    .nullish()
+    .nullish(),
 })
 
 export const formatAvatarUrl = (user: any) => {
   return getImageURL({
     fileType: 'user-avatar',
-    data: user
+    data: user,
   })
 }
 
 export type UserDTOKey = 'select:user:card' | 'select:user:profile' | 'select:user:settings'
-
 
 export function roleIconMapping(role: AppRoleEnum): string {
   switch (role) {
@@ -62,13 +61,13 @@ export const rules = {
     stringNullish,
     stringNull,
     stringOptional,
-    datetimeOffset
+    datetimeOffset,
   },
   toClient: {
     uuid: (userData: any) => uuid.parse(userData),
     string: (userData: any) => string.parse(userData),
     stringNullish: (userData: any) => stringNullish.parse(userData),
     stringNull: (userData: any) => stringNull.parse(userData),
-    stringOptional: (userData: any) => stringOptional.parse(userData)
-  }
+    stringOptional: (userData: any) => stringOptional.parse(userData),
+  },
 }

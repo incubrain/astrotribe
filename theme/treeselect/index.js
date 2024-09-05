@@ -24,7 +24,7 @@ export default {
       { 'hover:border-primary': !props.invalid },
       {
         'outline-none outline-offset-0 ring ring-primary-400/50 dark:ring-primary-300/50':
-          state.focused
+          state.focused,
       },
 
       // Misc
@@ -33,12 +33,12 @@ export default {
       {
         'opacity-60': props.disabled,
         'pointer-events-none': props.disabled,
-        'cursor-default': props.disabled
-      }
-    ]
+        'cursor-default': props.disabled,
+      },
+    ],
   }),
   labelContainer: {
-    class: ['overflow-hidden flex flex-auto cursor-pointer']
+    class: ['overflow-hidden flex flex-auto cursor-pointer'],
   },
   label: {
     class: [
@@ -54,8 +54,8 @@ export default {
       'transition duration-200',
 
       // Misc
-      'overflow-hidden whitespace-nowrap cursor-pointer overflow-ellipsis'
-    ]
+      'overflow-hidden whitespace-nowrap cursor-pointer overflow-ellipsis',
+    ],
   },
   dropdown: {
     class: [
@@ -72,8 +72,8 @@ export default {
 
       // Shape
       'rounded-tr-md',
-      'rounded-br-md'
-    ]
+      'rounded-br-md',
+    ],
   },
   panel: {
     class: [
@@ -88,8 +88,8 @@ export default {
       // Color
       'bg-surface-0 dark:bg-surface-400',
       'text-surface-100 dark:text-white/80',
-      'dark:border-surface-700'
-    ]
+      'dark:border-surface-700',
+    ],
   },
   treeContainer: {
     class: [
@@ -97,14 +97,14 @@ export default {
       'max-h-[200px]',
 
       // Misc
-      'overflow-auto'
-    ]
+      'overflow-auto',
+    ],
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',
     enterActiveClass:
       'transition-[transform,opacity] duration-[120ms] ease-[cubic-bezier(0,0,0.2,1)]',
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
-    leaveToClass: 'opacity-0'
-  }
+    leaveToClass: 'opacity-0',
+  },
 }

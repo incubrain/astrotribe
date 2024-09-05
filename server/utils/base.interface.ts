@@ -1,9 +1,9 @@
+import { boolean } from 'zod'
 import type { UserDTOKey } from './user/user.dto'
 import type { NewsDTOKey } from './news/news.dto'
 import type { ResearchDTOKey } from './research/research.dto'
 import type { CompanyDTOKey } from './company/company.dto'
 import type { Database, Tables } from '~/supabase/schema.gen'
-import { boolean } from 'zod'
 
 type DBTable = keyof Database['public']['Tables'] & keyof Database['public']['Views']
 type DBColumns<T extends DBTable> = keyof Tables<T>
@@ -67,7 +67,6 @@ type Conflict = {
   count?: 'exact' | 'planned' | 'estimated'
   defaultToNull?: boolean
 }
-
 
 // todo: refactor to have options under select/insert/update/delete
 // for instance we can group limit, pagination, selectStatement all under select

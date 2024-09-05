@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  name: 'Home'
+  name: 'Home',
 })
 // !todo:low look into subtle black and white images or patterns to give the background some flair
 
@@ -10,7 +10,7 @@ const features = [
     title: 'Comments',
     description: 'Highlight comments on the screen, & engage with your audience in real-time.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:chat-outline',
@@ -18,21 +18,21 @@ const features = [
     description:
       'Drive interaction among your users with live messaging features on your video streams.',
     link: '#',
-    linkText: 'Explore more'
+    linkText: 'Explore more',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:comment-text-outline',
     title: 'Comments',
     description: 'Highlight comments on the screen, & engage with your audience in real-time.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:chat-outline',
@@ -40,21 +40,21 @@ const features = [
     description:
       'Drive interaction among your users with live messaging features on your video streams.',
     link: '#',
-    linkText: 'Explore more'
+    linkText: 'Explore more',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:comment-text-outline',
     title: 'Comments',
     description: 'Highlight comments on the screen, & engage with your audience in real-time.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:chat-outline',
@@ -62,36 +62,36 @@ const features = [
     description:
       'Drive interaction among your users with live messaging features on your video streams.',
     link: '#',
-    linkText: 'Explore more'
+    linkText: 'Explore more',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
+    linkText: 'Explore More',
   },
   {
     icon: 'mdi:share-variant',
     title: 'Share Media',
     description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
     link: '#',
-    linkText: 'Explore More'
-  }
+    linkText: 'Explore More',
+  },
 ]
 </script>
 

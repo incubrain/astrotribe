@@ -33,13 +33,15 @@ export const useChunksStore = defineStore('chunksStore', () => {
       if (updatedChunk.is_flagged) {
         flaggedChunks.value.push(updatedChunk)
         chunks.value = chunks.value.filter((chunk: any) => chunk.id !== updatedChunk.id)
-      } else {
+      }
+      else {
         flaggedChunks.value = flaggedChunks.value.filter(
-          (chunk: any) => chunk.id !== updatedChunk.id
+          (chunk: any) => chunk.id !== updatedChunk.id,
         )
         chunks.value.push(updatedChunk)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       throw new Error(error.message)
     }
   }
@@ -56,7 +58,8 @@ export const useChunksStore = defineStore('chunksStore', () => {
 
       if (isFlagged) {
         query = query.order('updated_at', { ascending: false })
-      } else {
+      }
+      else {
         console.log('working 2')
         query = query.order('created_at', { ascending: false })
       }
@@ -70,10 +73,12 @@ export const useChunksStore = defineStore('chunksStore', () => {
 
       if (isFlagged) {
         flaggedChunks.value.push(...data)
-      } else {
+      }
+      else {
         chunks.value.push(...data)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       log.error('fetchChunks:', error)
       throw new Error(error.message)
     }
@@ -91,7 +96,7 @@ export const useChunksStore = defineStore('chunksStore', () => {
     search,
     searchType,
     matchThreshold = 0.41,
-    matchCount = 25
+    matchCount = 25,
   }: SimilarDocs) {
     try {
       const userId = useCookie('userId').value!
@@ -104,21 +109,23 @@ export const useChunksStore = defineStore('chunksStore', () => {
             query: search,
             match_threshold: matchThreshold,
             match_count: matchCount,
-            user_id: userId
-          }
+            user_id: userId,
+          },
         })
 
         if (!response.data) {
           return
         }
-      } else {
+      }
+      else {
         const formattedSearch = search.replaceAll(' ', ' & ')
         response = await client.from('research').select().textSearch('fts', formattedSearch)
       }
 
       console.log('response:', response)
       similarChunks.value.push(...response.data)
-    } catch (error: any) {
+    }
+    catch (error: any) {
       throw new Error(error.message)
     }
   }
@@ -135,7 +142,8 @@ export const useChunksStore = defineStore('chunksStore', () => {
 
       flaggedChunks.value = flaggedChunks.value.filter((chunk: any) => chunk.id !== chunkId)
       toast.info({ summary: 'Chunk Deleted', message: 'The chunk has been deleted' })
-    } catch (error: any) {
+    }
+    catch (error: any) {
       toast.error({ summary: 'Error Deleting Chunk', message: error.message })
       throw new Error(error.message)
     }
@@ -166,7 +174,7 @@ export const useChunksStore = defineStore('chunksStore', () => {
     cleanText,
     chunks,
     similarChunks,
-    flaggedChunks
+    flaggedChunks,
   }
 })
 

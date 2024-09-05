@@ -2,7 +2,7 @@ import {
   useErrorHandler,
   AppError,
   ErrorType,
-  ErrorSeverity
+  ErrorSeverity,
 } from './error-handler.ib'
 import { useHttpHandler } from './http-handler.ib'
 import { useLogger } from './logger.ib'
@@ -15,21 +15,20 @@ export function useSelectData<T extends { id: string | number }>(
   options: {
     columns?: string
     filters?: Record<string, any>
-    orderBy?: { column: string; ascending?: boolean }
+    orderBy?: { column: string, ascending?: boolean }
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number
     refreshRelated?: () => Promise<void>
     rateLimitMs?: number
     auditLog?: (action: string, details: any) => Promise<void>
-  } = {}
+  } = {},
 ) {
   const { select } = useHttpHandler()
   const { handleError } = useErrorHandler()
   const logger = useLogger('useSelectData')
   const store = getOrCreateStore<T>(tableName)()
   const { checkRateLimit } = useRateLimit()
-    
 
   const isSelecting: Ref<boolean> = ref(false)
   let lastSelectTime = 0
@@ -41,7 +40,7 @@ export function useSelectData<T extends { id: string | number }>(
     paginationStore.initPagination({
       domainKey: tableName,
       pagination: options.pagination,
-      force: true
+      force: true,
     })
   }
 
@@ -55,15 +54,15 @@ export function useSelectData<T extends { id: string | number }>(
         await checkRateLimit('useSelectData', { limitMs: options.rateLimitMs })
       }
 
-      let queryOptions: any = {
+      const queryOptions: any = {
         columns: options.columns || '*',
-        filters: options.filters
+        filters: options.filters,
       }
 
       if (options.orderBy) {
         queryOptions.order = {
           column: options.orderBy.column,
-          ascending: options.orderBy.ascending ?? true
+          ascending: options.orderBy.ascending ?? true,
         }
       }
 
@@ -72,15 +71,17 @@ export function useSelectData<T extends { id: string | number }>(
         if (pagination) {
           console.log('pagination', pagination)
           queryOptions.range = pagination
-        } else {
+        }
+        else {
           throw new AppError({
             type: ErrorType.VALIDATION_ERROR,
             message: `Pagination not initialized for ${tableName}`,
             severity: ErrorSeverity.MEDIUM,
-            context: 'Data Fetching'
+            context: 'Data Fetching',
           })
         }
-      } else if (options.limit) {
+      }
+      else if (options.limit) {
         queryOptions.range = { from: 0, to: options.limit - 1 }
       }
 
@@ -93,10 +94,12 @@ export function useSelectData<T extends { id: string | number }>(
 
       lastSelectTime = Date.now()
       return result
-    } catch (error: any) {
+    }
+    catch (error: any) {
       handleError(error, 'Error selecting data')
       throw error
-    } finally {
+    }
+    finally {
       isSelecting.value = false
     }
   }
@@ -107,11 +110,13 @@ export function useSelectData<T extends { id: string | number }>(
       const newData = await fetchData()
       if (newData.length === 0) {
         paginationStore.setDataFinished(tableName)
-      } else {
+      }
+      else {
         store.addItems(newData)
         paginationStore.incrementPagination(tableName)
       }
-    } else {
+    }
+    else {
       const data = await fetchData()
       store.setItems(data)
     }
@@ -127,7 +132,7 @@ export function useSelectData<T extends { id: string | number }>(
       paginationStore.initPagination({
         domainKey: tableName,
         pagination: options.pagination!,
-        force: true
+        force: true,
       })
     }
     store.clearItems()
@@ -142,6 +147,6 @@ export function useSelectData<T extends { id: string | number }>(
     store,
     loadMore,
     refresh,
-    isSelecting
+    isSelecting,
   }
 }

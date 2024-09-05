@@ -15,16 +15,16 @@
 defineProps({
   cta: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   hasIcon: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
   },
   icon: {
     type: String as PropType<string>,
-    default: ''
-  }
+    default: '',
+  },
 })
 </script>
 

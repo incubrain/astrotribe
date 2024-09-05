@@ -29,8 +29,8 @@
 const props = defineProps({
   postId: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const social = useSocialStore()

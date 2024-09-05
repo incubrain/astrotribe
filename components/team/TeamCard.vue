@@ -4,8 +4,8 @@ import type { TeamMemberType } from '@/types/team'
 defineProps({
   member: {
     type: Object as PropType<TeamMemberType>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 
@@ -49,7 +49,7 @@ defineProps({
             alt: member.name,
             loading: 'lazy',
             width: '100',
-            height: '100'
+            height: '100',
           }"
         />
       </div>

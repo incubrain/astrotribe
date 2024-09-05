@@ -25,7 +25,7 @@ const userCardKeys = [
   'avatar',
   'followed_count',
   'followers_count',
-  'plan'
+  'plan',
 ] as const
 
 export type UserCard = Pick<RowUser, ArrayToUnion<typeof userCardKeys>>

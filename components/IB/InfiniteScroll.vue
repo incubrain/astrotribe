@@ -14,14 +14,15 @@ onMounted(() => {
       {
         root: null,
         rootMargin: '200px', // Load more content when within 200px of the bottom
-        threshold: 0.1 // Trigger when at least 10% of the target is visible
-      }
+        threshold: 0.1, // Trigger when at least 10% of the target is visible
+      },
     )
 
     if (scrollContainer.value) {
       observer.value.observe(scrollContainer.value)
     }
-  } else {
+  }
+  else {
     // Fallback for browsers that don't support IntersectionObserver
     window.addEventListener('scroll', handleScroll)
   }

@@ -6,7 +6,7 @@
         alt: image?.alt || 'this is a default fallback for when an image is not present',
         width: options?.width || 60,
         height: options?.height || 37,
-        quality: options?.quality || 80
+        quality: options?.quality || 80,
       }"
       class="h-full w-full object-cover"
     />
@@ -39,7 +39,7 @@ interface Options {
 defineProps({
   image: {
     type: Object as () => Image | undefined,
-    default: undefined
+    default: undefined,
   },
   options: {
     type: Object as () => Options | undefined,
@@ -47,8 +47,8 @@ defineProps({
       width: 50,
       height: 50,
       sizes: null,
-      quality: 80
-    })
-  }
+      quality: 80,
+    }),
+  },
 })
 </script>

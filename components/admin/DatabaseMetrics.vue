@@ -24,7 +24,7 @@ const tables: TableOption[] = [
   { name: 'Companies', value: 'companies' },
   { name: 'Company URLs', value: 'company_urls' },
   { name: 'News', value: 'news' },
-  { name: 'Users', value: 'user_profiles' }
+  { name: 'Users', value: 'user_profiles' },
 ]
 
 const timePeriods: TimePeriod[] = [
@@ -32,7 +32,7 @@ const timePeriods: TimePeriod[] = [
   { name: 'Week', value: '1 week' },
   { name: 'Month', value: '1 month' },
   { name: 'Quarter', value: '3 months' },
-  { name: 'Year', value: '1 year' }
+  { name: 'Year', value: '1 year' },
 ]
 
 const selectedTable = ref<string>('companies')
@@ -45,15 +45,15 @@ const error = ref<string | null>(null)
 const dummyCalculateTableGrowth = (
   tableName: string,
   timePeriod: string,
-  numPeriods: number
-): Promise<{ data: GrowthData[]; error: any }> => {
+  numPeriods: number,
+): Promise<{ data: GrowthData[], error: any }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const baseCount =
-        {
+      const baseCount
+        = {
           companies: 1000,
           users: 10000,
-          products: 5000
+          products: 5000,
         }[tableName] || 1000
 
       const growthRates = {
@@ -61,7 +61,7 @@ const dummyCalculateTableGrowth = (
         '1 week': 0.05,
         '1 month': 0.1,
         '3 months': 0.2,
-        '1 year': 0.5
+        '1 year': 0.5,
       }
 
       const baseGrowthRate = growthRates[timePeriod] || 0.01
@@ -79,7 +79,7 @@ const dummyCalculateTableGrowth = (
           period_end_time: new Date(Date.now() - i * getMilliseconds(timePeriod)).toISOString(),
           row_count: newCount,
           growth_count: growthCount,
-          growth_percentage: growthRate * 100
+          growth_percentage: growthRate * 100,
         })
 
         currentCount = newCount
@@ -96,7 +96,7 @@ const getMilliseconds = (period: string): number => {
     '1 week': 7 * 24 * 60 * 60 * 1000,
     '1 month': 30 * 24 * 60 * 60 * 1000,
     '3 months': 90 * 24 * 60 * 60 * 1000,
-    '1 year': 365 * 24 * 60 * 60 * 1000
+    '1 year': 365 * 24 * 60 * 60 * 1000,
   }
   return ms[period] || ms['1 day']
 }
@@ -108,7 +108,7 @@ const fetchData = async () => {
     const { data, error: rpcError } = await dummyCalculateTableGrowth(
       selectedTable.value,
       selectedTimePeriod.value,
-      numPeriods.value
+      numPeriods.value,
     )
 
     // await supabase.rpc('calculate_table_growth', {
@@ -118,7 +118,8 @@ const fetchData = async () => {
     // })
     if (rpcError) throw rpcError
     growthData.value = data
-  } catch (err) {
+  }
+  catch (err) {
     error.value = 'Failed to fetch growth data'
     console.error(err)
   }
@@ -132,27 +133,27 @@ const calculateTotalGrowth = () => {
 const calculateAverageGrowthRate = () => {
   const totalGrowthRate = growthData.value.reduce(
     (total, period) => total + period.growth_percentage,
-    0
+    0,
   )
   return totalGrowthRate / (growthData.value.length - 1) // Exclude the first period as it's always 0
 }
 
 const chartData = computed(() => ({
-  labels: growthData.value.map((d) => new Date(d.period_end_time).toLocaleDateString()).reverse(),
+  labels: growthData.value.map(d => new Date(d.period_end_time).toLocaleDateString()).reverse(),
   datasets: [
     {
       label: 'Row Count',
-      data: growthData.value.map((d) => d.row_count).reverse(),
+      data: growthData.value.map(d => d.row_count).reverse(),
       borderColor: '#42A5F5',
-      tension: 0.4
+      tension: 0.4,
     },
     {
       label: 'Growth Percentage',
-      data: growthData.value.map((d) => d.growth_percentage).reverse(),
+      data: growthData.value.map(d => d.growth_percentage).reverse(),
       borderColor: '#66BB6A',
-      tension: 0.4
-    }
-  ]
+      tension: 0.4,
+    },
+  ],
 }))
 
 const chartOptions = {
@@ -160,18 +161,18 @@ const chartOptions = {
   maintainAspectRatio: false,
   scales: {
     y: {
-      beginAtZero: true
-    }
-  }
+      beginAtZero: true,
+    },
+  },
 }
 
 const exportToCSV = () => {
   const headers = ['Period End Time', 'Row Count', 'Growth Count', 'Growth Percentage']
   const csvContent = [
     headers.join(','),
-    ...growthData.value.map((row) =>
-      [row.period_end_time, row.row_count, row.growth_count, row.growth_percentage].join(',')
-    )
+    ...growthData.value.map(row =>
+      [row.period_end_time, row.row_count, row.growth_count, row.growth_percentage].join(','),
+    ),
   ].join('\n')
 
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })

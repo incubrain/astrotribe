@@ -25,19 +25,19 @@ import type { NewsCardT } from '@/types/news'
 defineProps({
   condition: {
     type: Boolean,
-    required: true
+    required: true,
   },
   isPrev: {
     type: Boolean,
-    default: false
+    default: false,
   },
   post: {
     type: Object as () => NewsCardT,
-    required: true
+    required: true,
   },
   handleClick: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

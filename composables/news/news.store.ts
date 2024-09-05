@@ -18,7 +18,8 @@ export const useNewsStore = defineStore('newsStore', () => {
       }
 
       news.value.push(...data)
-    } catch (error) {
+    }
+    catch (error) {
       logger.error('Failed to load news:', error)
     }
   }
@@ -31,6 +32,6 @@ export const useNewsStore = defineStore('newsStore', () => {
 
   return {
     news,
-    loadNews
+    loadNews,
   }
 })

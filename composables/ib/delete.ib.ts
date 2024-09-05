@@ -2,13 +2,12 @@ import {
   useErrorHandler,
   AppError,
   ErrorSeverity,
-  ErrorType
+  ErrorType,
 } from './error-handler.ib'
 import { useHttpHandler } from './http-handler.ib'
 import { useLogger } from './logger.ib'
 import { getOrCreateStore } from './main.ib.store'
 import { useRateLimit } from './rate-limit.ib'
-
 
 export function useDeleteData<T extends { id: string | number }>(
   tableName: string,
@@ -17,7 +16,7 @@ export function useDeleteData<T extends { id: string | number }>(
     refreshRelated?: () => Promise<void>
     rateLimitMs?: number
     auditLog?: (action: string, details: any) => Promise<void>
-  } = {}
+  } = {},
 ) {
   const { remove } = useHttpHandler()
   const { handleError } = useErrorHandler()
@@ -44,7 +43,7 @@ export function useDeleteData<T extends { id: string | number }>(
             type: ErrorType.VALIDATION_ERROR,
             message: 'Delete validation failed',
             severity: ErrorSeverity.MEDIUM,
-            context: 'Data Validation'
+            context: 'Data Validation',
           })
         }
 
@@ -65,7 +64,8 @@ export function useDeleteData<T extends { id: string | number }>(
         }
 
         lastDeleteTime = Date.now()
-      } catch (error: any) {
+      }
+      catch (error: any) {
         // Revert optimistic delete
         const oldItem = store.getItemById(itemId)
         if (oldItem) {
@@ -78,19 +78,22 @@ export function useDeleteData<T extends { id: string | number }>(
     try {
       if (Array.isArray(id)) {
         await Promise.all(id.map(deleteSingle))
-      } else {
+      }
+      else {
         await deleteSingle(id)
       }
-    } catch (error: any) {
+    }
+    catch (error: any) {
       handleError(error, 'Error deleting data')
       throw error
-    } finally {
+    }
+    finally {
       isDeleting.value = false
     }
   }
 
   return {
     deleteData,
-    isDeleting
+    isDeleting,
   }
 }

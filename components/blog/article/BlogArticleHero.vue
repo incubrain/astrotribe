@@ -6,7 +6,7 @@
         :img="{
           src: `images/blog/${article.category}/${article.featured_image}`,
           width: '1140px',
-          height: '700px'
+          height: '700px',
         }"
         class="relative md:rounded-md"
       />
@@ -55,8 +55,8 @@ import type { ArticleFullT } from '~/types/articles'
 defineProps({
   article: {
     type: Object as PropType<ArticleFullT>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

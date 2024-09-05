@@ -1,7 +1,6 @@
 import { defineEventHandler, getQuery } from 'h3'
 import { useTwitterAnalytics, useServerError } from '#imports'
 
-
 const PREFIX = 'social/twitter/analytics'
 
 export default defineEventHandler(async (event) => {
@@ -20,13 +19,14 @@ export default defineEventHandler(async (event) => {
     return {
       status: 200,
       message: 'Post analytics returned from Twitter',
-      data: userAnalytics
+      data: userAnalytics,
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'Error fetching Twitter analytics',
-      userMessage: 'Error fetching Twitter analytics'
+      userMessage: 'Error fetching Twitter analytics',
     })
   }
 })

@@ -18,15 +18,14 @@
 </template>
 
 <script setup lang="ts">
-
-const { form, errors, validateAndUpdate, accountDetailsSchema } = useOnboarding();
+const { form, errors, validateAndUpdate, accountDetailsSchema } = useOnboarding()
 
 const handleSubmit = () => {
   if (validateAndUpdate(accountDetailsSchema)) {
     // Submit the form data to your API
-    console.log('Form submitted:', form);
+    console.log('Form submitted:', form)
   }
-};
+}
 
-const emit = defineEmits(['prev']);
+const emit = defineEmits(['prev'])
 </script>

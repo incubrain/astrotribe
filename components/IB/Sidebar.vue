@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const isSideVisible = ref(true)
 </script>
+
 <template>
   <div class="top-0 space-y-4 p-8 md:sticky">
     <div class="flex flex-col justify-center md:justify-start">

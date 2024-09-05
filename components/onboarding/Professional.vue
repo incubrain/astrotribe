@@ -67,7 +67,7 @@ const occupationOptions = [
   { name: 'Astrophysicist', value: 'astrophysicist' },
   { name: 'Space Engineer', value: 'space_engineer' },
   { name: 'Planetary Scientist', value: 'planetary_scientist' },
-  { name: 'Other', value: 'other' }
+  { name: 'Other', value: 'other' },
 ]
 
 const handleSubmit = () => {

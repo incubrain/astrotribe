@@ -5,12 +5,12 @@ export const identitySchema = z.object({
   user_id: z.string(),
   identity_data: z.object({
     email: z.string().email(),
-    sub: z.string()
+    sub: z.string(),
   }),
   provider: z.string(),
   last_sign_in_at: z.string(),
   created_at: z.string(),
-  updated_at: z.string()
+  updated_at: z.string(),
 })
 
 export const emailUnvalidatedUserSchema = z.object({
@@ -22,12 +22,12 @@ export const emailUnvalidatedUserSchema = z.object({
   confirmation_sent_at: z.string().optional(),
   app_metadata: z.object({
     provider: z.string(),
-    providers: z.array(z.string())
+    providers: z.array(z.string()),
   }),
   user_metadata: z.record(z.any()).optional(),
   identities: z.array(identitySchema),
   created_at: z.string().optional(),
-  updated_at: z.string().optional()
+  updated_at: z.string().optional(),
 })
 
 export const userSchema = z.object({
@@ -42,12 +42,12 @@ export const userSchema = z.object({
   last_sign_in_at: z.string().optional(),
   app_metadata: z.object({
     provider: z.string().optional(),
-    providers: z.array(z.string()).optional()
+    providers: z.array(z.string()).optional(),
   }),
   user_metadata: z.record(z.any()),
   identities: z.array(identitySchema).optional(),
   created_at: z.string().optional(),
-  updated_at: z.string().optional()
+  updated_at: z.string().optional(),
 })
 
 export const sessionSchema = z.object({
@@ -56,17 +56,17 @@ export const sessionSchema = z.object({
   user: userSchema.optional(),
   token_type: z.string(),
   expires_in: z.number(),
-  expires_at: z.number().optional()
+  expires_at: z.number().optional(),
 })
 
 export const authSchema = z.object({
   user: userSchema,
-  session: sessionSchema
+  session: sessionSchema,
 })
 
 export const simpleUserSchema = z.object({
   email: z.string().email(),
-  password: z.string()
+  password: z.string(),
 })
 
 // Infer the types

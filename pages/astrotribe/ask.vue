@@ -20,16 +20,16 @@ const agents: ChatAgent[] = [
     features: [
       'Break down complex astronomy concepts',
       'Explain in an engaging, Carl Sagan-inspired style',
-      'Make astronomy accessible to all'
+      'Make astronomy accessible to all',
     ],
     systemMessage:
       'You are an enthusiastic astronomy science communicator who can break down even the most complex topics into something easy to understand. Channel the spirit of Carl Sagan in your explanations, using vivid imagery and relatable analogies. Your goal is to inspire wonder and curiosity about the cosmos in every interaction.',
     enabled: true,
     starterPrompts: [
       'Can you explain black holes in a way that would captivate a 10-year-old?',
-      "What's the most mind-blowing fact about our universe that you can share?",
-      "How would you describe the concept of light-years to someone who's never heard of it before?"
-    ]
+      'What\'s the most mind-blowing fact about our universe that you can share?',
+      'How would you describe the concept of light-years to someone who\'s never heard of it before?',
+    ],
   },
   {
     id: 2,
@@ -37,16 +37,16 @@ const agents: ChatAgent[] = [
     features: [
       'Research astronomy and space tech companies',
       'Provide insights for job seekers and competitors',
-      'Analyze company profiles and trends'
+      'Analyze company profiles and trends',
     ],
     systemMessage:
       'You are an astronomy and space tech company researcher. Your database contains information on numerous companies in the field. Your role is to answer questions about these companies, help users find potential employers, and perform competitor analysis. Provide detailed, factual information and insightful comparisons when asked.',
     enabled: true,
     starterPrompts: [
       'What are the top 3 companies currently leading in commercial space flight, and how do they compare?',
-      "I'm an aerospace engineer looking for job opportunities. Which companies should I be watching?",
-      'Can you provide a brief analysis of the current trends in the satellite industry?'
-    ]
+      'I\'m an aerospace engineer looking for job opportunities. Which companies should I be watching?',
+      'Can you provide a brief analysis of the current trends in the satellite industry?',
+    ],
   },
   {
     id: 3,
@@ -54,16 +54,16 @@ const agents: ChatAgent[] = [
     features: [
       'Report on latest astronomy and space news',
       'Provide expert analysis on recent developments',
-      'Offer context and implications of news stories'
+      'Offer context and implications of news stories',
     ],
     systemMessage:
       'You are an expert news reporter specializing in astronomy and space news. Your knowledge is based on a constantly updated database of news articles. When asked, provide the latest developments in the field, offer expert analysis, and explain the significance of recent news stories. Your reporting should be accurate, engaging, and informative.',
     enabled: true,
     starterPrompts: [
-      "What's the most significant space exploration news from the past week?",
+      'What\'s the most significant space exploration news from the past week?',
       'Can you give me an update on the latest developments in the search for exoplanets?',
-      'What are the potential implications of the most recent Mars rover discoveries?'
-    ]
+      'What are the potential implications of the most recent Mars rover discoveries?',
+    ],
   },
   {
     id: 4,
@@ -71,16 +71,16 @@ const agents: ChatAgent[] = [
     features: [
       'Share random, fascinating astronomy facts',
       'Cover a wide range of astronomical topics',
-      'Provide brief, engaging explanations'
+      'Provide brief, engaging explanations',
     ],
     systemMessage:
       'You are an astronomy fact generator. Your purpose is to share interesting and fun facts about astronomy and space. When prompted, randomly select a topic from your vast knowledge base and provide a fascinating fact along with a brief, engaging explanation. Your facts should spark curiosity and encourage further exploration of astronomical topics.',
     enabled: true,
     starterPrompts: [
-      "Tell me an interesting fact about Saturn's rings.",
+      'Tell me an interesting fact about Saturn\'s rings.',
       'Share a mind-blowing fact about the scale of the universe.',
-      "What's a surprising fact about stars that most people don't know?"
-    ]
+      'What\'s a surprising fact about stars that most people don\'t know?',
+    ],
   },
   {
     id: 5,
@@ -88,7 +88,7 @@ const agents: ChatAgent[] = [
     features: [
       'Find relevant astronomy papers',
       'Summarize key findings',
-      'Suggest related research'
+      'Suggest related research',
     ],
     systemMessage:
       'You are a research assistant specializing in astronomy and astrophysics. Your role is to help users find relevant scientific papers, summarize key findings, and suggest related research. Provide concise, accurate information and guide users towards valuable resources in their area of interest.',
@@ -96,8 +96,8 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you find recent papers on dark matter detection methods?',
       'What are the key findings from the latest research on exoplanet atmospheres?',
-      "I'm interested in radio astronomy. What are some fundamental papers I should read to get started?"
-    ]
+      'I\'m interested in radio astronomy. What are some fundamental papers I should read to get started?',
+    ],
   },
   {
     id: 6,
@@ -105,16 +105,16 @@ const agents: ChatAgent[] = [
     features: [
       'Describe daily routines in space',
       'Explain space-specific challenges',
-      'Simulate space station experiences'
+      'Simulate space station experiences',
     ],
     systemMessage:
       'You are a Space Station Life Simulator, an expert on daily life and challenges of living in space. Your role is to provide accurate, detailed, and engaging descriptions of life aboard a space station, drawing from real astronaut experiences and scientific knowledge.',
     enabled: true,
     starterPrompts: [
-      "What's the most challenging aspect of personal hygiene in space?",
-      "Describe a typical 'day' for an astronaut on the International Space Station.",
-      'How do astronauts exercise in zero gravity, and why is it so important?'
-    ]
+      'What\'s the most challenging aspect of personal hygiene in space?',
+      'Describe a typical \'day\' for an astronaut on the International Space Station.',
+      'How do astronauts exercise in zero gravity, and why is it so important?',
+    ],
   },
   {
     id: 7,
@@ -122,16 +122,16 @@ const agents: ChatAgent[] = [
     features: [
       'Explain current dark matter theories',
       'Discuss dark energy research',
-      'Explore implications for the universe'
+      'Explore implications for the universe',
     ],
     systemMessage:
       'You are a Dark Matter & Energy Theorist, well-versed in current theories and research on these mysterious components of the universe. Your goal is to explain complex concepts in an understandable way, discuss ongoing research, and explore the implications for our understanding of the universe.',
     enabled: true,
     starterPrompts: [
-      "What's the strongest evidence we have for the existence of dark matter?",
+      'What\'s the strongest evidence we have for the existence of dark matter?',
       'How does dark energy affect the expansion of the universe?',
-      'What are some alternative theories to dark matter and dark energy?'
-    ]
+      'What are some alternative theories to dark matter and dark energy?',
+    ],
   },
   {
     id: 8,
@@ -139,7 +139,7 @@ const agents: ChatAgent[] = [
     features: [
       'Break down rocket propulsion basics',
       'Explain different types of rockets',
-      'Discuss challenges in rocketry'
+      'Discuss challenges in rocketry',
     ],
     systemMessage:
       'You are a Rocket Science Explainer, adept at breaking down the principles of rocketry and propulsion systems. Your role is to make complex rocket science concepts accessible to a general audience, explaining how rockets work and the challenges involved in space launch systems.',
@@ -147,8 +147,8 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you explain how a rocket generates thrust in simple terms?',
       'What are the main differences between liquid and solid fuel rockets?',
-      "What's the concept behind reusable rockets, and why are they important?"
-    ]
+      'What\'s the concept behind reusable rockets, and why are they important?',
+    ],
   },
   {
     id: 9,
@@ -156,7 +156,7 @@ const agents: ChatAgent[] = [
     features: [
       'Discuss potential for extraterrestrial life',
       'Explain habitable zone concepts',
-      'Describe astrobiology research methods'
+      'Describe astrobiology research methods',
     ],
     systemMessage:
       'You are an Astrobiology Specialist, focusing on the potential for life in the universe and related research. Your role is to discuss the conditions necessary for life, explain current research in astrobiology, and explore the implications of potentially finding life beyond Earth.',
@@ -164,8 +164,8 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'What are the key factors that make a planet potentially habitable?',
       'How do scientists search for signs of life on other planets?',
-      'What would be the implications if we found microbial life on Mars?'
-    ]
+      'What would be the implications if we found microbial life on Mars?',
+    ],
   },
   {
     id: 10,
@@ -173,7 +173,7 @@ const agents: ChatAgent[] = [
     features: [
       'Inform about upcoming astronomical events',
       'Explain significance of celestial phenomena',
-      'Provide viewing tips for events'
+      'Provide viewing tips for events',
     ],
     systemMessage:
       'You are a Cosmic Calendar Creator, an expert on upcoming astronomical events and phenomena. Your role is to inform users about interesting celestial events, explain their significance, and provide tips on how to best observe or appreciate these cosmic occurrences.',
@@ -181,8 +181,8 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'What are the most exciting astronomical events coming up in the next month?',
       'Can you explain what causes a solar eclipse and when the next one will be visible?',
-      'How can I best prepare to view the next meteor shower?'
-    ]
+      'How can I best prepare to view the next meteor shower?',
+    ],
   },
   {
     id: 11,
@@ -190,16 +190,16 @@ const agents: ChatAgent[] = [
     features: [
       'Offer tips for capturing celestial images',
       'Explain astrophotography equipment',
-      'Provide post-processing guidance'
+      'Provide post-processing guidance',
     ],
     systemMessage:
       'You are an Astrophotography Coach, skilled in the art and science of capturing stunning astronomical images. Your role is to offer tips and techniques for astrophotography, explain equipment choices, and provide guidance on image processing to help users create beautiful cosmic photographs.',
     enabled: true,
     starterPrompts: [
-      "What's the best way to start astrophotography on a budget?",
+      'What\'s the best way to start astrophotography on a budget?',
       'Can you explain the technique of stacking in astrophotography?',
-      'What settings should I use to photograph the Milky Way?'
-    ]
+      'What settings should I use to photograph the Milky Way?',
+    ],
   },
   {
     id: 12,
@@ -207,7 +207,7 @@ const agents: ChatAgent[] = [
     features: [
       'Explain space mission planning stages',
       'Discuss challenges in space exploration',
-      'Describe different types of space missions'
+      'Describe different types of space missions',
     ],
     systemMessage:
       'You are a Space Mission Planner, an expert in the complexities of planning and executing space missions. Your role is to help users understand the various stages of mission planning, the challenges involved, and the different types of missions undertaken in space exploration.',
@@ -215,8 +215,8 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'What are the key stages in planning a mission to Mars?',
       'How do space agencies choose landing sites for planetary missions?',
-      'What are the main challenges in planning a long-duration space mission?'
-    ]
+      'What are the main challenges in planning a long-duration space mission?',
+    ],
   },
   {
     id: 13,
@@ -224,7 +224,7 @@ const agents: ChatAgent[] = [
     features: [
       'Provide comparisons for cosmic scales',
       'Explain distances in space',
-      'Visualize sizes of celestial objects'
+      'Visualize sizes of celestial objects',
     ],
     systemMessage:
       'You are a Cosmic Scale Visualizer, adept at helping users comprehend the vast distances and sizes in the universe. Your role is to provide relatable comparisons, explain cosmic distances in understandable terms, and help visualize the scale of celestial objects and cosmic structures.',
@@ -232,9 +232,9 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you explain the size of our solar system using a relatable analogy?',
       'How can we visualize the distance to the nearest star beyond our Sun?',
-      "What's a good way to understand the scale of the Milky Way galaxy?"
-    ]
-  }
+      'What\'s a good way to understand the scale of the Milky Way galaxy?',
+    ],
+  },
 ]
 
 const chatStore = useChatStore()
@@ -263,18 +263,18 @@ const responsiveOptions = ref([
   {
     breakpoint: '1199px',
     numVisible: 3,
-    numScroll: 3
+    numScroll: 3,
   },
   {
     breakpoint: '991px',
     numVisible: 2,
-    numScroll: 2
+    numScroll: 2,
   },
   {
     breakpoint: '767px',
     numVisible: 1,
-    numScroll: 1
-  }
+    numScroll: 1,
+  },
 ])
 
 const isMessageSendable = computed(() => {
@@ -322,7 +322,7 @@ const isMessageSendable = computed(() => {
               class="m-2 rounded border border-surface-200 p-4 dark:border-surface-700"
               :class="{
                 'cursor-pointer transition-shadow hover:shadow-lg': slotProps.data.enabled,
-                'opacity-50': !slotProps.data.enabled
+                'opacity-50': !slotProps.data.enabled,
               }"
               @click="slotProps.data.enabled && selectAgent(slotProps.data)"
             >

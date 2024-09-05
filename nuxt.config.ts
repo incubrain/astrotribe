@@ -7,7 +7,7 @@ const og = {
   description:
     'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
-  url: 'https://www.astronera.org'
+  url: 'https://www.astronera.org',
 }
 
 export default defineNuxtConfig({
@@ -18,43 +18,43 @@ export default defineNuxtConfig({
     // typedPages: true,
     // sharedPrerenderData: true,
     inlineRouteRules: true,
-    asyncContext: true
+    asyncContext: true,
   },
 
   routeRules: {
-    '/astrotribe/**': { ssr: false }
+    '/astrotribe/**': { ssr: false },
   },
 
   nitro: {
     preset: 'node-server',
     experimental: {
       websocket: true,
-      tasks: true
+      tasks: true,
     },
     storage: {
       session: {
-        driver: 'memory'
+        driver: 'memory',
       },
       companies: {
         driver: 'fs',
-        base: './data/db'
-      }
+        base: './data/db',
+      },
     },
     scheduledTasks: {
       // every 12 hours
       // '0 */2 * * *': ['scrape:news']
-    }
+    },
   },
 
   app: {
     site: {
-      url: og.url
+      url: og.url,
     },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
       htmlAttrs: {
-        lang: 'en'
+        lang: 'en',
       },
       meta: [
         { property: 'title', content: og.description },
@@ -67,33 +67,33 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: 'Twitter Card' },
         { name: 'twitter:title', content: og.title },
         { name: 'twitter:description', content: og.description },
-        { name: 'twitter:image', content: og.image }
+        { name: 'twitter:image', content: og.image },
       ],
       script: [
         // Insert your Google Tag Manager Script here
         // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-        { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' }
-      ]
-    }
+        { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' },
+      ],
+    },
   },
 
   css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
 
   vue: {
     compilerOptions: {
-      isCustomElement: (tag) => ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag)
-    }
+      isCustomElement: tag => ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag),
+    },
   },
 
   imports: {
-    dirs: ['composables/**']
+    dirs: ['composables/**'],
   },
 
   modules: MODULES,
   ...MODULE_OPTIONS,
 
   $development: {
-    ...DEV_MODULE_OPTIONS
+    ...DEV_MODULE_OPTIONS,
   },
 
   devtools: {
@@ -103,8 +103,8 @@ export default defineNuxtConfig({
     vscode: {},
 
     timeline: {
-      enabled: true
-    }
+      enabled: true,
+    },
   },
 
   runtimeConfig: {
@@ -117,7 +117,7 @@ export default defineNuxtConfig({
       studioTokens: '',
       supabaseUrl: '',
       supabaseKey: '',
-      scraperUrl: ''
+      scraperUrl: '',
     },
     // server
     googleApiKey: '',
@@ -130,7 +130,7 @@ export default defineNuxtConfig({
     razorpayKey: '',
     razorpaySecret: '',
     razorpayTestKey: '',
-    razorpayTestSecret: ''
+    razorpayTestSecret: '',
   },
 
   typescript: {
@@ -138,11 +138,11 @@ export default defineNuxtConfig({
     tsConfig: {
       exclude: ['node_modules', 'dist'],
       compilerOptions: {
-        strict: true
-      }
-    }
+        strict: true,
+      },
+    },
   },
 
   ssr: true,
-  compatibilityDate: '2024-08-06'
+  compatibilityDate: '2024-08-06',
 })

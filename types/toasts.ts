@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const ToastActionSchema = z.object({
   variant: z.string(),
   color: z.string(),
-  label: z.string()
+  label: z.string(),
 })
 
 export const ToastSchema = z.object({
@@ -17,11 +17,11 @@ export const ToastSchema = z.object({
   avatar: z.unknown().optional(),
   closeButton: z.unknown().optional(),
   actions: z.array(ToastActionSchema).optional(),
-  callback: z.function().optional()
+  callback: z.function().optional(),
 })
 
 export const ToastStateSchema = z.object({
-  toasts: z.array(ToastSchema)
+  toasts: z.array(ToastSchema),
 })
 
 export type ToastType = z.infer<typeof ToastSchema>

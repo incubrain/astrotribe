@@ -26,8 +26,8 @@ interface Socials {
 const props = defineProps({
   socials: {
     type: Object as PropType<Socials>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const socialIcon = (platform: string) => {
@@ -53,7 +53,7 @@ const formattedSocials = computed(() => {
     return {
       platform: platform.split('_')[0],
       url,
-      icon: socialIcon(platform.split('_')[0])
+      icon: socialIcon(platform.split('_')[0]),
     }
   })
 })

@@ -5,7 +5,7 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
-import { createCRUDComposable } from '~/composables/ib/crud-factory.ib'
+import type { createCRUDComposable } from '~/composables/ib/crud-factory.ib'
 
 export interface AdminColumn<T> {
   field: keyof T
@@ -21,32 +21,33 @@ export interface AdminColumn<T> {
 export function createAdminDashboard<T extends { id: string | number }>(
   entityName: string,
   columns: AdminColumn<T>[],
-  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>
+  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>,
 ) {
   return defineComponent({
     name: `${entityName}AdminDashboard`,
     props: {
       title: {
         type: String,
-        default: `Manage ${entityName}`
+        default: `Manage ${entityName}`,
       },
       customActions: {
         type: Object as PropType<Record<string, (item: T) => void>>,
-        default: () => ({})
-      }
+        default: () => ({}),
+      },
     },
     setup(props) {
-      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity } =
-        useEntityComposable()
+      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity }
+        = useEntityComposable()
       const confirm = useConfirm()
       const filters = ref({})
       const showInsertDialog = ref(false)
       const newEntity = ref({} as Omit<T, 'id'>)
 
-      const handleRowEditSave = async (event: { data: T; newData: Partial<T> }) => {
+      const handleRowEditSave = async (event: { data: T, newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
-        } catch (error) {
+        }
+        catch (error) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -60,10 +61,11 @@ export function createAdminDashboard<T extends { id: string | number }>(
             try {
               await deleteEntity(item.id)
               // Show success message
-            } catch (error) {
+            }
+            catch (error) {
               // Handle error (e.g., show toast message)
             }
-          }
+          },
         })
       }
 
@@ -73,7 +75,8 @@ export function createAdminDashboard<T extends { id: string | number }>(
           showInsertDialog.value = false
           newEntity.value = {} as Omit<T, 'id'>
           // Show success message
-        } catch (error) {
+        }
+        catch (error) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -90,7 +93,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
         handleInsertEntity,
         filters,
         showInsertDialog,
-        newEntity
+        newEntity,
       }
     },
     render() {
@@ -100,7 +103,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           label: `Add New ${entityName}`,
           icon: 'pi pi-plus',
           class: 'mb-4',
-          onClick: () => (this.showInsertDialog = true)
+          onClick: () => (this.showInsertDialog = true),
         }),
         h(
           DataTable,
@@ -113,22 +116,22 @@ export function createAdminDashboard<T extends { id: string | number }>(
             editMode: 'row',
             onRowEditSave: this.handleRowEditSave,
             loading: this.isLoading,
-            responsiveLayout: 'scroll'
+            responsiveLayout: 'scroll',
           },
           {
             header: () =>
               h('div', { class: 'flex justify-between' }, [
                 h(InputText, {
-                  modelValue: this.filters['global']?.value,
+                  'modelValue': this.filters['global']?.value,
                   'onUpdate:modelValue': (value) => {
                     this.filters['global'] = { value, matchMode: 'contains' }
                   },
-                  placeholder: 'Global Search'
-                })
+                  'placeholder': 'Global Search',
+                }),
               ]),
             default: () =>
               columns
-                .map((col) =>
+                .map(col =>
                   h(
                     Column,
                     {
@@ -136,22 +139,22 @@ export function createAdminDashboard<T extends { id: string | number }>(
                       header: col.header,
                       sortable: col.sortable ?? true,
                       filter: col.filter ?? true,
-                      filterMatchMode: col.filterMatchMode ?? 'contains'
+                      filterMatchMode: col.filterMatchMode ?? 'contains',
                     },
                     {
-                      body: (slotProps) =>
+                      body: slotProps =>
                         col.bodyComponent
                           ? col.bodyComponent(slotProps.data)
                           : slotProps.data[col.field],
-                      editor: (slotProps) =>
+                      editor: slotProps =>
                         col.editComponent
                           ? col.editComponent(slotProps.data, col.field)
                           : h(InputText, {
-                              modelValue: slotProps.data[col.field],
-                              'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value)
-                            })
-                    }
-                  )
+                            'modelValue': slotProps.data[col.field],
+                            'onUpdate:modelValue': value => (slotProps.data[col.field] = value),
+                          }),
+                    },
+                  ),
                 )
                 .concat([
                   h(Column, { rowEditor: true, style: { width: '10%', minWidth: '8rem' } }),
@@ -159,63 +162,63 @@ export function createAdminDashboard<T extends { id: string | number }>(
                     Column,
                     {
                       header: 'Actions',
-                      style: { width: '10%', minWidth: '8rem' }
+                      style: { width: '10%', minWidth: '8rem' },
                     },
                     {
-                      body: (slotProps) => [
+                      body: slotProps => [
                         h(Button, {
                           icon: 'pi pi-trash',
                           class: 'p-button-rounded p-button-danger p-button-text',
-                          onClick: () => this.handleDeleteEntity(slotProps.data)
+                          onClick: () => this.handleDeleteEntity(slotProps.data),
                         }),
                         ...Object.entries(this.customActions).map(([label, action]) =>
                           h(Button, {
                             label,
                             class: 'p-button-rounded p-button-text',
-                            onClick: () => action(slotProps.data)
-                          })
-                        )
-                      ]
-                    }
-                  )
-                ])
-          }
+                            onClick: () => action(slotProps.data),
+                          }),
+                        ),
+                      ],
+                    },
+                  ),
+                ]),
+          },
         ),
         h(
           Dialog,
           {
-            header: `Add New ${entityName}`,
-            visible: this.showInsertDialog,
-            'onUpdate:visible': (value) => (this.showInsertDialog = value),
-            style: { width: '50vw' }
+            'header': `Add New ${entityName}`,
+            'visible': this.showInsertDialog,
+            'onUpdate:visible': value => (this.showInsertDialog = value),
+            'style': { width: '50vw' },
           },
           {
             default: () => [
               ...columns
-                .filter((col) => col.field !== 'id')
-                .map((col) =>
+                .filter(col => col.field !== 'id')
+                .map(col =>
                   h('div', { class: 'field' }, [
                     h('label', { for: col.field }, col.header),
                     col.insertComponent
                       ? col.insertComponent()
                       : h(InputText, {
-                          id: col.field,
-                          modelValue: this.newEntity[col.field],
-                          'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
-                          class: 'w-full'
-                        })
-                  ])
+                        'id': col.field,
+                        'modelValue': this.newEntity[col.field],
+                        'onUpdate:modelValue': value => (this.newEntity[col.field] = value),
+                        'class': 'w-full',
+                      }),
+                  ]),
                 ),
               h(Button, {
                 label: `Add ${entityName}`,
                 icon: 'pi pi-check',
-                onClick: this.handleInsertEntity
-              })
-            ]
-          }
+                onClick: this.handleInsertEntity,
+              }),
+            ],
+          },
         ),
-        h(ConfirmDialog)
+        h(ConfirmDialog),
       ])
-    }
+    },
   })
 }

@@ -5,7 +5,7 @@ const CategorySchema = z.object({
   name: z.string(),
   body: z.string().nullish(),
   created_at: z.string().optional(),
-  updated_at: z.string().optional()
+  updated_at: z.string().optional(),
 })
 
 const TagSchema = z.object({
@@ -13,7 +13,7 @@ const TagSchema = z.object({
   name: z.string(),
   body: z.string().nullish(),
   created_at: z.string().optional(),
-  updated_at: z.string().optional()
+  updated_at: z.string().optional(),
 })
 
 type Category = z.infer<typeof CategorySchema>
@@ -51,7 +51,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
       response,
       devOnly: true,
       devMessage: `Error Fetching Categories from DB`,
-      userMessage: `There was an error getting Categories from the database`
+      userMessage: `There was an error getting Categories from the database`,
     })
     categories.value.push(...cat)
     localStorage.store('astron-categories', { categories: cat })
@@ -71,18 +71,18 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
       response,
       devOnly: true,
       devMessage: `Error Fetching Tags from DB`,
-      userMessage: `There was an error getting Tags from the database`
+      userMessage: `There was an error getting Tags from the database`,
     })
     tags.value.push(...cat)
     localStorage.store('astron-tags', { tags: cat })
   }
 
   const getCategoryName = (categoryId: number) => {
-    return categories.value.find((category) => category.id === categoryId)?.name
+    return categories.value.find(category => category.id === categoryId)?.name
   }
 
   const getTagName = (tagId: number) => {
-    return tags.value.find((tag) => tag.id === tagId)
+    return tags.value.find(tag => tag.id === tagId)
   }
 
   return {
@@ -91,7 +91,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     getCategories,
     getTags,
     getCategoryName,
-    getTagName
+    getTagName,
   }
 })
 

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   if (!type) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Error type is required'
+      statusMessage: 'Error type is required',
     })
   }
 
@@ -16,19 +16,20 @@ export default defineEventHandler(async (event) => {
 
   try {
     const token = jwt.sign({ sender: 'AstronEra' }, config.scraperKey, {
-      algorithm: 'HS256'
+      algorithm: 'HS256',
     })
 
     const response = await $fetch(`${config.public.scraperUrl}/api/error/${type}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
     return {
-      data: response
+      data: response,
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error(`Error fetching ${type} data:`, error)
 
     if (error.response) {
@@ -38,26 +39,29 @@ export default defineEventHandler(async (event) => {
         // Handle 404 Not Found error
         return {
           data: null,
-          error: `No ${type} data found for the specified parameters`
+          error: `No ${type} data found for the specified parameters`,
         }
-      } else {
+      }
+      else {
         // Handle other error statuses
         throw createError({
           statusCode: error.response.status,
-          statusMessage: error.response.statusText || `Error fetching ${type} data`
+          statusMessage: error.response.statusText || `Error fetching ${type} data`,
         })
       }
-    } else if (error.request) {
+    }
+    else if (error.request) {
       // The request was made but no response was received
       throw createError({
         statusCode: 503,
-        statusMessage: 'Service Unavailable'
+        statusMessage: 'Service Unavailable',
       })
-    } else {
+    }
+    else {
       // Something happened in setting up the request that triggered an Error
       throw createError({
         statusCode: 500,
-        statusMessage: 'Internal Server Error'
+        statusMessage: 'Internal Server Error',
       })
     }
   }

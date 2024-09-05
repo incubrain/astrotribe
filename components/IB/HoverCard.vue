@@ -12,7 +12,8 @@ function checkHoverPosition(event) {
     console.log('top')
     // If the card is in the top third, expand downwards
     hoverPosition.value = 'down'
-  } else {
+  }
+  else {
     console.log('bottom')
     // If the card is in the bottom third, expand upwards
     hoverPosition.value = 'up'
@@ -47,11 +48,11 @@ onMounted(() => {
         {
           'lg:group-hover:absolute': enableHoverEffect && !!hoverPosition,
           'top-0': enableHoverEffect && hoverPosition === 'down',
-          'bottom-0': enableHoverEffect && hoverPosition === 'up'
-        }
+          'bottom-0': enableHoverEffect && hoverPosition === 'up',
+        },
       ]"
       :style="{
-        height: enableHoverEffect && !!hoverPosition ? `calc(200% + ${paddingSize}px)` : '100%'
+        height: enableHoverEffect && !!hoverPosition ? `calc(200% + ${paddingSize}px)` : '100%',
       }"
     >
       <slot></slot>

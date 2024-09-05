@@ -9,15 +9,15 @@ type CallOpenAIConfig = {
 // Asynchronous function to call the OpenAI API with specified parameters.
 
 interface OpenAIInput {
-  prompt: string,
-  systemMessage: string, 
+  prompt: string
+  systemMessage: string
   config?: CallOpenAIConfig
 }
 
 const createChatCompletion = async ({
   prompt,
   systemMessage,
-  config
+  config,
 }: OpenAIInput) => {
   try {
     // Make an API call to OpenAI's chat completion endpoint.
@@ -26,20 +26,21 @@ const createChatCompletion = async ({
       messages: [
         // An array of messages that precedes the function call.
         { role: 'system', content: systemMessage },
-        { role: 'user', content: prompt }
+        { role: 'user', content: prompt },
       ],
-      temperature: config?.temperature || 0.5, 
+      temperature: config?.temperature || 0.5,
       max_tokens: config?.max_tokens || 600,
-      top_p: config?.top_p || 0.7
+      top_p: config?.top_p || 0.7,
     })
 
     return response
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('Error calling OpenAI API', error)
     throw createError({ message: error.message || 'Failed to call OpenAI API' })
   }
 }
 
 export const openAI = {
-  createChatCompletion
+  createChatCompletion,
 }

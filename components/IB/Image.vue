@@ -5,8 +5,8 @@ const uuid = useId()
 const props = defineProps({
   img: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const imageUrl = ref(null)
@@ -16,7 +16,7 @@ watch(
   (newVal) => {
     imageUrl.value = newVal
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 function loadFallbackImage() {

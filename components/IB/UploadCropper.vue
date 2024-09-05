@@ -16,20 +16,20 @@ const image = ref<string>('')
 const props = defineProps({
   cropperType: {
     type: String as PropType<CropperConfigTypes>,
-    required: true
+    required: true,
   },
   bucket: {
     type: String,
-    required: true
+    required: true,
   },
   path: {
     type: String,
-    required: true
+    required: true,
   },
   requireCropping: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 const config = computed(() => cropperConfigs[props.cropperType])
@@ -68,12 +68,12 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
       minHeight: 0,
       minWidth: 0,
       maxHeight: 480,
-      maxWidth: 480
+      maxWidth: 480,
     },
     stencilProps: {
       aspectRatio: 1,
-      movable: true
-    }
+      movable: true,
+    },
   },
   avatar: {
     name: 'avatar',
@@ -83,13 +83,13 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
       minHeight: 0,
       minWidth: 0,
       maxHeight: 480,
-      maxWidth: 480
+      maxWidth: 480,
     },
     stencilProps: {
       aspectRatio: 1,
-      movable: true
-    }
-  }
+      movable: true,
+    },
+  },
 }
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 const userStore = useCurrentUser()
@@ -106,7 +106,7 @@ function checkWebpFeature(feature: Compression): Promise<boolean> {
       alpha:
         'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
       animation:
-        'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA'
+        'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA',
     }
 
     const img = new Image()
@@ -143,14 +143,15 @@ async function uploadImage(blob: Blob) {
       allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
       onProgress: (progress) => {
         console.log(`Upload progress: ${progress}%`)
-      }
+      },
     })
     toast.success({
       summary: 'Image uploaded',
-      message: 'Your image has been successfully uploaded and processed.'
+      message: 'Your image has been successfully uploaded and processed.',
     })
     return result
-  } catch (error: any) {
+  }
+  catch (error: any) {
     setError(`Failed to upload image: ${error.message}`)
     throw error
   }
@@ -183,12 +184,13 @@ const crop = async (toggleModalOpen: () => void) => {
       try {
         await uploadImage(blob)
         toggleModalOpen()
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error uploading cropped image:', error)
       }
     },
     exportMimeType,
-    0.9
+    0.9,
   )
 }
 
@@ -209,12 +211,15 @@ async function handleFileChange(e: Event, toggleModalOpen: () => void) {
         return
       }
       toggleModalOpen()
-    } else {
+    }
+    else {
       await uploadImage(file)
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     setError(`An error occurred while processing the file: ${error.message}`)
-  } finally {
+  }
+  finally {
     if (input) input.value = ''
   }
 }
@@ -224,20 +229,20 @@ const preview = reactive<CropperResult>({
     width: 0,
     height: 0,
     transforms: {} as ImageTransforms,
-    src: null
+    src: null,
   },
   visibleArea: {
     width: 0,
     height: 0,
     left: 0,
-    top: 0
+    top: 0,
   },
   coordinates: {
     left: 0,
     top: 0,
     width: 0,
-    height: 0
-  }
+    height: 0,
+  },
 })
 
 function onChange({ coordinates, image, canvas }: CropperResult) {
@@ -250,13 +255,13 @@ function onChange({ coordinates, image, canvas }: CropperResult) {
 
 // original file
 type CropperConfigDimensions = {
-  [key in CropperConfigTypes]: { minWidth: number; minHeight: number }
+  [key in CropperConfigTypes]: { minWidth: number, minHeight: number }
 }
 
 function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes): Promise<boolean> {
   const dimensions: CropperConfigDimensions = {
     default: { minWidth: 800, minHeight: 600 },
-    avatar: { minWidth: 160, minHeight: 160 }
+    avatar: { minWidth: 160, minHeight: 160 },
   }
 
   return new Promise((resolve) => {
@@ -266,9 +271,10 @@ function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes)
       console.log('cropper mins', minHeight, minWidth, img.width, img.height)
       if (img.width >= minWidth && img.height >= minHeight) {
         resolve(true)
-      } else {
+      }
+      else {
         setError(
-          `Image dimensions must be at least ${minWidth}x${minHeight}px for ${cropperType}. (dimensions ${img.width}x${img.height})`
+          `Image dimensions must be at least ${minWidth}x${minHeight}px for ${cropperType}. (dimensions ${img.width}x${img.height})`,
         )
         resolve(false)
       }
@@ -306,7 +312,7 @@ function validateFileSize(fileSize: number): boolean {
 const setError = (error: string) => {
   toast.error({
     summary: 'Error',
-    message: error
+    message: error,
   })
 }
 </script>

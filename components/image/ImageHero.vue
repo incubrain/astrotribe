@@ -4,20 +4,20 @@ import type { TitleType, ImageType } from '~/types/content'
 defineProps({
   fit: {
     type: String,
-    default: 'cover'
+    default: 'cover',
   },
   objectPosition: {
     type: String,
-    default: 'center'
+    default: 'center',
   },
   title: {
     type: Object as () => TitleType,
-    required: true
+    required: true,
   },
   img: {
     type: Object as () => ImageType,
-    required: true
-  }
+    required: true,
+  },
 })
 
 // consider turning the images into short videos using AI
@@ -31,7 +31,7 @@ defineProps({
         src: img.src,
         alt: img.alt,
         width: img.width,
-        height: img.height
+        height: img.height,
       }"
       :class="`w-full object-${fit} ${objectPosition} h-screen`"
     />

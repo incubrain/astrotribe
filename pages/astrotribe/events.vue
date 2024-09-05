@@ -9,8 +9,8 @@ const fetchInput = ref({
   domainKey,
   endpoint: '/api/events/select/cards',
   criteria: {
-    dto: 'select:events:card'
-  }
+    dto: 'select:events:card',
+  },
 }) as Ref<FetchInput>
 
 watchEffect(() => {
@@ -32,7 +32,7 @@ definePageMeta({ name: 'Events', layout: 'app' })
       :domain-key="domainKey"
       :pagination="{
         page: 1,
-        limit: 20
+        limit: 20,
       }"
       @update:scroll-end="eventsStore.loadEvents(fetchInput)"
     >

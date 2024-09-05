@@ -8,24 +8,31 @@ function formatNumber(value: number, style: 'INR' | 'USD' = 'INR'): string {
     case 'INR':
       if (absValue >= 1_00_00_00_000) {
         formattedNumber = `${(absValue / 1_00_00_00_000).toFixed(2)} T`
-      } else if (absValue >= 1_00_00_000) {
+      }
+      else if (absValue >= 1_00_00_000) {
         formattedNumber = `${(absValue / 1_00_00_000).toFixed(2)} CR`
-      } else if (absValue >= 1_00_000) {
+      }
+      else if (absValue >= 1_00_000) {
         formattedNumber = `${(absValue / 1_00_000).toFixed(2)} L`
-      } else if (absValue >= 1_000) {
+      }
+      else if (absValue >= 1_000) {
         formattedNumber = `${(absValue / 1_000).toFixed(2)} K`
-      } else {
+      }
+      else {
         formattedNumber = absValue.toFixed(2)
       }
       break
     case 'USD':
       if (absValue >= 1_000_000_000) {
         formattedNumber = `${(absValue / 1_000_000_000).toFixed(2)} B`
-      } else if (absValue >= 1_000_000) {
+      }
+      else if (absValue >= 1_000_000) {
         formattedNumber = `${(absValue / 1_000_000).toFixed(2)} M`
-      } else if (absValue >= 1_000) {
+      }
+      else if (absValue >= 1_000) {
         formattedNumber = `${(absValue / 1_000).toFixed(2)} K`
-      } else {
+      }
+      else {
         formattedNumber = absValue.toString()
       }
       break
@@ -46,11 +53,14 @@ function formatStorage(sizeInGB: number): string {
 
   if (absSize >= 1_000_000) {
     formattedSize = `${(absSize / 1_000_000).toFixed(2)} PB`
-  } else if (absSize >= 1_000) {
+  }
+  else if (absSize >= 1_000) {
     formattedSize = `${(absSize / 1_000).toFixed(2)} TB`
-  } else if (absSize >= 1) {
+  }
+  else if (absSize >= 1) {
     formattedSize = `${absSize.toFixed(2)} GB`
-  } else {
+  }
+  else {
     formattedSize = `${(absSize * 1_000).toFixed(2)} MB`
   }
 
@@ -94,7 +104,7 @@ const colorPalette = {
   darkBrown: [139, 69, 19],
   mediumBrown: [160, 82, 45],
   lightBrown: [210, 105, 30],
-  black: [0, 0, 0]
+  black: [0, 0, 0],
 }
 
 type ColorName =
@@ -149,17 +159,17 @@ function rgba(colorName: ColorName, opacity: number = 1): string {
 export default function useFinancials() {
   const globalChartRange = reactive({ start: 0, end: 12 })
 
-   const filteredData = reactive(
-      Object.entries(data).reduce((acc, [key, value]) => {
-        if (Array.isArray(value)) {
-          acc[key] = value.slice(globalChartRange.start, globalChartRange.end)
-        } else {
-          acc[key] = value
-        }
-        return acc
-      }, {} as FinancialData)
-    )
-
+  const filteredData = reactive(
+    Object.entries(data).reduce((acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = value.slice(globalChartRange.start, globalChartRange.end)
+      }
+      else {
+        acc[key] = value
+      }
+      return acc
+    }, {} as FinancialData),
+  )
 
   // function updateGlobalRange(newRange: { start: number; end: number }): void {
   //   globalChartRange.start = newRange.start
@@ -182,6 +192,6 @@ export default function useFinancials() {
     formatStorage,
     updateGlobalRange: () => console.log('hi'),
     findLargestValue,
-    rgba
+    rgba,
   }
 }

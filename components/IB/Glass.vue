@@ -17,7 +17,7 @@
         bgClasses,
         borderClasses,
         textClasses,
-        ...hoverClasses
+        ...hoverClasses,
       ]"
       :style="cardStyle"
       role="region"
@@ -72,7 +72,7 @@ const tailwindColors = [
   'fuchsia',
   'pink',
   'rose',
-  'primary' // Assuming you have a custom 'primary' color
+  'primary', // Assuming you have a custom 'primary' color
 ] as const
 
 type TailwindColor = (typeof tailwindColors)[number]
@@ -85,7 +85,7 @@ const props = defineProps({
   disableHover: { type: Boolean, default: false },
   padding: { type: String, default: '6' },
   loading: { type: Boolean, default: false },
-  ariaLabel: { type: String, default: 'Glass card' }
+  ariaLabel: { type: String, default: 'Glass card' },
 })
 
 const cardRef = ref<HTMLElement | null>(null)
@@ -100,7 +100,7 @@ const {
   borderClasses,
   textClasses,
   gradientClasses,
-  hoverClasses
+  hoverClasses,
 } = useGlassCard(props, uniqueId)
 </script>
 

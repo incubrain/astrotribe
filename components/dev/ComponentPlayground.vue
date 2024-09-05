@@ -70,7 +70,7 @@ const logEvent = (event) => {
   events.value.push({
     name: event.name,
     payload: event.payload,
-    timestamp: new Date()
+    timestamp: new Date(),
   })
 }
 
@@ -97,7 +97,8 @@ const getDefaultProps = (component: any) => {
     Object.entries(component.props).forEach(([key, value]: [string, any]) => {
       if (value.default !== undefined) {
         defaultProps[key] = typeof value.default === 'function' ? value.default() : value.default
-      } else if (value.type) {
+      }
+      else if (value.type) {
         // Provide sensible defaults based on prop type
         switch (value.type) {
           case String:
@@ -133,9 +134,11 @@ const getInitialState = (component: any) => {
       if (value.value !== undefined) {
         // Assume it's a ref
         initialState[key] = value.value
-      } else if (typeof value === 'function') {
+      }
+      else if (typeof value === 'function') {
         // Assume it's a computed property or method, skip it
-      } else {
+      }
+      else {
         // Assume it's a plain value
         initialState[key] = value
       }

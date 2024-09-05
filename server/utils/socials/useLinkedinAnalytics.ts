@@ -11,17 +11,17 @@ export function useLinkedinAnalytics(postId: string) {
     const url = `${LINKEDIN_API_URL}?q=postDimension&sourcePostEntity=${postId}&metricType=IMPRESSIONS,REPOSTS,COMMENTS,REACTIONS&dimensionType=STAFF_COUNT_RANGE&access_token=${ACCESS_TOKEN}`
     const response = await $fetch(url, {
       headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`
-      }
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
     })
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch post analytics for ${postId}`,
-      userMessage: `Failed to fetch analytics for post ${postId}`
+      userMessage: `Failed to fetch analytics for post ${postId}`,
     })
     return data.elements.map((element: any) => ({
       type: element.type,
-      value: element.metric.value.totalCount.long
+      value: element.metric.value.totalCount.long,
     }))
   }
 
@@ -31,24 +31,24 @@ export function useLinkedinAnalytics(postId: string) {
 
     const response = await $fetch(url, {
       headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`
-      }
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
     })
 
     const data = errors.handleFetchError({
       response,
       devMessage: `Failed to fetch trend analytics for page ${pageId}`,
-      userMessage: `Failed to fetch trend analytics for page ${pageId}`
+      userMessage: `Failed to fetch trend analytics for page ${pageId}`,
     })
 
     return data.elements.map((element: any) => ({
       type: element.type,
-      value: element.metric.value.totalCount.long || element.metric.value.totalCount.bigDecimal
+      value: element.metric.value.totalCount.long || element.metric.value.totalCount.bigDecimal,
     }))
   }
 
   return {
     fetchPostAnalytics,
-    fetchTrendAnalytics
+    fetchTrendAnalytics,
   }
 }

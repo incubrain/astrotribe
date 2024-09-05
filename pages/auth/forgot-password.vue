@@ -3,14 +3,14 @@
 // redirectTo page (password reset) should require auth to view (should be secure)
 
 const form = reactive({
-  email: ''
+  email: '',
 })
 
 const auth = useAuth()
 
 definePageMeta({
   name: 'ForgotPassword',
-  layout: 'auth'
+  layout: 'auth',
 })
 </script>
 
@@ -19,7 +19,7 @@ definePageMeta({
     :show-title="false"
     :title="{
       main: 'Request Magic Link',
-      subtitle: 'Enter your email to get a reset link.'
+      subtitle: 'Enter your email to get a reset link.',
     }"
   >
     <template #content>

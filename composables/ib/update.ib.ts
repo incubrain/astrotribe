@@ -13,7 +13,7 @@ export function useUpdateData<T extends { id: string | number }>(
     transformData?: (data: Partial<T>) => Partial<T>
     rateLimitMs?: number
     auditLog?: (action: string, details: any) => Promise<void>
-  } = {}
+  } = {},
 ) {
   const { update } = useHttpHandler()
   const { handleError } = useErrorHandler()
@@ -41,7 +41,7 @@ export function useUpdateData<T extends { id: string | number }>(
           type: ErrorType.VALIDATION_ERROR,
           message: 'Data validation failed',
           severity: ErrorSeverity.MEDIUM,
-          context: 'Data Validation'
+          context: 'Data Validation',
         })
       }
 
@@ -55,7 +55,7 @@ export function useUpdateData<T extends { id: string | number }>(
           type: ErrorType.NOT_FOUND_ERROR,
           message: 'Item not found in store',
           severity: ErrorSeverity.MEDIUM,
-          context: 'Data Update'
+          context: 'Data Update',
         })
       }
       store.updateItem({ ...oldData, ...transformedData, id })
@@ -78,20 +78,22 @@ export function useUpdateData<T extends { id: string | number }>(
 
       lastUpdateTime = Date.now()
       return result
-    } catch (error: any) {
+    }
+    catch (error: any) {
       // Revert optimistic update
       if (oldData) {
         store.updateItem(oldData)
       }
       handleError(error, 'Error updating data')
       throw error
-    } finally {
+    }
+    finally {
       isUpdating.value = false
     }
   }
 
   return {
     updateData,
-    isUpdating
+    isUpdating,
   }
 }

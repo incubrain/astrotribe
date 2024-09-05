@@ -4,8 +4,8 @@ type Provider = 'twitter' | 'linkedin'
 defineProps({
   provider: {
     type: String as PropType<Provider>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['social-login'])

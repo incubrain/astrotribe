@@ -11,7 +11,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
     :pt="{
       root: 'min-h-full flex flex-col rounded-none border-none p-0',
       menu: 'pt-8',
-      end: 'flex items-end justify-end h-full'
+      end: 'flex items-end justify-end h-full',
     }"
     :pt-options="{ mergeSections: true, mergeProps: true }"
   >

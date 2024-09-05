@@ -3,7 +3,7 @@ import { z } from 'zod'
 const abstract = z
   .object({
     title: z.string(),
-    description: z.string()
+    description: z.string(),
   })
   .optional()
 
@@ -16,7 +16,7 @@ const speakerSchema = z.object({
   abstract,
   avatar: z.string(),
   inPerson: z.boolean().optional(),
-  featured: z.boolean().optional()
+  featured: z.boolean().optional(),
 })
 
 export type SpeakerType = z.infer<typeof speakerSchema>

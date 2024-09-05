@@ -14,7 +14,7 @@ const charts = computed(() => {
     {
       title: 'Balance Over Time',
       subtitle:
-        "Shows the company's financial health and sustainability, indicating the ability to cover expenses.",
+        'Shows the company\'s financial health and sustainability, indicating the ability to cover expenses.',
       type: 'bar',
       data: {
         labels: months.value,
@@ -23,26 +23,26 @@ const charts = computed(() => {
             label: 'PL Margin',
             type: 'line',
             valueType: 'percentage',
-            data: metrics.value.map((m) => m.profitLossMargin),
+            data: metrics.value.map(m => m.profitLossMargin),
             borderColor: rgba('lightOrange', 0.5),
-            backgroundColor: rgba('lightOrange', 0.5)
+            backgroundColor: rgba('lightOrange', 0.5),
           },
           {
             label: 'Burn Rate',
             valueType: 'currency',
-            data: capital.value.map((m) => m.burnRate),
+            data: capital.value.map(m => m.burnRate),
             borderColor: rgba('darkRed', 0.5),
-            backgroundColor: rgba('darkRed', 0.5)
+            backgroundColor: rgba('darkRed', 0.5),
           },
           {
             label: 'Balance End',
             valueType: 'currency',
-            data: capital.value.map((m) => m.balance.end),
+            data: capital.value.map(m => m.balance.end),
             borderColor: rgba('darkGreen', 0.5),
-            backgroundColor: rgba('darkGreen', 0.5)
-          }
-        ]
-      }
+            backgroundColor: rgba('darkGreen', 0.5),
+          },
+        ],
+      },
     },
     {
       title: 'Subscription Revenue by Plan',
@@ -56,30 +56,30 @@ const charts = computed(() => {
             label: 'Total Conversion Rate',
             type: 'line',
             valueType: 'percentage',
-            data: metrics.value.flatMap((m) => m.conversionRate.total),
-            borderColor: rgba('lightPurple', 0.5)
+            data: metrics.value.flatMap(m => m.conversionRate.total),
+            borderColor: rgba('lightPurple', 0.5),
           },
           {
             label: 'Free Users Revenue',
             valueType: 'currency',
-            data: customers.value.flatMap((m) => m.free.revenue),
-            backgroundColor: rgba('lightGreen', 0.5)
+            data: customers.value.flatMap(m => m.free.revenue),
+            backgroundColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'Pro Users Revenue',
             valueType: 'currency',
-            data: customers.value.flatMap((m) => m.pro.revenue),
-            backgroundColor: rgba('lightGreen', 0.5)
+            data: customers.value.flatMap(m => m.pro.revenue),
+            backgroundColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'Expert Users Revenue',
             valueType: 'currency',
-            data: customers.value.flatMap((m) => m.expert.revenue),
-            backgroundColor: rgba('lightBlue', 0.5)
-          }
-        ]
-      }
-    }
+            data: customers.value.flatMap(m => m.expert.revenue),
+            backgroundColor: rgba('lightBlue', 0.5),
+          },
+        ],
+      },
+    },
   ]
 })
 </script>

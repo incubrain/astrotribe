@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-  name: 'Conference'
+  name: 'Conference',
 })
 
 // !todo: low priority - reduce the amount of text at the beginning of the page
@@ -13,12 +13,12 @@ definePageMeta({
     <CommonHero
       :img="{
         src: 'conference/photos/IDSPAC23-ruchira-huchgol.jpg',
-        alt: 'Featured image for the Dark Sky Conservation India Conference'
+        alt: 'Featured image for the Dark Sky Conservation India Conference',
       }"
       :title="{
         centered: false,
         main: 'Dark Sky Conservation India Conference',
-        subtitle: '24th-26th November 2023'
+        subtitle: '24th-26th November 2023',
       }"
       position="object-top"
     >
@@ -27,13 +27,13 @@ definePageMeta({
           width: '160px',
           height: '160px',
           src: 'conference/conference-logo.png',
-          alt: 'Conference logo'
+          alt: 'Conference logo',
         }"
         class="overflow-hidden rounded-full"
       />
       <IBImage
         :img="{
-          src: 'images/trusted/dst.png'
+          src: 'images/trusted/dst.png',
         }"
         class="mx-auto h-16 lg:h-20"
       />
@@ -83,7 +83,7 @@ definePageMeta({
               src: 'conference/photos/IDSPAC23-group-photo.jpg',
               alt: 'Manu Allaya resort at night with the milky way in the background',
               width: '900',
-              height: '460'
+              height: '460',
             }"
             class="mx-auto w-full rounded-md"
           />

@@ -7,21 +7,21 @@ export enum UserAcquisitionMetric {
   DemoRequest = 'demo_request',
   ContactFormSubmission = 'contact_form_submission',
   FeaturePageEngagement = 'feature_page_engagement',
-  BlogTraffic = 'blog_traffic'
+  BlogTraffic = 'blog_traffic',
 }
 
 export enum OnboardingMetric {
   StartRate = 'start_rate',
   StepCompletion = 'step_completion',
   DropOff = 'drop_off',
-  CompletionTime = 'completion_time'
+  CompletionTime = 'completion_time',
 }
 
 export enum UserEngagementMetric {
   SessionDuration = 'session_duration',
   ActionsPerSession = 'actions_per_session',
   VisitFrequency = 'visit_frequency',
-  FeatureAdoption = 'feature_adoption'
+  FeatureAdoption = 'feature_adoption',
 }
 
 export enum ContentPerformanceMetric {
@@ -29,7 +29,7 @@ export enum ContentPerformanceMetric {
   ReadTime = 'read_time',
   Share = 'share',
   Like = 'like',
-  Comment = 'comment'
+  Comment = 'comment',
 }
 
 export enum JobMarketMetric {
@@ -37,14 +37,14 @@ export enum JobMarketMetric {
   JobView = 'job_view',
   JobApplication = 'job_application',
   CompanyProfileCreation = 'company_profile_creation',
-  CompanyFollow = 'company_follow'
+  CompanyFollow = 'company_follow',
 }
 
 export enum TechnicalPerformanceMetric {
   PageLoadTime = 'page_load_time',
   APIResponseTime = 'api_response_time',
   ErrorRate = 'error_rate',
-  Uptime = 'uptime'
+  Uptime = 'uptime',
 }
 
 export type ContentType = 'blog_post' | 'news_article' | 'company_profile' | 'job_listing'
@@ -70,7 +70,7 @@ export function useAnalytics() {
       path: route.path,
       title: document.title,
       timeSpent,
-      ...properties
+      ...properties,
     })
     pageEnterTime.value = Date.now()
   }
@@ -83,13 +83,13 @@ export function useAnalytics() {
     $posthog.capture('Error Occurred', {
       errorType,
       errorDetails,
-      componentName
+      componentName,
     })
   }
 
   const trackUserAcquisition = (
     metric: UserAcquisitionMetric,
-    properties?: AnalyticsEventProperties
+    properties?: AnalyticsEventProperties,
   ) => {
     $posthog.capture(`User Acquisition - ${metric}`, properties)
   }
@@ -100,7 +100,7 @@ export function useAnalytics() {
 
   const trackUserEngagement = (
     metric: UserEngagementMetric,
-    properties?: AnalyticsEventProperties
+    properties?: AnalyticsEventProperties,
   ) => {
     $posthog.capture(`User Engagement - ${metric}`, properties)
   }
@@ -108,14 +108,14 @@ export function useAnalytics() {
   const trackContentPerformance = (
     metric: ContentPerformanceMetric,
     contentType: ContentType,
-    properties?: AnalyticsEventProperties
+    properties?: AnalyticsEventProperties,
   ) => {
     $posthog.capture(`Content Performance - ${contentType} - ${metric}`, properties)
   }
 
   const trackJobMarketActivity = (
     metric: JobMarketMetric,
-    properties?: AnalyticsEventProperties
+    properties?: AnalyticsEventProperties,
   ) => {
     $posthog.capture(`Job Market - ${metric}`, properties)
   }
@@ -123,7 +123,7 @@ export function useAnalytics() {
   const trackTechnicalPerformance = (
     metric: TechnicalPerformanceMetric,
     value: number,
-    properties?: AnalyticsEventProperties
+    properties?: AnalyticsEventProperties,
   ) => {
     $posthog.capture(`Technical Performance - ${metric}`, { value, ...properties })
   }
@@ -137,7 +137,7 @@ export function useAnalytics() {
   onUnmounted(() => {
     trackPageView()
     $posthog.capture('Session Ended', {
-      sessionDuration: Date.now() - pageEnterTime.value
+      sessionDuration: Date.now() - pageEnterTime.value,
     })
   })
 
@@ -151,22 +151,22 @@ export function useAnalytics() {
     trackContentPerformance,
     trackJobMarketActivity,
     trackTechnicalPerformance,
-    trackError
+    trackError,
   }
 }
 
-// import { 
-//   UserAcquisitionMetric, 
-//   OnboardingMetric, 
-//   UserEngagementMetric, 
-//   ContentPerformanceMetric, 
-//   JobMarketMetric, 
+// import {
+//   UserAcquisitionMetric,
+//   OnboardingMetric,
+//   UserEngagementMetric,
+//   ContentPerformanceMetric,
+//   JobMarketMetric,
 //   TechnicalPerformanceMetric,
 //   ContentType,
 //   ErrorType
 // } from '~/types/analytics'
 
-// const { 
+// const {
 //   trackUserAcquisition,
 //   trackOnboarding,
 //   trackUserEngagement,

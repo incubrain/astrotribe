@@ -12,8 +12,8 @@ export const useVenuesStore = defineStore('venuesStore', () => {
         endpoint: '/api/venues/cards',
         pagination: { page: 1, limit: 20 },
         config: {
-          shape: dataShape
-        }
+          shape: dataShape,
+        },
       })
 
       logger.log(`returned ${data.length} venues`)
@@ -22,7 +22,8 @@ export const useVenuesStore = defineStore('venuesStore', () => {
       }
 
       venues.value.push(...data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to load venues:', error)
     }
   }
@@ -33,6 +34,6 @@ export const useVenuesStore = defineStore('venuesStore', () => {
 
   return {
     venues,
-    loadVenues
+    loadVenues,
   }
 })

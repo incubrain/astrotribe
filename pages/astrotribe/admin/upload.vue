@@ -16,7 +16,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Upload',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 </script>
 

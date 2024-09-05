@@ -6,7 +6,7 @@ const { store, loadMore, refresh } = await useSelectData<Companies>('companies',
   filters: { content_status: 'draft' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
-  pagination: { page: 1, limit: 20 }
+  pagination: { page: 1, limit: 20 },
 })
 
 const { items: companies } = storeToRefs(store)

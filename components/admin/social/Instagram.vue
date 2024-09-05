@@ -46,8 +46,8 @@
 const props = defineProps({
   userId: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const social = useSocialStore()

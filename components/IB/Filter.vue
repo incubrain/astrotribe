@@ -17,7 +17,7 @@ const dateOptions = [
   { label: 'Today', value: 'today' },
   { label: 'This Week', value: 'week' },
   { label: 'This Month', value: 'month' },
-  { label: 'This Year', value: 'year' }
+  { label: 'This Year', value: 'year' },
 ]
 
 // Reactive data for filter values
@@ -30,17 +30,17 @@ const filterOptions = computed(() => {
       return {
         sources: ['nasa', 'isro', 'esa'],
         categories: ['Technology', 'Health', 'Business'],
-        dateRange: { start: new Date(2020, 0, 1), end: new Date(Date.now()) }
+        dateRange: { start: new Date(2020, 0, 1), end: new Date(Date.now()) },
       }
     case 'products':
       return {
         categories: ['Electronics', 'Books', 'Clothing'],
-        dateRange: { start: new Date(2020, 0, 1), end: new Date() }
+        dateRange: { start: new Date(2020, 0, 1), end: new Date() },
       }
     case 'events':
       return {
         sources: ['Eventbrite', 'Meetup', 'Local'],
-        dateRange: { start: new Date(2020, 0, 1), end: new Date() }
+        dateRange: { start: new Date(2020, 0, 1), end: new Date() },
       }
     default:
       return {}

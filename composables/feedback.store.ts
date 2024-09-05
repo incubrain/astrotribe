@@ -17,20 +17,22 @@ export const useFeedbackStore = defineStore('feedbackStore', () => {
     try {
       const response = await fetch('/api/feedback/insert/single', {
         method: 'POST',
-        body: newFeedback
+        body: newFeedback,
       })
 
       toast.info({ summary: 'Feedback Sent', message: response.message })
-    } catch (error: any) {
+    }
+    catch (error: any) {
       toast.error({ summary: 'Feedback Not Sent', message: error.message })
       logger.error('Error submitting question and handling response:', error)
-    } finally {
+    }
+    finally {
       await loading.setLoadingInterval(storeKey, false, 1000)
     }
   }
 
   return {
-    submitFeedback
+    submitFeedback,
   }
 })
 

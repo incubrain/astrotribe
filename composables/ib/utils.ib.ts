@@ -9,18 +9,18 @@ export function useUtils() {
     wasRowDataUpdated,
     time: {
       format: time.toDateObject,
-      lastSeen: time.lastSeen
+      lastSeen: time.lastSeen,
     },
     strings: {
       firstUpper: strings.upperCaseFirstLetter,
-      slugify: strings.slugify
+      slugify: strings.slugify,
     },
     arrays: {
       removeDuplicates: arrays.removeDuplicates,
-      sortBy: arrays.sortBy
+      sortBy: arrays.sortBy,
     },
     objects: {
-      pluck: objects.pluck
-    }
+      pluck: objects.pluck,
+    },
   }
 }

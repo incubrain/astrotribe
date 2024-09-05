@@ -9,7 +9,7 @@ onMounted(() => {
     'paginationMetrics',
     'blogPostScraperMetrics',
     'resourceAnalytics',
-    'pageToMarkdownAnalytics'
+    'pageToMarkdownAnalytics',
   ])
 })
 

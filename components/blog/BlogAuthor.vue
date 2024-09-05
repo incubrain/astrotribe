@@ -9,7 +9,7 @@ const authors = [
     name: {
       given: 'Shweta',
       surname: 'Kulkarni',
-      full: 'Shweta Kulkarni'
+      full: 'Shweta Kulkarni',
     },
     avatar: 'images/team/shweta-kulkarni.jpg',
     bio: {
@@ -17,7 +17,7 @@ const authors = [
       full: `Shweta is a space enthusiast and an aspiring astrophysicist.
          She has been closely following the developments in space exploration and has
          been an advocate for the same. She is also a part of the AstronEra team 
-         and has been contributing to the blog for a while now.`
+         and has been contributing to the blog for a while now.`,
     },
   },
   {
@@ -25,7 +25,7 @@ const authors = [
     name: {
       given: 'Srishti',
       surname: 'Bharadwaj',
-      full: 'Srishti Bharadwaj'
+      full: 'Srishti Bharadwaj',
     },
     avatar: 'images/team/srishti-bharadwaj.jpg',
     bio: {
@@ -33,16 +33,16 @@ const authors = [
       full: `
         Srishti is an astronomy, poetry, and literature enthusiast and a fellow astroguide at Astronera.
         She has been writing poetry and short stories since she was 10, finds peace in stargazing and joy in writing about them.
-      `
+      `,
     },
     socials: {
-      instagram: 'https://www.instagram.com/__srishtispoetry__/'
-    }
-  }
+      instagram: 'https://www.instagram.com/__srishtispoetry__/',
+    },
+  },
 ]
 
 const findAuthor = (id: number) => {
-  return authors.find((author) => author.id === id)
+  return authors.find(author => author.id === id)
 }
 </script>
 

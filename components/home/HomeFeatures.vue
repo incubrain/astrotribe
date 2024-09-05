@@ -21,7 +21,7 @@
               height: '366px',
               width: '290px',
               quality: '70',
-              format: 'webp'
+              format: 'webp',
             }"
             class="absolute left-0 top-0 h-full w-full object-cover"
           />
@@ -62,7 +62,7 @@ const icons = [
   'material-symbols:android-messages-outline',
   'mdi:briefcase',
   'mdi:telescope',
-  'material-symbols:circle-notifications'
+  'material-symbols:circle-notifications',
 ]
 </script>
 

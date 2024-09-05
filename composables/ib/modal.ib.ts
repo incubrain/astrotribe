@@ -7,7 +7,7 @@ export function useModal() {
   const currentIndex = ref(0)
   const previousIndex = computed(() => (currentIndex.value > 0 ? currentIndex.value - 1 : 0))
   const nextIndex = computed(() =>
-    currentIndex.value < news.value.length - 1 ? currentIndex.value + 1 : currentIndex.value
+    currentIndex.value < news.value.length - 1 ? currentIndex.value + 1 : currentIndex.value,
   )
 
   const toggleModal = (postIndex?: number) => {

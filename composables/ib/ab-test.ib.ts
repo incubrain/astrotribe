@@ -5,7 +5,7 @@ export enum TestGoal {
   Purchase = 'purchase',
   FeatureUsage = 'feature_usage',
   TimeOnPage = 'time_on_page',
-  ClickThroughRate = 'click_through_rate'
+  ClickThroughRate = 'click_through_rate',
 }
 
 interface ABTestVariant<T> {
@@ -24,10 +24,10 @@ export function useABTest<T>({
   experimentName,
   variants,
   defaultVariant,
-  goals
+  goals,
 }: ABTestConfig<T>) {
   const { $posthog } = useNuxtApp()
-  
+
   const selectedVariant = ref<ABTestVariant<T>>(defaultVariant)
 
   // Use PostHog's experiment feature to get the variant
@@ -35,10 +35,10 @@ export function useABTest<T>({
   selectedVariant.value = variants.find(v => v.name === variantName) || defaultVariant
 
   // Capture experiment exposure
-  $posthog.capture('$experiment_started', { 
-    experiment: experimentName, 
+  $posthog.capture('$experiment_started', {
+    experiment: experimentName,
     variant: selectedVariant.value.name,
-    goals: goals
+    goals: goals,
   })
 
   const value = computed(() => selectedVariant.value.value)
@@ -48,14 +48,14 @@ export function useABTest<T>({
     $posthog.capture(goal, {
       ...properties,
       $experiment_name: experimentName,
-      $variant: selectedVariant.value.name
+      $variant: selectedVariant.value.name,
     })
   }
 
   return {
     variant: selectedVariant,
     value,
-    trackGoal
+    trackGoal,
   }
 }
 
@@ -68,11 +68,11 @@ export function useComponentABTest(config: ABTestConfig<DefineComponent<any, any
   const TestComponent = computed(() => ({
     render() {
       return h(variant.value.value.component)
-    }
+    },
   }))
 
   return {
     TestComponent,
-    trackGoal
+    trackGoal,
   }
 }

@@ -40,8 +40,8 @@ import type { NewsCardT } from '@/types/news'
 defineProps({
   research: {
     type: Object as () => NewsCardT,
-    required: true
-  }
+    required: true,
+  },
   // summaryLevel: {
   //   type: String,
   //   required: true

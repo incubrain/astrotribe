@@ -11,17 +11,17 @@ export default {
       // Shape
       {
         'first:rounded-l-md rounded-none last:rounded-r-md':
-          parent.instance.$name == 'InputGroup' && !props.showButtons
+          parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       {
         'border-0 border-y border-l last:border-r border-surface-300 dark:border-surface-600':
-          parent.instance.$name == 'InputGroup' && !props.showButtons
+          parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       { 'first:ml-0 -ml-px': parent.instance.$name == 'InputGroup' && !props.showButtons },
 
-      //Sizing
-      { '!w-16': props.showButtons && props.buttonLayout == 'vertical' }
-    ]
+      // Sizing
+      { '!w-16': props.showButtons && props.buttonLayout == 'vertical' },
+    ],
   }),
   pcInput: {
     root: ({ parent, context }) => ({
@@ -34,7 +34,7 @@ export default {
         'flex-auto',
         { 'w-[1%]': parent.props.fluid },
 
-        //Text
+        // Text
         { 'text-center': parent.props.showButtons && parent.props.buttonLayout == 'vertical' },
 
         // Spacing
@@ -45,13 +45,13 @@ export default {
         'rounded-md',
         {
           'rounded-l-none rounded-r-none':
-            parent.props.showButtons && parent.props.buttonLayout == 'horizontal'
+            parent.props.showButtons && parent.props.buttonLayout == 'horizontal',
         },
         { 'rounded-none': parent.props.showButtons && parent.props.buttonLayout == 'vertical' },
 
         {
           'border-0':
-            parent.instance.$parentInstance?.$name == 'InputGroup' && !parent.props.showButtons
+            parent.instance.$parentInstance?.$name == 'InputGroup' && !parent.props.showButtons,
         },
 
         // Colors
@@ -74,17 +74,17 @@ export default {
         // Filled State *for FloatLabel
         {
           filled:
-            parent.instance?.$parentInstance?.$name == 'FloatLabel' &&
-            parent.state.d_modelValue !== null
+            parent.instance?.$parentInstance?.$name == 'FloatLabel'
+            && parent.state.d_modelValue !== null,
         },
 
-        //Position
+        // Position
         {
           'order-2':
-            parent.props.buttonLayout == 'horizontal' || parent.props.buttonLayout == 'vertical'
-        }
-      ]
-    })
+            parent.props.buttonLayout == 'horizontal' || parent.props.buttonLayout == 'vertical',
+        },
+      ],
+    }),
   },
   buttonGroup: ({ props }) => ({
     class: [
@@ -96,8 +96,8 @@ export default {
 
       'top-px right-px',
 
-      { 'h-[calc(100%-2px)]': props.showButtons && props.buttonLayout === 'stacked' }
-    ]
+      { 'h-[calc(100%-2px)]': props.showButtons && props.buttonLayout === 'stacked' },
+    ],
   }),
   incrementButton: ({ props }) => ({
     class: [
@@ -110,12 +110,12 @@ export default {
       'justify-center',
       'text-center align-bottom',
 
-      //Position
+      // Position
       'relative',
       { 'order-3': props.showButtons && props.buttonLayout === 'horizontal' },
       { 'order-1': props.showButtons && props.buttonLayout === 'vertical' },
 
-      //Color
+      // Color
       'text-primary-contrast',
       'bg-primary',
       'border-primary',
@@ -130,20 +130,20 @@ export default {
       'rounded-md',
       {
         'rounded-tl-none rounded-br-none rounded-bl-none':
-          props.showButtons && props.buttonLayout == 'stacked'
+          props.showButtons && props.buttonLayout == 'stacked',
       },
       {
-        'rounded-bl-none rounded-tl-none': props.showButtons && props.buttonLayout == 'horizontal'
+        'rounded-bl-none rounded-tl-none': props.showButtons && props.buttonLayout == 'horizontal',
       },
       { 'rounded-bl-none rounded-br-none': props.showButtons && props.buttonLayout == 'vertical' },
 
-      //States
+      // States
       'focus:outline-none focus:outline-offset-0 focus:ring',
       'hover:bg-primary-emphasis hover:border-primary-emphasis',
 
-      //Misc
-      'cursor-pointer overflow-hidden select-none'
-    ]
+      // Misc
+      'cursor-pointer overflow-hidden select-none',
+    ],
   }),
   incrementIcon: 'inline-block w-4 h-4',
   decrementButton: ({ props }) => ({
@@ -157,12 +157,12 @@ export default {
       'justify-center',
       'text-center align-bottom',
 
-      //Position
+      // Position
       'relative',
       { 'order-1': props.showButtons && props.buttonLayout == 'horizontal' },
       { 'order-3': props.showButtons && props.buttonLayout == 'vertical' },
 
-      //Color
+      // Color
       'text-primary-contrast',
       'bg-primary',
       'border-primary',
@@ -177,20 +177,20 @@ export default {
       'rounded-md',
       {
         'rounded-tr-none rounded-tl-none rounded-bl-none':
-          props.showButtons && props.buttonLayout == 'stacked'
+          props.showButtons && props.buttonLayout == 'stacked',
       },
       {
-        'rounded-tr-none rounded-br-none ': props.showButtons && props.buttonLayout == 'horizontal'
+        'rounded-tr-none rounded-br-none ': props.showButtons && props.buttonLayout == 'horizontal',
       },
       { 'rounded-tr-none rounded-tl-none ': props.showButtons && props.buttonLayout == 'vertical' },
 
-      //States
+      // States
       'focus:outline-none focus:outline-offset-0 focus:ring',
       'hover:bg-primary-emphasis hover:border-primary-emphasis',
 
-      //Misc
-      'cursor-pointer overflow-hidden select-none'
-    ]
+      // Misc
+      'cursor-pointer overflow-hidden select-none',
+    ],
   }),
-  decrementIcon: 'inline-block w-4 h-4'
+  decrementIcon: 'inline-block w-4 h-4',
 }

@@ -7,7 +7,7 @@ interface ErrorMessage {
 interface ErrorServer extends Omit<ErrorMessage, 'error'> {
   devOnly: boolean // default true - don't show toasts in production
   featureRelated?: boolean // default false - log to feature-specific log
-  response: { data: any; error: any }
+  response: { data: any, error: any }
 }
 
 interface ErrorClient extends ErrorMessage {
@@ -28,13 +28,13 @@ export function useBaseError() {
       case 429:
         toast.feature({
           summary: error.statusMessage,
-          message: error.message
+          message: error.message,
         })
         break
       case 403:
         toast.error({
           summary: error.statusMessage,
-          message: error.message
+          message: error.message,
         })
         break
       default:
@@ -54,7 +54,7 @@ export function useBaseError() {
     devMessage,
     devOnly = true,
     isServer = false,
-    error
+    error,
   }: ErrorClient) {
     // Determine the appropriate user message
     const errorMessage = formatErrorMessage({ error, userMessage, devMessage })
@@ -65,14 +65,14 @@ export function useBaseError() {
     if (!devOnly || isAdmin) {
       toast.error({
         summary: 'Error',
-        message: errorMessage
+        message: errorMessage,
       })
       // Here you could navigate to an error page, log out the user, etc.
       console.error('Handling critical error for:', devMessage)
     }
 
     throw createError({
-      message: `${isServer ? 'SERVER' : 'CLIENT'} ERROR: ${errorMessage}`
+      message: `${isServer ? 'SERVER' : 'CLIENT'} ERROR: ${errorMessage}`,
     })
   }
 
@@ -84,9 +84,10 @@ export function useBaseError() {
         devOnly,
         userMessage,
         isServer: true,
-        devMessage
+        devMessage,
       })
-    } else if (response.data) {
+    }
+    else if (response.data) {
       logger.info(`Successfully fetched ${response.data.length} items`)
       return response.data
     }
@@ -97,6 +98,6 @@ export function useBaseError() {
   return {
     withCode: handleErrorWithCodes,
     server: handleServerError,
-    client: handleError
+    client: handleError,
   }
 }

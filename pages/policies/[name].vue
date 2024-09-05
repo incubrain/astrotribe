@@ -3,7 +3,7 @@ const route = useRoute()
 const name = computed(() => String(route.params.name))
 
 const { error, data: policy } = await useAsyncData(`policies-${name.value}`, () =>
-  queryContent('/policies').where({ _path: route.fullPath }).findOne()
+  queryContent('/policies').where({ _path: route.fullPath }).findOne(),
 )
 
 if (error.value) {

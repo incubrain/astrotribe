@@ -18,7 +18,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
   const errorsBySeverity = computed(() => errorReport.value?.severityDistribution || {})
   const errorReduction = computed(() => errorReport.value?.errorReduction || 0)
   const mostFrequentErrors = computed(
-    () => errorReport.value?.mostFrequentErrors?.slice(0, 5) || []
+    () => errorReport.value?.mostFrequentErrors?.slice(0, 5) || [],
   )
   const errorsByHour = computed(() => {
     return (
@@ -41,17 +41,19 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     error.value = null
     try {
       const response = await fetch('/api/admin/error/report', {
-        query: { date: selectedDate.value.toISOString() }
+        query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {
         throw new Error('No data returned from the server')
       }
       errorReport.value = response.data
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Failed to fetch error report', err)
       error.value = 'Failed to load error report. Please try again later.'
       errorReport.value = null
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -61,17 +63,19 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     error.value = null
     try {
       const response = await fetch('/api/admin/error/trends', {
-        query: { date: selectedDate.value.toISOString() }
+        query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {
         throw new Error('No data returned from the server')
       }
       errorTrends.value = response.data.trends || []
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Failed to fetch error trends', err)
       error.value = 'Failed to load error trends. Please try again later.'
       errorTrends.value = []
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -84,8 +88,8 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         query: {
           date: selectedDate.value.toISOString(),
           page: currentPage.value,
-          pageSize: pageSize.value
-        }
+          pageSize: pageSize.value,
+        },
       })
       if (!response || !response.data) {
         throw new Error('No data returned from the server')
@@ -93,13 +97,15 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
       errorLogs.value = response.data.logs || []
       totalLogs.value = response.data.total || 0
       totalPages.value = response.data.totalPages || 1
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Failed to fetch error logs', err)
       error.value = 'Failed to load error logs. Please try again later.'
       errorLogs.value = []
       totalLogs.value = 0
       totalPages.value = 1
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -109,17 +115,19 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     error.value = null
     try {
       const response = await fetch('/api/admin/error/postgres', {
-        query: { date: selectedDate.value.toISOString() }
+        query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {
         throw new Error('No data returned from the server')
       }
       errorPG.value = response.data || []
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Failed to fetch postgres errors', err)
       error.value = 'Failed to load postgres errors. Please try again later.'
       errorPG.value = []
-    } finally {
+    }
+    finally {
       loading.value = false
     }
   }
@@ -129,7 +137,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
       fetchErrorReport(),
       fetchErrorLogs(),
       fetchPostgresErrors(),
-      fetchErrorTrends()
+      fetchErrorTrends(),
     ])
   }
 
@@ -171,7 +179,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     fetchErrorLogs,
     refreshData,
     setDate,
-    setPage
+    setPage,
   }
 })
 
@@ -193,7 +201,7 @@ const {
   errorsByHour,
   loading,
   currentPage,
-  totalPages
+  totalPages,
 } = storeToRefs(errorDashboard)
 
 const domainChartData = computed(() => ({
@@ -201,9 +209,9 @@ const domainChartData = computed(() => ({
   datasets: [
     {
       data: Object.values(errorsByDomain.value),
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-    }
-  ]
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+    },
+  ],
 }))
 
 const severityChartData = computed(() => ({
@@ -212,44 +220,44 @@ const severityChartData = computed(() => ({
     {
       label: 'Errors',
       data: Object.values(errorsBySeverity.value),
-      backgroundColor: '#36A2EB'
-    }
-  ]
+      backgroundColor: '#36A2EB',
+    },
+  ],
 }))
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 }
 
 // Computed properties for chart data
 const hourlyErrorChartData = computed(() => ({
   labels:
-    errorReport.value?.errorTrends?.map((trend) => trend.interval.split(' ')[1].slice(0, 5)) || [],
+    errorReport.value?.errorTrends?.map(trend => trend.interval.split(' ')[1].slice(0, 5)) || [],
   datasets: [
     {
       label: 'Hourly Errors',
-      data: errorReport.value?.errorTrends?.map((trend) => trend.count) || [],
+      data: errorReport.value?.errorTrends?.map(trend => trend.count) || [],
       backgroundColor: '#FF6384',
       borderColor: '#FF6384',
       valueType: 'number',
-      type: 'bar'
-    }
-  ]
+      type: 'bar',
+    },
+  ],
 }))
 
 const dailyErrorChartData = computed(() => ({
-  labels: errorReport.value?.historicalTrends?.map((trend) => trend.date) || [],
+  labels: errorReport.value?.historicalTrends?.map(trend => trend.date) || [],
   datasets: [
     {
       label: 'Daily Errors',
-      data: errorReport.value?.historicalTrends?.map((trend) => trend.totalErrors) || [],
+      data: errorReport.value?.historicalTrends?.map(trend => trend.totalErrors) || [],
       backgroundColor: '#36A2EB',
       borderColor: '#36A2EB',
       valueType: 'number',
-      type: 'line'
-    }
-  ]
+      type: 'line',
+    },
+  ],
 }))
 
 // Chart configurations
@@ -259,7 +267,7 @@ const hourlyErrorChart = computed(() => ({
   title: 'Hourly Error Trends',
   subtitle: 'Number of errors per hour in the last 24 hours',
   type: 'bar',
-  data: hourlyErrorChartData.value
+  data: hourlyErrorChartData.value,
 }))
 
 const dailyErrorChart = computed(() => ({
@@ -268,7 +276,7 @@ const dailyErrorChart = computed(() => ({
   title: 'Daily Error Trends',
   subtitle: 'Total errors per day over time',
   type: 'line',
-  data: dailyErrorChartData.value
+  data: dailyErrorChartData.value,
 }))
 
 onMounted(errorDashboard.refreshData)
@@ -277,7 +285,7 @@ const rawDataArray = computed(() => [
   { title: 'Error Trends', data: errorTrends.value },
   { title: 'Error Logs', data: errorLogs.value },
   { title: 'Postgres Errors', data: errorPG.value },
-  { title: 'Error Report', data: errorReport.value }
+  { title: 'Error Report', data: errorReport.value },
 ])
 </script>
 
@@ -304,7 +312,7 @@ const rawDataArray = computed(() => [
             v-if="errorLogs.length > 0 && errorPG.length > 0"
             :logs="[
               { source: 'DB', entries: errorPG },
-              { source: 'API', entries: errorLogs }
+              { source: 'API', entries: errorLogs },
             ]"
             class="no-scrollbar flex-grow overflow-auto"
           />

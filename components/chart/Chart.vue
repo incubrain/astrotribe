@@ -46,8 +46,8 @@ interface Chart {
 const props = defineProps({
   chart: {
     type: Object as PropType<Chart>,
-    default: () => null
-  }
+    default: () => null,
+  },
 })
 
 const preformattedCharts = computed(() => {
@@ -61,10 +61,10 @@ const preformattedCharts = computed(() => {
         const yAxisID = dataset.type ? 'y-2' : 'y'
         return {
           yAxisID,
-          ...dataset
+          ...dataset,
         }
-      })
-    }
+      }),
+    },
   }
 })
 
@@ -78,7 +78,7 @@ const customPaddingPlugin = {
       // Change the height as suggested in other answers
       this.height += 20
     }
-  }
+  },
 }
 
 function getFirstNumber(...values: any[]): number {
@@ -111,18 +111,18 @@ const chartOptions = computed(() => {
               borderColor: 'black',
               backgroundColor: context.dataset.backgroundColor,
               borderWidth: 2,
-              borderRadius: 2
+              borderRadius: 2,
             }
-          }
-        }
+          },
+        },
       },
       legend: generateLegend,
-      datalabels: false
+      datalabels: false,
     },
     scales: generateScales(
       preformattedCharts.value.data.datasets,
       props.chart.scaleType,
-      isPieChart || props.chart.hideAxes
+      isPieChart || props.chart.hideAxes,
     ),
     animations: {
       y: {
@@ -134,9 +134,9 @@ const chartOptions = computed(() => {
               return 0
             }
           }
-        }
-      }
-    }
+        },
+      },
+    },
   } as ChartOptions
 })
 
@@ -153,11 +153,11 @@ function generateLegend(): Partial<LegendOptions<'line'>> {
       borderRadius: 100,
       font: {
         size: 14,
-        weight: 'bold'
-      }
+        weight: 'bold',
+      },
     },
     position: 'top',
-    align: 'center'
+    align: 'center',
   }
 }
 
@@ -165,12 +165,12 @@ const gridColor = 'rgba(255, 255, 255, 0.1)'
 function generateScales(
   datasets: Dataset[],
   scaleType: ScaleType = 'linear',
-  hideAxes: boolean
+  hideAxes: boolean,
 ): Record<string, any> {
   if (hideAxes) {
     return {
       x: { display: false },
-      y: { display: false }
+      y: { display: false },
     }
   }
 
@@ -178,9 +178,9 @@ function generateScales(
     x: {
       ticks: { color: '#fff' },
       grid: {
-        color: gridColor
-      }
-    }
+        color: gridColor,
+      },
+    },
   }
 
   if (!datasets) return scales
@@ -196,16 +196,16 @@ function generateScales(
           position: 'right',
           title: {
             display: true,
-            text: formatTitle(dataset.valueType)
+            text: formatTitle(dataset.valueType),
           },
           ticks: {
             callback: dataFormatters[dataset.valueType],
-            color: '#fff'
+            color: '#fff',
           },
           grid: {
             drawOnChartArea: false, // only want the grid lines for one axis to show up
-            color: gridColor
-          }
+            color: gridColor,
+          },
         }
         break
       default:
@@ -214,15 +214,15 @@ function generateScales(
           type: scaleType,
           title: {
             display: true,
-            text: formatTitle(dataset.valueType)
+            text: formatTitle(dataset.valueType),
           },
           ticks: {
             callback: dataFormatters[dataset.valueType],
-            color: '#fff'
+            color: '#fff',
           },
           grid: {
-            color: gridColor
-          }
+            color: gridColor,
+          },
         }
     }
   })
@@ -260,12 +260,12 @@ function formatTooltipLabel(tooltipItem: TooltipItem<'line'>) {
 
 const isChartDataReady = computed(() => {
   return (
-    props.chart &&
-    props.chart.data &&
-    props.chart.data.datasets &&
-    props.chart.data.datasets.length > 0 &&
-    props.chart.data.labels &&
-    props.chart.data.labels.length > 0
+    props.chart
+    && props.chart.data
+    && props.chart.data.datasets
+    && props.chart.data.datasets.length > 0
+    && props.chart.data.labels
+    && props.chart.data.labels.length > 0
   )
 })
 
@@ -283,7 +283,7 @@ const dataFormatters = {
       return `${value.toFixed(2)}%` // For small non-zero decimals, show two decimal places
     }
     return `${value.toFixed(2)}%` // Round to whole numbers for clarity
-  }
+  },
 }
 </script>
 

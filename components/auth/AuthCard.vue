@@ -7,17 +7,17 @@ defineProps({
     default: () => ({
       main: 'main title',
       subtitle: 'subtitle',
-      label: 'label'
-    })
+      label: 'label',
+    }),
   },
   helpUrl: {
     type: String,
-    default: '/auth/login'
+    default: '/auth/login',
   },
   showTitle: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const currentUser = useCurrentUser()
@@ -38,7 +38,7 @@ const { haveUserSession } = storeToRefs(currentUser)
               src: 'astronera-logo.jpg',
               alt: 'AstronEra Logo',
               width: '60',
-              height: '60'
+              height: '60',
             }"
           />
           <p class="absolute mx-auto my-auto hidden text-black group-hover:flex">

@@ -1,3 +1,4 @@
+import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
 import {
   useErrorHandler,
   ErrorType,
@@ -5,12 +6,11 @@ import {
   AppError,
   mapErrorSeverity,
   mapErrorType,
-  retryableStatusCodes
+  retryableStatusCodes,
 } from './error-handler.ib'
 import { useLogger } from './logger.ib'
 import { getOrCreateStore } from './main.ib.store'
 import { usePaginationStore, type PaginationType } from './pagination.ib.store'
-import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
 
 export function useHttpHandler() {
   const supabase = useSupabaseClient()
@@ -20,7 +20,7 @@ export function useHttpHandler() {
   async function handleDatabaseOperation<T>(
     operation: () => Promise<PostgrestResponse<T>>,
     context: string,
-    maxRetries: number = 3
+    maxRetries: number = 3,
   ): Promise<T> {
     let retries = 0
     while (retries < maxRetries) {
@@ -30,7 +30,8 @@ export function useHttpHandler() {
           throw error
         }
         return data as T
-      } catch (error: unknown) {
+      }
+      catch (error: unknown) {
         retries++
         logger.warn(`${context} failed. Attempt ${retries} of ${maxRetries}`)
 
@@ -39,27 +40,27 @@ export function useHttpHandler() {
         const errorSeverity = mapErrorSeverity(pgError)
 
         if (
-          retries >= maxRetries ||
-          !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
+          retries >= maxRetries
+          || !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
         ) {
           const appError = new AppError({
             type: errorType,
             message:
-              pgError.message ||
-              retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
-              'Database operation failed',
+              pgError.message
+              || retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes]
+              || 'Database operation failed',
             severity: errorSeverity,
             code: pgError.code,
             context: context,
             pgError: pgError.details || pgError.hint || pgError.message,
-            operation: context
+            operation: context,
           })
           throw handleError(appError)
         }
 
         // Exponential backoff with jitter
         const backoffTime = Math.min(1000 * 2 ** retries + Math.random() * 1000, 10000)
-        await new Promise((resolve) => setTimeout(resolve, backoffTime))
+        await new Promise(resolve => setTimeout(resolve, backoffTime))
       }
     }
     throw new Error('Max retries reached')
@@ -68,7 +69,7 @@ export function useHttpHandler() {
   async function insert<T>(
     tableName: string,
     data: T,
-    options: { columns?: string } = {}
+    options: { columns?: string } = {},
   ): Promise<T> {
     return handleDatabaseOperation(
       async () =>
@@ -76,7 +77,7 @@ export function useHttpHandler() {
           .from(tableName)
           .insert(data)
           .select(options.columns || '*'),
-      `Insert into ${tableName}`
+      `Insert into ${tableName}`,
     )
   }
 
@@ -84,7 +85,7 @@ export function useHttpHandler() {
     tableName: string,
     id: string | number,
     data: Partial<T>,
-    options: { columns?: string } = {}
+    options: { columns?: string } = {},
   ): Promise<T> {
     return handleDatabaseOperation(
       async () =>
@@ -93,14 +94,14 @@ export function useHttpHandler() {
           .update(data)
           .eq('id', id)
           .select(options.columns || '*'),
-      `Update ${tableName}`
+      `Update ${tableName}`,
     )
   }
 
   async function remove(tableName: string, id: string | number): Promise<void> {
     await handleDatabaseOperation(
       async () => await supabase.from(tableName).delete().eq('id', id),
-      `Delete from ${tableName}`
+      `Delete from ${tableName}`,
     )
   }
 
@@ -109,9 +110,9 @@ export function useHttpHandler() {
     options: {
       columns?: string
       filters?: Record<string, any>
-      range?: { from: number; to: number }
-      order?: { column: string; ascending: boolean }
-    } = {}
+      range?: { from: number, to: number }
+      order?: { column: string, ascending: boolean }
+    } = {},
   ): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')
 
@@ -136,6 +137,6 @@ export function useHttpHandler() {
     insert,
     update,
     remove,
-    select
+    select,
   }
 }

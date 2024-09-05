@@ -6,9 +6,10 @@ const renderLatex = (text: string) => {
   return text.replace(/(\$.*?\$)/g, (match) => {
     try {
       return katex.renderToString(match.replace(/\$/g, ''), {
-        throwOnError: true
+        throwOnError: true,
       })
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error rendering LaTeX:', error)
       return `failed(${match})`
     }

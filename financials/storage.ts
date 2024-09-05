@@ -11,8 +11,8 @@ export const SUPABASE_CONFIG = {
     bandwidthIncludedGB: 250,
     bandwidthPricePerGB: 0.09,
     storageIncludedGB: 100,
-    storagePricePerGB: 0.021
-  }
+    storagePricePerGB: 0.021,
+  },
 }
 
 type SBPlan =
@@ -30,59 +30,59 @@ type SBPlan =
 
 export const SUPABASE_COMPUTE_CONFIG = {
   plans: {
-    nano: {
+    'nano': {
       hourly: 0,
       monthly: 0,
       cpu: 'Shared',
       memory: 'Up to 0.5 GB',
       directConnections: 60,
       poolerConnections: 200,
-      maxDbSizeGB: 0.5
+      maxDbSizeGB: 0.5,
     },
-    micro: {
+    'micro': {
       hourly: 0.01344,
       monthly: 10,
       cpu: '2-core ARM (shared)',
       memory: '1 GB',
       directConnections: 60,
       poolerConnections: 200,
-      maxDbSizeGB: 10
+      maxDbSizeGB: 10,
     },
-    small: {
+    'small': {
       hourly: 0.0206,
       monthly: 15,
       cpu: '2-core ARM (shared)',
       memory: '2 GB',
       directConnections: 90,
       poolerConnections: 400,
-      maxDbSizeGB: 50
+      maxDbSizeGB: 50,
     },
-    medium: {
+    'medium': {
       hourly: 0.0822,
       monthly: 60,
       cpu: '2-core ARM (shared)',
       memory: '4 GB',
       directConnections: 120,
       poolerConnections: 600,
-      maxDbSizeGB: 100
+      maxDbSizeGB: 100,
     },
-    large: {
+    'large': {
       hourly: 0.1517,
       monthly: 110,
       cpu: '2-core ARM (dedicated)',
       memory: '8 GB',
       directConnections: 160,
       poolerConnections: 800,
-      maxDbSizeGB: 200
+      maxDbSizeGB: 200,
     },
-    xl: {
+    'xl': {
       hourly: 0.2877,
       monthly: 210,
       cpu: '4-core ARM (dedicated)',
       memory: '16 GB',
       directConnections: 240,
       poolerConnections: 1000,
-      maxDbSizeGB: 500
+      maxDbSizeGB: 500,
     },
     '2xl': {
       hourly: 0.562,
@@ -91,7 +91,7 @@ export const SUPABASE_COMPUTE_CONFIG = {
       memory: '32 GB',
       directConnections: 380,
       poolerConnections: 1500,
-      maxDbSizeGB: 1000
+      maxDbSizeGB: 1000,
     },
     '4xl': {
       hourly: 1.32,
@@ -100,7 +100,7 @@ export const SUPABASE_COMPUTE_CONFIG = {
       memory: '64 GB',
       directConnections: 480,
       poolerConnections: 3000,
-      maxDbSizeGB: 2000
+      maxDbSizeGB: 2000,
     },
     '8xl': {
       hourly: 2.562,
@@ -109,7 +109,7 @@ export const SUPABASE_COMPUTE_CONFIG = {
       memory: '128 GB',
       directConnections: 490,
       poolerConnections: 6000,
-      maxDbSizeGB: 4000
+      maxDbSizeGB: 4000,
     },
     '12xl': {
       hourly: 3.836,
@@ -118,7 +118,7 @@ export const SUPABASE_COMPUTE_CONFIG = {
       memory: '192 GB',
       directConnections: 500,
       poolerConnections: 9000,
-      maxDbSizeGB: 6000
+      maxDbSizeGB: 6000,
     },
     '16xl': {
       hourly: 5.12,
@@ -127,14 +127,14 @@ export const SUPABASE_COMPUTE_CONFIG = {
       memory: '256 GB',
       directConnections: 500,
       poolerConnections: 12000,
-      maxDbSizeGB: 10000
-    }
-  }
+      maxDbSizeGB: 10000,
+    },
+  },
 }
 
 const VECTOR_SIZES = {
   large: 1536,
-  small: 724
+  small: 724,
 }
 
 const AVG_CHARS_PER_WORD = 4.7
@@ -143,7 +143,7 @@ const BYTES_PER_GB = 1024 ** 3
 export function calculateVectorStorage(
   vectorSize: number,
   numItems: number,
-  isBinary: boolean = false
+  isBinary: boolean = false,
 ): number {
   const bytesPerItem = isBinary ? Math.ceil(vectorSize / 8) : vectorSize * 4
   const totalBytes = bytesPerItem * numItems
@@ -187,7 +187,7 @@ function calculateComputeCost(params: ComputeCostParams): {
   return {
     total: hourlyCost + monthlyCost,
     hourly: hourlyCost,
-    monthly: monthlyCost
+    monthly: monthlyCost,
   }
 }
 
@@ -212,29 +212,29 @@ function calculateStorageCost(params: SupabaseCostParams): SupabaseCostBreakdown
     bandwidthIncludedGB,
     bandwidthPricePerGB,
     storageIncludedGB,
-    storagePricePerGB
+    storagePricePerGB,
   } = SUPABASE_CONFIG.pro
 
-  const additionalMauCost =
-    monthlyActiveUsers > mauIncluded ? (monthlyActiveUsers - mauIncluded) * mauPrice : 0
+  const additionalMauCost
+    = monthlyActiveUsers > mauIncluded ? (monthlyActiveUsers - mauIncluded) * mauPrice : 0
 
-  const additionalDbStorageCost =
-    dbStorageGB > dbIncludedGB ? (dbStorageGB - dbIncludedGB) * dbPricePerGB : 0
+  const additionalDbStorageCost
+    = dbStorageGB > dbIncludedGB ? (dbStorageGB - dbIncludedGB) * dbPricePerGB : 0
 
-  const additionalBandwidthCost =
-    bandwidthGB > bandwidthIncludedGB
+  const additionalBandwidthCost
+    = bandwidthGB > bandwidthIncludedGB
       ? (bandwidthGB - bandwidthIncludedGB) * bandwidthPricePerGB
       : 0
 
-  const additionalFileStorageCost =
-    fileStorageGB > storageIncludedGB ? (fileStorageGB - storageIncludedGB) * storagePricePerGB : 0
+  const additionalFileStorageCost
+    = fileStorageGB > storageIncludedGB ? (fileStorageGB - storageIncludedGB) * storagePricePerGB : 0
 
-  const totalCost =
-    basePrice +
-    additionalMauCost +
-    additionalDbStorageCost +
-    additionalBandwidthCost +
-    additionalFileStorageCost
+  const totalCost
+    = basePrice
+    + additionalMauCost
+    + additionalDbStorageCost
+    + additionalBandwidthCost
+    + additionalFileStorageCost
 
   return {
     total: parseFloat(totalCost.toFixed(3)),
@@ -242,7 +242,7 @@ function calculateStorageCost(params: SupabaseCostParams): SupabaseCostBreakdown
     mau: parseFloat(additionalMauCost.toFixed(3)),
     dbStorage: parseFloat(additionalDbStorageCost.toFixed(3)),
     bandwidth: parseFloat(additionalBandwidthCost.toFixed(3)),
-    fileStorage: parseFloat(additionalFileStorageCost.toFixed(3))
+    fileStorage: parseFloat(additionalFileStorageCost.toFixed(3)),
   }
 }
 
@@ -279,7 +279,7 @@ interface StorageResult {
 
 function calculateStorageUsage(
   contentParams: ContentParams[],
-  currentMonth: number
+  currentMonth: number,
 ): StorageResult {
   let totalDbStorageGB = 0
   let totalVectorStorageGB = 0
@@ -300,13 +300,13 @@ function calculateStorageUsage(
         count: TOTAL,
         avgChars: CHARS.CONTENT,
         totalChars: CHARS.CONTENT * TOTAL,
-        totalChunks: CHARS.CHUNKS * TOTAL
+        totalChunks: CHARS.CHUNKS * TOTAL,
       },
       storage: {
         total: contentStorage + vectorStorage,
         db: contentStorage,
-        vector: vectorStorage
-      }
+        vector: vectorStorage,
+      },
     })
   }
 
@@ -314,14 +314,14 @@ function calculateStorageUsage(
     total: parseFloat((totalDbStorageGB + totalVectorStorageGB).toFixed(3)),
     db: parseFloat(totalDbStorageGB.toFixed(3)),
     vector: parseFloat(totalVectorStorageGB.toFixed(3)),
-    details
+    details,
   }
 }
 
 export function calculateSupabaseCosts(
   mau: number,
   currentMonth: number,
-  contentParams: ContentParams[]
+  contentParams: ContentParams[],
 ): StorageCostResult {
   console.log('Content Params:', contentParams, mau)
   const storage = calculateStorageUsage(contentParams, currentMonth)
@@ -331,7 +331,7 @@ export function calculateSupabaseCosts(
 
   const computeCost = calculateComputeCost({
     plan: computePlan,
-    hoursUsed: 730 // Assuming 24/7 usage, can we make dynamic?
+    hoursUsed: 730, // Assuming 24/7 usage, can we make dynamic?
   })
 
   // Calculate bandwidth and file storage dynamically based on MAU
@@ -343,7 +343,7 @@ export function calculateSupabaseCosts(
     monthlyActiveUsers: mau,
     dbStorageGB: storage.total,
     bandwidthGB,
-    fileStorageGB
+    fileStorageGB,
   })
 
   return {
@@ -355,18 +355,18 @@ export function calculateSupabaseCosts(
         mau: USD2INR(storageCost.mau),
         db: USD2INR(storageCost.dbStorage),
         bandwidth: USD2INR(storageCost.bandwidth),
-        fileStorage: USD2INR(storageCost.fileStorage)
+        fileStorage: USD2INR(storageCost.fileStorage),
       },
-      data: storage
+      data: storage,
     },
     compute: {
       plan: computePlan,
       cost: {
         total: USD2INR(computeCost.total),
         hourly: USD2INR(computeCost.hourly),
-        monthly: USD2INR(computeCost.monthly)
-      }
-    }
+        monthly: USD2INR(computeCost.monthly),
+      },
+    },
   }
 }
 

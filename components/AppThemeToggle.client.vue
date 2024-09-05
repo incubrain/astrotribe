@@ -1,5 +1,6 @@
 <script setup>
 import { usePrimeVue } from 'primevue/config'
+
 const mode = useColorMode()
 
 const PrimeVue = usePrimeVue()
@@ -19,12 +20,13 @@ watch(
     if (isDarkNow) {
       console.log('going dark')
       PrimeVue.changeTheme(lightTheme, darkTheme, 'theme-link', () => {})
-    } else {
+    }
+    else {
       // console.log('going light')
       // PrimeVue.changeTheme(darkTheme, lightTheme, 'theme-link', () => {})
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 onMounted(() => {
@@ -34,7 +36,7 @@ onMounted(() => {
 
 const context = reactive({
   isDark,
-  toggle
+  toggle,
 })
 </script>
 

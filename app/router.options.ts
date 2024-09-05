@@ -6,15 +6,17 @@ export default <RouterOptions>{
       setTimeout(() => {
         if (savedPosition) {
           resolve(savedPosition)
-        } else if (to.hash) {
+        }
+        else if (to.hash) {
           resolve({
             el: to.hash,
-            top: 0
+            top: 0,
           })
-        } else {
+        }
+        else {
           resolve({ top: 0 })
         }
       }, 100)
     })
-  }
+  },
 }

@@ -11,10 +11,10 @@ const productSteps = [
       'News from NASA, ISRO, and more',
       'Daily updates',
       'AI-powered article summaries',
-      'Comprehensive coverage of private companies'
+      'Comprehensive coverage of private companies',
     ],
     cta: 'Check it out',
-    available: true
+    available: true,
   },
   {
     id: 2,
@@ -27,10 +27,10 @@ const productSteps = [
       'Database of major government agencies',
       'Insights into private companies',
       'Follow companies of interest - coming soon',
-      'Linked social profiles - coming soon'
+      'Linked social profiles - coming soon',
     ],
     cta: 'Check it out',
-    available: true
+    available: true,
   },
   {
     id: 3,
@@ -43,10 +43,10 @@ const productSteps = [
       'Connect with global enthusiasts',
       'Share your passion for astronomy',
       'Foster collaboration',
-      'Hire AstroGuides'
+      'Hire AstroGuides',
     ],
     cta: 'Check it out',
-    available: true
+    available: true,
   },
   {
     id: 4,
@@ -59,11 +59,11 @@ const productSteps = [
       'Database of upcoming launches',
       'Global launch providers',
       'Stay informed about space events',
-      'Never miss an important launch'
+      'Never miss an important launch',
     ],
     cta: 'Coming Q2 2024',
-    available: false
-  }
+    available: false,
+  },
 ]
 
 const dummyData = {
@@ -82,7 +82,7 @@ const dummyData = {
     has_summary: false,
     published_at: '2024-03-21 18:30:00+00',
     source: 'nasa',
-    url: 'https://www.nasa.gov/directorates/stmd/space-tech-research-grants/esi/elastocaloric-refrigeration-for-spaceflight-applications-esra/'
+    url: 'https://www.nasa.gov/directorates/stmd/space-tech-research-grants/esi/elastocaloric-refrigeration-for-spaceflight-applications-esra/',
   },
 
   company: {
@@ -100,8 +100,8 @@ const dummyData = {
       linkedin_url: 'https://www.linkedin.com/company/agnikul-cosmos/',
       twitter_url: 'https://twitter.com/@agnikulcosmos',
       instagram_url: 'https://instagram.com/agnikul/',
-      youtube_url: 'https://www.youtube.com/@agnikulcosmos1404'
-    }
+      youtube_url: 'https://www.youtube.com/@agnikulcosmos1404',
+    },
   },
   user: {
     id: 'e1bf12c6-aad4-4905-bda2-127c027504a3',
@@ -120,8 +120,8 @@ const dummyData = {
     followed_count: 1,
     followers_count: 1,
     plan: 'free',
-    role: 'admin'
-  }
+    role: 'admin',
+  },
 }
 
 const getDummyData = (type) => {

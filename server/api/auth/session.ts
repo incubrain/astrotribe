@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
         error: null,
         status: 200,
         message: 'No user session found',
-        data: null
+        data: null,
       }
     }
 
@@ -16,15 +16,16 @@ export default defineEventHandler(async (event) => {
       error: null,
       status: 200,
       message: 'User session fetched from session',
-      data: session.user
+      data: session.user,
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('session error', error.message)
     return {
       error,
       status: 500,
       message: error.message,
-      data: null
+      data: null,
     }
   }
 })

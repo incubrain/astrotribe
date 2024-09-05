@@ -3,28 +3,28 @@ import { z } from 'zod'
 export const PositionSchema = z.object({
   title: z.string(),
   description: z.string(),
-  joining: z.string()
+  joining: z.string(),
 })
 
 export const SocialSchema = z.object({
   id: z.number(),
   platform: z.string(),
   url: z.string(),
-  username: z.string()
+  username: z.string(),
 })
 
 export const AchievementSchema = z.object({
   id: z.number(),
   title: z.string(),
   body: z.string(),
-  url: z.string().optional()
+  url: z.string().optional(),
 })
 
 export const PublicitySchema = z.object({
   id: z.number(),
   title: z.string(),
   body: z.string(),
-  url: z.string().optional()
+  url: z.string().optional(),
 })
 
 export const TeamMemberSchema = z.object({
@@ -35,7 +35,7 @@ export const TeamMemberSchema = z.object({
   bio: z.string(),
   socials: z.array(SocialSchema),
   achievements: z.array(AchievementSchema),
-  publicity: z.array(PublicitySchema)
+  publicity: z.array(PublicitySchema),
 })
 
 export const TeamSchema = z.array(TeamMemberSchema)

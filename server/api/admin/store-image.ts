@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     // Fetch the image as a blob
     const imgBlob = await $fetch(
       'https://cdn.mos.cms.futurecdn.net/594rdNk4Ci9qT8e2XKsQ7Q-970-80.jpg.webp',
-      { responseType: 'blob' }
+      { responseType: 'blob' },
     )
 
     console.log('Image fetched', imgBlob)
@@ -29,14 +29,15 @@ export default defineEventHandler(async (event) => {
 
     return {
       status: 200,
-      message: 'Image Stored'
+      message: 'Image Stored',
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('store-image error', error.message)
     return {
       status: 500,
       message: 'Error Storing Image',
-      error
+      error,
     }
   }
 })

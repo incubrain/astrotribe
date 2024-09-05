@@ -4,27 +4,28 @@ const summaryLevels = [
     {
       label: 'Beginner',
       value: 'beginner',
-      click: () => news.changeSummaryLevel('beginner')
-    }
+      click: () => news.changeSummaryLevel('beginner'),
+    },
   ],
   [
     {
       label: 'Intermediate',
       value: 'intermediate',
-      click: () => news.changeSummaryLevel('intermediate')
-    }
+      click: () => news.changeSummaryLevel('intermediate'),
+    },
   ],
   [
     {
       label: 'Expert',
       value: 'expert',
-      click: () => news.changeSummaryLevel('expert')
-    }
-  ]
+      click: () => news.changeSummaryLevel('expert'),
+    },
+  ],
 ]
 
 const selectedLevel = ref('beginner')
 </script>
+
 <template>
   <div class="flex w-full gap-2">
     <PrimeButton @click="news.scrapeBlogs">

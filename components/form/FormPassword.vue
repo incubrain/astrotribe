@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
     'At least one lowercase',
     'At least one uppercase',
     'At least one numeric',
-    'Minimum 8 characters'
+    'Minimum 8 characters',
   ],
   invalid: false,
   feedback: true,
@@ -43,13 +43,12 @@ const props = withDefaults(defineProps<Props>(), {
   promptLabel: 'Please enter a password',
   mediumRegex:
     '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
-  strongRegex: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})'
+  strongRegex: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
 })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
-
 
 const onPasswordChange = (value: string) => {
   emit('update:modelValue', value)
@@ -76,9 +75,9 @@ const onPasswordChange = (value: string) => {
     :strong-label="strongLabel"
     :placeholder="placeholder"
     :prompt-label="promptLabel"
-    @update:modelValue="onPasswordChange"
     :medium-regex="mediumRegex"
     :strong-regex="strongRegex"
+    @update:model-value="onPasswordChange"
   >
     <template #footer>
       <PrimeDivider />

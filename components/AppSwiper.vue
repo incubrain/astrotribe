@@ -7,7 +7,7 @@ const swiperRef = ref(null as SwiperContainer | null)
 
 const swiperConfig = computed(() => ({
   autoplay: {
-    delay: 7000
+    delay: 7000,
   },
   loop: true,
   breakpoints: {
@@ -15,31 +15,31 @@ const swiperConfig = computed(() => ({
       slidesPerView: 1,
       grid: {
         rows: 1,
-        fill: 'row'
-      }
+        fill: 'row',
+      },
     },
     768: {
       slidesPerView: 2,
       spaceBetween: 24,
       grid: {
         rows: 1,
-        fill: 'row'
-      }
+        fill: 'row',
+      },
     },
     1280: {
       slidesPerView: 3,
       spaceBetween: 24,
       grid: {
         rows: 2,
-        fill: 'row'
-      }
-    }
-  }
+        fill: 'row',
+      },
+    },
+  },
 }))
 
 const swiperLoaded = ref(false)
 onMounted(async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 1000))
   swiperLoaded.value = true
 })
 
@@ -51,7 +51,7 @@ watch(
       swiperRef.value.initialize()
     }
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 defineProps<{

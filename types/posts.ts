@@ -7,7 +7,7 @@ export const PostSchema = z.object({
   title: z.string().nullable(),
   body: z.string().nullable(),
   image: z.string().nullable(),
-  status_id: z.number()
+  status_id: z.number(),
 })
 
 // make posts extendable

@@ -3,7 +3,7 @@
     class="h-full"
     :pt="{
       body: 'justify-between h-full',
-      root: 'overflow-hidden relative'
+      root: 'overflow-hidden relative',
     }"
     :pt-options="{ mergeProps: true, mergeSections: true }"
   >
@@ -17,7 +17,7 @@
           height: '350',
           loading: 'lazy',
           quality: '80',
-          format: 'webp'
+          format: 'webp',
         }"
         class="w-full object-cover grayscale-[20%]"
       />
@@ -79,13 +79,13 @@ const isOpen = ref(false)
 defineProps({
   speaker: {
     type: Object as PropType<SpeakerType>,
-    required: true
+    required: true,
   },
   featured: {
     type: Boolean,
     required: false,
-    default: false
-  }
+    default: false,
+  },
 })
 </script>
 

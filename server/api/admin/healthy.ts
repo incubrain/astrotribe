@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
   const env = useRuntimeConfig().public
   const port = process.env.PORT
 
-
   try {
     // You can add more checks here, e.g., Redis connection, external API calls, etc.
 
@@ -14,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
     console.log('Health check successful', env)
     console.log('Process Port:', port)
-    console.log('Nitro Port: ', )
+    console.log('Nitro Port: ')
 
     return {
       status: 'healthy',
@@ -24,20 +23,21 @@ export default defineEventHandler(async (event) => {
         rss: memoryUsage.rss,
         heapTotal: memoryUsage.heapTotal,
         heapUsed: memoryUsage.heapUsed,
-        external: memoryUsage.external
+        external: memoryUsage.external,
       },
       environment: process.env.NODE_ENV,
       databaseConnection: 'ok',
-      responseTime: Date.now() - startTime
+      responseTime: Date.now() - startTime,
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('Health check failed:', error)
 
     return {
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       error: error.message,
-      responseTime: Date.now() - startTime
+      responseTime: Date.now() - startTime,
     }
   }
 })

@@ -26,7 +26,7 @@ export interface PaginationInput {
 
 export const usePaginationStore = defineStore('paginationStore', () => {
   const logger = useLogger('paginationStore')
-  const stores = reactive({} as Record<DomainKey, Ref<{ page: number; limit: number }>>)
+  const stores = reactive({} as Record<DomainKey, Ref<{ page: number, limit: number }>>)
   const dataFinished = ref({} as Record<DomainKey, boolean>)
 
   function initPagination(input: PaginationInput) {
@@ -52,7 +52,7 @@ export const usePaginationStore = defineStore('paginationStore', () => {
       logger.log('getPaginationRange', pagination.limit, (pagination.page - 1) * pagination.limit)
       return {
         from: (pagination.page - 1) * pagination.limit,
-        to: pagination.limit * pagination.page
+        to: pagination.limit * pagination.page,
       }
     }
     return undefined
@@ -62,7 +62,8 @@ export const usePaginationStore = defineStore('paginationStore', () => {
     const currentPagination = getPagination(domainKey)
     if (currentPagination) {
       currentPagination.page++
-    } else {
+    }
+    else {
       logger.warn(`Attempted to increment pagination for an uninitialized store '${domainKey}'.`)
     }
   }
@@ -82,6 +83,6 @@ export const usePaginationStore = defineStore('paginationStore', () => {
     initPagination,
     getPagination,
     incrementPagination,
-    getPaginationRange
+    getPaginationRange,
   }
 })

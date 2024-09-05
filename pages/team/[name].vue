@@ -6,11 +6,11 @@
     <ImageHero
       :img="{
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
-        alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
+        alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars',
       }"
       :title="{
         main: user.name,
-        subtitle: `${user.position.title} at AstronEra`
+        subtitle: `${user.position.title} at AstronEra`,
       }"
     />
 
@@ -22,7 +22,7 @@
           <IBImage
             :img="{
               src: user.avatar,
-              alt: user.name
+              alt: user.name,
             }"
             class="background h-32 w-32 rounded-full p-2 lg:h-48 lg:w-48"
           />
@@ -72,11 +72,11 @@ import team from '@/data/home/team.json'
 
 const { name } = useRoute().params
 const user = computed(() =>
-  team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name)
+  team.find(user => user.name.toLowerCase().replaceAll(' ', '-') === name),
 )
 
 definePageMeta({
-  name: 'TeamIndividual'
+  name: 'TeamIndividual',
 })
 </script>
 

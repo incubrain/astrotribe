@@ -15,11 +15,11 @@ interface ErrorDetails {
 export function mapErrorType(error: any): ErrorType {
   // Connection errors
   if (
-    error.code === '08000' ||
-    error.code === '08003' ||
-    error.code === '08006' ||
-    error.code === '08001' ||
-    error.code === '08004'
+    error.code === '08000'
+    || error.code === '08003'
+    || error.code === '08006'
+    || error.code === '08001'
+    || error.code === '08004'
   ) {
     return ErrorType.CONNECTION_ERROR
   }
@@ -52,10 +52,10 @@ export function mapErrorType(error: any): ErrorType {
 
   // System errors
   if (
-    error.code === '53000' ||
-    error.code === '53100' ||
-    error.code === '53200' ||
-    error.code === '53300'
+    error.code === '53000'
+    || error.code === '53100'
+    || error.code === '53200'
+    || error.code === '53300'
   ) {
     return ErrorType.INSUFFICIENT_RESOURCES
   }
@@ -105,14 +105,14 @@ export const retryableStatusCodes: { [key: number]: string } = {
   500: 'Internal Server Error - The server encountered an unexpected condition that prevented it from fulfilling the request.',
   502: 'Bad Gateway - The server, while acting as a gateway or proxy, received an invalid response from an inbound server.',
   503: 'Service Unavailable - The server is currently unable to handle the request due to temporary overloading or maintenance of the server.',
-  504: 'Gateway Timeout - The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server.'
+  504: 'Gateway Timeout - The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server.',
 }
 
 export enum ErrorSeverity {
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 export enum ErrorType {
@@ -137,7 +137,7 @@ export enum ErrorType {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   VALIDATION_ERROR = 'VALIDATION_ERROR',
   NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
-  NETWORK_ERROR = 'NETWORK_ERROR'
+  NETWORK_ERROR = 'NETWORK_ERROR',
 }
 
 export class AppError extends Error {
@@ -192,7 +192,8 @@ export function useErrorHandler() {
 
     if (error instanceof AppError) {
       appError = error
-    } else {
+    }
+    else {
       const errorType = determineErrorType(error)
       const severity = determineSeverity(error)
       appError = new AppError({
@@ -203,7 +204,7 @@ export function useErrorHandler() {
         context: context,
         code: (error as any).code,
         pgError: (error as any).details || (error as any).hint,
-        operation: context
+        operation: context,
       })
     }
 
@@ -223,6 +224,6 @@ export function useErrorHandler() {
     handleError,
     AppError,
     ErrorType,
-    ErrorSeverity
+    ErrorSeverity,
   }
 }

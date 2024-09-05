@@ -65,16 +65,17 @@
 
 <script setup lang="ts">
 import socials from '@/data/home/socials.json'
+
 const color = useColorMode()
 
 const contactData = {
   Email: '',
   Phone: '',
-  Location: ''
+  Location: '',
 }
 
 definePageMeta({
-  name: 'Contact'
+  name: 'Contact',
 })
 </script>
 

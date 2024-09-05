@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const store = useServerAnalyticsStore()
 const {
   jobMetrics,
@@ -10,7 +9,7 @@ const {
   pageToMarkdownAnalytics,
   availableMetrics,
   isConnected,
-  haveMetrics
+  haveMetrics,
 } = storeToRefs(store)
 
 interface FlatMetric {
@@ -29,11 +28,12 @@ function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
 
       if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
         flattened = flattened.concat(flattenMetrics(value, newPrefix))
-      } else {
+      }
+      else {
         flattened.push({
           key: key,
           value: value,
-          path: newPrefix
+          path: newPrefix,
         })
       }
     }
@@ -48,7 +48,7 @@ const allMetrics = computed(() => ({
   paginationMetrics: paginationMetrics.value,
   blogPostScraperMetrics: blogPostScraperMetrics.value,
   resourceAnalytics: resourceAnalytics.value,
-  pageToMarkdownAnalytics: pageToMarkdownAnalytics.value
+  pageToMarkdownAnalytics: pageToMarkdownAnalytics.value,
 }))
 
 const flatMetrics = computed<FlatMetric[]>(() => {
@@ -56,11 +56,11 @@ const flatMetrics = computed<FlatMetric[]>(() => {
 })
 
 const metricCategories = computed(() => {
-  return [...new Set(flatMetrics.value.map((metric) => metric.path[0]))]
+  return [...new Set(flatMetrics.value.map(metric => metric.path[0]))]
 })
 
 function getCategoryMetrics(category: string): FlatMetric[] {
-  return flatMetrics.value.filter((metric) => metric.path[0] === category)
+  return flatMetrics.value.filter(metric => metric.path[0] === category)
 }
 
 function formatCategoryName(name: string): string {
@@ -74,9 +74,11 @@ function formatMetricName(name: string): string {
 function formatMetricValue(value: any): string {
   if (typeof value === 'number') {
     return value.toLocaleString()
-  } else if (value instanceof Date) {
+  }
+  else if (value instanceof Date) {
     return value.toLocaleString()
-  } else {
+  }
+  else {
     return String(value)
   }
 }

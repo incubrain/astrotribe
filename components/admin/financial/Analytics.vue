@@ -18,31 +18,31 @@ const charts = computed(() => {
           'Events Cost',
           'Recordings Cost',
           'Feature Requests Cost',
-          'Survey Responses Cost'
+          'Survey Responses Cost',
         ],
         datasets: [
           {
             label: 'Total Analytics Costs',
             valueType: 'currency',
             data: [
-              analytics.value.flatMap((month) => month.events.cost).reduce((a, b) => a + b, 0),
-              analytics.value.flatMap((month) => month.recordings.cost).reduce((a, b) => a + b, 0),
+              analytics.value.flatMap(month => month.events.cost).reduce((a, b) => a + b, 0),
+              analytics.value.flatMap(month => month.recordings.cost).reduce((a, b) => a + b, 0),
               analytics.value
-                .flatMap((month) => month.featureRequests.cost)
+                .flatMap(month => month.featureRequests.cost)
                 .reduce((a, b) => a + b, 0),
               analytics.value
-                .flatMap((month) => month.surveyResponses.cost)
-                .reduce((a, b) => a + b, 0)
+                .flatMap(month => month.surveyResponses.cost)
+                .reduce((a, b) => a + b, 0),
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
               rgba('darkBlue', 0.5),
               rgba('darkBlue', 0.5),
-              rgba('darkBlue', 0.5)
-            ]
-          }
-        ]
-      }
+              rgba('darkBlue', 0.5),
+            ],
+          },
+        ],
+      },
     },
     {
       title: 'Total Analytics Cost and Breakdown',
@@ -54,40 +54,40 @@ const charts = computed(() => {
           {
             label: 'Events Cost',
             valueType: 'currency',
-            data: analytics.value.flatMap((month) => month.events.cost),
+            data: analytics.value.flatMap(month => month.events.cost),
             backgroundColor: rgba('black', 1),
-            borderColor: rgba('lightBlue', 0.5)
+            borderColor: rgba('lightBlue', 0.5),
           },
           {
             label: 'Recordings Cost',
             valueType: 'currency',
-            data: analytics.value.flatMap((month) => month.recordings.cost),
+            data: analytics.value.flatMap(month => month.recordings.cost),
             backgroundColor: rgba('black', 1),
-            borderColor: rgba('darkRed', 0.5)
+            borderColor: rgba('darkRed', 0.5),
           },
           {
             label: 'Feature Requests Cost',
             valueType: 'currency',
-            data: analytics.value.flatMap((month) => month.featureRequests.cost),
+            data: analytics.value.flatMap(month => month.featureRequests.cost),
             backgroundColor: rgba('black', 1),
-            borderColor: rgba('lightGreen', 0.5)
+            borderColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'Survey Responses Cost',
             valueType: 'currency',
-            data: analytics.value.flatMap((month) => month.surveyResponses.cost),
+            data: analytics.value.flatMap(month => month.surveyResponses.cost),
             backgroundColor: rgba('black', 1),
-            borderColor: rgba('lightRed', 0.5)
+            borderColor: rgba('lightRed', 0.5),
           },
           {
             label: 'Total Cost',
             valueType: 'currency',
             type: 'bar',
-            data: analytics.value.flatMap((month) => month.total),
-            backgroundColor: rgba('darkBlue', 0.5)
-          }
-        ]
-      }
+            data: analytics.value.flatMap(month => month.total),
+            backgroundColor: rgba('darkBlue', 0.5),
+          },
+        ],
+      },
     },
     {
       title: 'Usage Metrics Over Time',
@@ -100,33 +100,33 @@ const charts = computed(() => {
           {
             label: 'Events Usage',
             valueType: 'number',
-            data: analytics.value.flatMap((month) => month.events.usage),
+            data: analytics.value.flatMap(month => month.events.usage),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
+            backgroundColor: rgba('lightBlue', 0.2),
           },
           {
             label: 'Recordings Usage',
             valueType: 'number',
-            data: analytics.value.flatMap((month) => month.recordings.usage),
+            data: analytics.value.flatMap(month => month.recordings.usage),
             borderColor: rgba('darkRed', 0.5),
-            backgroundColor: rgba('darkRed', 0.2)
+            backgroundColor: rgba('darkRed', 0.2),
           },
           {
             label: 'Feature Requests Usage',
             valueType: 'number',
-            data: analytics.value.flatMap((month) => month.featureRequests.usage),
+            data: analytics.value.flatMap(month => month.featureRequests.usage),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            backgroundColor: rgba('lightGreen', 0.2),
           },
           {
             label: 'Survey Responses Usage',
             valueType: 'number',
-            data: analytics.value.flatMap((month) => month.surveyResponses.usage),
+            data: analytics.value.flatMap(month => month.surveyResponses.usage),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('lightRed', 0.2)
-          }
-        ]
-      }
+            backgroundColor: rgba('lightRed', 0.2),
+          },
+        ],
+      },
     },
     {
       title: 'Cost Efficiency Over Time',
@@ -138,40 +138,40 @@ const charts = computed(() => {
           {
             label: 'Events Cost Efficiency',
             valueType: 'currency',
-            data: analytics.value.flatMap((month) => month.events.cost / month.events.usage),
+            data: analytics.value.flatMap(month => month.events.cost / month.events.usage),
             borderColor: rgba('lightBlue', 0.5),
-            backgroundColor: rgba('lightBlue', 0.2)
+            backgroundColor: rgba('lightBlue', 0.2),
           },
           {
             label: 'Recordings Cost Efficiency',
             valueType: 'currency',
             data: analytics.value.flatMap(
-              (month) => month.recordings.cost / month.recordings.usage
+              month => month.recordings.cost / month.recordings.usage,
             ),
             borderColor: rgba('darkRed', 0.5),
-            backgroundColor: rgba('darkRed', 0.2)
+            backgroundColor: rgba('darkRed', 0.2),
           },
           {
             label: 'Feature Requests Cost Efficiency',
             valueType: 'currency',
             data: analytics.value.flatMap(
-              (month) => month.featureRequests.cost / month.featureRequests.usage
+              month => month.featureRequests.cost / month.featureRequests.usage,
             ),
             borderColor: rgba('lightGreen', 0.5),
-            backgroundColor: rgba('lightGreen', 0.2)
+            backgroundColor: rgba('lightGreen', 0.2),
           },
           {
             label: 'Survey Responses Cost Efficiency',
             valueType: 'currency',
             data: analytics.value.flatMap(
-              (month) => month.surveyResponses.cost / month.surveyResponses.usage
+              month => month.surveyResponses.cost / month.surveyResponses.usage,
             ),
             borderColor: rgba('lightRed', 0.5),
-            backgroundColor: rgba('lightRed', 0.2)
-          }
-        ]
-      }
-    }
+            backgroundColor: rgba('lightRed', 0.2),
+          },
+        ],
+      },
+    },
   ]
 })
 </script>

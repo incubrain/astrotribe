@@ -26,7 +26,7 @@ interface RefundEfficiencyParams {
 export function EFFICIENCY_FACTOR({
   currentMonth,
   pessimistic,
-  optimistic
+  optimistic,
 }: RefundEfficiencyParams): number {
   const midpoint = 6 // Midpoint of 12 months for gradual change
   const steepness = 0.1 // Steepness of the curve

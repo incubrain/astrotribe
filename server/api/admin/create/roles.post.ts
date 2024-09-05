@@ -1,4 +1,4 @@
-import { Role } from '@/types/roles'
+import type { Role } from '@/types/roles'
 
 export default defineEventHandler(async (event) => {
   const client = dbClient(event)
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     const mappedRoles = roles.map((role) => {
       role.created_at = new Date(role.created_at).toISOString()
       return {
-        ...role
+        ...role,
       }
     })
 
@@ -21,6 +21,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     status: 200,
-    message: 'Users have been inserted successfully'
+    message: 'Users have been inserted successfully',
   }
 })

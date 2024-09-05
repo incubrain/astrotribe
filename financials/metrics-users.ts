@@ -35,7 +35,7 @@ function allocateCostsToTiers({ totalCosts, users }: AllocateCostParams): UserTi
   const costs: UserTierCost = {
     free: { total: 0, singleCost: 0 },
     pro: { total: 0, singleCost: 0 },
-    expert: { total: 0, singleCost: 0 }
+    expert: { total: 0, singleCost: 0 },
   }
 
   // Allocate infrastructure costs
@@ -70,7 +70,7 @@ export interface CalculateCostParams {
 export function calculateCostPerUser({ users, totalCosts }: CalculateCostParams): CostPerUser {
   const costs = allocateCostsToTiers({
     totalCosts,
-    users
+    users,
   })
 
   return {
@@ -80,18 +80,18 @@ export function calculateCostPerUser({ users, totalCosts }: CalculateCostParams)
     free: {
       count: users.free,
       totalCost: costs.free.total,
-      singleCost: costs.free.singleCost
+      singleCost: costs.free.singleCost,
     },
     pro: {
       count: users.pro,
       totalCost: costs.pro.total,
-      singleCost: costs.pro.singleCost
+      singleCost: costs.pro.singleCost,
     },
     expert: {
       count: users.expert,
       totalCost: costs.expert.total,
-      singleCost: costs.expert.singleCost
-    }
+      singleCost: costs.expert.singleCost,
+    },
   }
 }
 

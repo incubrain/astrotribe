@@ -20,7 +20,7 @@ export interface AnalyticsResult {
   }
 }
 
-function calculateTieredCost(quantity: number, tiers: { limit: number; price: number }[]) {
+function calculateTieredCost(quantity: number, tiers: { limit: number, price: number }[]) {
   let cost = 0
   let remainingQuantity = quantity
 
@@ -41,7 +41,7 @@ const POSTHOG_ANALYTICS_TIERS = [
   { limit: 35000000, price: 0.0000295 },
   { limit: 50000000, price: 0.0000218 },
   { limit: 150000000, price: 0.000015 },
-  { limit: Infinity, price: 0.000009 }
+  { limit: Infinity, price: 0.000009 },
 ]
 
 function calculateProductAnalyticsCost(events: number) {
@@ -54,7 +54,7 @@ const POSTHOG_REPLAY_TIERS = [
   { limit: 35000, price: 0.003 },
   { limit: 100000, price: 0.0027 },
   { limit: 350000, price: 0.0025 },
-  { limit: Infinity, price: 0.002 }
+  { limit: Infinity, price: 0.002 },
 ]
 
 function calculateSessionReplayCost(recordings: number) {
@@ -66,7 +66,7 @@ const POSTHOG_FEAT_FLAG_TIERS = [
   { limit: 1000000, price: 0.0001 },
   { limit: 8000000, price: 0.000045 },
   { limit: 40000000, price: 0.000025 },
-  { limit: Infinity, price: 0.00001 }
+  { limit: Infinity, price: 0.00001 },
 ]
 
 function calculateFeatureFlagsCost(requests: number) {
@@ -79,7 +79,7 @@ const POSTHOG_SURVEY_TIERS = [
   { limit: 500, price: 0.1 },
   { limit: 9000, price: 0.035 },
   { limit: 10000, price: 0.015 },
-  { limit: Infinity, price: 0.01 }
+  { limit: Infinity, price: 0.01 },
 ]
 
 function calculateSurveysCost(responses: number) {
@@ -89,28 +89,28 @@ function calculateSurveysCost(responses: number) {
 export function calculateAnalyticsCost({
   MAU,
   month,
-  avgMauUsage
+  avgMauUsage,
 }: UsageEstimationParams): AnalyticsResult {
   const { events, recordings, featureRequests, surveyResponses } = estimateUsage({
     MAU,
     month,
-    avgMauUsage
+    avgMauUsage,
   })
-  
+
   const eventsCost = calculateProductAnalyticsCost(events)
   const recordingsCost = calculateSessionReplayCost(recordings)
   const featureRequestsCost = calculateFeatureFlagsCost(featureRequests)
   const surveysCost = calculateSurveysCost(surveyResponses)
-  
+
   console.log(
     'Calculate Analytics Cost:',
     MAU,
     eventsCost,
     recordingsCost,
     featureRequestsCost,
-    surveysCost
+    surveysCost,
   )
-  
+
   const totalCost = eventsCost + recordingsCost + featureRequestsCost + surveysCost
   console.log(
     'Calculate Analytics Cost:',
@@ -120,7 +120,7 @@ export function calculateAnalyticsCost({
     featureRequestsCost,
     surveysCost,
     totalCost,
-    USD2INR(totalCost)
+    USD2INR(totalCost),
   )
 
   return {
@@ -131,16 +131,16 @@ export function calculateAnalyticsCost({
     },
     recordings: {
       cost: USD2INR(recordingsCost),
-      usage: recordings
+      usage: recordings,
     },
     featureRequests: {
       cost: USD2INR(featureRequestsCost),
-      usage: featureRequests
+      usage: featureRequests,
     },
     surveyResponses: {
       cost: USD2INR(surveysCost),
-      usage: surveyResponses
-    }
+      usage: surveyResponses,
+    },
   }
 }
 
@@ -167,7 +167,7 @@ function estimateUsage({ MAU, month, avgMauUsage }: UsageEstimationParams): Esti
     events: Math.round(events),
     recordings: Math.round(recordings),
     featureRequests: Math.round(featureRequests),
-    surveyResponses: Math.round(surveyResponses)
+    surveyResponses: Math.round(surveyResponses),
   }
 }
 

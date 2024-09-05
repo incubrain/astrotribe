@@ -16,15 +16,15 @@ export function useAdmin() {
   const toast = useNotification()
   const createdUsers = ref([] as NewUser[])
 
-  const register = async ({ email, password }: { email: string; password: string }) => {
+  const register = async ({ email, password }: { email: string, password: string }) => {
     const { data, error } = await client.auth.signUp({
       email,
-      password
+      password,
     })
     if (error) {
       throw createError({
         statusCode: 401,
-        message: error.message
+        message: error.message,
       })
     }
 
@@ -44,15 +44,15 @@ export function useAdmin() {
         .upload(`${userId}/avatar/${file.name}`, file)
       if (error) {
         throw createError(
-          `Error uploading profile picture for user with ID ${userId}: ${error.message}`
+          `Error uploading profile picture for user with ID ${userId}: ${error.message}`,
         )
       }
       console.log(`Profile picture uploaded successfully for user with ID ${userId}`)
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`Error uploading profile picture for user with ID ${userId}:`, error)
     }
   }
-
 
   async function registerManyUsers() {
     const users: UserRowType[] = []
@@ -74,8 +74,8 @@ export function useAdmin() {
         // Locate the profile image file based on the user's given name and surname
         const imageName = `${givenName.toLowerCase()}-${surname.toLowerCase()}.jpg`
         const imagePath = `/data/seed/avatars/${imageName}` // Adjust the path as necessary
-        const imageFile = new File([await fetch(imagePath).then((r) => r.blob())], imageName, {
-          type: 'image/jpeg'
+        const imageFile = new File([await fetch(imagePath).then(r => r.blob())], imageName, {
+          type: 'image/jpeg',
         })
 
         console.log('file exists', imageFile.size)
@@ -84,12 +84,12 @@ export function useAdmin() {
 
         // update user profile with data
         await updateSingle(user, newUser.id)
-      } catch (error) {
+      }
+      catch (error) {
         console.error(`Failed to register user with email ${user.email}:`, error)
       }
     }
   }
-
 
   async function updateUser(newData: any, oldData: any) {
     log.info(`Updating user with email ${newData.email}`)
@@ -106,8 +106,8 @@ export function useAdmin() {
         method: 'POST',
         body: {
           data: updatedData,
-          id: newData.id
-        }
+          id: newData.id,
+        },
       })
 
       console.log('data:', response)
@@ -117,22 +117,23 @@ export function useAdmin() {
         devOnly: false,
         showSuccess: true,
         devMessage: `Error updating user with email ${newData.email}`,
-        userMessage: `There was an error updating user with email ${newData.email}`
+        userMessage: `There was an error updating user with email ${newData.email}`,
       })
 
       log.info(`User with email ${data.email} updated successfully`)
       toast.success({
         summary: 'Success',
-        message: `User with email ${data.email} updated successfully`
+        message: `User with email ${data.email} updated successfully`,
       })
 
       // maybe update state here
-    } catch (error) {
+    }
+    catch (error) {
       errors.client({
         error,
         devOnly: false,
         devMessage: `Error updating user with email ${newData.email}`,
-        userMessage: `There was an error updating user with email ${newData.email}`
+        userMessage: `There was an error updating user with email ${newData.email}`,
       })
     }
   }
@@ -140,6 +141,6 @@ export function useAdmin() {
   return {
     registerManyUsers,
     updateUser,
-    createdUsers
+    createdUsers,
   }
 }

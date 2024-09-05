@@ -5,8 +5,8 @@ import type { NewsCardT } from '@/types/news'
 defineProps({
   news: {
     type: Object as () => NewsCardT,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 
@@ -18,7 +18,7 @@ defineProps({
           src: `images/companies/${news.source}-logo.jpg`,
           alt: news.title,
           width: '60',
-          height: '60'
+          height: '60',
         }"
         class="rounded-full"
       />

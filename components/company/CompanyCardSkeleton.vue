@@ -8,7 +8,7 @@
         <div class="flex gap-4 items-center">
           <PrimeSkeleton
             :pt="{
-              root: 'max-w-16 min-h-16 rounded-full'
+              root: 'max-w-16 min-h-16 rounded-full',
             }"
           />
 

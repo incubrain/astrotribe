@@ -4,73 +4,73 @@ const BASE_EMPLOYEE_COUNT = {
   support: 0,
   core: 0,
   experts: 3,
-  founders: 2
+  founders: 2,
 }
 
 export const EMPLOYEE_CONFIG = {
   start: {
     support: {
-      salary: 10_000
+      salary: 10_000,
     },
     core: {
-      salary: 10_000
+      salary: 10_000,
     },
     experts: {
-      salary: 25_000
+      salary: 25_000,
     },
     founders: {
-      salary: 25_000
-    }
+      salary: 25_000,
+    },
   },
   growth: {
     support: {
-      salary: 15_000
+      salary: 15_000,
     },
     core: {
-      salary: 24_000
+      salary: 24_000,
     },
     experts: {
-      salary: 40_000
+      salary: 40_000,
     },
     founders: {
-      salary: 50_000
-    }
+      salary: 50_000,
+    },
   },
   scaling: {
     support: {
-      salary: 20_000
+      salary: 20_000,
     },
     core: {
-      salary: 36_000
+      salary: 36_000,
     },
     experts: {
-      salary: 50_000
+      salary: 50_000,
     },
     founders: {
-      salary: 120_000
-    }
+      salary: 120_000,
+    },
   },
   secure: {
     support: {
-      salary: 30_000
+      salary: 30_000,
     },
     core: {
-      salary: 50_000
+      salary: 50_000,
     },
     experts: {
-      salary: 100_000
+      salary: 100_000,
     },
     founders: {
-      salary: 400_000
-    }
-  }
+      salary: 400_000,
+    },
+  },
 }
 
 const EMPLOYEE_EXTRAS = {
   recruitment: 500,
   turnover: 1000,
   legal: 1000,
-  technology: 1000
+  technology: 1000,
 }
 
 // Function to calculate benefits as a percentage of salary
@@ -119,7 +119,7 @@ export function calculateEmployeeCost({
   mau,
   stage,
   month,
-  bootstrapMonths
+  bootstrapMonths,
 }: EmployeeCostParams): EmployeeResult {
   const baseCount = BASE_EMPLOYEE_COUNT
   const stageConfig = EMPLOYEE_CONFIG[stage]
@@ -143,7 +143,7 @@ export function calculateEmployeeCost({
         benefits: 0,
         recruitment: 0,
         technology: technology / count,
-        mauRatio: undefined
+        mauRatio: undefined,
       }
     }
 
@@ -160,7 +160,7 @@ export function calculateEmployeeCost({
       support: calculateBaseCost(0, stageConfig.support.salary),
       core: calculateBaseCost(0, stageConfig.core.salary),
       experts,
-      founders
+      founders,
     }
   }
 
@@ -194,7 +194,7 @@ export function calculateEmployeeCost({
       benefits: benefits,
       recruitment: recruitment / count,
       technology: technology / count,
-      mauRatio
+      mauRatio,
     }
   }
 
@@ -212,7 +212,7 @@ export function calculateEmployeeCost({
     support,
     core,
     experts,
-    founders
+    founders,
   }
 }
 

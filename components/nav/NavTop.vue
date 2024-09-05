@@ -4,12 +4,12 @@ const { websiteLinks } = usePages()
 const props = defineProps({
   isCompact: {
     type: Boolean,
-    default: false
+    default: false,
   },
   compactOnScroll: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const currentUser = useCurrentUser()
@@ -20,7 +20,8 @@ const lastScrollY = ref(y.value)
 const navbarClasses = computed(() => {
   if (navPosition.value === 'fixed') {
     return ''
-  } else {
+  }
+  else {
     return navPosition.value === 'hidden' ? 'animate-bounce-out' : 'animate-bounce-in'
   }
 })
@@ -33,14 +34,16 @@ watch(
   (newY) => {
     if (window?.innerWidth < 1024) {
       navPosition.value = 'fixed'
-    } else if (newY > lastScrollY.value) {
+    }
+    else if (newY > lastScrollY.value) {
       navPosition.value = 'hidden'
-    } else if (newY < lastScrollY.value) {
+    }
+    else if (newY < lastScrollY.value) {
       navPosition.value = 'visible'
     }
     lastScrollY.value = newY
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 
@@ -54,7 +57,7 @@ watch(
       top: '0',
       left: '0',
       right: '0',
-      zIndex: '50'
+      zIndex: '50',
     }"
   >
     <PrimeMenubar
@@ -62,8 +65,8 @@ watch(
       class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
-          class: '!text-sm !font-bold'
-        }
+          class: '!text-sm !font-bold',
+        },
       }"
       :pt-options="{ mergeSections: true, mergeProps: true }"
     >
@@ -74,7 +77,7 @@ watch(
           >
             <IBImage
               :img="{
-                src: '/astronera-logo.jpg'
+                src: '/astronera-logo.jpg',
               }"
               class="h-full w-full dark:opacity-90"
             />

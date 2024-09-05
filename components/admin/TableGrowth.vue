@@ -15,7 +15,7 @@ const tables = [
   'blacklisted_domains',
   'blacklisted_urls',
   'searches',
-  'research'
+  'research',
 ]
 
 const growthData = ref<Record<string, any>>({})
@@ -32,26 +32,27 @@ const fetchGrowthData = async (table: string) => {
       supabase.rpc('calculate_table_growth', {
         p_table_name: table,
         p_time_period: '1 day',
-        p_num_periods: 30
+        p_num_periods: 30,
       }),
       supabase.rpc('calculate_table_growth', {
         p_table_name: table,
         p_time_period: '1 week',
-        p_num_periods: 12
+        p_num_periods: 12,
       }),
       supabase.rpc('calculate_table_growth', {
         p_table_name: table,
         p_time_period: '1 month',
-        p_num_periods: 12
-      })
+        p_num_periods: 12,
+      }),
     ])
 
     return {
       daily: daily.data,
       weekly: weekly.data,
-      monthly: monthly.data
+      monthly: monthly.data,
     }
-  } catch (error) {
+  }
+  catch (error) {
     handleError(error, `Error fetching growth data for ${table}`)
     return null
   }
@@ -67,7 +68,7 @@ const generateFakeGrowthData = (table: string) => {
         period_end_time: new Date(Date.now() - (periodCount - i - 1) * 86400000).toISOString(),
         row_count: rowCount,
         growth_count: i === 0 ? 0 : rowCount - baseRowCount,
-        growth_percentage: i === 0 ? 0 : ((rowCount - baseRowCount) / baseRowCount) * 100
+        growth_percentage: i === 0 ? 0 : ((rowCount - baseRowCount) / baseRowCount) * 100,
       }
     })
   }
@@ -76,7 +77,7 @@ const generateFakeGrowthData = (table: string) => {
   return {
     daily: generatePeriodData(30, baseRowCount),
     weekly: generatePeriodData(12, baseRowCount),
-    monthly: generatePeriodData(12, baseRowCount)
+    monthly: generatePeriodData(12, baseRowCount),
   }
 }
 
@@ -85,23 +86,23 @@ const processGrowthData = (data: any) => {
 
   const getLatestGrowth = (periodData: any[]) => {
     return periodData.sort(
-      (a, b) => new Date(b.period_end_time).getTime() - new Date(a.period_end_time).getTime()
+      (a, b) => new Date(b.period_end_time).getTime() - new Date(a.period_end_time).getTime(),
     )[0]
   }
 
   return {
     daily: {
       latest: getLatestGrowth(data.daily),
-      data: data.daily
+      data: data.daily,
     },
     weekly: {
       latest: getLatestGrowth(data.weekly),
-      data: data.weekly
+      data: data.weekly,
     },
     monthly: {
       latest: getLatestGrowth(data.monthly),
-      data: data.monthly
-    }
+      data: data.monthly,
+    },
   }
 }
 
@@ -147,8 +148,8 @@ const totalRowCount = computed(() => {
 const getSparklineData = (table: string, period: string) => {
   const data = growthData.value[table]?.[period]?.data || []
 
-  const borderColor =
-    growthData.value[table]?.[period]?.latest.growth_percentage > 0 ? '#4CAF50' : '#F44336'
+  const borderColor
+    = growthData.value[table]?.[period]?.latest.growth_percentage > 0 ? '#4CAF50' : '#F44336'
 
   return {
     labels: data.map((d: any) => d.period_end_time),
@@ -158,9 +159,9 @@ const getSparklineData = (table: string, period: string) => {
         borderColor,
         borderWidth: 2,
         fill: false,
-        pointRadius: 0
-      }
-    ]
+        pointRadius: 0,
+      },
+    ],
   }
 }
 
@@ -169,37 +170,38 @@ const sparklineOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: { display: false },
-    tooltip: { enabled: false }
+    tooltip: { enabled: false },
   },
   scales: { x: { display: false }, y: { display: false } },
   elements: {
     line: {
-      tension: 0.4 // Smooth line
+      tension: 0.4, // Smooth line
     },
     point: {
-      radius: 0 // Hide points
-    }
+      radius: 0, // Hide points
+    },
   },
   interaction: {
     intersect: false,
     mode: 'index',
     hover: {
-      mode: null // Disable hover mode
-    }
+      mode: null, // Disable hover mode
+    },
   },
   animation: {
-    duration: 0 // Disable all animations
-  }
+    duration: 0, // Disable all animations
+  },
 }
 
 onMounted(async () => {
   try {
     await fetchAllGrowthData()
-  } catch (error) {
+  }
+  catch (error) {
     handleError(error, 'Error loading dashboard data')
     toast.error({
       summary: 'Data Load Error',
-      message: 'Failed to load dashboard data. Please try again later.'
+      message: 'Failed to load dashboard data. Please try again later.',
     })
   }
 })

@@ -9,15 +9,16 @@ export default defineEventHandler(async (event) => {
       error: null,
       data: [],
       status: 200,
-      message: 'User fetched'
+      message: 'User fetched',
     }
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('update user error', error.message)
     return {
       error,
       data: null,
       status: 500,
-      message: error.message
+      message: error.message,
     }
   }
 })

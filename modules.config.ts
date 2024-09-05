@@ -1,8 +1,9 @@
-import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 import path from 'path'
+import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
+  '@nuxt/eslint',
   '@nuxt/devtools',
   '@vueuse/nuxt',
   '@nuxt/image',
@@ -16,15 +17,19 @@ export const MODULES: NuxtConfig['modules'] = [
   '@nuxtjs/supabase',
   'nuxt-icon',
   'nuxt-security',
-  'nuxt-tiptap-editor'
+  'nuxt-tiptap-editor',
 ]
 
 const PINIA_OPTIONS: NuxtConfig['pinia'] = {
-  autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs']
+  autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs'],
 }
 
 const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
-  prefix: 'Tiptap'
+  prefix: 'Tiptap',
+}
+
+const ESLINT_OPTIONS: NuxtConfig['eslint'] = {
+  checker: true,
 }
 
 // !infra:med:hard:12 - look into and configure nuxt security module
@@ -32,18 +37,18 @@ const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
 const SECURITY_OPTIONS: NuxtConfig['security'] = {
   headers: {
     contentSecurityPolicy: {
-      'worker-src': ["'self'", 'blob:'],
+      'worker-src': ['\'self\'', 'blob:'],
       'default-src': [
-        "'self'",
+        '\'self\'',
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.astronera.org',
         'https://*.up.railway.app',
         'https://*.supabase.co',
-        'https://*.posthog.com'
+        'https://*.posthog.com',
       ],
       'connect-src': [
-        "'self'",
+        '\'self\'',
         'http://localhost:3000',
         'http://localhost:8080',
         'http://host.docker.internal:8080',
@@ -59,10 +64,10 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://scrapers.railway.internal:8080',
         'https://*.razorpay.com',
         'https://*.posthog.com',
-        'https://us.i.posthog.com'
+        'https://us.i.posthog.com',
       ],
       'img-src': [
-        "'self'",
+        '\'self\'',
         'data:',
         'http://localhost:54321',
         'http://localhost:3000',
@@ -76,13 +81,13 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.supabase.co',
         'https://*.posthog.com',
         'https://us.i.posthog.com',
-        'http://*.railway.internal'
+        'http://*.railway.internal',
       ],
       'script-src': [
-        "'self'",
-        "'nonce-{{nonce}}'",
-        "'unsafe-inline'",
-        "'wasm-unsafe-eval'",
+        '\'self\'',
+        '\'nonce-{{nonce}}\'',
+        '\'unsafe-inline\'',
+        '\'wasm-unsafe-eval\'',
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.youtube.com',
@@ -91,35 +96,35 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.betterstack.com',
         'https://*.razorpay.com',
         'https://*.posthog.com',
-        'https://us.i.posthog.com'
+        'https://us.i.posthog.com',
       ],
       'style-src': [
-        "'self'",
-        "'unsafe-inline'",
+        '\'self\'',
+        '\'unsafe-inline\'',
         'https://fonts.googleapis.com',
-        'https://*.posthog.com'
+        'https://*.posthog.com',
       ],
       'frame-src': [
-        "'self'",
+        '\'self\'',
         'https://www.youtube.com',
         'https://us.i.posthog.com',
         'https://*.posthog.com',
         'https://www.google.com',
         'https://*.astronera.org',
         'https://*.betterstack.com',
-        'https://*.razorpay.com'
+        'https://*.razorpay.com',
       ],
-      'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com']
+      'child-src': ['\'self\'', 'https://us.i.posthog.com', 'https://*.posthog.com'],
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
     crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
     crossOriginOpenerPolicy: 'same-origin',
-    crossOriginEmbedderPolicy: 'unsafe-none'
+    crossOriginEmbedderPolicy: 'unsafe-none',
   },
   requestSizeLimiter: {
     maxUploadFileRequestInBytes: 2000000, // 2 MB
     throwError: true,
-    maxRequestSizeInBytes: 2000000 // 2 MB
+    maxRequestSizeInBytes: 2000000, // 2 MB
   },
   xssValidator: false,
   corsHandler: {
@@ -132,7 +137,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
       'http://localhost:54321',
       'https://*.supabase.co',
       'https://us.i.posthog.com',
-      'https://*.posthog.com'
+      'https://*.posthog.com',
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-client-info', 'apikey'],
@@ -140,8 +145,8 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
     credentials: true,
     maxAge: '86400', // 24 hours in seconds
     preflight: {
-      statusCode: 204
-    }
+      statusCode: 204,
+    },
   },
   allowedMethodsRestricter: false,
   hidePoweredBy: false,
@@ -150,17 +155,17 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
   nonce: true,
   removeLoggers: false,
   ssg: false,
-  sri: false
+  sri: false,
 }
 
 const SEO_OPTIONS: NuxtConfig['seo'] = {
-  redirectToCanonicalSiteUrl: true
+  redirectToCanonicalSiteUrl: true,
 }
 
 const OG_IMAGE_OPTIONS: NuxtConfig['ogImage'] = {
   componentOptions: {
-    global: true
-  }
+    global: true,
+  },
 }
 
 const CONTENT_OPTIONS: NuxtConfig['content'] = {
@@ -169,16 +174,16 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
       // !todo: light theme not working ??
       default: 'github-light',
       light: 'github-light',
-      dark: 'github-dark'
-    }
-  }
+      dark: 'github-dark',
+    },
+  },
 }
 
 const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
   importPT: { from: path.resolve(__dirname, './theme/index.js') },
   components: {
     prefix: 'Prime',
-    exclude: ['Editor']
+    exclude: ['Editor'],
   },
 
   options: {
@@ -186,14 +191,14 @@ const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
     unstyled: true,
     theme: {
       options: {
-        cssLayer: false
-      }
-    }
-  }
+        cssLayer: false,
+      },
+    },
+  },
 }
 
 const IMAGE_OPTIONS: NuxtConfig['image'] = {
-  format: ['webp', 'jpg']
+  format: ['webp', 'jpg'],
   // image: {
   //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
   //   presets: {
@@ -216,7 +221,7 @@ const IMAGE_OPTIONS: NuxtConfig['image'] = {
 }
 
 const COLOR_MODE_OPTIONS: NuxtConfig['colorMode'] = {
-  classSuffix: ''
+  classSuffix: '',
 }
 
 const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
@@ -225,17 +230,17 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
     callback: '/auth/confirm',
     include: ['/astrotribe/**'],
     exclude: [],
-    cookieRedirect: true
+    cookieRedirect: true,
   },
   clientOptions: {
     auth: {
       flowType: 'pkce',
       detectSessionInUrl: true,
       persistSession: true,
-      autoRefreshToken: true
-    }
+      autoRefreshToken: true,
+    },
   },
-  cookieName: 'sb'
+  cookieName: 'sb',
 }
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
@@ -245,10 +250,11 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,
   content: CONTENT_OPTIONS,
+  eslint: ESLINT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
   supabase: SUPABASE_OPTIONS,
-  tiptap: TIP_TAP_OPTIONS
+  tiptap: TIP_TAP_OPTIONS,
 }
 
 export const DEV_MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {}

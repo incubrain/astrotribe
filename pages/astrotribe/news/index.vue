@@ -10,7 +10,7 @@ const { store, loadMore, refresh } = await useSelectData<User>('news', {
   filters: { content_status: 'agent_action' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
-  pagination: { page: 1, limit: 20 }
+  pagination: { page: 1, limit: 20 },
 })
 
 const { items: news } = storeToRefs(store)
@@ -22,7 +22,7 @@ const isLoading = computed(() => loading.isLoading(domainKey))
 
 definePageMeta({
   name: 'News',
-  layout: 'app'
+  layout: 'app',
 })
 </script>
 

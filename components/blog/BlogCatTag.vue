@@ -17,25 +17,25 @@
 </template>
 
 <script setup lang="ts">
-import type { ArticleTagsT, ArticleCategoriesT } from '~/types/articles'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+import type { ArticleTagsT, ArticleCategoriesT } from '~/types/articles'
 
 // TODO: Add full article as prop and types for article
 defineProps({
   articleLink: {
     type: String,
-    required: true
+    required: true,
   },
   tags: {
     type: Array as PropType<ArticleTagsT[]>,
     required: false,
-    default: () => []
+    default: () => [],
   },
   category: {
     type: String as PropType<ArticleCategoriesT>,
     required: false,
-    default: 'category missing'
-  }
+    default: 'category missing',
+  },
 })
 
 const badgeColor = (badge: ArticleCategoriesT | ArticleTagsT): string => {

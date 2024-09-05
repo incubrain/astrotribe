@@ -2,7 +2,7 @@
 import teamMembers from '@/data/home/team.json'
 
 definePageMeta({
-  name: 'Team'
+  name: 'Team',
 })
 </script>
 
@@ -11,10 +11,10 @@ definePageMeta({
     <ImageHero
       :img="{
         src: 'images/team/cartoon_of_adult_astronomers_with_a_telescope.jpg',
-        alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars'
+        alt: 'AstronEra team page hero image, cartoon of astronomers looking at the stars',
       }"
       :title="{
-        main: 'The AstronEra Team'
+        main: 'The AstronEra Team',
       }"
       fit="cover"
       object-position="object-top"

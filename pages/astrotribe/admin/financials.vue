@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { updateGlobalRange, months, haveData } = useFinancials()
-
 import {
   AdminFinancialTotals,
   LazyAdminFinancialOperations,
@@ -10,65 +8,67 @@ import {
   LazyAdminFinancialOpenAI,
   LazyAdminFinancialPayments,
   LazyAdminFinancialLogging,
-  LazyAdminFinancialDevOps
+  LazyAdminFinancialDevOps,
   // LazyAdminFinancialData
 } from '#components'
+
+const { updateGlobalRange, months, haveData } = useFinancials()
 
 const financialTabs = [
   {
     title: 'Totals',
     slotName: 'totals',
     value: '0',
-    component: AdminFinancialTotals
+    component: AdminFinancialTotals,
   },
   {
     title: 'Operations',
     slotName: 'operations',
     value: '2',
-    component: LazyAdminFinancialOperations
+    component: LazyAdminFinancialOperations,
   },
   {
     title: 'Employees',
     slotName: 'employees',
     value: '4',
-    component: LazyAdminFinancialEmployees
+    component: LazyAdminFinancialEmployees,
   },
   {
     title: 'Storage',
     slotName: 'storage',
     value: '5',
-    component: LazyAdminFinancialStorage
+    component: LazyAdminFinancialStorage,
   },
   {
     title: 'Analytics',
     slotName: 'analytics',
     value: '6',
-    component: LazyAdminFinancialAnalytics
+    component: LazyAdminFinancialAnalytics,
   },
   {
     title: 'DevOps',
     slotName: 'devops',
     value: '7',
-    component: LazyAdminFinancialDevOps
+    component: LazyAdminFinancialDevOps,
   },
   {
     title: 'OpenAI',
     slotName: 'openai',
     value: '8',
-    component: LazyAdminFinancialOpenAI
+    component: LazyAdminFinancialOpenAI,
   },
   {
     title: 'Payments',
     slotName: 'payments',
     value: '9',
-    component: LazyAdminFinancialPayments
+    component: LazyAdminFinancialPayments,
   },
   {
     title: 'Logging',
     slotName: 'logging',
     value: '10',
-    component: LazyAdminFinancialLogging
-  }
+    component: LazyAdminFinancialLogging,
+  },
   // {
   //   title: 'Data',
   //   slotName: 'data',
@@ -85,13 +85,13 @@ watch(
     console.log('range', newVal)
     updateGlobalRange({ start: newVal[0], end: newVal[1] })
   },
-  { deep: true }
+  { deep: true },
 )
 
 definePageMeta({
   layoutTransition: false,
   name: 'AdminFinancials',
-  middleware: 'is-admin'
+  middleware: 'is-admin',
 })
 
 const visibleRight = ref(false)

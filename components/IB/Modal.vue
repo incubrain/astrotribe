@@ -7,7 +7,7 @@ const toggleModalOpen = () => {
 
 const options = ref({
   isOpen,
-  toggleModalOpen
+  toggleModalOpen,
 })
 </script>
 
@@ -22,7 +22,7 @@ const options = ref({
       modal
       :pt="{
         root: 'max-w-2xl w-full',
-        content: 'w-full aspect-square'
+        content: 'w-full aspect-square',
       }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >

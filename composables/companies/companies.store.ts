@@ -60,7 +60,8 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
       }
       logger.log(`returned ${data.length} companies`)
       companies.value.push(...data)
-    } catch (error) {
+    }
+    catch (error) {
       logger.error('Failed to load companies:', error)
     }
   }
@@ -72,8 +73,8 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
         headers: useRequestHeaders(['cookie']),
         body: JSON.stringify({
           newData: newCompany,
-          dto: 'insert:company:full'
-        })
+          dto: 'insert:company:full',
+        }),
       })
 
       if (error) {
@@ -81,7 +82,8 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
       }
 
       logger.log(`Company ${data.name} inserted successfully`)
-    } catch (error) {
+    }
+    catch (error) {
       logger.error(`Error inserting company ${newCompany.name}:`, error)
     }
   }
@@ -93,6 +95,6 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
   return {
     companies,
     loadCompanies,
-    insertCompany
+    insertCompany,
   }
 })

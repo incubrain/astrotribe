@@ -8,6 +8,6 @@ export function generateInfo() {
   const devOpsSummaries = generateDevOpsSummaries()
 
   return {
-    devops: devOpsSummaries
+    devops: devOpsSummaries,
   }
 }

@@ -4,6 +4,7 @@
 // !todo:high:1 - add subtitle prompt to all auth cards
 // !todo:med:2 - handle session expired, redirect to login with explanation
 </script>
+
 <template>
   <div class="relative flex h-full min-h-screen w-full items-center justify-start">
     <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[480px] p-4">
@@ -18,7 +19,7 @@
       <IBImage
         :img="{
           src: '/astron-era-hero.jpg',
-          alt: ''
+          alt: '',
         }"
         class="min-h-full w-full object-cover object-center"
       />

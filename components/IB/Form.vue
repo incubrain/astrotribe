@@ -39,14 +39,14 @@ import { z } from 'zod'
 
 const props = defineProps({
   schema: Object,
-  formFields: Object
+  formFields: Object,
 })
 
 const form = reactive(
   props.formFields.reduce((acc, field) => {
     acc[field.name] = field.defaultValue || ''
     return acc
-  }, {})
+  }, {}),
 )
 
 const schema = z.object(props.schema)

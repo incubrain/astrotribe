@@ -32,14 +32,14 @@ if (!supabaseKey) {
 console.log('Hello from Functions!')
 
 const openai = new OpenAI({
-  apiKey: openAiApiKey
+  apiKey: openAiApiKey,
 })
 
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey'
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey',
 }
 
 const contentTypes = [
@@ -53,26 +53,26 @@ const contentTypes = [
         url: {
           extract: 'string(attribute)',
           selector: 'string(css selector)',
-          attributeName: 'string'
+          attributeName: 'string',
         },
         title: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         author: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         description: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         published_at: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
-        }
-      }
-    }
+          selector: 'string(css selector)',
+        },
+      },
+    },
   },
   {
     type: 'news_article',
@@ -84,27 +84,27 @@ const contentTypes = [
         url: {
           extract: 'string(attribute)',
           selector: 'string(css selector)',
-          attributeName: 'string'
+          attributeName: 'string',
         },
         title: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         author: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         description: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
+          selector: 'string(css selector)',
         },
         published_at: {
           extract: 'string(text)',
-          selector: 'string(css selector)'
-        }
-      }
-    }
-  }
+          selector: 'string(css selector)',
+        },
+      },
+    },
+  },
 ]
 
 Deno.serve(async (req) => {
@@ -119,11 +119,12 @@ Deno.serve(async (req) => {
     console.log('PARSING REQUEST', req)
     requestBody = await req.json()
     console.log('PARSING REQUEST', requestBody)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Invalid JSON input:', error)
     return new Response(JSON.stringify({ error: 'Invalid JSON input' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
@@ -132,16 +133,16 @@ Deno.serve(async (req) => {
   if (!htmlContent || !contentType) {
     return new Response(JSON.stringify({ error: 'HTML content and content type are required' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
-  const contentTypeConfig = contentTypes.find((ct) => ct.type === contentType)
+  const contentTypeConfig = contentTypes.find(ct => ct.type === contentType)
 
   if (!contentTypeConfig) {
     return new Response(JSON.stringify({ error: 'Invalid content type' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
@@ -152,23 +153,24 @@ Deno.serve(async (req) => {
         { role: 'system', content: systemMessage },
         {
           role: 'user',
-          content: `Extract the data from the following HTML content and return it in the specified JSON structure: ${htmlContent}`
-        }
+          content: `Extract the data from the following HTML content and return it in the specified JSON structure: ${htmlContent}`,
+        },
       ],
       model: 'gpt-4o',
-      response_format: { type: 'json_object' }
+      response_format: { type: 'json_object' },
     })
 
     const generatedConfig = openaiResponse.choices[0].message.content
 
     return new Response(JSON.stringify({ config: generatedConfig }), {
-      headers
+      headers,
     })
-  } catch (error: any) {
+  }
+  catch (error: any) {
     console.error('Error processing request:', error)
     return new Response(JSON.stringify({ error: error.message }), {
       headers,
-      status: 500
+      status: 500,
     })
   }
 })

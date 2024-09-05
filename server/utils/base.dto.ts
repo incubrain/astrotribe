@@ -1,5 +1,5 @@
-import { ZodSchema } from 'zod'
-import { AllDTOKey } from './base.interface'
+import type { ZodSchema } from 'zod'
+import type { AllDTOKey } from './base.interface'
 
 type DTODefinition<T> = {
   name: AllDTOKey
@@ -20,7 +20,7 @@ export class BaseDTO<T> {
   }
 
   private getSchema(dtoName: AllDTOKey): ZodSchema<T> | undefined {
-    const dto = this.dtos.find((d) => d.name === dtoName)
+    const dto = this.dtos.find(d => d.name === dtoName)
     this.log.info(`Retrieved DTO schema for: ${dto?.name}`)
     return dto?.schema
   }
@@ -40,7 +40,8 @@ export class BaseDTO<T> {
 
       this.log.info('parsing single DTO', input.dto)
       return schema.parse(input.data)
-    } catch (error) {
+    }
+    catch (error) {
       this.log.error(`Error parsing data for: ${input.dto} - ${error}`)
       return null
     }

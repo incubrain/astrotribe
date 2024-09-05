@@ -11,7 +11,7 @@
         :img="{
           src: imgSrc,
           alt: `${title} AstroTribe feature`,
-          format: 'webp'
+          format: 'webp',
         }"
         class="h-full w-full overflow-hidden rounded-lg object-cover object-left"
       />
@@ -35,24 +35,24 @@
 defineProps({
   title: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   body: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   cta: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   imageRight: {
     type: Boolean as PropType<boolean>,
-    required: true
+    required: true,
   },
   imgSrc: {
     type: String as PropType<string>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 

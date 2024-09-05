@@ -8,7 +8,7 @@ const { store: userProfiles, loadMore, refresh } = await useSelectData<User>('us
   filters: { content_status: 'agent_action' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
-  pagination: { page: 1, limit: 20 }
+  pagination: { page: 1, limit: 20 },
 })
 
 const onRowEditSave = async (event) => {
@@ -30,9 +30,9 @@ const onRowEditSave = async (event) => {
         table: { style: 'min-width: 50rem' },
         column: {
           bodycell: ({ state }) => ({
-            style: state['d_editing'] && 'padding-top: 0.6rem; padding-bottom: 0.6rem'
-          })
-        }
+            style: state['d_editing'] && 'padding-top: 0.6rem; padding-bottom: 0.6rem',
+          }),
+        },
       }"
       @row-edit-save="onRowEditSave"
     >

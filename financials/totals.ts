@@ -1,3 +1,5 @@
+import fs from 'fs/promises'
+import path from 'path'
 import { calculateSupabaseCosts } from './storage'
 import { calculateAiCost, COST_CONFIG } from './gpt'
 import { calculateDigitalOceanCost } from './digital-ocean'
@@ -30,11 +32,8 @@ import {
   EFFICIENCY_FACTOR,
   CHURN_TO_LIFESPAN_MONTHS,
   WORDS_TO_CHAR_CHUNKS,
-  WORDS_TO_CHARS
+  WORDS_TO_CHARS,
 } from './helpers'
-
-import fs from 'fs/promises'
-import path from 'path'
 
 // set hard limits for devops usage
 
@@ -85,7 +84,7 @@ export type ContentScalingRules = {
 function scaleContentConfig(
   CONTENT_CONFIG: StageConfig,
   currentMonth: number,
-  rules: ContentScalingRules
+  rules: ContentScalingRules,
 ): StageConfig {
   const scaledConfig: StageConfig = JSON.parse(JSON.stringify(CONTENT_CONFIG)) // Deep copy to avoid mutations
 
@@ -234,7 +233,7 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
     openAI: [],
     metrics: [],
     months: [],
-    stages: []
+    stages: [],
   }
 
   let previousMonth = {
@@ -246,35 +245,35 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
       total: 0,
       new: 0,
       churned: 0,
-      churnRate: 0
+      churnRate: 0,
     },
     customers: {
       all: 0,
       pro: 0,
-      expert: 0
-    }
+      expert: 0,
+    },
   }
 
   for (let month = 1; month <= params.PROJECTION.MONTHS; month++) {
     const marketingCost = calculateMarketingCost({
       mrr: previousMonth.revenue,
-      percentage: params.MRR_MARKETING_PERCENTAGE_SPEND
+      percentage: params.MRR_MARKETING_PERCENTAGE_SPEND,
     })
 
     const scaledContentConfig = scaleContentConfig(
       params.CONTENT_CONFIG,
       month,
-      params.SCALING_RULES
+      params.SCALING_RULES,
     )
 
     // Calculate new MAU
     let mau = Math.ceil(
-      previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE) +
-        params.PROJECTION.MANUAL_GROWTH_RATE * month
+      previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE)
+      + params.PROJECTION.MANUAL_GROWTH_RATE * month,
     )
 
     const churnedMAU = Math.ceil(previousMonth.mau.total * previousMonth.mau.churnRate)
-    let newMAU = mau - (previousMonth.mau.total - churnedMAU)
+    const newMAU = mau - (previousMonth.mau.total - churnedMAU)
     mau -= churnedMAU
 
     const companyStage = determineCompanyStage(previousMonth.mau.total)
@@ -282,37 +281,37 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
     const revenue = calculateRevenue({
       mau: {
         total: mau,
-        new: newMAU
+        new: newMAU,
       },
       customers: {
         pro: previousMonth.customers.pro,
-        expert: previousMonth.customers.expert
-      }
+        expert: previousMonth.customers.expert,
+      },
     })
 
     const payments = simulateRealWorldPurchases({
       newCustomers: {
         pro: revenue.customers.pro.new,
-        expert: revenue.customers.expert.new
+        expert: revenue.customers.expert.new,
       },
-      frequency: 'Monthly'
+      frequency: 'Monthly',
     })
 
     const logging = calculateLogsCost({
       MAU: mau,
       avgMauUsage: AVG_MAU_USAGE,
       month,
-      teamMembers: 1
+      teamMembers: 1,
     })
     const devOps = calculateDevopsCosts(mau)
     const openAI = calculateAiCost({
       mau,
       customers: {
         pro: revenue.customers.pro.count,
-        expert: revenue.customers.expert.count
+        expert: revenue.customers.expert.count,
       },
       isBatch: false,
-      CONTENT_CONFIG: scaledContentConfig
+      CONTENT_CONFIG: scaledContentConfig,
     })
 
     const contentParams = Object.entries(scaledContentConfig).map(
@@ -320,22 +319,22 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
         CONTENT_TYPE: contentType as Content,
         CHARS: contentConfig.CHARS,
         TOTAL: contentConfig.TOTAL,
-        PROCESSED: contentConfig.PROCESSED
-      })
+        PROCESSED: contentConfig.PROCESSED,
+      }),
     )
     const supabase = calculateSupabaseCosts(mau, month, contentParams)
 
     const analytics = calculateAnalyticsCost({
       MAU: mau,
       month,
-      avgMauUsage: 300
+      avgMauUsage: 300,
     })
 
     const employees = calculateEmployeeCost({
       mau,
       stage: companyStage,
       month: month,
-      bootstrapMonths: params.BOOTSTRAP_MONTHS
+      bootstrapMonths: params.BOOTSTRAP_MONTHS,
     })
 
     const office = calculateOfficeCosts(employees.totalCount)
@@ -343,26 +342,26 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
     const devOpsCost = mau > 100_000 ? devOps.inhouse.cost.total : devOps.vercel.cost.total
     const software = calculateSubscriptionCosts(employees.totalCount)
 
-    const userExpenses =
-      supabase.totalCost +
-      digitalOcean.cost +
-      logging.total +
-      devOpsCost +
-      analytics.total +
-      marketingCost
+    const userExpenses
+      = supabase.totalCost
+      + digitalOcean.cost
+      + logging.total
+      + devOpsCost
+      + analytics.total
+      + marketingCost
 
-    const monthlyExpenses =
-      employees.totalCost +
-      supabase.totalCost +
-      devOpsCost +
-      digitalOcean.cost +
-      logging.total +
-      openAI.cost.total +
-      office.total +
-      analytics.total +
-      software.totalCost +
-      marketingCost +
-      payments.totalCost
+    const monthlyExpenses
+      = employees.totalCost
+      + supabase.totalCost
+      + devOpsCost
+      + digitalOcean.cost
+      + logging.total
+      + openAI.cost.total
+      + office.total
+      + analytics.total
+      + software.totalCost
+      + marketingCost
+      + payments.totalCost
 
     console.log('Monthly Expenses:', {
       employees: employees.totalCost,
@@ -375,26 +374,26 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
       analytics: analytics.total,
       software: software.totalCost,
       marketing: marketingCost,
-      payments: payments.totalCost
+      payments: payments.totalCost,
     })
 
     const totalCustomers = revenue.customers.pro.count + revenue.customers.expert.count
     const metrics = calculateAllMetrics({
       marketing: {
         cost: marketingCost,
-        leads: 0
+        leads: 0,
       },
       currentMonth: month,
       expenses: {
         total: monthlyExpenses,
         free: userExpenses + openAI.chat.free.cost.total,
         pro: userExpenses + openAI.chat.pro.cost.total,
-        expert: userExpenses + openAI.chat.expert.cost.total
+        expert: userExpenses + openAI.chat.expert.cost.total,
       },
       revenue: {
         free: revenue.total.free,
         pro: revenue.customers.pro.revenue,
-        expert: revenue.customers.expert.revenue
+        expert: revenue.customers.expert.revenue,
       },
       users: {
         mau,
@@ -403,8 +402,8 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
         expert: revenue.customers.expert.count,
         totalCustomers: totalCustomers,
         new: newMAU,
-        newCustomers: revenue.customers.pro.new + revenue.customers.expert.new
-      }
+        newCustomers: revenue.customers.pro.new + revenue.customers.expert.new,
+      },
     })
 
     const capital = calculateRemainingBalance({
@@ -413,16 +412,16 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
       initialCapital: params.INITIAL_CAPITAL,
       bootstrapMonths: params.BOOTSTRAP_MONTHS,
       expenses: monthlyExpenses,
-      income: metrics.monthlyRecurringRevenue.effective
+      income: metrics.monthlyRecurringRevenue.effective,
     })
 
     allData.totals.push({
       expenses: {
-        total: parseInt(monthlyExpenses.toFixed(0))
+        total: parseInt(monthlyExpenses.toFixed(0)),
       },
       income: {
         total: revenue.total.revenue,
-        effective: metrics.monthlyRecurringRevenue.effective
+        effective: metrics.monthlyRecurringRevenue.effective,
       },
       employees: employees.totalCost,
       office: office.total,
@@ -435,7 +434,7 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
       analytics: analytics.total,
       marketing: marketingCost,
       software: software.totalCost,
-      payments: payments.totalCost
+      payments: payments.totalCost,
     })
     allData.metrics.push(metrics)
     allData.employees.push(employees)
@@ -463,13 +462,13 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
         total: mau,
         new: newMAU,
         churned: churnedMAU,
-        churnRate: metrics.churn.free.rate
+        churnRate: metrics.churn.free.rate,
       },
       customers: {
         all: totalCustomers,
         pro: revenue.customers.pro.count,
-        expert: revenue.customers.expert.count
-      }
+        expert: revenue.customers.expert.count,
+      },
     }
   }
 
@@ -567,27 +566,27 @@ export const metricConfig = {
   MONTHLY_CHURN: {
     MAU: {
       PESSIMISTIC: 0.1,
-      OPTIMISTIC: 0.05
+      OPTIMISTIC: 0.05,
     },
     PRO: {
       PESSIMISTIC: 0.1,
-      OPTIMISTIC: 0.04
+      OPTIMISTIC: 0.04,
     },
     EXPERT: {
       PESSIMISTIC: 0.09,
-      OPTIMISTIC: 0.04
-    }
+      OPTIMISTIC: 0.04,
+    },
   },
   CURRENT: {
     MAU: 100,
     USD_TO_INR: 83.4,
-    REVENUE: 0
+    REVENUE: 0,
   },
   LOAN: {
     AMOUNT: 10_00_000,
     ANNUAL_INTEREST_RATE: 0.0,
     TERM_IN_YEARS: 2,
-    GRACE_PERIOD: 7
+    GRACE_PERIOD: 7,
   },
   PROJECTION: {
     MONTHS: 12,
@@ -595,7 +594,7 @@ export const metricConfig = {
     MANUAL_GROWTH_RATE: 100,
     USAGE_HOURS_PER_DAY: 0.1,
     USAGE_GROWTH_FACTOR: 0.1,
-    MAX_DAILY_USAGE: 1.5
+    MAX_DAILY_USAGE: 1.5,
   },
   DEVOPS_USAGE: {
     DATA_TRANSFER_GB: 0.015,
@@ -612,7 +611,7 @@ export const metricConfig = {
     EDGE_CONFIG_WRITES: 0.1,
     MONITORING_EVENTS: 0,
     SPEED_INSIGHTS_DATA_POINTS: 0,
-    WEB_ANALYTICS_EVENTS: 0
+    WEB_ANALYTICS_EVENTS: 0,
   },
   CONTENT_CONFIG: {
     NEWS: {
@@ -625,8 +624,8 @@ export const metricConfig = {
         CONTENT: WORDS_TO_CHARS(1000),
         CHUNKS: WORDS_TO_CHAR_CHUNKS(1000),
         PROMPT: WORDS_TO_CHARS(100),
-        OUTPUT: WORDS_TO_CHARS(240)
-      }
+        OUTPUT: WORDS_TO_CHARS(240),
+      },
     },
     // RESEARCH_ABSTRACTS: {
     //   PROCESSED: 0,
@@ -664,8 +663,8 @@ export const metricConfig = {
         CONTENT: WORDS_TO_CHARS(20_000),
         CHUNKS: WORDS_TO_CHAR_CHUNKS(20_000),
         PROMPT: WORDS_TO_CHARS(200),
-        OUTPUT: WORDS_TO_CHARS(1_000)
-      }
+        OUTPUT: WORDS_TO_CHARS(1_000),
+      },
     },
     JOBS: {
       PROCESSED: 0,
@@ -677,9 +676,9 @@ export const metricConfig = {
         CONTENT: WORDS_TO_CHARS(1_000),
         CHUNKS: WORDS_TO_CHAR_CHUNKS(1_000),
         PROMPT: WORDS_TO_CHARS(120),
-        OUTPUT: WORDS_TO_CHARS(100)
-      }
-    }
+        OUTPUT: WORDS_TO_CHARS(100),
+      },
+    },
   },
   SCALING_RULES: {
     // 0.1 = 10%
@@ -688,7 +687,7 @@ export const metricConfig = {
       totalVectorStored: 0,
       sourceGrowthRate: 0.15,
       additionsGrowthRate: 0.15,
-      monthlyProcessingGrowthRate: 0.1
+      monthlyProcessingGrowthRate: 0.1,
     },
     // RESEARCH_ABSTRACTS: {
     //   totalContentStored: 0,
@@ -709,16 +708,16 @@ export const metricConfig = {
       totalVectorStored: 0,
       sourceGrowthRate: 0.005,
       additionsGrowthRate: 0.06,
-      monthlyProcessingGrowthRate: 0.05
+      monthlyProcessingGrowthRate: 0.05,
     },
     JOBS: {
       totalContentStored: 0,
       totalVectorStored: 0,
       sourceGrowthRate: 0.05,
       additionsGrowthRate: 0.1,
-      monthlyProcessingGrowthRate: 0.05
-    }
-  }
+      monthlyProcessingGrowthRate: 0.05,
+    },
+  },
 }
 
 export async function generateBusinessMetrics() {
@@ -731,7 +730,8 @@ export async function generateBusinessMetrics() {
     // Write the data to a JSON file
     await fs.writeFile('./financials/business-financials.json', JSON.stringify(data, null, 2))
     console.log('Business metrics data has been written to business-metrics.json')
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error writing business metrics data to file:', error)
   }
 }

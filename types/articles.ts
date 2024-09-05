@@ -10,7 +10,7 @@ const isUUID = (value: string): boolean => {
 
 // Custom Zod validation
 const UUIDSchema = z.string().refine(isUUID, {
-  message: 'String must be a valid UUID'
+  message: 'String must be a valid UUID',
 })
 
 // ARTICLE CATEGORIES
@@ -19,7 +19,7 @@ export const articleCategorySchema = z.enum([
   'people-of-space',
   'space-exploration',
   'dark-sky-conservation',
-  'sustainable-development'
+  'sustainable-development',
 ])
 export type ArticleCategoriesT = z.infer<typeof articleCategorySchema>
 export const CATEGORIES: ArticleCategoriesT[] = [
@@ -27,7 +27,7 @@ export const CATEGORIES: ArticleCategoriesT[] = [
   'people-of-space',
   'space-exploration',
   'dark-sky-conservation',
-  'sustainable-development'
+  'sustainable-development',
 ]
 
 // ARTICLE TAGS
@@ -83,7 +83,7 @@ export const articleTagSchema = z.enum([
   'satellites',
   'international space station',
   'sky map apps',
-  'astro tourism'
+  'astro tourism',
 ])
 export type ArticleTagsT = z.infer<typeof articleTagSchema>
 export const TAGS: ArticleTagsT[] = [
@@ -138,7 +138,7 @@ export const TAGS: ArticleTagsT[] = [
   'satellites',
   'international space station',
   'sky map apps',
-  'astro tourism'
+  'astro tourism',
 ]
 
 // ARTICLE CARD
@@ -156,7 +156,7 @@ export const articleCardSchema = z.object({
   category: articleCategorySchema,
   keywords: z.object({
     primary: z.string(),
-    secondary: z.array(z.string()).optional()
+    secondary: z.array(z.string()).optional(),
   }),
   tags: z
     .array(articleTagSchema)
@@ -167,7 +167,7 @@ export const articleCardSchema = z.object({
   publishedAt: dateSchema,
   updatedAt: dateSchema,
   isSSR: z.boolean().optional(),
-  _path: z.string()
+  _path: z.string(),
 })
 export type ArticleCardT = z.infer<typeof articleCardSchema>
 export const ARTICLE_CARD_PROPERTIES = [
@@ -182,7 +182,7 @@ export const ARTICLE_CARD_PROPERTIES = [
   'featured_image',
   'publishedAt',
   'updatedAt',
-  '_path'
+  '_path',
 ]
 
 const authorSchema = z.object({
@@ -190,12 +190,12 @@ const authorSchema = z.object({
     given: z.string(),
     surname: z.string(),
     full: z.string(),
-    title: z.string().optional()
+    title: z.string().optional(),
   }),
   avatar: z.string(),
   bio: z.object({
     short: z.string(),
-    full: z.string()
+    full: z.string(),
   }),
   socials: z.object({
     twitter: z.string().optional(),
@@ -203,9 +203,9 @@ const authorSchema = z.object({
     linkedin: z.string().optional(),
     facebook: z.string().optional(),
     instagram: z.string().optional(),
-    youtube: z.string().optional()
+    youtube: z.string().optional(),
   }),
-  sponsorLink: z.string().optional()
+  sponsorLink: z.string().optional(),
 })
 
 export type AuthorT = z.infer<typeof authorSchema>
@@ -214,7 +214,7 @@ export type AuthorT = z.infer<typeof authorSchema>
 export const articleFullSchema = articleCardSchema.extend({
   body: z.object({}).passthrough(), // passthrough allows any structure within the object
   version: z.number(),
-  _id: z.string()
+  _id: z.string(),
 })
 export type ArticleFullT = z.infer<typeof articleFullSchema>
 export const ARTICLE_FULL_PROPERTIES = [...ARTICLE_CARD_PROPERTIES, 'body', '_id', 'version']
