@@ -22,11 +22,10 @@ const onRowEditSave = async (event) => {
 <template>
   <div>
     <PrimeDataTable
-      v-model:editingRows="editingRows"
+      v-model:editing-rows="editingRows"
       :value="userProfiles"
-      editMode="row"
-      dataKey="id"
-      @row-edit-save="onRowEditSave"
+      edit-mode="row"
+      data-key="id"
       :pt="{
         table: { style: 'min-width: 50rem' },
         column: {
@@ -35,6 +34,7 @@ const onRowEditSave = async (event) => {
           })
         }
       }"
+      @row-edit-save="onRowEditSave"
     >
       <PrimeColumn
         field="id"
@@ -69,9 +69,9 @@ const onRowEditSave = async (event) => {
         </template>
       </PrimeColumn>
       <PrimeColumn
-        :rowEditor="true"
+        :row-editor="true"
         style="width: 10%; min-width: 8rem"
-        bodyStyle="text-align:center"
+        body-style="text-align:center"
       ></PrimeColumn>
     </PrimeDataTable>
   </div>

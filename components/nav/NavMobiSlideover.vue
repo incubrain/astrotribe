@@ -27,7 +27,9 @@
                 class="h-8 w-8 md:h-12 md:w-12"
               />
             </div>
-            <h3 class="text-xl">AstronEra</h3>
+            <h3 class="text-xl">
+              AstronEra
+            </h3>
           </NuxtLink>
           <PrimeButton
             variant="solid"

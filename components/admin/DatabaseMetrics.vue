@@ -190,7 +190,9 @@ const exportToCSV = () => {
 
 <template>
   <div class="p-4">
-    <h1 class="mb-4 text-2xl font-bold">Table Growth</h1>
+    <h1 class="mb-4 text-2xl font-bold">
+      Table Growth
+    </h1>
 
     <div class="mb-4 flex flex-wrap gap-4">
       <PrimeSelect
@@ -214,12 +216,12 @@ const exportToCSV = () => {
         placeholder="Number of Periods"
       />
       <PrimeButton
-        @click="fetchData"
         label="Fetch Data"
+        @click="fetchData"
       />
       <PrimeButton
-        @click="exportToCSV"
         label="Export to CSV"
+        @click="exportToCSV"
       />
     </div>
 
@@ -227,41 +229,57 @@ const exportToCSV = () => {
       v-if="loading"
       severity="info"
       :life="3000"
-      >Loading data...</PrimeMessage
     >
+      Loading data...
+    </PrimeMessage>
     <PrimeMessage
       v-if="error"
       severity="error"
       :closable="true"
-      >{{ error }}</PrimeMessage
     >
+      {{ error }}
+    </PrimeMessage>
 
     <div
       v-if="growthData.length"
       class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3"
     >
       <PrimeCard>
-        <template #title>Current Count</template>
+        <template #title>
+          Current Count
+        </template>
         <template #content>
-          <p class="text-2xl font-bold">{{ growthData[0].row_count }}</p>
+          <p class="text-2xl font-bold">
+            {{ growthData[0].row_count }}
+          </p>
         </template>
       </PrimeCard>
       <PrimeCard>
-        <template #title>Total Growth</template>
+        <template #title>
+          Total Growth
+        </template>
         <template #content>
-          <p class="text-2xl font-bold">{{ calculateTotalGrowth() }}</p>
+          <p class="text-2xl font-bold">
+            {{ calculateTotalGrowth() }}
+          </p>
         </template>
       </PrimeCard>
       <PrimeCard>
-        <template #title>Average Growth Rate</template>
+        <template #title>
+          Average Growth Rate
+        </template>
         <template #content>
-          <p class="text-2xl font-bold">{{ calculateAverageGrowthRate().toFixed(2) }}%</p>
+          <p class="text-2xl font-bold">
+            {{ calculateAverageGrowthRate().toFixed(2) }}%
+          </p>
         </template>
       </PrimeCard>
     </div>
 
     <PrimeCard v-if="growthData.length">
-      <template #title>Growth Trend</template>
+      <template #title>
+        Growth Trend
+      </template>
       <template #content>
         <PrimeChart
           class="min-h-64"

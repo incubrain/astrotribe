@@ -87,13 +87,15 @@ function formatMetricValue(value: any): string {
     <div
       v-if="isConnected"
       class="text-green-500"
-      >Connected</div
     >
+      Connected
+    </div>
     <div
       v-else
       class="text-red-500"
-      >Disconnected</div
     >
+      Disconnected
+    </div>
     {{ allMetrics }}
     <div
       v-if="haveMetrics"
@@ -104,9 +106,13 @@ function formatMetricValue(value: any): string {
         :key="category"
         class="mb-8"
       >
-        <h2 class="mb-4 text-2xl font-semibold capitalize">{{ formatCategoryName(category) }}</h2>
+        <h2 class="mb-4 text-2xl font-semibold capitalize">
+          {{ formatCategoryName(category) }}
+        </h2>
         <PrimeCard class="shadow-md">
-          <template #title>{{ formatCategoryName(category) }}</template>
+          <template #title>
+            {{ formatCategoryName(category) }}
+          </template>
           <template #content>
             <div
               v-for="metric in getCategoryMetrics(category)"

@@ -1,8 +1,5 @@
-// errorHandler.ts
-
-import * as Sentry from '@sentry/vue'
-import { useNotification } from './notification.base.composable' // Adjust import as needed
-import { useLogger } from './logger.base.composable' // Adjust import as needed
+import { useNotification } from './notification.ib' // Adjust import as needed
+import { useLogger } from './logger.ib' // Adjust import as needed
 
 interface ErrorDetails {
   type: ErrorType
@@ -14,7 +11,6 @@ interface ErrorDetails {
   pgError?: string
   operation?: string
 }
-
 
 export function mapErrorType(error: any): ErrorType {
   // Connection errors
@@ -143,8 +139,6 @@ export enum ErrorType {
   NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
   NETWORK_ERROR = 'NETWORK_ERROR'
 }
-
-
 
 export class AppError extends Error {
   details: ErrorDetails

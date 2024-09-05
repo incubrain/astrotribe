@@ -31,7 +31,9 @@
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
       >
         <template #header>
-          <h2 class="text-2xl font-semibold">Watch the video</h2>
+          <h2 class="text-2xl font-semibold">
+            Watch the video
+          </h2>
         </template>
         <div class="relative flex aspect-[16/9] w-full max-w-[1140px]">
           <iframe

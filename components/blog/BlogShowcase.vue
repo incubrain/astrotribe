@@ -50,8 +50,8 @@ if (error.value) {
     <div class="space-y-6 lg:space-y-12">
       <slot name="title" />
       <p
-        class="rounded-md bg-red-950/70 p-4 text-sm lg:text-base"
         v-if="message.length"
+        class="rounded-md bg-red-950/70 p-4 text-sm lg:text-base"
       >
         {{ message }}
       </p>

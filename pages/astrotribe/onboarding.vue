@@ -1,11 +1,22 @@
 <template>
   <div class="p-4">
-    <h1 class="mb-4 text-3xl font-bold">Complete Your Profile</h1>
-    <PrimeStepper v-model:value="activeStep" linear>
+    <h1 class="mb-4 text-3xl font-bold">
+      Complete Your Profile
+    </h1>
+    <PrimeStepper
+      v-model:value="activeStep"
+      linear
+    >
       <PrimeStepList>
-        <PrimeStep value="1">Personal Info</PrimeStep>
-        <PrimeStep value="2">Professional Info</PrimeStep>
-        <PrimeStep value="3">Interests</PrimeStep>
+        <PrimeStep value="1">
+          Personal Info
+        </PrimeStep>
+        <PrimeStep value="2">
+          Professional Info
+        </PrimeStep>
+        <PrimeStep value="3">
+          Interests
+        </PrimeStep>
       </PrimeStepList>
       <PrimeStepPanels>
         <PrimeStepPanel value="1">

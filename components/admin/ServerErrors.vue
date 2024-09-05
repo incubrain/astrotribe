@@ -287,12 +287,14 @@ const rawDataArray = computed(() => [
       <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-4 p-4">
-            <h2 class="text-xl font-bold">{{ totalLogs }} Error Logs</h2>
+            <h2 class="text-xl font-bold">
+              {{ totalLogs }} Error Logs
+            </h2>
             <div class="flex items-center gap-2">
               <PrimeButton
-                @click="errorDashboard.refreshData"
                 :loading="loading"
                 class="h-full"
+                @click="errorDashboard.refreshData"
               >
                 <Icon name="mdi:refresh" />
               </PrimeButton>
@@ -309,40 +311,53 @@ const rawDataArray = computed(() => [
           <p
             v-else-if="error"
             class="text-red-500"
-            >{{ error }}</p
           >
+            {{ error }}
+          </p>
           <p
             v-else-if="loading"
             class="text-gray-500"
-            >Loading error logs...</p
           >
+            Loading error logs...
+          </p>
           <p
             v-else
             class="text-gray-500"
-            >No logs available for the selected date.</p
           >
+            No logs available for the selected date.
+          </p>
         </div>
       </PrimeSplitterPanel>
       <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div
-          class="h-full overflow-auto"
           v-if="!loading && !error && errorReport"
+          class="h-full overflow-auto"
         >
-          <h2 class="mb-4 text-2xl font-bold">Error Metrics</h2>
+          <h2 class="mb-4 text-2xl font-bold">
+            Error Metrics
+          </h2>
           <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <PrimeCard>
-              <template #title>Total Errors</template>
+              <template #title>
+                Total Errors
+              </template>
               <template #content>
-                <div class="text-4xl font-bold">{{ errorReport.totalErrors }}</div>
+                <div class="text-4xl font-bold">
+                  {{ errorReport.totalErrors }}
+                </div>
                 <div class="text-sm text-gray-500">
                   {{ errorReduction.toFixed(2) }}% change from yesterday
                 </div>
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>Average Errors per Day</template>
+              <template #title>
+                Average Errors per Day
+              </template>
               <template #content>
-                <div class="text-4xl font-bold">{{ averageErrorsPerDay.toFixed(2) }}</div>
+                <div class="text-4xl font-bold">
+                  {{ averageErrorsPerDay.toFixed(2) }}
+                </div>
               </template>
             </PrimeCard>
           </div>
@@ -350,7 +365,9 @@ const rawDataArray = computed(() => [
             v-if="Object.keys(errorsByDomain).length > 0"
             class="mb-4"
           >
-            <template #title>Domain Distribution</template>
+            <template #title>
+              Domain Distribution
+            </template>
             <template #content>
               <PrimeChart
                 type="pie"
@@ -363,7 +380,9 @@ const rawDataArray = computed(() => [
             v-if="Object.keys(errorsBySeverity).length > 0"
             class="mb-4"
           >
-            <template #title>Severity Distribution</template>
+            <template #title>
+              Severity Distribution
+            </template>
             <template #content>
               <PrimeChart
                 type="bar"
@@ -376,7 +395,9 @@ const rawDataArray = computed(() => [
             v-if="mostFrequentErrors.length > 0"
             class="mb-4"
           >
-            <template #title>Most Frequent Errors</template>
+            <template #title>
+              Most Frequent Errors
+            </template>
             <template #content>
               <ul class="list-disc pl-5">
                 <li
@@ -391,13 +412,17 @@ const rawDataArray = computed(() => [
           </PrimeCard>
           <div class="mb-4 grid grid-cols-1 gap-4">
             <PrimeCard>
-              <template #title>Hourly Error Trends</template>
+              <template #title>
+                Hourly Error Trends
+              </template>
               <template #content>
                 <Chart :chart="hourlyErrorChart" />
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>Daily Error Trends</template>
+              <template #title>
+                Daily Error Trends
+              </template>
               <template #content>
                 <Chart :chart="dailyErrorChart" />
               </template>
@@ -407,18 +432,21 @@ const rawDataArray = computed(() => [
         <p
           v-else-if="error"
           class="text-red-500"
-          >{{ error }}</p
         >
+          {{ error }}
+        </p>
         <p
           v-else-if="loading"
           class="text-gray-500"
-          >Loading error metrics...</p
         >
+          Loading error metrics...
+        </p>
         <p
           v-else
           class="text-gray-500"
-          >No error report available for the selected date.</p
         >
+          No error report available for the selected date.
+        </p>
       </PrimeSplitterPanel>
     </PrimeSplitter>
   </div>

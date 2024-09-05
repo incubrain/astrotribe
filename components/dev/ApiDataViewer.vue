@@ -1,10 +1,9 @@
-<!-- components/ApiDataViewer.vue -->
 <template>
   <div v-if="showComponent">
     <div
+      v-tooltip.left="'Page Data Structures'"
       class="fixed bottom-5 right-5 z-50 flex cursor-pointer rounded-full bg-blue-500 p-3 text-white"
       @click="showModal = true"
-      v-tooltip.left="'Page Data Structures'"
     >
       <Icon name="ic:baseline-data-object" />
     </div>
@@ -14,7 +13,10 @@
       header="API Data Structures"
       class="w-11/12 max-w-6xl"
     >
-      <PrimeAccordion :multiple="true" class="flex flex-col gap-2">
+      <PrimeAccordion
+        :multiple="true"
+        class="flex flex-col gap-2"
+      >
         <PrimeAccordionPanel
           v-for="(structure, url, index) in apiDataStore.apiData"
           :key="url"

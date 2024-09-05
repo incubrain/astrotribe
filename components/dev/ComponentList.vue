@@ -11,8 +11,8 @@
         :key="componentName"
       >
         <PrimeButton
-          @click="$emit('select', componentName)"
           size="small"
+          @click="$emit('select', componentName)"
         >
           {{ componentName }}
         </PrimeButton>

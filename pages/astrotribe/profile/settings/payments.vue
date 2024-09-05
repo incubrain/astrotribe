@@ -55,27 +55,27 @@ definePageMeta({
   >
     <div class="flex gap-4">
       <PrimeButton
-        @click="handleCreateOrder"
         :loading="isLoading"
+        @click="handleCreateOrder"
       >
         Create Order
       </PrimeButton>
       <PaymentButton />
       <PrimeButton
-        @click="handleInitializePayment"
         :loading="isLoading"
+        @click="handleInitializePayment"
       >
         Initialize Payment
       </PrimeButton>
       <PrimeButton
-        @click="handleVerifyPayment"
         :loading="isLoading"
+        @click="handleVerifyPayment"
       >
         Verify Payment
       </PrimeButton>
       <PrimeButton
-        @click="handleFetchSubscription"
         :loading="isLoading"
+        @click="handleFetchSubscription"
       >
         Fetch Subscription
       </PrimeButton>

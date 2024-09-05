@@ -1,4 +1,4 @@
-import type { DomainKey } from './pagination.base.store'
+import type { DomainKey } from './pagination.ib.store'
 
 type Loaders = {
   [K in DomainKey]?: boolean

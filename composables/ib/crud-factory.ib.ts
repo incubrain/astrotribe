@@ -1,13 +1,13 @@
-import { useUpdateData } from './update.base.composable'
-import { useSelectData } from './select.base.composable'
-import { useDeleteData } from './delete.base.composable'
-import { useInsertData } from './insert.base.composable'
+import { useUpdateData } from './update.ib'
+import { useSelectData } from './select.ib'
+import { useDeleteData } from './delete.ib'
+import { useInsertData } from './insert.ib'
 import {
   useErrorHandler,
   AppError,
   ErrorType,
   ErrorSeverity
-} from './error-handler.base.composable'
+} from './error-handler.ib'
 
 export interface CRUDOptions<T> {
   initialFetch?: boolean
@@ -60,6 +60,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             type: ErrorType.VALIDATION_ERROR,
             message: 'Insert validation failed',
             severity: ErrorSeverity.MEDIUM,
+            stack: 'no stack',
             context: `${entityName} insert`
           })
         }

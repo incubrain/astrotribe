@@ -1,7 +1,7 @@
 <template>
   <div
-    class="relative"
     :id="uniqueId"
+    class="relative"
   >
     <div
       ref="gravityAreaRef"

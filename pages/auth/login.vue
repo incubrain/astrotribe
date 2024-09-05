@@ -68,7 +68,9 @@ definePageMeta({
           </label>
         </div>
         <p class="text-sm">
-          <NuxtLink to="/auth/forgot-password"> Forgot Password? </NuxtLink>
+          <NuxtLink to="/auth/forgot-password">
+            Forgot Password?
+          </NuxtLink>
         </p>
       </div>
 

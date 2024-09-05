@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
-import { useFileUpload } from '@/composables/base/upload.base.composable'
+import { useFileUpload } from '~/composables/ib/upload.ib
 
 const schema = [
   {

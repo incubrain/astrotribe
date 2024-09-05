@@ -119,24 +119,27 @@ loadKeys()
   <div class="p-4">
     <div class="border-color background mb-4 flex items-center gap-4 rounded-md border p-4">
       <h1>Redis Management</h1>
-      <PrimeButton @click="loadKeys">Refresh Keys</PrimeButton>
+      <PrimeButton @click="loadKeys">
+        Refresh Keys
+      </PrimeButton>
       <PrimeButton
-        @click="flushDatabase"
         severity="danger"
-        >Flush Database</PrimeButton
+        @click="flushDatabase"
       >
+        Flush Database
+      </PrimeButton>
     </div>
 
     <PrimeDataTable
+      v-model:filters="filters"
       :value="tableData"
       :paginator="true"
       :rows="PAGE_SIZE"
-      v-model:filters="filters"
-      filterDisplay="row"
-      :globalFilterFields="['table', 'category']"
+      filter-display="row"
+      :global-filter-fields="['table', 'category']"
       :loading="loading"
+      :total-records="totalRecords"
       @page="onPage"
-      :totalRecords="totalRecords"
     >
       <PrimeColumn
         field="table"
@@ -194,21 +197,21 @@ loadKeys()
           <div class="flex flex-col">
             <div class="mt-2 flex gap-2">
               <PrimeButton
-                @click="viewFullValue(slotProps.data)"
                 label="View"
                 size="small"
+                @click="viewFullValue(slotProps.data)"
               />
               <PrimeButton
-                @click="editValue(slotProps.data)"
                 label="Edit"
                 size="small"
                 severity="secondary"
+                @click="editValue(slotProps.data)"
               />
               <PrimeButton
-                @click="deleteKey(slotProps.data.key)"
                 label="Delete"
                 size="small"
                 severity="danger"
+                @click="deleteKey(slotProps.data.key)"
               />
             </div>
           </div>
@@ -232,17 +235,17 @@ loadKeys()
         ></PrimeTextarea>
       </template>
       <template
-        #footer
         v-if="dialogMode === 'edit'"
+        #footer
       >
         <PrimeButton
-          @click="saveEditedValue"
           label="Save"
+          @click="saveEditedValue"
         />
         <PrimeButton
-          @click="dialogVisible = false"
           label="Cancel"
           severity="secondary"
+          @click="dialogVisible = false"
         />
       </template>
     </PrimeDialog>

@@ -26,8 +26,9 @@ function loadFallbackImage() {
 
 <template>
   <NuxtImg
-    v-bind="$attrs"
     v-if="imageUrl"
+    v-bind="$attrs"
+    :key="`image-${uuid}`"
     :src="imageUrl"
     :alt="img.alt"
     :width="img.width"
@@ -35,9 +36,8 @@ function loadFallbackImage() {
     :format="img.format"
     :quality="img.quality"
     :loading="img.loading"
-    @error="loadFallbackImage"
-    :key="`image-${uuid}`"
     :nonce="nonce"
     crossorigin="anonymous"
+    @error="loadFallbackImage"
   />
 </template>

@@ -14,6 +14,7 @@
   "editor.quickSuggestions": {
     "strings": true
   },
+  "eslint.useFlatConfig": true,
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
   "tailwindCSS.experimental.classRegex": [["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"]],
   "tailwindCSS.classAttributes": ["class", "className", "ngClass", "ui"],

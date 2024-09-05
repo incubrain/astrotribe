@@ -1,8 +1,14 @@
 <template>
   <div class="responsive-tester">
-    <button @click="$emit('change', 'mobile')">Mobile</button>
-    <button @click="$emit('change', 'tablet')">Tablet</button>
-    <button @click="$emit('change', 'desktop')">Desktop</button>
+    <button @click="$emit('change', 'mobile')">
+      Mobile
+    </button>
+    <button @click="$emit('change', 'tablet')">
+      Tablet
+    </button>
+    <button @click="$emit('change', 'desktop')">
+      Desktop
+    </button>
   </div>
 </template>
 

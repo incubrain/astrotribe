@@ -56,7 +56,7 @@ definePageMeta({
     >
       <template
         v-for="tab in socialsTabs"
-        v-slot:[tab.tabName]
+        #[tab.tabName]
       >
         <div class="h-full p-4">
           <component

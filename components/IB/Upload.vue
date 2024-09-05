@@ -37,7 +37,7 @@ const onAdvancedUpload = () => {
         :multiple="multiple"
         :accept="accept"
         :url="url"
-        :maxFileSize="maxFileSize"
+        :max-file-size="maxFileSize"
         @upload="onAdvancedUpload()"
       >
         <template #empty>

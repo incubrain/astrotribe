@@ -2,8 +2,8 @@
   <div class="relative h-full">
     <h2>Mermaid Test</h2>
     <pre
-    class="text-white"
       ref="el"
+      class="text-white"
       :style="{ display: rendered ? 'block' : 'none' }"
     >
       <slot />

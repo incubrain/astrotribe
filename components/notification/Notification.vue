@@ -28,8 +28,12 @@ const getIconName = (severity: string) => {
       <section class="flex w-full items-start justify-start gap-3 rounded-md p-3 shadow-md">
         <Icon :name="getIconName(message.severity)" />
         <div class="flex w-full flex-col items-start justify-start gap-2">
-          <p class="m-0 text-base font-semibold">{{ message.summary }}</p>
-          <p class="m-0 text-base">{{ message.detail }}</p>
+          <p class="m-0 text-base font-semibold">
+            {{ message.summary }}
+          </p>
+          <p class="m-0 text-base">
+            {{ message.detail }}
+          </p>
           <div class="mt-2">
             <p class="text-lg foreground rounded-md px-3 py-1 font-bold text-white">
               Premium Plan Coming Soon!

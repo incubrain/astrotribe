@@ -3,11 +3,11 @@ import {
   AppError,
   ErrorType,
   ErrorSeverity
-} from './error-handler.base.composable'
-import { useHttpHandler } from './http-handler.base.composable'
-import { useLogger } from './logger.base.composable'
-import { getOrCreateStore } from './utils.base.composable'
-import { useRateLimit } from './rate-limit.composable'
+} from './error-handler.ib'
+import { useHttpHandler } from './http-handler.ib'
+import { useLogger } from './logger.ib'
+import { getOrCreateStore } from './main.ib.store'
+import { useRateLimit } from './rate-limit.ib'
 
 type InsertError =
   | 'VALIDATION_ERROR'

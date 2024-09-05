@@ -13,7 +13,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
       menu: 'pt-8',
       end: 'flex items-end justify-end h-full'
     }"
-    :ptOptions="{ mergeSections: true, mergeProps: true }"
+    :pt-options="{ mergeSections: true, mergeProps: true }"
   >
     <template #start>
       <div class="flex min-h-[60px] items-center justify-end p-3">

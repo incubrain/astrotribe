@@ -45,25 +45,24 @@ const selectedRows = ref([])
 <template>
   <PrimeDataTable
     v-if="dataRows.length > 1"
-    v-model:editingRows="editingRows"
+    v-model:editing-rows="editingRows"
     v-model:selection="selectedRows"
     v-model:filters="tableFilters"
     :value="dataRows"
-    stripedRows
+    striped-rows
     size="small"
     :global-filter-fields="filterFields"
     paginator
     :rows="100"
     paginator-template="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-    :rowsPerPageOptions="[20, 50, 100]"
-    currentPageReportTemplate="{first} to {last} of {totalRecords}"
+    :rows-per-page-options="[20, 50, 100]"
+    current-page-report-template="{first} to {last} of {totalRecords}"
     scrollable
     scroll-height="flex"
-    stateStorage="session"
-    stateKey="admin-user-profiles-table"
-    editMode="row"
-    dataKey="id"
-    @row-edit-save="onRowEditSave"
+    state-storage="session"
+    state-key="admin-user-profiles-table"
+    edit-mode="row"
+    data-key="id"
     :pt="{
       column: {
         bodycell: ({ state }) => ({
@@ -72,6 +71,7 @@ const selectedRows = ref([])
       },
       paginator: { paginatorwrapper: 'border-color', root: 'rounded-none' }
     }"
+    @row-edit-save="onRowEditSave"
   >
     <template #header>
       <div class="flex items-center justify-start gap-4">
@@ -85,20 +85,24 @@ const selectedRows = ref([])
       </div>
     </template>
 
-    <template #empty> No data found. </template>
+    <template #empty>
+      No data found.
+    </template>
 
-    <template #loading> Loading data. Please wait. </template>
+    <template #loading>
+      Loading data. Please wait.
+    </template>
 
     <PrimeColumn
-      selectionMode="multiple"
-      headerStyle="width: 3rem"
+      selection-mode="multiple"
+      header-style="width: 3rem"
     ></PrimeColumn>
 
     <PrimeColumn
       :frozen="true"
-      :rowEditor="true"
+      :row-editor="true"
       header="Edit"
-      bodyStyle="text-align:center text:nowrap"
+      body-style="text-align:center text:nowrap"
       :pt="{
         headercell: 'text-nowrap text-sm p-3 bg-primary-950 text-center w-full',
         bodycell: 'text-nowrap overflow-scroll',
@@ -118,11 +122,11 @@ const selectedRows = ref([])
         bodycell: 'text-nowrap overflow-scroll max-w-sm text-sm foreground min-w-24 text-center'
       }"
     >
-      <template v-slot:editor="{ data, field }">
+      <template #editor="{ data, field }">
         <component
           :is="col.editor"
-          class="w-full text-sm"
           v-model="data[field]"
+          class="w-full text-sm"
           v-bind="col.editorProps"
         />
       </template>
@@ -132,9 +136,9 @@ const selectedRows = ref([])
       <template #filter="{ filterModel, filterCallback }">
         <PrimeInputText
           type="text"
-          @input="filterCallback()"
           class="h-6 w-full"
           placeholder="Search by name"
+          @input="filterCallback()"
         />
       </template>
     </PrimeColumn>

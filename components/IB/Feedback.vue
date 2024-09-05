@@ -79,23 +79,25 @@ const submitFeedback = async () => {
 
 <template>
   <div class="w-52">
-    <h2 class="text-lg mb-4 text-left font-bold">{{ cta }}</h2>
+    <h2 class="text-lg mb-4 text-left font-bold">
+      {{ cta }}
+    </h2>
     <form
       class="w-52 space-y-4"
       @submit.prevent="submitFeedback"
     >
       <PrimeSelect
-        :pt="{ root: 'flex text-left pl-1' }"
-        :ptOptions="{ mergeProps: true, mergeSections: true }"
         v-model="feedback.feedback_type"
+        :pt="{ root: 'flex text-left pl-1' }"
+        :pt-options="{ mergeProps: true, mergeSections: true }"
         :options="feedbackTypes"
         option-label="name"
         placeholder="Feedback Type"
       />
       <PrimeTextarea
-        class="w-full"
         v-show="feedback.feedback_type"
         v-model="feedback.message"
+        class="w-full"
         :rows="5"
         :placeholder="messagePlaceholder"
         :disabled="isMessageDisabled"
@@ -103,8 +105,8 @@ const submitFeedback = async () => {
       />
       <div>
         <PrimeButton
-          class="flex w-full justify-between"
           v-show="feedback.feedback_type"
+          class="flex w-full justify-between"
           :disabled="isMessageInvalid"
           :outlined="isMessageInvalid"
           @click="submitFeedback"

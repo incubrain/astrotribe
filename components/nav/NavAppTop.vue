@@ -64,7 +64,8 @@ const nonce = useNonce()
       <IBBreadcrumbs class="hidden text-sm lg:block" />
     </div>
     <!-- center -->
-    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl"> </div>
+    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl">
+    </div>
     <!-- end -->
     <ClientOnly>
       <div
@@ -79,8 +80,8 @@ const nonce = useNonce()
         />
       </div>
       <div
-        class="flex items-center justify-center gap-4"
         v-else-if="profile?.user_role"
+        class="flex items-center justify-center gap-4"
       >
         <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
           <Icon
@@ -100,10 +101,10 @@ const nonce = useNonce()
           class="cursor-pointer"
           aria-haspopup="true"
           aria-controls="overlay_menu"
-          @error="logError"
-          @click="toggleMenu"
           :nonce="nonce"
           crossorigin="anonymous"
+          @error="logError"
+          @click="toggleMenu"
         />
         <PrimeMenu
           id="overlay_menu"

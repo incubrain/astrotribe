@@ -28,7 +28,9 @@ const { similarChunks } = storeToRefs(chunksStore)
       :key="doc.id"
       class="border-color background h-full max-h-[600px] min-h-[600px] space-y-4 overflow-scroll text-wrap rounded-lg border p-4"
     >
-      <h4 class="text-xl font-semibold"> {{ useChangeCase(doc.title, 'capitalCase').value }}</h4>
+      <h4 class="text-xl font-semibold">
+        {{ useChangeCase(doc.title, 'capitalCase').value }}
+      </h4>
       <div v-html="renderLatex(doc.abstract)"></div>
     </div>
   </div>

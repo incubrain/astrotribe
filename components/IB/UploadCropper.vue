@@ -2,8 +2,8 @@
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-import { useFileUpload } from '@/composables/base/upload.base.composable'
-import { useNotification } from '@/composables/base/notification.base.composable'
+import { useFileUpload } from '~/composables/ib/upload.ib'
+import { useNotification } from '~/composables/ib/notification.ib'
 import { useCurrentUser } from '@/composables/users/user.current.store'
 
 type CropperConfigTypes = 'avatar' | 'default'
@@ -333,7 +333,9 @@ const setError = (error: string) => {
         />
       </template>
       <template #modal:header>
-        <h2 class="text-xl font-semibold">Crop your image</h2>
+        <h2 class="text-xl font-semibold">
+          Crop your image
+        </h2>
       </template>
       <template #modal:default>
         <Cropper
@@ -371,8 +373,8 @@ const setError = (error: string) => {
             :coordinates="preview.coordinates"
           />
           <PrimeButton
-            @click="crop(toggleModalOpen)"
             :disabled="isUploading"
+            @click="crop(toggleModalOpen)"
           >
             {{ isUploading ? 'Uploading...' : 'Crop & Upload' }}
           </PrimeButton>

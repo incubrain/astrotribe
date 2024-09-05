@@ -1,4 +1,4 @@
-import type { FetchInput } from '../base/fetch.base.composable'
+import type { FetchInput } from '../ib/fetch.ib'
 
 type CompanyType = {
   id: number

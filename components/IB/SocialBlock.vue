@@ -1,7 +1,7 @@
 <template>
   <div
-    class="flex gap-2"
     v-if="formattedSocials.length > 0"
+    class="flex gap-2"
   >
     <a
       v-for="social in formattedSocials"

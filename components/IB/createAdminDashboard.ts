@@ -5,7 +5,7 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
-import { createCRUDComposable } from '~/composables/base/crud-factory.base.composable'
+import { createCRUDComposable } from '~/composables/ib/crud-factory.ib'
 
 export interface AdminColumn<T> {
   field: keyof T

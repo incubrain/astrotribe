@@ -46,11 +46,11 @@ const submitQuestion = async () => {
         <PrimeTextarea
           ref="messageInput"
           v-model="question"
-          @keyup.enter="submitQuestion"
-          autoResize
+          auto-resize
           placeholder="Ask Your Question..."
           class="flex max-h-[120px] w-full items-center justify-center bg-transparent px-4 py-2 outline-none"
           :pt="{ root: 'border-none' }"
+          @keyup.enter="submitQuestion"
         />
         <PrimeButton
           pt:root:class="p-0"

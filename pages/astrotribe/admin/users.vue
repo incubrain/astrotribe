@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  createCRUDComposable,
-  type CRUDOptions
-} from '@/composables/base/crud-factory.base.composable'
+import { createCRUDComposable, type CRUDOptions } from '~/composables/base/crud-factory.ib'
 import { createAdminDashboard } from '~/components/IB/createAdminDashboard'
 import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'

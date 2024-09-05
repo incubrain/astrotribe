@@ -19,7 +19,9 @@
             class="rounded-full"
           />
         </div>
-        <h3 class="text-2xl font-semibold"> Hi 👋, I'm Shweta </h3>
+        <h3 class="text-2xl font-semibold">
+          Hi 👋, I'm Shweta
+        </h3>
       </div>
       <div
         class="background absolute -top-3 right-2 flex cursor-pointer items-center justify-center rounded-full p-3 lg:hidden"
@@ -46,7 +48,9 @@
         aria-label="Reach out to Shweta via email"
         target="_blank"
       >
-        <PrimeButton severity="secondary"> Reach Out </PrimeButton>
+        <PrimeButton severity="secondary">
+          Reach Out
+        </PrimeButton>
       </NuxtLink>
     </template>
   </PrimeCard>

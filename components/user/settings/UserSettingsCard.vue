@@ -13,7 +13,9 @@ defineProps({
   <PrimeCard>
     <template #title>
       <div>
-        <h2 class="text-2xl font-semibold">{{ title.main }}</h2>
+        <h2 class="text-2xl font-semibold">
+          {{ title.main }}
+        </h2>
         <span class="text-base">{{ title.subtitle }}</span>
       </div>
     </template>

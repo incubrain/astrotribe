@@ -161,8 +161,8 @@ function toggleGoalCompletion(goal: Goal) {
       header="Goal Details"
     >
       <form
-        @submit.prevent="saveGoal"
         class="goal-form"
+        @submit.prevent="saveGoal"
       >
         <input
           v-model="currentGoal.title"
@@ -175,12 +175,22 @@ function toggleGoalCompletion(goal: Goal) {
           required
         />
         <select v-model="currentGoal.category">
-          <option value="financial">Financial</option>
-          <option value="metrics">Metrics</option>
-          <option value="hiring">Hiring</option>
-          <option value="events">Events</option>
+          <option value="financial">
+            Financial
+          </option>
+          <option value="metrics">
+            Metrics
+          </option>
+          <option value="hiring">
+            Hiring
+          </option>
+          <option value="events">
+            Events
+          </option>
         </select>
-        <PrimeButton type="submit">{{ editingGoal ? 'Update Goal' : 'Add Goal' }}</PrimeButton>
+        <PrimeButton type="submit">
+          {{ editingGoal ? 'Update Goal' : 'Add Goal' }}
+        </PrimeButton>
       </form>
     </PrimeDialog>
   </div>

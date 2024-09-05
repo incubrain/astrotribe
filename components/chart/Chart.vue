@@ -289,8 +289,8 @@ const dataFormatters = {
 
 <template>
   <div
-    class="relative flex w-full flex-col gap-4"
     v-if="isChartDataReady"
+    class="relative flex w-full flex-col gap-4"
   >
     <PrimeDrawer
       v-model:visible="isFullScreen"
@@ -299,13 +299,17 @@ const dataFormatters = {
     >
       <template #header>
         <div class="flex flex-col gap-3">
-          <h2 class="text-xl font-bold">{{ chart.title }}</h2>
-          <p class="text-sm">{{ chart.subtitle }}</p>
+          <h2 class="text-xl font-bold">
+            {{ chart.title }}
+          </h2>
+          <p class="text-sm">
+            {{ chart.subtitle }}
+          </p>
         </div>
       </template>
       <div
-        class="border-color w-full max-w-xs rounded-lg border p-4"
         v-if="chart.info"
+        class="border-color w-full max-w-xs rounded-lg border p-4"
       >
         <ul class="pt-4">
           <li
@@ -318,16 +322,16 @@ const dataFormatters = {
         </ul>
       </div>
       <PrimeChart
-        class="mx-auto h-full max-h-[80vh] w-full max-w-[78vw] flex-grow pt-4"
         :id="`chart-${componentId}-fullscreen`"
+        class="mx-auto h-full max-h-[80vh] w-full max-w-[78vw] flex-grow pt-4"
         :type="chart.type"
         :data="preformattedCharts.data"
         :options="chartOptions"
       />
     </PrimeDrawer>
     <PrimeChart
-      class="flex max-h-[600px] min-h-96 min-w-full items-center justify-center"
       :id="`chart-${componentId}`"
+      class="flex max-h-[600px] min-h-96 min-w-full items-center justify-center"
       :type="chart.type"
       :data="preformattedCharts.data"
       :plugins="[customPaddingPlugin]"
@@ -335,8 +339,8 @@ const dataFormatters = {
     />
     <div class="border-color flex w-full gap-2 rounded-lg border px-3 py-2">
       <button
-        @click="isFullScreen = true"
         class="border-color flex gap-2 border-r pr-2"
+        @click="isFullScreen = true"
       >
         fullscreen
         <Icon

@@ -293,12 +293,15 @@ const isMessageSendable = computed(() => {
     >
       <div class="w-full md:col-span-3 md:col-start-1 md:row-start-1">
         <div class="space-y-2 pb-6 text-center">
-          <h1 class="text-5xl font-semibold">Galactic Guide </h1>
+          <h1 class="text-5xl font-semibold">
+            Galactic Guide
+          </h1>
           <div class="flex gap-2 pt-2">
             <PrimeMessage
               severity="info"
               class="flex w-full justify-center"
-              >3 question limit per 30 min
+            >
+              3 question limit per 30 min
             </PrimeMessage>
             <PrimeMessage
               severity="warn"
@@ -310,9 +313,9 @@ const isMessageSendable = computed(() => {
         </div>
         <PrimeCarousel
           :value="agents"
-          :numVisible="3"
-          :numScroll="3"
-          :responsiveOptions="responsiveOptions"
+          :num-visible="3"
+          :num-scroll="3"
+          :responsive-options="responsiveOptions"
         >
           <template #item="slotProps">
             <div
@@ -323,7 +326,9 @@ const isMessageSendable = computed(() => {
               }"
               @click="slotProps.data.enabled && selectAgent(slotProps.data)"
             >
-              <div class="mb-4 font-medium">{{ slotProps.data.name }}</div>
+              <div class="mb-4 font-medium">
+                {{ slotProps.data.name }}
+              </div>
               <div class="mb-4">
                 <ul class="list-disc pl-5">
                   <li
@@ -385,12 +390,14 @@ const isMessageSendable = computed(() => {
           v-if="selectedStarterPrompts.length"
           class="space-y-2 pb-2"
         >
-          <p class="text-center font-semibold">Example Questions</p>
+          <p class="text-center font-semibold">
+            Example Questions
+          </p>
           <PrimeButton
             v-for="prompt in selectedStarterPrompts"
+            :key="prompt"
             severity="secondary"
             outlined
-            :key="prompt"
             class="mb-2 mr-2 flex w-full items-start justify-start text-left"
             @click="selectPrompt(prompt)"
           >

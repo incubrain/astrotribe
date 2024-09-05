@@ -24,8 +24,12 @@ defineProps<{
         />
         <div class="w-full space-y-1 text-left">
           <div class="flex items-center gap-2">
-            <h4 class="text-xl font-semibold"> About {{ author.name.full }} </h4>
-            <PrimeTag class="text-xs uppercase text-primary-600">follow</PrimeTag>
+            <h4 class="text-xl font-semibold">
+              About {{ author.name.full }}
+            </h4>
+            <PrimeTag class="text-xs uppercase text-primary-600">
+              follow
+            </PrimeTag>
             <IBSocialBlock
               v-if="author.socials"
               :socials="author.socials"

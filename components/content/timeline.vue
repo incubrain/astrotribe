@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h3 class="text-center pb-8"> Timeline </h3>
+    <h3 class="text-center pb-8">
+      Timeline
+    </h3>
     <PrimeTimeline
       :value="events"
       align="alternate"
@@ -25,7 +27,9 @@
           <p class="text-lg font-bold">
             {{ slotProps.item.date }}
           </p>
-          <p class="text-xl">{{ slotProps.item.description }}</p>
+          <p class="text-xl">
+            {{ slotProps.item.description }}
+          </p>
         </div>
       </template>
     </PrimeTimeline>

@@ -3,9 +3,9 @@ import {
   AppError,
   ErrorType,
   ErrorSeverity
-} from './error-handler.base.composable'
-import { useLogger } from './logger.base.composable'
-import { useRateLimit } from './rate-limit.composable'
+} from './error-handler.ib'
+import { useLogger } from './logger.ib'
+import { useRateLimit } from './rate-limit.ib'
 import { v4 as uuidv4 } from 'uuid'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
