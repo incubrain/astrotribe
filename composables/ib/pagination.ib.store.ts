@@ -11,8 +11,6 @@ export type DomainKey =
   | 'chat'
   | 'auth'
 
-type PaginationKey = 'from' | 'to' | undefined
-
 export type PaginationType = {
   page: number
   limit: number

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const domainKey = 'companies'
-const { store, loadMore, refresh } = await useSelectData<Companies>('companies', {
+const { store, loadMore } = await useSelectData<Companies>('companies', {
   columns:
     'id, name, description, logo_url, url, scrape_frequency, founding_year, created_at, updated_at, is_government, category_id, social_media_id, scrape_rating, content_status, scraped_at, keywords',
   filters: { content_status: 'draft' },

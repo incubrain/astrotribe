@@ -36,6 +36,7 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
     >
       <template
         v-for="tab in businessPlanTabs"
+        :key="tab.slotName"
         #[tab.slotName]
       >
         <AdminBusinessPlan

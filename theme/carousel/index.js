@@ -20,7 +20,7 @@ export default {
       {
         'flex-row': props.orientation !== 'vertical',
         'flex-col': props.orientation == 'vertical',
-      },,
+      },
       '[&>[data-pc-extend=button]]:self-center',
     ],
   }),

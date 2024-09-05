@@ -12,7 +12,7 @@ import {
   // LazyAdminFinancialData
 } from '#components'
 
-const { updateGlobalRange, months, haveData } = useFinancials()
+const { updateGlobalRange, haveData } = useFinancials()
 
 const financialTabs = [
   {
@@ -107,6 +107,7 @@ const visibleRight = ref(false)
     >
       <template
         v-for="tab in financialTabs"
+        :key="tab.slotName"
         #[tab.slotName]
       >
         <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">

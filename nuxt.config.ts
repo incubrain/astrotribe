@@ -46,10 +46,11 @@ export default defineNuxtConfig({
     },
   },
 
+  site: {
+    url: og.url,
+  },
+
   app: {
-    site: {
-      url: og.url,
-    },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
@@ -81,7 +82,8 @@ export default defineNuxtConfig({
 
   vue: {
     compilerOptions: {
-      isCustomElement: tag => ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag),
+      isCustomElement: tag =>
+        ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag),
     },
   },
 

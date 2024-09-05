@@ -46,7 +46,7 @@ export function useBaseFetch() {
       'cookie': useRequestHeaders(['cookie']).cookie ?? '',
     },
     onResponseError({ error, response, request, options }) {
-      console.error('onResponseError', response, response._data)
+      console.error('onResponseError', response, response._data, error)
     },
     async onResponse({ request, response, options }) {
       const url = request.toString()

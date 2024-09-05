@@ -1,4 +1,3 @@
-import { useJwt } from '@vueuse/integrations/useJwt'
 import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 
 async function fetchPermissions(userPlan: string, userRole: string) {

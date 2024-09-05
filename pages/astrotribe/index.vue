@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import BaseFeedback from '~/components/IB/BaseFeedback.vue
-
 definePageMeta({
   name: 'AstroTribe',
-  layout: 'app'
+  layout: 'app',
 })
 
 const userStore = useCurrentUser()
@@ -13,7 +11,7 @@ const comingSoon = [
   'Adding all major companies',
   'Adding all major news sources',
   'Improving the quality of news/company data',
-  'AI generated Weekly/Monthly newsletter'
+  'AI generated Weekly/Monthly newsletter',
 ]
 </script>
 
@@ -24,10 +22,12 @@ const comingSoon = [
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
-      :ptOptions="{ mergeProps: true, mergeSections: true }"
+      :pt-options="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
-        <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
+        <h1 class="pb-4 text-2xl font-semibold">
+          Welcome {{ profile?.given_name ?? '' }} 👋
+        </h1>
         <h3 class="text-lg pb-4 font-semibold text-primary-600">
           AstroTribe Is Currently In Open Alpha
         </h3>
@@ -40,7 +40,9 @@ const comingSoon = [
     <PrimeCard class="border-color border">
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Latest News </h3>
+          <h3 class="text-xl font-semibold">
+            Latest News
+          </h3>
           <p class="text-base text-slate-200">
             Stay current with leading government space agencies and private sector companies from
             around the globe.
@@ -49,18 +51,22 @@ const comingSoon = [
       </template>
       <template #footer>
         <NuxtLink to="/astrotribe/news">
-          <PrimeButton outlined> Explore Now </PrimeButton>
+          <PrimeButton outlined>
+            Explore Now
+          </PrimeButton>
         </NuxtLink>
       </template>
     </PrimeCard>
     <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
-      :ptOptions="{ mergeProps: true, mergeSections: true }"
+      :pt-options="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Companies </h3>
+          <h3 class="text-xl font-semibold">
+            Companies
+          </h3>
           <p class="text-base text-slate-200">
             Follow the companies that will take us to the Moon, Mars, and beyond. India is our first
             focus, then we go global!
@@ -69,13 +75,17 @@ const comingSoon = [
       </template>
       <template #footer>
         <NuxtLink to="/astrotribe/companies">
-          <PrimeButton outlined> Search Companies </PrimeButton>
+          <PrimeButton outlined>
+            Search Companies
+          </PrimeButton>
         </NuxtLink>
       </template>
     </PrimeCard>
 
     <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
-      <PrimeMessage severity="info"> What we're working on </PrimeMessage>
+      <PrimeMessage severity="info">
+        What we're working on
+      </PrimeMessage>
       <ul>
         <li
           v-for="item in comingSoon"

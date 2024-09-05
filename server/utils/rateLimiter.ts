@@ -1,8 +1,6 @@
 type PlanKey = 'free' | 'basic' | 'intermediate' | 'premium'
 type FeatureKey = 'ask'
 
-interface FeatureConfig {}
-
 const rateLimitConfig = {
   free: {
     ask: {

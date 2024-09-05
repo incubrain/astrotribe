@@ -57,6 +57,7 @@ definePageMeta({
     >
       <template
         v-for="tab in socialsTabs"
+        :key="tab.tabName"
         #[tab.tabName]
       >
         <div class="h-full p-4">

@@ -44,15 +44,6 @@ const updateHeight = async () => {
   }
 }
 
-const handleIframeLoad = (event: Event) => {
-  const iframe = event.target as HTMLIFrameElement
-  updateHeight()
-
-  // Set up a MutationObserver to watch for changes in the iframe content
-  const observer = new MutationObserver(updateHeight)
-  observer.observe(iframe.contentDocument?.body || iframe, { childList: true, subtree: true })
-}
-
 // Update height when tab changes
 watch(activeTab, updateHeight)
 
@@ -77,6 +68,7 @@ definePageMeta({
   >
     <template
       v-for="tab in analyticsTabs"
+      :key="tab.slotName"
       #[tab.slotName]
     >
       <div class="h-full min-h-full">
