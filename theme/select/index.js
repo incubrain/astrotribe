@@ -156,9 +156,8 @@ export default {
 
       // Colors
       {
-        'text-surface-100 dark:text-white/80': !context.focused && !context.selected,
+        'text-surface-100 dark:text-white/80': !context.selected,
         'bg-surface-200 dark:bg-surface-400': context.focused && !context.selected,
-        'text-surface-100 dark:text-white/80': context.focused && !context.selected,
         'bg-primary-950': context.selected,
       },
 

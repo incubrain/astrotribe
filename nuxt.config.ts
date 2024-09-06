@@ -82,7 +82,7 @@ export default defineNuxtConfig({
 
   vue: {
     compilerOptions: {
-      isCustomElement: tag =>
+      isCustomElement: (tag) =>
         ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag),
     },
   },
@@ -120,6 +120,15 @@ export default defineNuxtConfig({
       supabaseUrl: '',
       supabaseKey: '',
       scraperUrl: '',
+      devHelper: {
+        enabled: process.env.NUXT_PUBLIC_IB_DEVEX === 'true',
+        features: {
+          networkErrorClassifier: true,
+          infiniteLoopDetector: true,
+          unhandledPromiseRejectionTracker: true,
+          environmentConsistencyChecker: true,
+        },
+      },
     },
     // server
     googleApiKey: '',

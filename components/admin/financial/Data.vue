@@ -38,7 +38,7 @@ function traverseObject(
 ): Record<string, Array<{ path: string, value: any, type: string }>> {
   const result: Record<string, Array<{ path: string, value: any, type: string }>> = {}
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key]
       if (
         Array.isArray(value)
@@ -74,7 +74,7 @@ function traverseNestedObject(
 ): Array<{ path: string, value: any, type: string }> {
   let result: Array<{ path: string, value: any, type: string }> = []
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const newPath = `${parentKey}.${key}`
       const value = obj[key]
       if (

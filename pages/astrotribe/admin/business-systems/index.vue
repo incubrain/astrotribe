@@ -10,6 +10,12 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+definePageMeta({
+  layoutTransition: false,
+  name: 'Business Systems',
+  middleware: 'is-admin',
+})
+</script>
 
 <style scoped></style>

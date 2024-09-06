@@ -51,7 +51,7 @@ export default {
       'outline-none',
     ],
   }),
-  item: ({ props, context, instance }) => ({
+  item: ({ props }) => ({
     class: [
       // Spacing & Shape
       'p-2 rounded-md',

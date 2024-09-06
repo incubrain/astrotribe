@@ -3,8 +3,8 @@ import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'
 
 import { z } from 'zod'
-import { createCRUDComposable, type CRUDOptions } from '~/composables/ib/crud-factory'
-import { createAdminDashboard } from '~/components/ib/createAdminDashboard'
+import { createCRUDComposable, type CRUDOptions } from '~/composables/ib/crud-factory.ib'
+import { createAdminDashboard } from '~/components/IB/createAdminDashboard'
 
 const app_plan_enum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])
 

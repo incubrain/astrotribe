@@ -64,7 +64,6 @@ definePageMeta({
   <IBTabView
     ref="analyticsTabView"
     :tabs="analyticsTabs"
-    class="h-full min-h-full w-full"
   >
     <template
       v-for="tab in analyticsTabs"

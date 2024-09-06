@@ -1,5 +1,5 @@
 export default {
-  root: ({ props, context }) => ({
+  root: ({ props }) => ({
     class: [
       'relative',
 

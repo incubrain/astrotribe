@@ -140,7 +140,7 @@ function toggleGoalCompletion(goal: Goal) {
 </script>
 
 <template>
-  <div class="company-goals-calendar">
+  <div class="company-goals-calendar h-full">
     <h2>Upcoming Goals</h2>
     <ul class="upcoming-goals">
       <li
@@ -199,9 +199,7 @@ function toggleGoalCompletion(goal: Goal) {
 </template>
 
 <style scoped>
-.company-goals-calendar {
-  font-family: Arial, sans-serif;
-}
+
 
 .upcoming-goals {
   list-style-type: none;

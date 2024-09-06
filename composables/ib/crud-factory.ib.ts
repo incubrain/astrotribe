@@ -40,7 +40,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
 
     const entities = computed(() => {
       const data = store.items
-      return options.customSelectLogic ? options.customSelectLogic(data) : data
+      return options.customSelectLogic ? options.customSelectLogic(data as T[]) : data
     })
 
     const isLoading = computed(() => isSelecting.value || isUpdating.value || isDeleting.value)
@@ -86,6 +86,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             message: 'Update validation failed',
             severity: ErrorSeverity.MEDIUM,
             context: `${entityName} update`,
+            stack: 'no stack',
           })
         }
         const updatedItem = await updateData(id, data)
@@ -108,6 +109,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             message: 'Delete validation failed',
             severity: ErrorSeverity.MEDIUM,
             context: `${entityName} delete`,
+            stack: 'no stack',
           })
         }
         await deleteData(id)
