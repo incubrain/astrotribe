@@ -209,7 +209,7 @@ watch(bucket, (newBucket) => {
           </PrimeProgressBar>
         </div>
       </template>
-      <template #content="{ files, uploadedFiles, removeUploadedFileCallback, removeFileCallback }">
+      <template #content="{ files, removeUploadedFileCallback, removeFileCallback }">
         <div class="flex flex-col gap-8 pt-4">
           <div v-if="files.length > 0">
             <h5>Pending</h5>

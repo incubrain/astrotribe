@@ -38,7 +38,13 @@ const onRowEditSave = (event) => {
 
 const dataRows = computed(() => props.tableData)
 const editingRows = ref([])
-const tableFilters = ref({ ...props.filters })
+
+const localFilters = ref({ ...props.filters })
+const localFiltersGlobal = ref(localFilters.value['global'])
+watch(localFilters, () => {
+  localFiltersGlobal.value = localFilters.value['global']
+})
+
 const selectedRows = ref([])
 </script>
 
@@ -76,7 +82,7 @@ const selectedRows = ref([])
     <template #header>
       <div class="flex items-center justify-start gap-4">
         <PrimeInputText
-          v-model="filters['global']"
+          v-model="localFiltersGlobal"
           placeholder="Search"
           size="small"
           class="flex items-center justify-center rounded-lg"
@@ -85,13 +91,9 @@ const selectedRows = ref([])
       </div>
     </template>
 
-    <template #empty>
-      No data found.
-    </template>
+    <template #empty> No data found. </template>
 
-    <template #loading>
-      Loading data. Please wait.
-    </template>
+    <template #loading> Loading data. Please wait. </template>
 
     <PrimeColumn
       selection-mode="multiple"

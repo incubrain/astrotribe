@@ -16,7 +16,7 @@ defineProps<{
     class="h-full"
     scrollable
     :pt="{
-      root: 'w-full',
+      root: 'w-full h-full',
     }"
     :pt-options="{ mergeSections: true }"
   >
@@ -33,7 +33,7 @@ defineProps<{
         :pt="{
           root: ({ context }) => ({
             class: [
-              'text-nowrap px-6 py-4 border-x border-color',
+              'text-nowrap px-6 py-4 border-x border-color h-full',
               { 'bg-primary-900': context.active },
             ],
           }),
@@ -44,11 +44,11 @@ defineProps<{
       </PrimeTab>
     </PrimeTabList>
     <PrimeTabPanel
-      v-for="(tab, index) in tabs"
+      v-for="tab in tabs"
       :key="`tab-index-${tab.title}`"
       :value="tab.value"
       :pt="{
-        root: 'overflow-scroll',
+        root: 'overflow-scroll h-full',
       }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >

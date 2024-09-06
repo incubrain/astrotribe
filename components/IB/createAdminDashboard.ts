@@ -21,7 +21,7 @@ export interface AdminColumn<T> {
 export function createAdminDashboard<T extends { id: string | number }>(
   entityName: string,
   columns: AdminColumn<T>[],
-  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>,
+  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>
 ) {
   return defineComponent({
     name: `${entityName}AdminDashboard`,
@@ -36,18 +36,17 @@ export function createAdminDashboard<T extends { id: string | number }>(
       },
     },
     setup(props) {
-      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity }
-        = useEntityComposable()
+      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity } =
+        useEntityComposable()
       const confirm = useConfirm()
       const filters = ref({})
       const showInsertDialog = ref(false)
       const newEntity = ref({} as Omit<T, 'id'>)
 
-      const handleRowEditSave = async (event: { data: T, newData: Partial<T> }) => {
+      const handleRowEditSave = async (event: { data: T; newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
-        }
-        catch (error) {
+        } catch (error) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -61,8 +60,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
             try {
               await deleteEntity(item.id)
               // Show success message
-            }
-            catch (error) {
+            } catch (error) {
               // Handle error (e.g., show toast message)
             }
           },
@@ -75,8 +73,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           showInsertDialog.value = false
           newEntity.value = {} as Omit<T, 'id'>
           // Show success message
-        }
-        catch (error) {
+        } catch (error) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -122,16 +119,16 @@ export function createAdminDashboard<T extends { id: string | number }>(
             header: () =>
               h('div', { class: 'flex justify-between' }, [
                 h(InputText, {
-                  'modelValue': this.filters['global']?.value,
+                  modelValue: this.filters['global']?.value,
                   'onUpdate:modelValue': (value) => {
                     this.filters['global'] = { value, matchMode: 'contains' }
                   },
-                  'placeholder': 'Global Search',
+                  placeholder: 'Global Search',
                 }),
               ]),
             default: () =>
               columns
-                .map(col =>
+                .map((col) =>
                   h(
                     Column,
                     {
@@ -142,19 +139,19 @@ export function createAdminDashboard<T extends { id: string | number }>(
                       filterMatchMode: col.filterMatchMode ?? 'contains',
                     },
                     {
-                      body: slotProps =>
+                      body: (slotProps) =>
                         col.bodyComponent
                           ? col.bodyComponent(slotProps.data)
                           : slotProps.data[col.field],
-                      editor: slotProps =>
+                      editor: (slotProps) =>
                         col.editComponent
                           ? col.editComponent(slotProps.data, col.field)
                           : h(InputText, {
-                            'modelValue': slotProps.data[col.field],
-                            'onUpdate:modelValue': value => (slotProps.data[col.field] = value),
-                          }),
-                    },
-                  ),
+                              modelValue: slotProps.data[col.field],
+                              'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value),
+                            }),
+                    }
+                  )
                 )
                 .concat([
                   h(Column, { rowEditor: true, style: { width: '10%', minWidth: '8rem' } }),
@@ -165,7 +162,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
                       style: { width: '10%', minWidth: '8rem' },
                     },
                     {
-                      body: slotProps => [
+                      body: (slotProps) => [
                         h(Button, {
                           icon: 'pi pi-trash',
                           class: 'p-button-rounded p-button-danger p-button-text',
@@ -176,38 +173,38 @@ export function createAdminDashboard<T extends { id: string | number }>(
                             label,
                             class: 'p-button-rounded p-button-text',
                             onClick: () => action(slotProps.data),
-                          }),
+                          })
                         ),
                       ],
-                    },
+                    }
                   ),
                 ]),
-          },
+          }
         ),
         h(
           Dialog,
           {
-            'header': `Add New ${entityName}`,
-            'visible': this.showInsertDialog,
-            'onUpdate:visible': value => (this.showInsertDialog = value),
-            'style': { width: '50vw' },
+            header: `Add New ${entityName}`,
+            visible: this.showInsertDialog,
+            'onUpdate:visible': (value) => (this.showInsertDialog = value),
+            style: { width: '50vw' },
           },
           {
             default: () => [
               ...columns
-                .filter(col => col.field !== 'id')
-                .map(col =>
+                .filter((col) => col.field !== 'id')
+                .map((col) =>
                   h('div', { class: 'field' }, [
                     h('label', { for: col.field }, col.header),
                     col.insertComponent
                       ? col.insertComponent()
                       : h(InputText, {
-                        'id': col.field,
-                        'modelValue': this.newEntity[col.field],
-                        'onUpdate:modelValue': value => (this.newEntity[col.field] = value),
-                        'class': 'w-full',
-                      }),
-                  ]),
+                          id: col.field,
+                          modelValue: this.newEntity[col.field],
+                          'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
+                          class: 'w-full',
+                        }),
+                  ])
                 ),
               h(Button, {
                 label: `Add ${entityName}`,
@@ -215,7 +212,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
                 onClick: this.handleInsertEntity,
               }),
             ],
-          },
+          }
         ),
         h(ConfirmDialog),
       ])

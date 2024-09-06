@@ -23,7 +23,7 @@ export default createConfigForNuxt({
     'curly': 'off',
     'no-undef': 'off',
     'space-before-function-paren': 'off',
-    'arrow-parens': 'off',
+    'arrow-parens': 'error',
     'vue/html-self-closing': 'off',
   },
   ignores: [

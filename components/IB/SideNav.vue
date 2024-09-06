@@ -74,11 +74,6 @@ const route = useRoute()
         </NuxtLink>
       </div>
     </template>
-    <template #end>
-      <div class="flex h-full items-end justify-end">
-        <IBDevHelpers v-if="isDev && showDevHelpers" />
-      </div>
-    </template>
   </PrimeMenu>
 </template>
 

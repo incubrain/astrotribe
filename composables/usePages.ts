@@ -60,6 +60,13 @@ const adminLinks = ref([
     children: [],
   },
   {
+    id: 5,
+    label: 'Timeline',
+    slug: '/astrotribe/admin/timeline',
+    icon: 'mdi:chart-bar',
+    children: [],
+  },
+  {
     id: 6,
     label: 'BP',
     slug: '/astrotribe/admin/business-plan',

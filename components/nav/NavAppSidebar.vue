@@ -55,7 +55,6 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
     </template>
     <template #end>
       <div class="flex h-full items-end justify-end p-2">
-        <!-- <IBDevHelpers v-if="isDev" /> -->
         <div class="foreground flex items-center justify-center gap-2 rounded-md p-2">
           <iframe
             src="https://status.astronera.org/badge?theme=dark"

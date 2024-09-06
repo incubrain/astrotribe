@@ -1,10 +1,9 @@
 import { createConsola } from 'consola'
 
 export const useLogger = (tag = '') => {
-  const { logLevel } = useRuntimeConfig().public
-
+  const logLevel = 10
   const logger = createConsola({
-    level: parseInt(logLevel, 10),
+    level: logLevel,
   }).withTag(tag.toUpperCase())
 
   return logger
