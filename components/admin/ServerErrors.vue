@@ -12,13 +12,13 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
   const pageSize = ref(50)
   const selectedDate = ref(new Date())
   const loading = ref(false)
-  const error = ref(null)
+  const error = ref(null as string | null)
 
   const errorsByDomain = computed(() => errorReport.value?.domainDistribution || {})
   const errorsBySeverity = computed(() => errorReport.value?.severityDistribution || {})
   const errorReduction = computed(() => errorReport.value?.errorReduction || 0)
   const mostFrequentErrors = computed(
-    () => errorReport.value?.mostFrequentErrors?.slice(0, 5) || [],
+    () => errorReport.value?.mostFrequentErrors?.slice(0, 5) || []
   )
   const errorsByHour = computed(() => {
     return (
@@ -47,13 +47,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorReport.value = response.data
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch error report', err)
       error.value = 'Failed to load error report. Please try again later.'
       errorReport.value = null
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -69,13 +67,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorTrends.value = response.data.trends || []
-    }
-    catch (error: any) {
+    } catch (err: any) {
       console.error('Failed to fetch error trends', err)
       error.value = 'Failed to load error trends. Please try again later.'
       errorTrends.value = []
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -97,15 +93,13 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
       errorLogs.value = response.data.logs || []
       totalLogs.value = response.data.total || 0
       totalPages.value = response.data.totalPages || 1
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch error logs', err)
       error.value = 'Failed to load error logs. Please try again later.'
       errorLogs.value = []
       totalLogs.value = 0
       totalPages.value = 1
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -121,13 +115,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorPG.value = response.data || []
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch postgres errors', err)
-      error.value = 'Failed to load postgres errors. Please try again later.'
+      error.value = 'Failed to load postgres errors. Please try again later.' + err
       errorPG.value = []
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -233,11 +225,11 @@ const chartOptions = {
 // Computed properties for chart data
 const hourlyErrorChartData = computed(() => ({
   labels:
-    errorReport.value?.errorTrends?.map(trend => trend.interval.split(' ')[1].slice(0, 5)) || [],
+    errorReport.value?.errorTrends?.map((trend) => trend.interval.split(' ')[1].slice(0, 5)) || [],
   datasets: [
     {
       label: 'Hourly Errors',
-      data: errorReport.value?.errorTrends?.map(trend => trend.count) || [],
+      data: errorReport.value?.errorTrends?.map((trend) => trend.count) || [],
       backgroundColor: '#FF6384',
       borderColor: '#FF6384',
       valueType: 'number',
@@ -247,11 +239,11 @@ const hourlyErrorChartData = computed(() => ({
 }))
 
 const dailyErrorChartData = computed(() => ({
-  labels: errorReport.value?.historicalTrends?.map(trend => trend.date) || [],
+  labels: errorReport.value?.historicalTrends?.map((trend) => trend.date) || [],
   datasets: [
     {
       label: 'Daily Errors',
-      data: errorReport.value?.historicalTrends?.map(trend => trend.totalErrors) || [],
+      data: errorReport.value?.historicalTrends?.map((trend) => trend.totalErrors) || [],
       backgroundColor: '#36A2EB',
       borderColor: '#36A2EB',
       valueType: 'number',
@@ -287,6 +279,13 @@ const rawDataArray = computed(() => [
   { title: 'Postgres Errors', data: errorPG.value },
   { title: 'Error Report', data: errorReport.value },
 ])
+
+
+const settings = ref()
+
+const toggle = (event) => {
+  settings.value.toggle(event)
+}
 </script>
 
 <template>
@@ -295,17 +294,23 @@ const rawDataArray = computed(() => [
       <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-4 p-4">
-            <h2 class="text-xl font-bold">
-              {{ totalLogs }} Error Logs
-            </h2>
+            <h2 class="text-xl font-bold"> {{ totalLogs }} Error Logs </h2>
             <div class="flex items-center gap-2">
+              <PrimeButton
+                type="button"
+                label="Settings"
+                @click="toggle"
+              />
+              <PrimePopover ref="settings">
+                <DevSettings />
+              </PrimePopover>
               <PrimeButton
                 :loading="loading"
                 class="h-full"
                 @click="errorDashboard.refreshData"
               >
-                <Icon name="mdi:refresh" />
-              </PrimeButton>
+              <Icon name="mdi:refresh" />
+            </PrimeButton>
             </div>
           </div>
           <AdminErrorLogViewer
@@ -341,14 +346,10 @@ const rawDataArray = computed(() => [
           v-if="!loading && !error && errorReport"
           class="h-full overflow-auto"
         >
-          <h2 class="mb-4 text-2xl font-bold">
-            Error Metrics
-          </h2>
+          <h2 class="mb-4 text-2xl font-bold"> Error Metrics </h2>
           <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <PrimeCard>
-              <template #title>
-                Total Errors
-              </template>
+              <template #title> Total Errors </template>
               <template #content>
                 <div class="text-4xl font-bold">
                   {{ errorReport.totalErrors }}
@@ -359,9 +360,7 @@ const rawDataArray = computed(() => [
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>
-                Average Errors per Day
-              </template>
+              <template #title> Average Errors per Day </template>
               <template #content>
                 <div class="text-4xl font-bold">
                   {{ averageErrorsPerDay.toFixed(2) }}
@@ -373,9 +372,7 @@ const rawDataArray = computed(() => [
             v-if="Object.keys(errorsByDomain).length > 0"
             class="mb-4"
           >
-            <template #title>
-              Domain Distribution
-            </template>
+            <template #title> Domain Distribution </template>
             <template #content>
               <PrimeChart
                 type="pie"
@@ -388,9 +385,7 @@ const rawDataArray = computed(() => [
             v-if="Object.keys(errorsBySeverity).length > 0"
             class="mb-4"
           >
-            <template #title>
-              Severity Distribution
-            </template>
+            <template #title> Severity Distribution </template>
             <template #content>
               <PrimeChart
                 type="bar"
@@ -403,34 +398,28 @@ const rawDataArray = computed(() => [
             v-if="mostFrequentErrors.length > 0"
             class="mb-4"
           >
-            <template #title>
-              Most Frequent Errors
-            </template>
+            <template #title> Most Frequent Errors </template>
             <template #content>
               <ul class="list-disc pl-5">
                 <li
-                  v-for="error in mostFrequentErrors"
-                  :key="error.message"
+                  v-for="freqError in mostFrequentErrors"
+                  :key="freqError.message"
                   class="mb-2"
                 >
-                  {{ error.message }} ({{ error.count }} occurrences)
+                  {{ freqError.message }} ({{ freqError.count }} occurrences)
                 </li>
               </ul>
             </template>
           </PrimeCard>
           <div class="mb-4 grid grid-cols-1 gap-4">
             <PrimeCard>
-              <template #title>
-                Hourly Error Trends
-              </template>
+              <template #title> Hourly Error Trends </template>
               <template #content>
                 <Chart :chart="hourlyErrorChart" />
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>
-                Daily Error Trends
-              </template>
+              <template #title> Daily Error Trends </template>
               <template #content>
                 <Chart :chart="dailyErrorChart" />
               </template>
