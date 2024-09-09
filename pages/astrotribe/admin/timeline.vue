@@ -8,8 +8,7 @@ definePageMeta({
 
 <template>
   <div class="p-4">
-    <h1>Timeline</h1>
-    <IBCalendar />
+    <IBTasksCalendar />
   </div>
 </template>
 
