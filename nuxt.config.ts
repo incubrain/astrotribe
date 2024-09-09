@@ -1,5 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import { maxHeaderSize } from 'http'
 import { MODULE_OPTIONS, MODULES, DEV_MODULE_OPTIONS } from './modules.config'
 
 const og = {
@@ -38,6 +39,10 @@ export default defineNuxtConfig({
       companies: {
         driver: 'fs',
         base: './data/db',
+      },
+      tasks: {
+        driver: 'fs',
+        base: './data/tasks',
       },
     },
     scheduledTasks: {
