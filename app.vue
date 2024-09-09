@@ -18,19 +18,15 @@ supabase.auth.onAuthStateChange((event, session) => {
       console.log('TOKEN_REFRESHED', session)
       await currentUser.loadSession()
       // Use webhooks/database for role/plan changes to trigger new session
-    }
-    else if (event === 'SIGNED_OUT') {
+    } else if (event === 'SIGNED_OUT') {
       console.log('SIGNED_OUT')
       currentUser.removeSession()
-    }
-    else if (event === 'PASSWORD_RECOVERY') {
+    } else if (event === 'PASSWORD_RECOVERY') {
       console.log('PASSWORD_RECOVERY: TRIGGER')
       // Handle password recovery event
-    }
-    else if (event === 'INITIAL_SESSION') {
+    } else if (event === 'INITIAL_SESSION') {
       await currentUser.loadSession()
-    }
-    else if (event === 'SIGNED_IN') {
+    } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER')
     }
   }, 0)
@@ -62,6 +58,19 @@ const togglePlayground = () => {
   showPlayground.value = !showPlayground.value
 }
 
+const globalTimer = ref<InstanceType<typeof IBGlobalTimer> | null>(null)
+
+function startGlobalTimer(taskTitle: string) {
+  globalTimer.value?.showTimer(taskTitle)
+}
+
+function stopGlobalTimer() {
+  globalTimer.value?.stopTimer()
+}
+
+provide('startGlobalTimer', startGlobalTimer)
+provide('stopGlobalTimer', stopGlobalTimer)
+
 // infra:med:med:2 setup feature flags for posthog
 // ui:low:easy:1 - add styling to the toasts, specifically dark mode
 // !infra:med:hard:4 - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
@@ -74,7 +83,13 @@ const togglePlayground = () => {
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
-    <DevApiDataViewer />
+    <div
+      class="fixed bottom-5 right-5 z-50 flex cursor-pointer gap-2 rounded-full bg-blue-500 p-3 text-white"
+    >
+      <DevApiDataViewer />
+      <IBGlobalTimer ref="globalTimer" />
+    </div>
+
     <!-- <DevComponentPlayground v-if="showPlayground" /> -->
 
     <!-- <Notification /> -->
