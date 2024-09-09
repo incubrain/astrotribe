@@ -1,12 +1,8 @@
 <script lang="ts" setup>
 const links = useBreadcrumbItems()
 
-// design:med:med:2 - set home as astrotribe when inside the app
-
-// if current link contains astrotribe, set home to astrotribe, remove astrotribe and / path
 const isAppRoute = useRoute().path.includes('/astrotribe')
 
-// if route contains /users/**/ then we should replace ** with the username
 const userStore = useCurrentUser()
 const { profile } = storeToRefs(userStore)
 
