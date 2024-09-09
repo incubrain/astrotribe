@@ -12,8 +12,20 @@ export interface Goal {
   }
 }
 
+interface Milestone {
+  id: number
+  title: string
+  description: string
+  startDate: string
+  endDate: string
+  status: 'not_started' | 'in_progress' | 'completed'
+  progress: number
+  parentMilestoneId: number | null
+}
+
 export default function useTasks() {
   const goals = ref<Goal[]>([])
+  const milestones = ref<Milestone[]>([])
 
   async function fetchGoals() {
     try {
@@ -82,10 +94,18 @@ export default function useTasks() {
   }
 
   async function createGoal(goal: Goal) {
+    goal.subtasks = goal.subtasks.map((subtask, index) => ({
+      ...subtask,
+      id: subtask.id || Date.now() + index,
+    }))
     return handleGoalCrud('create', goal)
   }
 
   async function updateGoal(goal: Goal) {
+    goal.subtasks = goal.subtasks.map((subtask, index) => ({
+      ...subtask,
+      id: subtask.id || Date.now() + index,
+    }))
     return handleGoalCrud('update', goal)
   }
 
@@ -104,7 +124,7 @@ export default function useTasks() {
           // Update the goal in the local state
           const index = goals.value.findIndex((g) => g.id === goal.id)
           if (index !== -1) {
-            goals.value[index] = goal
+            goals.value[index] = { ...goal, subtasks: goal.subtasks }
           }
         } else {
           // For create and delete, re-fetch all goals
@@ -119,8 +139,44 @@ export default function useTasks() {
     }
   }
 
+  async function updateGoalsWithDefaultValues() {
+    const updatedGoals = goals.value.map((goal) => ({
+      ...goal,
+      progress: goal.progress ?? 0,
+      priority: goal.priority ?? 'medium',
+      timeSpent: goal.timeSpent ?? 0,
+      description: goal.description ?? '',
+      subtasks: goal.subtasks ?? [],
+    }))
+
+    for (const goal of updatedGoals) {
+      await updateGoal(goal)
+    }
+
+    await fetchGoals()
+  }
+
+  async function fetchMilestones() {
+    try {
+      const response = await fetch('/api/admin/milestones')
+
+      console.log('milestones', response)
+      if (!response.ok) {
+        throw new Error('Failed to fetch milestones')
+      }
+      const data = await response.json()
+      milestones.value = data
+    } catch (error) {
+      console.error('Error fetching milestones:', error)
+      toast.error({ message: 'Failed to fetch milestones', summary: 'Error' })
+    }
+  }
+
   return {
     goals,
+    milestones,
+    fetchMilestones,
+    updateGoalsWithDefaultValues,
     fetchGoals,
     createGoal,
     updateGoal,

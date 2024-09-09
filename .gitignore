@@ -8,7 +8,6 @@ node_modules
 dist
 .unlighthouse
 private-data
-data/**
 /test-results/
 /blob-report/
 .DS_Store

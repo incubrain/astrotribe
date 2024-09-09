@@ -2,7 +2,6 @@
   <div v-if="showComponent">
     <div
       v-tooltip.left="'Page Data Structures'"
-      class="fixed bottom-5 right-5 z-50 flex cursor-pointer rounded-full bg-blue-500 p-3 text-white"
       @click="showModal = true"
     >
       <Icon name="ic:baseline-data-object" />
@@ -32,7 +31,7 @@
             </p>
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <pre class="max-h-96 overflow-auto rounded p-4 foreground mt-2">
+            <pre class="foreground mt-2 max-h-96 overflow-auto rounded p-4">
               {{ JSON.stringify(structure, null, 2) }}
             </pre>
           </PrimeAccordionContent>
