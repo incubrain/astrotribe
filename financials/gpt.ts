@@ -119,7 +119,7 @@ function determineGroqModel(
 
   // Find a model that can handle the peak hourly request and token rates
   const suitableModel = models.find(
-    model =>
+    (model) =>
       model.requestsPerMinute * 60 >= peakRequestsPerHour
       && model.tokensPerMinute * 60 >= peakTokensPerHour,
   )

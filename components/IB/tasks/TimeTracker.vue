@@ -43,7 +43,9 @@ function formatTime(minutes: number) {
 
 <template>
   <div class="flex flex-col space-y-2">
-    <h3 class="text-lg font-semibold">Time Spent: {{ formatTime(goal.timeSpent) }}</h3>
+    <h3 class="text-lg font-semibold">
+      Time Spent: {{ formatTime(goal.timeSpent) }}
+    </h3>
     <div class="flex space-x-2">
       <PrimeButton
         class="rounded-full bg-green-500 p-2 hover:bg-green-600"

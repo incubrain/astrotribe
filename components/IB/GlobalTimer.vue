@@ -3,8 +3,12 @@
     v-if="isVisible"
     class="flex items-center gap-2 rounded-lg bg-gray-800 p-2 text-white shadow-lg"
   >
-    <div class="text-sm font-bold">{{ currentTask }}</div>
-    <div class="text-xl">⏱️ {{ formatTime(elapsedTime) }}</div>
+    <div class="text-sm font-bold">
+      {{ currentTask }}
+    </div>
+    <div class="text-xl">
+      ⏱️ {{ formatTime(elapsedTime) }}
+    </div>
     <div class="flex space-x-2">
       <PrimeButton
         v-if="!isTracking"

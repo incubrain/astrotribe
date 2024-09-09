@@ -6,7 +6,7 @@ export function processResponse<T>(data: any, Model: ModelConstructor<T>, log: a
   try {
     if (Array.isArray(data)) {
       log.silly(`processResponse Array[0] BEFORE ${JSON.stringify(data[0])}`)
-      const processedArray = data.map(item => new Model(item))
+      const processedArray = data.map((item) => new Model(item))
       log.silly(`processResponse Array[0] AFTER ${JSON.stringify(processedArray[0])}`)
       return processedArray
     }

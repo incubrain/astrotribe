@@ -5,7 +5,7 @@ const embeddingDetails = computed(() => {
   if (!months.value || !openAI.value) {
     return []
   }
-  return openAI.value.map(month =>
+  return openAI.value.map((month) =>
     month.breakdown.reduce(
       (acc, detail) => {
         acc.totalCost += detail.embedding.totalCost
@@ -27,7 +27,7 @@ const summaryDetails = computed(() => {
     return []
   }
 
-  return openAI.value.map(month =>
+  return openAI.value.map((month) =>
     month.breakdown.reduce(
       (acc, detail) => {
         acc.totalCost += detail.summary.cost.total
@@ -74,10 +74,10 @@ const charts = computed(() => {
             label: 'Total OpenAI Costs',
             valueType: 'currency',
             data: [
-              openAI.value.map(month => month.cost.total).reduce((a, b) => a + b, 0),
-              openAI.value.map(month => month.cost.embedding).reduce((a, b) => a + b, 0),
-              openAI.value.map(month => month.cost.summary).reduce((a, b) => a + b, 0),
-              openAI.value.map(month => month.cost.chat).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.total).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.embedding).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.summary).reduce((a, b) => a + b, 0),
+              openAI.value.map((month) => month.cost.chat).reduce((a, b) => a + b, 0),
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
@@ -112,26 +112,26 @@ const charts = computed(() => {
             valueType: 'number',
             data: [
               openAI.value
-                .flatMap(month => month.chat.free.tokens.input)
+                .flatMap((month) => month.chat.free.tokens.input)
                 .reduce((a, b) => a + b, 0),
               openAI.value
-                .flatMap(month => month.chat.free.tokens.output)
+                .flatMap((month) => month.chat.free.tokens.output)
                 .reduce((a, b) => a + b, 0),
               openAI.value
-                .flatMap(month => month.chat.pro.tokens.input)
+                .flatMap((month) => month.chat.pro.tokens.input)
                 .reduce((a, b) => a + b, 0),
               openAI.value
-                .flatMap(month => month.chat.pro.tokens.output)
+                .flatMap((month) => month.chat.pro.tokens.output)
                 .reduce((a, b) => a + b, 0),
               openAI.value
-                .flatMap(month => month.chat.expert.tokens.input)
+                .flatMap((month) => month.chat.expert.tokens.input)
                 .reduce((a, b) => a + b, 0),
               openAI.value
-                .flatMap(month => month.chat.expert.tokens.output)
+                .flatMap((month) => month.chat.expert.tokens.output)
                 .reduce((a, b) => a + b, 0),
-              embeddingDetails.value.map(d => d.totalTokens).reduce((a, b) => a + b, 0),
-              summaryDetails.value.map(d => d.inputTokens).reduce((a, b) => a + b, 0),
-              summaryDetails.value.map(d => d.outputTokens).reduce((a, b) => a + b, 0),
+              embeddingDetails.value.map((d) => d.totalTokens).reduce((a, b) => a + b, 0),
+              summaryDetails.value.map((d) => d.inputTokens).reduce((a, b) => a + b, 0),
+              summaryDetails.value.map((d) => d.outputTokens).reduce((a, b) => a + b, 0),
             ],
             backgroundColor: [
               rgba('lightGreen', 0.5),
@@ -159,42 +159,42 @@ const charts = computed(() => {
             label: 'Total Cost',
             valueType: 'currency',
             type: 'line',
-            data: openAI.value.flatMap(month => month.cost.total),
+            data: openAI.value.flatMap((month) => month.cost.total),
             borderColor: rgba('lightBlue', 0.5),
           },
           {
             label: 'Embedding Cost',
             stack: 'stack1',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.embedding),
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             backgroundColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'Summary Cost',
             valueType: 'currency',
             stack: 'stack1',
-            data: openAI.value.flatMap(month => month.cost.summary),
+            data: openAI.value.flatMap((month) => month.cost.summary),
             backgroundColor: rgba('lightRed', 0.5),
           },
           {
             label: 'Free Chat Cost',
             valueType: 'currency',
             stack: 'stack2',
-            data: openAI.value.flatMap(month => month.chat.free.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.free.cost.total),
             backgroundColor: rgba('darkBlue', 0.5),
           },
           {
             label: 'Pro Chat Cost',
             valueType: 'currency',
             stack: 'stack2',
-            data: openAI.value.flatMap(month => month.chat.pro.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.total),
             backgroundColor: rgba('darkPink', 0.5),
           },
           {
             label: 'Expert Chat Cost',
             valueType: 'currency',
             stack: 'stack2',
-            data: openAI.value.flatMap(month => month.chat.expert.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.total),
             backgroundColor: rgba('darkPurple', 0.5),
           },
         ],
@@ -210,7 +210,7 @@ const charts = computed(() => {
           {
             label: 'Embedding Total Cost',
             valueType: 'currency',
-            data: embeddingDetails.value.map(detail => detail.totalCost),
+            data: embeddingDetails.value.map((detail) => detail.totalCost),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('black', 1),
           },
@@ -218,7 +218,7 @@ const charts = computed(() => {
             label: 'Token Usage',
             valueType: 'number',
             type: 'bar',
-            data: embeddingDetails.value.map(detail => detail.totalTokens),
+            data: embeddingDetails.value.map((detail) => detail.totalTokens),
             backgroundColor: rgba('darkOrange', 0.3),
           },
         ],
@@ -234,21 +234,21 @@ const charts = computed(() => {
           {
             label: 'Summary Total Cost',
             valueType: 'currency',
-            data: summaryDetails.value.map(d => d.totalCost),
+            data: summaryDetails.value.map((d) => d.totalCost),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2),
           },
           {
             label: 'Input Cost',
             valueType: 'currency',
-            data: summaryDetails.value.map(d => d.inputCost),
+            data: summaryDetails.value.map((d) => d.inputCost),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2),
           },
           {
             label: 'Output Cost',
             valueType: 'currency',
-            data: summaryDetails.value.map(d => d.outputCost),
+            data: summaryDetails.value.map((d) => d.outputCost),
             borderColor: rgba('darkPurple', 0.5),
             backgroundColor: rgba('darkPurple', 0.2),
           },
@@ -256,7 +256,7 @@ const charts = computed(() => {
             label: 'Tokens Used',
             valueType: 'number',
             type: 'bar',
-            data: summaryDetails.value.map(d => d.totalTokens),
+            data: summaryDetails.value.map((d) => d.totalTokens),
             borderColor: rgba('darkBlue', 0.5),
             backgroundColor: rgba('darkBlue', 0.2),
           },
@@ -274,45 +274,45 @@ const charts = computed(() => {
             label: 'Free Chat Total Cost',
             type: 'line',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.free.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.free.cost.total),
             borderColor: rgba('lightBlue', 0.5),
           },
           {
             label: 'Pro Chat Total Cost',
             type: 'line',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.pro.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.total),
             borderColor: rgba('darkOrange', 0.5),
           },
           {
             label: 'Expert Chat Total Cost',
             type: 'line',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.expert.cost.total),
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.total),
             borderColor: rgba('darkOrange', 0.5),
           },
           {
             label: 'Pro Chat Input Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.pro.cost.input),
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.input),
             backgroundColor: rgba('darkPurple', 0.5),
           },
           {
             label: 'Pro Chat Output Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.pro.cost.output),
+            data: openAI.value.flatMap((month) => month.chat.pro.cost.output),
             backgroundColor: rgba('darkBlue', 0.5),
           },
           {
             label: 'Expert Chat Input Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.expert.cost.input),
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.input),
             backgroundColor: rgba('darkPurple', 0.5),
           },
           {
             label: 'Expert Chat Output Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.chat.expert.cost.output),
+            data: openAI.value.flatMap((month) => month.chat.expert.cost.output),
             backgroundColor: rgba('darkBlue', 0.5),
           },
         ],
@@ -329,42 +329,42 @@ const charts = computed(() => {
           {
             label: 'Free Chat Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.free.tokens.total),
+            data: openAI.value.flatMap((month) => month.chat.free.tokens.total),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('lightBlue', 0.2),
           },
           {
             label: 'Free Chat Requests',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.free.requests.total),
+            data: openAI.value.flatMap((month) => month.chat.free.requests.total),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('lightGreen', 0.2),
           },
           {
             label: 'Pro Chat Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.pro.tokens.total),
+            data: openAI.value.flatMap((month) => month.chat.pro.tokens.total),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2),
           },
           {
             label: 'Pro Chat Requests',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.pro.requests.total),
+            data: openAI.value.flatMap((month) => month.chat.pro.requests.total),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2),
           },
           {
             label: 'Expert Chat Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.expert.tokens.total),
+            data: openAI.value.flatMap((month) => month.chat.expert.tokens.total),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2),
           },
           {
             label: 'Expert Chat Requests',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.chat.expert.requests.total),
+            data: openAI.value.flatMap((month) => month.chat.expert.requests.total),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2),
           },
@@ -382,21 +382,21 @@ const charts = computed(() => {
           {
             label: 'Embedding Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(detail => detail.tokens.embedding),
+            data: openAI.value.flatMap((detail) => detail.tokens.embedding),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'Summary Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(detail => detail.tokens.summary),
+            data: openAI.value.flatMap((detail) => detail.tokens.summary),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'Chat Tokens',
             valueType: 'number',
-            data: openAI.value.flatMap(month => month.tokens.chat),
+            data: openAI.value.flatMap((month) => month.tokens.chat),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('black', 1),
           },
@@ -404,7 +404,7 @@ const charts = computed(() => {
             label: 'Total Tokens',
             valueType: 'number',
             type: 'bar',
-            data: openAI.value.flatMap(month => month.tokens.total),
+            data: openAI.value.flatMap((month) => month.tokens.total),
             backgroundColor: rgba('darkOrange', 0.3),
           },
         ],
@@ -420,13 +420,13 @@ const charts = computed(() => {
           {
             label: 'Embedding Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.embedding),
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             backgroundColor: rgba('lightBlue', 0.5),
           },
           {
             label: 'Summary Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.summary),
+            data: openAI.value.flatMap((month) => month.cost.summary),
             backgroundColor: rgba('lightGreen', 0.5),
           },
         ],
@@ -442,21 +442,21 @@ const charts = computed(() => {
           {
             label: 'Embedding Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.embedding),
+            data: openAI.value.flatMap((month) => month.cost.embedding),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('lightBlue', 0.2),
           },
           {
             label: 'Summary Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.summary),
+            data: openAI.value.flatMap((month) => month.cost.summary),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('lightGreen', 0.2),
           },
           {
             label: 'Chat Cost',
             valueType: 'currency',
-            data: openAI.value.flatMap(month => month.cost.chat),
+            data: openAI.value.flatMap((month) => month.cost.chat),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('lightRed', 0.2),
           },

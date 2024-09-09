@@ -46,7 +46,7 @@ type UserProfile = z.infer<typeof userProfileSchema>
 
 const userProfileOptions: CRUDOptions<UserProfile> = {
   orderBy: { column: 'created_at' as keyof UserProfile, ascending: false },
-  customSelectLogic: (data: UserProfile[]) => data.filter(user => user.role !== 'super_admin'),
+  customSelectLogic: (data: UserProfile[]) => data.filter((user) => user.role !== 'super_admin'),
   validateInsert: (data: Omit<UserProfile, 'id'>) => {
     const result = userProfileSchema.omit({ id: true }).safeParse(data)
     return result.success

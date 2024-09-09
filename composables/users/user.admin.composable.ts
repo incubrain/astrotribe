@@ -74,7 +74,7 @@ export function useAdmin() {
         // Locate the profile image file based on the user's given name and surname
         const imageName = `${givenName.toLowerCase()}-${surname.toLowerCase()}.jpg`
         const imagePath = `/data/seed/avatars/${imageName}` // Adjust the path as necessary
-        const imageFile = new File([await fetch(imagePath).then(r => r.blob())], imageName, {
+        const imageFile = new File([await fetch(imagePath).then((r) => r.blob())], imageName, {
           type: 'image/jpeg',
         })
 

@@ -22,7 +22,7 @@ const businessPlanSections = [
 
 const businessPlanTabs = businessPlanSections.map((section, index) => ({
   value: `${index}`,
-  title: section.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+  title: section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
   slotName: section,
 }))
 </script>

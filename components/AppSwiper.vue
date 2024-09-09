@@ -39,7 +39,7 @@ const swiperConfig = computed(() => ({
 
 const swiperLoaded = ref(false)
 onMounted(async () => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   swiperLoaded.value = true
 })
 

@@ -50,7 +50,7 @@ watch(
   () => tasks.goals.value,
   (newGoals) => {
     goals.value = newGoals
-  }
+  },
 )
 
 onMounted(async () => {
@@ -91,7 +91,7 @@ const currentGoal = computed(
       category: 'events',
       completed: false,
       assigneeId: 0,
-    }
+    },
 )
 
 const priorityFilter = ref('all')
@@ -135,13 +135,15 @@ async function saveGoal(goal: Goal) {
     if (isNew(goal)) {
       await tasks.createGoal(goal)
       toast.success({ message: 'Goal created successfully', summary: 'Success' })
-    } else {
+    }
+    else {
       await tasks.updateGoal(goal)
       toast.success({ message: 'Goal updated successfully', summary: 'Success' })
     }
     await tasks.fetchGoals()
     showModal.value = false
-  } catch (error) {
+  }
+  catch (error) {
     toast.error({ message: `Failed to save goal: ${error.message}`, summary: 'Error' })
   }
 }
@@ -152,7 +154,8 @@ async function deleteGoal(goal: Goal) {
     toast.success({ message: 'Goal deleted successfully', summary: 'Success' })
     await tasks.fetchGoals()
     showModal.value = false
-  } catch (error) {
+  }
+  catch (error) {
     toast.error({ message: `Failed to delete goal: ${error.message}`, summary: 'Error' })
   }
 }
@@ -175,8 +178,6 @@ function filterByAssignee(employee: Employee) {
   console.log('Selected employee', employee)
   selectedEmployee.value = employee
 }
-
-
 
 const filteredGoals = computed(() => {
   let filtered = goals.value
@@ -302,7 +303,8 @@ async function handleEventDrop(dropInfo: any) {
     try {
       await tasks.updateGoal(updatedGoal)
       toast.success({ message: 'Goal date updated successfully', summary: 'Success' })
-    } catch (error) {
+    }
+    catch (error) {
       toast.error({ message: 'Failed to update goal date', summary: 'Error' })
       dropInfo.revert()
     }
@@ -384,10 +386,10 @@ function updateSubtaskCompletion(goal: Goal, subtaskId: number, completed: boole
     />
 
     <PrimeButton
-      @click="toggleDragDrop"
       :label="dragDropEnabled ? 'Disable Drag & Drop' : 'Enable Drag & Drop'"
       :class="{ 'p-button-success': dragDropEnabled, 'p-button-secondary': !dragDropEnabled }"
       class="mb-4"
+      @click="toggleDragDrop"
     />
 
     <FullCalendar

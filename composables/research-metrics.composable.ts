@@ -10,7 +10,7 @@ function calculateAverageCitationDensity(totalCitations: number, totalChunks: nu
 }
 
 function calculateFigureInclusionRate(chunks: any[], totalChunks: number): number {
-  const chunksWithFigures = chunks.filter(chunk => chunk.includesFigures)
+  const chunksWithFigures = chunks.filter((chunk) => chunk.includesFigures)
   return (chunksWithFigures.length / totalChunks) * 100
 }
 

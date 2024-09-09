@@ -5,19 +5,19 @@ import type { DomainKey } from './pagination.ib.store'
 export function createBaseStore<T extends object>(domainKey: DomainKey) {
   return defineStore(`${domainKey}Store`, () => {
     const items = ref<T[]>([]) as Ref<T[]>
-    const itemsMap = computed(() => new Map(items.value.map(item => [item.id, item])))
+    const itemsMap = computed(() => new Map(items.value.map((item) => [item.id, item])))
 
     function setItems(newItems: T[]) {
       items.value = newItems
     }
 
     function addItems(newItems: T[]) {
-      const newItemsMap = new Map(newItems.map(item => [item.id, item]))
-      items.value = [...items.value.filter(item => !newItemsMap.has(item.id)), ...newItems]
+      const newItemsMap = new Map(newItems.map((item) => [item.id, item]))
+      items.value = [...items.value.filter((item) => !newItemsMap.has(item.id)), ...newItems]
     }
 
     function updateItem(updatedItem: T) {
-      const index = items.value.findIndex(item => item.id === updatedItem.id)
+      const index = items.value.findIndex((item) => item.id === updatedItem.id)
       if (index !== -1) {
         items.value[index] = { ...items.value[index], ...updatedItem }
       }
@@ -27,7 +27,7 @@ export function createBaseStore<T extends object>(domainKey: DomainKey) {
     }
 
     function removeItem(id: string | number) {
-      items.value = items.value.filter(item => item.id !== id)
+      items.value = items.value.filter((item) => item.id !== id)
     }
 
     function clearItems() {

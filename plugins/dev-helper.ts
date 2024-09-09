@@ -16,8 +16,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         // Reinitialize the feature if it's being enabled
         if (enabled) {
-          const initMethod =
-            `init${feature.charAt(0).toUpperCase() + feature.slice(1)}` as keyof typeof DevHelper
+          const initMethod
+            = `init${feature.charAt(0).toUpperCase() + feature.slice(1)}` as keyof typeof DevHelper
           if (typeof this[initMethod] === 'function') {
             ;(this[initMethod] as Function)()
           }
@@ -100,8 +100,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         const wrappedCallback = function (this: typeof window) {
           iterationCount++
           if (
-            iterationCount > MAX_ITERATIONS ||
-            (Date.now() - start > TIME_THRESHOLD && iterationCount > 1000)
+            iterationCount > MAX_ITERATIONS
+            || (Date.now() - start > TIME_THRESHOLD && iterationCount > 1000)
           ) {
             console.warn('🔄 Potential infinite loop detected:', {
               iterations: iterationCount,
@@ -111,7 +111,8 @@ export default defineNuxtPlugin((nuxtApp) => {
           }
           if (typeof handler === 'function') {
             return handler.apply(this, args)
-          } else {
+          }
+          else {
             return Function(handler as string).apply(this, args)
           }
         }
@@ -144,7 +145,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       if (missingVars.length > 0) {
         console.warn('🔑 Missing required environment variables:', missingVars)
-      } else {
+      }
+      else {
         console.log('🔑 All required environment variables are set')
       }
     },
@@ -158,10 +160,12 @@ export default defineNuxtPlugin((nuxtApp) => {
       DevHelper.initUnhandledPromiseRejectionTracker()
       DevHelper.checkEnvironmentConsistency()
       logger.info('Initialization complete')
-    } catch (error) {
+    }
+    catch (error) {
       logger.error('Initialization failed:', error)
     }
-  } else {
+  }
+  else {
     logger.info('Initialization skipped (not in dev mode or devHelper not enabled)')
   }
 

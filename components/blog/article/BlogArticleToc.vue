@@ -54,7 +54,7 @@ const isSectionOrChildActive = (section: TOCItem) => {
   if (isActiveSection(section.id)) {
     return true
   }
-  return section.children?.some(child => isActiveSection(child.id)) ?? false
+  return section.children?.some((child) => isActiveSection(child.id)) ?? false
 }
 
 onMounted(() => {

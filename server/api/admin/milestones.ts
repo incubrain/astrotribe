@@ -11,14 +11,16 @@ export default defineEventHandler(async (event) => {
     try {
       const data = await fs.readFile(milestonesFilePath, 'utf-8')
       return JSON.parse(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error reading milestones:', error)
       throw createError({
         statusCode: 500,
         statusMessage: 'Failed to read milestones',
       })
     }
-  } else if (method === 'POST') {
+  }
+  else if (method === 'POST') {
     const body = await readBody(event)
     const { action, milestone } = body
 
@@ -46,7 +48,8 @@ export default defineEventHandler(async (event) => {
 
       await fs.writeFile(milestonesFilePath, JSON.stringify(milestones, null, 2), 'utf-8')
       return { success: true, message: `Milestone ${action}d successfully` }
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`Error ${action}ing milestone:`, error)
       throw createError({
         statusCode: 500,

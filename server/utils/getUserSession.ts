@@ -199,7 +199,7 @@ export async function hasDBPermission(
   }
 
   const tablePermissions = permissions.role_permissions.find(
-    item => item.table_name === tableName,
+    (item) => item.table_name === tableName,
   )
 
   if (!tablePermissions) {
@@ -222,7 +222,7 @@ export async function hasFeaturePermission(
     return false
   }
 
-  const featurePermissions = permissions.plan_permissions.find(item => item.feature === feature)
+  const featurePermissions = permissions.plan_permissions.find((item) => item.feature === feature)
 
   if (!featurePermissions) {
     throw createError({

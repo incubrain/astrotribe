@@ -139,17 +139,17 @@ const calculateAverageGrowthRate = () => {
 }
 
 const chartData = computed(() => ({
-  labels: growthData.value.map(d => new Date(d.period_end_time).toLocaleDateString()).reverse(),
+  labels: growthData.value.map((d) => new Date(d.period_end_time).toLocaleDateString()).reverse(),
   datasets: [
     {
       label: 'Row Count',
-      data: growthData.value.map(d => d.row_count).reverse(),
+      data: growthData.value.map((d) => d.row_count).reverse(),
       borderColor: '#42A5F5',
       tension: 0.4,
     },
     {
       label: 'Growth Percentage',
-      data: growthData.value.map(d => d.growth_percentage).reverse(),
+      data: growthData.value.map((d) => d.growth_percentage).reverse(),
       borderColor: '#66BB6A',
       tension: 0.4,
     },
@@ -170,7 +170,7 @@ const exportToCSV = () => {
   const headers = ['Period End Time', 'Row Count', 'Growth Count', 'Growth Percentage']
   const csvContent = [
     headers.join(','),
-    ...growthData.value.map(row =>
+    ...growthData.value.map((row) =>
       [row.period_end_time, row.row_count, row.growth_count, row.growth_percentage].join(','),
     ),
   ].join('\n')

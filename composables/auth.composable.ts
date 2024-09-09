@@ -12,7 +12,7 @@ export const SettingsPasswordValidation = z
     newPassword: passwordValidation,
     confirmNewPassword: passwordValidation,
   })
-  .refine(data => data.newPassword === data.confirmNewPassword, {
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
     message: 'Passwords don\'t match',
     path: ['confirmNewPassword'],
   })

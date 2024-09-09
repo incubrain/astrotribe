@@ -18,7 +18,7 @@ export default defineEventHandler({
       }
     }
 
-    const isValidMessage = msg =>
+    const isValidMessage = (msg) =>
       msg
       && typeof msg === 'object'
       && ['system', 'user', 'assistant'].includes(msg.role)
