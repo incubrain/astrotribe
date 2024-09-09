@@ -9,8 +9,8 @@ const stripeTransactions = computed(() => {
   }
 
   return stripePaymentTypes.reduce((acc, type) => {
-    const transactions = payments.value.flatMap(month =>
-      month.stripe.transactions.flatMap(transaction =>
+    const transactions = payments.value.flatMap((month) =>
+      month.stripe.transactions.flatMap((transaction) =>
         transaction.paymentMethod === type
           ? [
               {
@@ -94,8 +94,8 @@ const razorpayTransactions = computed(() => {
   }
 
   return razorpayPaymentTypes.reduce((acc, type) => {
-    const transactions = payments.value.flatMap(month =>
-      month.razorpay.transactions.flatMap(transaction =>
+    const transactions = payments.value.flatMap((month) =>
+      month.razorpay.transactions.flatMap((transaction) =>
         transaction.paymentMethod === type
           ? [
               {
@@ -178,7 +178,7 @@ const stripe = computed(() => {
     return []
   }
 
-  return payments.value.flatMap(month => month.stripe)
+  return payments.value.flatMap((month) => month.stripe)
 })
 
 const razorpay = computed(() => {
@@ -186,7 +186,7 @@ const razorpay = computed(() => {
     return []
   }
 
-  return payments.value.flatMap(month => month.razorpay)
+  return payments.value.flatMap((month) => month.razorpay)
 })
 
 const charts = computed(() => {
@@ -248,7 +248,7 @@ const charts = computed(() => {
             label: 'Razorpay Total Transactions',
             type: 'line',
             valueType: 'number',
-            data: razorpay.value.flatMap(month => month.totalCustomers),
+            data: razorpay.value.flatMap((month) => month.totalCustomers),
             borderColor: rgba('darkOrange', 0.8),
             backgroundColor: rgba('black', 1),
           },
@@ -256,20 +256,20 @@ const charts = computed(() => {
             label: 'Stripe Total Transactions',
             type: 'line',
             valueType: 'number',
-            data: stripe.value.flatMap(month => month.totalCustomers),
+            data: stripe.value.flatMap((month) => month.totalCustomers),
             borderColor: rgba('darkBlue', 0.8),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'Razorpay Total Cost',
             valueType: 'currency',
-            data: razorpay.value.flatMap(month => month.totalCost),
+            data: razorpay.value.flatMap((month) => month.totalCost),
             backgroundColor: rgba('darkOrange', 0.3),
           },
           {
             label: 'Stripe Total Cost',
             valueType: 'currency',
-            data: stripe.value.flatMap(month => month.totalCost),
+            data: stripe.value.flatMap((month) => month.totalCost),
             backgroundColor: rgba('darkBlue', 0.3),
           },
         ],
@@ -285,21 +285,21 @@ const charts = computed(() => {
           {
             label: 'Visa Cost',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.totalCost),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightBlue', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'MasterCard Cost',
             valueType: 'currency',
-            data: razorpayTransactions.value.MasterCard.transactions.map(m => m.totalCost),
+            data: razorpayTransactions.value.MasterCard.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightGreen', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'UPI Cost',
             valueType: 'currency',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.totalCost),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.totalCost),
             borderColor: rgba('lightRed', 0.5),
             backgroundColor: rgba('black', 1),
           },
@@ -307,7 +307,7 @@ const charts = computed(() => {
             label: 'Domestic Transactions',
             type: 'bar',
             valueType: 'number',
-            data: razorpay.value.map(m => m.totalCustomers),
+            data: razorpay.value.map((m) => m.totalCustomers),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2),
           },
@@ -325,34 +325,34 @@ const charts = computed(() => {
             label: 'Total Transactions',
             type: 'line',
             valueType: 'number',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.totalTransactions),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.totalTransactions),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'Platform Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.platform),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.5),
           },
           {
             label: 'Subscription Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.subscription),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
           },
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.gst),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
           {
             label: 'Extra Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.UPI.transactions.map(m => m.additionalFees),
+            data: razorpayTransactions.value.UPI.transactions.map((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',
           },
@@ -370,34 +370,34 @@ const charts = computed(() => {
             label: 'Total Transactions',
             type: 'line',
             valueType: 'number',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.totalTransactions),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.totalTransactions),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
           },
           {
             label: 'Platform Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.platform),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.5),
           },
           {
             label: 'Subscription Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.subscription),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
           },
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.gst),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
           {
             label: 'Extra Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.map(m => m.additionalFees),
+            data: razorpayTransactions.value.Visa.transactions.map((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',
           },
@@ -416,7 +416,7 @@ const charts = computed(() => {
             type: 'line',
             valueType: 'number',
             data: razorpayTransactions.value.MasterCard.transactions.flatMap(
-              m => m.totalTransactions,
+              (m) => m.totalTransactions,
             ),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
@@ -424,27 +424,27 @@ const charts = computed(() => {
           {
             label: 'Platform Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.MasterCard.transactions.flatMap(m => m.platform),
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.platform),
             backgroundColor: rgba('darkRed', 0.7),
           },
           {
             label: 'Subscription Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.MasterCard.transactions.flatMap(m => m.subscription),
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.subscription),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
           },
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.MasterCard.transactions.flatMap(m => m.gst),
+            data: razorpayTransactions.value.MasterCard.transactions.flatMap((m) => m.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
           {
             label: 'Extra Fees',
             valueType: 'currency',
-            data: razorpayTransactions.value.Visa.transactions.flatMap(m => m.additionalFees),
+            data: razorpayTransactions.value.Visa.transactions.flatMap((m) => m.additionalFees),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',
           },
@@ -461,21 +461,21 @@ const charts = computed(() => {
           {
             label: 'MasterCard/Visa Cost',
             valueType: 'currency',
-            data: stripeTransactions.value.MasterCardVisa.transactions.map(m => m.totalCost),
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((m) => m.totalCost),
             backgroundColor: rgba('black', 1),
             borderColor: rgba('darkBlue', 0.6),
           },
           {
             label: 'American Express Cost',
             valueType: 'currency',
-            data: stripeTransactions.value.AmericanExpress.transactions.map(m => m.totalCost),
+            data: stripeTransactions.value.AmericanExpress.transactions.map((m) => m.totalCost),
             backgroundColor: rgba('black', 1),
             borderColor: rgba('lightGreen', 0.5),
           },
           {
             label: 'International Card Cost',
             valueType: 'currency',
-            data: stripeTransactions.value.InternationalCard.transactions.map(m => m.totalCost),
+            data: stripeTransactions.value.InternationalCard.transactions.map((m) => m.totalCost),
             backgroundColor: rgba('black', 1),
             borderColor: rgba('lightRed', 0.5),
           },
@@ -483,7 +483,7 @@ const charts = computed(() => {
             label: 'International Transactions',
             type: 'bar',
             valueType: 'number',
-            data: stripe.value.map(m => m.totalCustomers),
+            data: stripe.value.map((m) => m.totalCustomers),
             borderColor: rgba('darkOrange', 0.5),
             backgroundColor: rgba('darkOrange', 0.2),
           },
@@ -503,7 +503,7 @@ const charts = computed(() => {
             type: 'line',
             valueType: 'number',
             data: stripeTransactions.value.InternationalCard.transactions.flatMap(
-              m => m.totalTransactions,
+              (m) => m.totalTransactions,
             ),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
@@ -512,7 +512,7 @@ const charts = computed(() => {
             label: 'Platform Fees',
             valueType: 'currency',
             data: stripeTransactions.value.InternationalCard.transactions.map(
-              cost => cost.platform,
+              (cost) => cost.platform,
             ),
             backgroundColor: rgba('darkRed', 0.5),
           },
@@ -520,7 +520,7 @@ const charts = computed(() => {
             label: 'Subscription Fees',
             valueType: 'currency',
             data: stripeTransactions.value.InternationalCard.transactions.map(
-              cost => cost.subscription,
+              (cost) => cost.subscription,
             ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
@@ -528,7 +528,7 @@ const charts = computed(() => {
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: stripeTransactions.value.InternationalCard.transactions.map(cost => cost.gst),
+            data: stripeTransactions.value.InternationalCard.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
@@ -536,7 +536,7 @@ const charts = computed(() => {
             label: 'Extra Fees',
             valueType: 'currency',
             data: stripeTransactions.value.InternationalCard.transactions.map(
-              cost => cost.additionalFees,
+              (cost) => cost.additionalFees,
             ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',
@@ -556,7 +556,7 @@ const charts = computed(() => {
             type: 'line',
             valueType: 'number',
             data: stripeTransactions.value.MasterCardVisa.transactions.flatMap(
-              m => m.totalTransactions,
+              (m) => m.totalTransactions,
             ),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
@@ -564,14 +564,14 @@ const charts = computed(() => {
           {
             label: 'Platform Fees',
             valueType: 'currency',
-            data: stripeTransactions.value.MasterCardVisa.transactions.map(cost => cost.platform),
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((cost) => cost.platform),
             backgroundColor: rgba('darkRed', 0.7),
           },
           {
             label: 'Subscription Fees',
             valueType: 'currency',
             data: stripeTransactions.value.MasterCardVisa.transactions.map(
-              cost => cost.subscription,
+              (cost) => cost.subscription,
             ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
@@ -579,7 +579,7 @@ const charts = computed(() => {
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: stripeTransactions.value.MasterCardVisa.transactions.map(cost => cost.gst),
+            data: stripeTransactions.value.MasterCardVisa.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
@@ -587,7 +587,7 @@ const charts = computed(() => {
             label: 'Extra Fees',
             valueType: 'currency',
             data: stripeTransactions.value.MasterCardVisa.transactions.map(
-              cost => cost.additionalFees,
+              (cost) => cost.additionalFees,
             ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',
@@ -607,7 +607,7 @@ const charts = computed(() => {
             type: 'line',
             valueType: 'number',
             data: stripeTransactions.value.AmericanExpress.transactions.flatMap(
-              m => m.totalTransactions,
+              (m) => m.totalTransactions,
             ),
             borderColor: rgba('darkGray', 0.5),
             backgroundColor: rgba('black', 1),
@@ -616,7 +616,7 @@ const charts = computed(() => {
             label: 'Platform Fees',
             valueType: 'currency',
             data: stripeTransactions.value.AmericanExpress.transactions.map(
-              cost => cost.platform,
+              (cost) => cost.platform,
             ),
             backgroundColor: rgba('darkRed', 0.5),
           },
@@ -624,7 +624,7 @@ const charts = computed(() => {
             label: 'Subscription Fees',
             valueType: 'currency',
             data: stripeTransactions.value.AmericanExpress.transactions.map(
-              cost => cost.subscription,
+              (cost) => cost.subscription,
             ),
             backgroundColor: rgba('darkOrange', 0.5),
             stack: 'stack1',
@@ -632,7 +632,7 @@ const charts = computed(() => {
           {
             label: 'GST Fees',
             valueType: 'currency',
-            data: stripeTransactions.value.AmericanExpress.transactions.map(cost => cost.gst),
+            data: stripeTransactions.value.AmericanExpress.transactions.map((cost) => cost.gst),
             backgroundColor: rgba('darkPurple', 0.5),
             stack: 'stack1',
           },
@@ -640,7 +640,7 @@ const charts = computed(() => {
             label: 'Extra Fees',
             valueType: 'currency',
             data: stripeTransactions.value.AmericanExpress.transactions.map(
-              cost => cost.additionalFees,
+              (cost) => cost.additionalFees,
             ),
             backgroundColor: rgba('darkBlue', 0.3),
             stack: 'stack1',

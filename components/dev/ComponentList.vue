@@ -35,6 +35,6 @@ const emit = defineEmits<{
 const search = ref('')
 
 const filteredComponentNames = computed(() =>
-  props.componentNames.filter(name => name.toLowerCase().includes(search.value.toLowerCase())),
+  props.componentNames.filter((name) => name.toLowerCase().includes(search.value.toLowerCase())),
 )
 </script>

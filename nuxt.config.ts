@@ -12,6 +12,11 @@ const og = {
 }
 
 export default defineNuxtConfig({
+  // UNCOMMENT FOR DEBUGGING
+  debug: true,
+  build: {
+    analyze: true,
+  },
   experimental: {
     // https://nuxt.com/docs/guide/going-further/experimental-features
     // cookieStore: true,

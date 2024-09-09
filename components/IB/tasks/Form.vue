@@ -1,7 +1,7 @@
 <template>
   <form
-    @submit.prevent="handleSubmit"
     class="flex gap-6 text-sm"
+    @submit.prevent="handleSubmit"
   >
     <!-- Left column: Title, Milestone, Description, and Subtasks -->
     <div class="flex-grow">
@@ -52,7 +52,7 @@
           id="description"
           v-model="formData.description"
           rows="6"
-          autoResize
+          auto-resize
           placeholder="Add a more detailed description..."
           class="w-full"
         />
@@ -139,8 +139,8 @@
         <PrimeDatePicker
           id="date"
           v-model="formData.date"
-          dateFormat="yy-mm-dd"
-          :showIcon="true"
+          date-format="yy-mm-dd"
+          :show-icon="true"
           class="w-full"
           required
         />
@@ -161,8 +161,8 @@
           id="category"
           v-model="formData.category"
           :options="categories"
-          optionLabel="name"
-          optionValue="value"
+          option-label="name"
+          option-value="value"
           placeholder="Select a category"
           class="w-full"
         />
@@ -187,8 +187,8 @@
             { label: 'Medium', value: 'medium' },
             { label: 'High', value: 'high' },
           ]"
-          optionLabel="label"
-          optionValue="value"
+          option-label="label"
+          option-value="value"
           placeholder="Select priority"
           class="w-full"
         />
@@ -209,8 +209,8 @@
           id="assignee"
           v-model="formData.assigneeId"
           :options="employees"
-          optionLabel="name"
-          optionValue="id"
+          option-label="name"
+          option-value="id"
           placeholder="Select an assignee"
           class="w-full"
         />
@@ -226,7 +226,7 @@
         </label>
         <IBTasksTimeTracker
           :goal="formData"
-          @update:timeSpent="updateTimeSpent"
+          @update:time-spent="updateTimeSpent"
         />
       </div>
 
@@ -241,8 +241,8 @@
           v-if="!isNew"
           type="button"
           severity="danger"
-          @click="$emit('delete', formData)"
           class="ml-2 w-full"
+          @click="$emit('delete', formData)"
         >
           Delete Goal
         </PrimeButton>
@@ -264,7 +264,7 @@ interface ExtendedGoal extends Goal {
 const props = defineProps<{
   goal: ExtendedGoal
   employees: Employee[]
-  categories: { name: string; value: string }[]
+  categories: { name: string, value: string }[]
   milestones: Milestone[]
   isNew: boolean
 }>()
@@ -282,7 +282,7 @@ watch(
   (newGoal) => {
     formData.value = { ...newGoal, subtasks: newGoal.subtasks || [] }
   },
-  { deep: true }
+  { deep: true },
 )
 
 const progress = computed(() => {

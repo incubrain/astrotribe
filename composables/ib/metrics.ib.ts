@@ -11,7 +11,7 @@ function calculateMedian(arr: number[]): number {
 function calculateStandardDeviation(valuesArray: number[]): number {
   const mean = valuesArray.reduce((a, b) => a + b) / valuesArray.length
   return Math.sqrt(
-    valuesArray.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / valuesArray.length,
+    valuesArray.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / valuesArray.length,
   )
 }
 

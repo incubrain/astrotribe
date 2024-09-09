@@ -60,7 +60,7 @@ export function useHttpHandler() {
 
         // Exponential backoff with jitter
         const backoffTime = Math.min(1000 * 2 ** retries + Math.random() * 1000, 10000)
-        await new Promise(resolve => setTimeout(resolve, backoffTime))
+        await new Promise((resolve) => setTimeout(resolve, backoffTime))
       }
     }
     throw new Error('Max retries reached')

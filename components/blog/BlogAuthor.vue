@@ -42,7 +42,7 @@ const authors = [
 ]
 
 const findAuthor = (id: number) => {
-  return authors.find(author => author.id === id)
+  return authors.find((author) => author.id === id)
 }
 </script>
 

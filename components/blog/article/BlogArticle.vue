@@ -16,7 +16,7 @@ watch(
   async (newVal) => {
     if (newVal && p.article.body) {
       // awiat timeout of 1 seconds
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       articleHtml.value = newVal.innerHTML
     }
   },

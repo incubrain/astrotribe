@@ -40,11 +40,11 @@ watchEffect(async () => {
       articlesFinished.value = true
     }
     console.log('newArticles.value', newArticles.value.length)
-    allArticles.value.filter(article => isValidArticleCard(article))
+    allArticles.value.filter((article) => isValidArticleCard(article))
     allArticles.value.push(...newArticles.value)
     pagination.skip += pagination.limit
 
-    await new Promise(resolve => setTimeout(resolve, 1200))
+    await new Promise((resolve) => setTimeout(resolve, 1200))
   }
 })
 

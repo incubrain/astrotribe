@@ -56,11 +56,11 @@ const flatMetrics = computed<FlatMetric[]>(() => {
 })
 
 const metricCategories = computed(() => {
-  return [...new Set(flatMetrics.value.map(metric => metric.path[0]))]
+  return [...new Set(flatMetrics.value.map((metric) => metric.path[0]))]
 })
 
 function getCategoryMetrics(category: string): FlatMetric[] {
-  return flatMetrics.value.filter(metric => metric.path[0] === category)
+  return flatMetrics.value.filter((metric) => metric.path[0] === category)
 }
 
 function formatCategoryName(name: string): string {

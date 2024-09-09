@@ -55,7 +55,7 @@ const showMilestoneDetails = ref(false)
 const selectedMilestone = ref<Milestone | null>(null)
 
 const getTasksForMilestone = computed(
-  () => (milestoneId: number) => props.goals.filter((goal) => goal.milestoneId === milestoneId)
+  () => (milestoneId: number) => props.goals.filter((goal) => goal.milestoneId === milestoneId),
 )
 
 function calculateMilestoneProgress(milestoneId: number) {

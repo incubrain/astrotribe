@@ -137,7 +137,7 @@ Deno.serve(async (req) => {
     })
   }
 
-  const contentTypeConfig = contentTypes.find(ct => ct.type === contentType)
+  const contentTypeConfig = contentTypes.find((ct) => ct.type === contentType)
 
   if (!contentTypeConfig) {
     return new Response(JSON.stringify({ error: 'Invalid content type' }), {

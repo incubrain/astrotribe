@@ -45,10 +45,10 @@ const processData = () => {
 
   const latestData = data[0]
   const previousWeekData = data.find(
-    d => new Date(d.capture_time) <= new Date(latestData.capture_time - 7 * 24 * 60 * 60 * 1000),
+    (d) => new Date(d.capture_time) <= new Date(latestData.capture_time - 7 * 24 * 60 * 60 * 1000),
   )
 
-  const uniqueTables = new Set(data.map(d => d.table_name))
+  const uniqueTables = new Set(data.map((d) => d.table_name))
 
   metrics.value = [
     {
@@ -76,8 +76,8 @@ const processData = () => {
             ? previousWeekData.table_size
             / new Set(
               data
-                .filter(d => d.capture_time <= previousWeekData.capture_time)
-                .map(d => d.table_name),
+                .filter((d) => d.capture_time <= previousWeekData.capture_time)
+                .map((d) => d.table_name),
             ).size
             : 0,
         ],

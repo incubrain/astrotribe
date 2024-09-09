@@ -4,7 +4,6 @@ import { PDFDocument } from 'pdf-lib'
 import lame from 'node-lame'
 import ffmpeg from 'fluent-ffmpeg'
 import sharp from 'sharp'
-import { serverSupabaseClient } from '#supabase/server'
 
 // Base optimizer interface
 interface FileOptimizer {
@@ -108,15 +107,15 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'No form data provided' })
   }
 
-  const userId = form.find(item => item.name === 'userId')?.data.toString()
-  const fileType = form.find(item => item.name === 'fileType')?.data.toString()
-  const bucket = form.find(item => item.name === 'bucket')?.data.toString()
-  const path = form.find(item => item.name === 'path')?.data.toString()
+  const userId = form.find((item) => item.name === 'userId')?.data.toString()
+  const fileType = form.find((item) => item.name === 'fileType')?.data.toString()
+  const bucket = form.find((item) => item.name === 'bucket')?.data.toString()
+  const path = form.find((item) => item.name === 'path')?.data.toString()
   const optimizationOptions = JSON.parse(
-    form.find(item => item.name === 'optimizationOptions')?.data.toString() || '{}',
+    form.find((item) => item.name === 'optimizationOptions')?.data.toString() || '{}',
   )
 
-  const file = form.find(item => item.name === 'file')
+  const file = form.find((item) => item.name === 'file')
   if (!file) {
     throw createError({ statusCode: 400, statusMessage: 'No file provided' })
   }

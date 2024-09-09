@@ -32,7 +32,7 @@ export function useABTest<T>({
 
   // Use PostHog's experiment feature to get the variant
   const variantName = $posthog.getFeatureFlag(experimentName)
-  selectedVariant.value = variants.find(v => v.name === variantName) || defaultVariant
+  selectedVariant.value = variants.find((v) => v.name === variantName) || defaultVariant
 
   // Capture experiment exposure
   $posthog.capture('$experiment_started', {

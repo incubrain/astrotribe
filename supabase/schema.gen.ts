@@ -36,7 +36,7 @@ export type Database = {
     Tables: {
       addresses: {
         Row: {
-          address_type: Database["public"]["Enums"]["address_type"] | null
+          address_type: Database['public']['Enums']['address_type'] | null
           city_id: number
           company_id: string | null
           country_id: number
@@ -50,7 +50,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          address_type?: Database["public"]["Enums"]["address_type"] | null
+          address_type?: Database['public']['Enums']['address_type'] | null
           city_id: number
           company_id?: string | null
           country_id: number
@@ -64,7 +64,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          address_type?: Database["public"]["Enums"]["address_type"] | null
+          address_type?: Database['public']['Enums']['address_type'] | null
           city_id?: number
           company_id?: string | null
           country_id?: number
@@ -79,32 +79,32 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_city"
-            columns: ["city_id"]
+            foreignKeyName: 'fk_city'
+            columns: ['city_id']
             isOneToOne: false
-            referencedRelation: "cities"
-            referencedColumns: ["id"]
+            referencedRelation: 'cities'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_country"
-            columns: ["country_id"]
+            foreignKeyName: 'fk_country'
+            columns: ['country_id']
             isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
+            referencedRelation: 'countries'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_addresses_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: 'public_addresses_company_id_fkey'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_addresses_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'public_addresses_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -153,43 +153,43 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_blacklisted_urls_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: 'public_blacklisted_urls_company_id_fkey'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
         ]
       }
       bookmarks: {
         Row: {
           content_id: string
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at: string | null
           id: string
           user_id: string
         }
         Insert: {
           content_id: string
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           user_id: string
         }
         Update: {
           content_id?: string
-          content_type?: Database["public"]["Enums"]["content_type"]
+          content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "bookmarks_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'bookmarks_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -238,11 +238,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_country"
-            columns: ["country_id"]
+            foreignKeyName: 'fk_country'
+            columns: ['country_id']
             isOneToOne: false
-            referencedRelation: "countries"
-            referencedColumns: ["id"]
+            referencedRelation: 'countries'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -250,7 +250,7 @@ export type Database = {
         Row: {
           content: string
           content_id: string
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at: string | null
           id: string
           parent_comment_id: string | null
@@ -260,7 +260,7 @@ export type Database = {
         Insert: {
           content: string
           content_id: string
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           parent_comment_id?: string | null
@@ -270,7 +270,7 @@ export type Database = {
         Update: {
           content?: string
           content_id?: string
-          content_type?: Database["public"]["Enums"]["content_type"]
+          content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           parent_comment_id?: string | null
@@ -279,18 +279,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "comments_parent_comment_id_fkey"
-            columns: ["parent_comment_id"]
+            foreignKeyName: 'comments_parent_comment_id_fkey'
+            columns: ['parent_comment_id']
             isOneToOne: false
-            referencedRelation: "comments"
-            referencedColumns: ["id"]
+            referencedRelation: 'comments'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "comments_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'comments_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -298,7 +298,7 @@ export type Database = {
         Row: {
           category: string | null
           category_id: number | null
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at: string | null
           description: string | null
           failed_count: number | null
@@ -310,7 +310,7 @@ export type Database = {
           logo_url: string | null
           name: string | null
           scrape_frequency:
-            | Database["public"]["Enums"]["scrape_frequency"]
+            | Database['public']['Enums']['scrape_frequency']
             | null
           scrape_rating: number | null
           scraped_at: string | null
@@ -321,7 +321,7 @@ export type Database = {
         Insert: {
           category?: string | null
           category_id?: number | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string | null
           description?: string | null
           failed_count?: number | null
@@ -333,7 +333,7 @@ export type Database = {
           logo_url?: string | null
           name?: string | null
           scrape_frequency?:
-            | Database["public"]["Enums"]["scrape_frequency"]
+            | Database['public']['Enums']['scrape_frequency']
             | null
           scrape_rating?: number | null
           scraped_at?: string | null
@@ -344,7 +344,7 @@ export type Database = {
         Update: {
           category?: string | null
           category_id?: number | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string | null
           description?: string | null
           failed_count?: number | null
@@ -356,7 +356,7 @@ export type Database = {
           logo_url?: string | null
           name?: string | null
           scrape_frequency?:
-            | Database["public"]["Enums"]["scrape_frequency"]
+            | Database['public']['Enums']['scrape_frequency']
             | null
           scrape_rating?: number | null
           scraped_at?: string | null
@@ -366,25 +366,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_social_media"
-            columns: ["social_media_id"]
+            foreignKeyName: 'fk_social_media'
+            columns: ['social_media_id']
             isOneToOne: false
-            referencedRelation: "social_media"
-            referencedColumns: ["id"]
+            referencedRelation: 'social_media'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_companies_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: 'public_companies_category_id_fkey'
+            columns: ['category_id']
             isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_companies_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'public_companies_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -412,24 +412,24 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_company"
-            columns: ["company_id"]
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_contact"
-            columns: ["contact_id"]
+            foreignKeyName: 'fk_contact'
+            columns: ['contact_id']
             isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
+            referencedRelation: 'contacts'
+            referencedColumns: ['id']
           },
         ]
       }
       company_employees: {
         Row: {
-          access_level: Database["public"]["Enums"]["access_level"]
+          access_level: Database['public']['Enums']['access_level']
           company_id: string | null
           created_at: string | null
           end_date: string | null
@@ -441,7 +441,7 @@ export type Database = {
           user_profile_id: string
         }
         Insert: {
-          access_level?: Database["public"]["Enums"]["access_level"]
+          access_level?: Database['public']['Enums']['access_level']
           company_id?: string | null
           created_at?: string | null
           end_date?: string | null
@@ -453,7 +453,7 @@ export type Database = {
           user_profile_id: string
         }
         Update: {
-          access_level?: Database["public"]["Enums"]["access_level"]
+          access_level?: Database['public']['Enums']['access_level']
           company_id?: string | null
           created_at?: string | null
           end_date?: string | null
@@ -466,11 +466,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "company_employees_user_profile_id_fkey"
-            columns: ["user_profile_id"]
+            foreignKeyName: 'company_employees_user_profile_id_fkey'
+            columns: ['user_profile_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -516,11 +516,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_company"
-            columns: ["company_id"]
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -551,11 +551,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "company_metrics_metric_id_fkey"
-            columns: ["metric_id"]
+            foreignKeyName: 'company_metrics_metric_id_fkey'
+            columns: ['metric_id']
             isOneToOne: false
-            referencedRelation: "metric_definitions"
-            referencedColumns: ["id"]
+            referencedRelation: 'metric_definitions'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -595,68 +595,68 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_company_urls_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: 'public_company_urls_company_id_fkey'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
         ]
       }
       contacts: {
         Row: {
           company_id: string | null
-          contact_type: Database["public"]["Enums"]["contact_type"] | null
+          contact_type: Database['public']['Enums']['contact_type'] | null
           created_at: string | null
           email: string | null
           id: number
           is_primary: boolean | null
           phone: string | null
-          privacy_level: Database["public"]["Enums"]["privacy_level"] | null
+          privacy_level: Database['public']['Enums']['privacy_level'] | null
           title: string | null
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           company_id?: string | null
-          contact_type?: Database["public"]["Enums"]["contact_type"] | null
+          contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
           id: number
           is_primary?: boolean | null
           phone?: string | null
-          privacy_level?: Database["public"]["Enums"]["privacy_level"] | null
+          privacy_level?: Database['public']['Enums']['privacy_level'] | null
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           company_id?: string | null
-          contact_type?: Database["public"]["Enums"]["contact_type"] | null
+          contact_type?: Database['public']['Enums']['contact_type'] | null
           created_at?: string | null
           email?: string | null
           id?: number
           is_primary?: boolean | null
           phone?: string | null
-          privacy_level?: Database["public"]["Enums"]["privacy_level"] | null
+          privacy_level?: Database['public']['Enums']['privacy_level'] | null
           title?: string | null
           updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_company"
-            columns: ["company_id"]
+            foreignKeyName: 'fk_company'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "fk_user"
-            columns: ["user_id"]
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -678,109 +678,109 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "content_categories_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: 'content_categories_category_id_fkey'
+            columns: ['category_id']
             isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "content_categories_content_id_fkey"
-            columns: ["content_id"]
+            foreignKeyName: 'content_categories_content_id_fkey'
+            columns: ['content_id']
             isOneToOne: false
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
       content_sources: {
         Row: {
           company_id: string | null
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at: string | null
           expected_count: number | null
           failed_count: number | null
           has_failed: boolean | null
           hash: number | null
           id: number
-          priority: Database["public"]["Enums"]["priority"]
+          priority: Database['public']['Enums']['priority']
           refreshed_at: string | null
-          scrape_frequency: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency: Database['public']['Enums']['scrape_frequency']
           scraped_at: string | null
           updated_at: string | null
           url: string
         }
         Insert: {
           company_id?: string | null
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at?: string | null
           expected_count?: number | null
           failed_count?: number | null
           has_failed?: boolean | null
           hash?: number | null
           id?: number
-          priority: Database["public"]["Enums"]["priority"]
+          priority: Database['public']['Enums']['priority']
           refreshed_at?: string | null
-          scrape_frequency: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency: Database['public']['Enums']['scrape_frequency']
           scraped_at?: string | null
           updated_at?: string | null
           url: string
         }
         Update: {
           company_id?: string | null
-          content_type?: Database["public"]["Enums"]["content_type"]
+          content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           expected_count?: number | null
           failed_count?: number | null
           has_failed?: boolean | null
           hash?: number | null
           id?: number
-          priority?: Database["public"]["Enums"]["priority"]
+          priority?: Database['public']['Enums']['priority']
           refreshed_at?: string | null
-          scrape_frequency?: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency']
           scraped_at?: string | null
           updated_at?: string | null
           url?: string
         }
         Relationships: [
           {
-            foreignKeyName: "content_sources_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: 'content_sources_company_id_fkey'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
         ]
       }
       content_statuses: {
         Row: {
           content_id: string
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at: string | null
           id: string
           notes: string | null
         }
         Insert: {
           content_id: string
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at?: string | null
           id?: string
           notes?: string | null
         }
         Update: {
           content_id?: string
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string | null
           id?: string
           notes?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "content_statuses_content_id_fkey"
-            columns: ["content_id"]
+            foreignKeyName: 'content_statuses_content_id_fkey'
+            columns: ['content_id']
             isOneToOne: false
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -799,24 +799,24 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "content_tags_content_id_fkey"
-            columns: ["content_id"]
+            foreignKeyName: 'content_tags_content_id_fkey'
+            columns: ['content_id']
             isOneToOne: false
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "content_tags_tag_id_fkey"
-            columns: ["tag_id"]
+            foreignKeyName: 'content_tags_tag_id_fkey'
+            columns: ['tag_id']
             isOneToOne: false
-            referencedRelation: "tags"
-            referencedColumns: ["id"]
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
           },
         ]
       }
       contents: {
         Row: {
-          content_type: Database["public"]["Enums"]["content_type"]
+          content_type: Database['public']['Enums']['content_type']
           created_at: string | null
           id: string
           title: string | null
@@ -824,7 +824,7 @@ export type Database = {
           url: string
         }
         Insert: {
-          content_type?: Database["public"]["Enums"]["content_type"]
+          content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           title?: string | null
@@ -832,7 +832,7 @@ export type Database = {
           url: string
         }
         Update: {
-          content_type?: Database["public"]["Enums"]["content_type"]
+          content_type?: Database['public']['Enums']['content_type']
           created_at?: string | null
           id?: string
           title?: string | null
@@ -964,25 +964,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "customer_payments_payment_provider_id_fkey"
-            columns: ["payment_provider_id"]
+            foreignKeyName: 'customer_payments_payment_provider_id_fkey'
+            columns: ['payment_provider_id']
             isOneToOne: false
-            referencedRelation: "payment_providers"
-            referencedColumns: ["id"]
+            referencedRelation: 'payment_providers'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "customer_payments_subscription_id_fkey"
-            columns: ["subscription_id"]
+            foreignKeyName: 'customer_payments_subscription_id_fkey'
+            columns: ['subscription_id']
             isOneToOne: false
-            referencedRelation: "customer_subscriptions"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_subscriptions'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "customer_payments_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'customer_payments_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1055,11 +1055,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "customer_refunds_payment_id_fkey"
-            columns: ["payment_id"]
+            foreignKeyName: 'customer_refunds_payment_id_fkey'
+            columns: ['payment_id']
             isOneToOne: false
-            referencedRelation: "customer_payments"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_payments'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1213,25 +1213,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "customer_subscriptions_payment_provider_id_fkey"
-            columns: ["payment_provider_id"]
+            foreignKeyName: 'customer_subscriptions_payment_provider_id_fkey'
+            columns: ['payment_provider_id']
             isOneToOne: false
-            referencedRelation: "payment_providers"
-            referencedColumns: ["id"]
+            referencedRelation: 'payment_providers'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "customer_subscriptions_plan_id_fkey"
-            columns: ["plan_id"]
+            foreignKeyName: 'customer_subscriptions_plan_id_fkey'
+            columns: ['plan_id']
             isOneToOne: false
-            referencedRelation: "customer_subscription_plans"
-            referencedColumns: ["id"]
+            referencedRelation: 'customer_subscription_plans'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "customer_subscriptions_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'customer_subscriptions_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1266,8 +1266,8 @@ export type Database = {
         Row: {
           created_at: string
           device_info: string | null
-          feedback_status: Database["public"]["Enums"]["feedback_status"] | null
-          feedback_type: Database["public"]["Enums"]["feedback_type"] | null
+          feedback_status: Database['public']['Enums']['feedback_status'] | null
+          feedback_type: Database['public']['Enums']['feedback_type'] | null
           id: number
           message: string
           page_identifier: string
@@ -1279,9 +1279,9 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_status?:
-            | Database["public"]["Enums"]["feedback_status"]
+            | Database['public']['Enums']['feedback_status']
             | null
-          feedback_type?: Database["public"]["Enums"]["feedback_type"] | null
+          feedback_type?: Database['public']['Enums']['feedback_type'] | null
           id?: number
           message: string
           page_identifier: string
@@ -1293,9 +1293,9 @@ export type Database = {
           created_at?: string
           device_info?: string | null
           feedback_status?:
-            | Database["public"]["Enums"]["feedback_status"]
+            | Database['public']['Enums']['feedback_status']
             | null
-          feedback_type?: Database["public"]["Enums"]["feedback_type"] | null
+          feedback_type?: Database['public']['Enums']['feedback_type'] | null
           id?: number
           message?: string
           page_identifier?: string
@@ -1305,43 +1305,43 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "fk_user"
-            columns: ["user_id"]
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
       follows: {
         Row: {
           created_at: string | null
-          followed_entity: Database["public"]["Enums"]["followed_entity"]
+          followed_entity: Database['public']['Enums']['followed_entity']
           followed_id: string
           follower_id: string
           id: string
         }
         Insert: {
           created_at?: string | null
-          followed_entity: Database["public"]["Enums"]["followed_entity"]
+          followed_entity: Database['public']['Enums']['followed_entity']
           followed_id: string
           follower_id: string
           id?: string
         }
         Update: {
           created_at?: string | null
-          followed_entity?: Database["public"]["Enums"]["followed_entity"]
+          followed_entity?: Database['public']['Enums']['followed_entity']
           followed_id?: string
           follower_id?: string
           id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "follows_follower_id_fkey"
-            columns: ["follower_id"]
+            foreignKeyName: 'follows_follower_id_fkey'
+            columns: ['follower_id']
             isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1381,7 +1381,7 @@ export type Database = {
           body: string | null
           category_id: number
           company_id: string | null
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at: string
           description: string | null
           failed_count: number | null
@@ -1391,7 +1391,7 @@ export type Database = {
           id: string
           keywords: Json | null
           published_at: string | null
-          scrape_frequency: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency: Database['public']['Enums']['scrape_frequency']
           scraped_at: string | null
           title: string | null
           updated_at: string
@@ -1402,7 +1402,7 @@ export type Database = {
           body?: string | null
           category_id?: number
           company_id?: string | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string
           description?: string | null
           failed_count?: number | null
@@ -1412,7 +1412,7 @@ export type Database = {
           id: string
           keywords?: Json | null
           published_at?: string | null
-          scrape_frequency?: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency']
           scraped_at?: string | null
           title?: string | null
           updated_at?: string
@@ -1423,7 +1423,7 @@ export type Database = {
           body?: string | null
           category_id?: number
           company_id?: string | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string
           description?: string | null
           failed_count?: number | null
@@ -1433,7 +1433,7 @@ export type Database = {
           id?: string
           keywords?: Json | null
           published_at?: string | null
-          scrape_frequency?: Database["public"]["Enums"]["scrape_frequency"]
+          scrape_frequency?: Database['public']['Enums']['scrape_frequency']
           scraped_at?: string | null
           title?: string | null
           updated_at?: string
@@ -1441,25 +1441,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_news_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: 'public_news_category_id_fkey'
+            columns: ['category_id']
             isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_news_company_id_fkey"
-            columns: ["company_id"]
+            foreignKeyName: 'public_news_company_id_fkey'
+            columns: ['company_id']
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            referencedRelation: 'companies'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_news_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'public_news_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1484,11 +1484,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_news_summaries_news_id_fkey"
-            columns: ["news_id"]
+            foreignKeyName: 'public_news_summaries_news_id_fkey'
+            columns: ['news_id']
             isOneToOne: false
-            referencedRelation: "news"
-            referencedColumns: ["id"]
+            referencedRelation: 'news'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1510,17 +1510,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "news_tags_tag_id_fkey"
-            columns: ["tag_id"]
+            foreignKeyName: 'news_tags_tag_id_fkey'
+            columns: ['tag_id']
             isOneToOne: false
-            referencedRelation: "tags"
-            referencedColumns: ["id"]
+            referencedRelation: 'tags'
+            referencedColumns: ['id']
           },
         ]
       }
       newsletters: {
         Row: {
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at: string | null
           end_date: string
           frequency: string
@@ -1531,7 +1531,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string | null
           end_date: string
           frequency: string
@@ -1542,7 +1542,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string | null
           end_date?: string
           frequency?: string
@@ -1554,11 +1554,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "newsletters_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'newsletters_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1590,17 +1590,17 @@ export type Database = {
         Row: {
           feature: string
           id: number
-          plan: Database["public"]["Enums"]["app_plan_enum"]
+          plan: Database['public']['Enums']['app_plan_enum']
         }
         Insert: {
           feature: string
           id?: number
-          plan: Database["public"]["Enums"]["app_plan_enum"]
+          plan: Database['public']['Enums']['app_plan_enum']
         }
         Update: {
           feature?: string
           id?: number
-          plan?: Database["public"]["Enums"]["app_plan_enum"]
+          plan?: Database['public']['Enums']['app_plan_enum']
         }
         Relationships: []
       }
@@ -1612,7 +1612,7 @@ export type Database = {
           authors: Json | null
           category: string | null
           comments: string | null
-          content_status: Database["public"]["Enums"]["content_status"]
+          content_status: Database['public']['Enums']['content_status']
           created_at: string
           doi_url: string | null
           figure_count: number | null
@@ -1639,7 +1639,7 @@ export type Database = {
           authors?: Json | null
           category?: string | null
           comments?: string | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string
           doi_url?: string | null
           figure_count?: number | null
@@ -1666,7 +1666,7 @@ export type Database = {
           authors?: Json | null
           category?: string | null
           comments?: string | null
-          content_status?: Database["public"]["Enums"]["content_status"]
+          content_status?: Database['public']['Enums']['content_status']
           created_at?: string
           doi_url?: string | null
           figure_count?: number | null
@@ -1688,11 +1688,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "research_content_fk"
-            columns: ["id"]
+            foreignKeyName: 'research_content_fk'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "contents"
-            referencedColumns: ["id"]
+            referencedRelation: 'contents'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1732,18 +1732,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_research_embeddings_embedding_review_id_fkey"
-            columns: ["embedding_review_id"]
+            foreignKeyName: 'public_research_embeddings_embedding_review_id_fkey'
+            columns: ['embedding_review_id']
             isOneToOne: false
-            referencedRelation: "embedding_reviews"
-            referencedColumns: ["id"]
+            referencedRelation: 'embedding_reviews'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "public_research_embeddings_research_id_fkey"
-            columns: ["research_id"]
+            foreignKeyName: 'public_research_embeddings_research_id_fkey'
+            columns: ['research_id']
             isOneToOne: true
-            referencedRelation: "research"
-            referencedColumns: ["id"]
+            referencedRelation: 'research'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1774,11 +1774,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "responses_search_id_fkey"
-            columns: ["search_id"]
+            foreignKeyName: 'responses_search_id_fkey'
+            columns: ['search_id']
             isOneToOne: false
-            referencedRelation: "searches"
-            referencedColumns: ["id"]
+            referencedRelation: 'searches'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -1787,21 +1787,21 @@ export type Database = {
           conditions: Json | null
           id: number
           permissions: Json | null
-          role: Database["public"]["Enums"]["app_role_enum"]
+          role: Database['public']['Enums']['app_role_enum']
           table_name: string
         }
         Insert: {
           conditions?: Json | null
           id?: number
           permissions?: Json | null
-          role: Database["public"]["Enums"]["app_role_enum"]
+          role: Database['public']['Enums']['app_role_enum']
           table_name: string
         }
         Update: {
           conditions?: Json | null
           id?: number
           permissions?: Json | null
-          role?: Database["public"]["Enums"]["app_role_enum"]
+          role?: Database['public']['Enums']['app_role_enum']
           table_name?: string
         }
         Relationships: []
@@ -1890,11 +1890,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "spider_metrics_metric_id_fkey"
-            columns: ["metric_id"]
+            foreignKeyName: 'spider_metrics_metric_id_fkey'
+            columns: ['metric_id']
             isOneToOne: false
-            referencedRelation: "metric_definitions"
-            referencedColumns: ["id"]
+            referencedRelation: 'metric_definitions'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -2070,8 +2070,8 @@ export type Database = {
           id: string
           introduction: string | null
           last_seen: string | null
-          plan: Database["public"]["Enums"]["app_plan_enum"] | null
-          role: Database["public"]["Enums"]["app_role_enum"]
+          plan: Database['public']['Enums']['app_plan_enum'] | null
+          role: Database['public']['Enums']['app_role_enum']
           surname: string | null
           updated_at: string | null
           username: string | null
@@ -2088,8 +2088,8 @@ export type Database = {
           id?: string
           introduction?: string | null
           last_seen?: string | null
-          plan?: Database["public"]["Enums"]["app_plan_enum"] | null
-          role?: Database["public"]["Enums"]["app_role_enum"]
+          plan?: Database['public']['Enums']['app_plan_enum'] | null
+          role?: Database['public']['Enums']['app_role_enum']
           surname?: string | null
           updated_at?: string | null
           username?: string | null
@@ -2106,19 +2106,19 @@ export type Database = {
           id?: string
           introduction?: string | null
           last_seen?: string | null
-          plan?: Database["public"]["Enums"]["app_plan_enum"] | null
-          role?: Database["public"]["Enums"]["app_role_enum"]
+          plan?: Database['public']['Enums']['app_plan_enum'] | null
+          role?: Database['public']['Enums']['app_role_enum']
           surname?: string | null
           updated_at?: string | null
           username?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_user_profiles_id_fkey"
-            columns: ["id"]
+            foreignKeyName: 'public_user_profiles_id_fkey'
+            columns: ['id']
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -2135,46 +2135,46 @@ export type Database = {
       }
       binary_quantize:
         | {
-            Args: {
-              "": string
-            }
-            Returns: unknown
+          Args: {
+            '': string
           }
+          Returns: unknown
+        }
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
+          Args: {
+            '': unknown
           }
+          Returns: unknown
+        }
       calculate_table_growth:
         | {
-            Args: {
-              p_table_name: string
-              p_end_date?: string
-            }
-            Returns: {
-              period: string
-              start_date: string
-              end_date: string
-              start_row_count: number
-              end_row_count: number
-              row_growth: number
-              growth_percentage: number
-            }[]
+          Args: {
+            p_table_name: string
+            p_end_date?: string
           }
+          Returns: {
+            period: string
+            start_date: string
+            end_date: string
+            start_row_count: number
+            end_row_count: number
+            row_growth: number
+            growth_percentage: number
+          }[]
+        }
         | {
-            Args: {
-              p_table_name: string
-              p_time_period: unknown
-              p_num_periods: number
-            }
-            Returns: {
-              period_end_time: string
-              row_count: number
-              growth_count: number
-              growth_percentage: number
-            }[]
+          Args: {
+            p_table_name: string
+            p_time_period: unknown
+            p_num_periods: number
           }
+          Returns: {
+            period_end_time: string
+            row_count: number
+            growth_count: number
+            growth_percentage: number
+          }[]
+        }
       cleanup_table_stats: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2295,102 +2295,102 @@ export type Database = {
       }
       halfvec_avg: {
         Args: {
-          "": number[]
+          '': number[]
         }
         Returns: unknown
       }
       halfvec_out: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       halfvec_send: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: string
       }
       halfvec_typmod_in: {
         Args: {
-          "": unknown[]
+          '': unknown[]
         }
         Returns: number
       }
       hnsw_bit_support: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       hnsw_halfvec_support: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       hnsw_sparsevec_support: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       hnswhandler: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       ivfflat_bit_support: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       ivfflat_halfvec_support: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       ivfflathandler: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       l2_norm:
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
+          Args: {
+            '': unknown
           }
+          Returns: number
+        }
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
+          Args: {
+            '': unknown
           }
+          Returns: number
+        }
       l2_normalize:
         | {
-            Args: {
-              "": string
-            }
-            Returns: string
+          Args: {
+            '': string
           }
+          Returns: string
+        }
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
+          Args: {
+            '': unknown
           }
+          Returns: unknown
+        }
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: unknown
+          Args: {
+            '': unknown
           }
+          Returns: unknown
+        }
       match_research: {
         Args: {
           query_embedding: string
@@ -2419,19 +2419,19 @@ export type Database = {
       }
       sparsevec_out: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: unknown
       }
       sparsevec_send: {
         Args: {
-          "": unknown
+          '': unknown
         }
         Returns: string
       }
       sparsevec_typmod_in: {
         Args: {
-          "": unknown[]
+          '': unknown[]
         }
         Returns: number
       }
@@ -2443,135 +2443,135 @@ export type Database = {
       }
       vector_avg: {
         Args: {
-          "": number[]
+          '': number[]
         }
         Returns: string
       }
       vector_dims:
         | {
-            Args: {
-              "": string
-            }
-            Returns: number
+          Args: {
+            '': string
           }
+          Returns: number
+        }
         | {
-            Args: {
-              "": unknown
-            }
-            Returns: number
+          Args: {
+            '': unknown
           }
+          Returns: number
+        }
       vector_norm: {
         Args: {
-          "": string
+          '': string
         }
         Returns: number
       }
       vector_out: {
         Args: {
-          "": string
+          '': string
         }
         Returns: unknown
       }
       vector_send: {
         Args: {
-          "": string
+          '': string
         }
         Returns: string
       }
       vector_typmod_in: {
         Args: {
-          "": unknown[]
+          '': unknown[]
         }
         Returns: number
       }
     }
     Enums: {
-      access_level: "viewer" | "editor" | "admin" | "super_admin"
+      access_level: 'viewer' | 'editor' | 'admin' | 'super_admin'
       address_type:
-        | "residential"
-        | "headquarters"
-        | "office"
-        | "factory"
-        | "lab"
-        | "warehouse"
-        | "research"
-        | "retail"
-        | "showroom"
-        | "branch"
+        | 'residential'
+        | 'headquarters'
+        | 'office'
+        | 'factory'
+        | 'lab'
+        | 'warehouse'
+        | 'research'
+        | 'retail'
+        | 'showroom'
+        | 'branch'
       app_plan_enum:
-        | "free"
-        | "basic"
-        | "intermediate"
-        | "premium"
-        | "enterprise"
-        | "custom"
+        | 'free'
+        | 'basic'
+        | 'intermediate'
+        | 'premium'
+        | 'enterprise'
+        | 'custom'
       app_role_enum:
-        | "guest"
-        | "user"
-        | "astroguide"
-        | "mentor"
-        | "moderator"
-        | "tenant_member"
-        | "tenant_admin"
-        | "tenant_super_admin"
-        | "admin"
-        | "super_admin"
+        | 'guest'
+        | 'user'
+        | 'astroguide'
+        | 'mentor'
+        | 'moderator'
+        | 'tenant_member'
+        | 'tenant_admin'
+        | 'tenant_super_admin'
+        | 'admin'
+        | 'super_admin'
       contact_type:
-        | "personal"
-        | "company"
-        | "professional"
-        | "recruitment"
-        | "founder"
+        | 'personal'
+        | 'company'
+        | 'professional'
+        | 'recruitment'
+        | 'founder'
       content_status:
-        | "draft"
-        | "pending_agent_action"
-        | "pending_agent_review"
-        | "pending_human_review"
-        | "pending_relevance_check"
-        | "irrelevant"
-        | "scheduled"
-        | "unpublished"
-        | "archived"
-        | "published"
-        | "failed"
-        | "pending_crawl"
-        | "scraped"
-        | "outdated"
-        | "updated"
-        | "new"
-      content_type: "news" | "events" | "jobs" | "research" | "companies"
+        | 'draft'
+        | 'pending_agent_action'
+        | 'pending_agent_review'
+        | 'pending_human_review'
+        | 'pending_relevance_check'
+        | 'irrelevant'
+        | 'scheduled'
+        | 'unpublished'
+        | 'archived'
+        | 'published'
+        | 'failed'
+        | 'pending_crawl'
+        | 'scraped'
+        | 'outdated'
+        | 'updated'
+        | 'new'
+      content_type: 'news' | 'events' | 'jobs' | 'research' | 'companies'
       feedback_status:
-        | "new"
-        | "under_review"
-        | "backlog"
-        | "working_on"
-        | "resolved"
-        | "rejected"
-        | "deferred"
+        | 'new'
+        | 'under_review'
+        | 'backlog'
+        | 'working_on'
+        | 'resolved'
+        | 'rejected'
+        | 'deferred'
       feedback_type:
-        | "bug_report"
-        | "feature_request"
-        | "user_interface_issue"
-        | "performance_issue"
-        | "documentation"
-      followed_entity: "company" | "user"
-      news_importance_level: "high" | "medium" | "low"
-      news_relation_type: "source" | "topic" | "mention"
-      priority: "very_low" | "low" | "medium" | "high" | "critical"
-      privacy_level: "private" | "connected" | "public"
+        | 'bug_report'
+        | 'feature_request'
+        | 'user_interface_issue'
+        | 'performance_issue'
+        | 'documentation'
+      followed_entity: 'company' | 'user'
+      news_importance_level: 'high' | 'medium' | 'low'
+      news_relation_type: 'source' | 'topic' | 'mention'
+      priority: 'very_low' | 'low' | 'medium' | 'high' | 'critical'
+      privacy_level: 'private' | 'connected' | 'public'
       scrape_frequency:
-        | "four_times_daily"
-        | "twice_daily"
-        | "daily"
-        | "twice_weekly"
-        | "weekly"
-        | "bi_weekly"
-        | "monthly"
-        | "quarterly"
-        | "biannual"
-        | "annually"
-        | "never"
-      user_status: "online" | "offline"
+        | 'four_times_daily'
+        | 'twice_daily'
+        | 'daily'
+        | 'twice_weekly'
+        | 'weekly'
+        | 'bi_weekly'
+        | 'monthly'
+        | 'quarterly'
+        | 'biannual'
+        | 'annually'
+        | 'never'
+      user_status: 'online' | 'offline'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2681,11 +2681,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "objects_bucketId_fkey"
-            columns: ["bucket_id"]
+            foreignKeyName: 'objects_bucketId_fkey'
+            columns: ['bucket_id']
             isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
+            referencedRelation: 'buckets'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -2722,11 +2722,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey"
-            columns: ["bucket_id"]
+            foreignKeyName: 's3_multipart_uploads_bucket_id_fkey'
+            columns: ['bucket_id']
             isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
+            referencedRelation: 'buckets'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -2769,18 +2769,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey"
-            columns: ["bucket_id"]
+            foreignKeyName: 's3_multipart_uploads_parts_bucket_id_fkey'
+            columns: ['bucket_id']
             isOneToOne: false
-            referencedRelation: "buckets"
-            referencedColumns: ["id"]
+            referencedRelation: 'buckets'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey"
-            columns: ["upload_id"]
+            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey'
+            columns: ['upload_id']
             isOneToOne: false
-            referencedRelation: "s3_multipart_uploads"
-            referencedColumns: ["id"]
+            referencedRelation: 's3_multipart_uploads'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -2884,85 +2884,84 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, 'public'>]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
+  | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+    Database[PublicTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+  Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R
     }
-    ? R
-    : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
       ? R
       : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
+  PublicSchema['Views'])
+    ? (PublicSchema['Tables'] &
+    PublicSchema['Views'])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+        ? R
+        : never
     : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Tables']
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+    Insert: infer I
+  }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+      Insert: infer I
+    }
       ? I
       : never
     : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Tables']
+  | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
+    Update: infer U
+  }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+    ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
+      Update: infer U
+    }
       ? U
       : never
     : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
+  | keyof PublicSchema['Enums']
+  | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
     : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
+    ? PublicSchema['Enums'][PublicEnumNameOrOptions]
     : never
-

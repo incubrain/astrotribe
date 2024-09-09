@@ -20,7 +20,7 @@ export class BaseDTO<T> {
   }
 
   private getSchema(dtoName: AllDTOKey): ZodSchema<T> | undefined {
-    const dto = this.dtos.find(d => d.name === dtoName)
+    const dto = this.dtos.find((d) => d.name === dtoName)
     this.log.info(`Retrieved DTO schema for: ${dto?.name}`)
     return dto?.schema
   }

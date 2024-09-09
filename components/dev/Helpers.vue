@@ -82,7 +82,7 @@ const resetPinia = (): Record<string | 'all', () => void> => {
     resetStores[name] = () => store.$reset()
   })
 
-  resetStores.all = () => pinia._s.forEach(store => store.$reset())
+  resetStores.all = () => pinia._s.forEach((store) => store.$reset())
   return resetStores
 }
 

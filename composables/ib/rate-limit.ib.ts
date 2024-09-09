@@ -12,7 +12,7 @@ export function useRateLimit() {
 
     if (timeElapsed < options.limitMs) {
       const waitTime = options.limitMs - timeElapsed
-      await new Promise(resolve => setTimeout(resolve, waitTime))
+      await new Promise((resolve) => setTimeout(resolve, waitTime))
     }
 
     lastActionTimes.value.set(action, Date.now())

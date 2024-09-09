@@ -37,7 +37,7 @@ export function useOnboarding() {
   const validateAndUpdate = (schema: ZodSchema) => {
     const result = schema.safeParse(form)
     if (result.success) {
-      Object.keys(errors).forEach(key => delete errors[key as keyof SignupForm])
+      Object.keys(errors).forEach((key) => delete errors[key as keyof SignupForm])
       return true
     }
     else {
