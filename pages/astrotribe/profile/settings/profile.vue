@@ -87,8 +87,7 @@ const handleFileUpload = async (event: Event) => {
       },
     })
     console.log('File uploaded successfully:', result)
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error uploading file:', error)
   }
 }

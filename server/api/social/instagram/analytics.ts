@@ -22,8 +22,7 @@ export default defineEventHandler(async (event) => {
       message: 'Profile businessAnalytics returned from Instagram',
       data: businessAnalytics,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'Error fetching Instagram insights',

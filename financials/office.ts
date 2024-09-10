@@ -11,11 +11,9 @@ const OFFICE_SPACE = {
       const totalSqMeters
         = OFFICE_SPACE.maxEmployees * OFFICE_SPACE.sqMetersPerEmployee
       return totalSqMeters * OFFICE_SPACE.costPerSqMeter
-    }
-    else if (haveCoworking) {
+    } else if (haveCoworking) {
       return 8000 * employees
-    }
-    else {
+    } else {
       return 0
     }
   },

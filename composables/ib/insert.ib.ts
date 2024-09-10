@@ -89,8 +89,7 @@ export function useInsertData<T extends { id: string | number }>(
 
         lastInsertTime = Date.now()
         return result
-      }
-      catch (error: any) {
+      } catch (error: any) {
         // Revert optimistic insert
         store.removeItem(item.id)
         throw error // error handler in the HTTP handler deals with this
@@ -102,18 +101,15 @@ export function useInsertData<T extends { id: string | number }>(
         const results = await Promise.all(data.map(insertSingle))
         isInserting.value = false
         return results
-      }
-      else {
+      } else {
         const result = await insertSingle(data)
         isInserting.value = false
         return result
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       handleError(error, 'Error inserting data')
       throw error // Re-throw to allow caller to handle if needed
-    }
-    finally {
+    } finally {
       isInserting.value = false
     }
   }

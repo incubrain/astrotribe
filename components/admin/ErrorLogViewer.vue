@@ -86,8 +86,7 @@ const uniqueLogs = computed(() => {
       if (new Date(log.timestamp) > new Date(existingLog.timestamp)) {
         existingLog.timestamp = log.timestamp
       }
-    }
-    else {
+    } else {
       logMap.set(key, { ...log })
     }
   })

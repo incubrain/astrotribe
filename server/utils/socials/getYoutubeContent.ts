@@ -63,8 +63,7 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
       subscriberCount: channel.statistics.subscriberCount,
       videos,
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Failed to fetch YouTube profile details:', error)
     return null
   }

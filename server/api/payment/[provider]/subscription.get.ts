@@ -8,11 +8,9 @@ export default defineEventHandler(async (event) => {
   const backendUrl = config.scraperUrl
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription')
-  }
-  else if (provider === 'stripe') {
+  } else if (provider === 'stripe') {
     backendUrl.concat('/api/customer/subscription')
-  }
-  else {
+  } else {
     throw createError({
       statusCode: 400,
       statusMessage: 'Invalid payment provider',
@@ -28,8 +26,7 @@ export default defineEventHandler(async (event) => {
       },
     })
     return response
-  }
-  catch (error) {
+  } catch (error) {
     console.error(`Error fetching subscription from ${provider}:`, error)
     throw createError({
       statusCode: 500,

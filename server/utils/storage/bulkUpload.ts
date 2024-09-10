@@ -1,4 +1,4 @@
-import { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**
  * Uploads multiple files to a specified bucket and directory in Supabase Storage.
@@ -16,51 +16,38 @@ async function bulkUploadFilesToSupabase(
   files: { file: File; fileName: string }[]
 ): Promise<any[]> {
   // Ensure the path ends with a slash
-  const directory = path.endsWith('/') ? path : `${path}/`;
+  const directory = path.endsWith('/') ? path : `${path}/`
 
   // Create an array of upload promises
   const uploadPromises = files.map(({ file, fileName }) => {
-    const fullPath = `${directory}${fileName}`;
-    return supabaseClient.storage
-      .from(bucketName)
-      .upload(fullPath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
-  });
+    const fullPath = `${directory}${fileName}`
+    return supabaseClient.storage.from(bucketName).upload(fullPath, file, {
+      cacheControl: '3600',
+      upsert: false,
+    })
+  })
 
   // Execute all promises concurrently
-  const results = await Promise.allSettled(uploadPromises);
+  const results = await Promise.allSettled(uploadPromises)
 
   // Process results to separate successes and errors
-  const successes = [];
-  const errors = [];
-  results.forEach(result => {
+  const successes = []
+  const errors = []
+  results.forEach((result) => {
     if (result.status === 'fulfilled' && result.value.error === null) {
-      successes.push(result.value.data);
+      successes.push(result.value.data)
     } else if (result.status === 'rejected' || result.value.error) {
-      errors.push(result.reason || result.value.error.message);
+      errors.push(result.reason || result.value.error.message)
     }
-  });
+  })
 
   // Optionally handle errors, e.g., retry failed uploads, log errors, etc.
   if (errors.length > 0) {
-    console.error('Some uploads failed:', errors);
+    console.error('Some uploads failed:', errors)
   }
 
-  return successes;
+  return successes
 }
-
-//
-
-
-Currently, the @supabase/supabase-js library does not support direct bulk file uploads in a single API call. Each file must be uploaded individually using the upload method on the storage client. However, you can facilitate bulk uploads by iterating over an array of files and uploading them asynchronously. This can be effectively managed using Promise.all to handle multiple uploads concurrently, which can significantly speed up the process compared to sequential uploads.
-
-Here’s how you can implement a bulk upload function in TypeScript using Supabase Storage:
-
-typescript
-Copy code
-import { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Uploads multiple files to a specified bucket and directory in Supabase Storage.
@@ -78,52 +65,50 @@ async function bulkUploadFilesToSupabase(
   files: { file: File; fileName: string }[]
 ): Promise<any[]> {
   // Ensure the path ends with a slash
-  const directory = path.endsWith('/') ? path : `${path}/`;
+  const directory = path.endsWith('/') ? path : `${path}/`
 
   // Create an array of upload promises
   const uploadPromises = files.map(({ file, fileName }) => {
-    const fullPath = `${directory}${fileName}`;
-    return supabaseClient.storage
-      .from(bucketName)
-      .upload(fullPath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
-  });
+    const fullPath = `${directory}${fileName}`
+    return supabaseClient.storage.from(bucketName).upload(fullPath, file, {
+      cacheControl: '3600',
+      upsert: false,
+    })
+  })
 
   // Execute all promises concurrently
-  const results = await Promise.allSettled(uploadPromises);
+  const results = await Promise.allSettled(uploadPromises)
 
   // Process results to separate successes and errors
-  const successes = [];
-  const errors = [];
-  results.forEach(result => {
+  const successes = []
+  const errors = []
+  results.forEach((result) => {
     if (result.status === 'fulfilled' && result.value.error === null) {
-      successes.push(result.value.data);
+      successes.push(result.value.data)
     } else if (result.status === 'rejected' || result.value.error) {
-      errors.push(result.reason || result.value.error.message);
+      errors.push(result.reason || result.value.error.message)
     }
-  });
+  })
 
   // Optionally handle errors, e.g., retry failed uploads, log errors, etc.
   if (errors.length > 0) {
-    console.error('Some uploads failed:', errors);
+    console.error('Some uploads failed:', errors)
   }
 
-  return successes;
+  return successes
 }
 
-const bucketName = 'your-bucket-name';
-const directoryPath = 'uploads/multiple';
+const bucketName = 'your-bucket-name'
+const directoryPath = 'uploads/multiple'
 const filesToUpload = [
   { file: new File(['contents of file 1'], 'file1.txt'), fileName: 'file1.txt' },
-  { file: new File(['contents of file 2'], 'file2.txt'), fileName: 'file2.txt' }
-];
+  { file: new File(['contents of file 2'], 'file2.txt'), fileName: 'file2.txt' },
+]
 
 bulkUploadFilesToSupabase(supabaseClient, bucketName, directoryPath, filesToUpload)
-  .then(successfulUploads => {
-    console.log('Successfully uploaded files:', successfulUploads);
+  .then((successfulUploads) => {
+    console.log('Successfully uploaded files:', successfulUploads)
   })
-  .catch(error => {
-    console.error('Error during bulk upload:', error);
-  });
+  .catch((error) => {
+    console.error('Error during bulk upload:', error)
+  })

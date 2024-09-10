@@ -30,8 +30,7 @@ export function useHttpHandler() {
           throw error
         }
         return data as T
-      }
-      catch (error: unknown) {
+      } catch (error: unknown) {
         retries++
         logger.warn(`${context} failed. Attempt ${retries} of ${maxRetries}`)
 

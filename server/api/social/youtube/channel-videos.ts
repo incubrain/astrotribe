@@ -12,8 +12,7 @@ export default defineEventHandler(async (event) => {
       message: 'Videos returned from youtube',
       data: videos,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('social/youtube error', error.message)
     return {
       status: 500,

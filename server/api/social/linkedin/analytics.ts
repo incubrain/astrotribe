@@ -20,8 +20,7 @@ export default defineEventHandler(async (event) => {
       message: 'Post analytics returned from LinkedIn',
       data: postAnalytics,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'Error fetching LinkedIn analytics',

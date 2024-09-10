@@ -52,7 +52,7 @@ function adjustConversionRates(MAU: number) {
         subscription.expert.conversion.pessimistic
         + (MAU / 100000)
         * (subscription.expert.conversion.optimistic
-        - subscription.expert.conversion.pessimistic),
+          - subscription.expert.conversion.pessimistic),
         subscription.expert.conversion.optimistic,
       )
       : 0

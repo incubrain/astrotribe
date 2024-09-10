@@ -21,8 +21,7 @@ onMounted(() => {
     if (scrollContainer.value) {
       observer.value.observe(scrollContainer.value)
     }
-  }
-  else {
+  } else {
     // Fallback for browsers that don't support IntersectionObserver
     window.addEventListener('scroll', handleScroll)
   }

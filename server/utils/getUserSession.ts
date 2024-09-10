@@ -23,8 +23,7 @@ async function fetchPermissions(userPlan: string, userRole: string) {
       role: rolePermissions,
       plan: planPermissions,
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching permissions:', error.message)
     return null // Return null to indicate failure
   }
@@ -142,8 +141,7 @@ export async function validateAndUpdateSession() {
       plan_permissions: permissions.plan,
       role_permissions: permissions.role,
     })
-  }
-  else {
+  } else {
     console.log('Current permissions are valid and do not need updates.')
   }
 

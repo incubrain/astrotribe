@@ -60,8 +60,7 @@ export const usePaginationStore = defineStore('paginationStore', () => {
     const currentPagination = getPagination(domainKey)
     if (currentPagination) {
       currentPagination.page++
-    }
-    else {
+    } else {
       logger.warn(`Attempted to increment pagination for an uninitialized store '${domainKey}'.`)
     }
   }

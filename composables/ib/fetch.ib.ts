@@ -19,15 +19,13 @@ export interface FetchInput {
 function getDataStructure(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.length > 0 ? [getDataStructure(obj[0])] : []
-  }
-  else if (typeof obj === 'object' && obj !== null) {
+  } else if (typeof obj === 'object' && obj !== null) {
     const structure: Record<string, any> = {}
     for (const key in obj) {
       structure[key] = getDataStructure(obj[key])
     }
     return structure
-  }
-  else {
+  } else {
     return typeof obj
   }
 }
@@ -100,8 +98,7 @@ export function useBaseFetch() {
       paginationStore.incrementPagination(domainKey)
 
       return data
-    }
-    catch (error) {
+    } catch (error) {
       errors.client({
         error,
         devOnly: false,

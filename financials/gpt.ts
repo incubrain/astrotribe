@@ -256,8 +256,7 @@ function calculateTotalChatCost(params: CostParams): {
         output: totalOutputTokens,
       },
     }
-  }
-  else {
+  } else {
     // Free users utilize Groq models
     // Implement logic to calculate the hourly request and token rate
     const hourlyRate = calculateHourlyRate(numItems, totalInputTokens + totalOutputTokens)
@@ -284,14 +283,11 @@ function calculateTotalChatCost(params: CostParams): {
 function calculateTotalCost(params: CostParams): any {
   if (params.taskType === 'embedding') {
     return calculateEmbeddingCost(params)
-  }
-  else if (params.taskType === 'chat') {
+  } else if (params.taskType === 'chat') {
     return calculateTotalChatCost(params)
-  }
-  else if (params.taskType === 'summary') {
+  } else if (params.taskType === 'summary') {
     return calculateTotalChatCost(params)
-  }
-  else {
+  } else {
     throw new Error('Unsupported task type')
   }
 }

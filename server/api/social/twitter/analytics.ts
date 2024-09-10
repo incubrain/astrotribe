@@ -21,8 +21,7 @@ export default defineEventHandler(async (event) => {
       message: 'Post analytics returned from Twitter',
       data: userAnalytics,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'Error fetching Twitter analytics',

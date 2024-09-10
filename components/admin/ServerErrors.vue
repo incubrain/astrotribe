@@ -47,13 +47,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorReport.value = response.data
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch error report', err)
       error.value = 'Failed to load error report. Please try again later.'
       errorReport.value = null
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -69,13 +67,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorTrends.value = response.data.trends || []
-    }
-    catch (err: any) {
+    } catch (err: any) {
       console.error('Failed to fetch error trends', err)
       error.value = 'Failed to load error trends. Please try again later.'
       errorTrends.value = []
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -97,15 +93,13 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
       errorLogs.value = response.data.logs || []
       totalLogs.value = response.data.total || 0
       totalPages.value = response.data.totalPages || 1
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch error logs', err)
       error.value = 'Failed to load error logs. Please try again later.'
       errorLogs.value = []
       totalLogs.value = 0
       totalPages.value = 1
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }
@@ -121,13 +115,11 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
         throw new Error('No data returned from the server')
       }
       errorPG.value = response.data || []
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Failed to fetch postgres errors', err)
       error.value = 'Failed to load postgres errors. Please try again later.' + err
       errorPG.value = []
-    }
-    finally {
+    } finally {
       loading.value = false
     }
   }

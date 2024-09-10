@@ -4,6 +4,7 @@ import { PDFDocument } from 'pdf-lib'
 import lame from 'node-lame'
 import ffmpeg from 'fluent-ffmpeg'
 import sharp from 'sharp'
+import { serverSupabaseClient } from '#supabase/server'
 
 // Base optimizer interface
 interface FileOptimizer {
@@ -143,8 +144,7 @@ export default defineEventHandler(async (event) => {
       optimizedFile = result.data
       finalExtension = result.extension
       finalMimeType = result.mimeType
-    }
-    else {
+    } else {
       console.log('No optimizer found for this file type, uploading as-is')
       optimizedFile = file.data
       finalExtension = mimeType.split('/')[1]
@@ -174,8 +174,7 @@ export default defineEventHandler(async (event) => {
 
       if (updateError) {
         console.error('Error updating user profile:', updateError)
-      }
-      else {
+      } else {
         console.log('User profile updated:', data)
       }
     }
@@ -187,8 +186,7 @@ export default defineEventHandler(async (event) => {
         fileName: `${fileName}.${finalExtension}`,
       }),
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('Error processing file:', error)
     throw createError({ statusCode: 500, statusMessage: error.message })
   }

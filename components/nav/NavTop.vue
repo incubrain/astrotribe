@@ -20,8 +20,7 @@ const lastScrollY = ref(y.value)
 const navbarClasses = computed(() => {
   if (navPosition.value === 'fixed') {
     return ''
-  }
-  else {
+  } else {
     return navPosition.value === 'hidden' ? 'animate-bounce-out' : 'animate-bounce-in'
   }
 })
@@ -34,11 +33,9 @@ watch(
   (newY) => {
     if (window?.innerWidth < 1024) {
       navPosition.value = 'fixed'
-    }
-    else if (newY > lastScrollY.value) {
+    } else if (newY > lastScrollY.value) {
       navPosition.value = 'hidden'
-    }
-    else if (newY < lastScrollY.value) {
+    } else if (newY < lastScrollY.value) {
       navPosition.value = 'visible'
     }
     lastScrollY.value = newY

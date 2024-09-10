@@ -57,8 +57,7 @@ function isValidArticleCard(article: ArticleCardT): boolean {
   try {
     articleCardSchema.parse(article)
     return true
-  }
-  catch (error) {
+  } catch (error) {
     console.error(`Error parsing article: ${article?.title}`, error)
     return false
   }

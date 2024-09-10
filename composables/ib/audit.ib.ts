@@ -61,8 +61,7 @@ export function useAuditLog() {
         if (error) {
           console.error('Error logging audit event to database:', error)
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error logging audit event to database:', error)
       }
     }
@@ -74,8 +73,7 @@ export function useAuditLog() {
           method: 'POST',
           body: JSON.stringify(logEntry),
         })
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error sending log to external service:', error)
       }
     }

@@ -192,8 +192,7 @@ export function useErrorHandler() {
 
     if (error instanceof AppError) {
       appError = error
-    }
-    else {
+    } else {
       const errorType = determineErrorType(error)
       const severity = determineSeverity(error)
       appError = new AppError({

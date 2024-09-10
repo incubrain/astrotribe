@@ -86,8 +86,7 @@ export function useBaseError() {
         isServer: true,
         devMessage,
       })
-    }
-    else if (response.data) {
+    } else if (response.data) {
       logger.info(`Successfully fetched ${response.data.length} items`)
       return response.data
     }

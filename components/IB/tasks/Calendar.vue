@@ -135,15 +135,13 @@ async function saveGoal(goal: Goal) {
     if (isNew(goal)) {
       await tasks.createGoal(goal)
       toast.success({ message: 'Goal created successfully', summary: 'Success' })
-    }
-    else {
+    } else {
       await tasks.updateGoal(goal)
       toast.success({ message: 'Goal updated successfully', summary: 'Success' })
     }
     await tasks.fetchGoals()
     showModal.value = false
-  }
-  catch (error) {
+  } catch (error) {
     toast.error({ message: `Failed to save goal: ${error.message}`, summary: 'Error' })
   }
 }
@@ -154,8 +152,7 @@ async function deleteGoal(goal: Goal) {
     toast.success({ message: 'Goal deleted successfully', summary: 'Success' })
     await tasks.fetchGoals()
     showModal.value = false
-  }
-  catch (error) {
+  } catch (error) {
     toast.error({ message: `Failed to delete goal: ${error.message}`, summary: 'Error' })
   }
 }
@@ -303,8 +300,7 @@ async function handleEventDrop(dropInfo: any) {
     try {
       await tasks.updateGoal(updatedGoal)
       toast.success({ message: 'Goal date updated successfully', summary: 'Success' })
-    }
-    catch (error) {
+    } catch (error) {
       toast.error({ message: 'Failed to update goal date', summary: 'Error' })
       dropInfo.revert()
     }

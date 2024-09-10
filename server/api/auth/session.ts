@@ -18,8 +18,7 @@ export default defineEventHandler(async (event) => {
       message: 'User session fetched from session',
       data: session.user,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('session error', error.message)
     return {
       error,

@@ -118,8 +118,7 @@ const fetchData = async () => {
     // })
     if (rpcError) throw rpcError
     growthData.value = data
-  }
-  catch (err) {
+  } catch (err) {
     error.value = 'Failed to fetch growth data'
     console.error(err)
   }

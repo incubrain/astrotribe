@@ -65,8 +65,7 @@ export function useAuth() {
     if (error) {
       console.error(error.message)
       toast.error({ summary: 'Register with email', message: error.message })
-    }
-    else {
+    } else {
       console.log('success')
       navigateTo('/auth/success')
     }
@@ -115,8 +114,7 @@ export function useAuth() {
     if (error) {
       console.error('Forgot password failed:', error)
       toast.error({ summary: 'Password Reset Failed', message: error.message })
-    }
-    else {
+    } else {
       toast.success({
         summary: 'Email Sent',
         message: 'Check your email for a password reset link',
@@ -130,8 +128,7 @@ export function useAuth() {
     if (error) {
       console.error('Password update failed:', error)
       toast.error({ summary: 'Password Update Failed', message: error.message })
-    }
-    else {
+    } else {
       toast.success({ summary: 'Password Updated', message: 'Your password has been updated' })
     }
   }
@@ -141,8 +138,7 @@ export function useAuth() {
     if (error) {
       console.error('Logout failed:', error)
       toast.error({ summary: 'Logout Failed', message: error.message })
-    }
-    else {
+    } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
       navigateTo('/')
     }

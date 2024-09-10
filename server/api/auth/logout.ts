@@ -7,8 +7,7 @@ export default defineEventHandler(async (event) => {
       message: 'User session removed',
       data: null,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('session error', error.message)
     return {
       error,

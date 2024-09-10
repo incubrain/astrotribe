@@ -1,3 +1,11 @@
+<script setup lang="ts">
+definePageMeta({
+  layoutTransition: false,
+  name: 'Upload',
+  middleware: 'is-admin',
+})
+</script>
+
 <template>
   <div class="flex flex-col gap-4 p-4">
     <!-- <IBUpload
@@ -11,13 +19,5 @@
     <AdminUpload />
   </div>
 </template>
-
-<script setup lang="ts">
-definePageMeta({
-  layoutTransition: false,
-  name: 'Upload',
-  middleware: 'is-admin',
-})
-</script>
 
 <style scoped></style>

@@ -20,8 +20,7 @@ watch(
     if (isDarkNow) {
       console.log('going dark')
       PrimeVue.changeTheme(lightTheme, darkTheme, 'theme-link', () => {})
-    }
-    else {
+    } else {
       // console.log('going light')
       // PrimeVue.changeTheme(darkTheme, lightTheme, 'theme-link', () => {})
     }

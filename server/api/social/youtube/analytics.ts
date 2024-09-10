@@ -32,8 +32,7 @@ export default defineEventHandler(async (event) => {
         videos,
       },
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     errors.handleError({
       error,
       devMessage: 'error fetching youtube analytics',

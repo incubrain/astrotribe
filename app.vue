@@ -18,19 +18,15 @@ supabase.auth.onAuthStateChange((event, session) => {
       console.log('TOKEN_REFRESHED', session)
       await currentUser.loadSession()
       // Use webhooks/database for role/plan changes to trigger new session
-    }
-    else if (event === 'SIGNED_OUT') {
+    } else if (event === 'SIGNED_OUT') {
       console.log('SIGNED_OUT')
       currentUser.removeSession()
-    }
-    else if (event === 'PASSWORD_RECOVERY') {
+    } else if (event === 'PASSWORD_RECOVERY') {
       console.log('PASSWORD_RECOVERY: TRIGGER')
       // Handle password recovery event
-    }
-    else if (event === 'INITIAL_SESSION') {
+    } else if (event === 'INITIAL_SESSION') {
       await currentUser.loadSession()
-    }
-    else if (event === 'SIGNED_IN') {
+    } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER')
     }
   }, 0)
@@ -54,10 +50,6 @@ useHead({
     },
   ],
 })
-
-// infra:med:med:2 setup feature flags for posthog
-// ui:low:easy:1 - add styling to the toasts, specifically dark mode
-// !infra:med:hard:4 - add an event emitter using kafka or rabbitmq, or a simple pubsub to server
 </script>
 
 <template>
@@ -67,8 +59,8 @@ useHead({
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
-    <IBAdminTools v-if="currentUser.isAdmin" />
-
+    <IBAdminTools v-if="false" />
+    <!-- currentUser.isAdmin -->
     <!-- <DevComponentPlayground v-if="showPlayground" /> -->
 
     <!-- <Notification /> -->

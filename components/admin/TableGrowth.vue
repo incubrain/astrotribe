@@ -51,8 +51,7 @@ const fetchGrowthData = async (table: string) => {
       weekly: weekly.data,
       monthly: monthly.data,
     }
-  }
-  catch (error) {
+  } catch (error) {
     handleError(error, `Error fetching growth data for ${table}`)
     return null
   }
@@ -196,8 +195,7 @@ const sparklineOptions = {
 onMounted(async () => {
   try {
     await fetchAllGrowthData()
-  }
-  catch (error) {
+  } catch (error) {
     handleError(error, 'Error loading dashboard data')
     toast.error({
       summary: 'Data Load Error',

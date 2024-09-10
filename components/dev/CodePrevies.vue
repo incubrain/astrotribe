@@ -19,8 +19,8 @@ const generatedCode = computed(
 <template>
   <${props.component.name}
     ${Object.entries(props.props)
-    .map(([key, value]) => `:${key}="${JSON.stringify(value)}"`)
-    .join('\n    ')}
+        .map(([key, value]) => `:${key}="${JSON.stringify(value)}"`)
+        .join('\n    ')}
   />
 </template>
 

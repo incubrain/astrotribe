@@ -39,12 +39,10 @@ export default function useTasks() {
       if (response.success) {
         goals.value = response.goals
         generateRecurringTasks()
-      }
-      else {
+      } else {
         throw new Error(response.message)
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching goals:', error)
       throw error
     }
@@ -128,17 +126,14 @@ export default function useTasks() {
           if (index !== -1) {
             goals.value[index] = { ...goal, subtasks: goal.subtasks }
           }
-        }
-        else {
+        } else {
           // For create and delete, re-fetch all goals
           await fetchGoals()
         }
-      }
-      else {
+      } else {
         throw new Error(response.message)
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(`Error ${action}ing goal:`, error)
       throw error
     }
@@ -171,8 +166,7 @@ export default function useTasks() {
       }
       const data = await response.json()
       milestones.value = data
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching milestones:', error)
       toast.error({ message: 'Failed to fetch milestones', summary: 'Error' })
     }

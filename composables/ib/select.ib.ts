@@ -71,8 +71,7 @@ export function useSelectData<T extends { id: string | number }>(
         if (pagination) {
           console.log('pagination', pagination)
           queryOptions.range = pagination
-        }
-        else {
+        } else {
           throw new AppError({
             type: ErrorType.VALIDATION_ERROR,
             message: `Pagination not initialized for ${tableName}`,
@@ -80,8 +79,7 @@ export function useSelectData<T extends { id: string | number }>(
             context: 'Data Fetching',
           })
         }
-      }
-      else if (options.limit) {
+      } else if (options.limit) {
         queryOptions.range = { from: 0, to: options.limit - 1 }
       }
 
@@ -94,12 +92,10 @@ export function useSelectData<T extends { id: string | number }>(
 
       lastSelectTime = Date.now()
       return result
-    }
-    catch (error: any) {
+    } catch (error: any) {
       handleError(error, 'Error selecting data')
       throw error
-    }
-    finally {
+    } finally {
       isSelecting.value = false
     }
   }
@@ -110,13 +106,11 @@ export function useSelectData<T extends { id: string | number }>(
       const newData = await fetchData()
       if (newData.length === 0) {
         paginationStore.setDataFinished(tableName)
-      }
-      else {
+      } else {
         store.addItems(newData)
         paginationStore.incrementPagination(tableName)
       }
-    }
-    else {
+    } else {
       const data = await fetchData()
       store.setItems(data)
     }

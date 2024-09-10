@@ -730,8 +730,7 @@ export async function generateBusinessMetrics() {
     // Write the data to a JSON file
     await fs.writeFile('./financials/business-financials.json', JSON.stringify(data, null, 2))
     console.log('Business metrics data has been written to business-metrics.json')
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error writing business metrics data to file:', error)
   }
 }

@@ -36,11 +36,9 @@ defineProps({
 const isStarFilled = (index: number, rating: number) => {
   if (index <= Math.floor(rating)) {
     return 'material-symbols:star'
-  }
-  else if (index - 0.5 <= rating) {
+  } else if (index - 0.5 <= rating) {
     return 'material-symbols:star-half'
-  }
-  else {
+  } else {
     return 'material-symbols:star-outline'
   }
 }

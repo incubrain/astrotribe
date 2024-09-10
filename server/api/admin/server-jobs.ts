@@ -79,8 +79,7 @@ const scheduleReconnect = () => {
     reconnectAttempts++
     console.log(`Scheduling reconnection attempt ${reconnectAttempts}/${maxReconnectAttempts}`)
     reconnectTimeout = setTimeout(connectToAnalyticsServer, reconnectInterval)
-  }
-  else {
+  } else {
     console.log('Max reconnect attempts reached. Please check the server.')
   }
 }
@@ -110,8 +109,7 @@ export default defineWebSocketHandler({
           metrics: parsedMessage.metrics,
         }),
       )
-    }
-    else {
+    } else {
       console.log('Cannot forward message: serverWs not ready')
     }
   },
