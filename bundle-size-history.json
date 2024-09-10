@@ -76,5 +76,83 @@
         "size": 5534
       }
     ]
+  },
+  {
+    "date": "2024-09-10T16:55:21.551Z",
+    "clientSize": 86347572,
+    "serverSize": 90151800,
+    "totalSize": 176499372,
+    "clientSizeMB": "82.347",
+    "serverSizeMB": "85.975",
+    "totalSizeMB": "168.323",
+    "gitCommit": "1dd71ad2ea34c1a5825adcb9e56b25c5e62baf7f",
+    "buildTime": 66,
+    "nodeVersion": "v20.17.0",
+    "environment": "development",
+    "gzipClientSize": 0,
+    "gzipServerSize": 0,
+    "clientFileCount": 386,
+    "serverFileCount": 3412,
+    "largestFiles": [
+      {
+        "name": "astron-era-hero.jpg",
+        "size": 124625
+      },
+      {
+        "name": "astronera-logo.jpg",
+        "size": 26223
+      },
+      {
+        "name": "_nuxt",
+        "size": 8736
+      },
+      {
+        "name": "astronera-logo-with-text.jpg",
+        "size": 7003
+      },
+      {
+        "name": "favicon.ico",
+        "size": 5534
+      }
+    ]
+  },
+  {
+    "date": "2024-09-10T17:08:44.071Z",
+    "clientSize": 86347587,
+    "serverSize": 90151797,
+    "totalSize": 176499384,
+    "clientSizeMB": "82.347",
+    "serverSizeMB": "85.975",
+    "totalSizeMB": "168.323",
+    "gitCommit": "1dd71ad2ea34c1a5825adcb9e56b25c5e62baf7f",
+    "buildTime": 80,
+    "nodeVersion": "v20.17.0",
+    "environment": "development",
+    "gzipClientSize": 0,
+    "gzipServerSize": 0,
+    "clientFileCount": 386,
+    "serverFileCount": 3412,
+    "largestFiles": [
+      {
+        "name": "astron-era-hero.jpg",
+        "size": 124625
+      },
+      {
+        "name": "astronera-logo.jpg",
+        "size": 26223
+      },
+      {
+        "name": "_nuxt",
+        "size": 8736
+      },
+      {
+        "name": "astronera-logo-with-text.jpg",
+        "size": 7003
+      },
+      {
+        "name": "favicon.ico",
+        "size": 5534
+      }
+    ]
   }
 ]
