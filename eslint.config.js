@@ -23,10 +23,10 @@ export default createConfigForNuxt({
     'object-curly-newline': 'off',
     'arrow-parens': ['error', 'always'],
     '@stylistic/arrow-parens': ['error', 'always'],
+    '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
     'curly': 'off',
     'no-undef': 'off',
     'space-before-function-paren': 'off',
-    'arrow-parens': 'error',
     'vue/html-self-closing': 'off',
   },
   ignores: [

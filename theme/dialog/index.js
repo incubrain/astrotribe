@@ -131,8 +131,8 @@ export default {
               'opacity-0 scale-75 translate-x-0 translate-y-full translate-z-0 mask-active',
           }
         : props.position === 'left'
-        || props.position === 'topleft'
-        || props.position === 'bottomleft'
+          || props.position === 'topleft'
+          || props.position === 'bottomleft'
           ? {
               enterFromClass:
                 'opacity-0 scale-75 -translate-x-full translate-y-0 translate-z-0 mask-active',
@@ -142,8 +142,8 @@ export default {
                 'opacity-0 scale-75  -translate-x-full translate-y-0 translate-z-0 mask-active',
             }
           : props.position === 'right'
-          || props.position === 'topright'
-          || props.position === 'bottomright'
+            || props.position === 'topright'
+            || props.position === 'bottomright'
             ? {
                 enterFromClass:
                   'opacity-0 scale-75 translate-x-full translate-y-0 translate-z-0 mask-active',

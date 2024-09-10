@@ -39,8 +39,7 @@ export function useOnboarding() {
     if (result.success) {
       Object.keys(errors).forEach((key) => delete errors[key as keyof SignupForm])
       return true
-    }
-    else {
+    } else {
       result.error.issues.forEach((issue) => {
         errors[issue.path[0] as keyof SignupForm] = issue.message
       })

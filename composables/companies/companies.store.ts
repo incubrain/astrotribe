@@ -60,8 +60,7 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
       }
       logger.log(`returned ${data.length} companies`)
       companies.value.push(...data)
-    }
-    catch (error) {
+    } catch (error) {
       logger.error('Failed to load companies:', error)
     }
   }
@@ -82,8 +81,7 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
       }
 
       logger.log(`Company ${data.name} inserted successfully`)
-    }
-    catch (error) {
+    } catch (error) {
       logger.error(`Error inserting company ${newCompany.name}:`, error)
     }
   }

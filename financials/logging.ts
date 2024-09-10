@@ -104,8 +104,7 @@ export function calculateLogsCost(params: LogsCostParams): LoggingResult {
       metrics: USD2INR(metricsCost),
       analytics: USD2INR(analyticsCost),
     }
-  }
-  else {
+  } else {
     const { includedGB, additionalGBPrice, retentionPricePerGBPerMonth, minimumCharge }
       = LOGS_CONFIG
 

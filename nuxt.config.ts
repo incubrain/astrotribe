@@ -35,24 +35,16 @@ export default defineNuxtConfig({
     preset: 'node-server',
     experimental: {
       websocket: true,
-      tasks: true,
+      // tasks: true,
     },
     storage: {
       session: {
         driver: 'memory',
       },
-      companies: {
-        driver: 'fs',
-        base: './data/db',
-      },
       tasks: {
         driver: 'fs',
         base: './data/tasks',
       },
-    },
-    scheduledTasks: {
-      // every 12 hours
-      // '0 */2 * * *': ['scrape:news']
     },
   },
 

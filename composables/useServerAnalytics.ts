@@ -84,11 +84,9 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       const data = JSON.parse(event.data)
       if (data.type === 'availableMetrics') {
         setAvailableMetrics(data.metrics)
-      }
-      else if (data.type === 'error') {
+      } else if (data.type === 'error') {
         console.error('WebSocket error:', data.message)
-      }
-      else {
+      } else {
         console.log('Updating metrics with:', data)
         updateMetrics(data)
       }
@@ -110,8 +108,7 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       reconnectAttempts.value++
       console.log(`Attempting to reconnect (${reconnectAttempts.value}/${maxReconnectAttempts})...`)
       setTimeout(connectWebSocket, reconnectInterval)
-    }
-    else {
+    } else {
       console.log('Max reconnect attempts reached. Please refresh the page.')
     }
   }

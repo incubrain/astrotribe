@@ -48,8 +48,7 @@ export function useAdmin() {
         )
       }
       console.log(`Profile picture uploaded successfully for user with ID ${userId}`)
-    }
-    catch (error) {
+    } catch (error) {
       console.error(`Error uploading profile picture for user with ID ${userId}:`, error)
     }
   }
@@ -84,8 +83,7 @@ export function useAdmin() {
 
         // update user profile with data
         await updateSingle(user, newUser.id)
-      }
-      catch (error) {
+      } catch (error) {
         console.error(`Failed to register user with email ${user.email}:`, error)
       }
     }
@@ -127,8 +125,7 @@ export function useAdmin() {
       })
 
       // maybe update state here
-    }
-    catch (error) {
+    } catch (error) {
       errors.client({
         error,
         devOnly: false,

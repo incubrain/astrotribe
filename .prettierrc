@@ -7,5 +7,6 @@
   "printWidth": 100,
   "htmlWhitespaceSensitivity": "strict",
   "singleAttributePerLine": true,
+  "operatorPosition": "begin",
   "plugins": ["prettier-plugin-tailwindcss"]
 }

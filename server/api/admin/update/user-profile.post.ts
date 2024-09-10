@@ -36,8 +36,7 @@ export default defineEventHandler(async (event) => {
       message: 'Users have been inserted successfully',
       data,
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error(`Error updating user ${userId}:`, error)
     return {
       status: 500,

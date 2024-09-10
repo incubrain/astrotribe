@@ -64,8 +64,7 @@ export function useDeleteData<T extends { id: string | number }>(
         }
 
         lastDeleteTime = Date.now()
-      }
-      catch (error: any) {
+      } catch (error: any) {
         // Revert optimistic delete
         const oldItem = store.getItemById(itemId)
         if (oldItem) {
@@ -78,16 +77,13 @@ export function useDeleteData<T extends { id: string | number }>(
     try {
       if (Array.isArray(id)) {
         await Promise.all(id.map(deleteSingle))
-      }
-      else {
+      } else {
         await deleteSingle(id)
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       handleError(error, 'Error deleting data')
       throw error
-    }
-    finally {
+    } finally {
       isDeleting.value = false
     }
   }

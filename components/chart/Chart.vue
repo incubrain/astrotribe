@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TooltipOptions, ChartOptions, TooltipItem, LegendOptions, LabelItem } from 'chart.js'
+import type { ChartOptions, TooltipItem } from 'chart.js'
 
 const componentId = useId()
 
@@ -32,23 +32,29 @@ interface Dataset {
   type?: ChartType
 }
 
-interface Chart {
+interface ChartProps {
   id: number
-  scaleType: ScaleType
+  scaleType: 'logarithmic' | 'linear'
   title: string
   subtitle: string
-  type: string
-  horizontal?: boolean
-  hideAxes?: boolean
-  data: ChartData
+  type: ChartType
+  data: {
+    labels: string[]
+    datasets: Array<{
+      label: string
+      data: number[]
+      backgroundColor: string
+      valueType: string
+      type?: ChartType
+      yAxisID?: string
+    }>
+  }
+  info?: Array<{ name: string; value: string }>
 }
 
-const props = defineProps({
-  chart: {
-    type: Object as PropType<Chart>,
-    default: () => null,
-  },
-})
+const props = defineProps<{
+  chart: ChartProps
+}>()
 
 const preformattedCharts = computed(() => {
   if (!isChartDataReady.value) return null
@@ -90,7 +96,7 @@ function getFirstNumber(...values: any[]): number {
   return 0
 }
 
-const chartOptions = computed(() => {
+const chartOptions = computed((): Partial<ChartOptions> => {
   if (!isChartDataReady.value) return {}
 
   const isPieChart = props.chart.type === 'pie' || props.chart.type === 'doughnut'
@@ -122,7 +128,7 @@ const chartOptions = computed(() => {
     scales: generateScales(
       preformattedCharts.value.data.datasets,
       props.chart.scaleType,
-      isPieChart || props.chart.hideAxes,
+      isPieChart || props.chart.hideAxes
     ),
     animations: {
       y: {
@@ -137,7 +143,7 @@ const chartOptions = computed(() => {
         },
       },
     },
-  } as ChartOptions
+  }
 })
 
 function generateLegend(): Partial<LegendOptions<'line'>> {
@@ -165,7 +171,7 @@ const gridColor = 'rgba(255, 255, 255, 0.1)'
 function generateScales(
   datasets: Dataset[],
   scaleType: ScaleType = 'linear',
-  hideAxes: boolean,
+  hideAxes: boolean
 ): Record<string, any> {
   if (hideAxes) {
     return {
@@ -260,12 +266,12 @@ function formatTooltipLabel(tooltipItem: TooltipItem<'line'>) {
 
 const isChartDataReady = computed(() => {
   return (
-    props.chart
-    && props.chart.data
-    && props.chart.data.datasets
-    && props.chart.data.datasets.length > 0
-    && props.chart.data.labels
-    && props.chart.data.labels.length > 0
+    props.chart &&
+    props.chart.data &&
+    props.chart.data.datasets &&
+    props.chart.data.datasets.length > 0 &&
+    props.chart.data.labels &&
+    props.chart.data.labels.length > 0
   )
 })
 
@@ -284,7 +290,7 @@ const dataFormatters = {
     }
     return `${value.toFixed(2)}%` // Round to whole numbers for clarity
   },
-}
+} as const
 </script>
 
 <template>

@@ -1,10 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import {
-  useErrorHandler,
-  AppError,
-  ErrorType,
-  ErrorSeverity,
-} from './error-handler.ib'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from './error-handler.ib'
 import { useLogger } from './logger.ib'
 import { useRateLimit } from './rate-limit.ib'
 
@@ -144,8 +139,7 @@ export function useFileUpload() {
 
       if (options.useServerUpload) {
         result = await serverSideUpload(file, options)
-      }
-      else {
+      } else {
         const filePath = getFilePath(file.name, options)
         const { data, error } = await supabase.storage.from(options.bucket).upload(filePath, file, {
           cacheControl: '3600',
@@ -189,12 +183,10 @@ export function useFileUpload() {
       lastUploadTime.value = Date.now()
 
       return result
-    }
-    catch (error: any) {
+    } catch (error: any) {
       handleError(error, 'Error uploading file')
       throw error
-    }
-    finally {
+    } finally {
       isUploading.value = false
       uploadProgress.value = 100
       currentUpload.value = null

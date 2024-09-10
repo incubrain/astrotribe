@@ -34,8 +34,7 @@ const { error, status } = await useAsyncData(
 
     if (articles.length) {
       articlesShowcase.value.push(...articles)
-    }
-    else {
+    } else {
       message.value = 'No articles loaded...'
     }
   },

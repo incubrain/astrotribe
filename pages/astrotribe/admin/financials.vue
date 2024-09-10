@@ -12,6 +12,12 @@ import {
   // LazyAdminFinancialData
 } from '#components'
 
+definePageMeta({
+  layoutTransition: false,
+  name: 'AdminFinancials',
+  middleware: 'is-admin',
+})
+
 const { updateGlobalRange, haveData } = useFinancials()
 
 const financialTabs = [
@@ -85,14 +91,8 @@ watch(
     console.log('range', newVal)
     updateGlobalRange({ start: newVal[0], end: newVal[1] })
   },
-  { deep: true },
+  { deep: true }
 )
-
-definePageMeta({
-  layoutTransition: false,
-  name: 'AdminFinancials',
-  middleware: 'is-admin',
-})
 
 const visibleRight = ref(false)
 </script>
@@ -112,9 +112,7 @@ const visibleRight = ref(false)
       >
         <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">
           <div>
-            <PrimeButton @click="visibleRight = true">
-              Options
-            </PrimeButton>
+            <PrimeButton @click="visibleRight = true"> Options </PrimeButton>
           </div>
 
           <PrimeDrawer
@@ -124,9 +122,7 @@ const visibleRight = ref(false)
           >
             <div class="flex h-full gap-4">
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">
-                  Start
-                </p>
+                <p class="text-sm font-semibold"> Start </p>
                 <PrimeInputNumber
                   v-model="range[0]"
                   show-buttons
@@ -138,9 +134,7 @@ const visibleRight = ref(false)
                 />
               </div>
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">
-                  End
-                </p>
+                <p class="text-sm font-semibold"> End </p>
                 <PrimeInputNumber
                   v-model="range[1]"
                   show-buttons

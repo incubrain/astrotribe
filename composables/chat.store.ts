@@ -127,11 +127,9 @@ export const useChatStore = defineStore('chatStore', () => {
 
       // const search = await insertSearchData(userId)
       // insertResponseData(search[0].id, questionResponseData)
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error submitting question and handling response:', error)
-    }
-    finally {
+    } finally {
       await loading.setLoadingInterval(domainKey, false, 1000)
     }
   }

@@ -78,16 +78,14 @@ export function useUpdateData<T extends { id: string | number }>(
 
       lastUpdateTime = Date.now()
       return result
-    }
-    catch (error: any) {
+    } catch (error: any) {
       // Revert optimistic update
       if (oldData) {
         store.updateItem(oldData)
       }
       handleError(error, 'Error updating data')
       throw error
-    }
-    finally {
+    } finally {
       isUpdating.value = false
     }
   }

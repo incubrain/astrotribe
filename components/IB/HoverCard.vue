@@ -12,8 +12,7 @@ function checkHoverPosition(event) {
     console.log('top')
     // If the card is in the top third, expand downwards
     hoverPosition.value = 'down'
-  }
-  else {
+  } else {
     console.log('bottom')
     // If the card is in the bottom third, expand upwards
     hoverPosition.value = 'up'

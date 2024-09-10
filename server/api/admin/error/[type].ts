@@ -28,8 +28,7 @@ export default defineEventHandler(async (event) => {
     return {
       data: response,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error(`Error fetching ${type} data:`, error)
 
     if (error.response) {
@@ -41,23 +40,20 @@ export default defineEventHandler(async (event) => {
           data: null,
           error: `No ${type} data found for the specified parameters`,
         }
-      }
-      else {
+      } else {
         // Handle other error statuses
         throw createError({
           statusCode: error.response.status,
           statusMessage: error.response.statusText || `Error fetching ${type} data`,
         })
       }
-    }
-    else if (error.request) {
+    } else if (error.request) {
       // The request was made but no response was received
       throw createError({
         statusCode: 503,
         statusMessage: 'Service Unavailable',
       })
-    }
-    else {
+    } else {
       // Something happened in setting up the request that triggered an Error
       throw createError({
         statusCode: 500,

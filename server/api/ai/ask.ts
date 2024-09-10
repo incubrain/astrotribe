@@ -44,12 +44,10 @@ export default defineEventHandler({
       if (plan === 'free') {
         console.log('getGroqChatCompletion')
         chatCompletion = await getGroqChatCompletion(messages)
-      }
-      else if (plan === 'pro' || plan === 'expert') {
+      } else if (plan === 'pro' || plan === 'expert') {
         console.log('openAI.createChatCompletion')
         chatCompletion = openAI.createChatCompletion(messages)
-      }
-      else {
+      } else {
         log.warn('no user plan', plan)
       }
 
@@ -58,8 +56,7 @@ export default defineEventHandler({
         statusCode: 200,
         data: chatCompletion || '',
       }
-    }
-    catch (error) {
+    } catch (error) {
       log.error('error', error)
       return {
         data: null,

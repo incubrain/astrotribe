@@ -28,8 +28,7 @@ export default defineEventHandler(async (event) => {
     // Get item from storage
     nasaImg = await storage.getItem<NasaImgT>(cacheKey)!
     log.info(`Got ${cacheKey} from storage: `, nasaImg)
-  }
-  else {
+  } else {
     // Get the item for the previous day
     const previousDay = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0]
     const previousCacheKey = `nasa-iotd:${previousDay}`

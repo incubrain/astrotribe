@@ -48,8 +48,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const fetchEntities = async () => {
       try {
         await loadMore()
-      }
-      catch (error: any) {
+      } catch (error: any) {
         handleError(error, `Error fetching ${entityName}`)
       }
     }
@@ -71,8 +70,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
         }
         await fetchEntities() // Refresh the list after insertion
         return insertedItem
-      }
-      catch (error: any) {
+      } catch (error: any) {
         handleError(error, `Error inserting ${entityName}`)
         throw error
       }
@@ -94,8 +92,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
           await options.afterUpdate(updatedItem)
         }
         return updatedItem
-      }
-      catch (error: any) {
+      } catch (error: any) {
         handleError(error, `Error updating ${entityName}`)
         throw error
       }
@@ -117,8 +114,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
           await options.afterDelete(id)
         }
         await fetchEntities() // Refresh the list after deletion
-      }
-      catch (error: any) {
+      } catch (error: any) {
         handleError(error, `Error deleting ${entityName}`)
         throw error
       }

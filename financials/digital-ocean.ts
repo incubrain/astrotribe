@@ -52,14 +52,11 @@ export interface DigitalOceanResult {
 function calculatePlan(bandwidthGB: number): DOPlan {
   if (bandwidthGB <= 200) {
     return '2vcpu-2gb'
-  }
-  else if (bandwidthGB <= 300) {
+  } else if (bandwidthGB <= 300) {
     return '4vcpu-8gb'
-  }
-  else if (bandwidthGB <= 500) {
+  } else if (bandwidthGB <= 500) {
     return '8vcpu-16gb'
-  }
-  else {
+  } else {
     return '16vcpu-32gb'
   }
 }

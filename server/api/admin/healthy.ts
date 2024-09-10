@@ -29,8 +29,7 @@ export default defineEventHandler(async (event) => {
       databaseConnection: 'ok',
       responseTime: Date.now() - startTime,
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('Health check failed:', error)
 
     return {

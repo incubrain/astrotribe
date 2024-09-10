@@ -21,12 +21,10 @@ export const useFeedbackStore = defineStore('feedbackStore', () => {
       })
 
       toast.info({ summary: 'Feedback Sent', message: response.message })
-    }
-    catch (error: any) {
+    } catch (error: any) {
       toast.error({ summary: 'Feedback Not Sent', message: error.message })
       logger.error('Error submitting question and handling response:', error)
-    }
-    finally {
+    } finally {
       await loading.setLoadingInterval(storeKey, false, 1000)
     }
   }

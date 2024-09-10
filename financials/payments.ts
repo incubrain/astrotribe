@@ -144,8 +144,7 @@ function calculatePaymentCosts({
     const conversionFee = USD2INR(priceInUSD * additionalFees.conversionFee)
     extraCost += conversionFee
     costPerCustomer += conversionFee
-  }
-  else {
+  } else {
     extraCost = additionalFees.registration + additionalFees.autoDebit
     costPerCustomer += extraCost
   }
@@ -187,8 +186,7 @@ function calculateFees({
     subscriptionFee = methodConfig.baseFeePercentage
     additionalFees = methodConfig.additionalFees1kInrPlus // Specific for Razorpay domestic methods
     gst = (platformFee + subscriptionFee) * razorpayConfig.gstPercentage
-  }
-  else {
+  } else {
     // Handle Stripe fees
     const methodConfig = stripeConfig.international[paymentMethod as InternationalPaymentMethod]
     platformFee = methodConfig.platformFeePercentage
@@ -284,8 +282,7 @@ export function handleSubscriptions({
         pro: transactionDetailsPro,
         expert: transactionDetailsExpert,
       })
-    }
-    else {
+    } else {
       combinedResults.push({
         paymentMethod: paymentMethod as DomesticPaymentMethod | InternationalPaymentMethod,
         methodCost: 0,

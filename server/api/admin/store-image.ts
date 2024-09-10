@@ -31,8 +31,7 @@ export default defineEventHandler(async (event) => {
       status: 200,
       message: 'Image Stored',
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('store-image error', error.message)
     return {
       status: 500,

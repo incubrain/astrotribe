@@ -16,8 +16,7 @@ const textSearchType = ref('fts' as SearchType)
 const toggleTextSearchType = () => {
   if (textSearchType.value === 'fts') {
     textSearchType.value = 'vector'
-  }
-  else {
+  } else {
     textSearchType.value = 'fts'
   }
 }

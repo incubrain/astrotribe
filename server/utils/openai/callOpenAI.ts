@@ -34,8 +34,7 @@ const createChatCompletion = async ({
     })
 
     return response
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('Error calling OpenAI API', error)
     throw createError({ message: error.message || 'Failed to call OpenAI API' })
   }

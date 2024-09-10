@@ -77,8 +77,7 @@ const handleSubmit = () => {
     // Submit the interests to your API
     console.log('Interests submitted:', selectedInterests.value)
     // You can add your API call here
-  }
-  else {
+  } else {
     // Update errors
     errors.value = result.error.flatten().fieldErrors
   }

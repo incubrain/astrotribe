@@ -150,8 +150,7 @@ async function uploadImage(blob: Blob) {
       message: 'Your image has been successfully uploaded and processed.',
     })
     return result
-  }
-  catch (error: any) {
+  } catch (error: any) {
     setError(`Failed to upload image: ${error.message}`)
     throw error
   }
@@ -184,8 +183,7 @@ const crop = async (toggleModalOpen: () => void) => {
       try {
         await uploadImage(blob)
         toggleModalOpen()
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error uploading cropped image:', error)
       }
     },
@@ -211,15 +209,12 @@ async function handleFileChange(e: Event, toggleModalOpen: () => void) {
         return
       }
       toggleModalOpen()
-    }
-    else {
+    } else {
       await uploadImage(file)
     }
-  }
-  catch (error: any) {
+  } catch (error: any) {
     setError(`An error occurred while processing the file: ${error.message}`)
-  }
-  finally {
+  } finally {
     if (input) input.value = ''
   }
 }
@@ -271,8 +266,7 @@ function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes)
       console.log('cropper mins', minHeight, minWidth, img.width, img.height)
       if (img.width >= minWidth && img.height >= minHeight) {
         resolve(true)
-      }
-      else {
+      } else {
         setError(
           `Image dimensions must be at least ${minWidth}x${minHeight}px for ${cropperType}. (dimensions ${img.width}x${img.height})`,
         )

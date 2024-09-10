@@ -112,15 +112,13 @@ onMounted(async () => {
   try {
     await loadMore()
     processData()
-  }
-  catch (error) {
+  } catch (error) {
     handleError(error, 'Error loading dashboard data')
     toast.error({
       summary: 'Data Load Error',
       message: 'Failed to load dashboard data. Please try again later.',
     })
-  }
-  finally {
+  } finally {
     isLoading.value = false
   }
 })

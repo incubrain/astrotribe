@@ -39,12 +39,10 @@ export function useServerError(loggerPrefix = 'useServerError') {
         userMessage,
         devMessage,
       })
-    }
-    else if (response.data) {
+    } else if (response.data) {
       log.info(`Successfully fetched ${response.data.length} items`)
       return response.data
-    }
-    else {
+    } else {
       log.info(`Nothing returned from fetch`)
       throw createError({
         message: 'No data found',
@@ -64,8 +62,7 @@ export function handleDBErrors(response: { data?: any, error?: any }, logger: an
   if (response.error) {
     logger.error(`handleDBErrors - Supabase Error: ${response.error.message}`)
     throw createError({ message: response.error.message })
-  }
-  else if (response.data) {
+  } else if (response.data) {
     return response.data
   }
   return null

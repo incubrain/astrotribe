@@ -46,8 +46,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
       const handleRowEditSave = async (event: { data: T, newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
-        }
-        catch (error) {
+        } catch (error) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -61,8 +60,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
             try {
               await deleteEntity(item.id)
               // Show success message
-            }
-            catch (error) {
+            } catch (error) {
               // Handle error (e.g., show toast message)
             }
           },
@@ -75,8 +73,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           showInsertDialog.value = false
           newEntity.value = {} as Omit<T, 'id'>
           // Show success message
-        }
-        catch (error) {
+        } catch (error) {
           // Handle error (e.g., show toast message)
         }
       }

@@ -57,13 +57,11 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
       // Calculate tilt factor
       if (x >= 0 && x <= cardRect.width && y >= 0 && y <= cardRect.height) {
         state.tiltFactor = 1 // Cursor is directly over the card
-      }
-      else {
+      } else {
         // Smooth transition in the gravity area
         state.tiltFactor = Math.max(0, 1 - distance / gravityArea)
       }
-    }
-    else {
+    } else {
       state.tiltFactor = 0
       state.isOutside = true
     }

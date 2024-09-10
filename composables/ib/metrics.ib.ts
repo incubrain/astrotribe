@@ -42,8 +42,7 @@ function calculateMode(arr: number[]): number | number[] {
     if (frequency[value] > maxFreq) {
       maxFreq = frequency[value]
       modes = [value]
-    }
-    else if (frequency[value] === maxFreq) {
+    } else if (frequency[value] === maxFreq) {
       modes.push(value)
     }
   })

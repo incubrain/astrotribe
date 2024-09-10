@@ -16,8 +16,7 @@ onMounted(() => {
 
     // Define the callback globally to initialize player when API is ready
     window.onYouTubeIframeAPIReady = initializePlayer
-  }
-  else {
+  } else {
     // Initialize the player immediately if YT is already loaded
     initializePlayer()
   }

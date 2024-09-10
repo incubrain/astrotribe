@@ -54,8 +54,7 @@ Deno.serve(async (req) => {
     console.log('PARSING REQUEST', req)
     requestBody = await req.json()
     console.log('PARSING REQUEST', requestBody)
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Invalid JSON input:', error)
     return new Response(JSON.stringify({ error: 'Invalid JSON input' }), {
       headers,
@@ -123,8 +122,7 @@ Deno.serve(async (req) => {
         console.error('Error updating user_ids:', updateError)
         throw new Error(`Error updating user_ids: ${updateError.message}`)
       }
-    }
-    else {
+    } else {
       // Query does not exist, generate the embedding
       const embeddingResponse = await openai.embeddings.create({
         model: 'text-embedding-3-small',
@@ -163,8 +161,7 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify(documents), {
       headers,
     })
-  }
-  catch (error: any) {
+  } catch (error: any) {
     console.error('Error processing request:', error)
     return new Response(JSON.stringify({ error: error.message }), {
       headers,

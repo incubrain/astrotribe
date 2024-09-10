@@ -28,8 +28,7 @@ function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
 
       if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
         flattened = flattened.concat(flattenMetrics(value, newPrefix))
-      }
-      else {
+      } else {
         flattened.push({
           key: key,
           value: value,
@@ -74,11 +73,9 @@ function formatMetricName(name: string): string {
 function formatMetricValue(value: any): string {
   if (typeof value === 'number') {
     return value.toLocaleString()
-  }
-  else if (value instanceof Date) {
+  } else if (value instanceof Date) {
     return value.toLocaleString()
-  }
-  else {
+  } else {
     return String(value)
   }
 }

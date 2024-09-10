@@ -20,8 +20,7 @@ export function createBaseStore<T extends object>(domainKey: DomainKey) {
       const index = items.value.findIndex((item) => item.id === updatedItem.id)
       if (index !== -1) {
         items.value[index] = { ...items.value[index], ...updatedItem }
-      }
-      else {
+      } else {
         items.value.push(updatedItem)
       }
     }

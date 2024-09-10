@@ -162,8 +162,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
       }
 
       lastNRows.value[tableName].push(...data)
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Unexpected error:', error)
       return
     }
@@ -179,8 +178,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
       if (isFlagged !== undefined) {
         query = query.eq('is_flagged', isFlagged).order('updated_at', { ascending: false })
-      }
-      else {
+      } else {
         query = query.order('created_at', { ascending: false })
       }
 
@@ -196,12 +194,10 @@ export const useResearchStore = defineStore('storeResearch', () => {
 
       if (isFlagged) {
         researchData[tableName].flagged.push(...data)
-      }
-      else {
+      } else {
         researchData[tableName].data.push(...data)
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       log.error(`fetchFromTable (${tableName}):`, error)
       toast.error({ summary: 'Error fetching data', message: error.message })
       throw new Error(error.message)
@@ -239,15 +235,13 @@ export const useResearchStore = defineStore('storeResearch', () => {
         researchData[tableName].data = researchData[tableName].data.filter(
           (item: any) => item.id !== updatedItem.id,
         )
-      }
-      else {
+      } else {
         researchData[tableName].flagged = researchData[tableName].flagged.filter(
           (item: any) => item.id !== updatedItem.id,
         )
         researchData[tableName].data.push(updatedItem)
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       throw new Error(error.message)
     }
   }
@@ -266,8 +260,7 @@ export const useResearchStore = defineStore('storeResearch', () => {
         (item: any) => item.id !== itemId,
       )
       toast.info({ summary: 'Item Deleted', message: 'The item has been deleted' })
-    }
-    catch (error: any) {
+    } catch (error: any) {
       toast.error({ summary: 'Error Deleting Item', message: error.message })
       throw new Error(error.message)
     }

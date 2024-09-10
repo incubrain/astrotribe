@@ -7,6 +7,12 @@ import {
   LazyAdminSocialTwitter,
 } from '#components'
 
+definePageMeta({
+  layoutTransition: false,
+  name: 'Socials',
+  middleware: 'is-admin',
+})
+
 // todo:med:hard:8 create tables for and store social snapshots in the database
 // probably monthly would be enough, not sure exactly how I would do this, possibly a simple cron would work
 const socialsTabs = [
@@ -41,12 +47,6 @@ const socialsTabs = [
     component: LazyAdminSocialTwitter,
   },
 ]
-
-definePageMeta({
-  layoutTransition: false,
-  name: 'Socials',
-  middleware: 'is-admin',
-})
 </script>
 
 <template>

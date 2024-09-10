@@ -48,12 +48,10 @@ function traverseObject(
       ) {
         const childResults = traverseNestedObject(value[0], key)
         result[key] = childResults
-      }
-      else if (typeof value === 'object' && value !== null) {
+      } else if (typeof value === 'object' && value !== null) {
         const childResults = traverseNestedObject(value, key)
         result[key] = childResults
-      }
-      else {
+      } else {
         if (!result['Root']) {
           result['Root'] = []
         }
@@ -84,11 +82,9 @@ function traverseNestedObject(
         && value[0] !== null
       ) {
         result = result.concat(traverseNestedObject(value[0], newPath))
-      }
-      else if (typeof value === 'object' && value !== null) {
+      } else if (typeof value === 'object' && value !== null) {
         result = result.concat(traverseNestedObject(value, newPath))
-      }
-      else {
+      } else {
         result.push({
           path: newPath,
           value: value,

@@ -47,8 +47,7 @@ onUnmounted(() => {})
 watchEffect(() => {
   if (selectedFile.value) {
     fileReader.readAsDataURL(selectedFile.value)
-  }
-  else {
+  } else {
     imageSrc.value = null
   }
 })

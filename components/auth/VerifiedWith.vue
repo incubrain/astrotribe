@@ -11,20 +11,15 @@ const currentProvider = computed(() => {
 const verifiedIcon = computed(() => {
   if (registeredWithProvider.value === 'email') {
     return 'mdi:email'
-  }
-  else if (registeredWithProvider.value === 'google') {
+  } else if (registeredWithProvider.value === 'google') {
     return 'mdi:google'
-  }
-  else if (registeredWithProvider.value === 'facebook') {
+  } else if (registeredWithProvider.value === 'facebook') {
     return 'mdi:facebook'
-  }
-  else if (registeredWithProvider.value === 'twitter') {
+  } else if (registeredWithProvider.value === 'twitter') {
     return 'mdi:twitter'
-  }
-  else if (registeredWithProvider.value === 'linkedin_oidc') {
+  } else if (registeredWithProvider.value === 'linkedin_oidc') {
     return 'mdi:linkedin'
-  }
-  else {
+  } else {
     return 'mdi:account'
   }
 })

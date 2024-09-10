@@ -6,6 +6,12 @@ import { z } from 'zod'
 import { createCRUDComposable, type CRUDOptions } from '~/composables/ib/crud-factory.ib'
 import { createAdminDashboard } from '~/components/IB/createAdminDashboard'
 
+definePageMeta({
+  layoutTransition: false,
+  name: 'Users',
+  middleware: 'is-admin',
+})
+
 const app_plan_enum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])
 
 const app_role_enum = z.enum([
@@ -74,9 +80,9 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(DatePicker, {
-        'modelValue': item[field] as Date,
+        modelValue: item[field] as Date,
         'onUpdate:modelValue': (value: Date) => (item[field] = value),
-        'dateFormat': 'yy-mm-dd',
+        dateFormat: 'yy-mm-dd',
       }),
   },
   { field: 'gender_id', header: 'Gender ID', sortable: true },
@@ -93,10 +99,10 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(Select, {
-        'modelValue': item[field],
+        modelValue: item[field],
         'onUpdate:modelValue': (value: typeof app_plan_enum._type | null) => (item[field] = value),
-        'options': app_plan_enum.options,
-        'placeholder': 'Select a Plan',
+        options: app_plan_enum.options,
+        placeholder: 'Select a Plan',
       }),
   },
   {
@@ -105,10 +111,10 @@ const userColumns = [
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
       h(Select, {
-        'modelValue': item[field],
+        modelValue: item[field],
         'onUpdate:modelValue': (value: typeof app_role_enum._type) => (item[field] = value),
-        'options': app_role_enum.options,
-        'placeholder': 'Select a Role',
+        options: app_role_enum.options,
+        placeholder: 'Select a Role',
       }),
   },
 ]
@@ -116,14 +122,8 @@ const userColumns = [
 const UserProfilesAdminDashboard = createAdminDashboard(
   'userProfiles',
   userColumns,
-  useUserProfiles,
+  useUserProfiles
 )
-
-definePageMeta({
-  layoutTransition: false,
-  name: 'Users',
-  middleware: 'is-admin',
-})
 </script>
 
 <template>

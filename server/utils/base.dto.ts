@@ -40,8 +40,7 @@ export class BaseDTO<T> {
 
       this.log.info('parsing single DTO', input.dto)
       return schema.parse(input.data)
-    }
-    catch (error) {
+    } catch (error) {
       this.log.error(`Error parsing data for: ${input.dto} - ${error}`)
       return null
     }

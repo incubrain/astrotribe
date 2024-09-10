@@ -59,8 +59,7 @@ const refreshData = async () => {
   isRefreshing.value = true
   try {
     await refreshNuxtData()
-  }
-  finally {
+  } finally {
     isRefreshing.value = false
   }
 }
