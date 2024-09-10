@@ -12,4 +12,5 @@ private-data
 /blob-report/
 .DS_Store
 docs/**
+.clinic
 .eslintcache

@@ -18,7 +18,7 @@ export default createConfigForNuxt({
     'no-global-assign': ['off', { exceptions: ['Object'] }],
     'no-undefined': 'off',
     'no-console': 'off',
-    'quotes': ['error', 'single', { allowTemplateLiterals: true }],
+    'quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
     'no-new': 'off',
     'object-curly-newline': 'off',
     'arrow-parens': ['error', 'always'],
@@ -28,6 +28,7 @@ export default createConfigForNuxt({
     'no-undef': 'off',
     'space-before-function-paren': 'off',
     'vue/html-self-closing': 'off',
+
   },
   ignores: [
     '**/node_modules/**',
