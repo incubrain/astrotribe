@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import { createCRUDComposable, type CRUDOptions } from '~/composables/ib/crud-factory.ib'
-import { createAdminDashboard } from '~/components/ib/createAdminDashboard'
+import { createAdminDashboard } from '~/composables/createAdminDashboard'
 
 definePageMeta({
   layoutTransition: false,
@@ -76,10 +76,10 @@ const userColumns = [
     header: 'Date of Birth',
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(DatePicker, {
-        'modelValue': item[field] as Date,
+      h(PrimeDatePicker, {
+        modelValue: item[field] as Date,
         'onUpdate:modelValue': (value: Date) => (item[field] = value),
-        'dateFormat': 'yy-mm-dd',
+        dateFormat: 'yy-mm-dd',
       }),
   },
   { field: 'gender_id', header: 'Gender ID', sortable: true },
@@ -95,11 +95,11 @@ const userColumns = [
     header: 'Plan',
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(Select, {
-        'modelValue': item[field],
+      h(PrimeSelect, {
+        modelValue: item[field],
         'onUpdate:modelValue': (value: typeof app_plan_enum._type | null) => (item[field] = value),
-        'options': app_plan_enum.options,
-        'placeholder': 'Select a Plan',
+        options: app_plan_enum.options,
+        placeholder: 'Select a Plan',
       }),
   },
   {
@@ -107,11 +107,11 @@ const userColumns = [
     header: 'Role',
     sortable: true,
     editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(Select, {
-        'modelValue': item[field],
+      h(PrimeSelect, {
+        modelValue: item[field],
         'onUpdate:modelValue': (value: typeof app_role_enum._type) => (item[field] = value),
-        'options': app_role_enum.options,
-        'placeholder': 'Select a Role',
+        options: app_role_enum.options,
+        placeholder: 'Select a Role',
       }),
   },
 ]

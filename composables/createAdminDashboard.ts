@@ -5,7 +5,7 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
-import type { createCRUDComposable } from '~/composables/ib/crud-factory.ib'
+import type { createCRUDComposable } from './ib/crud-factory.ib'
 
 export interface AdminColumn<T> {
   field: keyof T
@@ -21,7 +21,7 @@ export interface AdminColumn<T> {
 export function createAdminDashboard<T extends { id: string | number }>(
   entityName: string,
   columns: AdminColumn<T>[],
-  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>
+  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>,
 ) {
   return defineComponent({
     name: `${entityName}AdminDashboard`,
@@ -150,8 +150,8 @@ export function createAdminDashboard<T extends { id: string | number }>(
                               modelValue: slotProps.data[col.field],
                               'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value),
                             }),
-                    }
-                  )
+                    },
+                  ),
                 )
                 .concat([
                   h(Column, { rowEditor: true, style: { width: '10%', minWidth: '8rem' } }),
@@ -173,13 +173,13 @@ export function createAdminDashboard<T extends { id: string | number }>(
                             label,
                             class: 'p-button-rounded p-button-text',
                             onClick: () => action(slotProps.data),
-                          })
+                          }),
                         ),
                       ],
-                    }
+                    },
                   ),
                 ]),
-          }
+          },
         ),
         h(
           Dialog,
@@ -204,7 +204,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
                           'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
                           class: 'w-full',
                         }),
-                  ])
+                  ]),
                 ),
               h(Button, {
                 label: `Add ${entityName}`,
@@ -212,7 +212,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
                 onClick: this.handleInsertEntity,
               }),
             ],
-          }
+          },
         ),
         h(ConfirmDialog),
       ])
