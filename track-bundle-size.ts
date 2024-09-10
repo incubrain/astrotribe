@@ -49,7 +49,7 @@ function bytesToMB(bytes: number): string {
 
 function getLargestFiles(
   directory: string,
-  top: number = 5
+  top: number = 5,
 ): Array<{ name: string; size: number }> {
   const files = fs.readdirSync(directory)
   const fileSizes = files.map((file) => {
@@ -71,6 +71,13 @@ function trackBundleSize(): void {
   const serverStats = getDirectorySize(serverDir)
   const totalSize = clientStats.size + serverStats.size
 
+  let gitCommit = 'unknown'
+  try {
+    gitCommit = execSync('git rev-parse HEAD').toString().trim()
+  } catch (error) {
+    console.warn('Unable to get Git commit hash:', error)
+  }
+
   const data: BundleSizeData = {
     date: new Date().toISOString(),
     clientSize: clientStats.size,
@@ -79,7 +86,7 @@ function trackBundleSize(): void {
     clientSizeMB: bytesToMB(clientStats.size),
     serverSizeMB: bytesToMB(serverStats.size),
     totalSizeMB: bytesToMB(totalSize),
-    gitCommit: execSync('git rev-parse HEAD').toString().trim(),
+    gitCommit,
     buildTime: Date.now() - startTime,
     nodeVersion: process.version,
     environment: process.env.NODE_ENV || 'development',
@@ -94,14 +101,21 @@ function trackBundleSize(): void {
   const historyFile = path.join('bundle-size-history.json')
 
   if (fs.existsSync(historyFile)) {
-    history = JSON.parse(fs.readFileSync(historyFile, 'utf8'))
+    try {
+      history = JSON.parse(fs.readFileSync(historyFile, 'utf8'))
+    } catch (error) {
+      console.warn('Error reading history file:', error)
+    }
   }
 
   history.push(data)
 
-  fs.writeFileSync(historyFile, JSON.stringify(history, null, 2))
-
-  console.log('Bundle size tracked:', data)
+  try {
+    fs.writeFileSync(historyFile, JSON.stringify(history, null, 2))
+    console.log('Bundle size tracked:', data)
+  } catch (error) {
+    console.error('Error writing history file:', error)
+  }
 }
 
 trackBundleSize()
