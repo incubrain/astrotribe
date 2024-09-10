@@ -1,6 +1,7 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
 import { maxHeaderSize } from 'http'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { MODULE_OPTIONS, MODULES, DEV_MODULE_OPTIONS } from './modules.config'
 
 const og = {
@@ -13,10 +14,19 @@ const og = {
 
 export default defineNuxtConfig({
   // UNCOMMENT FOR DEBUGGING
-  debug: true,
-  build: {
-    analyze: true,
-  },
+
+  // webpack: {
+  //   plugins: [new BundleAnalyzerPlugin()],
+  // },
+  // debug: false,
+  // sourcemap: {
+  //   server: false,
+  //   client: false,
+  // },
+  // build: {
+  //   analyze: false,
+  // },
+
   experimental: {
     // https://nuxt.com/docs/guide/going-further/experimental-features
     // cookieStore: true,
@@ -35,15 +45,10 @@ export default defineNuxtConfig({
     preset: 'node-server',
     experimental: {
       websocket: true,
-      // tasks: true,
     },
     storage: {
       session: {
         driver: 'memory',
-      },
-      tasks: {
-        driver: 'fs',
-        base: './data/tasks',
       },
     },
   },
@@ -147,9 +152,9 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    shim: false,
+    shim: true,
     tsConfig: {
-      exclude: ['node_modules', 'dist'],
+      exclude: ['node_modules', 'dist', 'theme', 'types'],
       compilerOptions: {
         strict: true,
       },
@@ -157,5 +162,6 @@ export default defineNuxtConfig({
   },
 
   ssr: true,
-  compatibilityDate: '2024-08-06',
+
+  compatibilityDate: '2024-09-10',
 })

@@ -8,21 +8,16 @@ export const MODULES: NuxtConfig['modules'] = [
   '@vueuse/nuxt',
   '@nuxt/image',
   '@pinia/nuxt',
+  '@nuxt/icon',
   '@nuxtjs/seo',
   '@nuxt/content',
   '@primevue/nuxt-module',
   '@nuxtjs/tailwindcss',
   '@nuxtjs/color-mode',
-  '@nuxthq/studio',
   '@nuxtjs/supabase',
-  'nuxt-icon',
   'nuxt-security',
   'nuxt-tiptap-editor',
 ]
-
-const PINIA_OPTIONS: NuxtConfig['pinia'] = {
-  autoImports: ['defineStore', 'acceptHMRUpdate', 'storeToRefs'],
-}
 
 const TIP_TAP_OPTIONS: NuxtConfig['tiptap'] = {
   prefix: 'Tiptap',
@@ -162,6 +157,12 @@ const SEO_OPTIONS: NuxtConfig['seo'] = {
   redirectToCanonicalSiteUrl: true,
 }
 
+const ICON_OPTIONS: NuxtConfig['icon'] = {
+  serverBundle: {
+    collections: ['material-symbols', 'mdi'],
+  },
+}
+
 const OG_IMAGE_OPTIONS: NuxtConfig['ogImage'] = {
   componentOptions: {
     global: true,
@@ -244,7 +245,7 @@ const SUPABASE_OPTIONS: NuxtConfig['supabase'] = {
 }
 
 export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
-  pinia: PINIA_OPTIONS,
+  icon: ICON_OPTIONS,
   security: SECURITY_OPTIONS,
   primevue: PRIMEVUE_OPTIONS,
   seo: SEO_OPTIONS,
