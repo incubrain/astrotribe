@@ -100,7 +100,7 @@ const comingSoon = [
           <span class="pl-2">{{ item }}</span>
         </li>
       </ul>
-      <IBFeedback cta="Have an idea? We would love to hear it!" />
+      <IbFeedback cta="Have an idea? We would love to hear it!" />
     </div>
   </div>
 </template>

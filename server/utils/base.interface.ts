@@ -1,8 +1,3 @@
-import { boolean } from 'zod'
-import type { UserDTOKey } from './user/user.dto'
-import type { NewsDTOKey } from './news/news.dto'
-import type { ResearchDTOKey } from './research/research.dto'
-import type { CompanyDTOKey } from './company/company.dto'
 import type { Database, Tables } from '~/supabase/schema.gen'
 
 type DBTable = keyof Database['public']['Tables'] & keyof Database['public']['Views']
@@ -42,8 +37,6 @@ interface Pagination {
   from: number
   to: number
 }
-
-export type AllDTOKey = UserDTOKey | NewsDTOKey | ResearchDTOKey | CompanyDTOKey
 
 export type GenericReturn<T> = Promise<T[] | T | null>
 

@@ -13,7 +13,7 @@ defineProps({
 <template>
   <div class="border-color border-b pt-4">
     <div class="flex gap-4 p-6">
-      <IBImage
+      <IbImage
         :img="{
           src: `images/companies/${news.source}-logo.jpg`,
           alt: news.title,
@@ -27,7 +27,7 @@ defineProps({
           <PrimeTag>
             {{ news.companies.name }}
           </PrimeTag>
-          <IBNewLabel
+          <IbNewLabel
             :date="news.published_at ?? news.created_at!"
             :max-age="2"
           />
@@ -41,7 +41,7 @@ defineProps({
       v-if="news.featured_image"
       class="overflow-hidden w-full"
     >
-      <IBImage
+      <IbImage
         :img="{
           src: news.featured_image,
           alt: news.title,

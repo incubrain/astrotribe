@@ -115,7 +115,7 @@ const selectedRows = ref([])
           v-bind="col.componentProps"
         />
       </template>
-      <template #filter="{ filterModel, filterCallback }">
+      <template #filter="{ filterCallback }">
         <PrimeInputText
           type="text"
           class="h-6 w-full"

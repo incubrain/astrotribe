@@ -38,7 +38,6 @@
 import { ref } from 'vue'
 import { getActivePinia } from 'pinia'
 import type { Store, Pinia } from 'pinia'
-import PrimeButton from 'primevue/button'
 import { clearNuxtState, clearNuxtData, refreshNuxtData, reloadNuxtApp } from '#app'
 
 interface ExtendedPinia extends Pinia {

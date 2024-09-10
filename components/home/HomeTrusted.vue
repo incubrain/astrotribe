@@ -13,7 +13,7 @@ const trustedImages = [
       Our Partners
     </h4>
     <div class="grid w-full grid-cols-2 justify-between gap-4 md:grid-cols-4">
-      <IBImage
+      <IbImage
         v-for="(image, index) in trustedImages"
         :key="index"
         :img="{ src: image }"

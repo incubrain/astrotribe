@@ -29,7 +29,7 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
 
 <template>
   <div class="relative h-full max-h-full pb-4 xl:pb-8">
-    <IBTabView
+    <IbTabView
       ref="businessPlanTabView"
       :tabs="businessPlanTabs"
       class="relative h-full w-full pb-4"
@@ -44,7 +44,7 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
           class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
         />
       </template>
-    </IBTabView>
+    </IbTabView>
   </div>
 </template>
 

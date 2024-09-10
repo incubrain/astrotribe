@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartOptions, TooltipItem } from 'chart.js'
+import type { ChartOptions, TooltipItem, LegendOptions, Plugin } from 'chart.js'
 
 const componentId = useId()
 
@@ -12,16 +12,7 @@ type AxisType = 'y-2'
 type AxisPosiion = 'top' | 'right' | 'bottom' | 'left'
 type ScaleType = 'logarithmic' | 'linear'
 
-type ChartType =
-  | 'line'
-  | 'bar'
-  | 'doughnut'
-  | 'pie'
-  | 'polarArea'
-  | 'bubble'
-  | 'scatter'
-  | 'area'
-  | 'radar'
+type ChartType = 'line' | 'bar' | 'doughnut' | 'pie' | 'polarArea' | 'bubble' | 'scatter' | 'radar'
 
 interface Dataset {
   label: string
@@ -49,7 +40,7 @@ interface ChartProps {
       yAxisID?: string
     }>
   }
-  info?: Array<{ name: string; value: string }>
+  info?: Array<{ name: string, value: string }>
 }
 
 const props = defineProps<{
@@ -74,7 +65,7 @@ const preformattedCharts = computed(() => {
   }
 })
 
-const customPaddingPlugin = {
+const customPaddingPlugin: Plugin = {
   id: 'customPaddingPlugin',
   beforeInit: (chart: any) => {
     const originalFit = chart.legend.fit
@@ -96,7 +87,7 @@ function getFirstNumber(...values: any[]): number {
   return 0
 }
 
-const chartOptions = computed((): Partial<ChartOptions> => {
+const chartOptions = computed((): ChartOptions<ChartType> => {
   if (!isChartDataReady.value) return {}
 
   const isPieChart = props.chart.type === 'pie' || props.chart.type === 'doughnut'
@@ -128,7 +119,7 @@ const chartOptions = computed((): Partial<ChartOptions> => {
     scales: generateScales(
       preformattedCharts.value.data.datasets,
       props.chart.scaleType,
-      isPieChart || props.chart.hideAxes
+      isPieChart || props.chart.hideAxes,
     ),
     animations: {
       y: {
@@ -146,7 +137,7 @@ const chartOptions = computed((): Partial<ChartOptions> => {
   }
 })
 
-function generateLegend(): Partial<LegendOptions<'line'>> {
+const generateLegend = (): Partial<LegendOptions<ChartType>> => {
   return {
     labels: {
       color: '#fff',
@@ -171,7 +162,7 @@ const gridColor = 'rgba(255, 255, 255, 0.1)'
 function generateScales(
   datasets: Dataset[],
   scaleType: ScaleType = 'linear',
-  hideAxes: boolean
+  hideAxes: boolean,
 ): Record<string, any> {
   if (hideAxes) {
     return {
@@ -266,12 +257,12 @@ function formatTooltipLabel(tooltipItem: TooltipItem<'line'>) {
 
 const isChartDataReady = computed(() => {
   return (
-    props.chart &&
-    props.chart.data &&
-    props.chart.data.datasets &&
-    props.chart.data.datasets.length > 0 &&
-    props.chart.data.labels &&
-    props.chart.data.labels.length > 0
+    props.chart
+    && props.chart.data
+    && props.chart.data.datasets
+    && props.chart.data.datasets.length > 0
+    && props.chart.data.labels
+    && props.chart.data.labels.length > 0
   )
 })
 

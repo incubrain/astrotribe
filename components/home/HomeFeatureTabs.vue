@@ -131,7 +131,7 @@ const getDummyData = (type) => {
 
 <template>
   <div>
-    <IBTabView :tabs="productSteps">
+    <IbTabView :tabs="productSteps">
       <template
         v-for="feat in productSteps"
         #[feat.tabName]
@@ -178,7 +178,7 @@ const getDummyData = (type) => {
           </div>
         </div>
       </template>
-    </IBTabView>
+    </IbTabView>
   </div>
 </template>
 

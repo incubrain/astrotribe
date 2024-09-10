@@ -10,7 +10,7 @@
     >
       <template #header>
         <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 dark:visible" />
-        <IBImage
+        <IbImage
           :img="{
             src: `conference/speakers/${host.avatar}.jpg`,
             alt: `${host.given_name} is the chairperson at the Dark Sky Conservation India Conference`,

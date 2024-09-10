@@ -28,11 +28,11 @@ definePageMeta({
 
 <template>
   <div class="relative flex h-full w-full flex-col md:gap-4 xl:gap-8">
-    <!-- <IBFilter data-type="news" /> -->
+    <!-- <IbFilter data-type="news" /> -->
     <!-- <NewsSummaryLevel /> -->
-    <IBInfiniteScroll @update:scroll-end="loadMore()">
+    <IbInfiniteScroll @update:scroll-end="loadMore()">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
-        <IBSidebar class="mx-auto" />
+        <IbSidebar class="mx-auto" />
         <div class="mx-auto flex w-full max-w-sm flex-col md:col-start-2">
           <NewsCard
             v-for="(item, i) in news"
@@ -42,7 +42,7 @@ definePageMeta({
           <NewsCardSkeleton v-show="isLoading" />
         </div>
       </div>
-    </IBInfiniteScroll>
+    </IbInfiniteScroll>
   </div>
 </template>
 

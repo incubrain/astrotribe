@@ -12,7 +12,7 @@
       <template #default="{ item }: { item: Testimonial }">
         <div class="border-color foreground h-full rounded-md border p-6">
           <div class="flex h-auto items-center">
-            <IBImage
+            <IbImage
               :img="{
                 src: item.image,
                 alt: item.name,

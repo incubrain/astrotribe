@@ -21,9 +21,9 @@ definePageMeta({ name: 'Companies', layout: 'app' })
 
 <template>
   <div>
-    <IBInfiniteScroll @update:scroll-end="loadMore">
+    <IbInfiniteScroll @update:scroll-end="loadMore">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
-        <IBSidebar />
+        <IbSidebar />
         <div class="mx-auto flex w-full max-w-sm flex-col md:col-start-2">
           <CompanyCard
             v-for="(company, i) in companies"
@@ -33,6 +33,6 @@ definePageMeta({ name: 'Companies', layout: 'app' })
           <CompanyCardSkeleton v-show="isLoading" />
         </div>
       </div>
-    </IBInfiniteScroll>
+    </IbInfiniteScroll>
   </div>
 </template>

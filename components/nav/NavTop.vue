@@ -72,7 +72,7 @@ watch(
           <div
             class="relative flex h-[36px] w-[36px] items-center justify-center overflow-hidden rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
           >
-            <IBImage
+            <IbImage
               :img="{
                 src: '/astronera-logo.jpg',
               }"

@@ -21,7 +21,7 @@ export interface AdminColumn<T> {
 export function createAdminDashboard<T extends { id: string | number }>(
   entityName: string,
   columns: AdminColumn<T>[],
-  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>,
+  useEntityComposable: () => ReturnType<ReturnType<typeof createCRUDComposable<T>>>
 ) {
   return defineComponent({
     name: `${entityName}AdminDashboard`,
@@ -36,14 +36,14 @@ export function createAdminDashboard<T extends { id: string | number }>(
       },
     },
     setup(props) {
-      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity }
-        = useEntityComposable()
+      const { entities, isLoading, fetchEntities, insertEntity, updateEntity, deleteEntity } =
+        useEntityComposable()
       const confirm = useConfirm()
       const filters = ref({})
       const showInsertDialog = ref(false)
       const newEntity = ref({} as Omit<T, 'id'>)
 
-      const handleRowEditSave = async (event: { data: T, newData: Partial<T> }) => {
+      const handleRowEditSave = async (event: { data: T; newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
         } catch (error) {
@@ -119,11 +119,11 @@ export function createAdminDashboard<T extends { id: string | number }>(
             header: () =>
               h('div', { class: 'flex justify-between' }, [
                 h(InputText, {
-                  'modelValue': this.filters['global']?.value,
+                  modelValue: this.filters['global']?.value,
                   'onUpdate:modelValue': (value) => {
                     this.filters['global'] = { value, matchMode: 'contains' }
                   },
-                  'placeholder': 'Global Search',
+                  placeholder: 'Global Search',
                 }),
               ]),
             default: () =>
@@ -147,11 +147,11 @@ export function createAdminDashboard<T extends { id: string | number }>(
                         col.editComponent
                           ? col.editComponent(slotProps.data, col.field)
                           : h(InputText, {
-                            'modelValue': slotProps.data[col.field],
-                            'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value),
-                          }),
-                    },
-                  ),
+                              modelValue: slotProps.data[col.field],
+                              'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value),
+                            }),
+                    }
+                  )
                 )
                 .concat([
                   h(Column, { rowEditor: true, style: { width: '10%', minWidth: '8rem' } }),
@@ -173,21 +173,21 @@ export function createAdminDashboard<T extends { id: string | number }>(
                             label,
                             class: 'p-button-rounded p-button-text',
                             onClick: () => action(slotProps.data),
-                          }),
+                          })
                         ),
                       ],
-                    },
+                    }
                   ),
                 ]),
-          },
+          }
         ),
         h(
           Dialog,
           {
-            'header': `Add New ${entityName}`,
-            'visible': this.showInsertDialog,
+            header: `Add New ${entityName}`,
+            visible: this.showInsertDialog,
             'onUpdate:visible': (value) => (this.showInsertDialog = value),
-            'style': { width: '50vw' },
+            style: { width: '50vw' },
           },
           {
             default: () => [
@@ -199,12 +199,12 @@ export function createAdminDashboard<T extends { id: string | number }>(
                     col.insertComponent
                       ? col.insertComponent()
                       : h(InputText, {
-                        'id': col.field,
-                        'modelValue': this.newEntity[col.field],
-                        'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
-                        'class': 'w-full',
-                      }),
-                  ]),
+                          id: col.field,
+                          modelValue: this.newEntity[col.field],
+                          'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
+                          class: 'w-full',
+                        }),
+                  ])
                 ),
               h(Button, {
                 label: `Add ${entityName}`,
@@ -212,7 +212,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
                 onClick: this.handleInsertEntity,
               }),
             ],
-          },
+          }
         ),
         h(ConfirmDialog),
       ])

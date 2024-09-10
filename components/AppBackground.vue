@@ -6,9 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-
-// Constants
 const CANVAS_WIDTH = computed(() => (window ? window.innerWidth : 0))
 const CANVAS_HEIGHT = computed(() => (window ? window.innerHeight + 800 : 0))
 const STAR_COUNT = 300 // Number of stars

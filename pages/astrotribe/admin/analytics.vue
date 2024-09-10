@@ -61,7 +61,7 @@ definePageMeta({
 </script>
 
 <template>
-  <IBTabView
+  <IbTabView
     ref="analyticsTabView"
     :tabs="analyticsTabs"
   >
@@ -81,7 +81,7 @@ definePageMeta({
         ></iframe>
       </div>
     </template>
-  </IBTabView>
+  </IbTabView>
 </template>
 
 <style scoped></style>

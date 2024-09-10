@@ -19,7 +19,7 @@
             @click="isOpen = false"
           >
             <div class="flex aspect-square rounded-full bg-white p-2">
-              <IBImage
+              <IbImage
                 :img="{
                   src: '/astronera-logo.jpg',
                   alt: 'Astron Era Logo',

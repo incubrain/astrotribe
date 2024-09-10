@@ -21,7 +21,7 @@ defineProps<{
           {{ chart.subtitle }}
         </p>
       </div>
-      <Chart
+      <LazyChart
         class="flex h-full w-full items-center justify-center py-8"
         :chart="chart"
       />

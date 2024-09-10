@@ -28,7 +28,7 @@ definePageMeta({ name: 'Events', layout: 'app' })
 
 <template>
   <div>
-    <IBInfiniteScroll
+    <IbInfiniteScroll
       :domain-key="domainKey"
       :pagination="{
         page: 1,
@@ -59,6 +59,6 @@ definePageMeta({ name: 'Events', layout: 'app' })
           </p>
         </div>
       </div>
-    </IBInfiniteScroll>
+    </IbInfiniteScroll>
   </div>
 </template>

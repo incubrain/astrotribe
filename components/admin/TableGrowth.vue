@@ -218,7 +218,7 @@ onMounted(async () => {
     </div>
     <div v-else>
       <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <IBGlass class="lg:col-start-2">
+        <IbGlass class="lg:col-start-2">
           <template #header>
             <h2 class="mb-2 text-2xl font-semibold">
               Total Row Count
@@ -229,10 +229,10 @@ onMounted(async () => {
               {{ formatNumber(totalRowCount) }}
             </div>
           </template>
-        </IBGlass>
+        </IbGlass>
       </div>
       <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <IBGlass
+        <IbGlass
           v-for="table in tables"
           :key="table"
         >
@@ -282,7 +282,7 @@ onMounted(async () => {
               No data available
             </div>
           </template>
-        </IBGlass>
+        </IbGlass>
       </div>
     </div>
   </div>

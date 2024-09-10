@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <IBGlass
+  <IbGlass
     class="background border-color flex w-full flex-col items-center justify-between rounded-md border backdrop-blur-lg backdrop-filter transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
   >
     <div class="absolute h-full w-full animate-pulse">
@@ -43,7 +43,7 @@ defineProps({
 
     <div class="relative flex items-start justify-center px-10 pb-4">
       <div class="w-20 overflow-hidden rounded-full border md:w-24">
-        <IBImage
+        <IbImage
           :img="{
             src: member.avatar,
             alt: member.name,
@@ -74,7 +74,7 @@ defineProps({
         </div>
       </div>
     </div>
-  </IBGlass>
+  </IbGlass>
 </template>
 
 <style scoped></style>

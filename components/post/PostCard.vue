@@ -4,7 +4,7 @@
     :key="article.id"
     class="group grid origin-left scale-x-0 animate-swipe-in grid-rows-4 overflow-hidden rounded-md shadow-sm"
   >
-    <IBImage
+    <IbImage
       :img="{
         src: s.image.single({
           bucket: 'articles',

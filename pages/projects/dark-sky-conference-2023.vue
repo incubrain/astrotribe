@@ -22,7 +22,7 @@ definePageMeta({
       }"
       position="object-top"
     >
-      <IBImage
+      <IbImage
         :img="{
           width: '160px',
           height: '160px',
@@ -31,7 +31,7 @@ definePageMeta({
         }"
         class="overflow-hidden rounded-full"
       />
-      <IBImage
+      <IbImage
         :img="{
           src: 'images/trusted/dst.png',
         }"
@@ -78,7 +78,7 @@ definePageMeta({
           </div>
         </div>
         <div>
-          <IBImage
+          <IbImage
             :img="{
               src: 'conference/photos/IDSPAC23-group-photo.jpg',
               alt: 'Manu Allaya resort at night with the milky way in the background',

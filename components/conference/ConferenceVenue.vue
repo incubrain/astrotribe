@@ -17,7 +17,7 @@
       </div>
     </CommonTitle>
     <div class="h-full w-full">
-      <IBImage
+      <IbImage
         :img="{
           src: image.src,
           alt: image.alt,

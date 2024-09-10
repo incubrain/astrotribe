@@ -19,7 +19,7 @@
         class="background border-color easy-in-out w-full transform rounded-b-md border backdrop-blur-lg backdrop-filter duration-200"
       >
         <div class="-mt-16 flex items-center justify-start lg:-mt-24">
-          <IBImage
+          <IbImage
             :img="{
               src: user.avatar,
               alt: user.name,

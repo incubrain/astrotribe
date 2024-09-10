@@ -112,7 +112,7 @@ definePageMeta({
         <div
           class="left-16 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-red-50"
         >
-          <IBImage
+          <IbImage
             v-if="userProfile?.avatar"
             :img="{
               src: userProfile.avatar,
@@ -120,7 +120,7 @@ definePageMeta({
             }"
             class="h-full w-full"
           />
-          <IBUploadCropper
+          <IbUploadCropper
             cropper-type="avatar"
             class="absolute z-20"
           />

@@ -62,9 +62,9 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   function hasValueChanged(newValue: any, currentValue: any): boolean {
     console.log('hasValueChanged', newValue, currentValue)
     if (
-      typeof newValue === 'string' ||
-      typeof newValue === 'boolean' ||
-      typeof newValue === 'number'
+      typeof newValue === 'string'
+      || typeof newValue === 'boolean'
+      || typeof newValue === 'number'
     ) {
       return newValue !== currentValue
     } else if (Array.isArray(newValue)) {
@@ -80,8 +80,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     const updatedData: any = {}
     for (const key in newData) {
       if (
-        Object.hasOwnProperty.call(newData, key) &&
-        hasValueChanged(newData[key], previousData[key])
+        Object.hasOwnProperty.call(newData, key)
+        && hasValueChanged(newData[key], previousData[key])
       ) {
         updatedData[key] = newData[key]
       }
@@ -116,7 +116,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     // update state
     console.log('updating user', validData)
     for (const key in validData[0]) {
-      if (validData.hasOwnProperty(key) && profile.value[key] !== validData[key]) {
+      if (Object.hasOwnProperty.call(validData, key) && profile.value[key] !== validData[key]) {
         profile.value[key] = validData[key]
       }
     }
@@ -166,7 +166,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   return {
     haveUserSession: computed(() => !!profile.value),
     isAdmin: computed(
-      () => profile.value?.user_role === 'admin' || profile.value?.user_role === 'super_admin'
+      () => profile.value?.user_role === 'admin' || profile.value?.user_role === 'super_admin',
     ),
     registeredWithProvider: computed(() => profile.value?.provider),
     profile,

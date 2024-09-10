@@ -1,8 +1,8 @@
 <template>
   <div class="foreground relative flex w-full items-center justify-center pb-12 pt-16">
     <div class="flex w-full max-w-[1140px] flex-col">
-      <IBBreadcrumbs class="px-4 py-10" />
-      <IBImage
+      <IbBreadcrumbs class="px-4 py-10" />
+      <IbImage
         :img="{
           src: `images/blog/${article.category}/${article.featured_image}`,
           width: '1140px',

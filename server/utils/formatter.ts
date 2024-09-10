@@ -11,7 +11,7 @@ const stringOptional = z.string().optional()
 
 export const datetimeOffset = (
   errorMsg: string = 'Invalid datetime string! Must be UTC.',
-  offset?: boolean,
+  offset?: boolean
 ) => ({
   optional: z
     .string()

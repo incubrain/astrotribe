@@ -47,7 +47,7 @@ interface DevopsInhouseResult {
 function calculateInHouseCosts(
   mau: number,
   storageGB: number,
-  dataTransferGB: number
+  dataTransferGB: number,
 ): DevopsInhouseResult {
   const efficiencyFactor = calculateEfficiencyFactor(mau)
 
@@ -58,13 +58,13 @@ function calculateInHouseCosts(
   const prometheusGrafanaCost = DEVOPS.PROMETHEUS_GRAFANA_COST_PER_MONTH
   const cloudflareCost = calculateCloudflareCDNCost(dataTransferGB)
 
-  const total =
-    ec2Cost +
-    s3Cost +
-    dataTransferCost +
-    eksCost +
-    prometheusGrafanaCost +
-    cloudflareCost * efficiencyFactor
+  const total
+    = ec2Cost
+    + s3Cost
+    + dataTransferCost
+    + eksCost
+    + prometheusGrafanaCost
+    + cloudflareCost * efficiencyFactor
 
   return {
     total: USD2INR(total),
@@ -164,7 +164,7 @@ function calculateFunctionCost(
   memoryInMB: number,
   invocations: number,
   durationInSeconds: number,
-  pricePerGBHour: number
+  pricePerGBHour: number,
 ): number {
   // Convert memory from MB to GB
   const memoryInGB = memoryInMB / 1024
@@ -269,7 +269,7 @@ function calculateVercelUsage(mau: number): VercelUsageParams {
 
   const invocationsPerMonthPerUser = (0.08 * avgUserMonthlyHours * 3600) / (0.256 * 1)
   console.log(
-    `Estimated Function Invocations per Month per User: ${invocationsPerMonthPerUser} in Hours: ${avgUserMonthlyHours}`
+    `Estimated Function Invocations per Month per User: ${invocationsPerMonthPerUser} in Hours: ${avgUserMonthlyHours}`,
   )
 
   return {
@@ -333,103 +333,103 @@ function calculateVercelCost(params: VercelUsageParams): VercelResult {
     webAnalytics,
   } = vercelConfig
 
-  const dataTransferCost =
-    dataTransferGB > dataTransfer.includedGB
+  const dataTransferCost
+    = dataTransferGB > dataTransfer.includedGB
       ? (dataTransferGB - dataTransfer.includedGB) * dataTransfer.pricePerGB
       : 0
 
-  const originTransferCost =
-    originTransferGB > originTransfer.includedGB
+  const originTransferCost
+    = originTransferGB > originTransfer.includedGB
       ? (originTransferGB - originTransfer.includedGB) * originTransfer.pricePerGB
       : 0
 
-  const edgeRequestsCost =
-    edgeRequests > edgeReq.includedRequests
+  const edgeRequestsCost
+    = edgeRequests > edgeReq.includedRequests
       ? ((edgeRequests - edgeReq.includedRequests) / 1_000_000) * edgeReq.pricePerMillion
       : 0
 
-  const middlewareInvocationsCost =
-    middlewareInvocations > midInvocations.includedInvocations
-      ? ((middlewareInvocations - midInvocations.includedInvocations) / 1_000_000) *
-        midInvocations.pricePerMillion
+  const middlewareInvocationsCost
+    = middlewareInvocations > midInvocations.includedInvocations
+      ? ((middlewareInvocations - midInvocations.includedInvocations) / 1_000_000)
+      * midInvocations.pricePerMillion
       : 0
 
-  const sourceImagesCost =
-    sourceImages > srcImages.includedImages
+  const sourceImagesCost
+    = sourceImages > srcImages.includedImages
       ? ((sourceImages - srcImages.includedImages) / 1_000) * srcImages.pricePerThousand
       : 0
 
-  const functionInvocationsCost =
-    functionInvocations > funcInvocations.includedInvocations
-      ? ((functionInvocations - funcInvocations.includedInvocations) / 1_000_000) *
-        funcInvocations.pricePerMillion
+  const functionInvocationsCost
+    = functionInvocations > funcInvocations.includedInvocations
+      ? ((functionInvocations - funcInvocations.includedInvocations) / 1_000_000)
+      * funcInvocations.pricePerMillion
       : 0
 
-  const functionDurationCost =
-    functionDurationGBHours > funcDuration.includedGBHours
+  const functionDurationCost
+    = functionDurationGBHours > funcDuration.includedGBHours
       ? (functionDurationGBHours - funcDuration.includedGBHours) * funcDuration.pricePerGBHour
       : 0
 
-  const edgeFunctionExecutionsCost =
-    edgeFunctionExecutions > edgeExec.includedExecutions
-      ? ((edgeFunctionExecutions - edgeExec.includedExecutions) / 1_000_000) *
-        edgeExec.pricePerMillion
+  const edgeFunctionExecutionsCost
+    = edgeFunctionExecutions > edgeExec.includedExecutions
+      ? ((edgeFunctionExecutions - edgeExec.includedExecutions) / 1_000_000)
+      * edgeExec.pricePerMillion
       : 0
 
-  const dataCacheReadsCost =
-    dataCacheReads > cacheReads.includedReads
+  const dataCacheReadsCost
+    = dataCacheReads > cacheReads.includedReads
       ? ((dataCacheReads - cacheReads.includedReads) / 1_000_000) * cacheReads.pricePerMillion
       : 0
 
-  const dataCacheWritesCost =
-    dataCacheWrites > cacheWrites.includedWrites
+  const dataCacheWritesCost
+    = dataCacheWrites > cacheWrites.includedWrites
       ? ((dataCacheWrites - cacheWrites.includedWrites) / 1_000_000) * cacheWrites.pricePerMillion
       : 0
 
-  const edgeConfigReadsCost =
-    edgeConfigReads > configReads.includedReads
+  const edgeConfigReadsCost
+    = edgeConfigReads > configReads.includedReads
       ? ((edgeConfigReads - configReads.includedReads) / 1_000_000) * configReads.pricePerMillion
       : 0
 
-  const edgeConfigWritesCost =
-    edgeConfigWrites > configWrites.includedWrites
+  const edgeConfigWritesCost
+    = edgeConfigWrites > configWrites.includedWrites
       ? ((edgeConfigWrites - configWrites.includedWrites) / 500) * configWrites.pricePer500Writes
       : 0
 
-  const monitoringCost =
-    monitoringEvents > 0
+  const monitoringCost
+    = monitoringEvents > 0
       ? monitoring.baseFee + (monitoringEvents / 1_000_000) * monitoring.pricePerMillionEvents
       : 0
 
-  const speedInsightsCost =
-    speedInsightsDataPoints > speedInsights.includedDataPoints
-      ? ((speedInsightsDataPoints - speedInsights.includedDataPoints) / 10_000) *
-        speedInsights.pricePer10kEvents
+  const speedInsightsCost
+    = speedInsightsDataPoints > speedInsights.includedDataPoints
+      ? ((speedInsightsDataPoints - speedInsights.includedDataPoints) / 10_000)
+      * speedInsights.pricePer10kEvents
       : 0
 
-  const webAnalyticsCost =
-    webAnalyticsEvents > webAnalytics.includedEvents
-      ? ((webAnalyticsEvents - webAnalytics.includedEvents) / 100_000) *
-        webAnalytics.pricePer100kEvents
+  const webAnalyticsCost
+    = webAnalyticsEvents > webAnalytics.includedEvents
+      ? ((webAnalyticsEvents - webAnalytics.includedEvents) / 100_000)
+      * webAnalytics.pricePer100kEvents
       : 0
 
-  const totalCost =
-    basePrice +
-    dataTransferCost +
-    originTransferCost +
-    edgeRequestsCost +
-    middlewareInvocationsCost +
-    sourceImagesCost +
-    functionInvocationsCost +
-    functionDurationCost +
-    edgeFunctionExecutionsCost +
-    dataCacheReadsCost +
-    dataCacheWritesCost +
-    edgeConfigReadsCost +
-    edgeConfigWritesCost +
-    monitoringCost +
-    speedInsightsCost +
-    webAnalyticsCost
+  const totalCost
+    = basePrice
+    + dataTransferCost
+    + originTransferCost
+    + edgeRequestsCost
+    + middlewareInvocationsCost
+    + sourceImagesCost
+    + functionInvocationsCost
+    + functionDurationCost
+    + edgeFunctionExecutionsCost
+    + dataCacheReadsCost
+    + dataCacheWritesCost
+    + edgeConfigReadsCost
+    + edgeConfigWritesCost
+    + monitoringCost
+    + speedInsightsCost
+    + webAnalyticsCost
 
   return {
     total: USD2INR(totalCost),
@@ -536,7 +536,7 @@ export function generateDevOpsSummaries() {
       PROMETHEUS_GRAFANA_COST_PER_MONTH,
       CLOUD_FLARE_COST_PER_GB,
     },
-    'inhouse'
+    'inhouse',
   )
 
   return configSummaries
