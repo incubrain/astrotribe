@@ -224,7 +224,7 @@
           />
           Time Tracking
         </label>
-        <IBTasksTimeTracker
+        <IbTasksTimeTracker
           :goal="formData"
           @update:time-spent="updateTimeSpent"
         />

@@ -17,7 +17,7 @@ const { socials, websiteLinks } = usePages()
             to="/"
             class="flex items-center justify-center gap-4 font-semibold lg:flex-row"
           >
-            <IBImage
+            <IbImage
               :img="{
                 src: '/astronera-logo.jpg',
                 alt: 'AstronEra Logo',

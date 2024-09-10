@@ -12,7 +12,7 @@ defineProps<{
         v-if="author"
         class="flex items-start gap-2 rounded-md"
       >
-        <IBImage
+        <IbImage
           :img="{
             src: author.avatar,
             alt: `${author.name.given} ${author.name.surname} is an author on the AstronEra Blog`,

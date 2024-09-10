@@ -51,7 +51,7 @@ const socialsTabs = [
 
 <template>
   <div class="h-full w-full">
-    <IBTabView
+    <IbTabView
       :tabs="socialsTabs"
       class="h-full w-full"
     >
@@ -67,7 +67,7 @@ const socialsTabs = [
           />
         </div>
       </template>
-    </IBTabView>
+    </IbTabView>
   </div>
 </template>
 

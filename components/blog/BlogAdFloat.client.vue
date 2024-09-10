@@ -9,7 +9,7 @@
     <template #header>
       <div class="flex flex-shrink-0 items-center justify-start gap-2 p-2 pb-0">
         <div class="background rounded-full p-1">
-          <IBImage
+          <IbImage
             :img="{
               src: 'images/team/shweta-kulkarni.jpg',
               alt: 'Shweta Kulkarni is the CEO / Founder of AstronEra',

@@ -1,6 +1,6 @@
 <template>
   <div class="relative grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 xl:gap-8">
-    <IBGlass
+    <IbGlass
       v-for="item in timeline"
       :key="item.title"
       color="emerald"
@@ -16,7 +16,7 @@
           {{ item.body }}
         </p>
       </div>
-    </IBGlass>
+    </IbGlass>
   </div>
 </template>
 

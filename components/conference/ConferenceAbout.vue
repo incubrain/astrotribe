@@ -44,7 +44,7 @@
       <div
         class="row-start-3 grid grid-cols-1 gap-6 lg:col-span-2 lg:row-start-2 lg:grid-cols-2 xl:gap-12"
       >
-        <IBImage
+        <IbImage
           :img="{
             src: themes.img.src,
             alt: themes.img.alt,

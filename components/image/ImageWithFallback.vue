@@ -1,6 +1,6 @@
 <template>
   <div class="relative h-full w-full overflow-hidden rounded-md object-cover">
-    <IBImage
+    <IbImage
       :img="{
         src: image?.src || 'astron-era-hero.jpg',
         alt: image?.alt || 'this is a default fallback for when an image is not present',

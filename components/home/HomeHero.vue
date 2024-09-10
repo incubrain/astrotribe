@@ -1,6 +1,6 @@
 <template>
   <div class="relative min-h-screen text-white">
-    <IBImage
+    <IbImage
       :img="{
         src: bgImg,
         quality: '80',
@@ -19,7 +19,7 @@
         <div
           class="h-16 w-16 overflow-hidden rounded-full bg-white p-2 shadow-lg lg:h-24 lg:w-24 xl:p-4"
         >
-          <IBImage
+          <IbImage
             :img="{
               src: '/astronera-logo.jpg',
             }"

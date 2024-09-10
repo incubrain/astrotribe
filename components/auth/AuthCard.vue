@@ -32,7 +32,7 @@ const { haveUserSession } = storeToRefs(currentUser)
           to="/"
           class="flex items-center justify-center"
         >
-          <IBImage
+          <IbImage
             class="group-hover:opacity-0"
             :img="{
               src: 'astronera-logo.jpg',

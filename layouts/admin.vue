@@ -22,7 +22,7 @@ const { adminLinks } = usePages()
 
 <template>
   <div class="background relative flex h-screen w-full lg:p-4">
-    <IBSideNav :links="adminLinks" />
+    <IbSideNav :links="adminLinks" />
     <div class="foreground h-full w-full overflow-y-scroll rounded-lg">
       <slot />
     </div>

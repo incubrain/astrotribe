@@ -14,7 +14,7 @@
           :key="feature.id"
           class="relative mx-auto h-full overflow-hidden rounded-lg p-8 shadow-md"
         >
-          <IBImage
+          <IbImage
             :img="{
               src: feature.bgImg,
               alt: `${feature.title} background image`,

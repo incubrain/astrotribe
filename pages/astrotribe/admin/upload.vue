@@ -8,7 +8,7 @@ definePageMeta({
 
 <template>
   <div class="flex flex-col gap-4 p-4">
-    <!-- <IBUpload
+    <!-- <IbUpload
       name="user-images"
       url="/api/admin/users/bulk-upload"
       accept="image/*"

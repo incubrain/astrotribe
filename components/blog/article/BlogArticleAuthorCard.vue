@@ -14,7 +14,7 @@ defineProps<{
         v-if="author"
         class="flex flex-row items-center gap-4 xl:gap-8"
       >
-        <IBImage
+        <IbImage
           :img="{
             src: author.avatar,
             alt: `${author.name.full} is an author on the AstronEra Blog`,
@@ -31,7 +31,7 @@ defineProps<{
             <PrimeTag class="text-xs uppercase text-primary-600">
               follow
             </PrimeTag>
-            <IBSocialBlock
+            <IbSocialBlock
               v-if="author.socials"
               :socials="author.socials"
             />

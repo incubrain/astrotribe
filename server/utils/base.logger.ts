@@ -26,8 +26,8 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.cli(),
   winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: [${info.loggerPrefix}] ${info.message}`,
-  ),
+    (info) => `${info.timestamp} ${info.level}: [${info.loggerPrefix}] ${info.message}`
+  )
 )
 
 export const logger = winston.createLogger({
@@ -36,8 +36,7 @@ export const logger = winston.createLogger({
   format,
   transports: [
     new winston.transports.Console(),
-    // new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
-    // new winston.transports.File({ filename: './data/logs/combined.log' })
+    new winston.transports.File({ filename: './data/logs/error.log', level: 'error' }),
   ],
 }) as winston.Logger & Record<keyof typeof logLevels, winston.LeveledLogMethod>
 

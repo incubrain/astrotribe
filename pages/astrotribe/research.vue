@@ -31,7 +31,7 @@ definePageMeta({
 <template>
   <div class="relative flex h-full w-full flex-col">
     <!-- <SummaryLevel /> -->
-    <IBInfiniteScroll
+    <IbInfiniteScroll
       :domain-key="domainKey"
       :pagination="{
         page: 1,
@@ -46,6 +46,6 @@ definePageMeta({
           :research="item"
         />
       </div>
-    </IBInfiniteScroll>
+    </IbInfiniteScroll>
   </div>
 </template>

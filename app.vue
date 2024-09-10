@@ -59,7 +59,7 @@ useHead({
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
-    <IBAdminTools v-if="false" />
+    <IbAdminTools v-if="false" />
     <!-- currentUser.isAdmin -->
     <!-- <DevComponentPlayground v-if="showPlayground" /> -->
 

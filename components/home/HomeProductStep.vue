@@ -7,7 +7,7 @@
     "
   >
     <div class="relative aspect-auto h-[360px] shadow-2xl md:w-[70%]">
-      <IBImage
+      <IbImage
         :img="{
           src: imgSrc,
           alt: `${title} AstroTribe feature`,

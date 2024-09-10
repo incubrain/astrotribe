@@ -346,12 +346,12 @@ function updateSubtaskCompletion(goal: Goal, subtaskId: number, completed: boole
 
 <template>
   <div class="company-goals-calendar h-full">
-    <IBTasksUpcoming
+    <IbTasksUpcoming
       :goals="upcomingGoals"
       @toggle-completion="toggleGoalCompletion"
     />
 
-    <IBTasksMilestones
+    <IbTasksMilestones
       :goals="filteredGoals"
       :milestones="tasks.milestones"
     />
@@ -398,7 +398,7 @@ function updateSubtaskCompletion(goal: Goal, subtaskId: number, completed: boole
       :modal="true"
       :header="editingGoal ? 'Edit Goal' : 'Create Goal'"
     >
-      <IBTasksForm
+      <IbTasksForm
         :goal="currentGoal"
         :employees="employees"
         :categories="categories"

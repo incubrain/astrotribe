@@ -3,7 +3,7 @@
     class="fixed bottom-5 right-5 z-50 flex cursor-pointer gap-2 rounded-full bg-blue-500 p-3 text-white"
   >
     <DevApiDataViewer />
-    <IBGlobalTimer ref="globalTimer" />
+    <IbGlobalTimer ref="globalTimer" />
   </div>
 </template>
 
