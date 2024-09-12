@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "gen:financials": "tsx ./financials/totals.ts",
-    "postbuild": "tsx track-bundle-size.ts",
+    "ci": "tsx ci/scripts/index.ts",
     "debug": "npx nuxi dev --inspect",
     "debug-build": "clinic doctor -- node --trace-warnings --max-old-space-size=8192 debug-build.js",
     "build": "nuxi build",
@@ -13,7 +13,6 @@
     "type:check": "npx nuxi typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "",
     "supa:gen:seed": " supabase db dump -f supabase/dump.sql --data-only",
     "supa:gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:func": "supabase functions serve --env-file ./supabase/.env.local --no-verify-jwt",
@@ -26,6 +25,7 @@
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.1.48",
     "@iconify-json/mdi": "^1.1.52",
+    "@lhci/cli": "^0.14.0",
     "@nuxt/content": "^2.12.1",
     "@nuxt/devtools": "^1.4.2",
     "@nuxt/eslint": "^0.5.6",
