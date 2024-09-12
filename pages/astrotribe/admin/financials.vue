@@ -15,6 +15,7 @@ import {
 definePageMeta({
   layoutTransition: false,
   name: 'AdminFinancials',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 

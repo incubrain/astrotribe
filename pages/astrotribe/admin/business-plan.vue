@@ -2,6 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'BusinessPlan',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 

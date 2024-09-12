@@ -2,6 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Errors',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 </script>

@@ -14,6 +14,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Business Systems',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 </script>

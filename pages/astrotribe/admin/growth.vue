@@ -2,6 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Growth',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 </script>

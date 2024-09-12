@@ -2,6 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'AdminDashboard',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 
