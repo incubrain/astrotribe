@@ -10,6 +10,7 @@ import {
 definePageMeta({
   layoutTransition: false,
   name: 'Socials',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 

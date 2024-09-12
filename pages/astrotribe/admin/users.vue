@@ -6,6 +6,7 @@ import { createAdminDashboard } from '~/composables/createAdminDashboard'
 definePageMeta({
   layoutTransition: false,
   name: 'Users',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 

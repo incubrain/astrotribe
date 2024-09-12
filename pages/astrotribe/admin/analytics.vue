@@ -56,6 +56,7 @@ onMounted(() => {
 definePageMeta({
   layoutTransition: false,
   name: 'Analytics',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 </script>

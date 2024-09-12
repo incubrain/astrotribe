@@ -2,6 +2,7 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Redis',
+  layout: 'admin',
   middleware: 'is-admin',
 })
 </script>
