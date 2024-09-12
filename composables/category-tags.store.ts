@@ -19,71 +19,59 @@ const TagSchema = z.object({
 type Category = z.infer<typeof CategorySchema>
 type Tag = z.infer<typeof TagSchema>
 
-const DOMAIN_KEY = 'categoryTag'
-
 export const useCategoryTagStore = defineStore('categoryTagStore', () => {
-  const logger = useLogger(DOMAIN_KEY)
-  const categories = ref([{}] as Category[])
-  const tags = ref([{}] as Tag[])
+  const logger = useLogger('categoryTagStore')
+  const categories = ref<Category[]>([])
+  const tags = ref<Tag[]>([])
   const localStorage = useBaseLocalStorage()
   const errors = useBaseError()
 
   const client = useSupabaseClient()
 
   async function getCategories() {
-    const localStorageData = await localStorage.check('astron-categories')
-
-    if (localStorageData) {
-      logger.debug('Retrieved categories from local storage', localStorageData)
-      categories.value.push(...localStorageData.categories)
-      return
+    try {
+      categories.value = await localStorage.getCachedOrFetch('astronera-categories', async () => {
+        const { data, error } = await client.from('categories').select('id, name')
+        if (error) throw error
+        return z.array(CategorySchema).parse(data)
+      })
+    } catch (error) {
+      logger.error('Error fetching categories:', error)
+      errors.server({
+        error,
+        devOnly: true,
+        devMessage: 'Error Fetching Categories from DB',
+        userMessage: 'There was an error getting Categories from the database',
+      })
     }
-
-    const response = await client.from('categories').select('id, name')
-    console.log('category response', response)
-
-    // "TypeError: Failed to fetch\n
-    // at http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:23:25\n
-    // at http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:44:16\n
-    // at Generator.next (<anonymous>)\n    at fulfilled (http://localhost:3000/_nuxt/node_modules/@supabase/supabase-js/dist/module/lib/fetch.js?v=6c748db4:4:58)"
-
-    const cat = errors.server({
-      response,
-      devOnly: true,
-      devMessage: `Error Fetching Categories from DB`,
-      userMessage: `There was an error getting Categories from the database`,
-    })
-    categories.value.push(...cat)
-    localStorage.store('astron-categories', { categories: cat })
   }
 
   async function getTags() {
-    const localStorageData = await localStorage.check('astron-tags')
-
-    if (localStorageData) {
-      logger.debug('Retrieved tags from local storage', localStorageData)
-      tags.value.push(...localStorageData.tags)
-      return
+    try {
+      tags.value = await localStorage.getCachedOrFetch('astronera-tags', async () => {
+        const { data, error } = await client.from('tags').select('id, name')
+        if (error) throw error
+        return z.array(TagSchema).parse(data)
+      })
+    } catch (error) {
+      logger.error('Error fetching tags:', error)
+      errors.server({
+        error,
+        devOnly: true,
+        devMessage: 'Error Fetching Tags from DB',
+        userMessage: 'There was an error getting Tags from the database',
+      })
     }
-
-    const response = await client.from('tags').select('id, name')
-    const cat = errors.server({
-      response,
-      devOnly: true,
-      devMessage: `Error Fetching Tags from DB`,
-      userMessage: `There was an error getting Tags from the database`,
-    })
-    tags.value.push(...cat)
-    localStorage.store('astron-tags', { tags: cat })
   }
 
-  const getCategoryName = (categoryId: number) => {
-    return categories.value.find((category) => category.id === categoryId)?.name
-  }
+  const getCategoryName = computed(
+    () => (categoryId: number) =>
+      categories.value.find((category) => category.id === categoryId)?.name,
+  )
 
-  const getTagName = (tagId: number) => {
-    return tags.value.find((tag) => tag.id === tagId)
-  }
+  const getTagName = computed(
+    () => (tagId: number) => tags.value.find((tag) => tag.id === tagId)?.name,
+  )
 
   return {
     categories,
@@ -92,6 +80,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     getTags,
     getCategoryName,
     getTagName,
+    clearAllCaches: localStorage.clearAllCaches,
   }
 })
 
