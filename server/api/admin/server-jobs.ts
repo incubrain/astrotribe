@@ -9,14 +9,7 @@ let reconnectAttempts = 0
 const maxReconnectAttempts = 5
 let reconnectInterval = 5000 // 5 seconds
 
-let selectedMetrics: string[] = [
-  'spiderMetrics',
-  'jobMetrics',
-  'paginationMetrics',
-  'blogPostScraperMetrics',
-  'resourceAnalytics',
-  'pageToMarkdownAnalytics',
-] // Default metrics
+let selectedMetrics: string[] = ['all']
 
 const connectToAnalyticsServer = () => {
   if (reconnectAttempts >= maxReconnectAttempts) {
@@ -28,8 +21,11 @@ const connectToAnalyticsServer = () => {
   const token = jwt.sign({ sender: 'AstronEra' }, scraperKey, {
     algorithm: 'HS256',
   })
+
   const scraperBaseURL = useRuntimeConfig().public.scraperUrl
   const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
+
+  console.log(`Connecting to WebSocket URL: ${wsUrl}`)
 
   serverWs = new WebSocket(wsUrl, {
     headers: { Authorization: `Bearer ${token}` },
@@ -55,6 +51,7 @@ const connectToAnalyticsServer = () => {
 
   serverWs.on('message', (data) => {
     // Broadcast the message to all connected Nuxt clients
+    console.log('Received message from Analytics server:', data.toString())
     for (const client of clients) {
       client.send(data)
     }
@@ -77,8 +74,13 @@ const connectToAnalyticsServer = () => {
 const scheduleReconnect = () => {
   if (reconnectAttempts < maxReconnectAttempts) {
     reconnectAttempts++
-    console.log(`Scheduling reconnection attempt ${reconnectAttempts}/${maxReconnectAttempts}`)
-    reconnectTimeout = setTimeout(connectToAnalyticsServer, reconnectInterval)
+    console.log(
+      `Scheduling reconnection attempt ${reconnectAttempts}/${maxReconnectAttempts} in ${reconnectInterval}ms`,
+    )
+    reconnectTimeout = setTimeout(() => {
+      console.log(`Executing reconnection attempt ${reconnectAttempts}`)
+      connectToAnalyticsServer()
+    }, reconnectInterval)
   } else {
     console.log('Max reconnect attempts reached. Please check the server.')
   }
@@ -96,21 +98,33 @@ export default defineWebSocketHandler({
 
   message(peer, message) {
     console.log('Received message from Nuxt client:', message)
-    // Forward the message to the Analytics server
-    const parsedMessage = JSON.parse(message)
-    selectedMetrics = parsedMessage.metrics
+    try {
+      const parsedMessage = JSON.parse(message)
+      selectedMetrics = parsedMessage.metrics
+      console.log('Updated selectedMetrics:', selectedMetrics)
 
-    // Forward the message to the Analytics server
-    if (serverWs && serverWs.readyState === WebSocket.OPEN) {
-      // Include the config in the forwarded message
-      serverWs.send(
-        JSON.stringify({
-          action: 'subscribe',
-          metrics: parsedMessage.metrics,
-        }),
-      )
-    } else {
-      console.log('Cannot forward message: serverWs not ready')
+      if (serverWs && serverWs.readyState === WebSocket.OPEN) {
+        console.log(
+          'Forwarding message to Analytics server:',
+          JSON.stringify({
+            action: 'subscribe',
+            subscribedMetrics: parsedMessage.metrics,
+          }),
+        )
+        serverWs.send(
+          JSON.stringify({
+            action: 'subscribe',
+            subscribedMetrics: parsedMessage.metrics,
+          }),
+        )
+      } else {
+        console.log(
+          'Cannot forward message: serverWs not ready. Current state:',
+          serverWs ? serverWs.readyState : 'null',
+        )
+      }
+    } catch (error) {
+      console.error('Error parsing or handling message:', error)
     }
   },
 

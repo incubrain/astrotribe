@@ -3,14 +3,7 @@ const serverAnalyticsStore = useServerAnalyticsStore()
 
 onMounted(() => {
   serverAnalyticsStore.connectWebSocket()
-  serverAnalyticsStore.subscribeToMetrics([
-    'spiderMetrics',
-    'jobMetrics',
-    'paginationMetrics',
-    'blogPostScraperMetrics',
-    'resourceAnalytics',
-    'pageToMarkdownAnalytics',
-  ])
+  serverAnalyticsStore.subscribeToMetrics(['all'])
 })
 
 onUnmounted(() => {

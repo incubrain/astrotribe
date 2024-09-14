@@ -108,6 +108,12 @@ const adminLinks = ref([
     icon: 'material-symbols:attach-money',
     children: [],
   },
+  {
+    id: 12,
+    label: 'Classifier',
+    slug: '/astrotribe/admin/classifier',
+    icon: 'mdi:application',
+  },
   // {
   //   id: 3,
   //   label: 'Upload',

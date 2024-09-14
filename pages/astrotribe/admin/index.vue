@@ -20,9 +20,9 @@ const reset = () => {
 </script>
 
 <template>
-  <div class="relative h-full max-h-full">
+  <div class="relative h-full max-h-full p-4">
     <div class="flex flex-col gap-8">
-      <div class="flex gap-4 p-4">
+      <div class="flex gap-4">
         <PrimeButton @click="testUrl">
           Test API
         </PrimeButton>

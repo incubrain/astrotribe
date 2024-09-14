@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const store = useServerAnalyticsStore()
-const { spiderMetrics, isConnected, haveMetrics } = storeToRefs(store)
+const { news_links, isConnected, haveMetrics } = storeToRefs(store)
 
 watch(
-  spiderMetrics,
+  news_links,
   (newMetrics) => {
     console.log('Spider Metrics updated:', newMetrics)
   },
@@ -75,7 +75,7 @@ const protocolChartOptions = {
 }
 
 const urlDepthChartData = computed(() => {
-  const depthStats = spiderMetrics.value?.depthStats ?? {}
+  const depthStats = news_links.value?.depthStats ?? {}
   return {
     labels: Object.keys(depthStats),
     datasets: [
@@ -98,15 +98,15 @@ const protocolChartData = computed(() => ({
   datasets: [
     {
       data: [
-        spiderMetrics.value?.protocolDistribution?.http ?? 0,
-        spiderMetrics.value?.protocolDistribution?.https ?? 0,
+        news_links.value?.protocolDistribution?.http ?? 0,
+        news_links.value?.protocolDistribution?.https ?? 0,
       ],
       backgroundColor: ['#FF6384', '#36A2EB'],
     },
   ],
 }))
 
-const isSpiderActive = computed(() => !!spiderMetrics.value?.crawlDuration)
+const isSpiderActive = computed(() => !!news_links.value?.crawlDuration)
 
 const rawDataArray = computed(() =>
   isSpiderActive.value
@@ -114,12 +114,12 @@ const rawDataArray = computed(() =>
         {
           title: 'Spider Metrics',
           data: {
-            crawlDuration: spiderMetrics.value.crawlDuration,
-            urlsPerSecond: spiderMetrics.value.urlsPerSecond,
-            responseTimeStats: spiderMetrics.value.responseTimeStats,
-            urlCounts: spiderMetrics.value.urlCounts,
-            depthStats: spiderMetrics.value.depthStats,
-            protocolDistribution: spiderMetrics.value.protocolDistribution,
+            crawlDuration: news_links.value.crawlDuration,
+            urlsPerSecond: news_links.value.urlsPerSecond,
+            responseTimeStats: news_links.value.responseTimeStats,
+            urlCounts: news_links.value.urlCounts,
+            depthStats: news_links.value.depthStats,
+            protocolDistribution: news_links.value.protocolDistribution,
           },
         },
         {
@@ -137,7 +137,7 @@ const rawDataArray = computed(() =>
 
 <template>
   <div class="p-4">
-    {{ spiderMetrics }}
+    {{ news_links }}
     <div v-if="isConnected">
       Connected
     </div>
@@ -156,7 +156,7 @@ const rawDataArray = computed(() =>
             </template>
             <template #content>
               <div class="text-4xl font-bold">
-                {{ spiderMetrics.crawlDuration / 1000 }}s
+                {{ news_links.crawlDuration / 1000 }}s
               </div>
             </template>
           </PrimeCard>
@@ -166,7 +166,7 @@ const rawDataArray = computed(() =>
             </template>
             <template #content>
               <div class="text-4xl font-bold">
-                {{ spiderMetrics.urlsPerSecond }}
+                {{ news_links.urlsPerSecond }}
               </div>
             </template>
           </PrimeCard>
@@ -176,7 +176,7 @@ const rawDataArray = computed(() =>
             </template>
             <template #content>
               <div class="text-4xl font-bold">
-                {{ spiderMetrics.responseTimeStats.average }}ms
+                {{ news_links.responseTimeStats.average }}ms
               </div>
             </template>
           </PrimeCard>
@@ -187,7 +187,7 @@ const rawDataArray = computed(() =>
           </template>
           <template #content>
             <div class="text-4xl font-bold">
-              {{ spiderMetrics.urlCounts.total }}
+              {{ news_links.urlCounts.total }}
             </div>
           </template>
         </PrimeCard>
@@ -197,7 +197,7 @@ const rawDataArray = computed(() =>
           </template>
           <template #content>
             <div class="text-4xl font-bold">
-              {{ spiderMetrics.urlCounts.new }}
+              {{ news_links.urlCounts.new }}
             </div>
           </template>
         </PrimeCard>
@@ -207,7 +207,7 @@ const rawDataArray = computed(() =>
           </template>
           <template #content>
             <div class="text-4xl font-bold">
-              {{ spiderMetrics.urlCounts.allowed }}
+              {{ news_links.urlCounts.allowed }}
             </div>
           </template>
         </PrimeCard>
