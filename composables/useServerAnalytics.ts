@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import { ref, reactive, onUnmounted, watchEffect } from 'vue'
 
 export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
-  const jobMetrics = reactive({})
-  const spiderMetrics = reactive({})
-  const paginationMetrics = reactive({})
-  const blogPostScraperMetrics = reactive({})
-  const resourceAnalytics = reactive({})
-  const pageToMarkdownAnalytics = reactive({})
+  const company = reactive({})
+  const queue = reactive({})
+  const performance = reactive({})
+  const news_links = reactive({})
+
   const availableMetrics = ref<string[]>([])
+
   const isConnected = ref(false)
   const haveMetrics = ref(false)
 
@@ -18,18 +18,24 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
   const reconnectInterval = 3000 // 3 seconds
 
   function updateMetrics(newData: any) {
-    Object.keys(newData).forEach((key) => {
+    console.log('Updating metrics with:', newData)
+    Object.entries(newData).forEach(([key, value]) => {
       const targetMetric = {
-        jobMetrics,
-        spiderMetrics,
-        paginationMetrics,
-        blogPostScraperMetrics,
-        resourceAnalytics,
-        pageToMarkdownAnalytics,
-      }[key]
+        company,
+        performance,
+        news_links,
+        queue,
+      }[key as keyof typeof newData]
 
-      if (targetMetric) {
-        Object.assign(targetMetric, { ...targetMetric, ...newData[key] })
+      if (targetMetric && Array.isArray(value)) {
+        value.forEach((metric: any) => {
+          if (metric.name && metric.value !== undefined) {
+            targetMetric[metric.name] = metric.value
+            if (metric.metadata) {
+              targetMetric[`${metric.name}_metadata`] = metric.metadata
+            }
+          }
+        })
       }
     })
     haveMetrics.value = true
@@ -45,23 +51,19 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
 
   function getMetricsByType(type: string) {
     return {
-      jobMetrics,
-      spiderMetrics,
-      paginationMetrics,
-      blogPostScraperMetrics,
-      resourceAnalytics,
-      pageToMarkdownAnalytics,
+      company,
+      news_links,
+      performance,
+      queue,
     }[type]
   }
 
   function getAllMetrics() {
     return {
-      jobMetrics,
-      spiderMetrics,
-      paginationMetrics,
-      blogPostScraperMetrics,
-      resourceAnalytics,
-      pageToMarkdownAnalytics,
+      company,
+      news_links,
+      performance,
+      queue,
     }
   }
 
@@ -82,13 +84,16 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
 
     socket.value.onmessage = (event) => {
       const data = JSON.parse(event.data)
+      console.log('Received message from Analytics server:', data)
       if (data.type === 'availableMetrics') {
         setAvailableMetrics(data.metrics)
       } else if (data.type === 'error') {
         console.error('WebSocket error:', data.message)
+      } else if (data.domain && data.metrics) {
+        console.log('Updating metrics:', data)
+        updateMetrics({ [data.domain]: data.metrics })
       } else {
-        console.log('Updating metrics with:', data)
-        updateMetrics(data)
+        console.warn('Received unexpected data structure:', data)
       }
     }
 
@@ -154,12 +159,10 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
   })
 
   return {
-    jobMetrics,
-    spiderMetrics,
-    paginationMetrics,
-    blogPostScraperMetrics,
-    resourceAnalytics,
-    pageToMarkdownAnalytics,
+    queue,
+    company,
+    news_links,
+    performance,
     availableMetrics,
     isConnected,
     haveMetrics,

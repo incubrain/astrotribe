@@ -1,3 +1,8 @@
+// to add
+// PWA
+// move to monorepo structure
+// extract out base func / components etc.
+
 export interface Goal {
   id: number
   title: string

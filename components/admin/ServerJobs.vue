@@ -1,21 +1,65 @@
 <script setup lang="ts">
 const store = useServerAnalyticsStore()
-const {
-  jobMetrics,
-  spiderMetrics,
-  paginationMetrics,
-  blogPostScraperMetrics,
-  resourceAnalytics,
-  pageToMarkdownAnalytics,
-  availableMetrics,
-  isConnected,
-  haveMetrics,
-} = storeToRefs(store)
+const { company, news_links, performance, queue, isConnected, haveMetrics } = storeToRefs(store)
 
 interface FlatMetric {
   key: string
   value: any
   path: string[]
+}
+
+function formatMetricValue(value: any, key: string): string {
+  if (typeof value === 'number') {
+    switch (key) {
+      case 'cpu_usage':
+      case 'memory_usage':
+        return `${value.toFixed(2)}%`
+      case 'free_memory':
+      case 'total_memory':
+      case 'heap_used':
+      case 'heap_total':
+      case 'external_memory':
+      case 'heap_limit':
+        return formatBytes(value)
+      case 'load_average_1m':
+      case 'load_average_5m':
+      case 'load_average_15m':
+        return value.toFixed(2)
+      case 'uptime':
+        return formatUptime(value)
+      default:
+        return value.toLocaleString()
+    }
+  } else if (value instanceof Date) {
+    return value.toLocaleString()
+  } else {
+    return String(value)
+  }
+}
+
+function formatBytes(bytes: number): string {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  let i = 0
+  while (bytes >= 1024 && i < units.length - 1) {
+    bytes /= 1024
+    i++
+  }
+  return `${bytes.toFixed(2)} ${units[i]}`
+}
+
+function formatUptime(seconds: number): string {
+  const days = Math.floor(seconds / (3600 * 24))
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = Math.floor(seconds % 60)
+
+  const parts = []
+  if (days > 0) parts.push(`${days}d`)
+  if (hours > 0) parts.push(`${hours}h`)
+  if (minutes > 0) parts.push(`${minutes}m`)
+  if (remainingSeconds > 0 || parts.length === 0) parts.push(`${remainingSeconds}s`)
+
+  return parts.join(' ')
 }
 
 function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
@@ -42,12 +86,10 @@ function flattenMetrics(obj: any, prefix: string[] = []): FlatMetric[] {
 }
 
 const allMetrics = computed(() => ({
-  jobMetrics: jobMetrics.value,
-  spiderMetrics: spiderMetrics.value,
-  paginationMetrics: paginationMetrics.value,
-  blogPostScraperMetrics: blogPostScraperMetrics.value,
-  resourceAnalytics: resourceAnalytics.value,
-  pageToMarkdownAnalytics: pageToMarkdownAnalytics.value,
+  company: company.value,
+  news_links: news_links.value,
+  performance: performance.value,
+  queue: queue.value,
 }))
 
 const flatMetrics = computed<FlatMetric[]>(() => {
@@ -68,16 +110,6 @@ function formatCategoryName(name: string): string {
 
 function formatMetricName(name: string): string {
   return name.replace(/([A-Z])/g, ' $1').trim()
-}
-
-function formatMetricValue(value: any): string {
-  if (typeof value === 'number') {
-    return value.toLocaleString()
-  } else if (value instanceof Date) {
-    return value.toLocaleString()
-  } else {
-    return String(value)
-  }
 }
 </script>
 
@@ -119,7 +151,7 @@ function formatMetricValue(value: any): string {
               class="mb-2"
             >
               <strong>{{ formatMetricName(metric.key) }}:</strong>
-              {{ formatMetricValue(metric.value) }}
+              {{ formatMetricValue(metric.value, metric.key) }}
             </div>
           </template>
         </PrimeCard>
