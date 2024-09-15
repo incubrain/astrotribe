@@ -25,11 +25,13 @@ export function useHttpHandler() {
     let retries = 0
     while (retries < maxRetries) {
       try {
-        const { data, error } = await operation()
-        if (error) {
-          throw error
+        const response = await operation()
+        logger.debug(`${context} response:`, response)
+
+        if (response.error) {
+          throw response.error
         }
-        return data as T
+        return response.data as T
       } catch (error: unknown) {
         retries++
         logger.warn(`${context} failed. Attempt ${retries} of ${maxRetries}`)
@@ -39,15 +41,15 @@ export function useHttpHandler() {
         const errorSeverity = mapErrorSeverity(pgError)
 
         if (
-          retries >= maxRetries
-          || !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
+          retries >= maxRetries ||
+          !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
         ) {
           const appError = new AppError({
             type: errorType,
             message:
-              pgError.message
-              || retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes]
-              || 'Database operation failed',
+              pgError.message ||
+              retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
+              'Database operation failed',
             severity: errorSeverity,
             code: pgError.code,
             context: context,
@@ -109,8 +111,8 @@ export function useHttpHandler() {
     options: {
       columns?: string
       filters?: Record<string, any>
-      range?: { from: number, to: number }
-      order?: { column: string, ascending: boolean }
+      range?: { from: number; to: number }
+      order?: { column: string; ascending: boolean }
     } = {},
   ): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')

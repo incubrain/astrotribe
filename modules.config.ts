@@ -32,9 +32,9 @@ const ESLINT_OPTIONS: NuxtConfig['eslint'] = {
 const SECURITY_OPTIONS: NuxtConfig['security'] = {
   headers: {
     contentSecurityPolicy: {
-      'worker-src': ['\'self\'', 'blob:'],
+      'worker-src': ["'self'", 'blob:'],
       'default-src': [
-        '\'self\'',
+        "'self'",
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.astronera.org',
@@ -43,7 +43,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.posthog.com',
       ],
       'connect-src': [
-        '\'self\'',
+        "'self'",
         'http://localhost:3000',
         'http://localhost:8080',
         'http://host.docker.internal:8080',
@@ -62,7 +62,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://us.i.posthog.com',
       ],
       'img-src': [
-        '\'self\'',
+        "'self'",
         'data:',
         'http://localhost:54321',
         'http://localhost:3000',
@@ -79,10 +79,10 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'http://*.railway.internal',
       ],
       'script-src': [
-        '\'self\'',
-        '\'nonce-{{nonce}}\'',
-        '\'unsafe-inline\'',
-        '\'wasm-unsafe-eval\'',
+        "'self'",
+        "'nonce-{{nonce}}'",
+        "'unsafe-inline'",
+        "'wasm-unsafe-eval'",
         'http://localhost:3000',
         'http://localhost:54321',
         'https://www.youtube.com',
@@ -94,13 +94,13 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://us.i.posthog.com',
       ],
       'style-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
+        "'self'",
+        "'unsafe-inline'",
         'https://fonts.googleapis.com',
         'https://*.posthog.com',
       ],
       'frame-src': [
-        '\'self\'',
+        "'self'",
         'https://www.youtube.com',
         'https://us.i.posthog.com',
         'https://*.posthog.com',
@@ -109,7 +109,7 @@ const SECURITY_OPTIONS: NuxtConfig['security'] = {
         'https://*.betterstack.com',
         'https://*.razorpay.com',
       ],
-      'child-src': ['\'self\'', 'https://us.i.posthog.com', 'https://*.posthog.com'],
+      'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com'],
     },
     xFrameOptions: 'DENY', // Prevents clickjacking
     crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed

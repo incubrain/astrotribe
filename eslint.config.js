@@ -19,6 +19,7 @@ export default createConfigForNuxt({
     'no-undefined': 'off',
     'no-console': 'off',
     'quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
+    '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
     'no-new': 'off',
     'object-curly-newline': 'off',
     'arrow-parens': ['error', 'always'],

@@ -23,9 +23,6 @@ export default {
       // Size
       'w-full h-full',
 
-      // Color
-      'bg-surface-100/40 dark:bg-surface-400/40',
-
       // Transition
       'transition duration-200',
     ],
@@ -36,7 +33,7 @@ export default {
   tableContainer: ({ props }) => ({
     class: [
       {
-        'relative': props.scrollable,
+        relative: props.scrollable,
         'flex flex-col grow': props.scrollable && props.scrollHeight === 'flex',
       },
 
@@ -55,7 +52,6 @@ export default {
       'p-4',
 
       // Color
-      'bg-surface-50 dark:bg-surface-400',
       'border-surface-200 dark:border-surface-700',
       'text-surface-100 dark:text-white/80',
     ],
@@ -66,7 +62,7 @@ export default {
   thead: ({ context }) => ({
     class: [
       {
-        'bg-surface-50 dark:bg-surface-400 top-0 z-40 sticky': context.scrollable,
+        'top-0 z-40 sticky': context.scrollable,
       },
     ],
   }),
@@ -75,7 +71,6 @@ export default {
       {
         'sticky z-20': instance.frozenRow && context.scrollable,
       },
-      'bg-surface-50 dark:bg-surface-400',
     ],
   }),
   tfoot: ({ context }) => ({
@@ -96,7 +91,6 @@ export default {
       'p-4',
 
       // Color
-      'bg-surface-50 dark:bg-surface-400',
       'border-surface-200 dark:border-surface-700',
       'text-surface-100 dark:text-white/80',
     ],
@@ -124,7 +118,7 @@ export default {
         // Color
         (props.sortable === '' || props.sortable) && context.sorted
           ? 'bg-highlight'
-          : 'bg-surface-50 text-surface-100 dark:text-white/80 dark:bg-surface-400',
+          : 'text-surface-100 dark:text-white/80',
         'border-surface-200 dark:border-surface-700 ',
 
         // States
@@ -226,7 +220,6 @@ export default {
         'min-w-[12.5rem]',
 
         // Color
-        'bg-surface-0 dark:bg-surface-400',
         'text-surface-100 dark:text-white/80',
         'dark:border-surface-700',
       ],
@@ -253,8 +246,7 @@ export default {
 
         // Color
         {
-          'bg-surface-0 dark:bg-surface-400 text-surface-100 dark:text-white/80':
-            !context?.highlighted,
+          'text-surface-100 dark:text-white/80': !context?.highlighted,
         },
         { 'bg-highlight': context?.highlighted },
 
@@ -366,8 +358,8 @@ export default {
       // Color
       'dark:text-white/80',
       { 'bg-highlight': context.selected },
-      { 'bg-surface-0 text-surface-600 dark:bg-surface-400': !context.selected },
-      { 'font-bold bg-surface-0 dark:bg-surface-400 z-20': props.frozenRow },
+      { 'text-surface-600': !context.selected },
+      { 'font-bold  z-20': props.frozenRow },
       {
         'odd:bg-surface-0 odd:text-surface-600 dark:odd:bg-surface-400 even:bg-surface-50 even:text-surface-600 dark:even:bg-surface-900/50':
           context.stripedRows,
@@ -395,14 +387,14 @@ export default {
   rowGroupHeader: {
     class: [
       'sticky z-20',
-      'bg-surface-0 text-surface-600 dark:text-white/70',
+      'dark:text-white/70',
       'dark:bg-surface-400',
     ],
   },
   rowGroupFooter: {
     class: [
       'sticky z-20',
-      'bg-surface-0 text-surface-600 dark:text-white/70',
+      'dark:text-white/70',
       'dark:bg-surface-400',
     ],
   },

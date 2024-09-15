@@ -140,8 +140,3 @@ supabase db diff -f new_employee
 supabase db reset
 ```
 
-<!--
-select count(*) from companies where description is null; = 7912 (8279 total)
-company_urls: 46,074 records
-news: 626 records
- -->

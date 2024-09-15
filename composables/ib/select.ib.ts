@@ -1,9 +1,4 @@
-import {
-  useErrorHandler,
-  AppError,
-  ErrorType,
-  ErrorSeverity,
-} from './error-handler.ib'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from './error-handler.ib'
 import { useHttpHandler } from './http-handler.ib'
 import { useLogger } from './logger.ib'
 import { getOrCreateStore } from './main.ib.store'
@@ -15,7 +10,7 @@ export function useSelectData<T extends { id: string | number }>(
   options: {
     columns?: string
     filters?: Record<string, any>
-    orderBy?: { column: string, ascending?: boolean }
+    orderBy?: { column: string; ascending?: boolean }
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number
@@ -84,6 +79,7 @@ export function useSelectData<T extends { id: string | number }>(
       }
 
       const result = await select<T>(tableName, queryOptions)
+      console.log('Fetch result:', result)
 
       // Audit logging
       if (options.auditLog) {
