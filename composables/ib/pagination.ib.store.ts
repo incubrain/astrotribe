@@ -12,7 +12,7 @@ export type DomainKey =
   | 'auth'
 
 export type PaginationType = {
-  page: number
+  offset: number
   limit: number
 }
 
@@ -24,14 +24,17 @@ export interface PaginationInput {
 
 export const usePaginationStore = defineStore('paginationStore', () => {
   const logger = useLogger('paginationStore')
-  const stores = reactive({} as Record<DomainKey, Ref<{ page: number, limit: number }>>)
+  const stores = reactive({} as Record<DomainKey, Ref<{ offset: number; limit: number }>>)
   const dataFinished = ref({} as Record<DomainKey, boolean>)
 
   function initPagination(input: PaginationInput) {
     if (!stores[input.domainKey] || input.force) {
       // -1 for supabase because it is 0 indexed
       console.log('initPagination', input.force)
-      stores[input.domainKey] = { page: input.pagination.page, limit: input.pagination.limit - 1 }
+      stores[input.domainKey] = {
+        offset: input.pagination.offset,
+        limit: input.pagination.limit - 1,
+      }
     }
   }
 
@@ -47,10 +50,10 @@ export const usePaginationStore = defineStore('paginationStore', () => {
   function getPaginationRange(domainKey: DomainKey) {
     const pagination = getPagination(domainKey)
     if (pagination) {
-      logger.log('getPaginationRange', pagination.limit, (pagination.page - 1) * pagination.limit)
+      logger.log('getPaginationRange', pagination.limit, (pagination.offset - 1) * pagination.limit)
       return {
-        from: (pagination.page - 1) * pagination.limit,
-        to: pagination.limit * pagination.page,
+        from: (pagination.offset - 1) * pagination.limit,
+        to: pagination.limit * pagination.offset,
       }
     }
     return undefined
@@ -59,7 +62,7 @@ export const usePaginationStore = defineStore('paginationStore', () => {
   function incrementPagination(domainKey: DomainKey) {
     const currentPagination = getPagination(domainKey)
     if (currentPagination) {
-      currentPagination.page++
+      currentPagination.offset++
     } else {
       logger.warn(`Attempted to increment pagination for an uninitialized store '${domainKey}'.`)
     }
