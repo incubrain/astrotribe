@@ -15,6 +15,7 @@ const contentTypes = [
   { label: 'Unknown', value: 'unknown' },
 ]
 
+const notification = useNotification()
 const selectedUrls = ref([])
 
 const {
@@ -34,7 +35,35 @@ const { updateData, isUpdating } = useUpdateData('classified_urls')
 
 // Function to update actual category
 const updateActualCategory = async (id: number, category: string) => {
-  await updateData(id, { id, actual_category: category, is_reviewed: true })
+  notification.info({
+    summary: 'Updating category',
+    message: 'Category update in progress. Click to cancel.',
+  })
+
+  const timeoutId = setTimeout(async () => {
+    try {
+      await updateData(id, { id, actual_category: category, is_reviewed: true })
+      notification.success({
+        summary: 'Category updated',
+        message: 'The category has been successfully updated.',
+      })
+    } catch (error) {
+      notification.error({
+        summary: 'Update failed',
+        message: 'Failed to update the category. Please try again.',
+      })
+    }
+  }, 3000)
+
+  return () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+      notification.info({
+        summary: 'Update cancelled',
+        message: 'The category update has been cancelled.',
+      })
+    }
+  }
 }
 
 const markAsReviewed = async () => {
@@ -124,12 +153,15 @@ const getLabelSeverity = (label) => {
 <template>
   <div class="flex h-full flex-col">
     <PrimeSplitter class="h-full">
-      <PrimeSplitterPanel class="h-full overflow-scroll p-4">
+      <PrimeSplitterPanel
+        class="h-full overflow-scroll p-4"
+        :size="25"
+      >
         <div class="flex h-full flex-col">
           <h2 class="mb-4 text-2xl font-bold">Training URLs</h2>
 
           <!-- Label Summary Metrics -->
-          <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-2">
             <PrimeCard
               v-for="(count, label) in labelCounts"
               :key="label"
@@ -152,6 +184,8 @@ const getLabelSeverity = (label) => {
 
           <PrimeDataTable
             :value="fetchedUrls"
+            size="small"
+            class="text-sm"
             :pt="{
               header: ({ props }) => ({
                 cell: '!bg-transparent',
@@ -192,8 +226,11 @@ const getLabelSeverity = (label) => {
           </PrimeDataTable>
         </div>
       </PrimeSplitterPanel>
-      <PrimeSplitterPanel class="h-full overflow-scroll p-4">
-        <PrimeToolbar class="mb-8">
+      <PrimeSplitterPanel
+        class="h-full w-full overflow-scroll p-4"
+        :size="75"
+      >
+        <PrimeToolbar class="mb-8 w-full">
           <template #start>
             <div class="flex gap-2">
               <PrimeButton
@@ -252,7 +289,6 @@ const getLabelSeverity = (label) => {
           <PrimeColumn
             field="url"
             header="URL"
-            style="max-width: 18rem"
             body="urlTemplate"
           ></PrimeColumn>
           <PrimeColumn
@@ -262,8 +298,20 @@ const getLabelSeverity = (label) => {
           <PrimeColumn
             field="actual_category"
             header="Actual Category"
-            body="categoryDropdown"
-          ></PrimeColumn>
+            style="width: 10em"
+          >
+            <template #body="slotProps">
+              <PrimeSelect
+                v-model="slotProps.data.actual_category"
+                class="relative z-50 w-full"
+                :options="contentTypes"
+                option-label="label"
+                option-value="value"
+                placeholder="Select a category"
+                @change="updateActualCategory(slotProps.data.id, $event.value)"
+              />
+            </template>
+          </PrimeColumn>
           <PrimeColumn
             field="is_reviewed"
             header="Reviewed"
