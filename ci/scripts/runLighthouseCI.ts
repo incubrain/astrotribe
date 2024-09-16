@@ -58,7 +58,10 @@ async function cleanupOldReports(reportDir: string) {
 }
 
 async function runLighthouseCI() {
-  console.log('Running Lighthouse CI...')
+  console.log('Waiting for server to start...')
+  await sleep(10000) // Wait for 10 seconds
+  console.log('Starting Lighthouse tests...')
+
   const configPath = path.join(__dirname, '..', '..', 'lighthouserc.cjs')
   const reportDir = path.join(__dirname, '..', 'reports', 'lighthouse')
 
@@ -113,6 +116,10 @@ async function runLighthouseCI() {
     await cleanupOldReports(reportDir)
   } catch (error) {
     console.error('Lighthouse CI error:', error)
+    if (error instanceof Error) {
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
     process.exit(1)
   }
 }

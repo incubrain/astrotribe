@@ -10,6 +10,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+      - name: Setup network
+        run: |
+          sudo ufw allow 3000
+          sudo ufw reload
       - run: npm ci
       - run: npm run build
       - name: Run CI scripts
@@ -26,3 +30,8 @@ jobs:
           name: bundle-size-reports
           path: ci/reports/bundle-size/*.json
           retention-days: 90
+      - name: Debug Lighthouse reports
+        if: always()
+        run: |
+          ls -la ci/reports/lighthouse
+          cat ci/reports/lighthouse/*.json || echo "No JSON files found"
