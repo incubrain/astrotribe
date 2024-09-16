@@ -19,5 +19,8 @@ module.exports = {
       outputDir: './ci/reports/lighthouse',
       reportFilenamePattern: '%%DATETIME%%-lighthouse.json',
     },
+    settings: {
+      logLevel: 'info',
+    },
   },
 }
