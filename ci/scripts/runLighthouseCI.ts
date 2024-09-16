@@ -40,7 +40,7 @@ async function readJsonSafely(filePath: string, retries = 3): Promise<Lighthouse
   throw new Error('Failed to read JSON file after multiple attempts')
 }
 
-async function cleanupOldReports(reportDir: string) {
+async function removeOldReports(reportDir: string) {
   const files = await fs.readdir(reportDir)
   const now = new Date()
   const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate())
@@ -106,14 +106,14 @@ async function runLighthouseCI() {
     const customReportPath = path.join(reportDir, `lighthouse-summary-${dateString}.json`)
     await fs.writeFile(customReportPath, JSON.stringify(customReport, null, 2))
 
-    // Clean up all JSON files in the directory
-    const allJsonFiles = files.filter((file) => file.endsWith('.json'))
-    await Promise.all(allJsonFiles.map((file) => fs.unlink(path.join(reportDir, file))))
+    const unwantedJSON = files.filter(
+      (file) => file.endsWith('-lighthouse.json') || file === 'manifest.json',
+    )
+    await Promise.all(unwantedJSON.map((file) => fs.unlink(path.join(reportDir, file))))
 
     console.log('Custom Lighthouse report saved:', customReportPath)
 
-    // Clean up old reports
-    await cleanupOldReports(reportDir)
+    await removeOldReports(reportDir)
   } catch (error) {
     console.error('Lighthouse CI error:', error)
     if (error instanceof Error) {
