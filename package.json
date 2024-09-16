@@ -12,7 +12,7 @@
     "cache:clean": "npm cache clean --force && npx nuxi cleanup",
     "type:check": "npx nuxi typecheck",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "nuxt preview --host 0.0.0.0",
     "supa:gen:seed": " supabase db dump -f supabase/dump.sql --data-only",
     "supa:gen:types": "supabase gen types typescript --local > ./supabase/schema.gen.ts",
     "supa:func": "supabase functions serve --env-file ./supabase/.env.local --no-verify-jwt",
