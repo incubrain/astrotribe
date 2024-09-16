@@ -3,115 +3,6 @@ on: [push]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    DM
-do I also need to add the environment variables into our github script?
-
-name: Performance Tracking
-on: [push]
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Setup network
-        run: |
-          sudo ufw allow 3000
-          sudo ufw reload
-      - run: npm ci
-      - run: npm run build
-      - name: Run CI scripts
-        run: npm run ci
-      - name: Upload Lighthouse reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: lighthouse-reports
-          path: ci/reports/lighthouse/lighthouse-summary-.json
-          retention-days: 90
-      - name: Upload Bundle Size reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: bundle-size-reports
-          path: ci/reports/bundle-size/.json
-          retention-days: 90
-      - name: Debug Lighthouse reports
-        if: always()
-        run: |
-          ls -la ci/reports/lighthouse
-          cat ci/reports/lighthouse/*.json || echo "No JSON files found"
-
----
-these are the envars we added to the project:
-
-Repository secrets
-New repository secret
-Name
-Last updated
-Actions
-GROQ_API_KEY
-4 hours ago
-LANGCHAIN_KEY
-4 hours ago
-NUXT_PUBLIC_IB_DEVEX
-4 hours ago
-NUXT_PUBLIC_LOG_LEVEL
-4 hours ago
-NUXT_PUBLIC_POSTHOG_KEY
-4 hours ago
-NUXT_PUBLIC_POSTHOG_URL
-4 hours ago
-NUXT_PUBLIC_SCRAPER_URL
-4 hours ago
-NUXT_RAZORPAY_ID
-4 hours ago
-NUXT_RAZORPAY_SECRET
-4 hours ago
-NUXT_RAZORPAY_TEST_ID
-4 hours ago
-NUXT_RAZORPAY_TEST_SECRET
-4 hours ago
-NUXT_REDIS_FLUSH_KEY
-4 hours ago
-NUXT_SCRAPER_KEY
-4 hours ago
-OPENAI_API_KEY
-4 hours ago
-OPENAI_ORG_ID
-4 hours ago
-OPENAI_PROJECT_ID
-4 hours ago
-PRODUCTION_DB_PASSWORD
-last year
-PRODUCTION_PROJECT_ID
-last year
-STAGING_DB_PASSWORD
-last year
-STAGING_PROJECT_ID
-last year
-SUPABASE_ACCESS_TOKEN
-last year
-TIPTAP_API_SECRET
-4 hours ago
-TIPTAP_APP_SECRET
-4 hours ago
-TIPTAP_JWT
-4 hours ago
-
-
-Yes, you should add the environment variables to your GitHub Actions workflow. Since you've already added these as repository secrets, you can reference them in your workflow. Here's how you can modify your workflow to include these environment variables:
-
-yaml
-
-Copy
-name: Performance Tracking
-on: [push]
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       LANGCHAIN_KEY: ${{ secrets.LANGCHAIN_KEY }}
@@ -137,7 +28,7 @@ jobs:
       TIPTAP_API_SECRET: ${{ secrets.TIPTAP_API_SECRET }}
       TIPTAP_APP_SECRET: ${{ secrets.TIPTAP_APP_SECRET }}
       TIPTAP_JWT: ${{ secrets.TIPTAP_JWT }}
-      
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
