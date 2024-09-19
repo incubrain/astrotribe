@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development')
+import { ref, computed } from 'vue'
+import { useRoute, useRuntimeConfig } from '#imports'
 
 defineProps({
   links: {
@@ -13,68 +14,80 @@ defineProps({
 })
 
 const route = useRoute()
+const isExpanded = ref(false)
 </script>
 
 <template>
-  <PrimeMenu
-    :model="links"
-    :pt="{
-      root: 'min-h-full flex flex-col rounded-none border-none p-0 w-full h-full max-w-[10%] min-w-[140px] hidden lg:flex',
-      menu: 'pt-8',
-    }"
+  <div
+    class="background fixed left-0 top-0 z-[100] h-full transition-all duration-300 ease-in-out hover:overflow-visible"
+    :class="{ 'w-[60px]': !isExpanded, 'w-[180px]': isExpanded }"
+    @mouseenter="isExpanded = true"
+    @mouseleave="isExpanded = false"
   >
-    <template #start>
-      <div class="flex min-h-[60px] items-center justify-end p-3">
-        <NuxtLink
-          to="/"
-          class="flex items-center justify-end gap-2"
+    <PrimeMenu
+      :model="links"
+      :pt="{
+        root: 'min-h-full flex flex-col rounded-none border-none p-0 w-full h-full hidden lg:flex',
+        menu: 'pt-8',
+      }"
+    >
+      <template #start>
+        <div
+          class="flex min-h-[60px] items-center p-3"
+          :class="{ 'justify-center': !isExpanded, 'justify-start': isExpanded }"
         >
-          <h1 class="text-lg flex cursor-pointer font-bold leading-none tracking-normal">
-            ASTRO
-            <strong class="text-highlight"> TRIBE </strong>
-          </h1>
-        </NuxtLink>
-      </div>
-    </template>
-    <template #submenuheader="{ item }">
-      <p>something here to {{ item }}</p>
-    </template>
-    <template #item="{ item }">
-      <div>
-        <NuxtLink
-          :to="item.slug"
-          class="w-full"
-        >
-          <span
-            class="relative flex w-full items-center gap-3 rounded-[.5rem_0_0_.5rem] p-3 text-sm"
-            :class="route.path === item.slug ? 'foreground justify-end' : 'justify-end'"
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-2"
           >
-            <div
-              v-if="route.path === item.slug"
-              class="background absolute -bottom-4 right-0 z-10 h-4 w-4 rounded-tr-xl"
-            ></div>
-            <div
-              v-if="route.path === item.slug"
-              class="foreground absolute -bottom-4 right-0 h-4 w-4"
-            ></div>
-            <div
-              v-if="route.path === item.slug"
-              class="background absolute -top-4 right-0 z-10 h-4 w-4 rounded-br-xl"
-            ></div>
-            <div
-              v-if="route.path === item.slug"
-              class="foreground absolute -top-4 right-0 h-4 w-4"
-            ></div>
-            {{ item.label }}
             <Icon
-              :name="item.icon"
-              size="24px"
+              v-if="!isExpanded"
+              name="mdi:rocket"
+              size="20px"
             />
-          </span>
-        </NuxtLink>
-      </div>
-    </template>
-  </PrimeMenu>
+            <h1
+              v-else
+              class="text-lg flex cursor-pointer whitespace-nowrap font-bold leading-none tracking-normal"
+            >
+              ASTRO
+              <strong class="text-highlight"> TRIBE </strong>
+            </h1>
+          </NuxtLink>
+        </div>
+      </template>
+      <template #submenuheader="{ item }">
+        <p v-if="isExpanded">something here to {{ item }}</p>
+      </template>
+      <template #item="{ item }">
+        <div class="w-full">
+          <NuxtLink
+            :to="item.slug"
+            class="block w-full"
+          >
+            <span
+              class="relative flex w-full items-center rounded-[.5rem_0_0_.5rem] p-3.5 text-sm"
+              :class="[
+                route.path === item.slug ? 'foreground' : '',
+                isExpanded ? 'justify-start' : 'justify-center',
+              ]"
+            >
+              <Icon
+                :name="item.icon"
+                class="flex shrink-0"
+                size="20px"
+              />
+              <span
+                v-show="isExpanded"
+                class="overflow-hidden whitespace-nowrap pl-4"
+              >
+                {{ item.label }}
+              </span>
+            </span>
+          </NuxtLink>
+        </div>
+      </template>
+    </PrimeMenu>
+  </div>
 </template>
 
 <style scoped></style>
