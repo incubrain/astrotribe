@@ -4,6 +4,7 @@ import { useStorage } from '@vueuse/core'
 import advertisements from '~/assets/advertisements.json'
 
 const showAds = ref(false)
+const userShowAds = useStorage('userShowAds', true)
 
 interface Advertisement {
   id: number
@@ -106,6 +107,18 @@ onUnmounted(() => {
 
 <template>
   <aside class="mx-auto min-h-72 w-72 space-y-4 p-4">
+    <div class="mb-4 flex items-center justify-between">
+      <label
+        for="show-ads-toggle"
+        class="pr-2 text-sm"
+      >
+        Toggle Ads
+      </label>
+      <PrimeToggleSwitch
+        v-model="showAds"
+        input-id="show-ads-toggle"
+      />
+    </div>
     <div
       v-for="ad in activeAds"
       :key="ad.id"

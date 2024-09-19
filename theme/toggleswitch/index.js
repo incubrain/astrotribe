@@ -2,7 +2,7 @@ export default {
   root: ({ props }) => ({
     class: [
       'inline-block relative',
-      'w-12 h-7',
+      'w-10 h-6',
       'rounded-2xl',
       {
         'opacity-60 select-none pointer-events-none cursor-default': props.disabled,
@@ -13,7 +13,7 @@ export default {
     class: [
       // Position
       'absolute top-0 left-0 right-0 bottom-0',
-      { 'before:transform before:translate-x-5': props.modelValue == props.trueValue },
+      { 'before:transform before:translate-x-3': props.modelValue == props.trueValue },
 
       // Shape
       'rounded-2xl',
@@ -24,12 +24,12 @@ export default {
       'before:h-5 before:w-5',
       'before:rounded-full',
       'before:duration-200',
-      'before:bg-surface-0 before:dark:bg-surface-900',
+      'before:bg-surface-0 before:dark:bg-surface-500',
 
       // Colors
       'border',
       {
-        'bg-surface-200 dark:bg-surface-700': !(props.modelValue == props.trueValue),
+        'bg-surface-300': !(props.modelValue == props.trueValue),
         'bg-primary': props.modelValue == props.trueValue,
       },
 
@@ -39,7 +39,10 @@ export default {
       { 'border-red-500 dark:border-red-400': props.invalid },
 
       // States
-      { 'peer-hover:bg-surface-300 dark:peer-hover:bg-surface-600 ': !(props.modelValue == props.trueValue) && !props.disabled },
+      {
+        'peer-hover:bg-surface-300 dark:peer-hover:bg-surface-300 ':
+          !(props.modelValue == props.trueValue) && !props.disabled,
+      },
       { 'peer-hover:bg-primary-hover ': props.modelValue == props.trueValue && !props.disabled },
       'peer-focus-visible:ring peer-focus-visible:ring-primary-400/50 dark:peer-focus-visible:ring-primary-300/50',
 
