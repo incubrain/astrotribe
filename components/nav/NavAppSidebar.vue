@@ -54,17 +54,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
       </div>
     </template>
     <template #end>
-      <div class="flex h-full items-end justify-end p-2">
-        <div class="foreground flex items-center justify-center gap-2 rounded-md p-2">
-          <iframe
-            src="https://status.astronera.org/badge?theme=dark"
-            width="120"
-            height="30"
-            frameborder="0"
-            scrolling="no"
-          ></iframe>
-        </div>
-      </div>
+      <div class="flex h-full items-end justify-end p-2"> </div>
     </template>
   </PrimeMenu>
 </template>
