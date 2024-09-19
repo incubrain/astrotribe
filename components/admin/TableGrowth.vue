@@ -254,7 +254,8 @@ onMounted(async () => {
                     <Icon
                       :name="getGrowthIcon(growthData[table][period].latest.growth_percentage)"
                       :class="getGrowthClass(growthData[table][period].latest.growth_percentage)"
-                      class="mr-2 h-6 w-6"
+                      class="mr-2"
+                      size="24px"
                     />
                     <span
                       :class="getGrowthClass(growthData[table][period].latest.growth_percentage)"

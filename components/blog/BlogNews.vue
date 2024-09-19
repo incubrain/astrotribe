@@ -40,12 +40,12 @@ if (error.value) {
 
 <template>
   <div>
-    <h2 class="text-3xl font-bold pb-20 underline underline-offset-8 decoration-primary-500">
+    <h2 class="pb-20 text-3xl font-bold underline decoration-primary-500 underline-offset-8">
       LATEST NEWS
     </h2>
     <div
       v-if="spaceNews?.data"
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
     >
       <NewsCard
         v-for="(news, i) in spaceNews.data"
@@ -54,15 +54,15 @@ if (error.value) {
       />
     </div>
     <NuxtLink
-      class="flex gap-2 w-full justify-end items-center pt-20 hover:text-primary-500"
+      class="flex w-full items-center justify-end gap-2 pt-20 hover:text-primary-500"
       to="/auth/register"
     >
-      <h2 class="text-3xl font-bold underline text-end underline-offset-8 decoration-primary-500">
+      <h2 class="text-end text-3xl font-bold underline decoration-primary-500 underline-offset-8">
         JOIN FREE FOR MORE
       </h2>
       <Icon
         name="mdi:chevron-right"
-        class="w-10 h-10"
+        size="32px"
       />
     </NuxtLink>
   </div>

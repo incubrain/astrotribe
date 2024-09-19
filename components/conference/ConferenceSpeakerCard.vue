@@ -2,7 +2,7 @@
   <PrimeCard
     class="h-full"
     :pt="{
-      body: 'justify-between h-full',
+      body: 'justify-between h-full background',
       root: 'overflow-hidden relative',
     }"
     :pt-options="{ mergeProps: true, mergeSections: true }"
@@ -31,7 +31,8 @@
           <p class="flex items-center gap-2 font-semibold text-primary-500 dark:text-primary-600">
             <Icon
               name="mdi:account"
-              class="h-4 w-4 flex-shrink-0"
+              class="flex-shrink-0"
+              \size="24px"
             />
             {{ speaker.professional_title }}
           </p>
@@ -49,9 +50,7 @@
         :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-100 dark:bg-primary-950'"
         @click="isOpen = true"
       >
-        <h5 class="font-semibold">
-          Abstract
-        </h5>
+        <h5 class="font-semibold"> Abstract </h5>
         <p class="text-sm">
           {{ speaker.abstract.title }}
         </p>

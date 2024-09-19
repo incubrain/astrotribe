@@ -44,7 +44,8 @@ const context = reactive({
     <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
       <Icon
       :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-      class="w-6 h-6 cursor-pointer"
+      class="cursor-pointer"
+      size="24px"
       @click="toggle"
       />
     </AppThemeToggle>

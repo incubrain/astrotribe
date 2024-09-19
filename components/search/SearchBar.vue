@@ -40,7 +40,9 @@ const submitQuestion = async () => {
         >
           <Icon
             :name="textSearchType === 'fts' ? 'mdi:card-text-outline' : 'mdi:format-list-numbered'"
-            class="absolute h-5 w-5"
+            class="absolute"
+                      size="24px"
+
           />
         </PrimeButton> -->
         <PrimeTextarea
@@ -59,7 +61,8 @@ const submitQuestion = async () => {
         >
           <Icon
             :name="isLoading ? 'mdi:loading' : 'mdi:send'"
-            class="h-6 w-6 font-bold text-primary-500"
+            class="font-bold text-primary-500"
+            size="24px"
             :class="isLoading ? 'animate-spin' : ''"
           />
         </PrimeButton>

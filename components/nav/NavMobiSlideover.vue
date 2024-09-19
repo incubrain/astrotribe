@@ -7,7 +7,9 @@
     >
       <Icon
         name="mdi:menu"
-        class="h-6 w-6 text-black dark:text-white"
+        class=" text-black dark:text-white"
+        size="24px"
+
       />
     </PrimeButton>
     <PrimeDrawer v-model:visible="isOpen">
@@ -50,7 +52,9 @@
             {{ link.name }}
             <Icon
               :name="getIcon(link.name)"
-              class="ml-2 h-4 w-4"
+              class="ml-2"
+              size="24px"
+
             />
           </NuxtLink>
         </div>

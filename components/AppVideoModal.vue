@@ -20,7 +20,8 @@
         />
         <Icon
           name="mdi:play"
-          class="absolute h-[72px] w-[72px]"
+          class="absolute"
+          size="72px"
         />
       </PrimeButton>
 

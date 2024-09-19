@@ -1,18 +1,19 @@
 <template>
   <PrimeButton
     v-if="condition"
-    class="background rounded-md hover:text-primary-500 flex items-center justify-center"
+    class="background flex items-center justify-center rounded-md hover:text-primary-500"
     variant="none"
     :padded="false"
     @click="handleClick"
   >
     <div
-      class="flex justify-center items-center gap-2 p-2 text-sm font-normal"
+      class="flex items-center justify-center gap-2 p-2 text-sm font-normal"
       :class="isPrev ? 'flex-row text-right' : 'flex-row-reverse text-left'"
     >
       <Icon
         :name="isPrev ? 'mdi:chevron-left' : 'mdi:chevron-right'"
-        class="w-6 h-6 flex-shrink-0"
+        class="flex-shrink-0"
+        size="24px"
       />
       {{ post.title.substring(0, 54) }}...
     </div>

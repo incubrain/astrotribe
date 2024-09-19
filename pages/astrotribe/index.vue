@@ -25,9 +25,7 @@ const comingSoon = [
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >
       <template #content>
-        <h1 class="pb-4 text-2xl font-semibold">
-          Welcome {{ profile?.given_name ?? '' }} 👋
-        </h1>
+        <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
         <h3 class="text-lg pb-4 font-semibold text-primary-600">
           AstroTribe Is Currently In Open Alpha
         </h3>
@@ -40,9 +38,7 @@ const comingSoon = [
     <PrimeCard class="border-color border">
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold">
-            Latest News
-          </h3>
+          <h3 class="text-xl font-semibold"> Latest News </h3>
           <p class="text-base text-slate-200">
             Stay current with leading government space agencies and private sector companies from
             around the globe.
@@ -51,9 +47,7 @@ const comingSoon = [
       </template>
       <template #footer>
         <NuxtLink to="/astrotribe/news">
-          <PrimeButton outlined>
-            Explore Now
-          </PrimeButton>
+          <PrimeButton outlined> Explore Now </PrimeButton>
         </NuxtLink>
       </template>
     </PrimeCard>
@@ -64,9 +58,7 @@ const comingSoon = [
     >
       <template #content>
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold">
-            Companies
-          </h3>
+          <h3 class="text-xl font-semibold"> Companies </h3>
           <p class="text-base text-slate-200">
             Follow the companies that will take us to the Moon, Mars, and beyond. India is our first
             focus, then we go global!
@@ -75,17 +67,13 @@ const comingSoon = [
       </template>
       <template #footer>
         <NuxtLink to="/astrotribe/companies">
-          <PrimeButton outlined>
-            Search Companies
-          </PrimeButton>
+          <PrimeButton outlined> Search Companies </PrimeButton>
         </NuxtLink>
       </template>
     </PrimeCard>
 
     <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
-      <PrimeMessage severity="info">
-        What we're working on
-      </PrimeMessage>
+      <PrimeMessage severity="info"> What we're working on </PrimeMessage>
       <ul>
         <li
           v-for="item in comingSoon"
@@ -94,7 +82,7 @@ const comingSoon = [
         >
           <Icon
             name="mdi:chevron-right"
-            size="16"
+            size="16px"
             class="text-primary-500"
           />
           <span class="pl-2">{{ item }}</span>

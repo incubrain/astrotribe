@@ -118,7 +118,8 @@ watch(
           >
             <Icon
               name="mdi:github"
-              class="flex h-5 w-5 cursor-pointer items-center justify-center md:h-6 md:w-6"
+              class="flex cursor-pointer items-center justify-center"
+              size="24px"
             />
           </NuxtLink>
           <ClientOnly>

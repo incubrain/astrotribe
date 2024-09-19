@@ -6,9 +6,7 @@
     <div class="text-sm font-bold">
       {{ currentTask }}
     </div>
-    <div class="text-xl">
-      ⏱️ {{ formatTime(elapsedTime) }}
-    </div>
+    <div class="text-xl"> ⏱️ {{ formatTime(elapsedTime) }} </div>
     <div class="flex space-x-2">
       <PrimeButton
         v-if="!isTracking"
@@ -18,7 +16,7 @@
       >
         <Icon
           name="mdi:play"
-          class="h-5 w-5"
+          size="24px"
         />
       </PrimeButton>
       <PrimeButton
@@ -29,7 +27,7 @@
       >
         <Icon
           name="mdi:pause"
-          class="h-5 w-5"
+          size="24px"
         />
       </PrimeButton>
       <PrimeButton
@@ -39,7 +37,7 @@
       >
         <Icon
           name="mdi:stop"
-          class="h-5 w-5"
+          size="24px"
         />
       </PrimeButton>
     </div>

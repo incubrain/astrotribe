@@ -12,7 +12,7 @@
     >
       <Icon
         :name="social.icon"
-        class="h-[24px] w-[24px]"
+        size="24px"
       />
     </a>
   </div>

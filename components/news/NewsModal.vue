@@ -1,17 +1,17 @@
 <template>
-  <div class="foreground relative w-full h-full">
+  <div class="foreground relative h-full w-full">
     <div
-      class="sticky top-0 left-0 z-20 w-full background flex h-auto items-center justify-between px-4 py-2"
+      class="background sticky left-0 top-0 z-20 flex h-auto w-full items-center justify-between px-4 py-2"
     >
-      <h3 class="font-semibold text-sm lg:text-lg">
+      <h3 class="lg:text-lg text-sm font-semibold">
         {{ posts[currentIndex].title }}
       </h3>
-      <div class="flex gap-2 items-center">
+      <div class="flex items-center gap-2">
         <PrimeButton
           to="https://tailwindcss.com/docs/content"
           target="_blank"
           icon="material-symbols:chrome-reader-mode-rounded"
-          class="lg:after:content-['Full_Article'] flex items-center justify-end"
+          class="flex items-center justify-end lg:after:content-['Full_Article']"
         />
         <PrimeButton
           icon="mdi:close"
@@ -20,8 +20,8 @@
         />
       </div>
     </div>
-    <div class="grid grid-cols-1 xl:grid-cols-4 gap-4 overflow-scroll w-full h-full py-4">
-      <div class="grid grid-cols-2 xl:col-start-4 gap-4">
+    <div class="grid h-full w-full grid-cols-1 gap-4 overflow-scroll py-4 xl:grid-cols-4">
+      <div class="grid grid-cols-2 gap-4 xl:col-start-4">
         <NewsNavigationButton
           :condition="nextIndex <= posts.length - 1"
           :is-prev="true"
@@ -36,7 +36,7 @@
       </div>
       <div
         v-if="posts[currentIndex].media"
-        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2 lg:mt-0"
+        class="col-start-1 lg:mt-0 xl:col-span-3 xl:row-span-2 xl:row-start-1"
       >
         <LazyImageCarousel
           :media="posts[currentIndex].media"
@@ -45,7 +45,7 @@
       </div>
       <div
         v-else
-        class="xl:col-span-3 col-start-1 xl:row-start-1 xl:row-span-2 overflow-hidden"
+        class="col-start-1 overflow-hidden xl:col-span-3 xl:row-span-2 xl:row-start-1"
       >
         <ImageWithFallback
           :image="undefined"
@@ -57,13 +57,14 @@
           <li
             v-for="sum in posts[currentIndex].summary[summaryLevel]"
             :key="sum"
-            class="flex gap-2 items-start"
+            class="flex items-start gap-2"
           >
             <Icon
               name="mdi:star"
-              class="text-yellow-500 w-3 h-3 flex-shrink-0 mt-[3px]"
+              class="mt-[3px] flex-shrink-0 text-yellow-500"
+              size="18px"
             />
-            <p class="flex-grow leading-snug text-sm">
+            <p class="flex-grow text-sm leading-snug">
               {{ sum }}
             </p>
           </li>

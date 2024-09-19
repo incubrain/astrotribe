@@ -47,7 +47,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
             {{ item.label }}
             <Icon
               :name="item.icon"
-              class="h-[20px] w-[20px]"
+              size="24px"
             />
           </span>
         </NuxtLink>
