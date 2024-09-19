@@ -1,12 +1,12 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col space-y-2">
     <h2
       v-if="hasTitle"
-      class="text-xl font-semibold leading-normal lg:text-2xl"
+      class="text-xl font-semibold leading-normal"
     >
       Follow us
     </h2>
-    <div :class="`mt-2 flex w-full gap-2 ${position}`">
+    <div :class="`flex w-full gap-2 ${position}`">
       <a
         v-for="s in socials"
         :key="s.id"
@@ -16,10 +16,9 @@
       >
         <Icon
           :name="`mdi:${s.platform}`"
-          class="h-[24px] w-[24px]"
+          :size="`${iconSize}px`"
         />
       </a>
-      <!-- !todo add social username -->
     </div>
   </div>
 </template>
@@ -40,6 +39,10 @@ defineProps({
     type: String,
     required: false,
     default: 'justify-center',
+  },
+  iconSize: {
+    type: Number,
+    default: 24,
   },
 })
 </script>

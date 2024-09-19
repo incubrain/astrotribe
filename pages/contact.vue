@@ -3,21 +3,17 @@
     <div class="relative flex flex-col overflow-hidden md:block">
       <div>
         <div
-          class="right-0 z-30 flex min-h-full w-full flex-col items-start from-transparent via-white to-white p-4 text-left md:absolute md:w-2/5 md:items-end md:justify-center md:bg-gradient-to-r md:text-right lg:gap-10 lg:px-8 lg:py-12 dark:via-zinc-900 dark:to-zinc-900"
+          class="right-0 z-30 gap-4 flex min-h-full w-full flex-col items-start from-transparent via-white to-white p-4 text-left md:absolute md:w-2/5 md:items-end md:justify-center md:bg-gradient-to-r md:text-right lg:gap-10 lg:px-8 lg:py-12 dark:via-zinc-900 dark:to-zinc-900"
         >
           <div class="md:w-96">
-            <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-5xl">
-              LET’S TALK
-            </h1>
+            <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-5xl"> LET’S TALK </h1>
             <p class="py-4 text-base leading-normal md:mt-2">
-              We'll happily answer any questions <br />you have about AstronEra / AstroTribe
+              We'll happily answer any questions <br />you have about AstronEra
             </p>
           </div>
           <div class="flex flex-col gap-3 md:max-w-48">
             <div class="space-y-1">
-              <h3 class="text-xl font-semibold">
-                Email
-              </h3>
+              <h3 class="text-xl font-semibold"> Email </h3>
               <NuxtLink
                 to="mailto:connectus@astronera.org"
                 target="_blank"
@@ -26,9 +22,7 @@
               </NuxtLink>
             </div>
             <div class="space-y-1">
-              <h3 class="text-xl font-semibold">
-                Phone
-              </h3>
+              <h3 class="text-xl font-semibold"> Phone </h3>
               <NuxtLink
                 to="tel: +91-880-610-7510"
                 target="_blank"
@@ -37,16 +31,17 @@
               </NuxtLink>
             </div>
             <div class="space-y-1">
-              <h3 class="text-xl font-semibold">
-                Address
-              </h3>
+              <h3 class="text-xl font-semibold"> Address </h3>
               <p>
                 Prachi, 392/6B, Atreya Soc., Deep Bangla Chowk, Model Colony, Pune, Maharashtra
                 411016
               </p>
             </div>
           </div>
-          <AppSocialBlock :socials="socials" />
+          <AppSocialBlock
+            :socials="socials"
+            :icon-size="30"
+          />
         </div>
       </div>
       <iframe
