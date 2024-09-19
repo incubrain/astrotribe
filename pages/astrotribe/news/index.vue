@@ -4,10 +4,13 @@
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
 
 const domainKey = 'news'
-const { store, loadMore, refresh } = await useSelectData<User>('news', {
+const { store, loadMore, refresh } = useSelectData<News>('news', {
   columns:
     'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*)',
-  filters: { content_status: 'draft' },
+  filters: {
+    // content_status: { eq: 'draft' },
+    body: { neq: 'null' },
+  },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 },
@@ -28,8 +31,6 @@ definePageMeta({
 
 <template>
   <div>
-    <!-- <IbFilter data-type="news" /> -->
-    <!-- <NewsSummaryLevel /> -->
     <IbInfiniteScroll @update:scroll-end="loadMore()">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
         <IbSidebar class="mx-auto" />

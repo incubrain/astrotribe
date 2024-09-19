@@ -12,6 +12,72 @@ import { useLogger } from './logger.ib'
 import { getOrCreateStore } from './main.ib.store'
 import { usePaginationStore, type PaginationType } from './pagination.ib.store'
 
+interface FilterOption {
+  [key: string]: string | number | boolean | null | FilterOption
+}
+
+interface SelectOptions {
+  columns?: string
+  filters?: Record<string, FilterOption>
+  range?: { from: number; to: number }
+  order?: { column: string; ascending: boolean }
+}
+
+function applyFilter(query: any, column: string, filter: FilterOption): any {
+  const [operator, value] = Object.entries(filter)[0]
+  switch (operator) {
+    case 'eq':
+      return query.eq(column, value)
+    case 'neq':
+      return query.neq(column, value)
+    case 'gt':
+      return query.gt(column, value)
+    case 'gte':
+      return query.gte(column, value)
+    case 'lt':
+      return query.lt(column, value)
+    case 'lte':
+      return query.lte(column, value)
+    case 'like':
+      return query.like(column, value)
+    case 'ilike':
+      return query.ilike(column, value)
+    case 'is':
+      return query.is(column, value)
+    case 'in':
+      return query.in(column, value as any[])
+    case 'contains':
+      return query.contains(column, value)
+    case 'containedBy':
+      return query.containedBy(column, value)
+    case 'rangeGt':
+      return query.rangeGt(column, value)
+    case 'rangeGte':
+      return query.rangeGte(column, value)
+    case 'rangeLt':
+      return query.rangeLt(column, value)
+    case 'rangeLte':
+      return query.rangeLte(column, value)
+    case 'rangeAdjacent':
+      return query.rangeAdjacent(column, value)
+    case 'overlaps':
+      return query.overlaps(column, value)
+    case 'textSearch':
+      return query.textSearch(column, value as string, { config: 'english' })
+    case 'match':
+      return query.match(column, value as Record<string, unknown>)
+    case 'not':
+      return applyFilter(query.not(), column, value as FilterOption)
+    case 'or':
+      return query.or(value as string)
+    case 'and':
+      return query.and(value as string)
+    default:
+      console.warn(`Unsupported filter operator: ${operator}`)
+      return query
+  }
+}
+
 export function useHttpHandler() {
   const supabase = useSupabaseClient()
   const { handleError } = useErrorHandler()
@@ -118,8 +184,9 @@ export function useHttpHandler() {
     let query = supabase.from(tableName).select(options.columns || '*')
 
     if (options.filters) {
-      Object.entries(options.filters).forEach(([key, value]) => {
-        query = query.eq(key, value)
+      Object.entries(options.filters).forEach(([column, filterOption]) => {
+        console.log('column:', column, 'filterOption:', filterOption)
+        query = applyFilter(query, column, filterOption)
       })
     }
 
