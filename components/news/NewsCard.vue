@@ -25,7 +25,7 @@ defineProps({
       <div class="justify-center-center flex flex-col gap-2">
         <div class="flex gap-2">
           <PrimeTag>
-            {{ news.companies.name }}
+            {{ news.companies?.name }}
           </PrimeTag>
           <IbNewLabel
             :date="news.published_at ?? news.created_at!"
@@ -53,8 +53,7 @@ defineProps({
       />
     </div> -->
     <div class="flex flex-col gap-2 px-4 pb-4">
-      <div class="w-full">
-      </div>
+      <div class="w-full"> </div>
       <h4 class="text-balance text-xl">
         {{ news.title }}
       </h4>

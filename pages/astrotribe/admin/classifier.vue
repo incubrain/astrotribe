@@ -27,7 +27,7 @@ const {
   initialFetch: true,
   columns: '*',
   orderBy: { column: 'created_at', ascending: false },
-  pagination: { offset: 1, limit: 99 },
+  pagination: { page: 1, limit: 99 },
 })
 
 // Updating data

@@ -1,0 +1,24 @@
+[
+  {
+    "adId": 1,
+    "impressions": 2,
+    "clicks": 0,
+    "uniqueViews": 0,
+    "deviceType": "Desktop",
+    "viewTimes": [
+      1726724487507,
+      1726724487507
+    ]
+  },
+  {
+    "adId": 2,
+    "impressions": 2,
+    "clicks": 0,
+    "uniqueViews": 0,
+    "deviceType": "Desktop",
+    "viewTimes": [
+      1726724487507,
+      1726724487507
+    ]
+  }
+]

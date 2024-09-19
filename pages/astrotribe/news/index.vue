@@ -7,7 +7,7 @@ const domainKey = 'news'
 const { store, loadMore, refresh } = await useSelectData<User>('news', {
   columns:
     'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*)',
-  filters: { content_status: 'pending_agent_action' },
+  filters: { content_status: 'draft' },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 },
@@ -27,7 +27,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="relative flex h-full w-full flex-col md:gap-4 xl:gap-8">
+  <div>
     <!-- <IbFilter data-type="news" /> -->
     <!-- <NewsSummaryLevel /> -->
     <IbInfiniteScroll @update:scroll-end="loadMore()">
@@ -41,6 +41,7 @@ definePageMeta({
           />
           <NewsCardSkeleton v-show="isLoading" />
         </div>
+        <IbAdvertisement />
       </div>
     </IbInfiniteScroll>
   </div>
