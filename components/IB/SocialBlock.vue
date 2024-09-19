@@ -6,13 +6,13 @@
     <a
       v-for="social in formattedSocials"
       :key="`${social.platform}-icon`"
-      class="cursor-pointer"
+      class="cursor-pointer flex items-center"
       target="_blank"
       :href="social.url"
     >
       <Icon
         :name="social.icon"
-        size="24px"
+        :size="size"
       />
     </a>
   </div>
@@ -27,6 +27,10 @@ const props = defineProps({
   socials: {
     type: Object as PropType<Socials>,
     required: true,
+  },
+  size: {
+    type: String,
+    default: '24px',
   },
 })
 

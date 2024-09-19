@@ -44,18 +44,18 @@ const p = defineProps({
     <main>
       <BlogArticleHero :article="article" />
       <div
-        class="grid grid-cols-[minmax(300px,700px)] xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8 pt-8 padded-x justify-center"
+        class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8"
       >
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
-            class="background p-4 xl:p-0 rounded-md border border-color xl:border-none xl:sticky xl:top-24 xl:left-0"
+            class="background border-color rounded-md border p-4 xl:sticky xl:left-0 xl:top-24 xl:border-none xl:p-0"
             :toc="article.body.toc.links"
             :updated-at="article.updatedAt"
             :version="article.version"
             :expanded="expandToc"
           />
         </div>
-        <div class="xl:col-start-2 xl:padded-x">
+        <div class="xl:padded-x xl:col-start-2">
           <ContentRenderer :value="article">
             <div class="pb-12">
               <div
@@ -73,7 +73,7 @@ const p = defineProps({
                 :link="article._id.replaceAll(':', '/')"
                 :summary="article.description"
               />
-              <BlogArticleAuthorCard :author-id="article.authorIds[0]" />
+              <BlogArticleAuthorCard :author-ids="article.authorIds" />
             </div>
           </ContentRenderer>
         </div>

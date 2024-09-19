@@ -28,7 +28,7 @@
         </div>
         <BlogArticleAuthor
           :published-at="article.publishedAt"
-          :author-id="article.authorIds[0]"
+          :author-ids="article.authorIds"
         />
       </div>
       <div
