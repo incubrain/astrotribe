@@ -47,13 +47,14 @@ const SettingsAccountValidation = z.object({
 const currentUser = useCurrentUser()
 
 const userId = useCookie('userId')
+
 const {
   store: userProfile,
   loadMore,
   refresh,
 } = useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: userId.value },
+  filters: { id: {eq: userId.value} },
   initialFetch: true,
   limit: 1,
 })
@@ -63,6 +64,8 @@ const profileCopy = ref({})
 watch(userProfile, () => {
   profileCopy.value = { ...userProfile.items[0] }
 })
+
+console.log(userProfile, "PROFILE COPY");
 
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 
