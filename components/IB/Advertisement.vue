@@ -3,7 +3,7 @@ import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { useStorage } from '@vueuse/core'
 import advertisements from '~/assets/advertisements.json'
 
-const showAds = ref(true)
+const showAds = ref(false)
 
 interface Advertisement {
   id: number
@@ -105,38 +105,39 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <aside class="w-72 p-4">
+  <aside class="mx-auto min-h-72 w-72 space-y-4 p-4">
     <div
       v-for="ad in activeAds"
       :key="ad.id"
-      class="mb-6 overflow-hidden rounded-lg"
+      class="border-color overflow-hidden rounded-lg"
+      :class="!showAds ? '' : 'border'"
     >
       <a
         :href="showAds ? ad.link : undefined"
         target="_blank"
         rel="noopener noreferrer"
-        class="block h-full"
+        class="block h-full w-full"
         :class="{ invisible: !showAds }"
         @click="trackInteraction(ad.id)"
       >
-        <div class="h-40 w-full">
-          <img
+        <div class="max-h-72 w-full">
+          <NuxtImg
             v-if="showAds"
             :src="ad.imageUrl"
             :alt="ad.title"
-            class="h-full w-full object-cover"
+            class="w-full object-cover"
           />
         </div>
         <div class="p-4">
           <h3
             v-if="showAds"
-            class="text-lg mb-2 font-semibold text-gray-800"
+            class="text-lg font-semibold"
           >
             {{ ad.title }}
           </h3>
           <p
             v-if="showAds"
-            class="text-sm text-gray-600"
+            class="text-sm"
           >
             {{ ad.description }}
           </p>
