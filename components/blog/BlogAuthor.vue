@@ -1,6 +1,6 @@
 <script setup lang="ts">
-defineProps<{
-  authorId: number
+const props = defineProps<{
+  authorIds: number[]
 }>()
 
 const authors = [
@@ -23,6 +23,25 @@ const authors = [
   {
     id: 2,
     name: {
+      given: 'Ruchira',
+      surname: 'Huchgol',
+      full: 'Ruchira Huchgol',
+    },
+    avatar: 'images/team/ruchira-huchgol.jpg',
+    bio: {
+      short: 'AstronEra COO',
+      full: `
+      Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. 
+      She is also a n Analog Astronaut  and has been involved in  analog space missions.
+      `,
+    },
+    socials: {
+      linkedin: 'https://www.linkedin.com/in/ruchira-huchgol-bb114621a/',
+    },
+  },
+  {
+    id: 3,
+    name: {
       given: 'Srishti',
       surname: 'Bharadwaj',
       full: 'Srishti Bharadwaj',
@@ -41,13 +60,15 @@ const authors = [
   },
 ]
 
-const findAuthor = (id: number) => {
-  return authors.find((author) => author.id === id)
-}
+const findAuthors = computed(() => {
+  return (
+    props.authorIds?.map((id) => authors.find((author) => author.id === id)).filter(Boolean) || []
+  )
+})
 </script>
 
 <template>
   <div>
-    <slot :author="findAuthor(authorId)"></slot>
+    <slot :authors="findAuthors"></slot>
   </div>
 </template>

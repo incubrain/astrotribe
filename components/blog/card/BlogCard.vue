@@ -45,15 +45,20 @@ defineProps({
         <p class="text-primary">
           {{ useDateFormat(article.publishedAt, 'DD MMM YYYY').value }}
         </p>
-        <BlogAuthor :author-id="article.authorIds[0]">
-          <template #default="{ author }">
+        <BlogAuthor :author-ids="article.authorIds">
+          <template #default="{ authors }">
             <span
-              v-if="author"
+              v-if="authors"
               class="flex gap-2"
             >
               by
-              {{ author.name.given }}
-              {{ author.name.surname }}
+              <span
+                v-for="(author, i) in authors"
+                :key="`author-${i}`"
+              >
+                {{ author?.name.given }}
+                {{ author?.name.surname }}
+              </span>
             </span>
           </template>
         </BlogAuthor>
@@ -69,9 +74,7 @@ defineProps({
     <template #footer>
       <div class="flex w-full justify-end">
         <NuxtLink :to="article._path">
-          <PrimeButton outlined>
-            Read More
-          </PrimeButton>
+          <PrimeButton outlined> Read More </PrimeButton>
         </NuxtLink>
       </div>
     </template>

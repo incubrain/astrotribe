@@ -1,44 +1,53 @@
 <script setup lang="ts">
 defineProps<{
-  authorId: number
+  authorIds: number[]
 }>()
 </script>
 
 <template>
   <BlogAuthor
-    :author-id="authorId"
-    class="border-color foreground rounded-xl border p-4 xl:p-8"
+    :author-ids="authorIds"
+    class="flex gap-8"
   >
-    <template #default="{ author }">
+    <template #default="{ authors }">
       <div
-        v-if="author"
-        class="flex flex-row items-center gap-4 xl:gap-8"
+        v-if="authors"
+        class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-8"
       >
-        <IbImage
-          :img="{
-            src: author.avatar,
-            alt: `${author.name.full} is an author on the AstronEra Blog`,
-            width: '100px',
-            height: '100px',
-          }"
-          class="h-full rounded-full sm:max-w-[100px]"
-        />
-        <div class="w-full space-y-1 text-left">
-          <div class="flex items-center gap-2">
-            <h4 class="text-xl font-semibold">
-              About {{ author.name.full }}
-            </h4>
-            <PrimeTag class="text-xs uppercase text-primary-600">
-              follow
-            </PrimeTag>
-            <IbSocialBlock
-              v-if="author.socials"
-              :socials="author.socials"
+        <div
+          v-for="(author, i) in authors"
+          :key="`author-${i}`"
+          class="border-color foreground flex h-full flex-col items-center gap-4 rounded-xl border p-4 xl:p-8"
+        >
+          <div>
+            <IbImage
+              v-if="author"
+              :img="{
+                src: author.avatar,
+                alt: `${author.name.full} is an author on the AstronEra Blog`,
+                width: 100,
+                height: 100,
+              }"
+              class="h-full rounded-full sm:max-w-[100px]"
             />
           </div>
-          <p class="text-sm">
-            {{ author.bio.full }}
-          </p>
+          <div
+            v-if="author"
+            class="w-full space-y-1 text-left"
+          >
+            <h4 class="text-xl font-semibold"> About {{ author.name.full }} </h4>
+            <div class="flex items-center gap-2">
+              <IbSocialBlock
+                v-if="author.socials"
+                size="24px"
+                :socials="author.socials"
+              />
+              <PrimeTag class="text-sm uppercase text-primary-600"> follow me</PrimeTag>
+            </div>
+            <p class="text-sm">
+              {{ author.bio.full }}
+            </p>
+          </div>
         </div>
       </div>
     </template>
