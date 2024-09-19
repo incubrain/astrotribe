@@ -81,6 +81,9 @@ export default defineNuxtConfig({
         // Insert your Google Tag Manager Script here
         // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
         { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' },
+        {
+          src: 'https://unpkg.com/mermaid/dist/mermaid.min.js',
+        },
       ],
     },
   },

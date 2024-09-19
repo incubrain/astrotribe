@@ -1,13 +1,12 @@
 <template>
   <div class="relative h-full">
-    <h2>Mermaid Test</h2>
-    <pre
+    <code
       ref="el"
       class="text-white"
       :style="{ display: rendered ? 'block' : 'none' }"
     >
       <slot />
-    </pre>
+    </code>
   </div>
 </template>
 
@@ -30,10 +29,28 @@ async function render() {
       el.value.removeChild(child)
     }
   }
+
+  await nextTick()
   const { default: mermaid } = await import('mermaid')
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: {
+      useMaxWidth: false,
+      htmlLabels: true,
+      defaultRenderer: 'elk', // Use the elk renderer
+    },
+  })
+
   el.value.classList.add('mermaid')
+  try {
+    await mermaid.run({ nodes: [el.value] })
+  } catch (error) {
+    console.error('Mermaid rendering error:', error)
+  }
   rendered.value = true
-  await mermaid.run({ nodes: [el.value] })
 }
 
 onMounted(() => {
@@ -42,35 +59,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* .mermaid rect {
-  stroke: #6195ff !important;
-  fill: #fff !important;
-}
-
-.mermaid .current-doc.node .label {
-  color: #fff !important;
-}
-
-.mermaid line {
-  stroke: #6195ff !important;
-} */
-
-.mermaid .flowchart-link {
-  stroke: #fff !important;
-}
-
-.mermaid .messageText {
-  color: #fff !important;
-  fill: #fff !important;
-  stroke: #fff !important;
-}
-
-.mermaid marker {
-  fill: #fff !important;
-  color: #fff !important;
-}
-
-.mermaid line {
-  stroke: #fff !important;
+.mermaid {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -178,6 +178,9 @@ const CONTENT_OPTIONS: NuxtConfig['content'] = {
       dark: 'github-dark',
     },
   },
+  markdown: {
+    remarkPlugins: ['remark-mermaid'],
+  },
 }
 
 const PRIMEVUE_OPTIONS: NuxtConfig['primevue'] = {
