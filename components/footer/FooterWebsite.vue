@@ -66,7 +66,8 @@ const { socials, websiteLinks } = usePages()
           >
             <Icon
               :name="social.icon"
-              class="h-7 w-7 flex-shrink-0 dark:text-white"
+              class="flex-shrink-0 dark:text-white"
+              size="24px"
             />
           </NuxtLink>
         </div>

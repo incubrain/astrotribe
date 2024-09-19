@@ -29,7 +29,7 @@
           <div class="text-light relative z-50">
             <Icon
               :name="feature.icon"
-              class="h-[26px] w-[26px]"
+              size="28px"
             />
             <div class="pt-4">
               <h1 class="text-lg font-semibold tracking-wider lg:text-2xl">

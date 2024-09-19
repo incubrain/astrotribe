@@ -2,15 +2,16 @@
   <div>
     <div class="h-full">
       <div class="flex h-full gap-2 leading-4">
-        <div class="relative flex items-center justify-center h-full gap-1 group">
+        <div class="group relative flex h-full items-center justify-center gap-1">
           <Icon
             v-for="i in 5"
             :key="i"
             :name="isStarFilled(i, rating / 2)"
-            :class="`text-yellow-400 w-[${starSize}px] h-[${starSize}px]`"
+            class="text-yellow-400"
+            :size="`${starSize}px`"
           />
           <div
-            class="absolute p-2 mt-2 text-xs transition duration-200 ease-in-out transform -translate-x-1/2 rounded shadow-lg opacity-0 left-1/2 top-full group-hover:opacity-100 group-focus:opacity-100"
+            class="absolute left-1/2 top-full mt-2 -translate-x-1/2 transform rounded p-2 text-xs opacity-0 shadow-lg transition duration-200 ease-in-out group-hover:opacity-100 group-focus:opacity-100"
           >
             {{ rating.toPrecision(2) }}
           </div>

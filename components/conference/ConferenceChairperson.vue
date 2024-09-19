@@ -5,6 +5,7 @@
       :key="`conference-host-${i}`"
       :pt="{
         root: 'flex flex-col md:flex-row w-full h-full overflow-hidden relative',
+        body: ' background',
       }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >
@@ -26,13 +27,12 @@
       <template #content>
         <div class="flex flex-col justify-between gap-4">
           <div class="flex flex-col gap-4 text-sm">
-            <h3 class="text-2xl font-semibold">
-              {{ host.given_name }} {{ host.surname }}
-            </h3>
+            <h3 class="text-2xl font-semibold"> {{ host.given_name }} {{ host.surname }} </h3>
             <p class="flex items-center gap-2 font-semibold text-primary-500 dark:text-primary-600">
               <Icon
                 name="mdi:account"
-                class="h-4 w-4 flex-shrink-0"
+                class="flex-shrink-0"
+                size="24px"
               />
               {{ host.professional_title }}
             </p>

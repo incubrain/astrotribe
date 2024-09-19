@@ -21,8 +21,7 @@ const socialLogin = () => {
       <Icon
         class="flex items-center justify-center"
         :name="`mdi:${provider}`"
-        width="30px"
-        height="30px"
+        size="30px"
       />
     </span>
   </PrimeButton>

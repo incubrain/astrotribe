@@ -43,7 +43,8 @@ const sendMessage = () => {
       >
         <Icon
           :name="textSearchType === 'fts' ? 'mdi:card-text-outline' : 'mdi:format-list-numbered'"
-          class="absolute h-5 w-5"
+          class="absolute"
+          size="24px"
         />
       </PrimeButton>
       <PrimeTextarea
@@ -62,7 +63,8 @@ const sendMessage = () => {
       >
         <Icon
           name="mdi:send"
-          class="absolute h-5 w-5 text-white"
+          class="absolute text-white"
+          size="24px"
         />
       </PrimeButton>
     </div>

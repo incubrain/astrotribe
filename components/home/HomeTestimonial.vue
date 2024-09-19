@@ -37,12 +37,14 @@
             <p class="relative m-2 h-auto rounded-sm bg-primary-950 p-3 text-sm italic">
               <Icon
                 name="mdi:format-quote-open"
-                class="absolute -top-4 left-4 h-8 w-8 text-white"
+                class="absolute -top-4 left-4 text-white"
+                size="28px"
               />
               {{ item.quote }}
               <Icon
                 name="mdi:format-quote-close"
-                class="absolute -bottom-4 right-4 h-8 w-8 text-white"
+                class="absolute -bottom-4 right-4 text-white"
+                size="28px"
               />
             </p>
           </div>

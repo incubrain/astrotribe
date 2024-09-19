@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3 class="text-center pb-8">
-      Timeline
-    </h3>
+    <h3 class="pb-8 text-center"> Timeline </h3>
     <PrimeTimeline
       :value="events"
       align="alternate"
@@ -14,14 +12,14 @@
           :style="{ backgroundColor: slotProps.item.color }"
         >
           <Icon
-            class="h-8 w-8"
             :name="`mdi:${slotProps.item.icon}`"
+            size="32px"
           ></Icon>
         </span>
       </template>
       <template #content="slotProps">
-        <div class="border-color border p-4 rounded-lg background">
-          <h4 class="text-2xl m-0">
+        <div class="border-color background rounded-lg border p-4">
+          <h4 class="m-0 text-2xl">
             {{ slotProps.item.status }}
           </h4>
           <p class="text-lg font-bold">
@@ -127,8 +125,6 @@ const events = ref([
     color: '#FF9800',
     description: 'Develop and launch a native mobile application.',
   },
-
-  // Year 3
   {
     status: 'Premium Content Expansion',
     date: 'Q1 2026',

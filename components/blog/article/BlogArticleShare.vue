@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-start items-center w-full gap-2 py-12">
+  <div class="flex w-full items-center justify-start gap-2 py-12">
     <p>Share</p>
     <PrimeButton
       v-for="platform in socialPlatforms"
@@ -11,12 +11,11 @@
     >
       <Icon
         :name="platform.icon"
-        class="h-5 w-5 inline-block"
+        class="inline-block"
+        size="24px"
       />
     </PrimeButton>
-    <p class="px-2">
-      - or -
-    </p>
+    <p class="px-2"> - or - </p>
     <PrimeButton
       :to="`https://github.com/incubrain/incubrain/edit/main/${link}`"
       target="_blank"
@@ -24,7 +23,8 @@
     >
       <Icon
         name="mdi:github"
-        class="h-4 w-4 inline-block shrink-0"
+        class="inline-block shrink-0"
+        size="24px"
       />
       Suggest Edit
     </PrimeButton>

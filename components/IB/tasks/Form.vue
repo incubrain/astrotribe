@@ -89,7 +89,7 @@
             >
               <Icon
                 name="mdi:trash"
-                class="h-6 w-6"
+                size="24px"
               />
             </PrimeButton>
           </li>
@@ -101,7 +101,7 @@
         >
           <Icon
             name="mdi:plus"
-            class="h-5 w-5"
+            size="24px"
           />
           Add
         </PrimeButton>
@@ -264,7 +264,7 @@ interface ExtendedGoal extends Goal {
 const props = defineProps<{
   goal: ExtendedGoal
   employees: Employee[]
-  categories: { name: string, value: string }[]
+  categories: { name: string; value: string }[]
   milestones: Milestone[]
   isNew: boolean
 }>()

@@ -109,15 +109,14 @@ watch(bucket, (newBucket) => {
 
 <template>
   <div class="p-4">
-    <h2 class="mb-4 text-2xl font-bold">
-      File Uploads
-    </h2>
+    <h2 class="mb-4 text-2xl font-bold"> File Uploads </h2>
     <div class="mb-4 flex flex-wrap gap-4">
       <span class="flex flex-col gap-2">
         <label
           for="bucket"
           class="pl-2"
-        >Bucket</label>
+          >Bucket</label
+        >
         <PrimeSelect
           id="bucket"
           v-model="bucket"
@@ -130,7 +129,8 @@ watch(bucket, (newBucket) => {
         <label
           for="path"
           class="pl-2"
-        >Path</label>
+          >Path</label
+        >
         <PrimeSelect
           id="path"
           v-model="path"
@@ -141,7 +141,8 @@ watch(bucket, (newBucket) => {
         <label
           for="fileType"
           class="pl-2"
-        >File Type</label>
+          >File Type</label
+        >
         <PrimeSelect
           id="fileType"
           v-model="fileType"
@@ -172,7 +173,7 @@ watch(bucket, (newBucket) => {
             >
               <Icon
                 name="mdi:file-image"
-                class="text-2xl"
+                size="32px"
               />
             </PrimeButton>
             <PrimeButton
@@ -184,7 +185,7 @@ watch(bucket, (newBucket) => {
             >
               <Icon
                 name="mdi:cloud-upload"
-                class="text-2xl"
+                size="32px"
               />
             </PrimeButton>
             <PrimeButton
@@ -196,7 +197,7 @@ watch(bucket, (newBucket) => {
             >
               <Icon
                 name="mdi:delete"
-                class="text-2xl"
+                size="32px"
               />
             </PrimeButton>
           </div>
@@ -236,7 +237,8 @@ watch(bucket, (newBucket) => {
                 </div>
                 <span
                   class="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
-                >{{ file.name }}</span>
+                  >{{ file.name }}</span
+                >
                 <div>{{ formatSize(file.size) }}</div>
                 <PrimeBadge
                   value="Pending"
@@ -277,7 +279,8 @@ watch(bucket, (newBucket) => {
                 </div>
                 <span
                   class="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
-                >{{ file.name }}</span>
+                  >{{ file.name }}</span
+                >
                 <div>{{ formatSize(file.size) }}</div>
                 <PrimeBadge
                   value="Completed"
@@ -304,12 +307,10 @@ watch(bucket, (newBucket) => {
           >
             <Icon
               name="mdi:cloud-upload"
-              class="text-4xl"
+              size="48px"
             />
           </div>
-          <p class="mb-0 mt-6">
-            Drag and drop files here to upload.
-          </p>
+          <p class="mb-0 mt-6"> Drag and drop files here to upload. </p>
         </div>
       </template>
     </PrimeFileUpload>

@@ -39,7 +39,7 @@ const verifiedIcon = computed(() => {
           Visit Dashboard
           <Icon
             name="mdi:play"
-            class="h-5 w-5"
+            size="24px"
           />
         </PrimeButton>
       </NuxtLink>

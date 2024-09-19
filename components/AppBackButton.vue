@@ -1,16 +1,16 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex gap-2 p-2 background rounded-md justify-center items-center">
+  <div class="background flex items-center justify-center gap-2 rounded-md p-2">
     <NuxtLink to="/">
-      <PrimeButton label="Go back">
-        Go Home
-      </PrimeButton>
+      <PrimeButton label="Go back"> Go Home </PrimeButton>
     </NuxtLink>
     <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
       <Icon
         :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-        class="w-6 h-6 cursor-pointer"
+        class="cursor-pointer"
+                      size="24px"
+
         @click="toggle"
       />
     </AppThemeToggle> -->
