@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const { isLoading, error, initializePayment, createOrder, verifyPayment, fetchSubscription }
-  = usePayments('razorpay')
+const { isLoading, error, initializePayment, createOrder, verifyPayment, fetchSubscription } =
+  usePayments('razorpay')
 
 const result = ref(null as any)
 
@@ -53,7 +53,7 @@ definePageMeta({
       subtitle: 'Manage your subscription and payment options',
     }"
   >
-    <div class="flex gap-4">
+    <div class="flex gap-4 items-center">
       <PrimeButton
         :loading="isLoading"
         @click="handleCreateOrder"

@@ -12,15 +12,48 @@ import { useLogger } from './logger.ib'
 import { getOrCreateStore } from './main.ib.store'
 import { usePaginationStore, type PaginationType } from './pagination.ib.store'
 
-interface FilterOption {
-  [key: string]: string | number | boolean | null | FilterOption
+type FilterOperator =
+  | 'eq'
+  | 'neq'
+  | 'gt'
+  | 'gte'
+  | 'lt'
+  | 'lte'
+  | 'like'
+  | 'ilike'
+  | 'is'
+  | 'in'
+  | 'contains'
+  | 'containedBy'
+  | 'overlaps'
+  | 'textSearch'
+  | 'match'
+  | 'not'
+  | 'or'
+  | 'and'
+  | 'rangeGt'
+  | 'rangeGte'
+  | 'rangeLt'
+  | 'rangeLte'
+  | 'rangeAdjacent'
+
+type FilterOptionValue = string | number | boolean | null | any[] | Record<string, unknown>
+
+type FilterOption = {
+  [K in FilterOperator]?: K extends 'not'
+    ? FilterOption
+    : K extends 'or' | 'and'
+      ? string
+      : FilterOptionValue
 }
 
-interface SelectOptions {
-  columns?: string
-  filters?: Record<string, FilterOption>
+type Filters = Record<string, FilterOption>
+
+interface SelectOptions<T> {
+  columns?: keyof T | Array<keyof T> | string
+  filters?: Filters
   range?: { from: number; to: number }
-  order?: { column: string; ascending: boolean }
+  order?: { column: keyof T; ascending: boolean }
 }
 
 function applyFilter(query: any, column: string, filter: FilterOption): any {
@@ -172,15 +205,7 @@ export function useHttpHandler() {
     )
   }
 
-  async function select<T>(
-    tableName: string,
-    options: {
-      columns?: string
-      filters?: Record<string, any>
-      range?: { from: number; to: number }
-      order?: { column: string; ascending: boolean }
-    } = {},
-  ): Promise<T[]> {
+  async function select<T>(tableName: string, options: SelectOptions<T> = {}): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')
 
     if (options.filters) {
