@@ -128,21 +128,21 @@ const adminLinks = ref([
   //   icon: 'mdi:chart-bar',
   //   children: []
   // },
-  // {
-  //   id: 11,
-  //   label: 'Systems',
-  //   slug: '/astrotribe/admin/business-systems',
-  //   icon: 'mdi:chat',
-  //   children: [
-  //     {
-  //       id: 71,
-  //       label: 'Users',
-  //       slug: '/astrotribe/admin/business-systems/users',
-  //       icon: 'mdi:account',
-  //       children: []
-  //     },
-  //   ]
-  // },
+  {
+    id: 11,
+    label: 'Systems',
+    slug: '/astrotribe/admin/business-systems',
+    icon: 'mdi:chat',
+    children: [
+      {
+        id: 71,
+        label: 'Users',
+        slug: '/astrotribe/admin/business-systems/users',
+        icon: 'mdi:account',
+        children: [],
+      },
+    ],
+  },
 ])
 
 const socials = ref([
