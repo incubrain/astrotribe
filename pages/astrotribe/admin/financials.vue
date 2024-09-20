@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
   AdminFinancialTotals,
-  LazyAdminFinancialOperations,
-  LazyAdminFinancialEmployees,
-  LazyAdminFinancialStorage,
-  LazyAdminFinancialAnalytics,
-  LazyAdminFinancialOpenAI,
-  LazyAdminFinancialPayments,
-  LazyAdminFinancialLogging,
-  LazyAdminFinancialDevOps,
-  // LazyAdminFinancialData
+  AdminFinancialOperations,
+  AdminFinancialEmployees,
+  AdminFinancialStorage,
+  AdminFinancialAnalytics,
+  AdminFinancialDevOps,
+  AdminFinancialOpenAI,
+  AdminFinancialPayments,
+  AdminFinancialLogging,
+  // AdminFinancialData
 } from '#components'
 
 definePageMeta({
@@ -32,55 +32,55 @@ const financialTabs = [
     title: 'Operations',
     slotName: 'operations',
     value: '2',
-    component: LazyAdminFinancialOperations,
+    component: AdminFinancialOperations,
   },
   {
     title: 'Employees',
     slotName: 'employees',
     value: '4',
-    component: LazyAdminFinancialEmployees,
+    component: AdminFinancialEmployees,
   },
   {
     title: 'Storage',
     slotName: 'storage',
     value: '5',
-    component: LazyAdminFinancialStorage,
+    component: AdminFinancialStorage,
   },
   {
     title: 'Analytics',
     slotName: 'analytics',
     value: '6',
-    component: LazyAdminFinancialAnalytics,
+    component: AdminFinancialAnalytics,
   },
   {
     title: 'DevOps',
     slotName: 'devops',
     value: '7',
-    component: LazyAdminFinancialDevOps,
+    component: AdminFinancialDevOps,
   },
   {
     title: 'OpenAI',
     slotName: 'openai',
     value: '8',
-    component: LazyAdminFinancialOpenAI,
+    component: AdminFinancialOpenAI,
   },
   {
     title: 'Payments',
     slotName: 'payments',
     value: '9',
-    component: LazyAdminFinancialPayments,
+    component: AdminFinancialPayments,
   },
   {
     title: 'Logging',
     slotName: 'logging',
     value: '10',
-    component: LazyAdminFinancialLogging,
+    component: AdminFinancialLogging,
   },
   // {
   //   title: 'Data',
   //   slotName: 'data',
   //   value: '11',
-  //   component: LazyAdminFinancialData
+  //   component: AdminFinancialData,
   // }
 ]
 
@@ -113,9 +113,7 @@ const visibleRight = ref(false)
       >
         <div class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8">
           <div>
-            <PrimeButton @click="visibleRight = true">
-              Options
-            </PrimeButton>
+            <PrimeButton @click="visibleRight = true"> Options </PrimeButton>
           </div>
 
           <PrimeDrawer
@@ -125,9 +123,7 @@ const visibleRight = ref(false)
           >
             <div class="flex h-full gap-4">
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">
-                  Start
-                </p>
+                <p class="text-sm font-semibold"> Start </p>
                 <PrimeInputNumber
                   v-model="range[0]"
                   show-buttons
@@ -139,9 +135,7 @@ const visibleRight = ref(false)
                 />
               </div>
               <div class="flex flex-col items-center gap-2">
-                <p class="text-sm font-semibold">
-                  End
-                </p>
+                <p class="text-sm font-semibold"> End </p>
                 <PrimeInputNumber
                   v-model="range[1]"
                   show-buttons
@@ -154,7 +148,10 @@ const visibleRight = ref(false)
               </div>
             </div>
           </PrimeDrawer>
-          <component :is="tab.component" />
+          <component
+            :is="tab.component"
+            lazy
+          />
         </div>
       </template>
     </IbTabView>

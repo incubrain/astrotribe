@@ -1,7 +1,9 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 
+import path from 'path'
 import { maxHeaderSize } from 'http'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import generateRoutes from './scripts/generate-lazy-routes'
 import { MODULE_OPTIONS, MODULES, DEV_MODULE_OPTIONS } from './modules.config'
 
 const og = {
@@ -15,18 +17,66 @@ const og = {
 export default defineNuxtConfig({
   // UNCOMMENT FOR DEBUGGING
 
-  // webpack: {
-  //   plugins: [new BundleAnalyzerPlugin()],
-  // },
+  webpack: {
+    terser: {
+      terserOptions: {
+        compress: {
+          drop_console: true,
+        },
+      },
+    },
+  },
   // debug: false,
   // sourcemap: {
   //   server: false,
   //   client: false,
   // },
-  // build: {
-  //   analyze: false,
-  // },
-
+  build: {
+    transpile: ['primevue'],
+    splitChunks: {
+      layouts: true,
+      pages: true,
+      commons: true,
+      components: true,
+      composables: true,
+      plugins: true,
+      financials: true,
+      server: true,
+    },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        automaticNameDelimiter: '.',
+        name: undefined,
+        cacheGroups: {
+          components: {
+            test: /\/(components|composables)\//,
+            name: 'components',
+            chunks: 'all',
+            enforce: true,
+          },
+          financials: {
+            test: /\/financials\//,
+            name: 'financials',
+            chunks: 'all',
+            enforce: true,
+          },
+          server: {
+            test: /\/server\//,
+            name: 'server',
+            chunks: 'all',
+            enforce: true,
+          },
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'all',
+            priority: -10,
+          },
+        },
+      },
+    },
+  },
   experimental: {
     // https://nuxt.com/docs/guide/going-further/experimental-features
     // cookieStore: true,
@@ -41,15 +91,40 @@ export default defineNuxtConfig({
     '/astrotribe/**': { ssr: false },
   },
 
+  hooks: {
+    'pages:extend'(pages) {
+      const generatedRoutes = generateRoutes(path.join(__dirname, 'pages'))
+      pages.push(...generatedRoutes)
+    },
+  },
+
+  pages: {
+    index: {
+      lazy: false,
+    },
+  },
+
   nitro: {
     preset: 'node-server',
     experimental: {
       websocket: true,
+      watcher: 'parcel',
+    },
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
     },
     storage: {
       session: {
         driver: 'memory',
       },
+    },
+  },
+
+  vite: {
+    optimizeDeps: {
+      exclude: ['fsevents'],
     },
   },
 
