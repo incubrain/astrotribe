@@ -34,20 +34,3 @@
    - **Data Quality Improvements:** Focus on sourcing high-quality data, improving data processing,
      and cleaning mechanisms. Implement robust labeling and scoring systems for better data accuracy
      and relevance.
-
-
-Add mermaid for simple charts and diagrams
-```
-graph TD;
-    A[User posts on AstronEra] --> B[Post received by AstronEra server]
-    B --> C[Post processed]
-    C --> D[Post pushed to Instagram]
-    C --> E[Post pushed to Twitter]
-    C --> F[Post pushed to LinkedIn]
-
-    subgraph Social Media Platforms
-        D
-        E
-        F
-    end
-```
