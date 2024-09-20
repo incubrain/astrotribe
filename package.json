@@ -39,6 +39,7 @@
     "@nuxtjs/seo": "^2.0.0-rc.21",
     "@nuxtjs/supabase": "^1.4.0",
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "@parcel/watcher": "^2.4.1",
     "@pinia/nuxt": "^0.5.1",
     "@primevue/nuxt-module": "^4.0.6",
     "@tailwindcss/typography": "^0.5.12",
