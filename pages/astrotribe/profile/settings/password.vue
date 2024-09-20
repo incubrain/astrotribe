@@ -35,7 +35,7 @@ const {
   refresh,
 } = await useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: userId.value },
+  filters: { id: {eq: userId.value} },
   initialFetch: true,
   limit: 1,
 })

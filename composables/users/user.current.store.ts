@@ -101,10 +101,9 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       return
     }
 
-    const response = await fetch(`/api/users/update/${userId.value}`, {
-      method: 'POST',
-      body: data,
-    })
+    const response = await $fetch(`/api/users/update`, { method: 'POST'})
+
+    return;
 
     const validData = errors.server({
       response,
