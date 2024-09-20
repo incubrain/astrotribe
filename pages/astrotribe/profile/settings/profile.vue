@@ -65,8 +65,6 @@ watch(userProfile, () => {
   profileCopy.value = { ...userProfile.items[0] }
 })
 
-console.log(userProfile, "PROFILE COPY");
-
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 
 const handleFileUpload = async (event: Event) => {
