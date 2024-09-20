@@ -54,7 +54,7 @@ const {
   refresh,
 } = useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: {eq: userId.value} },
+  filters: { id: { eq: userId.value } },
   initialFetch: true,
   limit: 1,
 })
@@ -150,6 +150,12 @@ definePageMeta({
             @click="currentUser.updateProfile(profileCopy)"
           >
             Save changes
+          </PrimeButton>
+          <PrimeButton
+            class="text-white"
+            @click="currentUser.testUpdateProfile()"
+          >
+            Test changes
           </PrimeButton>
         </div>
       </div>

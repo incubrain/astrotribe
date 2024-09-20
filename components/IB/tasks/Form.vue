@@ -118,7 +118,7 @@
           />
           Progress
         </label>
-        <ProgressBar
+        <PrimeProgressBar
           :value="progress"
           class="h-2"
         />

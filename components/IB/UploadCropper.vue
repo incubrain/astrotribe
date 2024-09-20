@@ -20,7 +20,8 @@ const props = defineProps({
   },
   bucket: {
     type: String,
-    required: true,
+    required: false,
+    default: 'profile',
   },
   path: {
     type: String,
@@ -131,7 +132,6 @@ async function uploadImage(blob: Blob) {
   try {
     const result = await uploadFile(new File([blob], 'image.webp', { type: 'image/webp' }), {
       bucket: props.bucket,
-      path: props.path,
       fileType: 'image',
       userId: userId.value,
       serverSideOptimize: true,
@@ -250,7 +250,7 @@ function onChange({ coordinates, image, canvas }: CropperResult) {
 
 // original file
 type CropperConfigDimensions = {
-  [key in CropperConfigTypes]: { minWidth: number, minHeight: number }
+  [key in CropperConfigTypes]: { minWidth: number; minHeight: number }
 }
 
 function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes): Promise<boolean> {
@@ -333,9 +333,7 @@ const setError = (error: string) => {
         />
       </template>
       <template #modal:header>
-        <h2 class="text-xl font-semibold">
-          Crop your image
-        </h2>
+        <h2 class="text-xl font-semibold"> Crop your image </h2>
       </template>
       <template #modal:default>
         <Cropper
@@ -355,7 +353,7 @@ const setError = (error: string) => {
           class="text-center"
         >
           <p>Uploading: {{ uploadProgress }}%</p>
-          <ProgressBar :value="uploadProgress" />
+          <PrimeProgressBar :value="uploadProgress" />
         </div>
       </template>
       <template #modal:footer="{ toggleModalOpen }">
