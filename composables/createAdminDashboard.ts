@@ -3,9 +3,12 @@ import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import type { DataTableFilterMeta } from 'primevue/datatable'
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
+import { useStorage } from '@vueuse/core'
 import type { createCRUDComposable } from './ib/crud-factory.ib'
+import { Icon } from '#components'
 
 export interface AdminColumn<T> {
   field: keyof T
@@ -16,6 +19,7 @@ export interface AdminColumn<T> {
   bodyComponent?: (item: T) => any
   editComponent?: (item: T, field: keyof T) => any
   insertComponent?: () => any
+  width?: string
 }
 
 export function createAdminDashboard<T extends { id: string | number }>(
@@ -43,11 +47,32 @@ export function createAdminDashboard<T extends { id: string | number }>(
       const showInsertDialog = ref(false)
       const newEntity = ref({} as Omit<T, 'id'>)
 
+      const orderedColumns = ref<(keyof T)[]>(columns.map((col) => col.field))
       const handleRowEditSave = async (event: { data: T; newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
         } catch (error) {
           // Handle error (e.g., show toast message)
+        }
+      }
+
+      const onColumnReorder = (event: { dragIndex: number; dropIndex: number }) => {
+        const newOrder = [...orderedColumns.value]
+        const [reorderedItem] = newOrder.splice(event.dragIndex, 1)
+        newOrder.splice(event.dropIndex, 0, reorderedItem)
+        orderedColumns.value = newOrder
+      }
+
+      const onCellEditComplete = async (event) => {
+        const { data, newValue, field, oldValue } = event
+        // 4. Only trigger the update function if the value has changed
+        if (newValue !== oldValue) {
+          console.log('updating', newValue, oldValue)
+          try {
+            await updateEntity(data.id, { [field]: newValue })
+          } catch (error) {
+            // Handle error (e.g., show toast message)
+          }
         }
       }
 
@@ -88,9 +113,12 @@ export function createAdminDashboard<T extends { id: string | number }>(
         handleRowEditSave,
         handleDeleteEntity,
         handleInsertEntity,
+        onCellEditComplete,
+        onColumnReorder,
         filters,
         showInsertDialog,
         newEntity,
+        orderedColumns,
       }
     },
     render() {
@@ -98,22 +126,25 @@ export function createAdminDashboard<T extends { id: string | number }>(
         h('h2', { class: 'text-2xl font-bold mb-4' }, this.title),
         h(Button, {
           label: `Add New ${entityName}`,
-          icon: 'pi pi-plus',
-          class: 'mb-4',
+          class: 'p-button-success mb-4',
           onClick: () => (this.showInsertDialog = true),
         }),
         h(
           DataTable,
           {
             value: this.entities,
-            dataKey: 'id',
             paginator: true,
-            rows: 10,
+            rows: 100,
             filters: this.filters,
-            editMode: 'row',
-            onRowEditSave: this.handleRowEditSave,
+            editMode: 'cell',
+            onCellEditComplete: this.onCellEditComplete,
             loading: this.isLoading,
             responsiveLayout: 'scroll',
+            resizableColumns: true,
+            columnResizeMode: 'expand',
+            showGridlines: true,
+            reorderableColumns: true,
+            onColumnReorder: this.onColumnReorder,
           },
           {
             header: () =>
@@ -127,16 +158,21 @@ export function createAdminDashboard<T extends { id: string | number }>(
                 }),
               ]),
             default: () =>
-              columns
-                .map((col) =>
-                  h(
+              this.orderedColumns
+                .map((field, index) => {
+                  const col = columns.find((c) => c.field === field)
+                  if (!col) return null
+                  return h(
                     Column,
                     {
+                      key: col.field,
                       field: col.field,
                       header: col.header,
                       sortable: col.sortable ?? true,
                       filter: col.filter ?? true,
                       filterMatchMode: col.filterMatchMode ?? 'contains',
+                      class: 'whitespace-nowrap overflow-hidden',
+                      style: { maxWidth: col.width || '200px' },
                     },
                     {
                       body: (slotProps) =>
@@ -151,27 +187,34 @@ export function createAdminDashboard<T extends { id: string | number }>(
                               'onUpdate:modelValue': (value) => (slotProps.data[col.field] = value),
                             }),
                     },
-                  ),
-                )
+                  )
+                })
+                .filter(Boolean)
                 .concat([
-                  h(Column, { rowEditor: true, style: { width: '10%', minWidth: '8rem' } }),
+                  h(Column, {
+                    key: 'row-editor',
+                    rowEditor: true,
+                    style: { width: '10%', minWidth: '8rem' },
+                  }),
                   h(
                     Column,
                     {
+                      key: 'actions',
                       header: 'Actions',
                       style: { width: '10%', minWidth: '8rem' },
+                      class: 'whitespace-nowrap',
                     },
                     {
                       body: (slotProps) => [
                         h(Button, {
-                          icon: 'pi pi-trash',
-                          class: 'p-button-rounded p-button-danger p-button-text',
+                          label: 'delete',
+                          severity: 'danger',
+                          size: 'small',
                           onClick: () => this.handleDeleteEntity(slotProps.data),
                         }),
                         ...Object.entries(this.customActions).map(([label, action]) =>
                           h(Button, {
                             label,
-                            class: 'p-button-rounded p-button-text',
                             onClick: () => action(slotProps.data),
                           }),
                         ),
@@ -191,7 +234,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           },
           {
             default: () => [
-              ...columns
+              ...this.orderedColumns
                 .filter((col) => col.field !== 'id')
                 .map((col) =>
                   h('div', { class: 'field' }, [
@@ -208,7 +251,6 @@ export function createAdminDashboard<T extends { id: string | number }>(
                 ),
               h(Button, {
                 label: `Add ${entityName}`,
-                icon: 'pi pi-check',
                 onClick: this.handleInsertEntity,
               }),
             ],

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Select from 'primevue/select'
+import DatePicker from 'primevue/datepicker'
 import { z } from 'zod'
 import { createCRUDComposable, type CRUDOptions } from '~/composables/ib/crud-factory.ib'
 import { createAdminDashboard } from '~/composables/createAdminDashboard'
@@ -48,6 +50,30 @@ const userProfileSchema = z.object({
 // Infer TypeScript type from Zod schema
 type UserProfile = z.infer<typeof userProfileSchema>
 
+const createDateEditor = () => {
+  return (slotProps: any) =>
+    h(DatePicker, {
+      modelValue: slotProps.data[slotProps.field],
+      'onUpdate:modelValue': (value: any) => {
+        slotProps.data[slotProps.field] = value
+      },
+      editorSaveCallback: slotProps.editorSaveCallback,
+    })
+}
+
+const createSelectEditor = (options: any[], placeholder: string) => {
+  return (slotProps: any) =>
+    h(Select, {
+      modelValue: slotProps.data[slotProps.field],
+      'onUpdate:modelValue': (value: any) => {
+        slotProps.data[slotProps.field] = value
+      },
+      options,
+      placeholder,
+      editorSaveCallback: slotProps.editorSaveCallback,
+    })
+}
+
 const userProfileOptions: CRUDOptions<UserProfile> = {
   orderBy: { column: 'created_at' as keyof UserProfile, ascending: false },
   customSelectLogic: (data: UserProfile[]) => data.filter((user) => user.role !== 'super_admin'),
@@ -76,12 +102,7 @@ const userColumns = [
     field: 'dob',
     header: 'Date of Birth',
     sortable: true,
-    editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(PrimeDatePicker, {
-        modelValue: item[field] as Date,
-        'onUpdate:modelValue': (value: Date) => (item[field] = value),
-        dateFormat: 'yy-mm-dd',
-      }),
+    editComponent: createDateEditor(),
   },
   { field: 'gender_id', header: 'Gender ID', sortable: true },
   { field: 'created_at', header: 'Created At', sortable: true },
@@ -95,25 +116,13 @@ const userColumns = [
     field: 'plan',
     header: 'Plan',
     sortable: true,
-    editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(PrimeSelect, {
-        modelValue: item[field],
-        'onUpdate:modelValue': (value: typeof app_plan_enum._type | null) => (item[field] = value),
-        options: app_plan_enum.options,
-        placeholder: 'Select a Plan',
-      }),
+    editComponent: createSelectEditor(app_plan_enum.options, 'Select a Plan'),
   },
   {
     field: 'role',
     header: 'Role',
     sortable: true,
-    editComponent: (item: UserProfile, field: keyof UserProfile) =>
-      h(PrimeSelect, {
-        modelValue: item[field],
-        'onUpdate:modelValue': (value: typeof app_role_enum._type) => (item[field] = value),
-        options: app_role_enum.options,
-        placeholder: 'Select a Role',
-      }),
+    editComponent: createSelectEditor(app_role_enum.options, 'Select a Role'),
   },
 ]
 

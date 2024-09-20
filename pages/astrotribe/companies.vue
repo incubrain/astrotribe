@@ -11,8 +11,6 @@ const { store, loadMore } = await useSelectData<Companies>('companies', {
 
 const { items: companies } = storeToRefs(store)
 
-console.log('companies', companies)
-
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
 
@@ -32,6 +30,7 @@ definePageMeta({ name: 'Companies', layout: 'app' })
           />
           <CompanyCardSkeleton v-show="isLoading" />
         </div>
+        <IbAdvertisement />
       </div>
     </IbInfiniteScroll>
   </div>
