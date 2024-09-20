@@ -4,7 +4,6 @@ type DBTable = keyof Database['public']['Tables'] & keyof Database['public']['Vi
 type DBColumns<T extends DBTable> = keyof Tables<T>
 type TableSpecificColumns<T extends DBTable> = Partial<DBColumns<T>>
 
-export { Database, Tables, DBTable }
 
 // full list of filters here: https://postgrest.org/en/v12/references/api/tables_views.html#operators
 
@@ -98,3 +97,5 @@ export interface DeleteInput<T, K extends DBTable> extends BaseOperationInput<T,
   data: T | T[]
   filterBy: FilterBy<K>
 }
+
+export { Database, Tables, DBTable }
