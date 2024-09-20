@@ -54,7 +54,7 @@
     "chart.js": "^4.4.3",
     "eslint": "^9.9.1",
     "jwt-decode": "^4.0.0",
-    "nuxt": "^3.13.1",
+    "nuxt": "^3.13.2",
     "nuxt-security": "^2.0.0-rc.9",
     "nuxt-tiptap-editor": "^2.0.0",
     "openai": "^4.38.2",

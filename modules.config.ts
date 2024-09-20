@@ -3,7 +3,7 @@ import type { ModuleOptions, NuxtConfig } from '@nuxt/schema'
 
 export const MODULES: NuxtConfig['modules'] = [
   // '@nuxtjs/partytown',
-  '@nuxt/eslint',
+  // '@nuxt/eslint',
   '@nuxt/devtools',
   '@vueuse/nuxt',
   '@nuxt/image',
@@ -254,7 +254,7 @@ export const MODULE_OPTIONS: { [key: string]: Partial<ModuleOptions> } = {
   seo: SEO_OPTIONS,
   ogImage: OG_IMAGE_OPTIONS,
   content: CONTENT_OPTIONS,
-  eslint: ESLINT_OPTIONS,
+  // eslint: ESLINT_OPTIONS,
   image: IMAGE_OPTIONS,
   colorMode: COLOR_MODE_OPTIONS,
   supabase: SUPABASE_OPTIONS,
