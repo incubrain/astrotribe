@@ -45,7 +45,7 @@ const settingsRoutes = computed(() => [
           :model="settingsRoutes"
           :pt="{
             root: 'border-none !bg-transparent relative md:w-64',
-            list: 'md:sticky md:top-8 flex md:flex-col justify-left !w-full items-center md:justify-end md:items-end overflow-scroll',
+            list: 'md:sticky md:top-8 flex md:flex-col justify-left !w-full items-center md:justify-end md:items-end overflow-auto',
             item: 'w-full',
           }"
           :pt-options="{ mergeSections: true, mergeProps: true }"
