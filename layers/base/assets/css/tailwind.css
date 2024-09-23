@@ -1,0 +1,165 @@
+@layer tailwind-base, primeui, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+  :root {
+    --mobi-bottom-nav-height: 50px;
+    --nav-height-sm: 50px;
+    --nav-height-lg: 60px;
+    --max-width-sm: 840px;
+    --max-width-md: 1040px;
+    --max-width-lg: 1140px;
+
+    /* imported from old theme */
+
+    /* added */
+
+    --p-primary-50: #e6f1fa;
+    --p-primary-100: #cce3f5;
+    --p-primary-200: #99c7eb;
+    --p-primary-300: #66aae0;
+    --p-primary-400: #338ed6;
+    --p-primary-500: #085eaa; /* Your provided color */
+    --p-primary-600: #074b88;
+    --p-primary-700: #053966;
+    --p-primary-800: #022e55;
+    --p-primary-900: #01223f;
+    --p-primary-950: #001932;
+    --p-primary-color-50: var(--p-primary-50);
+    --p-primary-color-100: var(--p-primary-100);
+    --p-primary-color-200: var(--p-primary-200);
+    --p-primary-color-300: var(--p-primary-300);
+    --p-primary-color-400: var(--p-primary-400);
+    --p-primary-color-500: var(--p-primary-500);
+    --p-primary-color-600: var(--p-primary-600);
+    --p-primary-color-700: var(--p-primary-700);
+    --p-primary-color-800: var(--p-primary-800);
+    --p-primary-color-900: var(--p-primary-900);
+    --p-primary-color-950: var(--p-primary-950);
+
+    --p-surface-0: #f6f6f6;
+    --p-surface-50: #dedede;
+    --p-surface-100: #bebebe;
+    --p-surface-200: #b8b8b8;
+    --p-surface-300: #a2a2a2;
+    --p-surface-400: #1c1c1f;
+    --p-surface-500: #1a1a1d;
+    --p-surface-600: #18181b;
+    --p-surface-700: #161618;
+    --p-surface-800: #18181b;
+    --p-surface-900: #0e0e11;
+    --p-surface-950: #09090b;
+    --p-content-border-radius: 8px;
+
+    --p-primary-color: var(--p-primary-color-500);
+    --p-primary-contrast-color: var(--p-surface-900);
+    --p-primary-hover-color: var(--p-primary-color-300);
+    --p-primary-active-color: var(--p-primary-color-200);
+    --p-content-border-color: var(--p-surface-700);
+    --p-content-hover-background: var(--p-surface-800);
+    --p-content-hover-color: var(--p-surface-0);
+    --p-highlight-background: color-mix(in srgb, var(--p-primary-color-950), transparent 84%);
+    --p-highlight-color: rgba(31, 48, 208, 0.87);
+    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-color-950), transparent 76%);
+    --p-highlight-focus-color: rgba(136, 39, 39, 0.87);
+    --p-text-color: var(--p-surface-50);
+    --p-text-hover-color: var(--p-surface-0);
+    --p-text-muted-color: var(--p-surface-400);
+    --p-text-hover-muted-color: var(--p-surface-300);
+
+    --p-surface-section: #18181b;
+    --p-surface-card: #18181b;
+    --p-surface-overlay: #18181b;
+    --p-surface-border: #27272a;
+    --p-surface-hover: rgba(80, 204, 22, 0.03);
+    --p-primary-color-text: #e2e2e2;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    text-wrap: balance;
+  }
+
+  a {
+    color: var(--p-primary-color-text);
+  }
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+
+  .wrapper {
+    @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)];
+  }
+  .container {
+    @apply mx-auto flex max-w-[1240px] flex-col px-[20px] md:px-[80px] lg:px-[160px];
+  }
+  .text-light {
+    @apply text-zinc-100 dark:text-zinc-300;
+  }
+  .padded-x {
+    @apply px-4 lg:px-8;
+  }
+  .border-color {
+    @apply border-zinc-200 dark:border-zinc-800;
+  }
+  .border-inverted {
+    @apply border-zinc-800 dark:border-zinc-300;
+  }
+  .background {
+    @apply bg-[var(--p-surface-700)];
+  }
+  .foreground {
+    @apply bg-[var(--p-surface-950)] text-zinc-800 dark:text-zinc-300;
+  }
+
+  .highlight {
+    @apply bg-[var(--p-primary-color-800)] text-zinc-300;
+  }
+
+  .link-active {
+    @apply text-[var(--p-primary-color-500)] underline underline-offset-4;
+  }
+
+  .text-highlight {
+    @apply text-[var(--p-primary-color-500)];
+  }
+
+  .glass-primary {
+    @apply relative w-full overflow-hidden rounded-md border border-primary-500/30 bg-primary-900/20 p-6 text-left leading-7 text-primary-100 shadow-xl ring-2 ring-inset ring-white/10 backdrop-blur-md backdrop-filter transition-all duration-300 hover:border-primary-400/40 hover:bg-primary-800/30 hover:shadow-2xl;
+  }
+  .glass-primary::before {
+    @apply absolute inset-0 z-[-1] bg-gradient-to-br from-primary-500/10 to-primary-700/10 opacity-50 content-[''];
+  }
+  .glass-primary:hover {
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+  }
+  .glass-primary::after {
+    @apply pointer-events-none absolute inset-0 opacity-30 content-[''];
+    background: radial-gradient(
+      circle 80px at var(--x) var(--y),
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: opacity 0.2s;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  html {
+    color: var(--p-primary-color-text);
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

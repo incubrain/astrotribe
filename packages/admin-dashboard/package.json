@@ -1,0 +1,21 @@
+{
+  "name": "admin-dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxi build",
+    "gen:financials": "tsx ./financials/totals.ts",
+    "dev": "nuxi dev",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview",
+    "postinstall": "nuxi prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.13.0",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/multimonth": "^6.1.15",
+    "@fullcalendar/vue3": "^6.1.15"
+  }
+}

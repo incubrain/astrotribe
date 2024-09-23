@@ -1,0 +1,79 @@
+services:
+  website:
+    build:
+      context: ./packages/website
+      dockerfile: Dockerfile
+    image: astrotribe-website:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - auth-service
+
+  auth-service:
+    build:
+      context: ./packages/auth-service
+      dockerfile: Dockerfile
+    image: astrotribe-auth:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+ 
+
+  main-app:
+    build:
+      context: ./packages/main-app
+      dockerfile: Dockerfile
+    image: astrotribe-app:latest
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=development
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - auth-service
+
+  admin-dashboard:
+    build:
+      context: ./packages/admin-dashboard
+      dockerfile: Dockerfile
+    image: astrotribe-admin:latest
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=development
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - auth-service
+
+  monitoring-dashboard:
+    build:
+      context: ./packages/monitoring-dashboard
+      dockerfile: Dockerfile
+    image: astrotribe-monitoring:latest
+    ports:
+      - "3004:3000"
+    environment:
+      - NODE_ENV=development
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - auth-service
+
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    environment:
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=adminpassword
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+
+volumes:
+  influxdb-data:
