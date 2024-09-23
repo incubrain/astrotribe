@@ -83,7 +83,7 @@ const isPasswordUpdatable = computed(() =>
           <FormPassword
             :id="item.id"
             v-model="item.value.value"
-            :feedback="false"
+            :feedback="item.id !== 'confirm_new_password'"
             :required="true"
           />
         </UserSettingsItem>
