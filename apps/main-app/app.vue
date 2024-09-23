@@ -29,7 +29,10 @@ supabase.auth.onAuthStateChange((event, session) => {
       await currentUser.loadSession()
     } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER')
+<<<<<<< HEAD:apps/main-app/app.vue
       await currentUser.loadSession()
+=======
+>>>>>>> fa4d6b2 (fix: API Endpoint for User Profile Updation):app.vue
     } else if (event === 'USER_UPDATED') {
       console.log('USER UPDATED')
     }
