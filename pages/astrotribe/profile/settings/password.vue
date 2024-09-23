@@ -1,13 +1,6 @@
 <script setup lang="ts">
+
 const schema = [
-  {
-    id: 'password',
-    label: 'Current Password',
-    tip: 'Your first name',
-    placeholder: 'Your current password',
-    value: ref(''),
-    type: 'password',
-  },
   {
     id: 'new_password',
     label: 'New Password',
@@ -27,6 +20,8 @@ const schema = [
 ]
 
 const currentUser = useCurrentUser()
+const auth = useAuth()
+const toast = useNotification()
 
 const userId = useCookie('userId')
 const {
@@ -35,10 +30,24 @@ const {
   refresh,
 } = await useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: {eq: userId.value} },
+  filters: { id: { eq: userId.value } },
   initialFetch: true,
   limit: 1,
 })
+
+function handlePasswordUpdate() {
+  const { new_password, confirm_new_password } = schema.reduce((acc, field) => ({ ...acc, [field.id]: field.value.value }), {
+    new_password: '',
+    confirm_new_password: '',
+  })
+
+  if (new_password !== confirm_new_password) {
+    toast.error({ summary: 'Passwords Don\'t Match', message: 'The two passwords entered don\'t match' })
+    return
+  }
+
+  auth.password.update(new_password)
+}
 
 definePageMeta({
   layoutTransition: false,
@@ -75,12 +84,13 @@ const isPasswordUpdatable = computed(() =>
             :id="item.id"
             v-model="item.value.value"
             :feedback="false"
+            :required="true"
           />
         </UserSettingsItem>
         <div class="flex justify-start pt-12">
           <PrimeButton
             label="Update Password"
-            @click="updatePassword"
+            @click="handlePasswordUpdate"
           />
         </div>
       </div>
