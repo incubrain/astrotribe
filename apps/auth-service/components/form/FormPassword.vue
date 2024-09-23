@@ -74,9 +74,9 @@ const onPasswordChange = (value: string) => {
     :medium-label="mediumLabel"
     :strong-label="strongLabel"
     :placeholder="placeholder"
-    :prompt-label="promptLabel"
-    :medium-regex="mediumRegex"
-    :strong-regex="strongRegex"
+    :prompt-label="props.promptLabel"
+    :medium-regex="props.mediumRegex"
+    :strong-regex="props.strongRegex"
     @update:model-value="onPasswordChange"
   >
     <template #footer>
@@ -89,7 +89,7 @@ const onPasswordChange = (value: string) => {
         style="line-height: 1.5"
       >
         <li
-          v-for="suggestion in suggestions"
+          v-for="suggestion in props.suggestions"
           :key="suggestion"
         >
           {{ suggestion }}
