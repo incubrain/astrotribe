@@ -64,7 +64,7 @@ const nonce = useNonce()
       <IBBreadcrumbs class="hidden text-sm lg:block" />
     </div>
     <!-- center -->
-    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl"> </div>
+    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl"/>
     <!-- end -->
     <ClientOnly>
       <div

@@ -81,6 +81,12 @@
   h4,
   h5 {
     text-wrap: balance;
+    color: var(--p-primary-color-text);
+  }
+
+
+  html {
+    color: var(--p-primary-color-text);
   }
 
   a {
@@ -104,17 +110,21 @@
   .padded-x {
     @apply px-4 lg:px-8;
   }
+  
   .border-color {
-    @apply border-zinc-200 dark:border-zinc-800;
+    @apply !border-zinc-700;
   }
+
   .border-inverted {
     @apply border-zinc-800 dark:border-zinc-300;
   }
+
   .background {
-    @apply bg-[var(--p-surface-700)];
+    @apply bg-[var(--p-surface-700)] text-zinc-300;
   }
+
   .foreground {
-    @apply bg-[var(--p-surface-950)] text-zinc-800 dark:text-zinc-300;
+    @apply bg-[var(--p-surface-950)] text-zinc-300;
   }
 
   .highlight {
@@ -153,9 +163,6 @@
     display: none;
   }
 
-  html {
-    color: var(--p-primary-color-text);
-  }
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {

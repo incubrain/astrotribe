@@ -54,7 +54,7 @@ const isDev = computed(() => useRuntimeConfig().public.nodeEnv === 'development'
       </div>
     </template>
     <template #end>
-      <div class="flex h-full items-end justify-end p-2"> </div>
+      <div class="flex h-full items-end justify-end p-2"/>
     </template>
   </PrimeMenu>
 </template>

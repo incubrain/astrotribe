@@ -23,7 +23,7 @@
         <NuxtLink :to="`/news/article/${article.id}`">
           <button
             class="absolute left-0 right-0 top-[-20px] mx-auto h-[40px] w-[80%] rounded-md bg-[#440439] px-8 font-bold shadow-lg before:content-['Category'] group-hover:before:content-['Read_more']"
-          ></button>
+          />
         </NuxtLink>
         <h1 class="pb-4 text-2xl font-semibold">
           {{ article.title }}

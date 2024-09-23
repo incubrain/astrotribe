@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'url'
-import { dirname, join, resolve } from 'path'
+import { dirname, resolve } from 'path'
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -10,11 +10,11 @@ const og = {
 }
 
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
+// const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   extends: ['../../layers/base'],
-  ssr: false,
+  ssr: true,
   modules: ['@nuxt/content', '@nuxtjs/seo'],
 
   experimental: {
@@ -22,9 +22,12 @@ export default defineNuxtConfig({
     asyncContext: true,
   },
 
-  alias: {
-    '@': currentDir,
-    '~': currentDir,
+
+  site: {
+    url: og.url,
+    name: 'AstronEra',
+    description: 'Astronomy Hub',
+    defaultLocale: 'en',
   },
 
   vue: {
@@ -33,7 +36,7 @@ export default defineNuxtConfig({
         ['swiper-container', 'swiper-slide', 'swiper-wrapper'].includes(tag),
     },
   },
-  css: [resolve(currentDir, './node_modules/swiper/element/css/autoplay'), resolve(currentDir, './node_modules/swiper/element/css/grid')],
+  css: ['swiper/element/css/autoplay', 'swiper/element/css/grid'],
 
   seo: {
     redirectToCanonicalSiteUrl: true,

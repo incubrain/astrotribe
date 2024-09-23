@@ -53,7 +53,7 @@ defineProps({
       />
     </div> -->
     <div class="flex flex-col gap-2 px-4 pb-4">
-      <div class="w-full"> </div>
+      <div class="w-full"/>
       <h4 class="text-balance text-xl">
         {{ news.title }}
       </h4>

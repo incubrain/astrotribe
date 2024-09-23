@@ -6,7 +6,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   alias: {
-    '@base': resolve(currentDir),
+    '@base': resolve(currentDir, './node_modules'),
   },
 
   modules: [

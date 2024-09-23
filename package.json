@@ -24,6 +24,7 @@
     "build": "./scripts/build-all.sh",
     "test": "./scripts/run-tests.sh",
     "lint": "./scripts/run-lint.sh",
+    "lint:fix": "./scripts/run-lint-fix.sh",
     "docker:up": "./scripts/docker-build.sh",
     "docker:website": "docker compose -f docker-compose.website.yml up --build",
     "docker:down": "docker compose down",

@@ -10,7 +10,7 @@
       type="testimonial"
     >
       <template #default="{ item }: { item: Testimonial }">
-        <div class="border-color foreground h-full rounded-md border p-6">
+        <div class="background h-full rounded-md border border-color p-6">
           <div class="flex h-auto items-center">
             <IBImage
               :img="{

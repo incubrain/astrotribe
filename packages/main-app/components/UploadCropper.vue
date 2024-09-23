@@ -330,7 +330,7 @@ const setError = (error: string) => {
           name="filename"
           class="hidden"
           @change="handleFileChange($event, toggleModalOpen)"
-        />
+        >
       </template>
       <template #modal:header>
         <h2 class="text-xl font-semibold"> Crop your image </h2>

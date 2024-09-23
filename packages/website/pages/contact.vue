@@ -8,7 +8,7 @@
           <div class="md:w-96">
             <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-5xl"> LET’S TALK </h1>
             <p class="py-4 text-base leading-normal md:mt-2">
-              We'll happily answer any questions <br />you have about AstronEra
+              We'll happily answer any questions <br >you have about AstronEra
             </p>
           </div>
           <div class="flex flex-col gap-3 md:max-w-48">
@@ -53,7 +53,7 @@
         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
         style="border: 0"
         referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
+      />
     </div>
   </div>
 </template>

@@ -47,7 +47,7 @@ const getIconName = (severity: string) => {
           severity="contrast"
           @click="closeCallback"
         >
-          <Icon name="mdi:close"></Icon>
+          <Icon name="mdi:close"/>
         </PrimeButton>
       </section>
     </template>

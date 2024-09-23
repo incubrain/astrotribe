@@ -10,6 +10,7 @@
       <PrimeButton
         class="relative flex items-center justify-center"
         link
+        @click="handleClicked()"
       >
         <IBImage
           :img="{
@@ -46,8 +47,7 @@
             class="aspect-video w-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-          >
-        </iframe>
+          />
         </div>
       </PrimeDialog>
     </template>
@@ -57,8 +57,7 @@
 <script setup lang="ts">
 const isOpen = ref(false)
 
-const handleClicked = (posthog) => {
-  posthog().capture('interest_video', { location: 'hero' })
+const handleClicked = () => {
   isOpen.value = true
 }
 
