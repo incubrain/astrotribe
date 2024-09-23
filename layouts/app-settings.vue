@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const user = useCurrentUser()
+
 const settingsRoutes = computed(() => [
   {
     key: 'settings-account',
@@ -13,7 +15,7 @@ const settingsRoutes = computed(() => [
     label: 'Update Password',
     url: `/astrotribe/profile/settings/password`,
     icon: 'material-symbols:key',
-    visible: true,
+    visible: user.profile?.providers.includes('email'),
     disabled: false,
   },
   {
