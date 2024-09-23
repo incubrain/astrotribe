@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const schema = [
   {
     id: 'new_password',
@@ -17,13 +16,13 @@ const schema = [
     value: ref(''),
     type: 'password',
   },
-]
+];
 
-const currentUser = useCurrentUser()
-const auth = useAuth()
-const toast = useNotification()
+const currentUser = useCurrentUser();
+const auth = useAuth();
+const toast = useNotification();
 
-const userId = useCookie('userId')
+const userId = useCookie('userId');
 const {
   store: userProfile,
   loadMore,
@@ -33,37 +32,43 @@ const {
   filters: { id: { eq: userId.value } },
   initialFetch: true,
   limit: 1,
-})
+});
 
 function handlePasswordUpdate() {
-  const { new_password, confirm_new_password } = schema.reduce((acc, field) => ({ ...acc, [field.id]: field.value.value }), {
-    new_password: '',
-    confirm_new_password: '',
-  })
+  const { new_password, confirm_new_password } = schema.reduce(
+    (acc, field) => ({ ...acc, [field.id]: field.value.value }),
+    {
+      new_password: '',
+      confirm_new_password: '',
+    }
+  );
 
   if (new_password !== confirm_new_password) {
-    toast.error({ summary: 'Passwords Don\'t Match', message: 'The two passwords entered don\'t match' })
-    return
+    toast.error({
+      summary: "Passwords Don't Match",
+      message: "The two passwords entered don't match",
+    });
+    return;
   }
 
-  auth.password.update(new_password)
+  auth.password.update(new_password);
 }
 
 definePageMeta({
   layoutTransition: false,
   name: 'Password',
   layout: 'app-settings',
-})
+});
 
 const settings = reactive({
   password: '',
   new_password: '',
   confirm_new_password: '',
-})
+});
 
 const isPasswordUpdatable = computed(() =>
-  currentUser.profile ? currentUser.profile?.providers.includes('email') : false,
-)
+  currentUser.profile ? currentUser.profile?.providers.includes('email') : false
+);
 </script>
 
 <template>
@@ -75,33 +80,19 @@ const isPasswordUpdatable = computed(() =>
       }"
     >
       <div v-if="isPasswordUpdatable">
-        <UserSettingsItem
-          v-for="item in schema"
-          :key="item.id"
-          :item="item"
-        >
+        <UserSettingsItem v-for="item in schema" :key="item.id" :item="item">
           <FormPassword
             :id="item.id"
             v-model="item.value.value"
-<<<<<<< HEAD:apps/main-app/pages/profile/settings/password.vue
             :feedback="item.id !== 'confirm_new_password'"
-=======
-            :feedback="false"
->>>>>>> 01bc833 (fix: Handle Logged-In User Password Update):pages/astrotribe/profile/settings/password.vue
             :required="true"
           />
         </UserSettingsItem>
         <div class="flex justify-start pt-12">
-          <PrimeButton
-            label="Update Password"
-            @click="handlePasswordUpdate"
-          />
+          <PrimeButton label="Update Password" @click="handlePasswordUpdate" />
         </div>
       </div>
-      <PrimeMessage
-        v-else-if="currentUser.profile"
-        severity="info"
-      >
+      <PrimeMessage v-else-if="currentUser.profile" severity="info">
         You used {{ currentUser.profile.provider }} to authenticate
       </PrimeMessage>
     </UserSettingsCard>
