@@ -251,7 +251,7 @@ watch(
               >
                 <NuxtLink
                   v-ripple
-                  to="/auth/login"
+                  to="/login"
                 >
                   <PrimeButton
                     severity="contrast"
@@ -263,7 +263,7 @@ watch(
 
                 <NuxtLink
                   v-ripple
-                  to="/auth/register"
+                  to="/register"
                 >
                   <PrimeButton> Join AstronEra </PrimeButton>
                 </NuxtLink>

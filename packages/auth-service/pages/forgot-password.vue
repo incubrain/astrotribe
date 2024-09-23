@@ -10,7 +10,6 @@ const auth = useAuth()
 
 definePageMeta({
   name: 'ForgotPassword',
-  layout: 'auth',
 })
 </script>
 

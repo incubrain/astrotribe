@@ -14,7 +14,7 @@
     </div>
     <div class="absolute left-0 top-0 flex h-full w-full">
       <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
-      <AppBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block" />
+      <IBBackground class="left-0 top-0 z-0 hidden lg:fixed lg:block" />
 
       <IBImage
         :img="{

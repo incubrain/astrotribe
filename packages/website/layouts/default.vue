@@ -26,7 +26,7 @@ const showTopNav = computed(
       <div class="relative z-10">
         <slot />
       </div>
-      <AppBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
+      <IBBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
     </div>
 
     <FooterWebsite v-if="showFooter" />

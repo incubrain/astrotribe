@@ -1,11 +1,10 @@
-const isAdmin = (role: string) => role === "admin" || role === "super_admin";
+const isAdmin = (role: string) => role === 'admin' || role === 'super_admin'
 
 export default defineNuxtRouteMiddleware((to, from) => {
-  const user = useSupabaseUser();
-  const authUrl = useRuntimeConfig().public.authUrl;
- 
+  const user = useSupabaseUser()
+  const authUrl = useRuntimeConfig().public.authUrl
 
   if (!isAdmin(user.value?.app_metadata.role)) {
-    return navigateTo(authUrl);
+    return navigateTo(authUrl, { external: true })
   }
-});
+})

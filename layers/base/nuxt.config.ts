@@ -4,6 +4,12 @@ import { dirname, join, resolve } from 'path'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+function generateLocalUrls(start = 3000, end = 3009) {
+  return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
+}
+
+const localUrls = generateLocalUrls()
+
 export default defineNuxtConfig({
   alias: {
     '@base': resolve(currentDir, './node_modules'),
@@ -83,6 +89,7 @@ export default defineNuxtConfig({
         'worker-src': ["'self'", 'blob:'],
         'default-src': [
           "'self'",
+          ...localUrls,
           'http://localhost:3000',
           'http://localhost:54321',
           'https://www.astronera.org',
@@ -92,6 +99,7 @@ export default defineNuxtConfig({
         ],
         'connect-src': [
           "'self'",
+          ...localUrls,
           'http://localhost:3000',
           'http://localhost:8080',
           'http://host.docker.internal:8080',
@@ -172,7 +180,7 @@ export default defineNuxtConfig({
     xssValidator: false,
     corsHandler: {
       origin: [
-        'http://localhost:3000',
+        ...localUrls,
         'http://localhost:8080',
         'http://host.docker.internal:8080',
         'http://*.railway.internal',
@@ -317,7 +325,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      authUrl: 'http://localhost:3001',
+      authUrl: 'http://localhost:3009',
       // client
       nodeEnv: process.env.NODE_ENV,
       logLevel: '',

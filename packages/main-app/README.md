@@ -9,7 +9,7 @@
 </p>
 
 We're currently working towards an open beta release. If you'd like to be notified when we launch,
-register your interest [here](https://astrotribe.vercel.app/auth/register)
+register your interest [here](https://astrotribe.vercel.app/register)
 
 ### Contributing:
 
