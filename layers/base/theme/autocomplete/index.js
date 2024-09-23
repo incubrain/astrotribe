@@ -13,7 +13,7 @@ export default {
       { 'w-full': props.multiple },
 
       // Color
-      'text-surface-900 dark:text-surface-0',
+      'text-surface-0',
 
       // States
       {
@@ -42,20 +42,20 @@ export default {
       'appearance-none rounded-md',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'placeholder:text-surface-100 dark:placeholder:text-surface-50',
-      'bg-surface-0 dark:bg-surface-900',
+      'text-white/80',
+      'placeholder:text-surface-50',
+      'bg-surface-900',
       'border',
-      { 'border-surface-300 dark:border-surface-600': !props.invalid },
+      { 'border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // States
       { 'hover:border-primary': !props.invalid },
       'focus:outline-none focus:outline-offset-0',
-      { 'ring ring-primary-400/50 dark:ring-primary-300/50': state.focused },
-      { 'ring ring-primary-400/50 dark:ring-primary-300/50': state.hovered },
+      { 'ring ring-primary-300/50': state.focused },
+      { 'ring ring-primary-300/50': state.hovered },
       // Transition
       'transition duration-200 ease-in-out',
 
@@ -85,8 +85,8 @@ export default {
         'rounded-[1.14rem]',
 
         // Colors
-        'bg-surface-200 dark:bg-surface-700',
-        'text-surface-100 dark:text-white/70',
+        'bg-surface-700',
+        'text-white/70',
 
         // Misc
         'cursor-default',

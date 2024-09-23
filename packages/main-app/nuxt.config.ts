@@ -19,9 +19,6 @@ export default defineNuxtConfig({
     prefix: 'Tiptap',
   },
 
-  // site: {
-  //   url: og.url,
-  // },
   
   
 

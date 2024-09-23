@@ -69,6 +69,6 @@ const findAuthors = computed(() => {
 
 <template>
   <div>
-    <slot :authors="findAuthors"></slot>
+    <slot :authors="findAuthors"/>
   </div>
 </template>

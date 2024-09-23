@@ -74,7 +74,7 @@ watch(
       <img
         :src="destination"
         class="block w-full rounded-full"
-      />
+      >
     </div>
     <div
       v-show="imageSrc"
@@ -84,7 +84,7 @@ watch(
         ref="img"
         class="block w-full max-w-full pb-4 aspect-auto"
         :src="imageSrc"
-      />
+      >
     </div>
     <div class="flex content-end justify-center w-full py-2 mt-2 rounded-md">
       <PrimeButton
@@ -117,7 +117,7 @@ watch(
         class="py-4"
         :style="{ display: 'none' }"
         @change="fileChanged"
-      />
+      >
     </div>
   </div>
 </template>

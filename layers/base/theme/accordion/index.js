@@ -32,8 +32,8 @@ export default {
 
         // Color
         'border border-color ',
-        'bg-surface-50 dark:bg-surface-400',
-        'text-surface-600 dark:text-surface-0/80',
+        'bg-surface-400',
+        'text-surface-0/80',
         { 'text-surface-900': context.active },
 
         // Transition

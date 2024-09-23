@@ -9,7 +9,6 @@ const swiperConfig = computed(() => ({
   autoplay: {
     delay: 7000,
   },
-  loop: true,
   breakpoints: {
     640: {
       slidesPerView: 1,
@@ -71,7 +70,7 @@ defineProps<{
       :key="`${type}-${index}`"
       class="slide"
     >
-      <slot :item="item"></slot>
+      <slot :item="item" />
     </swiper-slide>
   </swiper-container>
 </template>

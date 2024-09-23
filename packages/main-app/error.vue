@@ -14,7 +14,7 @@
         v-if="error.stack"
         class="mb-4 overflow-auto text-xs text-gray-500"
       >
-        <strong>Stack trace:</strong><br />
+        <strong>Stack trace:</strong><br >
         {{ error.stack }}
       </p>
       <div class="flex justify-between">

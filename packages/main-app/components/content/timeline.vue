@@ -14,7 +14,7 @@
           <Icon
             :name="`mdi:${slotProps.item.icon}`"
             size="32px"
-          ></Icon>
+          />
         </span>
       </template>
       <template #content="slotProps">

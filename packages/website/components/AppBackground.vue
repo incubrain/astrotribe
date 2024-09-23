@@ -2,7 +2,7 @@
   <canvas
     ref="canvas"
     class="w-full h-full"
-  ></canvas>
+  />
 </template>
 
 <script setup lang="ts">

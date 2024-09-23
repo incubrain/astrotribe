@@ -40,7 +40,7 @@ defineProps<{
                 v-if="author"
                 class="mt-2 text-center text-sm font-semibold"
               >
-                {{ author.name.given }}<br />{{ author.name.surname }}
+                {{ author.name.given }}<br >{{ author.name.surname }}
               </p>
             </div>
           </template>

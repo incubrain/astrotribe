@@ -82,7 +82,7 @@ const { website } = useInfo()
         width="90px"
         height="90px"
         class="z-50 relative"
-      />
+      >
 
       <svg
         class="absolute"

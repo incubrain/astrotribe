@@ -45,7 +45,7 @@ defineProps({
     />
     <div
       v-if="!image?.src"
-      class="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/20 dark:bg-black/40"
+      class="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/40"
     >
       <h3 class="foreground rounded-lg px-3 py-1 text-base">
         NO IMAGE
