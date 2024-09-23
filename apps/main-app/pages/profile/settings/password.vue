@@ -83,7 +83,11 @@ const isPasswordUpdatable = computed(() =>
           <FormPassword
             :id="item.id"
             v-model="item.value.value"
+<<<<<<< HEAD:apps/main-app/pages/profile/settings/password.vue
             :feedback="item.id !== 'confirm_new_password'"
+=======
+            :feedback="false"
+>>>>>>> 01bc833 (fix: Handle Logged-In User Password Update):pages/astrotribe/profile/settings/password.vue
             :required="true"
           />
         </UserSettingsItem>
