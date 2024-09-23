@@ -1,17 +1,46 @@
-// import { useUpdateData } from "#imports";
-
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   try {
-    console.log('update user endpoint fired')
+    const body = await readBody(event)
+
+    const supabase = await serverSupabaseClient(event)
+
+    const { data } = await supabase.auth.getUser()
+    const { user } = data
+
+    if (user && user.email) {
+      const response = await supabase.from('user_profiles').update(body).eq('email', user.email)
+
+      if (response.error) {
+        return {
+          error: response.error,
+          data: [],
+          status: 500,
+          message: 'Error Updating User',
+        }
+      } else {
+        return {
+          error: null,
+          data: [],
+          status: 200,
+          message: 'User Updated',
+        }
+      }
+    }
+
     return {
       error: null,
       data: [],
-      status: 200,
-      message: 'User fetched',
+      status: 500,
+      message: 'Something went wrong',
     }
-  } catch (e) {
-    return { error: e }
+  } catch (error) {
+    return {
+      error,
+      data: [],
+      status: 500,
+      message: 'Error',
+    }
   }
 })

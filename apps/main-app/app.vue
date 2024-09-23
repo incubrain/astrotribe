@@ -28,6 +28,8 @@ supabase.auth.onAuthStateChange((event, session) => {
       await currentUser.loadSession()
     } else if (event === 'SIGNED_IN') {
       console.log('SIGNED_IN: TRIGGER')
+    } else if (event === 'USER_UPDATED') {
+      console.log('USER UPDATED')
     }
   }, 0)
 })
