@@ -9,7 +9,7 @@ export default defineEventHandler((event) => {
 
   // if (user.value.user_metadata?.provider === 'email') {
   //   if (!user.value.email_confirmed_at) {
-  //     return navigateTo('/auth/success')
+  //     return navigateTo('/success')
   //   }
   // }
 })

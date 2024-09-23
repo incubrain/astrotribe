@@ -40,7 +40,7 @@ if (error.value) {
 
 <template>
   <div>
-    <h2 class="pb-20 text-3xl font-bold underline decoration-primary-500 underline-offset-8">
+    <h2 class="decoration-primary-500 pb-20 text-3xl font-bold underline underline-offset-8">
       LATEST NEWS
     </h2>
     <div
@@ -54,10 +54,10 @@ if (error.value) {
       />
     </div>
     <NuxtLink
-      class="flex w-full items-center justify-end gap-2 pt-20 hover:text-primary-500"
-      to="/auth/register"
+      class="hover:text-primary-500 flex w-full items-center justify-end gap-2 pt-20"
+      to="/register"
     >
-      <h2 class="text-end text-3xl font-bold underline decoration-primary-500 underline-offset-8">
+      <h2 class="decoration-primary-500 text-end text-3xl font-bold underline underline-offset-8">
         JOIN FREE FOR MORE
       </h2>
       <Icon

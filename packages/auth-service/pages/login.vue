@@ -12,7 +12,6 @@ const { haveUserSession } = storeToRefs(currentUser)
 
 definePageMeta({
   name: 'Login',
-  layout: 'auth',
 })
 </script>
 
@@ -23,7 +22,7 @@ definePageMeta({
       subtitle: 'Don\'t have an account?',
       label: 'Sign up',
     }"
-    help-url="/auth/register"
+    help-url="/register"
   >
     <template #title>
       <div v-if="haveUserSession">
@@ -68,7 +67,7 @@ definePageMeta({
           </label>
         </div>
         <p class="text-sm">
-          <NuxtLink to="/auth/forgot-password">
+          <NuxtLink to="/forgot-password">
             Forgot Password?
           </NuxtLink>
         </p>

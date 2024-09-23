@@ -16,7 +16,7 @@
         :multiple="true"
         class="flex flex-col gap-2"
       >
-        <PrimeAccordionPanel
+        <!-- <PrimeAccordionPanel
           v-for="(structure, url, index) in apiDataStore.apiData"
           :key="url"
           :value="`${index}`"
@@ -35,14 +35,14 @@
               {{ JSON.stringify(structure, null, 2) }}
             </pre>
           </PrimeAccordionContent>
-        </PrimeAccordionPanel>
+        </PrimeAccordionPanel> -->
       </PrimeAccordion>
     </PrimeDialog>
   </div>
 </template>
 
 <script setup lang="ts">
-const apiDataStore = useApiDataStore()
+// const apiDataStore = useApiDataStore()
 
 const showModal = ref(false)
 

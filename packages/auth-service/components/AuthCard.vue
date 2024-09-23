@@ -12,7 +12,7 @@ defineProps({
   },
   helpUrl: {
     type: String,
-    default: '/auth/login',
+    default: '/login',
   },
   showTitle: {
     type: Boolean,
@@ -20,8 +20,8 @@ defineProps({
   },
 })
 
-const currentUser = useCurrentUser()
-const { haveUserSession } = storeToRefs(currentUser)
+// const currentUser = useCurrentUser()
+// const { haveUserSession } = storeToRefs(currentUser)
 </script>
 
 <template>
@@ -65,7 +65,7 @@ const { haveUserSession } = storeToRefs(currentUser)
       </div>
     </div>
     <PrimeCard>
-      <template
+      <!-- <template
         v-if="showTitle && haveUserSession"
         #title
       >
@@ -83,7 +83,7 @@ const { haveUserSession } = storeToRefs(currentUser)
             </div>
           </div>
         </div>
-      </template>
+      </template> -->
       <template #content>
         <div class="flex flex-col gap-4 xl:gap-6">
           <slot name="content" />

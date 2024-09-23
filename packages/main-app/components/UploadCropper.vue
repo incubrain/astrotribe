@@ -4,7 +4,7 @@ import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import { useFileUpload } from '../../../layers/base/composables/upload'
 import { useNotification } from '../../../layers/base/composables/notification'
-import { useCurrentUser } from '../composables/users/user.current.store'
+import { useCurrentUser } from '../../../layers/base/composables/user.current.store'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
@@ -318,7 +318,7 @@ const setError = (error: string) => {
         <label
           v-ripple
           :for="`myFile-${cropperType}`"
-          class="border-color rounded-lg border bg-primary-600 px-2 py-1 text-sm"
+          class="border-color bg-primary-600 rounded-lg border px-2 py-1 text-sm"
         >
           Upload {{ cropperType }}
         </label>
@@ -330,7 +330,7 @@ const setError = (error: string) => {
           name="filename"
           class="hidden"
           @change="handleFileChange($event, toggleModalOpen)"
-        >
+        />
       </template>
       <template #modal:header>
         <h2 class="text-xl font-semibold"> Crop your image </h2>

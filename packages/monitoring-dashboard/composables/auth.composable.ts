@@ -67,7 +67,7 @@ export function useAuth() {
       toast.error({ summary: 'Register with email', message: error.message })
     } else {
       console.log('success')
-      navigateTo('/auth/success')
+      navigateTo('/success')
     }
     loading.setLoading('auth', false)
   }

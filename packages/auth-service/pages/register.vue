@@ -27,7 +27,6 @@ const isFormValid = computed(() => {
 
 definePageMeta({
   name: 'Register',
-  layout: 'auth',
 })
 </script>
 
@@ -38,7 +37,7 @@ definePageMeta({
       subtitle: 'Already have an account?',
       label: 'Login',
     }"
-    help-url="/auth/login"
+    help-url="/login"
   >
     <template #content>
       <div class="flex flex-col gap-4">

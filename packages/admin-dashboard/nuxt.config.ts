@@ -1,4 +1,3 @@
 export default defineNuxtConfig({
-  extends: ['/layers/base'],
-
-})  
+  extends: ['../../layers/base'],
+})
