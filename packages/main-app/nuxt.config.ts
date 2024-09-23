@@ -1,0 +1,29 @@
+
+
+export default defineNuxtConfig({
+  extends: ['../../layers/base'],
+
+  modules: ['nuxt-tiptap-editor'],
+
+  experimental: {
+    // https://nuxt.com/docs/guide/going-further/experimental-features
+    // cookieStore: true,
+    // viewTransition: true,
+    // typedPages: true,
+    // sharedPrerenderData: true,
+    inlineRouteRules: true,
+    asyncContext: true,
+  },
+
+  tiptap: {
+    prefix: 'Tiptap',
+  },
+
+  // site: {
+  //   url: og.url,
+  // },
+  
+  
+
+  compatibilityDate: '2024-09-10',
+})
