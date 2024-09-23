@@ -80,6 +80,9 @@ export function useAuth() {
     if (error) {
       console.error(error.message)
       toast.error({ summary: 'Login with password', message: error.message })
+    } else {
+      toast.success({ summary: 'Login Successful', message: 'You Have Successfully Logged In' })
+      navigateTo('/astrotribe/')
     }
   }
 
