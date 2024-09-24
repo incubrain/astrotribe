@@ -10,15 +10,15 @@ export default {
 
       // Color
       {
-        'bg-surface-0 dark:bg-surface-900 ': !props.modelValue,
+        'bg-surface-900 ': !props.modelValue,
         'border-color  ': !props.modelValue && !props.invalid,
-        'text-surface-100 dark:text-white/80': !props.modelValue,
+        'text-white/80': !props.modelValue,
         'bg-primary border-primary text-primary-contrast': props.modelValue,
       },
 
       // States
       {
-        'hover:text-surface-100 dark:hover:text-white/80': !props.disabled && !props.modelValue,
+        'hover:hover:text-white/80': !props.disabled && !props.modelValue,
         'focus:outline-none focus:outline-offset-0 focus-visible:ring-1 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400':
           !props.disabled,
       },

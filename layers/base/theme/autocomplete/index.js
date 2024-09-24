@@ -5,7 +5,7 @@ export default {
 
       // Flex
       {
-        'flex': props.fluid,
+        flex: props.fluid,
         'inline-flex': !props.fluid,
       },
 
@@ -126,8 +126,8 @@ export default {
   overlay: {
     class: [
       // Colors
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
 
       // Shape
       'border-0',
@@ -156,14 +156,14 @@ export default {
 
       // Colors
       {
-        'text-surface-100 dark:text-white/80': !context.selected,
+        'text-white/80': !context.selected,
         'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
         'bg-highlight': context.selected,
       },
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -183,8 +183,8 @@ export default {
       'm-0 p-3',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-700',
+      'text-white/80',
 
       // Misc
       'cursor-auto',
@@ -199,7 +199,7 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-transparent',
     ],
   },

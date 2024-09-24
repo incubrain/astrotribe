@@ -12,7 +12,7 @@ export default {
       'rounded-md',
 
       // Color
-      'bg-surface-50 dark:bg-surface-400',
+      'bg-surface-400',
       'border border-color ',
     ],
   },

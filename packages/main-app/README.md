@@ -140,3 +140,5 @@ supabase db diff -f new_employee
 supabase db reset
 ```
 
+
+<!-- 11:28 battery full -->

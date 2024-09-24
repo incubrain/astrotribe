@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Business Systems',
-  
-  middleware: 'is-admin',
 })
 
 const systemsTabs = [
@@ -33,7 +31,7 @@ const systemsTabs = [
         :key="tab.slotName"
         #[tab.slotName]
       >
-        <AdminBusinessSystems :system-name="tab.system" />
+        <BusinessSystems :system-name="tab.system" />
       </template>
     </IBTabView>
   </div>

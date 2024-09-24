@@ -12,7 +12,7 @@ export default {
         },
         'bottom-[20px] right-[20px]',
         'h-12 w-12 rounded-full shadow-md',
-        'text-white dark:text-surface-900 bg-surface-500 dark:bg-surface-400',
+        'text-white dark:text-surface-900 0 dark:bg-surface-400',
         'hover:bg-surface-600 dark:hover:bg-surface-300',
       ],
     },

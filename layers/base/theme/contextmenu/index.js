@@ -10,8 +10,8 @@ export default {
       'py-2',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-700',
+      'text-white/80',
       'dark:border ',
     ],
   },
@@ -33,15 +33,15 @@ export default {
       // Shape
       'rounded-none',
       // Colors
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       {
         'text-surface-50 dark:text-white/70': !context.focused && !context.active,
         'text-surface-50 dark:text-white/70 bg-surface-200 dark:bg-surface-600/90':
           context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active)
-          || context.active
-          || (!context.focused && context.active),
+          (context.focused && context.active) ||
+          context.active ||
+          (!context.focused && context.active),
       },
 
       // Transitions
@@ -50,7 +50,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 
@@ -71,7 +71,7 @@ export default {
       'px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
 
       // Misc
       'no-underline',
@@ -114,7 +114,7 @@ export default {
       { 'sm:absolute sm:left-full sm:top-0': props.level > 1 },
 
       // Color
-      'bg-surface-0 dark:bg-surface-700',
+      'bg-surface-700',
     ],
   }),
   submenuIcon: {

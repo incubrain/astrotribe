@@ -5,7 +5,7 @@ export default {
 
       // Flex
       {
-        'flex': props.fluid,
+        flex: props.fluid,
         'inline-flex': !props.fluid,
       },
 
@@ -13,7 +13,7 @@ export default {
       'rounded-md',
 
       // Color and Background
-      'bg-surface-0 dark:bg-surface-900',
+      'bg-surface-900',
       'border',
       { 'border-surface-300 dark:border-surface-600': !props.invalid },
 
@@ -60,10 +60,10 @@ export default {
       'bg-transparent',
       'border-0',
       {
-        'text-surface-100 dark:text-white/80': props.modelValue,
-        'text-surface-100 dark:text-surface-50': !props.modelValue,
+        'text-white/80': props.modelValue,
+        'text-surface-50': !props.modelValue,
       },
-      'placeholder:text-surface-100 dark:placeholder:text-surface-50',
+      'placeholder:placeholder:text-surface-50',
 
       // Transitions
       'transition',
@@ -109,8 +109,8 @@ export default {
       'shadow-md',
 
       // Color
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-700',
+      'text-white/80',
       '',
     ],
   },
@@ -136,14 +136,14 @@ export default {
         'text-surface-50 dark:text-white/70 bg-surface-200 dark:bg-surface-600/90':
           context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active)
-          || context.active
-          || (!context.focused && context.active),
+          (context.focused && context.active) ||
+          context.active ||
+          (!context.focused && context.active),
       },
 
       // Hover States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 
@@ -201,7 +201,7 @@ export default {
       'z-10',
 
       // Color
-      'bg-surface-0 dark:bg-surface-700',
+      'bg-surface-700',
     ],
   },
   transition: {

@@ -30,7 +30,7 @@ export default {
       // Color
       {
         'text-surface-600 dark:text-white/80': !context?.selected,
-        'bg-surface-0 dark:bg-surface-400': !context?.selected,
+        'bg-surface-400': !context?.selected,
         'border-color ': !context?.selected,
         'bg-highlight': context?.selected,
         'border-primary-200 dark:border-primary-600': context?.selected,
@@ -38,7 +38,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-700': context?.selectable && !context?.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-700': context?.selectable && !context?.selected,
         'hover:bg-highlight-emphasis': context?.selectable && context?.selected,
       },
 

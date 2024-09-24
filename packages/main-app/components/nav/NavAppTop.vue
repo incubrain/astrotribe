@@ -13,7 +13,7 @@ const items = computed(() => {
   const menuItems = [
     {
       label: 'Settings',
-      command: () => router.push(`/astrotribe/profile/settings/profile`),
+      command: () => router.push(`/profile/settings/profile`),
     },
     {
       label: 'Logout',
@@ -24,7 +24,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => router.push(`/astrotribe/admin/`),
+      command: () => router.push(`/admin/`),
     })
   }
 
@@ -64,7 +64,7 @@ const nonce = useNonce()
       <IBBreadcrumbs class="hidden text-sm lg:block" />
     </div>
     <!-- center -->
-    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl"/>
+    <div class="flex w-full max-w-[70%] gap-4 px-4 py-2 lg:max-w-xl" />
     <!-- end -->
     <ClientOnly>
       <div

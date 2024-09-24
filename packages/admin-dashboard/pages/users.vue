@@ -8,8 +8,6 @@ import { createAdminDashboard } from '../composables/createAdminDashboard'
 definePageMeta({
   layoutTransition: false,
   name: 'Users',
-  
-  middleware: 'is-admin',
 })
 
 const app_plan_enum = z.enum(['free', 'basic', 'intermediate', 'premium', 'enterprise', 'custom'])

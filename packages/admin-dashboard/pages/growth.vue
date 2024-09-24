@@ -2,15 +2,13 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Growth',
-  
-  middleware: 'is-admin',
 })
 </script>
 
 <template>
   <div>
-    <!-- <AdminGrowthMetrics /> -->
-    <AdminTableGrowth />
+    <!-- <GrowthMetrics /> -->
+    <TableGrowth />
   </div>
 </template>
 

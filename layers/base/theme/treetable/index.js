@@ -50,9 +50,9 @@ export default {
       'p-4',
 
       // Color
-      'bg-surface-50 dark:bg-surface-400',
+      'bg-surface-400',
       'border-color ',
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
     ],
   }),
   footer: {
@@ -149,13 +149,12 @@ export default {
       // Color
       (props.sortable === '' || props.sortable) && context.sorted
         ? 'bg-highlight'
-        : 'bg-surface-50 text-surface-100 dark:text-white/80 dark:bg-surface-400',
+        : ' text-white/80 dark:bg-surface-400',
       'border-color ',
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-400/30':
-          (props.sortable === '' || props.sortable) && !context?.sorted,
+        'hover:bg-surface-600 ': (props.sortable === '' || props.sortable) && !context?.sorted,
       },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
 
@@ -196,13 +195,12 @@ export default {
         // Color
         (props.sortable === '' || props.sortable) && context.sorted
           ? 'bg-highlight'
-          : 'bg-surface-50 text-surface-100 dark:text-white/80 dark:bg-surface-400',
+          : ' text-white/80 dark:bg-surface-400',
         'border-color ',
 
         // States
         {
-          'hover:bg-surface-100 dark:hover:bg-surface-400/30':
-            (props.sortable === '' || props.sortable) && !context?.sorted,
+          'hover:bg-surface-600 ': (props.sortable === '' || props.sortable) && !context?.sorted,
         },
         'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
 
@@ -244,7 +242,7 @@ export default {
         // Misc
         {
           'cursor-pointer': context.selectable,
-          'sticky': context.scrollable && context.scrollDirection === 'both' && context.frozen,
+          sticky: context.scrollable && context.scrollDirection === 'both' && context.frozen,
           'border-x-0 border-l-0': !context.showGridlines,
         },
       ],
@@ -272,7 +270,7 @@ export default {
         'bg-transparent',
 
         // States
-        'hover:bg-surface-50 dark:hover:bg-surface-700',
+        'hover:hover:bg-surface-700',
         'focus-visible:outline-none focus-visible:outline-offset-0',
         'focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
 

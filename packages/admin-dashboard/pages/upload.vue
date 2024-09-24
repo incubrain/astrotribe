@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Upload',
-  
-  middleware: 'is-admin',
 })
 </script>
 
@@ -17,7 +15,7 @@ definePageMeta({
       :multiple="true"
     /> -->
 
-    <AdminUpload />
+    <Upload />
   </div>
 </template>
 

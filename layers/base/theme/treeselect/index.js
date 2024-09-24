@@ -9,7 +9,7 @@ export default {
       'rounded-md',
 
       // Color and Background
-      'bg-surface-0 dark:bg-surface-900',
+      'bg-surface-900',
       'border',
       { 'border-surface-300 dark:border-surface-600': !props.invalid },
 
@@ -48,7 +48,7 @@ export default {
       'p-3',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
 
       // Transition
       'transition duration-200',
@@ -86,8 +86,8 @@ export default {
       'shadow-md',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       '',
     ],
   },

@@ -11,7 +11,7 @@ export default {
       'rounded-[16px]',
 
       // Colors
-      'text-surface-100 dark:text-white/70',
+      'text-white/70',
       'bg-surface-200 dark:bg-surface-700',
     ],
   },

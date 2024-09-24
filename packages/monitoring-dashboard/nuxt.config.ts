@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   extends: ['/layers/base'],
 
+  routeRules: {
+    '/**': { appMiddleware: 'auth' },
+  },
+
   runtimeConfig: {
     influxUrl: '',
     influxToken: '',

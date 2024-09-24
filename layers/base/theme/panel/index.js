@@ -5,8 +5,8 @@ export default {
       'flex items-center justify-between',
 
       // Colors
-      'text-surface-100 dark:text-surface-0/80',
-      'bg-surface-50 dark:bg-surface-900',
+      'text-surface-0/80',
+      'bg-surface-900',
       'border border-color ',
 
       // Shape
@@ -37,8 +37,8 @@ export default {
       'text-surface-600 dark:text-surface-0/80',
 
       // States
-      'hover:text-surface-100 dark:hover:text-surface-0/80',
-      'hover:bg-surface-100 dark:hover:bg-surface-400/80',
+      'hover:hover:text-surface-0/80',
+      'hover:bg-surface-600 dark:hover:bg-surface-400/80',
       'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 focus-visible:ring-inset dark:focus-visible:ring-primary-300/50',
 
       // Transitions
@@ -62,8 +62,8 @@ export default {
 
       // Color
       'border-color ',
-      'bg-surface-0 dark:bg-surface-900',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-900',
+      'text-surface-0/80',
     ],
   },
   footer: {
@@ -76,8 +76,8 @@ export default {
 
       // Color
       'border-color ',
-      'bg-surface-0 dark:bg-surface-900',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-900',
+      'text-surface-0/80',
     ],
   },
   transition: {

@@ -6,8 +6,8 @@ export default {
       'rounded-md',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       'border',
       { 'border-surface-300 dark:border-surface-600': !props.invalid },
 
@@ -43,14 +43,14 @@ export default {
 
       // Colors
       {
-        'text-surface-100 dark:text-white/80': !context.selected,
+        'text-white/80': !context.selected,
         'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
         'bg-highlight': context.selected,
       },
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -75,14 +75,14 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-600/80',
+      'text-white/80',
+      'bg-surface-600/80',
 
       // Misc
       'cursor-auto',
     ],
   },
-  optionCheckIcon: 'relative -ms-1.5 me-1.5 text-surface-100 dark:text-white/80 w-4 h-4',
+  optionCheckIcon: 'relative -ms-1.5 me-1.5 text-white/80 w-4 h-4',
   header: {
     class: [
       // Spacing
@@ -95,7 +95,7 @@ export default {
       'rounded-tr-md',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-surface-100 dark:bg-surface-400',
       'border-surface-300 dark:border-surface-600',
 
@@ -111,7 +111,7 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-transparent',
     ],
   },

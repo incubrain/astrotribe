@@ -15,7 +15,6 @@ import {
 definePageMeta({
   layoutTransition: false,
   name: 'Financials',
-  middleware: 'is-admin',
 })
 
 const { updateGlobalRange, haveData } = useFinancials()

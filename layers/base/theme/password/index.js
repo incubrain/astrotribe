@@ -19,8 +19,8 @@ export default {
       'shadow-md rounded-md',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-900',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-900',
+      'text-white/80',
       '',
     ],
   },

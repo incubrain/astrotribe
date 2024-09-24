@@ -19,7 +19,9 @@ export default defineNuxtConfig({
     prefix: 'Tiptap',
   },
 
-  
+  routeRules: {
+    '/**': { appMiddleware: 'auth' },
+  },
   
 
   compatibilityDate: '2024-09-10',

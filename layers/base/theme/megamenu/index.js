@@ -10,7 +10,7 @@ export default {
       'rounded-md',
 
       // Color
-      'bg-surface-50 dark:bg-surface-700',
+      'bg-surface-700',
       'border border-color ',
       {
         'p-2 items-center': props.orientation == 'horizontal',
@@ -45,7 +45,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-0 dark:bg-surface-700 sm:bg-transparent dark:sm:bg-transparent',
+      'bg-surface-700 sm:bg-transparent dark:sm:bg-transparent',
 
       // Misc
       'outline-none',
@@ -71,14 +71,14 @@ export default {
         'text-surface-50 dark:text-white/70 bg-surface-200 dark:bg-surface-600/90':
           context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active)
-          || context.active
-          || (!context.focused && context.active),
+          (context.focused && context.active) ||
+          context.active ||
+          (!context.focused && context.active),
       },
 
       // Hover States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 
@@ -135,7 +135,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-0 dark:bg-surface-700',
+      'bg-surface-700',
 
       // Position
       'static sm:absolute',
@@ -163,8 +163,8 @@ export default {
       'm-0',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-700',
+      'text-white/80',
+      'bg-surface-700',
     ],
   },
   separator: {
@@ -187,7 +187,7 @@ export default {
 
       // States
       'hover:text-surface-600 dark:hover:text-white/60',
-      'hover:bg-surface-100 dark:hover:bg-surface-600/80',
+      'hover:bg-surface-600 dark:hover:bg-surface-600/80',
       'focus:outline-none focus:outline-offset-0',
       'focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
 

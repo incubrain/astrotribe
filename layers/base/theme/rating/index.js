@@ -36,7 +36,7 @@ export default {
       'w-5 h-5',
 
       // Color
-      'text-surface-100 dark:text-surface-0/80',
+      'text-surface-0/80',
 
       // State
       { 'hover:text-primary-500 dark:hover:text-primary-400': !props.readonly },

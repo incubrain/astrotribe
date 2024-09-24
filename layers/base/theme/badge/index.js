@@ -34,13 +34,14 @@ export default {
       'text-primary-contrast',
       {
         'bg-primary-800': props.severity === null || props.severity === 'primary',
-        'bg-surface-500 dark:bg-surface-400': props.severity === 'secondary',
+        'dark:bg-surface-400': props.severity === 'secondary',
         'bg-green-500 dark:bg-green-400': props.severity === 'success',
         'bg-blue-500 dark:bg-blue-400': props.severity === 'info',
         'bg-orange-500 dark:bg-orange-400': props.severity === 'warn',
         'bg-purple-500 dark:bg-purple-400': props.severity === 'help',
         'bg-red-500 dark:bg-red-400': props.severity === 'danger',
-        'text-surface-0 dark:text-surface-900 bg-surface-900 dark:bg-surface-0': props.severity === 'contrast',
+        'text-surface-0 dark:text-surface-900 bg-surface-900 dark:bg-surface-0':
+          props.severity === 'contrast',
       },
     ],
   }),

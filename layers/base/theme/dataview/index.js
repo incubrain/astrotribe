@@ -8,8 +8,8 @@ export default {
       'border-0',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-400',
+      'text-white/80',
+      'bg-surface-400',
     ],
   },
   header: {
@@ -20,8 +20,8 @@ export default {
       'p-4',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-50 dark:bg-surface-400',
+      'text-white/80',
+      'bg-surface-400',
       'border-color  border-y',
     ],
   },

@@ -2,8 +2,6 @@ export default {
   root: ({ context }) => ({
     class: [
       // Colors
-      'bg-surface-0',
-      'dark:bg-surface-900',
       'text-surface-100',
       'dark:text-surface-0/80',
 
@@ -27,8 +25,8 @@ export default {
       'shrink-0',
 
       // Colors
-      'bg-surface-50',
-      'dark:bg-surface-400',
+      '',
+      'bg-surface-400',
 
       // Transitions
       'transition-all',

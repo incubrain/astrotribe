@@ -8,7 +8,7 @@ export default {
       'p-4',
 
       // Color
-      'bg-surface-0 dark:bg-surface-700',
+      'bg-surface-700',
       'border border-color ',
 
       // Misc

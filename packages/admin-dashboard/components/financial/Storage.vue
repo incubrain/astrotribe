@@ -188,7 +188,7 @@ const charts = computed(() => {
 </script>
 
 <template>
-  <AdminFinancialCharts :charts="charts" />
+  <FinancialCharts :charts="charts" />
 </template>
 
 <style scoped></style>

@@ -55,9 +55,9 @@ export default {
         },
 
         // Colors
-        'text-surface-100 dark:text-white/80',
-        'placeholder:text-surface-100 dark:placeholder:text-surface-50',
-        { 'bg-surface-0 dark:bg-surface-900': !context.disabled },
+        'text-white/80',
+        'placeholder:placeholder:text-surface-50',
+        { 'bg-surface-900': !context.disabled },
         'border',
         { 'border-surface-300 ': !parent.props.invalid },
 
@@ -74,8 +74,8 @@ export default {
         // Filled State *for FloatLabel
         {
           filled:
-            parent.instance?.$parentInstance?.$name == 'FloatLabel'
-            && parent.state.d_modelValue !== null,
+            parent.instance?.$parentInstance?.$name == 'FloatLabel' &&
+            parent.state.d_modelValue !== null,
         },
 
         // Position

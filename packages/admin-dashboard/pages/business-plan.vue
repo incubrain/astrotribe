@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'BusinessPlan',
-  
-  middleware: 'is-admin',
 })
 
 const businessPlanSections = [
@@ -40,7 +38,7 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
         :key="tab.slotName"
         #[tab.slotName]
       >
-        <AdminBusinessPlan
+        <BusinessPlan
           :bp-section="tab.slotName"
           class="relative flex h-auto flex-col gap-4 p-4 xl:gap-8 xl:p-8"
         />

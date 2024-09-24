@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'AdminDashboard',
-  
-  middleware: 'is-admin',
 })
 
 const urlTest = ref('https://astrotribe-production.up.railway.app/api')
@@ -23,18 +21,14 @@ const reset = () => {
   <div class="relative h-full max-h-full p-4">
     <div class="flex flex-col gap-8">
       <div class="flex gap-4">
-        <PrimeButton @click="testUrl">
-          Test API
-        </PrimeButton>
+        <PrimeButton @click="testUrl"> Test API </PrimeButton>
         <PrimeInputText v-model="urlTest" />
-        <PrimeButton @click="reset">
-          Clear
-        </PrimeButton>
+        <PrimeButton @click="reset"> Clear </PrimeButton>
       </div>
       <p> {{ outputData }}</p>
     </div>
-    <AdminDatabaseMetrics />
-    <AdminServerJobs />
+    <DatabaseMetrics />
+    <ServerJobs />
   </div>
 </template>
 
