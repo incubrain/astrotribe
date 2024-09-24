@@ -73,3 +73,8 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+npx nx g @nx/nuxt:setup-project --name=main-app --directory=packages/main-app
+npx nx g @nx/nuxt:setup-project --name=monitoring-dashboard --directory=packages/monitoring-dashboard
+npx nx g @nx/nuxt:setup-project --name=admin-dashboard --directory=packages/admin-dashboard
+npx nx g @nx/nuxt:setup-project --name=auth-service --directory=packages/auth-service

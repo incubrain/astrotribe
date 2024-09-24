@@ -1,3 +1,14 @@
 node_modules/
 .env
 .npm_token
+
+
+.nx/cache
+.nx/workspace-data
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache

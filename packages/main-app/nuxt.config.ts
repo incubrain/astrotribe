@@ -1,18 +1,18 @@
-
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineNuxtConfig({
+  workspaceDir: '../../',
   extends: ['../../layers/base'],
-
+  
   modules: ['nuxt-tiptap-editor'],
-
+  
   experimental: {
-    // https://nuxt.com/docs/guide/going-further/experimental-features
-    // cookieStore: true,
-    // viewTransition: true,
-    // typedPages: true,
-    // sharedPrerenderData: true,
     inlineRouteRules: true,
     asyncContext: true,
+  },
+  
+  vite: {
+    plugins: [nxViteTsPaths()]
   },
 
   tiptap: {
@@ -22,7 +22,20 @@ export default defineNuxtConfig({
   routeRules: {
     '/**': { appMiddleware: 'auth' },
   },
-  
 
-  compatibilityDate: '2024-09-10',
+  ssr: false,
+
+  nitro: {
+    externals: {
+      inline: ['sharp'],
+    },
+  },
+  build: {
+    transpile: ['sharp'],
+  },
+
+  imports: {
+    autoImport: true,
+  },
+
 })
