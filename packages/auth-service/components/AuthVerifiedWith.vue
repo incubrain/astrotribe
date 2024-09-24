@@ -33,7 +33,7 @@ const verifiedIcon = computed(() => {
     <div class="flex flex-col items-center">
       <NuxtLink
         v-ripple
-        to="/astrotribe"
+        to="/"
       >
         <PrimeButton>
           Visit Dashboard

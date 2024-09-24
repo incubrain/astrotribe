@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import { useServerAnalyticsStore } from '#imports'
+
+const serverAnalyticsStore = useServerAnalyticsStore()
+
+onMounted(() => {
+  serverAnalyticsStore.connectWebSocket()
+  serverAnalyticsStore.subscribeToMetrics(['all'])
+})
+
+onUnmounted(() => {
+  serverAnalyticsStore.disconnectWebSocket()
+})
+
+</script>
+
+
 <template>
   <div class="h-full w-full">
     <NuxtLoadingIndicator />

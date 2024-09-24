@@ -8,8 +8,8 @@ export default {
       'rounded-md',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       'border border-solid border-color ',
       '[&_[data-pc-name=pcfilter]]:w-full',
     ],
@@ -50,9 +50,9 @@ export default {
 
       // States
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/40':
-          (props.selectionMode == 'single' || props.selectionMode == 'multiple')
-          && !context.selected,
+        'hover:hover:bg-surface-700/40':
+          (props.selectionMode == 'single' || props.selectionMode == 'multiple') &&
+          !context.selected,
       },
 
       // Transition
@@ -80,11 +80,11 @@ export default {
       {
         'text-surface-50 dark:text-white': !context.selected,
         'text-primary-600 dark:text-white': context.selected,
-        'invisible': context.leaf,
+        invisible: context.leaf,
       },
 
       // States
-      'hover:bg-surface-200/20 dark:hover:bg-surface-500/20',
+      'hover:bg-surface-200/20 dark:hover:0/20',
       'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
 
       // Transition

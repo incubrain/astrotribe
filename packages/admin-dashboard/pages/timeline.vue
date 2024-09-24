@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Timeline',
-  
-  middleware: 'is-admin',
 })
 </script>
 

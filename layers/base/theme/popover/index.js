@@ -10,8 +10,8 @@ export default {
       'z-40 transform origin-center',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-400',
+      'text-surface-0/80',
       '',
 
       // Before: Arrow

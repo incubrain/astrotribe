@@ -1,4 +1,4 @@
-import data from '../../../admin-dashboard/assets/business-financials.json'
+import data from '../assets/business-financials.json'
 
 function formatNumber(value: number, style: 'INR' | 'USD' = 'INR'): string {
   const absValue = Math.abs(value)

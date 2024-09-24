@@ -9,7 +9,7 @@ export default {
       'rounded-md',
 
       // Color and Background
-      'bg-surface-0 dark:bg-surface-900',
+      'bg-surface-900',
       'border',
       { 'border-surface-300 dark:border-surface-600': !props.invalid },
 
@@ -52,10 +52,10 @@ export default {
 
       // Color
       {
-        'text-surface-100 dark:text-white/80': props.modelValue?.length,
-        'text-surface-100 dark:text-surface-50': !props.modelValue?.length,
+        'text-white/80': props.modelValue?.length,
+        'text-surface-50': !props.modelValue?.length,
       },
-      'placeholder:text-surface-100 dark:placeholder:text-surface-50',
+      'placeholder:placeholder:text-surface-50',
 
       // Transitions
       'transition duration-200',
@@ -92,8 +92,8 @@ export default {
       'shadow-md',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       '',
     ],
   },
@@ -110,7 +110,7 @@ export default {
       'rounded-tr-md',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-surface-100 dark:bg-surface-400',
       'border-surface-300 ',
 
@@ -151,19 +151,18 @@ export default {
       'py-3 px-5 gap-2',
 
       // Color
-      { 'text-surface-100 dark:text-white/80': !context.focused && !context.selected },
+      { 'text-white/80': !context.focused && !context.selected },
       {
-        'bg-surface-200 dark:bg-surface-600/60 text-surface-100 dark:text-white/80':
-          context.focused && !context.selected,
+        'bg-surface-200 dark:bg-surface-600/60 text-white/80': context.focused && !context.selected,
       },
       { 'bg-highlight': context.selected },
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       {
-        'hover:text-surface-100 hover:bg-surface-100 dark:hover:text-white dark:hover:bg-surface-600/80':
+        'hover:text-surface-100 hover:bg-surface-600 dark:hover:text-white dark:hover:bg-surface-600/80':
           context.focused && !context.selected,
       },
 
@@ -187,8 +186,8 @@ export default {
       'p-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-600/80',
+      'text-white/80',
+      'bg-surface-600/80',
 
       // Misc
       'cursor-auto',
@@ -203,12 +202,12 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-transparent',
     ],
   },
   loadingIcon: {
-    class: 'text-surface-100 dark:text-surface-50 animate-spin',
+    class: 'text-surface-50 animate-spin',
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',

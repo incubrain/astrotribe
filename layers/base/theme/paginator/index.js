@@ -11,7 +11,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
+      'bg-surface-400',
       'text-surface-50 dark:text-white/60',
     ],
   },
@@ -34,7 +34,7 @@ export default {
 
       // State
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/70': !context.disabled,
+        'hover:hover:bg-surface-700/70': !context.disabled,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50':
           !context.disabled,
       },
@@ -66,7 +66,7 @@ export default {
 
       // State
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/70': !context.disabled,
+        'hover:hover:bg-surface-700/70': !context.disabled,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50':
           !context.disabled,
       },
@@ -98,7 +98,7 @@ export default {
 
       // State
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/70': !context.disabled,
+        'hover:hover:bg-surface-700/70': !context.disabled,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50':
           !context.disabled,
       },
@@ -130,7 +130,7 @@ export default {
 
       // State
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/70': !context.disabled,
+        'hover:hover:bg-surface-700/70': !context.disabled,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50':
           !context.disabled,
       },
@@ -165,7 +165,7 @@ export default {
 
       // State
       {
-        'hover:bg-surface-50 dark:hover:bg-surface-700/70': !context.disabled && !context.active,
+        'hover:hover:bg-surface-700/70': !context.disabled && !context.active,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50':
           !context.disabled,
       },

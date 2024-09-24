@@ -65,9 +65,9 @@ export default {
         'text-surface-50 dark:text-white/70 bg-surface-700 dark:bg-surface-700':
           context.focused && !context.active,
         'bg-surface-900/80':
-          (context.focused && context.active)
-          || context.active
-          || (!context.focused && context.active),
+          (context.focused && context.active) ||
+          context.active ||
+          (!context.focused && context.active),
       },
 
       // Hover States
@@ -165,7 +165,7 @@ export default {
 
       // States
       'hover:text-surface-600 dark:hover:text-white/60',
-      'hover:bg-surface-100 dark:hover:bg-surface-600/80',
+      'hover:bg-surface-600 dark:hover:bg-surface-600/80',
       'focus:outline-none focus:outline-offset-0',
       'focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
 

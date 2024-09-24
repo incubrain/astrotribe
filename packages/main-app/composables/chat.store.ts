@@ -42,16 +42,16 @@ export const useChatStore = defineStore('chatStore', () => {
   const logger = useLogger(domainKey)
 
   const chat = ref({} as Chat)
-  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system', content: string }>>([])
+  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system'; content: string }>>([])
 
   const question = ref('' as string)
 
   // function handleNavigation() {
   //   const route = useRoute()
-  //   if (route.path === '/astrotribe/ask') {
+  //   if (route.path === '/ask') {
   //     return
   //   }
-  //   navigateTo('/astrotribe/ask')
+  //   navigateTo('/ask')
   // }
 
   async function insertSearchData(userId: string) {
@@ -90,7 +90,7 @@ export const useChatStore = defineStore('chatStore', () => {
     messages.value.push({ role, content })
   }
 
-  async function submitQuestion(args: { question: string, systemPrompt: string }) {
+  async function submitQuestion(args: { question: string; systemPrompt: string }) {
     console.log('searchMessage', args)
 
     if (loading.isLoading(domainKey)) {

@@ -2,14 +2,12 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Errors',
-  
-  middleware: 'is-admin',
 })
 </script>
 
 <template>
   <div class="relative h-full max-h-full">
-    <AdminServerErrors />
+    <ServerErrors />
   </div>
 </template>
 

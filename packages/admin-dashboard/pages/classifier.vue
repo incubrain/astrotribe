@@ -2,8 +2,6 @@
 definePageMeta({
   layoutTransition: false,
   name: 'Classifier',
-  
-  middleware: 'is-admin',
 })
 
 const contentTypes = [
@@ -129,7 +127,7 @@ const severities = ['primary', 'secondary', 'success', 'info', 'warning', 'dange
 
 const labelCounts = computed(() => {
   const counts = {}
-  fetchedUrls.value.forEach((url) => {
+  fetchedUrls.value?.forEach((url) => {
     counts[url.label] = (counts[url.label] || 0) + 1
   })
   return counts
@@ -138,7 +136,7 @@ const labelCounts = computed(() => {
 const totalUrls = computed(() => fetchedUrls.value.length)
 
 const processUrls = () => {
-  uniqueLabels.value = new Set(fetchedUrls.value.map((item) => item.label))
+  uniqueLabels.value = new Set(fetchedUrls.value?.map((item) => item.label))
 
   Array.from(uniqueLabels.value).forEach((label, index) => {
     labelSeverities.value[label] = severities[index % severities.length]

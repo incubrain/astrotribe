@@ -20,12 +20,12 @@ export default {
 
       // Color
       'border border-color ',
-      'bg-surface-50 dark:bg-surface-400',
+      'bg-surface-400',
       'text-surface-600 dark:text-surface-0/80',
       { 'text-surface-900': context.active },
 
       // States
-      'hover:bg-surface-100 dark:hover:bg-surface-700',
+      'hover:bg-surface-600 dark:hover:bg-surface-700',
       'hover:text-surface-900',
 
       // Transition
@@ -70,8 +70,8 @@ export default {
       'rounded-t-none rounded-br-md rounded-bl-md',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-400',
+      'text-white/80',
+      'bg-surface-400',
       'border-color ',
     ],
   },
@@ -84,7 +84,7 @@ export default {
       'border-none rounded-none',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
 
       // Transition
       'transition-shadow duration-200',
@@ -104,12 +104,12 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
 
       // States
-      'hover:bg-surface-100 dark:hover:bg-surface-700/80 hover:text-surface-100 dark:hover:text-white/80',
+      'hover:bg-surface-600 dark:hover:bg-surface-700/80 hover:hover:text-white/80',
       {
-        'bg-surface-200 text-surface-100 dark:text-white/80 dark:bg-surface-600/90': context.focused,
+        'bg-surface-200 text-white/80 dark:bg-surface-600/90': context.focused,
       },
 
       // Misc

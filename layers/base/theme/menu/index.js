@@ -7,8 +7,8 @@ export default {
       // Spacing
       'py-2',
       // Colors
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-700',
+      'text-white/80',
       'border border-color ',
     ],
   },
@@ -26,16 +26,16 @@ export default {
       // Shape
       'rounded-none',
       // Colors
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       {
-        'bg-surface-200 text-surface-100 dark:bg-surface-300/10 dark:text-white': context.focused,
+        'bg-surface-200 bg-surface-300/10 dark:text-white': context.focused,
       },
       // Transitions
       'transition-shadow',
       'duration-200',
       // States
-      'hover:text-surface-100 dark:hover:text-white/80',
-      'hover:bg-surface-100 dark:bg-surface-700 dark:hover:bg-surface-400/10',
+      'hover:hover:text-white/80',
+      'hover:bg-surface-600 dark:bg-surface-700 dark:hover:bg-surface-400/10',
     ],
   }),
   itemLink: {
@@ -51,7 +51,7 @@ export default {
       'px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
 
       // Misc
       'no-underline',
@@ -83,8 +83,8 @@ export default {
       'rounded-tl-none',
       'rounded-tr-none',
       // Colors
-      'bg-surface-0 dark:bg-surface-700',
-      'text-surface-100 dark:text-white',
+      'bg-surface-700',
+      'text-white',
     ],
   },
   transition: {

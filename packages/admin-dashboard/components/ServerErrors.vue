@@ -293,9 +293,7 @@ const toggle = (event) => {
       <PrimeSplitterPanel class="h-full overflow-scroll p-4">
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between gap-4 p-4">
-            <h2 class="text-xl font-bold">
-              {{ totalLogs }} Error Logs
-            </h2>
+            <h2 class="text-xl font-bold"> {{ totalLogs }} Error Logs </h2>
             <div class="flex items-center gap-2">
               <PrimeButton
                 type="button"
@@ -314,7 +312,7 @@ const toggle = (event) => {
               </PrimeButton>
             </div>
           </div>
-          <AdminErrorLogViewer
+          <ErrorLogViewer
             v-if="errorLogs.length > 0 && errorPG.length > 0"
             :logs="[
               { source: 'DB', entries: errorPG },
@@ -347,14 +345,10 @@ const toggle = (event) => {
           v-if="!loading && !error && errorReport"
           class="h-full overflow-auto"
         >
-          <h2 class="mb-4 text-2xl font-bold">
-            Error Metrics
-          </h2>
+          <h2 class="mb-4 text-2xl font-bold"> Error Metrics </h2>
           <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <PrimeCard>
-              <template #title>
-                Total Errors
-              </template>
+              <template #title> Total Errors </template>
               <template #content>
                 <div class="text-4xl font-bold">
                   {{ errorReport.totalErrors }}
@@ -365,9 +359,7 @@ const toggle = (event) => {
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>
-                Average Errors per Day
-              </template>
+              <template #title> Average Errors per Day </template>
               <template #content>
                 <div class="text-4xl font-bold">
                   {{ averageErrorsPerDay.toFixed(2) }}
@@ -379,9 +371,7 @@ const toggle = (event) => {
             v-if="Object.keys(errorsByDomain).length > 0"
             class="mb-4"
           >
-            <template #title>
-              Domain Distribution
-            </template>
+            <template #title> Domain Distribution </template>
             <template #content>
               <PrimeChart
                 type="pie"
@@ -394,9 +384,7 @@ const toggle = (event) => {
             v-if="Object.keys(errorsBySeverity).length > 0"
             class="mb-4"
           >
-            <template #title>
-              Severity Distribution
-            </template>
+            <template #title> Severity Distribution </template>
             <template #content>
               <PrimeChart
                 type="bar"
@@ -409,9 +397,7 @@ const toggle = (event) => {
             v-if="mostFrequentErrors.length > 0"
             class="mb-4"
           >
-            <template #title>
-              Most Frequent Errors
-            </template>
+            <template #title> Most Frequent Errors </template>
             <template #content>
               <ul class="list-disc pl-5">
                 <li
@@ -426,17 +412,13 @@ const toggle = (event) => {
           </PrimeCard>
           <div class="mb-4 grid grid-cols-1 gap-4">
             <PrimeCard>
-              <template #title>
-                Hourly Error Trends
-              </template>
+              <template #title> Hourly Error Trends </template>
               <template #content>
                 <Chart :chart="hourlyErrorChart" />
               </template>
             </PrimeCard>
             <PrimeCard>
-              <template #title>
-                Daily Error Trends
-              </template>
+              <template #title> Daily Error Trends </template>
               <template #content>
                 <Chart :chart="dailyErrorChart" />
               </template>

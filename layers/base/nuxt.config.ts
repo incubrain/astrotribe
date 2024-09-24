@@ -224,17 +224,12 @@ export default defineNuxtConfig({
       path: './components',
       pathPrefix: false,
       prefix: 'IB',
+      global: true,
     },
   ],
 
   supabase: {
-    redirectOptions: {
-      login: '/',
-      callback: '/confirm',
-      include: ['/astrotribe/**'],
-      exclude: [],
-      cookieRedirect: true,
-    },
+    redirect: false,
     clientOptions: {
       auth: {
         flowType: 'pkce',
@@ -326,6 +321,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       authUrl: 'http://localhost:3009',
+      loginUrl: 'http://localhost:3009/login',
       // client
       nodeEnv: process.env.NODE_ENV,
       logLevel: '',

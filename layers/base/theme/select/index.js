@@ -58,10 +58,10 @@ export default {
       'bg-transparent',
       'border-0',
       {
-        'text-surface-100 dark:text-white/80': props.modelValue != undefined,
-        'text-surface-100 dark:text-surface-50': props.modelValue == undefined,
+        'text-white/80': props.modelValue != undefined,
+        'text-surface-50': props.modelValue == undefined,
       },
-      'placeholder:text-surface-100 dark:placeholder:text-surface-50',
+      'placeholder:placeholder:text-surface-50',
 
       // Sizing and Spacing
       'w-[1%]',
@@ -118,8 +118,8 @@ export default {
       'shadow-md',
 
       // Color
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       '',
     ],
   },
@@ -156,14 +156,14 @@ export default {
 
       // Colors
       {
-        'text-surface-100 dark:text-white/80': !context.selected,
+        'text-white/80': !context.selected,
         'bg-surface-200 dark:bg-surface-400': context.focused && !context.selected,
         'bg-primary-950': context.selected,
       },
 
       // States
       {
-        'hover:bg-surface-100 dark:hover:bg-surface-950': context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-950': context.focused && !context.selected,
       },
       { 'hover:bg-primary-800': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -189,14 +189,14 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
-      'bg-surface-0 dark:bg-surface-400/80',
+      'text-white/80',
+      'bg-surface-400/80',
 
       // Misc
       'cursor-auto',
     ],
   },
-  optionCheckIcon: 'relative -ms-1.5 me-1.5 text-surface-100 dark:text-white/80 w-4 h-4',
+  optionCheckIcon: 'relative -ms-1.5 me-1.5 text-white/80 w-4 h-4',
   optionBlankIcon: 'w-4 h-4',
   emptyMessage: {
     class: [
@@ -207,7 +207,7 @@ export default {
       'py-3 px-5',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-transparent',
     ],
   },
@@ -223,7 +223,7 @@ export default {
       'rounded-tr-md',
 
       // Color
-      'text-surface-100 dark:text-white/80',
+      'text-white/80',
       'bg-surface-100 dark:bg-surface-400',
       'border-surface-300 ',
     ],
@@ -243,7 +243,7 @@ export default {
     ],
   },
   loadingIcon: {
-    class: 'text-surface-100 dark:text-surface-50 animate-spin',
+    class: 'text-surface-50 animate-spin',
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',

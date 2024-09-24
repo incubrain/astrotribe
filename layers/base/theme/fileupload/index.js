@@ -16,7 +16,7 @@ export default {
       'flex-wrap',
 
       // Colors
-      'bg-surface-50',
+      '',
       'dark:bg-surface-400',
       'text-surface-100',
       'dark:text-white/80',

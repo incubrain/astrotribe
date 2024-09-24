@@ -5,7 +5,7 @@ const appLinks = ref([
   {
     id: 1,
     label: 'Home',
-    slug: '/astrotribe/',
+    slug: '/',
     icon: 'material-symbols:home-rounded',
     children: [
       // { id: 11, label: 'Discover', slug: '/discover', icon: 'ri:compass-discover-line' }
@@ -14,24 +14,22 @@ const appLinks = ref([
   {
     id: 2,
     label: 'News',
-    slug: '/astrotribe/news',
+    slug: '/news',
     icon: 'mdi:newspaper-variant-outline',
   },
   {
     id: 3,
     label: 'Companies',
-    slug: '/astrotribe/companies',
+    slug: '/companies',
     icon: 'material-symbols:location-on-rounded',
   },
   {
     id: 4,
     label: 'Q&A',
-    slug: '/astrotribe/ask',
+    slug: '/ask',
     icon: 'mdi:information-slab-box',
   },
 ] as PageType[])
-
-
 
 export default function usePages() {
   return {

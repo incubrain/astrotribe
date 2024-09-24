@@ -68,8 +68,7 @@ export default {
       {
         'text-surface-950':
           props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
-        'bg-surface-50 dark:bg-surface-50':
-          props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
+        '': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
         'border border-surface-800 dark:border-surface-800':
           props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
       },
@@ -226,7 +225,7 @@ export default {
 
       // Secondary
       {
-        'hover:bg-surface-50 hover:border-surface-600 dark:hover:border-surface-300':
+        'hover: hover:border-surface-600 dark:hover:border-surface-300':
           props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
       },
       {
@@ -299,7 +298,7 @@ export default {
       },
       // Contrast
       {
-        'hover:bg-surface-400 dark:hover:bg-surface-100 hover:border-surface-800 dark:hover:border-surface-100':
+        'hover:bg-surface-400 dark:hover:bg-surface-600 hover:border-surface-800 dark:hover:border-surface-100':
           props.severity === 'contrast' && !props.text && !props.outlined && !props.plain,
       },
       { 'focus:ring-surface-500 dark:focus:ring-surface-400': props.severity === 'contrast' },

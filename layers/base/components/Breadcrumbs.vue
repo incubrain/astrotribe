@@ -16,11 +16,11 @@ const formattedLinks = computed(() => {
       }
 
       // Special handling for the 'astrotribe' path
-      if (link.to === '/astrotribe') {
+      if (link.to === '/') {
         return { ...link, label: 'Home', ariaLabel: 'Home' }
       }
 
-      if (link.to === '/astrotribe/ask') {
+      if (link.to === '/ask') {
         return { ...link, label: 'Q&A', ariaLabel: 'Q&A' }
       }
 

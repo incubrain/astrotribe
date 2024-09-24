@@ -26,7 +26,7 @@ const comingSoon = [
     >
       <template #content>
         <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
-        <h3 class="text-lg pb-4 font-semibold text-primary-600">
+        <h3 class="text-primary-600 pb-4 text-lg font-semibold">
           AstroTribe Is Currently In Open Alpha
         </h3>
         <p>
@@ -46,7 +46,7 @@ const comingSoon = [
         </div>
       </template>
       <template #footer>
-        <NuxtLink to="/astrotribe/news">
+        <NuxtLink to="/news">
           <PrimeButton outlined> Explore Now </PrimeButton>
         </NuxtLink>
       </template>
@@ -66,7 +66,7 @@ const comingSoon = [
         </div>
       </template>
       <template #footer>
-        <NuxtLink to="/astrotribe/companies">
+        <NuxtLink to="/companies">
           <PrimeButton outlined> Search Companies </PrimeButton>
         </NuxtLink>
       </template>

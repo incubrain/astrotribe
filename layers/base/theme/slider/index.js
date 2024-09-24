@@ -4,7 +4,10 @@ export default {
       'relative',
 
       // Size
-      { 'h-1 w-60': props.orientation == 'horizontal', 'w-1 h-56': props.orientation == 'vertical' },
+      {
+        'h-1 w-60': props.orientation == 'horizontal',
+        'w-1 h-56': props.orientation == 'vertical',
+      },
 
       // Shape
       'border-0',
@@ -52,7 +55,7 @@ export default {
       'border-2',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-600',
+      'bg-surface-600',
       'border-primary',
 
       // States
@@ -85,7 +88,7 @@ export default {
       'border-2',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-600',
+      'bg-surface-600',
       'border-primary',
 
       // States
@@ -118,7 +121,7 @@ export default {
       'border-2',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-600',
+      'bg-surface-600',
       'border-primary',
 
       // States

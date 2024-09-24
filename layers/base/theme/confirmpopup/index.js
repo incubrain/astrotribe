@@ -13,8 +13,8 @@ export default {
       // Color
       'dark:border',
       '',
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-400',
+      'text-surface-0/80',
 
       // Before: Arrow
       'before:absolute before:w-0 before:-top-3 before:h-0 before:border-transparent before:border-solid before:ml-6 before:border-x-[0.75rem] before:border-b-[0.75rem] before:border-t-0 before:border-b-surface-0 dark:before:border-b-surface-800',
@@ -43,8 +43,8 @@ export default {
       'rounded-b-lg',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-400',
+      'text-surface-0/80',
     ],
   },
   transition: {

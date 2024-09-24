@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "nuxt": "^3.13.0",
+    "@nuxt/content": "^2.12.1",
     "@nuxtjs/supabase": "^1.4.0",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",

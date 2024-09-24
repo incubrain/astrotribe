@@ -22,8 +22,8 @@ export default {
       'shadow-lg',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-white/80',
+      'bg-surface-400',
+      'text-white/80',
       '',
 
       // Transitions
@@ -44,8 +44,8 @@ export default {
       'p-5',
 
       // Colors
-      'bg-surface-0 dark:bg-surface-400',
-      'text-surface-100 dark:text-surface-0/80',
+      'bg-surface-400',
+      'text-surface-0/80',
     ],
   },
   title: {
@@ -78,8 +78,8 @@ export default {
       'transition duration-200 ease-in-out',
 
       // States
-      'hover:text-surface-100 dark:hover:text-white/80',
-      'hover:bg-surface-100 dark:hover:bg-surface-400/80',
+      'hover:hover:text-white/80',
+      'hover:bg-surface-600 dark:hover:bg-surface-400/80',
       'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-inset',
       'focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
 

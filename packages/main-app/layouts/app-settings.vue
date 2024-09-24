@@ -3,7 +3,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-account',
     label: 'Account Profile',
-    url: `/astrotribe/profile/settings/profile`,
+    url: `/profile/settings/profile`,
     icon: 'material-symbols:home',
     visible: true,
     disabled: false,
@@ -11,7 +11,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-password',
     label: 'Update Password',
-    url: `/astrotribe/profile/settings/password`,
+    url: `/profile/settings/password`,
     icon: 'material-symbols:key',
     visible: true,
     disabled: false,
@@ -19,7 +19,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-payments',
     label: 'Payments',
-    url: `/astrotribe/profile/settings/payments`,
+    url: `/profile/settings/payments`,
     icon: 'mdi:credit-card',
     visible: true,
     disabled: false,
@@ -27,7 +27,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-notifications',
     label: 'Notifications',
-    url: `/astrotribe/profile/settings/notifications`,
+    url: `/profile/settings/notifications`,
     icon: 'material-symbols:notifications',
     visible: true,
     disabled: true,

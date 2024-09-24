@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const props = defineProps({
   bpSection: {
     type: String,
@@ -25,7 +26,7 @@ console.log('bpMarkdown', bpMarkdown)
     <MDC
       :value="bpMarkdown"
       tag="article"
-      class="list-item-primary-700 background custom-content prose prose-lg mx-auto w-full rounded-md p-8 marker:h-3 marker:w-3 marker:text-primary-700 prose-headings:no-underline prose-h1:border-b-0 prose-h2:border-b-0 prose-h3:border-b-0 prose-h4:border-b-0 prose-h5:border-b-0 prose-h6:border-b-0"
+      class="list-item-primary-700 background custom-content prose prose-lg marker:text-primary-700 prose-headings:no-underline prose-h1:border-b-0 prose-h2:border-b-0 prose-h3:border-b-0 prose-h4:border-b-0 prose-h5:border-b-0 prose-h6:border-b-0 mx-auto w-full rounded-md p-8 marker:h-3 marker:w-3"
     />
   </div>
 </template>
@@ -67,7 +68,6 @@ console.log('bpMarkdown', bpMarkdown)
 /* List items */
 .custom-content li {
   color: #c8c8c8;
-
 }
 
 .custom-content ul {
@@ -75,8 +75,8 @@ console.log('bpMarkdown', bpMarkdown)
 }
 
 .custom-content ul li::before {
-  content: "💡";  /* You can use any character or emoji here */
-  color: #f2f4f6;  /* Choose your desired color */
+  content: '💡'; /* You can use any character or emoji here */
+  color: #f2f4f6; /* Choose your desired color */
   display: inline-block;
   width: 1em;
   margin-left: -1em;

@@ -10,8 +10,6 @@ import {
 definePageMeta({
   layoutTransition: false,
   name: 'Socials',
-  
-  middleware: 'is-admin',
 })
 
 // todo:med:hard:8 create tables for and store social snapshots in the database
