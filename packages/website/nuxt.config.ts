@@ -1,5 +1,4 @@
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -9,19 +8,23 @@ const og = {
   url: 'https://www.astronera.org',
 }
 
-
 // const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
+  workspaceDir: '../../',
   extends: ['../../layers/base'],
   ssr: true,
-  modules: ['@nuxt/content', '@nuxtjs/seo'],
+  modules: ['@nuxt/content', '@nuxtjs/seo', '@primevue/nuxt-module'],
 
   experimental: {
     inlineRouteRules: true,
     asyncContext: true,
   },
 
+  devServer: {
+    host: 'localhost',
+    port: 3000,
+  },
 
   site: {
     url: og.url,
@@ -85,6 +88,14 @@ export default defineNuxtConfig({
         { src: 'https://www.youtube.com/iframe_api', async: true, type: 'text/partytown' },
       ],
     },
+  },
+
+  imports: {
+    autoImport: true,
+  },
+
+  vite: {
+    plugins: [nxViteTsPaths()]
   },
 
   compatibilityDate: '2024-09-22',

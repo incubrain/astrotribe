@@ -18,94 +18,82 @@ const isSidebarExpanded = ref(false)
 </script>
 
 <template>
-  <transition name="sidebar">
-    <div
-      v-if="show"
-      class="fixed inset-y-0 right-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-300 md:static md:inset-0"
-      :class="{
-        'translate-x-0': isSidebarOpen,
-        'translate-x-full': !isSidebarOpen,
-        'md:translate-x-0': true,
-      }"
+  <!-- Hamburger Icon for Mobile -->
+  <button
+    class="fixed left-4 top-4 z-50 md:hidden"
+    @click="isSidebarOpen = !isSidebarOpen"
+  >
+    <!-- Hamburger SVG Icon -->
+    <svg
+      class="h-6 w-6 text-black"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <PrimeMenu
-        :model="links"
-        :pt="{
-          root: 'min-h-full flex flex-col rounded-none border-none p-0 w-full h-full hidden md:flex',
-          menu: 'pt-8',
-        }"
-      >
-        <template #start>
-          <div
-            class="flex min-h-[60px] items-center p-3"
-            :class="{ 'justify-center': !isSidebarOpen, 'justify-start': isSidebarOpen }"
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+  </button>
+
+  <!-- Sidebar -->
+  <div
+    :class="[
+      'fixed inset-y-0 left-0 z-40 flex flex-col bg-white shadow-lg transition-all duration-300',
+      isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
+      'md:translate-x-0', // Always visible on md and up
+    ]"
+    @mouseover="isSidebarExpanded = true"
+    @mouseleave="isSidebarExpanded = false"
+  >
+    <!-- Adjust the width based on expansion -->
+    <div
+      :class="[
+        'transition-width flex h-full flex-col overflow-hidden duration-300',
+        isSidebarExpanded ? 'w-64' : 'w-16',
+      ]"
+    >
+      <!-- Sidebar Content -->
+      <div class="flex h-16 items-center justify-center">
+        <NuxtLink to="/">
+          <Icon
+            name="mdi:rocket"
+            size="24px"
+          />
+        </NuxtLink>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1">
+        <ul>
+          <li
+            v-for="item in links"
+            :key="item.slug"
           >
             <NuxtLink
-              to="/"
-              class="flex items-center gap-2"
+              :to="item.slug"
+              class="flex items-center p-4 hover:bg-gray-100"
             >
               <Icon
-                v-if="!isSidebarOpen"
-                name="mdi:rocket"
-                size="20px"
+                :name="item.icon"
+                size="24px"
               />
-              <h1
-                v-else
-                class="flex cursor-pointer whitespace-nowrap text-lg font-bold leading-none tracking-normal"
-              >
-                ASTRO
-                <strong class="text-highlight"> TRIBE </strong>
-              </h1>
-            </NuxtLink>
-          </div>
-        </template>
-        <template #submenuheader="{ item }">
-          <p v-if="isSidebarOpen">something here to {{ item }}</p>
-        </template>
-        <template #item="{ item }">
-          <div class="w-full">
-            <NuxtLink
-              :to="item.slug"
-              class="block w-full"
-            >
               <span
-                class="relative flex w-full items-center rounded-[.5rem_0_0_.5rem] p-3.5 text-sm"
-                :class="[
-                  route.path === item.slug ? 'foreground' : '',
-                  isSidebarOpen ? 'justify-start' : 'justify-center',
-                ]"
+                v-if="isSidebarExpanded"
+                class="ml-4 whitespace-nowrap"
               >
-                <Icon
-                  :name="item.icon"
-                  class="flex shrink-0"
-                  size="20px"
-                />
-                <span
-                  v-show="isSidebarOpen"
-                  class="overflow-hidden whitespace-nowrap pl-4"
-                >
-                  {{ item.label }}
-                </span>
+                {{ item.label }}
               </span>
             </NuxtLink>
-          </div>
-        </template>
-      </PrimeMenu>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </transition>
+  </div>
 </template>
 
-<style scoped>
-.sidebar-enter-active,
-.sidebar-leave-active {
-  transition: transform 0.3s ease;
-}
-.sidebar-enter-from,
-.sidebar-leave-to {
-  transform: translateX(100%);
-}
-.sidebar-enter-to,
-.sidebar-leave-from {
-  transform: translateX(0);
-}
-</style>
+<style scoped></style>

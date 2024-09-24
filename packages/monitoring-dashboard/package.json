@@ -19,7 +19,7 @@
     "@nuxtjs/seo": "^2.0.0-rc.21",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
-    "@primevue/nuxt-module": "^4.0.6",
+    "@primevue/nuxt-module": "^4.0.7",
     "@tailwindcss/typography": "^0.5.12",
     "eslint": "^9.11.0",
     "lerna": "^8.1.8",
