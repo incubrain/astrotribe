@@ -4,6 +4,9 @@
 dist
 tmp
 /out-tsc
+.env
+.npm_token
+
 
 # dependencies
 node_modules
