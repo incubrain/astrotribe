@@ -1,29 +1,25 @@
 #!/bin/bash
 
-echo "Building all packages in order..."
+# Function to build a project
+build_project() {
+    echo "Building $1..."
+    nx build $1
+    if [ $? -ne 0 ]; then
+        echo "Error building $1"
+        exit 1
+    fi
+}
 
-# Build base layer first
-echo "Building base layer..."
-npx lerna run build --scope=base-nuxt-layer
+# Build auth-service first
+build_project auth-service
 
-# Check if base layer build was successful
-if [ $? -ne 0 ]; then
-    echo "Base layer build failed. Exiting."
-    exit 1
-fi
+# Build other projects in parallel
+build_project website &
+build_project admin-dashboard &
+build_project main-app &
+build_project monitoring-dashboard &
 
-# Build auth-service next
-echo "Building auth-service..."
-npx lerna run build --scope=auth-service
+# Wait for all background processes to finish
+wait
 
-# Check if auth-service build was successful
-if [ $? -ne 0 ]; then
-    echo "Auth-service build failed. Exiting."
-    exit 1
-fi
-
-# Build all remaining packages
-echo "Building remaining packages..."
-npx lerna run build --ignore=base-nuxt-layer --ignore=auth-service
-
-echo "All packages built."
+echo "All projects built successfully!"

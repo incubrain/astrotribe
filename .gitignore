@@ -17,6 +17,7 @@ tmp
 /out-tsc
 .env
 .npm_token
+*.eslintcache
 
 # dependencies
 node_modules
