@@ -2,7 +2,15 @@
   "name": "@packages/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev:website": "nx serve website",
+    "start:auth": "nx serve auth-service",
+    "start:main": "nx serve main-app",
+    "start:monitoring": "nx serve monitoring-dashboard",
+    "dev:admin": "nx serve admin-dashboard",
+    "dev:all": "scripts/run-all.sh",
+    "build:all": "scripts/build-all.sh"
+  },
   "private": true,
   "dependencies": {
     "@nuxt/content": "^2.13.2",
