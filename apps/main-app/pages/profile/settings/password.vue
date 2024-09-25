@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const schema = [
   {
     id: 'new_password',
@@ -52,6 +53,20 @@ function handlePasswordUpdate() {
   }
 
   auth.password.update(new_password);
+}
+
+function handlePasswordUpdate() {
+  const { new_password, confirm_new_password } = schema.reduce((acc, field) => ({ ...acc, [field.id]: field.value.value }), {
+    new_password: '',
+    confirm_new_password: '',
+  })
+
+  if (new_password !== confirm_new_password) {
+    toast.error({ summary: 'Passwords Don\'t Match', message: 'The two passwords entered don\'t match' })
+    return
+  }
+
+  auth.password.update(new_password)
 }
 
 definePageMeta({
