@@ -1,4 +1,14 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+node_modules
+.env
+
+# CI
+.unlighthouse
+/test-results/
+/blob-report/
+.lighthouseci
+.clinic
+
+
 
 # compiled output
 dist
@@ -40,9 +50,12 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+data/logs
+docs/**
+
 
 # System Files
-.DS_Store
+.
 Thumbs.db
 
 .nx/cache
