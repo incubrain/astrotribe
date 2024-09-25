@@ -1,8 +1,0 @@
-{
-  "name": "auth-service",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "sourceRoot": "packages/auth-service",
-  "// targets": "to see all targets run: nx show project auth-service --web",
-  "targets": {}
-}

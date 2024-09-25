@@ -1,0 +1,30 @@
+[
+  {
+    "account": {
+      "id": 1,
+      "given_name": "Shweta",
+      "surname": "Kulkarni",
+      "email": "shweta@gmail.com",
+      "phone": 7145895443,
+      "avatar": "/images/team/shweta-kulkarni.jpg",
+      "introduction": "some info about the person",
+      "favourite_quote": "fav quoteeee"
+    },
+    "notifications": "placeholder",
+    "billing": "placeholder"
+  },
+  {
+    "account": {
+      "id": 2,
+      "given_name": "Drew",
+      "surname": "MacGibbon",
+      "email": "drew@gmail.com",
+      "phone": 4559762188,
+      "avatar": "/images/team/drew-macgibbon.jpg",
+      "introduction": "some info about the person",
+      "favourite_quote": "fav quoteeee"
+    },
+    "notifications": "placeholder",
+    "billing": "placeholder"
+  }
+]

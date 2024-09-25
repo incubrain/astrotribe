@@ -1,0 +1,52 @@
+{
+  "name": "base-nuxt-layer",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "dev": "nuxi dev .playground",
+    "dev:prepare": "nuxt prepare .playground",
+    "build": "nuxt build .playground",
+    "generate": "nuxt generate .playground",
+    "preview": "nuxt preview .playground",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@iconify-json/material-symbols": "^1.1.48",
+    "@iconify-json/mdi": "^1.1.52",
+    "@nuxt/eslint": "latest",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@parcel/watcher": "^2.4.1",
+    "@pinia/nuxt": "^0.5.1",
+    "@tailwindcss/typography": "^0.5.12",
+    "@types/node": "^22.5.4",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^9.11.0",
+    "prettier": "^3.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.1",
+    "uuid": "^10.0.0",
+    "vite-plugin-eslint2": "^4.4.0",
+    "webpack-bundle-analyzer": "^4.10.2"
+  },
+  "dependencies": {
+    "@primevue/nuxt-module": "^4.0.7",
+    "@sentry/vue": "^8.25.0",
+    "@vueuse/core": "^11.1.0",
+    "@vueuse/integrations": "^11.1.0",
+    "@vueuse/nuxt": "^11.1.0",
+    "change-case": "^5.4.4",
+    "nuxt": "^3.13.0",
+    "pinia": "^2.2.2",
+    "posthog-js": "^1.128.1",
+    "primevue": "^4.0.7",
+    "sass": "^1.63.4",
+    "tailwindcss-primeui": "^0.3.4",
+    "winston": "^3.13.0",
+    "zod": "^3.22.8"
+  },
+  "peerDependencies": {
+    "@nuxtjs/supabase": "^1.4.0",
+    "nuxt": "^3.13.0",
+    "nuxt-security": "^2.0.0-rc.9"
+  }
+}
