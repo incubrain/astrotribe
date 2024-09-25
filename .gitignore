@@ -7,7 +7,6 @@ tmp
 .env
 .npm_token
 
-
 # dependencies
 node_modules
 .env
