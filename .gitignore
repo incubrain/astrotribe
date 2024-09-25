@@ -67,4 +67,6 @@ Thumbs.db
 .data
 .nuxt
 .nitro
-.cache
+.cache.npm_token
+supabase/functions/.env
+.env
