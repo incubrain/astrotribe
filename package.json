@@ -5,10 +5,6 @@
     "node": ">=20.17.0",
     "npm": ">=10.8.2"
   },
-  "resolutions": {
-    "primevue": "^4.0.7",
-    "@primevue/nuxt-module": "^4.0.7"
-  },
   "scripts": {
     "start": "nx serve website",
     "buildsnpm": "nx build website",
@@ -39,8 +35,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@iconify-json/material-symbols": "^1.1.48",
+    "@iconify-json/mdi": "^1.1.52",
     "@nuxt/devtools": "^1.0.0",
-    "@nuxt/eslint": "latest",
+    "@nuxt/eslint": "^0.5.7",
     "@nuxt/eslint-config": "^0.5.7",
     "@nuxt/icon": "^1.5.1",
     "@nuxt/image": "^1.8.0",
@@ -56,12 +54,14 @@
     "@nx/vite": "^19.8.0",
     "@nx/web": "^19.8.0",
     "@nx/workspace": "^19.8.0",
+    "@parcel/watcher": "^2.4.1",
     "@pinia/nuxt": "^0.5.1",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "^0.5.13",
     "@tailwindcss/typography": "^0.5.12",
     "@types/node": "^18.16.9",
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
@@ -76,15 +76,18 @@
     "nx": "^19.8.0",
     "pg": "^8.13.0",
     "pg-pool": "^3.7.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
+    "prettier-plugin-tailwindcss": "^0.6.1",
     "typescript": "~5.5.2",
     "typescript-eslint": "^8.7.0",
+    "uuid": "^10.0.0",
     "vite": "^5.4.7",
     "vite-plugin-eslint2": "^4.4.0",
     "vitest": "^1.6.0",
     "vue": "^3.5.8",
     "vue-router": "^4.4.5",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^2.1.6",
+    "webpack-bundle-analyzer": "^4.10.2"
   },
   "dependencies": {
     "@incubrain/logger": "^0.0.1",
@@ -95,11 +98,16 @@
     "@vueuse/core": "^11.1.0",
     "@vueuse/integrations": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
+    "change-case": "^5.4.4",
+    "nuxt": "^3.13.0",
     "nuxt-security": "^2.0.0-rc.9",
     "pinia": "^2.2.2",
     "posthog-js": "^1.128.1",
     "primevue": "^4.0.7",
+    "sass": "^1.63.4",
+    "swiper": "^11.1.14",
     "tailwindcss-primeui": "^0.3.4",
+    "winston": "^3.13.0",
     "zod": "^3.22.8"
   }
 }
