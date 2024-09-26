@@ -4,5 +4,12 @@
   "projectType": "application",
   "sourceRoot": "apps/admin-dashboard",
   "// targets": "to see all targets run: nx show project admin-dashboard --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --config eslint.config.js ."
+      }
+    }
+  }
 }
