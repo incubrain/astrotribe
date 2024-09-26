@@ -3,7 +3,6 @@ import { defineEventHandler, createError } from 'h3'
 import { PDFDocument } from 'pdf-lib'
 import lame from 'node-lame'
 import ffmpeg from 'fluent-ffmpeg'
-import sharp from 'sharp'
 import { serverSupabaseClient } from '#supabase/server'
 
 // Base optimizer interface
@@ -19,16 +18,16 @@ interface FileOptimizer {
 }
 
 // Image optimizer using Sharp
-class ImageOptimizer implements FileOptimizer {
-  async optimize(buffer: Buffer, options: any) {
-    const { maxWidth = 1920, maxHeight = 1080, quality = 80 } = options
-    const optimized = await sharp(buffer)
-      .resize(maxWidth, maxHeight, { fit: 'inside', withoutEnlargement: true })
-      .webp({ quality })
-      .toBuffer()
-    return { data: optimized, extension: 'webp', mimeType: 'image/webp' }
-  }
-}
+// class ImageOptimizer implements FileOptimizer {
+//   async optimize(buffer: Buffer, options: any) {
+//     const { maxWidth = 1920, maxHeight = 1080, quality = 80 } = options
+//     const optimized = await sharp(buffer)
+//       .resize(maxWidth, maxHeight, { fit: 'inside', withoutEnlargement: true })
+//       .webp({ quality })
+//       .toBuffer()
+//     return { data: optimized, extension: 'webp', mimeType: 'image/webp' }
+//   }
+// }
 
 // PDF optimizer using pdf-lib
 class PDFOptimizer implements FileOptimizer {
@@ -96,7 +95,7 @@ class OptimizerFactory {
 
 // Create and configure the optimizer factory
 const optimizerFactory = new OptimizerFactory()
-optimizerFactory.register('image', new ImageOptimizer())
+// optimizerFactory.register('image', new ImageOptimizer())
 optimizerFactory.register('application/pdf', new PDFOptimizer())
 optimizerFactory.register('video', new VideoOptimizer())
 optimizerFactory.register('audio', new AudioOptimizer())

@@ -24,7 +24,6 @@ console.log('research', research)
 
 definePageMeta({
   name: 'Research',
-  layout: 'app',
 })
 </script>
 

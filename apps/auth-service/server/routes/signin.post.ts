@@ -1,6 +1,4 @@
-// server/api/auth/signin.post.ts
 export default defineEventHandler(async (event) => {
-  // ... authentication logic
 
   if (authenticated) {
     setCookie(event, 'auth_token', token, {
@@ -12,5 +10,4 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // ... return response
 })

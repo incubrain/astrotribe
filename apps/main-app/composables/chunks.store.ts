@@ -116,7 +116,6 @@ export const useChunksStore = defineStore('chunksStore', () => {
         response = await client.from('research').select().textSearch('fts', formattedSearch)
       }
 
-      console.log('response:', response)
       similarChunks.value.push(...response.data)
     } catch (error: any) {
       throw new Error(error.message)

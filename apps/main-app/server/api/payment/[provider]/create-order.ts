@@ -35,7 +35,6 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    console.log('response:', response)
     return response
   } catch (error) {
     console.error(`Error creating order with ${provider}:`, error)

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
   name: 'AstroTribe',
-  layout: 'app',
 })
 
 const userStore = useCurrentUser()

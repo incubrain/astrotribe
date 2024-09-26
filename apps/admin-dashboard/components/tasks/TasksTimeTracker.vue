@@ -15,13 +15,15 @@ const startGlobalTimer = inject('startGlobalTimer') as (taskTitle: string) => vo
 const stopGlobalTimer = inject('stopGlobalTimer') as () => void
 
 function startTimer() {
-  isTracking.value = true
-  startTime = Date.now()
-  timer = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 60000)
-    emit('update:timeSpent', props.goal.timeSpent + elapsed)
-  }, 60000)
-  startGlobalTimer(props.goal.title)
+  if (import.meta.client) {
+    isTracking.value = true
+    startTime = Date.now()
+    timer = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 60000)
+      emit('update:timeSpent', props.goal.timeSpent + elapsed)
+    }, 60000)
+    startGlobalTimer(props.goal.title)
+  }
 }
 
 function stopTimer() {

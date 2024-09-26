@@ -14,7 +14,7 @@ const { items: companies } = storeToRefs(store)
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
 
-definePageMeta({ name: 'Companies', layout: 'app' })
+definePageMeta({ name: 'Companies' })
 </script>
 
 <template>

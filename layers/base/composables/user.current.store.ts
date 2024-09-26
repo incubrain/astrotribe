@@ -1,6 +1,7 @@
 const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
+  const { authUrl } = useRuntimeConfig().public
   const logger = useLogger(DOMAIN_KEY)
   const errors = useBaseError()
   const loading = useLoadingStore()
@@ -14,7 +15,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   // assign Posthog identify
 
   async function removeSession() {
-    const response = await fetch('/api/auth/logout')
+    const response = await fetch(`${authUrl}/logout`)
     console.log('removeSession', response)
     profile.value = null
   }
@@ -33,7 +34,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
     loading.setLoading(DOMAIN_KEY, true)
 
-    const response = await fetch('/api/auth/session', {
+    const response = await fetch(`${authUrl}/session`, {
       method: 'GET',
     })
 
@@ -112,7 +113,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         logger.info('Using mock API call')
         response = await mockApiCall(data)
       } else {
-        response = await $fetch(`/api/users/update`, {
+        response = await $fetch('/api/users/update', {
           method: 'POST',
           body: JSON.stringify(data),
         })
@@ -122,8 +123,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       const validData = errors.server({
         response,
         devOnly: false,
-        devMessage: `Error updating user profile`,
-        userMessage: `There was an error updating your profile after action`,
+        devMessage: 'Error updating user profile',
+        userMessage: 'There was an error updating your profile after action',
       })
 
       logger.info('Successfully validated server response', { validData })
@@ -159,7 +160,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
     for (const testCase of testCases) {
       try {
-        console.log(`Testing with data:`, testCase)
+        console.log('Testing with data:', testCase)
         await updateProfile(testCase, true) // Use mock API
         console.log('Test passed successfully')
       } catch (error) {

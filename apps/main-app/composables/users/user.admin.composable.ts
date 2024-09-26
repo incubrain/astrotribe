@@ -16,7 +16,7 @@ export function useAdmin() {
   const toast = useNotification()
   const createdUsers = ref([] as NewUser[])
 
-  const register = async ({ email, password }: { email: string, password: string }) => {
+  const register = async ({ email, password }: { email: string; password: string }) => {
     const { data, error } = await client.auth.signUp({
       email,
       password,
@@ -107,8 +107,6 @@ export function useAdmin() {
           id: newData.id,
         },
       })
-
-      console.log('data:', response)
 
       const data = errors.server({
         response,
