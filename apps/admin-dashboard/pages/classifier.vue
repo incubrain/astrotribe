@@ -150,7 +150,7 @@ const getLabelSeverity = (label) => {
 
 <template>
   <div class="flex h-full flex-col">
-    <PrimeSplitter class="h-full">
+    <PrimeSplitter class="h-full border-color">
       <PrimeSplitterPanel
         class="h-full overflow-scroll p-4"
         :size="25"
