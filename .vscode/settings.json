@@ -1,0 +1,7 @@
+{
+  "prettier.requireConfig": true,
+  "prettier.configPath": "./prettier.config.mjs",
+  "prettier.resolveGlobalModules": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

@@ -44,9 +44,26 @@
       }
     }
   ],
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e", "format", "format:check"]
+      }
+    }
+  },
   "targetDefaults": {
     "e2e-ci--**/*": {
       "dependsOn": ["^build-static"]
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+    },
+    "format": {
+      "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
+    },
+    "format:check": {
+      "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
     }
   }
 }
