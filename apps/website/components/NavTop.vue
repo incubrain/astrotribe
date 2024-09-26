@@ -86,7 +86,7 @@ const websiteLinks = [
         key: 'blog-home',
         label: 'All',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog',
+        url: '/blog/all',
         visible: true,
         disabled: false,
       },
