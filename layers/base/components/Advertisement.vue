@@ -83,7 +83,9 @@ const sendMetrics = async () => {
   }
 }
 
+const intervalId = ref(null as NodeJS.Timeout | null)
 onMounted(() => {
+  intervalId.value = setInterval(sendMetrics, sendInterval)
   loadActiveAds()
   activeAds.value.forEach((ad) => trackImpression(ad.id))
 })
@@ -96,10 +98,8 @@ watch(
   { deep: true },
 )
 
-const intervalId = setInterval(sendMetrics, sendInterval)
-
 onUnmounted(() => {
-  clearInterval(intervalId)
+  clearInterval(intervalId.value!)
   sendMetrics() // Send any remaining metrics before unmounting
 })
 </script>

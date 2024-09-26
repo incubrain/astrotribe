@@ -23,7 +23,7 @@ watchEffect(() => {
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
 
-definePageMeta({ name: 'Events', layout: 'app' })
+definePageMeta({ name: 'Events' })
 </script>
 
 <template>

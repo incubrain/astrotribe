@@ -12,10 +12,6 @@ export default defineNuxtConfig({
 
   modules: [],
 
-  // vite: {
-  //   plugins: [nxViteTsPaths()],
-  // },
-
   imports: {
     autoImport: true,
   },

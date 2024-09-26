@@ -13,7 +13,7 @@ const items = computed(() => {
   const menuItems = [
     {
       label: 'Settings',
-      command: () => router.push(`/profile/settings/profile`),
+      command: () => router.push('/profile/settings/profile'),
     },
     {
       label: 'Logout',
@@ -24,7 +24,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => router.push(`/admin/`),
+      command: () => router.push('/admin/'),
     })
   }
 

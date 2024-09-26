@@ -25,7 +25,6 @@ const isLoading = computed(() => loading.isLoading(domainKey))
 
 definePageMeta({
   name: 'News',
-  layout: 'app',
 })
 </script>
 

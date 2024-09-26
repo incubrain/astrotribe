@@ -27,8 +27,8 @@ const agents: ChatAgent[] = [
     enabled: true,
     starterPrompts: [
       'Can you explain black holes in a way that would captivate a 10-year-old?',
-      'What\'s the most mind-blowing fact about our universe that you can share?',
-      'How would you describe the concept of light-years to someone who\'s never heard of it before?',
+      "What's the most mind-blowing fact about our universe that you can share?",
+      "How would you describe the concept of light-years to someone who's never heard of it before?",
     ],
   },
   {
@@ -44,7 +44,7 @@ const agents: ChatAgent[] = [
     enabled: true,
     starterPrompts: [
       'What are the top 3 companies currently leading in commercial space flight, and how do they compare?',
-      'I\'m an aerospace engineer looking for job opportunities. Which companies should I be watching?',
+      "I'm an aerospace engineer looking for job opportunities. Which companies should I be watching?",
       'Can you provide a brief analysis of the current trends in the satellite industry?',
     ],
   },
@@ -60,7 +60,7 @@ const agents: ChatAgent[] = [
       'You are an expert news reporter specializing in astronomy and space news. Your knowledge is based on a constantly updated database of news articles. When asked, provide the latest developments in the field, offer expert analysis, and explain the significance of recent news stories. Your reporting should be accurate, engaging, and informative.',
     enabled: true,
     starterPrompts: [
-      'What\'s the most significant space exploration news from the past week?',
+      "What's the most significant space exploration news from the past week?",
       'Can you give me an update on the latest developments in the search for exoplanets?',
       'What are the potential implications of the most recent Mars rover discoveries?',
     ],
@@ -77,9 +77,9 @@ const agents: ChatAgent[] = [
       'You are an astronomy fact generator. Your purpose is to share interesting and fun facts about astronomy and space. When prompted, randomly select a topic from your vast knowledge base and provide a fascinating fact along with a brief, engaging explanation. Your facts should spark curiosity and encourage further exploration of astronomical topics.',
     enabled: true,
     starterPrompts: [
-      'Tell me an interesting fact about Saturn\'s rings.',
+      "Tell me an interesting fact about Saturn's rings.",
       'Share a mind-blowing fact about the scale of the universe.',
-      'What\'s a surprising fact about stars that most people don\'t know?',
+      "What's a surprising fact about stars that most people don't know?",
     ],
   },
   {
@@ -96,7 +96,7 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you find recent papers on dark matter detection methods?',
       'What are the key findings from the latest research on exoplanet atmospheres?',
-      'I\'m interested in radio astronomy. What are some fundamental papers I should read to get started?',
+      "I'm interested in radio astronomy. What are some fundamental papers I should read to get started?",
     ],
   },
   {
@@ -111,8 +111,8 @@ const agents: ChatAgent[] = [
       'You are a Space Station Life Simulator, an expert on daily life and challenges of living in space. Your role is to provide accurate, detailed, and engaging descriptions of life aboard a space station, drawing from real astronaut experiences and scientific knowledge.',
     enabled: true,
     starterPrompts: [
-      'What\'s the most challenging aspect of personal hygiene in space?',
-      'Describe a typical \'day\' for an astronaut on the International Space Station.',
+      "What's the most challenging aspect of personal hygiene in space?",
+      "Describe a typical 'day' for an astronaut on the International Space Station.",
       'How do astronauts exercise in zero gravity, and why is it so important?',
     ],
   },
@@ -128,7 +128,7 @@ const agents: ChatAgent[] = [
       'You are a Dark Matter & Energy Theorist, well-versed in current theories and research on these mysterious components of the universe. Your goal is to explain complex concepts in an understandable way, discuss ongoing research, and explore the implications for our understanding of the universe.',
     enabled: true,
     starterPrompts: [
-      'What\'s the strongest evidence we have for the existence of dark matter?',
+      "What's the strongest evidence we have for the existence of dark matter?",
       'How does dark energy affect the expansion of the universe?',
       'What are some alternative theories to dark matter and dark energy?',
     ],
@@ -147,7 +147,7 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you explain how a rocket generates thrust in simple terms?',
       'What are the main differences between liquid and solid fuel rockets?',
-      'What\'s the concept behind reusable rockets, and why are they important?',
+      "What's the concept behind reusable rockets, and why are they important?",
     ],
   },
   {
@@ -196,7 +196,7 @@ const agents: ChatAgent[] = [
       'You are an Astrophotography Coach, skilled in the art and science of capturing stunning astronomical images. Your role is to offer tips and techniques for astrophotography, explain equipment choices, and provide guidance on image processing to help users create beautiful cosmic photographs.',
     enabled: true,
     starterPrompts: [
-      'What\'s the best way to start astrophotography on a budget?',
+      "What's the best way to start astrophotography on a budget?",
       'Can you explain the technique of stacking in astrophotography?',
       'What settings should I use to photograph the Milky Way?',
     ],
@@ -232,14 +232,14 @@ const agents: ChatAgent[] = [
     starterPrompts: [
       'Can you explain the size of our solar system using a relatable analogy?',
       'How can we visualize the distance to the nearest star beyond our Sun?',
-      'What\'s a good way to understand the scale of the Milky Way galaxy?',
+      "What's a good way to understand the scale of the Milky Way galaxy?",
     ],
   },
 ]
 
 const chatStore = useChatStore()
 
-definePageMeta({ name: 'Q&A', layout: 'app' })
+definePageMeta({ name: 'Q&A' })
 
 const selectedAgent = ref(null as ChatAgent | null)
 const message = ref('')
@@ -279,11 +279,7 @@ const responsiveOptions = ref([
 </script>
 
 <template>
-  <div class="flex h-[calc(100vh-92px)] flex-col">
-    <!-- Header and Carousel -->
-
-    <!-- Scrollable Message Area -->
-
+  <div class="flex h-[calc(100vh-32px)] flex-col">
     <div
       class="mx-auto grid h-full max-w-[1000px] grid-cols-1 overflow-scroll p-4 md:grid-cols-[1fr_minmax(200px,700px)_1fr]"
     >
@@ -378,7 +374,7 @@ const responsiveOptions = ref([
 
     <!-- Fixed Bottom Bar -->
 
-    <div class="foreground border-color flex-shrink-0 border-t bg-surface-0 p-4">
+    <div class="foreground border-color flex-shrink-0 border-t p-4">
       <div class="mx-auto max-w-[600px]">
         <div
           v-if="selectedStarterPrompts.length"

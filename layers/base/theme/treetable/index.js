@@ -112,7 +112,7 @@ export default {
       // Color
       'dark:text-white/80',
       { 'bg-highlight': context.selected },
-      { 'bg-surface-0 text-surface-600 dark:bg-surface-400': !context.selected },
+      { 'text-surface-600 bg-surface-400': !context.selected },
 
       // Hover & Flexbox
       {

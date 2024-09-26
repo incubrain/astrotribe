@@ -1,5 +1,20 @@
 <script lang="ts" setup>
-const links = useBreadcrumbItems()
+const route = useRoute()
+
+const generateBreadcrumbs = (path: string) => {
+  const pathParts = path.split('/').filter(Boolean)
+  let currentPath = ''
+  return pathParts.map((part) => {
+    currentPath += `/${part}`
+    return {
+      to: currentPath,
+      label: part.charAt(0).toUpperCase() + part.slice(1),
+      ariaLabel: part.charAt(0).toUpperCase() + part.slice(1),
+    }
+  })
+}
+
+const links = computed(() => generateBreadcrumbs(route.path))
 
 // Prepare links by filtering and adjusting labels
 const formattedLinks = computed(() => {
@@ -32,7 +47,7 @@ const formattedLinks = computed(() => {
 
 <template>
   <PrimeBreadcrumb
-    v-if="formattedLinks"
+    v-if="formattedLinks.length"
     :model="formattedLinks"
     :pt="{
       root: 'foreground p-0 flex items-center justify-start',

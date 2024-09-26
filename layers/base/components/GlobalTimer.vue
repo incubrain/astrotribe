@@ -8,6 +8,8 @@ let startTime: number
 let pausedTime = 0
 
 function startTimer() {
+  if (!import.meta.client) return
+
   if (!isTracking.value) {
     isTracking.value = true
     startTime = Date.now() - pausedTime
