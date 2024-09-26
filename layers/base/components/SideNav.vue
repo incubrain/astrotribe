@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 defineProps({
   links: {
@@ -10,11 +10,11 @@ defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 
-const route = useRoute()
-const isSidebarOpen = ref(false) // Mobile specific
-const isSidebarExpanded = ref(false)
+const route = useRoute();
+const isSidebarOpen = ref(false); // Mobile specific
+const isSidebarExpanded = ref(false);
 </script>
 
 <template>
@@ -43,9 +43,9 @@ const isSidebarExpanded = ref(false)
   <!-- Sidebar -->
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-40 flex flex-col bg-white shadow-lg transition-all duration-300',
+      'fixed inset-y-0 left-0 z-40 flex flex-col background shadow-lg transition-all duration-300',
       isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
-      'md:translate-x-0', // Always visible on md and up
+      'md:translate-x-0',
     ]"
     @mouseover="isSidebarExpanded = true"
     @mouseleave="isSidebarExpanded = false"
@@ -60,31 +60,28 @@ const isSidebarExpanded = ref(false)
       <!-- Sidebar Content -->
       <div class="flex h-16 items-center justify-center">
         <NuxtLink to="/">
-          <Icon
-            name="mdi:rocket"
-            size="24px"
-          />
+          <Icon name="mdi:rocket" size="24px" />
         </NuxtLink>
       </div>
 
       <!-- Navigation Links -->
       <nav class="flex-1">
         <ul>
-          <li
-            v-for="item in links"
-            :key="item.slug"
-          >
+          <li v-for="item in links" :key="item.slug">
             <NuxtLink
               :to="item.slug"
-              class="flex items-center p-4 hover:bg-gray-100"
+              class="flex items-center p-4 hover:bg-primary-900"
             >
               <Icon
                 :name="item.icon"
                 size="24px"
+                class="flex shrink-0 min-w-[24px]"
               />
               <span
-                v-if="isSidebarExpanded"
                 class="ml-4 whitespace-nowrap"
+                :class="
+                  isSidebarExpanded ? 'w-64 opacity-100' : 'w-0 opacity-0'
+                "
               >
                 {{ item.label }}
               </span>

@@ -6,8 +6,12 @@ export default {
         'flex-col': props.fullScreen,
       },
       {
-        'flex-col': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'bottom',
-        'flex-row': parent.props.thumbnailsPosition === 'right' || parent.props.thumbnailsPosition === 'left',
+        'flex-col':
+          parent.props.thumbnailsPosition === 'top' ||
+          parent.props.thumbnailsPosition === 'bottom',
+        'flex-row':
+          parent.props.thumbnailsPosition === 'right' ||
+          parent.props.thumbnailsPosition === 'left',
       },
     ],
   }),
@@ -19,11 +23,17 @@ export default {
         'grow shrink w-0 justify-center': props.fullScreen,
       },
       {
-        'flex-col': parent.props.indicatorsPosition === 'bottom' || parent.props.indicatorsPosition === 'top',
-        'flex-row items-center': parent.props.indicatorsPosition === 'left' || parent.props.indicatorsPosition === 'right',
+        'flex-col':
+          parent.props.indicatorsPosition === 'bottom' ||
+          parent.props.indicatorsPosition === 'top',
+        'flex-row items-center':
+          parent.props.indicatorsPosition === 'left' ||
+          parent.props.indicatorsPosition === 'right',
       },
       {
-        'order-2': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'left',
+        'order-2':
+          parent.props.thumbnailsPosition === 'top' ||
+          parent.props.thumbnailsPosition === 'left',
         'flex-row': parent.props.thumbnailsPosition === 'right',
       },
     ],
@@ -33,8 +43,12 @@ export default {
     class: [
       'flex h-full relative',
       {
-        'order-1': parent.props.indicatorsPosition === 'bottom' || parent.props.indicatorsPosition === 'right',
-        'order-2': parent.props.indicatorsPosition === 'top' || parent.props.indicatorsPosition === 'left',
+        'order-1':
+          parent.props.indicatorsPosition === 'bottom' ||
+          parent.props.indicatorsPosition === 'right',
+        'order-2':
+          parent.props.indicatorsPosition === 'top' ||
+          parent.props.indicatorsPosition === 'left',
       },
     ],
   }),
@@ -53,7 +67,9 @@ export default {
       'flex flex-col shrink-0',
 
       {
-        'order-1': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'left',
+        'order-1':
+          parent.props.thumbnailsPosition === 'top' ||
+          parent.props.thumbnailsPosition === 'left',
       },
 
       // Misc
@@ -72,8 +88,12 @@ export default {
       'bg-black/90',
 
       {
-        'flex-row': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'bottom',
-        'flex-col grow': parent.props.thumbnailsPosition === 'right' || parent.props.thumbnailsPosition === 'left',
+        'flex-row':
+          parent.props.thumbnailsPosition === 'top' ||
+          parent.props.thumbnailsPosition === 'bottom',
+        'flex-col grow':
+          parent.props.thumbnailsPosition === 'right' ||
+          parent.props.thumbnailsPosition === 'left',
       },
     ],
   }),
@@ -105,7 +125,9 @@ export default {
     class: [
       'flex',
       {
-        'flex-col h-full': parent.props.thumbnailsPosition === 'right' || parent.props.thumbnailsPosition === 'left',
+        'flex-col h-full':
+          parent.props.thumbnailsPosition === 'right' ||
+          parent.props.thumbnailsPosition === 'left',
       },
     ],
   }),
@@ -117,7 +139,9 @@ export default {
 
       // Sizing
       {
-        'w-full md:w-[25%] lg:w-[20%]': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'bottom',
+        'w-full md:w-[25%] lg:w-[20%]':
+          parent.props.thumbnailsPosition === 'top' ||
+          parent.props.thumbnailsPosition === 'bottom',
       },
 
       // Misc
@@ -174,18 +198,30 @@ export default {
       },
 
       {
-        'bottom-0 left-0 w-full items-start': parent.props.indicatorsPosition == 'bottom' && parent.props.showIndicatorsOnItem,
-        'top-0 left-0 w-full items-start': parent.props.indicatorsPosition == 'top' && parent.props.showIndicatorsOnItem,
-        'left-0 top-0 h-full items-start': parent.props.indicatorsPosition == 'left' && parent.props.showIndicatorsOnItem,
-        'right-0 top-0 h-full items-start': parent.props.indicatorsPosition == 'right' && parent.props.showIndicatorsOnItem,
+        'bottom-0 left-0 w-full items-start':
+          parent.props.indicatorsPosition == 'bottom' &&
+          parent.props.showIndicatorsOnItem,
+        'top-0 left-0 w-full items-start':
+          parent.props.indicatorsPosition == 'top' &&
+          parent.props.showIndicatorsOnItem,
+        'left-0 top-0 h-full items-start':
+          parent.props.indicatorsPosition == 'left' &&
+          parent.props.showIndicatorsOnItem,
+        'right-0 top-0 h-full items-start':
+          parent.props.indicatorsPosition == 'right' &&
+          parent.props.showIndicatorsOnItem,
       },
     ],
   }),
   indicator: ({ parent }) => ({
     class: [
       {
-        'mr-2': parent.props.indicatorsPosition == 'bottom' || parent.props.indicatorsPosition == 'top',
-        'mb-2': parent.props.indicatorsPosition == 'left' || parent.props.indicatorsPosition == 'right',
+        'mr-2':
+          parent.props.indicatorsPosition == 'bottom' ||
+          parent.props.indicatorsPosition == 'top',
+        'mb-2':
+          parent.props.indicatorsPosition == 'left' ||
+          parent.props.indicatorsPosition == 'right',
       },
     ],
   }),
@@ -201,14 +237,21 @@ export default {
       'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
 
       // Conditional Appearance: Not Highlighted
-      { 'bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600': !context.highlighted },
+      {
+        'bg-surface-200 hover:bg-surface-700 dark:hover:bg-surface-600':
+          !context.highlighted,
+      },
 
       // Conditional Appearance: Highlighted
       { 'bg-primary hover:bg-primary-emphasis': context.highlighted },
     ],
   }),
   mask: {
-    class: ['fixed top-0 left-0 w-full h-full', 'flex items-center justify-center', 'bg-black/90'],
+    class: [
+      'fixed top-0 left-0 w-full h-full',
+      'flex items-center justify-center',
+      'bg-black/90',
+    ],
   },
   closeButton: {
     class: [
@@ -242,7 +285,8 @@ export default {
       // Appearance
       'bg-transparent text-white w-16 h-16 transition duration-200 ease-in-out rounded-md',
       {
-        'opacity-0 group-hover:opacity-100': parent.props.showItemNavigatorsOnHover,
+        'opacity-0 group-hover:opacity-100':
+          parent.props.showItemNavigatorsOnHover,
       },
 
       // Spacing
@@ -251,7 +295,8 @@ export default {
       // Positioning
       'top-1/2 mt-[-0.5rem] left-0',
       {
-        '!absolute': !parent.state.containerVisible && parent.props.showItemNavigators,
+        '!absolute':
+          !parent.state.containerVisible && parent.props.showItemNavigators,
         '!fixed': parent.state.containerVisible,
       },
 
@@ -270,7 +315,8 @@ export default {
       // Appearance
       'bg-transparent text-white w-16 h-16 transition duration-200 ease-in-out rounded-md',
       {
-        'opacity-0 group-hover:opacity-100': parent.props.showItemNavigatorsOnHover,
+        'opacity-0 group-hover:opacity-100':
+          parent.props.showItemNavigatorsOnHover,
       },
 
       // Spacing
@@ -279,7 +325,8 @@ export default {
       // Positioning
       'top-1/2 mt-[-0.5rem] right-0',
       {
-        '!absolute': !parent.state.containerVisible && parent.props.showItemNavigators,
+        '!absolute':
+          !parent.state.containerVisible && parent.props.showItemNavigators,
         '!fixed': parent.state.containerVisible,
       },
 
@@ -305,4 +352,4 @@ export default {
     leaveActiveClass: 'transition-all duration-150 ease-in',
     leaveToClass: 'opacity-0 scale-75',
   },
-}
+};

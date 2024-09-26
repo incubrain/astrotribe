@@ -21,15 +21,22 @@ export default {
       // Shape
       { 'rounded-md': parent.instance.$name !== 'InputGroup' },
       {
-        'first:rounded-l-md rounded-none last:rounded-r-md': parent.instance.$name == 'InputGroup',
+        'first:rounded-l-md rounded-none last:rounded-r-md':
+          parent.instance.$name == 'InputGroup',
       },
-      { 'border-0 border-y border-l last:border-r': parent.instance.$name == 'InputGroup' },
-      { 'first:ml-0 -ml-px': parent.instance.$name == 'InputGroup' && !props.showButtons },
+      {
+        'border-0 border-y border-l last:border-r':
+          parent.instance.$name == 'InputGroup',
+      },
+      {
+        'first:ml-0 -ml-px':
+          parent.instance.$name == 'InputGroup' && !props.showButtons,
+      },
 
       // Colors
       'text-surface-100',
       'placeholder:placeholder:text-surface-50',
-      'bg-surface-400 dark:bg-surface-400',
+      'bg-surface-400',
       'border',
       { 'border-surface-300/50 dark:border-surface-300/50': !props.invalid },
 
@@ -43,7 +50,8 @@ export default {
         'hover:border-primary': !context.disabled && !props.invalid,
         'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-500/50 dark:focus:ring-primary-400/50 focus:z-10':
           !context.disabled,
-        'opacity-60 select-none pointer-events-none cursor-default': context.disabled,
+        'opacity-60 select-none pointer-events-none cursor-default':
+          context.disabled,
       },
 
       // Filled State *for FloatLabel
@@ -54,4 +62,4 @@ export default {
       'transition-colors duration-200',
     ],
   }),
-}
+};

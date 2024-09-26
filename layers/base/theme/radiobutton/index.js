@@ -32,13 +32,18 @@ export default {
 
       // Colors
       {
-        'text-surface-100': props.value !== props.modelValue && props.value !== undefined,
-        'bg-surface-400 dark:bg-surface-400':
+        'text-surface-100':
+          props.value !== props.modelValue && props.value !== undefined,
+        'bg-surface-400':
           props.value !== props.modelValue && props.value !== undefined,
         'border-surface-300/50 dark:border-surface-300/50':
-          props.value !== props.modelValue && props.value !== undefined && !props.invalid,
-        'border-primary': props.value == props.modelValue && props.value !== undefined,
-        'bg-primary': props.value == props.modelValue && props.value !== undefined,
+          props.value !== props.modelValue &&
+          props.value !== undefined &&
+          !props.invalid,
+        'border-primary':
+          props.value == props.modelValue && props.value !== undefined,
+        'bg-primary':
+          props.value == props.modelValue && props.value !== undefined,
       },
       // Invalid State
       { 'border-red-500 dark:border-red-400': props.invalid },
@@ -48,7 +53,9 @@ export default {
         'peer-hover:border-primary dark:peer-hover:border-primary':
           !props.disabled && !props.invalid,
         'peer-hover:border-primary-emphasis peer-hover:bg-primary-emphasis':
-          !props.disabled && props.value == props.modelValue && props.value !== undefined,
+          !props.disabled &&
+          props.value == props.modelValue &&
+          props.value !== undefined,
         'peer-focus-visible:border-primary-500 dark:peer-focus-visible:border-primary-400 peer-focus-visible:ring-2 peer-focus-visible:ring-primary-400/20 dark:peer-focus-visible:ring-primary-300/20':
           !props.disabled,
         'opacity-60 cursor-default': props.disabled,
@@ -106,4 +113,4 @@ export default {
       'transition duration-200',
     ],
   }),
-}
+};

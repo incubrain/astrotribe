@@ -38,7 +38,8 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-700': context?.selectable && !context?.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-700':
+          context?.selectable && !context?.selected,
         'hover:bg-highlight-emphasis': context?.selectable && context?.selected,
       },
 
@@ -63,7 +64,7 @@ export default {
       'w-px h-[20px]',
 
       // Color
-      'bg-surface-200 dark:bg-surface-700',
+      'bg-surface-700',
     ],
   },
   connectorLeft: ({ context }) => ({
@@ -134,4 +135,4 @@ export default {
       'w-4 h-4',
     ],
   },
-}
+};

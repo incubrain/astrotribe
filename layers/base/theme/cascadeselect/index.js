@@ -132,8 +132,9 @@ export default {
 
       //  Colors
       {
-        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-200 dark:bg-surface-600/90':
+        'text-surface-50 dark:text-white/70':
+          !context.focused && !context.active,
+        'text-surface-50 dark:text-white/70 bg-surface-600/90':
           context.focused && !context.active,
         'bg-highlight':
           (context.focused && context.active) ||
@@ -211,4 +212,4 @@ export default {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
-}
+};

@@ -45,7 +45,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-700 dark:bg-surface-700 sm:bg-transparent',
+      'bg-surface-700 sm:bg-transparent',
 
       // Misc
       'outline-none',
@@ -62,7 +62,7 @@ export default {
       //  Colors
       {
         'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-700 dark:bg-surface-700':
+        'text-surface-50 dark:text-white/70 bg-surface-700':
           context.focused && !context.active,
         'bg-surface-900/80':
           (context.focused && context.active) ||
@@ -72,8 +72,7 @@ export default {
 
       // Hover States
       {
-        'hover:bg-surface-900/80 dark:hover:bg-surface-900/80': !context.active,
-        'hover:bg-surface-900/80': context.active,
+        'hover:bg-surface-900/80': !context.active,
       },
 
       // Transitions

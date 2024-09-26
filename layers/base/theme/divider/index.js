@@ -7,7 +7,8 @@ export default {
       { 'items-center': props.layout == 'vertical' },
       {
         'justify-start': props?.align == 'left' && props.layout == 'horizontal',
-        'justify-center': props?.align == 'center' && props.layout == 'horizontal',
+        'justify-center':
+          props?.align == 'center' && props.layout == 'horizontal',
         'justify-end': props?.align == 'right' && props.layout == 'horizontal',
         'items-center': props?.align == 'top' && props.layout == 'vertical',
         'items-start': props?.align == 'center' && props.layout == 'vertical',
@@ -31,8 +32,10 @@ export default {
 
       // Position
       {
-        'before:absolute before:left-0 before:top-1/2': props.layout == 'horizontal',
-        'before:absolute before:left-1/2 before:top-0 before:transform before:-translate-x-1/2': props.layout == 'vertical',
+        'before:absolute before:left-0 before:top-1/2':
+          props.layout == 'horizontal',
+        'before:absolute before:left-1/2 before:top-0 before:transform before:-translate-x-1/2':
+          props.layout == 'vertical',
       },
 
       // Size
@@ -50,8 +53,10 @@ export default {
 
       // Color
       {
-        'before:border-t before:border-color before:dark:border-surface-600': props.layout == 'horizontal',
-        'before:border-l before:border-color before:dark:border-surface-600': props.layout == 'vertical',
+        'before:border-t before:border-color before:dark:border-surface-600':
+          props.layout == 'horizontal',
+        'before:border-l before:border-color before:dark:border-surface-600':
+          props.layout == 'vertical',
       },
     ],
   }),
@@ -61,7 +66,7 @@ export default {
       'px-2 py-1 z-10',
 
       // Color
-      'bg-surface-400 dark:bg-surface-400',
+      'bg-surface-400',
     ],
   },
-}
+};
