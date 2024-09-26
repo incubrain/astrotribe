@@ -17,12 +17,14 @@ tmp
 /out-tsc
 .env
 .npm_token
-*.eslintcache
+**.eslintcache
+**.temp
+**.branches
 
 # dependencies
 node_modules
 .env
-*.env
+**.env
 supabase/functions/.env
 .npm_token
 
@@ -52,13 +54,14 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-data/logs
+**/data/logs
 docs/**
 
 
 # System Files
 .
 Thumbs.db
+**.DS_Store
 
 .nx/cache
 .nx/workspace-data
