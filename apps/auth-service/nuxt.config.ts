@@ -10,18 +10,7 @@ export default defineNuxtConfig({
     port: 3009,
   },
 
-  modules: [
-    '@nuxt/devtools',
-    '@vueuse/nuxt',
-    '@nuxt/image',
-    '@pinia/nuxt',
-    '@nuxt/icon',
-    '@nuxt/eslint',
-    '@nuxtjs/tailwindcss',
-    'nuxt-security',
-    '@nuxtjs/supabase',
-    '@primevue/nuxt-module',
-  ],
+  modules: [],
 
   // vite: {
   //   plugins: [nxViteTsPaths()],

@@ -9,7 +9,7 @@ export default {
 
       // Colors
       'text-surface-600 dark:text-surface-200',
-      'placeholder:placeholder:text-surface-50',
+      'placeholder:text-surface-100',
       'bg-surface-900',
 
       'border',
@@ -31,9 +31,9 @@ export default {
       // Filled State *for FloatLabel
       {
         filled:
-          parent.instance?.$name == 'FloatLabel'
-          && props.modelValue !== null
-          && props.modelValue?.length !== 0,
+          parent.instance?.$name == 'FloatLabel' &&
+          props.modelValue !== null &&
+          props.modelValue?.length !== 0,
       },
 
       // Misc

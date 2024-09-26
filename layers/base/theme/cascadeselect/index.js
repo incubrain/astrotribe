@@ -63,7 +63,7 @@ export default {
         'text-white/80': props.modelValue,
         'text-surface-50': !props.modelValue,
       },
-      'placeholder:placeholder:text-surface-50',
+      'placeholder:text-surface-100',
 
       // Transitions
       'transition',
@@ -135,9 +135,9 @@ export default {
         'text-surface-50 dark:text-white/70': !context.focused && !context.active,
         'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active)
-          || context.active
-          || (!context.focused && context.active),
+          (context.focused && context.active) ||
+          context.active ||
+          (!context.focused && context.active),
       },
 
       // Hover States

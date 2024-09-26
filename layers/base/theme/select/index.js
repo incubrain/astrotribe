@@ -65,7 +65,6 @@ export default {
         'text-white/80': props.modelValue != undefined,
         'text-surface-50': props.modelValue == undefined,
       },
-      'placeholder:placeholder:text-surface-50',
 
       // Sizing and Spacing
       'w-[1%]',

@@ -55,7 +55,7 @@ export default {
         'text-white/80': props.modelValue?.length,
         'text-surface-50': !props.modelValue?.length,
       },
-      'placeholder:placeholder:text-surface-50',
+      'placeholder:text-surface-100',
 
       // Transitions
       'transition duration-200',

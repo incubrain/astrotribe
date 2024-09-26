@@ -43,7 +43,7 @@ export default {
 
       // Color
       'text-white/80',
-      'placeholder:text-surface-50',
+      'placeholder:text-surface-100',
       'bg-surface-900',
       'border',
       { 'border-surface-600': !props.invalid },

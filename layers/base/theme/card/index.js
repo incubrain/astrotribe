@@ -29,7 +29,7 @@ export default {
     ],
   },
   content: {
-    class: 'py-5', // Vertical padding.
+    class: '', // Vertical padding.
   },
   footer: {
     class: 'pt-5', // Top padding.
