@@ -1,30 +1,45 @@
-const nx = require('@nx/eslint-plugin');
+import { createConfigForNuxt } from '@nuxt/eslint-config/flat';
 
-module.exports = [
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.vue'],
-    rules: {
-      '@nx/enforce-module-boundaries': [
-        'error',
-        {
-          enforceBuildableLibDependency: true,
-          allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
-          depConstraints: [
-            {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
-            },
-          ],
-        },
-      ],
+export default createConfigForNuxt({
+  features: {
+    stylistic: {
+      semi: false,
+      indent: 2,
+      quotes: 'single',
     },
   },
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    // Override or add rules here
-    rules: {},
+}).append({
+  files: ['**/*.{js,ts,vue}'],
+  rules: {
+    'vue/multi-word-component-names': 'off',
+    'no-global-assign': ['off', { exceptions: ['Object'] }],
+    'no-undefined': 'off',
+    'no-console': 'off',
+    'no-new': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    quotes: [
+      'error',
+      'single',
+      { allowTemplateLiterals: true, avoidEscape: true },
+    ],
+    'arrow-parens': ['error', 'always'],
+    '@stylistic/arrow-parens': ['error', 'always'],
+    '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+    'object-curly-newline': 'off',
+    curly: 'off',
+    'no-undef': 'off',
+    'space-before-function-paren': 'off',
+    'vue/html-self-closing': 'off',
   },
-];
+  ignores: [
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/.nuxt/**',
+    '**/public/**',
+    './theme/**',
+    '**/theme/**',
+    '**/.output/**',
+  ],
+});

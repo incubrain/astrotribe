@@ -4,5 +4,12 @@
   "projectType": "application",
   "sourceRoot": "packages/main-app",
   "// targets": "to see all targets run: nx show project main-app --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --config eslint.config.js ."
+      }
+    }
+  }
 }

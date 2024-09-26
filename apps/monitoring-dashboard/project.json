@@ -4,5 +4,12 @@
   "projectType": "application",
   "sourceRoot": "apps/monitoring-dashboard",
   "// targets": "to see all targets run: nx show project monitoring-dashboard --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --config eslint.config.js ."
+      }
+    }
+  }
 }
