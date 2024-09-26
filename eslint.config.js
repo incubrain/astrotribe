@@ -23,6 +23,7 @@ export default createConfigForNuxt({
       'quote-props': ['error', 'consistent-as-needed'],
       'quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
       'arrow-parens': ['error', 'always'],
+      '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
       '@stylistic/arrow-parens': ['error', 'always'],
       '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
       'object-curly-newline': 'off',
