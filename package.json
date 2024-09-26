@@ -37,6 +37,7 @@
     "@vueuse/integrations": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
     "change-case": "^5.4.4",
+    "chart.js": "^4.4.4",
     "jsonwebtoken": "^9.0.2",
     "nuxt-security": "^2.0.0",
     "pinia": "^2.2.2",

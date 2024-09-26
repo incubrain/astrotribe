@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-security',
     '@nuxtjs/supabase',
+    '@primevue/nuxt-module',
   ],
 
   primevue: {
@@ -82,9 +83,9 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
-        'worker-src': ['\'self\'', 'blob:'],
+        'worker-src': ["'self'", 'blob:'],
         'default-src': [
-          '\'self\'',
+          "'self'",
           ...localUrls,
           'http://localhost:3000',
           'http://localhost:54321',
@@ -94,7 +95,7 @@ export default defineNuxtConfig({
           'https://*.posthog.com',
         ],
         'connect-src': [
-          '\'self\'',
+          "'self'",
           ...localUrls,
           'http://localhost:3000',
           'http://localhost:8080',
@@ -114,7 +115,7 @@ export default defineNuxtConfig({
           'https://us.i.posthog.com',
         ],
         'img-src': [
-          '\'self\'',
+          "'self'",
           'data:',
           'http://localhost:54321',
           'http://localhost:3000',
@@ -131,10 +132,10 @@ export default defineNuxtConfig({
           'http://*.railway.internal',
         ],
         'script-src': [
-          '\'self\'',
-          '\'nonce-{{nonce}}\'',
-          '\'unsafe-inline\'',
-          '\'wasm-unsafe-eval\'',
+          "'self'",
+          "'nonce-{{nonce}}'",
+          "'unsafe-inline'",
+          "'wasm-unsafe-eval'",
           'http://localhost:3000',
           'http://localhost:54321',
           'https://www.youtube.com',
@@ -146,13 +147,13 @@ export default defineNuxtConfig({
           'https://us.i.posthog.com',
         ],
         'style-src': [
-          '\'self\'',
-          '\'unsafe-inline\'',
+          "'self'",
+          "'unsafe-inline'",
           'https://fonts.googleapis.com',
           'https://*.posthog.com',
         ],
         'frame-src': [
-          '\'self\'',
+          "'self'",
           'https://www.youtube.com',
           'https://us.i.posthog.com',
           'https://*.posthog.com',
@@ -161,7 +162,7 @@ export default defineNuxtConfig({
           'https://*.betterstack.com',
           'https://*.razorpay.com',
         ],
-        'child-src': ['\'self\'', 'https://us.i.posthog.com', 'https://*.posthog.com'],
+        'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com'],
       },
       xFrameOptions: 'DENY', // Prevents clickjacking
       crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
