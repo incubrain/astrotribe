@@ -43,7 +43,7 @@ const isSidebarExpanded = ref(false)
   <!-- Sidebar -->
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-40 flex flex-col background shadow-lg transition-all duration-300',
+      'fixed inset-y-0 left-0 z-[100] flex flex-col background shadow-lg transition-all duration-300',
       isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
       'md:translate-x-0',
     ]"
@@ -58,17 +58,29 @@ const isSidebarExpanded = ref(false)
       ]"
     >
       <!-- Sidebar Content -->
-      <div class="flex h-16 items-center justify-center">
-        <NuxtLink to="/">
+      <div class="flex max-h-24 min-h-24 items-center justify-start p-4 bg-primary-950">
+        <NuxtLink
+          v-show="!isSidebarExpanded"
+          to="/"
+        >
           <Icon
             name="mdi:rocket"
             size="24px"
           />
         </NuxtLink>
+        <NuxtLink
+          v-show="isSidebarExpanded"
+          to="/"
+        >
+          <h1 class="flex cursor-pointer text-lg font-bold leading-none">
+            ASTRO
+            <strong class="text-highlight"> TRIBE </strong>
+          </h1>
+        </NuxtLink>
       </div>
 
       <!-- Navigation Links -->
-      <nav class="flex-1">
+      <nav class="flex-1 overflow-y-auto">
         <ul>
           <li
             v-for="item in links"
