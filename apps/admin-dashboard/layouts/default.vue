@@ -117,7 +117,7 @@ const adminLinks = ref([
 <template>
   <div class="background relative flex h-screen w-full lg:p-4 lg:pl-0">
     <IBSideNav :links="adminLinks" />
-    <div class="foreground h-full w-full overflow-y-scroll rounded-lg md:ml-[60px]">
+    <div class="foreground h-full w-full overflow-y-scroll rounded-lg md:ml-[64px]">
       <slot />
     </div>
   </div>

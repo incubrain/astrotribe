@@ -133,7 +133,14 @@ const UserProfilesAdminDashboard = createAdminDashboard(
 
 <template>
   <div class="border-color h-full overflow-scroll rounded-lg border">
-    <UserProfilesAdminDashboard />
+    <UserProfilesAdminDashboard>
+      <template #title>
+        <div class="flex items-center">
+          <h2 class="text-2xl font-bold mr-4">Custom Title</h2>
+          <SomeCustomComponent />
+        </div>
+      </template>
+    </UserProfilesAdminDashboard>
   </div>
 </template>
 
