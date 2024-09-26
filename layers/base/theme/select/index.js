@@ -8,13 +8,20 @@ export default {
       // Shape
       { 'rounded-md': parent.instance.$name !== 'InputGroup' },
       {
-        'first:rounded-l-md rounded-none last:rounded-r-md': parent.instance.$name == 'InputGroup',
+        'first:rounded-l-md rounded-none last:rounded-r-md':
+          parent.instance.$name == 'InputGroup',
       },
-      { 'border-0 border-y border-l last:border-r': parent.instance.$name == 'InputGroup' },
-      { 'first:ml-0 ml-[-1px]': parent.instance.$name == 'InputGroup' && !props.showButtons },
+      {
+        'border-0 border-y border-l last:border-r':
+          parent.instance.$name == 'InputGroup',
+      },
+      {
+        'first:ml-0 ml-[-1px]':
+          parent.instance.$name == 'InputGroup' && !props.showButtons,
+      },
 
       // Color and Background
-      'bg-surface-400 dark:bg-surface-400',
+      'bg-surface-400',
 
       'border border-surface-300',
       { '': parent.instance.$name != 'InputGroup' },
@@ -79,7 +86,10 @@ export default {
       'focus:outline-none focus:shadow-none',
 
       // Filled State *for FloatLabel
-      { filled: parent.instance?.$name == 'FloatLabel' && props.modelValue !== null },
+      {
+        filled:
+          parent.instance?.$name == 'FloatLabel' && props.modelValue !== null,
+      },
 
       // Misc
       'relative',
@@ -157,13 +167,14 @@ export default {
       // Colors
       {
         'text-white/80': !context.selected,
-        'bg-surface-200 dark:bg-surface-400': context.focused && !context.selected,
+        'bg-surface-400': context.focused && !context.selected,
         'bg-primary-950': context.selected,
       },
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-950': context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-950':
+          context.focused && !context.selected,
       },
       { 'hover:bg-primary-800': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -224,7 +235,7 @@ export default {
 
       // Color
       'text-white/80',
-      'bg-surface-100 dark:bg-surface-400',
+      'bg-surface-400',
       'border-surface-300 ',
     ],
   },
@@ -252,4 +263,4 @@ export default {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
-}
+};

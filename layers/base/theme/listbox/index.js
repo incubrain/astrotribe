@@ -44,13 +44,14 @@ export default {
       // Colors
       {
         'text-white/80': !context.selected,
-        'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
+        'bg-surface-600/60': context.focused && !context.selected,
         'bg-highlight': context.selected,
       },
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80':
+          !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -96,7 +97,7 @@ export default {
 
       // Color
       'text-white/80',
-      'bg-surface-100 dark:bg-surface-400',
+      'bg-surface-400',
       'border-surface-300 dark:border-surface-600',
 
       '[&_[data-pc-name=pcfilter]]:w-full',
@@ -115,4 +116,4 @@ export default {
       'bg-transparent',
     ],
   },
-}
+};

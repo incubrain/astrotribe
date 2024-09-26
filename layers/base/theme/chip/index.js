@@ -12,7 +12,7 @@ export default {
 
       // Colors
       'text-white/70',
-      'bg-surface-200 dark:bg-surface-700',
+      'bg-surface-700',
     ],
   },
   label: {
@@ -39,4 +39,4 @@ export default {
       'cursor-pointer',
     ],
   },
-}
+};

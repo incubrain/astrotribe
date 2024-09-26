@@ -49,7 +49,8 @@ export default {
 
       // Size
       {
-        'w-full sm:w-[50%] md:w-[33.333333333333336%]': props.orientation !== 'vertical',
+        'w-full sm:w-[50%] md:w-[33.333333333333336%]':
+          props.orientation !== 'vertical',
 
         'w-full h-full': props.orientation == 'vertical',
       },
@@ -63,7 +64,8 @@ export default {
 
       // Size
       {
-        'w-full sm:w-[50%] md:w-[33.333333333333336%]': props.orientation !== 'vertical',
+        'w-full sm:w-[50%] md:w-[33.333333333333336%]':
+          props.orientation !== 'vertical',
 
         'w-full h-full': props.orientation == 'vertical',
       },
@@ -94,9 +96,10 @@ export default {
 
       // Color & Background
       {
-        'bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600': !context.highlighted,
+        'bg-surface-200 hover:bg-surface-700 dark:hover:bg-surface-600':
+          !context.highlighted,
         'bg-primary hover:bg-primary-emphasis': context.highlighted,
       },
     ],
   }),
-}
+};

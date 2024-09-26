@@ -4,7 +4,10 @@ export default {
       // Flexbox
       'flex gap-4',
 
-      { 'flex-col': props.orientation == 'horizontal', 'flex-row': props.orientation == 'vertical' },
+      {
+        'flex-col': props.orientation == 'horizontal',
+        'flex-row': props.orientation == 'vertical',
+      },
     ],
   }),
   meters: ({ props }) => ({
@@ -19,7 +22,7 @@ export default {
       { 'h-2': props.orientation === 'horizontal' },
 
       // Colors
-      'bg-gray-200 dark:bg-gray-700',
+      'bg-gray-700',
 
       // Border Radius
       'rounded-lg',
@@ -32,12 +35,14 @@ export default {
 
       // Rounded Corners - Horizontal
       {
-        'first:rounded-l-lg last:rounded-r-lg': props.orientation === 'horizontal',
+        'first:rounded-l-lg last:rounded-r-lg':
+          props.orientation === 'horizontal',
       },
 
       // Rounded Corners - Vertical
       {
-        'first:rounded-t-lg last:rounded-b-lg': props.orientation === 'vertical',
+        'first:rounded-t-lg last:rounded-b-lg':
+          props.orientation === 'vertical',
       },
 
       // Colors
@@ -57,13 +62,19 @@ export default {
 
       // Conditional Alignment - Horizontal
       {
-        'align-end': props.labelOrientation === 'horizontal' && props.labelPosition === 'end',
-        'align-start': props.labelOrientation === 'horizontal' && props.labelPosition === 'start',
+        'align-end':
+          props.labelOrientation === 'horizontal' &&
+          props.labelPosition === 'end',
+        'align-start':
+          props.labelOrientation === 'horizontal' &&
+          props.labelPosition === 'start',
       },
 
       // Conditional Alignment - Vertical
       {
-        'justify-start': props.labelOrientation === 'vertical' && props.labelPosition === 'start',
+        'justify-start':
+          props.labelOrientation === 'vertical' &&
+          props.labelPosition === 'start',
       },
 
       // List Styling
@@ -93,4 +104,4 @@ export default {
       'rounded-full',
     ],
   },
-}
+};
