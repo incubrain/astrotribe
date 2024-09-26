@@ -1,6 +1,7 @@
 ### Jobs Portal
 
 1. **Job Listings:**
+
    - **Types of Jobs:**
      - Science communication
        - Content writing
@@ -19,15 +20,15 @@
    - Displaying most relevant listings
    - Search by location/type/salary
 
-
-
 ### MVP
 
-- Listing card for each job will have to have displaying the: position / location / published_at / link
-- 
-
+- Listing card for each job will have to have displaying the: position / location / published_at /
+  link
+-
 
 ### Jobs Portal
 
-AstronEra’s dedicated jobs portal lists a variety of opportunities in science communication, engineering, startups, academia, and citizen science. Sourced from LinkedIn and company websites, the portal allows users to bookmark listings and search by location, type, and salary, ensuring they can find the most relevant job opportunities.
-
+AstronEra’s dedicated jobs portal lists a variety of opportunities in science communication,
+engineering, startups, academia, and citizen science. Sourced from LinkedIn and company websites,
+the portal allows users to bookmark listings and search by location, type, and salary, ensuring they
+can find the most relevant job opportunities.

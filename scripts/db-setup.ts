@@ -27,7 +27,7 @@ export async function dbSetup(options: DbOptions) {
   // Read permissions JSON
   const permissionsJson = JSON.parse(fs.readFileSync('./scripts/role-permissions.json', 'utf-8'))
 
-  const jsonConfig = JSON.stringify(permissionsJson).replace(/'/g, "''")
+  const jsonConfig = JSON.stringify(permissionsJson).replace(/'/g, '\'\'')
 
   console.log('permissionsJson:', jsonConfig)
 

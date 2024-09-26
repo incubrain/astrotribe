@@ -51,24 +51,24 @@ type UserProfile = z.infer<typeof userProfileSchema>
 const createDateEditor = () => {
   return (slotProps: any) =>
     h(DatePicker, {
-      modelValue: slotProps.data[slotProps.field],
+      'modelValue': slotProps.data[slotProps.field],
       'onUpdate:modelValue': (value: any) => {
         slotProps.data[slotProps.field] = value
       },
-      editorSaveCallback: slotProps.editorSaveCallback,
+      'editorSaveCallback': slotProps.editorSaveCallback,
     })
 }
 
 const createSelectEditor = (options: any[], placeholder: string) => {
   return (slotProps: any) =>
     h(Select, {
-      modelValue: slotProps.data[slotProps.field],
+      'modelValue': slotProps.data[slotProps.field],
       'onUpdate:modelValue': (value: any) => {
         slotProps.data[slotProps.field] = value
       },
       options,
       placeholder,
-      editorSaveCallback: slotProps.editorSaveCallback,
+      'editorSaveCallback': slotProps.editorSaveCallback,
     })
 }
 

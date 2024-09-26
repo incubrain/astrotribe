@@ -30,7 +30,6 @@ defineProps({
 })
 </script>
 
-
 <template>
   <div class="relative h-full w-full overflow-hidden rounded-md object-cover">
     <IBImage
@@ -47,10 +46,7 @@ defineProps({
       v-if="!image?.src"
       class="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/40"
     >
-      <h3 class="foreground rounded-lg px-3 py-1 text-base">
-        NO IMAGE
-      </h3>
+      <h3 class="foreground rounded-lg px-3 py-1 text-base"> NO IMAGE </h3>
     </div>
   </div>
 </template>
-

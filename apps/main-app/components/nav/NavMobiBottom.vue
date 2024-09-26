@@ -19,7 +19,6 @@ const { appLinks } = usePages()
           <Icon
             :name="page.icon"
             size="24px"
-
           />
         </NuxtLink>
       </li>

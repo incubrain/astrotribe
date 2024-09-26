@@ -29,9 +29,7 @@
         </div>
         <div class="grid grid-cols-1 gap-20 p-4 lg:grid-cols-2 xl:p-8">
           <div class="flex flex-col gap-3">
-            <h3 class="mb-4 text-2xl font-semibold">
-              About {{ user.given_name }}
-            </h3>
+            <h3 class="mb-4 text-2xl font-semibold"> About {{ user.given_name }} </h3>
             <p
               v-for="(section, i) in user.bio"
               :key="i"
@@ -52,9 +50,7 @@
             </div>
           </div> -->
           <div>
-            <h4 class="mb-4 text-xl font-semibold">
-              Connect with {{ user.given_name }}
-            </h4>
+            <h4 class="mb-4 text-xl font-semibold"> Connect with {{ user.given_name }} </h4>
             <AppSocialBlock
               :socials="user.socials"
               :has-title="false"

@@ -62,12 +62,11 @@ export default {
       //  Colors
       {
         'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-700':
-          context.focused && !context.active,
+        'text-surface-50 dark:text-white/70 bg-surface-700': context.focused && !context.active,
         'bg-surface-900/80':
-          (context.focused && context.active) ||
-          context.active ||
-          (!context.focused && context.active),
+          (context.focused && context.active)
+          || context.active
+          || (!context.focused && context.active),
       },
 
       // Hover States

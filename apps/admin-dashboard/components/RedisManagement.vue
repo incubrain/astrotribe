@@ -119,9 +119,7 @@ loadKeys()
   <div class="p-4">
     <div class="border-color background mb-4 flex items-center gap-4 rounded-md border p-4">
       <h1>Redis Management</h1>
-      <PrimeButton @click="loadKeys">
-        Refresh Keys
-      </PrimeButton>
+      <PrimeButton @click="loadKeys"> Refresh Keys </PrimeButton>
       <PrimeButton
         severity="danger"
         @click="flushDatabase"

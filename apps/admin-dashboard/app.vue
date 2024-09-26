@@ -12,9 +12,7 @@ onMounted(() => {
 onUnmounted(() => {
   serverAnalyticsStore.disconnectWebSocket()
 })
-
 </script>
-
 
 <template>
   <div class="h-full w-full">
@@ -25,7 +23,6 @@ onUnmounted(() => {
     <PrimeToast position="bottom-right" />
   </div>
 </template>
-
 
 <style>
 html {

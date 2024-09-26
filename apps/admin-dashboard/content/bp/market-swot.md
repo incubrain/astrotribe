@@ -25,11 +25,12 @@
    - Potential partnerships with educational institutions, research organizations, private
      companies, government organizations, public figures, and expert individuals.
      - **Weaknesses of Competitors:**
-  - Limited use of AI for personalized content.
-  - Often focused on a single aspect (e.g., news or courses) rather than an integrated approach.
-  - Astronomy is often not their primary focus
-  - Singular domain of expertise, no cross disiplanairy knowledge such as Astronomy, Education,
-    Entreprenuership etc.
+
+- Limited use of AI for personalized content.
+- Often focused on a single aspect (e.g., news or courses) rather than an integrated approach.
+- Astronomy is often not their primary focus
+- Singular domain of expertise, no cross disiplanairy knowledge such as Astronomy, Education,
+  Entreprenuership etc.
 
 4. **Threats:**
 
@@ -42,7 +43,8 @@
    - Cost of computation / scaling our systems
    - Security of our network and data
    - **Intense Competition:**
-  - Strong competition from well-established brands with significant market share.
+
+- Strong competition from well-established brands with significant market share.
 - **Rapid Technological Changes:**
   - The need to continuously innovate and adapt to new technologies and user expectations.
 - **Regulatory and Privacy Concerns:**
@@ -51,4 +53,3 @@
 
   - Reliance on external sources for content, which may affect the consistency and availability of
     information.
-

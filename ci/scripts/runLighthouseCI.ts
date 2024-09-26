@@ -14,10 +14,10 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 interface LighthouseRun {
   fetchTime: string
   categories: {
-    performance: { score: number }
-    accessibility: { score: number }
+    'performance': { score: number }
+    'accessibility': { score: number }
     'best-practices': { score: number }
-    seo: { score: number }
+    'seo': { score: number }
   }
   audits: {
     'first-contentful-paint': { numericValue: number }

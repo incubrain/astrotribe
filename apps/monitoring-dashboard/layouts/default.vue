@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="relative flex h-full min-h-screen w-full items-center justify-start">
@@ -7,6 +6,4 @@
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

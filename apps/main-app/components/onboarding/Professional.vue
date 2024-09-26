@@ -15,7 +15,8 @@
         <small
           v-if="errors.occupation"
           class="p-error"
-        >{{ errors.occupation }}</small>
+          >{{ errors.occupation }}</small
+        >
       </div>
       <div class="p-field">
         <label for="organization">Organization</label>
@@ -27,7 +28,8 @@
         <small
           v-if="errors.organization"
           class="p-error"
-        >{{ errors.organization }}</small>
+          >{{ errors.organization }}</small
+        >
       </div>
       <div class="p-field">
         <label for="experience">Years of Experience</label>
@@ -41,7 +43,8 @@
         <small
           v-if="errors.experience"
           class="p-error"
-        >{{ errors.experience }}</small>
+          >{{ errors.experience }}</small
+        >
       </div>
     </div>
     <div class="mt-4">

@@ -1,5 +1,5 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { defineNuxtConfig } from 'nuxt/config';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
@@ -12,11 +12,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    plugins: [nxViteTsPaths()]
+    plugins: [nxViteTsPaths()],
   },
 
   imports: {
     autoImport: true,
   },
-
 })

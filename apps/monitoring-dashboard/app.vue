@@ -8,7 +8,6 @@
   </div>
 </template>
 
-
 <style>
 html {
   margin: 0;

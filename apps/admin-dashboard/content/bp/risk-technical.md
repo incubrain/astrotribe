@@ -10,7 +10,6 @@
      - **Assumption:** Initial models might have lower accuracy that improves over time with more
        data.
 
-
 #### Mitigation Strategies
 
 4. **Technical Risks:**
@@ -28,4 +27,3 @@
      - Having a dedicated technical support team to address major issues.
    - **Continuous Improvement:**
      - Regular updates and improvements to AI models and infrastructure.
-

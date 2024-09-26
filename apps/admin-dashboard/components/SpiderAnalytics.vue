@@ -138,32 +138,20 @@ const rawDataArray = computed(() =>
 <template>
   <div class="p-4">
     {{ news_links }}
-    <div v-if="isConnected">
-      Connected
-    </div>
-    <div v-else>
-      Disconnected
-    </div>
+    <div v-if="isConnected"> Connected </div>
+    <div v-else> Disconnected </div>
     <div v-if="haveMetrics && isSpiderActive">
       <div class="mb-8">
-        <h2 class="mb-4 text-2xl font-semibold">
-          Spider Metrics
-        </h2>
+        <h2 class="mb-4 text-2xl font-semibold"> Spider Metrics </h2>
         <div class="grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 lg:grid-cols-3">
           <PrimeCard class="foreground">
-            <template #title>
-              Crawl Duration
-            </template>
+            <template #title> Crawl Duration </template>
             <template #content>
-              <div class="text-4xl font-bold">
-                {{ news_links.crawlDuration / 1000 }}s
-              </div>
+              <div class="text-4xl font-bold"> {{ news_links.crawlDuration / 1000 }}s </div>
             </template>
           </PrimeCard>
           <PrimeCard class="shadow-md">
-            <template #title>
-              URLs per Second
-            </template>
+            <template #title> URLs per Second </template>
             <template #content>
               <div class="text-4xl font-bold">
                 {{ news_links.urlsPerSecond }}
@@ -171,20 +159,14 @@ const rawDataArray = computed(() =>
             </template>
           </PrimeCard>
           <PrimeCard class="shadow-md">
-            <template #title>
-              Avg Response Time
-            </template>
+            <template #title> Avg Response Time </template>
             <template #content>
-              <div class="text-4xl font-bold">
-                {{ news_links.responseTimeStats.average }}ms
-              </div>
+              <div class="text-4xl font-bold"> {{ news_links.responseTimeStats.average }}ms </div>
             </template>
           </PrimeCard>
         </div>
         <PrimeCard class="shadow-md">
-          <template #title>
-            Total URLs
-          </template>
+          <template #title> Total URLs </template>
           <template #content>
             <div class="text-4xl font-bold">
               {{ news_links.urlCounts.total }}
@@ -192,9 +174,7 @@ const rawDataArray = computed(() =>
           </template>
         </PrimeCard>
         <PrimeCard class="shadow-md">
-          <template #title>
-            New URLs
-          </template>
+          <template #title> New URLs </template>
           <template #content>
             <div class="text-4xl font-bold">
               {{ news_links.urlCounts.new }}
@@ -202,9 +182,7 @@ const rawDataArray = computed(() =>
           </template>
         </PrimeCard>
         <PrimeCard class="shadow-md">
-          <template #title>
-            Allowed URLs
-          </template>
+          <template #title> Allowed URLs </template>
           <template #content>
             <div class="text-4xl font-bold">
               {{ news_links.urlCounts.allowed }}

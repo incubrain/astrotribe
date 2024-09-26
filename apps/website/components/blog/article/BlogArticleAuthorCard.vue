@@ -42,7 +42,7 @@ defineProps<{
                 size="24px"
                 :socials="author.socials"
               />
-              <PrimeTag class="text-sm uppercase text-primary-600"> follow me</PrimeTag>
+              <PrimeTag class="text-sm uppercase text-primary-600"> follow me </PrimeTag>
             </div>
             <p class="text-sm">
               {{ author.bio.full }}

@@ -10,7 +10,7 @@ import { serverSupabaseClient } from '#supabase/server'
 interface FileOptimizer {
   optimize(
     buffer: Buffer,
-    options: any
+    options: any,
   ): Promise<{
     data: Buffer
     extension: string

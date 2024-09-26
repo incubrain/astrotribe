@@ -1,4 +1,4 @@
-import { useToast } from 'primevue/usetoast'
+import type { useToast } from 'primevue/usetoast'
 
 interface BaseNotification {
   summary: string

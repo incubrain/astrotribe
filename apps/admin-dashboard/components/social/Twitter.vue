@@ -1,17 +1,13 @@
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">
-      Twitter Post Metrics
-    </h1>
+    <h1 class="text-2xl font-bold mb-4"> Twitter Post Metrics </h1>
     <div
       v-if="twitter"
       class="mb-4"
     >
       <PrimeCard>
         <template #header>
-          <h2 class="text-xl font-semibold">
-            Post Statistics
-          </h2>
+          <h2 class="text-xl font-semibold"> Post Statistics </h2>
         </template>
         <p>Impressions: {{ twitter.impression_count }}</p>
         <p>Likes: {{ twitter.like_count }}</p>

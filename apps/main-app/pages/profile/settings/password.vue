@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const schema = [
   {
     id: 'new_password',
@@ -17,13 +16,13 @@ const schema = [
     value: ref(''),
     type: 'password',
   },
-];
+]
 
-const currentUser = useCurrentUser();
-const auth = useAuth();
-const toast = useNotification();
+const currentUser = useCurrentUser()
+const auth = useAuth()
+const toast = useNotification()
 
-const userId = useCookie('userId');
+const userId = useCookie('userId')
 const {
   store: userProfile,
   loadMore,
@@ -33,7 +32,7 @@ const {
   filters: { id: { eq: userId.value } },
   initialFetch: true,
   limit: 1,
-});
+})
 
 function handlePasswordUpdate() {
   const { new_password, confirm_new_password } = schema.reduce(
@@ -41,28 +40,34 @@ function handlePasswordUpdate() {
     {
       new_password: '',
       confirm_new_password: '',
-    }
-  );
+    },
+  )
 
   if (new_password !== confirm_new_password) {
     toast.error({
-      summary: "Passwords Don't Match",
-      message: "The two passwords entered don't match",
-    });
-    return;
+      summary: 'Passwords Don\'t Match',
+      message: 'The two passwords entered don\'t match',
+    })
+    return
   }
 
-  auth.password.update(new_password);
+  auth.password.update(new_password)
 }
 
 function handlePasswordUpdate() {
-  const { new_password, confirm_new_password } = schema.reduce((acc, field) => ({ ...acc, [field.id]: field.value.value }), {
-    new_password: '',
-    confirm_new_password: '',
-  })
+  const { new_password, confirm_new_password } = schema.reduce(
+    (acc, field) => ({ ...acc, [field.id]: field.value.value }),
+    {
+      new_password: '',
+      confirm_new_password: '',
+    },
+  )
 
   if (new_password !== confirm_new_password) {
-    toast.error({ summary: 'Passwords Don\'t Match', message: 'The two passwords entered don\'t match' })
+    toast.error({
+      summary: 'Passwords Don\'t Match',
+      message: 'The two passwords entered don\'t match',
+    })
     return
   }
 
@@ -73,17 +78,17 @@ definePageMeta({
   layoutTransition: false,
   name: 'Password',
   layout: 'app-settings',
-});
+})
 
 const settings = reactive({
   password: '',
   new_password: '',
   confirm_new_password: '',
-});
+})
 
 const isPasswordUpdatable = computed(() =>
-  currentUser.profile ? currentUser.profile?.providers.includes('email') : false
-);
+  currentUser.profile ? currentUser.profile?.providers.includes('email') : false,
+)
 </script>
 
 <template>
@@ -95,7 +100,11 @@ const isPasswordUpdatable = computed(() =>
       }"
     >
       <div v-if="isPasswordUpdatable">
-        <UserSettingsItem v-for="item in schema" :key="item.id" :item="item">
+        <UserSettingsItem
+          v-for="item in schema"
+          :key="item.id"
+          :item="item"
+        >
           <FormPassword
             :id="item.id"
             v-model="item.value.value"
@@ -104,10 +113,16 @@ const isPasswordUpdatable = computed(() =>
           />
         </UserSettingsItem>
         <div class="flex justify-start pt-12">
-          <PrimeButton label="Update Password" @click="handlePasswordUpdate" />
+          <PrimeButton
+            label="Update Password"
+            @click="handlePasswordUpdate"
+          />
         </div>
       </div>
-      <PrimeMessage v-else-if="currentUser.profile" severity="info">
+      <PrimeMessage
+        v-else-if="currentUser.profile"
+        severity="info"
+      >
         You used {{ currentUser.profile.provider }} to authenticate
       </PrimeMessage>
     </UserSettingsCard>

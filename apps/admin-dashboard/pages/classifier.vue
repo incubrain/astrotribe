@@ -156,7 +156,7 @@ const getLabelSeverity = (label) => {
         :size="25"
       >
         <div class="flex h-full flex-col">
-          <h2 class="mb-4 text-2xl font-bold">Training URLs</h2>
+          <h2 class="mb-4 text-2xl font-bold"> Training URLs </h2>
 
           <!-- Label Summary Metrics -->
           <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-2">
@@ -172,7 +172,9 @@ const getLabelSeverity = (label) => {
                 />
               </template>
               <template #content>
-                <div class="text-2xl font-bold">{{ count }}</div>
+                <div class="text-2xl font-bold">
+                  {{ count }}
+                </div>
                 <div class="text-sm text-gray-500">
                   {{ ((count / totalUrls) * 100).toFixed(1) }}%
                 </div>

@@ -126,9 +126,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <h1 class="mb-6 text-3xl font-bold">
-      Growth Dashboard
-    </h1>
+    <h1 class="mb-6 text-3xl font-bold"> Growth Dashboard </h1>
     <div
       v-if="isLoading"
       class="flex h-64 items-center justify-center"
@@ -169,9 +167,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="mt-8">
-        <h2 class="mb-4 text-2xl font-semibold">
-          Table Size Growth
-        </h2>
+        <h2 class="mb-4 text-2xl font-semibold"> Table Size Growth </h2>
         <PrimeChart
           type="line"
           :data="chartData"

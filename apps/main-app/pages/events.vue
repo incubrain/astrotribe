@@ -51,9 +51,7 @@ definePageMeta({ name: 'Events', layout: 'app' })
         class="grid grid-cols-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3 2xl:grid-cols-4 2xl:gap-8"
       >
         <div class="foreground space-y-1 rounded-md p-8 shadow-md">
-          <h3 class="pb-4 text-xl font-semibold">
-            No events to show, check back soon.
-          </h3>
+          <h3 class="pb-4 text-xl font-semibold"> No events to show, check back soon. </h3>
           <p>
             We have regularly scheduled events and are in the process of getting this page working.
           </p>

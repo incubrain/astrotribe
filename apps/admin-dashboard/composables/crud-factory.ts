@@ -64,7 +64,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
             context: `${entityName} insert`,
           })
         }
-        const insertedItem = await insertData(data as T) as T
+        const insertedItem = (await insertData(data as T)) as T
         if (options.afterInsert) {
           await options.afterInsert(insertedItem)
         }

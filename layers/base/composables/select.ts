@@ -10,7 +10,7 @@ export function useSelectData<T extends { id: string | number }>(
   options: {
     columns?: string
     filters?: Record<string, any>
-    orderBy?: { column: string; ascending?: boolean }
+    orderBy?: { column: string, ascending?: boolean }
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number

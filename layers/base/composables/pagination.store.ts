@@ -24,7 +24,7 @@ export interface PaginationInput {
 
 export const usePaginationStore = defineStore('paginationStore', () => {
   const logger = useLogger('paginationStore')
-  const stores = reactive({} as Record<DomainKey, Ref<{ page: number; limit: number }>>)
+  const stores = reactive({} as Record<DomainKey, Ref<{ page: number, limit: number }>>)
   const dataFinished = ref({} as Record<DomainKey, boolean>)
 
   function initPagination(input: PaginationInput) {

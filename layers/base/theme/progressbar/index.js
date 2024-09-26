@@ -18,8 +18,7 @@ export default {
     class: [
       // Flexbox & Overflow & Position
       {
-        'absolute flex items-center justify-center overflow-hidden':
-          props.mode !== 'indeterminate',
+        'absolute flex items-center justify-center overflow-hidden': props.mode !== 'indeterminate',
       },
 
       // Colors
@@ -34,8 +33,7 @@ export default {
 
       // Transitions
       {
-        'transition-width duration-1000 ease-in-out':
-          props.mode !== 'indeterminate',
+        'transition-width duration-1000 ease-in-out': props.mode !== 'indeterminate',
         'progressbar-value-animate': props.mode == 'indeterminate',
       },
 
@@ -58,4 +56,4 @@ export default {
       'leading-6',
     ],
   },
-};
+}

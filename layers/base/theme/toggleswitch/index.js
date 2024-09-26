@@ -5,8 +5,7 @@ export default {
       'w-10 h-6',
       'rounded-2xl',
       {
-        'opacity-60 select-none pointer-events-none cursor-default':
-          props.disabled,
+        'opacity-60 select-none pointer-events-none cursor-default': props.disabled,
       },
     ],
   }),
@@ -15,8 +14,7 @@ export default {
       // Position
       'absolute top-0 left-0 right-0 bottom-0',
       {
-        'before:transform before:translate-x-3':
-          props.modelValue == props.trueValue,
+        'before:transform before:translate-x-3': props.modelValue == props.trueValue,
       },
 
       // Shape
@@ -48,8 +46,7 @@ export default {
           !(props.modelValue == props.trueValue) && !props.disabled,
       },
       {
-        'peer-hover:bg-primary-hover ':
-          props.modelValue == props.trueValue && !props.disabled,
+        'peer-hover:bg-primary-hover ': props.modelValue == props.trueValue && !props.disabled,
       },
       'peer-focus-visible:ring peer-focus-visible:ring-primary-400/50 dark:peer-focus-visible:ring-primary-300/50',
 
@@ -87,4 +84,4 @@ export default {
       'cursor-pointer',
     ],
   },
-};
+}

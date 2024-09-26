@@ -73,13 +73,9 @@ const selectedRows = ref([])
       </div>
     </template>
 
-    <template #empty>
-      No data found.
-    </template>
+    <template #empty> No data found. </template>
 
-    <template #loading>
-      Loading data. Please wait.
-    </template>
+    <template #loading> Loading data. Please wait. </template>
 
     <PrimeColumn
       selection-mode="multiple"

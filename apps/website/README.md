@@ -1,6 +1,7 @@
 # Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn
+more.
 
 ## Setup
 
@@ -72,9 +73,10 @@ yarn preview
 bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more
+information.
 
-npx nx g @nx/nuxt:setup-project --name=main-app --directory=packages/main-app
-npx nx g @nx/nuxt:setup-project --name=monitoring-dashboard --directory=packages/monitoring-dashboard
-npx nx g @nx/nuxt:setup-project --name=admin-dashboard --directory=packages/admin-dashboard
-npx nx g @nx/nuxt:setup-project --name=auth-service --directory=packages/auth-service
+npx nx g @nx/nuxt:setup-project --name=main-app --directory=packages/main-app npx nx g
+@nx/nuxt:setup-project --name=monitoring-dashboard --directory=packages/monitoring-dashboard npx nx
+g @nx/nuxt:setup-project --name=admin-dashboard --directory=packages/admin-dashboard npx nx g
+@nx/nuxt:setup-project --name=auth-service --directory=packages/auth-service

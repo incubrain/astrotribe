@@ -2,14 +2,9 @@ const OFFICE_SPACE = {
   sqMetersPerEmployee: 8,
   costPerSqMeter: 2360, // averaged from 40 offices in Pune
   maxEmployees: 35, // Maximum number of employees for full office
-  costPerEmployee: (
-    haveCoworking: boolean,
-    haveOffice: boolean,
-    employees: number,
-  ): number => {
+  costPerEmployee: (haveCoworking: boolean, haveOffice: boolean, employees: number): number => {
     if (haveOffice) {
-      const totalSqMeters
-        = OFFICE_SPACE.maxEmployees * OFFICE_SPACE.sqMetersPerEmployee
+      const totalSqMeters = OFFICE_SPACE.maxEmployees * OFFICE_SPACE.sqMetersPerEmployee
       return totalSqMeters * OFFICE_SPACE.costPerSqMeter
     } else if (haveCoworking) {
       return 8000 * employees
@@ -48,14 +43,9 @@ export function calculateOfficeCosts(employees: number): OfficeResult {
   const minEmployeesForCoworking = 10
   const minEmployeesForOffice = 20
   const haveOffice = employees > minEmployeesForOffice
-  const haveCoworking
-    = employees > minEmployeesForCoworking && employees < minEmployeesForOffice
+  const haveCoworking = employees > minEmployeesForCoworking && employees < minEmployeesForOffice
 
-  const spaceCost = OFFICE_SPACE.costPerEmployee(
-    haveCoworking,
-    haveOffice,
-    employees,
-  )
+  const spaceCost = OFFICE_SPACE.costPerEmployee(haveCoworking, haveOffice, employees)
   const officeSuppliesCost = employees * OFFICE_EXPENSES.supplies
   const utilitiesCost = employees * OFFICE_EXPENSES.utilities
   const snacksCoffeeCost = employees * OFFICE_EXPENSES.snacks

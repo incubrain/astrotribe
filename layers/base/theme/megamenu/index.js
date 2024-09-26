@@ -67,14 +67,12 @@ export default {
 
       //  Colors
       {
-        'text-surface-50 dark:text-white/70':
-          !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-600/90':
-          context.focused && !context.active,
+        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
+        'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active) ||
-          context.active ||
-          (!context.focused && context.active),
+          (context.focused && context.active)
+          || context.active
+          || (!context.focused && context.active),
       },
 
       // Hover States
@@ -203,4 +201,4 @@ export default {
   end: {
     class: 'ml-auto self-center',
   },
-};
+}

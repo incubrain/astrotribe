@@ -7,6 +7,7 @@
    - Converting free users to paying customers through targeted email marketing and website
      notifications / pop ups / push notifications
 3. **Key Performance Indicators (KPIs):**
+
    - Monthly Active Users (MAU)
    - Customer Churn Rate (CCR)
    - Monthly Recurring Revenue (MRR)
@@ -22,18 +23,24 @@
    - Average Session Duration
    - Average Customer Lifetime Value
 
-   ---
+   ***
+
    ## Version 2
 
    #### Marketing Objectives and Goals
 
-1. **Initial User Acquisition:**
-   - Focus on acquiring initial users through a mix of social media campaigns, email marketing, influencer partnerships, and SEO efforts to drive organic traffic.
+4. **Initial User Acquisition:**
 
-2. **Customer Conversion:**
-   - Utilize personalized email marketing campaigns, targeted website notifications, pop-ups, and push notifications to convert free users into paying customers. Incorporate A/B testing to optimize these strategies.
+   - Focus on acquiring initial users through a mix of social media campaigns, email marketing,
+     influencer partnerships, and SEO efforts to drive organic traffic.
 
-3. **Key Performance Indicators (KPIs):**
-   - Simplify the list to focus on the most impactful KPIs: Monthly Active Users (MAU), Customer Acquisition Cost (CAC), Customer Lifetime Value (CLV), Conversion Rate, and Monthly Recurring Revenue (MRR). This will allow for more focused and actionable insights.
+5. **Customer Conversion:**
 
+   - Utilize personalized email marketing campaigns, targeted website notifications, pop-ups, and
+     push notifications to convert free users into paying customers. Incorporate A/B testing to
+     optimize these strategies.
 
+6. **Key Performance Indicators (KPIs):**
+   - Simplify the list to focus on the most impactful KPIs: Monthly Active Users (MAU), Customer
+     Acquisition Cost (CAC), Customer Lifetime Value (CLV), Conversion Rate, and Monthly Recurring
+     Revenue (MRR). This will allow for more focused and actionable insights.

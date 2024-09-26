@@ -73,11 +73,11 @@ const totalStripeTransactions = computed(() => {
     month.stripe.transactions.forEach((transaction) => {
       totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
       totals.totalTransactions += transaction.methodCustomers || 0
-      totals.additionalFees +=
-        transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
+      totals.additionalFees
+        += transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
       totals.gst += transaction.pro.fees.gst + transaction.expert.fees.gst || 0
-      totals.subscription +=
-        transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
+      totals.subscription
+        += transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
       totals.platform += transaction.pro.fees.platform + transaction.expert.fees.platform || 0
     })
     return totals
@@ -102,8 +102,8 @@ const razorpayTransactions = computed(() => {
                 totalCost: transaction.pro?.totalCost + transaction.expert?.totalCost || 0,
                 totalTransactions: transaction.methodCustomers || 0,
                 additionalFees:
-                  transaction.pro?.fees?.additionalFees +
-                    transaction.expert?.fees?.additionalFees || 0,
+                  transaction.pro?.fees?.additionalFees
+                  + transaction.expert?.fees?.additionalFees || 0,
                 gst: transaction.pro?.fees?.gst + transaction.expert?.fees?.gst || 0,
                 subscription:
                   transaction.pro?.fees?.subscription + transaction.expert?.fees?.subscription || 0,
@@ -162,11 +162,11 @@ const totalRazorpayTransactions = computed(() => {
     month.razorpay.transactions.forEach((transaction) => {
       totals.totalCost += transaction.pro.totalCost + transaction.expert.totalCost || 0
       totals.totalTransactions += transaction.methodCustomers || 0
-      totals.additionalFees +=
-        transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
+      totals.additionalFees
+        += transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0
       totals.gst += transaction.pro.fees.gst + transaction.expert.fees.gst || 0
-      totals.subscription +=
-        transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
+      totals.subscription
+        += transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0
       totals.platform += transaction.pro.fees.platform + transaction.expert.fees.platform || 0
     })
     return totals

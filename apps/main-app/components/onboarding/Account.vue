@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div class="p-fluid"/>
+    <div class="p-fluid" />
     <div class="mt-4">
       <PrimeButton
         type="button"

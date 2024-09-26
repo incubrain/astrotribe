@@ -10,7 +10,8 @@
       <label
         :for="name"
         class="block text-sm font-medium text-gray-700"
-      >{{ input.label }}</label>
+        >{{ input.label }}</label
+      >
       <InputText
         :id="name"
         v-model="form[name]"

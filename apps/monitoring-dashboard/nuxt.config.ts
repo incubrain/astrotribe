@@ -1,13 +1,13 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { defineNuxtConfig } from 'nuxt/config';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
   extends: ['/layers/base'],
-  
+
   vite: {
-    plugins: [nxViteTsPaths()]
+    plugins: [nxViteTsPaths()],
   },
 
   routeRules: {
@@ -18,11 +18,10 @@ export default defineNuxtConfig({
     autoImport: true,
   },
 
-
   runtimeConfig: {
     influxUrl: '',
     influxToken: '',
     influxOrg: '',
     influxBucket: '',
-  }
+  },
 })

@@ -47,8 +47,8 @@ export function useBaseLocalStorage() {
       const currentTime = Date.now()
 
       if (
-        currentTime - parsedData.timestamp <= CACHE_DURATION &&
-        parsedData.version === CACHE_VERSION
+        currentTime - parsedData.timestamp <= CACHE_DURATION
+        && parsedData.version === CACHE_VERSION
       ) {
         logger.debug(`Retrieved valid cached data for: ${key}`)
         return parsedData.data

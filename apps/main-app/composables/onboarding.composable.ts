@@ -29,7 +29,6 @@ export function useOnboarding() {
     organization: '',
     experience: null,
     interests: [],
-
   })
 
   const errors = reactive<Partial<Record<keyof SignupForm, string>>>({})

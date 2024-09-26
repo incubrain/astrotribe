@@ -5,7 +5,7 @@ export default {
 
       // Flex
       {
-        flex: props.fluid,
+        'flex': props.fluid,
         'inline-flex': !props.fluid,
       },
 
@@ -17,8 +17,7 @@ export default {
 
       // States
       {
-        'opacity-60 select-none pointer-events-none cursor-default':
-          props.disabled,
+        'opacity-60 select-none pointer-events-none cursor-default': props.disabled,
       },
     ],
   }),
@@ -71,8 +70,7 @@ export default {
     class: 'flex-auto inline-flex pt-1 pb-1',
   },
   input: {
-    class:
-      'border-none outline-none bg-transparent m-0 p-0 shadow-none rounded-none w-full',
+    class: 'border-none outline-none bg-transparent m-0 p-0 shadow-none rounded-none w-full',
   },
   chipItem: {
     root: {
@@ -165,8 +163,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80':
-          !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -213,4 +210,4 @@ export default {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
-};
+}

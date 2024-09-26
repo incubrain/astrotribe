@@ -47,8 +47,7 @@ export default {
       {
         'p-3': props.display !== 'chip',
         'py-3 px-3': props.display === 'chip' && !props?.modelValue?.length,
-        'py-[0.375rem] px-3':
-          props.display === 'chip' && props?.modelValue?.length > 0,
+        'py-[0.375rem] px-3': props.display === 'chip' && props?.modelValue?.length > 0,
       },
 
       // Color
@@ -160,8 +159,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80':
-          !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       {
         'hover:text-surface-100 hover:bg-surface-600 dark:hover:text-white dark:hover:bg-surface-600/80':
@@ -218,4 +216,4 @@ export default {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
-};
+}

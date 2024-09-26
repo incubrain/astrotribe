@@ -96,7 +96,8 @@ export default {
     enterFromClass: 'opacity-0 translate-y-2/4',
     enterActiveClass: 'transition-[transform,opacity] duration-300',
     leaveFromClass: 'max-h-[1000px]',
-    leaveActiveClass: '!transition-[max-height_.45s_cubic-bezier(0,1,0,1),opacity_.3s,margin-bottom_.3s] overflow-hidden',
+    leaveActiveClass:
+      '!transition-[max-height_.45s_cubic-bezier(0,1,0,1),opacity_.3s,margin-bottom_.3s] overflow-hidden',
     leaveToClass: 'max-h-0 opacity-0 mb-0',
   },
 }

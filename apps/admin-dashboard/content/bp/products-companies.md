@@ -1,6 +1,7 @@
 ### Company Profiles
 
 1. **Content:**
+
    - **Included Information:**
      - Founding date
      - Company name
@@ -27,7 +28,10 @@
      - Job listings from company websites/LinkedIn.
      - Event and product scraping if available.
 
-
 ### Company Profiles
 
-Detailed profiles of space and astronomy companies are available on AstronEra, featuring information such as founding date, company name, vision, team, funding, employee count, job opportunities, and social media links. Only registered companies in the space/astronomy domain are included, ensuring a focus on relevant and credible organizations. Interactive features keep users updated on news, events, and job listings from these companies.
+Detailed profiles of space and astronomy companies are available on AstronEra, featuring information
+such as founding date, company name, vision, team, funding, employee count, job opportunities, and
+social media links. Only registered companies in the space/astronomy domain are included, ensuring a
+focus on relevant and credible organizations. Interactive features keep users updated on news,
+events, and job listings from these companies.

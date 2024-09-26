@@ -29,12 +29,8 @@
       >
         code
       </PrimeButton>
-      <PrimeButton @click="editor.chain().focus().unsetAllMarks().run()">
-        clear marks
-      </PrimeButton>
-      <PrimeButton @click="editor.chain().focus().clearNodes().run()">
-        clear nodes
-      </PrimeButton>
+      <PrimeButton @click="editor.chain().focus().unsetAllMarks().run()"> clear marks </PrimeButton>
+      <PrimeButton @click="editor.chain().focus().clearNodes().run()"> clear nodes </PrimeButton>
       <PrimeButton
         :class="{ 'is-active': editor.isActive('paragraph') }"
         @click="editor.chain().focus().setParagraph().run()"
@@ -104,9 +100,7 @@
       <PrimeButton @click="editor.chain().focus().setHorizontalRule().run()">
         horizontal rule
       </PrimeButton>
-      <PrimeButton @click="editor.chain().focus().setHardBreak().run()">
-        hard break
-      </PrimeButton>
+      <PrimeButton @click="editor.chain().focus().setHardBreak().run()"> hard break </PrimeButton>
       <PrimeButton
         :disabled="!editor.can().chain().focus().undo().run()"
         @click="editor.chain().focus().undo().run()"

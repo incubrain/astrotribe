@@ -41,9 +41,7 @@ defineProps({
               height: '60',
             }"
           />
-          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex">
-            Go Home
-          </p>
+          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex"> Go Home </p>
         </NuxtLink>
       </div>
       <div class="w-full">

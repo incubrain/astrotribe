@@ -1,8 +1,6 @@
 <template>
   <div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">
-      Select Your Interests
-    </h2>
+    <h2 class="text-2xl font-bold mb-4"> Select Your Interests </h2>
     <form @submit.prevent="handleSubmit">
       <div class="p-fluid">
         <div class="p-field">
@@ -19,7 +17,8 @@
           <small
             v-if="errors.interests"
             class="p-error"
-          >{{ errors.interests }}</small>
+            >{{ errors.interests }}</small
+          >
         </div>
       </div>
       <PrimeButton

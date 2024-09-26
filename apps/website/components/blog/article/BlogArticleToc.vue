@@ -78,9 +78,7 @@ onUnmounted(() => {
     <PrimeAccordion value="0">
       <PrimeAccordionPanel value="0">
         <PrimeAccordionHeader class="flex gap-4 bg-primary-800 py-2 px-4 rounded-md items-center">
-          <h3 class="text-lg font-semibold">
-            Table of Contents
-          </h3>
+          <h3 class="text-lg font-semibold"> Table of Contents </h3>
         </PrimeAccordionHeader>
         <PrimeAccordionContent>
           <ul>

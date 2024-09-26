@@ -33,7 +33,7 @@ export default {
   tableContainer: ({ props }) => ({
     class: [
       {
-        relative: props.scrollable,
+        'relative': props.scrollable,
         'flex flex-col grow': props.scrollable && props.scrollHeight === 'flex',
       },
 
