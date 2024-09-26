@@ -6,8 +6,7 @@ const props = defineProps({
   },
 })
 
-// fetch the bp section from content
-const { error, data: bpMarkdown } = await useAsyncData(`business-plan-${props.bpSection}`, () =>
+const { error, data: bpMarkdown } = await useLazyAsyncData(`business-plan-${props.bpSection}`, () =>
   queryContent('/bp')
     .where({ section: { $eq: props.bpSection } })
     .findOne(),
@@ -23,6 +22,7 @@ console.log('bpMarkdown', bpMarkdown)
 <template>
   <div class="mx-auto overflow-x-hidden p-4 md:p-6">
     <MDC
+      v-if="bpMarkdown"
       :value="bpMarkdown"
       tag="article"
       class="list-item-primary-700 background custom-content prose prose-lg marker:text-primary-700 prose-headings:no-underline prose-h1:border-b-0 prose-h2:border-b-0 prose-h3:border-b-0 prose-h4:border-b-0 prose-h5:border-b-0 prose-h6:border-b-0 mx-auto w-full rounded-md p-8 marker:h-3 marker:w-3"

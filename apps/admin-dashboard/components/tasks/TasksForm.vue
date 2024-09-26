@@ -293,7 +293,7 @@ function updateTimeSpent(time: number) {
           />
           Time Tracking
         </label>
-        <IBTasksTimeTracker
+        <TasksTimeTracker
           :goal="formData"
           @update:time-spent="updateTimeSpent"
         />

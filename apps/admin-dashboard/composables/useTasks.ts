@@ -35,7 +35,7 @@ export default function useTasks() {
   async function fetchGoals() {
     try {
       console.log('fetchGoals')
-      const response = await $fetch('/api/admin/goals', {
+      const response = await $fetch('/api/goals', {
         method: 'POST',
         body: { action: 'read' },
       })
@@ -120,7 +120,7 @@ export default function useTasks() {
 
   async function handleGoalCrud(action: 'create' | 'update' | 'delete', goal: Goal) {
     try {
-      const response = await $fetch('/api/admin/goals', {
+      const response = await $fetch('/api/goals', {
         method: 'POST',
         body: { action, goal },
       })
@@ -163,7 +163,7 @@ export default function useTasks() {
 
   async function fetchMilestones() {
     try {
-      const response = await fetch('/api/admin/milestones')
+      const response = await fetch('/api/milestones')
 
       console.log('milestones', response)
       if (!response.ok) {
