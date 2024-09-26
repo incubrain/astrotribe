@@ -94,16 +94,6 @@ export default <Partial<Config>>{
       },
     },
   },
-  content: [
-    // '../../apps/*/components/**/*.{vue,js,ts}',
-    // '../../apps/*/layouts/**/*.vue',
-    // '../../apps/*/pages/**/*.vue',
-    // '../../apps/*/plugins/**/*.{js,ts}',
-    resolve(currentDir, './theme/**/*.{js,vue,ts}'),
-    resolve(currentDir, './components/**/*.{js,vue,ts}'),
-    resolve(currentDir, './pages/**/*.{js,vue,ts}'),
-    resolve(currentDir, './assets/**/*.{js,vue,ts}'),
-    resolve(currentDir, './layouts/**/*.{js,vue,ts}'),
-  ],
+  content: [resolve(currentDir, '**/*.{js,vue,ts}')],
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')],
 }

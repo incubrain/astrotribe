@@ -32,7 +32,7 @@ export default {
 
       // Colors
       'text-surface-100',
-      'placeholder:placeholder:text-surface-50',
+      'placeholder:text-surface-100',
       'bg-surface-400',
       'border',
       { 'border-surface-300/50 dark:border-surface-300/50': !props.invalid },

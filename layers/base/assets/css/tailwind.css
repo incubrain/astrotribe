@@ -84,9 +84,8 @@
     color: var(--p-primary-color-text);
   }
 
-
   html {
-    color: var(--p-primary-color-text);
+    color: var(--p-primary-color-text) !important;
   }
 
   a {
@@ -110,7 +109,7 @@
   .padded-x {
     @apply px-4 lg:px-8;
   }
-  
+
   .border-color {
     @apply !border-zinc-700;
   }
@@ -142,6 +141,7 @@
   .glass-primary {
     @apply relative w-full overflow-hidden rounded-md border border-primary-500/30 bg-primary-900/20 p-6 text-left leading-7 text-primary-100 shadow-xl ring-2 ring-inset ring-white/10 backdrop-blur-md backdrop-filter transition-all duration-300 hover:border-primary-400/40 hover:bg-primary-800/30 hover:shadow-2xl;
   }
+  
   .glass-primary::before {
     @apply absolute inset-0 z-[-1] bg-gradient-to-br from-primary-500/10 to-primary-700/10 opacity-50 content-[''];
   }
@@ -162,7 +162,6 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {

@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
+  // tailwindcss: {
+  //   configPath: resolve(currentDir, './tailwind.config.js'),
+  // },
+
   primevue: {
     importPT: { from: resolve(currentDir, './theme/index.js') },
     autoImport: true,

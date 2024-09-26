@@ -52,7 +52,6 @@ export default {
       'inline-flex',
 
       // Font and Text
-      'text-white dark:text-surface-900',
       'leading-6',
     ],
   },
