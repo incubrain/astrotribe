@@ -137,7 +137,6 @@ const UserProfilesAdminDashboard = createAdminDashboard(
       <template #title>
         <div class="flex items-center">
           <h2 class="text-2xl font-bold mr-4">Custom Title</h2>
-          <SomeCustomComponent />
         </div>
       </template>
     </UserProfilesAdminDashboard>
