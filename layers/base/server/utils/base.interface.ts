@@ -97,4 +97,4 @@ export interface DeleteInput<T, K extends DBTable> extends BaseOperationInput<T,
   filterBy: FilterBy<K>
 }
 
-// export { Database, Tables, DBTable }
+export type { Database, Tables, DBTable }
