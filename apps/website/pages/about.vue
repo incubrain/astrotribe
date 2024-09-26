@@ -11,17 +11,13 @@
     <div class="wrapper padded-x mx-auto flex flex-col gap-12 xl:gap-24 xl:py-24">
       <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">
         <IBGlass>
-          <h3 class="pb-4 text-2xl font-bold leading-7">
-            The Mission
-          </h3>
+          <h3 class="pb-4 text-2xl font-bold leading-7"> The Mission </h3>
           <p class="pb-3 text-base font-normal">
             {{ about.mission }}
           </p>
         </IBGlass>
         <IBGlass>
-          <h3 class="pb-4 text-2xl font-bold leading-7">
-            The Vision
-          </h3>
+          <h3 class="pb-4 text-2xl font-bold leading-7"> The Vision </h3>
           <p class="pb-3 text-base font-normal">
             {{ about.vision }}
           </p>
@@ -46,9 +42,7 @@
         </div>
 
         <div class="h-auto w-full">
-          <h3 class="pb-4 text-2xl font-bold leading-7">
-            Timeline
-          </h3>
+          <h3 class="pb-4 text-2xl font-bold leading-7"> Timeline </h3>
           <AboutTimeline :timeline="about.timeline" />
         </div>
       </div>

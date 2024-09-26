@@ -1,4 +1,4 @@
-import { H3Event } from 'h3'
+import type { H3Event } from 'h3'
 
 export default defineEventHandler((event: H3Event) => {
   // This is just an example. In reality, you'd set this cookie after successful authentication.

@@ -38,8 +38,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-700':
-          context?.selectable && !context?.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-700': context?.selectable && !context?.selected,
         'hover:bg-highlight-emphasis': context?.selectable && context?.selected,
       },
 
@@ -135,4 +134,4 @@ export default {
       'w-4 h-4',
     ],
   },
-};
+}

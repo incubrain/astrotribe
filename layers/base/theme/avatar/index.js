@@ -29,8 +29,7 @@ export default {
       // Colors
       'bg-surface-700',
       {
-        'border-white dark:border-surface-800':
-          parent.instance.$style?.name == 'avatargroup',
+        'border-white dark:border-surface-800': parent.instance.$style?.name == 'avatargroup',
       },
     ],
   }),
@@ -43,4 +42,4 @@ export default {
       },
     ],
   }),
-};
+}

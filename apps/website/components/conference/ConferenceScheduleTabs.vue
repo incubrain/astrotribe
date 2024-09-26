@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-function convertISTtoLocal(day: number, time: { start: string; end: string }) {
+function convertISTtoLocal(day: number, time: { start: string, end: string }) {
   const start = `2023-11-${day}T${time.start}:00+05:30` // '+05:30' is the offset for IST
   const end = `2023-11-${day}T${time.end}:00+05:30` // '+05:30' is the offset for IST
 
@@ -198,7 +198,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic: "Astronomy's Impact on Sustainability",
+        topic: 'Astronomy\'s Impact on Sustainability',
         speaker: 'María Alejandra Díaz Teodori',
         time: { start: '15:30', end: '16:00' },
       },
@@ -425,7 +425,7 @@ const schedule = [
         online: true,
         icon: 'mdi:microphone',
         topic:
-          "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
+          'Empowering Ghana\'s STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation',
         speaker: 'Albert Kuntu Forson ',
         time: { start: '11:00', end: '11:30' },
       },

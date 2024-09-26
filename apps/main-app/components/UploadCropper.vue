@@ -250,7 +250,7 @@ function onChange({ coordinates, image, canvas }: CropperResult) {
 
 // original file
 type CropperConfigDimensions = {
-  [key in CropperConfigTypes]: { minWidth: number; minHeight: number }
+  [key in CropperConfigTypes]: { minWidth: number, minHeight: number }
 }
 
 function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes): Promise<boolean> {

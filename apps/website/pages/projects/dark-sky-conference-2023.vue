@@ -87,9 +87,7 @@ definePageMeta({
             }"
             class="mx-auto w-full rounded-md"
           />
-          <p class="w-full p-4 text-center">
-            Thank you to everyone who made this possible! ❤️
-          </p>
+          <p class="w-full p-4 text-center"> Thank you to everyone who made this possible! ❤️ </p>
           <div class="flex items-center justify-center">
             <a
               href="/conference/full-conference-report.pdf"

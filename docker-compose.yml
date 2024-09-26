@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     image: astrotribe-website:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
       - AUTH_SERVICE_URL=http://auth-service:3001
@@ -18,12 +18,11 @@ services:
       dockerfile: Dockerfile
     image: astrotribe-auth:latest
     ports:
-      - "3001:3000"
+      - '3001:3000'
     environment:
       - NODE_ENV=development
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
- 
 
   main-app:
     build:
@@ -31,7 +30,7 @@ services:
       dockerfile: Dockerfile
     image: astrotribe-app:latest
     ports:
-      - "3002:3000"
+      - '3002:3000'
     environment:
       - NODE_ENV=development
       - AUTH_SERVICE_URL=http://auth-service:3001
@@ -44,7 +43,7 @@ services:
       dockerfile: Dockerfile
     image: astrotribe-admin:latest
     ports:
-      - "3003:3000"
+      - '3003:3000'
     environment:
       - NODE_ENV=development
       - AUTH_SERVICE_URL=http://auth-service:3001
@@ -57,7 +56,7 @@ services:
       dockerfile: Dockerfile
     image: astrotribe-monitoring:latest
     ports:
-      - "3004:3000"
+      - '3004:3000'
     environment:
       - NODE_ENV=development
       - AUTH_SERVICE_URL=http://auth-service:3001

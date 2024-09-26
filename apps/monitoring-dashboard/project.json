@@ -10,6 +10,18 @@
       "options": {
         "command": "eslint --config eslint.config.js ."
       }
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\" --config ../../prettier.config.mjs"
+      }
+    },
+    "format:check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\" --config ../../prettier.config.mjs"
+      }
     }
   }
 }

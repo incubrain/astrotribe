@@ -27,10 +27,10 @@ interface BundleSizeData {
   gzipServerSize: number
   clientFileCount: number
   serverFileCount: number
-  largestFiles: Array<{ name: string; size: number; path: string }>
+  largestFiles: Array<{ name: string, size: number, path: string }>
 }
 
-async function getDirectorySize(directory: string): Promise<{ size: number; fileCount: number }> {
+async function getDirectorySize(directory: string): Promise<{ size: number, fileCount: number }> {
   let totalSize = 0
   let fileCount = 0
   const files = await fs.readdir(directory)
@@ -58,9 +58,9 @@ function bytesToMB(bytes: number): string {
 
 async function getAllFiles(
   directory: string,
-): Promise<Array<{ name: string; size: number; path: string }>> {
+): Promise<Array<{ name: string, size: number, path: string }>> {
   const files = await fs.readdir(directory)
-  const fileInfos: Array<{ name: string; size: number; path: string }> = []
+  const fileInfos: Array<{ name: string, size: number, path: string }> = []
 
   for (const file of files) {
     const filePath = path.join(directory, file)
@@ -79,7 +79,7 @@ async function getAllFiles(
 async function getLargestFiles(
   directory: string,
   top: number = 5,
-): Promise<Array<{ name: string; size: number; path: string }>> {
+): Promise<Array<{ name: string, size: number, path: string }>> {
   const allFiles = await getAllFiles(directory)
   return allFiles
     .sort((a, b) => b.size - a.size)

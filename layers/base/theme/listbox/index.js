@@ -50,8 +50,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80':
-          !context.focused && !context.selected,
+        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
@@ -116,4 +115,4 @@ export default {
       'bg-transparent',
     ],
   },
-};
+}

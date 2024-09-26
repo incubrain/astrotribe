@@ -35,14 +35,12 @@ export default {
 
       // Rounded Corners - Horizontal
       {
-        'first:rounded-l-lg last:rounded-r-lg':
-          props.orientation === 'horizontal',
+        'first:rounded-l-lg last:rounded-r-lg': props.orientation === 'horizontal',
       },
 
       // Rounded Corners - Vertical
       {
-        'first:rounded-t-lg last:rounded-b-lg':
-          props.orientation === 'vertical',
+        'first:rounded-t-lg last:rounded-b-lg': props.orientation === 'vertical',
       },
 
       // Colors
@@ -62,19 +60,13 @@ export default {
 
       // Conditional Alignment - Horizontal
       {
-        'align-end':
-          props.labelOrientation === 'horizontal' &&
-          props.labelPosition === 'end',
-        'align-start':
-          props.labelOrientation === 'horizontal' &&
-          props.labelPosition === 'start',
+        'align-end': props.labelOrientation === 'horizontal' && props.labelPosition === 'end',
+        'align-start': props.labelOrientation === 'horizontal' && props.labelPosition === 'start',
       },
 
       // Conditional Alignment - Vertical
       {
-        'justify-start':
-          props.labelOrientation === 'vertical' &&
-          props.labelPosition === 'start',
+        'justify-start': props.labelOrientation === 'vertical' && props.labelPosition === 'start',
       },
 
       // List Styling
@@ -104,4 +96,4 @@ export default {
       'rounded-full',
     ],
   },
-};
+}

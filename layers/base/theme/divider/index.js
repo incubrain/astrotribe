@@ -7,8 +7,7 @@ export default {
       { 'items-center': props.layout == 'vertical' },
       {
         'justify-start': props?.align == 'left' && props.layout == 'horizontal',
-        'justify-center':
-          props?.align == 'center' && props.layout == 'horizontal',
+        'justify-center': props?.align == 'center' && props.layout == 'horizontal',
         'justify-end': props?.align == 'right' && props.layout == 'horizontal',
         'items-center': props?.align == 'top' && props.layout == 'vertical',
         'items-start': props?.align == 'center' && props.layout == 'vertical',
@@ -32,8 +31,7 @@ export default {
 
       // Position
       {
-        'before:absolute before:left-0 before:top-1/2':
-          props.layout == 'horizontal',
+        'before:absolute before:left-0 before:top-1/2': props.layout == 'horizontal',
         'before:absolute before:left-1/2 before:top-0 before:transform before:-translate-x-1/2':
           props.layout == 'vertical',
       },
@@ -69,4 +67,4 @@ export default {
       'bg-surface-400',
     ],
   },
-};
+}

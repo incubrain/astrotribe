@@ -1,17 +1,13 @@
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">
-      Instagram Profile Metrics
-    </h1>
+    <h1 class="text-2xl font-bold mb-4"> Instagram Profile Metrics </h1>
     <div
       v-if="instagram"
       class="mb-4"
     >
       <PrimeCard>
         <template #header>
-          <h2 class="text-xl font-semibold">
-            Profile Statistics
-          </h2>
+          <h2 class="text-xl font-semibold"> Profile Statistics </h2>
         </template>
         <p>Followers Count: {{ instagram.analytics.followers_count }}</p>
         <p>Media Count: {{ instagram.analytics.media_count }}</p>
@@ -19,9 +15,7 @@
       </PrimeCard>
     </div>
     <div v-if="instagram && instagram.insights.length">
-      <h2 class="text-xl font-semibold mb-2">
-        Recent Insights
-      </h2>
+      <h2 class="text-xl font-semibold mb-2"> Recent Insights </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <PrimeCard
           v-for="insight in instagram.insights"

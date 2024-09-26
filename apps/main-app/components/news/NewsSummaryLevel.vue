@@ -28,15 +28,9 @@ const selectedLevel = ref('beginner')
 
 <template>
   <div class="flex w-full gap-2">
-    <PrimeButton @click="news.scrapeBlogs">
-      Scrape Blogs
-    </PrimeButton>
-    <PrimeButton @click="storeImage">
-      Store Image
-    </PrimeButton>
-    <PrimeButton @click="news.getBlogs">
-      Get Blogs
-    </PrimeButton>
+    <PrimeButton @click="news.scrapeBlogs"> Scrape Blogs </PrimeButton>
+    <PrimeButton @click="storeImage"> Store Image </PrimeButton>
+    <PrimeButton @click="news.getBlogs"> Get Blogs </PrimeButton>
     <div class="mb-4 flex w-full justify-end gap-2">
       <PrimeSelect
         v-model="selectedLevel"

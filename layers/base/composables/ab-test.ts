@@ -20,12 +20,7 @@ interface ABTestConfig<T> {
   goals: TestGoal[]
 }
 
-export function useABTest<T>({
-  experimentName,
-  variants,
-  defaultVariant,
-  goals,
-}: ABTestConfig<T>) {
+export function useABTest<T>({ experimentName, variants, defaultVariant, goals }: ABTestConfig<T>) {
   const { $posthog } = useNuxtApp()
 
   const selectedVariant = ref<ABTestVariant<T>>(defaultVariant)

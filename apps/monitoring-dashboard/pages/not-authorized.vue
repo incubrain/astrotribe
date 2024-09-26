@@ -1,13 +1,7 @@
 <template>
-  <div>
-    you are not authorized to see this
-  </div>
+  <div> you are not authorized to see this </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

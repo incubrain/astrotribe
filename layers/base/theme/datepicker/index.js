@@ -3,7 +3,7 @@ export default {
     class: [
       // Display and Position
       {
-        flex: props.fluid,
+        'flex': props.fluid,
         'inline-flex': !props.fluid,
       },
       'max-w-full',
@@ -87,7 +87,7 @@ export default {
     class: [
       // Display & Position
       {
-        absolute: !props.inline,
+        'absolute': !props.inline,
         'inline-block': props.inline,
       },
 

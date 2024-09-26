@@ -8,7 +8,7 @@
           <div class="md:w-96">
             <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-5xl"> LET’S TALK </h1>
             <p class="py-4 text-base leading-normal md:mt-2">
-              We'll happily answer any questions <br >you have about AstronEra
+              We'll happily answer any questions <br />you have about AstronEra
             </p>
           </div>
           <div class="flex flex-col gap-3 md:max-w-48">

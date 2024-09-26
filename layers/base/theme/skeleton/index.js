@@ -16,4 +16,4 @@ export default {
       'bg-surface-700',
     ],
   }),
-};
+}

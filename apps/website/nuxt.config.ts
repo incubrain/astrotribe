@@ -1,5 +1,5 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { defineNuxtConfig } from 'nuxt/config';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import { defineNuxtConfig } from 'nuxt/config'
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -7,7 +7,7 @@ const og = {
     'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
   url: 'https://www.astronera.org',
-};
+}
 
 // const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -113,4 +113,4 @@ export default defineNuxtConfig({
   // },
 
   compatibilityDate: '2024-09-22',
-});
+})

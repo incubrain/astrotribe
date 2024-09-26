@@ -59,7 +59,8 @@ const onPasswordChange = (value: string) => {
   <label
     v-if="label"
     :for="id"
-  >{{ label }}</label>
+    >{{ label }}</label
+  >
   <PrimePassword
     :id="id"
     class="w-full"
@@ -81,9 +82,7 @@ const onPasswordChange = (value: string) => {
   >
     <template #footer>
       <PrimeDivider />
-      <p class="mt-2">
-        Suggestions
-      </p>
+      <p class="mt-2"> Suggestions </p>
       <ul
         class="ml-2 mt-0 pl-2"
         style="line-height: 1.5"

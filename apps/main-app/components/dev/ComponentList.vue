@@ -4,7 +4,7 @@
     <input
       v-model="search"
       placeholder="Search components..."
-    >
+    />
     <ul>
       <li
         v-for="componentName in filteredComponentNames"

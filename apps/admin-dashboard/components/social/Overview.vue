@@ -1,9 +1,7 @@
 <template>
   <div>
     <h3> Overview dashboard </h3>
-    <PrimeMessage severity="info">
-      This is a work in progress
-    </PrimeMessage>
+    <PrimeMessage severity="info"> This is a work in progress </PrimeMessage>
   </div>
 </template>
 

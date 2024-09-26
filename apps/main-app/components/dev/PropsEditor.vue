@@ -10,7 +10,7 @@
         :value="value"
         :type="getInputType(value)"
         @input="updateProp(key, $event.target.value)"
-      >
+      />
     </div>
   </div>
 </template>

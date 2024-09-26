@@ -90,8 +90,6 @@
   - Many competitors offer specialized services (e.g., only news, only courses) rather than an
     integrated solution.
 
-
-
 ## Additional Links
 
 | **Source**                                       | **Description**                                                                                         | **Link**                                                                                |

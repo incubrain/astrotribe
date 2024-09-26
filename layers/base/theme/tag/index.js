@@ -26,8 +26,7 @@ export default {
         'bg-blue-900 dark:bg-blue-950': props.severity === 'info',
         'bg-orange-900 dark:bg-orange-950': props.severity === 'warn',
         'bg-red-900 dark:bg-red-950': props.severity === 'danger',
-        'text-surface-900 dark:text-surface-950 bg-surface-100':
-          props.severity === 'contrast',
+        'text-surface-900 dark:text-surface-950 bg-surface-100': props.severity === 'contrast',
       },
     ],
   }),
@@ -37,4 +36,4 @@ export default {
   icon: {
     class: 'mr-1 text-sm',
   },
-};
+}

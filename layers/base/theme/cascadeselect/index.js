@@ -5,7 +5,7 @@ export default {
 
       // Flex
       {
-        flex: props.fluid,
+        'flex': props.fluid,
         'inline-flex': !props.fluid,
       },
 
@@ -132,14 +132,12 @@ export default {
 
       //  Colors
       {
-        'text-surface-50 dark:text-white/70':
-          !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-600/90':
-          context.focused && !context.active,
+        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
+        'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
-          (context.focused && context.active) ||
-          context.active ||
-          (!context.focused && context.active),
+          (context.focused && context.active)
+          || context.active
+          || (!context.focused && context.active),
       },
 
       // Hover States
@@ -212,4 +210,4 @@ export default {
     leaveActiveClass: 'transition-opacity duration-100 ease-linear',
     leaveToClass: 'opacity-0',
   },
-};
+}

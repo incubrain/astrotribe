@@ -1,9 +1,4 @@
-import {
-  useErrorHandler,
-  AppError,
-  ErrorSeverity,
-  ErrorType,
-} from './error-handler'
+import { useErrorHandler, AppError, ErrorSeverity, ErrorType } from './error-handler'
 import { useHttpHandler } from './http-handler'
 import { useLogger } from './logger'
 import { getOrCreateStore } from './main.store'

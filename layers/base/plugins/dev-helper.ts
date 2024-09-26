@@ -15,8 +15,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         // Reinitialize the feature if it's being enabled
         if (enabled) {
-          const initMethod =
-            `init${feature.charAt(0).toUpperCase() + feature.slice(1)}` as keyof typeof DevHelper
+          const initMethod
+            = `init${feature.charAt(0).toUpperCase() + feature.slice(1)}` as keyof typeof DevHelper
           if (typeof this[initMethod] === 'function') {
             ;(this[initMethod] as Function)()
           }
@@ -99,8 +99,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         const wrappedCallback = function (this: typeof window) {
           iterationCount++
           if (
-            iterationCount > MAX_ITERATIONS ||
-            (Date.now() - start > TIME_THRESHOLD && iterationCount > 1000)
+            iterationCount > MAX_ITERATIONS
+            || (Date.now() - start > TIME_THRESHOLD && iterationCount > 1000)
           ) {
             logger.warn('🔄 Potential infinite loop detected:', {
               iterations: iterationCount,

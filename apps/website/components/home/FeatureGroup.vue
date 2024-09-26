@@ -6,7 +6,9 @@
     <p class="mb-8 text-center text-xl">
       {{ description }}
     </p>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 rounded-lg border border-color overflow-hidden">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 rounded-lg border border-color overflow-hidden"
+    >
       <div
         v-for="feature in features"
         :key="feature.title"
@@ -21,12 +23,13 @@
             {{ feature.title }}
           </h3>
         </div>
-        <span class="text-sm">{{ feature.description }}
+        <span class="text-sm"
+          >{{ feature.description }}
 
           <NuxtLink
             :to="feature.link"
             class="text-blue-800 hover:underline"
-          >{{ feature.linkText }}
+            >{{ feature.linkText }}
           </NuxtLink>
         </span>
       </div>

@@ -13,7 +13,7 @@
             placeholder="Your Email"
             aria-label="email"
             class="w-full h-12 pl-4 text-xs text-gray-700 placeholder-gray-600 bg-transparent rounded-lg lg:h-16 sm:text-base focus:outline-none"
-          >
+          />
           <button
             type="submit"
             class="absolute inset-y-0 right-0 h-full px-2 py-2 text-xs font-medium transition duration-150 ease-in-out border-l border-gray-300 rounded focus:outline-none lg:text-base text-primary-700 sm:px-6 lg:py-4"

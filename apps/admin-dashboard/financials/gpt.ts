@@ -537,7 +537,12 @@ export function calculateAiCost({
     })
   }
 
-  console.log('Total Costs:', totalEmbeddingsCost.toFixed(0), totalSummaryCost.toFixed(0), chat.totalCost.toFixed(0))
+  console.log(
+    'Total Costs:',
+    totalEmbeddingsCost.toFixed(0),
+    totalSummaryCost.toFixed(0),
+    chat.totalCost.toFixed(0),
+  )
 
   return {
     cost: {

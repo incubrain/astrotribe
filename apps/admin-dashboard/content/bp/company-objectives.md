@@ -1,9 +1,12 @@
 #### Company Objectives and Goals
 
 1. **Short-term Goals:**
+
    - **Objectives (1-2 years):**
-     - Expansive dataset of research papers, news articles, courses, textbooks, jobs, and company information.
-     - User growth: 10k after 1 year, 50k after 2 years, with conversion rates improving from 3% to 6%.
+     - Expansive dataset of research papers, news articles, courses, textbooks, jobs, and company
+       information.
+     - User growth: 10k after 1 year, 50k after 2 years, with conversion rates improving from 3% to
+       6%.
      - Dominance in astronomy communication and community building.
      - Securing a globally known brand ambassador.
    - **Milestones:**
@@ -14,6 +17,7 @@
      - Promoting AstroTourism in India.
 
 2. **Long-term Vision:**
+
    - **Vision (5-10 years):**
      - Global one-stop shop for astronomy.
      - Best AI system for astronomy research.

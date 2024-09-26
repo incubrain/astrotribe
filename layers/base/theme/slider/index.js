@@ -17,8 +17,7 @@ export default {
 
       // States
       {
-        'opacity-60 select-none pointer-events-none cursor-default':
-          props.disabled,
+        'opacity-60 select-none pointer-events-none cursor-default': props.disabled,
       },
     ],
   }),
@@ -49,10 +48,8 @@ export default {
       'h-[1.143rem]',
       'w-[1.143rem]',
       {
-        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]':
-          props.orientation == 'horizontal',
-        'left-[50%] mb-[-0.5715rem] ml-[-0.5715rem]':
-          props.orientation == 'vertical',
+        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]': props.orientation == 'horizontal',
+        'left-[50%] mb-[-0.5715rem] ml-[-0.5715rem]': props.orientation == 'vertical',
       },
 
       // Shape
@@ -84,10 +81,8 @@ export default {
       'h-[1.143rem]',
       'w-[1.143rem]',
       {
-        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]':
-          props.orientation == 'horizontal',
-        'left-[50%] mb-[-0.5715rem] ml-[-0.4715rem]':
-          props.orientation == 'vertical',
+        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]': props.orientation == 'horizontal',
+        'left-[50%] mb-[-0.5715rem] ml-[-0.4715rem]': props.orientation == 'vertical',
       },
 
       // Shape
@@ -119,10 +114,8 @@ export default {
       'h-[1.143rem]',
       'w-[1.143rem]',
       {
-        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]':
-          props.orientation == 'horizontal',
-        'left-[50%] mb-[-0.5715rem] ml-[-0.4715rem]':
-          props.orientation == 'vertical',
+        'top-[50%] mt-[-0.5715rem] ml-[-0.5715rem]': props.orientation == 'horizontal',
+        'left-[50%] mb-[-0.5715rem] ml-[-0.4715rem]': props.orientation == 'vertical',
       },
 
       // Shape
@@ -146,4 +139,4 @@ export default {
       'touch-action-none',
     ],
   }),
-};
+}

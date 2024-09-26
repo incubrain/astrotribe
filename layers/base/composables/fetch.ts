@@ -1,6 +1,6 @@
+import type { FilterBy, DBTable } from '../server/utils/base.interface'
 import type { DomainKey } from './pagination.store'
 import { useCookie, useRequestHeaders } from '#imports'
-import type { FilterBy, DBTable } from '../server/utils/base.interface'
 import type { FetchResult } from '#app'
 
 export interface FetchInput {

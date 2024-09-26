@@ -168,13 +168,9 @@ const getDummyData = (type) => {
               :user="getDummyData('user')"
             />
             <div v-else>
-              <PrimeMessage severity="info">
-                Coming Very Soon
-              </PrimeMessage>
+              <PrimeMessage severity="info"> Coming Very Soon </PrimeMessage>
             </div>
-            <PrimeButton class="flex w-full justify-center">
-              Join to see more
-            </PrimeButton>
+            <PrimeButton class="flex w-full justify-center"> Join to see more </PrimeButton>
           </div>
         </div>
       </template>

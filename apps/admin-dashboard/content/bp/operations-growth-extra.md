@@ -1,5 +1,3 @@
-
-
 #### Additional Growth Areas
 
 1. **Dark Sky Certification - C Tier:**

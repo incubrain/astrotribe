@@ -31,6 +31,5 @@ ${Object.entries(props.state)
     .map(([key, value]) => `const ${key} = ref(${JSON.stringify(value)})`)
     .join('\n')}
 <\/script>`,
-
 )
 </script>

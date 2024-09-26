@@ -25,7 +25,6 @@
    - **Data Security:**
      - Adopting industry-standard security practices and regular audits.
 
-
 #### Contingency Plans
 
 3. **Operational Risks:**
@@ -34,4 +33,3 @@
      - Having backup systems and disaster recovery plans.
    - **Business Continuity:**
      - Ensuring critical operations can continue during disruptions.
-

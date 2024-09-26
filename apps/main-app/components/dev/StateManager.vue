@@ -9,7 +9,7 @@
       <input
         :value="value"
         @input="updateState(key, $event.target.value)"
-      >
+      />
     </div>
   </div>
 </template>

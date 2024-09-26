@@ -206,7 +206,7 @@ function calculateChurnAndRefunds({ currentMonth, users, revenue }: ChurnRefundP
     churn: {
       total: {
         cost: totalChurnCost,
-        rate: (proChurnRate + expertChurnRate),
+        rate: proChurnRate + expertChurnRate,
         count: totalChurnedUsers,
       },
       free: {

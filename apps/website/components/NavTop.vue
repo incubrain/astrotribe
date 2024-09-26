@@ -124,7 +124,7 @@ const websiteLinks = [
       },
     ],
   },
-];
+]
 
 defineProps({
   isCompact: {
@@ -135,36 +135,34 @@ defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const { y } = useWindowScroll();
-const lastScrollY = ref(y.value);
+const { y } = useWindowScroll()
+const lastScrollY = ref(y.value)
 const navbarClasses = computed(() => {
   if (navPosition.value === 'fixed') {
-    return '';
+    return ''
   } else {
-    return navPosition.value === 'hidden'
-      ? 'animate-bounce-out'
-      : 'animate-bounce-in';
+    return navPosition.value === 'hidden' ? 'animate-bounce-out' : 'animate-bounce-in'
   }
-});
+})
 
-const navPosition = ref('fixed');
+const navPosition = ref('fixed')
 
 watch(
   y,
   (newY) => {
     if (window?.innerWidth < 1024) {
-      navPosition.value = 'fixed';
+      navPosition.value = 'fixed'
     } else if (newY > lastScrollY.value) {
-      navPosition.value = 'hidden';
+      navPosition.value = 'hidden'
     } else if (newY < lastScrollY.value) {
-      navPosition.value = 'visible';
+      navPosition.value = 'visible'
     }
-    lastScrollY.value = newY;
+    lastScrollY.value = newY
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -202,23 +200,26 @@ watch(
               class="h-full w-full dark:opacity-90"
             />
           </div>
-          <NuxtLink to="/" class="flex min-h-full items-center justify-center">
+          <NuxtLink
+            to="/"
+            class="flex min-h-full items-center justify-center"
+          >
             <h1
               class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
             >
               Astron
-              <strong
-                class="font-extrabold text-primary-600 dark:text-primary-700"
-              >
-                Era
-              </strong>
+              <strong class="font-extrabold text-primary-600 dark:text-primary-700"> Era </strong>
             </h1>
           </NuxtLink>
         </div>
       </template>
       <template #item="{ item, hasSubmenu, root }">
         <div class="px-4 py-2">
-          <NuxtLink v-ripple :to="item.url" class="cursor-pointer">
+          <NuxtLink
+            v-ripple
+            :to="item.url"
+            class="cursor-pointer"
+          >
             <p class="flex items-center gap-1">
               {{ item.label }}
               <Icon
@@ -243,17 +244,24 @@ watch(
             />
           </NuxtLink>
           <ClientOnly>
-            <div
-              class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4"
-            >
+            <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
               <div class="space-x-2 lg:space-x-4">
-                <NuxtLink v-ripple to="/login">
-                  <PrimeButton severity="contrast" outlined>
+                <NuxtLink
+                  v-ripple
+                  to="/login"
+                >
+                  <PrimeButton
+                    severity="contrast"
+                    outlined
+                  >
                     login
                   </PrimeButton>
                 </NuxtLink>
 
-                <NuxtLink v-ripple to="/register">
+                <NuxtLink
+                  v-ripple
+                  to="/register"
+                >
                   <PrimeButton> Join AstronEra </PrimeButton>
                 </NuxtLink>
               </div>

@@ -1,5 +1,4 @@
 <script setup>
-
 const socials = ref([
   {
     id: 1,

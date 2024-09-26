@@ -180,12 +180,11 @@ const copyErrorContext = (log: NormalizedLogEntry) => {
               v-if="log.stack"
               class="mb-4"
             >
-              <h3 class="text-lg mb-2 font-semibold">
-                Error Stack
-              </h3>
+              <h3 class="text-lg mb-2 font-semibold"> Error Stack </h3>
               <pre
                 class="max-h-96 overflow-auto whitespace-pre-wrap rounded-md bg-gray-800 p-4 text-sm"
-              >{{ log.stack }}</pre>
+                >{{ log.stack }}</pre
+              >
             </div>
 
             <!-- Additional Fields -->

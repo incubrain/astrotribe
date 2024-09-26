@@ -14,7 +14,7 @@ const charts = computed(() => {
     {
       title: 'Balance Over Time',
       subtitle:
-        "Shows the company's financial health and sustainability, indicating the ability to cover expenses.",
+        'Shows the company\'s financial health and sustainability, indicating the ability to cover expenses.',
       type: 'bar',
       data: {
         labels: months.value,

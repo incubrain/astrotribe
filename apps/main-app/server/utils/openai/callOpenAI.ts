@@ -14,11 +14,7 @@ interface OpenAIInput {
   config?: CallOpenAIConfig
 }
 
-const createChatCompletion = async ({
-  prompt,
-  systemMessage,
-  config,
-}: OpenAIInput) => {
+const createChatCompletion = async ({ prompt, systemMessage, config }: OpenAIInput) => {
   try {
     // Make an API call to OpenAI's chat completion endpoint.
     const response = await openAiClient.chat.completions.create({

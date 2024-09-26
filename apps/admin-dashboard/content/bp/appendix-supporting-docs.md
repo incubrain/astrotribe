@@ -19,15 +19,14 @@
    - Explanation of the tiered subscription model (Free, Pro, Expert) and the specific features
      included in each tier.
 
-
-4. **Marketing and Sales Strategy:**
+3. **Marketing and Sales Strategy:**
 
    - Detailed marketing and sales strategy documents, including objectives, customer acquisition
      strategies, digital marketing and SEO plans, social media engagement strategies, sales funnel,
      and conversion strategies.
    - Partnership and collaboration plans.
 
-5. **Operations Plan:**
+4. **Operations Plan:**
 
    - Overview of business operations and workflow.
    - Detailed description of the technology stack and infrastructure.
@@ -35,8 +34,6 @@
    - Content sourcing and quality control processes.
    - Customer support and service plans.
 
-6. **Management Team:**
+5. **Management Team:**
    - Organizational structure and roles and responsibilities of key team members.
    - Profiles of advisory board members and consultants.
-
-

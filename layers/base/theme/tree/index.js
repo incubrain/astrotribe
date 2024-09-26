@@ -51,8 +51,8 @@ export default {
       // States
       {
         'hover:hover:bg-surface-700/40':
-          (props.selectionMode == 'single' || props.selectionMode == 'multiple') &&
-          !context.selected,
+          (props.selectionMode == 'single' || props.selectionMode == 'multiple')
+          && !context.selected,
       },
 
       // Transition
@@ -80,7 +80,7 @@ export default {
       {
         'text-surface-50 dark:text-white': !context.selected,
         'text-primary-600 dark:text-white': context.selected,
-        invisible: context.leaf,
+        'invisible': context.leaf,
       },
 
       // States

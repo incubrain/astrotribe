@@ -18,9 +18,7 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
 <template>
   <div class="h-auto space-y-4 md:rounded-md">
     <div class="flex flex-wrap items-center gap-4">
-      <h3 class="flex h-full items-center text-xl font-semibold leading-none">
-        Categories:
-      </h3>
+      <h3 class="flex h-full items-center text-xl font-semibold leading-none"> Categories: </h3>
       <NuxtLink
         v-for="cat in CATEGORIES"
         :key="`astronera-blog-${cat}`"

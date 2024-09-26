@@ -289,9 +289,7 @@ const responsiveOptions = ref([
     >
       <div class="w-full md:col-span-3 md:col-start-1 md:row-start-1">
         <div class="space-y-2 pb-6 text-center">
-          <h1 class="text-5xl font-semibold">
-            Galactic Guide
-          </h1>
+          <h1 class="text-5xl font-semibold"> Galactic Guide </h1>
           <div class="flex gap-2 pt-2">
             <PrimeMessage
               severity="info"
@@ -315,7 +313,7 @@ const responsiveOptions = ref([
         >
           <template #item="slotProps">
             <div
-              class="m-2 rounded border border-color p-4 "
+              class="m-2 rounded border border-color p-4"
               :class="{
                 'cursor-pointer transition-shadow hover:shadow-lg': slotProps.data.enabled,
                 'opacity-50': !slotProps.data.enabled,
@@ -386,9 +384,7 @@ const responsiveOptions = ref([
           v-if="selectedStarterPrompts.length"
           class="space-y-2 pb-2"
         >
-          <p class="text-center font-semibold">
-            Example Questions
-          </p>
+          <p class="text-center font-semibold"> Example Questions </p>
           <PrimeButton
             v-for="prompt in selectedStarterPrompts"
             :key="prompt"

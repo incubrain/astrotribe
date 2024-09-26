@@ -1,20 +1,16 @@
 <template>
   <div class="flex h-auto items-center justify-center bg-gray-100">
     <div class="max-w-md rounded-lg p-8 shadow-lg">
-      <h1 class="mb-4 text-3xl font-bold text-red-600">
-        An error occurred
-      </h1>
+      <h1 class="mb-4 text-3xl font-bold text-red-600"> An error occurred </h1>
       <p class="text-lg mb-4">
         {{ error.message }}
       </p>
-      <p class="mb-2 text-sm text-gray-600">
-        Error ID: {{ error.errorId }}
-      </p>
+      <p class="mb-2 text-sm text-gray-600"> Error ID: {{ error.errorId }} </p>
       <p
         v-if="error.stack"
         class="mb-4 overflow-auto text-xs text-gray-500"
       >
-        <strong>Stack trace:</strong><br >
+        <strong>Stack trace:</strong><br />
         {{ error.stack }}
       </p>
       <div class="flex justify-between">

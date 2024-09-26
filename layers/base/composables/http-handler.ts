@@ -52,8 +52,8 @@ type Filters = Record<string, FilterOption>
 interface SelectOptions<T> {
   columns?: keyof T | Array<keyof T> | string
   filters?: Filters
-  range?: { from: number; to: number }
-  order?: { column: keyof T; ascending: boolean }
+  range?: { from: number, to: number }
+  order?: { column: keyof T, ascending: boolean }
 }
 
 function applyFilter(query: any, column: string, filter: FilterOption): any {
@@ -140,15 +140,15 @@ export function useHttpHandler() {
         const errorSeverity = mapErrorSeverity(pgError)
 
         if (
-          retries >= maxRetries ||
-          !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
+          retries >= maxRetries
+          || !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
         ) {
           const appError = new AppError({
             type: errorType,
             message:
-              pgError.message ||
-              retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
-              'Database operation failed',
+              pgError.message
+              || retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes]
+              || 'Database operation failed',
             severity: errorSeverity,
             code: pgError.code,
             context: context,
