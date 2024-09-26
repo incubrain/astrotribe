@@ -9,12 +9,10 @@ const og = {
   url: 'https://www.astronera.org',
 }
 
-// const currentDir = dirname(fileURLToPath(import.meta.url))
-
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  // extends: ['../../layers/base'],
+  extends: ['../../layers/base'],
   ssr: true,
   modules: ['@nuxt/content', '@nuxtjs/seo'],
 
