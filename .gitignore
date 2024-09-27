@@ -74,3 +74,5 @@ Thumbs.db
 .cache.npm_token
 supabase/functions/.env
 .env
+
+.cache
