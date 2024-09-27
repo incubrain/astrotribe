@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDateFormat } from '#imports'
+import { useDateFormat } from '@vueuse/core'
 
 defineProps({
   article: {

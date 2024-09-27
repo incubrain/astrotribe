@@ -1,4 +1,5 @@
-import { useLinkedinAnalytics, useServerError } from '#imports'
+import { useServerError } from '../../../../../../layers/base/server/utils/base.error-handler'
+import { useLinkedinAnalytics } from '#imports'
 
 const PREFIX = 'social/linkedin/analytics'
 

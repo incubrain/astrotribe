@@ -1,5 +1,6 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useInstagramAnalytics, useServerError } from '#imports'
+import { useServerError } from '../../../../../../layers/base/server/utils/base.error-handler'
+import { useInstagramAnalytics } from '#imports'
 
 const PREFIX = 'social/instagram/insights'
 
