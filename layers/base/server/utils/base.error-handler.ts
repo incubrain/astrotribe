@@ -43,7 +43,7 @@ export function useServerError(loggerPrefix = 'useServerError') {
       log.info(`Successfully fetched ${response.data.length} items`)
       return response.data
     } else {
-      log.info(`Nothing returned from fetch`)
+      log.info('Nothing returned from fetch')
       throw createError({
         message: 'No data found',
         statusCode: 404,

@@ -122,10 +122,10 @@ const dummyData = {
     plan: 'free',
     role: 'admin',
   },
-}
+} as const
 
-const getDummyData = (type) => {
-  return dummyData[type]
+const getDummyData = (type: string) => {
+  return dummyData[type as keyof typeof dummyData]
 }
 </script>
 
@@ -134,6 +134,7 @@ const getDummyData = (type) => {
     <IBTabView :tabs="productSteps">
       <template
         v-for="feat in productSteps"
+        :key="feat.id"
         #[feat.tabName]
       >
         <div class="grid grid-cols-1 gap-8 md:grid-cols-2">

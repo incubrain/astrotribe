@@ -12,6 +12,8 @@ const localUrls = generateLocalUrls()
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
+  srcDir: '.',
+
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -22,36 +24,11 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-security',
     '@nuxtjs/supabase',
-    '@primevue/nuxt-module',
   ],
 
   // tailwindcss: {
   //   configPath: resolve(currentDir, './tailwind.config.js'),
   // },
-
-  primevue: {
-    importPT: { from: resolve(currentDir, './theme/index.js') },
-    autoImport: true,
-    components: {
-      prefix: 'Prime',
-      include: '*',
-      exclude: ['Editor'],
-    },
-
-    composables: {
-      include: '*',
-    },
-
-    options: {
-      ripple: true,
-      unstyled: true,
-      theme: {
-        options: {
-          cssLayer: false,
-        },
-      },
-    },
-  },
 
   css: [resolve(currentDir, './assets/css/tailwind.css')],
 
@@ -247,26 +224,20 @@ export default defineNuxtConfig({
     experimental: {
       websocket: true,
     },
-    esbuild: {
-      options: {
-        target: 'esnext',
-      },
-    },
-    storage: {
-      session: {
-        driver: 'memory',
-      },
-    },
   },
 
   vite: {
+    // resolve: {
+    //   alias: {
+    //     primevue: '../../node_modules/primevue',
+    //   },
+    // },
     optimizeDeps: {
       exclude: ['fsevents'],
     },
   },
 
   build: {
-    transpile: ['@vueuse/integrations', '@vueuse/core', 'primevue'],
     // optimization: {
     //   splitChunks: {
     //     chunks: 'all',
@@ -306,7 +277,7 @@ export default defineNuxtConfig({
     tsConfig: {
       exclude: ['node_modules', 'dist', 'theme', 'types'],
       compilerOptions: {
-        strict: true,
+        strict: false,
       },
     },
   },

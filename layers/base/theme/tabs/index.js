@@ -38,11 +38,10 @@ export default {
         '-mb-px',
         // Colors and Conditions
         'outline-transparent',
+        'bg-surface-900',
         {
           'border-transparent': !context.active,
-          'bg-surface-900': !context.active,
           'text-surface-700 dark:text-surface-0/80': !context.active,
-          'bg-surface-900': context.active,
           'border-primary': context.active,
           'text-primary': context.active,
           'opacity-60 cursor-default user-select-none select-none pointer-events-none':
