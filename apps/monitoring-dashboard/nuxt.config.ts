@@ -1,15 +1,9 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  modules: ['@nuxtjs/supabase'],
-  extends: ['/layers/base'],
-
-  vite: {
-    plugins: [nxViteTsPaths()],
-  },
+  extends: ['../../layers/base'],
 
   routeRules: {
     '/**': { appMiddleware: 'auth' },

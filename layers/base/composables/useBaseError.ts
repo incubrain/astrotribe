@@ -90,7 +90,7 @@ export function useBaseError() {
       logger.info(`Successfully fetched ${response.data.length} items`)
       return response.data
     }
-    logger.info(`Nothing returned from database`)
+    logger.info('Nothing returned from database')
     return null
   }
 

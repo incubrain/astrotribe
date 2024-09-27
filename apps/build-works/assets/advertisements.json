@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Amazing Product",
+    "description": "You won't believe how great this is!",
+    "imageUrl": "/astronera-logo.jpg",
+    "link": "https://example.com/product1",
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "Amazing Product",
+    "description": "You won't believe how great this is!",
+    "imageUrl": "/astronera-logo.jpg",
+    "link": "https://example.com/product1",
+    "active": true
+  }
+]

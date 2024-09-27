@@ -4,7 +4,7 @@ const form = reactive({
   surname: '',
   email: '',
   password: '',
-  confirmPassword: null as string | null,
+  confirmPassword: '',
 })
 
 const auth = useAuth()
@@ -75,7 +75,7 @@ definePageMeta({
         />
         <FormPassword
           id="confirm-password"
-          v-model="form.confirmPassword"
+          v-model="form.confirmPassword!"
           label="Confirm password"
           :invalid="!isPasswordValid && isPasswordEntered"
           :feedback="false"

@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TitleType } from '../../../../layers/base/types/content'
+import type { TitleType } from '../../../base/types/content'
 
 defineProps({
   title: {

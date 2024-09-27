@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TitleType, ImageType } from '../../../../layers/base/types/content'
+import type { TitleType, ImageType } from '../../../base/types/content'
 
 defineProps<{
   title: TitleType

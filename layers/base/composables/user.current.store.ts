@@ -63,9 +63,9 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   function hasValueChanged(newValue: any, currentValue: any): boolean {
     console.log('hasValueChanged', newValue, currentValue)
     if (
-      typeof newValue === 'string'
-      || typeof newValue === 'boolean'
-      || typeof newValue === 'number'
+      typeof newValue === 'string' ||
+      typeof newValue === 'boolean' ||
+      typeof newValue === 'number'
     ) {
       return newValue !== currentValue
     } else if (Array.isArray(newValue)) {
@@ -81,8 +81,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     const updatedData: any = {}
     for (const key in newData) {
       if (
-        Object.hasOwnProperty.call(newData, key)
-        && hasValueChanged(newData[key], previousData[key])
+        Object.hasOwnProperty.call(newData, key) &&
+        hasValueChanged(newData[key], previousData[key])
       ) {
         updatedData[key] = newData[key]
       }
@@ -111,7 +111,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       let response
       if (isMock) {
         logger.info('Using mock API call')
-        response = await mockApiCall(data)
+        // response = await mockApiCall(data)
       } else {
         response = await $fetch('/api/users/update', {
           method: 'POST',
@@ -133,8 +133,8 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       logger.debug('Updating user profile state')
       for (const key in validData[0]) {
         if (
-          Object.hasOwnProperty.call(validData[0], key)
-          && profile.value[key] !== validData[0][key]
+          Object.hasOwnProperty.call(validData[0], key) &&
+          profile.value[key] !== validData[0][key]
         ) {
           logger.debug(`Updating profile field: ${key}`, {
             oldValue: profile.value[key],

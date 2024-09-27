@@ -1,17 +1,17 @@
-import { useUpdateData } from '../../../layers/base/composables/update'
-import { useSelectData } from '../../../layers/base/composables/select'
-import { useDeleteData } from '../../../layers/base/composables/delete'
-import { useInsertData } from '../../../layers/base/composables/insert'
+import { useUpdateData } from '../../base/composables/update'
+import { useSelectData } from '../../base/composables/select'
+import { useDeleteData } from '../../base/composables/delete'
+import { useInsertData } from '../../base/composables/insert'
 import {
   useErrorHandler,
   AppError,
   ErrorType,
   ErrorSeverity,
-} from '../../../layers/base/composables/error-handler'
+} from '../../base/composables/error-handler'
 
 export interface CRUDOptions<T> {
   initialFetch?: boolean
-  orderBy?: { column: keyof T, ascending: boolean }
+  orderBy?: { column: keyof T; ascending: boolean }
   limit?: number
   customSelectLogic?: (data: T[]) => T[]
   validateInsert?: (data: Omit<T, 'id'>) => boolean | Promise<boolean>
