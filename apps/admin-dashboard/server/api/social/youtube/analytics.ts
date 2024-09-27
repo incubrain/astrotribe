@@ -1,4 +1,5 @@
-import { useYoutubeChannel, useServerError } from '#imports'
+import { useServerError } from '../../../../../../layers/base/server/utils/base.error-handler'
+import { useYoutubeChannel } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'
 

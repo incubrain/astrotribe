@@ -15,9 +15,10 @@ const og = {
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base'],
+  // extends: ['../../layers/base'],
 
   build: {
+    analyze: true,
     transpile: ['../../layers/base/types'],
   },
 
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
   },
 
   primevue: {
-    // importPT: { from: resolve(currentDir, './theme/index.js') },
+    importPT: { from: resolve(currentDir, './theme/index.js') },
     autoImport: true,
     components: {
       prefix: 'Prime',
@@ -44,10 +45,10 @@ export default defineNuxtConfig({
 
     options: {
       ripple: true,
-      unstyled: false,
+      unstyled: true,
       theme: {
         options: {
-          cssLayer: false,
+          cssLayer: true,
         },
       },
     },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTimeAgo } from '#imports'
+import { useTimeAgo } from '@vueuse/core'
 import type { NewsCardT } from '@/types/news'
 
 defineProps({

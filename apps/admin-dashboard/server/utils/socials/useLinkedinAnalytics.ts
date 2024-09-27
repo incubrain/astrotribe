@@ -1,4 +1,4 @@
-import { useServerError } from '#imports'
+import { useServerError } from '../../../../../layers/base/server/utils/base.error-handler'
 
 const LINKEDIN_API_URL = 'https://api.linkedin.com/rest/dmaOrganizationalPageContentAnalytics'
 const ACCESS_TOKEN = 'YOUR_LINKEDIN_ACCESS_TOKEN'
