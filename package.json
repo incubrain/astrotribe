@@ -77,7 +77,7 @@
     "@nx/nuxt": "^19.8.0",
     "@nx/vite": "^19.8.0",
     "@nx/vue": "19.8.0",
-    "@nx/web": "19.8.0",
+    "@nx/web": "19.8.2",
     "@nx/workspace": "19.8.0",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
