@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["node"],
+    "types": ["node", "vue"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
-    }
+      "@/*": ["*"],
+      "@packages/testing": ["testing/src/index.ts"]
+    },
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "allowJs": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -4,6 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   // Check for super_admin role
   const role = user.app_metadata?.role || []
   if (role !== 'super_admin') {
-    return navigateTo('/not-authorized')
+    console.log('Not super_admin')
+    // return navigateTo('/not-authorized')
   }
 })

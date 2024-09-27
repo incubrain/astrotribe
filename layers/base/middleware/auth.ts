@@ -5,6 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const user = useSupabaseUser()
 
   if (!user.value) {
+    console.log('User not logged in')
     return navigateTo(loginUrl, { external: true })
   }
 })

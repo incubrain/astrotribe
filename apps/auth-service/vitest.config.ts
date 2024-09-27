@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/website',
+  cacheDir: '../../node_modules/.vite/apps/auth',
 
   plugins: [vue(), nxCopyAssetsPlugin(['*.md'])],
 
@@ -27,7 +27,7 @@ export default defineConfig({
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/apps/website',
+      reportsDirectory: '../../coverage/apps/auth',
       provider: 'v8',
     },
   },

@@ -1,4 +1,3 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
@@ -9,10 +8,6 @@ export default defineNuxtConfig({
   ssr: false,
   routeRules: {
     '/**': { appMiddleware: 'auth' },
-  },
-
-  vite: {
-    plugins: [nxViteTsPaths()],
   },
 
   imports: {

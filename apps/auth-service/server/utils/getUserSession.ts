@@ -1,3 +1,4 @@
+import { getCurrentSecret } from './secretManager'
 import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 
 async function fetchPermissions(userPlan: string, userRole: string) {
@@ -23,7 +24,7 @@ async function fetchPermissions(userPlan: string, userRole: string) {
       role: rolePermissions,
       plan: planPermissions,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching permissions:', error.message)
     return null // Return null to indicate failure
   }
@@ -54,14 +55,14 @@ interface StoredPermissions {
   refresh_token: string
   expires_at: number
   user: {
-    email: string
-    auth_role: string
-    confirmation_sent_at: string
-    confirmed_at: string
-    provider: string
+    email: string | undefined
+    auth_role: string | undefined
+    confirmation_sent_at: string | undefined
+    confirmed_at: string | undefined
+    provider: string | undefined
     providers: string[]
-    identities: string[]
-    avatar: string
+    identities: string[] | undefined
+    avatar: string | undefined
     full_name: string
     given_name: string
     surname: string
@@ -70,8 +71,8 @@ interface StoredPermissions {
     user_role: string
     user_plan: string
   }
-  plan_permissions: Permission[]
-  role_permissions: Permission[]
+  plan_permissions: Permission[] | undefined
+  role_permissions: Permission[] | undefined
 }
 
 export async function validateAndUpdateSession() {
@@ -95,9 +96,9 @@ export async function validateAndUpdateSession() {
   // PERMISSIONS
   const storedPermissions = await storage.getItem<StoredPermissions>(`permissions:${storageKey}`)
   if (
-    !storedPermissions
-    || storedPermissions.expires_at < Date.now()
-    || storedPermissions.refresh_token !== refresh_token
+    !storedPermissions ||
+    storedPermissions.expires_at < Date.now() ||
+    storedPermissions.refresh_token !== refresh_token
   ) {
     const { role: user_role, plan: user_plan } = user.app_metadata
 
@@ -132,7 +133,7 @@ export async function validateAndUpdateSession() {
         provider: user.app_metadata.provider,
         providers: user.app_metadata.providers,
         identities: user.identities,
-        avatar: formatAvatarUrl({ avatar: user.user_metadata.avatar, id: user.id }),
+        // avatar: formatAvatarUrl({ avatar: user.user_metadata.avatar, id: user.id }),
         full_name: user.user_metadata.full_name,
         given_name: user.user_metadata.given_name ?? user.user_metadata.given_name,
         surname: user.user_metadata.surname ?? user.user_metadata.surname,

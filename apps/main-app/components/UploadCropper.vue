@@ -2,9 +2,9 @@
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-import { useFileUpload } from '../../../layers/base/composables/upload'
-import { useNotification } from '../../../layers/base/composables/notification'
-import { useCurrentUser } from '../../../layers/base/composables/user.current.store'
+import { useFileUpload } from '../../base/composables/upload'
+import { useNotification } from '../../base/composables/notification'
+import { useCurrentUser } from '../../base/composables/user.current.store'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
@@ -250,7 +250,7 @@ function onChange({ coordinates, image, canvas }: CropperResult) {
 
 // original file
 type CropperConfigDimensions = {
-  [key in CropperConfigTypes]: { minWidth: number, minHeight: number }
+  [key in CropperConfigTypes]: { minWidth: number; minHeight: number }
 }
 
 function checkImageDimensions(imageSrc: string, cropperType: CropperConfigTypes): Promise<boolean> {
