@@ -7,11 +7,28 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  // extends: ['../../layers/base'],
-  modules: ['@nuxt/content', '@primevue/nuxt-module'],
+  extends: ['../../layers/base'],
+  modules: [
+    '@nuxt/devtools',
+    '@vueuse/nuxt',
+    '@nuxt/content',
+    '@nuxt/image',
+    '@pinia/nuxt',
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/supabase',
+    '@primevue/nuxt-module',
+  ],
   ssr: false,
   routeRules: {
     '/**': { appMiddleware: 'auth' },
+  },
+
+  nitro: {
+    experimental: {
+      websocket: true,
+    },
   },
 
   primevue: {

@@ -49,8 +49,6 @@ const logError = (error) => {
   avatarUrl.value = '/images/defaults/avatar.jpg'
 }
 
-const nonce = useNonce()
-
 // !todo: show a back button on tablet and below, left of nav.
 // !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
@@ -102,7 +100,6 @@ const nonce = useNonce()
           class="cursor-pointer"
           aria-haspopup="true"
           aria-controls="overlay_menu"
-          :nonce="nonce"
           crossorigin="anonymous"
           @error="logError"
           @click="toggleMenu"

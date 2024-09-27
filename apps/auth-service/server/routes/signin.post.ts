@@ -1,5 +1,4 @@
 export default defineEventHandler(async (event) => {
-
   if (authenticated) {
     setCookie(event, 'auth_token', token, {
       httpOnly: true,
@@ -9,5 +8,4 @@ export default defineEventHandler(async (event) => {
       domain: '.domain.com',
     })
   }
-
 })

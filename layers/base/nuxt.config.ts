@@ -4,12 +4,6 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-function generateLocalUrls(start = 3000, end = 3009) {
-  return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
-}
-
-const localUrls = generateLocalUrls()
-
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
@@ -22,175 +16,38 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
-    'nuxt-security',
     '@nuxtjs/supabase',
   ],
-
-  // tailwindcss: {
-  //   configPath: resolve(currentDir, './tailwind.config.js'),
-  // },
 
   css: [resolve(currentDir, './assets/css/tailwind.css')],
 
   image: {
     format: ['webp', 'jpg'],
-    // image: {
-    //   domains: ["dohemiycqebeipbvsvnr.supabase.co"],
-    //   presets: {
-    //     cover: {
-    //       modifiers: {
-    //         format: "jpg",
-    //         quality: 80,
-    //         sizes: "sm:100vw md:50vw lg:800px",
-    //       },
-    //     },
-    //     card: {
-    //       modifiers: {
-    //         format: "jpg",
-    //         quality: 70,
-    //         sizes: "sm:100vw md:40vw lg:300px",
-    //       },
-    //     },
-    //   },
-    // },
+    image: {
+      domains: ['dohemiycqebeipbvsvnr.supabase.co'],
+      presets: {
+        cover: {
+          modifiers: {
+            format: 'jpg',
+            quality: 80,
+            sizes: 'sm:100vw md:50vw lg:800px',
+          },
+        },
+        card: {
+          modifiers: {
+            format: 'jpg',
+            quality: 70,
+            sizes: 'sm:100vw md:40vw lg:300px',
+          },
+        },
+      },
+    },
   },
 
   icon: {
     serverBundle: {
       collections: ['material-symbols', 'mdi'],
     },
-  },
-
-  security: {
-    headers: {
-      contentSecurityPolicy: {
-        'worker-src': ["'self'", 'blob:'],
-        'default-src': [
-          "'self'",
-          ...localUrls,
-          'http://localhost:3000',
-          'http://localhost:54321',
-          'https://www.astronera.org',
-          'https://*.up.railway.app',
-          'https://*.supabase.co',
-          'https://*.posthog.com',
-        ],
-        'connect-src': [
-          "'self'",
-          ...localUrls,
-          'http://localhost:3000',
-          'http://localhost:8080',
-          'http://host.docker.internal:8080',
-          'http://localhost:54321',
-          'https://o1175094.ingest.sentry.io',
-          'https://api.iconify.design',
-          'https://api.unisvg.com',
-          'https://api.simplesvg.com',
-          'ws://localhost:4000',
-          'https://*.supabase.co',
-          'https://*.up.railway.app',
-          'http://*.railway.internal',
-          'http://scrapers.railway.internal:8080',
-          'https://*.razorpay.com',
-          'https://*.posthog.com',
-          'https://us.i.posthog.com',
-        ],
-        'img-src': [
-          "'self'",
-          'data:',
-          'http://localhost:54321',
-          'http://localhost:3000',
-          'https://*.up.railway.app',
-          'https://www.nasa.gov',
-          'https://science.nasa.gov',
-          'https://www.youtube.com',
-          'https://s.ytimg.com',
-          'https://pbs.twimg.com',
-          'https://media.licdn.com',
-          'https://*.supabase.co',
-          'https://*.posthog.com',
-          'https://us.i.posthog.com',
-          'http://*.railway.internal',
-        ],
-        'script-src': [
-          "'self'",
-          "'nonce-{{nonce}}'",
-          "'unsafe-inline'",
-          "'wasm-unsafe-eval'",
-          'http://localhost:3000',
-          'http://localhost:54321',
-          'https://www.youtube.com',
-          'https://s.ytimg.com',
-          'https://www.google.com/maps',
-          'https://*.betterstack.com',
-          'https://*.razorpay.com',
-          'https://*.posthog.com',
-          'https://us.i.posthog.com',
-        ],
-        'style-src': [
-          "'self'",
-          "'unsafe-inline'",
-          'https://fonts.googleapis.com',
-          'https://*.posthog.com',
-        ],
-        'frame-src': [
-          "'self'",
-          'https://www.youtube.com',
-          'https://us.i.posthog.com',
-          'https://*.posthog.com',
-          'https://www.google.com',
-          'https://*.astronera.org',
-          'https://*.betterstack.com',
-          'https://*.razorpay.com',
-        ],
-        'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com'],
-      },
-      xFrameOptions: 'DENY', // Prevents clickjacking
-      crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
-      crossOriginOpenerPolicy: 'same-origin',
-      crossOriginEmbedderPolicy: 'unsafe-none',
-    },
-    requestSizeLimiter: {
-      maxUploadFileRequestInBytes: 2000000, // 2 MB
-      throwError: true,
-      maxRequestSizeInBytes: 2000000, // 2 MB
-    },
-    xssValidator: false,
-    corsHandler: {
-      origin: [
-        ...localUrls,
-        'http://localhost:8080',
-        'http://host.docker.internal:8080',
-        'http://*.railway.internal',
-        'http://scrapers.railway.internal:8080',
-        'http://localhost:54321',
-        'https://*.supabase.co',
-        'https://us.i.posthog.com',
-        'https://*.posthog.com',
-      ],
-      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-      allowHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-Requested-With',
-        'x-client-info',
-        'apikey',
-      ],
-      exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
-      credentials: true,
-      maxAge: '86400', // 24 hours in seconds
-      preflight: {
-        statusCode: 204,
-      },
-    },
-    allowedMethodsRestricter: false,
-    hidePoweredBy: false,
-    basicAuth: false,
-    csrf: false,
-    nonce: true,
-    removeLoggers: false,
-    ssg: false,
-    sri: false,
   },
 
   eslint: {

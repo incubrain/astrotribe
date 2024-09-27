@@ -19,11 +19,7 @@ export default createConfigForNuxt({
       'no-console': 'off',
       'no-new': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      '@stylistic/operator-linebreak': [
-        'error',
-        'after',
-        { overrides: { '?': 'before', ':': 'before' } },
-      ],
+      '@stylistic/operator-linebreak': ['error', 'after'],
       '@typescript-eslint/no-explicit-any': 'off',
       'quote-props': ['error', 'consistent-as-needed'],
       'quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],

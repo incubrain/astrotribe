@@ -70,6 +70,7 @@ const sendMetrics = async () => {
   const metricsToSend = JSON.parse(JSON.stringify(adMetrics.value))
 
   try {
+    // Send metrics to admin server (not implemented)
     await $fetch('/api/admin/advertisement/metrics', {
       method: 'POST',
       body: { metrics: metricsToSend },

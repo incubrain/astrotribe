@@ -32,7 +32,7 @@ export default {
       // Filled State *for FloatLabel
       {
         filled:
-          parent.instance?.$name == 'FloatLabel' &&
+          parent.instance?.$name === 'FloatLabel' &&
           props.modelValue !== null &&
           props.modelValue?.length !== 0,
       },
