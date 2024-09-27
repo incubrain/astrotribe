@@ -1,5 +1,8 @@
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import { fileURLToPath } from 'url'
+import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
+
+const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
@@ -13,12 +16,41 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
   extends: ['../../layers/base'],
+
+  build: {
+    transpile: ['../../layers/base/types'],
+  },
+
   ssr: true,
-  modules: ['@nuxt/content', '@nuxtjs/seo'],
+  modules: ['@nuxt/content', '@nuxtjs/seo', '@primevue/nuxt-module'],
 
   experimental: {
     inlineRouteRules: true,
     asyncContext: true,
+  },
+
+  primevue: {
+    // importPT: { from: resolve(currentDir, './theme/index.js') },
+    autoImport: true,
+    components: {
+      prefix: 'Prime',
+      include: '*',
+      exclude: ['Editor'],
+    },
+
+    composables: {
+      include: '*',
+    },
+
+    options: {
+      ripple: true,
+      unstyled: false,
+      theme: {
+        options: {
+          cssLayer: false,
+        },
+      },
+    },
   },
 
   devServer: {
@@ -101,7 +133,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/api': {
-        target: `http://localhost:3000/api`,
+        target: 'http://localhost:3000/api',
       },
     },
   },

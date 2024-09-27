@@ -1,6 +1,7 @@
 {
-  "extends": "./.playground/.nuxt/tsconfig.json",
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
+    "esModuleInterop": true,
     "resolveJsonModule": true
   }
 }
