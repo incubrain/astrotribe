@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-const nonce = useNonce()
 const uuid = useId()
 
 const props = defineProps({
@@ -36,7 +35,6 @@ function loadFallbackImage() {
     :format="img.format"
     :quality="img.quality"
     :loading="img.loading"
-    :nonce="nonce"
     crossorigin="anonymous"
     @error="loadFallbackImage"
   />

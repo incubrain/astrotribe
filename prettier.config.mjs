@@ -8,4 +8,5 @@ export default {
   htmlWhitespaceSensitivity: 'strict',
   singleAttributePerLine: true,
   quoteProps: 'consistent',
+  operatorLinebreak: 'after',
 }

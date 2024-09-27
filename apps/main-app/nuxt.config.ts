@@ -7,9 +7,22 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  // extends: ['../../layers/base'],
+  extends: ['../../layers/base'],
 
-  modules: ['nuxt-tiptap-editor', '@primevue/nuxt-module'],
+  debug: true,
+
+  modules: [
+    'nuxt-tiptap-editor',
+    '@nuxt/devtools',
+    '@vueuse/nuxt',
+    '@nuxt/image',
+    '@pinia/nuxt',
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/supabase',
+    '@primevue/nuxt-module',
+  ],
 
   primevue: {
     importPT: { from: resolve(currentDir, './theme/index.js') },
@@ -35,9 +48,8 @@ export default defineNuxtConfig({
     },
   },
 
-  experimental: {
-    inlineRouteRules: true,
-    asyncContext: true,
+  image: {
+    format: ['webp', 'jpg'],
   },
 
   tiptap: {
