@@ -1,4 +1,3 @@
-import { useNotification } from './notification' // Adjust import as needed
 import { useLogger } from './logger' // Adjust import as needed
 
 interface ErrorDetails {
@@ -15,11 +14,11 @@ interface ErrorDetails {
 export function mapErrorType(error: any): ErrorType {
   // Connection errors
   if (
-    error.code === '08000'
-    || error.code === '08003'
-    || error.code === '08006'
-    || error.code === '08001'
-    || error.code === '08004'
+    error.code === '08000' ||
+    error.code === '08003' ||
+    error.code === '08006' ||
+    error.code === '08001' ||
+    error.code === '08004'
   ) {
     return ErrorType.CONNECTION_ERROR
   }
@@ -52,10 +51,10 @@ export function mapErrorType(error: any): ErrorType {
 
   // System errors
   if (
-    error.code === '53000'
-    || error.code === '53100'
-    || error.code === '53200'
-    || error.code === '53300'
+    error.code === '53000' ||
+    error.code === '53100' ||
+    error.code === '53200' ||
+    error.code === '53300'
   ) {
     return ErrorType.INSUFFICIENT_RESOURCES
   }
@@ -151,7 +150,6 @@ export class AppError extends Error {
 }
 
 export function useErrorHandler() {
-  const toast = useNotification()
   const logger = useLogger('ErrorHandler')
   const isAdmin = process.env.NODE_ENV === 'development'
 
@@ -167,25 +165,25 @@ export function useErrorHandler() {
 
   function logToSentry(error: AppError) {}
 
-  function showNotification(error: AppError) {
-    const message = isAdmin
-      ? `${error.details.message} (${error.details.type})`
-      : error.details.context || error.details.message
+  // function showNotification(error: AppError) {
+  //   const message = isAdmin
+  //     ? `${error.details.message} (${error.details.type})`
+  //     : error.details.context || error.details.message
 
-    const summary = error.details.type
-    switch (error.details.severity) {
-      case ErrorSeverity.LOW:
-        toast.info({ summary, message })
-        break
-      case ErrorSeverity.MEDIUM:
-        toast.warn({ summary, message })
-        break
-      case ErrorSeverity.HIGH:
-      case ErrorSeverity.CRITICAL:
-        toast.error({ summary, message })
-        break
-    }
-  }
+  //   const summary = error.details.type
+  //   switch (error.details.severity) {
+  //     case ErrorSeverity.LOW:
+  //       toast.info({ summary, message })
+  //       break
+  //     case ErrorSeverity.MEDIUM:
+  //       toast.warn({ summary, message })
+  //       break
+  //     case ErrorSeverity.HIGH:
+  //     case ErrorSeverity.CRITICAL:
+  //       toast.error({ summary, message })
+  //       break
+  //   }
+  // }
 
   function handleError(error: Error | AppError, context?: string) {
     let appError: AppError
@@ -208,8 +206,8 @@ export function useErrorHandler() {
     }
 
     logger.error(`${appError.details.type}: ${appError.message}`, appError.details)
-    logToSentry(appError)
-    showNotification(appError)
+    // logToSentry(appError)
+    // showNotification(appError)
 
     if (appError.details.severity === ErrorSeverity.CRITICAL) {
       // Handle critical errors (e.g., redirect to error page, reset app state)
