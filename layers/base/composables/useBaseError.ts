@@ -7,7 +7,7 @@ interface ErrorMessage {
 interface ErrorServer extends Omit<ErrorMessage, 'error'> {
   devOnly: boolean // default true - don't show toasts in production
   featureRelated?: boolean // default false - log to feature-specific log
-  response: { data: any, error: any }
+  response: { data: any; error: any }
 }
 
 interface ErrorClient extends ErrorMessage {
@@ -19,28 +19,28 @@ interface ErrorClient extends ErrorMessage {
 export function useBaseError() {
   // !todo:med:easy - add prefix to base error
 
-  const toast = useNotification()
+  // const toast = useNotification()
   const logger = useLogger('useBaseError')
   const isAdmin = useRuntimeConfig().public.nodeEnv === 'development'
 
-  function handleErrorWithCodes(error: any) {
-    switch (error.statusCode) {
-      case 429:
-        toast.feature({
-          summary: error.statusMessage,
-          message: error.message,
-        })
-        break
-      case 403:
-        toast.error({
-          summary: error.statusMessage,
-          message: error.message,
-        })
-        break
-      default:
-        console.error('Unhandled feature error:', error)
-    }
-  }
+  // function handleErrorWithCodes(error: any) {
+  //   switch (error.statusCode) {
+  //     case 429:
+  //       toast.feature({
+  //         summary: error.statusMessage,
+  //         message: error.message,
+  //       })
+  //       break
+  //     case 403:
+  //       toast.error({
+  //         summary: error.statusMessage,
+  //         message: error.message,
+  //       })
+  //       break
+  //     default:
+  //       console.error('Unhandled feature error:', error)
+  //   }
+  // }
 
   function formatErrorMessage({ userMessage, devMessage, error }: ErrorMessage) {
     const devError = `${devMessage}: ${JSON.stringify(error)}`
@@ -63,10 +63,10 @@ export function useBaseError() {
 
     // Handle critical errors specifically if needed
     if (!devOnly || isAdmin) {
-      toast.error({
-        summary: 'Error',
-        message: errorMessage,
-      })
+      // toast.error({
+      //   summary: 'Error',
+      //   message: errorMessage,
+      // })
       // Here you could navigate to an error page, log out the user, etc.
       console.error('Handling critical error for:', devMessage)
     }
@@ -95,7 +95,6 @@ export function useBaseError() {
   }
 
   return {
-    withCode: handleErrorWithCodes,
     server: handleServerError,
     client: handleError,
   }

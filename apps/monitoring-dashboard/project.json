@@ -5,11 +5,18 @@
   "sourceRoot": "apps/monitoring-dashboard",
   "// targets": "to see all targets run: nx show project monitoring-dashboard --web",
   "targets": {
+    "build:base": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/base && npx nuxi build"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/monitoring-dashboard && nuxt build"
-      }
+      },
+      "dependsOn": ["build:base"]
     },
     "lint": {
       "executor": "nx:run-commands",

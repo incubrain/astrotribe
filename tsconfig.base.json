@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@base/*": ["layers/base/*"],
+      "@website/*": ["apps/website/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -8,11 +13,6 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "vue"],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["*"],
-      "@packages/testing": ["testing/src/index.ts"]
-    },
     "noImplicitAny": false,
     "strictNullChecks": false,
     "noUnusedLocals": false,
