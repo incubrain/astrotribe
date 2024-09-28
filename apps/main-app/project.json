@@ -14,10 +14,11 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/main-app && nuxt build"
+        "command": "cd apps/main-app && npx nuxi build"
       },
       "dependsOn": ["build:base"]
     },
+
     "lint": {
       "executor": "nx:run-commands",
       "options": {

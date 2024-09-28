@@ -14,7 +14,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/admin-dashboard && nuxt build"
+        "command": "cd apps/admin-dashboard && npx nuxi build"
       },
       "dependsOn": ["build:base"]
     },

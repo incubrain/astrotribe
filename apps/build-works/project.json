@@ -14,7 +14,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/build-works && nuxt build"
+        "command": "cd apps/build-works && npx nuxi build"
       },
       "dependsOn": ["build:base"]
     },

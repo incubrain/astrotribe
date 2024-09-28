@@ -7,7 +7,7 @@
   "scripts": {
     "dev:website": "nx serve website",
     "dev:auth": "nx serve auth-service",
-    "dev:app": "nx serve main-app",
+    "dev:app": "scripts/start-app.sh",
     "dev:monitoring": "nx serve monitoring-dashboard",
     "dev:admin": "nx serve admin-dashboard",
     "dev:all": "scripts/run-all.sh",

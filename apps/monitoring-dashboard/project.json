@@ -14,7 +14,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/monitoring-dashboard && nuxt build"
+        "command": "cd apps/monitoring-dashboard && npx nuxi build"
       },
       "dependsOn": ["build:base"]
     },
