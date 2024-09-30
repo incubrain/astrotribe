@@ -148,10 +148,10 @@ watch(
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md justify-between"
+      class="w-full text-white rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
-          class: '!text-sm !font-bold',
+          class: '!bg-black !text-sm !font-bold',
         },
       }"
     >
