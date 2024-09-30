@@ -151,14 +151,14 @@ watch(
       class="w-full text-white rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
-          class: '!bg-black !text-sm !font-bold',
+          class: '!bg-black !text-sm !font-bold !text-white',
         },
       }"
     >
       <template #start>
         <div class="hidden gap-4 rounded-md p-1 lg:flex">
           <div
-            class="relative flex h-[36px] w-[36px] items-center justify-center overflow-hidden rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
+            class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
           >
             <IBImage
               :img="{
@@ -183,9 +183,8 @@ watch(
       <template #item="{ item, hasSubmenu, root }">
         <div class="px-4 py-2">
           <NuxtLink
-            v-ripple
             :to="item.url"
-            class="cursor-pointer"
+            class="cursor-pointer text-white"
           >
             <p class="flex items-center gap-1">
               {{ item.label }}

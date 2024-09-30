@@ -14,9 +14,18 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/auth-service && npx nuxi build"
+        "command": "npx nuxi build",
+        "cwd": "apps/auth-service"
       },
       "dependsOn": ["build:base"]
+    },
+
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx nuxi dev",
+        "cwd": "apps/auth-service"
+      }
     },
     "lint": {
       "executor": "nx:run-commands",

@@ -27,6 +27,19 @@ export default defineNuxtConfig({
     port: 3009,
   },
 
+  supabase: {
+    redirect: false,
+    clientOptions: {
+      auth: {
+        flowType: 'pkce',
+        detectSessionInUrl: true,
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    },
+    cookieName: 'sb',
+  },
+
   tailwindcss: {
     configPath: `${currentDir}/tailwind.config.ts`,
     cssPath: `${currentDir}/assets/css/tailwind.css`,
@@ -61,6 +74,14 @@ export default defineNuxtConfig({
 
   imports: {
     autoImport: true,
+  },
+
+  runtimeConfig: {
+    public: {
+      supabaseUrl: '',
+      supabaseKey: '',
+    },
+    supabaseServiceKey: '',
   },
 
   routeRules: {

@@ -16,7 +16,8 @@
     "lint": "nx run-many --target=lint --all",
     "lint:fix": "nx run-many --target=lint --all --fix",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\""
+    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
+    "clean:nuxi": "scripts/nuxi-cleanup.sh"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.15",
@@ -95,6 +96,7 @@
     "@vue/test-utils": "^2.4.1",
     "changelogen": "^0.5.7",
     "cypress": "^13.13.0",
+    "dotenv": "^16.4.5",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-cypress": "^3.5.0",

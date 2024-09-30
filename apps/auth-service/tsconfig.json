@@ -1,7 +1,4 @@
 {
   "extends": "./.nuxt/tsconfig.json",
-  "exclude": ["node_modules", ".nuxt", "dist", "tmp"],
-  "compilerOptions": {
-    "strict": true
-  }
+  "exclude": ["node_modules", ".nuxt", "dist", "tmp"]
 }
