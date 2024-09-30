@@ -48,33 +48,8 @@ const websiteLinks = [
         visible: true,
         disabled: false,
       },
-      // {
-      //   key: 'astrotribe',
-      //   label: 'Astrotribe',
-      //   icon: 'material-symbols:groups',
-      //   url: 'projects/astrotribe',
-      //   visible: true,
-      //   disabled: false
-      // },
     ],
   },
-  // {
-  //   key: 'events',
-  //   label: 'Events',
-  //   icon: 'material-symbols:event',
-  //   visible: false,
-  //   disabled: false,
-  //   items: [
-  //     {
-  //       key: 'stargazing',
-  //       label: 'Stargazing',
-  //       icon: 'material-symbols:dark-mode',
-  //       url: '/events/stargazing',
-  //       visible: false,
-  //       disabled: false
-  //     }
-  //   ]
-  // },
   {
     key: 'blog',
     label: 'Blog',
@@ -168,25 +143,12 @@ watch(
 <template>
   <div
     ref="navbar"
-    class="flex min-w-full"
+    class="flex min-w-full fixed top-0 left-0 z-50 bg-black gap-2"
     :class="navbarClasses"
-    :style="{
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      right: '0',
-      zIndex: '50',
-    }"
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md"
-      :pt="{
-        submenu: {
-          class: '!text-sm !font-bold',
-        },
-      }"
-      :pt-options="{ mergeSections: true, mergeProps: true }"
+      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md flex"
     >
       <template #start>
         <div class="hidden gap-4 rounded-md p-1 lg:flex">
