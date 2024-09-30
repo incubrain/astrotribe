@@ -11,12 +11,18 @@
         "command": "cd layers/base && npx nuxi build"
       }
     },
+    "build:auth": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/auth && npx nuxi build"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/main-app && npx nuxi build"
       },
-      "dependsOn": ["build:base"]
+      "dependsOn": ["build:base", "build:auth"]
     },
 
     "lint": {
