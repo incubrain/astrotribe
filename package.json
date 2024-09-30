@@ -1,6 +1,6 @@
 {
-  "name": "@packages/source",
-  "version": "0.0.0",
+  "name": "@astronera/monorepo",
+  "version": "0.0.1",
   "license": "MIT",
   "private": true,
   "type": "module",
