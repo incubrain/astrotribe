@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo "Building Nuxt layers..."
+scripts/build-layers.sh
+if [ $? -ne 0 ]; then
+    echo "Error building Nuxt layers"
+    exit 1
+fi
+echo "Nuxt layers built successfully"
+
 # Function to build a project
 build_project() {
     echo "Building $1..."
