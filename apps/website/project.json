@@ -17,7 +17,6 @@
         "command": "cd apps/website && npx nuxi build"
       },
       "dependsOn": ["build:base"]
-
     },
     "lint": {
       "executor": "nx:run-commands",
