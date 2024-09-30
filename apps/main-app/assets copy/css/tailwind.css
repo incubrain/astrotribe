@@ -1,0 +1,14 @@
+@import '../../../../theme/tailwind.base.css';
+
+/* App-specific styles */
+@layer base {
+  /* Override or add to base styles */
+}
+
+@layer components {
+  /* Add or override component styles */
+}
+
+@layer utilities {
+  /* Add app-specific utility classes */
+}
