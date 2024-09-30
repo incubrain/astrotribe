@@ -86,7 +86,7 @@ export default {
   global,
   directives: {
     tooltip,
-    // ripple,
+    ripple,
   },
   autocomplete,
   cascadeselect,
