@@ -10,9 +10,6 @@ const showFooter = computed(
 const showTopNav = computed(
   () => !noTopNav.some((noTopNavPath) => route.path.startsWith(noTopNavPath)),
 )
-
-// !todo: important - add a CTA at the bottom of default layout
-// probably for app signup, but also consider adding email list signup
 </script>
 
 <template>

@@ -143,12 +143,17 @@ watch(
 <template>
   <div
     ref="navbar"
-    class="flex min-w-full fixed top-0 left-0 z-50 bg-black gap-2"
+    class="flex min-w-full w-full fixed top-0 left-0 right-0 z-50"
     :class="navbarClasses"
   >
     <PrimeMenubar
       :model="websiteLinks"
-      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md flex"
+      class="w-full rounded-none backdrop:blur-lg lg:rounded-b-md justify-between"
+      :pt="{
+        submenu: {
+          class: '!text-sm !font-bold',
+        },
+      }"
     >
       <template #start>
         <div class="hidden gap-4 rounded-md p-1 lg:flex">
@@ -240,6 +245,13 @@ canvas {
   width: 100vw;
   height: 100vh;
   display: block;
+}
+
+.navbar {
+  display: flex !important;
+  position: static !important;
+  background-color: red !important; /* Just to make it obvious */
+  z-index: 9999 !important;
 }
 
 @keyframes bounce-in {

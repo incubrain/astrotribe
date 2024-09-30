@@ -2,6 +2,8 @@ export default {
   root: {
     class: [
       'relative',
+      'background',
+      'text-white',
 
       // Flexbox
       'flex',
@@ -24,16 +26,16 @@ export default {
       'sm:flex',
       'items-center',
       'flex-wrap',
-      'flex-col sm:flex-row',
+      'flex-col md:flex-row',
       { hidden: !props?.mobileActive, flex: props?.mobileActive },
 
       // Position
-      'absolute sm:relative',
+      'absolute md:relative',
       'top-full left-0',
-      'sm:top-auto sm:left-auto',
+      'top-auto left-auto',
 
       // Size
-      'w-full sm:w-auto',
+      'w-full',
 
       // Spacing
       'm-0',
@@ -45,7 +47,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-700 sm:bg-transparent',
+      'bg-surface-700',
 
       // Misc
       'outline-none',
@@ -149,7 +151,7 @@ export default {
   button: {
     class: [
       // Flexbox
-      'flex sm:hidden',
+      'flex md:hidden',
       'items-center justify-center',
 
       // Size
