@@ -12,7 +12,7 @@
         <div
           v-for="feature in features"
           :key="feature.id"
-          class="relative mx-auto h-full overflow-hidden rounded-lg p-8 shadow-md"
+          class="text-white relative mx-auto h-full overflow-hidden rounded-lg p-8 shadow-md"
         >
           <IBImage
             :img="{
