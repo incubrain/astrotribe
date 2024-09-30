@@ -52,19 +52,6 @@ export default defineNuxtConfig({
     },
   ],
 
-  supabase: {
-    redirect: false,
-    clientOptions: {
-      auth: {
-        flowType: 'pkce',
-        detectSessionInUrl: true,
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    },
-    cookieName: 'sb',
-  },
-
   nitro: {
     preset: 'node-server',
   },
@@ -115,7 +102,6 @@ export default defineNuxtConfig({
       },
     },
     googleApiKey: '',
-    supabaseServiceKey: '',
     nasaApiKey: '',
     openaiApiKey: '',
     openaiOrg: '',
