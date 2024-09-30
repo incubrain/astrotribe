@@ -17,6 +17,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     trackComponents: true,
   })
 
-  Sentry.setUser(useSupabaseUser())
+  // Sentry.setUser(useSupabaseUser())
   Sentry.setTag('environment', process.env.NODE_ENV)
 })
