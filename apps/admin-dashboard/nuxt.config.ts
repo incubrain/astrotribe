@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@primevue/nuxt-module',
   ],
+
   ssr: false,
   routeRules: {
     '/**': { appMiddleware: 'auth' },
@@ -29,6 +30,13 @@ export default defineNuxtConfig({
     experimental: {
       websocket: true,
     },
+  },
+
+  tailwindcss: {
+    configPath: '~/tailwind.config.ts',
+    exposeConfig: true,
+    injectPosition: 0,
+    viewer: true,
   },
 
   primevue: {

@@ -1,11 +1,6 @@
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
-
 import type { Config } from 'tailwindcss'
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
-
-export default <Partial<Config>>{
+const baseConfig: Partial<Config> = {
   darkMode: 'selector',
   safelist: [
     '-inset-[10%]',
@@ -94,6 +89,8 @@ export default <Partial<Config>>{
       },
     },
   },
-  content: [resolve(currentDir, '**/*.{js,vue,ts}')],
+  content: [],
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')],
 }
+
+export default baseConfig
