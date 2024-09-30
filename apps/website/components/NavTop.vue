@@ -183,7 +183,7 @@ watch(
       class="w-full text-white rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
-          class: '!text-sm !font-bold',
+          class: '!bg-black !text-sm !font-bold',
         },
       }"
       :pt-options="{ mergeSections: true, mergeProps: true }"
