@@ -57,30 +57,30 @@ import tooltip from './tooltip/index.js'
 import fileupload from './fileupload/index.js'
 import breadcrumb from './breadcrumb/index.js'
 import contextmenu from './contextmenu/index.js'
-// import dock from './dock/index.js'
-// import menu from './menu/index.js'
-// import menubar from './menubar/index.js'
-// import megamenu from './megamenu/index.js'
-// import panelmenu from './panelmenu/index.js'
-// import tieredmenu from './tieredmenu/index.js'
-// import message from './message/index.js'
-// import toast from './toast/index.js'
-// import carousel from './carousel/index.js'
-// import galleria from './galleria/index.js'
-// import image from './image/index.js'
-// import avatar from './avatar/index.js'
-// import badge from './badge/index.js'
-// import blockui from './blockui/index.js'
-// import chip from './chip/index.js'
-// import inplace from './inplace/index.js'
-// import metergroup from './metergroup/index.js'
-// import scrolltop from './scrolltop/index.js'
-// import skeleton from './skeleton/index.js'
-// import progressbar from './progressbar/index.js'
-// import progressspinner from './progressspinner/index.js'
-// import ripple from './ripple/index.js'
-// import tag from './tag/index.js'
-// import terminal from './terminal/index.js'
+import dock from './dock/index.js'
+import menu from './menu/index.js'
+import menubar from './menubar/index.js'
+import megamenu from './megamenu/index.js'
+import panelmenu from './panelmenu/index.js'
+import tieredmenu from './tieredmenu/index.js'
+import message from './message/index.js'
+import toast from './toast/index.js'
+import carousel from './carousel/index.js'
+import galleria from './galleria/index.js'
+import image from './image/index.js'
+import avatar from './avatar/index.js'
+import badge from './badge/index.js'
+import blockui from './blockui/index.js'
+import chip from './chip/index.js'
+import inplace from './inplace/index.js'
+import metergroup from './metergroup/index.js'
+import scrolltop from './scrolltop/index.js'
+import skeleton from './skeleton/index.js'
+import progressbar from './progressbar/index.js'
+import progressspinner from './progressspinner/index.js'
+import ripple from './ripple/index.js'
+import tag from './tag/index.js'
+import terminal from './terminal/index.js'
 
 export default {
   global,
@@ -145,27 +145,27 @@ export default {
   fileupload,
   breadcrumb,
   contextmenu,
-  // dock,
-  // menu,
-  // menubar,
-  // megamenu,
-  // panelmenu,
-  // tieredmenu,
-  // message,
-  // toast,
-  // carousel,
-  // galleria,
-  // image,
-  // avatar,
-  // badge,
-  // blockui,
-  // chip,
-  // inplace,
-  // metergroup,
-  // scrolltop,
-  // skeleton,
-  // progressbar,
-  // progressspinner,
-  // tag,
-  // terminal,
+  dock,
+  menu,
+  menubar,
+  megamenu,
+  panelmenu,
+  tieredmenu,
+  message,
+  toast,
+  carousel,
+  galleria,
+  image,
+  avatar,
+  badge,
+  blockui,
+  chip,
+  inplace,
+  metergroup,
+  scrolltop,
+  skeleton,
+  progressbar,
+  progressspinner,
+  tag,
+  terminal,
 }
