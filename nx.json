@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml", "{workspaceRoot}/.env"],
+    "default": ["{projectRoot}/**/*", "!{projectRoot}/**/*.spec.ts", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/eslint.config.js",
@@ -9,9 +10,9 @@
       "!{projectRoot}/cypress/**/*",
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s",
-      "!{projectRoot}/tsconfig.spec.json"
-    ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/**/*.spec.ts"
+    ]
   },
   "nxCloudId": "66f283bd927c3b4c910011f3",
   "plugins": [
