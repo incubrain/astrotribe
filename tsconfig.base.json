@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@base/*": ["layers/base/*"],
+      "@incubrain/shared-ui": ["libs/shared-ui/src/index.ts"],
       "@website/*": ["apps/website/*"]
     },
     "strict": true,
