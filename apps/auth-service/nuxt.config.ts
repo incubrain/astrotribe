@@ -27,6 +27,13 @@ export default defineNuxtConfig({
     port: 3009,
   },
 
+  tailwindcss: {
+    configPath: '~/tailwind.config.ts',
+    exposeConfig: true,
+    injectPosition: 0,
+    viewer: true,
+  },
+
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
