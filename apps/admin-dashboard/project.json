@@ -24,6 +24,12 @@
       },
       "dependsOn": ["build:base", "build:auth"]
     },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/admin-dashboard && npx nuxi dev"
+      }
+    },
     "lint": {
       "executor": "nx:run-commands",
       "options": {
