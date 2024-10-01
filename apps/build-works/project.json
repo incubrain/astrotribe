@@ -11,6 +11,12 @@
         "command": "cd layers/base && npx nuxi build"
       }
     },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/build-works && npx nuxi dev"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {

@@ -1,4 +1,4 @@
-import { useLogger } from './logger' // Adjust import as needed
+import { useLogger } from './logger'
 
 interface ErrorDetails {
   type: ErrorType
@@ -151,7 +151,6 @@ export class AppError extends Error {
 
 export function useErrorHandler() {
   const logger = useLogger('ErrorHandler')
-  const isAdmin = process.env.NODE_ENV === 'development'
 
   function determineErrorType(error: any): ErrorType {
     if (error instanceof AppError) return error.details.type

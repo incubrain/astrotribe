@@ -1,5 +1,15 @@
 {
   "extends": "./.nuxt/tsconfig.json",
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "@ib/utils": ["../../libs/utilities/src/index.ts"],
+      "@ib/utils/*": ["../../libs/utilities/src/*"]
+    }
+  },
+  "include": ["./**/*.ts", "./**/*.vue"],
   "exclude": ["node_modules", ".nuxt", "dist", "tmp"]
 }

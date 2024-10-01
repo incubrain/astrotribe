@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineNuxtConfig } from 'nuxt/config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
@@ -8,9 +9,8 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
-  devServer: {
-    host: 'localhost',
-    port: 3000,
+  alias: {
+    '@ib/utils': resolve(currentDir, '../../libs/utilities/src'),
   },
 
   modules: [
@@ -33,6 +33,16 @@ export default defineNuxtConfig({
     exposeConfig: true,
     injectPosition: 0,
     viewer: true,
+  },
+
+  vite: {
+    root: currentDir,
+    plugins: [tsconfigPaths()],
+    resolve: {
+      alias: {
+        '@ib/utils': resolve(currentDir, '../../libs/utilities/src/index.ts'),
+      },
+    },
   },
 
   primevue: {
