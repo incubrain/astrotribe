@@ -7,13 +7,10 @@
 
 <template>
   <div class="relative flex h-full min-h-screen w-full items-center justify-start">
-    <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[480px] p-4">
+    <div class="foreground relative z-20 min-h-lvh w-full p-4">
       <ClientOnly>
         <slot />
       </ClientOnly>
-    </div>
-    <div class="absolute left-0 top-0 flex h-full w-full">
-      <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
     </div>
   </div>
 </template>

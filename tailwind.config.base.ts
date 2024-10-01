@@ -89,7 +89,6 @@ const baseConfig: Partial<Config> = {
       },
     },
   },
-  content: [],
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')],
 }
 

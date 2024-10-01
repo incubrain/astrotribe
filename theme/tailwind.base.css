@@ -1,5 +1,5 @@
+@layer tailwind-base, primevue, tailwind-utilities;
 @import 'scrollbar.css';
-@layer tailwind-base, primeui, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;

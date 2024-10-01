@@ -40,7 +40,10 @@ export default defineNuxtConfig({
       unstyled: true,
       theme: {
         options: {
-          cssLayer: true,
+          cssLayer: {
+            name: 'primevue',
+            order: 'tailwind-base, primevue, tailwind-utilities',
+          },
         },
       },
     },
