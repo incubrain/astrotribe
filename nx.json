@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "plugins": ["@nx/nuxt", "@nx/vite", "@nx/cypress", "@nx/eslint"],
   "namedInputs": {
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml", "{workspaceRoot}/.env"],
     "default": ["{projectRoot}/**/*", "!{projectRoot}/**/*.spec.ts", "sharedGlobals"],
@@ -15,33 +16,16 @@
     ]
   },
   "nxCloudId": "66f283bd927c3b4c910011f3",
-  "plugins": [
-    {
-      "plugin": "@nx/nuxt/plugin",
-      "options": {
-        "testTargetName": "test",
-        "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "buildStaticTargetName": "build-static",
-        "serveStaticTargetName": "serve-static"
-      }
+  "pluginsConfig": {
+    "@nx/nuxt": {
+      "testTargetName": "test",
+      "buildTargetName": "build"
     },
-    {
-      "plugin": "@nx/cypress/plugin",
-      "options": {
-        "targetName": "e2e",
-        "openTargetName": "open-cypress",
-        "componentTestingTargetName": "component-test",
-        "ciTargetName": "e2e-ci"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "eslint:lint"
-      }
+    "@nx/vite": {
+      "testTargetName": "test",
+      "buildTargetName": "build"
     }
-  ],
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
@@ -62,6 +46,11 @@
     },
     "format:check": {
       "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
+    }
+  },
+  "release": {
+    "version": {
+      "preVersionCommand": "npx nx run-many -t build"
     }
   }
 }
