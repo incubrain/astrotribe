@@ -39,8 +39,8 @@ export default {
       'flex h-full relative',
       {
         'order-1':
-          parent.props.indicatorsPosition === 'bottom'
-          || parent.props.indicatorsPosition === 'right',
+          parent.props.indicatorsPosition === 'bottom' ||
+          parent.props.indicatorsPosition === 'right',
         'order-2':
           parent.props.indicatorsPosition === 'top' || parent.props.indicatorsPosition === 'left',
       },

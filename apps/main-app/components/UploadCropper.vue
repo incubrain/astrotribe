@@ -318,7 +318,7 @@ const setError = (error: string) => {
         <label
           v-ripple
           :for="`myFile-${cropperType}`"
-          class="border-color bg-primary-600 rounded-lg border px-2 py-1 text-sm"
+          class="border-color bg-primary rounded-lg border px-2 py-1 text-sm"
         >
           Upload {{ cropperType }}
         </label>

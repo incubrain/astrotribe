@@ -7,6 +7,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
+
   devServer: {
     host: 'localhost',
     port: 3000,
@@ -26,6 +27,14 @@ export default defineNuxtConfig({
 
   css: [resolve(currentDir, './assets/css/tailwind.css')],
 
+  tailwindcss: {
+    configPath: `${currentDir}/tailwind.config.ts`,
+    cssPath: `${currentDir}/assets/css/tailwind.css`,
+    exposeConfig: true,
+    injectPosition: 0,
+    viewer: true,
+  },
+
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
@@ -44,7 +53,10 @@ export default defineNuxtConfig({
       unstyled: true,
       theme: {
         options: {
-          cssLayer: true,
+          cssLayer: {
+            name: 'primeui',
+            order: 'tailwind-base, primeui, tailwind-utilities',
+          },
         },
       },
     },
