@@ -1,11 +1,7 @@
-<script lang="ts" setup>
-import NavTop from '~/components/NavTop.vue'
-import TestComponent from '~/components/TestComponent.vue'
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div>
-    <NavTop />
     <p>testing</p>
     <PrimeButton> hello world </PrimeButton>
     <PrimeCard class="p-4 bg-red-300" />
