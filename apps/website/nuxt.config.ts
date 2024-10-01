@@ -216,11 +216,6 @@ export default defineNuxtConfig({
     },
   },
 
-  devServer: {
-    host: 'localhost',
-    port: 3000,
-  },
-
   site: {
     url: og.url,
     name: 'AstronEra',
@@ -292,14 +287,6 @@ export default defineNuxtConfig({
 
   imports: {
     autoImport: true,
-  },
-
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: 'http://localhost:3000/api',
-      },
-    },
   },
 
   compatibilityDate: '2024-09-22',

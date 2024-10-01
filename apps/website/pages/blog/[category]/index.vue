@@ -4,6 +4,10 @@ import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 import { ARTICLE_CARD_PROPERTIES, articleCardSchema } from '~/types/articles'
 
+const whereOptions: QueryBuilderParams = {
+  status: { $eq: 'published' },
+}
+
 const route = useRoute()
 const categoryParam = computed(() => (String(route.params.category) as ArticleCategoriesT) ?? null)
 
@@ -11,56 +15,109 @@ const allArticles = ref<ArticleCardT[]>([])
 const pagination = reactive({ skip: 0, limit: 10 })
 
 const articlesFinished = ref(false)
+const articlesLoading = ref(false)
 
-const whereOptions: QueryBuilderParams = {
-  // tags: { $in: selectedTags.value },
-  status: { $eq: 'published' },
+const fetchArticles = async (
+  skip: number,
+  limit: number,
+  category: string | null,
+): Promise<ArticleCardT[]> => {
+  if (!category) return []
+
+  try {
+    const articles = await queryContent('/blog', category === 'all' ? '' : category)
+      .where(whereOptions)
+      .only(ARTICLE_CARD_PROPERTIES)
+      .sort({ publishedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .find()
+
+    // Validate articles
+    const validArticles = articles
+    // .filter((article) => {
+    //   try {
+    //     articleCardSchema.parse(article)
+    //     return true
+    //   } catch (err) {
+    //     console.error(`Error parsing article: ${article?.title}`, err)
+    //     return false
+    //   }
+    // })
+
+    return validArticles
+  } catch (err) {
+    console.error('Error fetching articles:', err)
+    return []
+  }
 }
 
-const {
-  error,
-  data: newArticles,
-  refresh,
-  status,
-} = useAsyncData(`article-cards-${categoryParam.value}`, () =>
-  categoryParam.value
-    ? (queryContent('/blog', categoryParam.value === 'all' ? '' : categoryParam.value)
-        .where(whereOptions)
-        .only(ARTICLE_CARD_PROPERTIES)
-        .sort({ publishedAt: -1 })
-        .skip(pagination.skip)
-        .limit(pagination.limit)
-        .find() as Promise<ArticleCardT[]>)
-    : Promise.resolve([]),
+// Fetch initial articles during SSR
+const { data: initialArticles, error } = await useAsyncData(
+  `article-cards-${categoryParam.value}-${pagination.skip}-${pagination.limit}`,
+  () => fetchArticles(0, pagination.limit, categoryParam.value),
 )
 
-watchEffect(async () => {
-  if (newArticles.value) {
-    if (!newArticles.value.length || newArticles.value.length < pagination.limit) {
-      articlesFinished.value = true
-    }
-    console.log('newArticles.value', newArticles.value.length)
-    allArticles.value.filter((article) => isValidArticleCard(article))
-    allArticles.value.push(...newArticles.value)
+if (initialArticles.value) {
+  allArticles.value = initialArticles.value
+  if (initialArticles.value.length < pagination.limit) {
+    articlesFinished.value = true
+  } else {
     pagination.skip += pagination.limit
-
-    await new Promise((resolve) => setTimeout(resolve, 1200))
   }
-})
-
-// Validation & Error Handling
-if (error.value) {
-  console.error('Error fetching articles:', error)
+  articlesLoading.value = true
+} else {
+  articlesLoading.value = true
 }
 
-function isValidArticleCard(article: ArticleCardT): boolean {
-  try {
-    articleCardSchema.parse(article)
-    return true
-  } catch (error) {
-    console.error(`Error parsing article: ${article?.title}`, error)
-    return false
+if (error.value) {
+  console.error('Error fetching initial articles:', error.value)
+}
+
+// Function to load more articles
+const loadMoreArticles = async () => {
+  if (articlesFinished.value || articlesLoading.value) return
+  articlesLoading.value = true
+
+  const articles = await fetchArticles(pagination.skip, pagination.limit, categoryParam.value)
+
+  if (!articles.length || articles.length < pagination.limit) {
+    articlesFinished.value = true
   }
+
+  allArticles.value.push(...articles)
+  pagination.skip += pagination.limit
+  articlesLoading.value = false
+}
+
+watch(
+  () => categoryParam.value,
+  async (newCategory, oldCategory) => {
+    if (newCategory !== oldCategory) {
+      // Reset pagination and articles
+      pagination.skip = 0
+      articlesFinished.value = false
+      allArticles.value = []
+      articlesLoading.value = false
+
+      // Fetch initial articles for the new category
+      articlesLoading.value = true
+      const articles = await fetchArticles(pagination.skip, pagination.limit, newCategory)
+      articlesLoading.value = false
+
+      if (articles.length < pagination.limit) {
+        articlesFinished.value = true
+      } else {
+        pagination.skip += pagination.limit
+      }
+
+      allArticles.value = articles
+    }
+  },
+)
+
+const handleInfiniteScroll = async () => {
+  await loadMoreArticles()
 }
 
 const category = {
@@ -159,9 +216,9 @@ const heroImage = computed(() => {
           :article="article"
         />
         <ClientOnly>
-          <BlogCardSkeleton v-show="status === 'pending'" />
-          <BlogCardSkeleton v-show="status === 'pending'" />
-          <BlogCardSkeleton v-show="status === 'pending'" />
+          <BlogCardSkeleton v-show="articlesLoading" />
+          <BlogCardSkeleton v-show="articlesLoading" />
+          <BlogCardSkeleton v-show="articlesLoading" />
           <div
             v-if="articlesFinished"
             class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
@@ -175,8 +232,8 @@ const heroImage = computed(() => {
       </div>
     </div>
     <BlogArticleInfinateScroll
-      v-show="!articlesFinished && status === 'success'"
-      @infinate-trigger="refresh"
+      v-show="!articlesFinished"
+      @infinate-trigger="handleInfiniteScroll"
     />
   </div>
 </template>
