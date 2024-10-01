@@ -1,8 +1,13 @@
-import { useErrorHandler, AppError, ErrorSeverity, ErrorType } from './error-handler'
+import {
+  useErrorHandler,
+  AppError,
+  ErrorSeverity,
+  ErrorType,
+} from '../../../libs/utilities/src/lib/error-handler'
+import { useLogger } from '../../../libs/utilities/src/lib/logger'
+import { useRateLimit } from '../../base/composables/rate-limit'
 import { useHttpHandler } from './http-handler'
-import { useLogger } from './logger'
 import { getOrCreateStore } from './main.store'
-import { useRateLimit } from './rate-limit'
 
 export function useDeleteData<T extends { id: string | number }>(
   tableName: string,
