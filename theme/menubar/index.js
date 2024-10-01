@@ -30,7 +30,7 @@ export default {
       { hidden: !props?.mobileActive, flex: props?.mobileActive },
 
       // Position
-      'absolute md:relative',
+      'absolute',
       'top-full left-0',
       'top-auto left-auto',
 
