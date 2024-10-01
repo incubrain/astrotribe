@@ -1,0 +1,28 @@
+{
+  "name": "utilities",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/utilities",
+  "sourceRoot": "libs/utilities/src",
+  "projectType": "library",
+  "tags": [],
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/libs/utilities",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/utilities",
+        "main": "libs/utilities/src/index.ts",
+        "tsConfig": "libs/utilities/tsconfig.lib.json",
+        "assets": ["libs/utilities/*.md"]
+      }
+    }
+  }
+}
