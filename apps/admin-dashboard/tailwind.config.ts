@@ -12,7 +12,7 @@ const config: Partial<Config> = {
       // Add app-specific extensions here
     },
   },
-  content: [resolve(currentDir, '**/*.{js,vue,ts}')],
+  content: [resolve(currentDir, '**/*.{js,vue,ts}'), '../../theme/**/*.{js,css,ts}'],
 }
 
 export default config
