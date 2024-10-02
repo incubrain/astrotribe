@@ -1,4 +1,4 @@
-import { useLogger } from './logger'
+import { useLogger } from '@ib/client'
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 const CACHE_VERSION = '1.0' // Increment this when data structure changes
@@ -47,8 +47,8 @@ export function useBaseLocalStorage() {
       const currentTime = Date.now()
 
       if (
-        currentTime - parsedData.timestamp <= CACHE_DURATION
-        && parsedData.version === CACHE_VERSION
+        currentTime - parsedData.timestamp <= CACHE_DURATION &&
+        parsedData.version === CACHE_VERSION
       ) {
         logger.debug(`Retrieved valid cached data for: ${key}`)
         return parsedData.data

@@ -1,7 +1,5 @@
-import type { UserRowType } from '~/types/users'
-
 export default defineEventHandler(async (event) => {
-  const { userId, profile }: { userId: string, profile: UserRowType } = await readBody(event)
+  const { userId, profile }: { userId: string; profile: any } = await readBody(event)
   const client = await dbClient(event)
 
   // Function to insert users from JSON file

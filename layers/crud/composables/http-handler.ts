@@ -1,4 +1,5 @@
 import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
+import { useLogger } from '@ib/client'
 import {
   useErrorHandler,
   ErrorType,
@@ -7,8 +8,7 @@ import {
   mapErrorSeverity,
   mapErrorType,
   retryableStatusCodes,
-} from './error-handler'
-import { useLogger } from './logger'
+} from '@ib/client'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 

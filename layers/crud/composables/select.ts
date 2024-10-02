@@ -1,6 +1,6 @@
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from './error-handler'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/client'
 import { useHttpHandler } from './http-handler'
-import { useLogger } from './logger'
+import { useLogger } from '@ib/client'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 import { useRateLimit } from './rate-limit'
@@ -10,7 +10,7 @@ export function useSelectData<T extends { id: string | number }>(
   options: {
     columns?: string
     filters?: Record<string, any>
-    orderBy?: { column: string, ascending?: boolean }
+    orderBy?: { column: string; ascending?: boolean }
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number

@@ -1,11 +1,5 @@
-import {
-  useErrorHandler,
-  AppError,
-  ErrorSeverity,
-  ErrorType,
-} from '../../../libs/utilities/src/lib/error-handler'
-import { useLogger } from '../../../libs/utilities/src/lib/logger'
-import { useRateLimit } from '../../base/composables/rate-limit'
+import { useErrorHandler, AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/client'
+import { useRateLimit } from './rate-limit'
 import { useHttpHandler } from './http-handler'
 import { getOrCreateStore } from './main.store'
 

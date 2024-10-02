@@ -1,13 +1,9 @@
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/client'
+
 import { useUpdateData } from '../../../layers/crud/composables/update'
 import { useSelectData } from '../../../layers/crud/composables/select'
 import { useDeleteData } from '../../../layers/crud/composables/delete'
 import { useInsertData } from '../../../layers/crud/composables/insert'
-import {
-  useErrorHandler,
-  AppError,
-  ErrorType,
-  ErrorSeverity,
-} from '../../../libs/utilities/src/lib/error-handler'
 
 export interface CRUDOptions<T> {
   initialFetch?: boolean

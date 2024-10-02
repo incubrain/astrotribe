@@ -1,4 +1,4 @@
-import { useServerError } from '../../../../../../layers/base/server/utils/base.error-handler'
+import { useServerError } from '@ib/server'
 import { useYoutubeChannel } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'
