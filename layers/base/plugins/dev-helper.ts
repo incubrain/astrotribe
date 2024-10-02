@@ -1,4 +1,4 @@
-import { useLogger } from '../../../libs/utilities/src/lib/logger'
+import { useLogger } from '@ib/client'
 
 const logger = useLogger('devHelper')
 

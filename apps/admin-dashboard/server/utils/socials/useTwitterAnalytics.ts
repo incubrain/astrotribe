@@ -1,4 +1,4 @@
-import { useServerError } from '../../../../../layers/base/server/utils/base.error-handler'
+import { useServerError } from '@ib/server'
 
 // user tweet timeline
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-tweets

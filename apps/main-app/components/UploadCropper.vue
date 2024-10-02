@@ -2,7 +2,7 @@
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-import { useFileUpload } from '../../../layers/base/composables/upload'
+import { useFileUpload } from '../../../layers/crud/composables/upload'
 import { useNotification } from '../../../layers/base/composables/notification'
 import { useCurrentUser } from '../../../layers/base/composables/user.current.store'
 

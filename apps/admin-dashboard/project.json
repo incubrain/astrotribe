@@ -8,26 +8,30 @@
     "build:base": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/base && npx nuxi build"
+        "command": "npx nuxi build",
+        "cwd": "layers/base"
       }
     },
     "build:auth": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/auth && npx nuxi build"
+        "command": "npx nuxi build",
+        "cwd": "layers/auth"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/admin-dashboard && npx nuxi build"
+        "command": "npx nuxi build",
+        "cwd": "apps/admin-dashboard"
       },
       "dependsOn": ["build:base", "build:auth"]
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/admin-dashboard && npx nuxi dev"
+        "command": "npx nuxi dev",
+        "cwd": "apps/admin-dashboard"
       }
     },
     "lint": {
