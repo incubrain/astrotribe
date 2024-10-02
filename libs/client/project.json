@@ -1,14 +1,14 @@
 {
-  "name": "utilities",
+  "name": "client",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "root": "libs/utilities",
-  "sourceRoot": "libs/utilities/src",
+  "root": "libs/client",
+  "sourceRoot": "libs/client/src",
   "projectType": "library",
   "tags": [],
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist/libs/utilities",
+        "packageRoot": "dist/libs/client",
         "currentVersionResolver": "git-tag"
       }
     }
@@ -18,10 +18,10 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/utilities",
-        "main": "libs/utilities/src/index.ts",
-        "tsConfig": "libs/utilities/tsconfig.lib.json",
-        "assets": ["libs/utilities/*.md"]
+        "outputPath": "dist/libs/client",
+        "main": "libs/client/src/index.ts",
+        "tsConfig": "libs/client/tsconfig.lib.json",
+        "assets": ["libs/client/*.md"]
       }
     }
   }

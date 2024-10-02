@@ -7,12 +7,14 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const config: Partial<Config> = {
   presets: [baseConfig],
-  theme: {
-    extend: {
-      // Add app-specific extensions here
-    },
-  },
-  content: [resolve(currentDir, '**/*.{js,vue,ts}'), '../../theme/**/*.{js,css,ts}'],
+  content: [
+    resolve(currentDir, 'pages/**/*.{js,vue,ts}'),
+    resolve(currentDir, 'layouts/**/*.{js,vue,ts}'),
+    resolve(currentDir, 'composables/**/*.{js,vue,ts}'),
+    resolve(currentDir, 'components/**/*.{js,vue,ts}'),
+    '../../theme/**/*.{js,css,ts}',
+  ],
+  exclude: ['server/**/*'],
 }
 
 export default config
