@@ -2,13 +2,13 @@
   "name": "server",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "root": "libs/server",
-  "sourceRoot": "libs/server/src",
+  "sourceRoot": "libs/server",
   "projectType": "library",
   "tags": [],
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist/libs/server",
+        "packageRoot": "libs/server/dist",
         "currentVersionResolver": "git-tag"
       }
     }
@@ -18,8 +18,8 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/server",
-        "main": "libs/server/src/index.ts",
+        "outputPath": "libs/server/dist",
+        "main": "libs/server/index.ts",
         "tsConfig": "libs/server/tsconfig.lib.json",
         "assets": ["libs/server/*.md"]
       }

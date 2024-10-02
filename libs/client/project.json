@@ -8,7 +8,7 @@
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "dist/libs/client",
+        "packageRoot": "libs/client/dist",
         "currentVersionResolver": "git-tag"
       }
     }
@@ -18,7 +18,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/client",
+        "outputPath": "libs/client/dist",
         "main": "libs/client/src/index.ts",
         "tsConfig": "libs/client/tsconfig.lib.json",
         "assets": ["libs/client/*.md"]

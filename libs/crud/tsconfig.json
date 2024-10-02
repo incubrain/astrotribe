@@ -8,5 +8,5 @@
   },
   "include": ["src/**/*", "index.d.ts", "index.ts"],
   "exclude": ["dist/**/*"],
-  "references": [{ "path": "./tsconfig.lib.json" }]
+  "references": [{ "path": "../client" }, { "path": "./tsconfig.lib.json" }]
 }
