@@ -9,10 +9,6 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
-  alias: {
-    '@ib/utils': resolve(currentDir, '../../libs/utilities/src'),
-  },
-
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -35,15 +31,7 @@ export default defineNuxtConfig({
     viewer: true,
   },
 
-  vite: {
-    root: currentDir,
-    plugins: [tsconfigPaths()],
-    resolve: {
-      alias: {
-        '@ib/utils': resolve(currentDir, '../../libs/utilities/src/index.ts'),
-      },
-    },
-  },
+  
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },

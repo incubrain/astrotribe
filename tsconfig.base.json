@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@layer/base/*": ["layers/base/*"],
-      "@ib/utils": ["libs/utilities/src/index.ts"],
+      "@ib/client": ["libs/client/src/index.ts"],
+      "@ib/server": ["libs/server/src/index.ts"],
       "@website/*": ["apps/website/*"]
     },
     "strict": true,

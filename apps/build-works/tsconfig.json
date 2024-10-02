@@ -3,11 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"],
-      "@ib/utils": ["../../libs/utilities/src/index.ts"],
-      "@ib/utils/*": ["../../libs/utilities/src/*"]
+    "pa../../libs/client/src/index.ts   "@/*": ["./*"],
+      "@ib/client": ../../libs/client/src/*/index.ts"],
+      "@ib/client/*": ["../../libs/client/src/*"]
     }
   },
   "include": ["./**/*.ts", "./**/*.vue"],
