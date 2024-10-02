@@ -31,6 +31,19 @@ export default createConfigForNuxt({
       'curly': 'off',
       'no-undef': 'off',
       'space-before-function-paren': 'off',
+      '@stylistic/member-delimiter-style': [
+        'error',
+        {
+          multiline: {
+            delimiter: 'none',
+            requireLast: false,
+          },
+          singleline: {
+            delimiter: 'semi',
+            requireLast: false,
+          },
+        },
+      ],
       'vue/html-self-closing': 'off',
     },
     ignores: [
