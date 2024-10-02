@@ -1,14 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "composite": true,
     "declaration": true,
-    "types": ["node"],
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "declarationMap": true, // Optional for better debugging
+    "rootDir": "src",
+    "outDir": "dist",
     "sourceMap": true,
     "inlineSources": true
-  },
-  "include": ["**/*.ts"]
+  }
 }

@@ -4,7 +4,7 @@ interface ErrorDetails {
   type: ErrorType
   message: string
   severity: ErrorSeverity
-  stack: string
+  stack?: string
   code?: string | number
   context?: string
   pgError?: string
