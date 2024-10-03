@@ -84,7 +84,7 @@ export function useUserAuth() {
       toast.error({ summary: 'Login with password', message: error.message })
     } else {
       toast.success({ summary: 'Login Successful', message: 'You Have Successfully Logged In' })
-      navigateTo('/astrotribe/')
+      navigateTo('/')
     }
   }
 
@@ -145,7 +145,7 @@ export function useUserAuth() {
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
-      navigateTo('/')
+      navigateTo(aeAppUrl)
     }
   }
 
