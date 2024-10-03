@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { useLogger } from '@ib/client'
 
 const CategorySchema = z.object({
   id: z.number(),

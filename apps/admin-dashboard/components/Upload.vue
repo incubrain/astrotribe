@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFileUpload } from '../../../layers/crud/composables/upload'
+import { useFileUpload } from '#imports'
 
 const user = useSupabaseUser()
 

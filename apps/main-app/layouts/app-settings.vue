@@ -5,7 +5,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-account',
     label: 'Account Profile',
-    url: `/profile/settings/profile`,
+    url: '/profile/settings/profile',
     icon: 'material-symbols:home',
     visible: true,
     disabled: false,
@@ -13,7 +13,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-password',
     label: 'Update Password',
-    url: `/profile/settings/password`,
+    url: '/profile/settings/password',
     icon: 'material-symbols:key',
     visible: user.profile?.providers.includes('email'),
     disabled: false,
@@ -21,7 +21,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-payments',
     label: 'Payments',
-    url: `/profile/settings/payments`,
+    url: '/profile/settings/payments',
     icon: 'mdi:credit-card',
     visible: true,
     disabled: false,
@@ -29,7 +29,7 @@ const settingsRoutes = computed(() => [
   {
     key: 'settings-notifications',
     label: 'Notifications',
-    url: `/profile/settings/notifications`,
+    url: '/profile/settings/notifications',
     icon: 'material-symbols:notifications',
     visible: true,
     disabled: true,
@@ -50,7 +50,7 @@ const settingsRoutes = computed(() => [
           }"
           :pt-options="{ mergeSections: true, mergeProps: true }"
         >
-          <template #item="{ item, disabled }">
+          <template #item="{ item }">
             <NuxtLink
               v-if="item.url && !item.disabled"
               v-ripple

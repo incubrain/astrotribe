@@ -1,6 +1,4 @@
-import { createError } from 'h3'
 import { useLogger } from '@ib/client'
-import { getLibConfig } from './configHolder'
 
 interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
@@ -22,11 +20,10 @@ interface ErrorClient extends ErrorMessage {
 
 export function useBaseError() {
   // !todo:med:easy - add prefix to base error
-  const { runtimeConfig } = getLibConfig()
 
   // const toast = useNotification()
   const logger = useLogger('useBaseError')
-  const isAdmin = runtimeConfig['public']['nodeEnv'] === 'development'
+  const isAdmin = useRuntimeConfig().public.nodeEnv === 'development'
 
   // function handleErrorWithCodes(error: any) {
   //   switch (error.statusCode) {

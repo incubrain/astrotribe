@@ -1,3 +1,5 @@
+import { useLogger } from '@ib/client'
+
 const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {

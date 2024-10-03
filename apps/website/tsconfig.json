@@ -1,5 +1,5 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
+  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
   "compilerOptions": {
     "paths": {
       "#types/*": ["../../layers/base/types/*"]
@@ -7,5 +7,5 @@
     "strict": true
   },
   "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
-  "exclude": ["node_modules", ".nuxt", "dist", "tmp"]
+  "exclude": ["node_modules", "dist", "tmp"]
 }

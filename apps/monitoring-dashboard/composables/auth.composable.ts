@@ -1,3 +1,4 @@
+import { useLogger } from '@ib/client'
 import { z } from 'zod'
 
 const passwordValidation = z

@@ -1,3 +1,4 @@
+import { useLogger } from '@ib/client'
 import { emailUnvalidatedUserSchema } from '../../../auth-service/types/auth'
 import type { UserRowType } from '~/types/users'
 

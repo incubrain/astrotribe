@@ -1,5 +1,3 @@
-import type { Database, Tables } from '../../../../supabase/schema.gen'
-
 type DBTable = keyof Database['public']['Tables'] & keyof Database['public']['Views']
 type DBColumns<T extends DBTable> = keyof Tables<T>
 type TableSpecificColumns<T extends DBTable> = Partial<DBColumns<T>>

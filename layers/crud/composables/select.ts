@@ -1,6 +1,5 @@
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/client'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/client'
 import { useHttpHandler } from './http-handler'
-import { useLogger } from '@ib/client'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 import { useRateLimit } from './rate-limit'

@@ -1,8 +1,7 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
+  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
   "compilerOptions": {
     "strict": true,
-    "baseUrl": ".",
     "paths": {
       "@base": ["../../layers/base"]
     }

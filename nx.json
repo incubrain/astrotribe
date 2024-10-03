@@ -2,7 +2,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "plugins": [
     {
-      "plugin": "@nx/vite/plugin",
+      "plugin": "@nx/vite",
       "options": {
         "buildTargetName": "vite:build",
         "testTargetName": "test",
@@ -13,9 +13,16 @@
       }
     },
     {
-      "plugin": "@nx/eslint/plugin",
+      "plugin": "@nx/eslint",
       "options": {
         "targetName": "eslint:lint"
+      }
+    },
+    {
+      "plugin": "@nx/js",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test"
       }
     }
   ],
@@ -43,8 +50,9 @@
     }
   },
   "targetDefaults": {
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build-static"]
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]

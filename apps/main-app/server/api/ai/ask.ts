@@ -1,3 +1,4 @@
+import { useServerLogger } from '@ib/server'
 import { openAI } from '~/server/utils/openai/callOpenAI'
 import { serverSupabaseUser } from '#supabase/server'
 
@@ -19,10 +20,10 @@ export default defineEventHandler({
     }
 
     const isValidMessage = (msg) =>
-      msg
-      && typeof msg === 'object'
-      && ['system', 'user', 'assistant'].includes(msg.role)
-      && typeof msg.content === 'string'
+      msg &&
+      typeof msg === 'object' &&
+      ['system', 'user', 'assistant'].includes(msg.role) &&
+      typeof msg.content === 'string'
 
     if (!messages.every(isValidMessage)) {
       return {

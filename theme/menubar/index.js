@@ -26,33 +26,31 @@ export default {
       'sm:flex',
       'items-center',
       'flex-wrap',
-      'flex-col md:flex-row',
-      { hidden: !props?.mobileActive, flex: props?.mobileActive },
-
+      'flex-col sm:flex-row',
+      {
+        hidden: !(props != null && props.mobileActive),
+        flex: props == null ? void 0 : props.mobileActive,
+      },
       // Position
-      'absolute',
+      'absolute sm:relative',
       'top-full left-0',
-      'top-auto left-auto',
-
+      'sm:top-auto sm:left-auto',
       // Size
-      'w-full',
-
+      'w-full sm:w-auto',
       // Spacing
       'm-0',
       'py-1 sm:py-0 sm:p-0',
       'list-none',
-
       // Shape
       'shadow-md sm:shadow-none',
       'border-0',
-
       // Color
-      'bg-surface-700',
-
+      'bg-surface-0 dark:bg-surface-700 sm:bg-transparent',
       // Misc
       'outline-none',
     ],
   }),
+
   item: {
     class: 'sm:relative sm:w-auto w-full static',
   },

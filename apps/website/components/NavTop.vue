@@ -151,7 +151,7 @@ watch(
       class="w-full text-white rounded-none backdrop:blur-lg lg:rounded-b-md"
       :pt="{
         submenu: {
-          class: '!bg-black md:absolute md:flex-col !text-sm !font-bold !text-white',
+          class: '!bg-black md:absolute md:flex-col flex !text-sm !font-bold !text-white',
         },
       }"
     >

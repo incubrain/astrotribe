@@ -1,4 +1,4 @@
-// import type { NewsCardT } from '@/types/news'
+import { useLogger } from '@ib/client'
 import type { FetchInput } from '#imports'
 
 export const useNewsStore = defineStore('newsStore', () => {

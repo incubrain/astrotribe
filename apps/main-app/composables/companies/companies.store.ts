@@ -1,3 +1,4 @@
+import { useLogger } from '@ib/client'
 import type { FetchInput } from '#imports'
 
 type CompanyType = {

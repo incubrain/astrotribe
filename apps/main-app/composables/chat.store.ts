@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { useLogger } from '@ib/client'
 
 const ChatCompletionSchema = z.object({
   id: z.string(),

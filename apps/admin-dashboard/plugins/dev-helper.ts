@@ -18,7 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           const initMethod =
             `init${feature.charAt(0).toUpperCase() + feature.slice(1)}` as keyof typeof DevHelper
           if (typeof this[initMethod] === 'function') {
-            ;(this[initMethod] as Function)()
+            ;(this[initMethod] as () => void)()
           }
         }
       }

@@ -8,7 +8,13 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
-  extends: ['../../layers/base'],
+  extends: ['../../layers/base', '../../layers/crud'],
+
+  vite: {
+    optimizeDeps: {
+      exclude: ['fsevents'],
+    },
+  },
 
   modules: [
     '@nuxt/devtools',

@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError, useServerLogger } from '@ib/server'
 import { useLinkedinAnalytics } from '#imports'
 
 const PREFIX = 'social/linkedin/analytics'

@@ -1,16 +1,18 @@
 {
+  "files": [],
   "compilerOptions": {
+    "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@layer/base/*": ["layers/base/*"],
-      "@ib/client": ["libs/client/src/index.ts"],
-      "@ib/server": ["libs/server/src/index.ts"],
+      "@ib/client": ["libs/client/index.ts"],
+      "@ib/client/*": ["libs/client/*"],
+      "@ib/server": ["libs/server/index.ts"],
+      "@ib/server/*": ["libs/server/*"],
       "@website/*": ["apps/website/*"]
     },
-    "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "skipLibCheck": true,
+    "skipLibCheck": true, // good for performance, skips .d.ts files
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],

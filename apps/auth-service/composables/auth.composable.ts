@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { useLogger } from '@ib/client'
 
 const passwordValidation = z
   .string()
@@ -13,7 +14,7 @@ export const SettingsPasswordValidation = z
     confirmNewPassword: passwordValidation,
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'Passwords don\'t match',
+    message: "Passwords don't match",
     path: ['confirmNewPassword'],
   })
 

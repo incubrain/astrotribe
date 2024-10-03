@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError, useServerLogger } from '@ib/server'
 
 const INSTAGRAM_API_URL = 'https://graph.instagram.com'
 const ACCESS_TOKEN = 'YOUR_INSTAGRAM_ACCESS_TOKEN'

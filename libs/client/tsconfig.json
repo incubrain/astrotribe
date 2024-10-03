@@ -4,7 +4,7 @@
     "composite": true,
     "declaration": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "."
   },
   "include": ["src/**/*", "index.d.ts", "index.ts"],
   "exclude": ["dist/**/*"],
