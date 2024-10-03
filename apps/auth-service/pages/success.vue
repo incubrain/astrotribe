@@ -10,7 +10,7 @@ definePageMeta({
 <template>
   <PrimeCard>
     <template #title>
-      <h2 class="text-primary-500 dark:text-primary-700 pb-2 text-3xl font-semibold"> SUCCESS! </h2>
+      <h2 class="text-primary-700 pb-2 text-3xl font-semibold"> SUCCESS! </h2>
     </template>
     <template #subtitle>
       <PrimeMessage

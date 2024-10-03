@@ -106,7 +106,7 @@
     @apply mx-auto flex max-w-[1240px] flex-col px-[20px] md:px-[80px] lg:px-[160px];
   }
   .text-light {
-    @apply text-zinc-100 dark:text-zinc-300;
+    @apply text-zinc-300;
   }
   .padded-x {
     @apply px-4 lg:px-8;
@@ -117,7 +117,7 @@
   }
 
   .border-inverted {
-    @apply border-zinc-800 dark:border-zinc-300;
+    @apply border-zinc-300;
   }
 
   .background {

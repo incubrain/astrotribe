@@ -90,11 +90,11 @@ export default {
       'transition duration-200',
 
       // Focus Styles
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-300/50',
 
       // Color & Background
       {
-        'bg-surface-200 hover:bg-surface-700 dark:hover:bg-surface-600': !context.highlighted,
+        'bg-surface-200 hover:bg-surface-600': !context.highlighted,
         'bg-primary hover:bg-primary-emphasis': context.highlighted,
       },
     ],

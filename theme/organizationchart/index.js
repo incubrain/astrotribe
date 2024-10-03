@@ -29,16 +29,16 @@ export default {
 
       // Color
       {
-        'text-surface-600 dark:text-white/80': !context?.selected,
+        'text-surface-600 text-white/80': !context?.selected,
         'bg-surface-400': !context?.selected,
         'border-color ': !context?.selected,
         'bg-highlight': context?.selected,
-        'border-primary-200 dark:border-primary-600': context?.selected,
+        'border-primary-600': context?.selected,
       },
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-700': context?.selectable && !context?.selected,
+        'hover:bg-surface-700': context?.selectable && !context?.selected,
         'hover:bg-highlight-emphasis': context?.selectable && context?.selected,
       },
 
@@ -119,7 +119,7 @@ export default {
       'bg-inherit text-inherit',
 
       // Focus
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-300/50',
 
       // Misc
       'cursor-pointer no-underline select-none',

@@ -19,12 +19,12 @@ export default {
       // States
       {
         'hover:hover:text-white/80': !props.disabled && !props.modelValue,
-        'focus:outline-none focus:outline-offset-0 focus-visible:ring-1 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400':
+        'focus:outline-none focus:outline-offset-0 focus-visible:ring-1 focus-visible:ring-primary-400':
           !props.disabled,
       },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // Before
       'before:absolute before:left-1 before:top-1 before:w-[calc(100%-0.5rem)] before:h-[calc(100%-0.5rem)] before:rounded-[4px] before:z-0',

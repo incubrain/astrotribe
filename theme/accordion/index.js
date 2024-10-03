@@ -41,9 +41,9 @@ export default {
         'transition-shadow duration-200',
 
         // States
-        'hover:bg-surface-600 dark:hover:bg-surface-700/40',
+        'hover:bg-surface-700/40',
         'hover:text-surface-900',
-        'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 ring-inset dark:focus-visible:ring-primary-300/50', // Focus
+        'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 ring-inset focus-visible:ring-primary-300/50', // Focus
 
         // Misc
         'cursor-pointer no-underline select-none',

@@ -28,7 +28,7 @@ definePageMeta({
             id="username"
             v-model="form.email"
           />
-          <label for="username">Your Regeistered Email</label>
+          <label for="username">Your Registered Email</label>
         </PrimeFloatLabel>
       </div>
     </template>

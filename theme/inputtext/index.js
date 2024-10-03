@@ -35,17 +35,17 @@ export default {
       'placeholder:text-surface-100',
       'bg-surface-400',
       'border',
-      { 'border-surface-300/50 dark:border-surface-300/50': !props.invalid },
+      { 'border-surface-300/50': !props.invalid },
 
       // Invalid State
       'invalid:focus:ring-red-200',
       'invalid:hover:border-red-500',
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // States
       {
         'hover:border-primary': !context.disabled && !props.invalid,
-        'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-500/50 dark:focus:ring-primary-400/50 focus:z-10':
+        'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 focus:z-10':
           !context.disabled,
         'opacity-60 select-none pointer-events-none cursor-default': context.disabled,
       },

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex items-center text-white justify-center w-full p-10 mx-auto md:py-20 lg:py-40 bg-neutral-900 dark:bg-black"
+    class="relative flex items-center text-white justify-center w-full p-10 mx-auto md:py-20 lg:py-40 bg-black"
   >
     <div class="flex flex-col items-center justify-center gap-4 text-center text-light">
       <h2 class="text-3xl font-bold">

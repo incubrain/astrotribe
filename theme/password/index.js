@@ -15,7 +15,7 @@ export default {
       'p-5',
 
       // Shape
-      'border-0 dark:border',
+      'border',
       'shadow-md rounded-md',
 
       // Colors
@@ -48,9 +48,9 @@ export default {
 
       // Colors
       {
-        'bg-red-500 dark:bg-red-400/50': instance?.meter?.strength == 'weak',
-        'bg-orange-500 dark:bg-orange-400/50': instance?.meter?.strength == 'medium',
-        'bg-green-500 dark:bg-green-400/50': instance?.meter?.strength == 'strong',
+        'bg-red-400/50': instance?.meter?.strength == 'weak',
+        'bg-orange-400/50': instance?.meter?.strength == 'medium',
+        'bg-green-400/50': instance?.meter?.strength == 'strong',
       },
 
       // Transitions
@@ -58,10 +58,10 @@ export default {
     ],
   }),
   maskIcon: {
-    class: ['absolute top-1/2 right-3 -mt-2 z-10', 'text-surface-600 dark:text-white/70'],
+    class: ['absolute top-1/2 right-3 -mt-2 z-10', 'text-surface-600 text-white/70'],
   },
   unmaskIcon: {
-    class: ['absolute top-1/2 right-3 -mt-2 z-10', 'text-surface-600 dark:text-white/70'],
+    class: ['absolute top-1/2 right-3 -mt-2 z-10', 'text-surface-600 text-white/70'],
   },
   transition: {
     enterFromClass: 'opacity-0 scale-y-[0.8]',

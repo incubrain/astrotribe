@@ -5,14 +5,14 @@
         main: 'Meet The IDSPC2023 Group',
       }"
     />
-    <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase">
+    <p class="text-primary-700 text-sm font-bold uppercase">
       offline / online Chairperson
     </p>
     <ConferenceChairperson
       class="pt-6"
       :hosts="hosts"
     />
-    <p class="text-primary-500 dark:text-primary-700 text-sm font-bold uppercase pt-4 lg:pt-8">
+    <p class="text-primary-700 text-sm font-bold uppercase pt-4 lg:pt-8">
       Conference Speakers
     </p>
     <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">

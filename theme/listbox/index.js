@@ -9,10 +9,10 @@ export default {
       'bg-surface-400',
       'text-white/80',
       'border',
-      { 'border-surface-300 dark:border-surface-600': !props.invalid },
+      { 'border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
     ],
   }),
   listContainer: 'overflow-auto',
@@ -50,10 +50,10 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600 hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
       // Transitions
       'transition-shadow',
@@ -97,7 +97,7 @@ export default {
       // Color
       'text-white/80',
       'bg-surface-400',
-      'border-surface-300 dark:border-surface-600',
+      'border-surface-600',
 
       '[&_[data-pc-name=pcfilter]]:w-full',
     ],

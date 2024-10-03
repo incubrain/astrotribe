@@ -16,22 +16,22 @@ export default {
 
       // Colors
       {
-        'bg-blue-950/20 dark:bg-blue-950/20': props.message.severity == 'info',
-        'bg-green-950/20 dark:bg-green-950/20': props.message.severity == 'success',
-        'bg-orange-950/20 dark:bg-orange-950/20': props.message.severity == 'warn',
-        'bg-red-950/20 dark:bg-red-950/20': props.message.severity == 'error',
+        'bg-blue-950/20': props.message.severity == 'info',
+        'bg-green-950/20': props.message.severity == 'success',
+        'bg-orange-950/20': props.message.severity == 'warn',
+        'bg-red-950/20': props.message.severity == 'error',
       },
       {
-        'border-blue-700 dark:border-blue-700': props.message.severity == 'info',
-        'border-green-700 dark:border-green-700': props.message.severity == 'success',
-        'border-orange-700 dark:border-orange-700': props.message.severity == 'warn',
-        'border-red-700 dark:border-red-700': props.message.severity == 'error',
+        'border-blue-700': props.message.severity == 'info',
+        'border-green-700': props.message.severity == 'success',
+        'border-orange-700': props.message.severity == 'warn',
+        'border-red-700': props.message.severity == 'error',
       },
       {
-        'text-blue-700 dark:text-blue-300': props.message.severity == 'info',
-        'text-green-700 dark:text-green-300': props.message.severity == 'success',
-        'text-orange-700 dark:text-orange-300': props.message.severity == 'warn',
-        'text-red-700 dark:text-red-300': props.message.severity == 'error',
+        'text-blue-300': props.message.severity == 'info',
+        'text-green-300': props.message.severity == 'success',
+        'text-orange-300': props.message.severity == 'warn',
+        'text-red-300': props.message.severity == 'error',
       },
     ],
   }),
@@ -56,7 +56,7 @@ export default {
       // Font and Text
       'text-base leading-none',
       'ml-2',
-      'flex flex-col w-full overflow-hidden',
+      'flex flex-col w-full overflow-visible',
     ],
   },
   summary: {
@@ -86,7 +86,7 @@ export default {
       'transition duration-200 ease-in-out',
 
       // States
-      'hover:bg-surface-0/50 dark:hover:bg-surface-0/10',
+      'hover:bg-surface-0/10',
 
       // Misc
       'overflow-hidden',

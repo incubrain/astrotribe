@@ -11,10 +11,10 @@ export default {
       // Color and Background
       'bg-surface-900',
       'border',
-      { 'border-surface-300 dark:border-surface-600': !props.invalid },
+      { 'border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // Transitions
       'transition-all',
@@ -23,7 +23,7 @@ export default {
       // States
       { 'hover:border-primary': !props.invalid },
       {
-        'outline-none outline-offset-0 ring ring-primary-400/50 dark:ring-primary-300/50':
+        'outline-none outline-offset-0 ring ring-primary-300/50':
           state.focused,
       },
 
@@ -81,7 +81,7 @@ export default {
       'absolute top-0 left-0',
 
       // Shape
-      'border-0 dark:border',
+      'border',
       'rounded-md',
       'shadow-md',
 

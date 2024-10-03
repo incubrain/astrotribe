@@ -7,7 +7,7 @@
     >
       <Icon
         name="mdi:menu"
-        class="text-black dark:text-white"
+        class="text-white"
         size="24px"
       />
     </PrimeButton>

@@ -20,7 +20,7 @@ export default {
 
       // State
       {
-        'outline-none ring ring-primary-500/50 dark:ring-primary-400/50': context.focused,
+        'outline-none ring ring-primary-400/50': context.focused,
       },
 
       // Misc
@@ -39,7 +39,7 @@ export default {
       'text-surface-0/80',
 
       // State
-      { 'hover:text-primary-500 dark:hover:text-primary-400': !props.readonly },
+      { 'hover:text-primary-400': !props.readonly },
 
       // Transition
       'transition duration-200 ease-in',
@@ -54,7 +54,7 @@ export default {
       'text-primary',
 
       // State
-      { 'hover:text-primary-600 dark:hover:text-primary-300': !props.readonly },
+      { 'hover:text-primary-300': !props.readonly },
 
       // Transition
       'transition duration-200 ease-in',

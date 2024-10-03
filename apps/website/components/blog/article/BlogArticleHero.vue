@@ -38,7 +38,7 @@
           {{ article.title }}
         </h1>
         <div
-          class="border-color w-full rounded-md border bg-primary-50 p-4 xl:p-8 dark:bg-primary-950"
+          class="border-color w-full rounded-md border p-4 xl:p-8 bg-primary-950"
         >
           <p class="text-xl">
             {{ article.description }}
