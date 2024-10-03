@@ -56,7 +56,7 @@ export default {
       // Font and Text
       'text-base leading-none',
       'ml-2',
-      'flex flex-col w-full overflow-hidden',
+      'flex flex-col w-full overflow-visible',
     ],
   },
   summary: {
