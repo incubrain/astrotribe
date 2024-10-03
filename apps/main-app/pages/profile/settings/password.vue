@@ -3,7 +3,7 @@ const schema = [
   {
     id: 'new_password',
     label: 'New Password',
-    tip: 'New password must be at least 8 characters long',
+    tip: 'New password must be at least 6 characters long',
     placeholder: 'Your new password',
     value: ref(''),
     type: 'password',

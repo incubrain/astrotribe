@@ -3,7 +3,7 @@ import { useLogger } from '@ib/client'
 
 const passwordValidation = z
   .string()
-  .min(8, 'Password must contain 8 characters')
+  .min(8, 'Password must contain 6 characters')
   .regex(/[A-Z]/, 'Password must contain an uppercase letter')
   .regex(/[^a-zA-Z0-9]/, 'Password must contain a special character')
 

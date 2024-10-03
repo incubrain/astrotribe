@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
     'At least one lowercase',
     'At least one uppercase',
     'At least one numeric',
-    'Minimum 8 characters',
+    'Minimum 6 characters',
   ],
   invalid: false,
   feedback: true,
