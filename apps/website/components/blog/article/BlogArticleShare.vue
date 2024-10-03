@@ -4,7 +4,8 @@
     <PrimeButton
       v-for="platform in socialPlatforms"
       :key="platform.name"
-      :to="platform.url"
+      as="a"
+      :href="platform.url"
       :aria-label="`Share article on ${platform.name}`"
       target="_blank"
       class="p-2"
@@ -17,7 +18,8 @@
     </PrimeButton>
     <p class="px-2"> - or - </p>
     <PrimeButton
-      :to="`https://github.com/incubrain/incubrain/edit/main/${link}`"
+      as="a"
+      :href="`https://github.com/incubrain/incubrain/edit/main/${link}`"
       target="_blank"
       class="flex items-center justify-center"
     >
