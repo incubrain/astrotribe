@@ -1,9 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
-
-const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
@@ -11,22 +8,9 @@ export default defineNuxtConfig({
 
   modules: [],
 
-  alias: {
-    '@ib/client': resolve(currentDir, '../../libs/client/src'),
-    '@ib/server': resolve(currentDir, '../../libs/server/src'),
-  },
-
   vite: {
     optimizeDeps: {
       exclude: ['fsevents'],
-    },
-    root: currentDir,
-    plugins: [tsconfigPaths()],
-    resolve: {
-      alias: {
-        '@ib/client': resolve(currentDir, '../../libs/client/src/index.ts'),
-        '@ib/server': resolve(currentDir, '../../libs/server/src/index.ts'),
-      },
     },
   },
 

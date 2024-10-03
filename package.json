@@ -5,11 +5,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:website": "nx serve website",
-    "dev:auth": "nx serve auth-service",
-    "dev:app": "scripts/start-app.sh",
+    "dev:website": "nx serve website --verbose",
+    "dev:auth": "nx serve admin-dashboard --verbose",
+    "dev:app": "nx serve main-app --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
-    "dev:admin": "nx serve admin-dashboard",
+    "dev:admin": "nx serve admin-dashboard --verbose",
     "dev:test": "nx serve build-works --verbose",
     "dev:all": "scripts/run-all.sh",
     "build:libs": "scripts/build-libs.sh",
@@ -20,9 +20,12 @@
     "lint:fix": "nx run-many --target=lint --all --fix",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
+    "types": "nx run crud:typecheck --verbose",
     "clean:nuxi": "scripts/nuxi-cleanup.sh"
   },
   "dependencies": {
+    "@ib/client": "file:libs/client",
+    "@ib/server": "file:libs/server",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
@@ -54,6 +57,7 @@
     "node-lame": "^1.3.2",
     "nuxt-security": "^2.0.0",
     "nuxt-tiptap-editor": "^2.0.0",
+    "ofetch": "^1.4.0",
     "openai": "^4.64.0",
     "pdf-lib": "^1.17.1",
     "pinia": "^2.2.2",
@@ -123,5 +127,8 @@
     "vue-advanced-cropper": "^2.8.9",
     "vue-router": "^4.2.4",
     "vue-tsc": "^2.1.6"
+  },
+  "resolutions": {
+    "@nitropack": "npm:nitropack"
   }
 }

@@ -1,3 +1,4 @@
+import { useLogger } from '@ib/client'
 import type { FilterBy, DBTable } from '../server/utils/base.interface'
 import type { DomainKey } from './pagination.store'
 import { useCookie, useRequestHeaders } from '#imports'

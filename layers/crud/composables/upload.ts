@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/client'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/client'
 import { useRateLimit } from './rate-limit'
+
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
 

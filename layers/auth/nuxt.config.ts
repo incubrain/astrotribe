@@ -11,22 +11,6 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/supabase'],
 
-  alias: {
-    '@ib/client': resolve(currentDir, '../../libs/client/src'),
-    '@ib/server': resolve(currentDir, '../../libs/server/src'),
-  },
-
-  vite: {
-    root: currentDir,
-    plugins: [tsconfigPaths()],
-    resolve: {
-      alias: {
-        '@ib/client': resolve(currentDir, '../../libs/client/src/index.ts'),
-        '@ib/server': resolve(currentDir, '../../libs/server/src/index.ts'),
-      },
-    },
-  },
-
   supabase: {
     redirect: false,
     clientOptions: {

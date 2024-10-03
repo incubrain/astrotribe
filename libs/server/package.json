@@ -2,17 +2,17 @@
   "name": "@ib/server",
   "version": "0.0.1",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./index.ts",
+      "require": "./index.ts",
+      "types": "./index.d.ts"
     }
   },
   "files": [
-    "dist"
+    "src"
   ]
 }

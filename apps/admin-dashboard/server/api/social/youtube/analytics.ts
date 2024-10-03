@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError, useServerLogger } from '@ib/server'
 import { useYoutubeChannel } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'

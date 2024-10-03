@@ -17,7 +17,7 @@
         "command": "npx nuxi build",
         "cwd": "apps/auth-service"
       },
-      "dependsOn": ["build:base"]
+      "dependsOn": ["build:base", "client:build", "server:build"]
     },
 
     "serve": {

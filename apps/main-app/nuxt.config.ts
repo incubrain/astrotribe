@@ -7,7 +7,13 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth'],
+  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
+
+  vite: {
+    optimizeDeps: {
+      exclude: ['fsevents'],
+    },
+  },
 
   debug: true,
 
@@ -24,13 +30,13 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
-  tailwindcss: {
-    configPath: `${currentDir}/tailwind.config.ts`,
-    cssPath: `${currentDir}/assets/css/tailwind.css`,
-    exposeConfig: true,
-    injectPosition: 0,
-    viewer: true,
-  },
+  // tailwindcss: {
+  //   configPath: `${currentDir}/tailwind.config.ts`,
+  //   cssPath: `${currentDir}/assets/css/tailwind.css`,
+  //   exposeConfig: true,
+  //   injectPosition: 0,
+  //   viewer: true,
+  // },
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
@@ -66,9 +72,5 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/**': { appMiddleware: 'auth' },
-  },
-
-  imports: {
-    autoImport: true,
   },
 })

@@ -1,4 +1,4 @@
-// import * as util from './utilities'
+import { useLogger } from '@ib/client'
 import type { FetchInput } from '#imports'
 import type { EventType } from '@/types/events'
 
@@ -20,7 +20,7 @@ export const useEventsStore = defineStore('eventsStore', () => {
     } catch (error) {
       console.error('Failed to load events:', error)
     }
-  }
+    }
 
   // const eventById = () => {
   //   return (id: number) => events.value.find((event: EventType) => event.id === id)
