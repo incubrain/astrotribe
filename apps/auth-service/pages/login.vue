@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const form = reactive({
+const form = ref({
   email: '',
   password: '',
   rememberMe: false,
 })
 
-const auth = useAuth()
+const auth = useUserAuth()
 
 const currentUser = useCurrentUser()
 const { haveUserSession } = storeToRefs(currentUser)

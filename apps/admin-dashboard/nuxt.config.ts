@@ -22,9 +22,6 @@ export default defineNuxtConfig({
   ],
 
   ssr: false,
-  routeRules: {
-    '/**': { appMiddleware: 'auth' },
-  },
 
   nitro: {
     experimental: {
