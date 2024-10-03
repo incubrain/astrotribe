@@ -28,14 +28,14 @@ export default {
       // Colors
       'text-white/80',
       {
-        'dark:text-white': context.focused,
+        'text-white': context.focused,
       },
       // Transitions
       'transition-shadow',
       'duration-200',
       // States
       'hover:hover:text-white/80',
-      'hover:bg-surface-600 dark:bg-surface-700 dark:hover:bg-surface-900/10',
+      'hover:bg-surface-900/10',
     ],
   }),
   itemLink: {
@@ -66,7 +66,7 @@ export default {
       'mr-2',
 
       // Color
-      'text-surface-600 dark:text-white/70',
+      'text-surface-600 text-white/70',
     ],
   },
   itemLabel: {

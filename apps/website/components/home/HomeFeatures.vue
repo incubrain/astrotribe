@@ -25,7 +25,7 @@
             }"
             class="absolute left-0 top-0 h-full w-full object-cover"
           />
-          <div class="absolute left-0 top-0 h-full w-full bg-gray-900/50 dark:bg-zinc-900/80" />
+          <div class="absolute left-0 top-0 h-full w-full bg-zinc-900/80" />
           <div class="text-light relative z-50">
             <Icon
               :name="feature.icon"
@@ -40,7 +40,7 @@
               </p>
               <p
                 v-if="!feature.isAvailable"
-                class="text-success-600 dark:text-success-test pt-2 text-xs font-semibold"
+                class="text-success-test pt-2 text-xs font-semibold"
               >
                 Coming soon
               </p>

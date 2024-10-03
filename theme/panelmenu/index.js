@@ -6,7 +6,7 @@ export default {
     class: [
       'rounded-md',
       'outline-none',
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-primary-300/50',
     ],
   },
   headerContent: ({ context, instance }) => ({
@@ -21,11 +21,11 @@ export default {
       // Color
       'border border-color ',
       'bg-surface-400',
-      'text-surface-600 dark:text-surface-0/80',
+      'text-surface-0/80',
       { 'text-surface-900': context.active },
 
       // States
-      'hover:bg-surface-600 dark:hover:bg-surface-700',
+      'hover:bg-surface-700',
       'hover:text-surface-900',
 
       // Transition
@@ -107,9 +107,9 @@ export default {
       'text-white/80',
 
       // States
-      'hover:bg-surface-600 dark:hover:bg-surface-700/80 hover:hover:text-white/80',
+      'hover:bg-surface-700/80 hover:hover:text-white/80',
       {
-        'bg-surface-200 text-white/80 dark:bg-surface-600/90': context.focused,
+        'text-white/80 bg-surface-600/90': context.focused,
       },
 
       // Misc

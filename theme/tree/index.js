@@ -30,7 +30,7 @@ export default {
     class: [
       'p-1',
       'rounded-md',
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-inset focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-inset focus:ring-primary-300/50',
     ],
   },
   nodeContent: ({ context, props }) => ({
@@ -45,7 +45,7 @@ export default {
       'p-2 gap-2',
 
       // Colors
-      'text-surface-600 dark:text-white/70',
+      'text-surface-600 text-white/70',
       { 'bg-highlight': context.selected },
 
       // States
@@ -78,14 +78,14 @@ export default {
       // Colors
       'bg-transparent',
       {
-        'text-surface-50 dark:text-white': !context.selected,
-        'text-primary-600 dark:text-white': context.selected,
+        'text-surface-50 text-white': !context.selected,
+        'text-primary-600 text-white': context.selected,
         'invisible': context.leaf,
       },
 
       // States
-      'hover:bg-surface-200/20 dark:hover:0/20',
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'hover:0/20',
+      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-300/50',
 
       // Transition
       'transition duration-200',
@@ -100,7 +100,7 @@ export default {
       'mr-2',
 
       // Color
-      'text-surface-600 dark:text-white/70',
+      'text-surface-600 text-white/70',
     ],
   },
   nodeChildren: {
@@ -108,7 +108,7 @@ export default {
   },
   loadingIcon: {
     class: [
-      'text-surface-50 dark:text-surface-0/70',
+      'text-surface-0/70',
       'absolute top-[50%] right-[50%] -mt-2 -mr-2 animate-spin',
     ],
   },

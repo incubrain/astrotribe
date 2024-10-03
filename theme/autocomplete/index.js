@@ -114,12 +114,12 @@ export default {
       // States
       'focus:outline-none focus:outline-offset-0 focus:ring',
       'hover:bg-primary-emphasis hover:border-primary-emphasis',
-      'focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:ring-primary-300/50',
     ],
   },
   loader: {
     class: [
-      'text-surface-50 dark:text-surface-0/70',
+      'text-surface-0/70',
       'absolute top-[50%] right-[0.5rem] -mt-2 animate-spin',
     ],
   },
@@ -163,10 +163,10 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.focused && !context.selected,
+        'hover:bg-surface-600/80': !context.focused && !context.selected,
       },
       { 'hover:bg-highlight-emphasis': context.selected },
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
       // Transition
       'transition-shadow duration-200',

@@ -11,7 +11,7 @@ export default {
       'm-0',
 
       // Color
-      'dark:border',
+      'border',
       '',
 
       // Transitions

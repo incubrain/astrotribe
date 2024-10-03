@@ -7,7 +7,7 @@ export default {
 
       // Color
       'background',
-      'text-surface-50 dark:text-surface-50',
+      'text-surface-50',
     ],
   },
   body: {
@@ -25,7 +25,7 @@ export default {
       'mb-2',
 
       // Color
-      'text-surface-600 dark:text-surface-0/60',
+      'text-surface-0/60',
     ],
   },
   content: {

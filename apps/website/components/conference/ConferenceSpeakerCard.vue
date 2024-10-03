@@ -8,7 +8,7 @@
     :pt-options="{ mergeProps: true, mergeSections: true }"
   >
     <template #header>
-      <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 dark:visible" />
+      <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
       <IBImage
         :img="{
           src: `conference/speakers/${speaker.avatar}.jpg`,
@@ -28,7 +28,7 @@
           <h3 class="text-2xl font-semibold">
             {{ speaker.title }} {{ speaker.given_name }} {{ speaker.surname }}
           </h3>
-          <p class="flex items-center gap-2 font-semibold text-primary-500 dark:text-primary-600">
+          <p class="flex items-center gap-2 font-semibold text-primary-600">
             <Icon
               name="mdi:account"
               class="flex-shrink-0"
@@ -46,11 +46,11 @@
     <template #footer>
       <div
         v-if="speaker.abstract"
-        class="border-color dark:text-white text-black flex h-full w-full flex-col justify-end gap-2 rounded-md border p-4"
-        :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-100 dark:bg-primary-950'"
+        class="border-color text-white flex h-full w-full flex-col justify-end gap-2 rounded-md border p-4"
+        :class="featured ? 'bg-black' : 'bg-primary-950'"
         @click="isOpen = true"
       >
-        <h5 class="font-semibold dark:text-white text-black"> Abstract </h5>
+        <h5 class="font-semibold text-white"> Abstract </h5>
         <p class="text-sm">
           {{ speaker.abstract.title }}
         </p>

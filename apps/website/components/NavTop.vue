@@ -164,7 +164,7 @@ watch(
               :img="{
                 src: '/astronera-logo.jpg',
               }"
-              class="h-full w-full dark:opacity-90"
+              class="h-full w-full opacity-90"
             />
           </div>
           <NuxtLink
@@ -175,7 +175,7 @@ watch(
               class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
             >
               Astron
-              <strong class="font-extrabold text-primary-600 dark:text-primary-700"> Era </strong>
+              <strong class="font-extrabold text-primary-700"> Era </strong>
             </h1>
           </NuxtLink>
         </div>

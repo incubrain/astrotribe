@@ -17,9 +17,9 @@ export default {
 
       // Colors
       '',
-      'dark:bg-surface-400',
+      'bg-surface-400',
       'text-surface-100',
-      'dark:text-white/80',
+      'text-white/80',
 
       // Spacing
       'p-5',
@@ -44,9 +44,9 @@ export default {
 
       // Colors
       'bg-surface-0',
-      'dark:bg-surface-900',
+      'bg-surface-900',
       'text-surface-100',
-      'dark:text-white/80',
+      'text-white/80',
 
       // Spacing
       'p-8',

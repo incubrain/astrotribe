@@ -22,11 +22,11 @@ export default {
 
       'border border-surface-300',
       { '': parent.instance.$name != 'InputGroup' },
-      { 'dark:border-surface-600': parent.instance.$name == 'InputGroup' },
-      { 'border-surface-300 dark:border-surface-600': !props.invalid },
+      { 'border-surface-600': parent.instance.$name == 'InputGroup' },
+      { 'border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // Transitions
       'transition-all',
@@ -35,7 +35,7 @@ export default {
       // States
       { 'hover:border-primary': !props.invalid },
       {
-        'outline-none outline-offset-0 ring ring-primary-400/50 dark:ring-primary-300/50':
+        'outline-none outline-offset-0 ring ring-primary-300/50':
           state.focused,
       },
 
@@ -118,7 +118,7 @@ export default {
       'absolute top-0 left-0',
 
       // Shape
-      'border-0 dark:border',
+      'border',
       'rounded-md',
       'shadow-md',
 
@@ -168,10 +168,10 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-950': context.focused && !context.selected,
+        'hover:bg-surface-950': context.focused && !context.selected,
       },
       { 'hover:bg-primary-800': context.selected },
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
       // Transitions
       'transition-shadow',

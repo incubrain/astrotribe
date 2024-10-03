@@ -14,7 +14,7 @@ export default {
           parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       {
-        'border-0 border-y border-l last:border-r border-surface-300 dark:border-surface-600':
+        'border-0 border-y border-l last:border-r border-surface-600':
           parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       { 'first:ml-0 -ml-px': parent.instance.$name == 'InputGroup' && !props.showButtons },
@@ -64,11 +64,11 @@ export default {
         // Invalid State
         'invalid:focus:ring-red-200',
         'invalid:hover:border-red-500',
-        { 'border-red-500 dark:border-red-400': parent.props.invalid },
+        { 'border-red-400': parent.props.invalid },
 
         // States
         { 'hover:border-primary': !parent.props.invalid },
-        'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500/50 dark:focus:ring-primary-400/50 focus:z-10',
+        'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-400/50 focus:z-10',
         { 'opacity-60 select-none pointer-events-none cursor-default': context.disabled },
 
         // Filled State *for FloatLabel

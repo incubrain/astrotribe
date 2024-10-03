@@ -16,7 +16,7 @@
         class="h-full w-full overflow-hidden rounded-lg object-cover object-left"
       />
       <div
-        class="absolute left-0 top-0 hidden h-full w-full rounded-lg bg-zinc-900/10 dark:block"
+        class="absolute left-0 top-0 h-full w-full rounded-lg bg-zinc-900/10 block"
       />
     </div>
     <div class="px-4 md:w-[50%]">

@@ -18,7 +18,7 @@ export default {
       },
 
       // Shape
-      'border-0 dark:border',
+      'border',
       'shadow-lg',
 
       // Colors
@@ -79,9 +79,9 @@ export default {
 
       // States
       'hover:hover:text-white/80',
-      'hover:bg-surface-600 dark:hover:bg-surface-400/80',
+      'hover:bg-surface-400/80',
       'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-inset',
-      'focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:ring-primary-300/50',
 
       // Misc
       'overflow-hidden',
