@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 interface Props {
   modelValue: string
-  label?: string
   id?: string
   suggestions?: string[]
   invalid?: boolean
-  feedback?: boolean
-  toggleMask?: boolean
   placeholder?: string
   disabled?: boolean
   required?: boolean
   inputClass?: string
-  weakLabel?: string
-  mediumLabel?: string
-  strongLabel?: string
-  promptLabel?: string
+  label?: string
   mediumRegex?: string
   strongRegex?: string
 }
@@ -32,15 +24,10 @@ const props = withDefaults(defineProps<Props>(), {
   ],
   invalid: false,
   feedback: true,
-  toggleMask: true,
   placeholder: undefined,
   disabled: false,
   required: false,
   inputClass: 'w-full',
-  weakLabel: 'Weak',
-  mediumLabel: 'Medium',
-  strongLabel: 'Strong',
-  promptLabel: 'Please enter a password',
   mediumRegex:
     '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
   strongRegex: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
@@ -67,17 +54,10 @@ const onPasswordChange = (value: string) => {
     :input-class="inputClass"
     :model-value="modelValue"
     :invalid="invalid"
-    :feedback="feedback"
-    :toggle-mask="toggleMask"
     :disabled="disabled"
     :required="required"
-    :weak-label="weakLabel"
-    :medium-label="mediumLabel"
-    :strong-label="strongLabel"
     :placeholder="placeholder"
-    :prompt-label="props.promptLabel"
-    :medium-regex="props.mediumRegex"
-    :strong-regex="props.strongRegex"
+    :label="props.label"
     @update:model-value="onPasswordChange"
   >
     <template #footer>
