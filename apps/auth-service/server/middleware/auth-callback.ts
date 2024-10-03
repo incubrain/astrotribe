@@ -2,6 +2,7 @@ import { setCookie, defineEventHandler } from 'h3'
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
+  const { aeAppUrl } = useRuntimeConfig().public
   try {
     const client = await serverSupabaseClient(event)
     const {
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
     }
     // Redirect to the home page or intended route
     console.info('Authentication Callback Success', event)
-    return sendRedirect(event, '/')
+    return sendRedirect(event, aeAppUrl)
   } catch (error) {
     console.error('Authentication Callback Error:', error)
   }
