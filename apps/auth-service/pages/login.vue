@@ -48,7 +48,7 @@ definePageMeta({
       </PrimeFloatLabel>
 
       <PrimeFloatLabel class="flex flex-col w-full">
-        <FormPassword v-model="form.password" />
+        <FormPassword v-model="form.password" :feedback="false"/>
         <label for="password">Password</label>
       </PrimeFloatLabel>
 

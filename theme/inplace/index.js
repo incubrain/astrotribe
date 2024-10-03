@@ -14,7 +14,7 @@ export default {
       'text-white/80',
 
       // States
-      'hover:bg-surface-600 hover:hover:bg-surface-700/80 dark:hover:text-white/80',
+      'hover:bg-surface-600 hover:hover:bg-surface-700/80 hover:text-white/80',
 
       // Transitions
       'transition',

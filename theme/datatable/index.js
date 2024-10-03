@@ -125,7 +125,7 @@ export default {
         {
           'hover:bg-surface-600 ': (props.sortable === '' || props.sortable) && !context?.sorted,
         },
-        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
         // Transition
         { 'transition duration-200': props.sortable === '' || props.sortable },
@@ -210,7 +210,7 @@ export default {
         'absolute top-0 left-0',
 
         // Shape
-        'border-0 dark:border',
+        'border-0',
         'rounded-md',
         'shadow-md',
 
@@ -249,12 +249,12 @@ export default {
         { 'bg-highlight': context?.highlighted },
 
         // States
-        { 'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context?.highlighted },
+        { 'hover:bg-surface-600/80': !context?.highlighted },
         {
-          'hover:text-surface-100 hover:bg-surface-600 dark:hover:text-white dark:hover:bg-surface-600/80':
+          'hover:text-surface-100 hover:text-white hover:bg-surface-600/80':
             !context?.highlighted,
         },
-        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
         // Transitions
         'transition-shadow',
@@ -274,7 +274,7 @@ export default {
 
         // Color
         'text-white/80',
-        'border-color dark:border-surface-800',
+        'border-color border-surface-800',
         'bg-surface-700',
         '[&>[data-pc-name=pcfilteroperatordropdown]]:w-full',
       ],
@@ -309,10 +309,10 @@ export default {
         'border-0 rounded-full',
 
         // Color
-        'text-surface-50 dark:text-white/70',
+        'text-surface-50 text-white/70',
         'bg-transparent',
         'focus-visible:outline-none focus-visible:outline-offset-0',
-        'focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+        'focus-visible:ring focus-visible:ring-primary-300/50',
 
         // Transition
         'transition duration-200',
@@ -354,18 +354,18 @@ export default {
   bodyRow: ({ context, props }) => ({
     class: [
       // Color
-      'dark:text-white/80',
+      'text-white/80',
       { 'bg-highlight': context.selected },
       { 'text-surface-200': !context.selected },
       { 'font-bold  z-20': props.frozenRow },
       {
-        'odd:bg-surface-0 odd:text-surface-200 dark:odd:bg-surface-400 even: even:text-surface-200 dark:even:bg-surface-900/50':
+        ' odd:text-surface-200 odd:bg-surface-400 even: even:text-surface-200 even:bg-surface-900/50':
           context.stripedRows,
       },
 
       // State
       {
-        'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 ring-inset dark:focus:ring-primary-300/50':
+        'focus:outline-none focus:outline-offset-0 focus:ring ring-inset focus:ring-primary-300/50':
           context.selectable,
       },
       {
@@ -380,13 +380,13 @@ export default {
     ],
   }),
   rowExpansion: {
-    class: 'bg-surface-400 text-surface-200 dark:text-white/80',
+    class: 'bg-surface-400 text-surface-200 text-white/80',
   },
   rowGroupHeader: {
-    class: ['sticky z-20', 'dark:text-white/70', 'dark:bg-surface-400'],
+    class: ['sticky z-20', 'text-white/70', 'bg-surface-400'],
   },
   rowGroupFooter: {
-    class: ['sticky z-20', 'dark:text-white/70', 'dark:bg-surface-400'],
+    class: ['sticky z-20', 'text-white/70', 'bg-surface-400'],
   },
   rowToggleButton: {
     class: [
@@ -406,10 +406,10 @@ export default {
       'border-0 rounded-full',
 
       // Color
-      'text-surface-50 dark:text-white/70',
+      'text-surface-50 text-white/70',
       'bg-transparent',
       'focus-visible:outline-none focus-visible:outline-offset-0',
-      'focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:ring focus-visible:ring-primary-300/50',
 
       // Transition
       'transition duration-200',

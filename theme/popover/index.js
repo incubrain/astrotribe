@@ -3,7 +3,7 @@ export default {
     class: [
       // Shape
       'rounded-md shadow-lg',
-      'border-0 dark:border',
+      'border',
 
       // Position
       'absolute left-0 top-0 mt-2',
@@ -15,8 +15,8 @@ export default {
       '',
 
       // Before: Arrow
-      'before:absolute before:w-0 before:-top-3 before:h-0 before:border-transparent before:border-solid before:ml-[10px] before:border-x-[10px] before:border-b-[10px] before:border-t-0 before:border-b-surface-300/10 dark:before:border-b-surface-700',
-      'after:absolute after:w-0 after:-top-[0.54rem] after:left-[4px] after:h-0 after:border-transparent after:border-solid after:ml-[8px] after:border-x-[8px] after:border-b-[8px] after:border-t-0 after:border-b-surface-0 dark:after:border-b-surface-800',
+      'before:absolute before:w-0 before:-top-3 before:h-0 before:border-transparent before:border-solid before:ml-[10px] before:border-x-[10px] before:border-b-[10px] before:border-t-0 before:border-b-surface-700',
+      'after:absolute after:w-0 after:-top-[0.54rem] after:left-[4px] after:h-0 after:border-transparent after:border-solid after:ml-[8px] after:border-x-[8px] after:border-b-[8px] after:border-t-0 after:border-b-surface-800',
     ],
   },
   content: {

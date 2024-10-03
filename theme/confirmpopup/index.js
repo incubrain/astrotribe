@@ -11,13 +11,13 @@ export default {
       'mt-3 absolute left-0 top-0',
 
       // Color
-      'dark:border',
+      'border',
       '',
       'bg-surface-400',
       'text-surface-0/80',
 
       // Before: Arrow
-      'before:absolute before:w-0 before:-top-3 before:h-0 before:border-transparent before:border-solid before:ml-6 before:border-x-[0.75rem] before:border-b-[0.75rem] before:border-t-0 before:border-b-surface-0 dark:before:border-b-surface-800',
+      'before:absolute before:w-0 before:-top-3 before:h-0 before:border-transparent before:border-solid before:ml-6 before:border-x-[0.75rem] before:border-b-[0.75rem] before:border-t-0 before:border-b-surface-800',
     ],
   },
   content: {

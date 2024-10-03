@@ -171,7 +171,7 @@ const websiteLinks = [
                 width: '48',
                 height: '48',
               }"
-              class="overflow-hidden rounded-full p-1 dark:bg-white"
+              class="overflow-hidden rounded-full p-1 bg-white"
             />
             AstronEra
           </NuxtLink>
@@ -213,7 +213,7 @@ const websiteLinks = [
           >
             <Icon
               :name="social.icon"
-              class="flex-shrink-0 dark:text-white"
+              class="flex-shrink-0 text-white"
               size="24px"
             />
           </NuxtLink>
