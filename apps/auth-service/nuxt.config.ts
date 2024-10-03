@@ -7,8 +7,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-
-  extends: ['../../layers/base', '../../layers/crud'],
+  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
 
   vite: {
     optimizeDeps: {
@@ -24,8 +23,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/supabase',
     '@primevue/nuxt-module',
+    '@nuxtjs/supabase',
   ],
 
   devServer: {
@@ -33,18 +32,7 @@ export default defineNuxtConfig({
     port: 3009,
   },
 
-  supabase: {
-    redirect: false,
-    clientOptions: {
-      auth: {
-        flowType: 'pkce',
-        detectSessionInUrl: true,
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    },
-    cookieName: 'sb',
-  },
+  ssr: true,
 
   tailwindcss: {
     configPath: `${currentDir}/tailwind.config.ts`,
@@ -81,19 +69,9 @@ export default defineNuxtConfig({
     },
   },
 
-  imports: {
-    autoImport: true,
-  },
-
-  runtimeConfig: {
-    public: {
-      supabaseUrl: '',
-      supabaseKey: '',
-    },
-    supabaseServiceKey: '',
-  },
-
   routeRules: {
-    '/': { redirect: '/register' },
+    '/': { redirect: '/login' },
   },
+
+  compatibilityDate: '2024-10-03',
 })

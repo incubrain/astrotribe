@@ -1,4 +1,7 @@
 {
   "extends": ["./.nuxt/tsconfig.json"],
-  "exclude": ["node_modules", "dist", "tmp"]
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  }
 }
