@@ -63,7 +63,7 @@ export default {
       // States
       'hover:bg-primary-emphasis',
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring',
-      'ring-primary-400/50 dark:ring-primary-300/50',
+      'ring-primary-300/50',
 
       // Transitions
       'transition duration-200',
@@ -96,7 +96,7 @@ export default {
       // States
       'hover:bg-primary-emphasis',
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring',
-      'focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:ring-primary-300/50',
 
       // Transitions
       'transition duration-200',
@@ -129,7 +129,7 @@ export default {
       // States
       'hover:bg-primary-emphasis',
       'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring',
-      'focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:ring-primary-300/50',
 
       // Transitions
       'transition duration-200',

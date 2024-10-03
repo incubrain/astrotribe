@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center items-center text-center lg:pl-8">
     <p
-      class="mb-4 text-base font-bold uppercase tracking-tight text-primary-700 dark:text-primary-600"
+      class="mb-4 text-base font-bold uppercase tracking-tight text-primary-600"
     >
       {{ heading }}
     </p>

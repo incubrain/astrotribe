@@ -21,7 +21,7 @@ export default {
       'w-full h-full',
 
       // Color
-      'bg-surface-100/40 dark:bg-surface-400/40',
+      'bg-surface-400/40',
 
       // Transition
       'transition duration-200',
@@ -63,7 +63,7 @@ export default {
       // Padding & Font
       'p-4 font-bold',
       // Dark Mode
-      'dark:bg-surface-900 dark:text-white/70 ',
+      'bg-surface-900 text-white/70 ',
     ],
   },
   table: {
@@ -110,7 +110,7 @@ export default {
       { 'flex flex-nowrap w-full': context.scrollable },
 
       // Color
-      'dark:text-white/80',
+      'text-white/80',
       { 'bg-highlight': context.selected },
       { 'text-surface-600 bg-surface-400': !context.selected },
 
@@ -118,7 +118,7 @@ export default {
       {
         'hover:bg-surface-300/20 hover:text-surface-600': context.selectable && !context.selected,
       },
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 ring-inset dark:focus:ring-primary-300/50',
+      'focus:outline-none focus:outline-offset-0 focus:ring ring-inset focus:ring-primary-300/50',
 
       // Transition
       { 'transition duration-200': (props.selectionMode && !context.selected) || props.rowHover },
@@ -149,14 +149,14 @@ export default {
       // Color
       (props.sortable === '' || props.sortable) && context.sorted
         ? 'bg-highlight'
-        : ' text-white/80 dark:bg-surface-400',
+        : ' text-white/80 bg-surface-400',
       'border-color ',
 
       // States
       {
         'hover:bg-surface-600 ': (props.sortable === '' || props.sortable) && !context?.sorted,
       },
-      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+      'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
       // Transition
       { 'transition duration-200': props.sortable === '' || props.sortable },
@@ -195,14 +195,14 @@ export default {
         // Color
         (props.sortable === '' || props.sortable) && context.sorted
           ? 'bg-highlight'
-          : ' text-white/80 dark:bg-surface-400',
+          : 'text-white/80 bg-surface-400',
         'border-color ',
 
         // States
         {
           'hover:bg-surface-600 ': (props.sortable === '' || props.sortable) && !context?.sorted,
         },
-        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+        'focus-visible:outline-none focus-visible:outline-offset-0 focus-visible:ring focus-visible:ring-inset focus-visible:ring-primary-300/50',
 
         // Transition
         { 'transition duration-200': props.sortable === '' || props.sortable },
@@ -266,13 +266,13 @@ export default {
         'border-0 rounded-full',
 
         // Color
-        'text-surface-50 dark:text-white/70',
+        'text-surface-50 text-white/70',
         'bg-transparent',
 
         // States
         'hover:hover:bg-surface-700',
         'focus-visible:outline-none focus-visible:outline-offset-0',
-        'focus-visible:ring focus-visible:ring-primary-400/50 dark:focus-visible:ring-primary-300/50',
+        'focus-visible:ring focus-visible:ring-primary-300/50',
 
         // Transition
         'transition duration-200',
@@ -285,7 +285,7 @@ export default {
     sortIcon: ({ context }) => ({
       class: [
         'ml-2 inline-block',
-        context.sorted ? 'text-inherit' : 'fill-surface-700 dark:fill-white/70',
+        context.sorted ? 'text-inherit' : 'fill-white/70',
       ],
     }),
     columnResizer: {

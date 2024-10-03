@@ -8,7 +8,7 @@ const trustedImages = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 rounded-b-xl bg-zinc-200 p-12 px-6 dark:bg-zinc-200">
+  <div class="flex flex-col gap-8 rounded-b-xl p-12 px-6 bg-zinc-200">
     <h4 class="text-lg block gap-4 text-center font-bold uppercase text-black"> Our Partners </h4>
     <div class="grid w-full grid-cols-2 justify-between gap-4 md:grid-cols-4">
       <IBImage

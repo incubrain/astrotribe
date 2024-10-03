@@ -89,7 +89,7 @@ onUnmounted(() => {
             >
               <NuxtLink
                 class="text-lg font-[Oswald]"
-                :class="{ 'text-primary-500 dark:text-primary-600': isActiveSection(item.id) }"
+                :class="{ 'text-primary-600': isActiveSection(item.id) }"
                 :to="`#${item.id}`"
               >
                 <h4>
@@ -110,7 +110,7 @@ onUnmounted(() => {
                   :key="`toc-child${child.id}`"
                   :class="{
                     'ml-4 max-w-[80%]': child.depth === 3,
-                    'text-primary-500 dark:text-primary-600': isActiveSection(child.id),
+                    'text-primary-600': isActiveSection(child.id),
                   }"
                   class="leading-tight"
                 >

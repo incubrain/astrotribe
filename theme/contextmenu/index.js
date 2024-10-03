@@ -12,7 +12,7 @@ export default {
       // Colors
       'bg-surface-700',
       'text-white/80',
-      'dark:border ',
+      'border',
     ],
   },
   rootList: {
@@ -35,8 +35,8 @@ export default {
       // Colors
       'text-white/80',
       {
-        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
+        'text-surface-50 text-white/70': !context.focused && !context.active,
+        'text-surface-50 text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
           (context.focused && context.active)
           || context.active
@@ -49,7 +49,7 @@ export default {
 
       // States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 
@@ -85,7 +85,7 @@ export default {
       'mr-2',
 
       // Color
-      'text-surface-600 dark:text-white/70',
+      'text-surface-600 text-white/70',
     ],
   },
   itemLabel: {
@@ -105,7 +105,7 @@ export default {
       // Shape
       'shadow-md',
       'rounded-md',
-      'dark:border ',
+      'border ',
 
       // Position
       'static sm:absolute',
@@ -120,7 +120,7 @@ export default {
     class: ['ml-auto'],
   },
   separator: {
-    class: 'border-t border-color dark:border-surface-600 my-1',
+    class: 'border-t border-color border-surface-600 my-1',
   },
   transition: {
     enterFromClass: 'opacity-0',

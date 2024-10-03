@@ -10,7 +10,7 @@
       :pt-options="{ mergeProps: true, mergeSections: true }"
     >
       <template #header>
-        <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 dark:visible" />
+        <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
         <IBImage
           :img="{
             src: `conference/speakers/${host.avatar}.jpg`,
@@ -28,7 +28,7 @@
         <div class="flex flex-col justify-between gap-4">
           <div class="flex flex-col gap-4 text-sm">
             <h3 class="text-2xl font-semibold"> {{ host.given_name }} {{ host.surname }} </h3>
-            <p class="flex items-center gap-2 font-semibold text-primary-500 dark:text-primary-600">
+            <p class="flex items-center gap-2 font-semibold text-primary-600">
               <Icon
                 name="mdi:account"
                 class="flex-shrink-0"

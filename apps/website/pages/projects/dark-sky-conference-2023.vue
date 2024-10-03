@@ -43,7 +43,7 @@ definePageMeta({
       <div class="flex flex-col gap-6 xl:gap-12">
         <div class="flex flex-col items-start gap-6 lg:flex-row xl:gap-12">
           <div class="space-y-4">
-            <p class="text-sm font-bold uppercase text-primary-500 dark:text-primary-700">
+            <p class="text-sm font-bold uppercase text-primary-700">
               Conference Summary
             </p>
             <p>

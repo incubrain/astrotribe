@@ -3,13 +3,13 @@
     <p
       v-if="title.label"
       class="text-sm font-bold uppercase"
-      :class="labelWhite ? 'text-white' : 'text-primary-500 dark:text-primary-700'"
+      :class="labelWhite ? 'text-white' : 'text-primary-700'"
     >
       {{ title.label }}
     </p>
     <h3
       class="text-2xl lg:text-4xl font-bold"
-      :class="isCta ? 'underline decoration-primary-500 dark:decoration-primary-900' : ''"
+      :class="isCta ? 'underline decoration-primary-900' : ''"
     >
       {{ title.main }}
     </h3>

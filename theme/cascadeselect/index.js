@@ -15,10 +15,10 @@ export default {
       // Color and Background
       'bg-surface-900',
       'border',
-      { 'border-surface-300 dark:border-surface-600': !props.invalid },
+      { 'border-surface-600': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // Transitions
       'transition-all',
@@ -27,7 +27,7 @@ export default {
       // States
       { 'hover:border-primary': !props.invalid },
       {
-        'outline-none outline-offset-0 ring ring-primary-400/50 dark:ring-primary-300/50':
+        'outline-none outline-offset-0 ring ring-primary-300/50':
           state.focused,
       },
 
@@ -104,7 +104,7 @@ export default {
       'absolute top-0 left-0',
 
       // Shape
-      'border-0 dark:border',
+      'border',
       'rounded-md',
       'shadow-md',
 
@@ -132,8 +132,8 @@ export default {
 
       //  Colors
       {
-        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
+        'text-surface-50 text-white/70': !context.focused && !context.active,
+        'text-surface-50 text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
           (context.focused && context.active) ||
           context.active ||
@@ -142,7 +142,7 @@ export default {
 
       // Hover States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 

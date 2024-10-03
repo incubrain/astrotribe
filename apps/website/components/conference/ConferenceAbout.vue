@@ -52,7 +52,7 @@
           class="w-full rounded-md"
         />
         <div class="flex w-full flex-col justify-center rounded-md pb-3">
-          <p class="pb-4 text-sm font-bold uppercase text-primary-500 dark:text-primary-700">
+          <p class="pb-4 text-sm font-bold uppercase text-primary-700">
             {{ themes.title }}
           </p>
           <ul>

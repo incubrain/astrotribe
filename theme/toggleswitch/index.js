@@ -26,7 +26,7 @@ export default {
       'before:h-5 before:w-5',
       'before:rounded-full',
       'before:duration-200',
-      'before:bg-surface-0 before:dark:0',
+      'before:0',
 
       // Colors
       'border',
@@ -38,7 +38,7 @@ export default {
       { 'border-transparent': !props.invalid },
 
       // Invalid State
-      { 'border-red-500 dark:border-red-400': props.invalid },
+      { 'border-red-400': props.invalid },
 
       // States
       {
@@ -48,7 +48,7 @@ export default {
       {
         'peer-hover:bg-primary-hover ': props.modelValue == props.trueValue && !props.disabled,
       },
-      'peer-focus-visible:ring peer-focus-visible:ring-primary-400/50 dark:peer-focus-visible:ring-primary-300/50',
+      'peer-focus-visible:ring peer-focus-visible:ring-primary-300/50',
 
       // Transition
       'transition-colors duration-200',

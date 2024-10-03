@@ -2,8 +2,7 @@ export default {
   root: ({ context }) => ({
     class: [
       // Colors
-      'text-surface-100',
-      'dark:text-surface-0/80',
+      'text-surface-0/80',
 
       // Shape
       'rounded-lg',
@@ -42,8 +41,7 @@ export default {
   gutterhandler: ({ props }) => ({
     class: [
       // Colors
-      'bg-surface-100',
-      'dark:bg-surface-600',
+      'bg-surface-600',
 
       // Transitions
       'transition-all',

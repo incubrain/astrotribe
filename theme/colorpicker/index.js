@@ -26,7 +26,7 @@ export default {
 
       // States
       'hover:border-primary',
-      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-300/50',
 
       // Transition
       'transition-colors duration-200',
@@ -47,7 +47,7 @@ export default {
       'shadow-md border',
 
       // Colors
-      'bg-surface-400 border-surface-900 dark:border-surface-600',
+      'bg-surface-400 border-surface-600',
     ],
   }),
   colorSelector: {

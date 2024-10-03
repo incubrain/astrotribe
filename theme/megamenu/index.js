@@ -45,7 +45,7 @@ export default {
       'border-0',
 
       // Color
-      'bg-surface-700 sm:bg-transparent dark:sm:bg-transparent',
+      'bg-surface-700 sm:bg-transparent',
 
       // Misc
       'outline-none',
@@ -67,8 +67,8 @@ export default {
 
       //  Colors
       {
-        'text-surface-50 dark:text-white/70': !context.focused && !context.active,
-        'text-surface-50 dark:text-white/70 bg-surface-600/90': context.focused && !context.active,
+        'text-surface-50 text-white/70': !context.focused && !context.active,
+        'text-surface-50 text-white/70 bg-surface-600/90': context.focused && !context.active,
         'bg-highlight':
           (context.focused && context.active)
           || context.active
@@ -77,7 +77,7 @@ export default {
 
       // Hover States
       {
-        'hover:bg-surface-600 dark:hover:bg-surface-600/80': !context.active,
+        'hover:bg-surface-600/80': !context.active,
         'hover:bg-highlight-emphasis': context.active,
       },
 
@@ -167,7 +167,7 @@ export default {
     ],
   },
   separator: {
-    class: 'border-t border-color dark:border-surface-600 my-1',
+    class: 'border-t border-color border-surface-600 my-1',
   },
   button: {
     class: [
@@ -182,13 +182,13 @@ export default {
       // Shape
       'rounded-full',
       // Color
-      'text-surface-50 dark:text-white/80',
+      'text-surface-50 text-white/80',
 
       // States
-      'hover:text-surface-600 dark:hover:text-white/60',
-      'hover:bg-surface-600 dark:hover:bg-surface-600/80',
+      'hover:text-white/60',
+      'hover:bg-surface-600/80',
       'focus:outline-none focus:outline-offset-0',
-      'focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50',
+      'focus:ring focus:ring-primary-300/50',
 
       // Transitions
       'transition duration-200 ease-in-out',

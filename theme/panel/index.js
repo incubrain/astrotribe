@@ -34,12 +34,12 @@ export default {
 
       // Color
       'bg-transparent',
-      'text-surface-600 dark:text-surface-0/80',
+      'text-surface-0/80',
 
       // States
       'hover:hover:text-surface-0/80',
-      'hover:bg-surface-600 dark:hover:bg-surface-400/80',
-      'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 focus-visible:ring-inset dark:focus-visible:ring-primary-300/50',
+      'hover:bg-surface-400/80',
+      'focus:outline-none focus:outline-offset-0 focus-visible:ring focus-visible:ring-primary-400/50 focus-visible:ring-primary-300/50',
 
       // Transitions
       'transition-all duration-200 ease-in-out',
