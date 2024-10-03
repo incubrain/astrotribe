@@ -9,7 +9,9 @@
           {{ venue.about }}
         </p>
         <PrimeButton
-          to="https://www.manuallaya.com/"
+          as="a"
+          href="https://www.manuallaya.com/"
+          target="_blank"
           variant="outline"
         >
           Manu Allaya Website
