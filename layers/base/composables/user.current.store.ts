@@ -3,7 +3,7 @@ import { useLogger } from '@ib/client'
 const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
-  const { authUrl } = useRuntimeConfig().public
+  const authUrl = useRuntimeConfig().public.aeAuthUrl
   const logger = useLogger(DOMAIN_KEY)
   const errors = useBaseError()
   const loading = useLoadingStore()
