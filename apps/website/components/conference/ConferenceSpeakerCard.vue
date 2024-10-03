@@ -46,11 +46,11 @@
     <template #footer>
       <div
         v-if="speaker.abstract"
-        class="border-color flex h-full w-full flex-col justify-end gap-2 rounded-md border p-4"
+        class="border-color dark:text-white text-black flex h-full w-full flex-col justify-end gap-2 rounded-md border p-4"
         :class="featured ? 'bg-white dark:bg-black' : 'bg-primary-100 dark:bg-primary-950'"
         @click="isOpen = true"
       >
-        <h5 class="font-semibold"> Abstract </h5>
+        <h5 class="font-semibold dark:text-white text-black"> Abstract </h5>
         <p class="text-sm">
           {{ speaker.abstract.title }}
         </p>
