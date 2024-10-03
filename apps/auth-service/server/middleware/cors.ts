@@ -7,6 +7,11 @@ export default defineEventHandler((event) => {
     'https://app-production-f479.up.railway.app',
     'https://admin-production-cf89.up.railway.app',
     'https://monorail.proxy.rlwy.net:51428:8080',
+    'https://auth.astronera.org',
+    'https://admin.astronera.org',
+    'https://app.astronera.org',
+    'https://monitoring.astronera.org',
+    'https://astronera.org',
     'http://localhost:3000',
   ]
   const origin = getRequestHeader(event, 'origin') || ''
@@ -21,7 +26,7 @@ export default defineEventHandler((event) => {
     })
   }
 
-  if (getMethod(event) === 'OPTIONS') {
+  if (event.method === 'OPTIONS') {
     event.node.res.statusCode = 204
     event.node.res.statusMessage = 'No Content.'
     return 'OK'

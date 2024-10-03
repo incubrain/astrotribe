@@ -3,8 +3,8 @@ import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
 
 async function fetchPermissions(userPlan: string, userRole: string) {
   const event = useEvent()
-  const supabase = await serverSupabaseClient(event)
   try {
+    const supabase = await serverSupabaseClient(event)
     console.log('fetching permissions for: ', userPlan, userRole)
     const { data: planPermissions, error: planError } = await supabase
       .from('plan_permissions')

@@ -20,7 +20,7 @@ export const SettingsPasswordValidation = z
 
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
-export function useAuth() {
+export function useUserAuth() {
   const redirectUrl = computed(() => `${window.location.origin}/`)
   const logger = useLogger('auth')
   const toast = useNotification()

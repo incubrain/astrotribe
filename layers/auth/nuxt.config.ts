@@ -21,11 +21,20 @@ export default defineNuxtConfig({
         autoRefreshToken: true,
       },
     },
+    cookieOptions: {
+      domain: process.env.NODE_ENV === 'production' ? '.domain.com' : 'localhost',
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    },
     cookieName: 'sb',
   },
 
   runtimeConfig: {
-    public: {},
+    public: {
+      supabaseUrl: '',
+      supabaseKey: '',
+    },
     supabaseServiceKey: '',
   },
 })

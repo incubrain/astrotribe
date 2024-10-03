@@ -80,8 +80,12 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      authUrl: 'http://localhost:3009',
-      loginUrl: 'http://localhost:3009/login',
+      aeAuthUrl: '',
+      aeLoginUrl: '',
+      aeAppUrl: '',
+      aeAdminUrl: '',
+      aeMonitoringUrl: '',
+      aeWebsiteUrl: '',
       // client
       nodeEnv: process.env.NODE_ENV,
       logLevel: '',
