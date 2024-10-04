@@ -13,17 +13,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (!user.value && !authToken.value && !authTokenFallback.value) {
       console.log('USER_NOT_LOGGED_IN', aeAuthUrl, aeLoginUrl)
 
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-
       return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
     } else {
       console.log('USER_LOGGED_IN', user.value, authToken.value, authTokenFallback.value)
     }
   } catch (error: any) {
     console.error('redirect error', `${aeAuthUrl}${aeLoginUrl}`)
-
-    await new Promise((resolve) => setTimeout(resolve, 10000))
-
     return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
   }
 })

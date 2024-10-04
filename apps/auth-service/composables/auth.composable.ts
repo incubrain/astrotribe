@@ -22,7 +22,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useUserAuth() {
   const { aeAppUrl } = useRuntimeConfig().public
-  console.log('redirectUrl', aeAppUrl)
+  const redirectUrl = `${aeAppUrl}/`
   const logger = useLogger('auth')
   const toast = useNotification()
   const supabase = useSupabaseClient()
@@ -84,16 +84,16 @@ export function useUserAuth() {
       toast.error({ summary: 'Login with password', message: error.message })
     } else {
       toast.success({ summary: 'Login Successful', message: 'You Have Successfully Logged In' })
-      navigateTo('/')
+      navigateTo(redirectUrl, { external: true })
     }
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
-    console.log('redirect', aeAppUrl)
-
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: aeAppUrl },
+      options: {
+        redirectTo: redirectUrl,
+      },
     })
 
     if (error?.message) {
@@ -113,7 +113,7 @@ export function useUserAuth() {
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${aeAppUrl}/settings/password`,
+      redirectTo: `${redirectUrl}/settings/password`,
     })
 
     if (error) {
@@ -145,7 +145,7 @@ export function useUserAuth() {
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
-      navigateTo(aeAppUrl)
+      navigateTo(redirectUrl, { external: true })
     }
   }
 
