@@ -13,7 +13,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   if (!session.value || !user.value) {
     console.log('USER_NOT_LOGGED_IN', `${aeAuthUrl}${aeLoginUrl}`)
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    // return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
   } else {
     console.log('USER_LOGGED_IN', session.value)
   }

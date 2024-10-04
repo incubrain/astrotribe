@@ -3,11 +3,13 @@
 </template>
 
 <script>
+definePageMeta({
+  middleware: 'auth', // Specify the middleware here
+})
 export default {
   methods: {
     async click() {
       console.log('CLICKED')
-      fetch('/api/check/checkAuth', { method: 'POST' })
     },
   },
 }
