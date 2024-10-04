@@ -7,7 +7,7 @@
   "scripts": {
     "dev:website": "nx serve website --verbose",
     "dev:auth": "nx serve auth-service --verbose",
-    "dev:app": "nx serve main-app --verbose",
+    "dev:app": "nx run-many -t serve -p main-app,auth-service --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
     "dev:admin": "nx run-many -t serve -p admin-dashboard,auth-service --parallel --verbose",
     "dev:test": "nx serve build-works --verbose",
