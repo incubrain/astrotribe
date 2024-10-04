@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   try {
+    console.log('FETCHING USER SESSION ON SERVER')
     const session = await validateAndUpdateSession()
 
     if (!session) {
