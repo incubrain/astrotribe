@@ -22,6 +22,9 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useUserAuth() {
   const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
+  const authUrl = aeAuthUrl
+  const appUrl = aeAppUrl
+
   const logger = useLogger('auth')
   const toast = useNotification()
   const supabase = useSupabaseClient()
@@ -82,17 +85,17 @@ export function useUserAuth() {
     if (error) {
       console.error(error.message)
       toast.error({ summary: 'Login with password', message: error.message })
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      navigateTo(aeAppUrl)
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    navigateTo(String(aeAppUrl), { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: String(aeAppUrl),
+        redirectTo: appUrl,
       },
     })
 
@@ -107,16 +110,13 @@ export function useUserAuth() {
         summary: 'Login failed',
         message: `there was an error logging in with ${provider}, no user returned`,
       })
-    } else {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      navigateTo(String(aeAppUrl), { external: true })
     }
   }
 
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${String(aeAuthUrl)}settings/password`,
+      redirectTo: `${authUrl}settings/password`,
     })
 
     if (error) {
@@ -148,7 +148,7 @@ export function useUserAuth() {
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
-      navigateTo(String(aeAuthUrl), { external: true })
+      navigateTo(aeAuthUrl, { external: true })
     }
   }
 
