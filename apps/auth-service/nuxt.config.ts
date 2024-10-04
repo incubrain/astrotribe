@@ -9,12 +9,6 @@ export default defineNuxtConfig({
   srcDir: '.',
   extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
 
-  vite: {
-    optimizeDeps: {
-      exclude: ['fsevents'],
-    },
-  },
-
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -24,7 +18,6 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
-    '@nuxtjs/supabase',
   ],
 
   devServer: {
@@ -32,15 +25,7 @@ export default defineNuxtConfig({
     port: 3009,
   },
 
-  ssr: true,
-
-  tailwindcss: {
-    configPath: `${currentDir}/tailwind.config.ts`,
-    cssPath: `${currentDir}/assets/css/tailwind.css`,
-    exposeConfig: true,
-    injectPosition: 0,
-    viewer: true,
-  },
+  ssr: false,
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
