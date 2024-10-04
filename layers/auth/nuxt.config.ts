@@ -5,6 +5,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
+console.log('Node Env:', process.env.NODE_ENV)
+
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
@@ -26,10 +28,9 @@ export default defineNuxtConfig({
         process.env.NODE_ENV === 'production'
           ? '.astronera.org' // This will work for all subdomains
           : 'localhost',
-      path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none', // Changed from 'lax' to 'none'
-      maxAge: 60 * 60 * 8, // 8 hours, adjust as needed
+      maxAge: 60 * 60 * 8,
+      sameSite: 'lax',
+      secure: false,
     },
     cookieName: 'sb',
   },
