@@ -22,10 +22,14 @@ export default defineNuxtConfig({
       },
     },
     cookieOptions: {
-      domain: process.env.NODE_ENV === 'production' ? '.domain.com' : 'localhost',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? '.astronera.org' // This will work for all subdomains
+          : 'localhost',
       path: '/',
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 8, // 8 hours, adjust as needed
     },
     cookieName: 'sb',
   },

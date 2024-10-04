@@ -1,22 +1,18 @@
-// src/middleware/cors.ts
+import { defineEventHandler, getRequestHeader, setResponseHeaders } from 'h3'
 
 export default defineEventHandler((event) => {
-  const allowedOrigins = [
-    'https://auth-production-afcc.up.railway.app',
-    'https://website-production-5ad5.up.railway.app',
-    'https://app-production-f479.up.railway.app',
-    'https://admin-production-cf89.up.railway.app',
-    'https://monorail.proxy.rlwy.net:51428:8080',
-    'https://auth.astronera.org',
-    'https://admin.astronera.org',
-    'https://app.astronera.org',
-    'https://monitoring.astronera.org',
-    'https://astronera.org',
-    'http://localhost:3000',
-  ]
+  const allowedDomains = ['astronera.org', 'up.railway.app', 'rlwy.net', 'localhost']
+
   const origin = getRequestHeader(event, 'origin') || ''
 
-  if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+  const isAllowedOrigin = allowedDomains.some(
+    (domain) =>
+      origin === 'http://localhost:3000' || // Allow localhost explicitly
+      origin.endsWith(`.${domain}`) || // Allow all subdomains
+      origin === `https://${domain}`, // Allow apex domain
+  )
+
+  if (isAllowedOrigin || process.env.NODE_ENV !== 'production') {
     setResponseHeaders(event, {
       'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
       'Access-Control-Allow-Origin': origin,
