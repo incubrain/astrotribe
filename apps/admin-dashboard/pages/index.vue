@@ -6,14 +6,31 @@ definePageMeta({
 
 const urlTest = ref('https://astrotribe-production.up.railway.app/api')
 const outputData = ref('')
-const testUrl = async () => {
-  const data = await $fetch(urlTest.value)
-  console.log(data)
-  outputData.value = JSON.stringify(data, null, 2)
+
+const scrapeNewsLinks = async () => {
+  try {
+    const data = await $fetch('/api/cron-jobs', {
+      method: 'POST',
+      body: { action: 'scrapeNewsLinks' },
+    })
+    outputData.value = JSON.stringify(data, null, 2)
+  } catch (error) {
+    console.error('Error scraping news links:', error)
+    outputData.value = 'Error scraping news links. Check console for details.'
+  }
 }
 
-const reset = () => {
-  outputData.value = ''
+const scrapeNewsArticles = async () => {
+  try {
+    const data = await $fetch('/api/cron-jobs', {
+      method: 'POST',
+      body: { action: 'scrapeNewsArticles' },
+    })
+    outputData.value = JSON.stringify(data, null, 2)
+  } catch (error) {
+    console.error('Error scraping news articles:', error)
+    outputData.value = 'Error scraping news articles. Check console for details.'
+  }
 }
 </script>
 
@@ -21,11 +38,11 @@ const reset = () => {
   <div class="relative h-full max-h-full p-4">
     <div class="flex flex-col gap-8">
       <div class="flex gap-4">
-        <PrimeButton @click="testUrl"> Test API </PrimeButton>
+        <PrimeButton @click="scrapeNewsLinks">Scrape News Links</PrimeButton>
+        <PrimeButton @click="scrapeNewsArticles">Scrape News Articles</PrimeButton>
         <PrimeInputText v-model="urlTest" />
-        <PrimeButton @click="reset"> Clear </PrimeButton>
       </div>
-      <p> {{ outputData }}</p>
+      <p>{{ outputData }}</p>
     </div>
     <DatabaseMetrics />
     <ServerJobs />

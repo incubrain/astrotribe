@@ -58,7 +58,7 @@ const isSidebarExpanded = ref(false)
       ]"
     >
       <!-- Sidebar Content -->
-      <div class="flex max-h-24 min-h-24 items-center justify-start p-4 bg-primary-950">
+      <div class="flex max-h-24 min-h-24 items-center justify-start p-4">
         <NuxtLink
           v-show="!isSidebarExpanded"
           to="/"
