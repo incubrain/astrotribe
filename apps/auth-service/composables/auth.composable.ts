@@ -22,7 +22,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useUserAuth() {
   const { aeAppUrl } = useRuntimeConfig().public
-  const redirectUrl = computed(() => `${aeAppUrl}/`)
+  console.log('redirectUrl', aeAppUrl)
   const logger = useLogger('auth')
   const toast = useNotification()
   const supabase = useSupabaseClient()
@@ -89,11 +89,11 @@ export function useUserAuth() {
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
-    console.log('redirect', redirectUrl.value)
+    console.log('redirect', aeAppUrl)
 
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: redirectUrl.value },
+      options: { redirectTo: aeAppUrl },
     })
 
     if (error?.message) {
@@ -113,7 +113,7 @@ export function useUserAuth() {
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${redirectUrl.value}/settings/password`,
+      redirectTo: `${aeAppUrl}/settings/password`,
     })
 
     if (error) {

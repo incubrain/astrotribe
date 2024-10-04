@@ -18,12 +18,13 @@ export default defineEventHandler(async (event) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 60 * 24 * 7, // 1 week
         path: '/',
-        domain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : 'localhost',
+        domain: process.env.NODE_ENV === 'production' ? '.astronera.org' : 'localhost',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       })
     }
-    // Redirect to the home page or intended route
-    console.info('Authentication Callback Success', event)
+
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+
     return sendRedirect(event, aeAppUrl)
   } catch (error) {
     console.error('Authentication Callback Error:', error)
