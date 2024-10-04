@@ -61,15 +61,15 @@ export default defineNuxtConfig({
       posthogUrl: '',
       studioTokens: '',
       scraperUrl: '',
-      // devHelper: {
-      //   enabled: process.env.NUXT_PUBLIC_IB_DEVEX === 'true',
-      //   features: {
-      //     networkErrorClassifier: true,
-      //     infiniteLoopDetector: true,
-      //     unhandledPromiseRejectionTracker: true,
-      //     environmentConsistencyChecker: true,
-      //   },
-      // },
+      devHelper: {
+        enabled: process.env.NUXT_PUBLIC_IB_DEVEX === 'true',
+        features: {
+          networkErrorClassifier: true,
+          infiniteLoopDetector: true,
+          unhandledPromiseRejectionTracker: true,
+          environmentConsistencyChecker: true,
+        },
+      },
     },
     googleApiKey: '',
     nasaApiKey: '',
