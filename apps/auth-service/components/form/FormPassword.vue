@@ -11,6 +11,7 @@ interface Props {
   label?: string
   mediumRegex?: string
   strongRegex?: string
+  feedback?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -52,6 +53,7 @@ const onPasswordChange = (value: string) => {
     :id="id"
     class="w-full"
     :input-class="inputClass"
+    :feedback="props.feedback"
     :model-value="modelValue"
     :invalid="invalid"
     :disabled="disabled"

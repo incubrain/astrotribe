@@ -1,18 +1,8 @@
-import { fileURLToPath } from 'url'
-import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-
-  modules: [],
-
-  vite: {
-    optimizeDeps: {
-      exclude: ['fsevents'],
-    },
-  },
 
   image: {
     format: ['webp', 'jpg'],
@@ -56,28 +46,6 @@ export default defineNuxtConfig({
     },
   ],
 
-  nitro: {
-    preset: 'node-server',
-  },
-
-  typescript: {
-    shim: true,
-    tsConfig: {
-      exclude: ['node_modules', 'dist', 'theme', 'types'],
-      compilerOptions: {
-        strict: false,
-      },
-    },
-  },
-  devtools: {
-    enabled: true,
-    vscode: {},
-
-    timeline: {
-      enabled: true,
-    },
-  },
-
   runtimeConfig: {
     public: {
       aeAuthUrl: '',
@@ -93,15 +61,15 @@ export default defineNuxtConfig({
       posthogUrl: '',
       studioTokens: '',
       scraperUrl: '',
-      devHelper: {
-        enabled: process.env.NUXT_PUBLIC_IB_DEVEX === 'true',
-        features: {
-          networkErrorClassifier: true,
-          infiniteLoopDetector: true,
-          unhandledPromiseRejectionTracker: true,
-          environmentConsistencyChecker: true,
-        },
-      },
+      // devHelper: {
+      //   enabled: process.env.NUXT_PUBLIC_IB_DEVEX === 'true',
+      //   features: {
+      //     networkErrorClassifier: true,
+      //     infiniteLoopDetector: true,
+      //     unhandledPromiseRejectionTracker: true,
+      //     environmentConsistencyChecker: true,
+      //   },
+      // },
     },
     googleApiKey: '',
     nasaApiKey: '',
