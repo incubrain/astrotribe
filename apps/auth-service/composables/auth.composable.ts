@@ -21,8 +21,8 @@ export const SettingsPasswordValidation = z
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useUserAuth() {
-  const { aeAppUrl } = useRuntimeConfig().public
-  const redirectUrl = aeAppUrl
+  const { aeAuthUrl } = useRuntimeConfig().public
+  const redirectUrl = aeAuthUrl
   const logger = useLogger('auth')
   const toast = useNotification()
   const supabase = useSupabaseClient()
