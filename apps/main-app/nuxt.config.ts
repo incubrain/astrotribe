@@ -7,7 +7,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/crud', '../../layers/auth'],
+  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
 
   vite: {
     optimizeDeps: {
@@ -68,9 +68,5 @@ export default defineNuxtConfig({
 
   tiptap: {
     prefix: 'Tiptap',
-  },
-
-  routeRules: {
-    '/**': { appMiddleware: 'auth' },
   },
 })
