@@ -21,7 +21,7 @@ export const SettingsPasswordValidation = z
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useUserAuth() {
-  const { aeAuthUrl } = useRuntimeConfig().public
+  const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
   const redirectUrl = aeAuthUrl
   const logger = useLogger('auth')
   const toast = useNotification()
@@ -84,14 +84,14 @@ export function useUserAuth() {
       console.error(error.message)
       toast.error({ summary: 'Login with password', message: error.message })
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    navigateTo(String(aeAppUrl), { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: {
-        redirectTo: redirectUrl,
-      },
     })
 
     if (error?.message) {
@@ -105,6 +105,9 @@ export function useUserAuth() {
         summary: 'Login failed',
         message: `there was an error logging in with ${provider}, no user returned`,
       })
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      navigateTo(String(aeAppUrl), { external: true })
     }
   }
 
