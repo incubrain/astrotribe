@@ -23,7 +23,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 export function useUserAuth() {
   const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
   const authUrl = aeAuthUrl
-  const appUrl = aeAppUrl
+  const appUrl = `${aeAppUrl}/auth-callback`
 
   const logger = useLogger('auth')
   const toast = useNotification()

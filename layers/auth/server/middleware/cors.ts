@@ -7,7 +7,7 @@ export default defineEventHandler((event) => {
 
   const isAllowedOrigin = allowedDomains.some(
     (domain) =>
-      origin === 'http://localhost:3000' || // Allow localhost explicitly
+      origin.startsWith('http://localhost:') || // Allow any localhost port
       origin.endsWith(`.${domain}`) || // Allow all subdomains
       origin === `https://${domain}`, // Allow apex domain
   )
@@ -21,6 +21,8 @@ export default defineEventHandler((event) => {
       'Access-Control-Expose-Headers': 'Content-Length, X-JSON',
     })
   }
+
+  console.log('CORS', origin, isAllowedOrigin)
 
   if (event.method === 'OPTIONS') {
     event.node.res.statusCode = 204
