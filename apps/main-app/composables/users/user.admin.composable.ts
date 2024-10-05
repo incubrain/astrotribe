@@ -101,7 +101,7 @@ export function useAdmin() {
         return
       }
 
-      const response = await $fetch('/api/admin/users/update', {
+      const response = await $fetch('/api/users/update', {
         method: 'POST',
         body: {
           data: updatedData,

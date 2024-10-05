@@ -71,7 +71,7 @@ const sendMetrics = async () => {
 
   try {
     // Send metrics to admin server (not implemented)
-    await $fetch('/api/admin/advertisement/metrics', {
+    await $fetch('/api/advertisement/metrics', {
       method: 'POST',
       body: { metrics: metricsToSend },
     })

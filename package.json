@@ -22,7 +22,8 @@
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
     "types": "nx run crud:typecheck --verbose",
-    "clean:nuxi": "scripts/nuxi-cleanup.sh"
+    "clean:nuxi": "scripts/nuxi-cleanup.sh",
+    "staging": "railway link -p d2993a83-20e2-4658-b045-8202866cd11f"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.15",
