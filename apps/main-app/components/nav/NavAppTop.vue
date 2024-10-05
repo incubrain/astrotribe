@@ -13,7 +13,7 @@ const items = computed(() => {
   const menuItems = [
     {
       label: 'Settings',
-      command: () => router.push('/profile/settings/profile'),
+      command: () => router.push('/profile/settings'),
     },
     {
       label: 'Logout',
@@ -46,7 +46,7 @@ watch(
 
 const logError = (error) => {
   console.info('Error loading image, default image rendered', error)
-  avatarUrl.value = '/images/defaults/avatar.jpg'
+  avatarUrl.value = '/defaults/avatar.jpg'
 }
 
 // !todo: show a back button on tablet and below, left of nav.
