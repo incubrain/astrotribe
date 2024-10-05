@@ -31,6 +31,7 @@ interface Milestone {
 export default function useTasks() {
   const goals = ref<Goal[]>([])
   const milestones = ref<Milestone[]>([])
+  const toast = useNotification()
 
   async function fetchGoals() {
     try {

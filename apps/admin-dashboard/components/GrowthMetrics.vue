@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useErrorHandler } from '@ib/client'
+
 const { store, loadMore, refresh, isSelecting } = useSelectData('table_statistics', {
   columns: 'table_name, table_size, row_count, capture_time',
   orderBy: { column: 'capture_time', ascending: false },
@@ -73,12 +75,12 @@ const processData = () => {
         [
           latestData.table_size / uniqueTables.size,
           previousWeekData
-            ? previousWeekData.table_size
-            / new Set(
-              data
-                .filter((d) => d.capture_time <= previousWeekData.capture_time)
-                .map((d) => d.table_name),
-            ).size
+            ? previousWeekData.table_size /
+              new Set(
+                data
+                  .filter((d) => d.capture_time <= previousWeekData.capture_time)
+                  .map((d) => d.table_name),
+              ).size
             : 0,
         ],
         50,

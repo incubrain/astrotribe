@@ -9,6 +9,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   const loading = useLoadingStore()
   const { fetch } = useBaseFetch()
   const userId = useCookie('userId')
+  const user = useSupabaseUser()
 
   // check:critical - user should only be able to fetch their own full profile
   // check:critical - user should only be able to update their own profile
@@ -16,50 +17,24 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   // todo:med - merge currentUser and profile into one, store all required data everything in their session
   // assign Posthog identify
 
-  async function removeSession() {
-    const response = await fetch(`${authUrl}/logout`)
-    console.log('removeSession', response)
-    profile.value = null
-  }
+  console.log('user', user.value)
 
-  const profile = ref(null)
-  async function loadSession() {
-    logger.info('loadSession')
-    if (loading.isLoading(DOMAIN_KEY) || profile.value) {
-      return
-    }
-
-    if (profile.value) {
-      logger.info('loadSession: Returning cached user')
-      return
-    }
-
-    loading.setLoading(DOMAIN_KEY, true)
-
-    const response = await fetch(`${authUrl}/session`, {
-      method: 'GET',
-    })
-
-    const data = errors.server({
-      response,
-      devOnly: false,
-      devMessage: 'error fetching user session',
-      userMessage: 'something went wrong when getting your session',
-    })
-
-    if (data) {
-      logger.info(`SETTING USER_ID' ${data.user_id}`)
-      profile.value = data
-      userId.value = data.user_id
-      // console.log('sendingIdentify', analytics)
-      // analytics?.identify(
-      //   data.user_id
-      // )
-    } else {
-      logger.info('no session found')
-    }
-    loading.setLoading(DOMAIN_KEY, false)
-  }
+  const profile = computed(() => ({
+    id: user.value?.id,
+    given_name: user.value?.user_metadata?.given_name,
+    email_confirmed_at: user.value?.email_confirmed_at,
+    confirmation_sent_at: user.value?.confirmation_sent_at,
+    confirmed_at: user.value?.confirmed_at,
+    created_at: user.value?.created_at,
+    surname: user.value?.user_metadata?.surname,
+    last_sign_in_at: user.value?.last_sign_in_at,
+    email: user.value?.email,
+    providers: user.value?.app_metadata.providers,
+    avatar: user.value?.user_metadata.avatar ?? user.value?.user_metadata.avatar_url,
+    provider: user.value?.provider,
+    user_role: user.value?.app_metadata?.role,
+    user_plan: user.value?.app_metadata?.plan,
+  }))
 
   // extract as util func
   function hasValueChanged(newValue: any, currentValue: any): boolean {
@@ -134,15 +109,10 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       // update state
       logger.debug('Updating user profile state')
       for (const key in validData[0]) {
-        if (
-          Object.hasOwnProperty.call(validData[0], key) &&
-          profile.value[key] !== validData[0][key]
-        ) {
+        if (Object.hasOwnProperty.call(validData[0], key)) {
           logger.debug(`Updating profile field: ${key}`, {
-            oldValue: profile.value[key],
             newValue: validData[0][key],
           })
-          profile.value[key] = validData[0][key]
         }
       }
       logger.info('Profile update completed successfully')
@@ -220,8 +190,6 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     ),
     registeredWithProvider: computed(() => profile.value?.provider),
     profile,
-    loadSession,
-    removeSession,
     uploadImage,
     updateProfile,
     testUpdateProfile,
