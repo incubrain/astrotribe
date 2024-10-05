@@ -9,7 +9,7 @@ definePageMeta({
   <div class="flex flex-col gap-4 p-4">
     <!-- <IBUpload
       name="user-images"
-      url="/api/admin/users/bulk-upload"
+      url="/api/users/bulk-upload"
       accept="image/*"
       :maxFileSize="50000000"
       :multiple="true"

@@ -54,7 +54,6 @@ export default defineNuxtConfig({
           'https://api.iconify.design',
           'https://api.unisvg.com',
           'https://api.simplesvg.com',
-          'ws://localhost:4000',
           'https://*.supabase.co',
           'https://*.up.railway.app',
           'http://*.railway.internal',

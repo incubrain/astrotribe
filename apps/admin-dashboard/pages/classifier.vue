@@ -77,7 +77,7 @@ const markAsReviewed = async () => {
 const deleteUrls = async () => {
   const ids = selectedUrls.value.map((row) => row.id)
   try {
-    await $fetch('/api/admin/classifier/delete', {
+    await $fetch('/api/classifier/delete', {
       body: { ids },
     })
     // Refresh data after operation
@@ -92,7 +92,7 @@ const addToTrainingData = async (rows) => {
   console.log('Adding to training data:', ids)
 
   try {
-    await $fetch('/api/admin/classifier/insert', {
+    await $fetch('/api/classifier/insert', {
       body: { ids },
     })
     // Optionally refresh data after operation
@@ -113,7 +113,7 @@ onMounted(async () => {
 
 const selectUrls = async () => {
   try {
-    const data = await $fetch('/api/admin/classifier/select', {
+    const data = await $fetch('/api/classifier/select', {
       method: 'POST',
     })
     fetchedUrls.value = data.data // Assuming the response structure matches

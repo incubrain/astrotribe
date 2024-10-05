@@ -74,7 +74,9 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       return
     }
 
-    socket.value = new WebSocket(`ws://${window.location.host}/api/admin/server-jobs`)
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const host = window.location.host
+    socket.value = new WebSocket(`${protocol}//${host}/api/server-jobs`)
 
     socket.value.onopen = () => {
       console.log('WebSocket connection established')

@@ -40,7 +40,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/api/admin/error/report', {
+      const response = await fetch('/api/error/report', {
         query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {
@@ -60,7 +60,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/api/admin/error/trends', {
+      const response = await fetch('/api/error/trends', {
         query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {
@@ -80,7 +80,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/api/admin/error/logs', {
+      const response = await fetch('/api/error/logs', {
         query: {
           date: selectedDate.value.toISOString(),
           page: currentPage.value,
@@ -108,7 +108,7 @@ const useErrorDashboard = defineStore('errorDashboard', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/api/admin/error/postgres', {
+      const response = await fetch('/api/error/postgres', {
         query: { date: selectedDate.value.toISOString() },
       })
       if (!response || !response.data) {

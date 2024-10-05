@@ -17,7 +17,7 @@ const items = computed(() => {
     },
     {
       label: 'Logout',
-      command: () => auth.logout(),
+      command: () => auth.signOut(),
     },
   ]
 
