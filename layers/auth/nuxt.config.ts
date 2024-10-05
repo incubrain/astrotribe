@@ -30,7 +30,7 @@ export default defineNuxtConfig({
           : 'localhost',
       maxAge: 60 * 60 * 8,
       path: '/',
-      sameSite: 'none',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production' ? true : false,
     },
     cookieName: 'sb',

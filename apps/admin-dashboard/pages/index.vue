@@ -44,6 +44,7 @@ const scrapeNewsArticles = async () => {
       </div>
       <p>{{ outputData }}</p>
     </div>
+    <ScriptExecution />
     <DatabaseMetrics />
     <ServerJobs />
   </div>
