@@ -13,6 +13,8 @@ RUN npm ci
 # Copy the entire project, including configuration files
 COPY . .
 
+RUN mkdir -p /app/scripts && cp -r scripts/* /app/scripts/
+
 # List contents to verify files are copied correctly
 RUN ls -la && ls -la apps/admin-dashboard
 
@@ -21,11 +23,11 @@ RUN npm install -g nx
 # Build the admin-dashboard
 RUN nx build admin-dashboard --verbose
 
-# Set the working directory to the admin-dashboard output
-WORKDIR /app/apps/admin-dashboard/.output
+# Keep the working directory at /app
+WORKDIR /app
 
 # Command to run the application
-CMD ["node", "server/index.mjs"]
+CMD ["node", "apps/admin-dashboard/.output/server/index.mjs"]
 
 # Expose the port the app runs on
 EXPOSE 3000

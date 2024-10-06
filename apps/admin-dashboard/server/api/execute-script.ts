@@ -28,8 +28,12 @@ export default defineEventHandler(async (event) => {
   const { type, file } = scriptConfigs[scriptName]
 
   const baseDir = process.cwd()
-  const scriptPath = path.join(process.cwd(), 'scripts', file)
+  const scriptPath = path.join('/app', 'scripts', file)
 
+  console.log(`Current working directory: ${process.cwd()}`)
+  console.log(`Script path: ${scriptPath}`)
+  console.log('Files in current directory:', fs.readdirSync(process.cwd()))
+  console.log('Files in /app/scripts:', fs.readdirSync('/app/scripts'))
   console.log(`Current working directory: ${baseDir}`)
   console.log(`Attempting to execute script: ${scriptPath}`)
 

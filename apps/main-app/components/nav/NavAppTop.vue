@@ -2,6 +2,7 @@
 const router = useRouter()
 const userStore = useCurrentUser()
 const { profile, isAdmin } = storeToRefs(userStore)
+const { aeAdminUrl } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -24,7 +25,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => router.push('/admin/'),
+      command: () => navigateTo(aeAdminUrl, { external: true }),
     })
   }
 
