@@ -1,15 +1,16 @@
 <script setup lang="ts">
 const router = useRouter()
 const userStore = useCurrentUser()
+const toast = useNotification()
+const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { aeAdminUrl } = useRuntimeConfig().public
+const { aeAdminUrl, aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
   profileMenu.value?.toggle(e)
 }
 
-const auth = useAuth()
 const items = computed(() => {
   const menuItems = [
     {
@@ -18,7 +19,7 @@ const items = computed(() => {
     },
     {
       label: 'Logout',
-      command: () => auth.signOut(),
+      command: signOut,
     },
   ]
 
@@ -31,6 +32,17 @@ const items = computed(() => {
 
   return menuItems
 })
+
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    console.error(error.message)
+    toast.error({ summary: 'Could not log out', message: error.message })
+  } else {
+    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+  }
+}
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading('currentUser'))
