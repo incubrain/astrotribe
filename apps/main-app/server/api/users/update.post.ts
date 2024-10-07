@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const { user } = data
 
     if (user && user.email) {
-      const response = await supabase.from('user_profiles').update(body).eq('email', user.email)
+      const response = await supabase.from('user_profiles').update(body).eq('id', user.id)
 
       if (response.error) {
         return {
