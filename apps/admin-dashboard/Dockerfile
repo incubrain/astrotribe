@@ -13,8 +13,6 @@ RUN npm ci
 # Copy the entire project, including configuration files
 COPY . .
 
-RUN mkdir -p /app/scripts && cp -r scripts/* /app/scripts/
-
 # List contents to verify files are copied correctly
 RUN ls -la && ls -la apps/admin-dashboard
 
