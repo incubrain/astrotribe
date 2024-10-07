@@ -40,14 +40,13 @@ const avatarUrl = ref(null)
 watch(
   profile,
   (newProfile) => {
-    avatarUrl.value = newProfile?.avatar
+    avatarUrl.value = newProfile?.avatar || '/defaults/avatar.jpg'
   },
   { immediate: true },
 )
 
 const logError = (error) => {
-  console.info('Error loading image, default image rendered', error)
-  avatarUrl.value = '/defaults/avatar.jpg'
+  console.log('Error loading image, default image rendered', error)
 }
 
 // !todo: show a back button on tablet and below, left of nav.
