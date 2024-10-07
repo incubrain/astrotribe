@@ -27,7 +27,7 @@ const schema = [
   },
   {
     value: 'username',
-    label: 'username',
+    label: 'Username',
     tip: 'Contact support to update your username',
     placeholder: 'Your username',
     type: 'username',
@@ -46,15 +46,13 @@ const SettingsAccountValidation = z.object({
 
 const currentUser = useCurrentUser()
 
-const userId = useCookie('userId')
-
 const {
   store: userProfile,
   loadMore,
   refresh,
 } = useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: { eq: userId.value } },
+  filters: { id: { eq: currentUser.profile.id } },
   initialFetch: true,
   limit: 1,
 })
@@ -144,7 +142,7 @@ definePageMeta({
             />
           </div>
         </UserSettingsItem>
-        <div class="py-8">
+        <div class="flex py-8 gap-2">
           <PrimeButton
             class="text-white"
             @click="currentUser.updateProfile(profileCopy)"
