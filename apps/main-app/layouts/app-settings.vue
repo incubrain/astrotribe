@@ -40,6 +40,7 @@ const settingsRoutes = computed(() => [
 <template>
   <div>
     <NuxtLayout name="app">
+      <AppBackButton class="rounded-none !justify-start !items-start" />
       <div class="overflow-auto h-screen flex flex-col p-4 bg-black md:flex-row md:gap-8 lg:p-8">
         <PrimeMenu
           :model="settingsRoutes"
