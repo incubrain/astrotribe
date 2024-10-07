@@ -14,7 +14,7 @@ const items = computed(() => {
   const menuItems = [
     {
       label: 'Settings',
-      command: () => router.push('/profile/settings'),
+      command: () => router.push('/profile/settings/profile'),
     },
     {
       label: 'Logout',
