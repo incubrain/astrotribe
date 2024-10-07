@@ -114,20 +114,19 @@ function formatMetricName(name: string): string {
 </script>
 
 <template>
-  <div class="metrics-display">
+  <div class="metrics-display flex flex-col justify-start items-start gap-4">
     <div
       v-if="isConnected"
-      class="text-green-500"
+      class="text-green-500 p-2 rounded-md border border-green-500"
     >
-      Connected
+      Scraper Connected
     </div>
     <div
       v-else
-      class="text-red-500"
+      class="text-red-500 p-2 rounded-md border border-red-500"
     >
       Disconnected
     </div>
-    {{ allMetrics }}
     <div
       v-if="haveMetrics"
       class="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-8"

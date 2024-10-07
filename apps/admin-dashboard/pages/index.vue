@@ -4,7 +4,6 @@ definePageMeta({
   name: 'AdminDashboard',
 })
 
-const urlTest = ref('https://astrotribe-production.up.railway.app/api')
 const outputData = ref('')
 
 const scrapeNewsLinks = async () => {
@@ -36,16 +35,13 @@ const scrapeNewsArticles = async () => {
 
 <template>
   <div class="relative h-full max-h-full p-4">
-    <div class="flex flex-col gap-8">
+    <!-- <div class="flex flex-col gap-8">
       <div class="flex gap-4">
         <PrimeButton @click="scrapeNewsLinks">Scrape News Links</PrimeButton>
         <PrimeButton @click="scrapeNewsArticles">Scrape News Articles</PrimeButton>
-        <PrimeInputText v-model="urlTest" />
       </div>
       <p>{{ outputData }}</p>
-    </div>
-    <ScriptExecution />
-    <DatabaseMetrics />
+    </div> -->
     <ServerJobs />
   </div>
 </template>

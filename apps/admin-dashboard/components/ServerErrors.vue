@@ -295,14 +295,14 @@ const toggle = (event) => {
           <div class="flex items-center justify-between gap-4 p-4">
             <h2 class="text-xl font-bold"> {{ totalLogs }} Error Logs </h2>
             <div class="flex items-center gap-2">
-              <PrimeButton
+              <!-- <PrimeButton
                 type="button"
                 label="Settings"
                 @click="toggle"
-              />
-              <PrimePopover ref="settings">
+              /> -->
+              <!-- <PrimePopover ref="settings">
                 <DevSettings />
-              </PrimePopover>
+              </PrimePopover> -->
               <PrimeButton
                 :loading="loading"
                 class="h-full"
