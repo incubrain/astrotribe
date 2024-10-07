@@ -89,6 +89,7 @@ const isSidebarExpanded = ref(false)
             <NuxtLink
               :to="item.slug"
               class="flex items-center p-4 hover:bg-primary-900"
+              exact-active-class="bg-primary-950 text-white w-full"
             >
               <Icon
                 :name="item.icon"
