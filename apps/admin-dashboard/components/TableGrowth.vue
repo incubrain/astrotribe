@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
+import { useErrorHandler } from '@ib/client'
 
 const supabase = useSupabaseClient()
 const { handleError } = useErrorHandler()
@@ -147,8 +148,8 @@ const totalRowCount = computed(() => {
 const getSparklineData = (table: string, period: string) => {
   const data = growthData.value[table]?.[period]?.data || []
 
-  const borderColor
-    = growthData.value[table]?.[period]?.latest.growth_percentage > 0 ? '#4CAF50' : '#F44336'
+  const borderColor =
+    growthData.value[table]?.[period]?.latest.growth_percentage > 0 ? '#4CAF50' : '#F44336'
 
   return {
     labels: data.map((d: any) => d.period_end_time),

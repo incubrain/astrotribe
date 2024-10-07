@@ -80,7 +80,7 @@ const isSidebarExpanded = ref(false)
       </div>
 
       <!-- Navigation Links -->
-      <nav class="flex-1 overflow-y-auto">
+      <nav class="scrollbar-hide flex-1 overflow-y-auto hover:overflow-y-scroll">
         <ul>
           <li
             v-for="item in links"
@@ -109,4 +109,12 @@ const isSidebarExpanded = ref(false)
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+</style>
