@@ -28,7 +28,7 @@ const executeScript = async (scriptName: string) => {
 <template>
   <div class="script-execution-panel">
     <h2>Script Execution Panel</h2>
-    <div class="script-buttons">
+    <div class="script-buttons flex gap-2">
       <PrimeButton
         v-for="script in scripts"
         :key="script.name"
