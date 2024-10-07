@@ -22,14 +22,13 @@ const currentUser = useCurrentUser()
 const auth = useAuth()
 const toast = useNotification()
 
-const userId = useCookie('userId')
 const {
   store: userProfile,
   loadMore,
   refresh,
 } = await useSelectData<User>('user_profiles', {
   columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: { eq: userId.value } },
+  filters: { id: { eq: currentUser.profile.id } },
   initialFetch: true,
   limit: 1,
 })
