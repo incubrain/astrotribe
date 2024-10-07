@@ -87,7 +87,7 @@ export function useUserAuth() {
       toast.error({ summary: 'Login with password', message: error.message })
     } else {
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      navigateTo(appUrl, { external: true })
+      navigateTo(aeAppUrl, { external: true })
     }
   }
 
