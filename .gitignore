@@ -20,6 +20,7 @@ tmp
 .npm_token
 **.eslintcache
 **.temp
+**.data
 **.branches
 
 # dependencies
@@ -57,6 +58,7 @@ testem.log
 /typings
 **/data/logs
 docs/**
+debug/**
 
 
 # System Files
