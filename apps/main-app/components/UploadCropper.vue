@@ -3,8 +3,8 @@ import { useFileUpload } from '#imports'
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
-import { useNotification } from '../../../layers/base/composables/notification'
-import { useCurrentUser } from '../../../layers/base/composables/user.current.store'
+import { useNotification } from '../../../layers/crud/composables/notification'
+import { useCurrentUser } from '../../../layers/crud/composables/user.current.store'
 
 type CropperConfigTypes = 'avatar' | 'default'
 

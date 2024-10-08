@@ -5,7 +5,6 @@
     "declarationMap": true, // Optional for better debugging
     "rootDir": ".",
     "outDir": "dist",
-    "sourceMap": true,
     "inlineSources": true
   }
 }
