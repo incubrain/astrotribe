@@ -130,6 +130,8 @@ onMounted(async () => {
 
 async function uploadImage(blob: Blob) {
   try {
+    const supabase = useSupabaseClient()
+
     const result = await uploadFile(new File([blob], 'image.webp', { type: 'image/webp' }), {
       bucket: props.bucket,
       fileType: 'image',
@@ -145,6 +147,12 @@ async function uploadImage(blob: Blob) {
         console.log(`Upload progress: ${progress}%`)
       },
     })
+
+    await supabase
+      .from('user_profiles')
+      .update({ avatar: result.publicUrl })
+      .eq('id', profile.value.id)
+
     toast.success({
       summary: 'Image uploaded',
       message: 'Your image has been successfully uploaded and processed.',
