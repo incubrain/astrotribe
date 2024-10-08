@@ -71,6 +71,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   async function updateProfile(newData: any, isMock: boolean = false) {
     logger.info('Starting updateProfile function', { newData, isMock })
     const updatedData: any = {}
+    const toast = useNotification()
 
     logger.debug('Cleaning data for update')
     // Compare newData with fullProfile and only include changed values
@@ -103,6 +104,15 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         devMessage: 'Error updating user profile',
         userMessage: 'There was an error updating your profile after action',
       })
+
+      if (response.error) {
+        toast.error({ summary: 'Could not update profile', message: response.error.message })
+      } else {
+        toast.success({
+          summary: 'Profile updated successfully',
+          message: 'Your profile was updated',
+        })
+      }
 
       logger.info('Successfully validated server response', { validData })
 
