@@ -24,6 +24,10 @@ export default defineNuxtConfig({
 
   extends: ['../../layers/base'],
 
+  build: {
+    transpile: ['../../layers/base'],
+  },
+
   // security: {
   //   headers: {
   //     contentSecurityPolicy: {
