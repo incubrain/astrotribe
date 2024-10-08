@@ -25,13 +25,25 @@
     # Copy the entire project
     COPY . .
 
-    RUN echo "AE_AUTH_URL: $AE_AUTH_URL"
-    RUN echo "POSTHOG_KEY: $POSTHOG_KEY"
     
     RUN npx nx reset
     RUN npx nx --version
-
+    
+    # Accept build-time arguments
+    ARG NUXT_PUBLIC_AE_AUTH_URL
+    ARG NUXT_PUBLIC_AE_LOGIN_URL
+    ARG NUXT_PUBLIC_AE_APP_URL
+    ARG NUXT_PUBLIC_AE_ADMIN_URL
+    ARG NUXT_PUBLIC_AE_MONITORING_URL
+    ARG NUXT_PUBLIC_AE_WEBSITE_URL
+    ARG NUXT_PUBLIC_LOG_LEVEL
+    ARG NUXT_PUBLIC_POSTHOG_KEY
+    ARG NUXT_PUBLIC_POSTHOG_URL
+    ARG NUXT_PUBLIC_STUDIO_TOKENS
+    ARG NUXT_PUBLIC_SCRAPER_URL
     ENV NODE_ENV=production
+
+    RUN echo $NUXT_PUBLIC_POSTHOG_KEY
 
     # Build the website
     RUN nx build website --verbose --skip-nx-cache
