@@ -33,7 +33,8 @@ const {
   limit: 1,
 })
 
-function handlePasswordUpdate() {
+async function handlePasswordUpdate() {
+  const supabase = useSupabaseClient()
   const { new_password, confirm_new_password } = schema.reduce(
     (acc, field) => ({ ...acc, [field.id]: field.value.value }),
     {
@@ -50,7 +51,16 @@ function handlePasswordUpdate() {
     return
   }
 
-  auth.password.update(new_password)
+  const { error } = await supabase.auth.updateUser({ password: new_password })
+
+  if (error) {
+    toast.error({ summary: 'Could Not Update Password', message: error.message })
+  } else {
+    toast.success({
+      summary: 'Successfully Updated Password',
+      message: 'Your password was updated',
+    })
+  }
 }
 
 definePageMeta({
