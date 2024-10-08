@@ -1,7 +1,10 @@
 import posthog from 'posthog-js'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const env = useRuntimeConfig().public
+  const env = nuxtApp.$config.public
+
+  console.log('ENV Key:', env)
+
   if (!env.posthogKey || !env.posthogUrl) {
     throw createError({ message: 'posthog key or url not defined' })
   }
