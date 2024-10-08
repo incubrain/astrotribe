@@ -35,12 +35,4 @@ export default defineNuxtConfig({
     },
     cookieName: 'sb',
   },
-
-  runtimeConfig: {
-    public: {
-      supabaseUrl: '',
-      supabaseKey: '',
-    },
-    supabaseServiceKey: '',
-  },
 })
