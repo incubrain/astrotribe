@@ -34,6 +34,7 @@ const {
 })
 
 function handlePasswordUpdate() {
+  const supabase = useSupabaseClient()
   const { new_password, confirm_new_password } = schema.reduce(
     (acc, field) => ({ ...acc, [field.id]: field.value.value }),
     {
@@ -50,7 +51,7 @@ function handlePasswordUpdate() {
     return
   }
 
-  auth.password.update(new_password)
+  supabase.auth.updateUser({ password: new_password })
 }
 
 definePageMeta({
