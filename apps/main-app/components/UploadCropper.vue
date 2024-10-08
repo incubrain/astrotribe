@@ -94,7 +94,7 @@ const cropperConfigs: Record<CropperConfigTypes, CropperConfig> = {
 }
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 const userStore = useCurrentUser()
-const { userId } = storeToRefs(userStore)
+const { profile } = storeToRefs(userStore)
 const toast = useNotification()
 
 // Checks & Utils
@@ -133,7 +133,7 @@ async function uploadImage(blob: Blob) {
     const result = await uploadFile(new File([blob], 'image.webp', { type: 'image/webp' }), {
       bucket: props.bucket,
       fileType: 'image',
-      userId: userId.value,
+      userId: profile.value.id,
       serverSideOptimize: true,
       maxWidth: 1200,
       maxHeight: 1200,
