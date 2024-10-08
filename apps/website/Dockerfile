@@ -1,13 +1,19 @@
+
 # ----------------------------
-# Build Stage
-# ----------------------------
+    # Build Stage
+    # ----------------------------
     FROM node:20.17.0 AS build
+    
+    # Disable Nx Daemon, Nx Cloud, and Caching
+    ENV NX_DAEMON=false
+    ENV NX_CLOUD=false
+    ENV NX_CACHE_SKIP=true
 
     # Set the working directory in the container
     WORKDIR /app
     
     # Copy package.json and package-lock.json
-    COPY package*.json ./
+    COPY package.json package-lock.json ./
     
     # Install dependencies
     RUN npm ci
@@ -19,8 +25,11 @@
     # Copy the entire project
     COPY . .
     
+    RUN npx nx reset
+    RUN npx nx --version
+
     # Build the website
-    RUN nx build website --verbose
+    RUN nx build website --verbose --skip-nx-cache
     
     # ----------------------------
     # Production Stage
