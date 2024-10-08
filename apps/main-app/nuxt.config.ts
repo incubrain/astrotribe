@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import { runtimeConfig } from '../../shared-runtime.config'
+import runtimeConfig from '../../shared-runtime.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -69,5 +69,5 @@ export default defineNuxtConfig({
     prefix: 'Tiptap',
   },
 
-  runtimeConfig,
+  ...runtimeConfig,
 })
