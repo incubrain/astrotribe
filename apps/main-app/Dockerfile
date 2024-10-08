@@ -18,8 +18,11 @@ RUN ls -la && ls -la apps/main-app
 
 RUN npm install -g nx
 
+RUN npx nx reset
+RUN npx nx --version
+
 # Build the main-app
-RUN nx build main-app --verbose
+RUN nx build main-app --verbose --skip-nx-cache
 
 # Set the working directory to the main-app output
 WORKDIR /app/apps/main-app/.output
