@@ -4,6 +4,19 @@
     # ----------------------------
     FROM node:20.17.0 AS build
 
+    # Set the working directory in the container
+    WORKDIR /app
+    
+    # Copy package.json and package-lock.json
+    COPY package.json package-lock.json ./
+    
+    # Install dependencies
+    RUN npm ci
+
+    # Install nx globally using the version from package.json
+    RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
+        npm install -g nx@$NX_VERSION
+
     # Accept build-time arguments
     ARG NUXT_PUBLIC_AE_AUTH_URL
     ARG NUXT_PUBLIC_AE_LOGIN_URL
@@ -24,7 +37,6 @@
         NUXT_PUBLIC_AE_ADMIN_URL=$NUXT_PUBLIC_AE_ADMIN_URL \
         NUXT_PUBLIC_AE_MONITORING_URL=$NUXT_PUBLIC_AE_MONITORING_URL \
         NUXT_PUBLIC_AE_WEBSITE_URL=$NUXT_PUBLIC_AE_WEBSITE_URL \
-        NODE_ENV=production \
         NUXT_PUBLIC_LOG_LEVEL=$NUXT_PUBLIC_LOG_LEVEL \
         NUXT_PUBLIC_POSTHOG_KEY=$NUXT_PUBLIC_POSTHOG_KEY \
         NUXT_PUBLIC_POSTHOG_URL=$NUXT_PUBLIC_POSTHOG_URL \
@@ -35,25 +47,14 @@
     ENV NX_DAEMON=false
     ENV NX_CLOUD=false
     ENV NX_CACHE_SKIP=true
-
-    # Set the working directory in the container
-    WORKDIR /app
-    
-    # Copy package.json and package-lock.json
-    COPY package.json package-lock.json ./
-    
-    # Install dependencies
-    RUN npm ci
-    
-    # Install nx globally using the version from package.json
-    RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
-        npm install -g nx@$NX_VERSION
     
     # Copy the entire project
     COPY . .
     
     RUN npx nx reset
     RUN npx nx --version
+
+    ENV NODE_ENV=production
 
     # Build the website
     RUN nx build website --verbose --skip-nx-cache
