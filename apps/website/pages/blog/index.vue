@@ -4,7 +4,7 @@
   <div>
     <CommonHero
       :img="{
-        src: 'images/blog/category-pages/isro-rocket-launch.png',
+        src: 'images/blog/all/isro-rocket-launch.png',
         alt: `AstronEra blog icon`,
         width: 1080,
         height: 720,

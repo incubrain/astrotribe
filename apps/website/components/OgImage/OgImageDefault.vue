@@ -6,7 +6,7 @@
 import { computed } from 'vue'
 
 const props = withDefaults(
-  defineProps<{ title?: string, description?: string, headline?: string }>(),
+  defineProps<{ title?: string; description?: string; headline?: string }>(),
   {
     title: 'title',
     description: 'description',
@@ -15,7 +15,7 @@ const props = withDefaults(
 )
 
 const title = computed(() => props.title.slice(0, 60))
-const { website } = useInfo()
+
 </script>
 
 <template>
@@ -78,7 +78,7 @@ const { website } = useInfo()
     </div>
     <div class="absolute flex justify-center items-center right-[200px] h-full">
       <img
-        :src="`/${website.logo}`"
+        :src="`/astronera-logo.jpg`"
         width="90px"
         height="90px"
         class="z-50 relative"

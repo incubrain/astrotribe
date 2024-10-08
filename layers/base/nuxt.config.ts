@@ -4,34 +4,13 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
-  image: {
-    format: ['webp', 'jpg'],
-    image: {
-      domains: ['dohemiycqebeipbvsvnr.supabase.co'],
-      presets: {
-        cover: {
-          modifiers: {
-            format: 'jpg',
-            quality: 80,
-            sizes: 'sm:100vw md:50vw lg:800px',
-          },
-        },
-        card: {
-          modifiers: {
-            format: 'jpg',
-            quality: 70,
-            sizes: 'sm:100vw md:40vw lg:300px',
-          },
-        },
-      },
-    },
-  },
-
   icon: {
     serverBundle: {
       collections: ['material-symbols', 'mdi'],
     },
   },
+
+  debug: true,
 
   eslint: {
     checker: true,

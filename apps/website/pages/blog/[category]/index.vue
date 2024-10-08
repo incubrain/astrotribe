@@ -2,7 +2,6 @@
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
-import { ARTICLE_CARD_PROPERTIES, articleCardSchema } from '~/types/articles'
 
 const whereOptions: QueryBuilderParams = {
   status: { $eq: 'published' },
@@ -11,110 +10,37 @@ const whereOptions: QueryBuilderParams = {
 const route = useRoute()
 const categoryParam = computed(() => (String(route.params.category) as ArticleCategoriesT) ?? null)
 
-const allArticles = ref<ArticleCardT[]>([])
-const pagination = reactive({ skip: 0, limit: 10 })
+const { data: articles, pending } = await useFetch('/api/articles', {
+  params: {
+    category: categoryParam,
+    limit: 10,
+    skip: 0,
+  },
+})
 
-const articlesFinished = ref(false)
-const articlesLoading = ref(false)
-
-const fetchArticles = async (
-  skip: number,
-  limit: number,
-  category: string | null,
-): Promise<ArticleCardT[]> => {
-  if (!category) return []
-
-  try {
-    const articles = await queryContent('/blog', category === 'all' ? '' : category)
-      .where(whereOptions)
-      .only(ARTICLE_CARD_PROPERTIES)
-      .sort({ publishedAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .find()
-
-    // Validate articles
-    const validArticles = articles
-    // .filter((article) => {
-    //   try {
-    //     articleCardSchema.parse(article)
-    //     return true
-    //   } catch (err) {
-    //     console.error(`Error parsing article: ${article?.title}`, err)
-    //     return false
-    //   }
-    // })
-
-    return validArticles
-  } catch (err) {
-    console.error('Error fetching articles:', err)
-    return []
-  }
-}
-
-// Fetch initial articles during SSR
-const { data: initialArticles, error } = await useAsyncData(
-  `article-cards-${categoryParam.value}-${pagination.skip}-${pagination.limit}`,
-  () => fetchArticles(0, pagination.limit, categoryParam.value),
-)
-
-if (initialArticles.value) {
-  allArticles.value = initialArticles.value
-  if (initialArticles.value.length < pagination.limit) {
-    articlesFinished.value = true
-  } else {
-    pagination.skip += pagination.limit
-  }
-  articlesLoading.value = true
-} else {
-  articlesLoading.value = true
-}
-
-if (error.value) {
-  console.error('Error fetching initial articles:', error.value)
-}
+const allArticles = ref(articles.value || [])
+const articlesFinished = computed(() => allArticles.value.length < 10)
+const articlesLoading = ref(pending.value)
 
 // Function to load more articles
 const loadMoreArticles = async () => {
   if (articlesFinished.value || articlesLoading.value) return
   articlesLoading.value = true
 
-  const articles = await fetchArticles(pagination.skip, pagination.limit, categoryParam.value)
+  const { data: newArticles } = await useFetch('/api/articles', {
+    params: {
+      category: categoryParam.value,
+      limit: 10,
+      skip: allArticles.value.length,
+    },
+  })
 
-  if (!articles.length || articles.length < pagination.limit) {
-    articlesFinished.value = true
+  if (newArticles.value) {
+    allArticles.value.push(...newArticles.value)
   }
 
-  allArticles.value.push(...articles)
-  pagination.skip += pagination.limit
   articlesLoading.value = false
 }
-
-watch(
-  () => categoryParam.value,
-  async (newCategory, oldCategory) => {
-    if (newCategory !== oldCategory) {
-      // Reset pagination and articles
-      pagination.skip = 0
-      articlesFinished.value = false
-      allArticles.value = []
-      articlesLoading.value = false
-
-      // Fetch initial articles for the new category
-      articlesLoading.value = true
-      const articles = await fetchArticles(pagination.skip, pagination.limit, newCategory)
-      articlesLoading.value = false
-
-      if (articles.length < pagination.limit) {
-        articlesFinished.value = true
-      } else {
-        pagination.skip += pagination.limit
-      }
-
-      allArticles.value = articles
-    }
-  },
-)
 
 const handleInfiniteScroll = async () => {
   await loadMoreArticles()
@@ -179,7 +105,7 @@ const heroImage = computed(() => {
     case 'sustainable-development':
       return (src += '1.sustainable-global-space-development.webp')
     default:
-      return (src += 'astronera-blog.jpg')
+      return (src += 'isro-rocket-launch.png')
   }
 })
 </script>

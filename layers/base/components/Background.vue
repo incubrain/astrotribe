@@ -57,8 +57,8 @@ function drawStars() {
 
     // Update star position to follow an inverted arc path
     star.x -= star.speed
-    star.y
-      = star.initialY - Math.sin((star.x / CANVAS_WIDTH.value) * Math.PI) * (CANVAS_HEIGHT.value / 4)
+    star.y =
+      star.initialY - Math.sin((star.x / CANVAS_WIDTH.value) * Math.PI) * (CANVAS_HEIGHT.value / 4)
 
     // Wrap stars around edges
     if (star.x < 0) {
