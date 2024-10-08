@@ -35,15 +35,17 @@
     # Production Stage
     # ----------------------------
     FROM nginx:alpine
+    ENV PORT=8080
     
     # Remove default Nginx index page
     RUN rm -rf /usr/share/nginx/html/*
     
     # Copy the built files from the previous stage
     COPY --from=build /app/apps/website/.output/public/ /usr/share/nginx/html/
+
+    COPY default.conf.template /etc/nginx/templates/default.conf.template
     
-    # Expose port 80 (the default port for Nginx)
-    EXPOSE 80
+    EXPOSE $PORT
     
     # Start Nginx
     CMD ["nginx", "-g", "daemon off;"]
