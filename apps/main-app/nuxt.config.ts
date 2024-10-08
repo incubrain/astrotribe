@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
+import { runtimeConfig } from '../../shared-runtime.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -29,12 +30,12 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
-  // tailwindcss: {
-  //   configPath: `${currentDir}/tailwind.config.ts`,
-  // cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
-  //   exposeConfig: true,
-  //   viewer: true,
-  // },
+  tailwindcss: {
+    configPath: `${currentDir}/tailwind.config.ts`,
+    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
+    exposeConfig: true,
+    viewer: true,
+  },
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
@@ -67,4 +68,6 @@ export default defineNuxtConfig({
   tiptap: {
     prefix: 'Tiptap',
   },
+
+  runtimeConfig,
 })
