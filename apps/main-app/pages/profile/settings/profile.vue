@@ -122,6 +122,7 @@ definePageMeta({
           <UploadCropper
             cropper-type="avatar"
             class="absolute z-20"
+            bucket="profile-public"
           />
         </div>
       </div>
