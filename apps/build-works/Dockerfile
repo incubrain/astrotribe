@@ -18,8 +18,11 @@ RUN ls -la && ls -la apps/build-works
 
 RUN npm install -g nx
 
+RUN npx nx reset
+RUN npx nx --version
+
 # Build the build-works
-RUN nx build build-works --verbose
+RUN nx build build-works --verbose --skip-nx-cache
 
 # Set the working directory to the build-works output
 WORKDIR /app/apps/build-works/.output

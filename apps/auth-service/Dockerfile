@@ -18,8 +18,11 @@ RUN ls -la && ls -la apps/auth-service
 
 RUN npm install -g nx
 
+RUN npx nx reset
+RUN npx nx --version
+
 # Build the auth-service
-RUN nx build auth-service --verbose
+RUN nx build auth-service --verbose --skip-nx-cache
 
 # Set the working directory to the auth-service output
 WORKDIR /app/apps/auth-service/.output

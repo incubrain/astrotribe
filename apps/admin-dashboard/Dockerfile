@@ -18,8 +18,11 @@ RUN ls -la && ls -la apps/admin-dashboard
 
 RUN npm install -g nx
 
+RUN npx nx reset
+RUN npx nx --version
+
 # Build the admin-dashboard
-RUN nx build admin-dashboard --verbose
+RUN nx build admin-dashboard --verbose --skip-nx-cache
 
 # Keep the working directory at /app
 WORKDIR /app

@@ -18,8 +18,10 @@ RUN ls -la && ls -la apps/monitoring-dashboard
 
 RUN npm install -g nx
 
+RUN npx nx reset
+RUN npx nx --version
 # Build the monitoring-dashboard
-RUN nx build monitoring-dashboard --verbose
+RUN nx build monitoring-dashboard --verbose --skip-nx-cache
 
 # Set the working directory to the monitoring-dashboard output
 WORKDIR /app/apps/monitoring-dashboard/.output
