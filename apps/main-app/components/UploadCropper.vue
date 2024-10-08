@@ -140,7 +140,7 @@ async function uploadImage(blob: Blob) {
       quality: 90,
       format: 'webp',
       maxFileSize: MAX_FILE_SIZE,
-      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+      allowedMimeTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
       onProgress: (progress) => {
         console.log(`Upload progress: ${progress}%`)
       },

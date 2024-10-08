@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/client'
 import { useRateLimit } from './rate-limit'
 
-
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
 
 interface UploadOptions {
@@ -15,7 +14,7 @@ interface UploadOptions {
   maxWidth?: number
   maxHeight?: number
   quality?: number
-  format?: 'jpeg' | 'png' | 'webp'
+  format?: 'jpeg' | 'jpg' | 'png' | 'webp'
   rateLimitMs?: number
   auditLog?: (action: string, details: any) => Promise<void>
   onProgress?: (progress: number) => void
@@ -50,7 +49,7 @@ export function useFileUpload() {
     const timestamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0]
     const uniqueId = uuidv4().slice(0, 8)
     const userPath = userId ? `${userId}/` : ''
-    return `${bucket}/${fileType}/${userPath}${path}/${timestamp}_${uniqueId}_${fileName}`
+    return `${bucket}/${fileType}/${userPath}/${timestamp}_${uniqueId}_${fileName}`
   }
 
   const validateFile = (file: File, options: UploadOptions): void => {
@@ -170,14 +169,6 @@ export function useFileUpload() {
           },
         }
       }
-
-      await logEvent('FILE_UPLOAD', {
-        filePath: result.path,
-        bucket: options.bucket,
-        fileType: options.fileType,
-        size: result.size,
-        mimeType: result.mimeType,
-      })
 
       lastUploadTime.value = Date.now()
 
