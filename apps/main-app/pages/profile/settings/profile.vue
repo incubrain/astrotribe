@@ -65,7 +65,8 @@ watch(userProfile, () => {
 
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 
-const updateProfileImage = (avatar: string) => {
+const updateProfileImage = (newImage: string) => {
+  const avatar = `${newImage}?v=${Date.now()}`
   currentUser.updateProfile({ avatar })
   profileCopy.value.avatar = avatar
 }
