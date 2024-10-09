@@ -9,7 +9,7 @@ import { useCurrentUser } from '../../../layers/crud/composables/user.current.st
 type CropperConfigTypes = 'avatar' | 'default'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
-
+const emit = defineEmits(['profile-pic-update'])
 const uploadInput = ref(null as HTMLInputElement | null)
 const image = ref<string>('')
 
@@ -148,15 +148,10 @@ async function uploadImage(blob: Blob) {
       },
     })
 
-    await supabase
-      .from('user_profiles')
-      .update({ avatar: result.publicUrl })
-      .eq('id', profile.value.id)
+    if (props.cropperType === 'avatar') {
+      emit('profile-pic-update', result.publicUrl)
+    }
 
-    toast.success({
-      summary: 'Image uploaded',
-      message: 'Your image has been successfully uploaded and processed.',
-    })
     return result
   } catch (error: any) {
     setError(`Failed to upload image: ${error.message}`)
