@@ -115,7 +115,7 @@ const features = [
       <LazyHomeFeatureTabs class="pb-16 md:pb-24" /> -->
     </div>
     <div class="wrapper padded-x mx-auto flex flex-col py-16 md:py-24">
-      <!-- <LazyHomeTestimonial class="pb-6 xl:pb-12" /> -->
+      <LazyHomeTestimonial class="pb-6 xl:pb-12" />
     </div>
   </div>
 </template>

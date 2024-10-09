@@ -16,20 +16,6 @@
         size="24px"
       />
     </PrimeButton>
-    <p class="px-2"> - or - </p>
-    <PrimeButton
-      as="a"
-      :href="`https://github.com/incubrain/incubrain/edit/main/${link}`"
-      target="_blank"
-      class="flex items-center justify-center"
-    >
-      <Icon
-        name="mdi:github"
-        class="inline-block shrink-0"
-        size="24px"
-      />
-      Suggest Edit
-    </PrimeButton>
   </div>
 </template>
 

@@ -3,10 +3,12 @@
     <div class="flex w-full max-w-[1140px] flex-col">
       <IBBreadcrumbs class="px-4 py-10" />
       <IBImage
+        v-if="article.cover"
         :img="{
-          src: `images/blog/${article.category}/${article.featured_image}`,
-          width: '1140px',
-          height: '700px',
+          src: `${baseUrl}${article.cover.url}`,
+          width: article.cover.width,
+          height: article.cover.height,
+          alt: article.cover.alternativeText || article.title,
         }"
         class="relative md:rounded-md"
       />
@@ -15,20 +17,21 @@
       >
         <div class="flex flex-wrap gap-4">
           <PrimeTag
-            :value="article.category"
+            v-if="article.category"
+            :value="article.category.name"
             class="text-nowrap text-sm"
           />
           <PrimeTag
             v-for="tag in article.tags"
-            :key="tag"
-            :value="tag"
-            severity="contrast"
+            :key="tag.name"
+            :value="tag.name"
             class="text-nowrap text-sm"
           />
+          <!-- Add tags here if you have them in your data structure -->
         </div>
         <BlogArticleAuthor
+          :authors="[article.author]"
           :published-at="article.publishedAt"
-          :author-ids="article.authorIds"
         />
       </div>
       <div
@@ -37,9 +40,7 @@
         <h1 class="font-[Oswald] text-4xl font-semibold lg:text-center xl:text-5xl">
           {{ article.title }}
         </h1>
-        <div
-          class="border-color w-full rounded-md border p-4 xl:p-8 bg-primary-950"
-        >
+        <div class="border-color w-full rounded-md border p-4 xl:p-8 bg-primary-950">
           <p class="text-xl">
             {{ article.description }}
           </p>
@@ -52,12 +53,14 @@
 <script setup lang="ts">
 import type { ArticleFullT } from '~/types/articles'
 
-defineProps({
+const props = defineProps({
   article: {
     type: Object as PropType<ArticleFullT>,
     required: true,
   },
 })
+
+const baseUrl = process.env.STRAPI_URL
 </script>
 
 <style scoped></style>

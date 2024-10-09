@@ -63,7 +63,7 @@ export default {
       {
         'text-surface-50 text-white/70': !context.focused && !context.active,
         'text-surface-50 text-white/70 bg-surface-700': context.focused && !context.active,
-        'bg-surface-900/80':
+        'bg-surface-700/80':
           (context.focused && context.active) ||
           context.active ||
           (!context.focused && context.active),
@@ -71,7 +71,7 @@ export default {
 
       // Hover States
       {
-        'hover:bg-surface-900/80': !context.active,
+        'hover:bg-surface-700/80': !context.active,
       },
 
       // Transitions
@@ -144,7 +144,7 @@ export default {
     ],
   }),
   separator: {
-    class: 'border-t border-color border-surface-600 my-1',
+    class: 'border-t border-color border-surface-50 my-2',
   },
   button: {
     class: [

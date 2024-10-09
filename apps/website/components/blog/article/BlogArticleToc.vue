@@ -17,10 +17,6 @@ const p = defineProps({
     type: String,
     required: true,
   },
-  version: {
-    type: Number,
-    required: true,
-  },
   expanded: {
     type: Boolean,
     default: false,
@@ -70,10 +66,6 @@ onUnmounted(() => {
   <div class="relative text-base">
     <div class="flex gap-2 pb-2">
       <PrimeTag :value="`Updated ${useDateFormat(updatedAt, 'DD MMM YYYY').value}`" />
-      <PrimeTag
-        :value="`Version ${version}`"
-        severity="secondary"
-      />
     </div>
     <PrimeAccordion value="0">
       <PrimeAccordionPanel value="0">

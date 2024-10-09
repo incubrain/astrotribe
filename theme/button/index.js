@@ -70,9 +70,9 @@ export default {
 
       // Secondary Button
       {
-        'text-surface-950':
+        'text-surface-50':
           props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
-        '': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
+        'background': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
         'border border-surface-800':
           props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,
       },

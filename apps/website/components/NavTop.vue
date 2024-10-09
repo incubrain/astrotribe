@@ -61,7 +61,7 @@ const websiteLinks = [
         key: 'blog-home',
         label: 'All',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/all',
+        url: '/blog/category/all/page/1',
         visible: true,
         disabled: false,
       },
@@ -69,7 +69,7 @@ const websiteLinks = [
         key: 'blog-dark-sky-conservation',
         label: 'Dark Sky Conservation',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/dark-sky-conservation',
+        url: '/blog/category/dark-sky-conservation/page/1',
         visible: true,
         disabled: false,
       },
@@ -77,7 +77,7 @@ const websiteLinks = [
         key: 'blog-people-of-space',
         label: 'Peoples of Space',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/people-of-space',
+        url: '/blog/category/people-of-space/page/1',
         visible: true,
         disabled: false,
       },
@@ -85,7 +85,7 @@ const websiteLinks = [
         key: 'blog-space-exploration',
         label: 'Space Exploration',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/space-exploration',
+        url: '/blog/category/space-exploration/page/1',
         visible: true,
         disabled: false,
       },
@@ -93,7 +93,7 @@ const websiteLinks = [
         key: 'blog-sustainable-development',
         label: 'Sustainable Development',
         icon: 'material-symbols:menu-book-outline',
-        url: '/blog/sustainable-development',
+        url: '/blog/category/sustainable-development/page/1',
         visible: true,
         disabled: false,
       },
@@ -184,7 +184,7 @@ watch(
         <div class="px-4 py-2">
           <NuxtLink
             :to="item.url"
-            class="cursor-pointer text-white"
+            class="cursor-pointer text-white text-nowrap"
           >
             <p class="flex items-center gap-1">
               {{ item.label }}

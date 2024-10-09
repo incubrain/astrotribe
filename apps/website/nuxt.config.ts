@@ -26,7 +26,13 @@ export default defineNuxtConfig({
   extends: ['../../layers/base'],
 
   build: {
-    transpile: ['../../layers/base'],
+    transpile: ['../../layers/base', 'embla-carousel-vue', 'embla-carousel-autoplay'],
+  },
+
+  routeRules: {
+    '/blog': { redirect: '/blog/category/all/page/1' },
+    '/blog/category': { redirect: '/blog/category/all/page/1' },
+    '/blog/category/*': { redirect: '/blog/category/all/page/1' },
   },
 
   // security: {
@@ -164,7 +170,7 @@ export default defineNuxtConfig({
   ssr: true,
 
   modules: [
-    '@nuxt/content',
+    '@nuxtjs/mdc',
     // 'nuxt-security',
     '@nuxtjs/seo',
     '@nuxt/devtools',
@@ -176,7 +182,65 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
+    '@nuxtjs/strapi',
   ],
+
+  strapi: {
+    version: 'v4',
+    devtools: true,
+  },
+
+  generate: {
+    routes: async () => {
+      const categories = [
+        'all',
+        'people-of-space',
+        'space-exploration',
+        'dark-sky-conservation',
+        'sustainable-development',
+      ]
+
+      const pageSize = 10 // Number of articles per page
+      const routes = []
+
+      const strapiBaseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+
+      for (const category of categories) {
+        // Add the category route without a page number
+        routes.push(`/blog/category/${category}`)
+
+        // Construct the query params for Strapi v4
+        let query = '?pagination[pageSize]=0'
+
+        if (category !== 'all') {
+          query += `&filters[category][slug][$eq]=${category}`
+        }
+
+        // Fetch the total count of articles for the category
+        const res = await fetch(`${strapiBaseUrl}/api/articles${query}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await res.json()
+
+        const totalCount = data.meta.pagination.total
+        console.log(`Strapi Total count for category '${category}':`, totalCount)
+        const totalPages = Math.ceil(totalCount / pageSize)
+
+        for (let page = 1; page <= totalPages; page++) {
+          routes.push({
+            route: `/blog/category/${category}/page/${page}`,
+            payload: {
+              totalPages,
+            },
+          })
+        }
+      }
+
+      return routes
+    },
+  },
 
   nitro: {
     // debug: true,
