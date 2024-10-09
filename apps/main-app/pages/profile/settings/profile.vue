@@ -46,24 +46,11 @@ const SettingsAccountValidation = z.object({
 
 const currentUser = useCurrentUser()
 
-const {
-  store: userProfile,
-  loadMore,
-  refresh,
-} = useSelectData<User>('user_profiles', {
-  columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: { eq: currentUser.profile.id } },
-  initialFetch: true,
-  limit: 1,
-})
-
 const profileCopy = ref({})
 
-watch(userProfile, () => {
-  profileCopy.value = { ...userProfile.items[0] }
+onMounted(() => {
+  profileCopy.value = { ...currentUser.profile }
 })
-
-const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 
 const updateProfileImage = (newImage: string) => {
   const avatar = `${newImage}?v=${Date.now()}`
@@ -81,7 +68,7 @@ definePageMeta({
 <template>
   <div>
     <UserSettingsCard
-      v-if="userProfile"
+      v-if="currentUser"
       :title="{
         main: 'Account Profile',
         subtitle: 'Update your account information',
