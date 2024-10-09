@@ -22,6 +22,7 @@ interface UploadOptions {
   allowedMimeTypes?: string[]
   serverSideOptimize?: boolean
   useServerUpload?: boolean
+  replace?: boolean
 }
 
 interface UploadResult {
@@ -45,11 +46,11 @@ export function useFileUpload() {
   const isProcessing = computed(() => uploadQueue.value.length > 0 || currentUpload.value !== null)
 
   const getFilePath = (fileName: string, options: UploadOptions): string => {
-    const { bucket, path, fileType, userId } = options
+    const { bucket, path, fileType, userId, replace } = options
     const timestamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0]
     const uniqueId = uuidv4().slice(0, 8)
     const userPath = userId ? `${userId}/` : ''
-    return `${bucket}/${fileType}/${userPath}/${timestamp}_${uniqueId}_${fileName}`
+    return `${bucket}/${fileType}/${userPath}${path || ''}/${replace ? '' : `${timestamp}_${uniqueId}_`}${fileName}`
   }
 
   const validateFile = (file: File, options: UploadOptions): void => {
@@ -141,7 +142,7 @@ export function useFileUpload() {
         const filePath = getFilePath(file.name, options)
         const { data, error } = await supabase.storage.from(options.bucket).upload(filePath, file, {
           cacheControl: '3600',
-          upsert: false,
+          upsert: options.replace,
           contentType: file.type,
         })
 
