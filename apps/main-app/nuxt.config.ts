@@ -31,6 +31,10 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
+  experimental: {
+    asyncContext: true,
+  },
+
   tailwindcss: {
     configPath: `${currentDir}/tailwind.config.ts`,
     cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],

@@ -1,3 +1,5 @@
+import { serverSupabaseUser } from '#supabase/server'
+
 type PlanKey = 'free' | 'basic' | 'intermediate' | 'premium'
 type FeatureKey = 'ask'
 
@@ -50,17 +52,14 @@ const getFeatureFromPath = (path: string): FeatureKey => {
 export async function rateLimiter() {
   const event = useEvent()
   const feature = getFeatureFromPath(event.path)
-  const permissions = await getUserPermissions()
+  const user = await serverSupabaseUser(event)
 
-  if (!permissions) {
+  if (!user) {
     throw createError({ message: 'User not found, You must be logged in to use this endpoint' })
   }
-
-  const user = permissions.user
-
-  const userPlan: PlanKey = (user.user_plan as PlanKey) ?? 'free'
+  const userPlan = (user?.app_metadata.plan as PlanKey) ?? 'free'
   const storage = useStorage('session')
-  const storageKey = `rateLimit:endpoint:${userPlan}:${user.user_id}`
+  const storageKey = `rateLimit:endpoint:${userPlan}:${user?.id}`
   const settings = rateLimitConfig[userPlan][feature]
 
   let rateLimit = await storage.getItem<RateLimitInfo>(storageKey)
