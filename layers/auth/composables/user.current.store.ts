@@ -30,7 +30,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     last_sign_in_at: user.value?.last_sign_in_at,
     email: user.value?.email,
     providers: user.value?.app_metadata.providers,
-    avatar: user.value?.user_metadata.avatar ?? user.value?.user_metadata.avatar_url,
+    avatar: user.value?.user_metadata.avatar || user.value?.user_metadata.avatar_url,
     provider: user.value?.provider,
     user_role: user.value?.app_metadata?.role,
     user_plan: user.value?.app_metadata?.plan,
