@@ -50,7 +50,7 @@ const submitQuestion = async () => {
           v-model="question"
           auto-resize
           placeholder="Ask Your Question..."
-          class="flex max-h-[120px] w-full items-center justify-center bg-transparent px-4 py-2 outline-none"
+          class="flex resize-none max-h-[120px] w-full items-center justify-center bg-transparent px-4 py-2 outline-none"
           :pt="{ root: 'border-none' }"
           @keyup.enter="submitQuestion"
         />

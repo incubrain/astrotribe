@@ -27,8 +27,13 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/mdc',
     '@primevue/nuxt-module',
   ],
+
+  experimental: {
+    asyncContext: true,
+  },
 
   tailwindcss: {
     configPath: `${currentDir}/tailwind.config.ts`,

@@ -30,7 +30,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     last_sign_in_at: user.value?.last_sign_in_at,
     email: user.value?.email,
     providers: user.value?.app_metadata.providers,
-    avatar: user.value?.user_metadata.avatar ?? user.value?.user_metadata.avatar_url,
+    avatar: user.value?.user_metadata.avatar || user.value?.user_metadata.avatar_url,
     provider: user.value?.provider,
     user_role: user.value?.app_metadata?.role,
     user_plan: user.value?.app_metadata?.plan,
@@ -107,6 +107,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
       if (response.error) {
         toast.error({ summary: 'Could not update profile', message: response.error.message })
+        return
       } else {
         toast.success({
           summary: 'Profile updated successfully',
@@ -118,10 +119,11 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
 
       // update state
       logger.debug('Updating user profile state')
-      for (const key in validData[0]) {
-        if (Object.hasOwnProperty.call(validData[0], key)) {
+      for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+          profile.value[key] = data[key]
           logger.debug(`Updating profile field: ${key}`, {
-            newValue: validData[0][key],
+            newValue: data[key],
           })
         }
       }

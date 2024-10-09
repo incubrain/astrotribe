@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useFileUpload } from '#imports'
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import { useNotification } from '../../../layers/crud/composables/notification'
 import { useCurrentUser } from '../../../layers/crud/composables/user.current.store'
+import { useFileUpload } from '#imports'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
-
+const emit = defineEmits(['profile-pic-update'])
 const uploadInput = ref(null as HTMLInputElement | null)
 const image = ref<string>('')
 
@@ -143,20 +143,16 @@ async function uploadImage(blob: Blob) {
       format: 'webp',
       maxFileSize: MAX_FILE_SIZE,
       allowedMimeTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+      replace: props.cropperType === 'avatar',
       onProgress: (progress) => {
         console.log(`Upload progress: ${progress}%`)
       },
     })
 
-    await supabase
-      .from('user_profiles')
-      .update({ avatar: result.publicUrl })
-      .eq('id', profile.value.id)
+    if (props.cropperType === 'avatar') {
+      emit('profile-pic-update', result.publicUrl)
+    }
 
-    toast.success({
-      summary: 'Image uploaded',
-      message: 'Your image has been successfully uploaded and processed.',
-    })
     return result
   } catch (error: any) {
     setError(`Failed to upload image: ${error.message}`)

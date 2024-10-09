@@ -43,7 +43,7 @@ export const useChatStore = defineStore('chatStore', () => {
   const logger = useLogger(domainKey)
 
   const chat = ref({} as Chat)
-  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system', content: string }>>([])
+  const messages = ref<Array<{ role: 'user' | 'assistant' | 'system'; content: string }>>([])
 
   const question = ref('' as string)
 
@@ -91,7 +91,7 @@ export const useChatStore = defineStore('chatStore', () => {
     messages.value.push({ role, content })
   }
 
-  async function submitQuestion(args: { question: string, systemPrompt: string }) {
+  async function submitQuestion(args: { question: string; systemPrompt: string }) {
     console.log('searchMessage', args)
 
     if (loading.isLoading(domainKey)) {
@@ -105,7 +105,10 @@ export const useChatStore = defineStore('chatStore', () => {
 
       const messageHistory = messages.value.slice(-5) // Get last 5 messages
 
-      const formattedMessages = [{ role: 'system', content: args.systemPrompt }, ...messageHistory]
+      const formattedMessages = [
+        ...(args.systemPrompt ? [{ role: 'system', content: args.systemPrompt }] : []),
+        ...messageHistory,
+      ]
 
       const questionResponse = await fetch('/api/ai/ask', {
         method: 'POST',

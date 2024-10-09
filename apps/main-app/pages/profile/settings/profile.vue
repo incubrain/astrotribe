@@ -46,49 +46,16 @@ const SettingsAccountValidation = z.object({
 
 const currentUser = useCurrentUser()
 
-const {
-  store: userProfile,
-  loadMore,
-  refresh,
-} = useSelectData<User>('user_profiles', {
-  columns: 'id, given_name, surname, email, avatar, dob, username',
-  filters: { id: { eq: currentUser.profile.id } },
-  initialFetch: true,
-  limit: 1,
-})
-
 const profileCopy = ref({})
 
-watch(userProfile, () => {
-  profileCopy.value = { ...userProfile.items[0] }
+onMounted(() => {
+  profileCopy.value = { ...currentUser.profile }
 })
 
-const { uploadFile, isUploading, uploadProgress } = useFileUpload()
-
-const handleFileUpload = async (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file) return
-
-  try {
-    const result = await uploadFile(file, {
-      bucket: 'users',
-      path: 'profile-images',
-      fileType: 'profile',
-      serverSideOptimize: true, // Enable server-side optimization
-      maxWidth: 800,
-      maxHeight: 800,
-      quality: 80,
-      format: 'webp',
-      maxFileSize: 5 * 1024 * 1024, // 5MB
-      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-      onProgress: (progress) => {
-        console.log(`Upload progress: ${progress}%`)
-      },
-    })
-    console.log('File uploaded successfully:', result)
-  } catch (error) {
-    console.error('Error uploading file:', error)
-  }
+const updateProfileImage = (newImage: string) => {
+  const avatar = `${newImage}?v=${Date.now()}`
+  currentUser.updateProfile({ avatar })
+  profileCopy.value.avatar = avatar
 }
 
 definePageMeta({
@@ -101,7 +68,7 @@ definePageMeta({
 <template>
   <div>
     <UserSettingsCard
-      v-if="userProfile"
+      v-if="currentUser"
       :title="{
         main: 'Account Profile',
         subtitle: 'Update your account information',
@@ -111,18 +78,20 @@ definePageMeta({
         <div
           class="left-16 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-red-50"
         >
-          <IBImage
-            v-if="userProfile?.avatar"
-            :img="{
-              src: userProfile.avatar,
-              type: 'avatar',
-            }"
-            class="h-full w-full"
+          <PrimeAvatar
+            v-if="profileCopy && profileCopy.avatar"
+            :image="profileCopy.avatar"
+            shape="circle"
+            class="w-full h-full cursor-pointer"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+            crossorigin="anonymous"
           />
           <UploadCropper
             cropper-type="avatar"
-            class="absolute z-20"
+            class="absolute bottom-0 z-20"
             bucket="profile-public"
+            @profile-pic-update="updateProfileImage"
           />
         </div>
       </div>
