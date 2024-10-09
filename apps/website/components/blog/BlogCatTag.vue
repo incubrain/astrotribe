@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="flex flex-wrap gap-4">
-      <PrimeTag
-        :id="`${articleLink}-${category}`"
-        :value="useChangeCase(category, 'capitalCase').value"
-        :class="`${badgeColor(category)}`"
+      <!-- <PrimeTag
+        :id="`${category.slug}`"
+        :value="useChangeCase(category.name, 'capitalCase').value"
+        :class="`${badgeColor(category.name)}`"
       />
       <PrimeTag
         v-for="tag in tags"
-        :key="`${articleLink}-${tag}`"
+        :key="`${tag}`"
         :value="tag"
         severity="contrast"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -22,10 +22,6 @@ import type { ArticleTagsT, ArticleCategoriesT } from '~/types/articles'
 
 // TODO: Add full article as prop and types for article
 defineProps({
-  articleLink: {
-    type: String,
-    required: true,
-  },
   tags: {
     type: Array as PropType<ArticleTagsT[]>,
     required: false,

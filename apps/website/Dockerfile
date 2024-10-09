@@ -29,7 +29,7 @@
     RUN npx nx reset
     RUN npx nx --version
     
-    # Accept build-time arguments
+    # Accept build-time arguments (required for railway when using SSG)
     ARG NUXT_PUBLIC_AE_AUTH_URL
     ARG NUXT_PUBLIC_AE_LOGIN_URL
     ARG NUXT_PUBLIC_AE_APP_URL

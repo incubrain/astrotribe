@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import type { ArticleFullT } from '~/types/articles'
-
 const { width } = useWindowSize()
 
-const expandToc = computed(() => {
-  console.log('width.value', width.value)
-  return width.value < 1280
-})
+const expandToc = computed(() => width.value < 1280)
 
 const articleContent = ref<HTMLElement | null>(null)
 const articleHtml = ref<string>('')
-
-watch(
-  () => articleContent.value,
-  async (newVal) => {
-    if (newVal && p.article.body) {
-      // awiat timeout of 1 seconds
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      articleHtml.value = newVal.innerHTML
-    }
-  },
-)
 
 const p = defineProps({
   article: {
@@ -29,18 +13,88 @@ const p = defineProps({
   },
 })
 
-// !todo:low add full width images
-// !todo:fun - add full width image grids with text
-// !todo:med - add a read time to the article
-// !todo:med - add social links to author block and links to profile
-// !todo:med - add links to the tags and category
+const ast = ref<MDCParserResult | null>(null)
+const parse = useMarkdownParser()
+
+// Function to render blocks as markdown
+const renderBlocksAsMarkdown = (blocks) => {
+  return blocks
+    .map((block) => {
+      if (block.__component === 'shared.rich-text') {
+        return block.body
+      }
+      // Add more conditions for other block types if needed
+      return ''
+    })
+    .join('\n\n')
+}
+
+onBeforeMount(async () => {
+  if (p.article.blocks) {
+    const markdown = renderBlocksAsMarkdown(p.article.blocks)
+    ast.value = await parse(markdown)
+  }
+})
+
+interface TocLink {
+  id: string
+  text: string
+  depth: number
+  children: TocLink[]
+}
+
+const extractToc = (markdown: any): TocLink[] => {
+  const tocLinks: TocLink[] = []
+  let currentH2: TocLink | null = null
+
+  markdown.forEach((block) => {
+    const lines = block.body.split('\n')
+
+    lines.forEach((line) => {
+      const match = line.match(/^(##|###)\s+(.+)$/)
+      if (match) {
+        const depth = match[1].length // 2 for h2, 3 for h3
+        const text = match[2].trim()
+
+        // Generate an id from the text
+        const id = text
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w-]+/g, '')
+
+        const tocLink: TocLink = { id, text, depth, children: [] }
+
+        if (depth === 2) {
+          currentH2 = tocLink
+          tocLinks.push(tocLink)
+        } else if (depth === 3) {
+          if (currentH2) {
+            currentH2.children.push(tocLink)
+          } else {
+            // If there's no current H2, treat H3 as top-level
+            tocLinks.push(tocLink)
+          }
+        }
+      }
+    })
+  })
+
+  return tocLinks
+}
+
+watch(
+  () => articleContent.value,
+  async (newVal) => {
+    if (newVal && ast.value) {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      articleHtml.value = newVal.innerHTML
+    }
+  },
+)
 </script>
 
 <template>
-  <div
-    v-if="article.body"
-    class="max-w-full pb-10"
-  >
+  <div class="max-w-full pb-10">
     <main>
       <BlogArticleHero :article="article" />
       <div
@@ -49,33 +103,32 @@ const p = defineProps({
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
             class="background border-color rounded-md border p-4 xl:sticky xl:left-0 xl:top-24 xl:border-none xl:p-0"
-            :toc="article.body.toc.links"
+            :toc="extractToc(article.blocks)"
             :updated-at="article.updatedAt"
-            :version="article.version"
             :expanded="expandToc"
           />
         </div>
         <div class="xl:padded-x xl:col-start-2">
-          <ContentRenderer :value="article">
-            <div class="pb-12">
-              <div
-                ref="articleContent"
-                class="mx-auto space-y-8"
-              >
-                <ContentRendererMarkdown
-                  :value="article.body"
+          <div class="pb-12">
+            <div
+              ref="articleContent"
+              class="mx-auto space-y-8"
+            >
+              <Suspense>
+                <MDCRenderer
+                  v-if="ast?.body"
                   class="nuxt-content"
-                >
-                  {{ article.body }}
-                </ContentRendererMarkdown>
-              </div>
-              <BlogArticleShare
-                :link="article._id.replaceAll(':', '/')"
-                :summary="article.description"
-              />
-              <BlogArticleAuthorCard :author-ids="article.authorIds" />
+                  :body="ast.body"
+                  :data="ast.data"
+                />
+              </Suspense>
             </div>
-          </ContentRenderer>
+            <BlogArticleShare
+              :link="article.slug"
+              :summary="article.description"
+            />
+            <BlogArticleAuthorCard :authors="[article.author]" />
+          </div>
         </div>
       </div>
     </main>

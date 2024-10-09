@@ -8,24 +8,21 @@ defineProps({
   },
 })
 
-// !todo: add links to the tags and category
-// !todo: add a read time to the article
-// !todo: add link to author profile
-// consider making read more button more subtle
+const baseUrl = process.env.STRAPI_URL
 </script>
 
 <template>
-  <PrimeCard>
+  <PrimeCard v-if="article">
     <template #header>
       <BlogCatTag
+        v-if="article.tags"
         :tags="article.tags"
         :category="article.category"
-        :article-link="article._path.split('/')[2]"
         class="p-4"
       />
       <IBImage
         :img="{
-          src: `images/blog/${article.category}/${article.featured_image}`,
+          src: `${baseUrl}${article.cover.url}`,
           width: '400',
           height: '300',
           quality: '80',
@@ -34,7 +31,7 @@ defineProps({
       />
     </template>
     <template #title>
-      <NuxtLink :to="article._path">
+      <NuxtLink :to="`/blog/${article.slug}`">
         <h3 class="text-xl font-bold lg:text-xl">
           {{ article.title }}
         </h3>
@@ -45,23 +42,18 @@ defineProps({
         <p class="text-primary">
           {{ useDateFormat(article.publishedAt, 'DD MMM YYYY').value }}
         </p>
-        <BlogAuthor :author-ids="article.authorIds">
-          <template #default="{ authors }">
-            <span
-              v-if="authors"
-              class="flex gap-2"
-            >
-              by
-              <span
-                v-for="(author, i) in authors"
-                :key="`author-${i}`"
-              >
-                {{ author?.name.given }}
-                {{ author?.name.surname }}
-              </span>
-            </span>
-          </template>
-        </BlogAuthor>
+        <!-- <span
+          v-if="article.author"
+          class="flex gap-2"
+        >
+          by
+          <span
+            v-for="author in article.author"
+            :key="author.id"
+          >
+            {{ author.name }}
+          </span>
+        </span> -->
       </div>
     </template>
     <template #content>
@@ -73,7 +65,7 @@ defineProps({
     </template>
     <template #footer>
       <div class="flex w-full justify-end">
-        <NuxtLink :to="article._path">
+        <NuxtLink :to="`/blog/${article.slug}`">
           <PrimeButton outlined> Read More </PrimeButton>
         </NuxtLink>
       </div>
