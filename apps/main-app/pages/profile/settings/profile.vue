@@ -65,30 +65,9 @@ watch(userProfile, () => {
 
 const { uploadFile, isUploading, uploadProgress } = useFileUpload()
 
-const handleFileUpload = async (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file) return
-
-  try {
-    const result = await uploadFile(file, {
-      bucket: 'users',
-      path: 'profile-images',
-      fileType: 'profile',
-      serverSideOptimize: true, // Enable server-side optimization
-      maxWidth: 800,
-      maxHeight: 800,
-      quality: 80,
-      format: 'webp',
-      maxFileSize: 5 * 1024 * 1024, // 5MB
-      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-      onProgress: (progress) => {
-        console.log(`Upload progress: ${progress}%`)
-      },
-    })
-    console.log('File uploaded successfully:', result)
-  } catch (error) {
-    console.error('Error uploading file:', error)
-  }
+const updateProfileImage = (avatar: string) => {
+  currentUser.updateProfile({ avatar })
+  profileCopy.value.avatar = avatar
 }
 
 definePageMeta({
@@ -124,6 +103,7 @@ definePageMeta({
             cropper-type="avatar"
             class="absolute bottom-0 z-20"
             bucket="profile-public"
+            @profile-pic-update="updateProfileImage"
           />
         </div>
       </div>
