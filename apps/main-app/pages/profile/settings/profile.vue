@@ -111,17 +111,18 @@ definePageMeta({
         <div
           class="left-16 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-red-50"
         >
-          <IBImage
-            v-if="userProfile?.avatar"
-            :img="{
-              src: userProfile.avatar,
-              type: 'avatar',
-            }"
-            class="h-full w-full"
+          <PrimeAvatar
+            v-if="profileCopy && profileCopy.avatar"
+            :image="profileCopy.avatar"
+            shape="circle"
+            class="w-full h-full cursor-pointer"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+            crossorigin="anonymous"
           />
           <UploadCropper
             cropper-type="avatar"
-            class="absolute z-20"
+            class="absolute bottom-0 z-20"
             bucket="profile-public"
           />
         </div>
