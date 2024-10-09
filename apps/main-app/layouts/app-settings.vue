@@ -18,14 +18,14 @@ const settingsRoutes = computed(() => [
     visible: user.profile?.providers.includes('email'),
     disabled: false,
   },
-  {
-    key: 'settings-payments',
-    label: 'Payments',
-    url: '/profile/settings/payments',
-    icon: 'mdi:credit-card',
-    visible: true,
-    disabled: false,
-  },
+  // {
+  //   key: 'settings-payments',
+  //   label: 'Payments',
+  //   url: '/profile/settings/payments',
+  //   icon: 'mdi:credit-card',
+  //   visible: true,
+  //   disabled: false,
+  // },
   {
     key: 'settings-notifications',
     label: 'Notifications',
