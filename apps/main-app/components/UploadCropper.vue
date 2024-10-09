@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useFileUpload } from '#imports'
 import type { CropperResult, ImageTransforms } from 'vue-advanced-cropper'
 import { Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import { useNotification } from '../../../layers/crud/composables/notification'
 import { useCurrentUser } from '../../../layers/crud/composables/user.current.store'
+import { useFileUpload } from '#imports'
 
 type CropperConfigTypes = 'avatar' | 'default'
 
@@ -143,6 +143,7 @@ async function uploadImage(blob: Blob) {
       format: 'webp',
       maxFileSize: MAX_FILE_SIZE,
       allowedMimeTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+      replace: props.cropperType === 'avatar',
       onProgress: (progress) => {
         console.log(`Upload progress: ${progress}%`)
       },
