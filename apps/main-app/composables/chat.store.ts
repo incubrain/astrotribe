@@ -105,7 +105,10 @@ export const useChatStore = defineStore('chatStore', () => {
 
       const messageHistory = messages.value.slice(-5) // Get last 5 messages
 
-      const formattedMessages = [{ role: 'system', content: args.systemPrompt }, ...messageHistory]
+      const formattedMessages = [
+        ...(args.systemPrompt ? [{ role: 'system', content: args.systemPrompt }] : []),
+        ...messageHistory,
+      ]
 
       const questionResponse = await fetch('/api/ai/ask', {
         method: 'POST',
