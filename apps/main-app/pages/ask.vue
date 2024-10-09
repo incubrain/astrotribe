@@ -254,6 +254,12 @@ const selectAgent = (agent: ChatAgent) => {
   }
 }
 
+const closeAgent = () => {
+  selectedAgent.value = null
+  selectedStarterPrompts.value = []
+  conversation.value = []
+}
+
 const selectPrompt = (prompt: string) => {
   message.value = prompt
   selectedStarterPrompts.value = []
@@ -380,7 +386,16 @@ const responsiveOptions = ref([
           v-if="selectedStarterPrompts.length"
           class="space-y-2 pb-2"
         >
-          <p class="text-center font-semibold"> Example Questions </p>
+          <div class="flex justify-center items-center">
+            <p class="text-center flex-grow font-semibold"> Example Questions </p>
+            <PrimeButton
+              severity="secondary"
+              class="text-end ml-auto text-white font-semibold"
+              @click="closeAgent"
+            >
+              X
+            </PrimeButton>
+          </div>
           <PrimeButton
             v-for="prompt in selectedStarterPrompts"
             :key="prompt"
