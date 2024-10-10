@@ -20,7 +20,13 @@ export default [
     name: 'strapi::cors',
     config: {
       enabled: true,
-      origin: ['http://localhost:3000'],
+      origin: [
+        'http://localhost:3000',
+        'https://staging.website.astronera.org',
+        'https://astronera.org',
+        'https://staging.cms.astronera.org',
+        'https://cms.astronera.org',
+      ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'sentry-trace', 'baggage'],
       expose: ['WWW-Authenticate', 'Server-Authorization'],
