@@ -183,6 +183,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
     '@nuxtjs/strapi',
+    '@nuxt/content',
   ],
 
   strapi: {
@@ -193,7 +194,7 @@ export default defineNuxtConfig({
       path: '/',
       maxAge: 14 * 24 * 60 * 60,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: true
+      sameSite: true,
     },
     cookieName: 'strapi_jwt',
   },
