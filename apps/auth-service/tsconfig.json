@@ -3,5 +3,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
+  "exclude": ["node_modules", "dist", "tmp"]
 }

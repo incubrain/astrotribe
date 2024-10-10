@@ -8,7 +8,8 @@
       "@ib/client/*": ["libs/client/*"],
       "@ib/server": ["libs/server/index.ts"],
       "@ib/server/*": ["libs/server/*"],
-      "@website/*": ["apps/website/*"]
+      "@website/*": ["apps/website/*"],
+      "@auth-service/*": ["apps/auth-service/*"]
     },
     "esModuleInterop": true,
     "moduleResolution": "node",
