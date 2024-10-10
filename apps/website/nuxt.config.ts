@@ -186,8 +186,16 @@ export default defineNuxtConfig({
   ],
 
   strapi: {
+    prefix: '/api',
     version: 'v4',
     devtools: true,
+    cookie: {
+      path: '/',
+      maxAge: 14 * 24 * 60 * 60,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: true
+    },
+    cookieName: 'strapi_jwt',
   },
 
   generate: {
@@ -203,7 +211,7 @@ export default defineNuxtConfig({
       const pageSize = 10 // Number of articles per page
       const routes = []
 
-      const strapiBaseUrl = process.env.STRAPI_URL || 'http://localhost:1337'
+      const strapiBaseUrl = process.env.STRAPI_URL || 'http://strapi:1337'
 
       for (const category of categories) {
         // Add the category route without a page number

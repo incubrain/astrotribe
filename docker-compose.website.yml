@@ -1,0 +1,73 @@
+services:
+  strapi:
+    build:
+      context: ./apps/cms
+      dockerfile: Dockerfile
+    image: cms
+    container_name: strapi
+    ports:
+      - '1337:1337'
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=1337
+      - APP_KEYS=hzD2uEmNx0oeTio1nkAliA==,2nsFZFEZqwlednX6Z+n8hQ==,uHBO8R2S8TgT+4/5U3D0Ew==,eJg+9WdVPM1wigrr1QAs9A==
+      - API_TOKEN_SALT=p/A0ZPOuZwizyOfg15aPxw==
+      - ADMIN_JWT_SECRET=ktIm9hdA8hldeD+XVARBDw==
+      - JWT_SECRET=/wY80OqWQiVKagSd7uQkvg==
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=strapi
+      - DATABASE_PASSWORD=strapi
+      - DATABASE_SSL=false
+    networks:
+      - strapi-network
+
+  db:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - strapi-network
+
+  website:
+    build:
+      context: .
+      dockerfile: apps/website/Dockerfile.dev
+    image: website
+    container_name: website
+    ports:
+      - '3000:3000'
+    depends_on:
+      - strapi
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - STRAPI_URL=http://strapi:1337  # Change this line
+      - STRAPI_PUBLIC_URL=http://localhost:1337
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_OPTIONS=--experimental-json-modules
+    networks:
+      - strapi-network
+
+volumes:
+  pgdata:
+
+networks:
+  strapi-network:
+    driver: bridge

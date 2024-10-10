@@ -6,7 +6,7 @@ defineProps<{
   publishedAt: string
 }>()
 
-const baseUrl = process.env.STRAPI_URL
+const baseUrl = process.env.STRAPI_PUBLIC_URL
 </script>
 
 <template>
