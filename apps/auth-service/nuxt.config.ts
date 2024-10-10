@@ -9,7 +9,9 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
   extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
-
+  build: {
+    transpile: ['../../layers/base'],
+  },
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
