@@ -17,18 +17,18 @@ const appLinks = ref([
     slug: '/news',
     icon: 'mdi:newspaper-variant-outline',
   },
-  {
-    id: 3,
-    label: 'Companies',
-    slug: '/companies',
-    icon: 'material-symbols:location-on-rounded',
-  },
-  {
-    id: 4,
-    label: 'Q&A',
-    slug: '/ask',
-    icon: 'mdi:information-slab-box',
-  },
+  // {
+  //   id: 3,
+  //   label: 'Companies',
+  //   slug: '/companies',
+  //   icon: 'material-symbols:location-on-rounded',
+  // },
+  // {
+  //   id: 4,
+  //   label: 'Q&A',
+  //   slug: '/ask',
+  //   icon: 'mdi:information-slab-box',
+  // },
 ] as PageType[])
 
 export default function usePages() {
