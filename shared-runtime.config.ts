@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       strapi: {
-        url: process.env.STRAPI_PUBLIC_URL || 'http://localhost:1337',
+        url: '',
       },
       supabaseUrl: '',
       supabaseKey: '',
@@ -28,7 +28,7 @@ export default defineNuxtConfig({
         },
       },
     },
-    strapiUrl: process.env.STRAPI_URL || 'http://strapi:1337',
+    strapiUrl: '',
     supabaseServiceKey: '',
     googleApiKey: '',
     nasaApiKey: '',
