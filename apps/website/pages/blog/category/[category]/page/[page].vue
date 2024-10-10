@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import { useRoute } from '#imports'
-import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 
 const route = useRoute()
 const pageParam = computed(() => Number(route.params.page) || 1)
