@@ -1,0 +1,30 @@
+{
+  "files": [],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ib/client": ["libs/client/index.ts"],
+      "@ib/client/*": ["libs/client/*"],
+      "@ib/server": ["libs/server/index.ts"],
+      "@ib/server/*": ["libs/server/*"],
+      "@website/*": ["apps/website/*"],
+      "@auth-service/*": ["apps/auth-service/*"]
+    },
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true, // good for performance, skips .d.ts files
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["node", "vue"],
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "allowJs": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"]
+}

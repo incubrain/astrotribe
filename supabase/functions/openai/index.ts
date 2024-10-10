@@ -32,16 +32,15 @@ if (!supabaseKey) {
 console.log('Hello from Functions!')
 
 const openai = new OpenAI({
-  apiKey: openAiApiKey
+  apiKey: openAiApiKey,
 })
 
 const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': 'http://localhost:3000',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey'
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-client-info, apikey',
 }
-
 
 Deno.serve(async (req) => {
   // Handle CORS preflight request
@@ -59,7 +58,7 @@ Deno.serve(async (req) => {
     console.error('Invalid JSON input:', error)
     return new Response(JSON.stringify({ error: 'Invalid JSON input' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
@@ -68,14 +67,14 @@ Deno.serve(async (req) => {
   if (!query) {
     return new Response(JSON.stringify({ error: 'Query is required' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
   if (!user_id) {
     return new Response(JSON.stringify({ error: 'Plan is required' }), {
       headers,
-      status: 400
+      status: 400,
     })
   }
 
@@ -88,7 +87,7 @@ Deno.serve(async (req) => {
       'query',
       query.trim().toLowerCase(),
       query.trim().toLowerCase() === 'tell me about dark matter',
-      query === 'tell me about dark matter'
+      query === 'tell me about dark matter',
     )
     const { data: existingQuery, error: checkError } = await supabaseServiceClient
       .from('searches')
@@ -115,7 +114,7 @@ Deno.serve(async (req) => {
       const { error: updateError } = await supabaseServiceClient
         .from('searches')
         .update({
-          user_ids: updatedUserIds
+          user_ids: updatedUserIds,
         })
         .eq('input', normalizedQuery)
 
@@ -128,7 +127,7 @@ Deno.serve(async (req) => {
       const embeddingResponse = await openai.embeddings.create({
         model: 'text-embedding-3-small',
         input: normalizedQuery,
-        encoding_format: 'float'
+        encoding_format: 'float',
       })
       embedding = embeddingResponse.data[0].embedding
       const tokensUsed = embeddingResponse.usage.total_tokens
@@ -138,7 +137,7 @@ Deno.serve(async (req) => {
         user_ids: [user_id],
         input: normalizedQuery,
         embedding: embedding,
-        tokens_used: tokensUsed
+        tokens_used: tokensUsed,
       })
 
       if (questionError) {
@@ -151,7 +150,7 @@ Deno.serve(async (req) => {
     const { data: documents, error } = await supabaseServiceClient.rpc('match_research', {
       query_embedding: embedding,
       match_threshold: match_threshold || 0.78,
-      match_count: match_count || 10
+      match_count: match_count || 10,
     })
 
     if (error) {
@@ -160,13 +159,13 @@ Deno.serve(async (req) => {
     }
 
     return new Response(JSON.stringify(documents), {
-      headers
+      headers,
     })
   } catch (error: any) {
     console.error('Error processing request:', error)
     return new Response(JSON.stringify({ error: error.message }), {
       headers,
-      status: 500
+      status: 500,
     })
   }
 })

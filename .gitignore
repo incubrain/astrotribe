@@ -1,16 +1,82 @@
 node_modules
-.nuxt
-.vercel
-.nitro
-.cache
-.output
 .env
-dist
+.npm_token
+.modules
+
+# CI
 .unlighthouse
-private-data
-data/**
 /test-results/
 /blob-report/
-.DS_Store
+.lighthouseci
+.clinic
+
+
+
+# compiled output
+dist
+tmp
+/out-tsc
+.env
+.npm_token
+**.eslintcache
+**.temp
+**.data
+**.branches
+
+# dependencies
+node_modules
+.env
+**.env
+supabase/functions/.env
+.npm_token
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+**/.env
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+**/data/logs
 docs/**
+debug/**
+
+
+# System Files
+.
+Thumbs.db
+**.DS_Store
+
+.nx/cache
+.nx/workspace-data
 .nx/
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache.npm_token
+supabase/functions/.env
+.env
+
+.cache

@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/server",
+  "sourceRoot": "libs/server",
+  "projectType": "library",
+  "tags": [],
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "libs/server/dist",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/server/dist",
+        "main": "libs/server/index.ts",
+        "tsConfig": "libs/server/tsconfig.lib.json",
+        "assets": ["libs/server/*.md"]
+      }
+    }
+  }
+}

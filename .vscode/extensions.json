@@ -1,18 +1,3 @@
 {
-	"recommendations": [
-		"aaron-bond.better-comments",
-		"dbaeumer.vscode-eslint",
-		"github.codespaces",
-		"github.vscode-pull-request-github",
-		"ecmel.vscode-html-css",
-		"ms-vscode.vscode-typescript-next",
-		"christian-kohler.path-intellisense",
-		"ms-vscode.powershell",
-		"bradlc.vscode-tailwindcss",
-		"vue.volar",
-		"vue.vscode-typescript-vue-plugin",
-		"sdras.vue-vscode-snippets",
-		"nuxt.mdc",
-    "heybourn.headwind"
-	]
+  "recommendations": ["nrwl.angular-console", "esbenp.prettier-vscode"]
 }
