@@ -6,15 +6,10 @@ WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
+COPY package-lock.json ./
 
-# Display the contents of the current directory
-RUN ls -la
-
-# Display the contents of package-lock.json
-RUN head -n 20 package-lock.json
-
-# Try to install dependencies
-RUN npm ci || (echo "npm ci failed, falling back to npm install" && npm install)
+# Install dependencies
+RUN npm ci
 
 # Copy the entire project, including configuration files
 COPY . .
