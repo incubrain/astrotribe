@@ -83,7 +83,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@nrwl/js": "^19.8.4",
     "@nuxt/devtools": "^1.0.0",
     "@nuxt/eslint-config": "~0.5.6",
     "@nuxt/kit": "^3.13.2",
