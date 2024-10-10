@@ -4,8 +4,30 @@ import { useRoute } from '#imports'
 import type { ArticleCardT, ArticleCategoriesT } from '~/types/articles'
 
 const route = useRoute()
-const categoryParam = computed(() => (String(route.params.category) as ArticleCategoriesT) || 'all')
 const pageParam = computed(() => Number(route.params.page) || 1)
+
+const validCategories = [
+  'all',
+  'people-of-space',
+  'space-exploration',
+  'dark-sky-conservation',
+  'sustainable-development',
+] as const
+
+type ArticleCategoriesT = (typeof validCategories)[number]
+
+function isValidCategory(category: any): category is ArticleCategoriesT {
+  return validCategories.includes(category as ArticleCategoriesT)
+}
+
+const categoryParam = computed<ArticleCategoriesT>(() => {
+  const category = route.params.category
+  // If category is undefined, null, or not a valid category, default to 'all'
+  if (!isValidCategory(category)) {
+    return 'all'
+  }
+  return category
+})
 
 const pageSize = 10 // Number of articles per page
 
@@ -132,7 +154,7 @@ console.log('articles', articles)
 <template>
   <div>
     <CommonHero
-      v-if="categoryParam"
+      v-if="categoryParam && categoryInfo[categoryParam as ArticleCategoriesT]"
       :img="{
         src: heroImage,
         alt: `AstronEra ${useChangeCase(categoryParam, 'capitalCase').value} Hero Image`,
@@ -182,6 +204,6 @@ console.log('articles', articles)
       :current-page="pageParam"
       :total-pages="totalPages"
       :base-url="`/blog/category/${categoryParam.value}`"
-      />
+    />
   </div>
 </template>
