@@ -26,6 +26,8 @@ export default [
         'https://astronera.org',
         'https://staging.cms.astronera.org',
         'https://cms.astronera.org',
+        'https://*.astronera.org',
+        'https://*.up.railway.app',
       ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'sentry-trace', 'baggage'],
