@@ -1,0 +1,47 @@
+[
+  {
+    "timestamp": "2024-09-16T13:58:29.565Z",
+    "scores": {
+      "performance": 0.55,
+      "accessibility": 0.71,
+      "bestPractices": 1,
+      "seo": 0.77
+    },
+    "metrics": {
+      "firstContentfulPaint": 14556.840200000002,
+      "largestContentfulPaint": 19928.260299999994,
+      "totalBlockingTime": 107.5,
+      "cumulativeLayoutShift": 0.000018834689720059318
+    }
+  },
+  {
+    "timestamp": "2024-09-16T13:58:50.178Z",
+    "scores": {
+      "performance": 0.55,
+      "accessibility": 0.71,
+      "bestPractices": 1,
+      "seo": 0.77
+    },
+    "metrics": {
+      "firstContentfulPaint": 14554.922000000002,
+      "largestContentfulPaint": 19579.92199999999,
+      "totalBlockingTime": 99,
+      "cumulativeLayoutShift": 0.000018834689720059318
+    }
+  },
+  {
+    "timestamp": "2024-09-16T13:59:10.409Z",
+    "scores": {
+      "performance": 0.55,
+      "accessibility": 0.71,
+      "bestPractices": 1,
+      "seo": 0.77
+    },
+    "metrics": {
+      "firstContentfulPaint": 14472.037000000004,
+      "largestContentfulPaint": 19434.055500000002,
+      "totalBlockingTime": 103,
+      "cumulativeLayoutShift": 0.000018834689720059318
+    }
+  }
+]

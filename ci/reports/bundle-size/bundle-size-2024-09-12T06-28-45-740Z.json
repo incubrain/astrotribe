@@ -1,0 +1,69 @@
+{
+  "date": "2024-09-12T06:28:45.739Z",
+  "clientSize": 86347587,
+  "serverSize": 90151797,
+  "totalSize": 176499384,
+  "clientSizeMB": "82.347",
+  "serverSizeMB": "85.975",
+  "totalSizeMB": "168.323",
+  "gitCommit": "c1012142bac01310aa4152371406be205612fabc",
+  "buildTime": 2579,
+  "nodeVersion": "v20.17.0",
+  "environment": "development",
+  "gzipClientSize": 77087642,
+  "gzipServerSize": 31983791,
+  "clientFileCount": 386,
+  "serverFileCount": 3412,
+  "largestFiles": [
+    {
+      "name": "full-conference-report.pdf",
+      "size": 8249681,
+      "path": "conference/full-conference-report.pdf"
+    },
+    {
+      "name": "bhakti-mithagri.jpg",
+      "size": 7724247,
+      "path": "conference/speakers/bhakti-mithagri.jpg"
+    },
+    {
+      "name": "amshu-cr.jpg",
+      "size": 4207215,
+      "path": "conference/speakers/amshu-cr.jpg"
+    },
+    {
+      "name": "maria-alejandra-diaz.jpg",
+      "size": 3629228,
+      "path": "conference/speakers/maria-alejandra-diaz.jpg"
+    },
+    {
+      "name": "vedvrat-bedekar.jpg",
+      "size": 3480013,
+      "path": "conference/speakers/vedvrat-bedekar.jpg"
+    },
+    {
+      "name": "upasana-dasgupta.jpg",
+      "size": 2904284,
+      "path": "conference/speakers/upasana-dasgupta.jpg"
+    },
+    {
+      "name": "sonam-wangchuk.jpg",
+      "size": 2872227,
+      "path": "conference/speakers/sonam-wangchuk.jpg"
+    },
+    {
+      "name": "samyukta-manikumar.jpg",
+      "size": 2765453,
+      "path": "conference/speakers/samyukta-manikumar.jpg"
+    },
+    {
+      "name": "albert-forson.jpg",
+      "size": 2728373,
+      "path": "conference/speakers/albert-forson.jpg"
+    },
+    {
+      "name": "david-ault.jpg",
+      "size": 2650092,
+      "path": "conference/speakers/david-ault.jpg"
+    }
+  ]
+}
