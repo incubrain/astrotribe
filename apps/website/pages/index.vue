@@ -100,6 +100,7 @@ const features = [
     <HomeHero />
     <div class="wrapper padded-x">
       <HomeTrusted />
+      <p>testing an update</p>
       <LazyHomeFeatures class="py-16 md:py-24" />
       <LazyHomeHeading
         heading="That's not all..."

@@ -1,0 +1,21 @@
+# Use an official Node.js runtime as a parent image
+FROM node:20.17.0
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Install nx globally using the version from package.json
+RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
+    npm install -g nx@$NX_VERSION
+
+# Expose the port Nuxt uses
+EXPOSE 3000
+
+# Start the development server with the --experimental-json-modules flag
+CMD ["node", "--experimental-json-modules", "node_modules/.bin/nx", "serve", "website", "--host=0.0.0.0"]

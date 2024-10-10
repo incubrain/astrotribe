@@ -1,11 +1,11 @@
 {
   "name": "@astronera/monorepo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:website": "nx serve website --verbose",
+    "dev:website": "docker-compose -f docker-compose.website.yml up",
     "dev:auth": "nx serve auth-service --verbose",
     "dev:app": "nx run-many -t serve -p main-app,auth-service --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
