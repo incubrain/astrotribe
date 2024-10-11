@@ -119,12 +119,6 @@ definePageMeta({
           >
             Save changes
           </PrimeButton>
-          <PrimeButton
-            class="text-white"
-            @click="currentUser.testUpdateProfile()"
-          >
-            Test changes
-          </PrimeButton>
         </div>
       </div>
     </UserSettingsCard>
