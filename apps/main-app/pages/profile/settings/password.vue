@@ -19,7 +19,6 @@ const schema = [
 ]
 
 const currentUser = useCurrentUser()
-const auth = useAuth()
 const toast = useNotification()
 
 const {

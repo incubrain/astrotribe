@@ -33,7 +33,7 @@
           cosmos together.
         </p>
         <div>
-          <NuxtLink to="auth/register">
+          <NuxtLink :to="`${$config.public.aeAuthUrl}/register`">
             <PrimeButton> Signup, it's FREE! </PrimeButton>
           </NuxtLink>
         </div>

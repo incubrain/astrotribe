@@ -209,30 +209,28 @@ watch(
               size="24px"
             />
           </NuxtLink>
-          <ClientOnly>
-            <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
-              <div class="space-x-2 lg:space-x-4">
-                <NuxtLink
-                  v-ripple
-                  to="/login"
+          <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
+            <div class="space-x-2 lg:space-x-4">
+              <NuxtLink
+                v-ripple
+                :to="$config.public.aeAuthUrl"
+              >
+                <PrimeButton
+                  severity="contrast"
+                  outlined
                 >
-                  <PrimeButton
-                    severity="contrast"
-                    outlined
-                  >
-                    login
-                  </PrimeButton>
-                </NuxtLink>
+                  login
+                </PrimeButton>
+              </NuxtLink>
 
-                <NuxtLink
-                  v-ripple
-                  to="/register"
-                >
-                  <PrimeButton> Join AstronEra </PrimeButton>
-                </NuxtLink>
-              </div>
+              <NuxtLink
+                v-ripple
+                :to="`${$config.public.aeAuthUrl}/register`"
+              >
+                <PrimeButton> Join AstronEra </PrimeButton>
+              </NuxtLink>
             </div>
-          </ClientOnly>
+          </div>
         </div>
       </template>
     </PrimeMenubar>
