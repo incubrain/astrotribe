@@ -13,13 +13,19 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/cms && npm run start"
+        "command": "cd apps/cms && npm run dev"
       }
     },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/cms && npm run dev"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/cms && npx strapi database:migrate"
       }
     }
   }

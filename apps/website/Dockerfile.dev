@@ -15,7 +15,9 @@ RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
     npm install -g nx@$NX_VERSION
 
 # Expose the port Nuxt uses
-EXPOSE 3000
+EXPOSE 3000 24678
+
 
 # Start the development server with the --experimental-json-modules flag
-CMD ["node", "--experimental-json-modules", "node_modules/.bin/nx", "serve", "website", "--host=0.0.0.0"]
+CMD ["node", "--experimental-json-modules", "node_modules/.bin/nx", "serve", "website"]
+
