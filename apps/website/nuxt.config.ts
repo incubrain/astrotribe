@@ -286,6 +286,7 @@ export default defineNuxtConfig({
     serveStatic: true,
     prerender: {
       crawlLinks: true,
+      routes: ['/sitemap.xml', '/robots.txt'],
     },
   },
 
