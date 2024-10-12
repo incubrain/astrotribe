@@ -1,8 +1,7 @@
 export default [
   { UserAgent: '*' },
-  { Disallow: '/' },
+  { Allow: '/' },
   { BlankLine: true },
-  { Comment: 'Comment here' },
-
+  { Comment: 'Allow crawling of all pages' },
   { Sitemap: (req) => `https://${req.headers.host}/sitemap.xml` },
 ]
