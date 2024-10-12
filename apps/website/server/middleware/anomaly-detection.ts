@@ -1,11 +1,12 @@
 import { defineEventHandler, type H3Event } from 'h3'
+import { logger } from '@ib/server'
 
 // Load thresholds from environment variables or use default values
 const THRESHOLD_REQUESTS_PER_MINUTE = Number(process.env.THRESHOLD_REQUESTS_PER_MINUTE ?? 100)
 const THRESHOLD_UNIQUE_PATHS_PER_MINUTE = Number(
   process.env.THRESHOLD_UNIQUE_PATHS_PER_MINUTE ?? 50,
 )
-const THRESHOLD_DEPTH = Number(process.env.THRESHOLD_DEPTH ?? 5)
+const THRESHOLD_DEPTH = Number(process.env.THRESHOLD_DEPTH ?? 6)
 
 // Initialize counters
 let requestCount = 0
@@ -50,9 +51,8 @@ function checkAnomalies(path: string): string[] {
   return anomalies
 }
 
-// Function to notify anomalies (console.log for now)
 function notifyAnomalies(anomalies: string[]) {
-  console.error('Anomalies detected:', anomalies)
+  logger.error('Anomalies detected:', anomalies)
   // Future implementation: Send notifications to monitoring services
 }
 
@@ -61,6 +61,11 @@ export default defineEventHandler((event: H3Event) => {
   const url = event.node.req.url || '/'
   const host = event.node.req.headers.host || 'localhost'
   const path = new URL(url, `http://${host}`).pathname
+
+  if (import.meta.prerender) {
+    logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
+    return
+  }
 
   const anomalies = checkAnomalies(path)
   if (anomalies.length > 0) {

@@ -45,13 +45,26 @@ const HOSTNAME_PATTERNS: { [key: string]: RegExp[] } = {
   // Add patterns for other crawlers as needed
 }
 
-const MAX_PATH_DEPTH = 4
+const MAX_PATH_DEPTH = 6
 
 // Simple in-memory cache for reverse DNS results
 const rdnsCache = new Map<string, { hostnames: string[]; expiresAt: number }>()
 const RDNS_CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
 
 export default defineEventHandler(async (event) => {
+  if (import.meta.prerender) {
+    logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
+    return
+  }
+
+  const url = new URL(event.node.req.url || '/', `http://${event.node.req.headers.host}`)
+
+  const internalPaths = ['/_ipx/', '/api/', '/_nuxt/', '/favicon.ico']
+  if (internalPaths.some((prefix) => url.pathname.startsWith(prefix))) {
+    // Skip middleware processing for internal routes
+    return
+  }
+
   const headers = getHeaders(event)
   const userAgent = headers['user-agent'] || ''
   const clientIP =
@@ -63,7 +76,7 @@ export default defineEventHandler(async (event) => {
   const isAllowedCrawler = !!matchedPattern
 
   // Calculate path depth
-  const path = event.node.req.url || '/'
+  const path = url.pathname
   const pathDepth = path.split('/').filter(Boolean).length
 
   if (isCrawler) {
