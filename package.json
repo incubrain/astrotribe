@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:website": "docker-compose -f docker-compose.website.yml up",
+    "dev:website": "docker compose -f docker-compose.website.yml up --build",
     "dev:auth": "nx serve auth-service --verbose",
     "dev:app": "nx run-many -t serve -p main-app,auth-service --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",

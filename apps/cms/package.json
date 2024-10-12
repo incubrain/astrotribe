@@ -14,7 +14,7 @@
   "dependencies": {
     "@strapi/plugin-cloud": "5.0.4",
     "@strapi/plugin-users-permissions": "5.0.4",
-    "@strapi/strapi": "5.0.4",
+    "@strapi/strapi": "^5.0.4",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "pg": "^8.13.0",

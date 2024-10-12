@@ -11,7 +11,7 @@ services:
       - db
     environment:
       - NODE_ENV=development
-      - HOST=0.0.0.0
+      - HOST=localhost
       - PORT=1337
       - APP_KEYS=hzD2uEmNx0oeTio1nkAliA==,2nsFZFEZqwlednX6Z+n8hQ==,uHBO8R2S8TgT+4/5U3D0Ew==,eJg+9WdVPM1wigrr1QAs9A==
       - API_TOKEN_SALT=p/A0ZPOuZwizyOfg15aPxw==
@@ -47,8 +47,6 @@ services:
       dockerfile: apps/website/Dockerfile.dev
     image: website
     container_name: website
-    ports:
-      - '3000:3000'
     depends_on:
       - strapi
     volumes:
@@ -56,14 +54,17 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3000
       - NUXT_STRAPI_URL=http://strapi:1337
       - NUXT_PUBLIC_STRAPI_URL=http://localhost:1337
+      - NUXT_PUBLIC_HMR_HOST=localhost
+      - NUXT_PUBLIC_HMR_PORT=24678
       - CHOKIDAR_USEPOLLING=true
       - NODE_OPTIONS=--experimental-json-modules
     networks:
       - strapi-network
+    ports:
+      - '3000:3000'
+      - '24678:24678'
 
 volumes:
   pgdata:

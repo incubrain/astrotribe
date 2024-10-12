@@ -35,6 +35,31 @@ export default defineNuxtConfig({
     '/blog/category/*': { redirect: '/blog/category/all/page/1' },
   },
 
+  content: {
+    watch: false,
+    highlight: {
+      theme: {
+        default: 'github-dark',
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+    },
+  },
+
+  vite: {
+    server: {
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 24678,
+      },
+      watch: {
+        usePolling: true,
+        interval: 100,
+      },
+    },
+  },
+
   // security: {
   //   headers: {
   //     contentSecurityPolicy: {
@@ -252,8 +277,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // debug: true,
-    // logLevel: 'debug',
+    debug: true,
+    logLevel: 'debug',
+    devServer: {
+      host: 'localhost',
+      port: 3000,
+    },
     serveStatic: true,
     prerender: {
       crawlLinks: true,
@@ -324,16 +353,6 @@ export default defineNuxtConfig({
   ogImage: {
     componentOptions: {
       global: true,
-    },
-  },
-
-  content: {
-    highlight: {
-      theme: {
-        default: 'github-dark',
-        light: 'github-light',
-        dark: 'github-dark',
-      },
     },
   },
 

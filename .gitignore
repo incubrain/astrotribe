@@ -19,6 +19,7 @@ tmp
 .env
 .npm_token
 **.eslintcache
+.eslintcache
 **.temp
 **.data
 **.branches

@@ -10,8 +10,6 @@ export default defineNuxtConfig({
     },
   },
 
-  debug: true,
-
   eslint: {
     checker: true,
   },
