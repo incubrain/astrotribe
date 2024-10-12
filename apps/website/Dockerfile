@@ -61,7 +61,8 @@
     
     # Copy the built files from the previous stage
     COPY --from=build /app/apps/website/.output/public/ /usr/share/nginx/html/
-
+    
+    COPY apps/website/nginx.conf /etc/nginx/nginx.conf
     COPY apps/website/default.conf.template /etc/nginx/templates/default.conf.template
     
     EXPOSE $PORT
