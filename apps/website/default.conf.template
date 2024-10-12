@@ -1,16 +1,48 @@
+# Define a zone for rate limiting
+limit_req_zone $binary_remote_addr zone=crawler_limit:10m rate=5r/s;
+
+# Map user agents to a variable
+map $http_user_agent $crawler {
+    default 0;
+    ~*(facebookexternalhit|meta-externalagent) 1;
+}
 
 server {
     listen       ${PORT};
     server_name  localhost;
 
+    # Rate limiting for crawler bots
+    limit_req zone=crawler_limit burst=10 nodelay;
+
+    # Crawler specific rules
+    if ($crawler) {
+        rewrite ^(/[^/]+/){3,} /too-many-nested-paths redirect;
+    }
+
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
         try_files $uri $uri/ /index.html;
+
+        # Additional rules for crawlers
+        if ($crawler) {
+            set $limit_rate 50k;  # Limit bandwidth for crawlers
+        }
+    }
+
+    # Custom location to handle deep nesting
+    location = /too-many-nested-paths {
+        return 410 "Gone - Too many nested paths";
     }
 
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
         root   /usr/share/nginx/html;
+    }
+
+    # Serve robots.txt with crawler instructions
+    location = /robots.txt {
+        add_header Content-Type text/plain;
+        return 200 "User-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n\nUser-agent: *\nAllow: /\n";
     }
 }
