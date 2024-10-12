@@ -1,58 +1,64 @@
-# Define a zone for rate limiting
-limit_req_zone $binary_remote_addr zone=crawler_limit:10m rate=5r/s;
+http {
+    # Define a zone for rate limiting
+    limit_req_zone $binary_remote_addr zone=crawler_limit:10m rate=5r/s;
 
-# Map user agents to a variable
-map $http_user_agent $crawler {
-    default 0;
-    ~*(facebookexternalhit|meta-externalagent) 1;
+    # Map user agents to a variable
+    map $http_user_agent $crawler {
+        default 0;
+        ~*(facebookexternalhit|meta-externalagent) 1;
+    }
+
+    server {
+        listen       ${PORT};
+        server_name  localhost;
+
+        # Rate limiting for crawler bots
+        limit_req zone=crawler_limit burst=10 nodelay;
+
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+
+        # Crawler specific rules
+        if ($crawler) {
+            set $limit_rate 50k;  # Limit bandwidth for crawlers
+        }
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+
+        # Handle deep nesting for crawlers
+        location ~ "^(/[^/]+/){3,}" {
+            if ($crawler) {
+                return 410 "Gone - Too many nested paths";
+            }
+            try_files $uri $uri/ /index.html;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+
+        # Serve robots.txt with crawler instructions
+        location = /robots.txt {
+            add_header Content-Type text/plain;
+            return 200 "User-agent: *\nAllow: /\n\nUser-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n";
+        }
+
+        # Disable access to . files
+        location ~ /\. {
+            deny all;
+            access_log off;
+            log_not_found off;
+        }
+
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+        add_header X-XSS-Protection "1; mode=block";
+    }
 }
 
-server {
-    listen       ${PORT};
-    server_name  localhost;
-
-    # Rate limiting for crawler bots
-    limit_req zone=crawler_limit burst=10 nodelay;
-
-    root   /usr/share/nginx/html;
-    index  index.html index.htm;
-
-    # Crawler specific rules
-    if ($crawler) {
-        set $limit_rate 50k;  # Limit bandwidth for crawlers
-    }
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # Handle deep nesting for crawlers
-    location ~ ^(/[^/]+){4,} {
-        if ($crawler) {
-            return 410 "Gone - Too many nested paths";
-        }
-        try_files $uri $uri/ /index.html;
-    }
-
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html {
-        root   /usr/share/nginx/html;
-    }
-
-    # Serve robots.txt with crawler instructions
-    location = /robots.txt {
-        add_header Content-Type text/plain;
-        return 200 "User-agent: *\nAllow: /\n\nUser-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n";
-    }
-
-    # Disable access to . files
-    location ~ /\. {
-        deny all;
-        access_log off;
-        log_not_found off;
-    }
-
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-    add_header X-XSS-Protection "1; mode=block";
+events {
+    worker_connections 1024;
 }
