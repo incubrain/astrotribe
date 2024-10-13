@@ -21,9 +21,6 @@ server {
     }
 
     location / {
-        # General rate limiting
-        limit_req zone=general_limit burst=20 nodelay;
-
         # Crawler specific rules
         if ($crawler) {
             set $limit_rate 50k;
