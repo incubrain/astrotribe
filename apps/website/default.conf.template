@@ -22,11 +22,10 @@ server {
 
     location / {
         # Apply rate limiting based on the $limit_zone variable
-        limit_req zone=general_limit burst=10 nodelay;
+        limit_req zone=$limit_zone burst=5 nodelay;
 
         # Set bandwidth limit for crawlers
         if ($crawler) {
-            limit_req zone=crawler_limit burst=5 nodelay;
             set $limit_rate 50k;
         }
 
