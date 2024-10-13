@@ -2,27 +2,42 @@ server {
     listen       ${PORT};
     server_name  localhost;
 
-    # Rate limiting for crawler bots
-    limit_req zone=crawler_limit burst=10 nodelay;
-
     root   /usr/share/nginx/html;
     index  index.html index.htm;
 
+    # General rate limiting
+    limit_req zone=general_limit burst=20 nodelay;
+
     # Crawler specific rules
     if ($crawler) {
-        set $limit_rate 50k;  # Limit bandwidth for crawlers
+        set $limit_rate 50k;
+        limit_req zone=crawler_limit burst=5 nodelay;
+    }
+
+    # Block deep paths
+    if ($is_deep_path) {
+        return 410 "Gone - Too many nested paths";
+    }
+
+    # Block bad bots
+    if ($bad_bot) {
+        return 403;
+    }
+
+    # Block requests to non-existent WordPress files
+    location ~ ^/(wp-admin|wp-includes|wp-content) {
+        deny all;
+        access_log off;
+        log_not_found off;
     }
 
     location / {
         try_files $uri $uri/ /index.html;
     }
 
-    # Handle deep nesting for crawlers
-    location ~ "^(/[^/]+/){3,}" {
-        if ($crawler) {
-            return 410 "Gone - Too many nested paths";
-        }
-        try_files $uri $uri/ /index.html;
+    # Block PHP execution (assuming you don't need PHP)
+    location ~ \.php$ {
+        deny all;
     }
 
     error_page   500 502 503 504  /50x.html;
@@ -33,17 +48,25 @@ server {
     # Serve robots.txt with crawler instructions
     location = /robots.txt {
         add_header Content-Type text/plain;
-        return 200 "User-agent: *\nAllow: /\n\nUser-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n";
+        return 200 "User-agent: *\nDisallow: /wp-admin/\nDisallow: /wp-includes/\nDisallow: /wp-content/\n\nUser-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n";
     }
 
-    # Disable access to . files
+    # Block access to hidden files and directories
     location ~ /\. {
         deny all;
         access_log off;
         log_not_found off;
     }
 
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-    add_header X-XSS-Protection "1; mode=block";
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';" always;
+
+    # Block WordPress-specific requests
+    if ($request_uri ~* "(wp-admin|wp-login|wp-includes|xmlrpc)") {
+        return 444;
+    }
 }
