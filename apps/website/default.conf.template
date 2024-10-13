@@ -1,5 +1,5 @@
 server {
-    listen       ${PORT};  # Replaced ${PORT} with a static port number
+    listen       ${PORT};
     server_name  localhost;
 
     root   /usr/share/nginx/html;
@@ -20,17 +20,15 @@ server {
         return 444;
     }
 
-    # Location block for crawlers with specific rate limiting
     location / {
-        # Check if the request is from a crawler
+        # Apply rate limiting based on the $limit_zone variable
+        limit_req zone=general_limit burst=10 nodelay;
+
+        # Set bandwidth limit for crawlers
         if ($crawler) {
-            # Apply crawler-specific rate limiting
             limit_req zone=crawler_limit burst=5 nodelay;
             set $limit_rate 50k;
         }
-
-        # Apply general rate limiting
-        limit_req zone=general_limit burst=20 nodelay;
 
         try_files $uri $uri/ /index.html;
     }
@@ -52,10 +50,10 @@ server {
         root   /usr/share/nginx/html;
     }
 
-    # Serve robots.txt as a static file
+    # Serve robots.txt with crawler instructions
     location = /robots.txt {
         add_header Content-Type text/plain;
-        try_files /robots.txt =404;
+        return 200 "User-agent: *\nDisallow: /wp-admin/\nDisallow: /wp-includes/\nDisallow: /wp-content/\n\nUser-agent: facebookexternalhit\nUser-agent: meta-externalagent\nCrawl-delay: 5\nDisallow: /*/*/*/\n";
     }
 
     # Block access to hidden files and directories
