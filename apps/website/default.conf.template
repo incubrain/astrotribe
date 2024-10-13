@@ -1,12 +1,3 @@
-# Define a zone for rate limiting
-limit_req_zone $binary_remote_addr zone=crawler_limit:10m rate=5r/s;
-
-# Map user agents to a variable
-map $http_user_agent $crawler {
-    default 0;
-    ~*(facebookexternalhit|meta-externalagent) 1;
-}
-
 server {
     listen       ${PORT};
     server_name  localhost;
