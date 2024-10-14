@@ -701,31 +701,4 @@ AS $function$BEGIN
 END;$function$
 ;
 
-create policy "insert_own_profile"
-on "public"."user_profiles"
-as permissive
-for insert
-to public
-with check ((auth.uid() = id));
-
-
-create policy "read_own_profile"
-on "public"."user_profiles"
-as permissive
-for select
-to public
-using ((auth.uid() = id));
-
-
-create policy "update_own_profile"
-on "public"."user_profiles"
-as permissive
-for update
-to public
-using ((auth.uid() = id))
-with check ((auth.uid() = id));
-
-
--- CREATE TRIGGER update_user_metadata_trigger AFTER UPDATE ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION update_user_metadata();
-
 

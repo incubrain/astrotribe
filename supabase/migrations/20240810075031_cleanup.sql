@@ -604,7 +604,23 @@ alter table "public"."contents" alter column "url" set not null;
 
 alter table "public"."news" add column "status" public.content_status not null default 'draft'::public.content_status;
 
-alter table "public"."news" alter column "keywords" set data type text[] using "keywords"::text[];
+-- Step 1: Add a new column of type text[]
+ALTER TABLE "public"."news" ADD COLUMN "keywords_array" text[];
+
+-- Step 2: Update the new column with the array data
+UPDATE "public"."news"
+SET "keywords_array" = CASE
+  WHEN keywords IS NULL THEN NULL
+  WHEN (keywords::text)::jsonb IS NULL THEN NULL
+  ELSE (
+    SELECT array_agg(value::text)
+    FROM jsonb_array_elements(keywords::jsonb->'values')
+  )
+END;
+
+-- Step 3: Drop the old column and rename the new one
+ALTER TABLE "public"."news" DROP COLUMN "keywords";
+ALTER TABLE "public"."news" RENAME COLUMN "keywords_array" TO "keywords";
 
 alter table "public"."research" add column "status" public.content_status not null default 'draft'::public.content_status;
 
@@ -688,6 +704,23 @@ alter table "public"."contents" enable row level security;
 
 alter table "public"."newsletters" enable row level security;
 
+
+alter table "public"."role_permissions" add column "conditions" jsonb default '{}'::jsonb;
+
+ALTER TABLE "public"."role_permissions" 
+ADD COLUMN "permissions" text[] NOT NULL DEFAULT '{}';
+
+-- Step 2: Update the new column with values from existing columns
+UPDATE "public"."role_permissions"
+SET "permissions" = ARRAY_REMOVE(ARRAY[
+    CASE WHEN "select" THEN 'select' ELSE NULL END,
+    CASE WHEN "update" THEN 'update' ELSE NULL END,
+    CASE WHEN "insert" THEN 'insert' ELSE NULL END,
+    CASE WHEN "delete" THEN 'delete' ELSE NULL END
+], NULL);
+
+alter table "public"."role_permissions" alter column "table_name" set data type text using "table_name"::text;
+
 alter table "public"."role_permissions" drop column "delete";
 
 alter table "public"."role_permissions" drop column "insert";
@@ -695,13 +728,6 @@ alter table "public"."role_permissions" drop column "insert";
 alter table "public"."role_permissions" drop column "select";
 
 alter table "public"."role_permissions" drop column "update";
-
-alter table "public"."role_permissions" add column "conditions" jsonb default '{}'::jsonb;
-
-alter table "public"."role_permissions" add column "permissions" text[] not null;
-
-alter table "public"."role_permissions" alter column "table_name" set data type text using "table_name"::text;
-
 
 set check_function_bodies = off;
 

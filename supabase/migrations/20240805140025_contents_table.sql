@@ -251,8 +251,6 @@ ALTER TABLE "public"."addresses" ADD COLUMN "company_id" uuid;
 -- Step 4: Drop the old column
 ALTER TABLE "public"."addresses" DROP COLUMN "old_company_id";
 
-alter table "public"."companies" drop column "website_url";
-
 alter table "public"."companies" add column "failed_count" smallint;
 
 alter table "public"."companies" add column "is_english" boolean;
@@ -261,8 +259,7 @@ alter table "public"."companies" add column "is_valid" boolean;
 
 alter table "public"."companies" add column "scrape_rating" smallint;
 
-alter table "public"."companies" add column "url" text not null;
-
+alter table "public"."companies" rename "website_url" to "url";
 
 ALTER TABLE "public"."company_contacts" DROP CONSTRAINT IF EXISTS company_contacts_company_id_fkey;
 ALTER TABLE "public"."company_employees" DROP CONSTRAINT IF EXISTS company_employees_company_id_fkey;
@@ -276,7 +273,7 @@ ALTER TABLE "public"."companies" DROP CONSTRAINT IF EXISTS companies_pkey;
 ALTER TABLE "public"."companies" RENAME COLUMN "id" TO "old_id";
 
 -- Step 3: Create a new id column with UUID type
-ALTER TABLE "public"."companies" ADD COLUMN "id" uuid;
+ALTER TABLE "public"."companies" ADD COLUMN "id" uuid DEFAULT extensions.uuid_generate_v4() not null;
 
 -- Step 4: Set the new id column as the primary key
 ALTER TABLE "public"."companies" ADD PRIMARY KEY ("id");
@@ -422,10 +419,6 @@ alter table "public"."scraping_metrics" add constraint "scraping_metrics_pkey" P
 
 alter table "public"."blacklisted_urls" add constraint "blacklisted_urls_url_key" UNIQUE using index "blacklisted_urls_url_key";
 
-alter table "public"."companies" add constraint "companies_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
-
-alter table "public"."companies" validate constraint "companies_content_fk";
-
 alter table "public"."companies" add constraint "companies_id_key1" UNIQUE using index "companies_id_key1";
 
 alter table "public"."companies" add constraint "public_companies_category_id_fkey" FOREIGN KEY (category_id) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL not valid;
@@ -456,17 +449,9 @@ alter table "public"."content_tags" add constraint "content_tags_tag_id_fkey" FO
 
 alter table "public"."content_tags" validate constraint "content_tags_tag_id_fkey";
 
-alter table "public"."news" add constraint "news_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
-
-alter table "public"."news" validate constraint "news_content_fk";
-
 alter table "public"."news" add constraint "public_news_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
 
 alter table "public"."news" validate constraint "public_news_company_id_fkey";
-
-alter table "public"."research" add constraint "research_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
-
-alter table "public"."research" validate constraint "research_content_fk";
 
 alter table "public"."addresses" add constraint "public_addresses_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
 
@@ -839,5 +824,29 @@ for select
 to public
 using (true);
 
+INSERT INTO public.contents (id, content_type, title, url)
+SELECT id, 'companies'::public.content_type, name, url
+FROM public.companies
+ON CONFLICT (id) DO NOTHING;
 
+INSERT INTO public.contents (id, content_type, title, url)
+SELECT id, 'news'::public.content_type, title, url
+FROM public.news
+ON CONFLICT (id) DO NOTHING;
 
+INSERT INTO public.contents (id, content_type, title, url)
+SELECT id, 'research'::public.content_type, title, abstract_url
+FROM public.research
+ON CONFLICT (id) DO NOTHING;
+
+alter table "public"."companies" add constraint "companies_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
+
+alter table "public"."companies" validate constraint "companies_content_fk";
+
+alter table "public"."news" add constraint "news_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
+
+alter table "public"."news" validate constraint "news_content_fk";
+
+alter table "public"."research" add constraint "research_content_fk" FOREIGN KEY (id) REFERENCES public.contents(id) not valid;
+
+alter table "public"."research" validate constraint "research_content_fk";

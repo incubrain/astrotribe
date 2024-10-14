@@ -1,3 +1,5 @@
+SET statement_timeout = '3600000';  -- 3600000 milliseconds = 1 hour
+
 create sequence "public"."customer_payments_id_seq";
 
 create sequence "public"."customer_refunds_id_seq";
@@ -473,6 +475,8 @@ BEGIN
 END;
 $function$
 ;
+
+DROP FUNCTION IF EXISTS public.perform_weekly_maintenance();
 
 CREATE OR REPLACE FUNCTION public.perform_weekly_maintenance()
  RETURNS void
