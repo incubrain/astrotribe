@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
   const { $formbricks } = useNuxtApp()
 
+  console.log('AUTH_MIDDLEWARE', $formbricks)
+
   const { aeLoginUrl, aeAuthUrl } = config.public
   const supabase = useSupabaseClient()
 
