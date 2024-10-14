@@ -4,6 +4,8 @@ export default defineNuxtConfig({
       strapi: {
         url: '',
       },
+      formbricksEnvironment: '',
+      formbricksHost: '',
       supabaseUrl: '',
       supabaseKey: '',
       aeAuthUrl: '',

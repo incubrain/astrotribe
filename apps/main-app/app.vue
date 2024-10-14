@@ -2,11 +2,8 @@
 const catTagStore = useCategoryTagStore()
 const currentUser = useCurrentUser()
 
-onMounted(() => {
-  document.documentElement.classList.add('dark')
-})
-
 onMounted(async () => {
+  document.documentElement.classList.add('dark')
   await catTagStore.getCategories()
   await catTagStore.getTags()
 })

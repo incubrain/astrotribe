@@ -16,6 +16,12 @@ export default defineNuxtConfig({
     },
   },
 
+  build: {
+    transpile: ['@formbricks/js'],
+  },
+
+  plugins: [{ src: '~/plugins/formbricks.client.ts' }],
+
   debug: true,
 
   modules: [
