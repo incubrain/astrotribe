@@ -5,7 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:website": "docker compose -f docker-compose.website.yml up --build",
+    "dev:strapi": "docker compose -f docker-compose.strapi.yml up",
+    "dev:website": "nx serve website",
     "dev:auth": "nx serve auth-service --verbose",
     "dev:app": "nx run-many -t serve -p main-app,auth-service --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
@@ -27,6 +28,7 @@
     "staging": "railway link -p d2993a83-20e2-4658-b045-8202866cd11f"
   },
   "dependencies": {
+    "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
