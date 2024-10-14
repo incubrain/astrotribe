@@ -1,8 +1,10 @@
-import { defineNuxtRouteMiddleware, navigateTo } from '#app'
+import { defineNuxtRouteMiddleware, navigateTo, useNuxtApp } from '#app'
 import { useRuntimeConfig, useSupabaseClient } from '#imports'
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
+  const { $formbricks } = useNuxtApp()
+
   const { aeLoginUrl, aeAuthUrl } = config.public
   const supabase = useSupabaseClient()
 
@@ -20,5 +22,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
   } else {
     console.log('USER_LOGGED_IN', data.session)
+    $formbricks.setUserId(data.session.user.id)
   }
 })

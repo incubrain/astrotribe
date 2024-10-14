@@ -28,7 +28,7 @@ onMounted(async () => {
     :class="{ 'pointer-events-none': isAuthenticating }"
     class="relative flex h-full min-h-screen w-full items-center justify-start"
   >
-    <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[480px] p-4">
+    <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[540px] p-4 lg:p-8">
       <ClientOnly>
         <slot />
       </ClientOnly>
