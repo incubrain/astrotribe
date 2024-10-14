@@ -28,14 +28,11 @@ RUN npx nx --version
 # Build the website
 RUN nx build website --verbose --skip-nx-cache
 
-# Install a simple HTTP server for serving static content
-RUN npm install -g http-server
-
 # Set the port (default to 8080 if not provided)
 ENV PORT=8080
 
 # Expose the port
 EXPOSE $PORT
 
-# Start the HTTP server
-CMD ["http-server", "/app/apps/website/.output/public", "-p", "$PORT"]
+# Start the application
+CMD ["node", "/app/apps/website/.output/server/index.mjs"]
