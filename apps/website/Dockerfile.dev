@@ -1,23 +1,44 @@
-# Use an official Node.js runtime as a parent image
-FROM node:20.17.0
+# Stage 1: Build Stage
+FROM node:20-slim AS builder
 
-# Set the working directory in the container
+# Set environment variables for better performance and reproducibility
+ENV NODE_ENV=development
+
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy only package.json and package-lock.json first for better caching
 COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm ci
 
-# Install nx globally using the version from package.json
-RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
-    npm install -g nx@$NX_VERSION
+# Copy the rest of the application code
+COPY . .
+
+# Build the application using Nx
+RUN npx nx build website
+
+# Stage 2: Production Stage
+FROM node:20-slim
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/.output ./.output
+
+# Optionally, copy package.json and package-lock.json if runtime dependencies are needed
+COPY package.json package-lock.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
 
 # Expose the port Nuxt uses
-EXPOSE 3000 24678
+EXPOSE 3000
 
-
-# Start the development server with the --experimental-json-modules flag
-CMD ["node", "--experimental-json-modules", "node_modules/.bin/nx", "serve", "website"]
-
+# Start the server
+CMD ["node", ".output/server/index.mjs"]

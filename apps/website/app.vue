@@ -1,5 +1,3 @@
-<script></script>
-
 <template>
   <div class="h-full w-full">
     <NuxtLoadingIndicator />
