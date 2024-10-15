@@ -287,7 +287,7 @@ export default defineNuxtConfig({
     format: ['webp', 'jpg', 'png'],
     provider: 'ipx',
     dir: 'public',
-    domains: ['astronera.org', 'localhost'],
+    domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
     quality: 80,
     fallback: '/defaults/fallback.jpg',
     ipx: {

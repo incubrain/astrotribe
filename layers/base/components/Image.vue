@@ -18,9 +18,12 @@ watch(
   { immediate: true },
 )
 
-function loadFallbackImage() {
+function loadFallbackImage(error: Error) {
+  console.error('Image loading error:', error)
   imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`
 }
+
+console.log('Full image URL:', `https://cms.astronera.org${imageUrl.value}`)
 </script>
 
 <template>
