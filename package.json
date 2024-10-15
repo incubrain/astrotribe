@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev:strapi": "docker compose -f docker-compose.strapi.yml up",
-    "dev:website": "npm run dev:strapi && nx serve website",
+    "dev:website": "nx serve website",
     "dev:auth": "nx serve auth-service --verbose",
     "dev:app": "nx run-many -t serve -p auth-service,main-app --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
