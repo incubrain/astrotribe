@@ -3,7 +3,56 @@ import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import { useRoute } from '#imports'
 
 const route = useRoute()
-const pageParam = computed(() => Number(route.params.page) || 1)
+
+const { data: pageData } = await useAsyncData(
+  `articles-${route.params.category}-page-${route.params.page}`,
+  () => {
+    // If we have a payload, use it
+    if (process.static && route.payload) {
+      return Promise.resolve(route.payload)
+    }
+
+    // Otherwise, fetch from API
+    return fetchArticlesFromAPI(route.params.category, route.params.page)
+  },
+  { server: true },
+)
+
+// Use the pageData in your component
+const articles = computed(() => pageData.value?.articles || [])
+const totalPages = computed(() => pageData.value?.totalPages || 1)
+const pageSize = 10
+const categoryParam = computed(() => pageData.value?.category || 'all')
+const pageParam = computed(() => pageData.value?.page || 1)
+
+console.log('Category:', categoryParam.value)
+console.log('Total Pages:', totalPages.value)
+console.log('Page Size:')
+console.log('Page:', pageParam.value)
+
+// Function to fetch articles from API (implement this based on your API)
+async function fetchArticlesFromAPI(category: string, page: number) {
+  const { find } = useStrapi()
+  const params = {
+    pagination: { pageSize: 10, page },
+    populate: { cover: true, category: true, tags: true, author: true },
+    sort: ['publishedAt:desc'],
+  }
+
+  if (category !== 'all') {
+    params.filters = { category: { slug: { $eq: category } } }
+  }
+
+  const response = await find('articles', params)
+  return {
+    articles: response.data,
+    totalPages: response.meta.pagination.pageCount,
+    category,
+    page,
+  }
+}
+
+// old
 
 const validCategories = [
   'all',
@@ -14,21 +63,6 @@ const validCategories = [
 ] as const
 
 type ArticleCategoriesT = (typeof validCategories)[number]
-
-function isValidCategory(category: any): category is ArticleCategoriesT {
-  return validCategories.includes(category as ArticleCategoriesT)
-}
-
-const categoryParam = computed<ArticleCategoriesT>(() => {
-  const category = route.params.category
-  // If category is undefined, null, or not a valid category, default to 'all'
-  if (!isValidCategory(category)) {
-    return 'all'
-  }
-  return category
-})
-
-const pageSize = 10 // Number of articles per page
 
 const categoryInfo = {
   'all': {
@@ -93,22 +127,6 @@ const {
   { server: true },
 )
 
-const articles = computed(() => articlesData.value?.data || [])
-
-const totalPages = computed(() => {
-  // If the payload was provided during generate, use it
-  if (route.params.payload && route.params.payload.totalPages) {
-    return route.params.payload.totalPages
-  }
-  // Else, calculate based on the meta data
-  if (articlesData.value && articlesData.value.meta) {
-    return articlesData.value.meta.pagination.pageCount
-  }
-  return 1
-})
-
-const websiteUrl = 'https://astronera.org'
-
 // SEO
 // if (categoryParam.value) {
 //   useSeoMeta({
@@ -130,6 +148,8 @@ const websiteUrl = 'https://astronera.org'
 //   })
 // }
 
+console.log('Articles Data:', articlesData.value)
+
 const heroImage = computed(() => {
   let src = `images/blog/${categoryParam.value}/`
 
@@ -146,10 +166,6 @@ const heroImage = computed(() => {
       return (src += 'isro-rocket-launch.png')
   }
 })
-
-console.log('Category:', categoryParam.value)
-console.log('Page:', pageParam.value)
-console.log('Articles Data:', articlesData.value)
 </script>
 
 <template>
@@ -178,11 +194,11 @@ console.log('Articles Data:', articlesData.value)
       <BlogAdFloat />
 
       <div v-if="articlesLoading">Loading...</div>
+
       <div
-        v-else-if="articles.length"
+        v-if="articles.length"
         class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8"
       >
-        >
         <BlogCard
           v-for="article in articles"
           :key="`astronera-${categoryParam}-article-${article.id}`"
@@ -207,7 +223,7 @@ console.log('Articles Data:', articlesData.value)
     <Pagination
       :current-page="pageParam"
       :total-pages="totalPages"
-      :base-url="`/blog/category/${categoryParam.value}`"
+      :base-url="`/blog/category/${categoryParam}`"
     />
   </div>
 </template>
