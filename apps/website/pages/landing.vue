@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div>
     <LandingHero />
@@ -11,10 +13,8 @@
     />
 
     <LandingCTASocial />
-
+    <LandingWebSeries />
   </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style scoped></style>
