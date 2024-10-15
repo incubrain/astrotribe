@@ -22,15 +22,13 @@ function loadFallbackImage(error: Error) {
   console.error('Image loading error:', error)
   imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`
 }
-
-console.log('Full image URL:', `https://cms.astronera.org${imageUrl.value}`)
 </script>
 
 <template>
   <NuxtImg
     v-if="imageUrl"
-    v-bind="$attrs"
     :key="`image-${uuid}`"
+    v-bind="$attrs"
     :src="imageUrl"
     :alt="img.alt"
     :width="img.width"
