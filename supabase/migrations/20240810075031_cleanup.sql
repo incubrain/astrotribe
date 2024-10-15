@@ -711,13 +711,23 @@ ALTER TABLE "public"."role_permissions"
 ADD COLUMN "permissions" text[] NOT NULL DEFAULT '{}';
 
 -- Step 2: Update the new column with values from existing columns
-UPDATE "public"."role_permissions"
-SET "permissions" = ARRAY_REMOVE(ARRAY[
-    CASE WHEN "select" THEN 'select' ELSE NULL END,
-    CASE WHEN "update" THEN 'update' ELSE NULL END,
-    CASE WHEN "insert" THEN 'insert' ELSE NULL END,
-    CASE WHEN "delete" THEN 'delete' ELSE NULL END
-], NULL);
+UPDATE role_permissions
+SET permissions = (
+    SELECT jsonb_object_agg(key, value)
+    FROM (
+        SELECT 'select' as key, TRUE as value
+        WHERE role_permissions.select = TRUE
+        UNION ALL
+        SELECT 'update' as key, TRUE as value
+        WHERE role_permissions.update = TRUE
+        UNION ALL
+        SELECT 'delete' as key, TRUE as value
+        WHERE role_permissions.delete = TRUE
+        UNION ALL
+        SELECT 'insert' as key, TRUE as value
+        WHERE role_permissions.insert = TRUE
+    ) AS permissions_data
+)
 
 alter table "public"."role_permissions" alter column "table_name" set data type text using "table_name"::text;
 
