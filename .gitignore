@@ -18,11 +18,13 @@ tmp
 /out-tsc
 .env
 .npm_token
+**/.eslintcache
 **.eslintcache
 .eslintcache
 **.temp
 **.data
 **.branches
+**/components.d.ts
 
 # dependencies
 node_modules
