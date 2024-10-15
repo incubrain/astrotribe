@@ -7,6 +7,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    PrimeAccordion: typeof import('primevue/accordion')['default']
+    PrimeAccordionContent: typeof import('primevue/accordioncontent')['default']
+    PrimeAccordionHeader: typeof import('primevue/accordionheader')['default']
+    PrimeAccordionPanel: typeof import('primevue/accordionpanel')['default']
+    PrimeBreadcrumb: typeof import('primevue/breadcrumb')['default']
     PrimeButton: typeof import('primevue/button')['default']
     PrimeCard: typeof import('primevue/card')['default']
     PrimeColumn: typeof import('primevue/column')['default']
@@ -18,6 +23,7 @@ declare module 'vue' {
     PrimeTabPanel: typeof import('primevue/tabpanel')['default']
     PrimeTabPanels: typeof import('primevue/tabpanels')['default']
     PrimeTabs: typeof import('primevue/tabs')['default']
+    PrimeTag: typeof import('primevue/tag')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
