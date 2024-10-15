@@ -13,6 +13,8 @@ const p = defineProps({
   },
 })
 
+console.log('Props Article:', p.article)
+
 const ast = ref<MDCParserResult | null>(null)
 const parse = useMarkdownParser()
 
@@ -46,6 +48,8 @@ interface TocLink {
 const extractToc = (markdown: any): TocLink[] => {
   const tocLinks: TocLink[] = []
   let currentH2: TocLink | null = null
+
+  console.log('Markdown:', markdown)
 
   markdown.forEach((block) => {
     const lines = block.body.split('\n')
@@ -91,6 +95,8 @@ watch(
     }
   },
 )
+
+console.log('Article:', p.article)
 </script>
 
 <template>
@@ -102,6 +108,7 @@ watch(
       >
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
+            v-if="article.blocks"
             class="background border-color rounded-md border p-4 xl:sticky xl:left-0 xl:top-24 xl:border-none xl:p-0"
             :toc="extractToc(article.blocks)"
             :updated-at="article.updatedAt"

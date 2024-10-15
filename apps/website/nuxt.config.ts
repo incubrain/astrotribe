@@ -55,9 +55,15 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/blog': { redirect: '/blog/category/all/page/1' },
-    '/blog/category': { redirect: '/blog/category/all/page/1' },
-    '/blog/category/*': { redirect: '/blog/category/all/page/1' },
+    '/': { prerender: true },
+    '/about': { prerender: true },
+    '/contact': { prerender: true },
+    '/team/**': { prerender: true },
+    '/projects/**': { prerender: true },
+    '/policies/**': { prerender: true },
+    '/blog': { isr: true },
+    '/blog/**': { swr: true },
+    '/blog/category/**': { isr: 60 },
   },
 
   content: {
@@ -237,46 +243,60 @@ export default defineNuxtConfig({
         'sustainable-development',
       ]
 
-      const pageSize = 10 // Number of articles per page
-      const routes = []
+      const routes = [
+        { route: '/' },
+        { route: '/about' },
+        { route: '/contact' },
+        { route: '/team' },
+        { route: '/projects/dark-sky-conference-2023' },
+      ]
 
+      const pageSize = 10 // Number of articles per page
       const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
 
       console.log('Strapi Base during BUILD URL:', strapiBaseUrl)
 
       for (const category of categories) {
-        // Add the category route without a page number
-        // routes.push(`/blog/category/${category}`)
-
         // Construct the query params for Strapi v4
-        let query = '?pagination[pageSize]=0'
-
+        let countQuery = '?pagination[pageSize]=0'
         if (category !== 'all') {
-          query += `&filters[category][slug][$eq]=${category}`
+          countQuery += `&filters[category][slug][$eq]=${category}`
         }
 
         // Fetch the total count of articles for the category
-        const res = await fetch(`${strapiBaseUrl}/api/articles${query}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
+          headers: { 'Content-Type': 'application/json' },
         })
-        const data = await res.json()
+        const countData = await countRes.json()
 
-        const totalCount = data.meta.pagination.total
+        const totalCount = countData.meta.pagination.total
         console.log(`Strapi Total count for category '${category}':`, totalCount)
         const totalPages = Math.ceil(totalCount / pageSize)
 
         for (let page = 1; page <= totalPages; page++) {
+          // Construct query for fetching articles for this page
+          let pageQuery = `?pagination[pageSize]=${pageSize}&pagination[page]=${page}&populate=cover,category,tags,author&sort=publishedAt:desc`
+          if (category !== 'all') {
+            pageQuery += `&filters[category][slug][$eq]=${category}`
+          }
+
+          // Fetch articles for this page
+          const articlesRes = await fetch(`${strapiBaseUrl}/api/articles${pageQuery}`, {
+            headers: { 'Content-Type': 'application/json' },
+          })
+          const articlesData = await articlesRes.json()
+
           routes.push({
             route: `/blog/category/${category}/page/${page}`,
             payload: {
               totalPages,
+              articles: articlesData.data,
+              category,
+              page,
             },
           })
         }
       }
-
       return routes
     },
   },
@@ -286,7 +306,15 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: ['/sitemap.xml', '/robots.txt'],
+      routes: [
+        '/',
+        '/about',
+        '/contact',
+        '/team',
+        '/projects/dark-sky-conference-2023',
+        '/sitemap.xml',
+        '/robots.txt',
+      ],
     },
   },
 
