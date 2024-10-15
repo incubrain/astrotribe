@@ -13,6 +13,7 @@
     />
     <LandingFuture />
     <LandingTestimonials />
+    <LandingPricing />
 
     <LandingCTASocial />
     <LandingWebSeries />
