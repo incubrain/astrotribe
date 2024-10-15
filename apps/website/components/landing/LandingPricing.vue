@@ -33,7 +33,7 @@ const trackTrialStart = () => {
 </script>
 
 <template>
-  <section class="pricing-section py-16 background">
+  <section class="pricing-section py-16">
     <div class="container mx-auto px-4">
       <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 font-space">
         Unlimited access for <span class="text-primary-600">FREE</span>
@@ -44,7 +44,9 @@ const trackTrialStart = () => {
       </p>
 
       <div class="flex justify-center">
-        <div class="pricing-card w-full max-w-md rounded-lg shadow-lg p-8 foreground">
+        <div
+          class="pricing-card w-full max-w-md rounded-lg shadow-lg p-8 background border border-color"
+        >
           <h3 class="text-2xl font-bold mb-4 text-center text-primary-600">Try AstronEra Now</h3>
           <ul class="mb-8">
             <li
