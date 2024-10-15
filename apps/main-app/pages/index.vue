@@ -50,7 +50,7 @@ const comingSoon = [
         </NuxtLink>
       </template>
     </PrimeCard>
-    <PrimeCard
+    <!-- <PrimeCard
       class="border-color border"
       :pt="{ body: 'justify-between h-full' }"
       :pt-options="{ mergeProps: true, mergeSections: true }"
@@ -69,7 +69,7 @@ const comingSoon = [
           <PrimeButton outlined> Search Companies </PrimeButton>
         </NuxtLink>
       </template>
-    </PrimeCard>
+    </PrimeCard> -->
 
     <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
       <PrimeMessage severity="info"> What we're working on </PrimeMessage>

@@ -1138,7 +1138,7 @@ grant references on table "public"."research_metrics" to "service_role";
 grant select on table "public"."research_metrics" to "service_role";
 
 grant trigger on table "public"."research_metrics" to "service_role";
-
+  
 grant truncate on table "public"."research_metrics" to "service_role";
 
 grant update on table "public"."research_metrics" to "service_role";
