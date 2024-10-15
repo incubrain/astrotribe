@@ -9,7 +9,15 @@ const config: Partial<Config> = {
   presets: [baseConfig],
   theme: {
     extend: {
-      // Add app-specific extensions here
+      fontFamily: {
+        space: ['Orbitron', 'sans-serif'],
+        typed: ['Source Code Pro', 'monospace'],
+      },
+      fontSize: {
+        '6xl': '4rem', // 64px
+        '7xl': '5rem', // 80px
+        '8xl': '6rem', // 96px
+      },
     },
   },
   content: [resolve(currentDir, '**/*.{js,vue,ts}'), '../../theme/**/*.{js,css}'],
