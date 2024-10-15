@@ -147,7 +147,9 @@ const heroImage = computed(() => {
   }
 })
 
-console.log('articles', articles)
+console.log('Category:', categoryParam.value)
+console.log('Page:', pageParam.value)
+console.log('Articles Data:', articlesData.value)
 </script>
 
 <template>
@@ -175,10 +177,9 @@ console.log('articles', articles)
     >
       <BlogAdFloat />
 
-      <div
-        v-if="articles"
-        class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8"
-      >
+      <div v-if="articlesLoading">Loading...</div>
+      <div v-else-if="articles.length">
+        class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8" >
         <BlogCard
           v-for="article in articles"
           :key="`astronera-${categoryParam}-article-${article.id}`"
@@ -196,6 +197,7 @@ console.log('articles', articles)
           <BlogCardSkeleton />
         </template>
       </div>
+      <div v-else>No articles found</div>
     </div>
 
     <!-- Pagination Component -->
