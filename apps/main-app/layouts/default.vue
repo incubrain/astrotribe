@@ -7,7 +7,7 @@ const { appLinks } = usePages()
     <IBSideNav :links="appLinks" />
 
     <div
-      class="w-full h-full pb-[var(--mobi-bottom-nav-height)] lg:pb-0 relative flex flex-col rounded-lg overflow-hidden md:ml-[64px]"
+      class="w-full h-full pb-[var(--mobi-bottom-nav-height)] lg:pb-0 relative flex flex-col rounded-lg overflow-hidden"
     >
       <NavAppTop />
       <div class="overflow-y-scroll h-full foreground">

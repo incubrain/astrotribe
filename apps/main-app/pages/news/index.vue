@@ -31,17 +31,24 @@ definePageMeta({
 <template>
   <div>
     <IBInfiniteScroll @update:scroll-end="loadMore()">
-      <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
-        <IBSidebar class="mx-auto" />
-        <div class="mx-auto flex w-full max-w-sm flex-col md:col-start-2">
-          <NewsCard
-            v-for="(item, i) in news"
-            :key="`news-post-${i}`"
-            :news="item"
-          />
-          <NewsCardSkeleton v-show="isLoading" />
+      <div
+        class="mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:col-start-2 gap-4 md:gap-8 p-4 md:p-8 max-w-[940px]"
+      >
+        <div class="col-span-full w-full justify-between flex">
+          <PrimeButton @click="refresh()"> Feed Categories </PrimeButton>
+          <PrimeButton
+            link
+            @click="refresh()"
+          >
+            Feed Settings
+          </PrimeButton>
         </div>
-        <IBAdvertisement />
+        <NewsCard
+          v-for="(item, i) in news"
+          :key="`news-post-${i}`"
+          :news="item"
+        />
+        <NewsCardSkeleton v-show="isLoading" />
       </div>
     </IBInfiniteScroll>
   </div>
