@@ -178,8 +178,11 @@ console.log('Articles Data:', articlesData.value)
       <BlogAdFloat />
 
       <div v-if="articlesLoading">Loading...</div>
-      <div v-else-if="articles.length">
-        class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8" >
+      <div
+        v-else-if="articles.length"
+        class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8"
+      >
+        >
         <BlogCard
           v-for="article in articles"
           :key="`astronera-${categoryParam}-article-${article.id}`"
