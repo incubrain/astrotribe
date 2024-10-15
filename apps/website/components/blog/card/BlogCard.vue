@@ -8,9 +8,7 @@ defineProps({
   },
 })
 
-const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 
-console.log('baseUrl', baseUrl)
 </script>
 
 <template>
@@ -24,7 +22,7 @@ console.log('baseUrl', baseUrl)
       />
       <NuxtImg
         provider="strapi"
-        :src="article.cover.url"
+        :src="$config.public.strapiUrl"
         width="400"
         height="300"
         quality="80"
