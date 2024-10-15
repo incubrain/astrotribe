@@ -44,7 +44,7 @@ defineProps<{
   <div
     v-if="items.length > 0"
     ref="emblaRef"
-    class="embla max-w-full border-8 border-primary-900 overflow-hidden p-8 rounded-xl"
+    class="embla max-w-full overflow-hidden rounded-xl"
   >
     <div class="embla__container grid gap-8 grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
       <div
