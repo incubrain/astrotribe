@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import runtimeConfig from '../../shared-runtime.config'
+import sharedRuntimeConfig from '../../shared-runtime.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -252,7 +252,7 @@ export default defineNuxtConfig({
       ]
 
       const pageSize = 10 // Number of articles per page
-      const strapiBaseUrl = runtimeConfig.public.strapiUrl || 'http://strapi:1337'
+      const strapiBaseUrl = sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
 
       console.log('Strapi Base during BUILD URL:', strapiBaseUrl)
 
@@ -327,7 +327,7 @@ export default defineNuxtConfig({
 
     // Strapi provider configuration
     strapi: {
-      baseURL: `${runtimeConfig.public.strapiUrl}/uploads/`, // Adjust this URL to match your Strapi setup
+      baseURL: `${sharedRuntimeConfig.runtimeConfig.public.strapiUrl}/uploads/`, // Adjust this URL to match your Strapi setup
     },
 
     // You can keep the ipx provider as a fallback or for local development
@@ -431,5 +431,5 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-09-22',
 
-  ...runtimeConfig,
+  ...sharedRuntimeConfig,
 })
