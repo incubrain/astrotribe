@@ -23,10 +23,35 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
+  ssr: true,
+
+  modules: [
+    '@nuxtjs/mdc',
+    'nuxt-security',
+    '@nuxtjs/seo',
+    '@nuxt/devtools',
+    '@vueuse/nuxt',
+    '@nuxt/image',
+    '@pinia/nuxt',
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@nuxtjs/tailwindcss',
+    '@primevue/nuxt-module',
+    '@nuxtjs/strapi',
+    '@nuxt/content',
+  ],
+
   extends: ['../../layers/base'],
 
   build: {
-    transpile: ['../../layers/base', 'embla-carousel-vue', 'embla-carousel-autoplay'],
+    transpile: [
+      '../../layers/base',
+      'embla-carousel-vue',
+      'embla-carousel-autoplay',
+      'embla-carousel-auto-scroll',
+      'gsap',
+    ],
   },
 
   routeRules: {
@@ -79,6 +104,10 @@ export default defineNuxtConfig({
           'https://us.i.posthog.com',
           'ws://localhost:4000',
           'wss://localhost:4000',
+          'https://picsum.photos',
+          'https://cms.astronera.org',
+          'https://astronera.org',
+          'https://*.astronera.org',
         ],
         'img-src': [
           "'self'",
@@ -96,6 +125,8 @@ export default defineNuxtConfig({
           'https://*.posthog.com',
           'https://us.i.posthog.com',
           'http://*.railway.internal',
+          'https://picsum.photos',
+          'https://fastly.picsum.photos/',
         ],
         'script-src': [
           "'self'",
@@ -111,6 +142,7 @@ export default defineNuxtConfig({
           'https://*.posthog.com',
           'https://us.i.posthog.com',
         ],
+        'script-src-attr': ["'unsafe-inline'"],
         'style-src': [
           "'self'",
           "'unsafe-inline'",
@@ -176,25 +208,6 @@ export default defineNuxtConfig({
     ssg: false,
     sri: false,
   },
-
-  ssr: true,
-
-  modules: [
-    '@nuxtjs/mdc',
-    'nuxt-security',
-    '@nuxtjs/seo',
-    '@nuxt/devtools',
-    '@vueuse/nuxt',
-    '@nuxt/image',
-    '@pinia/nuxt',
-    '@nuxt/icon',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxtjs/tailwindcss',
-    '@primevue/nuxt-module',
-    '@nuxtjs/strapi',
-    '@nuxt/content',
-  ],
 
   strapi: {
     prefix: '/api',
@@ -335,6 +348,13 @@ export default defineNuxtConfig({
     componentOptions: {
       global: true,
     },
+  },
+
+  fonts: {
+    families: [
+      { name: 'Orbitron', provider: 'google' },
+      { name: 'Source Code Pro', provider: 'google' },
+    ],
   },
 
   app: {
