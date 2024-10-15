@@ -22,14 +22,12 @@ console.log('baseUrl', baseUrl)
         :category="article.category"
         class="p-4"
       />
-      <IBImage
-        :img="{
-          src: `${baseUrl}${article.cover.url}`,
-          type: 'cover',
-          width: '400',
-          height: '300',
-          quality: '80',
-        }"
+      <NuxtImg
+        provider="strapi"
+        :src="article.cover.url"
+        width="400"
+        height="300"
+        quality="80"
         class="aspect-video w-full object-cover"
       />
     </template>

@@ -11,6 +11,8 @@ function generateLocalUrls(start = 3000, end = 3009) {
 
 const localUrls = generateLocalUrls()
 
+console.log('blog url', import.meta.env.NUXT_PUBLIC_STRAPI_URL)
+
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
   description:
@@ -108,12 +110,16 @@ export default defineNuxtConfig({
           'https://cms.astronera.org',
           'https://astronera.org',
           'https://*.astronera.org',
+          'http://localhost:1337/',
+          'http://strapi:1337/',
         ],
         'img-src': [
           "'self'",
           'data:',
           'http://localhost:54321',
           'http://localhost:3000',
+          'http://localhost:1337/',
+          'http://strapi:1337/',
           'https://*.up.railway.app',
           'https://www.nasa.gov',
           'https://science.nasa.gov',
@@ -127,6 +133,7 @@ export default defineNuxtConfig({
           'http://*.railway.internal',
           'https://picsum.photos',
           'https://fastly.picsum.photos/',
+          'https://img.youtube.com',
         ],
         'script-src': [
           "'self'",
@@ -235,7 +242,9 @@ export default defineNuxtConfig({
       const pageSize = 10 // Number of articles per page
       const routes = []
 
-      const strapiBaseUrl = import.meta.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
+      const strapiBaseUrl = import.meta.env.NUXT_STRAPI_URL || 'http://strapi:1337'
+
+      console.log('Strapi Base during BUILD URL:', strapiBaseUrl)
 
       for (const category of categories) {
         // Add the category route without a page number
@@ -285,11 +294,17 @@ export default defineNuxtConfig({
 
   image: {
     format: ['webp', 'jpg', 'png'],
-    provider: 'ipx',
+    quality: 80,
     dir: 'public',
     domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
-    quality: 80,
     fallback: '/defaults/fallback.jpg',
+
+    // Strapi provider configuration
+    strapi: {
+      baseURL: `${import.meta.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
+    },
+
+    // You can keep the ipx provider as a fallback or for local development
     ipx: {
       maxAge: 60 * 60 * 24 * 365, // 1 year (in seconds)
     },
