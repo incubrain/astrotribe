@@ -16,7 +16,9 @@ const { store, loadMore, refresh } = useSelectData<News>('news', {
   pagination: { page: 1, limit: 20 },
 })
 
-const { items: news } = storeToRefs(store)
+const { items: proxyNews } = storeToRefs(store)
+
+const news = computed(() => proxyNews.value.map((item) => toRaw(item)))
 
 console.log('news', news)
 
