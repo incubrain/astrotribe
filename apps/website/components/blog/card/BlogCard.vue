@@ -9,6 +9,8 @@ defineProps({
 })
 
 const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
+
+console.log('baseUrl', baseUrl)
 </script>
 
 <template>
@@ -23,6 +25,7 @@ const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
       <IBImage
         :img="{
           src: `${baseUrl}${article.cover.url}`,
+          type: 'cover',
           width: '400',
           height: '300',
           quality: '80',
