@@ -60,7 +60,7 @@ const props = defineProps({
   },
 })
 
-const baseUrl = process.env.STRAPI_PUBLIC_URL
+const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 </script>
 
 <style scoped></style>
