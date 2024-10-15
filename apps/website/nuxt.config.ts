@@ -11,8 +11,6 @@ function generateLocalUrls(start = 3000, end = 3009) {
 
 const localUrls = generateLocalUrls()
 
-console.log('blog url', import.meta.env.NUXT_PUBLIC_STRAPI_URL)
-
 const og = {
   title: 'AstronEra: Your Gateway to the Stars',
   description:
@@ -242,7 +240,7 @@ export default defineNuxtConfig({
       const pageSize = 10 // Number of articles per page
       const routes = []
 
-      const strapiBaseUrl = import.meta.env.NUXT_STRAPI_URL || 'http://strapi:1337'
+      const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
 
       console.log('Strapi Base during BUILD URL:', strapiBaseUrl)
 
@@ -301,7 +299,7 @@ export default defineNuxtConfig({
 
     // Strapi provider configuration
     strapi: {
-      baseURL: `${import.meta.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
+      baseURL: `${process.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
     },
 
     // You can keep the ipx provider as a fallback or for local development
