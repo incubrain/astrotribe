@@ -11,6 +11,7 @@
       subtitle="Join AstroTribe today and unlock a universe of knowledge!"
       button-text="Get Started"
     />
+    <LandingFuture />
 
     <LandingCTASocial />
     <LandingWebSeries />
