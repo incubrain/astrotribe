@@ -11,7 +11,7 @@ services:
       - strapi-db
     environment:
       - NODE_ENV=development
-      - HOST=localhost
+      - HOST=0.0.0.0
       - PORT=1337
       - APP_KEYS=hzD2uEmNx0oeTio1nkAliA==,2nsFZFEZqwlednX6Z+n8hQ==,uHBO8R2S8TgT+4/5U3D0Ew==,eJg+9WdVPM1wigrr1QAs9A==
       - API_TOKEN_SALT=p/A0ZPOuZwizyOfg15aPxw==
