@@ -12,6 +12,7 @@
       button-text="Get Started"
     />
     <LandingFuture />
+    <LandingTestimonials />
 
     <LandingCTASocial />
     <LandingWebSeries />
