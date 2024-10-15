@@ -235,7 +235,7 @@ export default defineNuxtConfig({
       const pageSize = 10 // Number of articles per page
       const routes = []
 
-      const strapiBaseUrl = process.env.STRAPI_URL || 'http://strapi:1337'
+      const strapiBaseUrl = import.meta.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
 
       for (const category of categories) {
         // Add the category route without a page number
