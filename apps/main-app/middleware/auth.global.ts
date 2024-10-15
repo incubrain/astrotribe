@@ -23,7 +23,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     console.log('USER_NOT_LOGGED_IN', `${aeAuthUrl}${aeLoginUrl}`)
     return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
   } else {
-    console.log('USER_LOGGED_IN', data.session)
-    $formbricks.setUserId(data.session.user.id)
+    console.log('USER_LOGGED_IN', data.session, $formbricks)
+    // $formbricks.setUserId(data.session.user.id)
   }
 })
