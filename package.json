@@ -59,6 +59,7 @@
     "@vueuse/nuxt": "^11.1.0",
     "change-case": "^5.4.4",
     "chart.js": "^4.4.4",
+    "dotenv": "^16.4.5",
     "embla-carousel-auto-scroll": "^8.3.0",
     "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-vue": "^8.3.0",

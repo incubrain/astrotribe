@@ -7,10 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   console.log('ENV Key:', env, env2)
   console.log('NODE_ENV:', import.meta.env.NODE_ENV)
 
-  if (!env.posthogKey || !env.posthogUrl || !env2.posthogKey || !env2.posthogUrl) {
-    console.error('posthog key or url not defined')
-  }
-
   const posthogKey = env.posthogKey || env2.posthogKey
   const posthogUrl = env.posthogUrl || env2.posthogUrl
 
