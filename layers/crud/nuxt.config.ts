@@ -13,8 +13,4 @@ export default defineNuxtConfig({
     },
     cookieName: 'sb',
   },
-
-  runtimeConfig: {
-    public: {},
-  },
 })

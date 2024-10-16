@@ -1,7 +1,10 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
+import { config } from 'dotenv'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedRuntimeConfig from '../../shared-runtime.config'
+import sharedRuntimeConfig from '../../shared-runtime.config.js'
+
+config()
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -46,7 +49,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      '../../layers/base',
+      // '../../layers/base',
       'embla-carousel-vue',
       'embla-carousel-autoplay',
       'embla-carousel-auto-scroll',
@@ -54,17 +57,16 @@ export default defineNuxtConfig({
     ],
   },
 
-  routeRules: {
-    '/': { prerender: true },
-    '/about': { prerender: true },
-    '/contact': { prerender: true },
-    '/team/**': { prerender: true },
-    '/projects/**': { prerender: true },
-    '/policies/**': { prerender: true },
-    '/blog': { isr: true },
-    '/blog/**': { swr: true },
-    '/blog/category/**': { isr: 60 },
-  },
+  // routeRules: {
+  //   '/': { prerender: true },
+  //   '/about': { prerender: true },
+  //   '/contact': { prerender: true },
+  //   '/team/**': { prerender: true },
+  //   '/projects/**': { prerender: true },
+  //   '/policies/**': { prerender: true },
+  //   '/blog': { isr: true },
+  //   '/blog/**': { isr: 60 }, // Revalidate every 60 seconds
+  // },
 
   content: {
     highlight: {
@@ -233,88 +235,12 @@ export default defineNuxtConfig({
     cookieName: 'strapi_jwt',
   },
 
-  generate: {
-    routes: async () => {
-      const categories = [
-        'all',
-        'people-of-space',
-        'space-exploration',
-        'dark-sky-conservation',
-        'sustainable-development',
-      ]
-
-      const routes = [
-        { route: '/' },
-        { route: '/about' },
-        { route: '/contact' },
-        { route: '/team' },
-        { route: '/projects/dark-sky-conference-2023' },
-      ]
-
-      const pageSize = 10 // Number of articles per page
-      const strapiBaseUrl = sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
-
-      console.log('Strapi Base during BUILD URL:', strapiBaseUrl)
-
-      for (const category of categories) {
-        // Construct the query params for Strapi v4
-        let countQuery = '?pagination[pageSize]=0'
-        if (category !== 'all') {
-          countQuery += `&filters[category][slug][$eq]=${category}`
-        }
-
-        // Fetch the total count of articles for the category
-        const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        const countData = await countRes.json()
-
-        const totalCount = countData.meta.pagination.total
-        console.log(`Strapi Total count for category '${category}':`, totalCount)
-        const totalPages = Math.ceil(totalCount / pageSize)
-
-        for (let page = 1; page <= totalPages; page++) {
-          // Construct query for fetching articles for this page
-          let pageQuery = `?pagination[pageSize]=${pageSize}&pagination[page]=${page}&populate=cover,category,tags,author&sort=publishedAt:desc`
-          if (category !== 'all') {
-            pageQuery += `&filters[category][slug][$eq]=${category}`
-          }
-
-          // Fetch articles for this page
-          const articlesRes = await fetch(`${strapiBaseUrl}/api/articles${pageQuery}`, {
-            headers: { 'Content-Type': 'application/json' },
-          })
-          const articlesData = await articlesRes.json()
-
-          routes.push({
-            route: `/blog/category/${category}/page/${page}`,
-            payload: {
-              totalPages,
-              articles: articlesData.data,
-              category,
-              page,
-            },
-          })
-        }
-      }
-      return routes
-    },
-  },
-
   nitro: {
     debug: true,
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: [
-        '/',
-        '/about',
-        '/contact',
-        '/team',
-        '/projects/dark-sky-conference-2023',
-        '/sitemap.xml',
-        '/robots.txt',
-      ],
+      routes: ['/sitemap.xml', '/robots.txt'],
     },
   },
 
@@ -327,7 +253,7 @@ export default defineNuxtConfig({
 
     // Strapi provider configuration
     strapi: {
-      baseURL: `${sharedRuntimeConfig.runtimeConfig.public.strapiUrl}/uploads/`, // Adjust this URL to match your Strapi setup
+      baseURL: `${process.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
     },
 
     // You can keep the ipx provider as a fallback or for local development
