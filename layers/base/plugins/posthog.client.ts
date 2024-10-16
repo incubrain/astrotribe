@@ -2,16 +2,21 @@ import posthog from 'posthog-js'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const env = nuxtApp.$config.public
+  const env2 = useRuntimeConfig().public
 
-  console.log('ENV Key:', env)
+  console.log('ENV Key:', env, env2)
+  console.log('NODE_ENV:', import.meta.env.NODE_ENV)
 
-  if (!env.posthogKey || !env.posthogUrl) {
-    throw createError({ message: 'posthog key or url not defined' })
+  if (!env.posthogKey || !env.posthogUrl || !env2.posthogKey || !env2.posthogUrl) {
+    console.error('posthog key or url not defined')
   }
 
+  const posthogKey = env.posthogKey || env2.posthogKey
+  const posthogUrl = env.posthogUrl || env2.posthogUrl
+
   // Initialize PostHog
-  posthog.init(env.posthogKey, {
-    api_host: env.posthogUrl,
+  posthog.init(posthogKey, {
+    api_host: posthogUrl,
     autocapture: false, // Disable autocapture as we'll handle events manually
     capture_pageview: false, // We'll capture pageviews manually for more control
     persistence: 'localStorage+cookie',
@@ -20,7 +25,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // },
     loaded: (posthog) => {
       // This function is called once PostHog is loaded
-      if (import.meta.env.MODE === 'development') {
+      if (import.meta.env.NODE_ENV === 'development') {
         // Log to console in development mode
         posthog.debug()
       }
