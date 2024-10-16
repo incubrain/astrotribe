@@ -193,10 +193,9 @@ const heroImage = computed(() => {
     >
       <BlogAdFloat />
 
-      <div v-if="articlesLoading">Loading...</div>
 
       <div
-        v-if="articles.length"
+        v-show="articles.length"
         class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8"
       >
         <BlogCard
@@ -216,7 +215,6 @@ const heroImage = computed(() => {
           <BlogCardSkeleton />
         </template>
       </div>
-      <div v-else>No articles found</div>
     </div>
 
     <!-- Pagination Component -->
