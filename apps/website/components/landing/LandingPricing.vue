@@ -24,12 +24,6 @@ onMounted(() => {
     duration: 0.8,
   })
 })
-
-const trackTrialStart = () => {
-  if (window.posthog) {
-    window.posthog.capture('free_plan_selected')
-  }
-}
 </script>
 
 <template>
@@ -72,7 +66,6 @@ const trackTrialStart = () => {
           <PrimeButton
             label="Get Started"
             class="p-button-primary w-full"
-            @click="trackTrialStart"
           />
         </div>
       </div>
