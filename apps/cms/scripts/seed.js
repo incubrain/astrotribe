@@ -1,16 +1,19 @@
 'use strict'
 
-const fs = require('fs-extra')
 const path = require('path')
+const fs = require('fs-extra')
 const mime = require('mime-types')
-const { categories, authors, articles, global, about } = require('../data/data.json')
+const axios = require('axios')
+
+// Import your exported data
+const exportedData = require('../data/exported-data.json')
 
 async function seedExampleApp() {
   const shouldImportSeedData = await isFirstRun()
 
   if (shouldImportSeedData) {
     try {
-      console.log('Setting up the template...')
+      console.log('Setting up the template with production data...')
       await importSeedData()
       console.log('Ready to go')
     } catch (error) {
@@ -18,10 +21,112 @@ async function seedExampleApp() {
       console.error(error)
     }
   } else {
-    console.log(
-      'Seed data has already been imported. We cannot reimport unless you clear your database first.',
-    )
+    console.log('Seed data has already been imported.')
   }
+}
+
+async function importSeedData() {
+  // Allow read of application content types
+  await setPublicPermissions({
+    article: ['find', 'findOne'],
+    category: ['find', 'findOne'],
+    tag: ['find', 'findOne'],
+    author: ['find', 'findOne'],
+    global: ['find', 'findOne'],
+    about: ['find', 'findOne'],
+  })
+
+  // Create all entries
+  await importCategories()
+  await importTags()
+  await importAuthors()
+  await importArticles()
+  await importGlobal()
+  await importAbout()
+}
+
+async function importCategories() {
+  for (const category of exportedData.categories.data) {
+    await createEntry({ model: 'category', entry: category.attributes })
+  }
+}
+
+async function importTags() {
+  for (const tag of exportedData.tags.data) {
+    await createEntry({ model: 'tag', entry: tag.attributes })
+  }
+}
+
+async function importAuthors() {
+  for (const author of exportedData.authors.data) {
+    const avatar = await downloadFile(author.attributes.avatar.data.attributes.url)
+    await createEntry({
+      model: 'author',
+      entry: {
+        ...author.attributes,
+        avatar,
+      },
+    })
+  }
+}
+
+async function importArticles() {
+  for (const article of exportedData.articles.data) {
+    const cover = await downloadFile(article.attributes.cover.data.attributes.url)
+    const updatedBlocks = await updateBlocks(article.attributes.blocks)
+
+    await createEntry({
+      model: 'article',
+      entry: {
+        ...article.attributes,
+        cover,
+        blocks: updatedBlocks,
+        publishedAt: article.attributes.publishedAt || Date.now(),
+      },
+    })
+  }
+}
+
+async function importGlobal() {
+  const globalData = exportedData.global.data.attributes
+  const favicon = await downloadFile(globalData.favicon.data.attributes.url)
+  const shareImage = await downloadFile(globalData.defaultSeo.shareImage.data.attributes.url)
+
+  return createEntry({
+    model: 'global',
+    entry: {
+      ...globalData,
+      favicon,
+      publishedAt: globalData.publishedAt || Date.now(),
+      defaultSeo: {
+        ...globalData.defaultSeo,
+        shareImage,
+      },
+    },
+  })
+}
+
+async function importAbout() {
+  const aboutData = exportedData.about.data.attributes
+  const updatedBlocks = await updateBlocks(aboutData.blocks)
+
+  await createEntry({
+    model: 'about',
+    entry: {
+      ...aboutData,
+      blocks: updatedBlocks,
+      publishedAt: aboutData.publishedAt || Date.now(),
+    },
+  })
+}
+
+async function downloadFile(url) {
+  const response = await axios.get(url, { responseType: 'arraybuffer' })
+  const buffer = Buffer.from(response.data, 'binary')
+  const fileName = path.basename(url)
+  const filePath = path.join('data', 'uploads', fileName)
+  await fs.writeFile(filePath, buffer)
+  return checkFileExistsBeforeUpload([fileName])
 }
 
 async function isFirstRun() {
@@ -164,94 +269,6 @@ async function updateBlocks(blocks) {
   }
 
   return updatedBlocks
-}
-
-async function importArticles() {
-  for (const article of articles) {
-    const cover = await checkFileExistsBeforeUpload([`${article.slug}.jpg`])
-    const updatedBlocks = await updateBlocks(article.blocks)
-
-    await createEntry({
-      model: 'article',
-      entry: {
-        ...article,
-        cover,
-        blocks: updatedBlocks,
-        // Make sure it's not a draft
-        publishedAt: Date.now(),
-      },
-    })
-  }
-}
-
-async function importGlobal() {
-  const favicon = await checkFileExistsBeforeUpload(['favicon.png'])
-  const shareImage = await checkFileExistsBeforeUpload(['default-image.png'])
-  return createEntry({
-    model: 'global',
-    entry: {
-      ...global,
-      favicon,
-      // Make sure it's not a draft
-      publishedAt: Date.now(),
-      defaultSeo: {
-        ...global.defaultSeo,
-        shareImage,
-      },
-    },
-  })
-}
-
-async function importAbout() {
-  const updatedBlocks = await updateBlocks(about.blocks)
-
-  await createEntry({
-    model: 'about',
-    entry: {
-      ...about,
-      blocks: updatedBlocks,
-      // Make sure it's not a draft
-      publishedAt: Date.now(),
-    },
-  })
-}
-
-async function importCategories() {
-  for (const category of categories) {
-    await createEntry({ model: 'category', entry: category })
-  }
-}
-
-async function importAuthors() {
-  for (const author of authors) {
-    const avatar = await checkFileExistsBeforeUpload([author.avatar])
-
-    await createEntry({
-      model: 'author',
-      entry: {
-        ...author,
-        avatar,
-      },
-    })
-  }
-}
-
-async function importSeedData() {
-  // Allow read of application content types
-  await setPublicPermissions({
-    article: ['find', 'findOne'],
-    category: ['find', 'findOne'],
-    author: ['find', 'findOne'],
-    global: ['find', 'findOne'],
-    about: ['find', 'findOne'],
-  })
-
-  // Create all entries
-  await importCategories()
-  await importAuthors()
-  await importArticles()
-  await importGlobal()
-  await importAbout()
 }
 
 async function main() {
