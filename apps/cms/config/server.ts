@@ -4,4 +4,8 @@ export default ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
+  bootstrap(app) {
+    const seedData = require('../scripts/seed')
+    seedData()
+  },
 })
