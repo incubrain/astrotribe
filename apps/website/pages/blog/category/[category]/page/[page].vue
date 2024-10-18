@@ -1,58 +1,11 @@
 <script setup lang="ts">
+import qs from 'qs'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 import { useRoute } from '#imports'
+import { populate } from 'dotenv'
 
 const route = useRoute()
-
-const { data: pageData } = await useAsyncData(
-  `articles-${route.params.category}-page-${route.params.page}`,
-  () => {
-    // If we have a payload, use it
-    if (process.static && route.payload) {
-      return Promise.resolve(route.payload)
-    }
-
-    // Otherwise, fetch from API
-    return fetchArticlesFromAPI(route.params.category, route.params.page)
-  },
-  { server: true },
-)
-
-// Use the pageData in your component
-const articles = computed(() => pageData.value?.articles || [])
-const totalPages = computed(() => pageData.value?.totalPages || 1)
-const pageSize = 10
-const categoryParam = computed(() => pageData.value?.category || 'all')
-const pageParam = computed(() => pageData.value?.page || 1)
-
-console.log('Category:', categoryParam.value)
-console.log('Total Pages:', totalPages.value)
-console.log('Page Size:')
-console.log('Page:', pageParam.value)
-
-// Function to fetch articles from API (implement this based on your API)
-async function fetchArticlesFromAPI(category: string, page: number) {
-  const { find } = useStrapi()
-  const params = {
-    pagination: { pageSize: 10, page },
-    populate: { cover: true, category: true, tags: true, author: true },
-    sort: ['publishedAt:desc'],
-  }
-
-  if (category !== 'all') {
-    params.filters = { category: { slug: { $eq: category } } }
-  }
-
-  const response = await find('articles', params)
-  return {
-    articles: response.data,
-    totalPages: response.meta.pagination.pageCount,
-    category,
-    page,
-  }
-}
-
-// old
+const strapi = useStrapi()
 
 const validCategories = [
   'all',
@@ -87,46 +40,75 @@ const categoryInfo = {
   },
 }
 
-const { find } = useStrapi()
-
-const {
-  data: articlesData,
-  pending: articlesLoading,
-  error,
-} = await useAsyncData(
-  `articles-${categoryParam.value}-page-${pageParam.value}`,
-  async () => {
-    const params: any = {
-      pagination: {
-        pageSize: pageSize,
-        page: pageParam.value,
-      },
-      populate: {
-        cover: true,
-        category: true,
-        tags: true,
-        author: true,
-      },
-      sort: ['publishedAt:desc'],
-    }
-
-    if (categoryParam.value !== 'all') {
-      params.filters = {
-        category: {
-          slug: {
-            $eq: categoryParam.value,
-          },
-        },
-      }
-    }
-
-    const response = await find('articles', params)
-    console.log('Strapi response:', response) // Log the full response
-    return response
-  },
-  { server: true },
+const { data: pageData } = await useAsyncData(
+  `articles-${route.params.category}-page-${route.params.page}`,
+  () => fetchArticlesFromAPI(String(route.params.category), Number(route.params.page)),
+  { server: false },
 )
 
+const articles = computed(() => pageData.value?.articles || [])
+const totalPages = computed(() => pageData.value?.totalPages || 1)
+const categoryParam = computed(() => pageData.value?.category || 'all')
+const pageParam = computed(() => pageData.value?.page || 1)
+
+// Use the pageData in your component
+
+console.log('PageData', pageData.value)
+console.log('Total Pages:', totalPages.value)
+console.log('Page Size:')
+console.log('Page:', pageParam.value)
+
+async function fetchArticlesFromAPI(category: string, page: number) {
+  const params: any = {
+    pagination: {
+      pageSize: 10,
+      page: page,
+    },
+    sort: {
+      publishedAt: 'desc',
+    },
+    populate: {
+      cover: {
+        populate: '*',
+      },
+      category: {
+        populate: '*',
+        fields: ['name', 'slug'],
+      },
+      author: {
+        populate: ['avatar'],
+        fields: ['name', 'bio'],
+      },
+    },
+  }
+
+  //
+
+  if (category !== 'all') {
+    params.populate.categories.filters = {
+      slug: {
+        $eq: category,
+      },
+    }
+  }
+
+  const authors = await strapi.fetchFromStrapi<any>('authors')
+  const response = await strapi.fetchFromStrapi<any>('articles', params)
+
+  // If you need categories and authors separately
+  // const categories = await strapi.fetchFromStrapi<any>('categories');
+
+  console.log('Response:', response, authors)
+
+  return {
+    articles: response.data,
+    totalPages: response.meta.pagination.pageCount,
+    category,
+    page,
+  }
+}
+
+// old
 // SEO
 // if (categoryParam.value) {
 //   useSeoMeta({
@@ -147,8 +129,6 @@ const {
 //     image: './',
 //   })
 // }
-
-console.log('Articles Data:', articlesData.value)
 
 const heroImage = computed(() => {
   let src = `images/blog/${categoryParam.value}/`
@@ -193,7 +173,6 @@ const heroImage = computed(() => {
     >
       <BlogAdFloat />
 
-
       <div
         v-show="articles.length"
         class="grid h-full grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8"
@@ -204,16 +183,16 @@ const heroImage = computed(() => {
           :article="article"
         />
         <div
-          v-if="!articlesLoading && articles.length === 0"
+          v-if="!articles.length"
           class="background flex w-full items-center justify-center border border-primary-500 p-8 md:rounded-md"
         >
           <p class="foreground px-2"> No articles found... </p>
         </div>
-        <template v-if="articlesLoading">
+        <!-- <template>
           <BlogCardSkeleton />
           <BlogCardSkeleton />
           <BlogCardSkeleton />
-        </template>
+        </template> -->
       </div>
     </div>
 

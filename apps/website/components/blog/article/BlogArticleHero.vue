@@ -5,7 +5,7 @@
       <NuxtImg
         v-if="article.cover"
         provider="strapi"
-        :src="article.cover.url"
+        :src="article.cover.url.replace('/uploads/', '')"
         :width="article.cover.width"
         :height="article.cover.height"
         :alt="article.cover.alternativeText || article.title"

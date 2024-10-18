@@ -1,48 +1,77 @@
 <script setup lang="ts">
-import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
+import { ref, computed, watchEffect } from 'vue'
+import type { PropType } from 'vue'
 import type { ArticleCategoriesT, ArticleCardT } from '~/types/articles'
-import { ARTICLE_CARD_PROPERTIES } from '~/types/articles'
 
 const message = ref('')
 
-const p = defineProps({
+const props = defineProps({
   articleCategory: {
     type: String as PropType<ArticleCategoriesT>,
     required: true,
   },
 })
 
-const articlesShowcase: Ref<ArticleCardT[]> = ref([])
-const category = computed(() => p.articleCategory)
+const articlesShowcase = ref<ArticleCardT[]>([])
+const category = computed(() => props.articleCategory)
 const haveArticles = computed(() => articlesShowcase.value.length > 0)
 
+const strapi = useStrapi()
+
 // Fetch articles on server and client
-const { error, status } = await useAsyncData(
-  `blog-showcase-${category.value}`,
-  async (): Promise<void> => {
-    const whereOptions: QueryBuilderParams = {
-      // tags: { $in: selectedTags.value },
-      status: { $eq: 'published' },
-    }
+const { data, error, status } = await useAsyncData(`blog-showcase-${category.value}`, async () => {
+  const params: any = {
+    pagination: {
+      pageSize: 3,
+      page: 1,
+    },
+    sort: ['publishedAt:desc'],
+    filters: {},
+    populate: {
+      cover: {
+        populate: '*',
+      },
+      category: {
+        fields: ['name', 'slug'],
+      },
+      author: {
+        fields: ['name', 'bio'],
+      },
+    },
+  }
 
-    const articles = (await queryContent('/blog', category.value === 'all' ? '' : category.value)
-      .where(whereOptions)
-      .only(ARTICLE_CARD_PROPERTIES)
-      .sort({ publishedAt: -1 })
-      .limit(3)
-      .find()) as ArticleCardT[]
+  // If you have a 'status' field and want to filter by 'published'
+  params.filters['status'] = {
+    $eq: 'published',
+  }
 
-    if (articles.length) {
-      articlesShowcase.value.push(...articles)
-    } else {
-      message.value = 'No articles loaded...'
+  if (category.value !== 'all') {
+    params.filters['category'] = {
+      slug: {
+        $eq: category.value,
+      },
     }
-  },
-)
+  }
+
+  const response = await strapi.fetchFromStrapi<any>('articles', params)
+
+  if (response && response.data && response.data.length > 0) {
+    return response.data
+  } else {
+    message.value = 'No articles loaded...'
+    return []
+  }
+})
 
 if (error.value) {
   console.error('Fetch Articles Error:', error.value)
 }
+
+watchEffect(() => {
+  if (data.value) {
+    articlesShowcase.value = data.value
+  }
+})
 </script>
 
 <template>

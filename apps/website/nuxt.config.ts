@@ -31,7 +31,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
-    '@nuxtjs/seo',
+    // '@nuxtjs/seo',
     '@nuxt/devtools',
     '@vueuse/nuxt',
     '@nuxt/image',
@@ -41,7 +41,6 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
-    '@nuxtjs/strapi',
     '@nuxt/content',
   ],
 
@@ -224,7 +223,7 @@ export default defineNuxtConfig({
 
   strapi: {
     prefix: '/api',
-    version: 'v4',
+    version: 'v5',
     devtools: true,
     cookie: {
       path: '/',
@@ -240,7 +239,42 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: ['/sitemap.xml', '/robots.txt'],
+      routes: async () => {
+        const categories = [
+          'all',
+          'people-of-space',
+          'space-exploration',
+          'dark-sky-conservation',
+          'sustainable-development',
+          '/sitemap.xml',
+          '/robots.txt',
+        ]
+        const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
+        const pageSize = 10 // Number of articles per page
+        const strapiBaseUrl =
+          sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
+
+        for (const category of categories) {
+          // Fetch the total count of articles for the category
+          let countQuery = '?pagination[pageSize]=0'
+          if (category !== 'all') {
+            countQuery += `&filters[category][slug][$eq]=${category}`
+          }
+          const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
+            headers: { 'Content-Type': 'application/json' },
+          })
+          const countData = await countRes.json()
+          const totalCount = countData.meta.pagination.total
+          const totalPages = Math.ceil(totalCount / pageSize)
+          for (let page = 1; page <= totalPages; page++) {
+            routes.push(`/blog/category/${category}/page/${page}`)
+          }
+        }
+
+        console.log('Prerendered routes:', routes)
+
+        return routes
+      },
     },
   },
 
@@ -307,15 +341,15 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  seo: {
-    redirectToCanonicalSiteUrl: true,
-  },
+  // seo: {
+  //   redirectToCanonicalSiteUrl: true,
+  // },
 
-  ogImage: {
-    componentOptions: {
-      global: true,
-    },
-  },
+  // ogImage: {
+  //   componentOptions: {
+  //     global: true,
+  //   },
+  // },
 
   fonts: {
     families: [
@@ -357,5 +391,9 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-09-22',
 
-  ...sharedRuntimeConfig,
+  runtimeConfig: {
+    public: {
+      ...sharedRuntimeConfig.runtimeConfig.public,
+    },
+  },
 })
