@@ -1,16 +1,18 @@
-import { factories } from '@strapi/strapi'
+import strapi from '@strapi/strapi'
 
-export default {
-  async exportData(ctx) {
-    const data = {
-      global: await factories.service('api::global.global').find(),
-      about: await factories.service('api::about.about').find(),
-      categories: await factories.service('api::category.category').find(),
-      tags: await factories.service('api::tag.tag').find(),
-      authors: await factories.service('api::author.author').find(),
-      articles: await factories.service('api::article.article').find({ populate: '*' }),
-    }
+export default strapi.factories.createCoreController(
+  'api::export.exportData',
+  ({ strapi }) =>
+    async (ctx) => {
+      const data = {
+        global: strapi.apis.global.services.global.getGlobal(),
+        about: strapi.apis.about.services.about.getAbout(),
+        categories: strapi.apis.category.services.category.getCategories(),
+        tags: strapi.apis.tag.services.tag.getTags(),
+        authors: strapi.apis.author.services.author.getAuthors(),
+        articles: strapi.apis.article.services.article.getArticles(),
+      }
 
-    ctx.send(data)
-  },
-}
+      ctx.send(data)
+    },
+)

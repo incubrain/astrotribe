@@ -1,85 +1,62 @@
 <script setup lang="ts">
+import qs from 'qs'
 import { computed } from 'vue'
-
-// interface ArticleFullT {
-//   id: number
-//   title: string
-//   description: string
-//   slug: string
-//   createdAt: string
-//   updatedAt: string
-//   publishedAt: string
-//   blocks: Array<{
-//     __component: string
-//     body: string
-//     id: number
-//   }>
-//   author: {
-//     id: number
-//     documentId: string
-//   }
-//   category: {
-//     id: number
-//     documentId: string
-//   }
-//   cover: {
-//     id: number
-//     documentId: string
-//   }
-// }
+import { useRoute } from '#imports'
 
 const route = useRoute()
-const { findOne } = useStrapi()
+const strapi = useStrapi()
 
 const slug = computed(() => String(route.params.title))
-
-console.log('Slug:', slug.value)
-console.log('Route params:', route.params)
 
 const { data, pending, error } = await useAsyncData(
   `article-${slug.value}`,
   async () => {
     try {
-      const article = await findOne('articles', {
-        filters: { slug: { $eq: slug.value } },
-        populate: {
-          cover: true,
-          blocks: true,
-          category: true,
-          tags: { fields: ['id', 'name'] },
-          author: { populate: ['avatar'] },
+      const params: any = {
+        filters: {
+          slug: {
+            $eq: slug.value,
+          },
         },
-      })
-
-      if (!article) {
-        throw createError({ statusCode: 404, message: 'Article not found' })
+        populate: {
+          cover: {
+            populate: '*',
+          },
+          category: {
+            fields: ['name', 'slug'],
+          },
+          tags: {
+            fields: ['id', 'name'],
+          },
+          author: {
+            populate: {
+              avatar: {
+                populate: '*',
+              },
+            },
+            fields: ['name', 'bio'],
+          },
+        },
       }
 
-      // Fetch author details if needed
-      if (article.data && !!article.data.attributes?.author) {
-        const authorDetails = await findOne('authors', article.data.attributes.author.data.id, {
-          populate: ['avatar', 'social_links'],
-        })
-        article.data.attributes.author = authorDetails.data
+      const response = await strapi.fetchFromStrapi<any>('articles', params)
+
+      if (!response || !response.data || response.data.length === 0) {
+        console.error({ statusCode: 404, message: 'Article not found' })
       }
+
+      const article = response.data[0]
 
       return article
     } catch (e) {
       console.error('Error fetching article:', e)
-      throw createError({ statusCode: 404, message: 'Article not found' })
     }
   },
-  { server: false }, // Set to true if you want server-side rendering
+  { server: true },
 )
 
-const article = computed(() => {
-  if (data.value && Array.isArray(data.value.data) && data.value.data.length > 0) {
-    return data.value.data[0]
-  }
-  return null
-})
+const article = computed(() => data.value)
 
-console.log('Raw data:', data.value)
 console.log('Article:', article.value)
 </script>
 
@@ -95,5 +72,3 @@ console.log('Article:', article.value)
     <div v-else>No article found</div>
   </div>
 </template>
-
-<style></style>

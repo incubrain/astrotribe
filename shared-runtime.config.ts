@@ -5,9 +5,7 @@ config()
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      strapi: {
-        url: process.env.NUXT_PUBLIC_STRAPI_URL,
-      },
+      strapiUrl: '',
       formbricksEnvironment: process.env.NUXT_PUBLIC_FORMBRICKS_ENVIRONMENT,
       formbricksHost: process.env.NUXT_PUBLIC_FORMBRICKS_HOST,
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,

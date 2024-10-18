@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 
-defineProps({
+const p = defineProps({
   article: {
     type: Object,
     required: true,
   },
 })
 
+// "/uploads/Screenshot_2024_10_09_at_11_34_50_AM_3839858f26.png"
 
+console.log('Article:', p.article)
 </script>
 
 <template>
@@ -22,7 +24,7 @@ defineProps({
       />
       <NuxtImg
         provider="strapi"
-        :src="$config.public.strapiUrl"
+        :src="article.cover.url.replace('/uploads/', '')"
         width="400"
         height="300"
         quality="80"
