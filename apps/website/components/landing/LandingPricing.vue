@@ -1,48 +1,37 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { onMounted } from 'vue'
+import { useAnimation } from '~/composables/useAnimation'
 
-gsap.registerPlugin(ScrollTrigger)
+const { fadeInUp } = useAnimation()
 
 const features = [
   'Daily space news updates',
   'Basic search functionality',
   'Community forums access',
   'Email notifications',
+  'Email notifications',
+  'Email notifications',
+  'Email notifications',
 ]
 
 onMounted(() => {
-  gsap.from('.pricing-card', {
-    scrollTrigger: {
-      trigger: '.pricing-section',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-  })
+  fadeInUp('.pricing-card')
 })
 </script>
 
 <template>
   <section class="pricing-section py-16">
-    <div class="container mx-auto px-4">
-      <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 font-space">
-        Unlimited access for <span class="text-primary-600">FREE</span>
-      </h2>
-      <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
-        AstronEra offers the most comprehensive space news and research platform. Get full access to
-        our content and features at no cost.
-      </p>
+    <div>
+      <LandingTitle
+        title="Unlimited access for FREE"
+        subtitle="AstronEra offers the most comprehensive space news."
+        class="max-w-2xl mx-auto"
+      />
 
       <div class="flex justify-center">
-        <div
-          class="pricing-card w-full max-w-md rounded-lg shadow-lg p-8 background border border-color"
-        >
-          <h3 class="text-2xl font-bold mb-4 text-center text-primary-600">Try AstronEra Now</h3>
-          <ul class="mb-8">
+        <IBGlass class="pricing-card">
+          <h3 class="text-3xl font-extrabold pb-4">FREE Forever Plan</h3>
+          <ul class="mb-8 border-y border-color py-4">
             <li
               v-for="feature in features"
               :key="feature"
@@ -56,25 +45,29 @@ onMounted(() => {
               <span>{{ feature }}</span>
             </li>
           </ul>
-          <div class="text-center mb-8">
-            <span class="text-4xl font-bold">$0</span>
-            <span class="text-xl">/month</span>
+          <div class="flex gap-8 mb-8 w-full">
+            <div class="">
+              <span class="text-4xl font-bold">$0</span>
+              <span class="text-xl">/month</span>
+            </div>
+            <div class="flex items-center">
+              <h4 class="text-xl bg-emerald-700/30 underline underline-offset-4 px-2 py-1"
+                >RISK FREE</h4
+              >
+            </div>
           </div>
           <p class="text-sm text-center mb-6">
             No credit card required. Start exploring the cosmos today!
           </p>
           <PrimeButton
             label="Get Started"
-            class="p-button-primary w-full"
+            class="w-full"
+            size="large"
           />
-        </div>
+        </IBGlass>
       </div>
     </div>
   </section>
 </template>
 
-<style scoped>
-.font-space {
-  font-family: 'Orbitron', sans-serif;
-}
-</style>
+<style></style>

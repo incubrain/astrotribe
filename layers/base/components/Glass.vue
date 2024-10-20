@@ -30,7 +30,7 @@ const tailwindColors = [
 type TailwindColor = (typeof tailwindColors)[number]
 
 const props = defineProps({
-  color: { type: String as PropType<TailwindColor>, default: 'primary' },
+  color: { type: String as PropType<TailwindColor>, default: 'slate' },
   bgOpacity: { type: Number, default: 20 },
   gradientOpacity: { type: Number, default: 10 },
   blurIntensity: { type: String, default: 'md' },
@@ -139,13 +139,4 @@ const {
   backdrop-filter: blur(2px) contrast(1.2);
   mix-blend-mode: overlay;
 }
-
-/* .card-content {
-  transform: translateZ(20px);
-  transition: all 0.3s ease;
-}
-.card:hover .card-content {
-  box-shadow: calc((var(--x) / var(--card-width) - 0.5) * 20px)
-    calc((var(--y) / var(--card-height) - 0.5) * 20px) 10px rgba(0, 0, 0, 0.1);
-} */
 </style>

@@ -1,10 +1,28 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAnimation } from '~/composables/useAnimation'
+import testimonials from '@/data/home/testimonials.json'
+
+const { carouselFadeIn } = useAnimation()
+
+interface Testimonial {
+  image: string
+  name: string
+  company: string
+  quote: string
+}
+
+onMounted(() => {
+  carouselFadeIn('.testimonial-item')
+})
+</script>
+
 <template>
-  <div class="space-background relative overflow-hidden py-16 md:py-24">
+  <div class="relative overflow-hidden py-16 md:py-24">
     <div class="mx-auto px-4 relative z-10">
-      <HomeHeading
-        heading="Hear From The Community"
-        subheading="Discover How We're Making a Difference"
-        class="pb-16 md:pb-24 text-white"
+      <LandingTitle
+        title="Hear From The Community"
+        subtitle="Discover How We're Making a Difference"
       />
       <AppSwiper
         :items="testimonials"
@@ -12,7 +30,7 @@
       >
         <template #default="{ item }: { item: Testimonial }">
           <div
-            class="bg-opacity-20 backdrop-blur-sm h-full rounded-md border border-color background p-6"
+            class="bg-opacity-20 backdrop-blur-sm h-full rounded-md border border-color background p-6 testimonial-item"
           >
             <div class="flex h-auto items-center">
               <IBImage
@@ -31,24 +49,24 @@
                 <h3 class="text-xl font-semibold text-white">
                   {{ item.name }}
                 </h3>
-                <p class="text-sm text-purple-300">
+                <p class="text-sm text-primary-300">
                   {{ item.company }}
                 </p>
               </div>
             </div>
             <div class="pt-8">
               <p
-                class="relative m-2 h-auto rounded-sm bg-opacity-30 bg-purple-900 p-3 text-sm italic text-white"
+                class="relative m-2 h-auto rounded-sm bg-opacity-30 bg-primary-600 p-3 text-sm italic text-white"
               >
                 <Icon
                   name="mdi:format-quote-open"
-                  class="absolute -top-4 left-4 text-purple-400"
+                  class="absolute -top-4 left-4 text-primary-400"
                   size="28px"
                 />
                 {{ item.quote }}
                 <Icon
                   name="mdi:format-quote-close"
-                  class="absolute -bottom-4 right-4 text-purple-400"
+                  class="absolute -bottom-4 right-4 text-primary-400"
                   size="28px"
                 />
               </p>
@@ -60,21 +78,6 @@
     <div class="space-stars absolute inset-0"></div>
   </div>
 </template>
-
-<script setup lang="ts">
-import testimonials from '@/data/home/testimonials.json'
-
-// <div class="relative h-full w-full bg-slate-950"><div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div><div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div></div>
-
-interface Testimonial {
-  image: string
-  name: string
-  company: string
-  quote: string
-}
-
-// !TODO: - allow users to add testimonials, fetch from supabase
-</script>
 
 <style scoped>
 .space-background {

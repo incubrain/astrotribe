@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { onMounted } from 'vue'
+import { useAnimation } from '~/composables/useAnimation'
 
-gsap.registerPlugin(ScrollTrigger)
+const { fadeInUp } = useAnimation()
 
 const steps = [
   {
@@ -24,30 +23,17 @@ const steps = [
 ]
 
 onMounted(() => {
-  gsap.from('.step-item', {
-    scrollTrigger: {
-      trigger: '.how-to-use-section',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.2,
-  })
+  fadeInUp('.step-item')
 })
 </script>
 
 <template>
-  <section class="how-to-use-section py-16">
+  <section class="how-to-use-section py-24">
     <div class="container mx-auto px-4">
-      <h2 class="text-4xl md:text-5xl font-bold text-center mb-4 font-space">
-        Get Started with <span class="text-primary-600">AstroTribe</span>
-      </h2>
-      <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
-        Discover the universe effortlessly with our intuitive platform. Here's how:
-      </p>
-
+      <LandingTitle
+        title="How it works"
+        subtitle="Discover the universe effortlessly with our intuitive platform. Here's how:"
+      />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <PrimeCard
           v-for="(step, index) in steps"

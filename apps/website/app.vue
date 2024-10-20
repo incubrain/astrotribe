@@ -9,6 +9,10 @@
 </template>
 
 <style>
+.font-space {
+  font-family: 'Orbitron', sans-serif;
+}
+
 html {
   margin: 0;
   padding: 0;

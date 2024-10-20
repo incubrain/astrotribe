@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useAnimation } from '~/composables/useAnimation'
 import { useRuntimeConfig } from '#app'
 
-gsap.registerPlugin(ScrollTrigger)
+const { fadeInLeft, fadeInRight } = useAnimation()
 
-const props = defineProps<{
+defineProps<{
   title: string
   subtitle: string
   buttonText: string
@@ -16,33 +15,18 @@ const config = useRuntimeConfig()
 const authLink = config.public.aeAuthLink
 
 onMounted(() => {
-  gsap.from('.cta-content', {
-    scrollTrigger: {
-      trigger: '.cta-section',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    x: -50,
-    opacity: 0,
-    duration: 0.8,
-  })
-
-  gsap.from('.cta-image', {
-    scrollTrigger: {
-      trigger: '.cta-section',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    x: 50,
-    opacity: 0,
-    duration: 0.8,
-  })
+  fadeInLeft('.cta-content')
+  fadeInRight('.cta-image')
 })
 </script>
 
 <template>
-  <section class="cta-section bg-primary-900 py-16">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+  <section class="cta-section relative py-32">
+    <div
+    class="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-transparent from-10% via-primary-950 via-50% to-transparent to-90%"
+    ></div>
+
+    <div class="wrapper px-4 flex flex-col md:flex-row items-center justify-between">
       <div class="cta-content text-white md:w-1/2 mb-8 md:mb-0">
         <h2 class="text-2xl md:text-3xl font-bold mb-4 font-space">
           {{ title }}
@@ -55,6 +39,7 @@ onMounted(() => {
           <PrimeButton
             :label="buttonText"
             severity="secondary"
+            size="large"
           />
         </NuxtLink>
       </div>
@@ -70,7 +55,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.font-space {
-  font-family: 'Orbitron', sans-serif;
+.bg-gradient-to-b {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(1, 34, 63, 0) 0%,
+    rgba(1, 34, 63, 1) 50%,
+    rgba(1, 34, 63, 0) 100%
+  );
 }
 </style>

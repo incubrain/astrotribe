@@ -1,70 +1,60 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useAnimation } from '~/composables/useAnimation'
 
-gsap.registerPlugin(ScrollTrigger)
+const { fadeInUp, scaleIn } = useAnimation()
 
 const socialMedia = [
-  { name: 'LINKEDIN', icon: 'mdi:linkedin', color: 'bg-blue-600' },
-  { name: 'TWITTER', icon: 'mdi:twitter', color: 'bg-sky-400' },
-  { name: 'YOUTUBE', icon: 'mdi:youtube', color: 'bg-red-600' },
-  { name: 'INSTAGRAM', icon: 'mdi:instagram', color: 'bg-purple-600' },
+  { name: 'LINKEDIN', icon: 'mdi:linkedin', color: 'info' },
+  { name: 'TWITTER', icon: 'mdi:twitter', color: 'success' },
+  { name: 'YOUTUBE', icon: 'mdi:youtube', color: 'danger' },
+  { name: 'INSTAGRAM', icon: 'mdi:instagram', color: 'info' },
 ]
 
 onMounted(() => {
-  gsap.from('.social-media-cta', {
-    scrollTrigger: {
-      trigger: '.social-media-cta',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-  })
-
-  gsap.from('.social-button', {
-    scrollTrigger: {
-      trigger: '.social-media-cta',
-      start: 'top bottom-=100px',
-      toggleActions: 'play none none reverse',
-    },
-    scale: 0.5,
-    opacity: 0,
-    duration: 0.5,
-    stagger: 0.1,
-  })
+  fadeInUp('.social-media-cta')
+  scaleIn('.social-button')
 })
 </script>
 
 <template>
-  <section class="py-16">
-    <div class="wrapper lg:px-8 mx-auto">
+  <section class="pb-8">
+    <div class="w-full">
       <div
         class="social-media-cta background border border-color rounded-lg shadow-lg p-8 text-center w-full"
       >
-        <h2 class="text-4xl font-bold mb-2">Let's stay in touch</h2>
-        <p class="text-2xl mb-8 text-primary-500">Follow us on Social</p>
+        <LandingTitle
+          title="Let's stay in touch"
+          subtitle="Follow us on Social"
+        />
         <div class="flex flex-wrap justify-center gap-4">
-          <a
+          <NuxtLink
             v-for="platform in socialMedia"
             :key="platform.name"
             href="#"
-            :class="[
-              platform.color,
-              ' text-white py-2 px-4 rounded-lg flex items-center transition-transform hover:scale-105',
-            ]"
+            class="social-button"
           >
-            <Icon
-              :name="platform.icon"
-              size="24"
-              class="mr-2"
-            />
-            {{ platform.name }}
-          </a>
+            <PrimeButton
+              outlined
+              :severity="platform.color"
+              size="large"
+            >
+              <Icon
+                :name="platform.icon"
+                size="24"
+                class="mr-2"
+              />
+              {{ platform.name }}
+            </PrimeButton>
+          </NuxtLink>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<style>
+.font-space {
+  font-family: 'Orbitron', sans-serif;
+}
+</style>
