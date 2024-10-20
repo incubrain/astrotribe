@@ -69,15 +69,10 @@ async function fetchArticlesFromAPI(category: string, page: number) {
     },
     populate: {
       cover: {
-        populate: '*',
-      },
-      category: {
-        populate: '*',
-        fields: ['name', 'slug'],
+        populate: true,
       },
       author: {
-        populate: ['avatar'],
-        fields: ['name', 'bio'],
+        populate: true,
       },
     },
   }

@@ -40,10 +40,10 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
 
     // Check if the mouse is within the gravity field
     if (
-      x >= -gravityArea
-      && x <= cardRect.width + gravityArea
-      && y >= -gravityArea
-      && y <= cardRect.height + gravityArea
+      x >= -gravityArea &&
+      x <= cardRect.width + gravityArea &&
+      y >= -gravityArea &&
+      y <= cardRect.height + gravityArea
     ) {
       state.mouseX = x
       state.mouseY = y
@@ -122,8 +122,8 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
   ])
 
   const borderClasses = computed(() => [
-    `border`,
-    `border-${props.color}-500/30`,
+    'border',
+    'border-color',
     `hover:border-${props.color}-400/40`,
   ])
 
