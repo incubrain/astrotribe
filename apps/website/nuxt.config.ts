@@ -239,7 +239,7 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: async () => {
+      routes: await (async () => {
         const categories = [
           'all',
           'people-of-space',
@@ -274,7 +274,7 @@ export default defineNuxtConfig({
         console.log('Prerendered routes:', routes)
 
         return routes
-      },
+      })(),
     },
   },
 
