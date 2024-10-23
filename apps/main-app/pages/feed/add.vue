@@ -6,6 +6,9 @@ const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
   initialFetch: true,
 })
 
+const name = ref(null)
+const search = ref(null)
+
 const { items: proxyCategories } = storeToRefs(store)
 
 // Ensure that `selected` is part of the category data when initially fetched
@@ -23,9 +26,6 @@ watchEffect(() => {
   }
 })
 
-// Use computed to return categories
-const categories = computed(() => proxyCategories.value)
-
 // Toggle the `selected` property directly in `proxyCategories`
 const toggleSelect = (id: string) => {
   const category = proxyCategories.value.find((item) => item.id === id)
@@ -34,11 +34,68 @@ const toggleSelect = (id: string) => {
   }
 }
 
-const save = () => {
+const onSearch = () => {
+  return proxyCategories.value.filter((item) => !search.value || item.name.includes(search.value))
+}
+
+const categories = computed(onSearch)
+
+const save = async () => {
+  const toast = useNotification()
   const selected = proxyCategories.value.filter((item) => item.selected)
+
+  if (!name.value) {
+    toast.error({ summary: 'Feed name cannot be empty', message: 'Please enter a feed name' })
+    return
+  }
+
+  if (!selected.length) {
+    toast.error({ summary: 'No categories selected', message: 'Please select some categories' })
+    return
+  }
+
+  const { profile } = useCurrentUser()
+
+  const client = useSupabaseClient()
+
+  if (profile?.id) {
+    const user_id = profile.id
+    const feed = { user_id, name: name.value }
+    try {
+      const { data, error, status } = await client.from('feeds').insert(feed).select('id')
+
+      if (!error) {
+        const feed_id = data[0].id
+        const res = await Promise.all(
+          selected.map((category) =>
+            client.from('feed_categories').insert({ feed_id, category_id: category.id }),
+          ),
+        )
+
+        if (res.every(({ error }) => !error)) {
+          toast.success({
+            summary: 'Feed created successfully',
+            message: `${name} was created successfully`,
+          })
+        } else {
+          res.forEach(
+            ({ error }) =>
+              error && toast.error({ summary: 'Could not create feed', message: error.message }),
+          )
+        }
+      } else {
+        toast.error({ summary: 'Could not create feed', message: error.message })
+      }
+    } catch (error) {
+      toast.error({ summary: 'Could not create feed', message: error })
+    }
+  } else {
+    toast.error({ summary: 'User Not Authenticated', message: 'Please login again' })
+  }
 }
 
 const discard = () => {
+  name.value = null
   const selected = proxyCategories.value.filter((item) => item.selected)
 
   selected.forEach((item) => (item.selected = false))
@@ -63,11 +120,19 @@ definePageMeta({
     <hr />
     <div>
       <PrimeFloatLabel class="flex flex-col m-6 w-50">
-        <PrimeInputText id="feedname" />
+        <PrimeInputText
+          id="feedname"
+          v-model="name"
+          required
+        />
         <label for="feedname">Enter feed name</label>
       </PrimeFloatLabel>
       <PrimeFloatLabel class="flex flex-col m-6 w-50">
-        <PrimeInputText id="search" />
+        <PrimeInputText
+          id="search"
+          v-model="search"
+          @input="onSearch"
+        />
         <label for="search">Search</label>
       </PrimeFloatLabel>
     </div>
