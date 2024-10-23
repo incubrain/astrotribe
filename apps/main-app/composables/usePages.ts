@@ -62,7 +62,7 @@ export default function usePages() {
             appLinks.value.push({
               id: feed.id,
               label: feed.name,
-              slug: '/news',
+              slug: `/feed/${feed.id}`,
               icon: 'mdi:newspaper-variant-multiple-outline',
             })
           }
