@@ -11,6 +11,13 @@ const { store: categoriesStore } = useSelectData('feed_categories', {
   initialFetch: true,
 })
 
+const removeFeed = async () => {
+  const { deleteData, isDeleting } = useDeleteData('feeds')
+  await deleteData(feedId.value)
+
+  if (!isDeleting.value) navigateTo('/')
+}
+
 const { items: proxyCategories } = storeToRefs(categoriesStore)
 
 const categories = computed(() => proxyCategories.value.map((item) => toRaw(item).categories))
@@ -62,28 +69,35 @@ const isLoading = computed(() => loading.isLoading(domainKey))
 </script>
 
 <template>
-  <PrimeButton
-    v-for="(category, index) in categories"
-    :key="index"
-    color="primary"
-    :aria-label="category.name"
-    :label="category.name"
-    size="small"
-    class="m-2"
-  />
-  <div>
-    <IBInfiniteScroll @update:scroll-end="loadMoreFunc && loadMoreFunc()">
-      <div
-        class="mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:col-start-2 gap-4 md:gap-8 p-4 md:p-8 max-w-[940px]"
-      >
-        <NewsCard
-          v-for="(item, i) in news"
-          :key="`news-post-${item.id}`"
-          :news="item"
-        />
-        <NewsCardSkeleton v-show="isLoading" />
-      </div>
-    </IBInfiniteScroll>
+  <div class="p-2">
+    <PrimeButton
+      v-for="(category, index) in categories"
+      :key="index"
+      color="primary"
+      :aria-label="category.name"
+      :label="category.name"
+      size="small"
+      class="m-1"
+    />
+    <div>
+      <IBInfiniteScroll @update:scroll-end="loadMoreFunc && loadMoreFunc()">
+        <div
+          class="mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:col-start-2 gap-4 md:gap-8 p-4 md:p-8 max-w-[940px]"
+        >
+          <NewsCard
+            v-for="(item, i) in news"
+            :key="`news-post-${item.id}`"
+            :news="item"
+          />
+          <NewsCardSkeleton v-show="isLoading" />
+        </div>
+      </IBInfiniteScroll>
+    </div>
+    <PrimeButton
+      label="Delete feed"
+      class="bg-red-800"
+      @click="removeFeed"
+    />
   </div>
 </template>
 
