@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 
-const titles = ['News', 'Research', 'Companies', 'For All']
+const titles = ['Space News', 'Astronomy Research', 'Space-Tech Companies', 'Space For All']
 const currentTitleIndex = ref(0)
 const displayedText = ref('')
 const isDeleting = ref(false)
@@ -111,10 +111,9 @@ onUnmounted(() => {
       <h1
         class="text-5xl md:text-8xl font-bold text-center mb-8 flex justify-center items-center gap-4"
       >
-        <span class="block font-space text-glow text-3d">Space</span>
-        <span class="inline-block min-w-[8ch] text-left text-3d">
+        <span class="inline-block min-w-[18ch] text-center text-3d">
           <span class="typed-text">{{ displayedText }}</span>
-          <span class="inline-block w-[2px] h-[1em] bg-white align-middle animate-blink"></span>
+          <span class="inline-block w-[2px] h-[1.2em] bg-white align-center animate-blink"></span>
         </span>
       </h1>
 
@@ -193,17 +192,17 @@ onUnmounted(() => {
 .text-3d {
   color: white;
   text-shadow:
-    0 1px 0 #cccccc,
-    0 2px 0 #c9c9c9,
-    0 3px 0 #bbb,
-    0 4px 0 #b9b9b9,
-    0 5px 0 #aaa,
-    0 6px 1px rgba(0, 0, 0, 0.1),
-    0 0 5px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    0 3px 5px rgba(0, 0, 0, 0.2),
+    0 1px 0 #1b1b1b,
+    0 2px 0 #2a2a2a,
+    0 3px 0 #190f0f,
+    0 4px 0 #202020,
+    0 5px 0 #088db2,
+    0 6px 1px rgba(8, 161, 203, 0.968),
+    0 0 5px rgba(9, 195, 237, 0.967),
+    0 1px 3px rgba(2, 190, 248, 0.3),
+    0 3px 5px rgba(3, 194, 241, 0.2),
     0 5px 10px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.2),
-    0 20px 20px rgba(0, 0, 0, 0.15);
+    0 10px 10px rgba(4, 167, 243, 0.2),
+    0 20px 20px rgba(2, 190, 248, 0.15);
 }
 </style>

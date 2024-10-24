@@ -19,15 +19,15 @@ onMounted(() => {
 
 <template>
   <section class="pb-8">
-    <div class="w-full">
-      <div
-        class="social-media-cta background border border-color rounded-lg shadow-lg p-8 text-center w-full"
-      >
+    <div
+      class="w-full flex flex-col gap-8 background border border-color rounded-lg shadow-lg p-8 text-center"
+    >
+      <div class="social-media-cta">
         <LandingTitle
           title="Let's stay in touch"
           subtitle="Follow us on Social"
         />
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-center gap-8">
           <NuxtLink
             v-for="platform in socialMedia"
             :key="platform.name"
@@ -36,8 +36,8 @@ onMounted(() => {
           >
             <PrimeButton
               outlined
-              :severity="platform.color"
               size="large"
+              severity="secondary"
             >
               <Icon
                 :name="platform.icon"
@@ -48,6 +48,12 @@ onMounted(() => {
             </PrimeButton>
           </NuxtLink>
         </div>
+      </div>
+      <div class="flex gap-4 max-w-xl mx-auto w-full">
+        <PrimeInputText
+          class="flex w-full border-4 border-primary-900"
+          placeholder="Join our email newsletter"
+        />
       </div>
     </div>
   </section>
