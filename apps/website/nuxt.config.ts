@@ -239,42 +239,47 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: async () => {
-        const categories = [
-          'all',
-          'people-of-space',
-          'space-exploration',
-          'dark-sky-conservation',
-          'sustainable-development',
-          '/sitemap.xml',
-          '/robots.txt',
-        ]
-        const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
-        const pageSize = 10 // Number of articles per page
-        const strapiBaseUrl =
-          sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
+      routes: [],
+    },
+  },
 
-        for (const category of categories) {
-          // Fetch the total count of articles for the category
-          let countQuery = '?pagination[pageSize]=0'
-          if (category !== 'all') {
-            countQuery += `&filters[category][slug][$eq]=${category}`
-          }
-          const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
-            headers: { 'Content-Type': 'application/json' },
-          })
-          const countData = await countRes.json()
-          const totalCount = countData.meta.pagination.total
-          const totalPages = Math.ceil(totalCount / pageSize)
-          for (let page = 1; page <= totalPages; page++) {
-            routes.push(`/blog/category/${category}/page/${page}`)
-          }
+  hooks: {
+    async 'nitro:config'(nitroConfig) {
+      const categories = [
+        'all',
+        'people-of-space',
+        'space-exploration',
+        'dark-sky-conservation',
+        'sustainable-development',
+        '/sitemap.xml',
+        '/robots.txt',
+      ]
+      const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
+      const pageSize = 10
+      const strapiBaseUrl =
+        sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
+
+      for (const category of categories) {
+        let countQuery = '?pagination[pageSize]=0'
+        if (category !== 'all') {
+          countQuery += `&filters[category][slug][$eq]=${category}`
         }
+        const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        const countData = await countRes.json()
+        const totalCount = countData.meta.pagination.total
+        const totalPages = Math.ceil(totalCount / pageSize)
 
-        console.log('Prerendered routes:', routes)
+        for (let page = 1; page <= totalPages; page++) {
+          routes.push(`/blog/category/${category}/page/${page}`)
+        }
+      }
 
-        return routes
-      },
+      nitroConfig.prerender = nitroConfig.prerender || {}
+      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
+
+      nitroConfig.prerender.routes.push(...routes)
     },
   },
 
