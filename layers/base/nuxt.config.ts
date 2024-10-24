@@ -14,6 +14,35 @@ export default defineNuxtConfig({
     checker: true,
   },
 
+  image: {
+    providers: {
+      supabase: {
+        name: 'supabase',
+        provider: '~/supabase-provider',
+      },
+    },
+    presets: {
+      original: {
+        modifiers: {
+          width: 1920,
+          height: 1080,
+        },
+      },
+      mobile: {
+        modifiers: {
+          width: 768,
+          height: 1024,
+        },
+      },
+      thumbnail: {
+        modifiers: {
+          width: 300,
+          height: 200,
+        },
+      },
+    },
+  },
+
   components: [
     {
       path: './components',
