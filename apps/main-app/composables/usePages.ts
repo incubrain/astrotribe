@@ -17,6 +17,12 @@ const appLinks = ref([
     slug: '/news',
     icon: 'mdi:newspaper-variant-outline',
   },
+  {
+    id: 3,
+    label: 'Add Custom Feed',
+    slug: '/feed/add',
+    icon: 'mdi:plus',
+  },
   // {
   //   id: 3,
   //   label: 'Companies',
@@ -32,6 +38,38 @@ const appLinks = ref([
 ] as PageType[])
 
 export default function usePages() {
+  const client = useSupabaseClient()
+
+  const { profile } = useCurrentUser()
+  if (profile.id) {
+    const toast = useNotification()
+    client
+      .from('feeds')
+      .select('id, name')
+      .eq('user_id', profile.id)
+      .then(({ data, error }) => {
+        if (error) {
+          toast.error({
+            summary: 'Failed to get custom feeds',
+            message: 'Could not get custom feeds',
+          })
+
+          return
+        }
+
+        data.forEach((feed) => {
+          if (!appLinks.value.some((link) => link.id === feed.id)) {
+            appLinks.value.push({
+              id: feed.id,
+              label: feed.name,
+              slug: `/feed/${feed.id}`,
+              icon: 'mdi:newspaper-variant-multiple-outline',
+            })
+          }
+        })
+      })
+  }
+
   return {
     appLinks,
   }
