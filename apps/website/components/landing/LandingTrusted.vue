@@ -42,7 +42,7 @@ onMounted(() => {
             :src="partner.image"
             :alt="partner.name"
             :class="[
-              'max-h-16 w-auto object-contain transition-all duration-300 hover:scale-110 ',
+              'max-h-32 w-auto object-contain transition-all duration-300 hover:scale-110 ',
               partner.invert ? 'filter invert' : '',
             ]"
           />

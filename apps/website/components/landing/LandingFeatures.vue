@@ -86,30 +86,40 @@ onUnmounted(() => {
             title="100+ News Sources"
             subtitle="Covering Astronomy and Space-tech"
           />
-          <div
-            ref="emblaRef"
-            class="embla overflow-hidden"
-          >
-            <div class="embla__container flex">
-              <div
-                v-for="logo in logos"
-                :key="logo.id"
-                class="embla__slide flex-shrink-0 mx-4 flex flex-col items-center justify-center gap-2 transition-transform duration-300 hover:scale-105"
-              >
-                <NuxtImg
-                  :src="`https://picsum.photos/200/100?random=${logo.id}`"
-                  :alt="logo.name"
-                  class="h-12 w-auto object-contain"
-                  width="200"
-                  height="100"
-                  loading="lazy"
-                />
-                <p
-                  class="text-xs border border-color rounded-full uppercase text-center font-bold px-2 pt-1"
-                  >{{ logo.name }}</p
+          <div class="relative border-x-4 border-primary-950/70 rounded-lg">
+            <div
+              ref="emblaRef"
+              class="embla overflow-hidden"
+            >
+              <div class="embla__container flex">
+                <div
+                  v-for="logo in logos"
+                  :key="logo.id"
+                  class="embla__slide flex-shrink-0 mx-4 flex flex-col items-center justify-center gap-2 transition-transform duration-300 hover:scale-105"
                 >
+                  <NuxtImg
+                    :src="`https://picsum.photos/200/100?random=${logo.id}`"
+                    :alt="logo.name"
+                    class="h-12 w-auto object-contain"
+                    width="200"
+                    height="100"
+                    loading="lazy"
+                  />
+                  <p
+                    class="text-xs border border-color rounded-full uppercase text-center font-bold px-2 pt-1"
+                  >
+                    {{ logo.name }}
+                  </p>
+                </div>
               </div>
             </div>
+            <!-- Gradient overlays -->
+            <div
+              class="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-primary-950 to-transparent"
+            ></div>
+            <div
+              class="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-primary-950 to-transparent"
+            ></div>
           </div>
           <div class="text-center mt-8">
             <PrimeButton
@@ -119,7 +129,6 @@ onUnmounted(() => {
             />
           </div>
         </div>
-
         <!-- Feature Grid -->
         <div class="feature-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <PrimeCard
@@ -168,6 +177,15 @@ onUnmounted(() => {
 .embla__slide {
   flex: 0 0 auto;
   min-width: 0;
-  max-width: 200px; /* Adjust based on your needs */
+  max-width: 200px;
+}
+
+.relative {
+  position: relative;
+  z-index: 1;
+}
+
+.absolute {
+  z-index: 2;
 }
 </style>

@@ -51,7 +51,7 @@ onMounted(() => {
               <span class="text-xl">/month</span>
             </div>
             <div class="flex items-center">
-              <h4 class="text-xl bg-emerald-700/30 underline underline-offset-4 px-2 py-1"
+              <h4 class="text-xl bg-emerald-700/30 underline underline-offset-4 px-2 py-1 font-bold"
                 >RISK FREE</h4
               >
             </div>

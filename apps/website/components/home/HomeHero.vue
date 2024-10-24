@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen text-white">
+  <div class="relative min-h-screen text-white w-full">
     <IBImage
       :img="{
         src: bgImg,
@@ -8,7 +8,7 @@
       }"
       class="absolute left-0 top-0 h-full w-full bg-center bg-no-repeat object-cover"
     />
-    <div class="absolute left-0 top-0 h-full w-full bg-zinc-900/60" />
+    <div class="absolute left-0 top-0 z-10 h-full w-full bg-zinc-900" />
     <div
       class="relative mx-auto grid max-w-[1920px] gap-8 px-4 py-32 md:px-16 lg:grid-cols-[1.5fr_1.75fr] xl:gap-16 xl:px-32"
     >
