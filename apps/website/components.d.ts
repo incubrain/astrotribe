@@ -17,7 +17,9 @@ declare module 'vue' {
     PrimeColumn: typeof import('primevue/column')['default']
     PrimeDataTable: typeof import('primevue/datatable')['default']
     PrimeDialog: typeof import('primevue/dialog')['default']
+    PrimeInputText: typeof import('primevue/inputtext')['default']
     PrimeMenubar: typeof import('primevue/menubar')['default']
+    PrimePopover: typeof import('primevue/popover')['default']
     PrimeTab: typeof import('primevue/tab')['default']
     PrimeTabList: typeof import('primevue/tablist')['default']
     PrimeTabPanel: typeof import('primevue/tabpanel')['default']
@@ -29,5 +31,6 @@ declare module 'vue' {
   }
   export interface ComponentCustomProperties {
     Ripple: typeof import('primevue/ripple')['default']
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }
