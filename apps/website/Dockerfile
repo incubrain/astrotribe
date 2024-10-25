@@ -25,6 +25,9 @@ COPY . .
 RUN npx nx reset
 RUN npx nx --version
 
+ARG NUXT_PUBLIC_STRAPI_URL
+ENV NUXT_PUBLIC_STRAPI_URL=$NUXT_PUBLIC_STRAPI_URL
+
 # Build the website
 RUN nx build website --verbose --skip-nx-cache
 
