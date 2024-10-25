@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     providers: {
       supabase: {
         name: 'supabase',
-        provider: '~/supabase-provider',
+        provider: '../../layers/base/supabase-provider',
       },
     },
     presets: {
