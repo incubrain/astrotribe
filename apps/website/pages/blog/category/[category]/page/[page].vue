@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import qs from 'qs'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { useRoute } from '#imports'
+import { useRoute, useRuntimeConfig } from '#imports'
 import { populate } from 'dotenv'
 
 const route = useRoute()
@@ -53,10 +53,7 @@ const pageParam = computed(() => pageData.value?.page || 1)
 
 // Use the pageData in your component
 
-console.log('PageData', pageData.value)
-console.log('Total Pages:', totalPages.value)
-console.log('Page Size:')
-console.log('Page:', pageParam.value)
+console.log('useRuntimeConfig:', useRuntimeConfig().public)
 
 async function fetchArticlesFromAPI(category: string, page: number) {
   const params: any = {
@@ -76,8 +73,6 @@ async function fetchArticlesFromAPI(category: string, page: number) {
       },
     },
   }
-
-  //
 
   if (category !== 'all') {
     params.populate.categories.filters = {

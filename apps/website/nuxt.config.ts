@@ -1,25 +1,10 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
-import { config } from 'dotenv'
 import { defineNuxtConfig } from 'nuxt/config'
 import sharedRuntimeConfig from '../../shared-runtime.config'
-
-config()
-
-console.log('Railway specific vars:', {
-  RAILWAY_SERVICE_NAME: process.env.RAILWAY_SERVICE_NAME,
-  RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT_NAME,
-})
+import prerenderRoutes from './prerender-routes.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
-// Move the URL resolution outside of any async context
-const resolveStrapiUrl = () => {
-  const configuredUrl = sharedRuntimeConfig.runtimeConfig.public.strapiUrl
-  console.log('Resolved Strapi URL:', configuredUrl)
-  return configuredUrl || 'http://strapi:1337'
-}
-
-const strapiBaseUrl = resolveStrapiUrl()
 
 function generateLocalUrls(start = 3000, end = 3009) {
   return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
@@ -44,7 +29,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
-    // '@nuxtjs/seo',
+    '@nuxtjs/seo',
     '@nuxt/devtools',
     '@vueuse/nuxt',
     '@nuxt/image',
@@ -252,45 +237,7 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: [],
-    },
-  },
-
-  hooks: {
-    async 'nitro:config'(nitroConfig) {
-      const categories = [
-        'all',
-        'people-of-space',
-        'space-exploration',
-        'dark-sky-conservation',
-        'sustainable-development',
-        '/sitemap.xml',
-        '/robots.txt',
-      ]
-      const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
-      const pageSize = 10
-
-      for (const category of categories) {
-        let countQuery = '?pagination[pageSize]=0'
-        if (category !== 'all') {
-          countQuery += `&filters[category][slug][$eq]=${category}`
-        }
-        const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        const countData = await countRes.json()
-        const totalCount = countData.meta.pagination.total
-        const totalPages = Math.ceil(totalCount / pageSize)
-
-        for (let page = 1; page <= totalPages; page++) {
-          routes.push(`/blog/category/${category}/page/${page}`)
-        }
-      }
-
-      nitroConfig.prerender = nitroConfig.prerender || {}
-      nitroConfig.prerender.routes = nitroConfig.prerender.routes || []
-
-      nitroConfig.prerender.routes.push(...routes)
+      routes: prerenderRoutes,
     },
   },
 
