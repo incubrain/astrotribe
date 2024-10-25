@@ -6,6 +6,11 @@ import sharedRuntimeConfig from '../../shared-runtime.config'
 
 config()
 
+console.log('Railway specific vars:', {
+  RAILWAY_SERVICE_NAME: process.env.RAILWAY_SERVICE_NAME,
+  RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT_NAME,
+})
+
 const currentDir = dirname(fileURLToPath(import.meta.url))
 // Move the URL resolution outside of any async context
 const resolveStrapiUrl = () => {
