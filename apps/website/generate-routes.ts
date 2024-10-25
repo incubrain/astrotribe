@@ -1,8 +1,13 @@
 import fs from 'fs'
 import fetch from 'node-fetch'
+import { config } from 'dotenv'
+
+config()
 
 async function generateRoutes() {
   const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
+
+  console.log('Generating routes...', strapiBaseUrl)
   const categories = [
     'all',
     'people-of-space',
