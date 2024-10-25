@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { config } from 'dotenv'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedRuntimeConfig from '../../shared-runtime.config.js'
+import sharedRuntimeConfig from '../../shared-runtime.config'
 
 config()
 
@@ -256,7 +256,8 @@ export default defineNuxtConfig({
       ]
       const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
       const pageSize = 10
-      const strapiBaseUrl = 'https://cms.astronera.org'
+      const strapiBaseUrl =
+        sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
       console.log('Attempting to connect to Strapi at:', strapiBaseUrl)
 
       for (const category of categories) {
