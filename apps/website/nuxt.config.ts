@@ -259,6 +259,7 @@ export default defineNuxtConfig({
       const strapiBaseUrl =
         sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
       console.log('Attempting to connect to Strapi at:', strapiBaseUrl)
+      console.log('SHARED RUNTIME CONFIG', sharedRuntimeConfig.runtimeConfig)
 
       for (const category of categories) {
         let countQuery = '?pagination[pageSize]=0'
