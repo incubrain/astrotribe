@@ -257,7 +257,7 @@ export default defineNuxtConfig({
       const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
       const pageSize = 10
       const strapiBaseUrl =
-        sharedRuntimeConfig.runtimeConfig.public.strapiUrl || 'http://strapi:1337'
+        process.env.NUXT_PUBLIC_STRAPI_URL || process.env.NUXT_STRAPI_URL || 'http://strapi:1337'
       console.log('Attempting to connect to Strapi at:', strapiBaseUrl)
 
       for (const category of categories) {
