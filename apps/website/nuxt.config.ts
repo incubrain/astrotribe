@@ -7,6 +7,14 @@ import sharedRuntimeConfig from '../../shared-runtime.config'
 config()
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
+// Move the URL resolution outside of any async context
+const resolveStrapiUrl = () => {
+  const configuredUrl = sharedRuntimeConfig.runtimeConfig.public.strapiUrl
+  console.log('Resolved Strapi URL:', configuredUrl)
+  return configuredUrl || 'http://strapi:1337'
+}
+
+const strapiBaseUrl = resolveStrapiUrl()
 
 function generateLocalUrls(start = 3000, end = 3009) {
   return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
@@ -256,9 +264,6 @@ export default defineNuxtConfig({
       ]
       const routes = ['/', '/about', '/contact', '/team', '/projects/dark-sky-conference-2023']
       const pageSize = 10
-      const strapiBaseUrl =
-        process.env.NUXT_PUBLIC_STRAPI_URL || process.env.NUXT_STRAPI_URL || 'http://strapi:1337'
-      console.log('Attempting to connect to Strapi at:', strapiBaseUrl)
 
       for (const category of categories) {
         let countQuery = '?pagination[pageSize]=0'
