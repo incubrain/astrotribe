@@ -114,7 +114,6 @@ export default defineNuxtConfig({
           'https://astronera.org',
           'https://*.astronera.org',
           'http://localhost:1337/',
-          'http://strapi:1337/',
         ],
         'img-src': [
           "'self'",
@@ -122,7 +121,6 @@ export default defineNuxtConfig({
           'http://localhost:54321',
           'http://localhost:3000',
           'http://localhost:1337/',
-          'http://strapi:1337/',
           'https://*.up.railway.app',
           'https://www.nasa.gov',
           'https://science.nasa.gov',

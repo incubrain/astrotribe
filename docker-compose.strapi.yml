@@ -2,9 +2,12 @@ services:
   strapi:
     build:
       context: ./apps/cms
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.develop
     image: astrotribe-cms
     container_name: astrotribe-strapi
+    volumes:
+      - ./apps/cms:/app
+      - /app/node_modules 
     ports:
       - '1337:1337'
     depends_on:

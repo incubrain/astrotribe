@@ -1,13 +1,19 @@
-# Use Alpine-based Node.js 18 image
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+# Build-time arguments
+ARG ENV_VARS
+
+# Parse and set all build arguments as environment variables
+RUN echo "$ENV_VARS" | tr ';' '\n' > build_env.sh && \
+    cat build_env.sh && \
+    source build_env.sh && \
+    export $(cut -d= -f1 build_env.sh)
 
 # Install dependencies
+COPY package.json package-lock.json ./
 RUN npm ci
 
 # Install nx globally using the version from package.json
@@ -25,10 +31,8 @@ COPY . .
 RUN npx nx reset
 RUN npx nx --version
 
-ARG NUXT_PUBLIC_STRAPI_URL
-ENV NUXT_PUBLIC_STRAPI_URL=$NUXT_PUBLIC_STRAPI_URL
-
 # Build the website
+RUN npx tsx apps/website/generate-routes.ts
 RUN nx build website --verbose --skip-nx-cache
 
 # Set the port (default to 8080 if not provided)
@@ -36,6 +40,7 @@ ENV PORT=8080
 
 # Expose the port
 EXPOSE $PORT
+
 
 # Start the application
 CMD ["node", "/app/apps/website/.output/server/index.mjs"]
