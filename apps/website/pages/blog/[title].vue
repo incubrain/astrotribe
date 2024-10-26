@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import qs from 'qs'
 import { computed } from 'vue'
-import { useRoute } from '#imports'
+import { useRoute, useStrapi } from '#imports'
 
 const route = useRoute()
 const strapi = useStrapi()
