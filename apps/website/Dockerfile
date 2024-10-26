@@ -21,22 +21,16 @@ ARG ENVIRONMENT_VARIABLES
 
 # Dynamically set environment variables
 SHELL ["/bin/sh", "-c"]
-# First, declare all ARGs
-RUN for var in $ENVIRONMENT_VARIABLES; do \
-        echo "ARG $var" >> /tmp/env.args; \
-    done && \
-    cat /tmp/env.args
-
-# Create script to set environment variables
-COPY --chmod=755 <<EOF /tmp/set-env.sh
-#!/bin/sh
-for var in $ENVIRONMENT_VARIABLES; do
-    val=$(printenv $var)
-    if [ ! -z "$val" ]; then
-        export $var=$val
-    fi
-done
-EOF
+RUN for var in ${ENVIRONMENT_VARIABLES}; do \
+        echo "ARG $var" >> env.args; \
+        echo "ENV $var=\$$var" >> env.args; \
+    done; \
+    cat env.args | while read line; do \
+        val=$(echo $line | grep "ENV" | cut -d"=" -f2); \
+        if [ ! -z "$val" ]; then \
+            export $(echo $line | grep "ENV" | cut -d"=" -f1 | cut -d" " -f2)="$val"; \
+        fi; \
+    done
 
 # Source the environment variables
 RUN . /tmp/set-env.sh
