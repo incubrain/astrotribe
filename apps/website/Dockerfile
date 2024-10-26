@@ -32,8 +32,6 @@ RUN for var in ${ENVIRONMENT_VARIABLES}; do \
         fi; \
     done
 
-# Source the environment variables
-RUN . /tmp/set-env.sh
 
 # Install dependencies
 COPY package.json package-lock.json ./
