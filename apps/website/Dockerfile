@@ -1,40 +1,37 @@
+# Define all environment variables in one place at the top
+ARG ENVIRONMENT_VARIABLES="NUXT_PUBLIC_POSTHOG_URL \
+    NUXT_PUBLIC_POSTHOG_KEY \
+    NUXT_PUBLIC_LOG_LEVEL \
+    RAILWAY_DOCKERFILE_PATH \
+    NUXT_PUBLIC_AE_AUTH_URL \
+    NUXT_PUBLIC_AE_LOGIN_URL \
+    NUXT_PUBLIC_STRAPI_URL \
+    NUXT_STRAPI_URL \
+    NODE_ENV \
+    NUXT_PUBLIC_AE_APP_URL \
+    NUXT_PUBLIC_SUPABASE_KEY \
+    NUXT_PUBLIC_SUPABASE_URL"
+
+
+# Dynamically set environment variables
+
+# Rest of your Dockerfile...
+
 FROM node:18-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /app
 
-ARG NUXT_PUBLIC_POSTHOG_URL
-ARG NUXT_PUBLIC_POSTHOG_KEY
-ARG NUXT_PUBLIC_LOG_LEVEL
-ARG RAILWAY_DOCKERFILE_PATH
-ARG NUXT_PUBLIC_AE_AUTH_URL
-ARG NUXT_PUBLIC_AE_LOGIN_URL
-ARG NUXT_PUBLIC_STRAPI_URL
-ARG NUXT_STRAPI_URL
-ARG NODE_ENV
-ARG NUXT_PUBLIC_AE_APP_URL
-ARG NUXT_PUBLIC_SUPABASE_KEY
-ARG NUXT_PUBLIC_SUPABASE_URL
+ARG ENVIRONMENT_VARIABLES
 
-# Convert ARGs to ENVs so they're available at runtime
-ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL}
-ENV NUXT_PUBLIC_POSTHOG_KEY=${NUXT_PUBLIC_POSTHOG_KEY}
-ENV NUXT_PUBLIC_LOG_LEVEL=${NUXT_PUBLIC_LOG_LEVEL}
-ENV RAILWAY_DOCKERFILE_PATH=${RAILWAY_DOCKERFILE_PATH}
-ENV NUXT_PUBLIC_AE_AUTH_URL=${NUXT_PUBLIC_AE_AUTH_URL}
-ENV NUXT_PUBLIC_AE_LOGIN_URL=${NUXT_PUBLIC_AE_LOGIN_URL}
-ENV NUXT_PUBLIC_STRAPI_URL=${NUXT_PUBLIC_STRAPI_URL}
-ENV NUXT_STRAPI_URL=${NUXT_STRAPI_URL}
-ENV NODE_ENV=${NODE_ENV}
-ENV NUXT_PUBLIC_AE_APP_URL=${NUXT_PUBLIC_AE_APP_URL}
-ENV NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY}
-ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
+# Dynamically set environment variables
+SHELL ["/bin/sh", "-c"]
+RUN for var in ${ENVIRONMENT_VARIABLES}; do \
+        echo "ARG $var" >> env.args; \
+        echo "ENV $var=\${$var}" >> env.args; \
+    done; \
+    cat env.args | while read line; do eval "$line"; done
 
-# Parse and set all build arguments as environment variables
-RUN echo "$ENV_VARS" | tr ';' '\n' > build_env.sh && \
-    cat build_env.sh && \
-    source build_env.sh && \
-    export $(cut -d= -f1 build_env.sh)
 
 # Install dependencies
 COPY package.json package-lock.json ./
@@ -64,7 +61,6 @@ ENV PORT=8080
 
 # Expose the port
 EXPOSE $PORT
-
 
 # Start the application
 CMD ["node", "/app/apps/website/.output/server/index.mjs"]
