@@ -1,0 +1,15 @@
+FROM node:18-slim
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm i
+
+# Install nodemon for development
+RUN npm install -g nodemon
+
+EXPOSE 1337
+
+# Use nodemon instead of npm run start
+CMD ["npm", "run", "dev"]

@@ -7,4 +7,5 @@ Dockerfile
 dist
 coverage
 tmp
+build
 *.log

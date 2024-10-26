@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 config()
 
 async function generateRoutes() {
-  const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL || 'http://strapi:1337'
+  const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 
   console.log('Generating routes...', strapiBaseUrl)
   const categories = [
