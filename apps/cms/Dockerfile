@@ -10,7 +10,6 @@ RUN npm i
 # Copy the rest of the application code
 COPY . .
 
-COPY ./data/exported-data.json ./data/
 COPY ./scripts/seed.js ./scripts/
 
 # Build the admin panel
