@@ -52,11 +52,12 @@ ENV NX_DAEMON=false
 ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
-RUN npx nx reset
-RUN npx nx --version
 
 # Copy the entire project
 COPY . .
+
+RUN npx nx reset
+RUN npx nx --version
 
 # Build the website
 RUN npx tsx apps/website/generate-routes.ts
