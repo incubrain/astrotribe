@@ -1,13 +1,15 @@
 import fs from 'fs'
 import fetch from 'node-fetch'
-import { config } from 'dotenv'
-
-config()
 
 async function generateRoutes() {
   const strapiBaseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 
+  if (!strapiBaseUrl) {
+    throw new Error('NUXT_PUBLIC_STRAPI_URL is not defined')
+  }
+
   console.log('Generating routes...', strapiBaseUrl)
+
   const categories = [
     'all',
     'people-of-space',
@@ -38,4 +40,7 @@ async function generateRoutes() {
   fs.writeFileSync('prerender-routes.json', JSON.stringify(routes, null, 2))
 }
 
-generateRoutes()
+generateRoutes().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})
