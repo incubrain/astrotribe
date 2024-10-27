@@ -109,6 +109,8 @@ export default defineNuxtConfig({
           'https://us.i.posthog.com',
           'ws://localhost:4000',
           'wss://localhost:4000',
+          'ws://localhost:4001', // Add this line
+          'wss://localhost:4001',
           'https://picsum.photos',
           'https://cms.astronera.org',
           'https://astronera.org',
@@ -135,6 +137,8 @@ export default defineNuxtConfig({
           'https://picsum.photos',
           'https://fastly.picsum.photos/',
           'https://img.youtube.com',
+          'https://cms.astronera.org',
+          'https://*.astronera.org',
         ],
         'script-src': [
           "'self'",
