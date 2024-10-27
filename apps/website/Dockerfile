@@ -41,7 +41,7 @@ ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Install dependencies
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm i
 
 # Install nx globally using the version from package.json
 RUN NX_VERSION=$(node -p "require('./package.json').devDependencies.nx") && \
@@ -52,11 +52,11 @@ ENV NX_DAEMON=false
 ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
-# Copy the entire project
-COPY . .
-
 RUN npx nx reset
 RUN npx nx --version
+
+# Copy the entire project
+COPY . .
 
 # Build the website
 RUN npx tsx apps/website/generate-routes.ts
