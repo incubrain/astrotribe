@@ -44,7 +44,8 @@ COPY package.json package-lock.json ./
 COPY . .
 
 # Install dependencies
-RUN npm ci
+RUN npm ci && \
+npm install -g nx@latest
 
 # Disable Nx Daemon, Nx Cloud, and Caching
 ENV NX_DAEMON=false
