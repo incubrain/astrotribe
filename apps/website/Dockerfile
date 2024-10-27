@@ -41,11 +41,13 @@ ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Copy the entire project (excluding node_modules via .dockerignore)
 COPY package.json package-lock.json ./
+RUN ls -la /app
+
 COPY . .
+RUN ls -la /app
 
 # Install dependencies
-RUN npm ci && \
-npm install -g nx@latest
+RUN npm ci
 
 # Disable Nx Daemon, Nx Cloud, and Caching
 ENV NX_DAEMON=false
@@ -53,12 +55,12 @@ ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
 # Reset Nx cache and verify version
-RUN npx nx reset
-RUN npx nx --version
+RUN nx reset
+RUN nx --version
 
 # Build the website
 RUN npx tsx apps/website/generate-routes.ts
-RUN npx nx build website --verbose --skip-nx-cache
+RUN nx build website --verbose --skip-nx-cache
 
 # Set the port (default to 8080 if not provided)
 ENV PORT=8080
