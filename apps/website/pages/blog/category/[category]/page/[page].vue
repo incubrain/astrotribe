@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import qs from 'qs'
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { useRoute, useRuntimeConfig } from '#imports'
-import { populate } from 'dotenv'
+import { useRoute, useRuntimeConfig, useStrapi } from '#imports'
 
 const route = useRoute()
 const strapi = useStrapi()
@@ -42,53 +40,50 @@ const categoryInfo = {
 
 const { data: pageData } = await useAsyncData(
   `articles-${route.params.category}-page-${route.params.page}`,
-  () => fetchArticlesFromAPI(String(route.params.category), Number(route.params.page)),
-  { server: false },
+  () =>
+    fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.page)),
+  { server: false, immediate: true },
 )
 
 const articles = computed(() => pageData.value?.articles || [])
 const totalPages = computed(() => pageData.value?.totalPages || 1)
-const categoryParam = computed(() => pageData.value?.category || 'all')
+const categoryParam = computed(() => route.params.category || 'all')
 const pageParam = computed(() => pageData.value?.page || 1)
 
 // Use the pageData in your component
 
-console.log('useRuntimeConfig:', useRuntimeConfig().public)
+console.log('useRuntimeConfig:', useRuntimeConfig().public, categoryParam.value, pageData)
 
 async function fetchArticlesFromAPI(category: string, page: number) {
+  console.log('Fetching articles:', category, page)
   const params: any = {
-    pagination: {
-      pageSize: 10,
-      page: page,
-    },
-    sort: {
-      publishedAt: 'desc',
-    },
     populate: {
+      author: {
+        populate: true,
+      },
       cover: {
         populate: true,
       },
-      author: {
+      category: {
         populate: true,
       },
     },
   }
 
   if (category !== 'all') {
-    params.populate.categories.filters = {
+    params.populate.category.filters = {
       slug: {
         $eq: category,
       },
     }
   }
 
-  const authors = await strapi.fetchFromStrapi<any>('authors')
-  const response = await strapi.fetchFromStrapi<any>('articles', params)
+  const response = await strapi.find<any>('articles', params)
 
   // If you need categories and authors separately
-  // const categories = await strapi.fetchFromStrapi<any>('categories');
+  // const categories = await strapi.find<any>('categories');
 
-  console.log('Response:', response, authors)
+  console.log('Response:', response)
 
   return {
     articles: response.data,

@@ -221,19 +221,6 @@ export default defineNuxtConfig({
     sri: false,
   },
 
-  strapi: {
-    prefix: '/api',
-    version: 'v5',
-    devtools: true,
-    cookie: {
-      path: '/',
-      maxAge: 14 * 24 * 60 * 60,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: true,
-    },
-    cookieName: 'strapi_jwt',
-  },
-
   nitro: {
     debug: true,
     logLevel: 'debug',

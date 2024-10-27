@@ -20,26 +20,24 @@ const { data, pending, error } = await useAsyncData(
         },
         populate: {
           cover: {
-            populate: '*',
+            populate: true,
           },
           category: {
-            fields: ['name', 'slug'],
+            populate: true,
           },
-          tags: {
-            fields: ['id', 'name'],
-          },
+          blocks: true,
           author: {
+            fields: ['name', 'bio'],
             populate: {
               avatar: {
-                populate: '*',
+                populate: true,
               },
             },
-            fields: ['name', 'bio'],
           },
         },
       }
 
-      const response = await strapi.fetchFromStrapi<any>('articles', params)
+      const response = await strapi.find<any>('articles', params)
 
       if (!response || !response.data || response.data.length === 0) {
         console.error({ statusCode: 404, message: 'Article not found' })
