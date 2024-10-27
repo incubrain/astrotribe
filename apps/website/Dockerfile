@@ -55,12 +55,12 @@ ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
 # Reset Nx cache and verify version
-RUN nx reset
-RUN nx --version
+RUN npx nx reset
+RUN npx nx --version
 
 # Build the website
 RUN npx tsx apps/website/generate-routes.ts
-RUN nx build website --verbose --skip-nx-cache
+RUN npx nx build website --verbose --skip-nx-cache
 
 # Set the port (default to 8080 if not provided)
 ENV PORT=8080
