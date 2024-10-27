@@ -9,8 +9,8 @@ export default [
         directives: {
           'frameAncestors': ['http://localhost:*', 'self'],
           'connect-src': ["'self'", 'http:', 'https:'],
-          'img-src': ["'self'", 'data:', 'blob:', 'http:', 'https:'],
-          'media-src': ["'self'", 'data:', 'blob:', 'http:', 'https:'],
+          'img-src': ["'self'", 'data:', 'blob:', 'http:', 'https:', '*.astronera.org'],
+          'media-src': ["'self'", 'data:', 'blob:', 'http:', 'https:', '*.astronera.org'],
           'upgradeInsecureRequests': null,
         },
       },
