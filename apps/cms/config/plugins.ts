@@ -1,11 +1,15 @@
-export default () => ({
+// config/plugins.js
+
+module.exports = ({ env }) => ({
   upload: {
     config: {
-      provider: 'local',
-      providerOptions: {},
-      actionOptions: {
-        upload: {},
-        delete: {},
+      provider: 'supabase',
+      providerOptions: {
+        endpoint: env('SUPABASE_STORAGE_URL'),
+        accessKeyId: env('SUPABASE_ACCESS_KEY'),
+        secretAccessKey: env('SUPABASE_SECRET_KEY'),
+        bucket: env('SUPABASE_BUCKET'),
+        region: 'ap-south-1',
       },
     },
   },
