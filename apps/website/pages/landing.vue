@@ -4,9 +4,9 @@
 
 <template>
   <div>
-    <LandingHero class="pb-24" />
+    <LandingHero />
 
-    <main class="space-y-24 overflow-hidden max-w-full">
+    <main class="space-y-24 py-24 overflow-hidden max-w-full">
       <LazyLandingFeatures class="wrapper overflow-hidden mx-auto px-4 sm:px-6 lg:px-8" />
       <LazyLandingProductSteps class="wrapper mx-auto px-4 sm:px-6 lg:px-8" />
       <LazyLandingTestimonials class="max-w-full w-full" />
