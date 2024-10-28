@@ -134,7 +134,7 @@ onUnmounted(() => {
           <PrimeCard
             v-for="feature in features"
             :key="feature.id"
-            class="feature-card"
+            class="feature-card border border-color"
           >
             <template #header>
               <div class="relative">
@@ -146,9 +146,10 @@ onUnmounted(() => {
                   height="200"
                   loading="lazy"
                 />
-                <div class="absolute top-2 right-2 bg-white rounded-full p-2">
+                <div class="absolute top-2 right-2 bg-white rounded-full p-2 flex">
                   <Icon
                     :name="feature.icon"
+                    class="text-black"
                     size="large"
                   />
                 </div>

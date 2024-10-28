@@ -1,208 +1,184 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
+import { useNuxtApp } from '#app'
 
-const titles = ['Space News', 'Astronomy Research', 'Space-Tech Companies', 'Space For All']
-const currentTitleIndex = ref(0)
-const displayedText = ref('')
-const isDeleting = ref(false)
+const nuxtApp = useNuxtApp()
+const highlightedWords = ['Discoveries', 'Innovations', 'Technologies', 'Future']
+const currentWord = ref(highlightedWords[0])
+const isTransitioning = ref(false)
 const scrollY = ref(0)
+const videoLoaded = ref(false)
+const videoElement = ref<HTMLVideoElement | null>(null)
 
-const typingSpeed = 150
-const deletingSpeed = 75
-const pauseBetweenWords = 1500
+const rotateWords = () => {
+  if (isTransitioning.value) return
 
-const backgroundImages = ['/defaults/cover.jpg', '/defaults/cover.jpg', '/defaults/cover.jpg']
-const currentImageIndex = ref(0)
+  isTransitioning.value = true
+  const currentIndex = highlightedWords.indexOf(currentWord.value)
+  const nextIndex = (currentIndex + 1) % highlightedWords.length
 
-const typeText = () => {
-  const currentWord = titles[currentTitleIndex.value]
-
-  if (!isDeleting.value) {
-    displayedText.value = currentWord.substring(0, displayedText.value.length + 1)
-
-    if (displayedText.value === currentWord) {
-      isDeleting.value = true
-      setTimeout(typeText, pauseBetweenWords)
-      return
-    }
-  } else {
-    displayedText.value = currentWord.substring(0, displayedText.value.length - 1)
-
-    if (displayedText.value === '') {
-      isDeleting.value = false
-      currentTitleIndex.value = (currentTitleIndex.value + 1) % titles.length
-    }
-  }
-
-  setTimeout(typeText, isDeleting.value ? deletingSpeed : typingSpeed)
+  gsap.to('.highlight-word', {
+    y: 50,
+    opacity: 0,
+    duration: 0.5,
+    onComplete: () => {
+      currentWord.value = highlightedWords[nextIndex]
+      gsap.fromTo('.highlight-word', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 })
+      isTransitioning.value = false
+    },
+  })
 }
 
 const handleScroll = () => {
   scrollY.value = window.scrollY
 }
 
-const changeBackgroundImage = () => {
-  gsap.to('.background-image', {
-    opacity: 0,
+const handleVideoLoad = () => {
+  videoLoaded.value = true
+  if (videoElement.value) {
+    videoElement.value.play().catch((error) => {
+      console.error('Video play error:', error)
+    })
+  }
+  gsap.to('.video-fade-in', {
+    opacity: 1,
     duration: 1,
-    onComplete: () => {
-      currentImageIndex.value = (currentImageIndex.value + 1) % backgroundImages.length
-      gsap.to('.background-image', {
-        opacity: 1,
-        duration: 1,
-      })
-    },
+    ease: 'power2.out',
   })
 }
 
-onMounted(() => {
-  typeText()
+// Initialize video on client-side only
+if (import.meta.client) {
+  nuxtApp.hook('app:mounted', () => {
+    // Initial animations
+    gsap.from('.hero-title', {
+      x: -50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    })
 
-  gsap.from('.text-3d', {
-    duration: 1.5,
-    y: 100,
-    opacity: 0,
-    ease: 'power3.out',
+    gsap.from('.hero-subtitle', {
+      x: -50,
+      opacity: 0,
+      duration: 1,
+      delay: 0.3,
+      ease: 'power3.out',
+    })
+
+    gsap.from('.hero-cta', {
+      x: -50,
+      opacity: 0,
+      duration: 1,
+      delay: 0.6,
+      ease: 'power3.out',
+    })
+
+    // Initialize video
+    if (videoElement.value) {
+      videoElement.value.play().catch(console.error)
+    }
+
+    // Start word rotation
+    setInterval(rotateWords, 3000)
+
+    window.addEventListener('scroll', handleScroll)
   })
 
-  gsap.from('.typed-text', {
-    duration: 1,
-    opacity: 0,
-    delay: 0.5,
-    ease: 'power2.in',
+  // Cleanup
+  nuxtApp.hook('app:beforeMount', () => {
+    window.removeEventListener('scroll', handleScroll)
   })
-
-  window.addEventListener('scroll', handleScroll)
-
-  // Start the background image transition
-  setInterval(changeBackgroundImage, 7000)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+}
 </script>
 
 <template>
   <div class="relative w-full h-screen overflow-hidden">
-    <div
-      v-for="(image, index) in backgroundImages"
-      :key="index"
-      class="background-image absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-      :style="{
-        backgroundImage: `url(${image})`,
-        opacity: index === currentImageIndex ? 1 : 0,
-        transform: `translateY(${scrollY * 0.5}px)`,
-      }"
-    ></div>
+    <!-- Video Background -->
+    <div class="absolute inset-0">
+      <!-- Thumbnail placeholder (shows until video loads) -->
+      <img
+        src="/hero-image.jpg"
+        alt="Space video thumbnail"
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+        :class="{ 'opacity-0': videoLoaded }"
+      />
 
-    <!-- Black Overlay -->
-    <div class="absolute inset-0 bg-primary-950/30 bg-opacity-40"></div>
-
-    <!-- Content -->
-    <div
-      class="relative z-10 flex flex-col items-center justify-center h-full text-white"
-      :style="{
-        transform: `translateY(${scrollY * -0.2}px)`,
-      }"
-    >
-      <!-- Animated Title -->
-      <h1
-        class="text-5xl md:text-8xl font-bold text-center mb-8 flex justify-center items-center gap-4"
-      >
-        <span class="inline-block min-w-[18ch] text-center text-3d">
-          <span class="typed-text">{{ displayedText }}</span>
-          <span class="inline-block w-[2px] h-[1.2em] bg-white align-center animate-blink"></span>
-        </span>
-      </h1>
-
-      <!-- Subtitle -->
-      <p class="text-xl sm:text-2xl md:text-3xl text-center mb-8 max-w-3xl">
-        Discover the universe with cutting-edge astronomy and space tech news
-      </p>
-
-      <!-- CTA Button -->
-      <div class="flex gap-4">
-        <PrimeButton
-          rounded
-          size="large"
+      <!-- Video element -->
+      <ClientOnly>
+        <video
+          ref="videoElement"
+          class="video-fade-in absolute inset-0 w-full h-full object-cover"
+          :class="{ 'opacity-0': !videoLoaded }"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="/hero-image.jpg"
+          @loadeddata="handleVideoLoad"
         >
-          Join Now
-        </PrimeButton>
-        <PrimeButton
-          rounded
-          outlined
-          severity="inverted"
-          size="large"
+          <source
+            src="/videos/hero.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </ClientOnly>
+
+      <!-- Overlay -->
+      <div
+        class="absolute inset-0 bg-primary-950/10"
+        :style="{
+          background:
+            'linear-gradient(to right, rgba(10, 10, 0, 0.90) 0%, rgba(30, 10, 60, 0.1) 100%)',
+        }"
+      ></div>
+    </div>
+
+    <!-- Rest of the content remains the same -->
+    <div class="relative z-10 mx-auto px-12 min-h-screen flex flex-col justify-center">
+      <div class="max-w-3xl">
+        <h1
+          class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
         >
-          More Info
-        </PrimeButton>
+          Your Gateway to Space
+          <div class="relative block mt-2">
+            <span class="highlight-word block text-primary-400">{{ currentWord }}</span>
+          </div>
+        </h1>
+
+        <p class="hero-subtitle text-lg md:text-xl text-gray-200 max-w-2xl mb-12">
+          Stay ahead with personalized space and astronomy news, delivered right to your browser's
+          new tab
+        </p>
+
+        <div class="hero-cta flex gap-4">
+          <PrimeButton size="large"> Get Started </PrimeButton>
+          <PrimeButton
+            severity="secondary"
+            size="large"
+            outlined
+          >
+            Learn More
+          </PrimeButton>
+        </div>
       </div>
 
-      <!-- Scroll Down Icon -->
-      <div class="animate-bounce mt-8">
-        <Icon
-          name="mdi:chevron-down"
-          size="48"
-        />
+      <div class="absolute bottom-8 w-full flex justify-center items-center left-0">
+        <div class="w-8 h-14 border-2 border-white/30 rounded-full flex justify-center mx-auto">
+          <div class="w-2 h-4 bg-white/60 rounded-full mt-3 animate-bounce"></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
+.highlight-word {
+  @apply transition-all duration-500 ease-out;
 }
 
-.animate-blink {
-  animation: blink 0.7s step-end infinite;
-}
-
-@keyframes fadeInOut {
-  0%,
-  100% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-bounce {
-  animation: fadeInOut 2s infinite;
-}
-
-.text-glow {
-  text-shadow:
-    0 0 10px rgba(255, 255, 255, 0.7),
-    0 0 20px rgba(255, 255, 255, 0.5),
-    0 0 30px rgba(255, 255, 255, 0.3);
-}
-
-.text-3d {
-  color: white;
-  text-shadow:
-    0 1px 0 #1b1b1b,
-    0 2px 0 #2a2a2a,
-    0 3px 0 #190f0f,
-    0 4px 0 #202020,
-    0 5px 0 #088db2,
-    0 6px 1px rgba(8, 161, 203, 0.968),
-    0 0 5px rgba(9, 195, 237, 0.967),
-    0 1px 3px rgba(2, 190, 248, 0.3),
-    0 3px 5px rgba(3, 194, 241, 0.2),
-    0 5px 10px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(4, 167, 243, 0.2),
-    0 20px 20px rgba(2, 190, 248, 0.15);
+.video-fade-in {
+  transition: opacity 1s ease-out;
 }
 </style>
