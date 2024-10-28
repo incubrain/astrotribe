@@ -42,7 +42,10 @@ module.exports = {
 
     const getFileUrl = (key: string): string => {
       // Get the base domain without protocol and trailing slashes
-      const domain = config.endpoint.replace(/^https?:\/\//, '').replace(/\/+$/, '')
+      const domain = config.endpoint
+        .replace(/^https?:\/\//, '')
+        .replace(/\/+$/, '')
+        .replace('/s3', '/object')
       return `https://${domain}/public/${config.bucket}/${key}`
     }
 
