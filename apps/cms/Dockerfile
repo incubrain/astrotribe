@@ -7,6 +7,10 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package.json ./
 
+# Declare build-time args
+ARG SUPABASE_STORAGE_URL
+ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
+
 # Install dependencies
 RUN npm i
 RUN npm i @aws-sdk/client-s3
