@@ -3,7 +3,7 @@
 module.exports = ({ env }) => ({
   upload: {
     config: {
-      provider: 'supabase',
+      provider: 'strapi-provider-upload-supabase',
       providerOptions: {
         endpoint: env('SUPABASE_STORAGE_URL'),
         accessKeyId: env('SUPABASE_ACCESS_KEY'),
