@@ -3,6 +3,7 @@
 module.exports = ({ env }) => ({
   upload: {
     config: {
+      customProvider: require.resolve('../src/providers/supabase'),
       provider: 'supabase',
       providerOptions: {
         endpoint: env('SUPABASE_STORAGE_URL'),
