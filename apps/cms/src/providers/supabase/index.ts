@@ -17,6 +17,7 @@ interface File {
   buffer: Buffer
   stream?: Readable
   url?: string
+  path?: string
 }
 
 module.exports = {
@@ -34,11 +35,26 @@ module.exports = {
 
     const s3 = new S3(s3Config)
 
+    const getFileKey = (file: File): string => {
+      const path = file.path ? `${file.path}/` : ''
+      return `${path}${file.hash}${file.ext}`
+    }
+
+    const getFileUrl = (key: string): string => {
+      // Remove any trailing slashes from the endpoint
+      const baseUrl = config.endpoint.replace(/\/+$/, '')
+
+      // Construct the storage URL
+      return `${baseUrl}/storage/v1/object/public/${config.bucket}/${key}`
+    }
+
     return {
       async upload(file: File): Promise<void> {
+        const key = getFileKey(file)
+
         const params = {
           Bucket: config.bucket,
-          Key: `${file.hash}${file.ext}`,
+          Key: key,
           Body: file.stream || file.buffer,
           ACL: 'public-read' as ObjectCannedACL,
           ContentType: file.mime,
@@ -47,14 +63,16 @@ module.exports = {
         // Upload file to Supabase storage
         await s3.send(new PutObjectCommand(params))
 
-        // Set file URL
-        file.url = `${config.endpoint}/${config.bucket}/${file.hash}${file.ext}`
+        // Set file URL using the proper storage path
+        file.url = getFileUrl(key)
       },
 
       async delete(file: File): Promise<void> {
+        const key = getFileKey(file)
+
         const params = {
           Bucket: config.bucket,
-          Key: `${file.hash}${file.ext}`,
+          Key: key,
         }
 
         // Delete file from Supabase storage
