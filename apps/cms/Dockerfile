@@ -9,7 +9,7 @@ COPY package.json ./
 
 # Install dependencies
 RUN npm i
-RUN npm i @aws-sdk/client-s3 @strapi/provider-upload-supabase
+RUN npm i @aws-sdk/client-s3
 RUN npm i typescript @types/node -D
 
 # Copy the rest of the application code
