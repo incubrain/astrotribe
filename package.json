@@ -28,8 +28,6 @@
     "staging": "railway link -p d2993a83-20e2-4658-b045-8202866cd11f"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.679.0",
-    "@aws-sdk/s3-request-presigner": "^3.679.0",
     "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -55,9 +53,7 @@
     "@primevue/core": "^4.0.7",
     "@primevue/nuxt-module": "^4.0.7",
     "@sentry/vue": "^8.31.0",
-    "@strapi/provider-upload-aws-s3": "^5.1.1",
     "@tailwindcss/typography": "^0.5.15",
-    "@types/aws-sdk": "^0.0.42",
     "@types/uuid": "^10.0.0",
     "@vueuse/core": "^11.1.0",
     "@vueuse/integrations": "^11.1.0",
