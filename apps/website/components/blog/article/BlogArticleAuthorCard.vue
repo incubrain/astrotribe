@@ -2,8 +2,6 @@
 defineProps<{
   authors: any[]
 }>()
-
-const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 </script>
 
 <template>
@@ -20,7 +18,7 @@ const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
         <IBImage
           v-if="author"
           :img="{
-            src: `${baseUrl}${author.avatar.url}`,
+            src: `${author.avatar.url}`,
             alt: `${author.name} is an author on the AstronEra Blog`,
             width: 100,
             height: 100,
