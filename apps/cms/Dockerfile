@@ -4,12 +4,20 @@ FROM node:18-slim
 # Set the working directory
 WORKDIR /app
 
+# Copy package files first for better caching
 COPY package.json ./
 
+# Install dependencies
 RUN npm i
-RUN npm i @aws-sdk/client-s3
+RUN npm i @aws-sdk/client-s3 @strapi/provider-upload-supabase
+RUN npm i typescript @types/node -D
+
 # Copy the rest of the application code
 COPY . .
+
+# Create necessary directories and ensure proper file structure
+RUN mkdir -p dist/src/providers/supabase
+RUN cp -r src/providers dist/src/ || true
 
 COPY ./scripts/seed.js ./scripts/
 
