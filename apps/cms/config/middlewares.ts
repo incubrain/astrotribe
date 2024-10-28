@@ -1,14 +1,3 @@
-// Helper function to safely get domain from URL
-const getSupabaseDomain = () => {
-  const url = process.env.SUPABASE_STORAGE_URL
-  if (!url) return ''
-  try {
-    return url.replace(/^https?:\/\//, '')
-  } catch {
-    return ''
-  }
-}
-
 export default [
   'strapi::logger',
   'strapi::errors',
@@ -28,7 +17,7 @@ export default [
             'https:',
             'cms.astronera.org',
             '*.astronera.org',
-            getSupabaseDomain(),
+            process.env.SUPABASE_STORAGE_URL.replace('https://', ''),
           ],
           'media-src': [
             "'self'",
@@ -38,7 +27,7 @@ export default [
             'https:',
             'cms.astronera.org',
             '*.astronera.org',
-            getSupabaseDomain(),
+            process.env.SUPABASE_STORAGE_URL.replace('https://', ''),
           ],
           'upgradeInsecureRequests': null,
         },
@@ -56,7 +45,7 @@ export default [
         'https://cms.astronera.org',
         'https://*.astronera.org',
         'https://*.up.railway.app',
-        `https://${getSupabaseDomain()}`,
+        process.env.SUPABASE_STORAGE_URL,
       ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'sentry-trace', 'baggage'],
