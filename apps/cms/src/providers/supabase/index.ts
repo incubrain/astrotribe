@@ -19,7 +19,7 @@ interface File {
   url?: string
 }
 
-export default {
+module.exports = {
   init(config: ProviderConfig) {
     // Configure S3 client
     const s3Config: S3ClientConfig = {
