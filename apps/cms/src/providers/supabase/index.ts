@@ -41,11 +41,9 @@ module.exports = {
     }
 
     const getFileUrl = (key: string): string => {
-      // Remove any trailing slashes from the endpoint
-      const baseUrl = config.endpoint.replace(/\/+$/, '')
-
-      // Construct the storage URL
-      return `${baseUrl}/storage/v1/object/public/${config.bucket}/${key}`
+      // Get the base domain without protocol and trailing slashes
+      const domain = config.endpoint.replace(/^https?:\/\//, '').replace(/\/+$/, '')
+      return `https://${domain}/storage/v1/object/public/${config.bucket}/${key}`
     }
 
     return {
@@ -58,12 +56,16 @@ module.exports = {
           Body: file.stream || file.buffer,
           ACL: 'public-read' as ObjectCannedACL,
           ContentType: file.mime,
+          Metadata: {
+            'x-amz-meta-Cache-Control': 'public, max-age=31536000',
+            'x-amz-meta-Access-Control-Allow-Origin': '*',
+          },
         }
 
         // Upload file to Supabase storage
         await s3.send(new PutObjectCommand(params))
 
-        // Set file URL using the proper storage path
+        // Set file URL directly
         file.url = getFileUrl(key)
       },
 
@@ -75,7 +77,6 @@ module.exports = {
           Key: key,
         }
 
-        // Delete file from Supabase storage
         await s3.send(new DeleteObjectCommand(params))
       },
     }
