@@ -7,6 +7,7 @@ WORKDIR /app
 COPY package.json ./
 
 RUN npm i
+RUN npm i @aws-sdk/client-s3
 # Copy the rest of the application code
 COPY . .
 
