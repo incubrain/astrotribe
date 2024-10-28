@@ -17,6 +17,7 @@ export default [
             'https:',
             'https://cms.astronera.org',
             '*.astronera.org',
+            process.env.SUPABASE_API_URL!.replace('https://', ''),
           ],
           'media-src': [
             "'self'",
@@ -26,6 +27,7 @@ export default [
             'https:',
             'https://cms.astronera.org',
             '*.astronera.org',
+            process.env.SUPABASE_API_URL!.replace('https://', ''),
           ],
           'upgradeInsecureRequests': null,
         },
@@ -43,6 +45,7 @@ export default [
         'https://cms.astronera.org',
         'https://*.astronera.org',
         'https://*.up.railway.app',
+        process.env.SUPABASE_API_URL!.replace('https://', ''),
       ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'sentry-trace', 'baggage'],
