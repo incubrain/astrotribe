@@ -3,6 +3,16 @@
 /* App-specific styles */
 @layer base {
   /* Override or add to base styles */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    text-wrap: balance;
+    color: var(--p-primary-color-text);
+    font-family: 'Orbitron', sans-serif;
+  }
 }
 
 @layer components {
