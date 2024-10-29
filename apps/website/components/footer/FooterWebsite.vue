@@ -152,87 +152,84 @@ const websiteLinks = [
 </script>
 
 <template>
-  <footer class="py-8 w-full relative flex">
-    <div class="container w-full">
-      <LandingGlass
-        hover-effect="glow"
-        glow-color="purple"
-        gradient="mixed"
-        intensity="low"
-        interactive
-        class="!w-full"
-      >
-        <!-- Content -->
-        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[220px_2fr_220px] gap-8 w-full">
-          <!-- Logo Section -->
-          <div class="flex items-start">
-            <NuxtLink
-              to="/"
-              class="flex items-center gap-4 group"
-            >
-              <div
-                class="relative p-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:border-sky-500/30"
-              >
-                <IBImage
-                  :img="{
-                    src: '/astronera-logo.jpg',
-                    alt: 'AstronEra Logo',
-                    width: '48',
-                    height: '48',
-                  }"
-                  class="rounded-full"
-                />
-              </div>
-              <span class="font-semibold text-white">AstronEra</span>
-            </NuxtLink>
-          </div>
-
-          <!-- Links Section -->
-          <div class="grid grid-cols-3 gap-8">
+  <footer class="container py-8 gap-8 w-full relative flex">
+    <LandingGlass
+      hover-effect="glow"
+      glow-color="purple"
+      gradient="mixed"
+      intensity="low"
+      interactive
+    >
+      <!-- Content -->
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[220px_3fr_220px] gap-8 w-full">
+        <!-- Logo Section -->
+        <div class="flex items-start">
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-4 group"
+          >
             <div
-              v-for="link in websiteLinks"
-              :key="link.key"
-              class="space-y-4"
+              class="relative p-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:border-sky-500/30"
             >
-              <h4 class="font-space text-lg text-white">
-                {{ link.label }}
-              </h4>
-              <ul class="space-y-2">
-                <li
-                  v-for="item in link.items"
-                  :key="item.key"
-                >
-                  <NuxtLink
-                    :to="item.url"
-                    class="text-gray-400 hover:text-sky-400 transition-colors duration-300"
-                  >
-                    {{ item.label }}
-                  </NuxtLink>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Social Links -->
-          <div class="flex flex-col items-end gap-4">
-            <NuxtLink
-              v-for="social in socials"
-              :key="social.id"
-              :to="social.url"
-              target="_blank"
-              class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-sky-500/10"
-            >
-              <Icon
-                :name="social.icon"
-                class="text-gray-400 group-hover:text-sky-400 transition-colors duration-300"
-                size="24px"
+              <IBImage
+                :img="{
+                  src: '/astronera-logo.jpg',
+                  alt: 'AstronEra Logo',
+                  width: '48',
+                  height: '48',
+                }"
+                class="rounded-full"
               />
-            </NuxtLink>
+            </div>
+            <span class="font-semibold text-white">AstronEra</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Links Section -->
+        <div class="grid grid-cols-3 gap-8">
+          <div
+            v-for="link in websiteLinks"
+            :key="link.key"
+            class="space-y-4"
+          >
+            <h4 class="font-space text-lg text-white">
+              {{ link.label }}
+            </h4>
+            <ul class="space-y-2">
+              <li
+                v-for="item in link.items"
+                :key="item.key"
+              >
+                <NuxtLink
+                  :to="item.url"
+                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300"
+                >
+                  {{ item.label }}
+                </NuxtLink>
+              </li>
+            </ul>
           </div>
         </div>
-      </LandingGlass>
-      <FooterBottomBar class="relative z-10" />
-    </div>
+
+        <!-- Social Links -->
+        <div class="flex flex-col items-end gap-4">
+          <NuxtLink
+            v-for="social in socials"
+            :key="social.id"
+            :to="social.url"
+            target="_blank"
+            class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-sky-500/10"
+          >
+            <Icon
+              :name="social.icon"
+              class="text-gray-400 group-hover:text-sky-400 transition-colors duration-300"
+              size="24px"
+            />
+          </NuxtLink>
+        </div>
+      </div>
+    </LandingGlass>
+    <FooterBottomBar class="relative z-10" />
   </footer>
 </template>
 

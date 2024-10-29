@@ -126,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="py-24 container">
+  <section>
     <!-- Stats Section -->
     <LandingGlass
       gradient="blue"
