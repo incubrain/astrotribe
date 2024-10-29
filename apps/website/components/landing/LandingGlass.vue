@@ -10,6 +10,8 @@ interface Props {
   borderColor?: string // Custom border color
   hoverEffect?: 'glow' | 'scale' | 'blur' | 'none'
   isolateContent?: boolean // Prevents hover effects from affecting slot content
+  rounded: boolean
+  overflow: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   borderColor: 'sky',
   hoverEffect: 'none',
   isolateContent: true,
+  rounded: true,
+  overflow: false,
 })
 
 const gradientConfig = computed(() => {
@@ -78,12 +82,14 @@ const borderClasses = computed(
 
 <template>
   <div
-    class="relative overflow-hidden rounded-2xl group"
+    class="relative group"
     :class="[
       intensityConfig.backdrop,
       intensityConfig.bgOpacity,
       hoverClasses,
       'transition-all duration-500',
+      !rounded ? 'rounded-none' : 'rounded-2xl',
+      !overflow ? 'overflow-hidden' : '',
     ]"
   >
     <!-- Animated gradient mesh -->
@@ -120,14 +126,22 @@ const borderClasses = computed(
     <!-- Electric edges -->
     <div class="absolute inset-1">
       <div
-        class="absolute inset-0 rounded-2xl border transition-colors duration-500"
+        class="absolute inset-0 border transition-colors duration-500"
         :class="[
           borderClasses,
-          { [`group-hover:border-${props.borderColor}-500/50`]: interactive },
+          {
+            [`group-hover:border-${props.borderColor}-500/50`]: interactive,
+            ['rounded-2xl']: rounded,
+          },
         ]"
       />
       <div
-        class="absolute inset-0 rounded-2xl animate-glow"
+        class="absolute inset-0 animate-glow"
+        :class="[
+          {
+            ['rounded-2xl']: rounded,
+          },
+        ]"
         :style="{
           '--glow-color': `var(--color-${props.glowColor}-500)`,
         }"

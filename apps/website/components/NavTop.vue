@@ -147,15 +147,18 @@ watch(
     :class="navbarClasses"
   >
     <!-- Glass Container -->
-    <div class="w-full relative">
-      <!-- Backdrop and Border -->
-      <div class="absolute inset-0 backdrop-blur-xl bg-primary-950/50 rounded-b-xl">
-        <!-- Neon Border -->
-        <div class="absolute inset-0 rounded-b-xl border-2 border-sky-500/20"></div>
-        <div class="absolute inset-0 rounded-b-xl animate-glow"></div>
-      </div>
-
-      <!-- Content -->
+    <LandingGlass
+      hover-effect="glow"
+      glow-color="purple"
+      gradient="mixed"
+      intensity="low"
+      interactive
+      isolate-content
+      class="!w-full"
+      :padded="false"
+      :rounded="false"
+      :overflow="true"
+    >
       <PrimeMenubar
         :model="websiteLinks"
         class="w-full text-white rounded-none lg:rounded-b-xl bg-transparent border-none relative z-10"
@@ -165,7 +168,7 @@ watch(
           },
           submenu: {
             class:
-              '!bg-primary-950/95 backdrop-blur-xl md:absolute md:flex-col flex !text-sm !font-bold !text-white border border-sky-500/20',
+              '!bg-primary-950/95 backdrop-blur-xl md:absolute md:flex-col flex !text-sm !font-bold !text-white border border-primary-500/50 rounded-md',
           },
         }"
       >
@@ -248,7 +251,7 @@ watch(
           </div>
         </template>
       </PrimeMenubar>
-    </div>
+    </LandingGlass>
   </div>
 </template>
 

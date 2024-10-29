@@ -1,11 +1,12 @@
 <template>
   <div class="relative grid h-full w-full grid-cols-1 gap-4 md:grid-cols-2 xl:gap-8">
-    <IBGlass
+    <LandingGlass
       v-for="item in timeline"
       :key="item.title"
       color="emerald"
+      :padded="false"
     >
-      <div class="flex w-full flex-col justify-center">
+      <div class="flex w-full flex-col justify-center p-6">
         <h2 class="text-lg font-semibold leading-7 xl:leading-9">
           {{ item.title }}
         </h2>
@@ -16,7 +17,7 @@
           {{ item.body }}
         </p>
       </div>
-    </IBGlass>
+    </LandingGlass>
   </div>
 </template>
 
