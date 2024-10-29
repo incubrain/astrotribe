@@ -34,7 +34,7 @@ defineProps({
   <div class="relative h-full w-full overflow-hidden rounded-md object-cover">
     <IBImage
       :img="{
-        src: image?.src || 'astron-era-hero.jpg',
+        src: image?.src || 'hero-image.jpg',
         alt: image?.alt || 'this is a default fallback for when an image is not present',
         width: options?.width || 60,
         height: options?.height || 37,

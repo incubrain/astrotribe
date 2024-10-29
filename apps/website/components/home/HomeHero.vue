@@ -52,5 +52,5 @@ const video = {
   alt: 'Astron Era Hero Video',
 }
 
-const bgImg = '/astron-era-hero.jpg'
+const bgImg = '/hero-image.jpg'
 </script>
