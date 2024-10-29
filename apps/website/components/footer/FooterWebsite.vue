@@ -152,76 +152,106 @@ const websiteLinks = [
 </script>
 
 <template>
-  <footer class="relative flex flex-col items-start justify-start overflow-hidden pt-4 lg:pt-8">
-    <div class="wrapper relative flex w-full items-start justify-between rounded-md lg:px-8">
-      <div
-        class="background mx-auto grid h-full w-full grid-cols-2 gap-4 rounded-t-md p-4 lg:grid-cols-[220px_2fr_220px] lg:gap-8 xl:p-8"
-      >
-        <div
-          class="col-start-2 row-start-2 flex flex-shrink-0 items-start lg:col-start-1 lg:row-start-1 lg:justify-start lg:pr-4"
-        >
+  <footer class="container gap-8 py-8">
+    <LandingGlass
+      hover-effect="glow"
+      glow-color="purple"
+      gradient="mixed"
+      intensity="low"
+      interactive
+    >
+      <!-- Content -->
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[220px_2fr_220px] gap-8 w-full">
+        <!-- Logo Section -->
+        <div class="flex items-start">
           <NuxtLink
             to="/"
-            class="flex items-center justify-center gap-4 font-semibold lg:flex-row"
+            class="flex items-center gap-4 group"
           >
-            <IBImage
-              :img="{
-                src: '/astronera-logo.jpg',
-                alt: 'AstronEra Logo',
-                width: '48',
-                height: '48',
-              }"
-              class="overflow-hidden rounded-full p-1 bg-white"
-            />
-            AstronEra
+            <div
+              class="relative p-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:border-sky-500/30"
+            >
+              <IBImage
+                :img="{
+                  src: '/astronera-logo.jpg',
+                  alt: 'AstronEra Logo',
+                  width: '48',
+                  height: '48',
+                }"
+                class="rounded-full"
+              />
+            </div>
+            <span class="font-semibold text-white">AstronEra</span>
           </NuxtLink>
         </div>
-        <ul
-          class="col-span-2 col-start-1 row-start-1 mx-auto flex items-start justify-between gap-2 text-sm lg:col-span-1 lg:col-start-2 lg:items-start"
-        >
+
+        <!-- Links Section -->
+        <div class="grid grid-cols-3 gap-8">
           <div
             v-for="link in websiteLinks"
-            :key="link.label"
-            class="space-y-2 px-3 pb-2 last:pr-0 lg:pb-0"
+            :key="link.key"
+            class="space-y-4"
           >
-            <h4
-              class="text-nowrap pb-2 text-base font-bold underline decoration-primary-600 underline-offset-4"
-            >
+            <h4 class="font-space text-lg text-white">
               {{ link.label }}
             </h4>
-            <NuxtLink
-              v-for="child in link.items"
-              :key="child.label"
-              :to="child.url"
-              class="flex items-center text-sm font-normal"
-            >
-              <li>
-                {{ child.label }}
+            <ul class="space-y-2">
+              <li
+                v-for="item in link.items"
+                :key="item.key"
+              >
+                <NuxtLink
+                  :to="item.url"
+                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300"
+                >
+                  {{ item.label }}
+                </NuxtLink>
               </li>
-            </NuxtLink>
+            </ul>
           </div>
-        </ul>
-        <div
-          class="col-start-1 flex items-center justify-end gap-2 lg:col-start-3 lg:row-start-1 lg:items-start"
-        >
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex flex-col items-end gap-4">
           <NuxtLink
             v-for="social in socials"
-            :key="social.label"
+            :key="social.id"
             :to="social.url"
             target="_blank"
-            class="flex items-center"
+            class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-sky-500/10"
           >
             <Icon
               :name="social.icon"
-              class="flex-shrink-0 text-white"
+              class="text-gray-400 group-hover:text-sky-400 transition-colors duration-300"
               size="24px"
             />
           </NuxtLink>
         </div>
       </div>
-    </div>
-    <div class="wrapper w-full lg:px-8">
-      <FooterBottomBar class="border-color min-w-full border-t" />
-    </div>
+    </LandingGlass>
+
+    <FooterBottomBar class="relative z-10" />
   </footer>
 </template>
+
+<style>
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(74, 222, 255, 0.1),
+      0 0 8px rgba(74, 222, 255, 0.1),
+      inset 0 0 4px rgba(74, 222, 255, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(74, 222, 255, 0.2),
+      0 0 16px rgba(74, 222, 255, 0.2),
+      inset 0 0 8px rgba(74, 222, 255, 0.2);
+  }
+}
+
+.animate-glow {
+  animation: glow 4s ease-in-out infinite;
+}
+</style>

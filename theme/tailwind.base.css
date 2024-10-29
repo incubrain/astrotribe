@@ -102,6 +102,7 @@
   .wrapper {
     @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)];
   }
+
   .container {
     @apply mx-auto flex max-w-[1240px] flex-col px-[20px] md:px-[80px] lg:px-[160px];
   }

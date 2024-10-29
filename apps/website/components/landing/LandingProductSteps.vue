@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAnimation } from '~/composables/useAnimation'
 
 const { fadeInUp } = useAnimation()
@@ -8,17 +8,30 @@ const steps = [
   {
     icon: 'mdi:checkbox-marked-circle-outline',
     title: 'Select Interests',
-    description: 'Customize your feed with your favorite space topics.',
+    description: 'Customize your feed with your favorite space topics and areas of interest.',
+    gif: '/images/gifs/select-interests.gif',
+    color: 'from-blue-500/20 to-purple-500/20',
   },
   {
     icon: 'mdi:newspaper-variant-outline',
     title: 'Explore Content',
-    description: 'Dive into curated news and cutting-edge research.',
+    description: 'Dive into curated news, research papers, and cutting-edge discoveries.',
+    gif: '/images/gifs/explore-content.gif',
+    color: 'from-sky-500/20 to-blue-500/20',
+  },
+  {
+    icon: 'mdi:rocket-launch-outline',
+    title: 'Track Missions',
+    description: 'Follow real-time updates on space missions and upcoming launches.',
+    gif: '/images/gifs/track-missions.gif',
+    color: 'from-purple-500/20 to-blue-500/20',
   },
   {
     icon: 'mdi:clock-time-four-outline',
-    title: 'Save Time',
-    description: 'Focus on discovery, not searching for information.',
+    title: 'Stay Updated',
+    description: 'Receive personalized notifications for events and breaking news.',
+    gif: '/images/gifs/stay-updated.gif',
+    color: 'from-indigo-500/20 to-sky-500/20',
   },
 ]
 
@@ -28,44 +41,78 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="how-to-use-section py-24">
-    <div class="container mx-auto px-4">
-      <LandingTitle
-        title="How it works"
-        subtitle="Discover the universe effortlessly with our intuitive platform. Here's how:"
-      />
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <PrimeCard
-          v-for="(step, index) in steps"
-          :key="index"
-          class="step-item border border-color foreground overflow-hidden relative"
+  <section class="py-24 container">
+    <LandingTitle
+      class="mb-12"
+      title="How it works"
+      subtitle="Discover the universe effortlessly with our intuitive platform. Here's how:"
+    />
+
+    <!-- Steps Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div
+        v-for="(step, index) in steps"
+        :key="index"
+        class="step-item group relative"
+      >
+        <!-- Step Number -->
+        <div
+          class="absolute -top-6 -left-6 w-12 h-12 rounded-full bg-primary-900/50 backdrop-blur-lg flex items-center justify-center border border-sky-500/20 z-10 transition-all duration-300 group-hover:border-sky-500/40 group-hover:bg-primary-900/70"
         >
+          <span class="font-space text-sky-400 text-xl">{{ index + 1 }}</span>
+        </div>
+
+        <PrimeCard
+          class="h-full bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 overflow-hidden"
+        >
+          <!-- Content -->
           <template #header>
-            <div class="w-full aspect-video bg-gray-200 flex items-center justify-center">
-              <span class="text-gray-400">GIF Placeholder</span>
+            <div class="relative w-full aspect-video rounded-lg overflow-hidden bg-primary-950/50">
+              <!-- Replace with actual GIF -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-gray-400">GIF Placeholder</span>
+              </div>
+
+              <!-- Overlay with icon -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent group-hover:from-primary-900/90 transition-all duration-500"
+              >
+                <Icon
+                  :name="step.icon"
+                  size="48"
+                  class="absolute bottom-4 right-4 text-sky-400/80 transition-transform duration-300 group-hover:scale-110"
+                />
+              </div>
             </div>
           </template>
+
           <template #title>
-            <div class="flex items-center mb-4 mt-4">
-              <h3 class="text-xl font-bold font-space">{{ step.title }}</h3>
-            </div>
+            <h3 class="text-2xl font-space text-white mb-2 relative z-10">
+              {{ step.title }}
+            </h3>
           </template>
+
           <template #content>
-            <p>{{ step.description }}</p>
+            <div
+              class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-40 transition-opacity duration-500"
+              :class="step.color"
+            ></div>
+            <p class="text-gray-300 relative z-10">{{ step.description }}</p>
           </template>
-          <Icon
-            :name="step.icon"
-            size="48"
-            class="text-primary-600 shrink-0 absolute -top-6 right-4 bg-foreground rounded-full p-2"
-          />
         </PrimeCard>
+
+        <!-- Card Glow -->
+        <div
+          class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10"
+        ></div>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.font-space {
-  font-family: 'Orbitron', sans-serif;
+/* Ensure proper stacking */
+.how-to-use-section {
+  isolation: isolate;
 }
 </style>

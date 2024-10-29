@@ -18,108 +18,113 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative overflow-hidden py-16 md:py-24">
-    <div class="mx-auto px-4 relative z-10">
+  <section class="py-24">
+    <GlassPanel
+      gradient="purple"
+      intensity="medium"
+    >
       <LandingTitle
         title="Hear From The Community"
         subtitle="Discover How We're Making a Difference"
+        class="!pb-12"
       />
+      <!-- Testimonials Carousel -->
       <AppSwiper
         :items="testimonials"
         type="testimonial"
+        class="testimonials-carousel"
       >
         <template #default="{ item }: { item: Testimonial }">
-          <div
-            class="bg-opacity-20 backdrop-blur-sm h-full rounded-md border border-color background p-6 testimonial-item"
-          >
-            <div class="flex h-auto items-center">
-              <IBImage
-                :img="{
-                  src: item.image,
-                  alt: item.name,
-                  width: '60px',
-                  height: '60px',
-                  loading: 'lazy',
-                  quality: '80',
-                  format: 'webp',
-                }"
-                class="h-14 w-14 rounded-full"
-              />
-              <div class="flex flex-col items-start pl-4">
-                <h3 class="text-xl font-semibold text-white">
-                  {{ item.name }}
-                </h3>
-                <p class="text-sm text-primary-300">
-                  {{ item.company }}
-                </p>
+          <div class="testimonial-item group">
+            <!-- Card with glass effect -->
+            <div
+              class="relative h-full rounded-xl bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 p-8"
+            >
+              <!-- Hover gradient -->
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+              ></div>
+
+              <!-- Content -->
+              <div class="relative z-10">
+                <!-- Profile section -->
+                <div class="flex items-center mb-8">
+                  <div class="relative">
+                    <IBImage
+                      :img="{
+                        src: item.image,
+                        alt: item.name,
+                        width: '60px',
+                        height: '60px',
+                        loading: 'lazy',
+                        quality: '80',
+                        format: 'webp',
+                      }"
+                      class="min-h-16 min-w-16 rounded-full ring-2 ring-sky-500/20"
+                    />
+                    <!-- Glow behind image -->
+                    <div class="absolute inset-0 bg-sky-500/20 blur-xl -z-10"></div>
+                  </div>
+
+                  <div class="flex flex-col pl-4">
+                    <h3 class="text-xl font-semibold text-white">{{ item.name }}</h3>
+                    <p class="text-sky-400">{{ item.company }}</p>
+                  </div>
+                </div>
+
+                <!-- Quote section -->
+                <div class="relative">
+                  <div class="relative rounded-xl bg-primary-900/50 p-6">
+                    <Icon
+                      name="mdi:format-quote-open"
+                      class="absolute -top-4 left-4 text-sky-400/40"
+                      size="32px"
+                    />
+                    <p class="text-gray-300 italic relative z-10">{{ item.quote }}</p>
+                    <Icon
+                      name="mdi:format-quote-close"
+                      class="absolute -bottom-4 right-4 text-sky-400/40"
+                      size="32px"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="pt-8">
-              <p
-                class="relative m-2 h-auto rounded-sm bg-opacity-30 bg-primary-600 p-3 text-sm italic text-white"
-              >
-                <Icon
-                  name="mdi:format-quote-open"
-                  class="absolute -top-4 left-4 text-primary-400"
-                  size="28px"
-                />
-                {{ item.quote }}
-                <Icon
-                  name="mdi:format-quote-close"
-                  class="absolute -bottom-4 right-4 text-primary-400"
-                  size="28px"
-                />
-              </p>
-            </div>
+
+            <!-- Card glow effect -->
+            <div
+              class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+            ></div>
           </div>
         </template>
       </AppSwiper>
-    </div>
-    <div class="space-stars absolute inset-0"></div>
-  </div>
+    </GlassPanel>
+  </section>
 </template>
 
 <style scoped>
-.space-background {
-  background: linear-gradient(
-    to bottom right,
-    #0a001f,
-    #1a0033,
-    #230042,
-    #2b0052,
-    #320061,
-    #3b0072,
-    #43007f,
-    #4b008f,
-    #53009e,
-    #5a00ae,
-    #6200bd,
-    #6900cc
-  );
+.testimonials-carousel :deep(.swiper-pagination-bullet) {
+  background: theme('colors.sky.400');
+  opacity: 0.5;
 }
 
-.space-stars {
-  background-image: radial-gradient(2px 2px at 20px 30px, #eef, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 50px 160px, #ddf, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0)),
-    radial-gradient(2px 2px at 160px 120px, #ddf, rgba(0, 0, 0, 0));
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.3;
-  animation: twinkle 5s infinite;
+.testimonials-carousel :deep(.swiper-pagination-bullet-active) {
+  opacity: 1;
 }
 
-@keyframes twinkle {
-  0% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 0.3;
-  }
+/* Optional: Enhanced navigation buttons */
+.testimonials-carousel :deep(.swiper-button-next),
+.testimonials-carousel :deep(.swiper-button-prev) {
+  color: blue;
+  background: blue;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+}
+
+.testimonials-carousel :deep(.swiper-button-next:after),
+.testimonials-carousel :deep(.swiper-button-prev:after) {
+  font-size: 20px;
 }
 </style>

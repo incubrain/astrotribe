@@ -81,7 +81,6 @@ onMounted(() => {
       AutoScroll({
         playOnInit: true,
         speed: 0.7,
-        stopOnMouseEnter: true,
         direction: 'forward',
       }),
     ])
@@ -124,61 +123,42 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="py-24">
-    <!-- Glass Panel Container -->
-    <div class="relative overflow-hidden rounded-2xl bg-primary-950/50 backdrop-blur-xl py-24">
-      <!-- Animated gradient mesh -->
-      <div class="absolute inset-0 opacity-10">
+  <section class="py-24 container">
+    <!-- Stats Section -->
+    <LandingGlass
+      gradient="blue"
+      intensity="low"
+      class="mb-24"
+      isolate-content
+    >
+      <div class="stats-grid grid grid-cols-2 md:grid-cols-4 gap-8">
         <div
-          class="absolute top-0 -left-40 w-96 h-96 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"
-        ></div>
-        <div
-          class="absolute top-0 -right-40 w-96 h-96 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"
-        ></div>
-        <div
-          class="absolute -bottom-32 left-20 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"
-        ></div>
-      </div>
-
-      <!-- Noise texture -->
-      <div class="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none"></div>
-
-      <!-- Electric blue edges -->
-      <div class="absolute inset-1 z-10">
-        <div class="absolute inset-0 rounded-2xl border border-primary-500/20"></div>
-        <!-- Optional: Animated glow effect -->
-        <div class="absolute inset-0 rounded-2xl animate-glow"></div>
-      </div>
-
-      <div class="container mx-auto px-4 mb-24">
-        <div class="stats-grid grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div
-            v-for="stat in stats"
-            :key="stat.id"
-            class="text-center flex flex-col"
-          >
-            <span class="flex items-center justify-center">
-              <h3
-                class="stat-value text-4xl md:text-5xl font-bold text-primary-400 mb-2"
-                :data-stat-id="stat.id"
-              >
-                {{ stat.value }}
-              </h3>
-              <p class="text-2xl font-bold pl-1">
-                {{ stat.suffix }}
-              </p>
-            </span>
-            <p class="text-gray-400 text-sm md:text-base">{{ stat.label }}</p>
-          </div>
+          v-for="stat in stats"
+          :key="stat.id"
+          class="text-center flex flex-col"
+        >
+          <span class="flex items-center justify-center">
+            <h3
+              class="stat-value text-4xl md:text-5xl font-bold text-primary-400 mb-2"
+              :data-stat-id="stat.id"
+            >
+              {{ stat.value }}
+            </h3>
+            <p class="text-2xl font-bold pl-1">{{ stat.suffix }}</p>
+          </span>
+          <p class="text-gray-400 text-sm md:text-base">{{ stat.label }}</p>
         </div>
       </div>
 
-      <!-- Partner Carousel -->
-      <div class="mb-24 w-full">
-        <h2 class="text-center text-2xl md:text-3xl font-bold text-white mb-12">
-          Trusted Sources & Partners
-        </h2>
-        <div class="relative border-x border-primary-900/30 rounded-lg py-8 z-0">
+      <!-- Partners Carousel -->
+      <div class="py-8 space-y-8">
+        <LandingTitle
+          title="Trusted Sources & Partners"
+          subtitle="Connecting you with the leaders in space exploration"
+          class="!pb-12"
+        />
+
+        <div class="relative border-x border-primary-900/30 rounded-lg py-8">
           <div
             ref="emblaRef"
             class="embla overflow-hidden"
@@ -189,14 +169,14 @@ onUnmounted(() => {
                 :key="partner.id"
                 class="embla__slide flex-shrink-0 mx-6"
               >
-                <div class="flex flex-col items-center space-y-3 group">
+                <div class="flex flex-col items-center space-y-3 group/partner">
                   <div
-                    class="w-24 h-24 bg-primary-900/50 rounded-xl p-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                    class="w-24 h-24 bg-primary-900/50 rounded-xl p-4 flex items-center justify-center transition-transform duration-300 group-hover/partner:scale-110"
                   >
                     <NuxtImg
                       :src="`/images/partners/${partner.name.toLowerCase()}.svg`"
                       :alt="partner.name"
-                      class="w-full h-full object-contain opacity-70 group-hover:opacity-100"
+                      class="w-full h-full object-contain opacity-70 group-hover/partner:opacity-100"
                       width="96"
                       height="96"
                     />
@@ -216,16 +196,12 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Core Features -->
-      <div class="container mx-auto px-4">
-        <h2 class="text-center text-2xl md:text-3xl font-bold text-white mb-4">
-          Comprehensive Space Coverage
-        </h2>
-        <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">
-          Get all your space news, research, and mission updates in one place with our powerful
-          platform
-        </p>
-
+      <div class="py-8 space-y-8">
+        <LandingTitle
+          title="Comprehensive Space Coverage"
+          subtitle="Get all your space news, research, and mission updates in one place with our powerful platform"
+          class="!pb-12"
+        />
         <div class="features-grid grid grid-cols-1 md:grid-cols-2 gap-8">
           <div
             v-for="feature in features"
@@ -268,58 +244,11 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </LandingGlass>
   </section>
 </template>
 
 <style scoped>
-@keyframes glow {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 1px rgba(74, 222, 255, 0.1),
-      0 0 8px rgba(74, 222, 255, 0.1),
-      inset 0 0 4px rgba(74, 222, 255, 0.1);
-  }
-  50% {
-    box-shadow:
-      0 0 0 1px rgba(74, 222, 255, 0.2),
-      0 0 16px rgba(74, 222, 255, 0.2),
-      inset 0 0 8px rgba(74, 222, 255, 0.2);
-  }
-}
-
-.animate-glow {
-  animation: glow 4s ease-in-out infinite;
-}
-/* Base glass effect utilities */
-.shadow-glass {
-  box-shadow:
-    0 4px 24px -1px rgba(0, 0, 0, 0.2),
-    0 0 1px 0 rgba(255, 255, 255, 0.1) inset,
-    0 0 0 1px rgba(74, 222, 255, 0.05);
-}
-
-.shadow-glass-hover {
-  box-shadow:
-    0 8px 32px -2px rgba(0, 0, 0, 0.2),
-    0 0 1px 0 rgba(255, 255, 255, 0.1) inset,
-    0 0 0 1px rgba(74, 222, 255, 0.1),
-    0 0 15px 0 rgba(74, 222, 255, 0.05);
-}
-
-/* Subtle noise texture */
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* Electric blue glow for hover states */
-.feature-card:hover {
-  box-shadow:
-    0 0 20px 0 rgba(74, 222, 255, 0.1),
-    0 0 0 1px rgba(74, 222, 255, 0.2);
-}
-
 .embla {
   overflow: hidden;
   position: relative;
@@ -336,25 +265,5 @@ onUnmounted(() => {
   min-width: 0;
   max-width: 200px;
   position: relative;
-}
-
-/* Optional: Animated gradient border */
-@keyframes borderGlow {
-  0%,
-  100% {
-    border-color: rgba(74, 222, 255, 0.1);
-  }
-  50% {
-    border-color: rgba(74, 222, 255, 0.2);
-  }
-}
-
-.feature-card {
-  animation: borderGlow 4s ease-in-out infinite;
-}
-
-/* Ensure proper z-index stacking */
-.features-section {
-  isolation: isolate;
 }
 </style>

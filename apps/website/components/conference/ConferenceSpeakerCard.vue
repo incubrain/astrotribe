@@ -1,52 +1,51 @@
 <template>
-  <PrimeCard
-    class="h-full"
-    :pt="{
-      body: 'justify-between h-full background',
-      root: 'overflow-hidden relative',
-    }"
-    :pt-options="{ mergeProps: true, mergeSections: true }"
+  <LandingGlass
+    hover-effect="glow"
+    glow-color="purple"
+    gradient="mixed"
+    intensity="low"
+    interactive
+    isolate-content
+    :padded="false"
+    class="flex flex-col gap-2 relative h-full"
   >
     <template #header>
-      <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
-      <IBImage
-        :img="{
-          src: `conference/speakers/${speaker.avatar}.jpg`,
-          alt: `${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`,
-          width: '350',
-          height: '350',
-          loading: 'lazy',
-          quality: '80',
-          format: 'webp',
-        }"
-        class="w-full object-cover grayscale-[20%]"
-      />
-    </template>
-    <template #content>
-      <div class="flex flex-grow flex-col justify-between gap-4">
-        <div class="flex flex-col gap-4 text-sm">
-          <h3 class="text-2xl font-semibold">
-            {{ speaker.title }} {{ speaker.given_name }} {{ speaker.surname }}
-          </h3>
-          <p class="flex items-center gap-2 font-semibold text-primary-600">
-            <Icon
-              name="mdi:account"
-              class="flex-shrink-0"
-              size="24px"
-            />
-            {{ speaker.professional_title }}
-          </p>
-          <p class="h-auto text-sm">
-            {{ speaker.bio }}
-          </p>
-        </div>
+      <div class="p-2">
+
+        <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
+        <IBImage
+          :img="{
+            src: `conference/speakers/${speaker.avatar}.jpg`,
+            alt: `${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`,
+            width: '350',
+            height: '350',
+            loading: 'lazy',
+            quality: '80',
+            format: 'webp',
+          }"
+          class="w-full object-cover grayscale-[20%] rounded-t-xl overflow-hidden"
+        />
       </div>
     </template>
+    <div class="p-6 flex flex-col justify-between flex-grow min-h-full">
+      <div class="flex flex-col flex-grow gap-4 text-sm pb-4">
+        <h3 class="text-2xl font-semibold">
+          {{ speaker.title }} {{ speaker.given_name }} {{ speaker.surname }}
+        </h3>
+        <p class="flex items-center gap-2 font-semibold text-primary-600">
+          <Icon
+            name="mdi:account"
+            class="flex-shrink-0"
+            size="24px"
+          />
+          {{ speaker.professional_title }}
+        </p>
+        <p class="h-auto text-sm"> {{ speaker.bio.slice(0, 240) }}... </p>
+      </div>
 
-    <template #footer>
       <div
         v-if="speaker.abstract"
-        class="border-color text-white flex h-full w-full flex-col justify-end gap-2 rounded-md border p-4"
+        class="border-color text-white flex w-full flex-col justify-end gap-2 rounded-md border p-4"
         :class="featured ? 'bg-black' : 'bg-primary-950'"
         @click="isOpen = true"
       >
@@ -66,8 +65,8 @@
           </p>
         </PrimeDialog>
       </div>
-    </template>
-  </PrimeCard>
+    </div>
+  </LandingGlass>
 </template>
 
 <script setup lang="ts">

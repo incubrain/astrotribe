@@ -5,69 +5,118 @@ import { useAnimation } from '~/composables/useAnimation'
 const { fadeInUp } = useAnimation()
 
 const features = [
-  'Daily space news updates',
-  'Basic search functionality',
-  'Community forums access',
-  'Email notifications',
-  'Email notifications',
-  'Email notifications',
-  'Email notifications',
+  {
+    text: 'Daily space news updates',
+    description: 'Stay informed with the latest developments in space exploration',
+  },
+  {
+    text: 'Basic search functionality',
+    description: "Find exactly what you're looking for with powerful search",
+  },
+  {
+    text: 'Community forums access',
+    description: 'Connect with fellow space enthusiasts',
+  },
+  {
+    text: 'Email notifications',
+    description: 'Never miss important space events and news',
+  },
+  {
+    text: 'Personalized feed',
+    description: 'Content tailored to your interests',
+  },
+  {
+    text: 'Launch calendars',
+    description: 'Track upcoming space missions and events',
+  },
+  {
+    text: 'Basic API access',
+    description: 'Integrate space data into your projects',
+  },
 ]
 
 onMounted(() => {
-  fadeInUp('.pricing-card')
+  fadeInUp('.pricing-content')
 })
 </script>
 
 <template>
-  <section class="pricing-section py-16">
-    <div>
+  <section class="py-24">
+    <LandingGlass
+      gradient="mixed"
+      intensity="low"
+    >
       <LandingTitle
         title="Unlimited access for FREE"
-        subtitle="AstronEra offers the most comprehensive space news."
-        class="max-w-2xl mx-auto"
+        subtitle="AstronEra offers the most comprehensive space news platform at zero cost"
       />
+      <div class="pricing-content flex flex-col items-center">
+        <!-- Price Tag -->
+        <div class="flex items-baseline gap-2 mb-8">
+          <span class="text-6xl font-bold text-sky-400">$0</span>
+          <span class="text-xl text-gray-400">/forever</span>
+          <span
+            class="ml-4 px-4 py-1 rounded-full text-sm bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
+          >
+            FOREVER FREE
+          </span>
+        </div>
 
-      <div class="flex justify-center">
-        <IBGlass class="pricing-card">
-          <h3 class="text-3xl font-extrabold pb-4">FREE Forever Plan</h3>
-          <ul class="mb-8 border-y border-color py-4">
-            <li
-              v-for="feature in features"
-              :key="feature"
-              class="flex items-center mb-3"
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 w-full max-w-4xl">
+          <div
+            v-for="feature in features"
+            :key="feature.text"
+            class="group relative flex"
+          >
+            <!-- Feature Card -->
+            <div
+              class="relative rounded-xl bg-primary-900/30 backdrop-blur-sm p-4 border border-primary-800/30 transition-all duration-300 hover:border-sky-500/30"
             >
-              <Icon
-                name="mdi:check-circle"
-                class="mr-3 text-green-500"
-                size="24"
+              <!-- Hover Gradient -->
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
               />
-              <span>{{ feature }}</span>
-            </li>
-          </ul>
-          <div class="flex gap-8 mb-8 w-full">
-            <div class="">
-              <span class="text-4xl font-bold">$0</span>
-              <span class="text-xl">/month</span>
-            </div>
-            <div class="flex items-center">
-              <h4 class="text-xl bg-emerald-700/30 underline underline-offset-4 px-2 py-1 font-bold"
-                >RISK FREE</h4
-              >
+
+              <!-- Content -->
+              <div class="relative z-10 flex items-start gap-3">
+                <Icon
+                  name="mdi:check-circle"
+                  class="text-emerald-500 flex-shrink-0 mt-1"
+                  size="20"
+                />
+                <div>
+                  <h4 class="font-medium text-white mb-1">{{ feature.text }}</h4>
+                  <p class="text-sm text-gray-400">{{ feature.description }}</p>
+                </div>
+              </div>
             </div>
           </div>
-          <p class="text-sm text-center mb-6">
-            No credit card required. Start exploring the cosmos today!
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center space-y-6 max-w-2xl">
+          <p class="text-gray-300"> No credit card required. Start exploring the cosmos today! </p>
+          <div class="flex justify-center gap-4">
+            <PrimeButton
+              label="Get Started Now"
+              icon="mdi:rocket-launch-outline"
+              size="large"
+              class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
+            />
+            <PrimeButton
+              label="Learn More"
+              size="large"
+              outlined
+              severity="secondary"
+              class="min-w-[200px] border-sky-500/30 hover:border-sky-500/50 text-sky-400 transition-all duration-300"
+            />
+          </div>
+          <p class="text-sm text-gray-400">
+            Join thousands of space enthusiasts already using AstronEra
           </p>
-          <PrimeButton
-            label="Get Started"
-            class="w-full"
-            size="large"
-          />
-        </IBGlass>
+        </div>
       </div>
-    </div>
+    </LandingGlass>
   </section>
 </template>
-
-<style></style>
