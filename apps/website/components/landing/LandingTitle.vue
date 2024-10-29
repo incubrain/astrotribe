@@ -4,7 +4,7 @@
     :class="padding"
   >
     <h2
-      class="text-3xl md:text-5xl font-bold tracking-wider relative font-orbitron max-w-2xl mx-auto"
+      class="text-3xl md:text-5xl font-bold tracking-wider relative font-orbitron max-w-2xl text-wrap mx-auto"
     >
       <!-- Main text - Make this solid white initially -->
       <span class="relative text-white">{{ title }}</span>
@@ -57,6 +57,12 @@ defineProps({
 
 <style scoped>
 /* Optional: Add hover effect */
+
+h2 {
+  text-wrap: normal !important; /* Override the text-wrap-balance */
+  animation: textPulse 4s ease-in-out infinite;
+}
+
 h2:hover span:first-child {
   opacity: 0.7;
   transition: opacity 0.3s ease;
