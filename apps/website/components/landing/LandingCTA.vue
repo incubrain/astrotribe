@@ -26,7 +26,7 @@ onMounted(() => {
     class="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-transparent from-10% via-primary-950 via-50% to-transparent to-90%"
     ></div>
 
-    <div class="wrapper px-4 flex flex-col md:flex-row items-center justify-between">
+    <div class="flex flex-col md:flex-row items-center justify-between">
       <div class="cta-content text-white md:w-1/2 mb-8 md:mb-0">
         <h2 class="text-2xl md:text-3xl font-bold mb-4 font-space">
           {{ title }}
