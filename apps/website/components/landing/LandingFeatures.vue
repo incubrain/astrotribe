@@ -10,18 +10,21 @@ let emblaApi: EmblaCarouselType | undefined
 
 // News sources/partners
 const partners = [
-  { name: 'NASA', id: useId(), type: 'Space Agency' },
+  { name: 'Aadyah Aerospace', id: useId(), type: 'Private Space' },
+  { name: 'Aeroin Space', id: useId(), type: 'Private Space' },
+  { name: 'Agnikul', id: useId(), type: 'Private Space' },
+  { name: 'Astrogate Labs', id: useId(), type: 'Private Space' },
+  { name: 'Bellatrix Aerospace', id: useId(), type: 'Private Space' },
+  { name: 'CNSA', id: useId(), type: 'Space Agency' },
+  { name: 'CSA', id: useId(), type: 'Space Agency' },
+  { name: 'Dhruva Space', id: useId(), type: 'Private Space' },
   { name: 'ESA', id: useId(), type: 'Space Agency' },
-  { name: 'SpaceX', id: useId(), type: 'Private Space' },
-  { name: 'Blue Origin', id: useId(), type: 'Private Space' },
-  { name: 'Roscosmos', id: useId(), type: 'Space Agency' },
-  { name: 'JAXA', id: useId(), type: 'Space Agency' },
   { name: 'ISRO', id: useId(), type: 'Space Agency' },
-  { name: 'Virgin Galactic', id: useId(), type: 'Private Space' },
-  { name: 'Virgin Galactic', id: useId(), type: 'Private Space' },
-  { name: 'Virgin Galactic', id: useId(), type: 'Private Space' },
-  { name: 'Virgin Galactic', id: useId(), type: 'Private Space' },
-  { name: 'Virgin Galactic', id: useId(), type: 'Private Space' },
+  { name: 'JAXA', id: useId(), type: 'Space Agency' },
+  { name: 'NASA', id: useId(), type: 'Space Agency' },
+  { name: 'Pixxel', id: useId(), type: 'Private Space' },
+  { name: 'Roscosmos', id: useId(), type: 'Space Agency' },
+  { name: 'Skyroot Aerospace', id: useId(), type: 'Private Space' },
 ]
 
 // Core features with more detailed information
@@ -174,7 +177,7 @@ onUnmounted(() => {
                     class="w-24 h-24 bg-primary-900/50 rounded-xl p-4 flex items-center justify-center transition-transform duration-300 group-hover/partner:scale-110"
                   >
                     <NuxtImg
-                      :src="`/images/partners/${partner.name.toLowerCase()}.svg`"
+                      :src="`/images/logos/${partner.name.toLowerCase().replace(' ', '-')}-logo.jpg`"
                       :alt="partner.name"
                       class="w-full h-full object-contain opacity-70 group-hover/partner:opacity-100"
                       width="96"
