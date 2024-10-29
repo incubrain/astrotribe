@@ -13,7 +13,7 @@ const showTopNav = computed(
 </script>
 
 <template>
-  <div class="foreground relative min-h-screen w-full">
+  <div class="foreground relative min-h-screen w-full flex flex-col">
     <NavTop v-if="showTopNav" />
     <AppBackButton
       v-else
@@ -26,7 +26,9 @@ const showTopNav = computed(
       <IBBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
     </div>
 
-    <FooterWebsite v-if="showFooter" />
+    <div class="relative w-full">
+      <FooterWebsite v-if="showFooter" />
+    </div>
   </div>
 </template>
 

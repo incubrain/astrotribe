@@ -5,10 +5,30 @@ import { useAnimation } from '~/composables/useAnimation'
 const { fadeInUp, scaleIn } = useAnimation()
 
 const socialMedia = [
-  { name: 'LINKEDIN', icon: 'mdi:linkedin', color: 'info' },
-  { name: 'TWITTER', icon: 'mdi:twitter', color: 'success' },
-  { name: 'YOUTUBE', icon: 'mdi:youtube', color: 'danger' },
-  { name: 'INSTAGRAM', icon: 'mdi:instagram', color: 'info' },
+  {
+    name: 'LINKEDIN',
+    icon: 'mdi:linkedin',
+    gradient: 'from-blue-500 to-sky-600',
+    hoverGradient: 'hover:from-blue-400 hover:to-sky-500',
+  },
+  {
+    name: 'TWITTER',
+    icon: 'mdi:twitter',
+    gradient: 'from-sky-500 to-blue-600',
+    hoverGradient: 'hover:from-sky-400 hover:to-blue-500',
+  },
+  {
+    name: 'YOUTUBE',
+    icon: 'mdi:youtube',
+    gradient: 'from-red-500 to-rose-600',
+    hoverGradient: 'hover:from-red-400 hover:to-rose-500',
+  },
+  {
+    name: 'INSTAGRAM',
+    icon: 'mdi:instagram',
+    gradient: 'from-purple-500 to-pink-600',
+    hoverGradient: 'hover:from-purple-400 hover:to-pink-500',
+  },
 ]
 
 onMounted(() => {
@@ -18,49 +38,101 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="pb-8">
-    <div
-      class="w-full flex flex-col gap-8 background border border-color rounded-lg shadow-lg p-8 text-center"
+  <section>
+    <LandingGlass
+      hover-effect="glow"
+      glow-color="purple"
+      gradient="mixed"
+      intensity="low"
+      interactive
+      isolate-content
     >
-      <div class="social-media-cta">
-        <LandingTitle
-          title="Let's stay in touch"
-          subtitle="Follow us on Social"
-        />
-        <div class="flex flex-wrap justify-center gap-8">
-          <NuxtLink
-            v-for="platform in socialMedia"
-            :key="platform.name"
-            href="#"
-            class="social-button"
-          >
-            <PrimeButton
-              outlined
-              size="large"
-              severity="secondary"
+      <div class="social-media-cta space-y-12">
+        <!-- Social Media Section -->
+        <div class="text-center">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 font-space">
+            Let's stay in touch
+          </h2>
+          <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+            Join our growing community and stay updated with the latest space news and platform
+            updates
+          </p>
+
+          <!-- Social Buttons -->
+          <div class="flex flex-wrap justify-center gap-4">
+            <NuxtLink
+              v-for="platform in socialMedia"
+              :key="platform.name"
+              href="#"
+              class="social-button group"
             >
-              <Icon
-                :name="platform.icon"
-                size="24"
-                class="mr-2"
+              <div class="relative">
+                <!-- Button -->
+                <PrimeButton
+                  class="relative z-10 border-none min-w-[160px] bg-gradient-to-r transition-all duration-300"
+                  :class="[platform.gradient, platform.hoverGradient]"
+                  size="large"
+                >
+                  <template #icon>
+                    <Icon
+                      :name="platform.icon"
+                      size="24"
+                    />
+                  </template>
+                  {{ platform.name }}
+                </PrimeButton>
+
+                <!-- Glow Effect -->
+                <div
+                  class="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 bg-gradient-to-r"
+                  :class="platform.gradient"
+                />
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="max-w-2xl mx-auto w-full space-y-6">
+          <h3 class="text-xl text-center text-white">Subscribe to Our Newsletter</h3>
+
+          <div class="relative">
+            <!-- Input Group -->
+            <div class="flex gap-4">
+              <PrimeInputText
+                class="flex-1 bg-primary-900/50 border-primary-800/50 focus:border-sky-500/50 rounded-lg"
+                placeholder="Enter your email"
               />
-              {{ platform.name }}
-            </PrimeButton>
-          </NuxtLink>
+              <PrimeButton
+                label="Subscribe"
+                class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
+              />
+            </div>
+
+            <!-- Privacy Note -->
+            <p class="text-xs text-gray-400 mt-2 text-center">
+              By subscribing, you agree to receive space-related updates. Unsubscribe at any time.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="flex gap-4 max-w-xl mx-auto w-full">
-        <PrimeInputText
-          class="flex w-full border-4 border-primary-900"
-          placeholder="Join our email newsletter"
-        />
-      </div>
-    </div>
+    </LandingGlass>
   </section>
 </template>
 
-<style>
-.font-space {
-  font-family: 'Orbitron', sans-serif;
+<style scoped>
+:deep(.p-inputtext) {
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(30, 41, 59, 0.5);
+  color: white;
+}
+
+:deep(.p-inputtext:focus) {
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: none;
+}
+
+:deep(.p-inputtext::placeholder) {
+  color: rgba(148, 163, 184, 0.7);
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useAnimation } from '~/composables/useAnimation'
+import LandingTitle from './LandingTitle.vue'
 
 const { fadeInUp, scaleOnHover } = useAnimation()
 
@@ -8,14 +9,48 @@ interface TrustedPartner {
   image: string
   name: string
   invert?: boolean
+  category: 'research' | 'education' | 'space' | 'tech'
+  description: string
 }
 
 const trustedPartners = ref<TrustedPartner[]>([
-  { image: 'images/trusted/dst.png', name: 'DST', invert: true },
-  { image: 'images/trusted/iau-oad.png', name: 'IAU-OAD', invert: true },
-  { image: 'images/trusted/in-fed.png', name: 'IN-FED', invert: true },
-  { image: 'images/trusted/iimb-nsrcel.png', name: 'IIMB-NSRCEL' },
+  {
+    image: 'images/trusted/dst.png',
+    name: 'DST',
+    invert: true,
+    category: 'research',
+    description:
+      "Department of Science and Technology - Government of India's premier scientific research organization.",
+  },
+  {
+    image: 'images/trusted/iau-oad.png',
+    name: 'IAU-OAD',
+    invert: true,
+    category: 'education',
+    description: 'International Astronomical Union Office of Astronomy for Development.',
+  },
+  {
+    image: 'images/trusted/in-fed.png',
+    name: 'IN-FED',
+    invert: true,
+    category: 'space',
+    description: 'Indian Federation of Space Research and Technology.',
+  },
+  {
+    image: 'images/trusted/iimb-nsrcel.png',
+    name: 'IIMB-NSRCEL',
+    invert: true,
+    category: 'tech',
+    description: "IIM Bangalore's Innovation & Entrepreneurship Center.",
+  },
 ])
+
+const categoryColors = {
+  research: 'from-blue-500/10 to-sky-500/10',
+  education: 'from-purple-500/10 to-blue-500/10',
+  space: 'from-sky-500/10 to-indigo-500/10',
+  tech: 'from-indigo-500/10 to-purple-500/10',
+}
 
 onMounted(() => {
   fadeInUp('.partner-logo')
@@ -24,40 +59,91 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative py-32">
-    <div
-      class="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-transparent from-10% via-primary-950 via-50% to-transparent to-90%"
-    ></div>
-    <div class="wrapper mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
-      <LandingTitle title="Trusted by Leading Organizations" />
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+  <section class="py-24">
+      <LandingGlass
+      gradient="mixed"
+      intensity="low"
+      >
+      <LandingTitle title="Trusted by Leading Organizations" class="!pb-12" />
+      <!-- Partner Stats -->
+      <div class="flex justify-center gap-8 mb-16">
+        <div class="text-center">
+          <h3 class="text-3xl font-bold text-sky-400 mb-2">30+</h3>
+          <p class="text-gray-400">Global Partners</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-3xl font-bold text-sky-400 mb-2">12+</h3>
+          <p class="text-gray-400">Countries</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-3xl font-bold text-sky-400 mb-2">5+</h3>
+          <p class="text-gray-400">Years of Trust</p>
+        </div>
+      </div>
+
+      <!-- Partners Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center mb-16">
         <div
           v-for="(partner, index) in trustedPartners"
           :key="index"
-          class="flex flex-col items-center justify-center partner-logo"
+          class="partner-logo group relative"
         >
-          <NuxtImg
-            :id="'partner-logo-' + index"
-            v-tooltip="partner.name"
-            :src="partner.image"
-            :alt="partner.name"
-            :class="[
-              'max-h-32 w-auto object-contain transition-all duration-300 hover:scale-110 ',
-              partner.invert ? 'filter invert' : '',
-            ]"
-          />
+          <!-- Partner Card -->
+          <div
+            class="relative rounded-xl bg-primary-900/30 backdrop-blur-sm p-6 border border-primary-800/30 transition-all duration-500 hover:border-sky-500/30"
+          >
+            <!-- Hover Gradient -->
+            <div
+              class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+              :class="categoryColors[partner.category]"
+            ></div>
+
+            <!-- Logo -->
+            <div class="relative z-10">
+              <NuxtImg
+                :id="'partner-logo-' + index"
+                v-tooltip="partner.description"
+                :src="partner.image"
+                :alt="partner.name"
+                :class="[
+                  'max-h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110',
+                  partner.invert ? 'filter invert' : '',
+                ]"
+              />
+            </div>
+          </div>
+
+          <!-- Card Glow -->
+          <div
+            class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+          ></div>
         </div>
       </div>
-      <div class="mt-16 text-center">
-        <p class="mb-4 text-lg">Interested in partnering with us?</p>
-        <PrimeButton
-          label="Get in Touch"
-          size="large"
-          outlined
-        />
+
+      <!-- CTA Section -->
+      <div class="text-center space-y-6">
+        <p class="text-xl text-gray-300">Ready to Join Our Network?</p>
+        <div class="flex gap-4 justify-center">
+          <PrimeButton
+            label="Partner With Us"
+            size="large"
+            class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
+          />
+          <PrimeButton
+            label="Learn More"
+            size="large"
+            outlined
+            severity="secondary"
+            class="min-w-[200px] border-sky-500/30 hover:border-sky-500/50 text-sky-400 transition-all duration-300"
+          />
+        </div>
+        <p class="text-sm text-gray-400 max-w-md mx-auto">
+          Join our growing network of space industry leaders and help shape the future of space
+          exploration
+        </p>
       </div>
-    </div>
-  </div>
+    </LandingGlass>
+  </section>
 </template>
 
 <style scoped>
@@ -65,12 +151,8 @@ onMounted(() => {
   filter: invert(1);
 }
 
-/* You might need to adjust these styles based on your PrimeVue theme */
-:deep(.p-tooltip) {
-  @apply bg-white text-black px-2 py-1 rounded text-sm;
-}
-
-:deep(.p-button) {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-bold transition duration-300 transform hover:scale-105;
+/* Ensure proper stacking */
+.partner-logo {
+  isolation: isolate;
 }
 </style>

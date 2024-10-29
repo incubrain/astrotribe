@@ -5,69 +5,167 @@ import { useAnimation } from '~/composables/useAnimation'
 const { fadeInUp } = useAnimation()
 const loadVideo = ref(false)
 
+const patreonPerks = [
+  'Behind-the-scenes content',
+  'Early access to episodes',
+  'Monthly Q&A sessions',
+  'Exclusive tutorials',
+  'Development insights',
+]
+
 onMounted(() => {
-  fadeInUp('.webseries-section')
+  fadeInUp('.content-section')
 })
 </script>
 
 <template>
-  <section class="pb-16 webseries-section">
-    <div>
-      <div class="grid grid-cols-2 gap-8 mb-8">
-        <h2
-          class="text-3xl md:text-4xl font-bold text-center p-8 font-space background border border-color rounded-md"
+  <section class="py-24 space-y-8">
+    <!-- Optional Title Section -->
+    <LandingTitle
+      title="Startups Guide to the Galaxy"
+      subtitle="Follow our journey building AstronEra and learn from our experiences"
+    />
+    <div class="content-section space-y-8">
+      <!-- Main Grid -->
+      <div class="grid md:grid-cols-2 gap-8">
+        <LandingGlass
+          hover-effect="glow"
+          glow-color="purple"
+          gradient="mixed"
+          intensity="low"
+          interactive
+          isolate-content
         >
-          Follow the development of AstronEra in "Startups Guide to the Galaxy"
-        </h2>
-        <div
-          class="flex justify-center items-center background border border-color rounded-lg shadow-lg p-6 text-center"
-        >
-          <div class="max-w-md">
-            <h3 class="text-3xl md:text-4xl font-bold font-space mb-4">Support Us on Patreon</h3>
-            <p class="mb-6">
-              Get behind-the-scenes access and exclusive content about starting, growing, and
-              running a SaaS company.
-            </p>
-            <NuxtLink
-              to="https://www.patreon.com/YourPatreonLink"
-              target="_blank"
+          <!-- Series Info -->
+          <div class="relative group">
+            <div
+              class="relative rounded-xl transition-all duration-500 hover:border-sky-500/30 h-full"
             >
-              <PrimeButton size="large"> Become a Patron </PrimeButton>
-            </NuxtLink>
+              <!-- Content -->
+              <div class="relative z-10 h-full flex flex-col">
+                <Icon
+                  name="mdi:video-vintage"
+                  size="48"
+                  class="text-sky-400 mb-6"
+                />
+                <h3 class="text-2xl font-bold text-white mb-4 font-space"> Building in Public </h3>
+                <p class="text-gray-300 mb-6">
+                  Watch as we navigate the challenges of building a space-tech startup. From
+                  ideation to launch, we share every step of our journey.
+                </p>
+                <div class="mt-auto">
+                  <span
+                    class="px-3 py-1 rounded-full text-xs bg-sky-500/10 border border-sky-500/20 text-sky-400"
+                  >
+                    New Episode Every Week
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </LandingGlass>
+
+        <!-- Patreon Support -->
+        <LandingGlass
+          hover-effect="glow"
+          glow-color="purple"
+          gradient="mixed"
+          intensity="low"
+          interactive
+          isolate-content
+        >
+          <div class="relative group">
+            <div
+              class="relative rounded-xl transition-all duration-500 hover:border-sky-500/30 h-full"
+            >
+              <!-- Content -->
+              <div class="relative z-10 h-full flex flex-col">
+                <Icon
+                  name="mdi:patreon"
+                  size="48"
+                  class="text-red-400 mb-6"
+                />
+                <h3 class="text-2xl font-bold text-white mb-4 font-space">
+                  Support Us on Patreon
+                </h3>
+                <div class="space-y-3 mb-6">
+                  <div
+                    v-for="perk in patreonPerks"
+                    :key="perk"
+                    class="flex items-center gap-2"
+                  >
+                    <Icon
+                      name="mdi:check"
+                      class="text-emerald-400"
+                    />
+                    <span class="text-gray-300">{{ perk }}</span>
+                  </div>
+                </div>
+                <div class="mt-auto">
+                  <NuxtLink
+                    to="https://www.patreon.com/YourPatreonLink"
+                    target="_blank"
+                  >
+                    <PrimeButton
+                      size="large"
+                      class="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 transition-all duration-300"
+                    >
+                      Become a Patron
+                    </PrimeButton>
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </LandingGlass>
+      </div>
+
+      <!-- Video Section -->
+      <LandingGlass
+        hover-effect="glow"
+        glow-color="purple"
+        gradient="mixed"
+        intensity="low"
+        interactive
+        isolate-content
+      >
+        <div class="relative group">
+          <div class="relative rounded-xl transition-all duration-500 hover:border-sky-500/30">
+            <!-- Video Container -->
+            <div class="aspect-video relative rounded-lg overflow-hidden">
+              <img
+                v-if="!loadVideo"
+                src="https://img.youtube.com/vi/gMG621m6QRE/maxresdefault.jpg"
+                alt="Startups Guide to the Galaxy - AstronEra"
+                class="w-full h-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+                @click="loadVideo = true"
+              />
+              <div
+                v-if="!loadVideo"
+                class="absolute inset-0 flex items-center justify-center bg-black/50 hover:bg-black/40 transition-colors duration-300"
+              >
+                <Icon
+                  name="mdi:play-circle"
+                  size="72"
+                  class="text-white/90 hover:text-white transition-colors duration-300"
+                />
+              </div>
+              <iframe
+                v-else
+                src="https://www.youtube.com/embed/gMG621m6QRE?start=488&autoplay=1"
+                title="Startups Guide to the Galaxy - AstronEra"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="absolute inset-0 w-full h-full"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="p-4 lg:p-8 rounded-lg background border border-color">
-        <div class="aspect-video relative">
-          <img
-            src="https://img.youtube.com/vi/gMG621m6QRE/hqdefault.jpg"
-            alt="Startups Guide to the Galaxy - AstronEra"
-            class="w-full h-full object-cover rounded-lg shadow-lg cursor-pointer"
-            @click="loadVideo = true"
-          />
-          <div
-            v-if="loadVideo"
-            class="absolute inset-0"
-          >
-            <iframe
-              src="https://www.youtube.com/embed/gMG621m6QRE?start=488&autoplay=1"
-              title="Startups Guide to the Galaxy - AstronEra"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              class="w-full h-full rounded-lg shadow-lg"
-            ></iframe>
-          </div>
-        </div>
-      </div>
+      </LandingGlass>
+      <LazyLandingCTASocial />
     </div>
-    <LazyLandingCTASocial class="pt-8 w-full" />
   </section>
 </template>
 
-<style scoped>
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-</style>
+<style scoped></style>

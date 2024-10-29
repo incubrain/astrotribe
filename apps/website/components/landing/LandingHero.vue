@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
-import { useNuxtApp } from '#app'
 
-const nuxtApp = useNuxtApp()
-const highlightedWords = ['Discoveries', 'Innovations', 'Technologies', 'Future']
+const highlightedWords = ['Discover', 'Innovate', 'Explore']
 const currentWord = ref(highlightedWords[0])
 const isTransitioning = ref(false)
 const scrollY = ref(0)
@@ -48,32 +46,36 @@ const handleVideoLoad = () => {
   })
 }
 
-// Initialize video on client-side only
-if (import.meta.client) {
-  nuxtApp.hook('app:mounted', () => {
-    // Initial animations
-    gsap.from('.hero-title', {
-      x: -50,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-    })
+let wordRotationInterval: number | null = null
 
-    gsap.from('.hero-subtitle', {
-      x: -50,
-      opacity: 0,
-      duration: 1,
-      delay: 0.3,
-      ease: 'power3.out',
-    })
+// Use onMounted instead of nuxtApp.hook
+onMounted(() => {
+  if (import.meta.client) {
+    // Initial animations with a slight delay to ensure DOM is ready
+    setTimeout(() => {
+      gsap.from('.hero-title', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+      })
 
-    gsap.from('.hero-cta', {
-      x: -50,
-      opacity: 0,
-      duration: 1,
-      delay: 0.6,
-      ease: 'power3.out',
-    })
+      gsap.from('.hero-subtitle', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power3.out',
+      })
+
+      gsap.from('.hero-cta', {
+        x: -50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power3.out',
+      })
+    }, 100)
 
     // Initialize video
     if (videoElement.value) {
@@ -81,18 +83,25 @@ if (import.meta.client) {
     }
 
     // Start word rotation
-    setInterval(rotateWords, 3000)
+    wordRotationInterval = setInterval(rotateWords, 3000)
 
+    // Add scroll listener
     window.addEventListener('scroll', handleScroll)
-  })
+  }
+})
 
-  // Cleanup
-  nuxtApp.hook('app:beforeMount', () => {
+// Clean up with onUnmounted
+onUnmounted(() => {
+  if (import.meta.client) {
     window.removeEventListener('scroll', handleScroll)
-  })
-}
+    if (wordRotationInterval) {
+      clearInterval(wordRotationInterval)
+    }
+  }
+})
 </script>
 
+<!-- Template remains the same -->
 <template>
   <div class="relative w-full h-screen overflow-hidden">
     <!-- Video Background -->
@@ -141,19 +150,23 @@ if (import.meta.client) {
         <h1
           class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
         >
-          Your Gateway to Space
+          A Cosmos to
           <div class="relative block mt-2">
-            <span class="highlight-word block text-primary-400">{{ currentWord }}</span>
+            <span
+              :key="currentWord"
+              class="highlight-word transition-all duration-500 ease-out block text-primary-400"
+            >
+              {{ currentWord }}</span
+            >
           </div>
         </h1>
 
-        <p class="hero-subtitle text-lg md:text-xl text-gray-200 max-w-2xl mb-12">
-          Stay ahead with personalized space and astronomy news, delivered right to your browser's
-          new tab
+        <p class="hero-subtitle text-lg md:text-xl text-gray-200 max-w-md mb-12">
+          Your daily dose of astronomical discoveries, mission updates, and space-tech insights.
         </p>
 
         <div class="hero-cta flex gap-4">
-          <PrimeButton size="large"> Get Started </PrimeButton>
+          <PrimeButton size="large"> 🚀 Get Started </PrimeButton>
           <PrimeButton
             severity="secondary"
             size="large"
@@ -174,10 +187,6 @@ if (import.meta.client) {
 </template>
 
 <style scoped>
-.highlight-word {
-  @apply transition-all duration-500 ease-out;
-}
-
 .video-fade-in {
   transition: opacity 1s ease-out;
 }

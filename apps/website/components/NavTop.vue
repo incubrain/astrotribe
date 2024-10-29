@@ -146,94 +146,109 @@ watch(
     class="flex min-w-full w-full fixed top-0 left-0 right-0 z-50"
     :class="navbarClasses"
   >
-    <PrimeMenubar
-      :model="websiteLinks"
-      class="w-full text-white rounded-none backdrop:blur-lg lg:rounded-b-md"
-      :pt="{
-        submenu: {
-          class: '!bg-black md:absolute md:flex-col flex !text-sm !font-bold !text-white',
-        },
-      }"
-    >
-      <template #start>
-        <div class="hidden gap-4 rounded-md p-1 lg:flex">
-          <div
-            class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
-          >
-            <IBImage
-              :img="{
-                src: '/astronera-logo.jpg',
-              }"
-              class="h-full w-full opacity-90"
-            />
-          </div>
-          <NuxtLink
-            to="/"
-            class="flex min-h-full items-center justify-center"
-          >
-            <h1
-              class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
-            >
-              Astron
-              <strong class="font-extrabold text-primary-700"> Era </strong>
-            </h1>
-          </NuxtLink>
-        </div>
-      </template>
-      <template #item="{ item, hasSubmenu, root }">
-        <div class="px-4 py-2">
-          <NuxtLink
-            :to="item.url"
-            class="cursor-pointer text-white text-nowrap"
-          >
-            <p class="flex items-center gap-1">
-              {{ item.label }}
-              <Icon
-                v-if="hasSubmenu"
-                :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
-              />
-            </p>
-          </NuxtLink>
-        </div>
-      </template>
-      <template #end>
-        <div class="flex flex-nowrap items-center justify-center gap-4 lg:pr-2">
-          <NuxtLink
-            to="https://github.com/incubrain/astrotribe"
-            target="_blank"
-            class="hidden items-center justify-center lg:flex"
-          >
-            <Icon
-              name="mdi:github"
-              class="flex cursor-pointer items-center justify-center"
-              size="24px"
-            />
-          </NuxtLink>
-          <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
-            <div class="space-x-2 lg:space-x-4">
-              <NuxtLink
-                v-ripple
-                :to="$config.public.aeAuthUrl"
-              >
-                <PrimeButton
-                  severity="contrast"
-                  outlined
-                >
-                  login
-                </PrimeButton>
-              </NuxtLink>
+    <!-- Glass Container -->
+    <div class="w-full relative">
+      <!-- Backdrop and Border -->
+      <div class="absolute inset-0 backdrop-blur-xl bg-primary-950/50 rounded-b-xl">
+        <!-- Neon Border -->
+        <div class="absolute inset-0 rounded-b-xl border-2 border-sky-500/20"></div>
+        <div class="absolute inset-0 rounded-b-xl animate-glow"></div>
+      </div>
 
-              <NuxtLink
-                v-ripple
-                :to="`${$config.public.aeAuthUrl}/register`"
+      <!-- Content -->
+      <PrimeMenubar
+        :model="websiteLinks"
+        class="w-full text-white rounded-none lg:rounded-b-xl bg-transparent border-none relative z-10"
+        :pt="{
+          root: {
+            class: 'flex items-center justify-between px-4 py-2',
+          },
+          submenu: {
+            class:
+              '!bg-primary-950/95 backdrop-blur-xl md:absolute md:flex-col flex !text-sm !font-bold !text-white border border-sky-500/20',
+          },
+        }"
+      >
+        <template #start>
+          <div class="hidden gap-4 rounded-md p-1 lg:flex">
+            <div
+              class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
+            >
+              <IBImage
+                :img="{
+                  src: '/astronera-logo.jpg',
+                }"
+                class="h-full w-full opacity-90"
+              />
+            </div>
+            <NuxtLink
+              to="/"
+              class="flex min-h-full items-center justify-center"
+            >
+              <h1
+                class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
               >
-                <PrimeButton> Join AstronEra </PrimeButton>
-              </NuxtLink>
+                Astron
+                <strong class="font-extrabold text-primary-400"> Era </strong>
+              </h1>
+            </NuxtLink>
+          </div>
+        </template>
+        <template #item="{ item, hasSubmenu, root }">
+          <div class="px-4 py-2">
+            <NuxtLink
+              :to="item.url"
+              class="cursor-pointer text-white text-nowrap"
+            >
+              <p class="flex items-center gap-1">
+                {{ item.label }}
+                <Icon
+                  v-if="hasSubmenu"
+                  :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
+                />
+              </p>
+            </NuxtLink>
+          </div>
+        </template>
+        <template #end>
+          <div class="flex flex-nowrap items-center justify-center gap-4 lg:pr-2">
+            <NuxtLink
+              to="https://github.com/incubrain/astrotribe"
+              target="_blank"
+              class="hidden items-center justify-center lg:flex"
+            >
+              <Icon
+                name="mdi:github"
+                class="flex cursor-pointer items-center justify-center"
+                size="24px"
+              />
+            </NuxtLink>
+            <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
+              <div class="space-x-2 lg:space-x-4">
+                <NuxtLink
+                  v-ripple
+                  :to="$config.public.aeAuthUrl"
+                >
+                  <PrimeButton
+                    severity="contrast"
+                    outlined
+                  >
+                    login
+                  </PrimeButton>
+                </NuxtLink>
+
+                <NuxtLink
+                  v-ripple
+                  :to="`${$config.public.aeAuthUrl}/register`"
+                >
+                  <PrimeButton> Join AstronEra </PrimeButton>
+                </NuxtLink>
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-    </PrimeMenubar>
+        </template>
+      </PrimeMenubar>
+    </div>
   </div>
 </template>
 
