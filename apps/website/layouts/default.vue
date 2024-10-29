@@ -13,7 +13,7 @@ const showTopNav = computed(
 </script>
 
 <template>
-  <div class="foreground relative min-h-screen w-full flex flex-col">
+  <div class="foreground relative min-h-screen w-full">
     <NavTop v-if="showTopNav" />
     <AppBackButton
       v-else

@@ -11,7 +11,7 @@ const config: Partial<Config> = {
     extend: {
       fontFamily: {
         space: ['Orbitron', 'sans-serif'],
-        typed: ['Source Code Pro', 'monospace'],
+        typed: ['Railway', 'sans-serif'],
       },
       fontSize: {
         '6xl': '4rem', // 64px
