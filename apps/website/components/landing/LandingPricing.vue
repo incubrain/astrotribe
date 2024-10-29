@@ -33,6 +33,14 @@ const features = [
     text: 'Basic API access',
     description: 'Integrate space data into your projects',
   },
+  {
+    text: 'Basic API access',
+    description: 'Integrate space data into your projects',
+  },
+  {
+    text: 'Basic API access',
+    description: 'Integrate space data into your projects',
+  },
 ]
 
 onMounted(() => {

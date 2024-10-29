@@ -74,7 +74,7 @@ onMounted(() => {
 
                 <!-- Quote section -->
                 <div class="relative">
-                  <div class="relative rounded-xl bg-primary-900/50 p-6">
+                  <div class="relative rounded-xl foreground p-6">
                     <Icon
                       name="mdi:format-quote-open"
                       class="absolute -top-4 left-4 text-sky-400/40"

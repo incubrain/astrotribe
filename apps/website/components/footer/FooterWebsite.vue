@@ -66,7 +66,7 @@ const websiteLinks = [
     items: [
       {
         key: 'dark-sky-conference-2023',
-        label: 'Dark Sky Conference',
+        label: 'Conference',
         icon: 'material-symbols:mic-rounded',
         url: '/projects/dark-sky-conference-2023',
         visible: true,
@@ -116,7 +116,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-dark-sky-conservation',
-        label: 'Dark Sky Conservation',
+        label: 'Conservation',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/dark-sky-conservation/page/1',
         visible: true,
@@ -124,7 +124,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-people-of-space',
-        label: 'Peoples of Space',
+        label: 'People',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/people-of-space/page/1',
         visible: true,
@@ -132,7 +132,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-space-exploration',
-        label: 'Space Exploration',
+        label: 'Exploration',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/space-exploration/page/1',
         visible: true,
@@ -140,7 +140,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-sustainable-development',
-        label: 'Sustainable Development',
+        label: 'Sustainability',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/sustainable-development/page/1',
         visible: true,
@@ -161,32 +161,38 @@ const websiteLinks = [
       interactive
     >
       <!-- Content -->
-      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[220px_3fr_220px] gap-8 w-full">
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[180px_3fr_180px] gap-8 w-full">
         <!-- Logo Section -->
         <div class="flex items-start">
           <NuxtLink
             to="/"
             class="flex items-center gap-4 group"
           >
-            <div
-              class="relative p-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:border-sky-500/30"
-            >
-              <IBImage
-                :img="{
-                  src: '/astronera-logo.jpg',
-                  alt: 'AstronEra Logo',
-                  width: '48',
-                  height: '48',
-                }"
-                class="rounded-full"
-              />
+            <div class="hidden gap-4 rounded-md p-1 lg:flex">
+              <div
+                class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
+              >
+                <IBImage
+                  :img="{
+                    src: '/astronera-logo.jpg',
+                  }"
+                  class="h-full w-full opacity-90"
+                />
+              </div>
+              <div class="flex justify-center">
+                <h1
+                  class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
+                >
+                  Astron
+                  <strong class="font-extrabold text-primary-400"> Era </strong>
+                </h1>
+              </div>
             </div>
-            <span class="font-semibold text-white">AstronEra</span>
           </NuxtLink>
         </div>
 
         <!-- Links Section -->
-        <div class="grid grid-cols-3 gap-8">
+        <div class="grid grid-cols-3 gap-8 mx-auto">
           <div
             v-for="link in websiteLinks"
             :key="link.key"
@@ -202,7 +208,7 @@ const websiteLinks = [
               >
                 <NuxtLink
                   :to="item.url"
-                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300"
+                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300 text-sm max-w-xl text-wrap"
                 >
                   {{ item.label }}
                 </NuxtLink>
