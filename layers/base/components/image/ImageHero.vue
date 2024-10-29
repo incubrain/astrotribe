@@ -45,12 +45,12 @@ defineProps({
         >
           {{ title.main }}
         </h2>
-        <h4
+        <p
           v-if="title.subtitle"
           :class="`inline-block w-auto max-w-2xl rounded-sm px-4 pb-4 text-xl font-semibold lg:text-3xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.subtitle }}
-        </h4>
+        </p>
       </div>
     </div>
     <div class="absolute left-0 top-0 h-full w-full bg-black/50" />

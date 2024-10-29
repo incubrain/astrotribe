@@ -74,6 +74,8 @@ onMounted(() => {
     <LandingGlass
       gradient="mixed"
       intensity="low"
+      interactive
+      isolate-content
     >
       <LandingTitle
         title="Into the Future"
@@ -87,7 +89,7 @@ onMounted(() => {
           v-for="(feature, index) in features"
           :key="index"
           ref="featureItems"
-          class="group relative"
+          class="group/feature relative"
         >
           <!-- Feature Card -->
           <div
@@ -95,7 +97,7 @@ onMounted(() => {
           >
             <!-- Hover Gradient -->
             <div
-              class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+              class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover/feature:opacity-100 transition-opacity duration-500 rounded-xl"
               :class="feature.color"
             ></div>
 
@@ -131,7 +133,7 @@ onMounted(() => {
 
           <!-- Card Glow -->
           <div
-            class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+            class="absolute inset-0 bg-sky-500/5 group-hover/feature:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
           />
         </div>
       </div>
