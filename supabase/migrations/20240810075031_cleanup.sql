@@ -708,10 +708,10 @@ alter table "public"."newsletters" enable row level security;
 alter table "public"."role_permissions" add column "conditions" jsonb default '{}'::jsonb;
 
 ALTER TABLE "public"."role_permissions" 
-ADD COLUMN "permissions" text[] NOT NULL DEFAULT '{}';
+ADD COLUMN "permissions" jsonb NOT NULL DEFAULT '{}';
 
 -- Step 2: Update the new column with values from existing columns
-UPDATE role_permissions
+UPDATE "public"."role_permissions"
 SET permissions = (
     SELECT jsonb_object_agg(key, value)
     FROM (
@@ -727,7 +727,7 @@ SET permissions = (
         SELECT 'insert' as key, TRUE as value
         WHERE role_permissions.insert = TRUE
     ) AS permissions_data
-)
+);
 
 alter table "public"."role_permissions" alter column "table_name" set data type text using "table_name"::text;
 
