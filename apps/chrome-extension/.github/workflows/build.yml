@@ -1,0 +1,23 @@
+name: Build Extension
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run zip
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extension
+          path: extension.zip
