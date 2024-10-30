@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "AstronEra",
+  "description": "Replaces the new tab page with My App.",
+  "version": "1.0.0",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "permissions": ["tabs"],
+  "author": "Your Name"
+}
