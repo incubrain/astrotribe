@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>New Tab</title>
+    <script
+      src="newtab.js"
+      defer
+    ></script>
+    <style>
+      #loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      #app-frame {
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">Loading your application...</div>
+    <iframe
+      id="app-frame"
+      style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    ></iframe>
+  </body>
+</html>
