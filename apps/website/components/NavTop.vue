@@ -42,7 +42,7 @@ const websiteLinks = [
     items: [
       {
         key: 'dark-sky-conference-2023',
-        label: 'Dark Sky Conference',
+        label: 'Conference',
         icon: 'material-symbols:mic-rounded',
         url: '/projects/dark-sky-conference-2023',
         visible: true,
@@ -67,7 +67,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-dark-sky-conservation',
-        label: 'Dark Sky Conservation',
+        label: 'Conservation',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/dark-sky-conservation/page/1',
         visible: true,
@@ -75,7 +75,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-people-of-space',
-        label: 'Peoples of Space',
+        label: 'People',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/people-of-space/page/1',
         visible: true,
@@ -83,7 +83,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-space-exploration',
-        label: 'Space Exploration',
+        label: 'Exploration',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/space-exploration/page/1',
         visible: true,
@@ -91,7 +91,7 @@ const websiteLinks = [
       },
       {
         key: 'blog-sustainable-development',
-        label: 'Sustainable Development',
+        label: 'Sustainability',
         icon: 'material-symbols:menu-book-outline',
         url: '/blog/category/sustainable-development/page/1',
         visible: true,
