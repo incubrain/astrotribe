@@ -19,14 +19,14 @@ create table "public"."feeds" (
 
 
 create table "public"."strapi_migrations" (
-    "id" integer not null default nextval('strapi_migrations_id_seq'::regclass),
+    "id" integer not null default nextval('public.strapi_migrations_id_seq'::regclass),
     "name" character varying(255),
     "time" timestamp without time zone
 );
 
 
 create table "public"."strapi_migrations_internal" (
-    "id" integer not null default nextval('strapi_migrations_internal_id_seq'::regclass),
+    "id" integer not null default nextval('public.strapi_migrations_internal_id_seq'::regclass),
     "name" character varying(255),
     "time" timestamp without time zone
 );
@@ -76,15 +76,15 @@ alter table "public"."strapi_migrations" add constraint "strapi_migrations_pkey"
 
 alter table "public"."strapi_migrations_internal" add constraint "strapi_migrations_internal_pkey" PRIMARY KEY using index "strapi_migrations_internal_pkey";
 
-alter table "public"."feed_categories" add constraint "feed_categories_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."feed_categories" add constraint "feed_categories_category_id_fkey" FOREIGN KEY (category_id) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."feed_categories" validate constraint "feed_categories_category_id_fkey";
 
-alter table "public"."feed_categories" add constraint "feed_categories_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES feeds(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."feed_categories" add constraint "feed_categories_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES public.feeds(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."feed_categories" validate constraint "feed_categories_feed_id_fkey";
 
-alter table "public"."feeds" add constraint "feeds_user_id_fkey" FOREIGN KEY (user_id) REFERENCES user_profiles(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."feeds" add constraint "feeds_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."feeds" validate constraint "feeds_user_id_fkey";
 
@@ -146,8 +146,8 @@ BEGIN
 END;$function$
 ;
 
-CREATE OR REPLACE FUNCTION public.match_research(query_embedding vector, match_threshold double precision, match_count integer)
- RETURNS SETOF research_embeddings
+CREATE OR REPLACE FUNCTION public.match_research(query_embedding public.vector, match_threshold double precision, match_count integer)
+ RETURNS SETOF public.research_embeddings
  LANGUAGE sql
 AS $function$
   select *
