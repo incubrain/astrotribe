@@ -8,17 +8,22 @@ const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
   initialFetch: true,
 })
 
-const name = ref(null)
-const search = ref('') // Initialize with empty string instead of null
+const name = ref('')
+const search = ref('')
 const fuseInstance = ref<Fuse<any> | null>(null)
 
 const { items: proxyCategories } = storeToRefs(store)
 
-// Initialize Fuse.js instance when categories are loaded
+const initializeSelection = () => {
+  proxyCategories.value = proxyCategories.value.map((item) => ({
+    ...item,
+    selected: false,
+  }))
+}
+
 watchEffect(() => {
   if (proxyCategories.value.length > 0) {
     initializeSelection()
-    // Configure Fuse with your preferred options
     fuseInstance.value = new Fuse(proxyCategories.value, {
       keys: ['name'],
       threshold: 0.3,
@@ -29,14 +34,6 @@ watchEffect(() => {
   }
 })
 
-// Ensure that `selected` is part of the category data when initially fetched
-const initializeSelection = () => {
-  proxyCategories.value = proxyCategories.value.map((item) => ({
-    ...item,
-    selected: false,
-  }))
-}
-
 const toggleSelect = (id: string) => {
   const category = proxyCategories.value.find((item) => item.id === id)
   if (category) {
@@ -45,7 +42,6 @@ const toggleSelect = (id: string) => {
 }
 
 const onSearch = () => {
-  // Only perform search if there's actual search text and it's at least 2 characters
   if (!search.value || search.value.trim().length < 2) {
     return proxyCategories.value
   }
@@ -63,9 +59,11 @@ const onSearch = () => {
 
 const categories = computed(() => onSearch())
 
+const selectedCategories = computed(() => proxyCategories.value.filter((cat) => cat.selected))
+
 const save = async () => {
   const toast = useNotification()
-  const selected = proxyCategories.value.filter((item) => item.selected)
+  const selected = selectedCategories.value
 
   if (!name.value) {
     toast.error({ summary: 'Feed name cannot be empty', message: 'Please enter a feed name' })
@@ -78,7 +76,6 @@ const save = async () => {
   }
 
   const { profile } = useCurrentUser()
-
   const client = useSupabaseClient()
 
   if (profile?.id) {
@@ -98,7 +95,7 @@ const save = async () => {
         if (res.every(({ error }) => !error)) {
           toast.success({
             summary: 'Feed created successfully',
-            message: `${name} was created successfully`,
+            message: `${name.value} was created successfully`,
           })
         } else {
           res.forEach(
@@ -118,10 +115,16 @@ const save = async () => {
 }
 
 const discard = () => {
-  name.value = null
-  const selected = proxyCategories.value.filter((item) => item.selected)
+  name.value = ''
+  search.value = ''
+  proxyCategories.value.forEach((item) => (item.selected = false))
+}
 
-  selected.forEach((item) => (item.selected = false))
+const removeSelected = (id: string) => {
+  const category = proxyCategories.value.find((item) => item.id === id)
+  if (category) {
+    category.selected = false
+  }
 }
 
 definePageMeta({
@@ -130,57 +133,125 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <div class="flex p-2 justify-between w-full items-center">
-      <h3 class="flex h-full items-center text-xl font-semibold leading-none">
-        Pick the tags you want to include
-      </h3>
-      <div class="flex gap-2">
-        <PrimeButton @click="discard">Discard</PrimeButton>
-        <PrimeButton @click="save">Save</PrimeButton>
-      </div>
+  <div class="max-w-7xl mx-auto p-4">
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-semibold mb-2">Create New Feed</h1>
+      <p class="text-gray-500">Select categories to include in your feed</p>
     </div>
-    <hr />
-    <div>
-      <PrimeFloatLabel class="flex flex-col m-6 w-50">
-        <PrimeInputText
-          id="feedname"
-          v-model="name"
-          required
+
+    <!-- Main Card -->
+    <PrimeCard class="bg-gray-900">
+      <template #content>
+        <!-- Top Section: Input Fields and Actions -->
+        <div class="grid gap-4 md:grid-cols-2 mb-6">
+          <div class="space-y-4">
+            <div class="flex items-center w-full gap-2">
+              <!-- Feed Name Input -->
+              <PrimeFloatLabel class="grow">
+                <PrimeInputText
+                  id="feedname"
+                  v-model="name"
+                  class="w-full"
+                  required
+                />
+                <label for="feedname">Enter feed name</label>
+              </PrimeFloatLabel>
+              <!-- Action Buttons -->
+              <div class="flex gap-2">
+                <PrimeButton
+                  label="Save Feed"
+                  @click="save"
+                />
+                <button
+                  link
+                  severity="danger"
+                  @click="discard"
+                >
+                  <Icon
+                    name="mdi:trash-can-outline"
+                    size="22px"
+                    class="text-red-500"
+                  />
+                </button>
+              </div>
+            </div>
+
+            <!-- Search Input -->
+            <PrimeFloatLabel>
+              <PrimeInputText
+                id="search"
+                v-model="search"
+                class="w-full"
+              />
+              <label for="search">Search categories</label>
+            </PrimeFloatLabel>
+          </div>
+
+          <!-- Selected Categories Preview -->
+          <PrimeCard class="bg-gray-800">
+            <template #title>
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-gray-400">Selected Categories</span>
+                <PrimeBadge
+                  :value="selectedCategories.length"
+                  severity="info"
+                />
+              </div>
+            </template>
+            <template #content>
+              <div class="flex flex-wrap gap-2">
+                <PrimeChip
+                  v-for="category in selectedCategories"
+                  :key="category.id"
+                  :label="category.name"
+                  class="bg-blue-900"
+                  removable
+                  @remove="removeSelected(category.id)"
+                />
+              </div>
+            </template>
+          </PrimeCard>
+        </div>
+
+        <!-- Categories Grid -->
+        <PrimeProgressSpinner
+          v-if="proxyCategories.length === 0"
+          class="w-8 h-8 mx-auto"
         />
-        <label for="feedname">Enter feed name</label>
-      </PrimeFloatLabel>
-      <PrimeFloatLabel class="flex flex-col m-6 w-50">
-        <PrimeInputText
-          id="search"
-          v-model="search"
-          @input="onSearch"
-        />
-        <label for="search">Search</label>
-      </PrimeFloatLabel>
-    </div>
-    <div class="text-center">
-      <div
-        v-if="proxyCategories.length === 0"
-        class="p-4 text-gray-500"
-      >
-        Loading categories...
-      </div>
-      <div v-else>
-        <PrimeButton
-          v-for="(category, index) in categories"
-          :key="category.id"
-          color="primary"
-          :aria-label="category.name"
-          :outlined="!category.selected"
-          :label="category.name"
-          size="small"
-          class="cursor-pointer m-2 bg-black"
-          @click="toggleSelect(category.id)"
-        />
-      </div>
-    </div>
+        <div
+          v-else
+          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2"
+        >
+          <PrimeButton
+            v-for="category in categories"
+            :key="category.id"
+            :label="category.name"
+            :outlined="!category.selected"
+            size="small"
+            class="whitespace-normal h-auto py-2"
+            @click="toggleSelect(category.id)"
+          />
+        </div>
+      </template>
+    </PrimeCard>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.p-card) {
+  background: transparent;
+}
+
+:deep(.p-button) {
+  justify-content: center;
+}
+
+:deep(.p-inputtext) {
+  width: 100%;
+}
+
+:deep(.p-chip) {
+  background: theme('colors.blue.900');
+}
+</style>
