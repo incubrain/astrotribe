@@ -188,12 +188,12 @@ watch(
               to="/"
               class="flex min-h-full items-center justify-center"
             >
-              <h1
+              <h4
                 class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
               >
                 Astron
                 <strong class="font-extrabold text-primary-400"> Era </strong>
-              </h1>
+              </h4>
             </NuxtLink>
           </div>
         </template>
