@@ -19,7 +19,7 @@
     "build:all": "scripts/build-all.sh",
     "build:debug": "npx tsx scripts/build-with-logs.ts -- --project",
     "db:setup": "npx tsx scripts/db-setup.ts",
-    "db:migrate": "supabase db diff -f",
+    "db:migrate": "npx tsx scripts/db-migration.ts",
     "lint": "nx run-many --target=lint --all",
     "lint:fix": "nx run-many --target=lint --all --fix",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,vue,json,md,yml,yaml}\"",
