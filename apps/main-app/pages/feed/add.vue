@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Fuse from 'fuse.js'
+
 const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
   columns: 'id, name',
   orderBy: { column: 'name', ascending: true },
@@ -7,38 +9,59 @@ const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
 })
 
 const name = ref(null)
-const search = ref(null)
+const search = ref('') // Initialize with empty string instead of null
+const fuseInstance = ref<Fuse<any> | null>(null)
 
 const { items: proxyCategories } = storeToRefs(store)
+
+// Initialize Fuse.js instance when categories are loaded
+watchEffect(() => {
+  if (proxyCategories.value.length > 0) {
+    initializeSelection()
+    // Configure Fuse with your preferred options
+    fuseInstance.value = new Fuse(proxyCategories.value, {
+      keys: ['name'],
+      threshold: 0.3,
+      distance: 100,
+      ignoreLocation: true,
+      shouldSort: true,
+    })
+  }
+})
 
 // Ensure that `selected` is part of the category data when initially fetched
 const initializeSelection = () => {
   proxyCategories.value = proxyCategories.value.map((item) => ({
     ...item,
-    selected: false, // Add `selected` property
+    selected: false,
   }))
 }
 
-// Call this when the data is fetched (initialFetch: true will fetch the data)
-watchEffect(() => {
-  if (proxyCategories.value.length > 0) {
-    initializeSelection()
-  }
-})
-
-// Toggle the `selected` property directly in `proxyCategories`
 const toggleSelect = (id: string) => {
   const category = proxyCategories.value.find((item) => item.id === id)
   if (category) {
-    category.selected = !category.selected // Toggle selected state directly
+    category.selected = !category.selected
   }
 }
 
 const onSearch = () => {
-  return proxyCategories.value.filter((item) => !search.value || item.name.includes(search.value))
+  // Only perform search if there's actual search text and it's at least 2 characters
+  if (!search.value || search.value.trim().length < 2) {
+    return proxyCategories.value
+  }
+
+  if (fuseInstance.value) {
+    const results = fuseInstance.value.search(search.value.trim())
+    return results.map((result) => ({
+      ...result.item,
+      selected: proxyCategories.value.find((cat) => cat.id === result.item.id)?.selected || false,
+    }))
+  }
+
+  return proxyCategories.value
 }
 
-const categories = computed(onSearch)
+const categories = computed(() => onSearch())
 
 const save = async () => {
   const toast = useNotification()
@@ -137,17 +160,25 @@ definePageMeta({
       </PrimeFloatLabel>
     </div>
     <div class="text-center">
-      <PrimeButton
-        v-for="(category, index) in categories"
-        :key="index"
-        color="primary"
-        :aria-label="category.name"
-        :outlined="!category.selected"
-        :label="category.name"
-        size="small"
-        class="cursor-pointer m-2 bg-black"
-        @click="toggleSelect(category.id)"
-      />
+      <div
+        v-if="proxyCategories.length === 0"
+        class="p-4 text-gray-500"
+      >
+        Loading categories...
+      </div>
+      <div v-else>
+        <PrimeButton
+          v-for="(category, index) in categories"
+          :key="category.id"
+          color="primary"
+          :aria-label="category.name"
+          :outlined="!category.selected"
+          :label="category.name"
+          size="small"
+          class="cursor-pointer m-2 bg-black"
+          @click="toggleSelect(category.id)"
+        />
+      </div>
     </div>
   </div>
 </template>
