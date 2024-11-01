@@ -1,17 +1,17 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+  <div class="flex flex-col items-center justify-center p-4 h-full">
     <div class="max-w-md w-full text-center space-y-6">
       <div class="flex justify-center">
         <Icon
           name="material-symbols:wifi-off"
-          class="w-20 h-20 text-gray-400"
+          class="w-20 h-20"
         />
       </div>
 
-      <h1 class="text-3xl font-bold text-gray-900"> No Internet Connection </h1>
+      <h1 class="text-3xl font-bold"> No Internet Connection </h1>
 
       <div class="space-y-4">
-        <p class="text-gray-600">
+        <p class="">
           The page you're trying to access requires an internet connection. Please check your
           connection and try again.
         </p>
@@ -24,7 +24,7 @@
         </Button>
       </div>
 
-      <div class="text-sm text-gray-500">
+      <div class="text-sm">
         <p>Some features may still be available offline</p>
       </div>
     </div>
@@ -32,6 +32,16 @@
 </template>
 
 <script setup lang="ts">
+const { $isOffline } = useNuxtApp()
+
+// Watch for online status changes
+watch($isOffline, (offline) => {
+  if (!offline) {
+    // Optionally reload when connection is restored
+    window.location.reload()
+  }
+})
+
 const reload = () => {
   window.location.reload()
 }

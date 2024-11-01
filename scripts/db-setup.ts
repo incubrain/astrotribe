@@ -26,28 +26,25 @@ export async function dbSetup(options: DbOptions) {
 
   // Read permissions JSON
   const permissionsJson = JSON.parse(fs.readFileSync('./scripts/role-permissions.json', 'utf-8'))
-
-  const jsonConfig = JSON.stringify(permissionsJson).replace(/'/g, '\'\'')
-
-  console.log('permissionsJson:', jsonConfig)
+  const jsonConfig = JSON.stringify(permissionsJson).replace(/'/g, "''")
 
   // Update role permissions
   try {
     const client = await pool.connect()
     try {
-      const result = await client.query(`SELECT update_role_permissions('${jsonConfig}'::jsonb)`)
-      console.log('Role permissions updated successfully. Result:', result.rows[0])
+      await client.query(`SELECT update_role_permissions('${jsonConfig}'::jsonb)`)
+      console.log('Role permissions updated successfully.')
 
       // Update policies
       await updatePolicies(client)
+      console.log('RLS Policies updated successfully.')
     } finally {
       client.release()
     }
   } catch (error: any) {
-    console.error('Error updating role permissions:', error)
+    console.error('Error updating role permissions / RLS:', error)
     throw error
   }
-  console.log('Role permissions updated successfully.')
 }
 
 async function enableRLSOnAllTables(): Promise<void> {

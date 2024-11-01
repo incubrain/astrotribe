@@ -31,6 +31,10 @@ useHead({
 <template>
   <div class="h-full w-full">
     <NuxtLoadingIndicator />
+    <Head>
+      <link rel="manifest" href="/manifest.webmanifest" />
+    </Head>
+    <NuxtPwaAssets />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
