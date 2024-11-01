@@ -7,6 +7,7 @@ export interface NewsCardT {
   title: string
   authorName: string
   published_at?: string
+  featured_image: string
   created_at: string
   url: string
   comments: number
@@ -41,8 +42,9 @@ const readTime = computed(() => {
 onMounted(async () => {
   try {
     // Get user's current vote for this news item
-    const response = await $fetch(`/api/votes/news/${props.news.id}`)
-    currentVote.value = response.voteType
+    // const response = await $fetch(`/api/votes/news/${props.news.id}`)
+    console.log('NEWS', props.news)
+    // currentVote.value = response.voteType
   } catch (error) {
     console.error('Error fetching vote status:', error)
   }
@@ -82,9 +84,11 @@ const openModal = (feature: string) => {
       <div>
         <div class="mb-4">
           <NuxtImg
-            :src="`https://picsum.photos/400/200?random=${news.id}`"
+            provider="supabase"
+            :src="news.featured_image"
             :alt="news.title"
             class="w-full h-auto rounded-lg"
+            preset="original"
             width="400"
             height="200"
           />
