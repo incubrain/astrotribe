@@ -1,13 +1,35 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import { ref } from 'vue'
-import type { NewsCardT } from '@/types/news'
+import { ref, onMounted } from 'vue'
 
-const props = defineProps({
-  news: {
-    type: Object as () => NewsCardT,
-    required: true,
-  },
+export interface NewsCardT {
+  id: string
+  title: string
+  authorName: string
+  published_at?: string
+  created_at: string
+  url: string
+  comments: number
+  score?: number
+}
+
+interface Props {
+  news: NewsCardT
+}
+
+const props = defineProps<Props>()
+
+const showModal = ref(false)
+const modalContent = ref('')
+const currentVote = ref<number | null>(null)
+const score = ref(props.news.score || 0)
+
+const displayScore = computed(() => {
+  // Only show negative numbers if user has downvoted
+  if (score.value < 0 && currentVote.value !== -1) {
+    return 0
+  }
+  return score.value
 })
 
 const readTime = computed(() => {
@@ -16,8 +38,19 @@ const readTime = computed(() => {
   return '2m read time'
 })
 
-const showModal = ref(false)
-const modalContent = ref('')
+onMounted(async () => {
+  try {
+    // Get user's current vote for this news item
+    const response = await $fetch(`/api/votes/news/${props.news.id}`)
+    currentVote.value = response.voteType
+  } catch (error) {
+    console.error('Error fetching vote status:', error)
+  }
+})
+
+const handleVoteChange = ({ change }: { voteType: number | null; change: number }) => {
+  score.value += change
+}
 
 const openModal = (feature: string) => {
   modalContent.value = `The ${feature} feature is coming soon! Stay tuned for updates.`
@@ -58,54 +91,52 @@ const openModal = (feature: string) => {
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
-            <PrimeButton
-              class="!p-2"
-              severity="contrast"
-              outlined
-              @click="openModal('Upvote')"
-            >
-              <Icon name="mdi:arrow-up" />
-            </PrimeButton>
-            <span>{{ news.upvotes }}</span>
-            <PrimeButton
-              class="!p-2"
-              severity="contrast"
-              outlined
-              @click="openModal('Downvote')"
-            >
-              <Icon name="mdi:arrow-down" />
-            </PrimeButton>
-            <PrimeButton
-              class="!p-2"
-              severity="contrast"
-              outlined
+            <div class="flex items-center justify-center bg-primary-950 py-1 px-2 rounded-xl">
+              <VoteButton
+                :content-id="news.id"
+                direction="up"
+                :initial-vote-type="currentVote"
+                @vote-change="handleVoteChange"
+              />
+              <span class="text-sm font-medium pl-1 pr-2">{{ displayScore }}</span>
+              <VoteButton
+                :content-id="news.id"
+                direction="down"
+                :initial-vote-type="currentVote"
+                @vote-change="handleVoteChange"
+              />
+            </div>
+            <button
+              class="flex items-center gap-2 text-sm hover:text-gray-600"
               @click="openModal('Comments')"
             >
-              <Icon name="mdi:comment-outline" />
-            </PrimeButton>
-            <span>{{ news.comments }}</span>
+              <Icon
+                name="mdi:comment-outline"
+                size="20px"
+              />
+              <span>{{ news.comments }}</span>
+            </button>
           </div>
-          <div class="flex items-center gap-2">
-            <PrimeButton
-              class="!p-2"
-              severity="contrast"
-              outlined
+          <div class="flex items-center gap-4">
+            <button
+              class="hover:text-gray-600"
               @click="openModal('Bookmark')"
             >
-              <Icon name="mdi:bookmark-outline" />
-            </PrimeButton>
+              <Icon
+                name="mdi:bookmark-outline"
+                size="20px"
+              />
+            </button>
             <NuxtLink
               :to="news.url"
               target="_blank"
               rel="noopener noreferrer nofollow"
+              class="hover:text-gray-600"
             >
-              <PrimeButton
-                class="!p-2"
-                severity="contrast"
-                outlined
-              >
-                <Icon name="mdi:link-variant" />
-              </PrimeButton>
+              <Icon
+                name="mdi:link-variant"
+                size="20px"
+              />
             </NuxtLink>
           </div>
         </div>

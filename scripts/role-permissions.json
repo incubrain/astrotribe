@@ -13,7 +13,7 @@
         "permissions": ["select", "insert", "update"]
       }
     },
-    "user": {
+  "user": {
       "public_tables": {
         "permissions": ["select"]
       },
@@ -69,6 +69,7 @@
       "feedbacks",
       "responses",
       "searches",
+      "votes",
       "social_media",
       "user_followers",
       "user_profiles",

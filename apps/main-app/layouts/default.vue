@@ -4,7 +4,7 @@ const { appLinks } = usePages()
 
 <template>
   <div class="w-full h-screen flex background relative overflow-hidden lg:py-4 lg:pr-4">
-    <IBSideNav :links="appLinks" />
+    <IBSideNav :categories="appLinks" />
 
     <div
       class="w-full h-full pb-[var(--mobi-bottom-nav-height)] lg:pb-0 relative flex flex-col rounded-lg overflow-hidden"
