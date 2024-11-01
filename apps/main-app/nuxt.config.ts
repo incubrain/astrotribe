@@ -3,6 +3,8 @@ import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import runtimeConfig from '../../shared-runtime.config'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
@@ -82,65 +84,33 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    registerType: 'autoUpdate', // Automatically update the service worker
-    manifest: {
-      screenshots: [
-        {
-          src: '/screenshots/screenshot1.png',
-          sizes: '640x480',
-          type: 'image/png',
-        },
-        // Add more screenshots
-      ],
-      lang: 'en',
-      dir: 'ltr',
-      name: 'AstronEra',
-      short_name: 'Astron',
-      description: 'Your Daily Astronomical Dose',
-      theme_color: '#000000',
-      background_color: '#000000',
-      display: 'standalone',
-      orientation: 'portrait',
-      scope: '/',
-      start_url: '/',
-      icons: [
-        {
-          src: '/favicons/web-app-manifest-192x192.png',
-          sizes: '192x192',
-          type: 'image/png',
-          purpose: 'maskable',
-        },
-        {
-          src: '/favicons/web-app-manifest-512x512.png',
-          sizes: '512x512',
-          type: 'image/png',
-          purpose: 'maskable',
-        },
-      ],
-    },
+    registerType: 'autoUpdate',
+    manifest: false, // We'll use our own manifest file
     workbox: {
       navigateFallback: '/offline',
+      globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      cleanupOutdatedCaches: true,
       runtimeCaching: [
         {
-          urlPattern: new RegExp(`^${process.env.SUPABASE_URL}/.*$`),
+          urlPattern: /^\/api\//,
           handler: 'NetworkFirst',
-          method: 'GET',
-
-          options: {
-            cacheName: 'supabase-api-cache',
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60, // 1 hour
-            },
-            cacheableResponse: {
-              statuses: [0, 200],
-            },
-          },
         },
       ],
     },
-    devOptions: {
-      enabled: true, // Enable PWA in development mode
+    client: {
+      installPrompt: true,
+    },
+  },
+
+  // Add proper MIME type handling
+  nitro: {
+    routeRules: {
+      '/manifest.webmanifest': {
+        headers: {
+          'Content-Type': 'application/manifest+json',
+          'Cache-Control': 'public, max-age=0',
+        },
+      },
     },
   },
 
