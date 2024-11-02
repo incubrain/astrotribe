@@ -17,8 +17,10 @@ export default defineNuxtConfig({
   image: {
     providers: {
       supabase: {
-        name: 'supabase',
-        provider: '../../layers/base/supabase-provider',
+        provider: '../../layers/base/supabase-provider.ts',
+        options: {
+          baseURL: process.env.NUXT_PUBLIC_SUPABASE_URL,
+        },
       },
     },
     presets: {
