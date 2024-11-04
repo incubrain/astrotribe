@@ -10,7 +10,6 @@ const { store, loadMore, refresh } = useSelectData<News>('news', {
   filters: {
     // content_status: { eq: 'draft' },
     body: { neq: 'null' },
-    featured_image: { neq: 'null' },
   },
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
