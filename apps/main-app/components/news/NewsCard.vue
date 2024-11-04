@@ -84,7 +84,7 @@ const openModal = (feature: string) => {
       <div>
         <div class="mb-4">
           <NuxtImg
-            :provider="!!news.featured_image && supabase"
+            :provider="!!news.featured_image && 'supabase'"
             :src="news.featured_image || 'fallback-news.jpg'"
             :alt="news.title"
             class="w-full h-auto rounded-lg"
