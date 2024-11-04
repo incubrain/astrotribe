@@ -40,12 +40,12 @@ const features = [
   },
   {
     id: useId(),
-    title: 'Mission Tracker',
-    subtitle: 'Real-time space mission monitoring',
+    title: 'Chrome New Tab Extension',
+    subtitle: 'Never miss space updates',
     description:
-      'Follow ongoing space missions, satellite deployments, and upcoming launches with our interactive tracking system.',
-    icon: 'mdi:rocket-launch',
-    metrics: ['Live updates', 'Mission details', 'Launch schedules'],
+      'Get the latest space news and updates every time you open a new tab in your browser. Stay informed and inspired with every click.',
+    icon: 'mdi:google-chrome',
+    metrics: ['Quick access', 'Creates a habit', 'One-click'],
   },
   {
     id: useId(),
@@ -54,7 +54,7 @@ const features = [
     description:
       'Access peer-reviewed papers, research summaries, and breakthrough discoveries in astronomy and space technology.',
     icon: 'mdi:telescope',
-    metrics: ['200+ journals', 'Expert analysis', 'Research briefs'],
+    metrics: ['200+ journals', 'Expert analysis', 'Research briefs', 'Comming Soon'],
   },
   {
     id: useId(),

@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
 import { useAnimation } from '~/composables/useAnimation'
-import LandingTitle from './LandingTitle.vue'
 
 const { pulseAnimation } = useAnimation()
 
@@ -13,7 +12,7 @@ const features = [
     description: 'Get concise, AI-generated summaries of the latest space news.',
     color: 'from-blue-500/20 to-purple-600/20',
     gradient: 'bg-gradient-to-br from-blue-500 to-purple-600',
-    comingSoon: 'Q2 2024',
+    comingSoon: 'Q4 2024',
   },
   {
     icon: 'mdi:file-document-outline',
@@ -21,23 +20,23 @@ const features = [
     description: 'Stay updated with simplified summaries of recent arXiv papers.',
     color: 'from-green-500/20 to-teal-600/20',
     gradient: 'bg-gradient-to-br from-green-500 to-teal-600',
-    comingSoon: 'Q3 2024',
+    comingSoon: 'Q4 2024',
   },
   {
-    icon: 'mdi:rocket',
-    title: 'Launch Tracking',
-    description: 'Real-time updates on upcoming space launches and missions.',
+    icon: 'mdi:rocket-launch',
+    title: 'Company Updates',
+    description: 'Follow the latest news and updates from your favorite space companies.',
     color: 'from-red-500/20 to-orange-600/20',
     gradient: 'bg-gradient-to-br from-red-500 to-orange-600',
-    comingSoon: 'Q2 2024',
+    comingSoon: 'Q1 2025',
   },
   {
-    icon: 'mdi:star',
-    title: 'Stargazing Guide',
-    description: 'Personalized sky maps and astronomy event notifications.',
+    icon: 'mdi:account-group',
+    title: 'Networking',
+    description: 'Connect with other space enthusiasts and professionals in the community.',
     color: 'from-yellow-500/20 to-amber-600/20',
     gradient: 'bg-gradient-to-br from-yellow-500 to-amber-600',
-    comingSoon: 'Q4 2024',
+    comingSoon: 'Q2 2025',
   },
 ]
 
