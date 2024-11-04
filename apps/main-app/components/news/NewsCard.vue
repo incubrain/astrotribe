@@ -88,7 +88,6 @@ const openModal = (feature: string) => {
             :src="news.featured_image"
             :alt="news.title"
             class="w-full h-auto rounded-lg"
-            preset="original"
             width="400"
             height="200"
           />
