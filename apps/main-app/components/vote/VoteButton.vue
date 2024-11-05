@@ -29,6 +29,10 @@ const isActive = computed(() => {
   return props.direction === 'up' ? currentVoteType.value === 1 : currentVoteType.value === -1
 })
 
+onMounted(async () => {
+  await voteStore.fetchUserVotes()
+})
+
 const handleVote = async () => {
   if (isPending.value) return
 
