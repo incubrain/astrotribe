@@ -35,7 +35,7 @@
     "@fullcalendar/vue3": "^6.1.15",
     "@ib/client": "file:libs/client",
     "@ib/server": "file:libs/server",
-    "@iconify-json/material-symbols": "^1.2.1",
+    "@iconify-json/material-symbols": "^1.2.4",
     "@iconify-json/mdi": "^1.2.0",
     "@influxdata/influxdb-client": "^1.35.0",
     "@nuxt/content": "^2.13.2",
