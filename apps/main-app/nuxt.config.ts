@@ -111,6 +111,12 @@ export default defineNuxtConfig({
           'Cache-Control': 'public, max-age=0',
         },
       },
+      '/api/bookmarks/**': {
+        appMiddleware: ['feature-limit'],
+      },
+      '/api/folders/**': {
+        appMiddleware: ['feature-limit'],
+      },
     },
   },
 
