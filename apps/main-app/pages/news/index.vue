@@ -7,7 +7,7 @@ const { init: initBookmarks } = useBookmarks()
 const domainKey = 'news'
 const { store, loadMore, refresh } = useSelectData<News>('news', {
   columns:
-    'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*)',
+    'id, title, body, published_at, created_at, description, category_id, author, url, keywords, featured_image, company_id, companies(*), score',
   filters: {
     // content_status: { eq: 'draft' },
     body: { neq: 'null' },
