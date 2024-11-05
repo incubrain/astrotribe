@@ -2,6 +2,7 @@
 // !todo:critical - add summaries for news articles
 // !todo:high - allow news to toggle summary level
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
+const { init: initBookmarks } = useBookmarks()
 
 const domainKey = 'news'
 const { store, loadMore, refresh } = useSelectData<News>('news', {
@@ -24,6 +25,19 @@ console.log('news', news)
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
+
+onMounted(async () => {
+  await initBookmarks()
+})
+
+// Add this to refresh bookmarks after route changes
+const route = useRoute()
+watch(
+  () => route.path,
+  async () => {
+    await initBookmarks()
+  },
+)
 
 definePageMeta({
   name: 'News',

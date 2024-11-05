@@ -1,0 +1,189 @@
+<script setup lang="ts">
+const { folders, flatFolders, getFavorites, createFolder } = useFolderSystem()
+const { checkFeatureLimit, getFeatureUsage, getUpgradeMessage } = usePlan()
+
+const canCreateFolder = computed(() => {
+  return checkFeatureLimit('BOOKMARK_FOLDERS', folders.value.length)
+})
+
+const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
+
+const showNewFolderModal = ref(false)
+const newFolder = ref({
+  name: '',
+  parent_id: null,
+  color: '#94A3B8',
+  is_favorite: false,
+  is_default: false,
+})
+
+const createNewFolder = async () => {
+  await createFolder(newFolder.value)
+  showNewFolderModal.value = false
+  newFolder.value = {
+    name: '',
+    parent_id: null,
+    color: '#94A3B8',
+    is_favorite: false,
+    is_default: false,
+  }
+}
+</script>
+
+<template>
+  <div class="space-y-2">
+    <div class="mt-4">
+      <button
+        v-if="canCreateFolder"
+        class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        @click="showNewFolderModal = true"
+      >
+        <Icon
+          name="mdi:plus"
+          class="w-4 h-4 mr-2"
+        />
+        New Folder
+        <span
+          v-if="!folderUsage.isUnlimited"
+          class="ml-1 text-gray-500"
+        >
+          ({{ folderUsage.used }}/{{ folderUsage.limit }})
+        </span>
+      </button>
+      <div
+        v-else
+        class="text-sm text-gray-600 bg-gray-50 p-3 rounded-md"
+      >
+        <p>You've reached the folder limit.</p>
+        <NuxtLink
+          to="/premium"
+          class="text-primary-600 hover:text-primary-700 font-medium"
+        >
+          {{ getUpgradeMessage('BOOKMARK_FOLDERS') }}
+        </NuxtLink>
+      </div>
+    </div>
+
+    <div
+      v-if="getFavorites.length"
+      class="mb-4"
+    >
+      <h3 class="font-medium text-gray-700 mb-2">Favorites</h3>
+      <div class="space-y-1">
+        <FolderItem
+          v-for="folder in getFavorites"
+          :key="folder.id"
+          :folder="folder"
+          @select="selectFolder"
+        />
+      </div>
+    </div>
+
+    <!-- Folder Tree -->
+    <div class="space-y-1">
+      <FolderItem
+        v-for="folder in folders"
+        :key="folder.id"
+        :folder="folder"
+        @select="selectFolder"
+      />
+    </div>
+
+    <!-- Add Folder Button -->
+    <button
+      class="mt-4 w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+      @click="showNewFolderModal = true"
+    >
+      <Icon
+        name="mdi:plus"
+        class="w-4 h-4 mr-2"
+      />
+      New Folder
+    </button>
+
+    <!-- New Folder Modal -->
+    <PrimeDialog v-model:show="showNewFolderModal">
+      <PrimeDialogContent>
+        <form
+          @submit.prevent="createNewFolder"
+          class="space-y-4"
+        >
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Name</label>
+            <input
+              v-model="newFolder.name"
+              type="text"
+              class="mt-1 block w-full rounded-md border-gray-300"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Parent Folder</label>
+            <select
+              v-model="newFolder.parent_id"
+              class="mt-1 block w-full rounded-md border-gray-300"
+            >
+              <option :value="null">No parent</option>
+              <option
+                v-for="folder in flatFolders"
+                :key="folder.id"
+                :value="folder.id"
+              >
+                {{ folder.name }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Color</label>
+            <div class="mt-1 flex items-center gap-2">
+              <input
+                v-model="newFolder.color"
+                type="color"
+                class="h-8 w-8 rounded cursor-pointer"
+              />
+              <span class="text-sm text-gray-600">{{ newFolder.color }}</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <label class="flex items-center">
+              <input
+                v-model="newFolder.is_favorite"
+                type="checkbox"
+                class="rounded border-gray-300"
+              />
+              <span class="ml-2 text-sm text-gray-600">Add to favorites</span>
+            </label>
+
+            <label class="flex items-center">
+              <input
+                v-model="newFolder.is_default"
+                type="checkbox"
+                class="rounded border-gray-300"
+              />
+              <span class="ml-2 text-sm text-gray-600">Set as default</span>
+            </label>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              @click="showNewFolderModal = false"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700"
+            >
+              Create Folder
+            </button>
+          </div>
+        </form>
+      </PrimeDialogContent>
+    </PrimeDialog>
+  </div>
+</template>

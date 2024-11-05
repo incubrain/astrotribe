@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue'
 export interface NewsCardT {
   id: string
   title: string
+  description: string
   authorName: string
   published_at?: string
   featured_image: string
@@ -20,10 +21,27 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { isNewsBookmarked, toggleBookmark } = useBookmarks()
+
 const showModal = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
 const score = ref(props.news.score || 0)
+const bookmarked = computed(() => isNewsBookmarked.value(props.news.id))
+
+const handleBookmark = async () => {
+  try {
+    await toggleBookmark({
+      id: props.news.id,
+      type: 'news',
+      title: props.news.title,
+      thumbnail: props.news.featured_image,
+      url: props.news.url,
+    })
+  } catch (error) {
+    console.error('Error handling bookmark:', error)
+  }
+}
 
 const displayScore = computed(() => {
   // Only show negative numbers if user has downvoted
@@ -42,9 +60,6 @@ const readTime = computed(() => {
 onMounted(async () => {
   try {
     // Get user's current vote for this news item
-    // const response = await $fetch(`/api/votes/news/${props.news.id}`)
-    console.log('NEWS', props.news)
-    // currentVote.value = response.voteType
   } catch (error) {
     console.error('Error fetching vote status:', error)
   }
@@ -123,11 +138,12 @@ const openModal = (feature: string) => {
           <div class="flex items-center gap-4">
             <button
               class="hover:text-gray-600"
-              @click="openModal('Bookmark')"
+              @click="handleBookmark"
             >
               <Icon
-                name="mdi:bookmark-outline"
+                :name="bookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
                 size="20px"
+                :class="{ 'text-primary-500': bookmarked }"
               />
             </button>
             <NuxtLink
