@@ -11,7 +11,8 @@ if (!migrationName) {
 }
 
 const migrationsDir = path.resolve('supabase/migrations')
-const fixMigrationScript = path.resolve(__dirname, 'fixMigration.ts')
+const __dirname = path.resolve()
+const fixMigrationScript = path.resolve(__dirname, 'fix-migration.ts')
 
 console.log(`\nStarting migration: ${migrationName}\n`)
 
