@@ -20,6 +20,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const voteStore = useVoteStore()
 
 const { isNewsBookmarked, toggleBookmark } = useBookmarks()
 
@@ -44,11 +45,13 @@ const handleBookmark = async () => {
 }
 
 const displayScore = computed(() => {
+  const currentScore = voteStore.getScore(props.news.id) ?? score.value
+
   // Only show negative numbers if user has downvoted
-  if (score.value < 0 && currentVote.value !== -1) {
+  if (currentScore < 0 && currentVote.value !== -1) {
     return 0
   }
-  return score.value
+  return currentScore
 })
 
 const readTime = computed(() => {
@@ -59,7 +62,8 @@ const readTime = computed(() => {
 
 onMounted(async () => {
   try {
-    // Get user's current vote for this news item
+    if (voteStore.getScore(props.news.id) == null)
+      voteStore.setVotes(props.news.id, props.news.score || 0)
   } catch (error) {
     console.error('Error fetching vote status:', error)
   }
