@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Fuse from 'fuse.js'
 
+const { addFeed } = usePages()
+
 const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
   columns: 'id, name',
   orderBy: { column: 'name', ascending: true },
@@ -97,6 +99,7 @@ const save = async () => {
             summary: 'Feed created successfully',
             message: `${name.value} was created successfully`,
           })
+          addFeed(data[0].id, name.value)
         } else {
           res.forEach(
             ({ error }) =>

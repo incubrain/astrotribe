@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 export interface PageType {
-  id: number
+  id: string
   label: string
   slug: string
   icon: string
@@ -32,13 +32,13 @@ const navigationCategories = ref([
     label: 'News',
     items: [
       {
-        id: 2,
+        id: '2',
         label: 'Feed',
         slug: '/news',
         icon: 'mdi:newspaper-variant-outline',
       },
       {
-        id: 3,
+        id: '3',
         label: '+ Create Feed',
         slug: '/feed/add',
         icon: 'mdi:plus',
@@ -73,41 +73,69 @@ const navigationCategories = ref([
 
 export default function usePages() {
   const client = useSupabaseClient()
-
   const { profile } = useCurrentUser()
-  if (profile.id) {
-    const toast = useNotification()
-    client
-      .from('feeds')
-      .select('id, name')
-      .eq('user_id', profile.id)
-      .then(({ data, error }) => {
-        if (error) {
-          toast.error({
-            summary: 'Failed to get custom feeds',
-            message: 'Could not get custom feeds',
-          })
-          return
-        }
 
-        // Add custom feeds to the News category
-        const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
-        if (newsCategory) {
-          data.forEach((feed) => {
-            if (!newsCategory.items.some((item) => item.id === feed.id)) {
-              newsCategory.items.push({
-                id: feed.id,
-                label: feed.name,
-                slug: `/feed/${feed.id}`,
-                icon: 'mdi:newspaper-variant-multiple-outline',
-              })
-            }
-          })
-        }
+  const addFeed = (id: string, label: string) => {
+    const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+
+    if (!newsCategory.items.some((item) => item.id === id)) {
+      newsCategory.items.push({
+        id,
+        label,
+        slug: `/feed/${id}`,
+        icon: 'mdi:newspaper-variant-multiple-outline',
       })
+    }
   }
+
+  const deleteFeed = (feedId: string) => {
+    const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+    const index = newsCategory.items.findIndex((item) => item.id == feedId)
+
+    if (index > -1) {
+      newsCategory.items.splice(index, 1)
+    }
+  }
+
+  const initializeFeeds = () => {
+    if (profile.id) {
+      const toast = useNotification()
+      client
+        .from('feeds')
+        .select('id, name')
+        .eq('user_id', profile.id)
+        .then(({ data, error }) => {
+          if (error) {
+            toast.error({
+              summary: 'Failed to get custom feeds',
+              message: 'Could not get custom feeds',
+            })
+            return
+          }
+
+          // Add custom feeds to the News category
+          const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+          if (newsCategory) {
+            data.forEach((feed) => {
+              if (!newsCategory.items.some((item) => item.id === feed.id)) {
+                newsCategory.items.push({
+                  id: feed.id,
+                  label: feed.name,
+                  slug: `/feed/${feed.id}`,
+                  icon: 'mdi:newspaper-variant-multiple-outline',
+                })
+              }
+            })
+          }
+        })
+    }
+  }
+
+  onMounted(initializeFeeds)
 
   return {
     appLinks: navigationCategories,
+    addFeed,
+    deleteFeed,
   }
 }
