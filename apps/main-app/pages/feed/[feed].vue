@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const feedId = computed(() => String(route.params.feed))
+const { deleteFeed } = usePages()
 
 const { store: categoriesStore } = useSelectData('feed_categories', {
   columns: 'id, feed_id, categories(id, name)',
@@ -15,7 +16,10 @@ const removeFeed = async () => {
   const { deleteData, isDeleting } = useDeleteData('feeds')
   await deleteData(feedId.value)
 
-  if (!isDeleting.value) navigateTo('/')
+  if (!isDeleting.value) {
+    deleteFeed(feedId.value)
+    navigateTo('/')
+  }
 }
 
 const { items: proxyCategories } = storeToRefs(categoriesStore)
