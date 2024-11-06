@@ -10,13 +10,18 @@ interface VoteResponse {
 export const useVoteStore = defineStore('votes', () => {
   // State
   const votes = ref<Record<string, number>>({})
+  const userVotes = ref<Record<string, number>>({})
   const pendingVotes = ref<Record<string, Promise<VoteResponse>>>({})
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
 
   // Getters
   const getVoteType = computed(() => {
-    return (contentId: string): number | null => votes.value[contentId] || null
+    return (contentId: string): number | null => userVotes.value[contentId] ?? null
+  })
+
+  const getScore = computed(() => {
+    return (contentId: string): number | null => votes.value[contentId] ?? null
   })
 
   const isVotePending = computed(() => {
@@ -32,7 +37,7 @@ export const useVoteStore = defineStore('votes', () => {
 
     try {
       const response = await $fetch('/api/votes/user')
-      votes.value = response.votes
+      userVotes.value = response.votes
     } catch (err) {
       console.error('Error fetching votes:', err)
       error.value = err as Error
@@ -51,6 +56,10 @@ export const useVoteStore = defineStore('votes', () => {
       error.value = err as Error
       throw err
     }
+  }
+
+  const setVotes = (contentId: string, score: number) => {
+    votes.value[contentId] = score
   }
 
   const submitVote = async (
@@ -75,8 +84,8 @@ export const useVoteStore = defineStore('votes', () => {
       })
 
       // Optimistically update UI
-      votes.value = {
-        ...votes.value,
+      userVotes.value = {
+        ...userVotes.value,
         [contentId]: isRemoving ? null : voteType,
       }
 
@@ -96,12 +105,18 @@ export const useVoteStore = defineStore('votes', () => {
       } else {
         change = oldVote ? voteType * 2 : voteType
       }
+      const newVotes = votes.value[contentId] + change
+
+      votes.value = {
+        ...votes.value,
+        [contentId]: newVotes,
+      }
 
       return { success: true, change }
     } catch (err: any) {
       // Revert optimistic update
-      votes.value = {
-        ...votes.value,
+      userVotes.value = {
+        ...userVotes.value,
         [contentId]: oldVote,
       }
 
@@ -128,10 +143,13 @@ export const useVoteStore = defineStore('votes', () => {
   return {
     // State
     votes,
+    userVotes,
     isLoading,
     error,
 
     // Getters
+    setVotes,
+    getScore,
     getVoteType,
     isVotePending,
 
