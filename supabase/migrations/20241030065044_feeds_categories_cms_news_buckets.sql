@@ -1,5 +1,15 @@
 CREATE EXTENSION IF NOT EXISTS vector;
 
+-- Create Buckets
+
+INSERT INTO storage.buckets (id, name)
+VALUES ('cms', 'cms')
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO storage.buckets (id, name)
+VALUES ('news', 'news')
+ON CONFLICT (id) DO NOTHING;
+
 -- First create the sequences with fully qualified names
 CREATE SEQUENCE public.strapi_migrations_id_seq AS integer;
 CREATE SEQUENCE public.strapi_migrations_internal_id_seq AS integer;
