@@ -1991,23 +1991,19 @@ INSERT INTO "public"."countries" ("id", "name", "code") OVERRIDING SYSTEM VALUE 
 -- Data for Name: content_sources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."content_sources" ("id", "content_type", "url", "scrape_frequency", "created_at", "updated_at", "refreshed_at", "has_failed", "priority") OVERRIDING SYSTEM VALUE VALUES 
-    (1, 'news',  'https://spaceflightnow.com/category/news-archive/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 10:16:36.945+00', False, 'low'),
-    (2, 'news',   'http://www.collectspace.com/news/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 06:08:57.834+00', False, 'low'),
-    (3, 'news',  'https://darksky.org/news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 10:16:35.883+00', True, 'low'),
-    (4, 'news',  'https://www.seti.org/news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 06:08:54.749+00', False, 'low'),
-    (5, 'news',   'https://astronomynow.com/2024/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 05:59:57.948+00',  False , 'low'),
-    (6, 'news',   'https://www.space.com/archive', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 08:25:04.333+00', False, 'low'),
-    (7, 'news',  'https://www.planetary.org/articles', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 08:25:03.767+00', False, 'low'),
-    (8, 'news',   'https://www.astronomy.com/news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 08:25:04.8+00', False, 'low'),
-    (9, 'news', 'https://skyandtelescope.org/astronomy-news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 10:16:35.883+00', False, 'low'),
-    (10, 'news',   'https://earthsky.org/space', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 05:59:32.737+00', False, 'low'),
-    (11, 'news',   'https://earthsky.org/astronomy-essentials/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 05:59:31.344+00', False, 'low'),
-    (12, 'news',   'https://earthsky.org/spaceflight/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 05:59:28.468+00', False, 'low'),
-    (13, 'news',   'https://www.astronomy.com/tags/news/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 10:16:33.592+00', False, 'low'),
-    (14, 'news',   'https://spacenews.com/section/news-archive/', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-06-27 08:25:03.256+00', False, 'low'),
-    (15, 'news',  'https://www.nasa.gov/news/all-news/', 'four_times_daily', '2024-06-27 08:20:22.544438+00', '2024-06-27 08:20:22.544438+00', '2024-06-26 08:28:09+00', False, 'low');
-
+INSERT INTO "public"."content_sources" ("id", "url", "content_type", "scrape_frequency", "created_at", "updated_at", "refreshed_at", "has_failed", "failed_count", "priority", "hash", "scraped_at", "expected_count", "company_id", "rss_urls") OVERRIDING SYSTEM VALUE VALUES
+('1', 'https://spaceflightnow.com/category/news-archive/', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-10-31 17:51:03.074+00', 'false', '0', 'low', '1888343262', '2024-10-31 17:51:03.074+00', '10', null, '"{\"https://spaceflightnow.com/category/news-archive/feed/\"]}'),
+('2', 'http://www.collectspace.com/news/', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:19.735+00', 'false', '0', 'low', '3006505983', '2024-11-02 07:33:19.735+00', '10', null, null),
+('3', 'https://darksky.org/news', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:30.7+00', 'false', '0', 'low', '2366810571', '2024-11-02 07:33:30.7+00', '10', null, '"{\"https://darksky.org/news/feed/\"]}'),
+('4', 'https://www.seti.org/news', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:39.473+00', 'false', '0', 'low', '3603463745', '2024-11-02 07:33:39.473+00', '10', null, null),
+('5', 'https://astronomynow.com/2024/', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:32.942+00', 'false', '0', 'low', '92583119', '2024-11-02 07:33:32.942+00', '10', null, '"{\"https://astronomynow.com/2024/feed/\"]}'),
+('6', 'https://www.space.com/archive', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:38.292+00', 'false', '0', 'low', '4146409479', '2024-11-02 07:33:38.292+00', '10', null, '"{\"https://www.space.com/feeds/all\"]}'),
+('7', 'https://www.planetary.org/articles', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-10-31 17:51:04.333+00', 'false', '0', 'low', '2727393038', '2024-10-31 17:51:04.333+00', '10', null, '"{\"https://www.planetary.org/rss/articles\"]}'),
+('9', 'https://skyandtelescope.org/astronomy-news', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:35.025+00', 'false', '0', 'low', '4116446593', '2024-11-02 07:33:35.025+00', '10', null, '"{\"https://skyandtelescope.com/astronomy-news/feed/\"]}'),
+('10', 'https://earthsky.org/space', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:30.666+00', 'false', '0', 'low', '3968349643', '2024-11-02 07:33:30.666+00', '10', null, '"{\"https://earthsky.org/space/feed/\"]}'),
+('11', 'https://earthsky.org/astronomy-essentials/', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:15.89+00', 'false', '0', 'low', '1184994737', '2024-11-02 07:33:15.89+00', '10', null, '"{\"https://earthsky.org/astronomy-essentials/feed/\"]}'),
+('14', 'https://spacenews.com/section/news-archive/', 'news', 'daily', '2024-06-25 08:15:29.766964+00', '2024-06-25 08:15:29.766964+00', '2024-11-02 07:33:14.231+00', 'false', '0', 'low', '2513000818', '2024-11-02 07:33:14.231+00', '10', null, '"{\"https://spacenews.com/section/news-archive/feed/\"]}'),
+('15', 'https://www.nasa.gov/news/all-news/', 'news', 'four_times_daily', '2024-06-27 08:20:22.544438+00', '2024-06-27 08:20:22.544438+00', '2024-10-31 17:50:58.811+00', 'false', '0', 'low', '543865889', '2024-10-31 17:50:58.811+00', '10', null, '"{\"https://www.nasa.gov/news-release/feed/\"]}');
 
 
 
