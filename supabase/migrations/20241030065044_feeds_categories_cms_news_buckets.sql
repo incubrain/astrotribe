@@ -1,14 +1,13 @@
 CREATE EXTENSION IF NOT EXISTS vector;
 
--- Create Buckets
+-- Create Buckets CMS and News
 
-INSERT INTO storage.buckets (id, name)
-VALUES ('cms', 'cms')
+INSERT INTO "storage"."buckets" 
+("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
+('cms', 'cms', NULL, '2023-03-02 05:08:03.279807+00', '2023-03-02 05:08:03.279807+00', true, false, NULL, NULL, NULL),
+('news', 'news', NULL, '2023-06-20 08:29:35.287069+00', '2023-06-20 08:29:35.287069+00', true, false, NULL, NULL, NULL)
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO storage.buckets (id, name)
-VALUES ('news', 'news')
-ON CONFLICT (id) DO NOTHING;
 
 -- First create the sequences with fully qualified names
 CREATE SEQUENCE public.strapi_migrations_id_seq AS integer;
