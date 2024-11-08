@@ -47,8 +47,21 @@ export const useBookmarks = () => {
   const updateCache = (
     item: { content_type: string; content_id: string } | null,
     isBookmarked: boolean,
+    data?: Bookmark,
   ) => {
     if (!item) return
+    if (data) {
+      bookmarks.value.push(data)
+    } else if (!data && !isBookmarked) {
+      const index = bookmarks.value.findIndex(
+        (bookmark) =>
+          bookmark.content_id === item.content_id && bookmark.content_type === item.content_type,
+      )
+      if (index > -1) {
+        bookmarks.value.splice(index, 1)
+      }
+    }
+
     const cacheKey = `${item.content_type}:${item.content_id}`
     bookmarkCache.set(cacheKey, isBookmarked)
   }
@@ -130,13 +143,14 @@ export const useBookmarks = () => {
       },
     })
 
-    const isBookmarked = response.data?.bookmarked ?? false
+    const isBookmarked = response.bookmarked ?? false
     updateCache(
       {
         content_type: content.type,
         content_id: content.id,
       },
       isBookmarked,
+      response.data,
     )
 
     return response.data
