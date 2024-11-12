@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import type { FuseResult } from 'fuse.js'
+import type { Folder } from '~/composables/useFolderSystem'
+
 const { getFeatureUsage } = usePlan()
-
 const { folders, loading: foldersLoading } = useFolderSystem()
-const { bookmarks, loading: bookmarksLoading, fetchBookmarks, searchBookmarks } = useBookmarks()
-
+const { bookmarks, loading: bookmarksLoading, fetchBookmarks } = useBookmarks()
 const {
   selectedBookmarks,
   showMoveModal,
   handleNewFolder,
   handleMoveSubmit,
   handleDeleteBookmark,
-  handleMoveBookmarks,
 } = useBookmarkManager()
 
 const {
@@ -24,9 +24,8 @@ const {
   toggleFolderPanel,
 } = useBookmarkView()
 
-// Only keep computed props and onMounted in the page
 const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
-const displayedBookmarks = ref(bookmarks.value)
+const displayedBookmarks = ref<typeof bookmarks.value>([])
 
 const toggleSelection = (id: string) => {
   const index = selectedBookmarks.value.indexOf(id)
@@ -43,40 +42,36 @@ const clearSelection = () => {
 
 const handleBulkDelete = async () => {
   if (!selectedBookmarks.value.length) return
-
   await handleDeleteBookmark(selectedBookmarks.value)
-
   clearSelection()
+}
+
+// Search configuration
+const searchFuseOptions = {
+  keys: ['metadata.title', 'metadata.description', 'metadata.author'],
+  threshold: 0.3,
+  shouldSort: true,
+}
+
+// Handle search results
+const handleSearchResults = (results: FuseResult<any>[]) => {
+  if (results.length === 0 && !searchQuery.value) {
+    displayedBookmarks.value = bookmarks.value
+  } else {
+    displayedBookmarks.value = results.map((result) => result.item)
+  }
 }
 
 const loading = computed(() => foldersLoading.value || bookmarksLoading.value)
 
 onMounted(async () => {
   const session = await useSupabaseSession()
-
-  // Only fetch if session is authenticated
   if (session.value) {
     await fetchBookmarks({})
   }
 })
 
-watch(useSupabaseUser(), async (newUser) => {
-  if (newUser) {
-    await fetchBookmarks({})
-  } else {
-    bookmarks.value = [] // Clear bookmarks when user logs out
-  }
-})
-
-watch(searchQuery, () => {
-  if (searchQuery.value) {
-    const results = searchBookmarks(searchQuery.value)
-    displayedBookmarks.value = results.map((result) => result.item)
-  } else {
-    displayedBookmarks.value = bookmarks.value
-  }
-})
-
+// Update initial display when bookmarks change
 watch(
   () => bookmarks.value,
   (newBookmarks) => {
@@ -84,64 +79,37 @@ watch(
       displayedBookmarks.value = newBookmarks
     }
   },
+  { immediate: true },
 )
 </script>
 
 <template>
   <div class="min-h-screen p-4 space-y-4">
-    <!-- Mobile Header -->
-    <PrimeToolbar class="md:hidden background border-b">
+    <!-- Simplified toolbar without left hamburger -->
+    <PrimeToolbar
+      class="sticky top-0 z-40"
+      :pt="{
+        start: 'flex-grow',
+      }"
+    >
       <template #start>
-        <button
-          class="p-2 text-gray-600 hover:text-gray-900"
-          @click="toggleFolderPanel"
-        >
-          <Icon
-            name="mdi:menu"
-            size="24px"
-          />
-        </button>
-      </template>
-      <template #center>
-        <h1 class="text-lg font-semibold">Bookmarks</h1>
-      </template>
-    </PrimeToolbar>
-
-    <PrimeToolbar class="sticky top-0 z-40">
-      <template #start>
-        <button
-          class="p-2 text-gray-600 hover:text-gray-900 hidden md:block"
-          @click="toggleFolderPanel"
-        >
-          <Icon
-            name="mdi:menu"
-            size="24px"
-          />
-        </button>
-      </template>
-
-      <template #center>
-        <div class="relative flex-1 max-w-md w-full">
-          <PrimeInputText
+        <div class="w-full max-w-xl">
+          <FuzzySearch
             v-model="searchQuery"
+            :data="bookmarks"
+            :fuse-options="searchFuseOptions"
             placeholder="Search bookmarks..."
-            class="w-full flex-grow"
-          >
-            <template #end>
-              <Icon
-                name="mdi:magnify"
-                class="text-gray-400"
-              />
-            </template>
-          </PrimeInputText>
+            class="w-full"
+            @results="handleSearchResults"
+          />
         </div>
       </template>
 
       <template #end>
         <div class="flex items-center gap-4">
-          <!-- Selection Actions - Show when items are selected -->
+          <!-- Selection Actions -->
           <template v-if="selectedBookmarks.length > 0">
-            <span class="text-sm text-gray-600"> {{ selectedBookmarks.length }} selected </span>
+            <span class="text-sm text-gray-600">{{ selectedBookmarks.length }} selected</span>
             <PrimeButton
               severity="danger"
               size="small"
@@ -176,10 +144,10 @@ watch(
               class="p-button-text hidden md:block"
               @click="toggleFolderPanel"
             >
-              <Icon
-                name="mdi:folder"
-                class="mr-2"
-              />
+              <div class="flex items-center gap-1">
+                <Icon name="mdi:folder" />
+                <span>+ Folder</span>
+              </div>
             </PrimeButton>
           </template>
         </div>
@@ -187,7 +155,7 @@ watch(
     </PrimeToolbar>
 
     <div class="flex">
-      <!-- Folder Sidebar - Hidden on mobile, shown in sidebar -->
+      <!-- Folder Sidebar -->
       <PrimeDrawer
         v-model:visible="showFolderPanel"
         :modal="true"
@@ -199,7 +167,6 @@ watch(
         </template>
 
         <div class="p-4 space-y-4">
-          <!-- Folder Usage -->
           <div class="text-sm text-gray-600 mb-4">
             <span
               >{{ folderUsage.used }}/{{ folderUsage.isUnlimited ? '∞' : folderUsage.limit }}</span
@@ -207,7 +174,6 @@ watch(
             folders used
           </div>
 
-          <!-- Folder Tree -->
           <FolderTree
             :folders="folders"
             :selected-folder="currentFolder"
@@ -219,8 +185,6 @@ watch(
       <!-- Main Content -->
       <div class="flex-1 overflow-auto">
         <div class="max-w-7xl mx-auto space-y-6">
-          <!-- Action Bar - Only show when items are selected -->
-
           <!-- Current Folder Info -->
           <div
             v-if="currentFolder"
@@ -260,11 +224,10 @@ watch(
               leave-to-class="opacity-0 transform scale-95"
             >
               <div
-                v-for="bookmark in bookmarks"
+                v-for="bookmark in displayedBookmarks"
                 :key="bookmark.id"
                 class="relative group flex"
               >
-                <!-- Selection Overlay -->
                 <div
                   class="absolute w-full h-10 inset-0 z-10 flex items-start justify-end p-2 bg-black/5"
                   :class="
@@ -280,7 +243,6 @@ watch(
                   />
                 </div>
 
-                <!-- Use original NewsCard -->
                 <NewsCard
                   :news="{
                     id: bookmark.content_id,
@@ -298,9 +260,9 @@ watch(
             </TransitionGroup>
           </div>
 
-          <!-- Empty State - Update condition -->
+          <!-- Empty State -->
           <div
-            v-if="!loading && (!bookmarks || bookmarks.length === 0)"
+            v-if="!loading && (!displayedBookmarks || displayedBookmarks.length === 0)"
             class="flex flex-col items-center justify-center h-64 text-gray-500"
           >
             <Icon
@@ -318,7 +280,7 @@ watch(
       </div>
     </div>
 
-    <!-- New Folder Modal -->
+    <!-- Modals -->
     <PrimeDialog
       v-model:visible="showNewFolderModal"
       modal
@@ -332,7 +294,6 @@ watch(
       />
     </PrimeDialog>
 
-    <!-- Move Bookmark Modal -->
     <PrimeDialog
       v-model:visible="showMoveModal"
       modal
@@ -342,7 +303,7 @@ watch(
       <MoveBookmarkForm
         :folders="folders"
         :selected-folder="currentFolder"
-        @submit="handleMoveSubmit"
+        @submit="(folder: Folder) => handleMoveSubmit(folder)"
         @cancel="showMoveModal = false"
       />
     </PrimeDialog>
