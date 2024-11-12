@@ -23,7 +23,6 @@ const isSideVisible = ref(true)
           </PrimeMessage>
         </Transition> -->
       </div>
-      <IBFeedback v-show="isSideVisible" />
     </div>
   </div>
 </template>
