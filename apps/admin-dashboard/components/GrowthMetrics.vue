@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useErrorHandler } from '@ib/client'
+import { useErrorHandler } from '@ib/logger'
 
 const { store, loadMore, refresh, isSelecting } = useSelectData('table_statistics', {
   columns: 'table_name, table_size, row_count, capture_time',

@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 const DOMAIN_KEY = 'currentUser'
 

@@ -1,9 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "declaration": true,
     "declarationMap": true, // Optional for better debugging
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["node", "vite/client"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"]
   }
 }

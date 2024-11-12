@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError } from '@ib/logger'
 
 interface YouTubeVideo {
   title: string

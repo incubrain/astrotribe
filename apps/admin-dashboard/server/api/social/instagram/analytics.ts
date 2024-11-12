@@ -1,12 +1,12 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useServerError, useServerLogger } from '@ib/server'
+import { useLoggerAsync, useErrorHandler } from '@ib/logger'
 import { useInstagramAnalytics } from '#imports'
 
 const PREFIX = 'social/instagram/insights'
 
 export default defineEventHandler(async (event) => {
-  const log = useServerLogger(PREFIX)
-  const errors = useServerError(PREFIX)
+  const log = await useLoggerAsync(PREFIX)
+  const errors = await useErrorHandler(PREFIX)
 
   const { userId } = getQuery(event) as { userId: string }
 

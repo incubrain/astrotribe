@@ -8,7 +8,7 @@ import {
   mapErrorSeverity,
   mapErrorType,
   retryableStatusCodes,
-} from '@ib/client'
+} from '@ib/logger'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 

@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError } from '@ib/logger'
 
 const LINKEDIN_API_URL = 'https://api.linkedin.com/rest/dmaOrganizationalPageContentAnalytics'
 const ACCESS_TOKEN = 'YOUR_LINKEDIN_ACCESS_TOKEN'

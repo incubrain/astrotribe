@@ -4,10 +4,8 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@ib/client": ["libs/client/index.ts"],
-      "@ib/client/*": ["libs/client/*"],
-      "@ib/server": ["libs/server/index.ts"],
-      "@ib/server/*": ["libs/server/*"],
+      "@ib/logger": ["libs/logger/index.ts"],
+      "@ib/logger/*": ["libs/logger/*"],
       "@website/*": ["apps/website/*"],
       "@auth-service/*": ["apps/auth-service/*"]
     },

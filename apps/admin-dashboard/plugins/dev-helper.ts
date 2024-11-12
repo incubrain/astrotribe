@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 const logger = useLogger('devHelper')
 
@@ -76,7 +76,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         })
       })
 
-      logger.log('🌐 Network Error Classifier initialized')
+      logger.info('🌐 Network Error Classifier initialized')
     },
 
     initInfiniteLoopDetector() {
@@ -118,7 +118,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         return Number(originalSetTimeout.call(this, wrappedCallback, timeout))
       }
 
-      logger.log('🔄 Infinite Loop Detector initialized')
+      logger.info('🔄 Infinite Loop Detector initialized')
     },
 
     initUnhandledPromiseRejectionTracker() {
@@ -133,7 +133,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         })
       })
 
-      logger.log('💥 Unhandled Promise Rejection Tracker initialized')
+      logger.info('💥 Unhandled Promise Rejection Tracker initialized')
     },
 
     checkEnvironmentConsistency() {
@@ -145,13 +145,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (missingVars.length > 0) {
         logger.warn('🔑 Missing required environment variables:', missingVars)
       } else {
-        logger.log('🔑 All required environment variables are set')
+        logger.info('🔑 All required environment variables are set')
       }
     },
   }
 
   if (import.meta.dev && config.public.devHelper.enabled) {
-    logger.log('🛠️ DevHelper: Initializing...')
+    logger.info('🛠️ DevHelper: Initializing...')
     try {
       DevHelper.initNetworkErrorClassifier()
       DevHelper.initInfiniteLoopDetector()

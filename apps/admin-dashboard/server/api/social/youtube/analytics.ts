@@ -1,11 +1,11 @@
-import { useServerError, useServerLogger } from '@ib/server'
+import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 import { useYoutubeChannel } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'
 
 export default defineEventHandler(async (event) => {
-  const log = useServerLogger(PREFIX)
-  const errors = useServerError(PREFIX)
+  const log = await useLoggerAsync(PREFIX)
+  const errors = useErrorHandler(PREFIX)
 
   const { channelName } = getQuery(event) as { channelName: string }
 

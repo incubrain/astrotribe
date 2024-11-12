@@ -1,4 +1,4 @@
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/client'
+import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useUpdateData, useSelectData, useDeleteData, useInsertData } from '#imports'
 
 export interface CRUDOptions<T> {

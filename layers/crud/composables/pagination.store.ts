@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 export type DomainKey =
   | 'users'
@@ -52,7 +52,7 @@ export const usePaginationStore = defineStore('paginationStore', () => {
   function getPaginationRange(domainKey: DomainKey) {
     const pagination = getPagination(domainKey)
     if (pagination) {
-      logger.log('getPaginationRange', pagination.limit, (pagination.page - 1) * pagination.limit)
+      logger.info('getPaginationRange', pagination.limit, (pagination.page - 1) * pagination.limit)
       return {
         from: (pagination.page - 1) * pagination.limit,
         to: pagination.limit * pagination.page,

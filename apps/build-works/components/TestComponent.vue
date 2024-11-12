@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 // need to import this in all other places
 
