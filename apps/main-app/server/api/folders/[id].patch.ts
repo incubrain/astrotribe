@@ -1,3 +1,7 @@
+// api/folders/[id].patch.ts
+
+import type { H3Event } from 'h3'
+
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -9,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
       message: 'Unauthorized',
     })
   }
-  
+
   const supabase = await serverSupabaseClient(event)
 
   const id = event.context.params.id

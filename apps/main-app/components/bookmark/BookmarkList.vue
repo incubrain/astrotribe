@@ -85,36 +85,58 @@
       </div>
     </div>
 
-    <!-- Move Bookmarks Dialog -->
-    <PrimeDialog v-model:show="showMoveDialog">
-      <PrimeDialogContent>
-        <PrimeDialogHeader>
-          <PrimeDialogTitle>Move Bookmarks</PrimeDialogTitle>
-        </PrimeDialogHeader>
+    <PrimeDialog
+      v-model:visible="showMoveModal"
+      modal
+      header="Move Bookmarks"
+      :style="{ width: '90vw', maxWidth: '500px' }"
+    >
+      <!-- Main Content -->
+      <span class="text-surface-500 dark:text-surface-400 block mb-4">
+        Select a destination folder for {{ selectedBookmarks.length }} bookmark(s).
+      </span>
 
-        <div class="py-4">
-          <FolderTree
-            v-model:selected="targetFolderId"
-            :exclude-folders="[currentFolderId]"
-          />
-        </div>
+      <div class="max-h-[400px] overflow-y-auto p-2">
+        <FolderTree
+          v-model:selected-keys="targetFolderId"
+          selection-mode="single"
+          :value="folders"
+          :filter="true"
+          filter-mode="strict"
+          class="w-full"
+        >
+          <template #default="{ node }">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-3 h-3 rounded-full"
+                :style="{ backgroundColor: node.color }"
+              />
+              <span>{{ node.name }}</span>
+              <Icon
+                v-if="node.is_favorite"
+                name="mdi:star"
+                class="text-yellow-400 w-4 h-4"
+              />
+            </div>
+          </template>
+        </FolderTree>
+      </div>
 
-        <PrimeDialogFooter>
-          <button
-            @click="showMoveDialog = false"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <button
-            @click="handleMoveBookmarks"
-            :disabled="!targetFolderId"
-            class="ml-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 disabled:opacity-50"
-          >
-            Move
-          </button>
-        </PrimeDialogFooter>
-      </PrimeDialogContent>
+      <!-- Footer -->
+      <template #footer>
+        <PrimeButton
+          label="Cancel"
+          class="p-button-text"
+          severity="secondary"
+          @click="showMoveModal = false"
+        />
+        <PrimeButton
+          label="Move"
+          :disabled="!targetFolderId"
+          severity="primary"
+          @click="(folder) => handleMoveSubmit(folder)"
+        />
+      </template>
     </PrimeDialog>
   </div>
 </template>

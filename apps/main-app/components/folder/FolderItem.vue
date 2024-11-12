@@ -1,3 +1,4 @@
+<!-- FolderItem.vue -->
 <template>
   <div
     :class="[
@@ -65,16 +66,14 @@
 <script setup lang="ts">
 import type { Folder } from '../../types/bookmarks'
 
-defineProps<{
+const props = defineProps<{
   folder: Folder
   depth?: number
   selectedId?: string
 }>()
 
 defineEmits<{
-  (e: 'select', folder: Folder): void
-  (e: 'edit', folder: Folder): void
-  (e: 'delete', folder: Folder): void
+  (e: 'select' | 'edit' | 'delete', folder: Folder): void
 }>()
 
 const isSelected = computed(() => props.folder.id === props.selectedId)

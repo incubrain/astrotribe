@@ -3,7 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@base": ["../../layers/base"]
+      "@base": ["../../layers/base"],
+      "@types/*": ["./types/*"],
+      "#shared/*": ["./shared/*"]
     }
   }
 }
