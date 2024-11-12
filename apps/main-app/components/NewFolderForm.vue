@@ -1,6 +1,6 @@
 <!-- components/NewFolderForm.vue -->
 <script setup lang="ts">
-import type { Folder } from '~/types/bookmark'
+import type { Folder } from '@types/folder'
 
 interface NewFolder {
   name: string

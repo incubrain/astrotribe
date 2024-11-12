@@ -1,4 +1,6 @@
-// types/plans.ts
+import { FEATURES } from '#shared/constants'
+
+// composables/usePlan.ts
 export enum PlanType {
   FREE = 'free',
   PRO = 'pro',
@@ -14,36 +16,7 @@ export interface PlanFeature {
   comingSoon?: boolean
 }
 
-// composables/usePlan.ts
 export const usePlan = () => {
-  const FEATURES = {
-    BOOKMARK_FOLDERS: {
-      name: 'Bookmark Folders',
-      limit: {
-        free: 2,
-        pro: -1, // unlimited
-      },
-      description: 'Organize your bookmarks into folders',
-    },
-    BOOKMARKS: {
-      name: 'Bookmarks',
-      limit: {
-        free: 100,
-        pro: -1,
-      },
-      description: 'Save articles for later',
-    },
-    CUSTOM_FOLDER_COLORS: {
-      name: 'Custom Folder Colors',
-      limit: {
-        free: 0,
-        pro: -1,
-      },
-      description: 'Personalize your folders with custom colors',
-      comingSoon: true,
-    },
-  } as const
-
   // For now, we'll assume everyone is on free plan
   // Later this can be updated based on your auth/subscription system
   const userPlan = ref<PlanType>(PlanType.FREE)

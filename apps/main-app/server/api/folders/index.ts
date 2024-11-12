@@ -1,38 +1,55 @@
-import { validateFeatureLimit } from '../../utils/featureLimits'
+// server/api/folders/index.ts
+import type { H3Event } from 'h3'
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event: H3Event) => {
-  const user = await serverSupabaseUser(event)
+  try {
+    const user = await serverSupabaseUser(event)
 
-  if (!user) {
-    return createError({
-      status: 401,
-      message: 'Unauthorized',
-    })
-  }
+    if (!user) {
+      throw createError({
+        statusCode: 401,
+        message: 'Unauthorized',
+      })
+    }
 
-  const supabase = await serverSupabaseClient(event)
+    const supabase = await serverSupabaseClient(event)
 
-  if (event.method === 'GET') {
-    return await supabase
-      .from('bookmark_folders')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('position')
-  }
+    if (event.method === 'GET') {
+      const { data, error } = await supabase
+        .from('bookmark_folders')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('position')
 
-  if (event.method === 'POST') {
-    try {
-      const { count } = await supabase
+      if (error) throw error
+
+      return { data }
+    }
+
+    if (event.method === 'POST') {
+      const body = await readBody(event)
+
+      // Validate required fields
+      if (!body.name?.trim()) {
+        throw createError({
+          statusCode: 400,
+          message: 'Folder name is required',
+        })
+      }
+
+      // Get current folder count
+      const { count, error: countError } = await supabase
         .from('bookmark_folders')
         .select('*', { count: 'exact' })
         .eq('user_id', user.id)
 
-      // Validate feature limit
-      await validateFeatureLimit(event, 'BOOKMARK_FOLDERS', count)
-      const body = await readBody(event)
+      if (countError) throw countError
 
-      // If creating a default folder, remove default from others
+      // Validate feature limit
+      await validateFeatureLimit(event, 'BOOKMARK_FOLDERS', count || 0)
+
+      // Handle default folder
       if (body.is_default) {
         await supabase
           .from('bookmark_folders')
@@ -41,34 +58,57 @@ export default defineEventHandler(async (event: H3Event) => {
           .eq('is_default', true)
       }
 
-      // Calculate path for nested folders
+      // Calculate path
       let path = body.name.toLowerCase().replace(/\s+/g, '_')
       if (body.parent_id) {
-        const parent = await supabase
+        const { data: parent, error: parentError } = await supabase
           .from('bookmark_folders')
           .select('path')
           .eq('id', body.parent_id)
           .single()
+
+        if (parentError) throw parentError
+        if (!parent) {
+          throw createError({
+            statusCode: 400,
+            message: 'Parent folder not found',
+          })
+        }
+
         path = `${parent.path}.${path}`
       }
 
-      return await supabase
+      const { data, error: insertError } = await supabase
         .from('bookmark_folders')
         .insert({
           ...body,
           user_id: user.id,
           path,
+          position: count || 0,
         })
         .select()
         .single()
-    } catch (error) {
-      if (error.statusCode === 403) {
-        throw createError({
-          statusCode: 403,
-          message: error.message,
-        })
-      }
-      throw error
+
+      if (insertError) throw insertError
+
+      return { data }
     }
+
+    throw createError({
+      statusCode: 405,
+      message: 'Method not allowed',
+    })
+  } catch (err) {
+    console.error('Folder API Error:', err)
+
+    if (err.statusCode) {
+      throw err
+    }
+
+    throw createError({
+      statusCode: 500,
+      message: 'Internal server error',
+      cause: err,
+    })
   }
 })
