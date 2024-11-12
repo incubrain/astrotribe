@@ -1,6 +1,6 @@
 <template>
-  <div class="flex h-auto items-center justify-center bg-gray-100">
-    <div class="max-w-md rounded-lg p-8 shadow-lg">
+  <div class="flex h-auto items-center justify-center foreground min-h-screen">
+    <div class="max-w-md rounded-lg p-8 shadow-lg background">
       <h1 class="mb-4 text-3xl font-bold text-red-600"> An error occurred </h1>
       <p class="text-lg mb-4">
         {{ error.message }}

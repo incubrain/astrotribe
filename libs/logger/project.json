@@ -1,14 +1,14 @@
 {
-  "name": "server",
+  "name": "logger",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "root": "libs/server",
-  "sourceRoot": "libs/server",
+  "root": "libs/logger",
+  "sourceRoot": "libs/logger/src",
   "projectType": "library",
   "tags": [],
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "libs/server/dist",
+        "packageRoot": "libs/logger/dist",
         "currentVersionResolver": "git-tag"
       }
     }
@@ -18,10 +18,10 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/server/dist",
-        "main": "libs/server/index.ts",
-        "tsConfig": "libs/server/tsconfig.lib.json",
-        "assets": ["libs/server/*.md"]
+        "outputPath": "libs/logger/dist",
+        "main": "libs/logger/src/index.ts",
+        "tsConfig": "libs/logger/tsconfig.lib.json",
+        "assets": ["libs/logger/*.md"]
       }
     }
   }

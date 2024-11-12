@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 export const useFeedbackStore = defineStore('feedbackStore', () => {
   const { fetch } = useBaseFetch()

@@ -1,4 +1,4 @@
-import { useErrorHandler } from '@ib/client'
+import { useErrorHandler } from '@ib/logger'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const { handleError } = useErrorHandler()

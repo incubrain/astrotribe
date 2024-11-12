@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 import type { FetchInput } from '#imports'
 
 export const useNewsStore = defineStore('newsStore', () => {
@@ -8,11 +8,11 @@ export const useNewsStore = defineStore('newsStore', () => {
   const news = ref([])
 
   async function loadNews(input: FetchInput) {
-    logger.log('loadNews start')
+    logger.info('loadNews start')
     try {
       const data = await baseFetch.fetchPaginatedData(input)
 
-      logger.log('returned data', data)
+      logger.info('returned data', data)
       if (!data) {
         return
       }

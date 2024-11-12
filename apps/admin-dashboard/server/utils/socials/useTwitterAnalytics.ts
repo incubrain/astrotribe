@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/server'
+import { useServerError } from '@ib/logger'
 
 // user tweet timeline
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-tweets

@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 import type { FilterBy, DBTable } from '../server/utils/base.interface'
 import type { DomainKey } from './pagination.store'
 import { useCookie, useRequestHeaders } from '#imports'
@@ -73,7 +73,7 @@ export function useBaseFetch() {
     loading.setLoading(domainKey, true)
 
     try {
-      logger.log('fetchPaginatedData for', domainKey, endpoint, criteria)
+      logger.info('fetchPaginatedData for', domainKey, endpoint, criteria)
       const response = await fetch(endpoint, {
         method: 'POST',
         params: {

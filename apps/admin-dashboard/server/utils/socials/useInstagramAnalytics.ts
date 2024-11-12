@@ -1,12 +1,12 @@
-import { useServerError, useServerLogger } from '@ib/server'
+import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 
 const INSTAGRAM_API_URL = 'https://graph.instagram.com'
 const ACCESS_TOKEN = 'YOUR_INSTAGRAM_ACCESS_TOKEN'
 const PREFIX = 'useInstagramAnalytics'
 
-export function useInstagramAnalytics() {
-  const log = useServerLogger(PREFIX)
-  const errors = useServerError(PREFIX)
+export async function useInstagramAnalytics() {
+  const log = await useLoggerAsync(PREFIX)
+  const errors = useErrorHandler(PREFIX)
 
   async function fetchProfileStatistics(userId: string) {
     log.info(`Fetching instagram profile statistics for: ${userId}`)

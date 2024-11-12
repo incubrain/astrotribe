@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 const passwordValidation = z
   .string()

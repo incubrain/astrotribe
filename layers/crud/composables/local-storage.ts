@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 
 const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 const CACHE_VERSION = '1.0' // Increment this when data structure changes

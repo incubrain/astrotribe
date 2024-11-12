@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { useErrorHandler } from '@ib/client'
+import { useErrorHandler } from '@ib/logger'
 
 const supabase = useSupabaseClient()
 const { handleError } = useErrorHandler()

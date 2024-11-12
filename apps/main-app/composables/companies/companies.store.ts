@@ -1,4 +1,4 @@
-import { useLogger } from '@ib/client'
+import { useLogger } from '@ib/logger'
 import type { FetchInput } from '#imports'
 
 type CompanyType = {
@@ -52,14 +52,14 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
   const baseFetch = useBaseFetch()
 
   async function loadCompanies(input: FetchInput) {
-    logger.log('loadCompanies start')
+    logger.info('loadCompanies start')
     try {
       const data = await baseFetch.fetchPaginatedData(input)
       console.log('loadCompanies return', data)
       if (!data) {
         return
       }
-      logger.log(`returned ${data.length} companies`)
+      logger.info(`returned ${data.length} companies`)
       companies.value.push(...data)
     } catch (error) {
       logger.error('Failed to load companies:', error)
@@ -81,7 +81,7 @@ export const useCompaniesStore = defineStore('companiesStore', () => {
         throw createError(`error inserting company: ${error.value}`)
       }
 
-      logger.log(`Company ${data.name} inserted successfully`)
+      logger.info(`Company ${data.name} inserted successfully`)
     } catch (error) {
       logger.error(`Error inserting company ${newCompany.name}:`, error)
     }

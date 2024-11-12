@@ -1,3 +1,5 @@
+import { FEATURES } from '#shared/constants'
+
 enum PlanType {
   FREE = 'free',
   PRO = 'pro',
@@ -11,7 +13,6 @@ export const validateFeatureLimit = async (
   // For now, assume free plan
   const userPlan = PlanType.FREE
 
-  const { FEATURES } = usePlan()
   const limit = FEATURES[feature].limit[userPlan]
 
   if (limit !== -1 && currentCount >= limit) {
