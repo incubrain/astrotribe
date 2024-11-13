@@ -1,3 +1,5 @@
+// useFolderSystem.ts
+
 import { useErrorHandler } from '@ib/logger'
 import type { Folder } from '@/types/folder'
 
@@ -13,6 +15,18 @@ export const useFolderSystem = () => {
     if (!items?.length) return []
 
     try {
+      // Filter out duplicate default folders, keep only the first one
+      const uniqueItems = items.reduce((acc, curr) => {
+        if (curr.is_default) {
+          if (!acc.some((item) => item.is_default)) {
+            acc.push(curr)
+          }
+        } else {
+          acc.push(curr)
+        }
+        return acc
+      }, [] as Folder[])
+
       const itemMap = new Map<string, Folder & { children: Folder[] }>()
 
       // First pass: Create map entries with empty children arrays

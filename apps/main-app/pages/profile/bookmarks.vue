@@ -85,6 +85,8 @@ watch(
 
 <template>
   <div class="min-h-screen p-4 space-y-4">
+    <BookmarkViewFolder v-if="!searchQuery" />
+
     <!-- Simplified toolbar without left hamburger -->
     <PrimeToolbar
       class="sticky top-0 z-40"
@@ -140,48 +142,12 @@ watch(
               :binary="true"
               label="Include subfolders"
             />
-            <PrimeButton
-              class="p-button-text hidden md:block"
-              @click="toggleFolderPanel"
-            >
-              <div class="flex items-center gap-1">
-                <Icon name="mdi:folder" />
-                <span>+ Folder</span>
-              </div>
-            </PrimeButton>
           </template>
         </div>
       </template>
     </PrimeToolbar>
 
     <div class="flex">
-      <!-- Folder Sidebar -->
-      <PrimeDrawer
-        v-model:visible="showFolderPanel"
-        :modal="true"
-        class="w-full max-w-xs"
-        position="left"
-      >
-        <template #header>
-          <h2 class="text-xl font-semibold">Folders</h2>
-        </template>
-
-        <div class="p-4 space-y-4">
-          <div class="text-sm text-gray-600 mb-4">
-            <span
-              >{{ folderUsage.used }}/{{ folderUsage.isUnlimited ? '∞' : folderUsage.limit }}</span
-            >
-            folders used
-          </div>
-
-          <FolderTree
-            :folders="folders"
-            :selected-folder="currentFolder"
-            @select="handleFolderSelect"
-          />
-        </div>
-      </PrimeDrawer>
-
       <!-- Main Content -->
       <div class="flex-1 overflow-auto">
         <div class="max-w-7xl mx-auto space-y-6">
@@ -280,27 +246,13 @@ watch(
       </div>
     </div>
 
-    <!-- Modals -->
-    <PrimeDialog
-      v-model:visible="showNewFolderModal"
-      modal
-      header="New Folder"
-      :style="{ width: '90vw', maxWidth: '500px' }"
-    >
-      <NewFolderForm
-        :folders="folders"
-        @submit="handleNewFolder"
-        @cancel="showNewFolderModal = false"
-      />
-    </PrimeDialog>
-
     <PrimeDialog
       v-model:visible="showMoveModal"
       modal
       header="Move Bookmark"
       :style="{ width: '90vw', maxWidth: '500px' }"
     >
-      <MoveBookmarkForm
+      <BookmarkFormMove
         :folders="folders"
         :selected-folder="currentFolder"
         @submit="(folder: Folder) => handleMoveSubmit(folder)"

@@ -3,7 +3,7 @@
   <div
     :class="[
       'group flex items-center px-2 py-1.5 rounded-md cursor-pointer',
-      isSelected ? 'bg-gray-100' : 'hover:bg-gray-50',
+      isSelected ? 'border' : 'hover:border-primary-950 border border-color foreground',
     ]"
     :style="{ paddingLeft: `${depth * 1.5 + 0.5}rem` }"
   >
@@ -20,7 +20,7 @@
       <span class="truncate">{{ folder.name }}</span>
       <span
         v-if="folder.is_default"
-        class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600"
+        class="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-primary-900"
       >
         Default
       </span>
@@ -28,8 +28,8 @@
 
     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100">
       <button
+        class="p-1"
         @click.stop="$emit('edit', folder)"
-        class="p-1 text-gray-400 hover:text-gray-600"
       >
         <Icon
           name="mdi:pencil"
@@ -38,8 +38,8 @@
       </button>
       <button
         v-if="!folder.is_default"
+        class="p-1 hover:text-red-600"
         @click.stop="$emit('delete', folder)"
-        class="p-1 text-gray-400 hover:text-red-600"
       >
         <Icon
           name="mdi:trash"
