@@ -13,7 +13,7 @@ interface ApiResponse {
 
 export default defineNitroPlugin((nitro) => {
   nitro.hooks.hook('error', async (error: Error, { event }) => {
-    const isDev = process.env.NODE_ENV === 'development'
+    const isDev = useRuntimeConfig().public.nodeEnv === 'development'
     const logger = await useLoggerAsync('nitro:error')
 
     // Extract API response from error.data if it exists, or create a new one
