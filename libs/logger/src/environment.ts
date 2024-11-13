@@ -1,6 +1,6 @@
 // src/environment.ts
 export const getEnvironment = () => {
-  // Check for Node.js environment
+  // Check for Node.js environment more safely
   const isNode = (() => {
     try {
       return typeof globalThis.process !== 'undefined' && !!globalThis.process?.versions?.node
@@ -22,17 +22,16 @@ export const getEnvironment = () => {
   const isDev = (() => {
     try {
       // For Nuxt specific environment
-      if (typeof useRuntimeConfig === 'function') {
-        const config = useRuntimeConfig()
+      if (typeof globalThis.useRuntimeConfig === 'function') {
+        const config = globalThis.useRuntimeConfig()
         return config.public.nodeEnv === 'development'
       }
 
       // Fallback checks
-      return (
+      return Boolean(
         import.meta?.env?.DEV ||
-        import.meta?.env?.MODE === 'development' ||
-        (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') ||
-        false
+          import.meta?.env?.MODE === 'development' ||
+          (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
       )
     } catch {
       return false
