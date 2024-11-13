@@ -130,28 +130,33 @@ const removeSelected = (id: string) => {
   }
 }
 
+const selectedItems = computed({
+  get: () => selectedCategories.value,
+  set: () => {}, // We handle removal through the removeSelected method
+})
+
 definePageMeta({
   name: 'Add Feed',
 })
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto p-4">
+  <div class="mx-auto p-4">
     <!-- Header -->
     <div class="mb-6">
       <h1 class="text-2xl font-semibold mb-2">Create New Feed</h1>
       <p class="text-gray-500">Select categories to include in your feed</p>
     </div>
 
-    <!-- Main Card -->
-    <PrimeCard class="bg-gray-900">
-      <template #content>
-        <!-- Top Section: Input Fields and Actions -->
-        <div class="grid gap-4 md:grid-cols-2 mb-6">
-          <div class="space-y-4">
-            <div class="flex items-center w-full gap-2">
-              <!-- Feed Name Input -->
-              <PrimeFloatLabel class="grow">
+    <!-- Main Layout -->
+    <div class="grid grid-cols-1 gap-6">
+      <!-- Top Panel - Input and Selected Categories -->
+      <PrimeCard class="bg-gray-900">
+        <template #content>
+          <div class="grid grid-cols-12 gap-4">
+            <!-- Feed Name Input -->
+            <div class="col-span-12 md:col-span-4">
+              <PrimeFloatLabel>
                 <PrimeInputText
                   id="feedname"
                   v-model="name"
@@ -160,84 +165,112 @@ definePageMeta({
                 />
                 <label for="feedname">Enter feed name</label>
               </PrimeFloatLabel>
-              <!-- Action Buttons -->
-              <div class="flex gap-2">
-                <PrimeButton
-                  label="Save Feed"
-                  @click="save"
-                />
-                <button
-                  link
-                  severity="danger"
-                  @click="discard"
-                >
-                  <Icon
-                    name="mdi:trash-can-outline"
-                    size="22px"
-                    class="text-red-500"
-                  />
-                </button>
-              </div>
             </div>
 
-            <!-- Search Input -->
-            <PrimeFloatLabel>
-              <PrimeInputText
-                id="search"
-                v-model="search"
+            <!-- Action Buttons -->
+            <div class="col-span-12 md:col-span-8 flex items-center gap-2 justify-end">
+              <PrimeSelect
+                v-model="selectedItems"
+                :options="selectedCategories"
+                placeholder="No categories selected"
+                option-label="name"
+                :close-on-select="false"
+                multiple
                 class="w-full"
+              >
+                <template #header>
+                  <div class="px-4 py-2 text-gray-400 text-sm font-medium">
+                    Selected Categories
+                  </div>
+                </template>
+                <template #value="{ value }">
+                  <div class="flex items-center gap-2">
+                    <span class="text-gray-300">{{
+                      value?.length
+                        ? `${value.length} categories selected`
+                        : 'No categories selected'
+                    }}</span>
+                    <PrimeBadge
+                      v-if="value?.length"
+                      :value="value.length"
+                      severity="info"
+                    />
+                  </div>
+                </template>
+                <template #option="{ option }">
+                  <div class="flex items-center justify-between w-full px-2 py-1">
+                    <span>{{ option.name }}</span>
+                    <button
+                      class="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-gray-700/50"
+                      @click.stop="removeSelected(option.id)"
+                    >
+                      <Icon
+                        name="mdi:close"
+                        size="16px"
+                      />
+                    </button>
+                  </div>
+                </template>
+              </PrimeSelect>
+              <PrimeButton
+                label="Save"
+                :disabled="!name || !selectedCategories.length"
+                class="flex shrink-0"
+                @click="save"
               />
-              <label for="search">Search categories</label>
-            </PrimeFloatLabel>
+              <button
+                class="p-2 hover:bg-gray-800 rounded-full transition-colors"
+                @click="discard"
+              >
+                <Icon
+                  name="mdi:trash-can-outline"
+                  size="22px"
+                  class="text-red-500"
+                />
+              </button>
+            </div>
+            <!-- Search -->
+            <div class="col-span-12">
+              <PrimeFloatLabel>
+                <PrimeInputText
+                  id="search"
+                  v-model="search"
+                  class="w-full"
+                />
+                <label for="search">Search categories</label>
+              </PrimeFloatLabel>
+            </div>
           </div>
+        </template>
+      </PrimeCard>
 
-          <!-- Selected Categories Preview -->
-          <PrimeCard class="bg-gray-800">
-            <template #title>
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-medium text-gray-400">Selected Categories</span>
-                <PrimeBadge
-                  :value="selectedCategories.length"
-                  severity="info"
-                />
-              </div>
-            </template>
-            <template #content>
-              <div class="flex flex-wrap gap-2">
-                <PrimeChip
-                  v-for="category in selectedCategories"
-                  :key="category.id"
-                  :label="category.name"
-                  class="bg-blue-900"
-                  removable
-                  @remove="removeSelected(category.id)"
-                />
-              </div>
-            </template>
-          </PrimeCard>
-        </div>
-
-        <!-- Categories Grid -->
-        <PrimeProgressSpinner
-          v-if="proxyCategories.length === 0"
-          class="w-8 h-8 mx-auto"
-        />
-        <div
-          v-else
-          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2"
-        >
-          <PrimeButton
-            v-for="category in categories"
-            :key="category.id"
-            :label="category.name"
-            :outlined="!category.selected"
-            size="small"
-            class="whitespace-normal h-auto py-2"
-            @click="toggleSelect(category.id)"
+      <!-- Search and Categories -->
+      <PrimeCard class="bg-gray-900">
+        <template #content>
+          <!-- Categories Grid -->
+          <PrimeProgressSpinner
+            v-if="proxyCategories.length === 0"
+            class="w-8 h-8 mx-auto"
           />
-        </div>
-      </template>
-    </PrimeCard>
+          <div
+            v-else
+            class="h-[500px] overflow-y-auto custom-scrollbar"
+          >
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+              <PrimeButton
+                v-for="category in categories"
+                :key="category.id"
+                :label="category.name"
+                :outlined="!category.selected"
+                size="small"
+                class="whitespace-normal h-auto py-2 justify-start"
+                @click="toggleSelect(category.id)"
+              />
+            </div>
+          </div>
+        </template>
+      </PrimeCard>
+    </div>
   </div>
 </template>
 
@@ -247,14 +280,62 @@ definePageMeta({
 }
 
 :deep(.p-button) {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 :deep(.p-inputtext) {
   width: 100%;
+  background: theme('colors.gray.800');
 }
 
-:deep(.p-chip) {
-  background: theme('colors.blue.900');
+:deep(.p-dropdown),
+:deep(.p-multiselect) {
+  background: theme('colors.gray.800');
+  border-color: theme('colors.gray.700');
+}
+
+:deep(.p-dropdown-panel),
+:deep(.p-multiselect-panel) {
+  background: theme('colors.gray.800');
+  border-color: theme('colors.gray.700');
+}
+
+:deep(.p-dropdown-item),
+:deep(.p-multiselect-item) {
+  color: theme('colors.gray.300');
+}
+
+:deep(.p-dropdown-item:hover),
+:deep(.p-multiselect-item:hover) {
+  background: theme('colors.gray.700');
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.gray.600') theme('colors.gray.800');
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: theme('colors.gray.800');
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: theme('colors.gray.600');
+  border-radius: 4px;
+}
+
+:deep(.p-float-label) {
+  display: block;
+}
+
+:deep(.p-float-label input:focus) ~ label,
+:deep(.p-float-label input.p-filled) ~ label {
+  background: theme('colors.gray.900');
+  padding: 0 4px;
 }
 </style>
