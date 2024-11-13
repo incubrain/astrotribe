@@ -52,14 +52,12 @@
 <script setup lang="ts">
 import type { ArticleFullT } from '~/types/articles'
 
-const props = defineProps({
+defineProps({
   article: {
     type: Object as PropType<ArticleFullT>,
     required: true,
   },
 })
-
-const baseUrl = process.env.NUXT_PUBLIC_STRAPI_URL
 </script>
 
 <style scoped></style>
