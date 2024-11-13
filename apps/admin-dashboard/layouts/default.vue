@@ -94,11 +94,17 @@ const adminLinks = ref([
   //   ],
   // },
 ])
+const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
 </script>
 
 <template>
   <div class="background relative flex h-screen w-full lg:p-4 lg:pl-0">
-    <IBSideNav :links="adminLinks" />
+    <IBSideNav
+      v-model:is-sidebar-open="isSidebarOpen"
+      v-model:is-mobile-sidebar-open="isMobileSidebarOpen"
+      :categories="adminLinks"
+      :is-mobile="isMobile"
+    />
     <div class="foreground h-full w-full overflow-y-scroll rounded-lg md:ml-[64px]">
       <slot />
     </div>
