@@ -1,3 +1,21 @@
+// src/environment.d.ts
+
+declare global {
+  // Add Nuxt runtime config types
+  interface RuntimeConfig {
+    public: {
+      nodeEnv?: string
+      [key: string]: any
+    }
+    [key: string]: any
+  }
+
+  // Add useRuntimeConfig function type
+  type UseRuntimeConfig = () => RuntimeConfig
+
+  const useRuntimeConfig: UseRuntimeConfig | undefined
+}
+
 export interface ImportMetaEnv {
   MODE: string
   DEV: boolean
@@ -15,3 +33,5 @@ export interface ImportMeta {
     [key: string]: any
   }
 }
+
+export {}
