@@ -1,8 +1,9 @@
+<!-- BookmarksCard -->
 <template>
   <div
     :class="[
       'relative group p-4 border border-color rounded-lg hover:shadow-sm transition-shadow',
-      selected ? 'ring-2 ring-primary-500 border-transparent' : 'hover:border-gray-300',
+      selected ? 'ring-2 ring-primary-500 border-transparent' : 'hover:border-color',
     ]"
   >
     <!-- Selection Checkbox -->
@@ -10,7 +11,7 @@
       <input
         type="checkbox"
         :checked="selected"
-        class="rounded border-gray-300"
+        class="rounded border-color"
         @change="$emit('select', bookmark.id)"
       />
     </div>

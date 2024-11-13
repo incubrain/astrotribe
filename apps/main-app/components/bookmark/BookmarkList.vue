@@ -1,3 +1,4 @@
+<!-- BookmarksList -->
 <template>
   <div class="flex gap-6">
     <!-- Folder Sidebar -->
@@ -38,7 +39,7 @@
             <input
               v-model="includeSubfolders"
               type="checkbox"
-              class="rounded border-gray-300 mr-2"
+              class="rounded border border-color mr-2"
             />
             Include subfolders
           </label>

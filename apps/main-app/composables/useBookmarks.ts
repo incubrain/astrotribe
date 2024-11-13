@@ -1,3 +1,4 @@
+// useBookmarks.ts
 import Fuse from 'fuse.js'
 
 interface BookmarkContent {
@@ -129,11 +130,14 @@ export const useBookmarks = () => {
 
   // Update toggleBookmark to use the new cache function
   const toggleBookmark = async (content: BookmarkContent) => {
+    const { getDefaultFolder } = useFolderSystem()
+
     const response = await $fetch('/api/bookmarks/toggle', {
       method: 'POST',
       body: {
         content_id: content.id,
         content_type: content.type,
+        folder_id: getDefaultFolder.value?.id,
         metadata: {
           title: content.title,
           description: content.description,

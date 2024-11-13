@@ -46,7 +46,7 @@ const createNewFolder = async () => {
     <div class="mt-4">
       <button
         v-if="canCreateFolder"
-        class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium border border-color bg-primary-500 rounded-md"
         @click="showNewFolderModal = true"
       >
         <Icon
@@ -56,14 +56,14 @@ const createNewFolder = async () => {
         New Folder
         <span
           v-if="!folderUsage.isUnlimited"
-          class="ml-1 text-gray-500"
+          class="ml-1"
         >
           ({{ folderUsage.used }}/{{ folderUsage.limit }})
         </span>
       </button>
       <div
         v-else
-        class="text-sm text-gray-600 bg-gray-50 p-3 rounded-md"
+        class="text-sm p-3 rounded-md"
       >
         <p>You've reached the folder limit.</p>
         <NuxtLink
@@ -79,7 +79,7 @@ const createNewFolder = async () => {
       v-if="getFavorites.length"
       class="mb-4"
     >
-      <h3 class="font-medium text-gray-700 mb-2">Favorites</h3>
+      <h3 class="font-medium mb-2">Favorites</h3>
       <div class="space-y-1">
         <FolderItem
           v-for="folder in getFavorites"
@@ -100,18 +100,6 @@ const createNewFolder = async () => {
       />
     </div>
 
-    <!-- Add Folder Button -->
-    <button
-      class="mt-4 w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-      @click="showNewFolderModal = true"
-    >
-      <Icon
-        name="mdi:plus"
-        class="w-4 h-4 mr-2"
-      />
-      New Folder
-    </button>
-
     <!-- New Folder Dialog -->
     <PrimeDialog
       v-model:visible="showNewFolderModal"
@@ -120,9 +108,7 @@ const createNewFolder = async () => {
       :style="{ width: '90vw', maxWidth: '500px' }"
     >
       <!-- Main Content -->
-      <span class="text-surface-500 dark:text-surface-400 block mb-4"
-        >Create a new folder to organize your bookmarks.</span
-      >
+      <span class="block mb-4">Create a new folder to organize your bookmarks.</span>
 
       <form
         class="space-y-4"
@@ -173,7 +159,7 @@ const createNewFolder = async () => {
               type="color"
               class="h-8 w-8 rounded cursor-pointer"
             />
-            <span class="text-sm text-gray-600">{{ newFolder.color }}</span>
+            <span class="text-sm">{{ newFolder.color }}</span>
           </div>
         </div>
 

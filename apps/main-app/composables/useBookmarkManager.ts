@@ -1,3 +1,4 @@
+// useBookmarkManager.ts
 import type { Folder } from '../types/bookmarks'
 
 export const useBookmarkManager = () => {
