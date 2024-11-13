@@ -38,26 +38,40 @@ const isMobileSidebarOpen = ref(false)
 
     <div class="flex h-full flex-col overflow-hidden">
       <!-- Logo -->
-      <div class="flex items-center gap-2 px-4 py-3">
+      <div
+        class="flex items-center px-4 py-3 transition-all duration-300"
+        :class="isSidebarOpen ? 'gap-3' : 'justify-center'"
+      >
         <div
-          class="flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[38px] md:w-[38px]"
+          class="flex items-center justify-center rounded-md border bg-white transition-all duration-300 delay-150"
+          :class="isSidebarOpen ? 'h-10 w-10' : 'h-6 w-6'"
         >
           <NuxtLink
             to="/"
-            class="flex items-center"
+            class="flex h-full w-full items-center justify-center"
           >
             <IBImage
-              :img="{ src: '/astronera-logo.jpg' }"
-              class="h-full w-full opacity-90"
+              :img="{ src: '/astronera-logo.jpg', width: 36, height: 36 }"
+              class="h-full w-full transition-all duration-300"
+              :class="isSidebarOpen ? 'p-0.5' : 'p-1'"
+              no-shrink
             />
           </NuxtLink>
         </div>
-        <h4
-          class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
+        <Transition
+          enter-active-class="transition-all duration-150 ease-out"
+          leave-active-class="transition-all duration-150 ease-in"
+          enter-from-class="opacity-0 -translate-x-4"
+          leave-to-class="opacity-0 -translate-x-4"
         >
-          Astron
-          <strong class="font-extrabold text-primary-400">Era</strong>
-        </h4>
+          <div
+            v-if="isSidebarOpen"
+            class="flex cursor-pointer flex-col items-start justify-center text-sm font-bold uppercase leading-none tracking-normal"
+          >
+            Astron
+            <strong class="font-extrabold text-primary-400">Era</strong>
+          </div>
+        </Transition>
       </div>
 
       <!-- Navigation Categories -->
@@ -99,7 +113,7 @@ const isMobileSidebarOpen = ref(false)
 </template>
 
 <style>
-.group:hover .group-hover\:opacity-100 {
-  opacity: 1;
+.transition-transform {
+  transition-property: transform, width, height;
 }
 </style>

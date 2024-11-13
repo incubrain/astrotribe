@@ -6,6 +6,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  noShrink: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const imageUrl = ref(null)
@@ -37,6 +41,7 @@ function loadFallbackImage(error: Error) {
     :quality="img.quality"
     :loading="img.loading"
     crossorigin="anonymous"
+    :class="{ 'flex shrink-0': !noShrink }"
     @error="loadFallbackImage"
   />
 </template>
