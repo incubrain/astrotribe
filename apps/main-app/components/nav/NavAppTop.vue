@@ -70,7 +70,8 @@ const logError = (error) => {
     class="foreground border-color sticky left-0 top-0 z-50 flex min-h-[60px] w-full flex-row items-center justify-between gap-4 border-b px-4 py-1"
   >
     <!-- start -->
-    <div>
+    <div class="flex items-center gap-4">
+      <IBNavHamburger />
       <IBBreadcrumbs class="hidden text-sm lg:block" />
     </div>
     <!-- center -->
