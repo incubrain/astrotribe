@@ -3,8 +3,6 @@ import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import runtimeConfig from '../../shared-runtime.config'
 
-const isProd = process.env.NODE_ENV === 'production'
-
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
