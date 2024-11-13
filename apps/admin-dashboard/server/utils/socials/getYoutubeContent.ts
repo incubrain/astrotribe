@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/logger'
+import { useErrorHandler } from '@ib/logger'
 
 interface YouTubeVideo {
   title: string
@@ -70,7 +70,7 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
 }
 
 export function useYoutubeChannel(channelId: string) {
-  const errors = useServerError('getYoutubeChannelAnalytics')
+  const errors = useErrorHandler('getYoutubeChannelAnalytics')
 
   async function fetchChannelStatistics() {
     const url = `${YOUTUBE_API_URL}channels?part=statistics&id=${channelId}&key=${GOOGLE_API_KEY}`
