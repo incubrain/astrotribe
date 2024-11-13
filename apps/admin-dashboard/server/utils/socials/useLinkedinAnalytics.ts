@@ -1,10 +1,10 @@
-import { useServerError } from '@ib/logger'
+import { useErrorHandler } from '@ib/logger'
 
 const LINKEDIN_API_URL = 'https://api.linkedin.com/rest/dmaOrganizationalPageContentAnalytics'
 const ACCESS_TOKEN = 'YOUR_LINKEDIN_ACCESS_TOKEN'
 
 export function useLinkedinAnalytics(postId: string) {
-  const errors = useServerError('getLinkedInPageAnalytics')
+  const errors = useErrorHandler('getLinkedInPageAnalytics')
 
   // https://learn.microsoft.com/en-us/linkedin/dma/analytics/organizational-page-content-analytics?tabs=http%2Cnon-obfuscated
   async function fetchPostAnalytics() {

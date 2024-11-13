@@ -1,4 +1,4 @@
-import { useServerError } from '@ib/logger'
+import { useErrorHandler } from '@ib/logger'
 
 // user tweet timeline
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-tweets
@@ -20,7 +20,7 @@ const TWITTER_API_URL = 'https://api.twitter.com/2/tweets'
 const BEARER_TOKEN = 'YOUR_TWITTER_BEARER_TOKEN'
 
 export function useTwitterAnalytics(postId: string) {
-  const errors = useServerError('getTwitterPostAnalytics')
+  const errors = useErrorHandler('getTwitterPostAnalytics')
 
   //
   async function fetchPostAnalytics() {
