@@ -1,6 +1,7 @@
 import { defineEventHandler, type H3Event } from 'h3'
-import { logger } from '@ib/logger'
+import { useLogger } from '@ib/logger'
 
+const logger = useLogger()
 // Load thresholds from environment variables or use default values
 const THRESHOLD_REQUESTS_PER_MINUTE = Number(process.env.THRESHOLD_REQUESTS_PER_MINUTE ?? 100)
 const THRESHOLD_UNIQUE_PATHS_PER_MINUTE = Number(

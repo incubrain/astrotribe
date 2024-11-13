@@ -1,6 +1,8 @@
 import dns from 'dns/promises'
 import { defineEventHandler, getHeaders, setResponseStatus, send } from 'h3'
-import { logger } from '@ib/logger'
+import { useLogger } from '@ib/logger'
+
+const logger = useLogger()
 
 const ALLOWED_CRAWLER_PATTERNS: RegExp[] = [
   /googlebot/i,
