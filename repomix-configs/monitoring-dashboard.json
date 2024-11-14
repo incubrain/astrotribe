@@ -1,0 +1,34 @@
+{
+  "output": {
+    "filePath": "ai-context/monitoring-dashboard-context.txt",
+    "style": "markdown",
+    "headerText": "Monitoring Dashboard application context including shared libraries and layers",
+    "showLineNumbers": true,
+    "topFilesLength": 10
+  },
+  "include": [
+    "apps/monitoring-dashboard/**/*.{ts,tsx,js,jsx,vue}",
+    "apps/monitoring-dashboard/**/*.md",
+    "apps/monitoring-dashboard/server/**/*.ts",
+    "libs/**/*.{ts,tsx,js}",
+    "layers/**/*.{ts,tsx,js,vue}",
+    "shared-runtime.config.ts"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}
