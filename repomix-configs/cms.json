@@ -1,0 +1,38 @@
+{
+  "output": {
+    "filePath": "ai-context/cms-context.txt",
+    "style": "markdown",
+    "headerText": "CMS application context including shared libraries and layers",
+    "showLineNumbers": true,
+    "topFilesLength": 10
+  },
+  "include": [
+    "apps/cms/**/*.{ts,tsx,js,jsx}",
+    "apps/cms/**/*.json",
+    "apps/cms/src/**/*.{json,ts}",
+    "apps/cms/config/**/*.ts",
+    "apps/cms/**/*.md",
+    "libs/**/*.{ts,tsx,js}",
+    "layers/**/*.{ts,tsx,js,vue}",
+    "shared-runtime.config.ts"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/build/**",
+      "**/public/uploads/**",
+      "**/data/uploads/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}
