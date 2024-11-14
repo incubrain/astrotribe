@@ -4,7 +4,7 @@
       <h2 class="text-xl font-semibold">Folders</h2>
       <PrimeButton
         class="p-button-primary"
-        @click="showNewFolderModal = true"
+        @click="showModal = true"
       >
         <div class="flex items-center gap-2">
           <Icon name="mdi:folder-plus" />
@@ -23,7 +23,7 @@
         v-for="folder in folders"
         :key="folder.id"
         class="p-4 hover:shadow-md transition-shadow bg-card border border-color rounded-lg cursor-pointer group"
-        @click="handleEditFolder(folder)"
+        @click="handleEditClick(folder)"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -57,33 +57,18 @@
       </div>
     </div>
 
-    <!-- New Folder Modal -->
+    <!-- Modal for both create and edit -->
     <PrimeDialog
-      v-model:visible="showNewFolderModal"
-      modal
-      header="New Folder"
+      v-model:visible="showModal"
+      :modal="true"
+      :header="selectedFolder ? 'Edit Folder' : 'New Folder'"
       :style="{ width: '90vw', maxWidth: '500px' }"
     >
       <FolderForm
-        :folders="folders"
-        @submit="handleNewFolder"
-        @cancel="showNewFolderModal = false"
-      />
-    </PrimeDialog>
-
-    <!-- Edit Folder Modal -->
-    <PrimeDialog
-      v-model:visible="showEditFolderModal"
-      modal
-      header="Edit Folder"
-      :style="{ width: '90vw', maxWidth: '500px' }"
-    >
-      <FolderForm
-        :folders="folders"
-        :existing-folder="selectedFolder"
-        @submit="handleUpdateFolder"
-        @delete="handleDeleteFolder"
-        @cancel="showEditFolderModal = false"
+        :folder="selectedFolder"
+        @submit="handleSubmit"
+        @delete="handleDelete"
+        @cancel="closeModal"
       />
     </PrimeDialog>
   </div>
@@ -92,45 +77,42 @@
 <script setup lang="ts">
 import type { Folder } from '~/types/folder'
 
-const { folders, updateFolder, deleteFolder } = useFolderSystem()
+const { folders, createFolder, updateFolder, deleteFolder } = useFolderSystem()
 const { bookmarks } = useBookmarks()
 const { getFeatureUsage } = usePlan()
 
-const showNewFolderModal = ref(false)
-const showEditFolderModal = ref(false)
+const showModal = ref(false)
 const selectedFolder = ref<Folder | null>(null)
 
 const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
 
-// Compute bookmark count for each folder
 const getFolderBookmarkCount = (folderId: string) => {
   return bookmarks.value.filter((bookmark) => bookmark.folder_id === folderId).length
 }
 
-// Handle folder edit
-const handleEditFolder = (folder: Folder) => {
+const handleEditClick = (folder: Folder) => {
   selectedFolder.value = folder
-  showEditFolderModal.value = true
+  showModal.value = true
 }
 
-// Handle folder update
-const handleUpdateFolder = async (updatedFolder: Folder) => {
-  await updateFolder(updatedFolder.id, updatedFolder)
-  showEditFolderModal.value = false
+const closeModal = () => {
+  showModal.value = false
   selectedFolder.value = null
 }
 
-// Handle folder deletion
-const handleDeleteFolder = async (folderId: string) => {
-  await deleteFolder(folderId)
-  showEditFolderModal.value = false
-  selectedFolder.value = null
+const handleSubmit = async (data: Partial<Folder>) => {
+  if (selectedFolder.value) {
+    await updateFolder(selectedFolder.value.id, data)
+  } else {
+    await createFolder(data)
+  }
+  closeModal()
 }
 
-// Handle new folder creation
-const handleNewFolder = async (folderData: Partial<Folder>) => {
-  const { createFolder } = useFolderSystem()
-  await createFolder(folderData)
-  showNewFolderModal.value = false
+const handleDelete = async () => {
+  if (selectedFolder.value) {
+    await deleteFolder(selectedFolder.value.id)
+    closeModal()
+  }
 }
 </script>
