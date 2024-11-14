@@ -1,4 +1,4 @@
-// server/api/folders/[id].patch.ts
+// server/api/folders/[id].delete.ts
 import type { H3Event } from 'h3'
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -11,28 +11,32 @@ export default defineEventHandler(async (event: H3Event) => {
 
     const supabase = await serverSupabaseClient(event)
     const id = event.context.params.id
-    const updates = await readBody(event)
 
-    // Validate updates
-    if (updates.name !== undefined && !updates.name.trim()) {
+    // Check if this is the default folder
+    const { data: folder } = await supabase
+      .from('bookmark_folders')
+      .select('is_default')
+      .eq('id', id)
+      .single()
+
+    if (folder?.is_default) {
       throw createError({
         statusCode: 400,
-        message: 'Folder name cannot be empty',
+        message: 'Cannot delete the default folder',
       })
     }
 
-    const { data, error } = await supabase
+    // Delete the folder
+    const { error } = await supabase
       .from('bookmark_folders')
-      .update(updates)
+      .delete()
       .eq('id', id)
       .eq('user_id', user.id)
-      .select()
-      .single()
 
     if (error) throw error
-    return { data }
+    return { success: true }
   } catch (err) {
-    console.error('Folder Update Error:', err)
+    console.error('Folder Delete Error:', err)
     throw createError({
       statusCode: err.statusCode || 500,
       message: err.message || 'Internal server error',
