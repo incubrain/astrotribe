@@ -6,7 +6,7 @@ export interface NewsCardT {
   id: string
   title: string
   description: string
-  authorName: string
+  author: string
   published_at?: string
   featured_image: string
   created_at: string
@@ -38,6 +38,7 @@ const handleBookmark = async () => {
       title: props.news.title,
       thumbnail: props.news.featured_image,
       url: props.news.url,
+      author: props.news.author,
     })
   } catch (error) {
     console.error('Error handling bookmark:', error)
