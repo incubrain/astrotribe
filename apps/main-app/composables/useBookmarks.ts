@@ -48,20 +48,8 @@ export const useBookmarks = () => {
   const updateCache = (
     item: { content_type: string; content_id: string } | null,
     isBookmarked: boolean,
-    data?: Bookmark,
   ) => {
     if (!item) return
-    if (data) {
-      bookmarks.value.push(data)
-    } else if (!data && !isBookmarked) {
-      const index = bookmarks.value.findIndex(
-        (bookmark) =>
-          bookmark.content_id === item.content_id && bookmark.content_type === item.content_type,
-      )
-      if (index > -1) {
-        bookmarks.value.splice(index, 1)
-      }
-    }
 
     const cacheKey = `${item.content_type}:${item.content_id}`
     bookmarkCache.set(cacheKey, isBookmarked)
@@ -128,36 +116,91 @@ export const useBookmarks = () => {
     }
   }
 
+  const optimisticUpdate = async (
+    content: BookmarkContent,
+    userId: string,
+    defaultFolderId: string,
+  ) => {
+    const { id, type, title } = content
+
+    const isBookmarked = bookmarks.value.some(
+      (bookmark) =>
+        bookmark.user_id === userId && bookmark.content_id === id && bookmark.content_type === type,
+    )
+
+    if (isBookmarked) {
+      bookmarks.value = bookmarks.value.filter(
+        (bookmark) =>
+          !(
+            bookmark.user_id === userId &&
+            bookmark.content_id === id &&
+            bookmark.content_type === type
+          ),
+      )
+    } else {
+      const bookmark: Bookmark = {
+        id: crypto.randomUUID(),
+        user_id: userId,
+        created_at: Date.now().toString(),
+        folder_id: defaultFolderId,
+        content_id: id,
+        content_type: type,
+        metadata: {
+          title,
+        },
+      }
+
+      bookmarks.value.push(bookmark)
+    }
+  }
+
   // Update toggleBookmark to use the new cache function
   const toggleBookmark = async (content: BookmarkContent) => {
     const { getDefaultFolder } = useFolderSystem()
+    const defaultFolderId = getDefaultFolder.value?.id
+    const { $id: userId } = useCurrentUser()
 
-    const response = await $fetch('/api/bookmarks/toggle', {
-      method: 'POST',
-      body: {
-        content_id: content.id,
-        content_type: content.type,
-        folder_id: getDefaultFolder.value?.id,
-        metadata: {
-          title: content.title,
-          description: content.description,
-          thumbnail: content.thumbnail,
-          url: content.url,
+    await optimisticUpdate(content, userId, defaultFolderId)
+    try {
+      const response = await $fetch('/api/bookmarks/toggle', {
+        method: 'POST',
+        body: {
+          content_id: content.id,
+          content_type: content.type,
+          folder_id: defaultFolderId,
+          metadata: {
+            title: content.title,
+            description: content.description,
+            thumbnail: content.thumbnail,
+            url: content.url,
+          },
         },
-      },
-    })
+      })
 
-    const isBookmarked = response.bookmarked ?? false
-    updateCache(
-      {
-        content_type: content.type,
-        content_id: content.id,
-      },
-      isBookmarked,
-      response.data,
-    )
+      const isBookmarked = response.bookmarked ?? false
+      updateCache(
+        {
+          content_type: content.type,
+          content_id: content.id,
+        },
+        isBookmarked,
+      )
 
-    return response.data
+      const index = bookmarks.value.findIndex(
+        (value) =>
+          value.user_id === userId &&
+          value.content_id === content.id &&
+          value.content_type === content.type,
+      )
+
+      index > -1 bookmarks.value[index] = response.data
+
+      return response.data
+    } catch (error) {
+      // Rollback
+
+      await optimisticUpdate(content, userId, defaultFolderId)
+    }
   }
 
   // Update isBookmarked to use the new cache function
