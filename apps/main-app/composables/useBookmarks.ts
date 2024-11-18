@@ -150,7 +150,7 @@ export const useBookmarks = () => {
         },
       }
 
-      bookmarks.value.push(bookmark)
+      bookmarks.value.unshift(bookmark)
     }
   }
 
@@ -193,7 +193,7 @@ export const useBookmarks = () => {
           value.content_type === content.type,
       )
 
-      index > -1 bookmarks.value[index] = response.data
+      if (index > -1) bookmarks.value[index] = response.data
 
       return response.data
     } catch (error) {
