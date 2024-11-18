@@ -24,6 +24,7 @@ interface Bookmark {
   content_id: string
   metadata: {
     title: string
+    author?: string
     description?: string
     thumbnail?: string
     url?: string
@@ -158,9 +159,9 @@ export const useBookmarks = () => {
   const toggleBookmark = async (content: BookmarkContent) => {
     const { getDefaultFolder } = useFolderSystem()
     const defaultFolderId = getDefaultFolder.value?.id
-    const { $id: userId } = useCurrentUser()
+    const { profile } = useCurrentUser()
 
-    await optimisticUpdate(content, userId, defaultFolderId)
+    await optimisticUpdate(content, profile.id, defaultFolderId)
     try {
       const response = await $fetch('/api/bookmarks/toggle', {
         method: 'POST',
@@ -186,20 +187,21 @@ export const useBookmarks = () => {
         isBookmarked,
       )
 
-      const index = bookmarks.value.findIndex(
-        (value) =>
-          value.user_id === userId &&
-          value.content_id === content.id &&
-          value.content_type === content.type,
-      )
+      if (isBookmarked) {
+        const index = bookmarks.value.findIndex(
+          (value) =>
+            value.user_id == profile.id &&
+            value.content_id == content.id &&
+            value.content_type == content.type,
+        )
 
-      if (index > -1) bookmarks.value[index] = response.data
+        if (index > -1) bookmarks.value[index] = response.data
+      }
 
       return response.data
     } catch (error) {
       // Rollback
-
-      await optimisticUpdate(content, userId, defaultFolderId)
+      await optimisticUpdate(content, profile.id, defaultFolderId)
     }
   }
 
