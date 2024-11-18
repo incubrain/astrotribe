@@ -8,6 +8,7 @@ interface BookmarkContent {
   description?: string
   thumbnail?: string
   url?: string
+  author?: string
 }
 
 interface BookmarkParams {
@@ -174,6 +175,7 @@ export const useBookmarks = () => {
             description: content.description,
             thumbnail: content.thumbnail,
             url: content.url,
+            author: content.author,
           },
         },
       })
