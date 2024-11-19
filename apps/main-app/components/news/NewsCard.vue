@@ -92,7 +92,7 @@ const openModal = (feature: string) => {
             width="24"
             height="24"
           />
-          <span class="text-sm">{{ news.authorName }}</span>
+          <span class="text-sm">{{ news.author }}</span>
         </div>
         <h2 class="text-xl font-bold mb-2">{{ news.title }}</h2>
         <div class="flex items-center text-sm mb-4">
