@@ -44,6 +44,8 @@ const handleBulkDelete = async () => {
   if (!selectedBookmarks.value.length) return
   await handleDeleteBookmark(selectedBookmarks.value)
   clearSelection()
+
+  await fetchBookmarks({})
 }
 
 // Search configuration
