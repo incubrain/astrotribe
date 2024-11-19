@@ -37,7 +37,7 @@ export const useBookmarkManager = () => {
     )
 
     selectedBookmarks.value = selectedBookmarks.value.filter((id) => !ids.includes(id))
-    return await fetchBookmarks({})
+    // return await fetchBookmarks({})
   }
 
   const handleNewFolder = async (folderData: Partial<Folder>) => {
