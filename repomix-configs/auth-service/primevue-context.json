@@ -1,0 +1,48 @@
+{
+  "output": {
+    "filePath": "ai-context/auth-service/primevue-context.txt",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "copyToClipboard": false,
+    "showLineNumbers": false,
+    "topFilesLength": 0
+  },
+  "include": [
+    "ai-docs/primevue/components/Toast.vue",
+    "ai-docs/primevue/components/Card.vue",
+    "ai-docs/primevue/components/Message.vue",
+    "ai-docs/primevue/components/Tag.vue",
+    "ai-docs/primevue/components/FloatLabel.vue",
+    "ai-docs/primevue/components/InputText.vue",
+    "ai-docs/primevue/components/Button.vue",
+    "ai-docs/primevue/components/Divider.vue",
+    "ai-docs/primevue/components/Checkbox.vue",
+    "ai-docs/primevue/components/Password.vue"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**",
+      "**/tmp/**",
+      "**/.cache/**",
+      "**/logs/**",
+      "**/build/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true,
+    "excludePatterns": [
+      "**/secrets/**",
+      "**/config/**/*.{prod,staging}.*"
+    ]
+  }
+}

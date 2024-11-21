@@ -46,7 +46,6 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      // '../../layers/base',
       'embla-carousel-vue',
       'embla-carousel-autoplay',
       'embla-carousel-auto-scroll',

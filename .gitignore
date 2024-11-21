@@ -83,3 +83,6 @@ supabase/functions/.env
 .env
 
 .cache
+
+# TEMP
+ai-docs

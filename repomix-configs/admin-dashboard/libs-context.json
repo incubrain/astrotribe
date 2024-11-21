@@ -1,0 +1,39 @@
+{
+  "output": {
+    "filePath": "ai-context/admin-dashboard/libs-context.txt",
+    "style": "markdown",
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "copyToClipboard": false,
+    "showLineNumbers": false,
+    "topFilesLength": 0
+  },
+  "include": [
+    "libs/**/*.{ts,tsx,js}"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**",
+      "**/tmp/**",
+      "**/.cache/**",
+      "**/logs/**",
+      "**/build/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true,
+    "excludePatterns": [
+      "**/secrets/**",
+      "**/config/**/*.{prod,staging}.*"
+    ]
+  }
+}
