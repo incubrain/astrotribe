@@ -27,13 +27,9 @@
     "types": "nx run crud:typecheck --verbose",
     "clean:nuxi": "scripts/nuxi-cleanup.sh",
     "staging": "railway link -p d2993a83-20e2-4658-b045-8202866cd11f",
-    "ai:admin": "repomix --config ./repomix-configs/admin-dashboard.json",
-    "ai:auth": "repomix --config ./repomix-configs/auth-service.json",
-    "ai:main": "repomix --config ./repomix-configs/main-app.json",
-    "ai:website": "repomix --config ./repomix-configs/website.json",
-    "ai:cms": "repomix --config ./repomix-configs/cms.json",
-    "ai:monitoring": "repomix --config ./repomix-configs/monitoring-dashboard.json",
-    "ai:package": "bash scripts/package-repo.sh"
+    "ai:docs": "./scripts/docs-manager.sh",
+    "ai:package": "bash scripts/package-repo.sh",
+    "ai:scan": "./scripts/scan-projects.sh "
   },
   "dependencies": {
     "@formbricks/js": "^3.0.1",
@@ -71,6 +67,8 @@
     "@vueuse/core": "^11.1.0",
     "@vueuse/integrations": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
+    "axios": "^1.7.7",
+    "chalk": "^5.3.0",
     "change-case": "^5.4.4",
     "chart.js": "^4.4.4",
     "dotenv": "^16.4.5",
@@ -81,6 +79,7 @@
     "fuse.js": "^7.0.0",
     "groq-sdk": "^0.7.0",
     "gsap": "^3.12.5",
+    "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "node-lame": "^1.3.2",
     "nuxt-security": "^2.0.0",

@@ -5,6 +5,11 @@
         "permissions": ["select", "insert", "update", "delete"]
       }
     },
+    "service_role": {
+      "all_tables": {
+        "permissions": ["select", "insert", "update", "delete"]
+      }
+    },
     "admin": {
       "all_tables": {
         "permissions": ["select", "insert", "update"]
@@ -13,7 +18,7 @@
         "permissions": ["select", "insert", "update"]
       }
     },
-  "user": {
+    "user": {
       "public_tables": {
         "permissions": ["select"]
       },
@@ -55,6 +60,7 @@
       "news_summaries",
       "news_tags",
       "tags",
+      "feed",
       "newsletters",
       "contents",
       "research",
