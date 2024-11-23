@@ -1,10 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": true,
     "declaration": true,
     "declarationMap": true, // Optional for better debugging
-    "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
     "types": ["node", "vite/client"],

@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "composite": true,
     "declaration": true,
     "outDir": "dist",
-    "baseUrl": ".",
     "rootDir": ".",
     "types": ["node"]
   },
-  "include": ["src/**/*", "index.d.ts", "index.ts"],
+  "include": ["src/**/*", "index.d.ts", "index.ts", "../../generators/schema-analyzer.ts"],
   "exclude": ["dist/**/*"],
   "references": [{ "path": "./tsconfig.lib.json" }]
 }

@@ -1,0 +1,26 @@
+{
+  "name": "@ib/db-testing",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+    "msw": "^2.0.0",
+    "vitest": "^1.0.0"
+  },
+  "devDependencies": {
+    "msw": "^2.0.0",
+    "vitest": "^1.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "require": "./index.ts",
+      "types": "./index.d.ts"
+    }
+  },
+  "files": [
+    "src"
+  ]
+}

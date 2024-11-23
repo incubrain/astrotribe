@@ -1,5 +1,14 @@
 {
-  "extends": ["./.nuxt/tsconfig.json"],
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
-  "exclude": ["node_modules", "dist", "tmp"]
+  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "#layers/*": ["../../layers/*"],
+      "@types/*": ["./types/*"],
+      "#imports": ["./.nuxt/imports.d.ts"],
+      "#shared/*": ["./shared/*"]
+    }
+  },
+  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "./.nuxt/imports.d.ts"]
 }

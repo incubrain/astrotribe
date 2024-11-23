@@ -4,6 +4,15 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
+  components: [
+    {
+      path: './components',
+      pathPrefix: false,
+      prefix: 'IB',
+      global: true,
+    },
+  ],
+
   icon: {
     serverBundle: {
       collections: ['material-symbols', 'mdi'],
@@ -44,13 +53,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
-  components: [
-    {
-      path: './components',
-      pathPrefix: false,
-      prefix: 'IB',
-      global: true,
-    },
-  ],
 })

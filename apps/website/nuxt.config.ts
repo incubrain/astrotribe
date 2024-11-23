@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
   ],
 
-  extends: ['../../layers/base'],
+  extends: ['../../layers/base', '../../layers/crud'],
 
   build: {
     transpile: [

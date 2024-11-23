@@ -61,6 +61,10 @@
     },
     "format:check": {
       "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
+    },
+    "test": {
+      "inputs": ["default", "^default"],
+      "cache": true
     }
   },
   "release": {
