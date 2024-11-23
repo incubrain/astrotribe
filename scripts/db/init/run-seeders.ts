@@ -44,9 +44,13 @@ export async function runSeeders() {
     const cities = await seed.seedCities(client)
     const socialMedia = await seed.seedSocialMedia(client, config.counts.socialMedia)
     const categories = await seed.seedCategories(client, config.counts.categories)
+    const tags = await seed.seedTags(client)
+
+    const categoryIds = categories.map((c) => c.id)
 
     // 2. Seed content and related tables
     const contents = await seed.seedContents(client, config.counts.contents)
+    const allContentIds = contents.map((c) => c.id)
 
     // Filter contents by type
     const companyContentIds = contents
@@ -63,11 +67,29 @@ export async function runSeeders() {
     // 3. Seed companies and related data
     const companies = await seed.seedCompanies(client, companyContentIds)
     const companyIds = companies.map((c) => c.id)
-
     await seed.seedContentSources(client, companyIds)
     await seed.seedCompanyEmployees(client, companyIds, userIds)
     await seed.seedContacts(client, companyIds, userIds)
     await seed.seedNewsletters(client, newsletterContentIds)
+
+    // Seed content related data
+    await seed.seedContentCategories(
+      client,
+      allContentIds,
+      categories.map((c) => c.id),
+    )
+
+    await seed.seedContentTags(
+      client,
+      allContentIds,
+      tags.map((t) => t.id),
+    )
+
+    await seed.seedNewsTags(
+      client,
+      newsContentIds,
+      tags.map((t) => t.id),
+    )
 
     // 4. Seed addresses
     await seed.seedAddresses(
@@ -104,6 +126,15 @@ export async function runSeeders() {
     // 7. Seed feedback and follows
     await seed.seedFeedback(client, userIds)
     await seed.seedFollows(client, userIds, companyContentIds)
+
+    // 8 Seed Feeds and Feed Categories
+    // After feeds seeding:
+    const feeds = await seed.seedFeeds(client, userIds)
+    await seed.seedFeedCategories(
+      client,
+      feeds.map((f) => f.id),
+      categoryIds,
+    )
 
     console.log(chalk.blue('✓ Database seeding completed successfully'))
     return true
