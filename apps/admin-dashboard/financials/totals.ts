@@ -268,8 +268,8 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
 
     // Calculate new MAU
     let mau = Math.ceil(
-      previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE)
-      + params.PROJECTION.MANUAL_GROWTH_RATE * month,
+      previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE) +
+      params.PROJECTION.MANUAL_GROWTH_RATE * month,
     )
 
     const churnedMAU = Math.ceil(previousMonth.mau.total * previousMonth.mau.churnRate)
@@ -342,26 +342,26 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
     const devOpsCost = mau > 100_000 ? devOps.inhouse.cost.total : devOps.vercel.cost.total
     const software = calculateSubscriptionCosts(employees.totalCount)
 
-    const userExpenses
-      = supabase.totalCost
-      + digitalOcean.cost
-      + logging.total
-      + devOpsCost
-      + analytics.total
-      + marketingCost
+    const userExpenses =
+      supabase.totalCost +
+      digitalOcean.cost +
+      logging.total +
+      devOpsCost +
+      analytics.total +
+      marketingCost
 
-    const monthlyExpenses
-      = employees.totalCost
-      + supabase.totalCost
-      + devOpsCost
-      + digitalOcean.cost
-      + logging.total
-      + openAI.cost.total
-      + office.total
-      + analytics.total
-      + software.totalCost
-      + marketingCost
-      + payments.totalCost
+    const monthlyExpenses =
+      employees.totalCost +
+      supabase.totalCost +
+      devOpsCost +
+      digitalOcean.cost +
+      logging.total +
+      openAI.cost.total +
+      office.total +
+      analytics.total +
+      software.totalCost +
+      marketingCost +
+      payments.totalCost
 
     console.log('Monthly Expenses:', {
       employees: employees.totalCost,

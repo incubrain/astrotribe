@@ -41,10 +41,10 @@ export function deepEqual(obj1: any, obj2: any): boolean {
 
 export function hasValueChanged(newValue: any, currentValue: any): boolean {
   if (
-    typeof newValue === 'string'
-    || typeof newValue === 'boolean'
-    || typeof newValue === 'number'
-    || newValue === null
+    typeof newValue === 'string' ||
+    typeof newValue === 'boolean' ||
+    typeof newValue === 'number' ||
+    newValue === null
   ) {
     return newValue !== currentValue
   }

@@ -9,13 +9,13 @@ const p = defineProps({
 })
 
 const filterBy = computed(() =>
-  p.newsCategory === 'all'
-    ? null
-    : {
-        columnName: 'source',
-        operator: 'eq',
-        value: p.newsCategory,
-      },
+  p.newsCategory === 'all' ?
+    null :
+    {
+      columnName: 'source',
+      operator: 'eq',
+      value: p.newsCategory,
+    },
 )
 
 const { data: spaceNews, error } = await useAsyncData(

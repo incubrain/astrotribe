@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-function convertISTtoLocal(day: number, time: { start: string, end: string }) {
+function convertISTtoLocal(day: number, time: { start: string; end: string }) {
   const start = `2023-11-${day}T${time.start}:00+05:30` // '+05:30' is the offset for IST
   const end = `2023-11-${day}T${time.end}:00+05:30` // '+05:30' is the offset for IST
 

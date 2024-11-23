@@ -31,7 +31,7 @@ export const getEnvironment = () => {
       return Boolean(
         import.meta?.env?.DEV ||
           import.meta?.env?.MODE === 'development' ||
-          (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
+            (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
       )
     } catch {
       return false

@@ -35,16 +35,16 @@ function getType(value: any): string {
 
 function traverseObject(
   obj: any,
-): Record<string, Array<{ path: string, value: any, type: string }>> {
-  const result: Record<string, Array<{ path: string, value: any, type: string }>> = {}
+): Record<string, Array<{ path: string; value: any; type: string }>> {
+  const result: Record<string, Array<{ path: string; value: any; type: string }>> = {}
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const value = obj[key]
       if (
-        Array.isArray(value)
-        && value.length > 0
-        && typeof value[0] === 'object'
-        && value[0] !== null
+        Array.isArray(value) &&
+        value.length > 0 &&
+        typeof value[0] === 'object' &&
+        value[0] !== null
       ) {
         const childResults = traverseNestedObject(value[0], key)
         result[key] = childResults
@@ -69,17 +69,17 @@ function traverseObject(
 function traverseNestedObject(
   obj: any,
   parentKey: string,
-): Array<{ path: string, value: any, type: string }> {
-  let result: Array<{ path: string, value: any, type: string }> = []
+): Array<{ path: string; value: any; type: string }> {
+  let result: Array<{ path: string; value: any; type: string }> = []
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const newPath = `${parentKey}.${key}`
       const value = obj[key]
       if (
-        Array.isArray(value)
-        && value.length > 0
-        && typeof value[0] === 'object'
-        && value[0] !== null
+        Array.isArray(value) &&
+        value.length > 0 &&
+        typeof value[0] === 'object' &&
+        value[0] !== null
       ) {
         result = result.concat(traverseNestedObject(value[0], newPath))
       } else if (typeof value === 'object' && value !== null) {

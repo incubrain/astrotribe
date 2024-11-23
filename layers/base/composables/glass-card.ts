@@ -135,9 +135,9 @@ export function useGlassCard(props: GlassCardProps, uniqueId: string) {
   ])
 
   const hoverClasses = computed(() =>
-    props.disableHover
-      ? []
-      : ['hover:shadow-2xl', `hover:bg-${props.color}-800/${props.bgOpacity + 10}`],
+    props.disableHover ?
+      [] :
+      ['hover:shadow-2xl', `hover:bg-${props.color}-800/${props.bgOpacity + 10}`],
   )
 
   return {

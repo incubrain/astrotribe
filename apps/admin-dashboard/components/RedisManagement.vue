@@ -39,7 +39,7 @@ const loadKeys = async (page = 0, pageSize = PAGE_SIZE) => {
   }
 }
 
-const parseKey = (item: { key: string, value: string }) => {
+const parseKey = (item: { key: string; value: string }) => {
   const match = item.key.match(/\{(.+?)\}:(.+?):(.+)/)
   if (match) {
     return {

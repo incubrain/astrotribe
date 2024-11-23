@@ -40,7 +40,7 @@ interface ChartProps {
       yAxisID?: string
     }>
   }
-  info?: Array<{ name: string, value: string }>
+  info?: Array<{ name: string; value: string }>
 }
 
 const props = defineProps<{
@@ -257,12 +257,12 @@ function formatTooltipLabel(tooltipItem: TooltipItem<'line'>) {
 
 const isChartDataReady = computed(() => {
   return (
-    props.chart
-    && props.chart.data
-    && props.chart.data.datasets
-    && props.chart.data.datasets.length > 0
-    && props.chart.data.labels
-    && props.chart.data.labels.length > 0
+    props.chart &&
+    props.chart.data &&
+    props.chart.data.datasets &&
+    props.chart.data.datasets.length > 0 &&
+    props.chart.data.labels &&
+    props.chart.data.labels.length > 0
   )
 })
 

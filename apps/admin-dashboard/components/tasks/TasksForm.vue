@@ -11,7 +11,7 @@ interface ExtendedGoal extends Goal {
 const props = defineProps<{
   goal: ExtendedGoal
   employees: Employee[]
-  categories: { name: string, value: string }[]
+  categories: { name: string; value: string }[]
   milestones: Milestone[]
   isNew: boolean
 }>()
