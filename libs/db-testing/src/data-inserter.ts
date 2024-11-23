@@ -101,12 +101,22 @@ export async function cleanUpTestData(pool: Pool) {
     // Delete in reverse dependency order
     const tables = [
       'comments',
+      'contacts',
+      'addresses',
+      'company_employees',
+      'content_sources',
       'bookmarks',
+      'bookmark_folders',
       'news',
+      'newsletters',
       'contents',
       'cities',
       'countries',
       'categories',
+      'social_media',
+      'follows',
+      'feedbacks',
+      'votes',
     ]
 
     for (const table of tables) {

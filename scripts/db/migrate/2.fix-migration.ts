@@ -1,6 +1,38 @@
+// alter table "public"."role_permissions" add column "inherit_from" (public.)app_role_enum[];
+
+// create table "public"."role_hierarchy" (
+//   "parent_role" public.app_role_enum not null,
+//   "child_role" public.app_role_enum not null
+// );
+
+// create policy "delete_policy"
+// on "public"."bookmark_folders"
+// as permissive
+// for delete
+// to public
+// using ((public.)authorize('bookmark_folders.delete'::text));
+
+// alter table "public"."user_profiles" alter column "role" set default 'user'::public.app_role_enum;
+
+// p_role_key::app_role_enum,
+
+// alter table "public"."categories" alter column "id" set default nextval('public.categories_id_seq'::regclass);
+
+// CREATE OR REPLACE FUNCTION public.get_inherited_permissions(p_role app_role_enum)
+
 // scripts/fix-migration.ts
 import * as fs from 'fs'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+function ensureBackupDirExists() {
+  if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir)
+  }
+}
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 interface Replacement {
   find: RegExp
@@ -25,14 +57,7 @@ const replacements: Replacement[] = [
   // Add more replacements as needed
 ]
 
-const __dirname = path.dirname(migrationFilePath)
-const backupDir = path.join(__dirname, '../migration_backups')
-
-function ensureBackupDirExists() {
-  if (!fs.existsSync(backupDir)) {
-    fs.mkdirSync(backupDir)
-  }
-}
+const backupDir = path.join(migrationFilePath, '../migration_backups')
 
 function backupMigrationFile(filePath: string) {
   ensureBackupDirExists()

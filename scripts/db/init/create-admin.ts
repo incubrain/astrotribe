@@ -1,4 +1,9 @@
-async function setAdminUser() {
+import type { Pool } from 'pg'
+import chalk from 'chalk'
+
+export async function setAdminUser(pool: Pool, usersToUpgrade: string[]) {
+  const client = await pool.connect()
+
   try {
     // Disable the trigger
     await client.query('ALTER TABLE user_profiles DISABLE TRIGGER columns_updateable')
@@ -29,11 +34,11 @@ async function setAdminUser() {
       $$;
     `)
 
-    console.log('Post-seed SQL operations completed successfully.')
+    console.log(chalk.green('✓ Admin users configured successfully'))
   } catch (error) {
-    console.error('Error running post-seed SQL operations:', error)
+    console.error(chalk.red('Error configuring admin users:'), error)
     throw error
   } finally {
-    client.release()
+    client.release() // Release the client back to the pool
   }
 }
