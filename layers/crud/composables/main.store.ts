@@ -56,5 +56,6 @@ export function getOrCreateStore<T>(domainKey: DomainKey) {
   if (!storeCache[domainKey]) {
     storeCache[domainKey] = createBaseStore<T>(domainKey)
   }
+
   return storeCache[domainKey] as ReturnType<typeof createBaseStore<T>>
 }
