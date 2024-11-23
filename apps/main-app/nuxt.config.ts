@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     '@primevue/nuxt-module',
     '@vite-pwa/nuxt',
+    '@nuxt/test-utils/module',
   ],
 
   experimental: {

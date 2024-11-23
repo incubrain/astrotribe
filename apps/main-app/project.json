@@ -36,6 +36,39 @@
       "options": {
         "command": "eslint --config eslint.config.js ."
       }
+    },
+
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/main-app && vitest run --coverage",
+        "env": {
+          "NUXT_PUBLIC_NODE_ENV": "test",
+          "VITEST_MODE": "true"
+        }
+      }
+    },
+    "test:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/main-app && vitest",
+        "env": {
+          "NUXT_PUBLIC_NODE_ENV": "test",
+          "VITEST_MODE": "true"
+        }
+      }
+    },
+    "test:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/main-app && vitest --ui"
+      }
+    },
+    "test:coverage": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/main-app && vitest run --coverage"
+      }
     }
   }
 }

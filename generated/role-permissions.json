@@ -1,0 +1,207 @@
+{
+  "table_groups": {
+    "reference_tables": {
+      "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
+      "tables": [
+        "cities",
+        "countries",
+        "content_categories",
+        "content_tags",
+        "metric_definitions",
+        "categories",
+        "tags"
+      ],
+      "default_permissions": [
+        "select"
+      ],
+      "audit_level": "low"
+    },
+    "public_content_tables": {
+      "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
+      "tables": [
+        "newsletters",
+        "companies",
+        "research",
+        "content_sources",
+        "contents",
+        "news"
+      ],
+      "default_permissions": [
+        "select"
+      ],
+      "audit_level": "medium"
+    },
+    "user_content_tables": {
+      "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
+      "tables": [
+        "user_followers",
+        "feedbacks",
+        "follows",
+        "comments",
+        "feed_categories",
+        "feeds",
+        "votes",
+        "bookmarks",
+        "bookmark_folders"
+      ],
+      "default_permissions": [],
+      "requires_user_check": true,
+      "audit_level": "medium"
+    },
+    "user_data_tables": {
+      "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
+      "tables": [
+        "user_profiles",
+        "searches",
+        "addresses",
+        "contacts"
+      ],
+      "default_permissions": [],
+      "requires_user_check": true,
+      "audit_level": "high"
+    },
+    "operational_tables": {
+      "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
+      "tables": [
+        "role_hierarchy",
+        "responses",
+        "social_media",
+        "news_tags",
+        "research_embeddings",
+        "company_contacts",
+        "company_employees",
+        "company_extras",
+        "company_urls",
+        "embedding_reviews",
+        "news_summaries",
+        "content_statuses",
+        "company_metrics",
+        "spider_metrics",
+        "classified_urls"
+      ],
+      "default_permissions": [],
+      "audit_level": "high"
+    },
+    "security_tables": {
+      "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
+      "tables": [
+        "plan_permissions",
+        "blacklisted_urls",
+        "blacklisted_domains",
+        "customer_payments",
+        "customer_processed_webhooks",
+        "customer_refunds",
+        "customer_subscription_plans",
+        "customer_subscriptions",
+        "payment_providers",
+        "role_permissions"
+      ],
+      "default_permissions": [],
+      "audit_level": "critical"
+    }
+  },
+  "roles": {
+    "super_admin": {
+      "all_tables": {
+        "permissions": [
+          "select",
+          "insert",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "admin": {
+      "inherit_from": [
+        "super_admin"
+      ],
+      "security_tables": {
+        "permissions": [
+          "select",
+          "insert",
+          "update"
+        ]
+      }
+    },
+    "moderator": {
+      "inherit_from": [
+        "admin"
+      ],
+      "operational_tables": {
+        "permissions": [
+          "select",
+          "update"
+        ],
+        "conditions": {
+          "select": {
+            "sql": "is_active = true"
+          },
+          "update": {
+            "sql": "is_active = true AND status = 'pending_review'"
+          }
+        }
+      }
+    },
+    "user": {
+      "inherit_from": [
+        "guest"
+      ],
+      "user_content_tables": {
+        "permissions": [
+          "select",
+          "insert",
+          "update",
+          "delete"
+        ],
+        "conditions": {
+          "select": {
+            "sql": "auth.uid() = user_id OR is_public = true"
+          },
+          "insert": {
+            "sql": "auth.uid() = user_id"
+          },
+          "update": {
+            "sql": "auth.uid() = user_id"
+          },
+          "delete": {
+            "sql": "auth.uid() = user_id"
+          }
+        }
+      },
+      "user_data_tables": {
+        "permissions": [
+          "select",
+          "insert",
+          "update",
+          "delete"
+        ],
+        "conditions": {
+          "select": {
+            "sql": "auth.uid() = user_id"
+          },
+          "insert": {
+            "sql": "auth.uid() = user_id"
+          },
+          "update": {
+            "sql": "auth.uid() = user_id"
+          },
+          "delete": {
+            "sql": "auth.uid() = user_id"
+          }
+        }
+      }
+    },
+    "guest": {
+      "reference_tables": {
+        "permissions": [
+          "select"
+        ]
+      },
+      "public_content_tables": {
+        "permissions": [
+          "select"
+        ]
+      }
+    }
+  }
+}

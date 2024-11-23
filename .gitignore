@@ -9,6 +9,7 @@ node_modules
 /blob-report/
 .lighthouseci
 .clinic
+**coverage
 
 
 
@@ -86,3 +87,4 @@ supabase/functions/.env
 
 # TEMP
 ai-docs
+
