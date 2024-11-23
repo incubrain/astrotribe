@@ -131,11 +131,11 @@ const getGrowthClass = (growth: number) => {
 
 const getGrowthIcon = (growth: number) => {
   if (isNaN(growth)) return 'mdi:minus-circle-outline'
-  return growth > 0
-    ? 'material-symbols:trending-up-rounded'
-    : growth < 0
-      ? 'material-symbols:trending-down-rounded'
-      : 'mdi:minus-circle-outline'
+  return growth > 0 ?
+    'material-symbols:trending-up-rounded' :
+    growth < 0 ?
+      'material-symbols:trending-down-rounded' :
+      'mdi:minus-circle-outline'
 }
 
 const totalRowCount = computed(() => {

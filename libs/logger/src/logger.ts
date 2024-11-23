@@ -96,17 +96,17 @@ export class NodeLogger extends BaseLogger {
         format,
         transports: [
           new winstonPackage.transports.Console(),
-          ...(this.env.isDev
-            ? []
-            : [
-                new winstonPackage.transports.File({
-                  filename: './data/logs/error.log',
-                  level: 'error',
-                }),
-                new winstonPackage.transports.File({
-                  filename: './data/logs/combined.log',
-                }),
-              ]),
+          ...(this.env.isDev ?
+            [] :
+            [
+              new winstonPackage.transports.File({
+                filename: './data/logs/error.log',
+                level: 'error',
+              }),
+              new winstonPackage.transports.File({
+                filename: './data/logs/combined.log',
+              }),
+            ]),
         ],
       })
     } catch (err) {

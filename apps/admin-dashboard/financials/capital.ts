@@ -32,9 +32,9 @@ export function calculateInitialLoan({
   const monthlyInterestOnlyPayment = loan * monthlyInterestRate
 
   // Calculate total monthly payment using the loan amortization formula
-  const monthlyTotalPayment
-    = (loan * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)))
-    / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
+  const monthlyTotalPayment =
+    (loan * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
+    (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
 
   // Calculate the principal payment
   const monthlyPrincipalPayment = monthlyTotalPayment - monthlyInterestOnlyPayment

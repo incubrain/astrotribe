@@ -1,4 +1,4 @@
 export default defineNuxtConfig({
   extends: ['..'],
-  modules: ['@nuxt/eslint']
+  modules: ['@nuxt/eslint'],
 })

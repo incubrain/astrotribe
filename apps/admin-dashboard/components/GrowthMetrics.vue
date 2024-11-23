@@ -74,14 +74,14 @@ const processData = () => {
       growth: calculate.percentile(
         [
           latestData.table_size / uniqueTables.size,
-          previousWeekData
-            ? previousWeekData.table_size /
-              new Set(
-                data
-                  .filter((d) => d.capture_time <= previousWeekData.capture_time)
-                  .map((d) => d.table_name),
-              ).size
-            : 0,
+          previousWeekData ?
+            previousWeekData.table_size /
+            new Set(
+              data
+                .filter((d) => d.capture_time <= previousWeekData.capture_time)
+                .map((d) => d.table_name),
+            ).size :
+            0,
         ],
         50,
       ),

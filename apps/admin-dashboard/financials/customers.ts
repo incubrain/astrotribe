@@ -40,22 +40,22 @@ export const INCOME_STREAMS = {
 function adjustConversionRates(MAU: number) {
   const { subscription } = INCOME_STREAMS
   subscription.pro.conversion.current = Math.min(
-    subscription.pro.conversion.pessimistic
-    + (MAU / 150000)
-    * (subscription.pro.conversion.optimistic - subscription.pro.conversion.pessimistic),
+    subscription.pro.conversion.pessimistic +
+    (MAU / 150000) *
+    (subscription.pro.conversion.optimistic - subscription.pro.conversion.pessimistic),
     subscription.pro.conversion.optimistic,
   )
 
-  subscription.expert.conversion.current
-    = MAU >= 5000
-      ? Math.min(
-        subscription.expert.conversion.pessimistic
-        + (MAU / 100000)
-        * (subscription.expert.conversion.optimistic
-          - subscription.expert.conversion.pessimistic),
+  subscription.expert.conversion.current =
+    MAU >= 5000 ?
+      Math.min(
+        subscription.expert.conversion.pessimistic +
+        (MAU / 100000) *
+        (subscription.expert.conversion.optimistic -
+          subscription.expert.conversion.pessimistic),
         subscription.expert.conversion.optimistic,
-      )
-      : 0
+      ) :
+      0
 }
 
 function newMauToCustomers(MAU: number) {
@@ -75,7 +75,7 @@ function subscriptionRevenueFromCustomers(proCustomers: number, expertCustomers:
   return { proRevenue, expertRevenue }
 }
 
-function calculateAdditionalRevenue(users: { free: number, pro: number, expert: number }) {
+function calculateAdditionalRevenue(users: { free: number; pro: number; expert: number }) {
   const totalUsers = users.free + users.pro + users.expert
   return {
     advertisingRevenue: {
@@ -128,14 +128,14 @@ export function calculateRevenue({ mau, customers }: RevenueParams): RevenueResu
   })
 
   const proExtraRevenue = affiliateRevenue.pro + promotionRevenue.pro + advertisingRevenue.pro
-  const expertExtraRevenue
-    = affiliateRevenue.expert + promotionRevenue.expert + advertisingRevenue.expert
+  const expertExtraRevenue =
+    affiliateRevenue.expert + promotionRevenue.expert + advertisingRevenue.expert
   const freeExtraRevenue = affiliateRevenue.free + promotionRevenue.free + advertisingRevenue.free
 
   const proTotalRevenue = proRevenue + proExtraRevenue
   const expertTotalRevenue = expertRevenue + expertExtraRevenue
-  const totalAdditionalRevenue
-    = advertisingRevenue.total + affiliateRevenue.total + promotionRevenue.total
+  const totalAdditionalRevenue =
+    advertisingRevenue.total + affiliateRevenue.total + promotionRevenue.total
   const totalRevenue = proRevenue + expertRevenue + totalAdditionalRevenue
 
   return {

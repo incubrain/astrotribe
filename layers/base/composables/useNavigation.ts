@@ -8,7 +8,7 @@ export const useNavigation = () => {
 
   // Close mobile nav on route changes
   const route = useRoute()
-  
+
   watch(
     () => route.path,
     () => {

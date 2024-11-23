@@ -80,9 +80,9 @@ const hoverClasses = computed(() => {
   if (!props.interactive) return ''
 
   const effect =
-    typeof hoverEffects[props.hoverEffect] === 'function'
-      ? hoverEffects[props.hoverEffect](props.glowColor)
-      : hoverEffects[props.hoverEffect]
+    typeof hoverEffects[props.hoverEffect] === 'function' ?
+      hoverEffects[props.hoverEffect](props.glowColor) :
+      hoverEffects[props.hoverEffect]
 
   return `transition-all duration-500 ${effect} ${intensityConfig.value.hoverBgOpacity}`
 })

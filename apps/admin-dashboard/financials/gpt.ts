@@ -13,7 +13,7 @@ const EXPERT_REQUESTS_CAP = 300
 
 interface CostConfig {
   embedding: Record<EmbeddingModel, Record<'live' | 'batch', number>>
-  chat: Record<ChatModel, Record<'live' | 'batch', { input: number, output: number }>>
+  chat: Record<ChatModel, Record<'live' | 'batch', { input: number; output: number }>>
 }
 
 // groq for free
@@ -74,7 +74,7 @@ const FREE_MODEL = GROQ_MODELS.llama70b
 function calculateHourlyRate(
   numItems: number,
   totalTokens: number,
-): { requestsPerHour: number[], tokensPerHour: number[] } {
+): { requestsPerHour: number[]; tokensPerHour: number[] } {
   const daysInMonth = 30.5
   const hoursPerDay = 24
   const quarters = [
@@ -108,7 +108,7 @@ function calculateHourlyRate(
 }
 
 function determineGroqModel(
-  hourlyRates: { requestsPerHour: number[], tokensPerHour: number[] },
+  hourlyRates: { requestsPerHour: number[]; tokensPerHour: number[] },
   currentModel: GroqModelConfig = GROQ_MODELS.llama70b,
 ): GroqModelConfig {
   const models = Object.values(GROQ_MODELS) // Convert model object to array for easier processing
@@ -120,8 +120,8 @@ function determineGroqModel(
   // Find a model that can handle the peak hourly request and token rates
   const suitableModel = models.find(
     (model) =>
-      model.requestsPerMinute * 60 >= peakRequestsPerHour
-      && model.tokensPerMinute * 60 >= peakTokensPerHour,
+      model.requestsPerMinute * 60 >= peakRequestsPerHour &&
+      model.tokensPerMinute * 60 >= peakTokensPerHour,
   )
 
   return suitableModel || currentModel // Return the found model or default back to the current if none found
@@ -347,7 +347,7 @@ export interface ChatGPTResult {
 
 function calculateChatGPTUsageCost(
   freeUsers: number,
-  customers: { pro: number, expert: number },
+  customers: { pro: number; expert: number },
 ): ChatGPTResult {
   const totalMauUsingChatGPT = Math.floor(freeUsers * PERCENTAGE_MAU_USING_CHAT)
   const totalFreeRequests = totalMauUsingChatGPT * AVG_FREE_REQUESTS_PER_USER

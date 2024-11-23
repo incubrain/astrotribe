@@ -117,6 +117,10 @@
     @apply !border-zinc-700;
   }
 
+  .divider-color {
+    @apply !divide-zinc-700;
+  }
+
   .border-inverted {
     @apply border-zinc-300;
   }

@@ -64,9 +64,9 @@ export default {
         'text-surface-50 text-white/70': !context.focused && !context.active,
         'text-surface-50 text-white/70 bg-surface-500/20': context.focused && !context.active,
         'bg-surface-500/20':
-          (context.focused && context.active) ||
-          context.active ||
-          (!context.focused && context.active),
+          (context.focused && context.active)
+          || context.active
+          || (!context.focused && context.active),
       },
 
       // Hover States

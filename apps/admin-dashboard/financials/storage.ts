@@ -215,26 +215,26 @@ function calculateStorageCost(params: SupabaseCostParams): SupabaseCostBreakdown
     storagePricePerGB,
   } = SUPABASE_CONFIG.pro
 
-  const additionalMauCost
-    = monthlyActiveUsers > mauIncluded ? (monthlyActiveUsers - mauIncluded) * mauPrice : 0
+  const additionalMauCost =
+    monthlyActiveUsers > mauIncluded ? (monthlyActiveUsers - mauIncluded) * mauPrice : 0
 
-  const additionalDbStorageCost
-    = dbStorageGB > dbIncludedGB ? (dbStorageGB - dbIncludedGB) * dbPricePerGB : 0
+  const additionalDbStorageCost =
+    dbStorageGB > dbIncludedGB ? (dbStorageGB - dbIncludedGB) * dbPricePerGB : 0
 
-  const additionalBandwidthCost
-    = bandwidthGB > bandwidthIncludedGB
-      ? (bandwidthGB - bandwidthIncludedGB) * bandwidthPricePerGB
-      : 0
+  const additionalBandwidthCost =
+    bandwidthGB > bandwidthIncludedGB ?
+      (bandwidthGB - bandwidthIncludedGB) * bandwidthPricePerGB :
+      0
 
-  const additionalFileStorageCost
-    = fileStorageGB > storageIncludedGB ? (fileStorageGB - storageIncludedGB) * storagePricePerGB : 0
+  const additionalFileStorageCost =
+    fileStorageGB > storageIncludedGB ? (fileStorageGB - storageIncludedGB) * storagePricePerGB : 0
 
-  const totalCost
-    = basePrice
-    + additionalMauCost
-    + additionalDbStorageCost
-    + additionalBandwidthCost
-    + additionalFileStorageCost
+  const totalCost =
+    basePrice +
+    additionalMauCost +
+    additionalDbStorageCost +
+    additionalBandwidthCost +
+    additionalFileStorageCost
 
   return {
     total: parseFloat(totalCost.toFixed(3)),

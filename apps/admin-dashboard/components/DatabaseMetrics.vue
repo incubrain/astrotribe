@@ -46,11 +46,11 @@ const dummyCalculateTableGrowth = (
   tableName: string,
   timePeriod: string,
   numPeriods: number,
-): Promise<{ data: GrowthData[], error: any }> => {
+): Promise<{ data: GrowthData[]; error: any }> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const baseCount
-        = {
+      const baseCount =
+        {
           companies: 1000,
           users: 10000,
           products: 5000,

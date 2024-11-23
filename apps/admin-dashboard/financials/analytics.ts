@@ -20,7 +20,7 @@ export interface AnalyticsResult {
   }
 }
 
-function calculateTieredCost(quantity: number, tiers: { limit: number, price: number }[]) {
+function calculateTieredCost(quantity: number, tiers: { limit: number; price: number }[]) {
   let cost = 0
   let remainingQuantity = quantity
 

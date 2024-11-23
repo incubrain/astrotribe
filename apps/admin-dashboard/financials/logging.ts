@@ -49,16 +49,16 @@ function estimateUsage(params: LogsCostParams): UsageParams {
   const { MAU, month, avgMauUsage, teamMembers } = params
 
   const ingestedGB = MAU * avgMauUsage
-  const additionalIngestedGB
-    = ingestedGB > LOGS_CONFIG.includedGB ? ingestedGB - LOGS_CONFIG.includedGB : 0
+  const additionalIngestedGB =
+    ingestedGB > LOGS_CONFIG.includedGB ? ingestedGB - LOGS_CONFIG.includedGB : 0
 
   const retentionGB = ingestedGB * (month > 6 ? 1 : 0) // Retention is applied only after the first 6 months
 
   const metricsIngestedDataPoints = MAU * 300 // Assuming 300 data points per MAU, 30 per day
-  const additionalMetricsDataPoints
-    = metricsIngestedDataPoints > LOGS_METRIC_CONFIG.includedDataPoints
-      ? metricsIngestedDataPoints - LOGS_METRIC_CONFIG.includedDataPoints
-      : 0
+  const additionalMetricsDataPoints =
+    metricsIngestedDataPoints > LOGS_METRIC_CONFIG.includedDataPoints ?
+      metricsIngestedDataPoints - LOGS_METRIC_CONFIG.includedDataPoints :
+      0
 
   return {
     MAU,
@@ -105,8 +105,8 @@ export function calculateLogsCost(params: LogsCostParams): LoggingResult {
       analytics: USD2INR(analyticsCost),
     }
   } else {
-    const { includedGB, additionalGBPrice, retentionPricePerGBPerMonth, minimumCharge }
-      = LOGS_CONFIG
+    const { includedGB, additionalGBPrice, retentionPricePerGBPerMonth, minimumCharge } =
+      LOGS_CONFIG
 
     // Calculate ingested cost
     const ingestedCost = additionalIngestedGB * additionalGBPrice
@@ -115,8 +115,8 @@ export function calculateLogsCost(params: LogsCostParams): LoggingResult {
     const retentionCost = retentionGB * retentionPricePerGBPerMonth
 
     // Calculate metrics cost
-    const metricsCost
-      = (additionalMetricsDataPoints / 10_000_000) * LOGS_METRIC_CONFIG.additionalDataPointsPrice
+    const metricsCost =
+      (additionalMetricsDataPoints / 10_000_000) * LOGS_METRIC_CONFIG.additionalDataPointsPrice
 
     // Calculate analytics cost
     const analyticsCost = teamMembers * LOGS_ANALYTICS_CONFIG.pricePerMember

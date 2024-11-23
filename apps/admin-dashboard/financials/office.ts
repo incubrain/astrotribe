@@ -56,16 +56,16 @@ export function calculateOfficeCosts(employees: number): OfficeResult {
   const insuranceCost = haveOffice ? OFFICE_SPACE.insurance : 0
   const maintenanceCost = haveOffice ? OFFICE_SPACE.maintenance : 0
 
-  const total
-    = spaceCost
-    + officeSuppliesCost
-    + utilitiesCost
-    + snacksCoffeeCost
-    + miscellaneousCost
-    + internetPhoneCost
-    + cleaningServicesCost
-    + insuranceCost
-    + maintenanceCost
+  const total =
+    spaceCost +
+    officeSuppliesCost +
+    utilitiesCost +
+    snacksCoffeeCost +
+    miscellaneousCost +
+    internetPhoneCost +
+    cleaningServicesCost +
+    insuranceCost +
+    maintenanceCost
 
   console.log('officeCost', {
     total,

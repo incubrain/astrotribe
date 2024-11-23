@@ -54,24 +54,24 @@ const normalizeFrontendLog = (log: any): NormalizedLogEntry => ({
 })
 
 // Function to normalize logs from all sources
-const normalizeAllLogs = (logs: { source: string, entries: any[] }[]): NormalizedLogEntry[] => {
+const normalizeAllLogs = (logs: { source: string; entries: any[] }[]): NormalizedLogEntry[] => {
   return logs.flatMap((sourceLog) => {
     console.log('sourceLog', sourceLog)
-    const normalizer
-      = sourceLog.source === 'DB'
-        ? normalizeDatabaseLog
-        : sourceLog.source === 'API'
-          ? normalizeAPILog
-          : sourceLog.source === 'Frontend'
-            ? normalizeFrontendLog
-            : (log: any) => ({ ...log, source: sourceLog.source, count: 1 }) // Default normalizer
+    const normalizer =
+      sourceLog.source === 'DB' ?
+        normalizeDatabaseLog :
+        sourceLog.source === 'API' ?
+          normalizeAPILog :
+          sourceLog.source === 'Frontend' ?
+            normalizeFrontendLog :
+            (log: any) => ({ ...log, source: sourceLog.source, count: 1 }) // Default normalizer
 
     return sourceLog.entries.map(normalizer)
   })
 }
 
 const props = defineProps<{
-  logs: { source: string, entries: any[] }[]
+  logs: { source: string; entries: any[] }[]
 }>()
 
 const normalizedLogs = computed(() => normalizeAllLogs(props.logs))

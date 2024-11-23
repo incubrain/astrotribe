@@ -3,7 +3,7 @@ import { calculateCostPerUser, type CostPerUser } from './metrics-users'
 import { INCOME_STREAMS } from './customers'
 import { metricConfig } from './totals'
 
-function calculateRecurringRevenue(revenue: { free: number, pro: number, expert: number }) {
+function calculateRecurringRevenue(revenue: { free: number; pro: number; expert: number }) {
   const freeMRR = revenue.free
   const proMRR = revenue.pro
   const expertMRR = revenue.expert
@@ -31,8 +31,8 @@ function calculateRecurringRevenue(revenue: { free: number, pro: number, expert:
 }
 
 interface ARPU {
-  MRR: { free: number, pro: number, expert: number }
-  users: { free: number, pro: number, expert: number }
+  MRR: { free: number; pro: number; expert: number }
+  users: { free: number; pro: number; expert: number }
 }
 function calculateAverageRevenuePerUser({ MRR, users }: ARPU) {
   const totalUsers = users.free + users.pro + users.expert
@@ -51,7 +51,7 @@ interface CLVParams {
     pro: number
     expert: number
   }
-  lifespan: { free: number, pro: number, expert: number }
+  lifespan: { free: number; pro: number; expert: number }
 }
 
 function calculateCustomerLifetimeValue(params: CLVParams) {
@@ -68,7 +68,7 @@ function calculateCustomerLifetimeValue(params: CLVParams) {
 
 interface CACParams {
   totalMarketingCosts: number
-  newUsers: { free: number, pro: number, expert: number }
+  newUsers: { free: number; pro: number; expert: number }
 }
 
 function calculateCustomerAcquisitionCost({ totalMarketingCosts, newUsers }: CACParams) {
@@ -88,7 +88,7 @@ function calculateCustomerAcquisitionCost({ totalMarketingCosts, newUsers }: CAC
   }
 }
 
-function calculateRetentionRate(churnRate: { free: number, pro: number, expert: number }) {
+function calculateRetentionRate(churnRate: { free: number; pro: number; expert: number }) {
   return {
     average: 100 - ((churnRate.free + churnRate.pro + churnRate.expert) * 100) / 3,
     free: 100 - churnRate.free * 100,
@@ -103,13 +103,13 @@ function calculateConversionRates(users: {
   pro: number
   expert: number
 }) {
-  return users.mau > 0
-    ? {
-        total: parseInt((((users.pro + users.expert) / users.mau) * 100).toFixed(0)),
-        pro: parseInt(((users.pro / users.mau) * 100).toFixed(0)),
-        expert: parseInt(((users.expert / users.mau) * 100).toFixed(0)),
-      }
-    : { total: 0, pro: 0, expert: 0 }
+  return users.mau > 0 ?
+    {
+      total: parseInt((((users.pro + users.expert) / users.mau) * 100).toFixed(0)),
+      pro: parseInt(((users.pro / users.mau) * 100).toFixed(0)),
+      expert: parseInt(((users.expert / users.mau) * 100).toFixed(0)),
+    } :
+    { total: 0, pro: 0, expert: 0 }
 }
 
 function calculateGrossMargin(revenue: number, costOfGoodsSold: number) {
@@ -267,8 +267,8 @@ export function calculateAllMetrics(params: AllMetricsParams): AllMetrics {
     },
   })
 
-  const effectiveRevenue
-    = revenue.free + revenue.pro + revenue.expert - refund.total.cost - churn.total.cost
+  const effectiveRevenue =
+    revenue.free + revenue.pro + revenue.expert - refund.total.cost - churn.total.cost
   const recurringRevenue = calculateRecurringRevenue(revenue)
 
   const freeLifespan = CHURN_TO_LIFESPAN_MONTHS(churn.free.rate)

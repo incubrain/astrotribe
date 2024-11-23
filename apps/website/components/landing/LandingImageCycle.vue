@@ -38,8 +38,8 @@ onUnmounted(() => {
     >
       <div
         v-for="(image, index) in images"
-        :key="image"
         v-show="index === currentImageIndex"
+        :key="image"
         class="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000"
         :style="{ backgroundImage: `url(${image})` }"
       ></div>
