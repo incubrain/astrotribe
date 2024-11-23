@@ -76,8 +76,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'submit', data: Partial<Folder>): void
-  (e: 'cancel'): void
-  (e: 'delete'): void
+  (e: 'cancel' | 'delete'): void
 }>()
 
 const formData = ref(

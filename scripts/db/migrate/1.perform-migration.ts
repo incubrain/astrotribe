@@ -2,7 +2,10 @@
 import { exec } from 'child_process'
 import * as path from 'path'
 import * as fs from 'fs'
+import { fileURLToPath } from 'url'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const migrationName = process.argv[2]
 
 if (!migrationName) {
@@ -10,9 +13,8 @@ if (!migrationName) {
   process.exit(1)
 }
 
-const migrationsDir = path.resolve('supabase/migrations')
-const __dirname = path.resolve()
-const fixMigrationScript = path.resolve(__dirname, 'fix-migration.ts')
+const migrationsDir = path.resolve('../../../supabase/migrations')
+const fixMigrationScript = path.resolve(__dirname, '2.fix-migration.ts')
 
 console.log(`\nStarting migration: ${migrationName}\n`)
 

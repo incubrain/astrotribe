@@ -1,9 +1,6 @@
 import pool from 'pg-pool'
-import { cleanUpTestData } from '../libs/db-testing/src/data-inserter'
-
-const client = new pool({
-  connectionString: process.env.DATABASE_URL,
-})
+import { cleanUpTestData } from '../../libs/db-testing/src/data-inserter'
+import client from './client'
 
 async function runCleanup() {
   try {
