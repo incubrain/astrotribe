@@ -1,0 +1,267 @@
+// src/cli/generate-permissions.ts
+import { fileURLToPath } from 'url'
+import path, { dirname } from 'path'
+import fs from 'fs/promises'
+import Pool from 'pg-pool'
+import dotenv from 'dotenv'
+import { SchemaAnalyzer } from '../../../generators/schema-analyzer'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+dotenv.config({
+  path: path.resolve(process.cwd(), '.env'),
+  override: true,
+})
+
+// Validate database connection string
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL environment variable is not set')
+  process.exit(1)
+}
+
+interface TableGroup {
+  description: string
+  tables: string[]
+  default_permissions: string[]
+  requires_user_check?: boolean
+  audit_level: 'low' | 'medium' | 'high' | 'critical'
+}
+
+interface TableGroups {
+  [key: string]: TableGroup
+}
+
+function categorizeTable(tableName: string, schemas: any[]): string {
+  // Reference tables
+  if (
+    [
+      'categories',
+      'cities',
+      'countries',
+      'tags',
+      'content_categories',
+      'content_tags',
+      'metric_definitions',
+    ].includes(tableName)
+  ) {
+    return 'reference_tables'
+  }
+
+  // Public content tables
+  if (
+    ['companies', 'news', 'research', 'contents', 'newsletters', 'content_sources'].includes(
+      tableName,
+    )
+  ) {
+    return 'public_content_tables'
+  }
+
+  // User content tables
+  if (
+    [
+      'bookmarks',
+      'bookmark_folders',
+      'comments',
+      'feeds',
+      'feed_categories',
+      'votes',
+      'follows',
+      'feedbacks',
+      'user_followers',
+    ].includes(tableName)
+  ) {
+    return 'user_content_tables'
+  }
+
+  // User data tables
+  if (['user_profiles', 'addresses', 'contacts', 'searches'].includes(tableName)) {
+    return 'user_data_tables'
+  }
+
+  // Security tables
+  if (
+    tableName.includes('permission') ||
+    tableName.includes('blacklist') ||
+    tableName.includes('customer_') ||
+    tableName.includes('payment')
+  ) {
+    return 'security_tables'
+  }
+
+  // Operational tables (default for remaining tables)
+  return 'operational_tables'
+}
+
+async function generatePermissions() {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  })
+
+  try {
+    // Test connection
+    await pool.query('SELECT NOW()')
+    console.log('Database connection successful')
+
+    const analyzer = new SchemaAnalyzer(pool)
+    const schemas = await analyzer.analyzeDatabase()
+
+    // Initialize table groups
+    const tableGroups: TableGroups = {
+      reference_tables: {
+        description:
+          'Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.',
+        tables: [],
+        default_permissions: ['select'],
+        audit_level: 'low',
+      },
+      public_content_tables: {
+        description:
+          "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
+        tables: [],
+        default_permissions: ['select'],
+        audit_level: 'medium',
+      },
+      user_content_tables: {
+        description:
+          'User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.',
+        tables: [],
+        default_permissions: [],
+        requires_user_check: true,
+        audit_level: 'medium',
+      },
+      user_data_tables: {
+        description:
+          'Sensitive personal user information and account data. These tables contain private user information and require strict access controls.',
+        tables: [],
+        default_permissions: [],
+        requires_user_check: true,
+        audit_level: 'high',
+      },
+      operational_tables: {
+        description:
+          'Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.',
+        tables: [],
+        default_permissions: [],
+        audit_level: 'high',
+      },
+      security_tables: {
+        description:
+          'Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.',
+        tables: [],
+        default_permissions: [],
+        audit_level: 'critical',
+      },
+    }
+
+    // Categorize tables
+    schemas.forEach((schema) => {
+      const groupKey = categorizeTable(schema.name, schemas)
+      if (tableGroups[groupKey]) {
+        tableGroups[groupKey].tables.push(schema.name)
+      }
+    })
+
+    // Generate role permissions configuration
+    const config = {
+      table_groups: tableGroups,
+      roles: {
+        super_admin: {
+          all_tables: {
+            permissions: ['select', 'insert', 'update', 'delete'],
+          },
+        },
+        admin: {
+          inherit_from: ['super_admin'],
+          security_tables: {
+            permissions: ['select', 'insert', 'update'],
+          },
+        },
+        moderator: {
+          inherit_from: ['admin'],
+          operational_tables: {
+            permissions: ['select', 'update'],
+            conditions: {
+              select: {
+                sql: 'is_active = true',
+              },
+              update: {
+                sql: "is_active = true AND status = 'pending_review'",
+              },
+            },
+          },
+        },
+        user: {
+          inherit_from: ['guest'],
+          user_content_tables: {
+            permissions: ['select', 'insert', 'update', 'delete'],
+            conditions: {
+              select: {
+                sql: 'auth.uid() = user_id OR is_public = true',
+              },
+              insert: {
+                sql: 'auth.uid() = user_id',
+              },
+              update: {
+                sql: 'auth.uid() = user_id',
+              },
+              delete: {
+                sql: 'auth.uid() = user_id',
+              },
+            },
+          },
+          user_data_tables: {
+            permissions: ['select', 'insert', 'update', 'delete'],
+            conditions: {
+              select: {
+                sql: 'auth.uid() = user_id',
+              },
+              insert: {
+                sql: 'auth.uid() = user_id',
+              },
+              update: {
+                sql: 'auth.uid() = user_id',
+              },
+              delete: {
+                sql: 'auth.uid() = user_id',
+              },
+            },
+          },
+        },
+        guest: {
+          reference_tables: {
+            permissions: ['select'],
+          },
+          public_content_tables: {
+            permissions: ['select'],
+          },
+        },
+      },
+    }
+
+    // Ensure output directory exists
+    const outputDir = path.join(__dirname, '../generated')
+    await fs.mkdir(outputDir, { recursive: true })
+
+    // Write configuration
+    await fs.writeFile(
+      path.join(outputDir, 'role-permissions.json'),
+      JSON.stringify(config, null, 2),
+    )
+
+    console.log('Successfully generated role permissions configuration!')
+  } catch (error) {
+    console.error('Error generating permissions:', error)
+    process.exit(1)
+  } finally {
+    await pool.end()
+  }
+}
+
+// Run if called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  generatePermissions()
+}
+
+export { generatePermissions }

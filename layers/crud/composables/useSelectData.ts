@@ -4,7 +4,7 @@ import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 import { useRateLimit } from './useRateLimit'
 
-export default function useSelectData<T extends { id: string | number }>(
+export function useSelectData<T extends { id: string | number }>(
   tableName: string,
   options: {
     columns?: string
