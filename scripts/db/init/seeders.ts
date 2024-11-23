@@ -1,6 +1,64 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID, generateUniqueId, generateUniqueUrl } from './seed-helpers'
+import {
+  bulkInsert,
+  generateUUID,
+  generateUniqueId,
+  generateUniqueUrl,
+  generateUniqueValue,
+} from './seed-helpers'
+
+// Add to your seed-helpers.ts or create a new helpers file
+
+const formatTimeWithZone = (date: Date) => {
+  return (
+    date.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'UTC',
+    }) + '+00'
+  )
+}
+
+export async function createContentStatuses(
+  pool: Pool,
+  contents: Array<{ id: string; content_status: string }>,
+  entityType: string, // e.g., 'news', 'research', 'company'
+) {
+  const statuses = contents.map((content) => ({
+    id: generateUUID(),
+    content_id: content.id,
+    content_status: content.content_status,
+    notes: `Initial ${entityType} status`,
+    created_at: new Date(),
+  }))
+
+  await bulkInsert(pool, 'content_statuses', statuses)
+  return statuses
+}
+
+// Helper to ensure we use consistent status transitions
+export const getContentStatusFlow = (entityType: string) => {
+  const commonStatuses = [
+    'draft',
+    'pending_agent_review',
+    'pending_human_review',
+    'published',
+    'archived',
+  ] as const
+
+  // Add entity-specific statuses
+  switch (entityType) {
+    case 'news':
+      return [...commonStatuses, 'pending_relevance_check', 'scraped', 'outdated', 'updated']
+    case 'research':
+      return [...commonStatuses, 'pending_crawl', 'irrelevant']
+    default:
+      return commonStatuses
+  }
+}
 
 // Define TypeScript types from the enums
 type AccessLevel = 'viewer' | 'editor' | 'admin' | 'super_admin'
@@ -159,139 +217,6 @@ export async function seedContents(pool: Pool, count: number) {
 
   await bulkInsert(pool, 'contents', contents)
   return contents
-}
-
-export async function seedCompanies(pool: Pool, contentIds: string[]) {
-  const companies = contentIds.map((id) => ({
-    id,
-    name: faker.company.name(),
-    url: faker.internet.url(),
-    description: faker.company.catchPhrase(),
-    category: faker.company.buzzPhrase(),
-    content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']),
-    is_english: true,
-    founding_year: faker.number.int({ min: 1900, max: 2024 }),
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
-  }))
-
-  await bulkInsert(pool, 'companies', companies)
-  return companies
-}
-
-export async function seedNews(pool: Pool, contentIds: string[], companyIds: string[]) {
-  // Create a set for tracking used URLs
-  const usedUrls = new Set<string>()
-
-  const news = contentIds.map((id) => ({
-    // Required fields with non-null constraints
-    id,
-    url: generateUniqueUrl(usedUrls, 'https://', '.com/news'),
-    category_id: 16n, // Default from schema
-    has_summary: false, // Default from schema
-    scrape_frequency: 'daily' as const, // Default from schema
-    content_status: faker.helpers.arrayElement([
-      'draft',
-      'pending_agent_action',
-      'pending_agent_review',
-      'pending_human_review',
-      'pending_relevance_check',
-      'irrelevant',
-      'scheduled',
-      'unpublished',
-      'archived',
-      'published',
-      'failed',
-      'pending_crawl',
-      'scraped',
-      'outdated',
-      'updated',
-      'new',
-    ] as const),
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
-
-    // Optional fields
-    title: faker.lorem.sentence(),
-    body: faker.lorem.paragraphs(3),
-    description: faker.lorem.paragraph(),
-    author: faker.person.fullName(),
-    company_id: faker.helpers.arrayElement(companyIds),
-    published_at: faker.date.past(),
-    hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
-    failed_count: faker.number.int({ min: 0, max: 5 }),
-    keywords: JSON.stringify(Array.from({ length: 5 }, () => faker.word.noun())),
-    score: faker.number.int({ min: 0, max: 100 }),
-    featured_image: Math.random() > 0.5 ? faker.image.url() : null,
-    scraped_at: faker.date.past(),
-  }))
-
-  await bulkInsert(pool, 'news', news)
-  return news
-}
-
-export async function seedResearch(pool: Pool, contentIds: string[]) {
-  const research = contentIds.map((id) => {
-    const year = faker.date.past().getFullYear().toString()
-    const month = (faker.date.past().getMonth() + 1).toString().padStart(2, '0')
-
-    return {
-      id,
-      title: faker.lorem.sentence(),
-      abstract: faker.lorem.paragraphs(2),
-      keywords: faker.lorem.words(5), // Changed from array to string
-      month,
-      year,
-      abstract_url: faker.internet.url(),
-      doi_url:
-        Math.random() > 0.5
-          ? `https://doi.org/10.${faker.number.int({ min: 1000, max: 9999 })}/${faker.string.alphanumeric(8)}`
-          : null,
-      pdf_url: Math.random() > 0.5 ? faker.internet.url() : null,
-      published_in: faker.company.name(),
-      // Properly format JSONB fields
-      affiliations: JSON.stringify([faker.company.name(), faker.company.name()]),
-      authors: JSON.stringify([
-        {
-          name: faker.person.fullName(),
-          email: faker.internet.email(),
-          affiliation: faker.company.name(),
-        },
-        {
-          name: faker.person.fullName(),
-          email: faker.internet.email(),
-          affiliation: faker.company.name(),
-        },
-      ]),
-      content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']),
-      is_flagged: false,
-      comments: faker.lorem.paragraph(),
-      table_count: faker.number.int({ min: 0, max: 10 }),
-      page_count: faker.number.int({ min: 10, max: 50 }),
-      summary: faker.lorem.paragraph(),
-      has_embedding: false,
-      figure_count: faker.number.int({ min: 0, max: 15 }),
-      version: 1,
-      published_at: faker.date.past(),
-      updated_at: faker.date.recent(),
-      created_at: faker.date.past(),
-      category: faker.helpers.arrayElement([
-        'Computer Science',
-        'Physics',
-        'Mathematics',
-        'Biology',
-        'Chemistry',
-        'Engineering',
-        'Medicine',
-        'Economics',
-        'Psychology',
-        'Social Sciences',
-      ]),
-    }
-  })
-
-  await bulkInsert(pool, 'research', research)
-  return research
 }
 
 export async function seedBookmarkFolders(pool: Pool, userIds: string[]) {
@@ -688,12 +613,106 @@ export async function seedCategories(pool: Pool, count: number) {
   return categories
 }
 
+export async function seedNews(pool: Pool, contentIds: string[], companyIds: string[]) {
+  const usedUrls = new Set<string>()
+  const newsStatuses = getContentStatusFlow('news')
+
+  const news = contentIds.map((id) => {
+    const contentStatus = faker.helpers.arrayElement(newsStatuses)
+    return {
+      id,
+      url: generateUniqueUrl(usedUrls, 'https://', '.com/news'),
+      category_id: 16n,
+      has_summary: false,
+      scrape_frequency: 'daily' as const,
+      content_status: contentStatus,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+      title: faker.lorem.sentence(),
+      body: faker.lorem.paragraphs(3),
+      description: faker.lorem.paragraph(),
+      author: faker.person.fullName(),
+      company_id: faker.helpers.arrayElement(companyIds),
+      published_at: faker.date.past(),
+      hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
+      failed_count: faker.number.int({ min: 0, max: 5 }),
+      keywords: JSON.stringify(Array.from({ length: 5 }, () => faker.word.noun())),
+      score: faker.number.int({ min: 0, max: 100 }),
+      featured_image: Math.random() > 0.5 ? faker.image.url() : null,
+      scraped_at: faker.date.past(),
+    }
+  })
+
+  // First insert the news entries
+  await bulkInsert(pool, 'news', news)
+
+  // Then create corresponding content statuses
+  await createContentStatuses(pool, news, 'news')
+
+  return news
+}
+
+export async function seedResearch(pool: Pool, contentIds: string[]) {
+  const usedUrls = new Set<string>()
+  const researchStatuses = getContentStatusFlow('research')
+
+  const research = contentIds.map((id) => {
+    const contentStatus = faker.helpers.arrayElement(researchStatuses)
+    return {
+      id,
+      title: faker.lorem.sentence(),
+      abstract: faker.lorem.paragraphs(2),
+      abstract_url: generateUniqueUrl(usedUrls, 'https://', '.com/research'),
+      authors: JSON.stringify([{ name: faker.person.fullName(), email: faker.internet.email() }]),
+      content_status: contentStatus,
+      published_at: faker.date.past(),
+      created_at: faker.date.past(),
+      keywords: faker.lorem.words(5),
+      affiliations: JSON.stringify([faker.company.name()]),
+    }
+  })
+
+  // Insert research entries
+  await bulkInsert(pool, 'research', research)
+
+  // Create corresponding content statuses
+  await createContentStatuses(pool, research, 'research')
+
+  return research
+}
+
+export async function seedCompanies(pool: Pool, contentIds: string[]) {
+  const companies = contentIds.map((id) => {
+    const contentStatus = faker.helpers.arrayElement(['draft', 'published', 'archived'] as const)
+    return {
+      id,
+      name: faker.company.name(),
+      url: faker.internet.url(),
+      description: faker.company.catchPhrase(),
+      category: faker.company.buzzPhrase(),
+      content_status: contentStatus,
+      is_english: true,
+      founding_year: faker.number.int({ min: 1900, max: 2024 }),
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    }
+  })
+
+  // Insert company entries
+  await bulkInsert(pool, 'companies', companies)
+
+  // Create corresponding content statuses
+  await createContentStatuses(pool, companies, 'company')
+
+  return companies
+}
+
 export async function seedNewsletters(pool: Pool, contentIds: string[]) {
-  const frequencies = ['daily', 'weekly', 'monthly']
   const newsletters = contentIds.map((id) => {
     const startDate = faker.date.future()
-    const frequency = faker.helpers.arrayElement(frequencies)
-    // Calculate end date based on frequency
+    const frequency = faker.helpers.arrayElement(['daily', 'weekly', 'monthly'])
+    const contentStatus = faker.helpers.arrayElement(['draft', 'scheduled', 'published'] as const)
+
     const endDate = new Date(startDate)
     switch (frequency) {
       case 'daily':
@@ -713,18 +732,260 @@ export async function seedNewsletters(pool: Pool, contentIds: string[]) {
       frequency,
       start_date: startDate,
       end_date: endDate,
-      content_status: faker.helpers.arrayElement([
-        'draft',
-        'pending_agent_review',
-        'scheduled',
-        'published',
-      ] as ContentStatus[]),
+      content_status: contentStatus,
       generated_content: faker.lorem.paragraphs(5),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     }
   })
 
+  // Insert newsletter entries
   await bulkInsert(pool, 'newsletters', newsletters)
+
+  // Create corresponding content statuses
+  await createContentStatuses(pool, newsletters, 'newsletter')
+
   return newsletters
+}
+
+export async function seedFeedCategories(pool: Pool, feedIds: string[], categoryIds: number[]) {
+  // Track used IDs
+  const usedIds = new Set<number>()
+
+  // Create feed categories - each feed will have 1-3 categories
+  const feedCategories = feedIds.flatMap((feedId) =>
+    // For each feed, create 1-3 category associations
+    Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => ({
+      id: generateUniqueId(1, 99999, usedIds),
+      feed_id: feedId,
+      category_id: faker.helpers.arrayElement(categoryIds),
+      created_at: faker.date.past(),
+    })),
+  )
+
+  await bulkInsert(pool, 'feed_categories', feedCategories)
+  return feedCategories
+}
+
+export async function seedFeeds(pool: Pool, userIds: string[]) {
+  const feeds = Array.from({ length: faker.number.int({ min: 20, max: 50 }) }, () => ({
+    id: generateUUID(),
+    name: faker.helpers.arrayElement([
+      'Industry News',
+      'Company Updates',
+      'Research Digest',
+      'Tech Trends',
+      'Market Analysis',
+      'Competitor Watch',
+      'Innovation Feed',
+      'Startup News',
+    ]),
+    user_id: faker.helpers.arrayElement(userIds),
+    created_at: faker.date.past(),
+  }))
+
+  await bulkInsert(pool, 'feeds', feeds)
+  return feeds
+}
+
+export async function seedContentCategories(
+  pool: Pool,
+  contentIds: string[],
+  categoryIds: number[],
+) {
+  // Track combinations to ensure no duplicates
+  const usedCombinations = new Set<string>()
+  const contentCategories: Array<{
+    content_id: string
+    category_id: number
+    is_primary: boolean
+  }> = []
+
+  // Each content should have 1-3 categories, with one primary
+  for (const contentId of contentIds) {
+    // Randomly select how many categories this content will have (1-3)
+    const numCategories = faker.number.int({ min: 1, max: 3 })
+
+    // Shuffle and take first n categories
+    const selectedCategoryIds = faker.helpers.shuffle([...categoryIds]).slice(0, numCategories)
+
+    // First category will be primary
+    selectedCategoryIds.forEach((categoryId, index) => {
+      const combinationKey = `${contentId}-${categoryId}`
+
+      if (!usedCombinations.has(combinationKey)) {
+        usedCombinations.add(combinationKey)
+        contentCategories.push({
+          content_id: contentId,
+          category_id: categoryId,
+          is_primary: index === 0, // First category is primary
+        })
+      }
+    })
+  }
+
+  await bulkInsert(pool, 'content_categories', contentCategories)
+  return contentCategories
+}
+
+export async function seedContentTags(pool: Pool, contentIds: string[], tagIds: number[]) {
+  // Track combinations to ensure no duplicates
+  const usedCombinations = new Set<string>()
+  const contentTags: Array<{
+    content_id: string
+    tag_id: number
+  }> = []
+
+  // Each content can have 0-5 tags
+  for (const contentId of contentIds) {
+    // Randomly select how many tags this content will have (0-5)
+    const numTags = faker.number.int({ min: 0, max: 5 })
+
+    // Shuffle and take first n tags
+    const selectedTagIds = faker.helpers.shuffle([...tagIds]).slice(0, numTags)
+
+    selectedTagIds.forEach((tagId) => {
+      const combinationKey = `${contentId}-${tagId}`
+
+      if (!usedCombinations.has(combinationKey)) {
+        usedCombinations.add(combinationKey)
+        contentTags.push({
+          content_id: contentId,
+          tag_id: tagId,
+        })
+      }
+    })
+  }
+
+  await bulkInsert(pool, 'content_tags', contentTags)
+  return contentTags
+}
+
+export async function seedTags(pool: Pool) {
+  // Common tags that might be used across different content
+  const commonTags = [
+    'Technology',
+    'Innovation',
+    'AI',
+    'Machine Learning',
+    'Cloud Computing',
+    'Sustainability',
+    'Green Tech',
+    'Renewable Energy',
+    'FinTech',
+    'Blockchain',
+    'Healthcare',
+    'Biotech',
+    'Digital Transformation',
+    'IoT',
+    'Cybersecurity',
+    'Remote Work',
+    'Future of Work',
+    'E-commerce',
+    'Supply Chain',
+    'Data Science',
+    'Space Tech',
+    'Quantum Computing',
+    'AR/VR',
+    '5G',
+    'Robotics',
+    'Smart Cities',
+    'AgTech',
+    'EdTech',
+    'Clean Energy',
+    'Digital Health',
+  ]
+
+  // Track used values
+  const usedIds = new Set<number>()
+  const usedNames = new Set<string>()
+
+  // First create tags from our predefined list
+  const tags = commonTags.map((tagName) => {
+    usedNames.add(tagName) // Add to used names
+    return {
+      id: generateUniqueId(1, 99999, usedIds),
+      name: tagName,
+      body: faker.lorem.sentence(),
+      document_id: faker.string.uuid(),
+      published_at: faker.date.past().toISOString(),
+      locale: 'en',
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    }
+  })
+
+  // Generate additional random tags
+  const additionalTags = Array.from({ length: 20 }, () => {
+    // Generate unique name
+    const name = generateUniqueValue(
+      () => `${faker.commerce.department()} ${faker.word.noun()}`, // More variety
+      usedNames,
+      100,
+    )
+
+    return {
+      id: generateUniqueId(1, 99999, usedIds),
+      name,
+      body: faker.lorem.sentence(),
+      document_id: faker.string.uuid(),
+      published_at: faker.date.past().toISOString(),
+      locale: faker.helpers.arrayElement(['en', 'es', 'fr', 'de']),
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    }
+  })
+
+  const allTags = [...tags, ...additionalTags]
+  await bulkInsert(pool, 'tags', allTags)
+  return allTags
+}
+
+export async function seedNewsTags(pool: Pool, newsIds: string[], tagIds: number[]) {
+  // First, get the numeric IDs for the news entries
+  const { rows: newsRows } = await pool.query(
+    `
+    SELECT CAST(split_part(id::text, '-', 1) AS bigint) as news_id 
+    FROM news 
+    WHERE id = ANY($1)
+  `,
+    [newsIds],
+  )
+
+  const numericNewsIds = newsRows.map((row) => row.news_id)
+
+  // Track combinations to ensure no duplicates
+  const usedCombinations = new Set<string>()
+  const usedIds = new Set<number>()
+
+  const newsTags: Array<{
+    id: number
+    news_id: number // Changed to number for bigint compatibility
+    tag_id: number
+  }> = []
+
+  // Each news item can have 2-5 tags
+  for (const newsId of numericNewsIds) {
+    // Randomly select how many tags this news will have
+    const numTags = faker.number.int({ min: 2, max: 5 })
+
+    // Shuffle and take first n tags
+    const selectedTagIds = faker.helpers.shuffle([...tagIds]).slice(0, numTags)
+
+    selectedTagIds.forEach((tagId) => {
+      const combinationKey = `${newsId}-${tagId}`
+
+      if (!usedCombinations.has(combinationKey)) {
+        usedCombinations.add(combinationKey)
+        newsTags.push({
+          id: generateUniqueId(1, 99999, usedIds),
+          news_id: newsId,
+          tag_id: tagId,
+        })
+      }
+    })
+  }
+
+  await bulkInsert(pool, 'news_tags', newsTags)
+  return newsTags
 }

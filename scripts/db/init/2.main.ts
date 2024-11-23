@@ -2,11 +2,13 @@
 
 import chalk from 'chalk'
 import client from '../client'
+import { generatePermissions } from '../update/generate-permissions'
 import { databaseConfig } from './1.config'
 import { setAdminUser } from './create-admin'
 import { enableRLSOnAllTables } from './enable-rls'
 import { updateDatabasePermissions } from './upsert-permissions'
 import { runSeeders } from './run-seeders'
+import { updateRLSPolicies } from './create-rls-policies'
 
 async function main() {
   console.log(chalk.blue('🚀 Starting database initialization...'))
@@ -19,17 +21,33 @@ async function main() {
       if (!seedResult) {
         throw new Error('Database seeding failed')
       }
-      console.log(chalk.green('✓ Database seeding completed'))
     }
 
     // 2. Set up admin users
     if (databaseConfig.steps.setAdminUsers) {
       console.log(chalk.blue('\n👤 Setting up admin users...'))
       await setAdminUser(client, databaseConfig.admins)
-      console.log(chalk.green('✓ Admin users configured'))
     }
 
-    // 3. Enable RLS
+    // 3. Generate Permissions
+    if (databaseConfig.steps.generatePermissions) {
+      console.log(chalk.blue('\n🔑 Generating new permissions configuration...'))
+      await generatePermissions()
+      console.log(chalk.green('✓ Permissions configuration generated'))
+    }
+
+    // 4. Update Database Permissions
+    if (databaseConfig.steps.updatePermissions) {
+      console.log(chalk.blue('\n🔑 Updating database permissions...'))
+      const permissionsConfig = {} // You might want to load this from your generated file
+      const permissionsUpdated = await updateDatabasePermissions(client, permissionsConfig)
+      if (!permissionsUpdated) {
+        throw new Error('Failed to update permissions')
+      }
+      console.log(chalk.green('✓ Database permissions updated'))
+    }
+
+    // 5. Enable RLS
     if (databaseConfig.steps.enableRLS) {
       console.log(chalk.blue('\n🔒 Enabling Row Level Security...'))
       const rlsEnabled = await enableRLSOnAllTables(client)
@@ -39,14 +57,14 @@ async function main() {
       console.log(chalk.green('✓ RLS enabled'))
     }
 
-    // 4. Update permissions
-    if (databaseConfig.steps.updatePermissions) {
-      console.log(chalk.blue('\n🔑 Updating permissions...'))
-      const permissionsUpdated = await updateDatabasePermissions(client, {})
-      if (!permissionsUpdated) {
-        throw new Error('Failed to update permissions')
+    // 6. Update RLS Policies
+    if (databaseConfig.steps.updateRLSPolicies) {
+      console.log(chalk.blue('\n🔒 Updating RLS policies...'))
+      const policiesUpdated = await updateRLSPolicies(client)
+      if (!policiesUpdated) {
+        throw new Error('Failed to update RLS policies')
       }
-      console.log(chalk.green('✓ Permissions updated'))
+      console.log(chalk.green('✓ RLS policies updated'))
     }
 
     console.log(chalk.green('\n✨ Database initialization completed successfully'))
