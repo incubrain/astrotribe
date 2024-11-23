@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
-import { bulkInsert, generateUUID } from './seed-helpers'
+import { bulkInsert, generateUUID, generateUniqueId, generateUniqueUrl } from './seed-helpers'
 
 // Define TypeScript types from the enums
 type AccessLevel = 'viewer' | 'editor' | 'admin' | 'super_admin'
@@ -180,21 +180,54 @@ export async function seedCompanies(pool: Pool, contentIds: string[]) {
 }
 
 export async function seedNews(pool: Pool, contentIds: string[], companyIds: string[]) {
+  // Create a set for tracking used URLs
+  const usedUrls = new Set<string>()
+
   const news = contentIds.map((id) => ({
+    // Required fields with non-null constraints
     id,
+    url: generateUniqueUrl(usedUrls, 'https://', '.com/news'),
+    category_id: 16n, // Default from schema
+    has_summary: false, // Default from schema
+    scrape_frequency: 'daily' as const, // Default from schema
+    content_status: faker.helpers.arrayElement([
+      'draft',
+      'pending_agent_action',
+      'pending_agent_review',
+      'pending_human_review',
+      'pending_relevance_check',
+      'irrelevant',
+      'scheduled',
+      'unpublished',
+      'archived',
+      'published',
+      'failed',
+      'pending_crawl',
+      'scraped',
+      'outdated',
+      'updated',
+      'new',
+    ] as const),
+    created_at: faker.date.past(),
+    updated_at: faker.date.recent(),
+
+    // Optional fields
     title: faker.lorem.sentence(),
     body: faker.lorem.paragraphs(3),
     description: faker.lorem.paragraph(),
     author: faker.person.fullName(),
     company_id: faker.helpers.arrayElement(companyIds),
     published_at: faker.date.past(),
-    content_status: faker.helpers.arrayElement(['draft', 'published', 'archived']),
-    url: faker.internet.url(),
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
+    hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
+    failed_count: faker.number.int({ min: 0, max: 5 }),
+    keywords: JSON.stringify(Array.from({ length: 5 }, () => faker.word.noun())),
+    score: faker.number.int({ min: 0, max: 100 }),
+    featured_image: Math.random() > 0.5 ? faker.image.url() : null,
+    scraped_at: faker.date.past(),
   }))
 
   await bulkInsert(pool, 'news', news)
+  return news
 }
 
 export async function seedResearch(pool: Pool, contentIds: string[]) {
@@ -440,8 +473,11 @@ export async function seedContacts(pool: Pool, companyIds: string[], userIds: st
   ]
   const privacyLevels: PrivacyLevel[] = ['private', 'connected', 'public']
 
+  // Track used IDs
+  const usedIds = new Set<number>()
+
   const contacts = [...Array(faker.number.int({ min: 50, max: 100 }))].map(() => ({
-    id: faker.number.int({ min: 1, max: 99999 }),
+    id: generateUniqueId(1, 99999, usedIds),
     company_id: faker.helpers.arrayElement(companyIds),
     user_id: faker.helpers.arrayElement(userIds),
     email: faker.internet.email(),
