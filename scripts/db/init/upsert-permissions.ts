@@ -20,7 +20,5 @@ export async function updateDatabasePermissions(pool: Pool, config: any) {
   } catch (error) {
     console.error(chalk.red('Error upserting role permissions:'), error)
     return false
-  } finally {
-    await pool.end()
   }
 }

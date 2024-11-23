@@ -10,9 +10,6 @@ async function main() {
   console.log(chalk.blue('Starting RBA permissions update process...\n'))
 
   try {
-    // Step 1: Generate new permissions file
-    console.log(chalk.blue('Step 1: Generating new permissions configuration...'))
-    await generatePermissions()
 
     // Read the generated file
     const configPath = path.join(__dirname, '../generated/role-permissions.json')

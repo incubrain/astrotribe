@@ -12,6 +12,8 @@ const { store: categoriesStore } = useSelectData('feed_categories', {
   initialFetch: true,
 })
 
+console.log('categoriesStore', categoriesStore)
+
 const removeFeed = async () => {
   const { deleteData, isDeleting } = useDeleteData('feeds')
   await deleteData(feedId.value)
