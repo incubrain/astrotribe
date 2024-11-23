@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import chalk from 'chalk'
 import type { Pool } from 'pg'
 
@@ -23,6 +24,40 @@ export function formatValue(value: any): string {
   }
   if (typeof value === 'object') return `'${JSON.stringify(value)}'`
   return `'${value.toString().replace(/'/g, "''")}'`
+}
+
+export function generateUniqueValue<T>(
+  generator: () => T,
+  existingValues: Set<T>,
+  maxAttempts = 100,
+): T {
+  let attempts = 0
+  let value: T
+
+  do {
+    value = generator()
+    attempts++
+
+    if (attempts >= maxAttempts) {
+      throw new Error(`Failed to generate unique value after ${maxAttempts} attempts`)
+    }
+  } while (existingValues.has(value))
+
+  existingValues.add(value)
+  return value
+}
+
+// Helper to generate a integer ID within a range
+export function generateUniqueId(min: number, max: number, existingIds: Set<number>): number {
+  return generateUniqueValue(() => faker.number.int({ min, max }), existingIds)
+}
+
+// Helper to generate unique URL
+export function generateUniqueUrl(existingUrls: Set<string>, prefix = '', suffix = ''): string {
+  return generateUniqueValue(() => {
+    const uniquePart = `${faker.internet.domainWord()}-${faker.internet.domainWord()}-${faker.number.int({ min: 1000, max: 9999 })}`
+    return `${prefix}${uniquePart}${suffix}`
+  }, existingUrls)
 }
 
 // Helper to generate bulk insert SQL
