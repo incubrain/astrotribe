@@ -2,6 +2,17 @@
 import type { FuseResult } from 'fuse.js'
 import type { Folder } from '~/composables/useFolderSystem'
 
+interface Bookmark {
+  id: string
+  content_id: string
+  content_type: 'news' | 'newsletters' | 'companies' | 'research'
+  title: string
+  news?: any
+  newsletters?: any
+  companies?: any
+  research?: any
+}
+
 const { getFeatureUsage } = usePlan()
 const { folders, loading: foldersLoading } = useFolderSystem()
 const { bookmarks, loading: bookmarksLoading, fetchBookmarks } = useBookmarks()
@@ -25,7 +36,6 @@ const {
 } = useBookmarkView()
 
 const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
-const displayedBookmarks = ref<typeof bookmarks.value>([])
 
 const toggleSelection = (id: string) => {
   const index = selectedBookmarks.value.indexOf(id)
@@ -46,22 +56,6 @@ const handleBulkDelete = async () => {
   clearSelection()
 }
 
-// Search configuration
-const searchFuseOptions = {
-  keys: ['metadata.title', 'metadata.description', 'metadata.author'],
-  threshold: 0.3,
-  shouldSort: true,
-}
-
-// Handle search results
-const handleSearchResults = (results: FuseResult<any>[]) => {
-  if (results.length === 0 && !searchQuery.value) {
-    displayedBookmarks.value = bookmarks.value
-  } else {
-    displayedBookmarks.value = results.map((result) => result.item)
-  }
-}
-
 const loading = computed(() => foldersLoading.value || bookmarksLoading.value)
 
 onMounted(async () => {
@@ -71,9 +65,161 @@ onMounted(async () => {
   }
 })
 
-// Update initial display when bookmarks change
+interface BaseBookmark {
+  id: string
+  content_id: string
+  content_type: 'news' | 'newsletters' | 'companies' | 'research'
+  user_id: string
+  created_at: string
+}
+
+interface News {
+  id: string
+  title: string
+  url: string
+  description?: string
+  author?: string
+  featured_image?: string
+  published_at?: string
+  score?: number
+}
+
+interface Research {
+  id: string
+  title: string
+  abstract: string
+  abstract_url: string
+  doi_url?: string
+  published_in?: string
+  published_at?: string
+  authors?: any[]
+}
+
+interface Newsletter {
+  id: string
+  title: string
+  start_date: string
+  end_date: string
+  frequency: string
+  generated_content?: string
+}
+
+interface Company {
+  id: string
+  name: string
+  description?: string
+  logo_url?: string
+  url: string
+  founding_year?: number
+  category?: string
+}
+
+interface RawBookmark extends BaseBookmark {
+  news?: News
+  research?: Research
+  newsletters?: Newsletter
+  companies?: Company
+}
+
+interface NormalizedBookmark extends BaseBookmark {
+  title: string
+  url: string
+  description?: string
+  featured_image?: string
+  published_at?: string
+  author?: string
+  // Additional fields that might be useful
+  abstract?: string
+  doi_url?: string
+  published_in?: string
+  founding_year?: number
+  category?: string
+  score?: number
+}
+
+function normalizeBookmark(bookmark: RawBookmark): NormalizedBookmark | null {
+  const content = bookmark[bookmark.content_type]
+
+  // If no content is found, return null instead of throwing
+  if (!content) {
+    console.warn(`Content not found for bookmark ${bookmark.id} of type ${bookmark.content_type}`)
+    return null
+  }
+
+  const base: NormalizedBookmark = {
+    ...bookmark, // Keep the base bookmark properties
+  }
+
+  try {
+    switch (bookmark.content_type) {
+      case 'news':
+        return {
+          ...base,
+          ...(bookmark.news ?? {}),
+        }
+
+      case 'research':
+        return {
+          ...base,
+          ...(bookmark.research ?? {}),
+        }
+
+      case 'newsletters':
+        return {
+          ...base,
+          ...(bookmark.newsletters ?? {}),
+        }
+
+      case 'companies':
+        return {
+          ...base,
+          ...(bookmark.companies ?? {}),
+        }
+
+      default:
+        console.warn(`Unknown content type: ${bookmark.content_type} for bookmark ${bookmark.id}`)
+        return null
+    }
+  } catch (error) {
+    console.warn(`Error normalizing bookmark ${bookmark.id}:`, error)
+    return null
+  }
+}
+
+const searchFuseOptions = {
+  keys: [
+    'title',
+    'description',
+    'author',
+    'abstract', // For research
+    'name', // For companies
+  ],
+  threshold: 0.3,
+  shouldSort: true,
+}
+
+// Normalize bookmarks first
+const normalizedBookmarks = computed(() => {
+  return bookmarks.value
+    .map((bookmark) => normalizeBookmark(bookmark))
+    .filter((bookmark): bookmark is NormalizedBookmark => bookmark !== null)
+})
+
+// Use normalized bookmarks for display
+const displayedBookmarks = ref<NormalizedBookmark[]>([])
+
+// Handle search results with normalized data
+const handleSearchResults = (results: FuseResult<NormalizedBookmark>[]) => {
+  if (results.length === 0 && !searchQuery.value) {
+    displayedBookmarks.value = normalizedBookmarks.value
+  } else {
+    displayedBookmarks.value = results.map((result) => result.item)
+  }
+}
+
+// Update initial display when normalized bookmarks change
 watch(
-  () => bookmarks.value,
+  () => normalizedBookmarks.value,
   (newBookmarks) => {
     if (!searchQuery.value) {
       displayedBookmarks.value = newBookmarks
@@ -84,7 +230,7 @@ watch(
 </script>
 
 <template>
-  <div class="min-h-screen p-4 space-y-4">
+  <div class="min-h-screen p-4 gap-4 max-w-[940px] flex flex-col mx-auto lg:p-8 lg:gap-8">
     <BookmarkViewFolder v-if="!searchQuery" />
 
     <!-- Simplified toolbar without left hamburger -->
@@ -150,7 +296,7 @@ watch(
     <div class="flex">
       <!-- Main Content -->
       <div class="flex-1 overflow-auto">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="mx-auto space-y-6">
           <!-- Current Folder Info -->
           <div
             v-if="currentFolder"
@@ -179,7 +325,7 @@ watch(
           <!-- Bookmarks Grid -->
           <div
             v-else
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
           >
             <TransitionGroup
               enter-active-class="transition-all duration-300 ease-out"
@@ -208,18 +354,8 @@ watch(
                     @update:model-value="toggleSelection(bookmark.id)"
                   />
                 </div>
-
-                <NewsCard
-                  :news="{
-                    id: bookmark.content_id,
-                    title: bookmark.metadata.title,
-                    description: bookmark.metadata.description,
-                    authorName: bookmark.metadata.author || 'Unknown',
-                    featured_image: bookmark.metadata.thumbnail,
-                    url: bookmark.metadata.url,
-                    comments: 0,
-                    score: 0,
-                  }"
+                <BookmarkCard
+                  :bookmark="bookmark"
                   :class="{ 'opacity-75': selectedBookmarks.includes(bookmark.id) }"
                 />
               </div>
