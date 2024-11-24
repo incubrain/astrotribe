@@ -10,7 +10,6 @@ async function main() {
   console.log(chalk.blue('Starting RBA permissions update process...\n'))
 
   try {
-
     // Read the generated file
     const configPath = path.join(__dirname, '../generated/role-permissions.json')
     const config = JSON.parse(await fs.readFile(configPath, 'utf-8'))

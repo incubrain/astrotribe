@@ -6,6 +6,7 @@ export interface PageType {
   slug: string
   icon: string
   children?: PageType[]
+  isExpanded?: boolean
 }
 
 export interface NavigationCategory {
@@ -20,7 +21,7 @@ const navigationCategories = ref([
     label: 'Main',
     items: [
       {
-        id: 1,
+        id: '1',
         label: 'Home',
         slug: '/',
         icon: 'material-symbols:home-rounded',
@@ -43,6 +44,14 @@ const navigationCategories = ref([
         slug: '/feed/add',
         icon: 'mdi:plus',
       },
+      {
+        id: 'my-feeds',
+        label: 'My Feeds',
+        slug: '#',
+        icon: 'mdi:rss',
+        isExpanded: false,
+        children: [], // This will hold the user's custom feeds
+      },
     ],
   },
   {
@@ -50,19 +59,19 @@ const navigationCategories = ref([
     label: 'Profile',
     items: [
       {
-        id: 4,
+        id: '4',
         label: 'Upvoted',
         slug: '/profile/votes/upvoted',
         icon: 'mdi:arrow-up-bold',
       },
       {
-        id: 5,
+        id: '5',
         label: 'Downvoted',
         slug: '/profile/votes/downvoted',
         icon: 'mdi:arrow-down-bold',
       },
       {
-        id: 6,
+        id: '6',
         label: 'Bookmarks',
         slug: '/profile/bookmarks',
         icon: 'mdi:bookmark-outline',
@@ -77,9 +86,10 @@ export default function usePages() {
 
   const addFeed = (id: string, label: string) => {
     const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+    const myFeeds = newsCategory.items.find((item) => item.id === 'my-feeds')
 
-    if (!newsCategory.items.some((item) => item.id === id)) {
-      newsCategory.items.push({
+    if (myFeeds && !myFeeds.children.some((feed) => feed.id === id)) {
+      myFeeds.children.push({
         id,
         label,
         slug: `/feed/${id}`,
@@ -90,10 +100,13 @@ export default function usePages() {
 
   const deleteFeed = (feedId: string) => {
     const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
-    const index = newsCategory.items.findIndex((item) => item.id == feedId)
+    const myFeeds = newsCategory.items.find((item) => item.id === 'my-feeds')
 
-    if (index > -1) {
-      newsCategory.items.splice(index, 1)
+    if (myFeeds) {
+      const index = myFeeds.children.findIndex((item) => item.id === feedId)
+      if (index > -1) {
+        myFeeds.children.splice(index, 1)
+      }
     }
   }
 
@@ -113,12 +126,17 @@ export default function usePages() {
             return
           }
 
-          // Add custom feeds to the News category
           const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
-          if (newsCategory) {
+          const myFeeds = newsCategory?.items.find((item) => item.id === 'my-feeds')
+
+          if (myFeeds) {
+            // Clear existing feeds before adding new ones
+            myFeeds.children = []
+
+            // Add custom feeds to My Feeds
             data.forEach((feed) => {
-              if (!newsCategory.items.some((item) => item.id === feed.id)) {
-                newsCategory.items.push({
+              if (!myFeeds.children.some((item) => item.id === feed.id)) {
+                myFeeds.children.push({
                   id: feed.id,
                   label: feed.name,
                   slug: `/feed/${feed.id}`,
@@ -131,11 +149,20 @@ export default function usePages() {
     }
   }
 
+  const toggleFeedExpansion = (feedId: string) => {
+    const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+    const myFeeds = newsCategory?.items.find((item) => item.id === feedId)
+    if (myFeeds) {
+      myFeeds.isExpanded = !myFeeds.isExpanded
+    }
+  }
+
   onMounted(initializeFeeds)
 
   return {
     appLinks: navigationCategories,
     addFeed,
     deleteFeed,
+    toggleFeedExpansion,
   }
 }
