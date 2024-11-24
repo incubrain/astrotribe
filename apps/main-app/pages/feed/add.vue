@@ -245,7 +245,7 @@ definePageMeta({
       </PrimeCard>
 
       <!-- Search and Categories -->
-      <PrimeCard class="bg-gray-900">
+      <PrimeCard>
         <template #content>
           <!-- Categories Grid -->
           <PrimeProgressSpinner
@@ -274,68 +274,4 @@ definePageMeta({
   </div>
 </template>
 
-<style scoped>
-:deep(.p-card) {
-  background: transparent;
-}
-
-:deep(.p-button) {
-  justify-content: flex-start;
-}
-
-:deep(.p-inputtext) {
-  width: 100%;
-  background: theme('colors.gray.800');
-}
-
-:deep(.p-dropdown),
-:deep(.p-multiselect) {
-  background: theme('colors.gray.800');
-  border-color: theme('colors.gray.700');
-}
-
-:deep(.p-dropdown-panel),
-:deep(.p-multiselect-panel) {
-  background: theme('colors.gray.800');
-  border-color: theme('colors.gray.700');
-}
-
-:deep(.p-dropdown-item),
-:deep(.p-multiselect-item) {
-  color: theme('colors.gray.300');
-}
-
-:deep(.p-dropdown-item:hover),
-:deep(.p-multiselect-item:hover) {
-  background: theme('colors.gray.700');
-}
-
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: theme('colors.gray.600') theme('colors.gray.800');
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: theme('colors.gray.800');
-  border-radius: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: theme('colors.gray.600');
-  border-radius: 4px;
-}
-
-:deep(.p-float-label) {
-  display: block;
-}
-
-:deep(.p-float-label input:focus) ~ label,
-:deep(.p-float-label input.p-filled) ~ label {
-  background: theme('colors.gray.900');
-  padding: 0 4px;
-}
-</style>
+<style scoped></style>
