@@ -3,12 +3,12 @@
     "reference_tables": {
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
-        "metric_definitions",
         "content_categories",
         "content_tags",
         "cities",
         "countries",
         "categories",
+        "metric_definitions",
         "tags"
       ],
       "default_permissions": [
@@ -34,12 +34,12 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "user_followers",
-        "feeds",
         "comments",
         "bookmarks",
         "bookmark_folders",
         "feed_categories",
+        "user_followers",
+        "feeds",
         "follows",
         "feedbacks",
         "votes"
@@ -51,10 +51,10 @@
     "user_data_tables": {
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
-        "searches",
-        "user_profiles",
         "contacts",
-        "addresses"
+        "addresses",
+        "searches",
+        "user_profiles"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -63,12 +63,6 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
-        "responses",
-        "embedding_reviews",
-        "company_metrics",
-        "spider_metrics",
-        "classified_urls",
-        "role_hierarchy",
         "company_contacts",
         "company_employees",
         "news_summaries",
@@ -76,6 +70,12 @@
         "research_embeddings",
         "company_extras",
         "company_urls",
+        "responses",
+        "embedding_reviews",
+        "company_metrics",
+        "spider_metrics",
+        "classified_urls",
+        "role_hierarchy",
         "news_tags",
         "social_media"
       ],
@@ -85,6 +85,7 @@
     "security_tables": {
       "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
       "tables": [
+        "blacklisted_urls",
         "plan_permissions",
         "blacklisted_domains",
         "customer_payments",
@@ -93,8 +94,7 @@
         "customer_subscription_plans",
         "customer_subscriptions",
         "payment_providers",
-        "role_permissions",
-        "blacklisted_urls"
+        "role_permissions"
       ],
       "default_permissions": [],
       "audit_level": "critical"

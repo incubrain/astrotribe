@@ -56,17 +56,12 @@ watch(
     <div
       class="flex flex-col background text-gray-300 shadow-lg transition-all duration-300 group"
       :class="[
-        // Shared styles
         'h-full',
-
-        // Mobile styles
         isMobile && [
           'fixed left-0 top-0 bottom-0 z-[100]',
           'w-[70vw]',
           isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full',
         ],
-
-        // Desktop styles
         !isMobile && ['relative', 'md:translate-x-0', isSidebarOpen ? 'md:w-60' : 'md:w-14'],
       ]"
     >
@@ -74,10 +69,7 @@ watch(
       <button
         v-if="!isMobile"
         class="absolute !z-[1000] -right-3 top-24 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-primary-600 text-gray-300 transition-opacity duration-300 hover:bg-primary-400 group-hover:opacity-100 md:flex"
-        :class="[
-          'z-[110]', // Ensure button is above other elements
-          isSidebarOpen ? 'opacity-0' : 'opacity-100',
-        ]"
+        :class="['z-[110]', isSidebarOpen ? 'opacity-0' : 'opacity-100']"
         :title="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
         @click="$emit('update:isSidebarOpen', !isSidebarOpen)"
       >
@@ -88,7 +80,7 @@ watch(
       </button>
 
       <div class="flex h-full flex-col overflow-hidden">
-        <!-- Logo -->
+        <!-- Logo section remains unchanged -->
         <div
           class="flex items-center px-4 py-3 transition-all duration-300"
           :class="isMobile || isSidebarOpen ? 'gap-3' : 'justify-center'"
@@ -125,7 +117,7 @@ watch(
           </Transition>
         </div>
 
-        <!-- Navigation Categories - always expanded on mobile -->
+        <!-- Navigation Categories -->
         <nav class="flex-1 space-y-4 px-2 py-4">
           <div
             v-for="category in categories"
@@ -138,24 +130,33 @@ watch(
             >
               {{ category.label }}
             </div>
-            <ul>
+            <ul class="space-y-1">
               <li
                 v-for="item in category.items"
-                :key="item.slug"
+                :key="item.id"
               >
-                <NuxtLink
-                  :to="item.slug"
-                  class="flex items-center rounded-lg px-2 py-2 text-sm font-medium hover:bg-primary-700"
-                  :class="{ 'bg-primary-800': route.path === item.slug }"
-                  @click="handleNavigation"
-                >
-                  <Icon
-                    :name="item.icon"
-                    size="20px"
-                    class="mr-3 flex-shrink-0"
+                <!-- Regular menu items -->
+                <template v-if="!item.children">
+                  <IBMenuItem
+                    :icon="item.icon"
+                    :label="item.label"
+                    :to="item.slug"
+                    :is-active="route.path === item.slug"
+                    :is-mobile="isMobile"
+                    :is-sidebar-open="isSidebarOpen"
+                    @click="handleNavigation"
                   />
-                  <span v-if="isMobile || isSidebarOpen">{{ item.label }}</span>
-                </NuxtLink>
+                </template>
+
+                <!-- Submenu for My Feeds -->
+                <template v-else>
+                  <IBMenuNested
+                    :items="item.children"
+                    :is-mobile="isMobile"
+                    :is-sidebar-open="isSidebarOpen"
+                    @expand-sidebar="$emit('update:isSidebarOpen', true)"
+                  />
+                </template>
               </li>
             </ul>
           </div>

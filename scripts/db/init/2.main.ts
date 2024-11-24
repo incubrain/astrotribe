@@ -1,6 +1,7 @@
 // scripts/db/init/1.main.ts
 
 import chalk from 'chalk'
+import permissionsConfig from '../generated/role-permissions.json'
 import client from '../client'
 import { generatePermissions } from '../update/generate-permissions'
 import { databaseConfig } from './1.config'
@@ -39,7 +40,6 @@ async function main() {
     // 4. Update Database Permissions
     if (databaseConfig.steps.updatePermissions) {
       console.log(chalk.blue('\n🔑 Updating database permissions...'))
-      const permissionsConfig = {} // You might want to load this from your generated file
       const permissionsUpdated = await updateDatabasePermissions(client, permissionsConfig)
       if (!permissionsUpdated) {
         throw new Error('Failed to update permissions')

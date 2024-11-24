@@ -5,7 +5,7 @@ const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
 
 <template>
   <div class="w-full h-screen flex background relative overflow-hidden lg:py-4 lg:pr-4">
-    <IBSideNav
+    <IBMenuSidebar
       v-model:is-sidebar-open="isSidebarOpen"
       v-model:is-mobile-sidebar-open="isMobileSidebarOpen"
       :categories="appLinks"
