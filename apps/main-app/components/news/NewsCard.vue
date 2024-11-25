@@ -219,23 +219,82 @@ const handleMouseLeave = () => {
 
       <!-- Back of card -->
       <div
-        class="absolute w-full h-full backface-hidden rotate-y-180 bg-primary-950 rounded-lg p-6 flex flex-col"
+        class="absolute w-full h-full backface-hidden rotate-y-180 bg-primary-950 rounded-lg p-4 flex flex-col"
       >
-        <h3 class="text-xl font-bold mb-4">{{ news.title }}</h3>
-        <p class="text-base flex-grow overflow-y-auto">{{ news.description }}</p>
-        <div class="mt-4 flex justify-end">
+        <!-- Back side content -->
+        <div class="flex-grow overflow-hidden flex flex-col">
+          <h3 class="text-xl font-bold mb-4">{{ news.title }}</h3>
+          <p class="text-base overflow-y-auto flex-grow">{{ news.description }}</p>
+        </div>
+
+        <!-- Read More CTA -->
+        <div class="mt-4 mb-4 flex justify-center">
           <NuxtLink
             :to="news.url"
             target="_blank"
             rel="noopener noreferrer nofollow"
-            class="text-primary-500 hover:text-primary-400 flex items-center gap-2"
+            class="bg-primary-500 hover:bg-primary-400 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-colors"
           >
-            Read More
+            Read Full Article
             <Icon
               name="mdi:arrow-right"
               size="20px"
             />
           </NuxtLink>
+        </div>
+
+        <!-- Back side actions -->
+        <div class="flex items-center justify-between border-t border-primary-900 pt-4">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center bg-primary-900 py-1 px-2 rounded-xl">
+              <VoteButton
+                :content-id="news.id"
+                direction="up"
+                :initial-vote-type="currentVote"
+                @vote-change="handleVoteChange"
+              />
+              <span class="text-sm font-medium pl-1 pr-2">{{ displayScore }}</span>
+              <VoteButton
+                :content-id="news.id"
+                direction="down"
+                :initial-vote-type="currentVote"
+                @vote-change="handleVoteChange"
+              />
+            </div>
+            <button
+              class="flex items-center gap-2 text-sm hover:text-gray-600"
+              @click="openModal('Comments')"
+            >
+              <Icon
+                name="mdi:comment-outline"
+                size="20px"
+              />
+              <span>{{ news.comments }}</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-4">
+            <button
+              class="hover:text-gray-600"
+              @click="handleBookmark"
+            >
+              <Icon
+                :name="bookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
+                size="20px"
+                :class="{ 'text-primary-500': bookmarked }"
+              />
+            </button>
+            <NuxtLink
+              :to="news.url"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="hover:text-gray-600"
+            >
+              <Icon
+                name="mdi:link-variant"
+                size="20px"
+              />
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
@@ -266,5 +325,19 @@ const handleMouseLeave = () => {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+/* Optional: Add a smooth transition for the hover effect */
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+/* Optional: Add hover state styles */
+@media (hover: hover) {
+  .hover\:cursor-pointer:hover {
+    cursor: pointer;
+  }
 }
 </style>

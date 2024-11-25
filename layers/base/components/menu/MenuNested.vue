@@ -50,13 +50,13 @@ const handleClick = () => {
         class="mr-3 flex-shrink-0"
       />
       <span
-        v-if="iMobile || isSidebarOpen"
+        v-if="isMobile || isSidebarOpen"
         class="flex-1 text-left"
       >
         My Feeds
       </span>
       <Icon
-        v-if="iMobile || isSidebarOpen"
+        v-if="isMobile || isSidebarOpen"
         :name="isExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'"
         size="16px"
         class="ml-2"
