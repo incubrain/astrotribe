@@ -4,6 +4,10 @@ FROM node:20.17.0
 # Set the working directory in the container
 WORKDIR /app
 
+# Declare build-time arguments and set them as environment variables
+ARG NUXT_PUBLIC_SUPABASE_URL
+ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 

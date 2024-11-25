@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
       )
       .eq('user_id', user.id)
       .eq('content_type', content_type)
+      .order('created_at', { ascending: false })
 
     if (folder_id) {
       if (include_subfolders) {
