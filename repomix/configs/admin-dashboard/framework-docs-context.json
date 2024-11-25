@@ -1,0 +1,40 @@
+{
+  "output": {
+    "filePath": "ai-context/admin-dashboard/framework-docs-context.txt",
+    "style": "markdown",
+    "removeComments": false,
+    "removeEmptyLines": true,
+    "copyToClipboard": false,
+    "showLineNumbers": false,
+    "topFilesLength": 0
+  },
+  "include": [
+    "ai-docs/nuxt/**/*.md",
+    "ai-docs/nitro/**/*.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**",
+      "**/tmp/**",
+      "**/.cache/**",
+      "**/logs/**",
+      "**/build/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true,
+    "excludePatterns": [
+      "**/secrets/**",
+      "**/config/**/*.{prod,staging}.*"
+    ]
+  }
+}

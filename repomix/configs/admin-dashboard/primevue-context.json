@@ -1,0 +1,67 @@
+{
+  "output": {
+    "filePath": "ai-context/admin-dashboard/primevue-context.txt",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "copyToClipboard": false,
+    "showLineNumbers": false,
+    "topFilesLength": 0
+  },
+  "include": [
+    "ai-docs/primevue/components/Toast.vue",
+    "ai-docs/primevue/components/Button.vue",
+    "ai-docs/primevue/components/Drawer.vue",
+    "ai-docs/primevue/components/InputNumber.vue",
+    "ai-docs/primevue/components/Splitter.vue",
+    "ai-docs/primevue/components/SplitterPanel.vue",
+    "ai-docs/primevue/components/Card.vue",
+    "ai-docs/primevue/components/Tag.vue",
+    "ai-docs/primevue/components/DataTable.vue",
+    "ai-docs/primevue/components/Column.vue",
+    "ai-docs/primevue/components/Toolbar.vue",
+    "ai-docs/primevue/components/Select.vue",
+    "ai-docs/primevue/components/InputText.vue",
+    "ai-docs/primevue/components/FileUpload.vue",
+    "ai-docs/primevue/components/ProgressBar.vue",
+    "ai-docs/primevue/components/Badge.vue",
+    "ai-docs/primevue/components/ProgressSpinner.vue",
+    "ai-docs/primevue/components/Chart.vue",
+    "ai-docs/primevue/components/Popover.vue",
+    "ai-docs/primevue/components/Dialog.vue",
+    "ai-docs/primevue/components/Textarea.vue",
+    "ai-docs/primevue/components/Accordion.vue",
+    "ai-docs/primevue/components/AccordionPanel.vue",
+    "ai-docs/primevue/components/AccordionHeader.vue",
+    "ai-docs/primevue/components/AccordionContent.vue",
+    "ai-docs/primevue/components/Message.vue",
+    "ai-docs/primevue/components/Fieldset.vue",
+    "ai-docs/primevue/components/Checkbox.vue",
+    "ai-docs/primevue/components/DatePicker.vue"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**",
+      "**/tmp/**",
+      "**/.cache/**",
+      "**/logs/**",
+      "**/build/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true,
+    "excludePatterns": [
+      "**/secrets/**",
+      "**/config/**/*.{prod,staging}.*"
+    ]
+  }
+}
