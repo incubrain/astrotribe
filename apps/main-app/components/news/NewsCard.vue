@@ -6,7 +6,7 @@ export interface NewsCardT {
   id: string
   title: string
   description: string
-  authorName: string
+  author: string
   published_at?: string
   featured_image: string
   created_at: string
@@ -38,6 +38,7 @@ const handleBookmark = async () => {
       title: props.news.title,
       thumbnail: props.news.featured_image,
       url: props.news.url,
+      author: props.news.author,
     })
   } catch (error) {
     console.error('Error handling bookmark:', error)
@@ -91,7 +92,7 @@ const openModal = (feature: string) => {
             width="24"
             height="24"
           />
-          <span class="text-sm">{{ news.authorName }}</span>
+          <span class="text-sm">{{ news.author }}</span>
         </div>
         <h2 class="text-xl font-bold mb-2">{{ news.title }}</h2>
         <div class="flex items-center text-sm mb-4">
