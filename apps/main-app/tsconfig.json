@@ -8,13 +8,9 @@
       "#layers/*": ["../../layers/*"],
       "@types/*": ["./types/*"],
       "#imports": ["./.nuxt/imports.d.ts"],
+
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": [
-    "./types/**/*.d.ts",
-    "./**/*.ts",
-    "./**/*.d.ts",
-    "./.nuxt/imports.d.ts"
-  ]
+  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "./.nuxt/imports.d.ts"]
 }
