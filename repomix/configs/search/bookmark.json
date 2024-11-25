@@ -1,0 +1,83 @@
+{
+  "output": {
+    "filePath": "ai-context/bookmark.txt",
+    "style": "markdown",
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "showLineNumbers": true,
+    "topFilesLength": 0
+  },
+  "include": [
+    "/Users/mac/Development/astronera/astrotribe/supabase/schema.gen.ts",
+    "/Users/mac/Development/astronera/astrotribe/generators/schema-analyzer.ts",
+    "/Users/mac/Development/astronera/astrotribe/generators/generate-rba-permissions.ts",
+    "/Users/mac/Development/astronera/astrotribe/scripts/bundler/feature-configs.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/nuxt.config.ts",
+    "/Users/mac/Development/astronera/astrotribe/scripts/db/update/generate-permissions.ts",
+    "/Users/mac/Development/astronera/astrotribe/scripts/db/migrate/2.fix-migration.ts",
+    "/Users/mac/Development/astronera/astrotribe/scripts/db/init/seeders.ts",
+    "/Users/mac/Development/astronera/astrotribe/scripts/db/init/run-seeders.ts",
+    "/Users/mac/Development/astronera/astrotribe/libs/db-testing/src/schemas.ts",
+    "/Users/mac/Development/astronera/astrotribe/libs/db-testing/src/data-inserter.ts",
+    "/Users/mac/Development/astronera/astrotribe/libs/db-testing/src/data-generator.ts",
+    "/Users/mac/Development/astronera/astrotribe/libs/db-testing/src/data-fixtures.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/types/bookmarks.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/shared/constants.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/composables/usePages.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/composables/useBookmarks.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/composables/useBookmarkView.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/composables/useBookmarkManager.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/middleware/feature-limit.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/pages/profile/bookmarks.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/pages/news/index.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/news/NewsCard.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/folder/FolderTree.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/folder/FolderItem.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/bookmark/BookmarkViewFolder.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/bookmark/BookmarkList.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/bookmark/BookmarkFormMove.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/components/bookmark/BookmarkCard.vue",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/folders/index.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/folders/[id].patch.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/folders/[id].delete.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/bookmarks/toggle.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/bookmarks/move.patch.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/bookmarks/index.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/main-app/server/api/bookmarks/[id].delete.ts",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/content/bp/products-summaries.md",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/content/bp/products-research.md",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/content/bp/products-news.md",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/content/bp/products-jobs.md",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/content/bp/12.todo.md",
+    "/Users/mac/Development/astronera/astrotribe/generated/role-permissions.json",
+    "/Users/mac/Development/astronera/astrotribe/scripts/db/generated/role-permissions.json",
+    "/Users/mac/Development/astronera/astrotribe/scripts/bundler/repomix-configs/search/bookmark.json",
+    "/Users/mac/Development/astronera/astrotribe/apps/admin-dashboard/data/tasks/goals.json"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "**/.nuxt/**",
+      "**/tests/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+      "**/debug/**",
+      "**/tmp/**",
+      "**/.cache/**",
+      "**/logs/**",
+      "**/build/**",
+      ""
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true,
+    "excludePatterns": [
+      "**/secrets/**",
+      "**/config/**/*.{prod,staging}.*"
+    ]
+  }
+}

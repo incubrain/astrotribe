@@ -105,6 +105,34 @@ scan_app() {
     sleep 1
 }
 
+scan_feature() {
+    local app_name="$1"
+    local feature_name="$2"
+    
+    if [ -z "$app_name" ] || [ -z "$feature_name" ]; then
+        handle_error "Usage: $0 scan-feature <app-name> <feature-name>"
+    fi
+
+    log "Scanning feature '$feature_name' in app: $app_name..."
+    check_lock
+    
+    GITHUB_TOKEN="$GITHUB_TOKEN" SCAN_FEATURE="$feature_name" npx tsx tools/project-scanner.ts "$app_name"
+    local scan_result=$?
+    
+    if [ $scan_result -ne 0 ]; then
+        cleanup
+        handle_error "Failed to scan feature: $feature_name in app: $app_name"
+    fi
+    
+    log "Feature scan completed successfully" "$GREEN"
+    
+    # Run repomix after successful scan
+    run_repomix "$app_name"
+    
+    cleanup
+    sleep 1
+}
+
 scan_all_apps() {
     local apps=("admin-dashboard" "auth-service" "main-app" "website" "monitoring-dashboard")
     local total=${#apps[@]}
@@ -134,6 +162,9 @@ case "$1" in
     scan-all)
         scan_all_apps
         ;;
+    scan-feature)
+        scan_feature "$2" "$3"
+        ;;
     repomix)
         run_repomix "$2"
         ;;
@@ -141,13 +172,14 @@ case "$1" in
         run_all_repomix
         ;;
     *)
-        echo "Usage: $0 {scan|scan-all|repomix|repomix-all}"
+        echo "Usage: $0 {scan|scan-all|scan-feature|repomix|repomix-all}"
         echo
         echo "Commands:"
-        echo "  scan <app-name>     - Scan specific app and generate config"
-        echo "  scan-all            - Scan all apps and generate configs"
-        echo "  repomix <app-name>  - Run repomix for specific app configs"
-        echo "  repomix-all         - Run repomix for all app configs"
+        echo "  scan <app-name>                    - Scan specific app and generate config"
+        echo "  scan-all                           - Scan all apps and generate configs"
+        echo "  scan-feature <app-name> <feature>  - Scan specific feature in an app"
+        echo "  repomix <app-name>                 - Run repomix for specific app configs"
+        echo "  repomix-all                        - Run repomix for all app configs"
         exit 1
         ;;
 esac

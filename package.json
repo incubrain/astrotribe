@@ -34,7 +34,11 @@
     "test": "nx run-many --target=test --all",
     "test:watch": "nx run-many --target=test:watch --all",
     "test:coverage": "nx run-many --target=test:coverage --all",
-    "ib:permissions": "npx tsx cli/update-rba-permissions.ts"
+    "ib:permissions": "npx tsx cli/update-rba-permissions.ts",
+    "pack:feature": "npx tsx scripts/bundler/bundler-cli.ts search",
+    "bundle": "npx tsx scripts/bundler/bundler-cli.ts",
+    "bundle:debug": "DEBUG=true npx tsx scripts/bundler/bundler-cli.ts",
+    "ib": "npx tsx cli/index.ts"
   },
   "dependencies": {
     "@formbricks/js": "^3.0.1",
@@ -77,6 +81,7 @@
     "chalk": "^5.3.0",
     "change-case": "^5.4.4",
     "chart.js": "^4.4.4",
+    "commander": "^12.1.0",
     "dotenv": "^16.4.5",
     "embla-carousel-auto-scroll": "^8.3.0",
     "embla-carousel-autoplay": "^8.3.0",

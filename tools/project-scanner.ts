@@ -1,9 +1,9 @@
 import path from 'path'
 import fs from 'fs/promises'
 import chalk from 'chalk'
-import { RepomixConfigGenerator } from './generators/repomix'
-import { PackageScanner } from './scanners/packages'
-import { ComponentScanner } from './scanners/components'
+import { PackageScanner } from '../scripts/bundler/scanners/packages'
+import { ComponentScanner } from '../scripts/bundler/scanners/components'
+import { RepomixConfigGenerator } from '../scripts/bundler/bundler'
 
 export class ProjectScanner {
   private componentScanner: ComponentScanner
@@ -40,27 +40,6 @@ export class ProjectScanner {
       packageScan,
       configs,
     }
-  }
-
-  async saveConfigs(appName: string, configs: any[]) {
-    // Create base directories
-    const configDir = path.join('repomix-configs', appName)
-    const contextDir = path.join('ai-context', appName)
-
-    await Promise.all([
-      fs.mkdir(configDir, { recursive: true }),
-      fs.mkdir(contextDir, { recursive: true }),
-    ])
-
-    // Save each config
-    await Promise.all(
-      configs.map(async (config) => {
-        const fileName = path.basename(config.output.filePath, '.txt') + '.json'
-        const configPath = path.join(configDir, fileName)
-        await fs.writeFile(configPath, JSON.stringify(config, null, 2))
-        console.log(chalk.green(`Generated config: ${configPath}`))
-      }),
-    )
   }
 }
 
