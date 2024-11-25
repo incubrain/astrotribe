@@ -24,6 +24,45 @@ const voteStore = useVoteStore()
 
 const { isNewsBookmarked, toggleBookmark } = useBookmarks()
 
+// utils/images.ts
+
+// Predefined list of fallback images with their proper aspect ratios
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80', // Space
+  'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80', // Satellite
+  'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80', // Earth
+  'https://images.unsplash.com/photo-1516849677043-ef67c9557e16?auto=format&fit=crop&q=80', // Rocket
+  'https://images.unsplash.com/photo-1457364887197-9150188c107b?auto=format&fit=crop&q=80', // Launch
+] as const
+
+const getRandomFallbackImage = (): string => {
+  const randomIndex = Math.floor(Math.random() * FALLBACK_IMAGES.length)
+  return FALLBACK_IMAGES[randomIndex]
+}
+
+// Optional: Get a deterministic fallback based on an ID
+const getFallbackImageById = (id: string): string => {
+  // Create a simple hash from the ID string
+  const hash = id.split('').reduce((acc, char) => {
+    return char.charCodeAt(0) + ((acc << 5) - acc)
+  }, 0)
+
+  // Use the hash to get a consistent index
+  const index = Math.abs(hash) % FALLBACK_IMAGES.length
+  return FALLBACK_IMAGES[index]
+}
+
+// Optional: Check if a URL is valid
+const isValidImageUrl = (url: string): boolean => {
+  if (!url) return false
+  try {
+    new URL(url)
+    return true
+  } catch {
+    return false
+  }
+}
+
 const showModal = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
@@ -78,6 +117,15 @@ const openModal = (feature: string) => {
   modalContent.value = `The ${feature} feature is coming soon! Stay tuned for updates.`
   showModal.value = true
 }
+
+const imageSource = computed(() => {
+  if (props.news.featured_image) {
+    return props.news.featured_image
+  }
+  // You can choose either random or deterministic fallbacks
+  // return getRandomFallbackImage() // Random each time
+  return getFallbackImageById(props.news.id) // Consistent for same ID
+})
 </script>
 
 <template>
@@ -85,13 +133,15 @@ const openModal = (feature: string) => {
     <div class="p-4 flex flex-col justify-between h-full">
       <div>
         <div class="flex items-center gap-2 mb-2">
-          <NuxtImg
-            :src="`https://picsum.photos/24/24?random=${news.id}`"
-            alt="Author"
-            class="w-6 h-6 rounded-full"
-            width="24"
-            height="24"
-          />
+          <div class="w-6 h-6 rounded-full overflow-hidden">
+            <NuxtImg
+              :src="`https://picsum.photos/24/24?random=${news.id}`"
+              alt="Author"
+              class="w-full h-full object-cover"
+              width="24"
+              height="24"
+            />
+          </div>
           <span class="text-sm">{{ news.author }}</span>
         </div>
         <h2 class="text-xl font-bold mb-2">{{ news.title }}</h2>
@@ -102,15 +152,18 @@ const openModal = (feature: string) => {
         </div>
       </div>
       <div>
+        <!-- Image container with fixed aspect ratio -->
         <div class="mb-4">
-          <NuxtImg
-            :provider="news.featured_image ? 'supabase' : undefined"
-            :src="news.featured_image || 'fallback-news.jpg'"
-            :alt="news.title"
-            class="w-full h-auto rounded-lg"
-            width="400"
-            height="200"
-          />
+          <div class="relative w-full pb-[56.25%]">
+            <!-- 16:9 aspect ratio -->
+            <NuxtImg
+              :provider="news.featured_image ? 'supabase' : undefined"
+              :src="imageSource"
+              :alt="news.title"
+              class="absolute inset-0 w-full h-full object-cover rounded-lg"
+              sizes="sm:100vw md:50vw lg:400px"
+            />
+          </div>
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
