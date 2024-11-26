@@ -11,6 +11,7 @@ export default {
       // Color and Background
       'bg-surface-900',
       'border',
+      'border-color',
       { 'border-surface-600': !props.invalid },
 
       // Invalid State
@@ -23,8 +24,7 @@ export default {
       // States
       { 'hover:border-primary': !props.invalid },
       {
-        'outline-none outline-offset-0 ring ring-primary-300/50':
-          state.focused,
+        'outline-none outline-offset-0 ring ring-primary-300/50': state.focused,
       },
 
       // Misc
@@ -73,6 +73,7 @@ export default {
       // Color and Background
       'bg-transparent',
       'text-surface-50',
+      'border-color',
 
       // Size
       'w-12',
@@ -88,6 +89,7 @@ export default {
 
       // Shape
       'border',
+      'border-color',
       'rounded-md',
       'shadow-md',
 
@@ -112,7 +114,7 @@ export default {
       // Color
       'text-white/80',
       'bg-surface-400',
-      'border-surface-300 ',
+      'border-color',
 
       '[&_[data-pc-name=pcfiltercontainer]]:!flex-auto',
       '[&_[data-pc-name=pcfilter]]:w-full',

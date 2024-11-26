@@ -1,277 +1,250 @@
 <script setup lang="ts">
-import Fuse from 'fuse.js'
-
 const { addFeed } = usePages()
+const client = useSupabaseClient()
 
-const { store, loadMore, refresh, isSelecting } = useSelectData('categories', {
+// Fetch categories
+const { store: categoriesStore } = useSelectData('categories', {
   columns: 'id, name',
   orderBy: { column: 'name', ascending: true },
-  limit: 100,
+  initialFetch: true,
+})
+
+// Fetch content sources with company details
+const { store: sourcesStore } = useSelectData('contents', {
+  columns: `
+    id,
+    title,
+    url,
+    rss_url,
+    companies (
+      id,
+      name,
+      logo_url,
+      category,
+      description
+    )
+  `,
+  filters: {
+    content_type: { eq: 'companies' },
+  },
+  orderBy: { column: 'created_at', ascending: true },
   initialFetch: true,
 })
 
 const name = ref('')
-const search = ref('')
-const fuseInstance = ref<Fuse<any> | null>(null)
+const selectedCategories = ref([])
+const selectedSourceIds = ref(new Set())
+const categorySearch = ref('')
+const sourceSearch = ref('')
 
-const { items: proxyCategories } = storeToRefs(store)
+const { items: categories } = storeToRefs(categoriesStore)
+const { items: sources } = storeToRefs(sourcesStore)
 
-const initializeSelection = () => {
-  proxyCategories.value = proxyCategories.value.map((item) => ({
-    ...item,
-    selected: false,
-  }))
-}
+// Computed property for filtered sources based on search
+const filteredSources = computed(() => {
+  if (!sourceSearch.value) return sources.value
 
-watchEffect(() => {
-  if (proxyCategories.value.length > 0) {
-    initializeSelection()
-    fuseInstance.value = new Fuse(proxyCategories.value, {
-      keys: ['name'],
-      threshold: 0.3,
-      distance: 100,
-      ignoreLocation: true,
-      shouldSort: true,
-    })
-  }
+  const search = sourceSearch.value.toLowerCase()
+  return sources.value.filter(
+    (source) =>
+      source.title?.toLowerCase().includes(search) ||
+      source.companies?.name?.toLowerCase().includes(search),
+  )
 })
 
-const toggleSelect = (id: string) => {
-  const category = proxyCategories.value.find((item) => item.id === id)
-  if (category) {
-    category.selected = !category.selected
+// Toggle source selection
+const toggleSource = (sourceId: string) => {
+  if (selectedSourceIds.value.has(sourceId)) {
+    selectedSourceIds.value.delete(sourceId)
+  } else {
+    selectedSourceIds.value.add(sourceId)
   }
 }
-
-const onSearch = () => {
-  if (!search.value || search.value.trim().length < 2) {
-    return proxyCategories.value
-  }
-
-  if (fuseInstance.value) {
-    const results = fuseInstance.value.search(search.value.trim())
-    return results.map((result) => ({
-      ...result.item,
-      selected: proxyCategories.value.find((cat) => cat.id === result.item.id)?.selected || false,
-    }))
-  }
-
-  return proxyCategories.value
-}
-
-const categories = computed(() => onSearch())
-
-const selectedCategories = computed(() => proxyCategories.value.filter((cat) => cat.selected))
 
 const save = async () => {
   const toast = useNotification()
-  const selected = selectedCategories.value
 
   if (!name.value) {
-    toast.error({ summary: 'Feed name cannot be empty', message: 'Please enter a feed name' })
+    toast.error({ summary: 'Feed name required', message: 'Please enter a feed name' })
     return
   }
 
-  if (!selected.length) {
-    toast.error({ summary: 'No categories selected', message: 'Please select some categories' })
+  if (!selectedCategories.value.length && !selectedSourceIds.value.size) {
+    toast.error({
+      summary: 'Selection required',
+      message: 'Please select at least one category or source',
+    })
     return
   }
 
   const { profile } = useCurrentUser()
-  const client = useSupabaseClient()
 
   if (profile?.id) {
-    const user_id = profile.id
-    const feed = { user_id, name: name.value }
     try {
-      const { data, error, status } = await client.from('feeds').insert(feed).select('id')
+      // Create feed
+      const { data: feedData, error: feedError } = await client
+        .from('feeds')
+        .insert({ user_id: profile.id, name: name.value })
+        .select('id')
+        .single()
 
-      if (!error) {
-        const feed_id = data[0].id
-        const res = await Promise.all(
-          selected.map((category) =>
-            client.from('feed_categories').insert({ feed_id, category_id: category.id }),
-          ),
+      if (feedError) throw feedError
+
+      const feed_id = feedData.id
+
+      // Insert categories
+      if (selectedCategories.value.length) {
+        const { error: categoriesError } = await client.from('feed_categories').insert(
+          selectedCategories.value.map((cat) => ({
+            feed_id,
+            category_id: cat.id,
+          })),
         )
 
-        if (res.every(({ error }) => !error)) {
-          toast.success({
-            summary: 'Feed created successfully',
-            message: `${name.value} was created successfully`,
-          })
-          addFeed(data[0].id, name.value)
-        } else {
-          res.forEach(
-            ({ error }) =>
-              error && toast.error({ summary: 'Could not create feed', message: error.message }),
-          )
-        }
-      } else {
-        toast.error({ summary: 'Could not create feed', message: error.message })
+        if (categoriesError) throw categoriesError
       }
+
+      // Insert sources
+      if (selectedSourceIds.value.size) {
+        const { error: sourcesError } = await client.from('feed_sources').insert(
+          Array.from(selectedSourceIds.value).map((sourceId) => ({
+            feed_id,
+            source_id: sourceId,
+          })),
+        )
+
+        if (sourcesError) throw sourcesError
+      }
+
+      toast.success({
+        summary: 'Feed created',
+        message: `${name.value} has been created successfully`,
+      })
+
+      addFeed(feed_id, name.value)
+      navigateTo('/')
     } catch (error) {
-      toast.error({ summary: 'Could not create feed', message: error })
+      toast.error({
+        summary: 'Error creating feed',
+        message: error.message,
+      })
     }
-  } else {
-    toast.error({ summary: 'User Not Authenticated', message: 'Please login again' })
   }
 }
 
-const discard = () => {
+const reset = () => {
   name.value = ''
-  search.value = ''
-  proxyCategories.value.forEach((item) => (item.selected = false))
+  selectedCategories.value = []
+  selectedSourceIds.value = new Set()
+  categorySearch.value = ''
+  sourceSearch.value = ''
 }
-
-const removeSelected = (id: string) => {
-  const category = proxyCategories.value.find((item) => item.id === id)
-  if (category) {
-    category.selected = false
-  }
-}
-
-const selectedItems = computed({
-  get: () => selectedCategories.value,
-  set: () => {}, // We handle removal through the removeSelected method
-})
-
-definePageMeta({
-  name: 'Add Feed',
-})
 </script>
 
 <template>
-  <div class="mx-auto p-4">
-    <!-- Header -->
+  <div class="max-w-6xl mx-auto p-4">
     <div class="mb-6">
       <h1 class="text-2xl font-semibold mb-2">Create New Feed</h1>
-      <p class="text-gray-500">Select categories to include in your feed</p>
+      <p class="text-gray-500">Select categories and sources for your personalized feed</p>
     </div>
 
-    <!-- Main Layout -->
-    <div class="grid grid-cols-1 gap-6">
-      <!-- Top Panel - Input and Selected Categories -->
-      <PrimeCard class="bg-gray-900">
-        <template #content>
-          <div class="grid grid-cols-12 gap-4">
-            <!-- Feed Name Input -->
-            <div class="col-span-12 md:col-span-4">
-              <PrimeFloatLabel>
-                <PrimeInputText
-                  id="feedname"
-                  v-model="name"
-                  class="w-full"
-                  required
-                />
-                <label for="feedname">Enter feed name</label>
-              </PrimeFloatLabel>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="col-span-12 md:col-span-8 flex items-center gap-2 justify-end">
-              <PrimeSelect
-                v-model="selectedItems"
-                :options="selectedCategories"
-                placeholder="No categories selected"
-                option-label="name"
-                :close-on-select="false"
-                multiple
-                class="w-full"
-              >
-                <template #header>
-                  <div class="px-4 py-2 text-gray-400 text-sm font-medium">
-                    Selected Categories
-                  </div>
-                </template>
-                <template #value="{ value }">
-                  <div class="flex items-center gap-2">
-                    <span class="text-gray-300">{{
-                      value?.length
-                        ? `${value.length} categories selected`
-                        : 'No categories selected'
-                    }}</span>
-                    <PrimeBadge
-                      v-if="value?.length"
-                      :value="value.length"
-                      severity="info"
-                    />
-                  </div>
-                </template>
-                <template #option="{ option }">
-                  <div class="flex items-center justify-between w-full px-2 py-1">
-                    <span>{{ option.name }}</span>
-                    <button
-                      class="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-gray-700/50"
-                      @click.stop="removeSelected(option.id)"
-                    >
-                      <Icon
-                        name="mdi:close"
-                        size="16px"
-                      />
-                    </button>
-                  </div>
-                </template>
-              </PrimeSelect>
-              <PrimeButton
-                label="Save"
-                :disabled="!name || !selectedCategories.length"
-                class="flex shrink-0"
-                @click="save"
-              />
-              <button
-                class="p-2 hover:bg-gray-800 rounded-full transition-colors"
-                @click="discard"
-              >
-                <Icon
-                  name="mdi:trash-can-outline"
-                  size="22px"
-                  class="text-red-500"
-                />
-              </button>
-            </div>
-            <!-- Search -->
-            <div class="col-span-12">
-              <PrimeFloatLabel>
-                <PrimeInputText
-                  id="search"
-                  v-model="search"
-                  class="w-full"
-                />
-                <label for="search">Search categories</label>
-              </PrimeFloatLabel>
-            </div>
-          </div>
-        </template>
-      </PrimeCard>
-
-      <!-- Search and Categories -->
+    <div class="space-y-6">
+      <!-- Feed Name -->
       <PrimeCard>
+        <template #title>Feed Details</template>
         <template #content>
-          <!-- Categories Grid -->
-          <PrimeProgressSpinner
-            v-if="proxyCategories.length === 0"
-            class="w-8 h-8 mx-auto"
+          <PrimeInputText
+            v-model="name"
+            placeholder="Enter feed name"
+            class="w-full mb-4"
           />
-          <div
-            v-else
-            class="h-[500px] overflow-y-auto custom-scrollbar"
-          >
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-              <PrimeButton
-                v-for="category in categories"
-                :key="category.id"
-                :label="category.name"
-                :outlined="!category.selected"
-                size="small"
-                class="whitespace-normal h-auto py-2 justify-start"
-                @click="toggleSelect(category.id)"
-              />
-            </div>
+        </template>
+      </PrimeCard>
+
+      <!-- Categories Selection -->
+      <PrimeCard>
+        <template #title>Categories</template>
+        <template #subtitle>Select topics you're interested in</template>
+        <template #content>
+          <PrimeMultiSelect
+            v-model="selectedCategories"
+            :options="categories"
+            option-label="name"
+            :filter="true"
+            placeholder="Search and select categories"
+            class="w-full"
+            display="chip"
+          />
+        </template>
+      </PrimeCard>
+
+      <!-- Sources Selection -->
+      <PrimeCard class="max-h-[540px] overflow-scroll">
+        <template #title>Sources</template>
+        <template #subtitle>Follow specific news sources</template>
+        <template #content>
+          <!-- Search input -->
+          <div class="mb-4 sticky top-0">
+            <PrimeInputText
+              v-model="sourceSearch"
+              placeholder="Search sources"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Source cards grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <button
+              v-for="source in filteredSources"
+              :key="source.id"
+              class="flex items-center p-4 rounded-lg border border-gray-800 transition-colors text-left"
+              :class="{
+                'bg-primary-900 border-primary-700': selectedSourceIds.has(source.id),
+                'hover:border-primary-700': !selectedSourceIds.has(source.id),
+              }"
+              @click="toggleSource(source.id)"
+            >
+              <div class="flex items-center gap-3 w-full">
+                <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                  <img
+                    :src="
+                      source.companies?.logo_url ||
+                      `/api/placeholder/40/40?text=${source.companies?.name?.[0] || 'S'}`
+                    "
+                    :alt="source.companies?.name"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="flex-grow min-w-0">
+                  <div class="font-medium truncate">{{ source.companies?.name }}</div>
+                  <div class="text-sm text-gray-400 truncate">{{ source.title || source.url }}</div>
+                </div>
+                <Icon
+                  v-if="selectedSourceIds.has(source.id)"
+                  name="mdi:check-circle"
+                  class="text-primary-500 flex-shrink-0"
+                  size="20"
+                />
+              </div>
+            </button>
           </div>
         </template>
       </PrimeCard>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-4">
+        <PrimeButton
+          label="Reset"
+          severity="secondary"
+          outlined
+          @click="reset"
+        />
+        <PrimeButton
+          label="Create Feed"
+          :disabled="!name || (!selectedCategories.length && !selectedSourceIds.size)"
+          @click="save"
+        />
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped></style>
