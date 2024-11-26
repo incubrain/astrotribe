@@ -39,18 +39,19 @@ const navigationCategories = ref([
         icon: 'mdi:newspaper-variant-outline',
       },
       {
-        id: '3',
-        label: '+ Create Feed',
-        slug: '/feed/add',
-        icon: 'mdi:plus',
-      },
-      {
         id: 'my-feeds',
         label: 'My Feeds',
         slug: '#',
         icon: 'mdi:rss',
         isExpanded: false,
-        children: [], // This will hold the user's custom feeds
+        children: [
+          {
+            id: '3',
+            label: '+ Create Feed',
+            slug: '/feed/add',
+            icon: 'mdi:plus',
+          },
+        ],
       },
     ],
   },
@@ -89,7 +90,8 @@ export default function usePages() {
     const myFeeds = newsCategory.items.find((item) => item.id === 'my-feeds')
 
     if (myFeeds && !myFeeds.children.some((feed) => feed.id === id)) {
-      myFeeds.children.push({
+      // Insert new feed after the Create Feed option
+      myFeeds.children.splice(1, 0, {
         id,
         label,
         slug: `/feed/${id}`,
@@ -98,18 +100,7 @@ export default function usePages() {
     }
   }
 
-  const deleteFeed = (feedId: string) => {
-    const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
-    const myFeeds = newsCategory.items.find((item) => item.id === 'my-feeds')
-
-    if (myFeeds) {
-      const index = myFeeds.children.findIndex((item) => item.id === feedId)
-      if (index > -1) {
-        myFeeds.children.splice(index, 1)
-      }
-    }
-  }
-
+  // Update the initializeFeeds function to maintain Create Feed at the top
   const initializeFeeds = () => {
     if (profile.id) {
       const toast = useNotification()
@@ -130,10 +121,10 @@ export default function usePages() {
           const myFeeds = newsCategory?.items.find((item) => item.id === 'my-feeds')
 
           if (myFeeds) {
-            // Clear existing feeds before adding new ones
-            myFeeds.children = []
+            // Keep only the Create Feed option
+            myFeeds.children = [myFeeds.children[0]]
 
-            // Add custom feeds to My Feeds
+            // Add custom feeds after Create Feed
             data.forEach((feed) => {
               if (!myFeeds.children.some((item) => item.id === feed.id)) {
                 myFeeds.children.push({
@@ -146,6 +137,18 @@ export default function usePages() {
             })
           }
         })
+    }
+  }
+
+  const deleteFeed = (feedId: string) => {
+    const newsCategory = navigationCategories.value.find((cat) => cat.id === 'news')
+    const myFeeds = newsCategory.items.find((item) => item.id === 'my-feeds')
+
+    if (myFeeds) {
+      const index = myFeeds.children.findIndex((item) => item.id === feedId)
+      if (index > -1) {
+        myFeeds.children.splice(index, 1)
+      }
     }
   }
 
