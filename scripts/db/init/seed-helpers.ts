@@ -95,5 +95,34 @@ export async function bulkInsert<T extends Record<string, any>>(
   }
 }
 
+// Simple helper to check and seed data
+export async function checkAndSeed<T>(
+  pool: Pool,
+  tableName: string,
+  seederFn: () => Promise<T[]>,
+): Promise<T[]> {
+  try {
+    // Check if table has data
+    const {
+      rows: [{ count }],
+    } = await pool.query(`SELECT COUNT(*) FROM ${tableName}`)
+
+    if (Number(count) > 0) {
+      console.log(chalk.blue(`Using existing data in ${tableName}`))
+      const { rows } = await pool.query(`SELECT * FROM ${tableName}`)
+      return rows
+    }
+
+    // If no data exists, run the seeder
+    console.log(chalk.blue(`Seeding ${tableName}...`))
+    const result = await seederFn()
+    console.log(chalk.green(`✓ Successfully seeded ${tableName}`))
+    return result
+  } catch (error) {
+    console.error(chalk.red(`Error while seeding ${tableName}:`), error)
+    throw error
+  }
+}
+
 // Helper to generate a UUID
 export const generateUUID = () => crypto.randomUUID()

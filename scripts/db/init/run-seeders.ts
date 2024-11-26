@@ -1,6 +1,7 @@
 import chalk from 'chalk'
 import client from '../client'
 import * as seed from './seeders'
+import { checkAndSeed } from './seed-helpers'
 
 interface SeedConfig {
   batchSize: number
@@ -18,7 +19,7 @@ interface SeedConfig {
 export async function runSeeders() {
   console.log(chalk.blue('Starting database seeding...'))
 
-  const config: SeedConfig = {
+  const config = {
     batchSize: 100,
     counts: {
       contents: 1015,
@@ -32,7 +33,7 @@ export async function runSeeders() {
   }
 
   try {
-    // Get list of existing users from user_profiles
+    // Get list of existing users
     const { rows: users } = await client.query('SELECT id FROM user_profiles')
     const userIds = users.map((u) => u.id)
     if (userIds.length === 0) {
@@ -40,16 +41,27 @@ export async function runSeeders() {
     }
 
     // 1. Seed reference data first
-    const countries = await seed.seedCountries(client)
-    const cities = await seed.seedCities(client)
-    const socialMedia = await seed.seedSocialMedia(client, config.counts.socialMedia)
-    const categories = await seed.seedCategories(client, config.counts.categories)
-    const tags = await seed.seedTags(client)
+    const countries = await checkAndSeed(client, 'countries', () => seed.seedCountries(client))
+
+    const cities = await checkAndSeed(client, 'cities', () => seed.seedCities(client))
+
+    const socialMedia = await checkAndSeed(client, 'social_media', () =>
+      seed.seedSocialMedia(client, config.counts.socialMedia),
+    )
+
+    const categories = await checkAndSeed(client, 'categories', () =>
+      seed.seedCategories(client, config.counts.categories),
+    )
+
+    const tags = await checkAndSeed(client, 'tags', () => seed.seedTags(client))
 
     const categoryIds = categories.map((c) => c.id)
 
     // 2. Seed content and related tables
-    const contents = await seed.seedContents(client, config.counts.contents)
+    const contents = await checkAndSeed(client, 'contents', () =>
+      seed.seedContents(client, config.counts.contents),
+    )
+
     const allContentIds = contents.map((c) => c.id)
 
     // Filter contents by type
@@ -65,75 +77,95 @@ export async function runSeeders() {
       .map((c) => c.id)
 
     // 3. Seed companies and related data
-    const companies = await seed.seedCompanies(client, companyContentIds)
+    const companies = await checkAndSeed(client, 'companies', () =>
+      seed.seedCompanies(client, companyContentIds),
+    )
+
     const companyIds = companies.map((c) => c.id)
-    await seed.seedContentSources(client, companyIds)
-    await seed.seedCompanyEmployees(client, companyIds, userIds)
-    await seed.seedContacts(client, companyIds, userIds)
-    await seed.seedNewsletters(client, newsletterContentIds)
 
-    // Seed content related data
-    await seed.seedContentCategories(
-      client,
-      allContentIds,
-      categories.map((c) => c.id),
+    await checkAndSeed(client, 'content_sources', () => seed.seedContentSources(client, companyIds))
+
+    await checkAndSeed(client, 'company_employees', () =>
+      seed.seedCompanyEmployees(client, companyIds, userIds),
     )
 
-    await seed.seedContentTags(
-      client,
-      allContentIds,
-      tags.map((t) => t.id),
+    await checkAndSeed(client, 'contacts', () => seed.seedContacts(client, companyIds, userIds))
+
+    await checkAndSeed(client, 'newsletters', () =>
+      seed.seedNewsletters(client, newsletterContentIds),
     )
 
-    await seed.seedNewsTags(
-      client,
-      newsContentIds,
-      tags.map((t) => t.id),
+    // 4. Seed content relationships
+    await checkAndSeed(client, 'content_categories', () =>
+      seed.seedContentCategories(client, allContentIds, categoryIds),
     )
 
-    // 4. Seed addresses
-    await seed.seedAddresses(
-      client,
-      cities.map((c: any) => c.id),
-      countries.map((c: any) => c.id),
-      userIds,
-      companyIds,
+    await checkAndSeed(client, 'content_tags', () =>
+      seed.seedContentTags(
+        client,
+        allContentIds,
+        tags.map((t) => t.id),
+      ),
     )
 
-    // 5. Seed news and research
-    await seed.seedNews(client, newsContentIds, companyIds)
-    await seed.seedResearch(client, researchContentIds)
-
-    // 6. Seed user-related content
-    const folders = await seed.seedBookmarkFolders(client, userIds)
-    await seed.seedBookmarks(
-      client,
-      folders.map((f) => f.id),
-      contents.map((c) => c.id),
-      userIds,
-    )
-    await seed.seedComments(
-      client,
-      contents.map((c) => c.id),
-      userIds,
-    )
-    await seed.seedVotes(
-      client,
-      contents.map((c) => c.id),
-      userIds,
+    await checkAndSeed(client, 'news_tags', () =>
+      seed.seedNewsTags(
+        client,
+        newsContentIds,
+        tags.map((t) => t.id),
+      ),
     )
 
-    // 7. Seed feedback and follows
-    await seed.seedFeedback(client, userIds)
-    await seed.seedFollows(client, userIds, companyContentIds)
+    // 5. Seed addresses
+    await checkAndSeed(client, 'addresses', () =>
+      seed.seedAddresses(
+        client,
+        cities.map((c: any) => c.id),
+        countries.map((c: any) => c.id),
+        userIds,
+        companyIds,
+      ),
+    )
 
-    // 8 Seed Feeds and Feed Categories
-    // After feeds seeding:
-    const feeds = await seed.seedFeeds(client, userIds)
-    await seed.seedFeedCategories(
-      client,
-      feeds.map((f) => f.id),
-      categoryIds,
+    // 6. Seed news and research
+    await checkAndSeed(client, 'news', () => seed.seedNews(client, newsContentIds, companyIds))
+
+    await checkAndSeed(client, 'research', () => seed.seedResearch(client, researchContentIds))
+
+    // 7. Seed user-related content
+    const folders = await checkAndSeed(client, 'bookmark_folders', () =>
+      seed.seedBookmarkFolders(client, userIds),
+    )
+
+    await checkAndSeed(client, 'bookmarks', () =>
+      seed.seedBookmarks(
+        client,
+        folders.map((f) => f.id),
+        allContentIds,
+        userIds,
+      ),
+    )
+
+    await checkAndSeed(client, 'comments', () => seed.seedComments(client, allContentIds, userIds))
+
+    await checkAndSeed(client, 'votes', () => seed.seedVotes(client, allContentIds, userIds))
+
+    // 8. Seed feedback and follows
+    await checkAndSeed(client, 'feedbacks', () => seed.seedFeedback(client, userIds))
+
+    await checkAndSeed(client, 'follows', () =>
+      seed.seedFollows(client, userIds, companyContentIds),
+    )
+
+    // 9. Seed feeds and feed categories
+    const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))
+
+    await checkAndSeed(client, 'feed_categories', () =>
+      seed.seedFeedCategories(
+        client,
+        feeds.map((f) => f.id),
+        categoryIds,
+      ),
     )
 
     console.log(chalk.blue('✓ Database seeding completed successfully'))
