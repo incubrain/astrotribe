@@ -243,7 +243,7 @@ export async function seedBookmarks(
   folderIds: string[],
   contentIds: string[],
   userIds: string[],
-) {
+): Promise<any> {
   const bookmarks = contentIds.map((contentId) => ({
     id: generateUUID(),
     user_id: faker.helpers.arrayElement(userIds),
@@ -258,7 +258,11 @@ export async function seedBookmarks(
   await bulkInsert(pool, 'bookmarks', bookmarks)
 }
 
-export async function seedComments(pool: Pool, contentIds: string[], userIds: string[]) {
+export async function seedComments(
+  pool: Pool,
+  contentIds: string[],
+  userIds: string[],
+): Promise<any> {
   const comments = contentIds.flatMap((contentId) =>
     Array.from({ length: faker.number.int({ min: 0, max: 5 }) }, () => ({
       id: generateUUID(),
@@ -368,7 +372,11 @@ export async function seedContentSources(pool: Pool, companyIds: string[]) {
   return sources
 }
 
-export async function seedCompanyEmployees(pool: Pool, companyIds: string[], userIds: string[]) {
+export async function seedCompanyEmployees(
+  pool: Pool,
+  companyIds: string[],
+  userIds: string[],
+): Promise<any> {
   const accessLevels: AccessLevel[] = ['viewer', 'editor', 'admin', 'super_admin']
 
   const employees = companyIds.flatMap((companyId) =>
@@ -425,7 +433,7 @@ export async function seedAddresses(
   countryIds: number[],
   userIds: string[],
   companyIds: string[],
-) {
+): Promise<any> {
   const addressTypes: AddressType[] = [
     'residential',
     'headquarters',
@@ -460,7 +468,7 @@ export async function seedAddresses(
   await bulkInsert(pool, 'addresses', addresses)
 }
 
-export async function seedFeedback(pool: Pool, userIds: string[]) {
+export async function seedFeedback(pool: Pool, userIds: string[]): Promise<any> {
   const feedbackTypes: FeedbackType[] = [
     'bug_report',
     'feature_request',
