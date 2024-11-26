@@ -22,9 +22,14 @@ interface File {
 
 module.exports = {
   init(config: ProviderConfig) {
+    // Ensure the endpoint is properly formatted
+    const formattedEndpoint = config.endpoint
+      .replace(/\/?$/, '') // Remove trailing slash if present
+      .replace('/storage/v1', '') // Remove /storage/v1 if present
+
     // Configure S3 client
     const s3Config: S3ClientConfig = {
-      endpoint: config.endpoint,
+      endpoint: `${formattedEndpoint}/storage/v1/s3`,
       credentials: {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
@@ -41,12 +46,7 @@ module.exports = {
     }
 
     const getFileUrl = (key: string): string => {
-      // Get the base domain without protocol and trailing slashes
-      const domain = config.endpoint
-        .replace(/^https?:\/\//, '')
-        .replace(/\/+$/, '')
-        .replace('/s3', '/object')
-      return `https://${domain}/public/${config.bucket}/${key}`
+      return `${formattedEndpoint}/storage/v1/object/public/${config.bucket}/${key}`
     }
 
     return {
@@ -60,16 +60,21 @@ module.exports = {
           ACL: 'public-read' as ObjectCannedACL,
           ContentType: file.mime,
           Metadata: {
-            'x-amz-meta-Cache-Control': 'public, max-age=31536000',
-            'x-amz-meta-Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=31536000',
+            'Access-Control-Allow-Origin': '*',
           },
         }
 
-        // Upload file to Supabase storage
-        await s3.send(new PutObjectCommand(params))
+        try {
+          // Upload file to Supabase storage
+          await s3.send(new PutObjectCommand(params))
 
-        // Set file URL directly
-        file.url = getFileUrl(key)
+          // Set file URL
+          file.url = getFileUrl(key)
+        } catch (error) {
+          console.error('Upload error:', error)
+          throw error
+        }
       },
 
       async delete(file: File): Promise<void> {
