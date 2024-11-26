@@ -1,6 +1,14 @@
-import type { Readable } from 'stream'
+import { Readable } from 'stream'
 import type { ObjectCannedACL, S3ClientConfig } from '@aws-sdk/client-s3'
-import { S3, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import {
+  S3,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  CreateMultipartUploadCommand,
+  UploadPartCommand,
+  CompleteMultipartUploadCommand,
+  AbortMultipartUploadCommand,
+} from '@aws-sdk/client-s3'
 
 interface ProviderConfig {
   endpoint: string
@@ -18,18 +26,20 @@ interface File {
   stream?: Readable
   url?: string
   path?: string
+  size?: number
 }
+
+const CHUNK_SIZE = 5 * 1024 * 1024 // 5MB chunk size
 
 module.exports = {
   init(config: ProviderConfig) {
-    // Ensure the endpoint is properly formatted
-    const formattedEndpoint = config.endpoint
-      .replace(/\/?$/, '') // Remove trailing slash if present
-      .replace('/storage/v1', '') // Remove /storage/v1 if present
+    // Ensure we have the full Supabase URL
+    const projectRef = config.endpoint.match(/(?:https?:\/\/)?([^.]+)/)?.[1] || ''
+    const baseUrl = `https://${projectRef}.supabase.co`
 
     // Configure S3 client
     const s3Config: S3ClientConfig = {
-      endpoint: `${formattedEndpoint}/storage/v1/s3`,
+      endpoint: `${baseUrl}/storage/v1/s3`,
       credentials: {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
@@ -46,13 +56,87 @@ module.exports = {
     }
 
     const getFileUrl = (key: string): string => {
-      return `${formattedEndpoint}/storage/v1/object/public/${config.bucket}/${key}`
+      return `${baseUrl}/storage/v1/object/public/${config.bucket}/${key}`
+    }
+
+    async function* createChunks(buffer: Buffer) {
+      let offset = 0
+      while (offset < buffer.length) {
+        const chunk = buffer.slice(offset, offset + CHUNK_SIZE)
+        yield chunk
+        offset += chunk.length
+      }
+    }
+
+    async function uploadMultipart(file: File): Promise<void> {
+      const key = getFileKey(file)
+      const buffer = file.buffer
+
+      try {
+        // Initialize multipart upload
+        const multipartUpload = await s3.send(
+          new CreateMultipartUploadCommand({
+            Bucket: config.bucket,
+            Key: key,
+            ContentType: file.mime,
+            ACL: 'public-read',
+            Metadata: {
+              'Cache-Control': 'public, max-age=31536000',
+              'Access-Control-Allow-Origin': '*',
+            },
+          }),
+        )
+
+        const uploadId = multipartUpload.UploadId
+        const parts: { ETag: string; PartNumber: number }[] = []
+
+        // Upload parts
+        let partNumber = 1
+        for await (const chunk of createChunks(buffer)) {
+          const uploadPartResult = await s3.send(
+            new UploadPartCommand({
+              Bucket: config.bucket,
+              Key: key,
+              UploadId: uploadId,
+              PartNumber: partNumber,
+              Body: chunk,
+            }),
+          )
+
+          parts.push({
+            ETag: uploadPartResult.ETag!,
+            PartNumber: partNumber,
+          })
+
+          partNumber++
+        }
+
+        // Complete multipart upload
+        await s3.send(
+          new CompleteMultipartUploadCommand({
+            Bucket: config.bucket,
+            Key: key,
+            UploadId: uploadId,
+            MultipartUpload: { Parts: parts },
+          }),
+        )
+
+        file.url = getFileUrl(key)
+      } catch (error) {
+        console.error('Multipart upload error:', error)
+        throw error
+      }
     }
 
     return {
       async upload(file: File): Promise<void> {
-        const key = getFileKey(file)
+        // Use multipart upload for files larger than 5MB
+        if (file.size && file.size > CHUNK_SIZE) {
+          await uploadMultipart(file)
+          return
+        }
 
+        const key = getFileKey(file)
         const params = {
           Bucket: config.bucket,
           Key: key,
@@ -66,10 +150,7 @@ module.exports = {
         }
 
         try {
-          // Upload file to Supabase storage
           await s3.send(new PutObjectCommand(params))
-
-          // Set file URL
           file.url = getFileUrl(key)
         } catch (error) {
           console.error('Upload error:', error)
@@ -77,9 +158,24 @@ module.exports = {
         }
       },
 
+      async uploadStream(file: File): Promise<Readable> {
+        const stream = new Readable({
+          read() {},
+        })
+
+        this.upload(file)
+          .then(() => {
+            stream.push(null)
+          })
+          .catch((error) => {
+            stream.emit('error', error)
+          })
+
+        return stream
+      },
+
       async delete(file: File): Promise<void> {
         const key = getFileKey(file)
-
         const params = {
           Bucket: config.bucket,
           Key: key,
