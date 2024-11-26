@@ -61,21 +61,15 @@ const navigationCategories = ref([
     items: [
       {
         id: '4',
-        label: 'Upvoted',
-        slug: '/profile/votes/upvoted',
-        icon: 'mdi:arrow-up-bold',
-      },
-      {
-        id: '5',
-        label: 'Downvoted',
-        slug: '/profile/votes/downvoted',
-        icon: 'mdi:arrow-down-bold',
-      },
-      {
-        id: '6',
         label: 'Bookmarks',
         slug: '/profile/bookmarks',
         icon: 'mdi:bookmark-outline',
+      },
+      {
+        id: '5',
+        label: 'Metrics',
+        slug: '/profile/metrics',
+        icon: 'mdi:chart-line',
       },
     ],
   },
