@@ -3,12 +3,12 @@
     "reference_tables": {
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
-        "content_categories",
-        "content_tags",
         "cities",
         "countries",
-        "categories",
+        "content_categories",
+        "content_tags",
         "metric_definitions",
+        "categories",
         "tags"
       ],
       "default_permissions": [
@@ -19,12 +19,12 @@
     "public_content_tables": {
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
-        "content_sources",
-        "news",
         "newsletters",
-        "contents",
         "companies",
-        "research"
+        "research",
+        "news",
+        "content_sources",
+        "contents"
       ],
       "default_permissions": [
         "select"
@@ -34,15 +34,15 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "comments",
-        "bookmarks",
-        "bookmark_folders",
-        "feed_categories",
         "user_followers",
-        "feeds",
-        "follows",
         "feedbacks",
-        "votes"
+        "follows",
+        "bookmark_folders",
+        "bookmarks",
+        "feed_categories",
+        "feeds",
+        "votes",
+        "comments"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -51,9 +51,9 @@
     "user_data_tables": {
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
-        "contacts",
-        "addresses",
         "searches",
+        "addresses",
+        "contacts",
         "user_profiles"
       ],
       "default_permissions": [],
@@ -63,21 +63,22 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
+        "responses",
+        "social_media",
+        "news_tags",
+        "research_embeddings",
         "company_contacts",
         "company_employees",
-        "news_summaries",
-        "content_statuses",
-        "research_embeddings",
         "company_extras",
         "company_urls",
-        "responses",
         "embedding_reviews",
+        "news_summaries",
+        "content_statuses",
         "company_metrics",
         "spider_metrics",
-        "classified_urls",
         "role_hierarchy",
-        "news_tags",
-        "social_media"
+        "classified_urls",
+        "feed_sources"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -85,8 +86,8 @@
     "security_tables": {
       "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
       "tables": [
-        "blacklisted_urls",
         "plan_permissions",
+        "blacklisted_urls",
         "blacklisted_domains",
         "customer_payments",
         "customer_processed_webhooks",
@@ -94,6 +95,7 @@
         "customer_subscription_plans",
         "customer_subscriptions",
         "payment_providers",
+        "role_permissions_materialized",
         "role_permissions"
       ],
       "default_permissions": [],

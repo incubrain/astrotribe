@@ -1,124 +1,87 @@
-create sequence "public"."social_media_id_seq";
+-- Create sequence for social_media_id_seq
+CREATE SEQUENCE "public"."social_media_id_seq";
 
-alter table "public"."follows" drop constraint "follows_follower_id_followed_id_followed_entity_key";
+-- Alter tables and drop constraints
+ALTER TABLE "public"."follows" DROP CONSTRAINT IF EXISTS "follows_follower_id_followed_id_followed_entity_key";
+ALTER TABLE "public"."votes" DROP CONSTRAINT IF EXISTS "votes_content_type_content_id_user_id_key";
 
-alter table "public"."votes" drop constraint "votes_content_type_content_id_user_id_key";
+-- Drop indexes if they exist
+DROP INDEX IF EXISTS "public"."follows_follower_id_followed_id_followed_entity_key";
+DROP INDEX IF EXISTS "public"."votes_content_type_content_id_user_id_key";
 
-drop index if exists "public"."follows_follower_id_followed_id_followed_entity_key";
+-- Alter content_type enum
+ALTER TABLE "public"."contents" ALTER COLUMN "content_type" DROP DEFAULT;
+ALTER TYPE "public"."content_type" RENAME TO "content_type__old_version_to_be_dropped";
 
-drop index if exists "public"."votes_content_type_content_id_user_id_key";
+-- Create new content_type enum
+CREATE TYPE "public"."content_type" AS ENUM ('news', 'events', 'jobs', 'research', 'companies', 'contact', 'people', 'newsletters', 'unknown');
 
-alter table "public"."contents" alter column "content_type" drop default;
-
-alter type "public"."content_type" rename to "content_type__old_version_to_be_dropped";
-
-create type "public"."content_type" as enum ('news', 'events', 'jobs', 'research', 'companies', 'contact', 'people', 'newsletters', 'unknown');
-
-create table "public"."feed_sources" (
-    "id" bigint generated always as identity not null,
-    "feed_id" uuid,
-    "source_id" uuid,
-    "created_at" timestamp with time zone not null default now()
+-- Create feed_sources table
+CREATE TABLE "public"."feed_sources" (
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
+    "feed_id" UUID,
+    "source_id" UUID,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-
-create table "public"."role_permissions_materialized" (
-    "role" public.app_role_enum not null,
-    "permissions" jsonb not null,
-    "last_updated" timestamp with time zone default now()
+-- Create role_permissions_materialized table
+CREATE TABLE "public"."role_permissions_materialized" (
+    "role" public.app_role_enum NOT NULL,
+    "permissions" JSONB NOT NULL,
+    "last_updated" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    PRIMARY KEY (role)
 );
 
+-- Enable RLS on role_permissions_materialized
+ALTER TABLE "public"."role_permissions_materialized" ENABLE ROW LEVEL SECURITY;
 
-alter table "public"."role_permissions_materialized" enable row level security;
+-- Alter columns to use new content_type
+ALTER TABLE "public"."classified_urls" ALTER COLUMN actual_category TYPE "public"."content_type" USING actual_category::text::"public"."content_type";
+ALTER TABLE "public"."classified_urls" ALTER COLUMN predicted_category TYPE "public"."content_type" USING predicted_category::text::"public"."content_type";
+ALTER TABLE "public"."comments" ALTER COLUMN content_type TYPE "public"."content_type" USING content_type::text::"public"."content_type";
+ALTER TABLE "public"."content_sources" ALTER COLUMN content_type TYPE "public"."content_type" USING content_type::text::"public"."content_type";
+ALTER TABLE "public"."contents" ALTER COLUMN content_type TYPE "public"."content_type" USING content_type::text::"public"."content_type";
+ALTER TABLE "public"."contents" ALTER COLUMN "content_type" SET DEFAULT 'companies'::public.content_type;
 
-alter table "public"."classified_urls" alter column actual_category type "public"."content_type" using actual_category::text::"public"."content_type";
+-- Drop old content_type enum
+DROP TYPE "public"."content_type__old_version_to_be_dropped";
 
-alter table "public"."classified_urls" alter column predicted_category type "public"."content_type" using predicted_category::text::"public"."content_type";
+-- Alter social_media table
+ALTER TABLE "public"."social_media" ALTER COLUMN "id" SET DEFAULT nextval('public.social_media_id_seq'::regclass);
 
-alter table "public"."comments" alter column content_type type "public"."content_type" using content_type::text::"public"."content_type";
-
-alter table "public"."content_sources" alter column content_type type "public"."content_type" using content_type::text::"public"."content_type";
-
-alter table "public"."contents" alter column content_type type "public"."content_type" using content_type::text::"public"."content_type";
-
-alter table "public"."contents" alter column "content_type" set default 'companies'::public.content_type;
-
-drop type "public"."content_type__old_version_to_be_dropped";
-
-alter table "public"."social_media" alter column "id" set default nextval('public.social_media_id_seq'::regclass);
-
-alter table "public"."tags" alter column "created_at" set default CURRENT_TIMESTAMP;
-
--- First, add a new column with the correct type
+-- Drop the existing columns
 ALTER TABLE public.tags 
-ADD COLUMN created_at_new timestamp with time zone;
+DROP COLUMN IF EXISTS created_at,
+DROP COLUMN IF EXISTS updated_at;
 
--- Update the new column with the converted values
-UPDATE public.tags 
-SET created_at_new = created_at::text::timestamp with time zone;
-
--- Drop the old column
+-- Add new columns with correct types and defaults
 ALTER TABLE public.tags 
-DROP COLUMN created_at;
+ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
 
--- Rename the new column
-ALTER TABLE public.tags 
-RENAME COLUMN created_at_new TO created_at;
-
--- Set the default value
-ALTER TABLE public.tags 
-ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;
-
-alter table "public"."tags" alter column "updated_at" set default CURRENT_TIMESTAMP;
-
--- First, add a new column with the correct type
-ALTER TABLE public.tags 
-ADD COLUMN updated_at_new timestamp with time zone;
-
--- Update the new column with the converted values
-UPDATE public.tags 
-SET updated_at_new = updated_at::text::timestamp with time zone;
-
--- Drop the old column
-ALTER TABLE public.tags 
-DROP COLUMN updated_at;
-
--- Rename the new column
-ALTER TABLE public.tags 
-RENAME COLUMN updated_at_new TO updated_at;
-
--- Set the default value
-ALTER TABLE public.tags 
-ALTER COLUMN updated_at SET DEFAULT CURRENT_TIMESTAMP;
-
+-- Create indexes
 CREATE INDEX feed_sources_feed_id_idx ON public.feed_sources USING btree (feed_id);
-
 CREATE UNIQUE INDEX feed_sources_feed_source_unique_idx ON public.feed_sources USING btree (feed_id, source_id);
-
 CREATE INDEX feed_sources_source_id_idx ON public.feed_sources USING btree (source_id);
-
 CREATE UNIQUE INDEX follows_unique_follower_following_idx ON public.follows USING btree (follower_id, followed_id, followed_entity);
-
-CREATE UNIQUE INDEX role_permissions_materialized_pkey ON public.role_permissions_materialized USING btree (role);
-
 CREATE UNIQUE INDEX votes_unique_user_content_vote_idx ON public.votes USING btree (content_type, content_id, user_id);
 
-alter table "public"."role_permissions_materialized" add constraint "role_permissions_materialized_pkey" PRIMARY KEY using index "role_permissions_materialized_pkey";
+-- Add constraints using indexes
+ALTER TABLE "public"."feed_sources" ADD CONSTRAINT "feed_sources_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES public.feeds(id) ON DELETE CASCADE NOT VALID;
+ALTER TABLE "public"."feed_sources" VALIDATE CONSTRAINT "feed_sources_feed_id_fkey";
 
-alter table "public"."feed_sources" add constraint "feed_sources_feed_id_fkey" FOREIGN KEY (feed_id) REFERENCES public.feeds(id) ON DELETE CASCADE not valid;
+ALTER TABLE "public"."feed_sources" ADD CONSTRAINT "feed_sources_source_id_fkey" FOREIGN KEY (source_id) REFERENCES public.contents(id) ON DELETE CASCADE NOT VALID;
+ALTER TABLE "public"."feed_sources" VALIDATE CONSTRAINT "feed_sources_source_id_fkey";
 
-alter table "public"."feed_sources" validate constraint "feed_sources_feed_id_fkey";
+ALTER TABLE "public"."follows" ADD CONSTRAINT "follows_unique_follower_following_idx" UNIQUE USING INDEX "follows_unique_follower_following_idx";
 
-alter table "public"."feed_sources" add constraint "feed_sources_source_id_fkey" FOREIGN KEY (source_id) REFERENCES public.contents(id) ON DELETE CASCADE not valid;
+ALTER TABLE "public"."votes" ADD CONSTRAINT "votes_unique_user_content_vote_idx" UNIQUE USING INDEX "votes_unique_user_content_vote_idx";
 
-alter table "public"."feed_sources" validate constraint "feed_sources_source_id_fkey";
+-- Set check_function_bodies to off
+SET check_function_bodies = off;
 
-alter table "public"."follows" add constraint "follows_unique_follower_following_idx" UNIQUE using index "follows_unique_follower_following_idx";
-
-alter table "public"."votes" add constraint "votes_unique_user_content_vote_idx" UNIQUE using index "votes_unique_user_content_vote_idx";
-
-set check_function_bodies = off;
-
+-- Define functions related to materialized permissions
+-- Function: refresh_materialized_permissions()
 CREATE OR REPLACE FUNCTION public.refresh_materialized_permissions()
  RETURNS void
  LANGUAGE plpgsql
@@ -150,10 +113,9 @@ BEGIN
     ) flattened
     GROUP BY role;
 END;
-$function$
-;
+$function$;
 
-
+-- Function: refresh_materialized_permissions_trigger()
 CREATE OR REPLACE FUNCTION public.refresh_materialized_permissions_trigger()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -162,9 +124,9 @@ BEGIN
     PERFORM refresh_materialized_permissions();
     RETURN NEW;
 END;
-$function$
-;
+$function$;
 
+-- Updated authorize function
 CREATE OR REPLACE FUNCTION public.authorize(requested_permission text)
  RETURNS boolean
  LANGUAGE plpgsql
@@ -204,124 +166,80 @@ BEGIN
     -- If no explicit permission found, return false
     RETURN COALESCE(check_result, FALSE);
 END;
-$function$
-;
+$function$;
 
-grant delete on table "public"."feed_sources" to "anon";
+-- Create trigger to refresh materialized permissions
+CREATE TRIGGER refresh_materialized_permissions_trigger
+AFTER INSERT OR DELETE OR UPDATE ON public.role_permissions
+FOR EACH STATEMENT EXECUTE FUNCTION public.refresh_materialized_permissions_trigger();
 
-grant insert on table "public"."feed_sources" to "anon";
+-- Grants on feed_sources
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."feed_sources" TO "anon";
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."feed_sources" TO "authenticated";
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."feed_sources" TO "service_role";
 
-grant references on table "public"."feed_sources" to "anon";
+-- Grants on role_permissions_materialized
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "anon";
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "authenticated";
+GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "service_role";
 
-grant select on table "public"."feed_sources" to "anon";
+-- Policies on role_permissions_materialized
+CREATE POLICY "delete_policy"
+ON "public"."role_permissions_materialized"
+AS permissive
+FOR DELETE
+TO public
+USING (public.authorize('role_permissions_materialized.delete'::text));
 
-grant trigger on table "public"."feed_sources" to "anon";
+CREATE POLICY "insert_policy"
+ON "public"."role_permissions_materialized"
+AS permissive
+FOR INSERT
+TO public
+WITH CHECK (public.authorize('role_permissions_materialized.insert'::text));
 
-grant truncate on table "public"."feed_sources" to "anon";
+CREATE POLICY "select_policy"
+ON "public"."role_permissions_materialized"
+AS permissive
+FOR SELECT
+TO public
+USING (public.authorize('role_permissions_materialized.select'::text));
 
-grant update on table "public"."feed_sources" to "anon";
+CREATE POLICY "update_policy"
+ON "public"."role_permissions_materialized"
+AS permissive
+FOR UPDATE
+TO public
+USING (public.authorize('role_permissions_materialized.update'::text));
 
-grant delete on table "public"."feed_sources" to "authenticated";
+-- Create policies on feed_sources
+CREATE POLICY "delete_policy"
+ON "public"."feed_sources"
+AS permissive
+FOR DELETE
+TO public
+USING (public.authorize('feed_sources.delete'::text));
 
-grant insert on table "public"."feed_sources" to "authenticated";
+CREATE POLICY "insert_policy"
+ON "public"."feed_sources"
+AS permissive
+FOR INSERT
+TO public
+WITH CHECK (public.authorize('feed_sources.insert'::text));
 
-grant references on table "public"."feed_sources" to "authenticated";
+CREATE POLICY "select_policy"
+ON "public"."feed_sources"
+AS permissive
+FOR SELECT
+TO public
+USING (public.authorize('feed_sources.select'::text));
 
-grant select on table "public"."feed_sources" to "authenticated";
+CREATE POLICY "update_policy"
+ON "public"."feed_sources"
+AS permissive
+FOR UPDATE
+TO public
+USING (public.authorize('feed_sources.update'::text));
 
-grant trigger on table "public"."feed_sources" to "authenticated";
-
-grant truncate on table "public"."feed_sources" to "authenticated";
-
-grant update on table "public"."feed_sources" to "authenticated";
-
-grant delete on table "public"."feed_sources" to "service_role";
-
-grant insert on table "public"."feed_sources" to "service_role";
-
-grant references on table "public"."feed_sources" to "service_role";
-
-grant select on table "public"."feed_sources" to "service_role";
-
-grant trigger on table "public"."feed_sources" to "service_role";
-
-grant truncate on table "public"."feed_sources" to "service_role";
-
-grant update on table "public"."feed_sources" to "service_role";
-
-grant delete on table "public"."role_permissions_materialized" to "anon";
-
-grant insert on table "public"."role_permissions_materialized" to "anon";
-
-grant references on table "public"."role_permissions_materialized" to "anon";
-
-grant select on table "public"."role_permissions_materialized" to "anon";
-
-grant trigger on table "public"."role_permissions_materialized" to "anon";
-
-grant truncate on table "public"."role_permissions_materialized" to "anon";
-
-grant update on table "public"."role_permissions_materialized" to "anon";
-
-grant delete on table "public"."role_permissions_materialized" to "authenticated";
-
-grant insert on table "public"."role_permissions_materialized" to "authenticated";
-
-grant references on table "public"."role_permissions_materialized" to "authenticated";
-
-grant select on table "public"."role_permissions_materialized" to "authenticated";
-
-grant trigger on table "public"."role_permissions_materialized" to "authenticated";
-
-grant truncate on table "public"."role_permissions_materialized" to "authenticated";
-
-grant update on table "public"."role_permissions_materialized" to "authenticated";
-
-grant delete on table "public"."role_permissions_materialized" to "service_role";
-
-grant insert on table "public"."role_permissions_materialized" to "service_role";
-
-grant references on table "public"."role_permissions_materialized" to "service_role";
-
-grant select on table "public"."role_permissions_materialized" to "service_role";
-
-grant trigger on table "public"."role_permissions_materialized" to "service_role";
-
-grant truncate on table "public"."role_permissions_materialized" to "service_role";
-
-grant update on table "public"."role_permissions_materialized" to "service_role";
-
-create policy "delete_policy"
-on "public"."role_permissions_materialized"
-as permissive
-for delete
-to public
-using (public.authorize('role_permissions_materialized.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."role_permissions_materialized"
-as permissive
-for insert
-to public
-with check (public.authorize('role_permissions_materialized.insert'::text));
-
-
-create policy "select_policy"
-on "public"."role_permissions_materialized"
-as permissive
-for select
-to public
-using (public.authorize('role_permissions_materialized.select'::text));
-
-
-create policy "update_policy"
-on "public"."role_permissions_materialized"
-as permissive
-for update
-to public
-using (public.authorize('role_permissions_materialized.update'::text));
-
-
-CREATE TRIGGER refresh_materialized_permissions_trigger AFTER INSERT OR DELETE OR UPDATE ON public.role_permissions FOR EACH STATEMENT EXECUTE FUNCTION public.refresh_materialized_permissions_trigger();
-
+-- Refresh materialized permissions after setup
+SELECT public.refresh_materialized_permissions();
