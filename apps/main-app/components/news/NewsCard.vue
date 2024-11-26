@@ -2,6 +2,12 @@
 import { useTimeAgo } from '@vueuse/core'
 import { ref, onMounted } from 'vue'
 
+export interface Company {
+  id: string
+  name: string
+  logo_url?: string
+}
+
 export interface NewsCardT {
   id: string
   title: string
@@ -13,6 +19,8 @@ export interface NewsCardT {
   url: string
   comments: number
   score?: number
+  company_id?: string
+  companies?: Company
 }
 
 interface Props {
@@ -56,6 +64,25 @@ const displayScore = computed(() => {
   return currentScore
 })
 
+const sourceDisplay = computed(() => {
+  const company = props.news.companies
+  const author = props.news.author
+
+  if (company?.name && author) {
+    return `${author} • ${company.name}`
+  } else if (company?.name) {
+    return company.name
+  } else if (author) {
+    return author
+  }
+  return 'Unknown source'
+})
+
+const formatSourceName = (name: string) => {
+  // Remove common suffixes like .com, .org, etc.
+  return name.replace(/\.(com|org|net|io|ai)$/, '')
+}
+
 const readTime = computed(() => {
   // Calculate read time based on content length
   // This is a placeholder, replace with actual logic
@@ -88,10 +115,6 @@ const imageSource = computed(() => {
   // return getRandomFallbackImage() // Random each time
   return 'fallback.jpg'
 })
-
-const toggleFlip = () => {
-  isFlipped.value = !isFlipped.value
-}
 
 // Handle clicks for touch devices
 const handleClick = (event: MouseEvent) => {
@@ -129,18 +152,31 @@ const handleMouseLeave = () => {
         <div class="p-4 flex flex-col justify-between h-full">
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <!-- Fixed author image container -->
+              <!-- Company logo or random image -->
               <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
                 <NuxtImg
-                  :src="`https://picsum.photos/24/24?random=${news.id}`"
-                  alt="Author"
+                  :src="news.companies?.logo_url || `https://picsum.photos/24/24?random=${news.id}`"
+                  alt="Source"
                   class="w-full h-full object-cover"
                   width="24"
                   height="24"
                 />
               </div>
-              <!-- Author name with ellipsis -->
-              <span class="text-sm truncate">{{ news.author }}</span>
+              <!-- Source and author info -->
+              <div class="flex flex-col min-w-0">
+                <span
+                  v-if="news.companies?.name"
+                  class="font-medium text-sm truncate"
+                >
+                  {{ formatSourceName(news.companies.name) }}
+                </span>
+                <span
+                  v-if="news.author"
+                  class="text-xs text-gray-400 truncate"
+                >
+                  {{ news.author }}
+                </span>
+              </div>
             </div>
             <h2 class="text-xl font-bold mb-2">{{ news.title }}</h2>
             <div class="flex items-center text-sm mb-4">
