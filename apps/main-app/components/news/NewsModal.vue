@@ -21,19 +21,7 @@
       </div>
     </div>
     <div class="grid h-full w-full grid-cols-1 gap-4 overflow-scroll py-4 xl:grid-cols-4">
-      <div class="grid grid-cols-2 gap-4 xl:col-start-4">
-        <NewsNavigationButton
-          :condition="nextIndex <= posts.length - 1"
-          :is-prev="true"
-          :post="posts[nextIndex]"
-          :handle-click="nextPost"
-        />
-        <NewsNavigationButton
-          :condition="previousIndex >= 0"
-          :post="posts[previousIndex]"
-          :handle-click="previousPost"
-        />
-      </div>
+      <div class="grid grid-cols-2 gap-4 xl:col-start-4"> </div>
       <div
         v-if="posts[currentIndex].media"
         class="col-start-1 lg:mt-0 xl:col-span-3 xl:row-span-2 xl:row-start-1"
