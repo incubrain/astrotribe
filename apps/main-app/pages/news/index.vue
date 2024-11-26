@@ -122,7 +122,7 @@ definePageMeta({
 
 <template>
   <div>
-    <!-- New title section -->
+    <!-- Title section -->
     <div class="bg-gray-900 border-b border-gray-800">
       <div class="max-w-[940px] mx-auto px-4 py-6 md:px-8">
         <div class="flex items-center justify-between">
@@ -134,6 +134,11 @@ definePageMeta({
         </div>
       </div>
     </div>
+
+    <!-- Black Friday Banner -->
+    <BlackFridayBanner />
+
+    <!-- News Content -->
     <IBInfiniteScroll @update:scroll-end="loadMore()">
       <div
         class="mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:col-start-2 gap-4 md:gap-8 p-4 md:p-8 max-w-[940px]"
@@ -149,4 +154,28 @@ definePageMeta({
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.stars-small,
+.stars-medium,
+.stars-large {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(1px, rgba(255, 255, 255, 0.5) 1px, transparent 0),
+    radial-gradient(2px, rgba(255, 255, 255, 0.3) 1px, transparent 0),
+    radial-gradient(3px, rgba(255, 255, 255, 0.2) 1px, transparent 0);
+  background-size:
+    100px 100px,
+    200px 200px,
+    300px 300px;
+  animation: stars-animation 100s linear infinite;
+}
+
+@keyframes stars-animation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+</style>
