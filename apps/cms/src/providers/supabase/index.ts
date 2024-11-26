@@ -33,18 +33,29 @@ const CHUNK_SIZE = 5 * 1024 * 1024 // 5MB chunk size
 
 module.exports = {
   init(config: ProviderConfig) {
-    // Ensure we have the full Supabase URL
-    const projectRef = config.endpoint.match(/(?:https?:\/\/)?([^.]+)/)?.[1] || ''
-    const baseUrl = `https://${projectRef}.supabase.co`
+    // Validate and format the endpoint URL
+    if (!config.endpoint) {
+      throw new Error('Supabase endpoint URL is required')
+    }
+
+    // Remove any protocol and trailing slashes
+    const cleanEndpoint = config.endpoint
+      .replace(/^https?:\/\//, '')
+      .replace(/\/+$/, '')
+      .replace('/storage/v1', '')
+
+    if (!cleanEndpoint) {
+      throw new Error('Invalid Supabase endpoint URL')
+    }
 
     // Configure S3 client
     const s3Config: S3ClientConfig = {
-      endpoint: `${baseUrl}/storage/v1/s3`,
+      endpoint: `https://${cleanEndpoint}/storage/v1/s3`,
       credentials: {
         accessKeyId: config.accessKeyId,
         secretAccessKey: config.secretAccessKey,
       },
-      region: config.region,
+      region: config.region || 'ap-south-1',
       forcePathStyle: true,
     }
 
@@ -56,7 +67,7 @@ module.exports = {
     }
 
     const getFileUrl = (key: string): string => {
-      return `${baseUrl}/storage/v1/object/public/${config.bucket}/${key}`
+      return `https://${cleanEndpoint}/storage/v1/object/public/${config.bucket}/${key}`
     }
 
     async function* createChunks(buffer: Buffer) {
@@ -130,26 +141,30 @@ module.exports = {
 
     return {
       async upload(file: File): Promise<void> {
-        // Use multipart upload for files larger than 5MB
-        if (file.size && file.size > CHUNK_SIZE) {
-          await uploadMultipart(file)
-          return
-        }
-
-        const key = getFileKey(file)
-        const params = {
-          Bucket: config.bucket,
-          Key: key,
-          Body: file.stream || file.buffer,
-          ACL: 'public-read' as ObjectCannedACL,
-          ContentType: file.mime,
-          Metadata: {
-            'Cache-Control': 'public, max-age=31536000',
-            'Access-Control-Allow-Origin': '*',
-          },
+        if (!file.hash || !file.ext) {
+          throw new Error('File hash and extension are required')
         }
 
         try {
+          // Use multipart upload for files larger than 5MB
+          if (file.size && file.size > CHUNK_SIZE) {
+            await uploadMultipart(file)
+            return
+          }
+
+          const key = getFileKey(file)
+          const params = {
+            Bucket: config.bucket,
+            Key: key,
+            Body: file.stream || file.buffer,
+            ACL: 'public-read' as ObjectCannedACL,
+            ContentType: file.mime,
+            Metadata: {
+              'Cache-Control': 'public, max-age=31536000',
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
+
           await s3.send(new PutObjectCommand(params))
           file.url = getFileUrl(key)
         } catch (error) {
@@ -159,29 +174,34 @@ module.exports = {
       },
 
       async uploadStream(file: File): Promise<Readable> {
-        const stream = new Readable({
-          read() {},
+        return new Promise((resolve, reject) => {
+          const stream = new Readable({
+            read() {},
+          })
+
+          this.upload(file)
+            .then(() => {
+              stream.push(null)
+              resolve(stream)
+            })
+            .catch((error) => {
+              reject(error)
+            })
         })
-
-        this.upload(file)
-          .then(() => {
-            stream.push(null)
-          })
-          .catch((error) => {
-            stream.emit('error', error)
-          })
-
-        return stream
       },
 
       async delete(file: File): Promise<void> {
-        const key = getFileKey(file)
-        const params = {
-          Bucket: config.bucket,
-          Key: key,
+        if (!file.hash || !file.ext) {
+          throw new Error('File hash and extension are required')
         }
 
-        await s3.send(new DeleteObjectCommand(params))
+        const key = getFileKey(file)
+        await s3.send(
+          new DeleteObjectCommand({
+            Bucket: config.bucket,
+            Key: key,
+          }),
+        )
       },
     }
   },
