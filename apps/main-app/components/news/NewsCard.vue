@@ -233,7 +233,7 @@ const handleMouseLeave = () => {
             :to="news.url"
             target="_blank"
             rel="noopener noreferrer nofollow"
-            class="bg-primary-500 hover:bg-primary-400 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-colors"
+            class="border border-primary-700 hover:border-primary-400 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-colors"
           >
             Read Full Article
             <Icon
