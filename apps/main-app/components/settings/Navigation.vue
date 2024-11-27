@@ -20,15 +20,21 @@ const { settingsRoutes } = useSettingsNavigation()
         v-ripple
         :to="item.url"
         exact-active-class="bg-primary-950 text-white w-full"
-        class="flex w-full justify-between gap-2 rounded-md px-3 py-2"
+        class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2"
       >
-        <span class="text-nowrap md:mr-4">{{ item.label }}</span>
-        <div class="hidden md:block">
+        <span class="flex items-center gap-2">
           <Icon
             v-if="item.icon"
             :name="item.icon"
+            class="md:hidden"
           />
-        </div>
+          <span>{{ item.label }}</span>
+        </span>
+        <Icon
+          v-if="item.icon"
+          :name="item.icon"
+          class="hidden md:block"
+        />
       </NuxtLink>
     </template>
   </PrimeMenu>
