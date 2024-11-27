@@ -1,6 +1,7 @@
+<!-- /forgot-password -->
+
 <script setup lang="ts">
 // If you use PKCE (default), this link only works on the device or browser where the original reset request was made. Display a message to the user to make sure they don't change devices or browsers.
-// redirectTo page (password reset) should require auth to view (should be secure)
 
 const form = reactive({
   email: '',

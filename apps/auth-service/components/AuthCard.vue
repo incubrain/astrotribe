@@ -25,8 +25,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="space-between flex min-h-full flex-col space-y-4">
-    <div class="flex h-full w-full flex-row items-center justify-center gap-4 py-8 text-white">
+  <div class="space-between flex min-h-full flex-col space-y-4 ">
+    <div class="flex h-full flex-row items-center justify-center gap-4 py-8 text-white mx-auto">
       <div class="border-color group relative rounded-full border bg-white p-4 hover:invert">
         <NuxtLink
           to="/"
@@ -45,24 +45,24 @@ defineProps({
         </NuxtLink>
       </div>
       <div class="w-full">
-        <h2 class="text-3xl font-extrabold lg:text-center">
+        <h2 class="text-3xl font-extrabold lg:text-start">
           {{ title.main }}
         </h2>
-        <span class="flex items-center gap-4 text-center font-bold lg:justify-center">
+        <span class="flex items-center gap-2 text-start font-bold lg:justify-start">
           {{ title.subtitle }}
           <NuxtLink
             v-if="helpUrl && title.label"
             :to="helpUrl"
             class="text-primary-500 underline"
           >
-            <PrimeButton>
+            <PrimeButton link class="!p-0 !m-0 leading-normal underline">
               {{ title.label }}
             </PrimeButton>
           </NuxtLink>
         </span>
       </div>
     </div>
-    <PrimeCard>
+    <PrimeCard class="max-w-sm w-full mx-auto py-2">
       <!-- <template
         v-if="showTitle && haveUserSession"
         #title
