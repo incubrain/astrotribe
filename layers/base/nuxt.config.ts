@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     preload: true,
     provider: 'server',
     serverBundle: {
-      collections: ['material-symbols', 'mdi'],
+      collections: ['material-symbols', 'mdi', 'game-icons'],
     },
     clientBundle: {
       scan: true,
