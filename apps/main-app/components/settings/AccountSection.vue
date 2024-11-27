@@ -1,9 +1,21 @@
 <!-- components/settings/AccountSection.vue -->
 <script setup lang="ts">
-import { z } from 'zod'
-import { useSettingsProfile } from '~/composables/useSettingsProfile'
+interface Profile {
+  avatar?: string
+  given_name: string
+  surname: string
+  email: string
+  username: string
+}
 
-const { profile, updateProfile, isUpdating } = useSettingsProfile()
+const profile = ref<Profile>({
+  given_name: 'Drew',
+  surname: 'MacGibbon',
+  email: 'drewmacgibbon@gmail.com',
+  username: '',
+})
+
+const isUpdating = ref(false)
 
 const schema = [
   {
@@ -33,10 +45,29 @@ const schema = [
     label: 'Username',
     tip: 'Contact support to update your username',
     placeholder: 'Your username',
-    type: 'username',
+    type: 'text',
     disabled: true,
   },
 ]
+
+async function updateProfile(updates: Partial<Profile>) {
+  try {
+    isUpdating.value = true
+    // Add actual update functionality here
+    profile.value = { ...profile.value, ...updates }
+    toast.success({
+      summary: 'Success',
+      message: 'Your profile has been updated',
+    })
+  } catch (error) {
+    toast.error({
+      summary: 'Error',
+      message: 'Failed to update profile',
+    })
+  } finally {
+    isUpdating.value = false
+  }
+}
 </script>
 
 <template>
@@ -51,12 +82,20 @@ const schema = [
         <div class="flex items-center space-x-4">
           <div class="relative h-32 w-32">
             <PrimeAvatar
-              v-if="profile?.avatar"
+              v-if="profile.avatar"
               :image="profile.avatar"
               shape="circle"
               class="h-full w-full"
               crossorigin="anonymous"
             />
+            <div
+              v-else
+              class="h-full w-full bg-gray-800 rounded-full flex items-center justify-center"
+            >
+              <span class="text-3xl text-gray-400">
+                {{ profile.given_name?.[0] }}
+              </span>
+            </div>
             <UploadCropper
               cropper-type="avatar"
               class="absolute bottom-0 right-0"
@@ -82,7 +121,7 @@ const schema = [
         </SettingsItem>
       </div>
 
-      <div class="pt-4">
+      <div class="flex justify-end pt-4">
         <PrimeButton
           :loading="isUpdating"
           @click="updateProfile(profile)"

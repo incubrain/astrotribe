@@ -1,56 +1,90 @@
-<template>
-  <div class="card background rounded-lg p-4 shadow-lg">
-    <h2 class="mb-4 text-2xl font-bold"> Monthly Test Plan </h2>
-    <div class="relative h-32 w-32 overflow-hidden rounded-full bg-white p-2">
-      <NuxtImg
-        src="/astronera-logo.jpg"
-        alt="Acme Corp Logo"
-        class="h-full w-full"
-      />
-    </div>
-    <p class="mb-4"> Subscribe to our monthly plan for exclusive benefits! </p>
-    <PrimeButton
-      label="Pay Now"
-      icon="pi pi-credit-card"
-      :loading="loading"
-      :disabled="!isRazorpayLoaded"
-      @click="handlePayment"
-    />
-  </div>
-</template>
-
+<!-- components/payments/RazorpayButton.vue -->
 <script setup lang="ts">
+interface PlanDetails {
+  name: string
+  description: string
+  amount: number
+  currency?: string
+  interval?: string
+  subscription_id?: string
+}
+
+interface CustomerInfo {
+  name?: string
+  email?: string
+  contact?: string
+}
+
+interface Props {
+  plan: PlanDetails
+  customer?: CustomerInfo
+  buttonLabel?: string
+  buttonIcon?: string
+  theme?: {
+    color?: string
+    logo?: string
+  }
+  notes?: Record<string, string>
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  buttonLabel: 'Pay Now',
+  buttonIcon: 'pi pi-credit-card',
+  theme: () => ({ color: '#4F46E5', logo: '/astronera-logo.jpg' }),
+  customer: () => ({}),
+  notes: () => ({}),
+})
+
+const emit = defineEmits<{
+  'payment-success': [response: any]
+  'payment-error': [error: any]
+  'payment-closed': []
+}>()
+
 const config = useRuntimeConfig()
 const loading = ref(false)
 const isRazorpayLoaded = ref(false)
 
-const razorpayOptions = {
-  key: 'rzp_test_lV0OE0NDIg6Hr6',
-  subscription_id: 'sub_OmnXoFCi6bQSlj',
-  name: 'Professional',
-  description: 'Monthly Professional Plan',
-  image: '/astronera-logo.jpg',
+const razorpayOptions = computed(() => ({
+  key: config.public.razorpayKey || 'rzp_test_lV0OE0NDIg6Hr6',
+  subscription_id: props.plan.subscription_id,
+  amount: props.plan.amount * 100, // Razorpay expects amount in paise
+  currency: props.plan.currency || 'INR',
+  name: props.plan.name,
+  description: props.plan.description,
+  image: props.theme.logo,
   handler: function (response: any) {
-    console.log('Payment ID:', response.razorpay_payment_id)
-    console.log('Subscription ID:', response.razorpay_subscription_id)
-    console.log('Signature:', response.razorpay_signature)
-    // Here you can add logic to verify the payment on your server
+    emit('payment-success', response)
+  },
+  modal: {
+    ondismiss: function () {
+      emit('payment-closed')
+      loading.value = false
+    },
   },
   prefill: {
-    name: 'Gaurav Kumar',
-    email: 'gaurav.kumar@example.com',
-    contact: '+919876543210',
+    name: props.customer.name,
+    email: props.customer.email,
+    contact: props.customer.contact,
   },
-  notes: {
-    note_key_1: 'Tea. Earl Grey. Hot',
-    note_key_2: 'Make it so.',
-  },
+  notes: props.notes,
   theme: {
-    color: '#F37254',
+    color: props.theme.color,
   },
-}
+}))
 
 let rzp: any
+
+// Watch for changes in razorpayOptions and recreate instance if needed
+watch(
+  () => razorpayOptions.value,
+  (newOptions) => {
+    if (isRazorpayLoaded.value) {
+      rzp = new (window as any).Razorpay(newOptions)
+    }
+  },
+  { deep: true },
+)
 
 useHead({
   script: [
@@ -59,7 +93,7 @@ useHead({
       async: true,
       onload: () => {
         isRazorpayLoaded.value = true
-        rzp = new (window as any).Razorpay(razorpayOptions)
+        rzp = new (window as any).Razorpay(razorpayOptions.value)
       },
     },
   ],
@@ -67,15 +101,26 @@ useHead({
 
 const handlePayment = () => {
   if (!isRazorpayLoaded.value) {
-    console.error('Razorpay is not loaded yet')
+    emit('payment-error', new Error('Razorpay is not loaded yet'))
     return
   }
-  loading.value = true
-  rzp.open()
-  loading.value = false
+
+  try {
+    loading.value = true
+    rzp.open()
+  } catch (error) {
+    emit('payment-error', error)
+    loading.value = false
+  }
 }
 </script>
 
-<style scoped>
-/* Add any additional styles here */
-</style>
+<template>
+  <PrimeButton
+    :label="buttonLabel"
+    :icon="buttonIcon"
+    :loading="loading"
+    :disabled="!isRazorpayLoaded"
+    @click="handlePayment"
+  />
+</template>
