@@ -368,8 +368,7 @@ export async function seedContentSources(pool: Pool, companyIds: string[]) {
     })),
   )
 
-  await bulkInsert(pool, 'content_sources', sources)
-  return sources
+  return await bulkInsert(pool, 'content_sources', sources)
 }
 
 export async function seedCompanyEmployees(
@@ -621,7 +620,12 @@ export async function seedCategories(pool: Pool, count: number) {
   return categories
 }
 
-export async function seedNews(pool: Pool, contentIds: string[], companyIds: string[]) {
+export async function seedNews(
+  pool: Pool,
+  contentIds: string[],
+  companyIds: string[],
+  contentSourceIds: number[],
+) {
   const usedUrls = new Set<string>()
   const newsStatuses = getContentStatusFlow('news')
 
@@ -641,6 +645,7 @@ export async function seedNews(pool: Pool, contentIds: string[], companyIds: str
       description: faker.lorem.paragraph(),
       author: faker.person.fullName(),
       company_id: faker.helpers.arrayElement(companyIds),
+      content_source_id: faker.helpers.arrayElement(contentSourceIds),
       published_at: faker.date.past(),
       hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
       failed_count: faker.number.int({ min: 0, max: 5 }),
@@ -996,4 +1001,22 @@ export async function seedNewsTags(pool: Pool, newsIds: string[], tagIds: number
 
   await bulkInsert(pool, 'news_tags', newsTags)
   return newsTags
+}
+
+export async function seedFeedSources(pool: Pool, feedIds: string[], contentSourceIds: string[]) {
+  // Track used IDs
+  const usedIds = new Set<number>()
+
+  // Create feed sources - each feed will have 1-5 sources
+  const feedSources = feedIds.flatMap((feedId) =>
+    // For each feed, create 1-5 source associations
+    Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+      feed_id: feedId,
+      source_id: faker.helpers.arrayElement(contentSourceIds), // Link to content_sources
+      created_at: faker.date.past(),
+    })),
+  )
+
+  await bulkInsert(pool, 'feed_sources', feedSources)
+  return feedSources
 }

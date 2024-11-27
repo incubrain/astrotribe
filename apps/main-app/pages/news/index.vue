@@ -15,90 +15,12 @@ const { store, loadMore, refresh } = useSelectData<News>('news', {
   orderBy: { column: 'created_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 },
+  storeKey: 'mainNewsFeed',
 })
 
 const { items: proxyNews } = storeToRefs(store)
 
 const news = computed(() => proxyNews.value.map((item) => toRaw(item)))
-
-console.log('news', news)
-
-const fetchTodaysPosts = async () => {
-  // Get the start and end of today in the user's timezone
-  const now = new Date()
-  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const endOfDay = new Date(startOfDay)
-  endOfDay.setDate(startOfDay.getDate() + 1)
-
-  // Convert to ISO strings for Supabase
-  const startISO = startOfDay.toISOString()
-  const endISO = endOfDay.toISOString()
-
-  const { count, error } = await supabase
-    .from('news')
-    .select('id', { count: 'exact', head: true })
-    .gte('created_at', startISO)
-    .lt('created_at', endISO)
-    .not('body', 'is', null)
-
-  if (error) {
-    console.error("Error fetching today's posts:", error)
-    return
-  }
-
-  todaysPosts.value = count || 0
-}
-
-// New code for title section
-const currentTime = ref(new Date())
-const formattedTime = computed(() => {
-  return new Intl.DateTimeFormat(undefined, {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    timeZoneName: 'short',
-  }).format(currentTime.value)
-})
-
-onMounted(() => {
-  // Initial fetch
-  fetchTodaysPosts()
-
-  // Update time every minute
-  const timeTimer = setInterval(() => {
-    currentTime.value = new Date()
-  }, 60000)
-
-  // Update post count every 5 minutes
-  const postTimer = setInterval(() => {
-    fetchTodaysPosts()
-  }, 300000)
-
-  onUnmounted(() => {
-    clearInterval(timeTimer)
-    clearInterval(postTimer)
-  })
-})
-
-// Calculate posts from today
-const todaysPosts = computed(() => {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  return news.value.filter((post) => {
-    const postDate = new Date(post.created_at)
-    postDate.setHours(0, 0, 0, 0)
-    return postDate.getTime() === today.getTime()
-  }).length
-})
-
-// Refresh post count when new posts are loaded
-watch(
-  () => proxyNews.value.length,
-  () => {
-    fetchTodaysPosts()
-  },
-)
 
 const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading(domainKey))
@@ -122,20 +44,7 @@ definePageMeta({
 
 <template>
   <div>
-    <!-- Title section -->
-    <div class="bg-gray-900 border-b border-gray-800">
-      <div class="max-w-[940px] mx-auto px-4 py-6 md:px-8">
-        <div class="flex items-center justify-between">
-          <h1 class="text-2xl font-bold text-white">News Feed</h1>
-          <div class="text-gray-400 text-sm space-y-1 text-right">
-            <div>{{ formattedTime }}</div>
-            <div>{{ todaysPosts }} posts today</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Black Friday Banner -->
+    <FeedTitle title="News Feed" />
     <BlackFridayBanner />
 
     <!-- News Content -->
@@ -154,28 +63,4 @@ definePageMeta({
   </div>
 </template>
 
-<style scoped>
-.stars-small,
-.stars-medium,
-.stars-large {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(1px, rgba(255, 255, 255, 0.5) 1px, transparent 0),
-    radial-gradient(2px, rgba(255, 255, 255, 0.3) 1px, transparent 0),
-    radial-gradient(3px, rgba(255, 255, 255, 0.2) 1px, transparent 0);
-  background-size:
-    100px 100px,
-    200px 200px,
-    300px 300px;
-  animation: stars-animation 100s linear infinite;
-}
-
-@keyframes stars-animation {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
-  }
-}
-</style>
+<style scoped></style>

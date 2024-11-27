@@ -22,8 +22,6 @@ export default defineEventHandler((event) => {
     })
   }
 
-  console.log('CORS', origin, isAllowedOrigin)
-
   if (event.method === 'OPTIONS') {
     event.node.res.statusCode = 204
     event.node.res.statusMessage = 'No Content.'
