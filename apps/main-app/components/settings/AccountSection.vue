@@ -1,9 +1,9 @@
 <!-- components/settings/AccountSection.vue -->
 <script setup lang="ts">
 import { z } from 'zod'
-import { useProfileSettings } from '~/composables/useProfileSettings'
+import { useSettingsProfile } from '~/composables/useSettingsProfile'
 
-const { profile, updateProfile, isUpdating } = useProfileSettings()
+const { profile, updateProfile, isUpdating } = useSettingsProfile()
 
 const schema = [
   {
