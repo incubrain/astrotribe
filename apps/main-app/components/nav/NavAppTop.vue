@@ -48,21 +48,42 @@ const loading = useLoadingStore()
 const isLoading = computed(() => loading.isLoading('currentUser'))
 
 const avatarUrl = ref(null)
+const fallbackLoaded = ref(false)
+
+// Generate fallback avatar URL using UI Avatars
+const getFallbackAvatarUrl = (name: string) => {
+  const initials =
+    name
+      ?.split(' ')
+      .map((word) => word[0])
+      .join('')
+      .toUpperCase() || 'U'
+  return `https://ui-avatars.com/api/?name=${initials}&background=random&size=128`
+}
 
 watch(
   profile,
   (newProfile) => {
-    avatarUrl.value = newProfile?.avatar || '/defaults/avatar.jpg'
+    if (newProfile?.avatar) {
+      avatarUrl.value = newProfile.avatar
+      fallbackLoaded.value = false
+    } else {
+      // Use name from profile for the fallback avatar, or default to 'User'
+      avatarUrl.value = getFallbackAvatarUrl(newProfile?.full_name || 'User')
+      fallbackLoaded.value = true
+    }
   },
   { immediate: true },
 )
 
-const logError = (error) => {
-  console.log('Error loading image, default image rendered', error)
+const handleImageError = () => {
+  if (!fallbackLoaded.value) {
+    // Only load fallback if we haven't already tried
+    avatarUrl.value = getFallbackAvatarUrl(profile.value?.full_name || 'User')
+    fallbackLoaded.value = true
+  }
+  console.log('Avatar image load error, using fallback')
 }
-
-// !todo: show a back button on tablet and below, left of nav.
-// !todo: add styling to profileMenu nav to make it full screen on tablet and below
 </script>
 
 <template>
@@ -93,15 +114,6 @@ const logError = (error) => {
         v-else-if="profile?.user_role"
         class="flex items-center justify-center gap-4"
       >
-        <!-- <AppThemeToggle v-slot="{ toggle, isDark }">
-          <Icon
-            :name="isDark ? 'heroicons:sun' : 'heroicons:moon'"
-            class="cursor-pointer"
-                      size="24px"
-
-            @click="toggle"
-          />
-        </AppThemeToggle> -->
         <PrimeTag v-if="profile.user_role">
           {{ profile.user_role }}
         </PrimeTag>
@@ -113,8 +125,7 @@ const logError = (error) => {
           class="cursor-pointer"
           aria-haspopup="true"
           aria-controls="overlay_menu"
-          crossorigin="anonymous"
-          @error="logError"
+          @error="handleImageError"
           @click="toggleMenu"
         />
         <PrimeMenu
