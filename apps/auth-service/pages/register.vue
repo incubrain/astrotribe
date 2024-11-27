@@ -8,6 +8,8 @@ const form = reactive({
 })
 
 const auth = useAuth()
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
 
 const isPasswordEntered = computed(() => {
   return !!form.password && !!form.confirmPassword
@@ -22,8 +24,28 @@ const isEmailValid = computed(() => {
 })
 
 const isFormValid = computed(() => {
-  return isPasswordValid.value && isEmailValid.value && !!form.given_name && !!form.surname
+  return (
+    isPasswordValid.value &&
+    isEmailValid.value &&
+    !!form.given_name &&
+    !!form.surname &&
+    turnstileValid.value
+  )
 })
+
+const handleRegister = async () => {
+  if (!isFormValid.value) return
+
+  await auth.registerWithEmail({
+    ...form,
+    turnstileToken: turnstileToken.value,
+  })
+}
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
 
 definePageMeta({
   name: 'Register',
@@ -80,10 +102,13 @@ definePageMeta({
           :invalid="!isPasswordValid && isPasswordEntered"
           :feedback="false"
         />
+
+        <TurnstileChallenge :on-valid-token="onValidTurnstile" />
+
         <PrimeButton
           class="justify-center"
           :disabled="!isFormValid"
-          @click="auth.registerWithEmail(form!)"
+          @click="handleRegister"
         >
           Sign up with email
         </PrimeButton>

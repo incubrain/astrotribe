@@ -48,48 +48,71 @@ export function useAuth() {
     surname: string
   }
 
-  async function registerWithEmail({ email, password, given_name, surname }: RegisterWithEmail) {
-    if (loading.isLoading('auth')) {
-      return
+  const registerWithEmail = async (formData: {
+    email: string
+    password: string
+    given_name: string
+    surname: string
+    turnstileToken?: string | null
+  }) => {
+    // First validate the turnstile token if provided
+    if (formData.turnstileToken) {
+      const validation = await $fetch('/api/auth/validate-turnstile', {
+        method: 'POST',
+        body: { token: formData.turnstileToken },
+      })
+
+      if (!validation.success) {
+        throw new Error('Invalid captcha')
+      }
     }
 
-    loading.setLoading('auth', true)
-    console.log('registerWithEmail', email, password, given_name, surname)
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
+    // Proceed with registration
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
       options: {
         data: {
-          given_name,
-          surname,
+          given_name: formData.given_name,
+          surname: formData.surname,
         },
       },
     })
 
-    if (error) {
-      console.error(error.message)
-      toast.error({ summary: 'Register with email', message: error.message })
-    } else {
-      console.log('success')
-      navigateTo('/success')
-    }
-    loading.setLoading('auth', false)
+    if (error) throw error
+
+    // Handle successful registration
+    return data
   }
 
-  async function loginWithEmail(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({
+  const loginWithEmail = async (
+    email: string,
+    password: string,
+    options?: { turnstileToken: string | null },
+  ) => {
+    // First validate the turnstile token if provided
+    if (options?.turnstileToken) {
+      const validation = await $fetch('/api/auth/validate-turnstile', {
+        method: 'POST',
+        body: { token: options.turnstileToken },
+      })
+
+      if (!validation.success) {
+        throw new Error('Invalid captcha')
+      }
+    }
+
+    // Proceed with login
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
-    if (error) {
-      console.error(error.message)
-      toast.error({ summary: 'Login with password', message: error.message })
-    } else {
-      toast.success({ summary: 'Authenticated', message: 'Logging In...' })
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      navigateTo(aeAppUrl, { external: true })
-    }
+    if (error) throw error
+
+    // Handle successful login
+    return data
+    // Handle error
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {

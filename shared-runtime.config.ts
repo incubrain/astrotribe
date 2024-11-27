@@ -5,6 +5,7 @@ config()
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
+      turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
       strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL,
       formbricksEnvironment: process.env.NUXT_PUBLIC_FORMBRICKS_ENVIRONMENT,
       formbricksHost: process.env.NUXT_PUBLIC_FORMBRICKS_HOST,
@@ -44,5 +45,6 @@ export default defineNuxtConfig({
     razorpaySecret: process.env.NUXT_RAZORPAY_SECRET,
     razorpayTestKey: process.env.NUXT_RAZORPAY_TEST_KEY,
     razorpayTestSecret: process.env.NUXT_RAZORPAY_TEST_SECRET,
+    turnstileSecretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
   },
 })
