@@ -17,6 +17,15 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   // todo:med - merge currentUser and profile into one, store all required data everything in their session
   // assign Posthog identify
 
+  type Provider =
+    | 'linkedin_oidc'
+    | 'twitter'
+    | 'google'
+    | 'facebook'
+    | 'github'
+    | 'discord'
+    | 'email'
+
   console.log('user', user.value)
 
   const profile = computed(() => ({
@@ -191,6 +200,47 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     updateProfile(newData)
   }
 
+  function formatProviderName(provider: Provider) {
+    const providers = {
+      linkedin_oidc: 'LinkedIn',
+      twitter: 'Twitter',
+      google: 'Google',
+      facebook: 'Facebook',
+      github: 'GitHub',
+      discord: 'Discord',
+      email: 'Email',
+    } as const
+
+    return providers[provider] || provider
+  }
+
+  function getProviderIcon(provider: Provider) {
+    const icons = {
+      linkedin_oidc: 'mdi:linkedin',
+      twitter: 'mdi:twitter',
+      google: 'mdi:google',
+      facebook: 'mdi:facebook',
+      github: 'mdi:github',
+      discord: 'mdi:discord',
+      email: 'mdi:email',
+    } as const
+
+    return icons[provider] || 'mdi:account'
+  }
+
+  function getProviderColor(provider: Provider) {
+    const colors = {
+      linkedin_oidc: 'rgb(10, 102, 194)',
+      twitter: 'rgb(29, 155, 240)',
+      google: 'rgb(219, 68, 55)',
+      facebook: 'rgb(66, 103, 178)',
+      github: 'rgb(36, 41, 47)',
+      discord: 'rgb(88, 101, 242)',
+      email: 'rgb(234, 88, 12)',
+    } as const
+
+    return colors[provider] || '#666'
+  }
   // first check if the user has an avatar in their profile
   // if not, check if the user has an avatar in their identities
   // cycle through identities check identities_data for picture
@@ -205,6 +255,9 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     uploadImage,
     updateProfile,
     testUpdateProfile,
+    getProviderIcon,
+    getProviderColor,
+    formatProviderName,
   }
 })
 

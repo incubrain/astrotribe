@@ -16,7 +16,7 @@ defineProps<SettingsItemProps>()
   >
     <div class="flex flex-col gap-1 md:w-48">
       <p class="text-lg font-medium">
-        {{ item.label }}
+        {{ item.label ?? 'No Label' }}
       </p>
       <p
         v-if="item.tip"
