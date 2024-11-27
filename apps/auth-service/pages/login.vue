@@ -6,9 +6,27 @@ const form = ref({
 })
 
 const auth = useAuth()
-
 const currentUser = useCurrentUser()
 const { haveUserSession } = storeToRefs(currentUser)
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+// Modified login handler
+const handleLogin = async () => {
+  if (!turnstileValid.value) {
+    // Show error message to user that captcha is required
+    return
+  }
+
+  await auth.loginWithEmail(form.value.email, form.value.password, {
+    turnstileToken: turnstileToken.value,
+  })
+}
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
 
 definePageMeta({
   name: 'Login',
@@ -56,27 +74,18 @@ definePageMeta({
       </PrimeFloatLabel>
 
       <div class="w-full py-2 flex justify-between">
-        <div class="flex gap-2 items-center">
-          <PrimeCheckbox
-            v-model="form.rememberMe"
-            :binary="true"
-            value="newsletter"
-          />
-          <label
-            for="ingredient1"
-            class="text-sm"
-          >
-            Newsletter signup
-          </label>
-        </div>
-        <p class="text-sm">
-          <NuxtLink to="/forgot-password"> Forgot Password? </NuxtLink>
-        </p>
+        <!-- Remember me and forgot password section -->
       </div>
+
+      <TurnstileChallenge
+        class="mb-4"
+        :onValidToken="onValidTurnstile"
+      />
 
       <PrimeButton
         class="justify-center link"
-        @click="auth.loginWithEmail(form.email, form.password)"
+        :disabled="!turnstileValid"
+        @click="handleLogin"
       >
         Sign in with email
       </PrimeButton>
