@@ -20,7 +20,7 @@ export const SettingsPasswordValidation = z
 
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
-export function useUserAuth() {
+export function useAuth() {
   const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
   const authUrl = aeAuthUrl
   const appUrl = `${aeAppUrl}/auth-callback`

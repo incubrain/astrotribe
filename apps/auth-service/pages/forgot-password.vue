@@ -7,7 +7,7 @@ const form = reactive({
   email: '',
 })
 
-const auth = useUserAuth()
+const auth = useAuth()
 
 definePageMeta({
   name: 'ForgotPassword',

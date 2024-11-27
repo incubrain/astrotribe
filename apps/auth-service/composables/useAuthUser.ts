@@ -1,4 +1,4 @@
-// composables/useUserAuth.ts
+// composables/useAuth.ts
 export async function forgotPassword(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${authUrl}/reset-password`, // Public reset password page

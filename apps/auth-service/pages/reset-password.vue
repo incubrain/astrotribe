@@ -1,7 +1,7 @@
- <!-- pages/reset-password.vue -->
+<!-- pages/reset-password.vue -->
 <script setup lang="ts">
 const route = useRoute()
-const auth = useUserAuth()
+const auth = useAuth()
 const toast = useNotification()
 
 const form = reactive({
