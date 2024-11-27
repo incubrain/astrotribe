@@ -7,7 +7,7 @@ const form = reactive({
   confirmPassword: '',
 })
 
-const auth = useUserAuth()
+const auth = useAuth()
 
 const isPasswordEntered = computed(() => {
   return !!form.password && !!form.confirmPassword

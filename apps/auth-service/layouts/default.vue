@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const isAuthenticating = ref(true)
+const route = useRoute()
 onMounted(async () => {
   const toast = useNotification()
   const supabase = useSupabaseClient()
@@ -20,12 +21,12 @@ onMounted(async () => {
 
 <template>
   <div
-    v-if="isAuthenticating"
+    v-if="isAuthenticating && !route.path.includes('settings')"
     class="text-white w-screen flex justify-center items-center absolute h-screen z-50 bg-black bg-opacity-50"
     >Looking for a session...</div
   >
   <div
-    :class="{ 'pointer-events-none': isAuthenticating }"
+    :class="{ 'pointer-events-none': isAuthenticating && !route.path.includes('settings') }"
     class="relative flex h-full min-h-screen w-full items-center justify-start"
   >
     <div class="foreground relative z-20 min-h-lvh w-full min-w-[340px] max-w-[540px] p-4 lg:p-8">

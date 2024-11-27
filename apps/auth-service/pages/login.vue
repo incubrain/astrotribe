@@ -5,7 +5,7 @@ const form = ref({
   rememberMe: false,
 })
 
-const auth = useUserAuth()
+const auth = useAuth()
 
 const currentUser = useCurrentUser()
 const { haveUserSession } = storeToRefs(currentUser)
@@ -48,7 +48,10 @@ definePageMeta({
       </PrimeFloatLabel>
 
       <PrimeFloatLabel class="flex flex-col w-full">
-        <FormPassword v-model="form.password" :feedback="false"/>
+        <FormPassword
+          v-model="form.password"
+          :feedback="false"
+        />
         <label for="password">Password</label>
       </PrimeFloatLabel>
 

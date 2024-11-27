@@ -18,6 +18,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  noFooter: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 // const currentUser = useCurrentUser()
@@ -25,7 +29,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="space-between flex min-h-full flex-col space-y-4 ">
+  <div class="space-between flex min-h-full flex-col space-y-4">
     <div class="flex h-full flex-row items-center justify-center gap-4 py-8 text-white mx-auto">
       <div class="border-color group relative rounded-full border bg-white p-4 hover:invert">
         <NuxtLink
@@ -55,7 +59,10 @@ defineProps({
             :to="helpUrl"
             class="text-primary-500 underline"
           >
-            <PrimeButton link class="!p-0 !m-0 leading-normal underline">
+            <PrimeButton
+              link
+              class="!p-0 !m-0 leading-normal underline"
+            >
               {{ title.label }}
             </PrimeButton>
           </NuxtLink>
@@ -87,7 +94,10 @@ defineProps({
           <slot name="content" />
         </div>
       </template>
-      <template #footer>
+      <template
+        v-if="!noFooter"
+        #footer
+      >
         <slot name="footer" />
       </template>
     </PrimeCard>
