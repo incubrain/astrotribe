@@ -1,3 +1,4 @@
+import { unref, watch, type MaybeRef } from 'vue'
 import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
@@ -6,7 +7,7 @@ import { useRateLimit } from './useRateLimit'
 
 export function useSelectData<T extends { id: string | number }>(
   tableName: string,
-  options: {
+  optionsRef: MaybeRef<{
     columns?: string
     filters?: Record<string, any>
     orderBy?: { column: string; ascending?: boolean }
@@ -16,12 +17,18 @@ export function useSelectData<T extends { id: string | number }>(
     refreshRelated?: () => Promise<void>
     rateLimitMs?: number
     auditLog?: (action: string, details: any) => Promise<void>
-  } = {},
+    storeKey?: string
+    enabled?: MaybeRef<boolean>
+  }> = {},
 ) {
+  const options = computed(() => unref(optionsRef) || {})
+  const isEnabled = computed(() => unref(options.value.enabled) ?? true)
+  const storeKey = options.value.storeKey || tableName
+
   const { select } = useHttpHandler()
   const { handleError } = useErrorHandler()
   const logger = useLogger('useSelectData')
-  const store = getOrCreateStore<T>(tableName)()
+  const store = getOrCreateStore<T>(storeKey)()
   const { checkRateLimit } = useRateLimit()
 
   const isSelecting: Ref<boolean> = ref(false)
@@ -29,11 +36,11 @@ export function useSelectData<T extends { id: string | number }>(
 
   let paginationStore: ReturnType<typeof usePaginationStore> | null = null
 
-  if (options.pagination) {
+  if (options.value.pagination) {
     paginationStore = usePaginationStore()
     paginationStore.initPagination({
-      domainKey: tableName,
-      pagination: options.pagination,
+      domainKey: storeKey,
+      pagination: options.value.pagination,
       force: true,
     })
   }
@@ -44,51 +51,51 @@ export function useSelectData<T extends { id: string | number }>(
 
     try {
       // Rate limiting
-      if (options.rateLimitMs && !forceFetch) {
-        await checkRateLimit('useSelectData', { limitMs: options.rateLimitMs })
+      if (options.value.rateLimitMs && !forceFetch) {
+        await checkRateLimit('useSelectData', { limitMs: options.value.rateLimitMs })
       }
 
       const queryOptions: any = {
-        columns: options.columns || '*',
-        filters: options.filters,
+        columns: options.value.columns || '*',
+        filters: options.value.filters,
       }
 
-      if (options.orderBy) {
+      if (options.value.orderBy) {
         queryOptions.order = {
-          column: options.orderBy.column,
-          ascending: options.orderBy.ascending ?? true,
+          column: options.value.orderBy.column,
+          ascending: options.value.orderBy.ascending ?? true,
         }
       }
 
       if (paginationStore) {
-        const pagination = paginationStore.getPaginationRange(tableName)
+        const pagination = paginationStore.getPaginationRange(storeKey)
         if (pagination) {
           console.log('pagination', pagination)
           queryOptions.range = pagination
         } else {
           throw new AppError({
             type: ErrorType.VALIDATION_ERROR,
-            message: `Pagination not initialized for ${tableName}`,
+            message: `Pagination not initialized for ${storeKey}`,
             severity: ErrorSeverity.MEDIUM,
             context: 'Data Fetching',
           })
         }
-      } else if (options.limit) {
-        queryOptions.range = { from: 0, to: options.limit - 1 }
+      } else if (options.value.limit) {
+        queryvalue.range = { from: 0, to: options.value.limit - 1 }
       }
 
       const result = await select<T>(tableName, queryOptions)
       console.log('Fetch result:', result)
 
       // Audit logging
-      if (options.auditLog) {
-        await options.auditLog('SELECT', { tableName, options: queryOptions })
+      if (options.value.auditLog) {
+        await options.value.auditLog('SELECT', { tableName, options: queryOptions })
       }
 
       lastSelectTime = Date.now()
       return result
     } catch (error: any) {
-      handleError(error, 'Error selecting data')
+      handleError(error, { userMessage: 'Error selecting data' })
       throw error
     } finally {
       isSelecting.value = false
@@ -100,10 +107,10 @@ export function useSelectData<T extends { id: string | number }>(
       console.log('loading more data')
       const newData = await fetchData()
       if (newData.length === 0) {
-        paginationStore.setDataFinished(tableName)
+        paginationStore.setDataFinished(storeKey)
       } else {
         store.addItems(newData)
-        paginationStore.incrementPagination(tableName)
+        paginationStore.incrementPagination(storeKey)
       }
     } else {
       const data = await fetchData()
@@ -111,16 +118,16 @@ export function useSelectData<T extends { id: string | number }>(
     }
 
     // Refresh related data if needed
-    if (options.refreshRelated) {
-      await options.refreshRelated()
+    if (options.value.refreshRelated) {
+      await options.value.refreshRelated()
     }
   }
 
   const refresh = async () => {
     if (paginationStore) {
       paginationStore.initPagination({
-        domainKey: tableName,
-        pagination: options.pagination!,
+        domainKey: storeKey,
+        pagination: options.value.pagination!,
         force: true,
       })
     }
@@ -128,9 +135,15 @@ export function useSelectData<T extends { id: string | number }>(
     await loadMore()
   }
 
-  if (options.initialFetch) {
+  if (options.value.initialFetch && isEnabled.value) {
     loadMore()
   }
+
+  watch(isEnabled, (newEnabled) => {
+    if (newEnabled && options.value.initialFetch) {
+      loadMore()
+    }
+  })
 
   return {
     store,

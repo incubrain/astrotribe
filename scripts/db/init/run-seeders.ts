@@ -83,7 +83,10 @@ export async function runSeeders() {
 
     const companyIds = companies.map((c) => c.id)
 
-    await checkAndSeed(client, 'content_sources', () => seed.seedContentSources(client, companyIds))
+    const contentSources = await checkAndSeed(client, 'content_sources', () =>
+      seed.seedContentSources(client, companyIds),
+    )
+    const contentSourceIds = contentSources.map((cs) => cs.id)
 
     await checkAndSeed(client, 'company_employees', () =>
       seed.seedCompanyEmployees(client, companyIds, userIds),
@@ -128,7 +131,9 @@ export async function runSeeders() {
     )
 
     // 6. Seed news and research
-    await checkAndSeed(client, 'news', () => seed.seedNews(client, newsContentIds, companyIds))
+    await checkAndSeed(client, 'news', () =>
+      seed.seedNews(client, newsContentIds, companyIds, contentSourceIds),
+    )
 
     await checkAndSeed(client, 'research', () => seed.seedResearch(client, researchContentIds))
 
@@ -159,6 +164,7 @@ export async function runSeeders() {
 
     // 9. Seed feeds and feed categories
     const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))
+    const feedIds = feeds.map((f) => f.id)
 
     await checkAndSeed(client, 'feed_categories', () =>
       seed.seedFeedCategories(
@@ -166,6 +172,10 @@ export async function runSeeders() {
         feeds.map((f) => f.id),
         categoryIds,
       ),
+    )
+
+    await checkAndSeed(client, 'feed_sources', () =>
+      seed.seedFeedSources(client, feedIds, contentSourceIds),
     )
 
     console.log(chalk.blue('✓ Database seeding completed successfully'))

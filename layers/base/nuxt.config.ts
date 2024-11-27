@@ -14,8 +14,13 @@ export default defineNuxtConfig({
   ],
 
   icon: {
+    preload: true,
+    provider: 'server',
     serverBundle: {
       collections: ['material-symbols', 'mdi'],
+    },
+    clientBundle: {
+      scan: true,
     },
   },
 
