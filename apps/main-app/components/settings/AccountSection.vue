@@ -114,7 +114,7 @@ async function updateProfile(updates: Partial<Profile>) {
         >
           <PrimeInputText
             v-model="profile[item.id]"
-            class="w-full md:w-96"
+            class="w-full md:max-w-96"
             :disabled="item.disabled"
             :placeholder="item.placeholder"
           />
