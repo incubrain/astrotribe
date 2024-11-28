@@ -4,90 +4,179 @@ definePageMeta({
 })
 
 const userStore = useCurrentUser()
+const metricsStore = useUserMetricsStore()
 const { profile } = storeToRefs(userStore)
+const {
+  isLoading,
+  currentLevel,
+  levelProgress,
+  remainingDailyVotes,
+  dailyProgress,
+  currentStreak,
+  downvoteCount,
+  upvoteCount,
+  todayVoteCount,
+  totalVotes,
+  voteAccuracy,
+  achievementStats,
+  recentAchievements,
+} = storeToRefs(metricsStore)
 
-const comingSoon = [
-  'Adding all major companies',
-  'Adding all major news sources',
-  'Improving the quality of news/company data',
-  'AI generated Weekly/Monthly newsletter',
-]
+// Initialize metrics
+onMounted(() => {
+  metricsStore.init()
+})
 </script>
 
 <template>
-  <div
-    class="grid w-full grid-cols-1 gap-4 p-0 md:grid-cols-2 md:p-4 lg:grid-cols-3 xl:gap-8 xl:p-8"
-  >
-    <PrimeCard
-      class="border-color border"
-      :pt="{ body: 'justify-between h-full' }"
-      :pt-options="{ mergeProps: true, mergeSections: true }"
-    >
-      <template #content>
-        <h1 class="pb-4 text-2xl font-semibold"> Welcome {{ profile?.given_name ?? '' }} 👋 </h1>
-        <h3 class="text-primary-600 pb-4 text-lg font-semibold">
-          AstroTribe Is Currently In Open Alpha
-        </h3>
-        <p>
-          This means we have limited functionality for now, but be sure to check back often as we
-          will roll out new features regularly!
-        </p>
-      </template>
-    </PrimeCard>
-    <PrimeCard class="border-color border">
-      <template #content>
+  <div class="grid w-full gap-6 p-6">
+    <!-- Welcome Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Welcome Card -->
+      <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
         <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Latest News </h3>
-          <p class="text-base text-slate-200">
-            Stay current with leading government space agencies and private sector companies from
-            around the globe.
-          </p>
+          <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-bold">Welcome Drew 👋</h1>
+            <div
+              class="flex items-center gap-2 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20"
+            >
+              <Icon
+                name="game-icons:star-medal"
+                class="text-blue-400"
+              />
+              <span class="text-blue-400 font-medium">Level {{ currentLevel }}</span>
+            </div>
+          </div>
+          <FeatureRanking class="mt-4" />
         </div>
-      </template>
-      <template #footer>
-        <NuxtLink to="/news">
-          <PrimeButton outlined> Explore Now </PrimeButton>
-        </NuxtLink>
-      </template>
-    </PrimeCard>
-    <!-- <PrimeCard
-      class="border-color border"
-      :pt="{ body: 'justify-between h-full' }"
-      :pt-options="{ mergeProps: true, mergeSections: true }"
-    >
-      <template #content>
-        <div class="space-y-4">
-          <h3 class="text-xl font-semibold"> Companies </h3>
-          <p class="text-base text-slate-200">
-            Follow the companies that will take us to the Moon, Mars, and beyond. India is our first
-            focus, then we go global!
-          </p>
-        </div>
-      </template>
-      <template #footer>
-        <NuxtLink to="/companies">
-          <PrimeButton outlined> Search Companies </PrimeButton>
-        </NuxtLink>
-      </template>
-    </PrimeCard> -->
+      </div>
 
-    <div class="row-span-2 space-y-4 md:col-start-2 md:row-start-1 lg:col-start-3">
-      <PrimeMessage severity="info"> What we're working on </PrimeMessage>
-      <ul>
-        <li
-          v-for="item in comingSoon"
-          :key="item"
-          class="py-2"
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 gap-4">
+        <MetricStatCard
+          title="Total Votes"
+          :value="totalVotes"
+          icon="game-icons:trophy"
+          color="yellow"
+          :loading="isLoading"
         >
-          <Icon
-            name="mdi:chevron-right"
-            size="16px"
-            class="text-primary-500"
-          />
-          <span class="pl-2">{{ item }}</span>
-        </li>
-      </ul>
-      <IBFeedback cta="Have an idea? We would love to hear it!" />
+          <template #footer>
+            <div class="mt-4 flex gap-4">
+              <span
+                class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400"
+              >
+                ↑{{ upvoteCount }}
+              </span>
+              <span
+                class="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400"
+              >
+                ↓{{ downvoteCount }}
+              </span>
+            </div>
+          </template>
+        </MetricStatCard>
+
+        <!-- Today's Progress -->
+        <MetricStatCard
+          title="Today's Progress"
+          :value="`${todayVoteCount}/10`"
+          icon="game-icons:laurels-trophy"
+          color="green"
+          :loading="isLoading"
+        >
+          <template #footer>
+            <div class="mt-4 space-y-2">
+              <MetricProgressBar
+                :value="todayVoteCount"
+                :max="10"
+                color="green"
+                :loading="isLoading"
+              />
+              <p class="text-sm text-gray-400"> {{ remainingDailyVotes }} votes remaining today </p>
+            </div>
+          </template>
+        </MetricStatCard>
+      </div>
+
+      <!-- Achievements Section -->
+      <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+        <div class="space-y-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold">Achievements</h3>
+            <span class="text-sm text-gray-400">
+              {{ achievementStats.completed }}/{{ achievementStats.total }}
+            </span>
+          </div>
+          <div
+            v-if="currentStreak > 0"
+            class="flex items-center gap-2 px-4 py-2 bg-orange-500/10 rounded-lg border border-orange-500/20"
+          >
+            <Icon
+              name="mdi:fire"
+              class="text-orange-400"
+            />
+            <span class="text-orange-400 font-medium">{{ currentStreak }} Day Streak!</span>
+          </div>
+
+          <!-- Recent Achievements -->
+          <div class="space-y-4">
+            <div
+              v-for="achievement in recentAchievements"
+              :key="achievement.name"
+              class="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg border border-gray-700"
+            >
+              <div class="p-2 bg-yellow-500/10 rounded-lg">
+                <Icon
+                  name="game-icons:medal"
+                  class="text-yellow-400"
+                />
+              </div>
+              <div>
+                <h4 class="font-medium">{{ achievement.name }}</h4>
+                <p class="text-sm text-gray-400">{{ achievement.category }}</p>
+              </div>
+            </div>
+          </div>
+
+          <NuxtLink
+            to="/achievements"
+            class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            <span>View All Achievements</span>
+            <Icon name="mdi:chevron-right" />
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Level Progress -->
+      <MetricLevelProgress
+        :level="currentLevel"
+        :progress="levelProgress"
+        :loading="isLoading"
+      />
+
+      <!-- Vote Accuracy -->
+      <MetricStatCard
+        title="Vote Accuracy"
+        :value="`${voteAccuracy}%`"
+        icon="game-icons:bullseye"
+        color="purple"
+        :loading="isLoading"
+      >
+        <template #footer>
+          <div class="mt-4">
+            <ProgressBar
+              :value="voteAccuracy"
+              :max="100"
+              color="purple"
+              :loading="isLoading"
+            />
+          </div>
+        </template>
+      </MetricStatCard>
     </div>
   </div>
 </template>

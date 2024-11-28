@@ -134,6 +134,22 @@ const handleMouseEnter = () => {
 const handleMouseLeave = () => {
   isFlipped.value = false
 }
+
+// METRICS
+const { trackNewsVisit } = useUserMetricsStore()
+let cleanupVisit: (() => Promise<void>) | null = null
+
+// Track when user visits source
+const handleSourceVisit = async () => {
+  cleanupVisit = await trackNewsVisit(props.news.id)
+}
+
+// Clean up when component is unmounted
+onBeforeUnmount(async () => {
+  if (cleanupVisit) {
+    await cleanupVisit()
+  }
+})
 </script>
 
 <template>
@@ -245,6 +261,7 @@ const handleMouseLeave = () => {
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   class="hover:text-primary-600"
+                  @click="handleSourceVisit"
                 >
                   <Icon
                     name="mdi:link-variant"
@@ -317,6 +334,7 @@ const handleMouseLeave = () => {
               target="_blank"
               rel="noopener noreferrer nofollow"
               class="flex items-center gap-1.5 group p-1 rounded-full bg-primary-500"
+              @click="handleSourceVisit"
             >
               <Icon
                 name="mdi:link-variant"
