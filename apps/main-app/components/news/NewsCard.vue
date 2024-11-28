@@ -178,7 +178,12 @@ const handleMouseLeave = () => {
                 </span>
               </div>
             </div>
-            <h2 class="text-xl font-bold mb-2">{{ news.title }}</h2>
+            <h3
+              class="text-xl font-bold mb-2 line-clamp-3 min-h-[3.5rem]"
+              :title="news.title"
+            >
+              {{ news.title }}
+            </h3>
             <div class="flex items-center text-sm mb-4">
               <span>{{ useTimeAgo(news.published_at ?? news.created_at).value }}</span>
               <span class="mx-2">•</span>
@@ -215,19 +220,18 @@ const handleMouseLeave = () => {
                   />
                 </div>
                 <button
-                  class="flex items-center gap-2 text-sm hover:text-gray-600"
+                  class="flex items-center gap-2 justify-center text-sm hover:text-primary-600"
                   @click="openModal('Comments')"
                 >
                   <Icon
                     name="mdi:comment-outline"
                     size="20px"
                   />
-                  <span>{{ news.comments }}</span>
                 </button>
               </div>
-              <div class="flex items-center gap-4">
+              <div class="flex items-center justify-center gap-4">
                 <button
-                  class="hover:text-gray-600"
+                  class="hover:text-primary-600 flex items-center justify-center h-full"
                   @click="handleBookmark"
                 >
                   <Icon
@@ -240,7 +244,7 @@ const handleMouseLeave = () => {
                   :to="news.url"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  class="hover:text-gray-600"
+                  class="hover:text-primary-600"
                 >
                   <Icon
                     name="mdi:link-variant"
@@ -259,24 +263,13 @@ const handleMouseLeave = () => {
       >
         <!-- Back side content -->
         <div class="flex-grow overflow-hidden flex flex-col">
-          <h3 class="text-xl font-bold mb-4">{{ news.title }}</h3>
-          <p class="text-base overflow-y-auto flex-grow">{{ news.description }}</p>
-        </div>
-
-        <!-- Read More CTA -->
-        <div class="mt-4 mb-4 flex justify-center">
-          <NuxtLink
-            :to="news.url"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            class="border border-primary-700 hover:border-primary-400 text-white px-6 py-2 rounded-full flex items-center gap-2 transition-colors"
+          <h3
+            class="text-xl font-bold mb-4 line-clamp-3 min-h-[3.5rem]"
+            :title="news.title"
           >
-            Read Full Article
-            <Icon
-              name="mdi:arrow-right"
-              size="20px"
-            />
-          </NuxtLink>
+            {{ news.title }}</h3
+          >
+          <p class="text-base overflow-y-auto flex-grow">{{ news.description }}</p>
         </div>
 
         <!-- Back side actions -->
@@ -298,7 +291,7 @@ const handleMouseLeave = () => {
               />
             </div>
             <button
-              class="flex items-center gap-2 text-sm hover:text-gray-600"
+              class="flex items-center hover:text-primary-600"
               @click="openModal('Comments')"
             >
               <Icon
@@ -308,9 +301,9 @@ const handleMouseLeave = () => {
               <span>{{ news.comments }}</span>
             </button>
           </div>
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 justify-center">
             <button
-              class="hover:text-gray-600"
+              class="hover:text-primary-600"
               @click="handleBookmark"
             >
               <Icon
@@ -323,7 +316,7 @@ const handleMouseLeave = () => {
               :to="news.url"
               target="_blank"
               rel="noopener noreferrer nofollow"
-              class="hover:text-gray-600"
+              class="flex items-center gap-1.5 group p-1 rounded-full bg-primary-500"
             >
               <Icon
                 name="mdi:link-variant"
