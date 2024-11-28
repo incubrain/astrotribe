@@ -34,15 +34,15 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "comments",
-        "user_followers",
         "feeds",
+        "comments",
         "bookmarks",
         "bookmark_folders",
         "feed_categories",
         "follows",
         "feedbacks",
-        "votes"
+        "votes",
+        "user_followers"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -74,11 +74,15 @@
         "feed_sources",
         "news_summaries",
         "content_statuses",
+        "content_source_visits",
         "research_embeddings",
         "company_extras",
         "company_urls",
         "news_tags",
-        "social_media"
+        "social_media",
+        "user_metrics",
+        "feature_requests",
+        "feature_rankings"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -94,9 +98,9 @@
         "customer_subscription_plans",
         "customer_subscriptions",
         "payment_providers",
-        "blacklisted_urls",
+        "role_permissions",
         "role_permissions_materialized",
-        "role_permissions"
+        "blacklisted_urls"
       ],
       "default_permissions": [],
       "audit_level": "critical"
