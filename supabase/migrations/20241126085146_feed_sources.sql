@@ -24,7 +24,7 @@ CREATE TABLE "public"."feed_sources" (
     "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
--- Create role_permissions_materialized table
+-- Create public.role_permissions_materialized table
 CREATE TABLE "public"."role_permissions_materialized" (
     "role" public.app_role_enum NOT NULL,
     "permissions" JSONB NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE "public"."role_permissions_materialized" (
     PRIMARY KEY (role)
 );
 
--- Enable RLS on role_permissions_materialized
+-- Enable RLS on public.role_permissions_materialized
 ALTER TABLE "public"."role_permissions_materialized" ENABLE ROW LEVEL SECURITY;
 
 -- Alter columns to use new content_type
@@ -108,7 +108,7 @@ BEGIN
             role,
             table_name,
             permissions
-        FROM role_permissions
+        FROM public.role_permissions
         ORDER BY role, table_name, id DESC
     ) flattened
     GROUP BY role;
@@ -178,12 +178,12 @@ GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "pu
 GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."feed_sources" TO "authenticated";
 GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."feed_sources" TO "service_role";
 
--- Grants on role_permissions_materialized
+-- Grants on public.role_permissions_materialized
 GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "anon";
 GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "authenticated";
 GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON TABLE "public"."role_permissions_materialized" TO "service_role";
 
--- Policies on role_permissions_materialized
+-- Policies on public.role_permissions_materialized
 CREATE POLICY "delete_policy"
 ON "public"."role_permissions_materialized"
 AS permissive

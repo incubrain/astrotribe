@@ -1,5 +1,5 @@
 -- Create sequence for categories_id_seq
-CREATE SEQUENCE "public"."categories_id_seq";
+CREATE SEQUENCE IF NOT EXISTS "public"."categories_id_seq";
 
 -- Drop existing policies on tables
 DROP POLICY IF EXISTS "read_all_policy" ON "public"."addresses";
@@ -47,7 +47,7 @@ CREATE TYPE "public"."app_role_enum" AS ENUM (
 );
 
 -- Create role_hierarchy table
-CREATE TABLE "public"."role_hierarchy" (
+CREATE TABLE IF NOT EXISTS "public"."role_hierarchy" (
     "parent_role" public.app_role_enum NOT NULL,
     "child_role" public.app_role_enum NOT NULL,
     PRIMARY KEY (parent_role, child_role)
@@ -85,7 +85,7 @@ ALTER SEQUENCE "public"."categories_id_seq"
 
 ALTER TABLE "public"."user_followers" ALTER COLUMN "id" SET DEFAULT extensions.uuid_generate_v4();
 
--- Add columns to role_permissions
+-- Add columns to public.role_permissions
 ALTER TABLE "public"."role_permissions"
 ADD COLUMN "cached_permissions" jsonb,
 ADD COLUMN "inherit_from" public.app_role_enum[],
@@ -112,7 +112,7 @@ ALTER TABLE "public"."role_hierarchy"
 -- Set check_function_bodies to off
 SET check_function_bodies = off;
 
--- Create the role_permissions table
+-- Create the public.role_permissions table
 CREATE TABLE IF NOT EXISTS "public"."role_permissions" (
     id SERIAL PRIMARY KEY,
     role public.app_role_enum NOT NULL,
@@ -135,7 +135,7 @@ CREATE OR REPLACE FUNCTION public.cache_role_permissions()
 AS $function$
 BEGIN
     -- Update cached permissions for all roles
-    UPDATE role_permissions rp
+    UPDATE public.role_permissions rp
     SET cached_permissions = (
         SELECT jsonb_object_agg(
             table_name,
@@ -144,7 +144,7 @@ BEGIN
                 'conditions', conditions
             )
         )
-        FROM get_inherited_permissions(rp.role)
+        FROM public.get_inherited_permissions(rp.role)
     ),
     last_updated = now();
 END;
@@ -158,14 +158,14 @@ AS $function$
 WITH RECURSIVE role_tree AS (
     -- Base case: direct permissions
     SELECT rp.table_name, rp.permissions, rp.conditions, ARRAY[rp.role] as role_path
-    FROM role_permissions rp
+    FROM public.role_permissions rp
     WHERE rp.role = p_role
     
     UNION ALL
     
     -- Recursive case: inherited permissions
     SELECT rp.table_name, rp.permissions, rp.conditions, rt.role_path || rp.role
-    FROM role_permissions rp
+    FROM public.role_permissions rp
     JOIN role_hierarchy rh ON rh.parent_role = rp.role
     JOIN role_tree rt ON rt.role_path[array_length(rt.role_path, 1)] = rh.child_role
     WHERE NOT rp.role = ANY(rt.role_path) -- Prevent cycles
@@ -442,7 +442,7 @@ BEGIN
     
     -- Check cache age and refresh if needed
     IF EXISTS (
-        SELECT 1 FROM role_permissions 
+        SELECT 1 FROM public.role_permissions 
         WHERE role = user_role 
         AND last_updated < now() - interval '1 hour'
     ) THEN
@@ -451,7 +451,7 @@ BEGIN
 
     -- Use cached permissions
     SELECT cached_permissions INTO cached_perms
-    FROM role_permissions
+    FROM public.role_permissions
     WHERE role = user_role;
 
     -- Parse permission request
