@@ -120,6 +120,11 @@ export async function cleanUpTestData(pool: Pool) {
       'follows',
       'feedbacks',
       'votes',
+      'user_metrics',
+      'user_followers',
+      'feature_requests',
+      'feature_rankings',
+      'content_source_visits',
     ]
 
     for (const table of tables) {

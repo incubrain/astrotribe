@@ -40,6 +40,8 @@ export async function runSeeders() {
       throw new Error('No users found in user_profiles table')
     }
 
+    await checkAndSeed(client, 'user_metrics', () => seed.seedUserMetrics(client, userIds))
+
     // 1. Seed reference data first
     const countries = await checkAndSeed(client, 'countries', () => seed.seedCountries(client))
 
@@ -151,9 +153,25 @@ export async function runSeeders() {
       ),
     )
 
+    await checkAndSeed(client, 'content_source_visits', () =>
+      seed.seedContentSourceVisits(client, userIds, newsContentIds),
+    )
+
     await checkAndSeed(client, 'comments', () => seed.seedComments(client, allContentIds, userIds))
 
     await checkAndSeed(client, 'votes', () => seed.seedVotes(client, allContentIds, userIds))
+
+    const features = await checkAndSeed(client, 'feature_requests', () =>
+      seed.seedFeatureRequests(client),
+    )
+
+    await checkAndSeed(client, 'feature_rankings', () =>
+      seed.seedFeatureRankings(
+        client,
+        userIds,
+        features.map((f) => f.id),
+      ),
+    )
 
     // 8. Seed feedback and follows
     await checkAndSeed(client, 'feedbacks', () => seed.seedFeedback(client, userIds))

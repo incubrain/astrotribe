@@ -1020,3 +1020,150 @@ export async function seedFeedSources(pool: Pool, feedIds: string[], contentSour
   await bulkInsert(pool, 'feed_sources', feedSources)
   return feedSources
 }
+
+// Add to your seeders.ts file
+
+export async function seedFeatureRequests(pool: Pool) {
+  const features = [
+    {
+      id: generateUUID(),
+      title: 'Advanced News Filtering',
+      description: 'Filter news by multiple categories, sources, and keywords',
+      status: 'planned',
+      priority: 1,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      title: 'Custom News Digest',
+      description: 'Personalized daily/weekly email digest of space news',
+      status: 'in_progress',
+      priority: 2,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      title: 'Company Comparisons',
+      description: 'Compare multiple space companies side by side',
+      status: 'planned',
+      priority: 3,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    // Add more predefined features
+  ]
+
+  await bulkInsert(pool, 'feature_requests', features)
+  return features
+}
+
+export async function seedFeatureRankings(pool: Pool, userIds: string[], featureIds: string[]) {
+  const rankings = userIds.map((userId) => ({
+    id: generateUUID(),
+    user_id: userId,
+    rankings: JSON.stringify(faker.helpers.shuffle([...featureIds])),
+    created_at: faker.date.past(),
+    updated_at: faker.date.recent(),
+  }))
+
+  await bulkInsert(pool, 'feature_rankings', rankings)
+  return rankings
+}
+
+export async function seedContentSourceVisits(pool: Pool, userIds: string[], contentIds: string[]) {
+  // Get valid content IDs and their types
+  const { rows: validContent } = await pool.query(
+    `
+    SELECT id, content_type FROM contents WHERE id = ANY($1)
+  `,
+    [contentIds],
+  )
+
+  const visits = []
+  const visitsPerUser = faker.number.int({ min: 5, max: 20 })
+
+  // More realistic content type weights
+  const contentTypeWeights = {
+    news: 0.45, // Most common
+    research: 0.15, // Higher value content
+    companies: 0.15, // Company profiles
+    events: 0.05, // Occasional
+    jobs: 0.05, // Job searches
+    newsletters: 0.05, // Newsletter views
+    people: 0.05, // People profiles
+    contact: 0.03, // Contact pages
+    unknown: 0.02, // Edge cases
+  }
+
+  for (const userId of userIds) {
+    for (let i = 0; i < visitsPerUser; i++) {
+      const contentType = faker.helpers.weightedArrayElement(
+        Object.entries(contentTypeWeights).map(([key, weight]) => ({
+          value: key,
+          weight,
+        })),
+      )
+
+      const typeContent = validContent.filter((c) => c.content_type === contentType)
+
+      if (typeContent.length > 0) {
+        visits.push({
+          id: generateUUID(),
+          user_id: userId,
+          content_id: faker.helpers.arrayElement(typeContent).id,
+          created_at: faker.date.recent(),
+        })
+      }
+    }
+  }
+
+  if (visits.length > 0) {
+    await bulkInsert(pool, 'content_source_visits', visits)
+  } else {
+    console.log('No content found for source visits')
+  }
+
+  return visits
+}
+
+export async function seedUserMetrics(pool: Pool, userIds: string[]) {
+  const metrics = userIds.map((userId) => {
+    const totalVotes = faker.number.int({ min: 0, max: 100 })
+    const upvotes = faker.number.int({ min: 0, max: totalVotes })
+    const downvotes = totalVotes - upvotes
+    const accuracy = faker.number.int({ min: 60, max: 100 })
+    const streak = faker.number.int({ min: 0, max: 14 })
+    const bestStreak = faker.number.int({ min: streak, max: 30 })
+
+    return {
+      id: generateUUID(),
+      user_id: userId,
+      total_votes: totalVotes,
+      upvote_count: upvotes,
+      downvote_count: downvotes,
+      vote_accuracy: accuracy,
+      current_streak: streak,
+      best_streak: bestStreak,
+      today_vote_count: faker.number.int({ min: 0, max: 10 }),
+      total_reading_time: faker.number.int({ min: 0, max: 3600 }),
+      last_vote_date: faker.date.recent(),
+      points: faker.number.int({ min: 0, max: 1000 }),
+      current_level: faker.number.int({ min: 1, max: 10 }),
+      current_xp: faker.number.int({ min: 0, max: 100 }),
+      xp_to_next_level: 100,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+      // Use default JSONB values for complex fields
+      points_breakdown: null,
+      interaction_stats: null,
+      achievements: null,
+      titles: null,
+      multipliers: null,
+    }
+  })
+
+  await bulkInsert(pool, 'user_metrics', metrics)
+  return metrics
+}
