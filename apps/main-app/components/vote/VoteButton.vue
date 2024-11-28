@@ -7,6 +7,7 @@ interface Props {
   contentType?: string
   count?: number
   direction: 'up' | 'down'
+  cardSide: 'front' | 'back'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -56,36 +57,38 @@ const handleVote = async () => {
 </script>
 
 <template>
-  <VoteAnimate
-    ref="animationRef"
-    :direction="direction"
-    :show-particles="direction === 'up'"
-    :content-id="contentId"
-  >
-    <button
-      class="p-1 rounded-md flex transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      :class="[
-        'hover:bg-gray-100 dark:hover:bg-gray-800',
-        {
-          'text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20':
-            direction === 'up' && isActive,
-          'text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20':
-            direction === 'down' && isActive,
-          'text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400':
-            !isActive,
-        },
-      ]"
-      :disabled="isPending"
-      @click="handleVote"
+  <div class="relative flex items-center justify-center">
+    <VoteAnimate
+      ref="animationRef"
+      :direction="direction"
+      :show-particles="direction === 'up'"
+      :content-id="`${contentId}_${cardSide}_${direction}`"
     >
-      <Icon
-        :name="direction === 'up' ? 'mdi:arrow-up' : 'mdi:arrow-down'"
-        class="flex transition-transform duration-200"
-        size="20px"
-        :class="{ 'scale-125': isActive }"
-      />
-    </button>
-  </VoteAnimate>
+      <button
+        class="p-1 rounded-md flex transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="[
+          'hover:bg-gray-100 dark:hover:bg-gray-800',
+          {
+            'text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20':
+              direction === 'up' && isActive,
+            'text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20':
+              direction === 'down' && isActive,
+            'text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400':
+              !isActive,
+          },
+        ]"
+        :disabled="isPending"
+        @click="handleVote"
+      >
+        <Icon
+          :name="direction === 'up' ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+          class="flex transition-transform duration-200"
+          size="20px"
+          :class="{ 'scale-125': isActive }"
+        />
+      </button>
+    </VoteAnimate>
+  </div>
 </template>
 
 <style>

@@ -224,13 +224,15 @@ onBeforeUnmount(async () => {
                   <VoteButton
                     :content-id="news.id"
                     direction="up"
+                    card-side="front"
                     :initial-vote-type="currentVote"
                     @vote-change="handleVoteChange"
                   />
                   <span class="text-sm font-medium pl-1 pr-2">{{ displayScore }}</span>
                   <VoteButton
-                    :content-id="news.id"
+                    :content-id="`${news.id}-front-down`"
                     direction="down"
+                    card-side="front"
                     :initial-vote-type="currentVote"
                     @vote-change="handleVoteChange"
                   />
@@ -296,6 +298,7 @@ onBeforeUnmount(async () => {
               <VoteButton
                 :content-id="news.id"
                 direction="up"
+                card-side="back"
                 :initial-vote-type="currentVote"
                 @vote-change="handleVoteChange"
               />
@@ -303,6 +306,7 @@ onBeforeUnmount(async () => {
               <VoteButton
                 :content-id="news.id"
                 direction="down"
+                card-side="back"
                 :initial-vote-type="currentVote"
                 @vote-change="handleVoteChange"
               />

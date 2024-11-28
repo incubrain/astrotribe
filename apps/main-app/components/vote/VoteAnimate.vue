@@ -51,7 +51,7 @@ const createParticles = () => {
 
     // Set initial position
     particle.style.cssText = `
-      position: fixed;
+      position: absolute;
       left: ${startX}px;
       top: ${startY}px;
       width: 8px;
@@ -107,8 +107,8 @@ defineExpose({ triggerAnimation })
 <template>
   <div
     :id="`vote-animate-${contentId}`"
+    class="relative inline-block"
     :class="{
-      'animation-wrapper': true,
       'scale-animation': isAnimating,
       'translate-up': isAnimating && direction === 'up',
       'translate-down': isAnimating && direction === 'down',
@@ -120,9 +120,8 @@ defineExpose({ triggerAnimation })
 
 <style>
 .animation-wrapper {
-  display: inline-flex;
-  position: relative;
   transition: transform 0.2s ease;
+  position: relative; /* Ensure this is positioned relative to its parent */
 }
 
 .scale-animation {
