@@ -99,6 +99,13 @@
   @tailwind components;
   @tailwind utilities;
 
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .wrapper {
     @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)];
   }
