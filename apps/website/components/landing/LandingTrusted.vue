@@ -60,68 +60,51 @@ onMounted(() => {
 
 <template>
   <section class="py-24">
-      <LandingGlass
-      gradient="mixed"
-      intensity="low"
+    <LandingTitle
+      title="Supported by"
+    />
+    <!-- Partner Stats -->
+
+    <!-- Partners Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center mb-16">
+      <div
+        v-for="(partner, index) in trustedPartners"
+        :key="index"
+        class="partner-logo group relative"
       >
-      <LandingTitle title="Trusted by Leading Organizations" class="!pb-12" />
-      <!-- Partner Stats -->
-      <div class="flex justify-center gap-8 mb-16">
-        <div class="text-center">
-          <h3 class="text-3xl font-bold text-sky-400 mb-2">30+</h3>
-          <p class="text-gray-400">Global Partners</p>
-        </div>
-        <div class="text-center">
-          <h3 class="text-3xl font-bold text-sky-400 mb-2">12+</h3>
-          <p class="text-gray-400">Countries</p>
-        </div>
-        <div class="text-center">
-          <h3 class="text-3xl font-bold text-sky-400 mb-2">5+</h3>
-          <p class="text-gray-400">Years of Trust</p>
-        </div>
-      </div>
-
-      <!-- Partners Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center mb-16">
+        <!-- Partner Card -->
         <div
-          v-for="(partner, index) in trustedPartners"
-          :key="index"
-          class="partner-logo group relative"
+          class="relative rounded-xl bg-primary-900/30 backdrop-blur-sm p-6 border border-primary-800/30 transition-all duration-500 hover:border-sky-500/30 !bg-gray-200"
         >
-          <!-- Partner Card -->
+          <!-- Hover Gradient -->
           <div
-            class="relative rounded-xl bg-primary-900/30 backdrop-blur-sm p-6 border border-primary-800/30 transition-all duration-500 hover:border-sky-500/30"
-          >
-            <!-- Hover Gradient -->
-            <div
-              class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
-              :class="categoryColors[partner.category]"
-            ></div>
-
-            <!-- Logo -->
-            <div class="relative z-10">
-              <NuxtImg
-                :id="'partner-logo-' + index"
-                v-tooltip="partner.description"
-                :src="partner.image"
-                :alt="partner.name"
-                :class="[
-                  'max-h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110',
-                  partner.invert ? 'filter invert' : '',
-                ]"
-              />
-            </div>
-          </div>
-
-          <!-- Card Glow -->
-          <div
-            class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+            class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+            :class="categoryColors[partner.category]"
           ></div>
-        </div>
-      </div>
 
-      <!-- CTA Section -->
-      <div class="text-center space-y-6">
+          <!-- Logo -->
+          <div class="relative z-10">
+            <NuxtImg
+              :id="'partner-logo-' + index"
+              v-tooltip="partner.description"
+              :src="partner.image"
+              :alt="partner.name"
+              :class="[
+                'max-h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110',
+              ]"
+            />
+          </div>
+        </div>
+
+        <!-- Card Glow -->
+        <div
+          class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+        ></div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <!-- <div class="text-center space-y-6">
         <p class="text-xl text-gray-300">Ready to Join Our Network?</p>
         <div class="flex gap-4 justify-center">
           <PrimeButton
@@ -141,8 +124,7 @@ onMounted(() => {
           Join our growing network of space industry leaders and help shape the future of space
           exploration
         </p>
-      </div>
-    </LandingGlass>
+      </div> -->
   </section>
 </template>
 

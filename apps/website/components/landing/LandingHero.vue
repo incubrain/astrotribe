@@ -2,10 +2,10 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 
-const highlightedWords = ['Discover', 'Innovate', 'Explore']
+// Simplified and more impactful word rotation
+const highlightedWords = ['Discover', 'Explore', 'Experience']
 const currentWord = ref(highlightedWords[0])
 const isTransitioning = ref(false)
-const scrollY = ref(0)
 const videoLoaded = ref(false)
 const videoElement = ref<HTMLVideoElement | null>(null)
 
@@ -17,105 +17,74 @@ const rotateWords = () => {
   const nextIndex = (currentIndex + 1) % highlightedWords.length
 
   gsap.to('.highlight-word', {
-    y: 50,
+    y: 40,
     opacity: 0,
-    duration: 0.5,
+    duration: 0.4,
     onComplete: () => {
       currentWord.value = highlightedWords[nextIndex]
-      gsap.fromTo('.highlight-word', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 })
+      gsap.fromTo('.highlight-word', { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 })
       isTransitioning.value = false
     },
   })
 }
 
-const handleScroll = () => {
-  scrollY.value = window.scrollY
-}
-
 const handleVideoLoad = () => {
   videoLoaded.value = true
   if (videoElement.value) {
-    videoElement.value.play().catch((error) => {
-      console.error('Video play error:', error)
-    })
+    videoElement.value.play().catch(console.error)
   }
   gsap.to('.video-fade-in', {
     opacity: 1,
-    duration: 1,
+    duration: 1.5,
     ease: 'power2.out',
   })
 }
 
 let wordRotationInterval: number | null = null
 
-// Use onMounted instead of nuxtApp.hook
 onMounted(() => {
   if (import.meta.client) {
-    // Initial animations with a slight delay to ensure DOM is ready
-    setTimeout(() => {
-      gsap.from('.hero-title', {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-      })
+    gsap.from('.hero-content', {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+    })
 
-      gsap.from('.hero-subtitle', {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        delay: 0.3,
-        ease: 'power3.out',
-      })
-
-      gsap.from('.hero-cta', {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power3.out',
-      })
-    }, 100)
-
-    // Initialize video
     if (videoElement.value) {
       videoElement.value.play().catch(console.error)
     }
 
-    // Start word rotation
     wordRotationInterval = setInterval(rotateWords, 3000)
-
-    // Add scroll listener
-    window.addEventListener('scroll', handleScroll)
   }
 })
 
-// Clean up with onUnmounted
 onUnmounted(() => {
-  if (import.meta.client) {
-    window.removeEventListener('scroll', handleScroll)
-    if (wordRotationInterval) {
-      clearInterval(wordRotationInterval)
-    }
+  if (wordRotationInterval) {
+    clearInterval(wordRotationInterval)
   }
 })
 </script>
 
-<!-- Template remains the same -->
 <template>
   <div class="relative w-full h-screen overflow-hidden">
-    <!-- Video Background -->
     <div class="absolute inset-0">
-      <!-- Thumbnail placeholder (shows until video loads) -->
-      <img
-        src="/hero-image.jpg"
-        alt="Space video thumbnail"
-        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-        :class="{ 'opacity-0': videoLoaded }"
-      />
-
-      <!-- Video element -->
       <ClientOnly>
+        <template #fallback>
+          <NuxtImg
+            src="hero-image.jpg"
+            alt="Space background"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        </template>
+
+        <NuxtImg
+          v-show="!videoLoaded"
+          src="hero-image.jpg"
+          alt="Space background"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+        />
+
         <video
           ref="videoElement"
           class="video-fade-in absolute inset-0 w-full h-full object-cover"
@@ -128,58 +97,82 @@ onUnmounted(() => {
           @loadeddata="handleVideoLoad"
         >
           <source
-            src="/videos/hero.mp4"
+            src="/videos/astronera-hero-video.mp4"
             type="video/mp4"
           />
         </video>
       </ClientOnly>
 
-      <!-- Overlay -->
+      <!-- Gradient overlay -->
       <div
-        class="absolute inset-0 bg-primary-950/10"
-        :style="{
-          background:
-            'linear-gradient(to right, rgba(10, 10, 0, 0.90) 0%, rgba(30, 10, 60, 0.1) 100%)',
-        }"
+        class="absolute inset-0"
+        style="
+          background: linear-gradient(
+            to right,
+            rgba(2, 6, 23, 0.95) 0%,
+            rgba(2, 6, 23, 0.8) 40%,
+            rgba(2, 6, 23, 0.1) 100%
+          );
+        "
       ></div>
     </div>
 
-    <!-- Rest of the content remains the same -->
-    <div class="relative z-10 mx-auto px-12 min-h-screen flex flex-col justify-center">
-      <div class="max-w-3xl">
-        <h1
-          class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-        >
-          A Cosmos to
-          <div class="relative block mt-2">
-            <span
-              :key="currentWord"
-              class="highlight-word transition-all duration-500 ease-out block text-primary-400"
-            >
-              {{ currentWord }}</span
-            >
-          </div>
-        </h1>
-
-        <p class="hero-subtitle text-lg md:text-xl text-gray-200 max-w-md mb-12">
-          Your daily dose of astronomical discoveries, mission updates, and space-tech insights.
-        </p>
-
-        <div class="hero-cta flex gap-4">
-          <PrimeButton size="large"> 🚀 Get Started </PrimeButton>
-          <PrimeButton
-            severity="secondary"
-            size="large"
-            outlined
+    <!-- Hero Content -->
+    <div
+      class="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center text-center"
+    >
+      <div class="hero-content max-w-4xl py-20">
+        <div class="space-y-8">
+          <!-- Main tagline -->
+          <h1
+            class="font-space-grotesk text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight tracking-tight"
           >
-            Learn More
-          </PrimeButton>
+            A Cosmos to
+            <div class="relative block mt-4">
+              <span
+                :key="currentWord"
+                class="highlight-word block text-sky-400 bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent"
+              >
+                {{ currentWord }}
+              </span>
+            </div>
+          </h1>
+
+          <!-- Enhanced subtitle -->
+          <p class="font-inter text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Your gateway to space exploration. Breaking news, mission updates, and astronomical
+            discoveries —
+            <span class="text-sky-400">100% free</span>.
+          </p>
+
+          <!-- CTA section -->
+          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
+            <PrimeButton
+              size="large"
+              class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"
+            >
+              🚀 Start Reading
+            </PrimeButton>
+            <button
+              class="font-inter text-gray-400 hover:text-white transition-colors duration-300 flex items-center gap-2 text-lg justify-center"
+            >
+              Learn more
+              <Icon
+                name="mdi:arrow-right"
+                size="24"
+              />
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="absolute bottom-8 w-full flex justify-center items-center left-0">
-        <div class="w-8 h-14 border-2 border-white/30 rounded-full flex justify-center mx-auto">
-          <div class="w-2 h-4 bg-white/60 rounded-full mt-3 animate-bounce"></div>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 w-full flex justify-center">
+      <div class="flex flex-col items-center gap-2">
+        <span class="font-inter text-sm text-gray-400">Scroll to explore</span>
+        <div class="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center">
+          <div class="w-1.5 h-3 bg-sky-400 rounded-full mt-2 animate-bounce"></div>
         </div>
       </div>
     </div>
@@ -187,7 +180,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 .video-fade-in {
-  transition: opacity 1s ease-out;
+  transition: opacity 1.5s ease-out;
+}
+
+.highlight-word {
+  transition: all 0.4s ease-out;
 }
 </style>

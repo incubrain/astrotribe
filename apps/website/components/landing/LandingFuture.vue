@@ -81,7 +81,6 @@ onMounted(() => {
         subtitle="Elevate Your Space Exploration Experience"
         gradient="mixed"
         intensity="low"
-        class="!pb-16"
       />
       <div class="features-grid grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         <div
@@ -135,29 +134,6 @@ onMounted(() => {
             class="absolute inset-0 bg-sky-500/5 group-hover/feature:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
           />
         </div>
-      </div>
-
-      <!-- CTA Section -->
-      <div class="text-center space-y-6">
-        <p class="text-xl text-gray-300">Want Early Access?</p>
-        <div class="flex justify-center gap-4">
-          <PrimeButton
-            ref="ctaButton"
-            label="Join the Waitlist"
-            size="large"
-            class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
-          />
-          <PrimeButton
-            label="Learn More"
-            size="large"
-            outlined
-            severity="secondary"
-            class="min-w-[200px] border-sky-500/30 hover:border-sky-500/50 text-sky-400 transition-all duration-300"
-          />
-        </div>
-        <p class="text-sm text-gray-400 max-w-md mx-auto">
-          Join our beta program and help shape the future of space exploration technology
-        </p>
       </div>
     </LandingGlass>
   </section>
