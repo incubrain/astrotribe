@@ -31,9 +31,11 @@ onMounted(() => {
 <template>
   <div class="grid w-full gap-6 p-6">
     <!-- Welcome Section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Welcome Card -->
-      <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+      <div
+        class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:row-span-2"
+      >
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold">Welcome Drew 👋</h1>
@@ -52,54 +54,54 @@ onMounted(() => {
       </div>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 gap-4">
-        <MetricStatCard
-          title="Total Votes"
-          :value="totalVotes"
-          icon="game-icons:trophy"
-          color="yellow"
-          :loading="isLoading"
-        >
-          <template #footer>
-            <div class="mt-4 flex gap-4">
-              <span
-                class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400"
-              >
-                ↑{{ upvoteCount }}
-              </span>
-              <span
-                class="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400"
-              >
-                ↓{{ downvoteCount }}
-              </span>
-            </div>
-          </template>
-        </MetricStatCard>
-
-        <!-- Today's Progress -->
-        <MetricStatCard
-          title="Today's Progress"
-          :value="`${todayVoteCount}/10`"
-          icon="game-icons:laurels-trophy"
-          color="green"
-          :loading="isLoading"
-        >
-          <template #footer>
-            <div class="mt-4 space-y-2">
-              <MetricProgressBar
-                :value="todayVoteCount"
-                :max="10"
-                color="green"
-                :loading="isLoading"
-              />
-              <p class="text-sm text-gray-400"> {{ remainingDailyVotes }} votes remaining today </p>
-            </div>
-          </template>
-        </MetricStatCard>
-      </div>
+      <MetricStatCard
+        title="Total Votes"
+        :value="totalVotes"
+        icon="game-icons:trophy"
+        class="md:col-span-1"
+        color="yellow"
+        :loading="isLoading"
+      >
+        <template #footer>
+          <div class="mt-4 flex gap-4">
+            <span
+              class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400"
+            >
+              ↑{{ upvoteCount }}
+            </span>
+            <span
+              class="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400"
+            >
+              ↓{{ downvoteCount }}
+            </span>
+          </div>
+        </template>
+      </MetricStatCard>
+      <MetricStatCard
+        title="Today's Progress"
+        :value="`${todayVoteCount}/10`"
+        icon="game-icons:laurels-trophy"
+        color="green"
+        class="md:col-span-1"
+        :loading="isLoading"
+      >
+        <template #footer>
+          <div class="mt-4 space-y-2">
+            <MetricProgressBar
+              :value="todayVoteCount"
+              :max="10"
+              color="green"
+              :loading="isLoading"
+            />
+            <p class="text-sm text-gray-400"> {{ remainingDailyVotes }} votes remaining today </p>
+          </div>
+        </template>
+      </MetricStatCard>
 
       <!-- Achievements Section -->
-      <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+      <div
+        class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-1 xl:row-span-2"
+      >
         <div class="space-y-6">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-semibold">Achievements</h3>

@@ -61,8 +61,8 @@ export const useUserMetricsStore = defineStore('metrics', () => {
   async function fetchMetrics() {
     try {
       isLoading.value = true
-      const { data } = await useFetch('/api/users/metrics/get')
-      metrics.value = data.value
+      const data = await $fetch('/api/users/metrics/get')
+      metrics.value = data
     } catch (err) {
       error.value = err
       console.error('Error fetching metrics:', err)
