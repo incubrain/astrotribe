@@ -57,7 +57,7 @@ export function useAuth() {
   }) => {
     // First validate the turnstile token if provided
     if (formData.turnstileToken) {
-      const validation = await fetch('/api/validate-turnstile', {
+      const validation = await $fetch('/api/validate-turnstile', {
         method: 'POST',
         body: { token: formData.turnstileToken },
       })
@@ -92,12 +92,12 @@ export function useAuth() {
   ) => {
     // First validate the turnstile token if provided
     if (options?.turnstileToken) {
-      const validation = await fetch('api/validate-turnstile', {
+      const validation = await $fetch('/api/validate-turnstile', {
         method: 'POST',
         body: { token: options.turnstileToken },
       })
 
-      if (!validation.ok) {
+      if (!validation.success) {
         throw new Error('Invalid captcha')
       }
     }
