@@ -31,7 +31,11 @@ export default defineEventHandler(async (event) => {
     const supabase = await serverSupabaseClient(event)
 
     // Get the table name from the path
-    const table = path.split('/')[2] // 'bookmarks' or 'folders'
+    let table = path.split('/')[2] // 'bookmarks' or 'folders'
+
+    if (table === 'folders') {
+      table = 'bookmark_folders'
+    }
 
     // Check current count
     const { count } = await supabase

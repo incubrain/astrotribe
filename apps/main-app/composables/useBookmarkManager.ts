@@ -1,63 +1,49 @@
-// useBookmarkManager.ts
-import type { Folder } from '../types/bookmarks'
-
 export const useBookmarkManager = () => {
-  const selectedBookmarks = ref<string[]>([])
-  const showMoveModal = ref(false)
+  const selectedIds = ref<string[]>([])
   const targetFolderId = ref<string | null>(null)
   const { moveBookmarks, fetchBookmarks } = useBookmarks()
+  const confirm = useConfirm()
 
-  const toggleBookmarkSelection = (bookmarkId: string) => {
-    const index = selectedBookmarks.value.indexOf(bookmarkId)
+  const toggleSelection = (bookmarkId: string) => {
+    const index = selectedIds.value.indexOf(bookmarkId)
     if (index === -1) {
-      selectedBookmarks.value.push(bookmarkId)
+      selectedIds.value.push(bookmarkId)
     } else {
-      selectedBookmarks.value.splice(index, 1)
+      selectedIds.value.splice(index, 1)
     }
   }
 
-  const handleMoveBookmarks = async () => {
-    if (!targetFolderId.value) return
+  const handleMove = async (targetFolder: string) => {
+    if (!selectedIds.value.length) return
 
-    await moveBookmarks(selectedBookmarks.value, targetFolderId.value)
-    selectedBookmarks.value = []
-    showMoveModal.value = false
-    targetFolderId.value = null
+    try {
+      await moveBookmarks(selectedIds.value, targetFolder)
+      // Refresh bookmarks
+      await fetchBookmarks({})
+      // Clear selection
+      selectedIds.value = []
+    } catch (error) {
+      console.error('Failed to move bookmarks:', error)
+    }
   }
 
-  const handleDeleteBookmark = async (bookmarkId: string | string[]) => {
+  const handleDelete = async (bookmarkId: string | string[]) => {
     const ids = Array.isArray(bookmarkId) ? bookmarkId : [bookmarkId]
 
-    await Promise.all(
-      ids.map((id) =>
-        $fetch(`/api/bookmarks/${id}`, {
-          method: 'DELETE',
-        }),
-      ),
-    )
-
-    selectedBookmarks.value = selectedBookmarks.value.filter((id) => !ids.includes(id))
-    // return await fetchBookmarks({})
-  }
-
-  const handleNewFolder = async (folderData: Partial<Folder>) => {
-    const { createFolder } = useFolderSystem()
-    return await createFolder(folderData)
-  }
-
-  const handleMoveSubmit = async (targetFolder: Folder) => {
-    targetFolderId.value = targetFolder.id
-    await handleMoveBookmarks()
+    try {
+      await Promise.all(ids.map((id) => $fetch(`/api/bookmarks/${id}`, { method: 'DELETE' })))
+      selectedIds.value = selectedIds.value.filter((id) => !ids.includes(id))
+      await fetchBookmarks({})
+    } catch (error) {
+      console.error('Failed to delete bookmarks:', error)
+    }
   }
 
   return {
-    selectedBookmarks,
-    showMoveModal,
+    selectedIds,
     targetFolderId,
-    toggleBookmarkSelection,
-    handleMoveBookmarks,
-    handleDeleteBookmark,
-    handleNewFolder,
-    handleMoveSubmit,
+    toggleSelection,
+    handleMove,
+    handleDelete,
   }
 }

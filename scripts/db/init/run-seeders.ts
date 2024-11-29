@@ -148,7 +148,7 @@ export async function runSeeders() {
       seed.seedBookmarks(
         client,
         folders.map((f) => f.id),
-        allContentIds,
+        contents,
         userIds,
       ),
     )

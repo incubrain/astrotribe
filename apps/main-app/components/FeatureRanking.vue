@@ -15,10 +15,10 @@ const isLoading = ref(true)
 
 const fetchFeatures = async () => {
   try {
-    const { data } = await useFetch('/api/feature/list', {
+    const data = await $fetch('/api/feature/list', {
       method: 'GET',
     })
-    features.value = data.value
+    features.value = data
   } catch (err) {
     error.value = err
     console.error('Error fetching features:', err)
@@ -36,9 +36,11 @@ const moveFeature = async (currentIndex: number, direction: 'up' | 'down') => {
   const [movedItem] = newFeatures.splice(currentIndex, 1)
   newFeatures.splice(newIndex, 0, movedItem)
 
+  // Update local state immediately for optimistic UI update
   features.value = newFeatures
 
   try {
+    // Make API call to persist the changes
     await $fetch('/api/feature/rank', {
       method: 'POST',
       body: {
@@ -47,6 +49,8 @@ const moveFeature = async (currentIndex: number, direction: 'up' | 'down') => {
     })
   } catch (error) {
     console.error('Error saving rankings:', error)
+    // Optionally, revert the change if the API call fails
+    // await fetchFeatures()
   }
 }
 
