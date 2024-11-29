@@ -54,7 +54,7 @@ onMounted(() => {
             Let's stay in touch
           </h2>
           <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join our growing community and stay updated with the latest space news and platform
+            Join the community and stay updated with the latest space news and platform
             updates
           </p>
 
@@ -93,11 +93,10 @@ onMounted(() => {
         </div>
 
         <!-- Newsletter Section -->
-        <div class="max-w-2xl mx-auto w-full space-y-6">
+        <!-- <div class="max-w-2xl mx-auto w-full space-y-6">
           <h3 class="text-xl text-center text-white">Subscribe to Our Newsletter</h3>
 
           <div class="relative">
-            <!-- Input Group -->
             <div class="flex gap-4">
               <PrimeInputText
                 class="flex-1 bg-primary-900/50 border-primary-800/50 focus:border-sky-500/50 rounded-lg"
@@ -109,12 +108,11 @@ onMounted(() => {
               />
             </div>
 
-            <!-- Privacy Note -->
             <p class="text-xs text-gray-400 mt-2 text-center">
               By subscribing, you agree to receive space-related updates. Unsubscribe at any time.
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
     </LandingGlass>
   </section>

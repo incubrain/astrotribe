@@ -57,7 +57,7 @@ onMounted(() => {
                   <span
                     class="px-3 py-1 rounded-full text-xs bg-sky-500/10 border border-sky-500/20 text-sky-400"
                   >
-                    New Episode Every Week
+                    New Episode Every Two Weeks
                   </span>
                 </div>
               </div>

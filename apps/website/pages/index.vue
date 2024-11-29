@@ -1,124 +1,22 @@
 <script setup lang="ts">
-definePageMeta({
-  name: 'Home',
-})
-// !todo:low look into subtle black and white images or patterns to give the background some flair
+import LandingFeatures from '../components/landing/LandingFeatures.vue'
+import LandingStats from '../components/landing/LandingStats.vue'
 
-const features = [
-  {
-    icon: 'mdi:comment-text-outline',
-    title: 'Comments',
-    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:chat-outline',
-    title: 'Unlimited Chat',
-    description:
-      'Drive interaction among your users with live messaging features on your video streams.',
-    link: '#',
-    linkText: 'Explore more',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:comment-text-outline',
-    title: 'Comments',
-    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:chat-outline',
-    title: 'Unlimited Chat',
-    description:
-      'Drive interaction among your users with live messaging features on your video streams.',
-    link: '#',
-    linkText: 'Explore more',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:comment-text-outline',
-    title: 'Comments',
-    description: 'Highlight comments on the screen, & engage with your audience in real-time.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:chat-outline',
-    title: 'Unlimited Chat',
-    description:
-      'Drive interaction among your users with live messaging features on your video streams.',
-    link: '#',
-    linkText: 'Explore more',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-  {
-    icon: 'mdi:share-variant',
-    title: 'Share Media',
-    description: 'Enhance user collaboration with exchange of images, videos, gifs & documents.',
-    link: '#',
-    linkText: 'Explore More',
-  },
-]
+// No GSAP-related code here anymore
 </script>
 
 <template>
-  <div class="relative z-0">
-    <HomeHero />
-    <div class="wrapper padded-x">
-      <HomeTrusted />
-      <LazyHomeFeatures class="py-16 md:py-24" />
-      <LazyHomeHeading
-        heading="That's not all..."
-        subheading="We Have Some Big Plans!"
-        class="pb-16 md:pb-24"
-      />
-      <!-- <HomeFeatureGroup
-        title="Supercharge Live Streams With On-brand Features"
-        description="OnTheFly gives you all the tools to engage your audience with captivating streams."
-        :features="features"
-      />
-      -->
+  <div>
+    <LandingHero />
 
-      <!-- <LazyHomeFeatureTabs class="pb-16 md:pb-24" /> -->
-    </div>
-    <div class="wrapper padded-x mx-auto flex flex-col py-16 md:py-24">
-      <LazyHomeTestimonial class="pb-6 xl:pb-12" />
-    </div>
+    <main class="space-y-36 py-24 overflow-hidden max-w-full">
+      <LandingSidescroll />
+      <LazyLandingProductSteps class="container" />
+      <LazyLandingFeatures class="container" />
+      <!-- <LazyLandingPricing class="container" /> -->
+      <!-- <LazyLandingFuture class="container" /> -->
+      <LazyLandingTestimonials class="max-w-full w-full" />
+      <LazyLandingWebSeries class="container" />
+    </main>
   </div>
 </template>
-
-<style scoped></style>

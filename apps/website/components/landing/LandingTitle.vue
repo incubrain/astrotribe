@@ -4,7 +4,7 @@
     :class="padding"
   >
     <h2
-      class="text-3xl md:text-5xl font-bold tracking-wider relative font-orbitron max-w-2xl text-wrap mx-auto"
+      class="text-3xl md:text-5xl font-bold tracking-wider relative font-orbitron max-w-3xl text-wrap mx-auto"
     >
       <!-- Main text - Make this solid white initially -->
       <span class="relative text-white">{{ title }}</span>
