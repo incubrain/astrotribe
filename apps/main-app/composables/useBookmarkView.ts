@@ -5,26 +5,14 @@ export const useBookmarkView = () => {
   const viewMode = ref<'grid' | 'list'>('grid')
   const searchQuery = ref('')
   const includeSubfolders = ref(true)
-  const showFolderPanel = ref(false)
   const showNewFolderModal = ref(false)
-  const currentFolder = ref<Folder | null>(null)
 
   const handleFolderSelect = async (folder: Folder) => {
-    currentFolder.value = folder
     const { fetchBookmarks } = useBookmarkStore()
     await fetchBookmarks({
       folder_id: folder.id,
       include_subfolders: includeSubfolders.value,
     })
-
-    // On mobile, close the folder panel after selection
-    if (import.meta.client && window.innerWidth < 768) {
-      showFolderPanel.value = false
-    }
-  }
-
-  const toggleFolderPanel = () => {
-    showFolderPanel.value = !showFolderPanel.value
   }
 
   const debouncedSearch = useDebounceFn((query: string) => {
@@ -40,10 +28,7 @@ export const useBookmarkView = () => {
     viewMode,
     searchQuery,
     includeSubfolders,
-    showFolderPanel,
     showNewFolderModal,
-    currentFolder,
     handleFolderSelect,
-    toggleFolderPanel,
   }
 }

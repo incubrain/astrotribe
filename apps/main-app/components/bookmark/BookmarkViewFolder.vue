@@ -1,12 +1,10 @@
 <template>
   <div class="space-y-6">
-    <PrimeConfirmPopup />
-
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Folders</h2>
       <PrimeButton
         class="p-button-primary"
-        @click="showModal = true"
+        @click="showNewFolderModal = true"
       >
         <div class="flex items-center gap-2">
           <Icon name="mdi:folder-plus" />
@@ -24,61 +22,119 @@
       <div
         v-for="folder in folderStore.folders"
         :key="folder.id"
-        class="p-4 hover:shadow-md transition-shadow bg-card border border-color rounded-lg cursor-pointer group"
-        :class="{ 'bg-primary-900': currentFolderId === folder.id }"
+        class="relative p-4 hover:shadow-md transition-shadow bg-card border border-color rounded-lg cursor-pointer group overflow-hidden"
+        :class="{ 'bg-primary-900': currentFolder.value.id === folder.id }"
         @click="handleFolderSelect(folder)"
       >
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
+        <!-- Static color strip -->
+        <div
+          class="absolute top-0 left-0 right-0 h-[5px]"
+          :style="{ backgroundColor: folder.color }"
+        />
+
+        <!-- Main Content -->
+        <div class="flex items-center justify-between mt-2">
+          <div class="flex items-center gap-2 w-full relative">
+            <!-- Normal title view -->
+            <h3
+              v-if="editingFolderId !== folder.id"
+              class="font-medium flex-1"
+            >
+              {{ folder.name }}
+            </h3>
+
+            <!-- Edit title mode -->
             <div
-              class="w-3 h-3 rounded-full"
-              :style="{ backgroundColor: folder.color }"
-            />
-            <h3 class="font-medium">{{ folder.name }}</h3>
+              v-if="editingFolderId === folder.id"
+              class="flex items-center w-full gap-2"
+              @click.stop
+            >
+              <input
+                v-model="editingName"
+                class="min-w-0 flex-1 bg-transparent border-b border-primary-500 focus:outline-none px-1"
+                @keyup.enter="saveEdit(folder)"
+                @keyup.esc="cancelEdit"
+                ref="editInput"
+                autocomplete="off"
+              />
+              <button
+                class="shrink-0 p-1 hover:text-primary-500 transition-colors border border-color flex text-white rounded-full"
+                @click="saveEdit(folder)"
+              >
+                <Icon
+                  name="mdi:check"
+                  class="w-4 h-4"
+                />
+              </button>
+            </div>
+
             <Icon
               v-if="folder.is_favorite"
               name="mdi:star"
-              class="w-4 h-4 text-yellow-400"
+              class="w-4 h-4 text-yellow-400 shrink-0"
             />
           </div>
-          <div class="flex items-center gap-2">
-            <span
-              v-if="folder.is_default"
-              class="text-sm text-muted-foreground"
-            >
-              Default
-            </span>
+
+          <!-- Mobile-only action button -->
+          <button
+            class="p-2 md:hidden rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            @click.stop="toggleActions(folder.id)"
+          >
+            <Icon
+              name="mdi:dots-vertical"
+              class="w-4 h-4"
+            />
+          </button>
+        </div>
+
+        <p class="mt-2 text-sm text-muted-foreground">
+          {{ bookmarkStore.getBookmarkCount(folder.id) }} bookmarks
+        </p>
+
+        <!-- Sliding Action Panel -->
+        <div
+          v-show="!editingFolderId || editingFolderId !== folder.id"
+          class="absolute top-0 right-0 h-full w-1/3 bg-card shadow-lg transform transition-transform bg-primary-900 border-l border-color duration-200 translate-x-full group-hover:translate-x-0"
+          :class="{ '!translate-x-0': activeActionsFolder === folder.id }"
+        >
+          <div class="grid grid-cols-2 items-center justify-center h-full gap-1 p-2">
+            <!-- Color Selector -->
             <button
-              class="p-1 hover:text-primary-500"
-              @click.stop="handleEditClick(folder)"
+              class="w-full h-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors p-2"
+              @click.stop
+            >
+              <div
+                class="w-full h-full rounded cursor-pointer"
+                :style="{ backgroundColor: folder.color }"
+              >
+                <input
+                  type="color"
+                  :value="folder.color"
+                  class="opacity-0 absolute w-full h-full"
+                  @input="(e) => updateFolder(folder, { color: e.target.value })"
+                />
+              </div>
+            </button>
+
+            <!-- Other Actions -->
+            <button
+              v-for="action in getActions(folder)"
+              :key="action.title"
+              class="w-full h-full foreground hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              :class="action.buttonClass"
+              @click.stop="action.handler(folder)"
+              :title="action.title"
             >
               <Icon
-                name="mdi:pencil"
-                class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                :name="action.icon"
+                class="w-4 h-4"
+                :class="action.iconClass"
               />
             </button>
           </div>
         </div>
-        <p class="mt-2 text-sm text-muted-foreground">
-          {{ bookmarkStore.getBookmarkCount(folder.id) }} bookmarks
-        </p>
       </div>
     </div>
-
-    <!-- Modal for both create and edit -->
-    <PrimeDialog
-      v-model:visible="showModal"
-      :modal="true"
-      :header="selectedFolder ? 'Edit Folder' : 'New Folder'"
-      :style="{ width: '90vw', maxWidth: '500px' }"
-    >
-      <FolderForm
-        :folder="selectedFolder"
-        @submit="handleSubmit"
-        @delete="handleDelete"
-        @cancel="closeModal"
-      />
-    </PrimeDialog>
   </div>
 </template>
 
@@ -87,70 +143,127 @@ import type { Folder } from '~/types/folder'
 
 const folderStore = useFolderStore()
 const bookmarkStore = useBookmarkStore()
+const { handleFolderSelect, currentFolder } = useBookmarkView()
 const { getFeatureUsage } = usePlan()
 
-const showModal = ref(false)
-const selectedFolder = ref<Folder | null>(null)
-const currentFolderId = ref<string | null>(null)
+const editingFolderId = ref<string | null>(null)
+const editingName = ref('')
+const editInput = ref<HTMLInputElement | null>(null)
+const activeActionsFolder = ref<string | null>(null)
+const showNewFolderModal = ref(false)
 
 const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folderStore.folders.length))
 
-const handleFolderSelect = async (folder: Folder) => {
-  currentFolderId.value = folder.id
-  folderStore.setSelectedFolder(folder.id)
-
-  // Fetch bookmarks for this folder
-  await bookmarkStore.fetchBookmarks({
-    folder_id: folder.id,
-    include_subfolders: true,
+// Start editing folder name
+const startEdit = (folder: Folder) => {
+  activeActionsFolder.value = null // Hide action panel
+  editingFolderId.value = folder.id
+  editingName.value = folder.name
+  nextTick(() => {
+    if (editInput.value) {
+      editInput.value.focus()
+      editInput.value.select() // Auto select the text
+    }
   })
 }
 
-const handleEditClick = (folder: Folder) => {
-  selectedFolder.value = folder
-  showModal.value = true
+// Save edited name
+const saveEdit = async (folder: Folder) => {
+  if (editingName.value.trim() && editingName.value !== folder.name) {
+    await updateFolder(folder, { name: editingName.value })
+  }
+  editingFolderId.value = null
 }
 
-const closeModal = () => {
-  showModal.value = false
-  selectedFolder.value = null
+// Cancel editing
+const cancelEdit = () => {
+  editingFolderId.value = null
 }
 
-const handleSubmit = async (data: Partial<Folder>) => {
+// Update folder with new data
+const updateFolder = async (folder: Folder, data: Partial<Folder>) => {
   try {
-    if (selectedFolder.value) {
-      await folderStore.updateFolder(selectedFolder.value.id, data)
-    } else {
-      await folderStore.createFolder(data)
-    }
-    closeModal()
+    await folderStore.updateFolder(folder.id, data)
   } catch (error) {
-    console.error('Error handling folder submission:', error)
+    console.error('Error updating folder:', error)
   }
 }
 
-const handleDelete = async () => {
-  if (selectedFolder.value) {
-    const success = await folderStore.deleteFolder(selectedFolder.value.id)
-    if (success) {
-      if (currentFolderId.value === selectedFolder.value.id) {
-        currentFolderId.value = null
-      }
-      await bookmarkStore.fetchBookmarks()
-      closeModal()
+const getActions = (folder: Folder) => {
+  const baseActions = [
+    {
+      title: 'Edit Name',
+      icon: 'mdi:pencil',
+      handler: startEdit,
+      buttonClass: '',
+      iconClass: '',
+    },
+    {
+      title: 'Toggle Favorite',
+      icon: folder.is_favorite ? 'mdi:star' : 'mdi:star-outline',
+      handler: toggleFavorite,
+      buttonClass: '',
+      iconClass: folder.is_favorite ? 'text-yellow-400' : '',
+    },
+  ]
+
+  if (!folder.is_default) {
+    baseActions.push({
+      title: 'Delete',
+      icon: 'mdi:trash',
+      handler: handleDelete,
+      buttonClass: 'text-red-500',
+      iconClass: '',
+    })
+  }
+
+  return baseActions
+}
+
+const toggleActions = (folderId: string) => {
+  activeActionsFolder.value = activeActionsFolder.value === folderId ? null : folderId
+}
+
+const toggleFavorite = async (folder: Folder) => {
+  await folderStore.updateFolder(folder.id, {
+    is_favorite: !folder.is_favorite,
+  })
+}
+
+const handleDelete = async (folder: Folder) => {
+  const success = await folderStore.deleteFolder(folder.id)
+  if (success) {
+    if (currentFolderId.value === folder.id) {
+      currentFolderId.value = null
     }
+    await bookmarkStore.fetchBookmarks()
+    activeActionsFolder.value = null
   }
 }
 
-onMounted(async () => {
-  try {
-    // Fetch folders first
-    await folderStore.fetchFolders()
+// Close active actions panel when clicking outside
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement
 
-    // Then fetch all bookmarks to get initial counts
-    await bookmarkStore.fetchBookmarks()
+    // If clicking outside folder card
+    if (!target.closest('.folder-card')) {
+      activeActionsFolder.value = null
+      if (editingFolderId.value) {
+        cancelEdit()
+      }
+    }
+  })
+
+  try {
+    folderStore.fetchFolders()
+    bookmarkStore.fetchBookmarks()
   } catch (error) {
     console.error('Error initializing data:', error)
   }
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', () => {})
 })
 </script>
