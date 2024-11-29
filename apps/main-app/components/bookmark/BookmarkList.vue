@@ -89,9 +89,8 @@
 </template>
 
 <script setup lang="ts">
-const { bookmarks, loading, fetchBookmarks, moveBookmarks, searchBookmarks } = useBookmarks()
-
-const { folders, getFavorites } = useFolderSystem()
+const bookmarkStore = useBookmarkStore()
+const folderStore = useFolderStore()
 
 const currentFolderId = ref<string | null>(null)
 const includeSubfolders = ref(true)
@@ -100,20 +99,41 @@ const selectedBookmarks = ref<string[]>([])
 const showMoveDialog = ref(false)
 const targetFolderId = ref<string | null>(null)
 
-const currentFolder = computed(() => folders.value.find((f) => f.id === currentFolderId.value))
+const currentFolder = computed(() =>
+  folderStore.folders.find((f) => f.id === currentFolderId.value),
+)
 
 const displayedBookmarks = computed(() => {
-  if (!searchQuery.value) return bookmarks.value
-  return searchBookmarks(searchQuery.value)
+  if (!searchQuery.value) return bookmarkStore.bookmarks
+  return bookmarkStore.searchBookmarks(searchQuery.value)
 })
 
 const handleFolderSelect = async (folder: Folder) => {
   currentFolderId.value = folder.id
-  await fetchBookmarks({
+  await bookmarkStore.fetchBookmarks({
     folder_id: folder.id,
     include_subfolders: includeSubfolders.value,
   })
 }
+
+// Watch for changes and update bookmarks
+watch(includeSubfolders, async () => {
+  if (currentFolderId.value) {
+    await bookmarkStore.fetchBookmarks({
+      folder_id: currentFolderId.value,
+      include_subfolders: includeSubfolders.value,
+    })
+  }
+})
+
+// Initialize data
+onMounted(async () => {
+  const defaultFolder = folderStore.getDefaultFolder
+  if (defaultFolder) {
+    currentFolderId.value = defaultFolder.id
+    await handleFolderSelect(defaultFolder)
+  }
+})
 
 const toggleBookmarkSelection = (bookmarkId: string) => {
   const index = selectedBookmarks.value.indexOf(bookmarkId)
@@ -123,24 +143,4 @@ const toggleBookmarkSelection = (bookmarkId: string) => {
     selectedBookmarks.value.splice(index, 1)
   }
 }
-
-watch(includeSubfolders, async () => {
-  if (currentFolderId.value) {
-    await fetchBookmarks({
-      folder_id: currentFolderId.value,
-      include_subfolders: includeSubfolders.value,
-    })
-  }
-})
-
-onMounted(async () => {
-  // Start with default folder if exists
-  const defaultFolder = folders.value.find((f) => f.is_default)
-  if (defaultFolder) {
-    currentFolderId.value = defaultFolder.id
-    await handleFolderSelect(defaultFolder)
-  } else {
-    await fetchBookmarks({})
-  }
-})
 </script>

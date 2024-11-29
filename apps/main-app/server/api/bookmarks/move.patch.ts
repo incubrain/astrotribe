@@ -1,3 +1,5 @@
+import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
+
 export default defineEventHandler(async (event: H3Event) => {
   try {
     const user = await serverSupabaseUser(event)

@@ -22,10 +22,11 @@
     <!-- Folders Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       <div
-        v-for="folder in folders"
+        v-for="folder in folderStore.folders"
         :key="folder.id"
         class="p-4 hover:shadow-md transition-shadow bg-card border border-color rounded-lg cursor-pointer group"
-        @click="handleEditClick(folder)"
+        :class="{ 'bg-primary-900': currentFolderId === folder.id }"
+        @click="handleFolderSelect(folder)"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -47,14 +48,19 @@
             >
               Default
             </span>
-            <Icon
-              name="mdi:pencil"
-              class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
-            />
+            <button
+              class="p-1 hover:text-primary-500"
+              @click.stop="handleEditClick(folder)"
+            >
+              <Icon
+                name="mdi:pencil"
+                class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              />
+            </button>
           </div>
         </div>
         <p class="mt-2 text-sm text-muted-foreground">
-          {{ getFolderBookmarkCount(folder.id) }} bookmarks
+          {{ bookmarkStore.getBookmarkCount(folder.id) }} bookmarks
         </p>
       </div>
     </div>
@@ -79,17 +85,25 @@
 <script setup lang="ts">
 import type { Folder } from '~/types/folder'
 
-const { folders, createFolder, updateFolder, deleteFolder } = useFolderSystem()
-const { bookmarks } = useBookmarks()
+const folderStore = useFolderStore()
+const bookmarkStore = useBookmarkStore()
 const { getFeatureUsage } = usePlan()
 
 const showModal = ref(false)
 const selectedFolder = ref<Folder | null>(null)
+const currentFolderId = ref<string | null>(null)
 
-const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
+const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folderStore.folders.length))
 
-const getFolderBookmarkCount = (folderId: string) => {
-  return bookmarks.value.filter((bookmark) => bookmark.folder_id === folderId).length
+const handleFolderSelect = async (folder: Folder) => {
+  currentFolderId.value = folder.id
+  folderStore.setSelectedFolder(folder.id)
+
+  // Fetch bookmarks for this folder
+  await bookmarkStore.fetchBookmarks({
+    folder_id: folder.id,
+    include_subfolders: true,
+  })
 }
 
 const handleEditClick = (folder: Folder) => {
@@ -103,21 +117,40 @@ const closeModal = () => {
 }
 
 const handleSubmit = async (data: Partial<Folder>) => {
-  if (selectedFolder.value) {
-    await updateFolder(selectedFolder.value.id, data)
-  } else {
-    await createFolder(data)
+  try {
+    if (selectedFolder.value) {
+      await folderStore.updateFolder(selectedFolder.value.id, data)
+    } else {
+      await folderStore.createFolder(data)
+    }
+    closeModal()
+  } catch (error) {
+    console.error('Error handling folder submission:', error)
   }
-  closeModal()
 }
 
 const handleDelete = async () => {
   if (selectedFolder.value) {
-    console.log('Deleting folder', selectedFolder.value)
-    const success = await deleteFolder(selectedFolder.value.id)
+    const success = await folderStore.deleteFolder(selectedFolder.value.id)
     if (success) {
+      if (currentFolderId.value === selectedFolder.value.id) {
+        currentFolderId.value = null
+      }
+      await bookmarkStore.fetchBookmarks()
       closeModal()
     }
   }
 }
+
+onMounted(async () => {
+  try {
+    // Fetch folders first
+    await folderStore.fetchFolders()
+
+    // Then fetch all bookmarks to get initial counts
+    await bookmarkStore.fetchBookmarks()
+  } catch (error) {
+    console.error('Error initializing data:', error)
+  }
+})
 </script>

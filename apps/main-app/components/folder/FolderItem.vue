@@ -6,6 +6,7 @@
       isSelected ? 'border' : 'hover:border-primary-950 border border-color foreground',
     ]"
     :style="{ paddingLeft: `${depth * 1.5 + 0.5}rem` }"
+    @click="handleSelect"
   >
     <div class="flex-1 flex items-center min-w-0">
       <div
@@ -29,7 +30,7 @@
     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100">
       <button
         class="p-1"
-        @click.stop="$emit('edit', folder)"
+        @click.stop="handleEdit"
       >
         <Icon
           name="mdi:pencil"
@@ -39,7 +40,7 @@
       <button
         v-if="!folder.is_default"
         class="p-1 hover:text-red-600"
-        @click.stop="$emit('delete', folder)"
+        @click.stop="handleDelete"
       >
         <Icon
           name="mdi:trash"
@@ -66,15 +67,34 @@
 <script setup lang="ts">
 import type { Folder } from '../../types/bookmarks'
 
-const props = defineProps<{
+interface Props {
   folder: Folder
   depth?: number
   selectedId?: string
-}>()
+}
 
-defineEmits<{
+interface Emits {
   (e: 'select' | 'edit' | 'delete', folder: Folder): void
-}>()
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  depth: 0,
+  selectedId: undefined,
+})
+
+const emit = defineEmits<Emits>()
 
 const isSelected = computed(() => props.folder.id === props.selectedId)
+
+const handleSelect = () => {
+  emit('select', props.folder)
+}
+
+const handleEdit = () => {
+  emit('edit', props.folder)
+}
+
+const handleDelete = () => {
+  emit('delete', props.folder)
+}
 </script>

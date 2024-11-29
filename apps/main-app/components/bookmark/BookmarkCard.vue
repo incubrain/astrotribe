@@ -15,11 +15,15 @@ defineEmits<{
 
 console.log('BookmarkCard props', props)
 
-const { toggleBookmark, isBookmarked } = useBookmarks()
+const bookmarkStore = useBookmarkStore()
+
+const isBookmarked = computed(() =>
+bookmarkStore.isBookmarked(props.bookmark.content_id, props.bookmark.content_type),
+)
 
 const handleBookmark = async () => {
   try {
-    await toggleBookmark({
+    await bookmarkStore.toggleBookmark({
       id: props.bookmark.content_id,
       type: props.bookmark.content_type,
       title: props.bookmark.metadata.title,

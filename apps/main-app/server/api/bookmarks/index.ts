@@ -8,7 +8,6 @@ interface BookmarkMetadata {
   featured_image?: string
   author?: string
   published_at?: string
-  score?: number
 }
 
 function normalizeContent(content: any, contentType: string): BookmarkMetadata {
@@ -21,7 +20,6 @@ function normalizeContent(content: any, contentType: string): BookmarkMetadata {
         featured_image: content.featured_image,
         author: content.author,
         published_at: content.published_at,
-        score: content.score,
       }
     case 'research':
       return {
@@ -30,8 +28,6 @@ function normalizeContent(content: any, contentType: string): BookmarkMetadata {
         description: content.abstract,
         author: content.authors?.[0], // First author or handle array differently
         published_at: content.published_at,
-        doi_url: content.doi_url,
-        published_in: content.published_in,
       }
     case 'newsletters':
       return {
@@ -46,21 +42,19 @@ function normalizeContent(content: any, contentType: string): BookmarkMetadata {
         url: content.url,
         description: content.description,
         featured_image: content.logo_url,
-        category: content.category,
-        founding_year: content.founding_year,
       }
     default:
       throw new Error(`Unknown content type: ${contentType}`)
   }
 }
 
+// server/api/bookmarks/index.ts
+// server/api/bookmarks/index.ts
 export default defineEventHandler(async (event) => {
   try {
-    const { content_type = 'news', folder_id = null, include_subfolders = false } = getQuery(event)
+    const { folder_id = null, include_subfolders = false } = getQuery(event)
     const user = await serverSupabaseUser(event)
     const supabase = await serverSupabaseClient(event)
-
-    console.log('Query params:', { content_type, folder_id, include_subfolders })
 
     if (!user) {
       throw createError({ statusCode: 401, message: 'Unauthorized' })
@@ -70,33 +64,62 @@ export default defineEventHandler(async (event) => {
       .from('bookmarks')
       .select(
         `
-    *,
-    folder:folder_id (
-      id,
-      name,
-      color,
-      path,
-      is_favorite
-    ),
-    content:content_id (
-      id,
-      title,
-      url,
-      content_type,
-      updated_at,
-      created_at
-    )
-  `,
+        *,
+        folder:folder_id (
+          id,
+          name,
+          color,
+          path,
+          is_favorite
+        ),
+        content:content_id (
+          id,
+          title,
+          url,
+          content_type,
+          updated_at,
+          created_at
+        )
+      `,
       )
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+
+    // Modify the query to fetch all bookmarks if no folder_id is provided
+    if (folder_id) {
+      if (include_subfolders) {
+        // Always filter by a folder (either specified or default)
+        const { data: folderData } = await supabase
+          .from('bookmark_folders')
+          .select('path')
+          .eq('id', folder_id)
+          .single()
+
+        if (folderData?.path) {
+          const { data: subFolderIds } = await supabase
+            .from('bookmark_folders')
+            .select('id')
+            .like('path', `${folderData.path}%`)
+
+          query = query.in('folder_id', [
+            folder_id,
+            ...(subFolderIds?.map((f) => f.id) || []),
+          ])
+        } else {
+          query = query.eq('folder_id', folder_id)
+        }
+      } else {
+        query = query.eq('folder_id', folder_id)
+      }
+    }
+
+    query = query.order('created_at', { ascending: false })
 
     const { data: bookmarks, error: bookmarksError } = await query
     if (bookmarksError) throw bookmarksError
 
     if (!bookmarks?.length) return { data: [] }
 
-    // Group bookmarks by content_type
+    // Group bookmarks by content_type for fetching related data
     const bookmarksByType = bookmarks.reduce(
       (acc, bookmark) => {
         const type = bookmark.content_type
@@ -112,7 +135,6 @@ export default defineEventHandler(async (event) => {
     await Promise.all(
       Object.entries(bookmarksByType).map(async ([type, ids]) => {
         const { data, error } = await supabase.from(type).select('*').in('id', ids)
-
         if (error) throw error
         contentTypeData[type] = data || []
       }),
@@ -128,14 +150,22 @@ export default defineEventHandler(async (event) => {
         : null
 
       return {
-        ...bookmark,
+        id: bookmark.id,
+        user_id: bookmark.user_id,
+        content_id: bookmark.content_id,
+        content_type: bookmark.content_type,
+        created_at: bookmark.created_at,
+        updated_at: bookmark.updated_at,
+        folder_id: bookmark.folder_id,
+        folder: bookmark.folder,
         metadata: {
           ...bookmark.metadata,
           ...newMetadata,
         },
-        [bookmark.content_type]: typeSpecificContent,
       }
     })
+
+    console.log('Normalized bookmarks:', normalizedBookmarks)
 
     return { data: normalizedBookmarks }
   } catch (error) {

@@ -73,12 +73,6 @@ const navigationCategories = ref([
         slug: '/profile/bookmarks',
         icon: 'mdi:bookmark-outline',
       },
-      {
-        id: '5',
-        label: 'Metrics',
-        slug: '/profile/metrics',
-        icon: 'mdi:chart-line',
-      },
     ],
   },
 ] as NavigationCategory[])

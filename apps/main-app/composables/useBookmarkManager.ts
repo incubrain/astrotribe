@@ -1,8 +1,12 @@
 export const useBookmarkManager = () => {
   const selectedIds = ref<string[]>([])
   const targetFolderId = ref<string | null>(null)
-  const { moveBookmarks, fetchBookmarks } = useBookmarks()
+  const { moveBookmarks, fetchBookmarks } = useBookmarkStore()
   const confirm = useConfirm()
+
+  const hasSelection = computed(() => selectedIds.value.length > 0)
+  const selectionCount = computed(() => selectedIds.value.length)
+  const isSelected = (bookmarkId: string) => computed(() => selectedIds.value.includes(bookmarkId))
 
   const toggleSelection = (bookmarkId: string) => {
     const index = selectedIds.value.indexOf(bookmarkId)
@@ -13,6 +17,10 @@ export const useBookmarkManager = () => {
     }
   }
 
+  const clearSelection = () => {
+    selectedIds.value = []
+  }
+
   const handleMove = async (targetFolder: string) => {
     if (!selectedIds.value.length) return
 
@@ -21,7 +29,7 @@ export const useBookmarkManager = () => {
       // Refresh bookmarks
       await fetchBookmarks({})
       // Clear selection
-      selectedIds.value = []
+      clearSelection()
     } catch (error) {
       console.error('Failed to move bookmarks:', error)
     }
@@ -42,7 +50,11 @@ export const useBookmarkManager = () => {
   return {
     selectedIds,
     targetFolderId,
+    hasSelection,
+    selectionCount,
+    isSelected,
     toggleSelection,
+    clearSelection,
     handleMove,
     handleDelete,
   }
