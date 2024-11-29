@@ -38,7 +38,7 @@ onMounted(() => {
       >
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold">Welcome Drew 👋</h1>
+            <h1 class="text-2xl font-bold">Welcome {{ profile.given_name }} 👋</h1>
             <div
               class="flex items-center gap-2 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20"
             >
