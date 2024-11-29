@@ -106,6 +106,7 @@ export function useAuth() {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: { captchaToken: options?.turnstileToken },
     })
 
     if (error) throw error
