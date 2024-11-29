@@ -2,33 +2,67 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useErrorHandler } from '@ib/logger'
 import type { Folder } from '~/types/folder'
 
-export const useFolderSystem = () => {
+export const useFolderStore = defineStore('folders', () => {
+  const error = ref<string | null>(null)
   const confirm = useConfirm()
-
-  const folders = ref<Folder[]>([])
   const loading = ref(false)
   const errorHandler = useErrorHandler('FolderSystem')
 
+  const folders = ref<Folder[]>([])
+  const selectedFolderId = ref<string | null>(null)
+  const includeSubfolders = ref(true)
+
+  // Computed properties for convenience
+  const getDefaultFolder = computed(() => folders.value.find((f) => f.is_default) || null)
+  const getFavorites = computed(() => folders.value.filter((f) => f.is_favorite) || [])
+
+  const setSelectedFolder = (folderId: string | null) => {
+    selectedFolderId.value = folderId
+  }
+
+  const setIncludeSubfolders = (value: boolean) => {
+    includeSubfolders.value = value
+  }
+
   const fetchFolders = async () => {
+    console.log('Fetching folders...')
     loading.value = true
+    error.value = null
+
     try {
       const response = await $fetch('/api/folders')
-      const data = errorHandler.handleFetchError({
-        response,
-        devMessage: 'Failed to fetch folders',
-        userMessage: 'Unable to load folders',
-      })
-      folders.value = data || []
-    } catch (error) {
-      errorHandler.handleError(error, {
-        context: 'fetchFolders',
-        userMessage: 'Failed to load folders',
-      })
+      console.log('Folders response:', response)
+
+      if (!response.data) {
+        console.warn('No data in response')
+      }
+
+      folders.value = response.data || []
+      console.log('Folders updated:', folders.value)
+    } catch (e) {
+      console.error('Error fetching folders:', e)
+      error.value = 'Failed to fetch folders'
       folders.value = []
     } finally {
       loading.value = false
     }
   }
+
+  const flatFolders = computed(() => {
+    const flattened: Folder[] = []
+
+    const flatten = (items: Folder[], depth = 0) => {
+      items.forEach((item) => {
+        flattened.push({ ...item, depth })
+        if (item.children?.length) {
+          flatten(item.children, depth + 1)
+        }
+      })
+    }
+
+    flatten(folders.value)
+    return flattened
+  })
 
   const createFolder = async (folder: Partial<Folder>) => {
     loading.value = true
@@ -179,23 +213,20 @@ export const useFolderSystem = () => {
     }
   }
 
-  // Initialize folders
-  onMounted(() => {
-    fetchFolders()
-  })
-
-  // Computed properties for convenience
-  const getDefaultFolder = computed(() => folders.value.find((f) => f.is_default) || null)
-  const getFavorites = computed(() => folders.value.filter((f) => f.is_favorite) || [])
-
   return {
     folders,
     loading,
+    error,
+    selectedFolderId,
+    includeSubfolders,
+    setSelectedFolder,
+    setIncludeSubfolders,
     fetchFolders,
     createFolder,
     updateFolder,
     deleteFolder,
+    flatFolders,
     getDefaultFolder,
     getFavorites,
   }
-}
+})

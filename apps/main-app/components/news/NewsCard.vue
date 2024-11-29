@@ -31,23 +31,29 @@ const props = defineProps<Props>()
 const voteStore = useVoteStore()
 const isFlipped = ref(false)
 
-const { isNewsBookmarked, toggleBookmark } = useBookmarks()
-
 const showModal = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
 const score = ref(props.news.score || 0)
-const bookmarked = computed(() => isNewsBookmarked.value(props.news.id))
+
+const bookmarkStore = useBookmarkStore()
+const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
+
+const folderStore = useFolderStore()
 
 const handleBookmark = async () => {
+  const folder = folderStore.getDefaultFolder
+
+  console.log('Bookmarking news:', props.news.id, folder.id)
   try {
-    await toggleBookmark({
+    await bookmarkStore.toggleBookmark({
       id: props.news.id,
       type: 'news',
       title: props.news.title,
       thumbnail: props.news.featured_image,
       url: props.news.url,
       author: props.news.author,
+      folder_id: folder.id,
     })
   } catch (error) {
     console.error('Error handling bookmark:', error)

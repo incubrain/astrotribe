@@ -1,23 +1,40 @@
 <!-- FolderTree.vue -->
 <script setup lang="ts">
-const { folders, flatFolders, getFavorites, createFolder } = useFolderSystem()
+const props = defineProps<{
+  modelValue?: string | null // For v-model of selected folder ID
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string | null): void
+  (e: 'select', folder: Folder): void
+}>()
+
+const { folders, flatFolders, getFavorites, createFolder } = useFolderStore()
 const { checkFeatureLimit, getFeatureUsage, getUpgradeMessage } = usePlan()
 
 const canCreateFolder = computed(() => {
-  return checkFeatureLimit('BOOKMARK_FOLDERS', folders.value.length)
+  return checkFeatureLimit('BOOKMARK_FOLDERS', folders.value?.length ?? 0)
 })
 
-const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
+const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value?.length ?? 0))
 
 const showNewFolderModal = ref(false)
-const selectedFolderId = ref<string | null>(null)
 
 const selectFolder = (folder: Folder) => {
-  selectedFolderId.value = folder.id
+  emit('update:modelValue', folder.id)
+  emit('select', folder)
 }
 
-const handleNewFolder = () => {
-  createNewFolder()
+const handleNewFolder = async () => {
+  if (!newFolder.value.name.trim()) return
+
+  try {
+    await createFolder(newFolder.value)
+    showNewFolderModal.value = false
+    resetNewFolder()
+  } catch (error) {
+    console.error('Failed to create folder:', error)
+  }
 }
 
 const newFolder = ref({
@@ -28,9 +45,7 @@ const newFolder = ref({
   is_default: false,
 })
 
-const createNewFolder = async () => {
-  await createFolder(newFolder.value)
-  showNewFolderModal.value = false
+const resetNewFolder = () => {
   newFolder.value = {
     name: '',
     parent_id: null,
@@ -96,6 +111,7 @@ const createNewFolder = async () => {
         v-for="folder in folders"
         :key="folder.id"
         :folder="folder"
+        :selected-id="modelValue"
         @select="selectFolder"
       />
     </div>

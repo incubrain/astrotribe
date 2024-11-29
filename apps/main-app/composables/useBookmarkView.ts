@@ -11,7 +11,7 @@ export const useBookmarkView = () => {
 
   const handleFolderSelect = async (folder: Folder) => {
     currentFolder.value = folder
-    const { fetchBookmarks } = useBookmarks()
+    const { fetchBookmarks } = useBookmarkStore()
     await fetchBookmarks({
       folder_id: folder.id,
       include_subfolders: includeSubfolders.value,

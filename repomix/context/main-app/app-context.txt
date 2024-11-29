@@ -140,7 +140,7 @@ apps/
       useBookmarkManager.ts
       useBookmarks.ts
       useBookmarkView.ts
-      useFolderSystem.ts
+      useFolderStore.ts
       usePages.ts
       usePayments.ts
       usePlan.ts
@@ -586,9 +586,9 @@ const handleSubmit = () => {
 </template>
 
 <script setup lang="ts">
-const { bookmarks, loading, fetchBookmarks, moveBookmarks, searchBookmarks } = useBookmarks()
+const { bookmarks, loading, fetchBookmarks, moveBookmarks, searchBookmarks } = useBookmarkStore()
 
-const { folders, getFavorites } = useFolderSystem()
+const { folders, getFavorites } = useFolderStore()
 
 const currentFolderId = ref<string | null>(null)
 const includeSubfolders = ref(true)
@@ -732,8 +732,8 @@ onMounted(async () => {
 <script setup lang="ts">
 import type { Folder } from '~/types/folder'
 
-const { folders, createFolder, updateFolder, deleteFolder } = useFolderSystem()
-const { bookmarks } = useBookmarks()
+const { folders, createFolder, updateFolder, deleteFolder } = useFolderStore()
+const { bookmarks } = useBookmarkStore()
 const { getFeatureUsage } = usePlan()
 
 const showModal = ref(false)
@@ -2641,7 +2641,7 @@ const isSelected = computed(() => props.folder.id === props.selectedId)
 <file path="apps/main-app/components/folder/FolderTree.vue">
 <!-- FolderTree.vue -->
 <script setup lang="ts">
-const { folders, flatFolders, getFavorites, createFolder } = useFolderSystem()
+const { folders, flatFolders, getFavorites, createFolder } = useFolderStore()
 const { checkFeatureLimit, getFeatureUsage, getUpgradeMessage } = usePlan()
 
 const canCreateFolder = computed(() => {
@@ -3260,7 +3260,7 @@ interface Props {
 const props = defineProps<Props>()
 const voteStore = useVoteStore()
 
-const { isNewsBookmarked, toggleBookmark } = useBookmarks()
+const { isNewsBookmarked, toggleBookmark } = useBookmarkStore()
 
 const showModal = ref(false)
 const modalContent = ref('')
@@ -6532,7 +6532,7 @@ export const useBookmarkManager = () => {
   const selectedBookmarks = ref<string[]>([])
   const showMoveModal = ref(false)
   const targetFolderId = ref<string | null>(null)
-  const { moveBookmarks, fetchBookmarks } = useBookmarks()
+  const { moveBookmarks, fetchBookmarks } = useBookmarkStore()
 
   const toggleBookmarkSelection = (bookmarkId: string) => {
     const index = selectedBookmarks.value.indexOf(bookmarkId)
@@ -6568,7 +6568,7 @@ export const useBookmarkManager = () => {
   }
 
   const handleNewFolder = async (folderData: Partial<Folder>) => {
-    const { createFolder } = useFolderSystem()
+    const { createFolder } = useFolderStore()
     return await createFolder(folderData)
   }
 
@@ -6636,7 +6636,7 @@ export const useBookmarks = () => {
   const error = ref<string | null>(null)
 
   const loading = ref(false)
-  const { getDefaultFolder } = useFolderSystem()
+  const { getDefaultFolder } = useFolderStore()
 
   const updateCache = (
     item: { content_type: string; content_id: string } | null,
@@ -6723,7 +6723,7 @@ export const useBookmarks = () => {
 
   // Update toggleBookmark to use the new cache function
   const toggleBookmark = async (content: BookmarkContent) => {
-    const { getDefaultFolder } = useFolderSystem()
+    const { getDefaultFolder } = useFolderStore()
 
     const response = await $fetch('/api/bookmarks/toggle', {
       method: 'POST',
@@ -6854,7 +6854,7 @@ export const useBookmarkView = () => {
 
   const handleFolderSelect = async (folder: Folder) => {
     currentFolder.value = folder
-    const { fetchBookmarks } = useBookmarks()
+    const { fetchBookmarks } = useBookmarkStore()
     await fetchBookmarks({
       folder_id: folder.id,
       include_subfolders: includeSubfolders.value,
@@ -6892,11 +6892,11 @@ export const useBookmarkView = () => {
 }
 </file>
 
-<file path="apps/main-app/composables/useFolderSystem.ts">
+<file path="apps/main-app/composables/useFolderStore.ts">
 import { useErrorHandler } from '@ib/logger'
 import type { Folder } from '~/types/folder'
 
-export const useFolderSystem = () => {
+export const useFolderStore = () => {
   const folders = ref<Folder[]>([])
   const loading = ref(false)
   const errorHandler = useErrorHandler('FolderSystem')
@@ -8183,7 +8183,7 @@ definePageMeta({
 // !todo:critical - add summaries for news articles
 // !todo:high - allow news to toggle summary level
 // !todo:bug:critical - infinite scroll is loading duplicate posts with pagination, probably a supabase issue
-const { init: initBookmarks } = useBookmarks()
+const { init: initBookmarks } = useBookmarkStore()
 
 const domainKey = 'news'
 const { store, loadMore, refresh } = useSelectData<News>('news', {
@@ -8677,11 +8677,11 @@ watch(() => voteString, fetchVotedPosts)
 <file path="apps/main-app/pages/profile/bookmarks.vue">
 <script setup lang="ts">
 import type { FuseResult } from 'fuse.js'
-import type { Folder } from '~/composables/useFolderSystem'
+import type { Folder } from '~/composables/useFolderStore'
 
 const { getFeatureUsage } = usePlan()
-const { folders, loading: foldersLoading } = useFolderSystem()
-const { bookmarks, loading: bookmarksLoading, fetchBookmarks } = useBookmarks()
+const { folders, loading: foldersLoading } = useFolderStore()
+const { bookmarks, loading: bookmarksLoading, fetchBookmarks } = useBookmarkStore()
 const {
   selectedBookmarks,
   showMoveModal,

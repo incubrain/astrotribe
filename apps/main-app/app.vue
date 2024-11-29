@@ -1,11 +1,17 @@
 <script setup lang="ts">
 const catTagStore = useCategoryTagStore()
 const currentUser = useCurrentUser()
+const folderStore = useFolderStore()
+const bookmarkStore = useBookmarkStore()
 
 onMounted(async () => {
   document.documentElement.classList.add('dark')
-  await catTagStore.getCategories()
-  await catTagStore.getTags()
+  try {
+    await Promise.all([folderStore.fetchFolders(), bookmarkStore.fetchBookmarks()])
+    await bookmarkStore.fetchBookmarkCounts() // Add error handling here
+  } catch (error) {
+    console.error('Error initializing data:', error)
+  }
 })
 
 useHead({
@@ -32,7 +38,10 @@ useHead({
   <div class="h-full w-full">
     <NuxtLoadingIndicator />
     <Head>
-      <link rel="manifest" href="/manifest.webmanifest" />
+      <link
+        rel="manifest"
+        href="/manifest.webmanifest"
+      />
     </Head>
     <NuxtPwaAssets />
     <NuxtLayout>
