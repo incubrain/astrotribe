@@ -10,30 +10,50 @@ export default defineEventHandler(async (event: H3Event) => {
     }
 
     const supabase = await serverSupabaseClient(event)
-    const id = event.context.params.id
-
-    // Check if this is the default folder
-    const { data: folder } = await supabase
-      .from('bookmark_folders')
-      .select('is_default')
-      .eq('id', id)
-      .single()
-
-    if (folder?.is_default) {
-      throw createError({
-        statusCode: 400,
-        message: 'Cannot delete the default folder',
-      })
+    const id = getRouterParam(event, 'id')
+    const body = await readBody(event)
+    const { strategy, defaultFolderId } = body as {
+      strategy: 'delete_all' | 'move_to_default'
+      defaultFolderId?: string
     }
 
-    // Delete the folder
-    const { error } = await supabase
+    // First try to update/delete bookmarks
+    if (strategy === 'delete_all') {
+      const { error: deleteError } = await supabase
+        .from('bookmarks')
+        .delete()
+        .eq('folder_id', id)
+        .eq('user_id', user.id)
+
+      if (deleteError) {
+        console.error('Delete bookmarks error:', deleteError)
+        throw deleteError
+      }
+    } else {
+      const { error: updateError } = await supabase
+        .from('bookmarks')
+        .update({ folder_id: defaultFolderId })
+        .eq('folder_id', id)
+        .eq('user_id', user.id)
+
+      if (updateError) {
+        console.error('Update bookmarks error:', updateError)
+        throw updateError
+      }
+    }
+
+    // Then delete the folder
+    const { error: folderError } = await supabase
       .from('bookmark_folders')
       .delete()
       .eq('id', id)
       .eq('user_id', user.id)
 
-    if (error) throw error
+    if (folderError) {
+      console.error('Delete folder error:', folderError)
+      throw folderError
+    }
+
     return { success: true }
   } catch (err) {
     console.error('Folder Delete Error:', err)

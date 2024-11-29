@@ -79,8 +79,9 @@ const sourceDisplay = computed(() => {
 })
 
 const formatSourceName = (name: string) => {
-  // Remove common suffixes like .com, .org, etc.
-  return name.replace(/\.(com|org|net|io|ai)$/, '')
+  // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
+  // .replace(/\.(com|org|net|io|ai)$/, '')
+  return name
 }
 
 const readTime = computed(() => {
@@ -171,7 +172,7 @@ onBeforeUnmount(async () => {
               <!-- Company logo or random image -->
               <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
                 <NuxtImg
-                  :src="news.companies?.logo_url || `https://picsum.photos/24/24?random=${news.id}`"
+                  :src="news.companies?.logo_url ?? `https://picsum.photos/24/24?random=${news.id}`"
                   alt="Source"
                   class="w-full h-full object-cover"
                   width="24"
@@ -201,7 +202,7 @@ onBeforeUnmount(async () => {
               {{ news.title }}
             </h3>
             <div class="flex items-center text-sm mb-4">
-              <span>{{ useTimeAgo(news.published_at ?? news.created_at).value }}</span>
+              {{ useTimeAgo(new Date(news.published_at ?? news.created_at)).value }}
               <span class="mx-2">•</span>
               <span>{{ readTime }}</span>
             </div>

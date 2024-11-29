@@ -1,7 +1,10 @@
+import { useConfirm } from 'primevue/useconfirm'
 import { useErrorHandler } from '@ib/logger'
 import type { Folder } from '~/types/folder'
 
 export const useFolderSystem = () => {
+  const confirm = useConfirm()
+
   const folders = ref<Folder[]>([])
   const loading = ref(false)
   const errorHandler = useErrorHandler('FolderSystem')
@@ -83,23 +86,92 @@ export const useFolderSystem = () => {
 
   const deleteFolder = async (folderId: string) => {
     loading.value = true
+
+    try {
+      // First get the default folder
+      const defaultFolder = getDefaultFolder.value
+      if (!defaultFolder) {
+        throw new Error('Default folder not found')
+      }
+
+      // Show confirmation dialog
+      return new Promise((resolve) => {
+        confirm.require({
+          message: 'What would you like to do with the bookmarks in this folder?',
+          header: 'Delete Folder',
+          icon: 'pi pi-exclamation-triangle',
+          acceptLabel: 'Delete all bookmarks',
+          rejectLabel: 'Move to default folder',
+          accept: async () => {
+            try {
+              const response = await $fetch(`/api/folders/${folderId}`, {
+                method: 'DELETE',
+                body: {
+                  strategy: 'delete_all',
+                },
+              })
+
+              const data = errorHandler.handleFetchError({
+                response,
+                devMessage: `Failed to delete folder ${folderId}`,
+                userMessage: 'Unable to delete folder',
+              })
+
+              if (data !== null) {
+                await fetchFolders()
+              }
+              resolve(true)
+            } catch (error) {
+              errorHandler.handleError(error, {
+                context: 'deleteFolder',
+                userMessage: 'Failed to delete folder',
+              })
+              resolve(false)
+            } finally {
+              loading.value = false
+            }
+          },
+          reject: async () => {
+            // Move to default folder
+            const result = await handleMoveAndDelete(folderId, defaultFolder.id)
+            resolve(result)
+          },
+        })
+      })
+    } catch (error) {
+      errorHandler.handleError(error, {
+        context: 'deleteFolder',
+        userMessage: 'Failed to delete folder',
+      })
+      loading.value = false
+      return false
+    }
+  }
+
+  const handleMoveAndDelete = async (folderId: string, defaultFolderId: string) => {
     try {
       const response = await $fetch(`/api/folders/${folderId}`, {
         method: 'DELETE',
+        body: {
+          strategy: 'move_to_default',
+          defaultFolderId,
+        },
       })
+
       const data = errorHandler.handleFetchError({
         response,
         devMessage: `Failed to delete folder ${folderId}`,
         userMessage: 'Unable to delete folder',
       })
+
       if (data !== null) {
         await fetchFolders()
       }
       return true
     } catch (error) {
       errorHandler.handleError(error, {
-        context: 'deleteFolder',
-        userMessage: 'Failed to delete folder',
+        context: 'handleMoveAndDelete',
+        userMessage: 'Failed to move bookmarks and delete folder',
       })
       return false
     } finally {

@@ -241,14 +241,14 @@ export async function seedBookmarkFolders(pool: Pool, userIds: string[]) {
 export async function seedBookmarks(
   pool: Pool,
   folderIds: string[],
-  contentIds: string[],
+  contents: any[],
   userIds: string[],
 ): Promise<any> {
-  const bookmarks = contentIds.map((contentId) => ({
+  const bookmarks = contents.map((content) => ({
     id: generateUUID(),
     user_id: faker.helpers.arrayElement(userIds),
-    content_id: contentId,
-    content_type: faker.helpers.arrayElement(['companies', 'news', 'research', 'newsletters']),
+    content_id: content.id,
+    content_type: content.content_type,
     folder_id: faker.helpers.arrayElement(folderIds),
     metadata: { notes: faker.lorem.sentence() },
     created_at: faker.date.past(),

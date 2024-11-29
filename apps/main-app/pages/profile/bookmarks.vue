@@ -1,227 +1,87 @@
 <script setup lang="ts">
-import type { FuseResult } from 'fuse.js'
-import type { Folder } from '~/composables/useFolderSystem'
+import { useConfirm } from 'primevue/useconfirm'
+import type { BaseBookmark } from '~/types/bookmark'
 
-interface Bookmark {
-  id: string
-  content_id: string
-  content_type: 'news' | 'newsletters' | 'companies' | 'research'
-  title: string
-  news?: any
-  newsletters?: any
-  companies?: any
-  research?: any
-}
+const { bookmarks, loading, fetchBookmarks } = useBookmarks()
+const { folders, currentFolder } = useFolderSystem()
+const { selectedIds, toggleSelection, handleMove, handleDelete } = useBookmarkManager()
 
-const { getFeatureUsage } = usePlan()
-const { folders, loading: foldersLoading } = useFolderSystem()
-const { bookmarks, loading: bookmarksLoading, fetchBookmarks } = useBookmarks()
-const {
-  selectedBookmarks,
-  showMoveModal,
-  handleNewFolder,
-  handleMoveSubmit,
-  handleDeleteBookmark,
-} = useBookmarkManager()
+const searchQuery = ref('')
+const selectedFolderId = ref<string | null>(null)
+const isMoving = ref(false)
+const includeSubfolders = ref(true)
+const confirm = useConfirm()
 
-const {
-  viewMode,
-  searchQuery,
-  includeSubfolders,
-  showFolderPanel,
-  showNewFolderModal,
-  currentFolder,
-  handleFolderSelect,
-  toggleFolderPanel,
-} = useBookmarkView()
+// Computed
+const availableFolders = computed(() => {
+  if (!folders.value || !currentFolder.value) return []
 
-const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folders.value.length))
+  return folders.value
+    .filter((f) => f.id !== currentFolder.value?.id)
+    .map((f) => ({
+      id: f.id,
+      name: f.name,
+    }))
+})
 
-const toggleSelection = (id: string) => {
-  const index = selectedBookmarks.value.indexOf(id)
-  if (index === -1) {
-    selectedBookmarks.value.push(id)
-  } else {
-    selectedBookmarks.value.splice(index, 1)
-  }
-}
-
+// Methods
 const clearSelection = () => {
-  selectedBookmarks.value = []
+  selectedIds.value = []
+  selectedFolderId.value = null
 }
 
-const handleBulkDelete = async () => {
-  if (!selectedBookmarks.value.length) return
-  await handleDeleteBookmark(selectedBookmarks.value)
-  clearSelection()
+const handleMoveSelected = async () => {
+  if (!selectedFolderId.value || !selectedIds.value.length) return
 
-  await fetchBookmarks({})
-}
-
-const loading = computed(() => foldersLoading.value || bookmarksLoading.value)
-
-onMounted(async () => {
-  const session = await useSupabaseSession()
-  if (session.value) {
-    await fetchBookmarks({})
-  }
-})
-
-interface BaseBookmark {
-  id: string
-  content_id: string
-  content_type: 'news' | 'newsletters' | 'companies' | 'research'
-  user_id: string
-  created_at: string
-}
-
-interface News {
-  id: string
-  title: string
-  url: string
-  description?: string
-  author?: string
-  featured_image?: string
-  published_at?: string
-  score?: number
-}
-
-interface Research {
-  id: string
-  title: string
-  abstract: string
-  abstract_url: string
-  doi_url?: string
-  published_in?: string
-  published_at?: string
-  authors?: any[]
-}
-
-interface Newsletter {
-  id: string
-  title: string
-  start_date: string
-  end_date: string
-  frequency: string
-  generated_content?: string
-}
-
-interface Company {
-  id: string
-  name: string
-  description?: string
-  logo_url?: string
-  url: string
-  founding_year?: number
-  category?: string
-}
-
-interface RawBookmark extends BaseBookmark {
-  news?: News
-  research?: Research
-  newsletters?: Newsletter
-  companies?: Company
-}
-
-interface NormalizedBookmark extends BaseBookmark {
-  title: string
-  url: string
-  description?: string
-  featured_image?: string
-  published_at?: string
-  author?: string
-  // Additional fields that might be useful
-  abstract?: string
-  doi_url?: string
-  published_in?: string
-  founding_year?: number
-  category?: string
-  score?: number
-}
-
-function normalizeBookmark(bookmark: RawBookmark): NormalizedBookmark | null {
-  const content = bookmark[bookmark.content_type]
-
-  // If no content is found, return null instead of throwing
-  if (!content) {
-    console.warn(`Content not found for bookmark ${bookmark.id} of type ${bookmark.content_type}`)
-    return null
-  }
-
-  const base: NormalizedBookmark = {
-    ...bookmark, // Keep the base bookmark properties
-  }
-
+  isMoving.value = true
   try {
-    switch (bookmark.content_type) {
-      case 'news':
-        return {
-          ...base,
-          ...(bookmark.news ?? {}),
-        }
-
-      case 'research':
-        return {
-          ...base,
-          ...(bookmark.research ?? {}),
-        }
-
-      case 'newsletters':
-        return {
-          ...base,
-          ...(bookmark.newsletters ?? {}),
-        }
-
-      case 'companies':
-        return {
-          ...base,
-          ...(bookmark.companies ?? {}),
-        }
-
-      default:
-        console.warn(`Unknown content type: ${bookmark.content_type} for bookmark ${bookmark.id}`)
-        return null
-    }
-  } catch (error) {
-    console.warn(`Error normalizing bookmark ${bookmark.id}:`, error)
-    return null
+    await handleMove(selectedFolderId.value)
+    clearSelection()
+  } finally {
+    isMoving.value = false
   }
 }
 
-const searchFuseOptions = {
-  keys: [
-    'title',
-    'description',
-    'author',
-    'abstract', // For research
-    'name', // For companies
-  ],
-  threshold: 0.3,
-  shouldSort: true,
+const handleDeleteSelected = () => {
+  confirm.require({
+    message: `Delete ${selectedIds.value.length} bookmark${selectedIds.value.length > 1 ? 's' : ''}?`,
+    header: 'Confirm Delete',
+    icon: 'pi pi-exclamation-triangle',
+    acceptClass: 'p-button-danger',
+    accept: async () => {
+      await handleDelete(selectedIds.value)
+      clearSelection()
+    },
+  })
 }
 
-// Normalize bookmarks first
-const normalizedBookmarks = computed(() => {
-  return bookmarks.value
-    .map((bookmark) => normalizeBookmark(bookmark))
-    .filter((bookmark): bookmark is NormalizedBookmark => bookmark !== null)
-})
-
-// Use normalized bookmarks for display
-const displayedBookmarks = ref<NormalizedBookmark[]>([])
-
-// Handle search results with normalized data
-const handleSearchResults = (results: FuseResult<NormalizedBookmark>[]) => {
+// Search handling
+const handleSearchResults = (results: any[]) => {
   if (results.length === 0 && !searchQuery.value) {
-    displayedBookmarks.value = normalizedBookmarks.value
+    displayedBookmarks.value = bookmarks.value
   } else {
     displayedBookmarks.value = results.map((result) => result.item)
   }
 }
 
-// Update initial display when normalized bookmarks change
+const searchFuseOptions = {
+  keys: [
+    'metadata.title',
+    'metadata.description',
+    'metadata.author',
+    'metadata.abstract',
+    'metadata.name',
+  ],
+  threshold: 0.3,
+  shouldSort: true,
+}
+
+// Use normalized bookmarks for display
+const displayedBookmarks = ref<BaseBookmark[]>([])
+
+// Update initial display when bookmarks change
 watch(
-  () => normalizedBookmarks.value,
+  () => bookmarks.value,
   (newBookmarks) => {
     if (!searchQuery.value) {
       displayedBookmarks.value = newBookmarks
@@ -229,187 +89,150 @@ watch(
   },
   { immediate: true },
 )
+
+// Initialize
+onMounted(async () => {
+  const session = await useSupabaseSession()
+  if (session.value) {
+    await fetchBookmarks({})
+  }
+})
 </script>
 
 <template>
-  <div class="min-h-screen p-4 gap-4 max-w-[940px] flex flex-col mx-auto lg:p-8 lg:gap-8">
+  <div class="min-h-screen p-4 gap-4 max-w-[940px`x] flex flex-col mx-auto lg:p-8 lg:gap-8">
     <BookmarkViewFolder v-if="!searchQuery" />
 
-    <!-- Simplified toolbar without left hamburger -->
-    <PrimeToolbar
-      class="sticky top-0 z-40"
-      :pt="{
-        start: 'flex-grow',
-      }"
+    <!-- Search Bar & Actions -->
+    <div
+      class="flex items-center justify-between sticky top-4 z-40 bg-card p-4 border border-color rounded-lg foreground"
     >
-      <template #start>
-        <div class="w-full max-w-xl">
-          <FuzzySearch
-            v-model="searchQuery"
-            :data="bookmarks"
-            :fuse-options="searchFuseOptions"
-            placeholder="Search bookmarks..."
-            class="w-full"
-            @results="handleSearchResults"
-          />
-        </div>
-      </template>
+      <div class="w-full">
+        <FuzzySearch
+          v-model="searchQuery"
+          :data="bookmarks"
+          :fuse-options="searchFuseOptions"
+          placeholder="Search bookmarks..."
+          class="w-full"
+          @results="handleSearchResults"
+        />
+      </div>
 
-      <template #end>
-        <div class="flex items-center gap-4">
-          <!-- Selection Actions -->
-          <template v-if="selectedBookmarks.length > 0">
-            <span class="text-sm text-gray-600">{{ selectedBookmarks.length }} selected</span>
-            <PrimeButton
-              severity="danger"
-              size="small"
-              @click="handleBulkDelete"
-            >
-              Delete
-            </PrimeButton>
-            <PrimeButton
-              size="small"
-              @click="showMoveModal = true"
-            >
-              Move to Folder
-            </PrimeButton>
+      <div class="flex items-center gap-4">
+        <!-- Selection Actions -->
+        <template v-if="selectedIds.length > 0">
+          <span class="text-sm text-gray-600">{{ selectedIds.length }} selected</span>
+
+          <div class="flex items-center gap-2">
+            <PrimeSelect
+              v-model="selectedFolderId"
+              :options="availableFolders"
+              option-label="name"
+              option-value="id"
+              placeholder="Move to folder..."
+            />
             <PrimeButton
               size="small"
-              text
-              @click="clearSelection"
+              :disabled="!selectedFolderId || isMoving"
+              :loading="isMoving"
+              @click="handleMoveSelected"
             >
-              Clear
+              {{ isMoving ? 'Moving...' : 'Move' }}
             </PrimeButton>
-          </template>
-
-          <!-- Regular Actions -->
-          <template v-else>
-            <PrimeCheckbox
-              v-if="currentFolder"
-              v-model="includeSubfolders"
-              :binary="true"
-              label="Include subfolders"
-            />
-          </template>
-        </div>
-      </template>
-    </PrimeToolbar>
-
-    <div class="flex">
-      <!-- Main Content -->
-      <div class="flex-1 overflow-auto">
-        <div class="mx-auto space-y-6">
-          <!-- Current Folder Info -->
-          <div
-            v-if="currentFolder"
-            class="flex items-center gap-2"
-          >
-            <div
-              class="w-3 h-3 rounded-full"
-              :style="{ backgroundColor: currentFolder.color }"
-            />
-            <h2 class="text-xl font-semibold">{{ currentFolder.name }}</h2>
-            <Icon
-              v-if="currentFolder.is_favorite"
-              name="mdi:star"
-              class="text-yellow-400"
-            />
           </div>
 
-          <!-- Loading State -->
-          <div
-            v-if="loading"
-            class="flex items-center justify-center h-64"
+          <PrimeButton
+            variant="destructive"
+            size="sm"
+            @click="handleDeleteSelected"
           >
-            <PrimeProgressSpinner />
-          </div>
+            Delete
+          </PrimeButton>
 
-          <!-- Bookmarks Grid -->
-          <div
-            v-else
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
+          <PrimeButton
+            variant="ghost"
+            size="sm"
+            @click="clearSelection"
           >
-            <TransitionGroup
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 transform scale-95"
-              enter-to-class="opacity-100 transform scale-100"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 transform scale-100"
-              leave-to-class="opacity-0 transform scale-95"
-            >
-              <div
-                v-for="bookmark in displayedBookmarks"
-                :key="bookmark.id"
-                class="relative group flex"
-              >
-                <div
-                  class="absolute w-full h-10 inset-0 z-10 flex items-start justify-end p-2 bg-black/5"
-                  :class="
-                    selectedBookmarks.includes(bookmark.id)
-                      ? 'opacity-100'
-                      : 'opacity-0 group-hover:opacity-100 transition-opacity'
-                  "
-                >
-                  <PrimeCheckbox
-                    :model-value="selectedBookmarks.includes(bookmark.id)"
-                    :binary="true"
-                    @update:model-value="toggleSelection(bookmark.id)"
-                  />
-                </div>
-                <BookmarkCard
-                  :bookmark="bookmark"
-                  :class="{ 'opacity-75': selectedBookmarks.includes(bookmark.id) }"
-                />
-              </div>
-            </TransitionGroup>
-          </div>
+            Clear
+          </PrimeButton>
+        </template>
 
-          <!-- Empty State -->
-          <div
-            v-if="!loading && (!displayedBookmarks || displayedBookmarks.length === 0)"
-            class="flex flex-col items-center justify-center h-64 text-gray-500"
-          >
-            <Icon
-              name="mdi:bookmark-outline"
-              size="48"
-            />
-            <p class="mt-4 text-lg">No bookmarks found</p>
-            <p class="text-sm">
-              {{
-                searchQuery ? 'Try a different search term' : 'Start by bookmarking some articles'
-              }}
-            </p>
-          </div>
-        </div>
+        <Checkbox
+          v-else-if="currentFolder"
+          v-model="includeSubfolders"
+          label="Include subfolders"
+        />
       </div>
     </div>
 
-    <PrimeDialog
-      v-model:visible="showMoveModal"
-      modal
-      header="Move Bookmark"
-      :style="{ width: '90vw', maxWidth: '500px' }"
-    >
-      <BookmarkFormMove
-        :folders="folders"
-        :selected-folder="currentFolder"
-        @submit="(folder: Folder) => handleMoveSubmit(folder)"
-        @cancel="showMoveModal = false"
-      />
-    </PrimeDialog>
+    <!-- Content -->
+    <div class="space-y-6">
+      <!-- Current Folder Info -->
+      <div
+        v-if="currentFolder"
+        class="flex items-center gap-2"
+      >
+        <div
+          class="w-3 h-3 rounded-full"
+          :style="{ backgroundColor: currentFolder.color }"
+        />
+        <h2 class="text-xl font-semibold">{{ currentFolder.name }}</h2>
+      </div>
+
+      <!-- Loading State -->
+      <div
+        v-if="loading"
+        class="flex items-center justify-center h-64"
+      >
+        <Spinner class="w-8 h-8" />
+      </div>
+
+      <!-- Bookmarks Grid -->
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
+      >
+        <TransitionGroup
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="opacity-0 transform scale-95"
+          enter-to-class="opacity-100 transform scale-100"
+          leave-active-class="transition-all duration-200 ease-in"
+          leave-from-class="opacity-100 transform scale-100"
+          leave-to-class="opacity-0 transform scale-95"
+        >
+          <div
+            v-for="bookmark in displayedBookmarks"
+            :key="bookmark.id"
+            class="relative group"
+          >
+            <BookmarkCard
+              :bookmark="bookmark"
+              :selectable="true"
+              :is-selected="selectedIds.includes(bookmark.id)"
+              @select="toggleSelection"
+            />
+          </div>
+        </TransitionGroup>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-if="!loading && (!displayedBookmarks || displayedBookmarks.length === 0)"
+        class="flex flex-col items-center justify-center h-64 text-gray-500"
+      >
+        <Icon
+          name="mdi:bookmark-outline"
+          class="w-12 h-12"
+        />
+        <p class="mt-4 text-lg">No bookmarks found</p>
+        <p class="text-sm">
+          {{ searchQuery ? 'Try a different search term' : 'Start by bookmarking some articles' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <PrimeConfirmPopup />
   </div>
 </template>
-
-<style scoped>
-@media (min-width: 768px) {
-  :deep(.p-drawer) {
-    position: relative;
-    height: 100%;
-    transform: none !important;
-  }
-
-  :deep(.p-drawer-mask) {
-    display: none;
-  }
-}
-</style>

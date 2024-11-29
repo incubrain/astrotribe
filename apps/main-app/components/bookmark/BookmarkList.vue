@@ -70,7 +70,7 @@
           :key="bookmark.id"
           :bookmark="bookmark"
           :selected="selectedBookmarks.includes(bookmark.id)"
-          @select="toggleBookmarkSelection"
+          @select="toggleBookmarkSelection(bookmark.id)"
           @move="showMoveDialog = true"
         />
       </div>
@@ -85,60 +85,6 @@
         />
       </div>
     </div>
-
-    <PrimeDialog
-      v-model:visible="showMoveModal"
-      modal
-      header="Move Bookmarks"
-      :style="{ width: '90vw', maxWidth: '500px' }"
-    >
-      <!-- Main Content -->
-      <span class="text-surface-500 dark:text-surface-400 block mb-4">
-        Select a destination folder for {{ selectedBookmarks.length }} bookmark(s).
-      </span>
-
-      <div class="max-h-[400px] overflow-y-auto p-2">
-        <FolderTree
-          v-model:selected-keys="targetFolderId"
-          selection-mode="single"
-          :value="folders"
-          :filter="true"
-          filter-mode="strict"
-          class="w-full"
-        >
-          <template #default="{ node }">
-            <div class="flex items-center gap-2">
-              <div
-                class="w-3 h-3 rounded-full"
-                :style="{ backgroundColor: node.color }"
-              />
-              <span>{{ node.name }}</span>
-              <Icon
-                v-if="node.is_favorite"
-                name="mdi:star"
-                class="text-yellow-400 w-4 h-4"
-              />
-            </div>
-          </template>
-        </FolderTree>
-      </div>
-
-      <!-- Footer -->
-      <template #footer>
-        <PrimeButton
-          label="Cancel"
-          class="p-button-text"
-          severity="secondary"
-          @click="showMoveModal = false"
-        />
-        <PrimeButton
-          label="Move"
-          :disabled="!targetFolderId"
-          severity="primary"
-          @click="(folder) => handleMoveSubmit(folder)"
-        />
-      </template>
-    </PrimeDialog>
   </div>
 </template>
 
@@ -176,15 +122,6 @@ const toggleBookmarkSelection = (bookmarkId: string) => {
   } else {
     selectedBookmarks.value.splice(index, 1)
   }
-}
-
-const handleMoveBookmarks = async () => {
-  if (!targetFolderId.value) return
-
-  await moveBookmarks(selectedBookmarks.value, targetFolderId.value)
-  selectedBookmarks.value = []
-  showMoveDialog.value = false
-  targetFolderId.value = null
 }
 
 watch(includeSubfolders, async () => {

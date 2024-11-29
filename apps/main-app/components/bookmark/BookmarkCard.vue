@@ -1,24 +1,41 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-
+import type { BaseBookmark } from '~/types/bookmark'
 
 interface Props {
-  bookmark: NormalizedBookmark
+  bookmark: BaseBookmark
+  selectable?: boolean
+  isSelected?: boolean
 }
 
 const props = defineProps<Props>()
-const { isNewsBookmarked, toggleBookmark } = useBookmarks()
+defineEmits<{
+  (e: 'select', id: string): void
+}>()
 
-const bookmarked = computed(() => isNewsBookmarked.value(props.bookmark.content_id))
+console.log('BookmarkCard props', props)
+
+const { toggleBookmark, isBookmarked } = useBookmarks()
 
 const handleBookmark = async () => {
   try {
     await toggleBookmark({
       id: props.bookmark.content_id,
       type: props.bookmark.content_type,
+      title: props.bookmark.metadata.title,
+      url: props.bookmark.metadata.url,
+      description: props.bookmark.metadata.description,
+      thumbnail: props.bookmark.metadata.featured_image,
+      author: props.bookmark.metadata.author,
     })
   } catch (error) {
     console.error('Error handling bookmark:', error)
+  }
+}
+
+const handleDoiClick = () => {
+  if (props.bookmark.metadata.doi_url) {
+    window.open(props.bookmark.metadata.doi_url, '_blank', 'noopener,noreferrer')
   }
 }
 
@@ -36,13 +53,26 @@ const contentTypeIcon = computed(() => {
       return 'mdi:bookmark'
   }
 })
-
-
 </script>
 
 <template>
   <div class="rounded-lg relative border border-color w-full h-full">
-    <div class="p-4 flex flex-col justify-between h-full">
+    <div
+      v-if="selectable"
+      class="absolute w-full h-10 inset-0 z-10 flex items-start justify-end p-2 bg-black/5"
+      :class="[isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 transition-opacity']"
+    >
+      <PrimeCheckbox
+        :model-value="isSelected"
+        :binary="true"
+        @update:model-value="$emit('select', bookmark.id)"
+      />
+    </div>
+
+    <div
+      class="p-4 flex flex-col justify-between h-full"
+      :class="{ 'opacity-75': isSelected }"
+    >
       <!-- Header -->
       <div>
         <div class="flex items-center justify-between mb-2">
@@ -55,22 +85,27 @@ const contentTypeIcon = computed(() => {
             <span class="text-sm capitalize">{{ bookmark.content_type }}</span>
           </div>
           <span class="text-sm text-gray-500">{{
-            useTimeAgo(bookmark.published_at || bookmark.created_at).value
+            useTimeAgo(bookmark.metadata.published_at || bookmark.created_at).value
           }}</span>
         </div>
 
-        <h2 class="text-xl font-bold mb-2">{{ bookmark.title }}</h2>
+        <h2 class="text-xl font-bold mb-2">{{ bookmark.metadata.title }}</h2>
 
-        <!-- Additional metadata based on content type -->
-        <div class="flex items-center text-sm mb-4 text-gray-500">
-          <template v-if="bookmark.author">
-            <span>{{ bookmark.author }}</span>
+        <!-- Additional metadata -->
+        <div
+          v-if="
+            bookmark.metadata.author || bookmark.metadata.published_in || bookmark.metadata.category
+          "
+          class="flex items-center text-sm mb-4 text-gray-500"
+        >
+          <template v-if="bookmark.metadata.author">
+            <span>{{ bookmark.metadata.author }}</span>
           </template>
-          <template v-if="bookmark.published_in">
-            <span>{{ bookmark.published_in }}</span>
+          <template v-if="bookmark.metadata.published_in">
+            <span>{{ bookmark.metadata.published_in }}</span>
           </template>
-          <template v-if="bookmark.category">
-            <span>{{ bookmark.category }}</span>
+          <template v-if="bookmark.metadata.category">
+            <span>{{ bookmark.metadata.category }}</span>
           </template>
         </div>
       </div>
@@ -78,13 +113,13 @@ const contentTypeIcon = computed(() => {
       <!-- Body -->
       <div>
         <div
-          v-if="bookmark.featured_image"
+          v-if="bookmark.metadata.featured_image"
           class="mb-4"
         >
           <NuxtImg
-            :provider="bookmark.featured_image ? 'supabase' : undefined"
-            :src="bookmark.featured_image || 'fallback-image.jpg'"
-            :alt="bookmark.title"
+            :provider="bookmark.metadata.featured_image ? 'supabase' : undefined"
+            :src="bookmark.metadata.featured_image || 'fallback-image.jpg'"
+            :alt="bookmark.metadata.title"
             class="w-full h-auto rounded-lg"
             width="400"
             height="200"
@@ -92,27 +127,27 @@ const contentTypeIcon = computed(() => {
         </div>
 
         <p
-          v-if="bookmark.description"
+          v-if="bookmark.metadata.description"
           class="text-sm text-gray-600 mb-4 line-clamp-3"
         >
-          {{ bookmark.description }}
+          {{ bookmark.metadata.description }}
         </p>
 
         <!-- Actions -->
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
             <Icon
-              v-if="bookmark.doi_url"
+              v-if="bookmark.metadata.doi_url"
               name="mdi:file-document-outline"
               size="20px"
               class="text-gray-500 hover:text-gray-700 cursor-pointer"
-              @click="window.open(bookmark.doi_url, '_blank')"
+              @click="handleDoiClick"
             />
             <span
-              v-if="bookmark.score"
+              v-if="bookmark.metadata.score"
               class="text-sm text-gray-500"
             >
-              Score: {{ bookmark.score }}
+              Score: {{ bookmark.metadata.score }}
             </span>
           </div>
           <div class="flex items-center gap-4">
@@ -121,13 +156,13 @@ const contentTypeIcon = computed(() => {
               @click="handleBookmark"
             >
               <Icon
-                :name="bookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
+                :name="isBookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
                 size="20px"
-                :class="{ 'text-primary-500': bookmarked }"
+                :class="{ 'text-primary-500': isBookmarked }"
               />
             </button>
             <NuxtLink
-              :to="bookmark.url"
+              :to="bookmark.metadata.url"
               target="_blank"
               rel="noopener noreferrer nofollow"
               class="hover:text-gray-600"

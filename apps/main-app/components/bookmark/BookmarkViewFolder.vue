@@ -1,5 +1,7 @@
 <template>
   <div class="space-y-6">
+    <PrimeConfirmPopup />
+
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Folders</h2>
       <PrimeButton
@@ -111,8 +113,11 @@ const handleSubmit = async (data: Partial<Folder>) => {
 
 const handleDelete = async () => {
   if (selectedFolder.value) {
-    await deleteFolder(selectedFolder.value.id)
-    closeModal()
+    console.log('Deleting folder', selectedFolder.value)
+    const success = await deleteFolder(selectedFolder.value.id)
+    if (success) {
+      closeModal()
+    }
   }
 }
 </script>
