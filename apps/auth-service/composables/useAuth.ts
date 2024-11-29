@@ -97,7 +97,7 @@ export function useAuth() {
         body: { token: options.turnstileToken },
       })
 
-      if (!validation.success) {
+      if (!validation.ok) {
         throw new Error('Invalid captcha')
       }
     }
@@ -109,10 +109,9 @@ export function useAuth() {
     })
 
     if (error) throw error
-
-    // Handle successful login
-    return data
-    // Handle error
+    toast.success({ summary: 'Authenticated', message: 'Logging In...' })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    navigateTo(aeAppUrl, { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
