@@ -39,7 +39,7 @@ useHead({
 const onSuccess = async (token) => {
   try {
     // Call server API to validate token
-    const response = await $fetch('/api/validate-turnstile', {
+    const response = await $fetch('/validate-turnstile', {
       method: 'POST',
       body: { token },
     })
