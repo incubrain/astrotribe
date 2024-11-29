@@ -44,7 +44,7 @@ const onSuccess = async (token) => {
       body: { token },
     })
 
-    if (response.ok) {
+    if (response.success) {
       props.onValidToken(token)
       emit('success', token)
     } else {
