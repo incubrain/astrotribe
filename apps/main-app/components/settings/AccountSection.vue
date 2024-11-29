@@ -12,6 +12,12 @@ const currentUser = useCurrentUser()
 
 const profileCopy = ref({})
 
+const updateProfileImage = (newImage: string) => {
+  const avatar = `${newImage}?v=${Date.now()}`
+  currentUser.updateProfile({ avatar })
+  profileCopy.value.avatar = avatar
+}
+
 onMounted(() => {
   profileCopy.value = { ...currentUser.profile }
 })
@@ -82,7 +88,7 @@ const schema = [
               cropper-type="avatar"
               class="absolute bottom-0 right-0"
               bucket="profile-public"
-              @profile-pic-update="currentUser.updateAvatar({ avatar: $event })"
+              @profile-pic-update="updateProfileImage"
             />
           </div>
         </div>
