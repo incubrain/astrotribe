@@ -8,11 +8,12 @@ interface Profile {
   username: string
 }
 
-const profile = ref<Profile>({
-  given_name: 'Drew',
-  surname: 'MacGibbon',
-  email: 'drewmacgibbon@gmail.com',
-  username: '',
+const currentUser = useCurrentUser()
+
+const profileCopy = ref({})
+
+onMounted(() => {
+  profileCopy.value = { ...currentUser.profile }
 })
 
 const isUpdating = ref(false)
@@ -49,25 +50,6 @@ const schema = [
     disabled: true,
   },
 ]
-
-async function updateProfile(updates: Partial<Profile>) {
-  try {
-    isUpdating.value = true
-    // Add actual update functionality here
-    profile.value = { ...profile.value, ...updates }
-    toast.success({
-      summary: 'Success',
-      message: 'Your profile has been updated',
-    })
-  } catch (error) {
-    toast.error({
-      summary: 'Error',
-      message: 'Failed to update profile',
-    })
-  } finally {
-    isUpdating.value = false
-  }
-}
 </script>
 
 <template>
@@ -82,8 +64,8 @@ async function updateProfile(updates: Partial<Profile>) {
         <div class="flex items-center space-x-4">
           <div class="relative h-32 w-32">
             <PrimeAvatar
-              v-if="profile.avatar"
-              :image="profile.avatar"
+              v-if="profileCopy.avatar"
+              :image="profileCopy.avatar"
               shape="circle"
               class="h-full w-full"
               crossorigin="anonymous"
@@ -93,14 +75,14 @@ async function updateProfile(updates: Partial<Profile>) {
               class="h-full w-full bg-gray-800 rounded-full flex items-center justify-center"
             >
               <span class="text-3xl text-gray-400">
-                {{ profile.given_name?.[0] }}
+                {{ profileCopy.given_name?.[0] }}
               </span>
             </div>
             <UploadCropper
               cropper-type="avatar"
               class="absolute bottom-0 right-0"
               bucket="profile-public"
-              @profile-pic-update="updateProfile({ avatar: $event })"
+              @profile-pic-update="currentUser.updateAvatar({ avatar: $event })"
             />
           </div>
         </div>
@@ -113,7 +95,7 @@ async function updateProfile(updates: Partial<Profile>) {
           :item="item"
         >
           <PrimeInputText
-            v-model="profile[item.id]"
+            v-model="profileCopy[item.id]"
             class="w-full md:max-w-96"
             :disabled="item.disabled"
             :placeholder="item.placeholder"
@@ -124,7 +106,7 @@ async function updateProfile(updates: Partial<Profile>) {
       <div class="flex justify-end pt-4">
         <PrimeButton
           :loading="isUpdating"
-          @click="updateProfile(profile)"
+          @click="currentUser.updateProfile(profileCopy)"
         >
           Save Changes
         </PrimeButton>
