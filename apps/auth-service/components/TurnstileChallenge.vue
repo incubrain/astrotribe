@@ -1,13 +1,6 @@
 <template>
   <div>
-    <div
-      class="cf-turnstile"
-      :data-sitekey="config.public.turnstileSiteKey"
-      :data-theme="colorMode === 'dark' ? 'dark' : 'light'"
-      :data-callback="onSuccess"
-      :data-error-callback="onError"
-      :data-expired-callback="onExpired"
-    ></div>
+    <div class="cf-turnstile"></div>
   </div>
 </template>
 
@@ -18,6 +11,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const scriptLoaded = ref(false)
 
 const emit = defineEmits(['error', 'expired', 'success'])
 const config = useRuntimeConfig()
@@ -30,6 +25,13 @@ useHead({
       src: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
       async: true,
       defer: true,
+      onload: () => {
+        console.log('Turnstile script loaded successfully')
+        scriptLoaded.value = true
+      },
+      onerror: () => {
+        console.error('Failed to load Turnstile script')
+      },
     },
   ],
 })
@@ -37,7 +39,7 @@ useHead({
 const onSuccess = async (token) => {
   try {
     // Call server API to validate token
-    const response = await $fetch('/api/auth/validate-turnstile', {
+    const response = await $fetch('/api/validate-turnstile', {
       method: 'POST',
       body: { token },
     })
@@ -65,10 +67,29 @@ const onExpired = () => {
   emit('expired')
 }
 
-// Reset method that can be called from parent
 const reset = () => {
   if (window.turnstile) {
     window.turnstile.reset()
+  }
+}
+
+onMounted(() => {
+  watch(scriptLoaded, (loaded) => {
+    if (loaded) {
+      renderTurnstile()
+    }
+  })
+})
+
+const renderTurnstile = () => {
+  if (window.turnstile) {
+    window.turnstile.render('.cf-turnstile', {
+      'sitekey': config.public.turnstileSiteKey,
+      'theme': colorMode.value === 'dark' ? 'dark' : 'light',
+      'callback': onSuccess,
+      'error-callback': onError,
+      'expired-callback': onExpired,
+    })
   }
 }
 
