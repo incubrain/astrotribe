@@ -57,7 +57,7 @@ export function useAuth() {
   }) => {
     // First validate the turnstile token if provided
     if (formData.turnstileToken) {
-      const validation = await $fetch('/api/auth/validate-turnstile', {
+      const validation = await fetch('/api/validate-turnstile', {
         method: 'POST',
         body: { token: formData.turnstileToken },
       })
@@ -92,12 +92,12 @@ export function useAuth() {
   ) => {
     // First validate the turnstile token if provided
     if (options?.turnstileToken) {
-      const validation = await $fetch('/api/auth/validate-turnstile', {
+      const validation = await fetch('api/validate-turnstile', {
         method: 'POST',
         body: { token: options.turnstileToken },
       })
 
-      if (!validation.success) {
+      if (!validation.ok) {
         throw new Error('Invalid captcha')
       }
     }
@@ -106,13 +106,13 @@ export function useAuth() {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: { captchaToken: options?.turnstileToken },
     })
 
     if (error) throw error
-
-    // Handle successful login
-    return data
-    // Handle error
+    toast.success({ summary: 'Authenticated', message: 'Logging In...' })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    navigateTo(aeAppUrl, { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
