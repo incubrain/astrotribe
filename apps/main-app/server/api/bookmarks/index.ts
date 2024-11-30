@@ -36,13 +36,6 @@ function normalizeContent(content: any, contentType: string): BookmarkMetadata {
         description: content.generated_content,
         published_at: content.start_date,
       }
-    case 'companies':
-      return {
-        title: content.name,
-        url: content.url,
-        description: content.description,
-        featured_image: content.logo_url,
-      }
     default:
       throw new Error(`Unknown content type: ${contentType}`)
   }
@@ -100,10 +93,7 @@ export default defineEventHandler(async (event) => {
             .select('id')
             .like('path', `${folderData.path}%`)
 
-          query = query.in('folder_id', [
-            folder_id,
-            ...(subFolderIds?.map((f) => f.id) || []),
-          ])
+          query = query.in('folder_id', [folder_id, ...(subFolderIds?.map((f) => f.id) || [])])
         } else {
           query = query.eq('folder_id', folder_id)
         }

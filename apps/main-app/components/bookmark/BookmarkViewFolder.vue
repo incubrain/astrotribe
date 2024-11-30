@@ -22,8 +22,8 @@
       <div
         v-for="folder in folderStore.folders"
         :key="folder.id"
-        class="relative p-4 hover:shadow-md transition-shadow bg-card border border-color rounded-lg cursor-pointer group overflow-hidden"
-        :class="{ 'bg-primary-900': currentFolder.value.id === folder.id }"
+        class="relative p-4 hover:shadow-md transition-shadow border border-color rounded-lg cursor-pointer group overflow-hidden"
+        :class="{ 'bg-primary-900': folderStore.selectedFolderId === folder.id }"
         @click="handleFolderSelect(folder)"
       >
         <!-- Static color strip -->
@@ -143,7 +143,7 @@ import type { Folder } from '~/types/folder'
 
 const folderStore = useFolderStore()
 const bookmarkStore = useBookmarkStore()
-const { handleFolderSelect, currentFolder } = useBookmarkView()
+const { handleFolderSelect } = useBookmarkView()
 const { getFeatureUsage } = usePlan()
 
 const editingFolderId = ref<string | null>(null)
@@ -153,7 +153,9 @@ const activeActionsFolder = ref<string | null>(null)
 const showNewFolderModal = ref(false)
 
 const folderUsage = computed(() => getFeatureUsage('BOOKMARK_FOLDERS', folderStore.folders.length))
+const currentFolderId = computed(() => folderStore.getDefaultFolder).value?.id
 
+console.log('folderStore.folders', folderStore.getDefaultFolder, currentFolderId)
 // Start editing folder name
 const startEdit = (folder: Folder) => {
   activeActionsFolder.value = null // Hide action panel
