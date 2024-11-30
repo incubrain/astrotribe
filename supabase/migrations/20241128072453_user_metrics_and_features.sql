@@ -1,4 +1,4 @@
-create table "public"."content_source_visits" (
+CREATE TABLE IF NOT EXISTS "public"."content_source_visits" (
     "id" uuid not null default gen_random_uuid(),
     "content_id" uuid not null,
     "user_id" uuid,
@@ -8,7 +8,7 @@ create table "public"."content_source_visits" (
 
 alter table "public"."content_source_visits" enable row level security;
 
-create table "public"."feature_rankings" (
+CREATE TABLE IF NOT EXISTS "public"."feature_rankings" (
     "id" uuid not null default gen_random_uuid(),
     "user_id" uuid not null,
     "rankings" jsonb not null,
@@ -19,7 +19,7 @@ create table "public"."feature_rankings" (
 
 alter table "public"."feature_rankings" enable row level security;
 
-create table "public"."feature_requests" (
+CREATE TABLE IF NOT EXISTS "public"."feature_requests" (
     "id" uuid not null default gen_random_uuid(),
     "title" text not null,
     "description" text,
@@ -32,7 +32,7 @@ create table "public"."feature_requests" (
 
 alter table "public"."feature_requests" enable row level security;
 
-create table "public"."user_metrics" (
+CREATE TABLE IF NOT EXISTS "public"."user_metrics" (
     "id" uuid not null default gen_random_uuid(),
     "user_id" uuid not null,
     "total_votes" integer default 0,
@@ -64,25 +64,25 @@ alter table "public"."strapi_migrations" enable row level security;
 
 alter table "public"."strapi_migrations_internal" enable row level security;
 
-CREATE UNIQUE INDEX feature_rankings_user_id_key ON public.feature_rankings USING btree (user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS  feature_rankings_user_id_key ON public.feature_rankings USING btree (user_id);
 
-CREATE INDEX idx_content_source_visits_content_id ON public.content_source_visits USING btree (content_id);
+CREATE INDEX IF NOT EXISTS  idx_content_source_visits_content_id ON public.content_source_visits USING btree (content_id);
 
-CREATE INDEX idx_content_source_visits_created_at ON public.content_source_visits USING btree (created_at);
+CREATE INDEX IF NOT EXISTS  idx_content_source_visits_created_at ON public.content_source_visits USING btree (created_at);
 
-CREATE INDEX idx_content_source_visits_user_id ON public.content_source_visits USING btree (user_id);
+CREATE INDEX IF NOT EXISTS  idx_content_source_visits_user_id ON public.content_source_visits USING btree (user_id);
 
-CREATE INDEX idx_user_metrics_current_streak ON public.user_metrics USING btree (current_streak);
+CREATE INDEX IF NOT EXISTS  idx_user_metrics_current_streak ON public.user_metrics USING btree (current_streak);
 
-CREATE INDEX idx_user_metrics_points ON public.user_metrics USING btree (points);
+CREATE INDEX IF NOT EXISTS  idx_user_metrics_points ON public.user_metrics USING btree (points);
 
-CREATE INDEX idx_user_metrics_total_votes ON public.user_metrics USING btree (total_votes);
+CREATE INDEX IF NOT EXISTS  idx_user_metrics_total_votes ON public.user_metrics USING btree (total_votes);
 
-CREATE INDEX idx_user_metrics_user_id ON public.user_metrics USING btree (user_id);
+CREATE INDEX IF NOT EXISTS  idx_user_metrics_user_id ON public.user_metrics USING btree (user_id);
 
-CREATE UNIQUE INDEX user_metrics_pkey ON public.user_metrics USING btree (id);
+CREATE UNIQUE INDEX IF NOT EXISTS  user_metrics_pkey ON public.user_metrics USING btree (id);
 
-CREATE UNIQUE INDEX user_metrics_user_id_key ON public.user_metrics USING btree (user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS  user_metrics_user_id_key ON public.user_metrics USING btree (user_id);
 
 alter table "public"."user_metrics" add constraint "user_metrics_pkey" PRIMARY KEY using index "user_metrics_pkey";
 
