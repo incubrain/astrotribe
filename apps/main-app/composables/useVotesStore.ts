@@ -24,6 +24,7 @@ export const useVoteStore = defineStore('votes', () => {
   const votes = ref<Record<string, number>>({})
   const userVotes = ref<Record<string, number>>({})
   const pendingVotes = ref<Record<string, Promise<VoteResponse>>>({})
+  const { execute: executeOptimistic } = useOptimisticUpdate()
 
   // Metrics state
   const metrics = ref<VoteMetrics | null>(null)
@@ -171,11 +172,7 @@ export const useVoteStore = defineStore('votes', () => {
     votes.value[contentId] = score
   }
 
-  const submitVote = async (
-    contentId: string,
-    voteType: number,
-    { success: successNotify, error: errorNotify }: ReturnType<typeof useNotification>,
-  ) => {
+  const submitVote = async (contentId: string, voteType: number, contentType: string = 'news') => {
     if (pendingVotes.value[contentId]) {
       return
     }
@@ -183,61 +180,49 @@ export const useVoteStore = defineStore('votes', () => {
     const currentVote = getVoteType.value(contentId)
     const isRemoving = currentVote === voteType
     const oldVote = currentVote
+    const oldScore = votes.value[contentId]
 
-    try {
-      pendingVotes.value[contentId] = $fetch(`/api/votes/news/${contentId}`, {
-        method: 'POST',
-        body: { voteType },
-      })
+    return executeOptimistic({
+      // Use contentId as key to prevent duplicate votes
+      key: contentId,
 
-      userVotes.value = {
-        ...userVotes.value,
-        [contentId]: isRemoving ? null : voteType,
-      }
+      // Define API call
+      apiCall: () =>
+        $fetch(`/api/votes/content/${contentId}`, {
+          method: 'POST',
+          body: { voteType },
+        }),
 
-      const response = await pendingVotes.value[contentId]
+      // Optimistic update function
+      optimisticUpdate: () => {
+        // Update user vote
+        userVotes.value = {
+          ...userVotes.value,
+          [contentId]: isRemoving ? null : voteType,
+        }
 
-      successNotify({
-        summary: 'Vote Recorded',
-        message: `Successfully ${response.action === 'removed' ? 'removed vote' : 'voted'}`,
-      })
+        // Update score
+        const change = isRemoving ? -voteType : oldVote ? voteType * 2 : voteType
+        votes.value = {
+          ...votes.value,
+          [contentId]: votes.value[contentId] + change,
+        }
 
-      let change = 0
-      if (isRemoving) {
-        change = -voteType
-      } else {
-        change = oldVote ? voteType * 2 : voteType
-      }
-      const newVotes = votes.value[contentId] + change
+        return { success: true, change }
+      },
 
-      votes.value = {
-        ...votes.value,
-        [contentId]: newVotes,
-      }
-
-      return { success: true, change }
-    } catch (err: any) {
-      userVotes.value = {
-        ...userVotes.value,
-        [contentId]: oldVote,
-      }
-
-      if (err.statusCode === 401) {
-        errorNotify({
-          summary: 'Authentication Required',
-          message: 'Please log in to vote',
-        })
-      } else {
-        errorNotify({
-          summary: 'Vote Failed',
-          message: 'Unable to record your vote. Please try again.',
-        })
-      }
-
-      throw err
-    } finally {
-      delete pendingVotes.value[contentId]
-    }
+      // Rollback function
+      rollback: () => {
+        userVotes.value = {
+          ...userVotes.value,
+          [contentId]: oldVote,
+        }
+        votes.value = {
+          ...votes.value,
+          [contentId]: oldScore,
+        }
+      },
+    })
   }
 
   // New metrics action

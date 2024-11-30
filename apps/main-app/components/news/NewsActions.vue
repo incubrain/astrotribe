@@ -5,6 +5,7 @@ interface Props {
   score: number
   commentsCount: number
   bookmarked: boolean
+  currentVote: number | null // Add this
   url: string
   onVoteChange: (payload: { voteType: number | null; change: number }) => void
   onBookmark: () => Promise<void>

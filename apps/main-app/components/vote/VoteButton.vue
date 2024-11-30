@@ -43,7 +43,7 @@ const handleVote = async () => {
   animationRef.value?.triggerAnimation()
 
   try {
-    const result = await voteStore.submitVote(props.contentId, voteType, notification)
+    const result = await voteStore.submitVote(props.contentId, voteType, props.contentType)
     if (result) {
       emit('vote-change', {
         voteType: voteStore.getVoteType(props.contentId),
