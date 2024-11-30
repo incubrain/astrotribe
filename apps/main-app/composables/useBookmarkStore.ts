@@ -154,7 +154,17 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
   }
 
   const toggleBookmark = async (content: BookmarkContent) => {
+    // Check if bookmark exists first
+    const existingBookmark = bookmarks.value.find(
+      (b) => b.content_id === content.id && b.content_type === content.type,
+    )
+
     try {
+      if (existingBookmark) {
+        // Optimistically remove from local state
+        bookmarks.value = bookmarks.value.filter((b) => b.id !== existingBookmark.id)
+      }
+
       const response = await $fetch('/api/bookmarks/toggle', {
         method: 'POST',
         body: {
@@ -171,13 +181,26 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
         },
       })
 
-      await fetchBookmarks()
+      // Update local state with server response if it's an add operation
+      if (!existingBookmark && response.data) {
+        bookmarks.value = [...bookmarks.value, response.data]
+      }
+
+      // Fetch counts since they might have changed
+      await fetchBookmarkCounts()
       return response.data
     } catch (error) {
       console.error('Error toggling bookmark:', error)
+      // Revert local state by refetching on error
       await fetchBookmarks()
       throw error
     }
+  }
+
+  // In useBookmarkStore
+  const removeBookmarks = (bookmarkIds: string[]) => {
+    // Update local state first
+    bookmarks.value = bookmarks.value.filter((b) => !bookmarkIds.includes(b.id))
   }
 
   const isBookmarked = computed(() => (contentId: string, contentType: string = 'news') => {
@@ -262,6 +285,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     filteredBookmarks,
 
     // Actions
+    removeBookmarks,
     fetchBookmarks,
     setCurrentFolder,
     setIncludeSubfolders,

@@ -6,7 +6,7 @@ export const useBookmarkManager = () => {
 
   const hasSelection = computed(() => selectedIds.value.length > 0)
   const selectionCount = computed(() => selectedIds.value.length)
-  const isSelected = (bookmarkId: string) => computed(() => selectedIds.value.includes(bookmarkId))
+  const isSelected = (bookmarkId: string) => selectedIds.value.includes(bookmarkId)
 
   const toggleSelection = (bookmarkId: string) => {
     const index = selectedIds.value.indexOf(bookmarkId)
@@ -37,11 +37,29 @@ export const useBookmarkManager = () => {
 
   const handleDelete = async (bookmarkId: string | string[]) => {
     const ids = Array.isArray(bookmarkId) ? bookmarkId : [bookmarkId]
+    const bookmarkStore = useBookmarkStore()
+    const { bookmarks } = storeToRefs(bookmarkStore)
+    const optimisticUpdate = useOptimisticUpdate()
 
     try {
-      await Promise.all(ids.map((id) => $fetch(`/api/bookmarks/${id}`, { method: 'DELETE' })))
-      selectedIds.value = selectedIds.value.filter((id) => !ids.includes(id))
-      await fetchBookmarks({})
+      await optimisticUpdate.execute({
+        key: 'delete-bookmarks',
+        apiCall: async () => {
+          return Promise.all(ids.map((id) => $fetch(`/api/bookmarks/${id}`, { method: 'DELETE' })))
+        },
+        optimisticUpdate: () => {
+          // Update local state
+          bookmarks.value = bookmarks.value.filter(
+            b => !ids.includes(b.id)
+          )
+          // Update selection state
+          selectedIds.value = selectedIds.value.filter((id) => !ids.includes(id))
+        },
+        rollback: async () => {
+          // Revert by refetching
+          await bookmarkStore.fetchBookmarks({})
+        },
+      })
     } catch (error) {
       console.error('Failed to delete bookmarks:', error)
     }

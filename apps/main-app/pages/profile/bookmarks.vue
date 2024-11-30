@@ -145,55 +145,85 @@ const isEmpty = computed(() => {
       </div>
 
       <!-- Selection Actions -->
-      <template v-if="bookmarkManager.selectionCount > 0">
-        <div class="flex items-center gap-4">
-          <span class="text-sm text-gray-600"> {{ bookmarkManager.selectionCount }} selected </span>
+      <template v-if="bookmarkManager.selectionCount">
+        <div class="flex w-full justify-between flex-row">
+          <div
+            v-if="currentFolder"
+            class="flex items-center gap-2 flex-grow"
+          >
+            <div
+              class="w-3 h-3 rounded-full"
+              :style="{ backgroundColor: currentFolder.color }"
+            />
+            <h2 class="text-xl font-semibold">{{ currentFolder.name }}</h2>
+          </div>
+          <div class="flex items-center gap-2 lg:gap-4">
+            <!-- Selection count -->
+            <span class="text-sm text-gray-600 hidden sm:inline">
+              {{ bookmarkManager.selectionCount }} selected
+            </span>
+            <span class="text-sm text-gray-600 sm:hidden">
+              {{ bookmarkManager.selectionCount }}
+            </span>
 
-          <PrimeSelect
-            v-model="selectedFolderId"
-            :options="folders"
-            option-label="name"
-            option-value="id"
-            placeholder="Move to folder..."
-          />
-          <PrimeButton
-            :disabled="!selectedFolderId || isMoving"
-            :loading="isMoving"
-            @click="handleMoveSelected"
-          >
-            {{ isMoving ? 'Moving...' : 'Move' }}
-          </PrimeButton>
-          <PrimeButton
-            severity="danger"
-            @click="handleDeleteSelected"
-          >
-            Delete
-          </PrimeButton>
+            <!-- Move to folder dropdown -->
+            <PrimeSelect
+              v-model="selectedFolderId"
+              :options="folders"
+              option-label="name"
+              option-value="id"
+              placeholder="Move to..."
+              class="min-w-[120px] lg:min-w-[200px]"
+            />
 
-          <PrimeButton
-            severity="secondary"
-            @click="clearSelection"
-          >
-            Clear
-          </PrimeButton>
+            <!-- Move button -->
+            <PrimeButton
+              :disabled="!selectedFolderId || isMoving"
+              :loading="isMoving"
+              @click="handleMoveSelected"
+              class="!p-2 lg:!p-3"
+            >
+              <Icon
+                name="mdi:folder-move"
+                class="w-5 h-5 lg:mr-2"
+              />
+              <span class="hidden lg:inline">
+                {{ isMoving ? 'Moving...' : 'Move' }}
+              </span>
+            </PrimeButton>
+
+            <!-- Delete button -->
+            <PrimeButton
+              severity="danger"
+              class="!p-2 lg:!p-3"
+              @click="handleDeleteSelected"
+            >
+              <Icon
+                name="mdi:trash-can"
+                class="w-5 h-5 lg:mr-2"
+              />
+              <span class="hidden lg:inline">Delete</span>
+            </PrimeButton>
+
+            <!-- Clear selection button -->
+            <PrimeButton
+              severity="secondary"
+              @click="clearSelection"
+              class="!p-2 lg:!p-3"
+            >
+              <Icon
+                name="mdi:close"
+                class="w-5 h-5 lg:mr-2"
+              />
+              <span class="hidden lg:inline">Clear</span>
+            </PrimeButton>
+          </div>
         </div>
       </template>
     </div>
 
     <!-- Content -->
     <div class="space-y-6">
-      <!-- Current Folder Info -->
-      <div
-        v-if="currentFolder"
-        class="flex items-center gap-2"
-      >
-        <div
-          class="w-3 h-3 rounded-full"
-          :style="{ backgroundColor: currentFolder.color }"
-        />
-        <h2 class="text-xl font-semibold">{{ currentFolder.name }}</h2>
-      </div>
-
       <!-- Loading State -->
       <div
         v-if="bookmarkStore.loading"
@@ -206,32 +236,12 @@ const isEmpty = computed(() => {
       </div>
 
       <!-- Bookmarks Grid -->
-      <div
+      <BookmarkGridAnimated
         v-else
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
-      >
-        <TransitionGroup
-          enter-active-class="transition-all duration-300 ease-out"
-          enter-from-class="opacity-0 transform scale-95"
-          enter-to-class="opacity-100 transform scale-100"
-          leave-active-class="transition-all duration-200 ease-in"
-          leave-from-class="opacity-0 transform scale-95"
-          leave-to-class="opacity-100 transform scale-100"
-        >
-          <div
-            v-for="bookmark in filteredBookmarks"
-            :key="bookmark.id"
-            class="relative group"
-          >
-            <BookmarkCard
-              :bookmark="bookmark"
-              :selectable="true"
-              :is-selected="bookmarkManager.isSelected(bookmark.id).value"
-              @select="bookmarkManager.toggleSelection"
-            />
-          </div>
-        </TransitionGroup>
-      </div>
+        :bookmarks="filteredBookmarks"
+        :is-selected="bookmarkManager.isSelected"
+        :toggle-selection="bookmarkManager.toggleSelection"
+      />
 
       <!-- Empty State -->
       <EmptyState
