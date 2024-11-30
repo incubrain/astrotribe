@@ -9,13 +9,11 @@ const { store: categoriesStore } = useSelectData('categories', {
   initialFetch: true,
 })
 
-// Fetch content sources with company details
-const { store: sourcesStore } = useSelectData('contents', {
+// Fetch content sources directly (not through contents anymore)
+const { store: sourcesStore } = useSelectData('content_sources', {
   columns: `
     id,
-    title,
     url,
-    rss_url,
     companies (
       id,
       name,
@@ -24,12 +22,19 @@ const { store: sourcesStore } = useSelectData('contents', {
       description
     )
   `,
-  filters: {
-    content_type: { eq: 'companies' },
-  },
   orderBy: { column: 'created_at', ascending: true },
   initialFetch: true,
 })
+
+// Toggle source selection - using the content_source id directly now
+const toggleSource = (sourceId: number) => {
+  // Now it's definitely a number/bigint
+  if (selectedSourceIds.value.has(sourceId)) {
+    selectedSourceIds.value.delete(sourceId)
+  } else {
+    selectedSourceIds.value.add(sourceId)
+  }
+}
 
 const name = ref('')
 const selectedCategories = ref([])
@@ -51,15 +56,6 @@ const filteredSources = computed(() => {
       source.companies?.name?.toLowerCase().includes(search),
   )
 })
-
-// Toggle source selection
-const toggleSource = (sourceId: string) => {
-  if (selectedSourceIds.value.has(sourceId)) {
-    selectedSourceIds.value.delete(sourceId)
-  } else {
-    selectedSourceIds.value.add(sourceId)
-  }
-}
 
 const save = async () => {
   const toast = useNotification()
@@ -107,9 +103,9 @@ const save = async () => {
       // Insert sources
       if (selectedSourceIds.value.size) {
         const { error: sourcesError } = await client.from('feed_sources').insert(
-          Array.from(selectedSourceIds.value).map((sourceId) => ({
+          Array.from(selectedSourceIds.value).map((companyId) => ({
             feed_id,
-            source_id: sourceId,
+            content_source_id: companyId,
           })),
         )
 
@@ -174,7 +170,46 @@ const reset = () => {
             placeholder="Search and select categories"
             class="w-full"
             display="chip"
-          />
+          >
+            <template #header>
+              <div class="font-medium px-3 py-2">
+                Available Categories
+                <span
+                  v-if="selectedCategories.length"
+                  class="text-sm text-primary-500 ml-2"
+                >
+                  ({{ selectedCategories.length }} selected)
+                </span>
+              </div>
+            </template>
+
+            <template #option="{ option }">
+              <div class="flex items-center px-3 py-2">
+                <div>{{ option.name }}</div>
+              </div>
+            </template>
+
+            <template #footer>
+              <div class="p-3 flex justify-between">
+                <PrimeButton
+                  label="Select All"
+                  severity="secondary"
+                  text
+                  size="small"
+                  icon="pi pi-check-circle"
+                  @click="selectedCategories = [...categories]"
+                />
+                <PrimeButton
+                  label="Clear All"
+                  severity="danger"
+                  text
+                  size="small"
+                  icon="pi pi-times"
+                  @click="selectedCategories = []"
+                />
+              </div>
+            </template>
+          </PrimeMultiSelect>
         </template>
       </PrimeCard>
 
@@ -217,7 +252,7 @@ const reset = () => {
                 </div>
                 <div class="flex-grow min-w-0">
                   <div class="font-medium truncate">{{ source.companies?.name }}</div>
-                  <div class="text-sm text-gray-400 truncate">{{ source.title || source.url }}</div>
+                  <div class="text-sm text-gray-400 truncate">{{ source.url }}</div>
                 </div>
                 <Icon
                   v-if="selectedSourceIds.has(source.id)"
