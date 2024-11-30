@@ -84,27 +84,94 @@ CREATE UNIQUE INDEX IF NOT EXISTS  user_metrics_pkey ON public.user_metrics USIN
 
 CREATE UNIQUE INDEX IF NOT EXISTS  user_metrics_user_id_key ON public.user_metrics USING btree (user_id);
 
-alter table "public"."user_metrics" add constraint "user_metrics_pkey" PRIMARY KEY using index "user_metrics_pkey";
+DO $$ 
+BEGIN
+   -- user_metrics primary key
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'user_metrics_pkey' 
+       AND conrelid = 'public.user_metrics'::regclass
+   ) THEN
+       alter table "public"."user_metrics" 
+       add constraint "user_metrics_pkey" 
+       PRIMARY KEY using index "user_metrics_pkey";
+   END IF;
 
-alter table "public"."content_source_visits" add constraint "content_source_visits_content_id_fkey" FOREIGN KEY (content_id) REFERENCES public.contents(id) not valid;
+   -- content_source_visits foreign keys
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'content_source_visits_content_id_fkey' 
+       AND conrelid = 'public.content_source_visits'::regclass
+   ) THEN
+       alter table "public"."content_source_visits" 
+       add constraint "content_source_visits_content_id_fkey" 
+       FOREIGN KEY (content_id) REFERENCES public.contents(id) not valid;
 
-alter table "public"."content_source_visits" validate constraint "content_source_visits_content_id_fkey";
+       alter table "public"."content_source_visits" 
+       validate constraint "content_source_visits_content_id_fkey";
+   END IF;
 
-alter table "public"."content_source_visits" add constraint "content_source_visits_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'content_source_visits_user_id_fkey' 
+       AND conrelid = 'public.content_source_visits'::regclass
+   ) THEN
+       alter table "public"."content_source_visits" 
+       add constraint "content_source_visits_user_id_fkey" 
+       FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
-alter table "public"."content_source_visits" validate constraint "content_source_visits_user_id_fkey";
+       alter table "public"."content_source_visits" 
+       validate constraint "content_source_visits_user_id_fkey";
+   END IF;
 
-alter table "public"."feature_rankings" add constraint "feature_rankings_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
+   -- feature_rankings constraints
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'feature_rankings_user_id_fkey' 
+       AND conrelid = 'public.feature_rankings'::regclass
+   ) THEN
+       alter table "public"."feature_rankings" 
+       add constraint "feature_rankings_user_id_fkey" 
+       FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
-alter table "public"."feature_rankings" validate constraint "feature_rankings_user_id_fkey";
+       alter table "public"."feature_rankings" 
+       validate constraint "feature_rankings_user_id_fkey";
+   END IF;
 
-alter table "public"."feature_rankings" add constraint "feature_rankings_user_id_key" UNIQUE using index "feature_rankings_user_id_key";
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'feature_rankings_user_id_key' 
+       AND conrelid = 'public.feature_rankings'::regclass
+   ) THEN
+       alter table "public"."feature_rankings" 
+       add constraint "feature_rankings_user_id_key" 
+       UNIQUE using index "feature_rankings_user_id_key";
+   END IF;
 
-alter table "public"."user_metrics" add constraint "user_metrics_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
+   -- user_metrics constraints
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'user_metrics_user_id_fkey' 
+       AND conrelid = 'public.user_metrics'::regclass
+   ) THEN
+       alter table "public"."user_metrics" 
+       add constraint "user_metrics_user_id_fkey" 
+       FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
 
-alter table "public"."user_metrics" validate constraint "user_metrics_user_id_fkey";
+       alter table "public"."user_metrics" 
+       validate constraint "user_metrics_user_id_fkey";
+   END IF;
 
-alter table "public"."user_metrics" add constraint "user_metrics_user_id_key" UNIQUE using index "user_metrics_user_id_key";
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_constraint 
+       WHERE conname = 'user_metrics_user_id_key' 
+       AND conrelid = 'public.user_metrics'::regclass
+   ) THEN
+       alter table "public"."user_metrics" 
+       add constraint "user_metrics_user_id_key" 
+       UNIQUE using index "user_metrics_user_id_key";
+   END IF;
+END $$;
 
 set check_function_bodies = off;
 
@@ -537,266 +604,397 @@ grant truncate on table "public"."user_metrics" to "service_role";
 
 grant update on table "public"."user_metrics" to "service_role";
 
-create policy "delete_policy"
-on "public"."content_source_visits"
-as permissive
-for delete
-to public
-using (public.authorize('content_source_visits.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."content_source_visits"
-as permissive
-for insert
-to public
-with check (public.authorize('content_source_visits.insert'::text));
-
-
-create policy "select_policy"
-on "public"."content_source_visits"
-as permissive
-for select
-to public
-using (public.authorize('content_source_visits.select'::text));
-
-
-create policy "update_policy"
-on "public"."content_source_visits"
-as permissive
-for update
-to public
-using (public.authorize('content_source_visits.update'::text));
-
-
-create policy "delete_policy"
-on "public"."feature_rankings"
-as permissive
-for delete
-to public
-using (public.authorize('feature_rankings.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."feature_rankings"
-as permissive
-for insert
-to public
-with check (public.authorize('feature_rankings.insert'::text));
-
-
-create policy "select_policy"
-on "public"."feature_rankings"
-as permissive
-for select
-to public
-using (public.authorize('feature_rankings.select'::text));
-
-
-create policy "update_policy"
-on "public"."feature_rankings"
-as permissive
-for update
-to public
-using (public.authorize('feature_rankings.update'::text));
-
-
-create policy "delete_policy"
-on "public"."feature_requests"
-as permissive
-for delete
-to public
-using (public.authorize('feature_requests.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."feature_requests"
-as permissive
-for insert
-to public
-with check (public.authorize('feature_requests.insert'::text));
-
-
-create policy "select_policy"
-on "public"."feature_requests"
-as permissive
-for select
-to public
-using (public.authorize('feature_requests.select'::text));
-
-
-create policy "update_policy"
-on "public"."feature_requests"
-as permissive
-for update
-to public
-using (public.authorize('feature_requests.update'::text));
-
-
-create policy "delete_policy"
-on "public"."feed_categories"
-as permissive
-for delete
-to public
-using (public.authorize('feed_categories.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."feed_categories"
-as permissive
-for insert
-to public
-with check (public.authorize('feed_categories.insert'::text));
-
-
-create policy "select_policy"
-on "public"."feed_categories"
-as permissive
-for select
-to public
-using (public.authorize('feed_categories.select'::text));
-
-
-create policy "update_policy"
-on "public"."feed_categories"
-as permissive
-for update
-to public
-using (public.authorize('feed_categories.update'::text));
-
-
-create policy "delete_policy"
-on "public"."feeds"
-as permissive
-for delete
-to public
-using (public.authorize('feeds.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."feeds"
-as permissive
-for insert
-to public
-with check (public.authorize('feeds.insert'::text));
-
-
-create policy "select_policy"
-on "public"."feeds"
-as permissive
-for select
-to public
-using (public.authorize('feeds.select'::text));
-
-
-create policy "update_policy"
-on "public"."feeds"
-as permissive
-for update
-to public
-using (public.authorize('feeds.update'::text));
-
-
-create policy "delete_policy"
-on "public"."strapi_migrations"
-as permissive
-for delete
-to public
-using (public.authorize('strapi_migrations.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."strapi_migrations"
-as permissive
-for insert
-to public
-with check (public.authorize('strapi_migrations.insert'::text));
-
-
-create policy "select_policy"
-on "public"."strapi_migrations"
-as permissive
-for select
-to public
-using (public.authorize('strapi_migrations.select'::text));
-
-
-create policy "update_policy"
-on "public"."strapi_migrations"
-as permissive
-for update
-to public
-using (public.authorize('strapi_migrations.update'::text));
-
-
-create policy "delete_policy"
-on "public"."strapi_migrations_internal"
-as permissive
-for delete
-to public
-using (public.authorize('strapi_migrations_internal.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."strapi_migrations_internal"
-as permissive
-for insert
-to public
-with check (public.authorize('strapi_migrations_internal.insert'::text));
-
-
-create policy "select_policy"
-on "public"."strapi_migrations_internal"
-as permissive
-for select
-to public
-using (public.authorize('strapi_migrations_internal.select'::text));
-
-
-create policy "update_policy"
-on "public"."strapi_migrations_internal"
-as permissive
-for update
-to public
-using (public.authorize('strapi_migrations_internal.update'::text));
-
-
-create policy "delete_policy"
-on "public"."user_metrics"
-as permissive
-for delete
-to public
-using (public.authorize('user_metrics.delete'::text));
-
-
-create policy "insert_policy"
-on "public"."user_metrics"
-as permissive
-for insert
-to public
-with check (public.authorize('user_metrics.insert'::text));
-
-
-create policy "select_policy"
-on "public"."user_metrics"
-as permissive
-for select
-to public
-using (public.authorize('user_metrics.select'::text));
-
-
-create policy "update_policy"
-on "public"."user_metrics"
-as permissive
-for update
-to public
-using (public.authorize('user_metrics.update'::text));
-
-
-CREATE TRIGGER update_metrics_after_bookmark AFTER INSERT ON public.bookmarks FOR EACH ROW EXECUTE FUNCTION public.update_bookmark_metrics();
-
-CREATE TRIGGER ensure_metrics_before_vote BEFORE INSERT ON public.votes FOR EACH ROW EXECUTE FUNCTION public.ensure_user_metrics();
-
-CREATE TRIGGER update_metrics_after_vote AFTER INSERT ON public.votes FOR EACH ROW EXECUTE FUNCTION public.update_vote_metrics();
-
-
+DO $$ 
+BEGIN
+   -- content_source_visits policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'content_source_visits' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."content_source_visits"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('content_source_visits.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'content_source_visits' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."content_source_visits"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('content_source_visits.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'content_source_visits' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."content_source_visits"
+       as permissive
+       for select
+       to public
+       using (public.authorize('content_source_visits.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'content_source_visits' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."content_source_visits"
+       as permissive
+       for update
+       to public
+       using (public.authorize('content_source_visits.update'::text));
+   END IF;
+END $$;
+
+
+DO $$ 
+BEGIN
+   -- feature_rankings policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_rankings' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."feature_rankings"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('feature_rankings.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_rankings' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."feature_rankings"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('feature_rankings.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_rankings' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."feature_rankings"
+       as permissive
+       for select
+       to public
+       using (public.authorize('feature_rankings.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_rankings' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."feature_rankings"
+       as permissive
+       for update
+       to public
+       using (public.authorize('feature_rankings.update'::text));
+   END IF;
+
+   -- feature_requests policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_requests' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."feature_requests"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('feature_requests.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_requests' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."feature_requests"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('feature_requests.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_requests' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."feature_requests"
+       as permissive
+       for select
+       to public
+       using (public.authorize('feature_requests.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feature_requests' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."feature_requests"
+       as permissive
+       for update
+       to public
+       using (public.authorize('feature_requests.update'::text));
+   END IF;
+
+   -- feed_categories policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feed_categories' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."feed_categories"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('feed_categories.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feed_categories' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."feed_categories"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('feed_categories.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feed_categories' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."feed_categories"
+       as permissive
+       for select
+       to public
+       using (public.authorize('feed_categories.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feed_categories' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."feed_categories"
+       as permissive
+       for update
+       to public
+       using (public.authorize('feed_categories.update'::text));
+   END IF;
+END $$;
+
+
+DO $$ 
+BEGIN
+   -- feeds policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feeds' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."feeds"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('feeds.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feeds' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."feeds"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('feeds.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feeds' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."feeds"
+       as permissive
+       for select
+       to public
+       using (public.authorize('feeds.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'feeds' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."feeds"
+       as permissive
+       for update
+       to public
+       using (public.authorize('feeds.update'::text));
+   END IF;
+END $$;
+
+DO $$ 
+BEGIN
+   -- user_metrics policies
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'user_metrics' 
+       AND policyname = 'delete_policy'
+   ) THEN
+       create policy "delete_policy"
+       on "public"."user_metrics"
+       as permissive
+       for delete
+       to public
+       using (public.authorize('user_metrics.delete'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'user_metrics' 
+       AND policyname = 'insert_policy'
+   ) THEN
+       create policy "insert_policy"
+       on "public"."user_metrics"
+       as permissive
+       for insert
+       to public
+       with check (public.authorize('user_metrics.insert'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'user_metrics' 
+       AND policyname = 'select_policy'
+   ) THEN
+       create policy "select_policy"
+       on "public"."user_metrics"
+       as permissive
+       for select
+       to public
+       using (public.authorize('user_metrics.select'::text));
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_policies 
+       WHERE schemaname = 'public' 
+       AND tablename = 'user_metrics' 
+       AND policyname = 'update_policy'
+   ) THEN
+       create policy "update_policy"
+       on "public"."user_metrics"
+       as permissive
+       for update
+       to public
+       using (public.authorize('user_metrics.update'::text));
+   END IF;
+END $$;
+
+
+DO $$ 
+BEGIN
+   -- Check and create bookmark metrics trigger
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_trigger 
+       WHERE tgname = 'update_metrics_after_bookmark'
+       AND tgrelid = 'public.bookmarks'::regclass
+   ) THEN
+       CREATE TRIGGER update_metrics_after_bookmark 
+       AFTER INSERT ON public.bookmarks 
+       FOR EACH ROW 
+       EXECUTE FUNCTION public.update_bookmark_metrics();
+   END IF;
+
+   -- Check and create vote metrics triggers
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_trigger 
+       WHERE tgname = 'ensure_metrics_before_vote'
+       AND tgrelid = 'public.votes'::regclass
+   ) THEN
+       CREATE TRIGGER ensure_metrics_before_vote 
+       BEFORE INSERT ON public.votes 
+       FOR EACH ROW 
+       EXECUTE FUNCTION public.ensure_user_metrics();
+   END IF;
+
+   IF NOT EXISTS (
+       SELECT 1 FROM pg_trigger 
+       WHERE tgname = 'update_metrics_after_vote'
+       AND tgrelid = 'public.votes'::regclass
+   ) THEN
+       CREATE TRIGGER update_metrics_after_vote 
+       AFTER INSERT ON public.votes 
+       FOR EACH ROW 
+       EXECUTE FUNCTION public.update_vote_metrics();
+   END IF;
+END $$;
