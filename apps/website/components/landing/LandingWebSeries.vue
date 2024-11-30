@@ -5,6 +5,7 @@ import { useAnimation } from '~/composables/useAnimation'
 const { fadeInUp } = useAnimation()
 const loadVideo = ref(false)
 
+
 const patreonPerks = [
   'Behind-the-scenes content',
   'Early access to episodes',

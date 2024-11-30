@@ -1,27 +1,5 @@
-<script setup>
-const socials = ref([
-  {
-    id: 1,
-    platform: 'twitter',
-    icon: 'mdi:twitter',
-    url: 'https://twitter.com/AstronEra',
-    username: 'uk',
-  },
-  {
-    id: 2,
-    icon: 'mdi:linkedin',
-    platform: 'linkedin',
-    url: 'https://www.linkedin.com/company/astronera',
-    username: 'uk',
-  },
-  {
-    id: 3,
-    icon: 'mdi:instagram',
-    platform: 'instagram',
-    url: 'https://www.instagram.com/astronera',
-    username: 'uk',
-  },
-])
+<script setup lang="ts">
+const { socials } = useSocialLinks()
 
 const websiteLinks = [
   {
