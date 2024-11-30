@@ -172,8 +172,11 @@ onBeforeUnmount(async () => {
     @mouseleave="handleMouseLeave"
   >
     <div
-      class="relative w-full h-full transition-transform duration-500 transform-style-preserve-3d border border-color rounded-lg"
-      :class="{ 'rotate-y-180': isFlipped }"
+      class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border rounded-lg"
+      :class="[
+        { 'rotate-y-180': isFlipped },
+        bookmarked ? 'border-amber-500/30 golden-glow' : 'border-color',
+      ]"
     >
       <!-- Front of card -->
       <div class="absolute w-full h-full backface-hidden">
@@ -316,6 +319,30 @@ onBeforeUnmount(async () => {
 @media (hover: hover) {
   .hover\:cursor-pointer:hover {
     cursor: pointer;
+  }
+}
+
+.golden-glow {
+  box-shadow:
+    0 0 15px 1px rgba(251, 191, 36, 0.1),
+    0 0 25px 2px rgba(251, 191, 36, 0.05),
+    inset 0 0 15px 1px rgba(251, 191, 36, 0.05);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 15px 1px rgba(251, 191, 36, 0.1),
+      0 0 25px 2px rgba(251, 191, 36, 0.05),
+      inset 0 0 15px 1px rgba(251, 191, 36, 0.05);
+  }
+  50% {
+    box-shadow:
+      0 0 20px 2px rgba(251, 191, 36, 0.15),
+      0 0 35px 4px rgba(251, 191, 36, 0.1),
+      inset 0 0 20px 2px rgba(251, 191, 36, 0.1);
   }
 }
 </style>
