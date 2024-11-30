@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Get project root by going up from scripts directory
-const projectRoot = path.resolve(__dirname, '../../')
+const projectRoot = path.resolve(__dirname, '../../../')
 const migrationsDir = path.join(projectRoot, 'supabase/migrations')
 const fixMigrationScript = path.resolve(__dirname, '2.fix-migration.ts')
 
