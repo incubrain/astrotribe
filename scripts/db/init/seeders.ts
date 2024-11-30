@@ -1012,7 +1012,7 @@ export async function seedFeedSources(pool: Pool, feedIds: string[], contentSour
     // For each feed, create 1-5 source associations
     Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
       feed_id: feedId,
-      source_id: faker.helpers.arrayElement(contentSourceIds), // Link to content_sources
+      content_source_id: faker.helpers.arrayElement(contentSourceIds), // Link to content_sources
       created_at: faker.date.past(),
     })),
   )
