@@ -38,6 +38,7 @@ const score = ref(props.news.score || 0)
 
 const bookmarkStore = useBookmarkStore()
 const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
+const showBookmarkFeedback = ref(false)
 
 const folderStore = useFolderStore()
 
@@ -55,6 +56,10 @@ const handleBookmark = async () => {
       author: props.news.author,
       folder_id: folder.id,
     })
+    showBookmarkFeedback.value = true
+    setTimeout(() => {
+      showBookmarkFeedback.value = false
+    }, 1000)
   } catch (error) {
     console.error('Error handling bookmark:', error)
   }
@@ -225,60 +230,18 @@ onBeforeUnmount(async () => {
                 />
               </div>
             </div>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-4">
-                <div class="flex items-center justify-center bg-primary-950 py-1 px-2 rounded-xl">
-                  <VoteButton
-                    :content-id="news.id"
-                    direction="up"
-                    card-side="front"
-                    :initial-vote-type="currentVote"
-                    @vote-change="handleVoteChange"
-                  />
-                  <span class="text-sm font-medium pl-1 pr-2">{{ displayScore }}</span>
-                  <VoteButton
-                    :content-id="`${news.id}-front-down`"
-                    direction="down"
-                    card-side="front"
-                    :initial-vote-type="currentVote"
-                    @vote-change="handleVoteChange"
-                  />
-                </div>
-                <button
-                  class="flex items-center gap-2 justify-center text-sm hover:text-primary-600"
-                  @click="openModal('Comments')"
-                >
-                  <Icon
-                    name="mdi:comment-outline"
-                    size="20px"
-                  />
-                </button>
-              </div>
-              <div class="flex items-center justify-center gap-4">
-                <button
-                  class="hover:text-primary-600 flex items-center justify-center h-full"
-                  @click="handleBookmark"
-                >
-                  <Icon
-                    :name="bookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
-                    size="20px"
-                    :class="{ 'text-primary-500': bookmarked }"
-                  />
-                </button>
-                <NuxtLink
-                  :to="news.url"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  class="hover:text-primary-600"
-                  @click="handleSourceVisit"
-                >
-                  <Icon
-                    name="mdi:link-variant"
-                    size="20px"
-                  />
-                </NuxtLink>
-              </div>
-            </div>
+            <NewsActions
+              :news-id="news.id"
+              :score="displayScore"
+              :comments-count="news.comments"
+              :bookmarked="bookmarked"
+              :url="news.url"
+              card-side="front"
+              :on-bookmark="handleBookmark"
+              :on-source-visit="handleSourceVisit"
+              @vote-change="handleVoteChange"
+              @open-modal="openModal"
+            />
           </div>
         </div>
       </div>
@@ -299,61 +262,18 @@ onBeforeUnmount(async () => {
         </div>
 
         <!-- Back side actions -->
-        <div class="flex items-center justify-between border-t border-primary-900 pt-4">
-          <div class="flex items-center gap-4">
-            <div class="flex items-center justify-center bg-primary-900 py-1 px-2 rounded-xl">
-              <VoteButton
-                :content-id="news.id"
-                direction="up"
-                card-side="back"
-                :initial-vote-type="currentVote"
-                @vote-change="handleVoteChange"
-              />
-              <span class="text-sm font-medium pl-1 pr-2">{{ displayScore }}</span>
-              <VoteButton
-                :content-id="news.id"
-                direction="down"
-                card-side="back"
-                :initial-vote-type="currentVote"
-                @vote-change="handleVoteChange"
-              />
-            </div>
-            <button
-              class="flex items-center hover:text-primary-600"
-              @click="openModal('Comments')"
-            >
-              <Icon
-                name="mdi:comment-outline"
-                size="20px"
-              />
-              <span>{{ news.comments }}</span>
-            </button>
-          </div>
-          <div class="flex items-center gap-2 justify-center">
-            <button
-              class="hover:text-primary-600"
-              @click="handleBookmark"
-            >
-              <Icon
-                :name="bookmarked ? 'mdi:bookmark' : 'mdi:bookmark-outline'"
-                size="20px"
-                :class="{ 'text-primary-500': bookmarked }"
-              />
-            </button>
-            <NuxtLink
-              :to="news.url"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              class="flex items-center gap-1.5 group p-1 rounded-full bg-primary-500"
-              @click="handleSourceVisit"
-            >
-              <Icon
-                name="mdi:link-variant"
-                size="20px"
-              />
-            </NuxtLink>
-          </div>
-        </div>
+        <NewsActions
+          :news-id="news.id"
+          :score="displayScore"
+          :comments-count="news.comments"
+          :bookmarked="bookmarked"
+          :url="news.url"
+          card-side="back"
+          :on-bookmark="handleBookmark"
+          :on-source-visit="handleSourceVisit"
+          @vote-change="handleVoteChange"
+          @open-modal="openModal"
+        />
       </div>
     </div>
   </div>
