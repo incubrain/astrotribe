@@ -1,4 +1,5 @@
 // useBookmarkView.ts
+import { set } from 'zod'
 import type { Folder } from '../types/bookmarks'
 
 export const useBookmarkView = () => {
@@ -9,6 +10,8 @@ export const useBookmarkView = () => {
 
   const handleFolderSelect = async (folder: Folder) => {
     const { fetchBookmarks } = useBookmarkStore()
+    const { setSelectedFolder } = useFolderStore()
+    setSelectedFolder(folder.id)
     await fetchBookmarks({
       folder_id: folder.id,
       include_subfolders: includeSubfolders.value,
