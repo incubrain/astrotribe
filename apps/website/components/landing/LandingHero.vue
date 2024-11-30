@@ -64,6 +64,8 @@ onUnmounted(() => {
     clearInterval(wordRotationInterval)
   }
 })
+
+const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
 </script>
 
 <template>
@@ -147,21 +149,14 @@ onUnmounted(() => {
 
           <!-- CTA section -->
           <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
-            <PrimeButton
-              size="large"
-              class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"
-            >
-              🚀 Start Reading
-            </PrimeButton>
-            <button
-              class="font-inter text-gray-400 hover:text-white transition-colors duration-300 flex items-center gap-2 text-lg justify-center"
-            >
-              Learn more
-              <Icon
-                name="mdi:arrow-right"
-                size="24"
-              />
-            </button>
+            <NuxtLink :to="String(`${aeAuthUrl}${aeLoginUrl}`)" external>
+              <PrimeButton
+                size="large"
+                class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"
+              >
+                🚀 Start Reading
+              </PrimeButton>
+            </NuxtLink>
           </div>
         </div>
       </div>

@@ -1,9 +1,4 @@
-<script setup lang="ts">
-import LandingFeatures from '../components/landing/LandingFeatures.vue'
-import LandingStats from '../components/landing/LandingStats.vue'
-
-// No GSAP-related code here anymore
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
@@ -13,8 +8,6 @@ import LandingStats from '../components/landing/LandingStats.vue'
       <LandingSidescroll />
       <LazyLandingProductSteps class="container" />
       <LazyLandingFeatures class="container" />
-      <!-- <LazyLandingPricing class="container" /> -->
-      <!-- <LazyLandingFuture class="container" /> -->
       <LazyLandingTestimonials class="max-w-full w-full" />
       <LazyLandingWebSeries class="container" />
     </main>

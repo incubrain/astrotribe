@@ -4,32 +4,18 @@ import { useAnimation } from '~/composables/useAnimation'
 
 const { fadeInUp, scaleIn } = useAnimation()
 
-const socialMedia = [
-  {
-    name: 'LINKEDIN',
-    icon: 'mdi:linkedin',
-    gradient: 'from-blue-500 to-sky-600',
-    hoverGradient: 'hover:from-blue-400 hover:to-sky-500',
-  },
-  {
-    name: 'TWITTER',
-    icon: 'mdi:twitter',
-    gradient: 'from-sky-500 to-blue-600',
-    hoverGradient: 'hover:from-sky-400 hover:to-blue-500',
-  },
-  {
-    name: 'YOUTUBE',
-    icon: 'mdi:youtube',
-    gradient: 'from-red-500 to-rose-600',
-    hoverGradient: 'hover:from-red-400 hover:to-rose-500',
-  },
-  {
-    name: 'INSTAGRAM',
-    icon: 'mdi:instagram',
-    gradient: 'from-purple-500 to-pink-600',
-    hoverGradient: 'hover:from-purple-400 hover:to-pink-500',
-  },
-]
+const { socials } = useSocialLinks()
+
+const socialMedia = computed(() => {
+  return socials.map((social) => {
+    return {
+      name: social.platform,
+      icon: social.icon,
+      gradient: `from-${social.color.from}-500 to-${social.color.to}-600`,
+      hoverGradient: `hover:from-${social.color.from}-400 hover:to-${social.color.to}-500`,
+    }
+  })
+})
 
 onMounted(() => {
   fadeInUp('.social-media-cta')
@@ -54,8 +40,7 @@ onMounted(() => {
             Let's stay in touch
           </h2>
           <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join the community and stay updated with the latest space news and platform
-            updates
+            Join the community and stay updated with the latest space news and platform updates
           </p>
 
           <!-- Social Buttons -->

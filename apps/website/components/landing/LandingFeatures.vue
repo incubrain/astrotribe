@@ -48,6 +48,8 @@ onMounted(() => {
     },
   })
 })
+
+const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
 </script>
 
 <template>
@@ -105,24 +107,29 @@ onMounted(() => {
           </div>
         </div>
         <div class="w-full flex justify-center items-center">
-          <PrimeMessage class="text-lg text-gray-400 mx-auto">More features launching soon</PrimeMessage>
+          <PrimeMessage class="text-lg text-gray-400 mx-auto"
+            >More features launching soon</PrimeMessage
+          >
         </div>
 
         <div
           class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
         >
-          <h3
-            class="text-2xl md:text-3xl font-bold text-white"
-          >
+          <h3 class="text-2xl md:text-3xl font-bold text-white">
             Begin exploring today.
             <span class="text-sky-400">It's free!</span>
           </h3>
-          <PrimeButton
-            label="Start Reading Now"
-            icon="mdi:rocket-launch-outline"
-            size="large"
-            class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg"
-          />
+          <NuxtLink
+            :to="String(`${aeAuthUrl}${aeLoginUrl}`)"
+            external
+          >
+            <PrimeButton
+              label="Start Reading Now"
+              icon="mdi:rocket-launch-outline"
+              size="large"
+              class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg"
+            />
+          </NuxtLink>
         </div>
       </div>
     </LandingGlass>
