@@ -1,8 +1,9 @@
 // cli/store.ts
+
 import fs from 'fs/promises'
 import path from 'path'
 
-export class FileStore implements CLIStore {
+export class FileStore {
   private storePath: string
 
   constructor(baseDir: string = '.cli-store') {
@@ -22,6 +23,28 @@ export class FileStore implements CLIStore {
       return JSON.parse(data)
     } catch (error) {
       return null
+    }
+  }
+
+  async clear(flowId?: string): Promise<void> {
+    try {
+      if (flowId) {
+        // Remove all files starting with flowId
+        const files = await fs.readdir(this.storePath)
+        await Promise.all(
+          files
+            .filter((file) => file.startsWith(`${flowId}-`))
+            .map((file) => fs.unlink(path.join(this.storePath, file))),
+        )
+      } else {
+        // Remove the entire store directory
+        await fs.rm(this.storePath, { recursive: true, force: true })
+      }
+    } catch (error) {
+      // Ignore errors if directory doesn't exist
+      if (error.code !== 'ENOENT') {
+        throw error
+      }
     }
   }
 }
