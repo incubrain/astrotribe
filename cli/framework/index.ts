@@ -5,6 +5,7 @@ import fs from 'fs/promises'
 import chalk from 'chalk'
 import { repomixFlow } from '../repomix/flows/repomix'
 import { searchFlow } from '../repomix/flows/search'
+import { scannerFlow } from '../scanner/scanner.flow'
 import { CLIFramework } from './framework'
 
 export const createCLI = () => {
@@ -28,6 +29,7 @@ export const createCLI = () => {
 
   cli.registerFlow(repomixFlow)
   cli.registerFlow(searchFlow)
+  cli.registerFlow(scannerFlow)
 
   return cli
 }
