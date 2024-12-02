@@ -18,11 +18,13 @@ const emit = defineEmits(['error', 'expired', 'success'])
 const config = useRuntimeConfig()
 const colorMode = useColorMode()
 
+const TURNSTILE_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+
 // Load Turnstile script
 useHead({
   script: [
     {
-      src: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+      src: TURNSTILE_URL,
       async: true,
       defer: true,
       onload: () => {
@@ -74,6 +76,10 @@ const reset = () => {
 }
 
 onMounted(() => {
+  if (document.querySelector(`script[src="${TURNSTILE_URL}"]`)) {
+    renderTurnstile()
+  }
+
   watch(scriptLoaded, (loaded) => {
     if (loaded) {
       renderTurnstile()
