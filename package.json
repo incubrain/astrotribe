@@ -48,6 +48,7 @@
     "@fullcalendar/vue3": "^6.1.15",
     "@ib/db-testing": "file:libs/db-testing",
     "@ib/logger": "file:libs/logger",
+    "@iconify-json/game-icons": "^1.2.0",
     "@iconify-json/material-symbols": "^1.2.1",
     "@iconify-json/mdi": "^1.2.0",
     "@influxdata/influxdb-client": "^1.35.0",
