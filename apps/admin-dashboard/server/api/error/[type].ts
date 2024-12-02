@@ -1,64 +1,70 @@
-import { defineEventHandler, getRouterParam, createError } from 'h3'
-import jwt from 'jsonwebtoken'
+import { defineEventHandler, getQuery } from 'h3'
+import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-  const type = getRouterParam(event, 'type')
+  const query = getQuery(event)
+  const type = event.context.params?.type
 
-  if (!type) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Error type is required',
-    })
-  }
-
-  console.log(`Sending error event to scraper for type: ${type}`)
+  const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey)
 
   try {
-    const token = jwt.sign({ sender: 'AstronEra' }, config.scraperKey, {
-      algorithm: 'HS256',
-    })
+    switch (type) {
+      case 'report': {
+        const date = query.date ? new Date(query.date as string) : new Date()
+        const startOfDay = new Date(date)
+        startOfDay.setHours(0, 0, 0, 0)
 
-    const response = await $fetch(`${config.public.scraperUrl}/api/error/${type}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+        // Get error metrics for the dashboard
+        const { data: metrics } = await supabase
+          .from('error_metrics')
+          .select('*')
+          .gte('time_bucket', startOfDay.toISOString())
+          .order('time_bucket', { ascending: false })
 
-    return {
-      data: response,
+        return {
+          data: {
+            totalErrors: metrics?.reduce((sum, m) => sum + m.error_count, 0) || 0,
+            severityDistribution: metrics?.reduce((acc, m) => {
+              acc[m.severity] = (acc[m.severity] || 0) + m.error_count
+              return acc
+            }, {}),
+            domainDistribution: metrics?.reduce((acc, m) => {
+              acc[m.service_name] = (acc[m.service_name] || 0) + m.error_count
+              return acc
+            }, {}),
+            errorTrends: metrics,
+          },
+        }
+      }
+
+      case 'logs': {
+        const page = parseInt(query.page as string) || 1
+        const pageSize = parseInt(query.pageSize as string) || 50
+
+        const { data: logs, count } = await supabase
+          .from('error_logs')
+          .select('*', { count: 'exact' })
+          .order('created_at', { ascending: false })
+          .range((page - 1) * pageSize, page * pageSize - 1)
+
+        return {
+          data: {
+            logs,
+            total: count,
+            totalPages: Math.ceil((count || 0) / pageSize),
+          },
+        }
+      }
+
+      default:
+        throw new Error(`Unknown error type: ${type}`)
     }
   } catch (error: any) {
     console.error(`Error fetching ${type} data:`, error)
-
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      if (error.response.status === 404) {
-        // Handle 404 Not Found error
-        return {
-          data: null,
-          error: `No ${type} data found for the specified parameters`,
-        }
-      } else {
-        // Handle other error statuses
-        throw createError({
-          statusCode: error.response.status,
-          statusMessage: error.response.statusText || `Error fetching ${type} data`,
-        })
-      }
-    } else if (error.request) {
-      // The request was made but no response was received
-      throw createError({
-        statusCode: 503,
-        statusMessage: 'Service Unavailable',
-      })
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Internal Server Error',
-      })
-    }
+    throw createError({
+      statusCode: error.status || 500,
+      statusMessage: error.message || `Error fetching ${type} data`,
+    })
   }
 })
