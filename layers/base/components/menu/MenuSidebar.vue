@@ -153,6 +153,7 @@ watch(
                   <IBMenuNested
                     :items="item.children"
                     :is-mobile="isMobile"
+                    :label="item.label"
                     :is-sidebar-open="isSidebarOpen"
                     @expand-sidebar="$emit('update:isSidebarOpen', true)"
                   />
