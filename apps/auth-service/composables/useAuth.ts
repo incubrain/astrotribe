@@ -55,18 +55,6 @@ export function useAuth() {
     surname: string
     turnstileToken?: string | null
   }) => {
-    // First validate the turnstile token if provided
-    if (formData.turnstileToken) {
-      const validation = await $fetch('/validate-turnstile', {
-        method: 'POST',
-        body: { token: formData.turnstileToken },
-      })
-
-      if (!validation.success) {
-        throw new Error('Invalid captcha')
-      }
-    }
-
     // Proceed with registration
     const { data, error } = await supabase.auth.signUp({
       email: formData.email,
@@ -75,6 +63,7 @@ export function useAuth() {
         data: {
           given_name: formData.given_name,
           surname: formData.surname,
+          captchaToken: formData.turnstileToken,
         },
       },
     })
@@ -90,18 +79,6 @@ export function useAuth() {
     password: string,
     options?: { turnstileToken: string | null },
   ) => {
-    // First validate the turnstile token if provided
-    if (options?.turnstileToken) {
-      const validation = await $fetch('/validate-turnstile', {
-        method: 'POST',
-        body: { token: options.turnstileToken },
-      })
-
-      if (!validation.success) {
-        throw new Error('Invalid captcha')
-      }
-    }
-
     // Proceed with login
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
