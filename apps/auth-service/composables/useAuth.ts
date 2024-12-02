@@ -69,7 +69,7 @@ export function useAuth() {
     })
 
     if (error) {
-      toast.error({ summary: 'Error', message: error.message })
+      toast.error({ summary: 'Registration Failure', message: error.message })
       return
     }
 
@@ -90,7 +90,7 @@ export function useAuth() {
     })
 
     if (error) {
-      toast.error({ summary: 'Error', message: error.message })
+      toast.error({ summary: 'Authentication Failure', message: error.message })
       return
     }
 
