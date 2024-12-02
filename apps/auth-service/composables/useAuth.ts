@@ -60,10 +60,10 @@ export function useAuth() {
       email: formData.email,
       password: formData.password,
       options: {
+        captchaToken: formData.turnstileToken,
         data: {
           given_name: formData.given_name,
           surname: formData.surname,
-          captchaToken: formData.turnstileToken,
         },
       },
     })
