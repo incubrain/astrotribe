@@ -68,7 +68,10 @@ export function useAuth() {
       },
     })
 
-    if (error) throw error
+    if (error) {
+      toast.error({ summary: 'Error', message: error.message })
+      return
+    }
 
     // Handle successful registration
     return data
@@ -86,7 +89,11 @@ export function useAuth() {
       options: { captchaToken: options?.turnstileToken },
     })
 
-    if (error) throw error
+    if (error) {
+      toast.error({ summary: 'Error', message: error.message })
+      return
+    }
+
     toast.success({ summary: 'Authenticated', message: 'Logging In...' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
     navigateTo(aeAppUrl, { external: true })
