@@ -54,6 +54,8 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
   const includeSubfolders = ref(true)
   const searchQuery = ref('')
 
+  const { execute: executeOptimistic } = useOptimisticUpdate()
+
   const organizeBookmarksByFolder = (bookmarksList: Bookmark[]) => {
     const folderMap = new Map<string, Bookmark[]>()
 
@@ -125,82 +127,113 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     return folderBookmarkCounts.value[folderId] || 0
   }
 
-  const moveBookmarks = async (bookmarkIds: string[], targetFolderId: string) => {
-    loading.value = true
-    try {
-      const response = await $fetch('/api/bookmarks/move', {
-        method: 'PATCH',
-        body: {
-          bookmarkIds,
-          targetFolderId,
-        },
-      })
-
-      // Optimistically update the local state
-      bookmarks.value = bookmarks.value.map((bookmark) =>
-        bookmarkIds.includes(bookmark.id) ? { ...bookmark, folder_id: targetFolderId } : bookmark,
-      )
-
-      // Fetch fresh data to ensure consistency
-      await fetchBookmarks()
-      return response.data
-    } catch (error) {
-      console.error('Error moving bookmarks:', error)
-      await fetchBookmarks()
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
   const toggleBookmark = async (content: BookmarkContent) => {
-    // Check if bookmark exists first
     const existingBookmark = bookmarks.value.find(
       (b) => b.content_id === content.id && b.content_type === content.type,
     )
 
-    try {
-      if (existingBookmark) {
-        // Optimistically remove from local state
-        bookmarks.value = bookmarks.value.filter((b) => b.id !== existingBookmark.id)
-      }
-
-      const response = await $fetch('/api/bookmarks/toggle', {
-        method: 'POST',
-        body: {
-          content_id: content.id,
-          content_type: content.type,
-          folder_id: content.folder_id,
-          metadata: {
-            title: content.title,
-            description: content.description,
-            thumbnail: content.thumbnail,
-            url: content.url,
-            author: content.author,
+    return executeOptimistic({
+      key: `bookmark-${content.id}`,
+      apiCall: () =>
+        $fetch('/api/bookmarks/toggle', {
+          method: 'POST',
+          body: {
+            content_id: content.id,
+            content_type: content.type,
+            folder_id: content.folder_id,
+            metadata: {
+              title: content.title,
+              description: content.description,
+              thumbnail: content.thumbnail,
+              url: content.url,
+              author: content.author,
+            },
           },
-        },
-      })
-
-      // Update local state with server response if it's an add operation
-      if (!existingBookmark && response.data) {
-        bookmarks.value = [...bookmarks.value, response.data]
-      }
-
-      // Fetch counts since they might have changed
-      await fetchBookmarkCounts()
-      return response.data
-    } catch (error) {
-      console.error('Error toggling bookmark:', error)
-      // Revert local state by refetching on error
-      await fetchBookmarks()
-      throw error
-    }
+        }),
+      optimisticUpdate: () => {
+        if (existingBookmark) {
+          bookmarks.value = bookmarks.value.filter((b) => b.id !== existingBookmark.id)
+        } else {
+          // Add optimistic bookmark with temporary id
+          const optimisticBookmark = {
+            id: `temp-${content.id}`,
+            content_id: content.id,
+            content_type: content.type,
+            folder_id: content.folder_id,
+            metadata: {
+              title: content.title,
+              description: content.description,
+              thumbnail: content.thumbnail,
+              url: content.url,
+              author: content.author,
+            },
+            created_at: new Date().toISOString(),
+          }
+          bookmarks.value = [...bookmarks.value, optimisticBookmark]
+        }
+        organizeBookmarksByFolder(bookmarks.value)
+      },
+      rollback: () => {
+        // Revert to previous state
+        if (existingBookmark) {
+          bookmarks.value = [...bookmarks.value, existingBookmark]
+        } else {
+          bookmarks.value = bookmarks.value.filter((b) => b.id !== `temp-${content.id}`)
+        }
+        organizeBookmarksByFolder(bookmarks.value)
+      },
+    })
   }
 
-  // In useBookmarkStore
-  const removeBookmarks = (bookmarkIds: string[]) => {
-    // Update local state first
-    bookmarks.value = bookmarks.value.filter((b) => !bookmarkIds.includes(b.id))
+  const moveBookmarks = async (bookmarkIds: string[], targetFolderId: string) => {
+    return executeOptimistic({
+      key: `move-${bookmarkIds.join('-')}`,
+      apiCall: () =>
+        $fetch('/api/bookmarks/move', {
+          method: 'PATCH',
+          body: {
+            bookmarkIds,
+            targetFolderId,
+          },
+        }),
+      optimisticUpdate: () => {
+        const previousState = [...bookmarks.value]
+        bookmarks.value = bookmarks.value.map((bookmark) =>
+          bookmarkIds.includes(bookmark.id) ? { ...bookmark, folder_id: targetFolderId } : bookmark,
+        )
+        organizeBookmarksByFolder(bookmarks.value)
+        return { previousState }
+      },
+      rollback: (context) => {
+        if (context?.previousState) {
+          bookmarks.value = context.previousState
+          organizeBookmarksByFolder(bookmarks.value)
+        }
+      },
+    })
+  }
+
+  const removeBookmarks = async (bookmarkIds: string[]) => {
+    return executeOptimistic({
+      key: `remove-${bookmarkIds.join('-')}`,
+      apiCall: () =>
+        $fetch('/api/bookmarks/batch', {
+          method: 'DELETE',
+          body: { bookmarkIds },
+        }),
+      optimisticUpdate: () => {
+        const previousState = [...bookmarks.value]
+        bookmarks.value = bookmarks.value.filter((b) => !bookmarkIds.includes(b.id))
+        organizeBookmarksByFolder(bookmarks.value)
+        return { previousState }
+      },
+      rollback: (context) => {
+        if (context?.previousState) {
+          bookmarks.value = context.previousState
+          organizeBookmarksByFolder(bookmarks.value)
+        }
+      },
+    })
   }
 
   const isBookmarked = computed(() => (contentId: string, contentType: string = 'news') => {

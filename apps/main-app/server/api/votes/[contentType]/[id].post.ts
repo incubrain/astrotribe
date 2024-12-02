@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { contentType, id } = event.context.params
+  const { contentType, id } = getRouterParams(event)
   const { voteType } = await readBody(event)
 
   // Validate content type (only news for now)
