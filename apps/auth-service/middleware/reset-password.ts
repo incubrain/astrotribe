@@ -1,7 +1,7 @@
 // middleware/reset-password.ts
 export default defineNuxtRouteMiddleware((to) => {
-  // Only allow access to reset-password page with valid hash
-  if (to.path === '/reset-password' && !to.hash) {
+  // Only allow access to settings/password page with valid hash
+  if (to.path === '/settings/password' && !to.hash) {
     return navigateTo('/login')
   }
 })
