@@ -188,7 +188,7 @@ export const useVoteStore = defineStore('votes', () => {
 
       // Define API call
       apiCall: () =>
-        $fetch(`/api/votes/content/${contentId}`, {
+        $fetch(`/api/votes/${contentType}/${contentId}`, {
           method: 'POST',
           body: { voteType },
         }),
