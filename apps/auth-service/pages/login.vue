@@ -11,10 +11,8 @@ const { haveUserSession } = storeToRefs(currentUser)
 const turnstileValid = ref(false)
 const turnstileToken = ref<string | null>(null)
 
-// Modified login handler
 const handleLogin = async () => {
   if (!turnstileValid.value) {
-    // Show error message to user that captcha is required
     return
   }
 
@@ -45,7 +43,6 @@ definePageMeta({
     <template #title>
       <div v-if="haveUserSession">
         <AuthVerifiedWith class="w-full" />
-
         <div class="w-full pt-4">
           <PrimeDivider
             layout="horizontal"
@@ -56,40 +53,75 @@ definePageMeta({
         </div>
       </div>
     </template>
+
     <template #content>
-      <PrimeFloatLabel class="flex flex-col w-full">
-        <PrimeInputText
-          id="username"
-          v-model="form.email"
-        />
-        <label for="username">Username</label>
-      </PrimeFloatLabel>
+      <div class="flex flex-col w-full gap-4">
+        <div class="flex flex-col gap-2">
+          <label
+            for="email"
+            class="text-sm"
+            >Email</label
+          >
+          <PrimeInputText
+            id="email"
+            v-model="form.email"
+            autocomplete="email"
+            class="w-full"
+          />
+        </div>
 
-      <PrimeFloatLabel class="flex flex-col w-full">
-        <FormPassword
-          v-model="form.password"
-          :feedback="false"
-        />
-        <label for="password">Password</label>
-      </PrimeFloatLabel>
+        <div class="flex flex-col gap-2">
+          <label
+            for="password"
+            class="text-sm"
+            >Password</label
+          >
+          <PrimePassword
+            id="password"
+            v-model="form.password"
+            input-class="w-full"
+            :feedback="false"
+            toggle-mask
+            autocomplete="current-password"
+          />
+        </div>
 
-      <div class="w-full py-2 flex justify-between">
-        <!-- Remember me and forgot password section -->
+        <div class="flex justify-between">
+          <div class="flex items-center gap-2">
+            <PrimeCheckbox
+              id="remember-me"
+              v-model="form.rememberMe"
+              :binary="true"
+            />
+            <label
+              for="remember-me"
+              class="text-sm"
+              >Remember me</label
+            >
+          </div>
+          <NuxtLink
+            to="/forgot-password"
+            class="text-sm text-primary hover:text-primary-600 transition-colors"
+          >
+            Forgot password?
+          </NuxtLink>
+        </div>
+
+        <TurnstileChallenge
+          class="mb-4"
+          :on-valid-token="onValidTurnstile"
+        />
+
+        <PrimeButton
+          class="justify-center link"
+          :disabled="!turnstileValid"
+          @click="handleLogin"
+        >
+          Sign in with email
+        </PrimeButton>
       </div>
-
-      <TurnstileChallenge
-        class="mb-4"
-        :onValidToken="onValidTurnstile"
-      />
-
-      <PrimeButton
-        class="justify-center link"
-        :disabled="!turnstileValid"
-        @click="handleLogin"
-      >
-        Sign in with email
-      </PrimeButton>
     </template>
+
     <template #footer>
       <AuthRegisterWith />
     </template>
