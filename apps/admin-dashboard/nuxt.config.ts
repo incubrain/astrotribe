@@ -30,12 +30,12 @@ export default defineNuxtConfig({
     },
   },
 
-  // tailwindcss: {
-  //   configPath: `${currentDir}/tailwind.config.ts`,
-  // cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
-  //   exposeConfig: true,
-  //   viewer: true,
-  // },
+  tailwindcss: {
+    configPath: `${currentDir}/tailwind.config.ts`,
+    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
+    exposeConfig: true,
+    viewer: true,
+  },
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
