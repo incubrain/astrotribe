@@ -57,6 +57,7 @@ console.log('useRuntimeConfig:', useRuntimeConfig().public, categoryParam.value,
 async function fetchArticlesFromAPI(category: string, page: number) {
   console.log('Fetching articles:', category, page)
   const params: any = {
+    sort: ['publishedAt:desc'],
     populate: {
       author: {
         populate: true,
