@@ -41,7 +41,6 @@ export default [
         'http://localhost:3000',
         'https://staging.website.astronera.org',
         'https://astronera.org',
-        'https://www.astronera.org',
         'https://staging.cms.astronera.org',
         'https://cms.astronera.org',
         'https://*.astronera.org',

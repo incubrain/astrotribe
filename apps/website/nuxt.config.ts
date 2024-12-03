@@ -17,7 +17,7 @@ const og = {
   description:
     'Connect, learn, and unravel the cosmos with astronomers and space enthusiasts from around the globe',
   image: '/astronera-logo-with-text.jpg',
-  url: 'https://www.astronera.org',
+  url: 'https://astronera.org',
 }
 
 export default defineNuxtConfig({
@@ -83,7 +83,7 @@ export default defineNuxtConfig({
           ...localUrls,
           'http://localhost:3000',
           'http://localhost:54321',
-          'https://www.astronera.org',
+          'https://astronera.org',
           'https://*.up.railway.app',
           'https://*.supabase.co',
           'https://*.posthog.com',
