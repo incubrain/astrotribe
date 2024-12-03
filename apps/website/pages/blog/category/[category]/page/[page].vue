@@ -73,8 +73,10 @@ async function fetchArticlesFromAPI(category: string, page: number) {
 
   if (category !== 'all') {
     params.filters = {
-      slug: {
-        $eq: category,
+      category: {
+        slug: {
+          $eq: category,
+        },
       },
     }
   }
