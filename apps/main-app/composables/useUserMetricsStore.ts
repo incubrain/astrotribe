@@ -17,7 +17,7 @@ export const useUserMetricsStore = defineStore('metrics', () => {
   const totalVotes = computed(() => metrics.value?.total_votes || 0)
   const upvoteCount = computed(() => metrics.value?.upvote_count || 0)
   const downvoteCount = computed(() => metrics.value?.downvote_count || 0)
-  const todayVoteCount = computed(() => metrics.value?.today_vote_count || 0)
+  const todayVoteCount = computed(() => metrics.value?.today_activity.votes.length || 0)
   const voteAccuracy = computed(() => metrics.value?.vote_accuracy || 0)
 
   const remainingDailyVotes = computed(() => 10 - todayVoteCount.value)
