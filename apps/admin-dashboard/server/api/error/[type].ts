@@ -1,12 +1,12 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { createClient } from '@supabase/supabase-js'
+import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
   const type = event.context.params?.type
 
-  const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey)
+  const supabase = await serverSupabaseClient(event)
 
   try {
     switch (type) {

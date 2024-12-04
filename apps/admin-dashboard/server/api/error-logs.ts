@@ -1,11 +1,11 @@
 // server/api/error-logs.get.ts
-import { createClient } from '@supabase/supabase-js'
+import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const query = getQuery(event)
 
-  const supabase = createClient(config.public.supabaseUrl, config.supabaseServiceKey)
+  const supabase = await serverSupabaseClient(event)
 
   try {
     const { from, to } = query
