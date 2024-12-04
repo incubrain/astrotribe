@@ -191,3 +191,43 @@ export interface Logger {
   silly: (message: string, ...args: any[]) => void
   http: (message: string, ...args: any[]) => void
 }
+
+export interface LogMetadata {
+  service: string
+  environment: string
+  timestamp: string
+  correlationId?: string
+  requestId?: string
+  userId?: string
+  browser?: string
+  os?: string
+  ip?: string
+  path?: string
+  method?: string
+  component?: string
+  version?: string
+  [key: string]: any
+}
+
+export interface LogContext {
+  action?: string
+  component?: string
+  version?: string
+  [key: string]: any
+}
+
+export interface ErrorLogEntry {
+  id: string
+  service_name: string
+  error_type: string
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  message: string
+  stack_trace?: string
+  metadata?: Partial<LogMetadata> // Make it optional and partial
+  context?: LogContext
+  user_id?: string
+  request_id?: string
+  correlation_id?: string
+  environment: string
+  created_at: string
+}

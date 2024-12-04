@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import client from '../client'
+import client from '../../client'
 import * as seed from './seeders'
 import { checkAndSeed } from './seed-helpers'
 
@@ -195,6 +195,8 @@ export async function runSeeders() {
     await checkAndSeed(client, 'feed_sources', () =>
       seed.seedFeedSources(client, feedIds, contentSourceIds),
     )
+
+    await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, userIds))
 
     console.log(chalk.blue('✓ Database seeding completed successfully'))
     return true
