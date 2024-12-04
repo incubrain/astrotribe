@@ -1,3 +1,5 @@
+import { createHash } from 'crypto'
+import { parse as parseStackTrace, type StackFrame } from 'stacktrace-parser'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { LogMetadata, LogContext, ErrorLogEntry } from './error-interface'
 import { BaseLogger, NodeLogger } from './logger'

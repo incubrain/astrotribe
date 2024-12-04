@@ -8,7 +8,7 @@ import { databaseConfig } from './1.config'
 import { setAdminUser } from './create-admin'
 import { enableRLSOnAllTables } from './enable-rls'
 import { updateDatabasePermissions } from './upsert-permissions'
-import { runSeeders } from './run-seeders'
+import { runSeeders } from './seeders/run-seeders'
 import { updateRLSPolicies } from './create-rls-policies'
 
 async function main() {

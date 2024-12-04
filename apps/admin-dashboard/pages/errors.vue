@@ -7,7 +7,7 @@ definePageMeta({
 
 <template>
   <div class="relative h-full max-h-full">
-    <ServerErrors />
+    <ErrorView />
   </div>
 </template>
 
