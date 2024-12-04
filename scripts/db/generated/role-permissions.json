@@ -77,12 +77,13 @@
         "spider_metrics",
         "role_hierarchy",
         "classified_urls",
-        "feed_sources",
         "news_tags",
         "content_source_visits",
         "feature_rankings",
         "feature_requests",
-        "user_metrics"
+        "user_metrics",
+        "feed_sources",
+        "error_logs"
       ],
       "default_permissions": [],
       "audit_level": "high"

@@ -6,6 +6,7 @@ const props = defineProps<{
     slug: string
     icon: string
   }>
+  label: string
   isMobile?: boolean
   isSidebarOpen?: boolean
 }>()
@@ -53,7 +54,7 @@ const handleClick = () => {
         v-if="isMobile || isSidebarOpen"
         class="flex-1 text-left"
       >
-        My Feeds
+        {{ label }}
       </span>
       <Icon
         v-if="isMobile || isSidebarOpen"
