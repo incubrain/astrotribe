@@ -178,6 +178,7 @@ set check_function_bodies = off;
 CREATE OR REPLACE FUNCTION public.ensure_user_metrics()
  RETURNS trigger
  LANGUAGE plpgsql
+ SECURITY DEFINER
 AS $function$
 BEGIN
     INSERT INTO public.user_metrics (user_id)
@@ -382,56 +383,63 @@ DECLARE
     _last_vote_date date;
     _achievements jsonb;
 BEGIN
-    -- Get last vote date
-    SELECT (last_vote_date AT TIME ZONE 'UTC')::date, achievements 
-    INTO _last_vote_date, _achievements
-    FROM user_metrics 
-    WHERE user_id = NEW.user_id;
+    IF TG_OP = 'INSERT' THEN
+        -- Get last vote date and achievements
+        SELECT (last_vote_date AT TIME ZONE 'UTC')::date, achievements
+        INTO _last_vote_date, _achievements
+        FROM user_metrics
+        WHERE user_id = NEW.user_id;
 
-    -- Update core voting metrics
-    UPDATE public.user_metrics
-    SET 
-        total_votes = total_votes + 1,
-        upvote_count = CASE WHEN NEW.vote_type > 0 
-            THEN upvote_count + 1 
-            ELSE upvote_count 
-        END,
-        downvote_count = CASE WHEN NEW.vote_type < 0 
-            THEN downvote_count + 1 
-            ELSE downvote_count 
-        END,
-        -- Reset or increment today's count based on date
-        today_vote_count = CASE 
-            WHEN _last_vote_date = _current_date THEN today_vote_count + 1
-            ELSE 1
-        END,
-        -- Update streak
-        current_streak = CASE 
-            WHEN _last_vote_date = _current_date - INTERVAL '1 day' 
-            THEN current_streak + 1
-            WHEN _last_vote_date != _current_date THEN 1
-            ELSE current_streak
-        END,
-        -- Update best streak if current is higher
-        best_streak = GREATEST(
-            best_streak, 
-            CASE 
-                WHEN _last_vote_date = _current_date - INTERVAL '1 day' 
-                THEN current_streak + 1
+        -- Update core voting metrics
+        UPDATE public.user_metrics
+        SET 
+            total_votes = total_votes + 1,
+            upvote_count = CASE WHEN NEW.vote_type > 0 THEN upvote_count + 1 ELSE upvote_count END,
+            downvote_count = CASE WHEN NEW.vote_type < 0 THEN downvote_count + 1 ELSE downvote_count END,
+            -- Reset or increment today's count based on date
+            today_vote_count = CASE 
+                WHEN _last_vote_date = _current_date THEN today_vote_count + 1
+                ELSE 1
+            END,
+            -- Update streak
+            current_streak = CASE 
+                WHEN _last_vote_date = _current_date - INTERVAL '1 day' THEN current_streak + 1
                 WHEN _last_vote_date != _current_date THEN 1
                 ELSE current_streak
+            END,
+            -- Update best streak if current streak is higher
+            best_streak = GREATEST(
+                best_streak, 
+                CASE 
+                    WHEN _last_vote_date = _current_date - INTERVAL '1 day' THEN current_streak + 1
+                    WHEN _last_vote_date != _current_date THEN 1
+                    ELSE current_streak
+                END
+            ),
+            last_vote_date = NEW.created_at,
+            -- Increment points (base points + streak bonus)
+            points = points + CASE 
+                WHEN current_streak >= 3 THEN 
+                    1 + LEAST(FLOOR(current_streak / 3), 5)
+                ELSE 1
             END
-        ),
-        last_vote_date = NEW.created_at,
-        -- Increment points (base point + streak bonus)
-        points = points + CASE 
-            WHEN current_streak >= 3 THEN 
-                1 + LEAST(FLOOR(current_streak / 3), 5)
-            ELSE 1
-        END
-    WHERE user_id = NEW.user_id;
+        WHERE user_id = NEW.user_id;
 
-    RETURN NEW;
+        RETURN NEW;
+    END IF;
+
+    IF TG_OP = 'DELETE' THEN
+        -- Update metrics for DELETE operation
+        UPDATE public.user_metrics
+        SET
+            total_votes = total_votes - 1,
+            upvote_count = CASE WHEN OLD.vote_type > 0 THEN upvote_count - 1 ELSE upvote_count END,
+            downvote_count = CASE WHEN OLD.vote_type < 0 THEN downvote_count - 1 ELSE downvote_count END,
+            today_vote_count = today_vote_count - 1
+        WHERE user_id = OLD.user_id;
+
+        RETURN NULL;
+    END IF;
 END;
 $function$
 ;
@@ -993,7 +1001,7 @@ BEGIN
        AND tgrelid = 'public.votes'::regclass
    ) THEN
        CREATE TRIGGER update_metrics_after_vote 
-       AFTER INSERT ON public.votes 
+       AFTER DELETE OR INSERT ON public.votes 
        FOR EACH ROW 
        EXECUTE FUNCTION public.update_vote_metrics();
    END IF;
