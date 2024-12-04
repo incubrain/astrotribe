@@ -93,7 +93,9 @@ onMounted(() => {
               color="green"
               :loading="isLoading"
             />
-            <p class="text-sm text-gray-400"> {{ remainingDailyVotes }} votes remaining today </p>
+            <p class="text-sm text-gray-400">
+              {{ remainingDailyVotes < 0 ? 0 : remainingDailyVotes }} votes remaining today
+            </p>
           </div>
         </template>
       </MetricStatCard>
