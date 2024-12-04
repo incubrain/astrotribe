@@ -40,11 +40,6 @@ const { data, error, status } = await useAsyncData(`blog-showcase-${category.val
     },
   }
 
-  // If you have a 'status' field and want to filter by 'published'
-  params.filters['status'] = {
-    $eq: 'published',
-  }
-
   if (category.value !== 'all') {
     params.filters['category'] = {
       slug: {
@@ -53,7 +48,7 @@ const { data, error, status } = await useAsyncData(`blog-showcase-${category.val
     }
   }
 
-  const response = await strapi.fetchFromStrapi<any>('articles', params)
+  const response = await strapi.find<any>('articles', params)
 
   if (response && response.data && response.data.length > 0) {
     return response.data
