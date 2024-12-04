@@ -30,6 +30,12 @@ const isRSSFeedsInvalid = computed(() => {
   )
 })
 
+const clear = () => {
+  contentType.value = ''
+  contentUrl.value = ''
+  rssFeeds.value = []
+}
+
 const submit = async () => {
   const toast = useNotification()
   if (isURLInvalid.value || isRSSFeedsInvalid.value || !contentType.value) {
@@ -47,9 +53,10 @@ const submit = async () => {
   })
 
   if (error) {
-    toast.error({ message: error.message, summary: 'Error' })
+    toast.error({ message: error.message, summary: 'Failed To Add Source' })
   } else {
     toast.success({ message: 'Content Source Added', summary: 'Submitted' })
+    clear()
   }
 }
 </script>
@@ -111,11 +118,19 @@ const submit = async () => {
         <li>{{ feed }}</li>
       </ul>
     </div>
-    <PrimeButton
-      class="justify-center link"
-      @click="submit"
-    >
-      Submit
-    </PrimeButton>
+    <div class="flex gap-2">
+      <PrimeButton
+        class="justify-center link"
+        @click="submit"
+      >
+        Submit
+      </PrimeButton>
+      <PrimeButton
+        class="justify-center link"
+        @click="clear"
+      >
+        Clear
+      </PrimeButton>
+    </div>
   </div>
 </template>
