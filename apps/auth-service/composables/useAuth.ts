@@ -74,7 +74,9 @@ export function useAuth() {
     }
 
     // Handle successful registration
-    return data
+    toast.success({ summary: 'Registeration Successful', message: 'Redirecting...' })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    navigateTo('/success')
   }
 
   const loginWithEmail = async (
