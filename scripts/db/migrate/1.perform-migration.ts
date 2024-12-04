@@ -69,7 +69,7 @@ async function runMigration() {
     console.log(`Migration file found: ${migrationFilePath}\n`)
 
     // Step 3: Fix the migration file
-    await runCommand(`npx ts-node "${fixMigrationScript}" "${migrationFilePath}"`)
+    await runCommand(`npx tsx "${fixMigrationScript}" "${migrationFilePath}"`)
 
     // Step 4: Reset the database
     await runCommand('supabase db reset')
