@@ -440,6 +440,38 @@ BEGIN
 
         RETURN NULL;
     END IF;
+
+    IF TG_OP = 'UPDATE' THEN
+        UPDATE public.user_metrics
+        SET
+            upvote_count = CASE WHEN NEW.vote_type > 0 THEN upvote_count + 1 ELSE upvote_count - 1 END,
+            downvote_count = CASE WHEN NEW.vote_type < 0 THEN downvote_count + 1 ELSE downvote_count - 1 END,
+            today_vote_count = today_vote_count + 1,
+            -- Update streak
+            current_streak = CASE 
+                WHEN _last_vote_date = _current_date - INTERVAL '1 day' THEN current_streak + 1
+                WHEN _last_vote_date != _current_date THEN 1
+                ELSE current_streak
+            END,
+            -- Update best streak if current streak is higher
+            best_streak = GREATEST(
+                best_streak, 
+                CASE 
+                    WHEN _last_vote_date = _current_date - INTERVAL '1 day' THEN current_streak + 1
+                    WHEN _last_vote_date != _current_date THEN 1
+                    ELSE current_streak
+                END
+            ),
+            last_vote_date = NEW.created_at,
+            -- Increment points (base points + streak bonus)
+            points = points + CASE 
+                WHEN current_streak >= 3 THEN 
+                    1 + LEAST(FLOOR(current_streak / 3), 5)
+                ELSE 1
+            END
+        WHERE user_id = NEW.user_id;
+        RETURN NEW;
+    END IF;
 END;
 $function$
 ;
@@ -1001,7 +1033,7 @@ BEGIN
        AND tgrelid = 'public.votes'::regclass
    ) THEN
        CREATE TRIGGER update_metrics_after_vote 
-       AFTER DELETE OR INSERT ON public.votes 
+       AFTER DELETE OR INSERT OR UPDATE ON public.votes 
        FOR EACH ROW 
        EXECUTE FUNCTION public.update_vote_metrics();
    END IF;
