@@ -86,6 +86,12 @@ const adminLinks = ref([
       //     },
       //   ],
       // },
+      {
+        id: 81,
+        label: 'Add Content Source',
+        slug: '/add-content-source',
+        icon: 'mdi:plus-thick',
+      },
     ],
   },
 ])
