@@ -20,6 +20,8 @@
 
 // CREATE OR REPLACE FUNCTION public.get_inherited_permissions(p_role app_role_enum)
 
+// CREATE TRIGGER ensure_default_bookmark_folder AFTER INSERT ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.create_default_bookmark_folder();
+
 // scripts/fix-migration.ts
 import * as fs from 'fs'
 import * as path from 'path'
@@ -43,7 +45,7 @@ interface Replacement {
 const migrationFilePath = process.argv[2]
 
 if (!migrationFilePath) {
-  console.error('Usage: npx ts-node scripts/fix-migration.ts <migration_file.sql>')
+  console.error('Usage: npx ts-node scripts/2.fix-migration.ts <migration_file.sql>')
   process.exit(1)
 }
 
