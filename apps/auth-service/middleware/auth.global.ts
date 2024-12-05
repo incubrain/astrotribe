@@ -20,9 +20,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
     console.log('USER_NOT_LOGGED_IN')
     console.log('ERROR', error)
     // Allow access to public routes
-    if (to.path === '/settings/password') {
-      return
-    }
 
     if (isPublicRoute) {
       return
