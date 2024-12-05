@@ -29,6 +29,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
   // User is logged in at this point
   console.log('USER_LOGGED_IN', data.session)
+
+  if (to.path === '/reset-password') {
+    return
+  }
   // Don't redirect to app if user is logged in and accessing the password settings
   // If user is logged in and tries to access a public route, redirect to app
   if (isPublicRoute) {
