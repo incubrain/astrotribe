@@ -38,7 +38,7 @@ async function handlePasswordReset() {
 
   try {
     // Update the password
-    await auth.password.updateUser(access_token, { password: form.password })
+    await auth.password.update(form.password)
 
     // Redirect to login
     navigateTo('/login', {
