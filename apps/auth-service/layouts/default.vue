@@ -8,6 +8,10 @@ onMounted(async () => {
   if (!data.session || error) {
     isAuthenticating.value = false
   } else {
+    if (route.path === '/reset-password') {
+      return
+    }
+
     toast.success({ summary: 'Authenticated', message: 'Found user session' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
@@ -21,7 +25,7 @@ onMounted(async () => {
 
 <template>
   <div
-    v-if="isAuthenticating && !route.path.includes('settings')"
+    v-if="isAuthenticating && !route.path.includes('settings') && !route.path.includes('password')"
     class="text-white w-screen flex justify-center items-center absolute h-screen z-50 bg-black bg-opacity-50"
     >Looking for a session...</div
   >
