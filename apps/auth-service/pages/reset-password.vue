@@ -9,24 +9,6 @@ const form = reactive({
   confirmPassword: '',
 })
 
-// Get the hash fragment from the URL (Supabase includes the token here)
-// const hash = route.hash
-
-// const params = new URLSearchParams(hash.substring(1))
-// const error = { error: params.get('error'), message: params.get('error_description') }
-// const access_token = params.get('access_token')
-
-onMounted(() => {
-  // Verify the hash exists
-  // if (!hash) {
-  //   toast.error({
-  //     summary: 'Invalid Reset Link',
-  //     message: 'This password reset link is invalid or has expired',
-  //   })
-  //   return
-  // }
-})
-
 async function handlePasswordReset() {
   if (form.password !== form.confirmPassword) {
     toast.error({
@@ -69,23 +51,32 @@ async function handlePasswordReset() {
         class="space-y-4 w-100"
         @submit.prevent="handlePasswordReset"
       >
-        <PrimeFloatLabel>
-          <PrimePassword
+        <div class="flex flex-col gap-2">
+          <label
+            for="password"
+            class="text-sm"
+            >Password</label
+          >
+          <FormPassword
+            id="password"
             v-model="form.password"
             :feedback="true"
+            toggle-mask
             required
           />
-          <label>New Password</label>
-        </PrimeFloatLabel>
-
-        <PrimeFloatLabel>
-          <PrimePassword
+        </div>
+        <div class="flex flex-col gap-2">
+          <label
+            for="confirm-password"
+            class="text-sm"
+            >Confirm Password</label
+          >
+          <FormPassword
+            id="confirm-password"
             v-model="form.confirmPassword"
             required
           />
-          <label>Confirm Password</label>
-        </PrimeFloatLabel>
-
+        </div>
         <PrimeButton
           type="submit"
           class="w-full"
