@@ -1,5 +1,3 @@
-import { useLogger } from '@ib/logger'
-
 export type DomainKey =
   | 'users'
   | 'news'

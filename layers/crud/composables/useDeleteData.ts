@@ -1,4 +1,4 @@
-import { useErrorHandler, AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/logger'
+import { AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/logger'
 import { useRateLimit } from './useRateLimit'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
@@ -13,7 +13,6 @@ export function useDeleteData<T extends { id: string | number }>(
   } = {},
 ) {
   const { remove } = useHttpHandler()
-  const { handleError } = useErrorHandler()
   const logger = useLogger('useDeleteData')
   const store = getOrCreateStore<T>(tableName)()
   const { checkRateLimit } = useRateLimit()
@@ -75,7 +74,7 @@ export function useDeleteData<T extends { id: string | number }>(
         await deleteSingle(id)
       }
     } catch (error: any) {
-      handleError(error, 'Error deleting data')
+      logger.error(error, 'Error deleting data')
       throw error
     } finally {
       isDeleting.value = false

@@ -1,8 +1,7 @@
-import { useLogger } from '@ib/logger'
 import { openAI } from '~/server/utils/openai/callOpenAI'
 import { serverSupabaseUser } from '#supabase/server'
 
-const log = useLogger('API:ASK')
+const log = useServerLogger('API:ASK')
 
 export default defineEventHandler({
   onRequest: [rateLimiter],

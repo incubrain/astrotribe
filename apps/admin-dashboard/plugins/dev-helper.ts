@@ -1,12 +1,28 @@
-import { useLogger } from '@ib/logger'
-
-const logger = useLogger('devHelper')
-
 export default defineNuxtPlugin((nuxtApp) => {
+  const logger = useLogger('devHelper')
   const config = useRuntimeConfig()
 
+  // Default configuration with type safety
+  const defaultConfig = {
+    enabled: process.env.NODE_ENV === 'development',
+    features: {
+      networkErrorClassifier: true,
+      infiniteLoopDetector: true,
+      unhandledPromiseRejectionTracker: true,
+      environmentConsistencyChecker: true,
+    },
+  }
+
+  const devHelperConfig = {
+    enabled: config.public?.devHelper?.enabled ?? defaultConfig.enabled,
+    features: {
+      ...defaultConfig.features,
+      ...config.public?.devHelper?.features,
+    },
+  }
+
   const DevHelper = {
-    features: { ...config.public.devHelper.features },
+    features: { ...devHelperConfig.features },
 
     toggleFeature(feature: string, enabled: boolean) {
       if (feature in this.features) {
@@ -143,14 +159,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       const missingVars = requiredVars.filter((varName) => !config.public[varName])
 
       if (missingVars.length > 0) {
-        logger.warn('🔑 Missing required environment variables:', missingVars)
+        logger.warn(`🔑 Missing required environment variables: ${missingVars.join(', ')}`)
       } else {
         logger.info('🔑 All required environment variables are set')
       }
     },
   }
 
-  if (import.meta.dev && config.public.devHelper.enabled) {
+  if (import.meta.dev && devHelperConfig.enabled) {
     logger.info('🛠️ DevHelper: Initializing...')
     try {
       DevHelper.initNetworkErrorClassifier()
@@ -159,7 +175,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       DevHelper.checkEnvironmentConsistency()
       logger.info('Initialization complete')
     } catch (error) {
-      logger.error('Initialization failed:', error)
+      logger.error('Initialization failed:', { error })
     }
   } else {
     logger.info('Initialization skipped (not in dev mode or devHelper not enabled)')

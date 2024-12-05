@@ -93,7 +93,7 @@ const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
 </script>
 
 <template>
-  <div class="w-full h-screen flex background relative overflow-hidden lg:py-4 lg:pr-4">
+  <div class="h-screen flex background relative overflow-hidden lg:py-4 lg:pr-4">
     <IBMenuSidebar
       v-model:is-sidebar-open="isSidebarOpen"
       v-model:is-mobile-sidebar-open="isMobileSidebarOpen"
@@ -101,7 +101,7 @@ const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
       :is-mobile="isMobile"
     />
     <div
-      class="w-full h-full pb-[var(--mobi-bottom-nav-height)] foreground lg:pb-0 relative flex flex-col rounded-lg overflow-hidden"
+      class="w-full h-full pb-[var(--mobi-bottom-nav-height)] foreground lg:pb-0 relative flex flex-col rounded-lg overflow-y-scroll"
     >
       <slot />
     </div>

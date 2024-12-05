@@ -1,10 +1,9 @@
-import { createCentralizedLogger } from '@ib/logger'
 import { useYoutubeChannel } from '#imports'
 
 const PREFIX = 'social/youtube/analytics'
 
 export default defineEventHandler(async (event) => {
-  const logger = createCentralizedLogger(PREFIX)
+  const logger = useServerLogger(PREFIX)
 
   const { channelName } = getQuery(event) as { channelName: string }
 

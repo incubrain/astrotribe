@@ -73,20 +73,6 @@
         <!-- Action Buttons -->
         <div class="flex gap-2">
           <PrimeButton
-            severity="danger"
-            :loading="loading"
-            class="px-4"
-            @click="triggerTestError"
-          >
-            <template #icon>
-              <Icon
-                name="mdi:alert"
-                class="mr-2 h-4 w-4"
-              />
-            </template>
-            Test Error
-          </PrimeButton>
-          <PrimeButton
             severity="secondary"
             class="px-3"
             @click="fetchErrorLogs"
@@ -96,6 +82,7 @@
               class="h-4 w-4"
             />
           </PrimeButton>
+          <ErrorTest />
         </div>
       </div>
     </div>

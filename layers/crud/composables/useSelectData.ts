@@ -1,5 +1,5 @@
 import { unref, watch, type MaybeRef } from 'vue'
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
+import { AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
@@ -26,7 +26,6 @@ export function useSelectData<T extends { id: string | number }>(
   const storeKey = options.value.storeKey || tableName
 
   const { select } = useHttpHandler()
-  const { handleError } = useErrorHandler()
   const logger = useLogger('useSelectData')
   const store = getOrCreateStore<T>(storeKey)()
   const { checkRateLimit } = useRateLimit()
@@ -95,7 +94,7 @@ export function useSelectData<T extends { id: string | number }>(
       lastSelectTime = Date.now()
       return result
     } catch (error: any) {
-      handleError(error, { userMessage: 'Error selecting data' })
+      logger.error(error, { userMessage: 'Error selecting data' })
       throw error
     } finally {
       isSelecting.value = false

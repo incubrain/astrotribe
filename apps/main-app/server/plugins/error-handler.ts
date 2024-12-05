@@ -1,4 +1,3 @@
-import { useLoggerAsync, type ErrorType } from '@ib/logger'
 import type { H3Error } from 'h3'
 
 interface ApiResponse {
@@ -13,7 +12,7 @@ interface ApiResponse {
 export default defineNitroPlugin((nitro) => {
   nitro.hooks.hook('error', async (error: Error, { event }) => {
     const isDev = useRuntimeConfig().public.nodeEnv === 'development'
-    const logger = await useLoggerAsync('nitro:error')
+    const logger = useServerLogger('nitro:error')
 
     if (!event || event.node.res.writableEnded || event.node.res.headersSent) {
       logger.warn('Response already sent or no event context available')

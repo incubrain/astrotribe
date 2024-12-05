@@ -1,4 +1,4 @@
-import { useErrorHandler, AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/logger'
+import { AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { useRateLimit } from './useRateLimit'
@@ -15,7 +15,6 @@ export function useUpdateData<T extends { id: string | number }>(
   } = {},
 ) {
   const { update } = useHttpHandler()
-  const { handleError } = useErrorHandler()
   const logger = useLogger('useUpdateData')
   const store = getOrCreateStore<T>(tableName)()
   const { checkRateLimit } = useRateLimit()
@@ -82,7 +81,7 @@ export function useUpdateData<T extends { id: string | number }>(
       if (oldData) {
         store.updateItem(oldData)
       }
-      handleError(error, 'Error updating data')
+      logger.error(error, 'Error updating data')
       throw error
     } finally {
       isUpdating.value = false
