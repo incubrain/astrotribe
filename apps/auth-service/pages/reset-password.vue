@@ -10,21 +10,21 @@ const form = reactive({
 })
 
 // Get the hash fragment from the URL (Supabase includes the token here)
-const hash = route.hash
+// const hash = route.hash
 
-const params = new URLSearchParams(hash.substring(1))
-const error = { error: params.get('error'), message: params.get('error_description') }
-const access_token = params.get('access_token')
+// const params = new URLSearchParams(hash.substring(1))
+// const error = { error: params.get('error'), message: params.get('error_description') }
+// const access_token = params.get('access_token')
 
 onMounted(() => {
   // Verify the hash exists
-  if (!hash) {
-    toast.error({
-      summary: 'Invalid Reset Link',
-      message: 'This password reset link is invalid or has expired',
-    })
-    return
-  }
+  // if (!hash) {
+  //   toast.error({
+  //     summary: 'Invalid Reset Link',
+  //     message: 'This password reset link is invalid or has expired',
+  //   })
+  //   return
+  // }
 })
 
 async function handlePasswordReset() {
