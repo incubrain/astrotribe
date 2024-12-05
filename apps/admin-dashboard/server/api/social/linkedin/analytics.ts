@@ -1,11 +1,9 @@
-import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 import { useLinkedinAnalytics } from '#imports'
 
 const PREFIX = 'social/linkedin/analytics'
 
 export default defineEventHandler(async (event) => {
-  const log = await useLoggerAsync(PREFIX)
-  const errors = useErrorHandler(PREFIX)
+  const logger = useServerLogger(PREFIX)
 
   const { postId } = getQuery(event) as { postId: string }
 
@@ -22,9 +20,8 @@ export default defineEventHandler(async (event) => {
       data: postAnalytics,
     }
   } catch (error: any) {
-    errors.handleError({
+    logger.error('Error fetching LinkedIn analytics', {
       error,
-      devMessage: 'Error fetching LinkedIn analytics',
       userMessage: 'Error fetching LinkedIn analytics',
     })
   }

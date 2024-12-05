@@ -8,7 +8,7 @@
     "rootDir": ".",
     "types": ["node"]
   },
-  "include": ["src/**/*", "index.d.ts", "index.ts"],
+  "include": ["src/**/*", "index.d.ts", "index.ts", "types"],
   "exclude": ["dist/**/*"],
   "references": [{ "path": "./tsconfig.lib.json" }]
 }

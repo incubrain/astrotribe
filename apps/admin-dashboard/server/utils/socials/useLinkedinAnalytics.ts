@@ -1,10 +1,8 @@
-import { useErrorHandler } from '@ib/logger'
-
 const LINKEDIN_API_URL = 'https://api.linkedin.com/rest/dmaOrganizationalPageContentAnalytics'
 const ACCESS_TOKEN = 'YOUR_LINKEDIN_ACCESS_TOKEN'
 
 export function useLinkedinAnalytics(postId: string) {
-  const errors = useErrorHandler('getLinkedInPageAnalytics')
+  const logger = useServerLogger('getLinkedInPageAnalytics')
 
   // https://learn.microsoft.com/en-us/linkedin/dma/analytics/organizational-page-content-analytics?tabs=http%2Cnon-obfuscated
   async function fetchPostAnalytics() {
@@ -14,7 +12,7 @@ export function useLinkedinAnalytics(postId: string) {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     })
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch post analytics for ${postId}`,
       userMessage: `Failed to fetch analytics for post ${postId}`,
@@ -35,7 +33,7 @@ export function useLinkedinAnalytics(postId: string) {
       },
     })
 
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch trend analytics for page ${pageId}`,
       userMessage: `Failed to fetch trend analytics for page ${pageId}`,

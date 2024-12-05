@@ -1,46 +1,24 @@
 // src/environment.ts
-export const getEnvironment = () => {
-  // Check for Node.js environment more safely
-  const isNode = (() => {
-    try {
-      return typeof globalThis.process !== 'undefined' && !!globalThis.process?.versions?.node
-    } catch {
-      return false
-    }
-  })()
+import type { Environment } from './environment.d'
 
-  // Check for browser environment
-  const isBrowser = (() => {
-    try {
-      return typeof window !== 'undefined'
-    } catch {
-      return false
-    }
-  })()
+// Remove the globalThis.useRuntimeConfig mock block entirely
 
-  // Check for development mode across different environments
-  const isDev = (() => {
-    try {
-      // For Nuxt specific environment
-      if (typeof globalThis.useRuntimeConfig === 'function') {
-        const config = globalThis.useRuntimeConfig()
-        return config.public.nodeEnv === 'development'
-      }
+export const getEnvironment = (): Environment => {
+  const isNode = typeof process !== 'undefined' && !!process.versions?.node
+  const isBrowser = typeof window !== 'undefined'
 
-      // Fallback checks
-      return Boolean(
-        import.meta?.env?.DEV ||
-          import.meta?.env?.MODE === 'development' ||
-            (typeof process !== 'undefined' && process.env.NODE_ENV === 'development'),
-      )
-    } catch {
-      return false
-    }
-  })()
+  // If running in a Node/Nuxt environment, `runtimeConfig` will be provided by the plugin
+  // If this code is invoked outside Nuxt, it will just use process.env as fallback.
 
   return {
     isNode,
     isBrowser,
-    isDev,
+    isDev: process.env.NODE_ENV === 'development',
+    supabase: {
+      url: process.env.SUPABASE_URL || null,
+      key: process.env.SUPABASE_KEY || null,
+      serviceKey: process.env.SUPABASE_SERVICE_KEY || null,
+    },
+    serviceName: process.env.SERVICE_NAME ?? 'api-gateway',
   }
 }

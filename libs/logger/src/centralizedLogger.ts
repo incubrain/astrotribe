@@ -1,74 +1,146 @@
-import { createHash } from 'crypto'
-import { parse as parseStackTrace, type StackFrame } from 'stacktrace-parser'
+import type { H3Event } from 'h3'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import type { LogMetadata, LogContext, ErrorLogEntry } from './error-interface'
-import { BaseLogger, NodeLogger } from './logger'
 import { getEnvironment } from './environment'
+import type { ErrorLogEntry } from './error-interface'
+import type { Service, ServiceToDomain } from './enums-domains'
+import { NodeWinstonTransport, BrowserConsoleTransport, Level, type LogTransport } from './logger'
 
-export class CentralizedLogger extends NodeLogger {
-  private static _instance: CentralizedLogger | null = null
+// ANSI constants
+const ANSI = {
+  reset: '\x1b[0m',
+  white: '\x1b[37m',
+  gray: '\x1b[90m',
+  cyan: '\x1b[36m',
+  bgRed: '\x1b[41m',
+  bgBlack: '\x1b[40m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
+} as const
+
+// Icons for levels
+const levelIcons: Record<string, string> = {
+  [Level.Error]: '❗',
+  [Level.Warn]: '⚠️',
+  [Level.Info]: 'ℹ️',
+  [Level.Debug]: '🐛',
+  [Level.Verbose]: '🔍',
+  [Level.Silly]: '🤪',
+}
+
+interface ConsoleData {
+  level: string
+  message: string
+  service: string
+  domain?: string
+  timestamp?: string
+  stack?: string
+  method?: string
+  path?: string
+}
+
+export class CentralizedLogger<S extends Service = Service> {
+  private static instance: CentralizedLogger | null = null
   private supabase: SupabaseClient | null = null
-  private metadata: Partial<LogMetadata>
+  protected env = getEnvironment()
+  private currentService?: S
+  private currentDomain?: ServiceToDomain[S]
 
-  private constructor(serviceName: string) {
-    super(serviceName)
+  // Defaults
+  private service: string = 'initializing'
+  private domain: string = 'none'
+  private transport: LogTransport
 
-    this.metadata = {
-      service: serviceName,
-      environment: getEnvironment().isDev ? 'development' : 'production',
-      timestamp: new Date().toISOString(),
-    }
+  private constructor() {
+    this.initSupabase()
 
-    // Initialize Supabase client
-    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-      this.supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
+    // Choose transport based on environment
+    if (this.env.isNode) {
+      const nodeTransport = new NodeWinstonTransport(this.env.isDev)
+      // Call init after construction
+      nodeTransport
+        .init()
+        .then(() => {
+          // Now the transport is ready
+        })
+        .catch((err) => console.error('Failed to initialize node logger:', err))
+      this.transport = nodeTransport
+    } else {
+      this.transport = new BrowserConsoleTransport()
     }
   }
 
-  public static getInstance(serviceName: string): CentralizedLogger {
-    if (!CentralizedLogger._instance) {
-      CentralizedLogger._instance = new CentralizedLogger(serviceName)
+  public static create<S extends Service>(): CentralizedLogger<S> {
+    if (!CentralizedLogger.instance) {
+      CentralizedLogger.instance = new CentralizedLogger()
     }
-    return CentralizedLogger._instance
+    return CentralizedLogger.instance as CentralizedLogger<S>
   }
 
-  private async logToDatabase(level: string, message: string, metadata: any = {}) {
-    if (!this.supabase) return
+  // Keep setServiceName and setDomain if needed
+  public setServiceName(name: S) {
+    this.currentService = name
+    this.service = name
+  }
 
-    try {
-      const logEntry: Omit<ErrorLogEntry, 'id' | 'created_at'> = {
-        service_name: this.metadata.service!,
-        error_type: metadata.type || 'UNKNOWN_ERROR',
-        severity: this.mapLogLevelToSeverity(level),
-        message,
-        stack_trace: metadata.stack,
-        metadata: this.sanitizeMetadata(metadata),
-        context: metadata.context || {},
-        environment: this.metadata.environment!,
-        user_id: metadata.userId,
-        request_id: metadata.requestId,
-        correlation_id: metadata.correlationId,
+  public setDomain(domain: ServiceToDomain[S]) {
+    if (!this.currentService) {
+      throw new Error('Service must be set before setting domain')
+    }
+    this.currentDomain = domain
+    this.domain = domain
+  }
+
+  private initSupabase() {
+    if (this.env.supabase?.url && this.env.supabase?.serviceKey) {
+      try {
+        this.supabase = createClient(this.env.supabase.url, this.env.supabase.serviceKey)
+      } catch (err) {
+        console.error('Failed to initialize Supabase client:', err)
       }
-
-      const { error } = await this.supabase.from('error_logs').insert(logEntry)
-
-      if (error) {
-        console.error('Failed to log to database:', error)
-      }
-    } catch (err) {
-      console.error('Error logging to database:', err)
     }
   }
 
-  private sanitizeMetadata(metadata: LogMetadata): Partial<LogMetadata> {
-    const sanitized = { ...metadata }
-    delete sanitized.stack
-    delete sanitized.password
-    delete sanitized.token
-    return sanitized
+  private sanitize(data: any) {
+    const clean = { ...data }
+    delete clean.password
+    delete clean.token
+    delete clean.secret
+    delete clean.authorization
+    delete clean.event
+    return clean
   }
 
-  private mapLogLevelToSeverity(level: string): 'low' | 'medium' | 'high' | 'critical' {
+  private bold(text: string) {
+    return `\x1b[1m${text}\x1b[0m`
+  }
+
+  private formatStackTrace(stack: string): string {
+    return stack
+      .split('\n')
+      .map((line) => {
+        if (line.trim().startsWith('at ')) {
+          const [start, location] = line.split('(')
+          if (location) {
+            return `${ANSI.gray}${start}(${ANSI.cyan}${location.slice(0, -1)}${ANSI.gray})${ANSI.reset}`
+          }
+          return `${ANSI.gray}${line}${ANSI.reset}`
+        }
+        return line
+      })
+      .join('\n')
+  }
+
+  private formatLevelBadge(level: string): string {
+    const upperLevel = level.toUpperCase()
+    if (level === 'error') {
+      return `${ANSI.bgRed}${ANSI.white}${ANSI.bright} ${upperLevel} ${ANSI.reset}`
+    } else if (level === 'warn') {
+      return `${ANSI.bgBlack}${ANSI.white}${ANSI.bright} ${upperLevel} ${ANSI.reset}`
+    }
+    return upperLevel
+  }
+
+  private getSeverity(level: string): 'low' | 'medium' | 'high' | 'critical' {
     switch (level) {
       case 'error':
         return 'critical'
@@ -81,23 +153,150 @@ export class CentralizedLogger extends NodeLogger {
     }
   }
 
-  override async error(message: string, ...args: any[]) {
-    await super.error(message, ...args)
-    await this.logToDatabase('error', message, args[0])
+  private async extractEventData(event?: H3Event) {
+    if (!this.env.isNode || !event) return null
+
+    try {
+      const { getRequestURL, getRequestHeaders, getQuery } = await import('h3')
+      return {
+        url: getRequestURL(event).toString(),
+        method: event.method,
+        headers: getRequestHeaders(event),
+        query: getQuery(event),
+        timestamp: new Date().toISOString(),
+        path: event.path,
+      }
+    } catch (error) {
+      return null
+    }
   }
 
-  override async warn(message: string, ...args: any[]) {
-    await super.warn(message, ...args)
-    await this.logToDatabase('warn', message, args[0])
+  private async prepareMetadata(
+    level: string,
+    message: string,
+    userMetadata: any = {},
+  ): Promise<{ consoleData: ConsoleData; dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'> }> {
+    const timestamp = new Date().toISOString()
+    const eventData = userMetadata?.event ? await this.extractEventData(userMetadata.event) : null
+
+    const stack = userMetadata?.error?.stack
+
+    if (eventData) {
+      message = `${eventData.method} ${eventData.path} - ${message}`
+    }
+
+    const consoleData: ConsoleData = {
+      level,
+      message,
+      service: this.service,
+      domain: this.domain,
+      timestamp,
+      stack,
+      method: eventData?.method,
+      path: eventData?.path,
+    }
+
+    const dbMetadata = {
+      service_name: this.service,
+      error_type: userMetadata?.error?.name || 'UNKNOWN_ERROR',
+      severity: this.getSeverity(level),
+      message,
+      stack_trace: stack,
+      metadata: this.sanitize({
+        timestamp,
+        ...userMetadata,
+        ...(eventData && { request: eventData }),
+      }),
+      context: userMetadata?.context || {},
+      environment: this.env.isDev ? 'development' : 'production',
+      request_id: eventData?.headers?.['x-request-id'] || userMetadata?.requestId || null,
+      correlation_id:
+        eventData?.headers?.['x-correlation-id'] || userMetadata?.correlationId || null,
+    }
+
+    return { consoleData, dbMetadata }
   }
 
-  override async info(message: string, ...args: any[]) {
-    await super.info(message, ...args)
-    await this.logToDatabase('info', message, args[0])
+  private formatLog(data: ConsoleData): string {
+    const { level, message, service, domain, timestamp, stack } = data
+    const icon = levelIcons[level] ?? ''
+    const levelBadge = this.formatLevelBadge(level)
+    const timestampStr = timestamp ? `${ANSI.gray}[${timestamp}]${ANSI.reset}` : ''
+
+    let finalMessage = message
+    if (level === 'error' && stack) {
+      finalMessage += '\n' + this.formatStackTrace(stack)
+    }
+
+    return `${timestampStr} ${levelBadge} [${service}|${domain}] ${finalMessage}`
+  }
+
+  private async logToDatabase(dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'>) {
+    if (!this.supabase) return
+    try {
+      const { error: dbError } = await this.supabase.from('error_logs').insert(dbMetadata)
+      if (dbError) console.error('Failed to log to database:', dbError)
+    } catch (err) {
+      console.error('Error logging to database:', err)
+    }
+  }
+
+  private shouldLogLevel(level: Level): boolean {
+    if (this.env.isNode) {
+      // Node environment: Winston handles level filtering
+      // but we can still manually prevent silly/debug in prod if needed
+      if (
+        !this.env.isDev &&
+        (level === Level.Debug || level === Level.Silly || level === Level.Verbose)
+      ) {
+        return false
+      }
+      return true
+    } else {
+      // Browser: no Winston, just apply dev filters
+      if (
+        !this.env.isDev &&
+        (level === Level.Debug || level === Level.Silly || level === Level.Verbose)
+      ) {
+        return false
+      }
+      return true
+    }
+  }
+
+  private async log(level: Level, message: string, metadata?: any) {
+    if (!this.shouldLogLevel(level)) return
+    const { consoleData, dbMetadata } = await this.prepareMetadata(level, message, metadata)
+    const finalMessage = this.formatLog(consoleData)
+    this.transport.log(level, finalMessage)
+    void this.logToDatabase(dbMetadata)
+  }
+
+  // Public logging methods
+  public async error(message: string, metadata?: any) {
+    return this.log(Level.Error, message, metadata)
+  }
+
+  public async warn(message: string, metadata?: any) {
+    return this.log(Level.Warn, message, metadata)
+  }
+
+  public async info(message: string, metadata?: any) {
+    return this.log(Level.Info, message, metadata)
+  }
+
+  public async verbose(message: string, metadata?: any) {
+    return this.log(Level.Verbose, message, metadata)
+  }
+
+  public async debug(message: string, metadata?: any) {
+    return this.log(Level.Debug, message, metadata)
+  }
+
+  public async silly(message: string, metadata?: any) {
+    return this.log(Level.Silly, message, metadata)
   }
 }
 
 // Factory function
-export const createCentralizedLogger = (serviceName: string): CentralizedLogger => {
-  return CentralizedLogger.getInstance(serviceName)
-}
+export const createCentralizedLogger = <S extends Service>() => CentralizedLogger.create<S>()

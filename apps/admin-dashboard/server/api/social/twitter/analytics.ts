@@ -1,12 +1,11 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useErrorHandler, useLoggerAsync } from '@ib/logger'
+
 import { useTwitterAnalytics } from '#imports'
 
 const PREFIX = 'social/twitter/analytics'
 
 export default defineEventHandler(async (event) => {
-  const log = await useLoggerAsync(PREFIX)
-  const errors = useErrorHandler(PREFIX)
+  const logger = useServerLogger(PREFIX)
 
   const { postId } = getQuery(event) as { postId: string }
 
@@ -23,7 +22,7 @@ export default defineEventHandler(async (event) => {
       data: userAnalytics,
     }
   } catch (error: any) {
-    errors.handleError({
+    logger.error({
       error,
       devMessage: 'Error fetching Twitter analytics',
       userMessage: 'Error fetching Twitter analytics',

@@ -1,4 +1,4 @@
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity } from '@ib/logger'
+import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useUpdateData, useSelectData, useDeleteData, useInsertData } from '#imports'
 
 export interface CRUDOptions<T> {
@@ -18,6 +18,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
   entityName: string,
   options: CRUDOptions<T> = {},
 ) {
+  const logger = useLogger('crud-factory')
   return function () {
     const { store, isSelecting, loadMore } = useSelectData<T>(entityName, {
       initialFetch: options.initialFetch ?? true,
@@ -28,7 +29,6 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const { insertData, isInserting } = useInsertData<T>(entityName)
     const { updateData, isUpdating } = useUpdateData<T>(entityName)
     const { deleteData, isDeleting } = useDeleteData<T>(entityName)
-    const { handleError } = useErrorHandler()
 
     const entities = computed(() => {
       const data = store.items
@@ -41,7 +41,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
       try {
         await loadMore()
       } catch (error: any) {
-        handleError(error, `Error fetching ${entityName}`)
+        logger.error(error, `Error fetching ${entityName}`)
       }
     }
 
@@ -63,7 +63,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
         await fetchEntities() // Refresh the list after insertion
         return insertedItem
       } catch (error: any) {
-        handleError(error, `Error inserting ${entityName}`)
+        logger.error(error, `Error inserting ${entityName}`)
         throw error
       }
     }
@@ -85,7 +85,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
         }
         return updatedItem
       } catch (error: any) {
-        handleError(error, `Error updating ${entityName}`)
+        logger.error(error, `Error updating ${entityName}`)
         throw error
       }
     }
@@ -107,7 +107,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
         }
         await fetchEntities() // Refresh the list after deletion
       } catch (error: any) {
-        handleError(error, `Error deleting ${entityName}`)
+        logger.error(error, `Error deleting ${entityName}`)
         throw error
       }
     }
