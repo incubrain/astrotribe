@@ -12,6 +12,10 @@ const form = reactive({
 // Get the hash fragment from the URL (Supabase includes the token here)
 const hash = route.hash
 
+const params = new URLSearchParams(hash.substring(1))
+const error = { error: params.get('error'), message: params.get('error_description') }
+const access_token = params.get('access_token')
+
 onMounted(() => {
   // Verify the hash exists
   if (!hash) {
@@ -34,7 +38,7 @@ async function handlePasswordReset() {
 
   try {
     // Update the password
-    await auth.password.update(form.password)
+    await auth.password.updateUser(access_token, { password: form.password })
 
     // Redirect to login
     navigateTo('/login', {
@@ -54,11 +58,17 @@ async function handlePasswordReset() {
 
 <template>
   <AuthCard
-    title="Reset Password"
-    subtitle="Enter your new password below"
+    :show-title="false"
+    :title="{
+      main: 'Reset Password',
+      subtitle: 'Enter your new password below',
+    }"
   >
-    <form @submit.prevent="handlePasswordReset">
-      <div class="space-y-4">
+    <template #content>
+      <form
+        class="space-y-4 w-100"
+        @submit.prevent="handlePasswordReset"
+      >
         <PrimeFloatLabel>
           <PrimePassword
             v-model="form.password"
@@ -82,7 +92,7 @@ async function handlePasswordReset() {
         >
           Reset Password
         </PrimeButton>
-      </div>
-    </form>
+      </form>
+    </template>
   </AuthCard>
 </template>
