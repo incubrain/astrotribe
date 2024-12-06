@@ -41,8 +41,8 @@ const fetchTodaysPosts = async () => {
   let query = supabase
     .from('news')
     .select('id', { count: 'exact', head: true })
-    .gte('created_at', startISO)
-    .lt('created_at', endISO)
+    .gte('published_at', startISO)
+    .lt('published_at', endISO)
     .not('body', 'is', null)
 
   // Add filters if this is a custom feed
