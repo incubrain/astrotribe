@@ -40,6 +40,27 @@ export const ERROR_TYPES = [
 
 export const SEVERITIES = ['low', 'medium', 'high', 'critical']
 
+export const COMMON_ERRORS = [
+  {
+    message: 'Service unavailable',
+    pattern: 'Service unavailable',
+    hash: 'b57973df2513f0659c652aa7de3b870d',
+    services: ['auth-service', 'api-gateway', 'user-service'],
+  },
+  {
+    message: 'Rate limit exceeded',
+    pattern: 'Rate limit exceeded',
+    hash: '8ab7b53038c4ee09174f4045787f2376',
+    services: ['user-service', 'api-gateway', 'content-service'],
+  },
+  {
+    message: 'Authentication token expired',
+    pattern: 'Authentication token expired',
+    hash: 'f70f185c04fb7b8d43479355106d4df0',
+    services: ['auth-service', 'user-service', 'notification-service'],
+  },
+]
+
 export function generateStackTrace(errorMessage: string): string {
   const randomFile = faker.system.fileName()
   const randomLine = faker.number.int({ min: 1, max: 1000 })

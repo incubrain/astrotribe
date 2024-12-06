@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import { faker } from '@faker-js/faker'
 import type { Pool } from 'pg'
 import {
@@ -12,6 +13,7 @@ import {
   ERROR_TYPES,
   SERVICE_NAMES,
   SEVERITIES,
+  COMMON_ERRORS,
   generateStackTrace,
 } from './errors'
 
@@ -1202,47 +1204,83 @@ export async function seedUserMetrics(pool: Pool, userIds: string[]) {
 }
 
 export async function seedErrorLogs(pool: Pool, userIds: string[], count = 1000) {
-  const logs = Array.from({ length: count }, () => {
-    const errorMessage = faker.helpers.arrayElement(ERROR_MESSAGES)
-    const metadata = {
-      browser: faker.helpers.maybe(() => faker.internet.userAgent(), { probability: 0.7 }),
-      os: faker.helpers.maybe(() => 'windows', { probability: 0.7 }),
-      ip: faker.helpers.maybe(() => faker.internet.ip(), { probability: 0.8 }),
-      path: faker.helpers.maybe(() => '/' + faker.system.directoryPath(), { probability: 0.9 }),
-      method: faker.helpers.maybe(
-        () => faker.helpers.arrayElement(['GET', 'POST', 'PUT', 'DELETE']),
-        { probability: 0.9 },
-      ),
-    }
+  const logs = []
+  let currentTime = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Start 7 days ago
 
-    const context = {
-      action: faker.helpers.maybe(() => faker.hacker.verb(), { probability: 0.8 }),
-      component: faker.helpers.maybe(
-        () => faker.helpers.arrayElement(['UserProfile', 'Dashboard', 'Settings', 'Auth', 'API']),
-        { probability: 0.8 },
-      ),
-      version: faker.helpers.maybe(() => faker.system.semver(), { probability: 0.7 }),
-    }
+  // Generate clusters of related errors
+  for (let i = 0; i < count; i++) {
+    const useCommonError = Math.random() < 0.7 // 70% chance of using a common error
+    const errorTemplate = useCommonError
+      ? faker.helpers.arrayElement(COMMON_ERRORS)
+      : {
+          message: faker.helpers.arrayElement(ERROR_MESSAGES),
+          pattern: faker.helpers.arrayElement(ERROR_MESSAGES),
+          hash: createHash('md5').update(faker.helpers.arrayElement(ERROR_MESSAGES)).digest('hex'),
+          services: [faker.helpers.arrayElement(SERVICE_NAMES)],
+        }
 
-    return {
+    // For each error, maybe generate a related error within 5 minutes
+    const primaryError = {
       id: generateUUID(),
-      service_name: faker.helpers.arrayElement(SERVICE_NAMES),
+      service_name: faker.helpers.arrayElement(errorTemplate.services),
       error_type: faker.helpers.arrayElement(ERROR_TYPES),
       severity: faker.helpers.arrayElement(SEVERITIES),
-      message: errorMessage,
-      stack_trace: generateStackTrace(errorMessage),
-      metadata: metadata,
-      context: context,
+      message: errorTemplate.message,
+      stack_trace: generateStackTrace(errorTemplate.message),
+      metadata: {
+        browser: faker.helpers.maybe(() => faker.internet.userAgent(), { probability: 0.7 }),
+        os: faker.helpers.maybe(() => 'windows', { probability: 0.7 }),
+        ip: faker.helpers.maybe(() => faker.internet.ip(), { probability: 0.8 }),
+        path: faker.helpers.maybe(() => '/' + faker.system.directoryPath(), { probability: 0.9 }),
+        method: faker.helpers.maybe(
+          () => faker.helpers.arrayElement(['GET', 'POST', 'PUT', 'DELETE']),
+          { probability: 0.9 },
+        ),
+      },
+      context: {
+        action: faker.helpers.maybe(() => faker.hacker.verb(), { probability: 0.8 }),
+        component: faker.helpers.maybe(
+          () => faker.helpers.arrayElement(['UserProfile', 'Dashboard', 'Settings', 'Auth', 'API']),
+          { probability: 0.8 },
+        ),
+        version: faker.helpers.maybe(() => faker.system.semver(), { probability: 0.7 }),
+      },
       user_id: faker.helpers.maybe(() => faker.helpers.arrayElement(userIds), { probability: 0.7 }),
       request_id: generateUUID(),
       correlation_id: generateUUID(),
       environment: faker.helpers.arrayElement(['development', 'staging', 'production']),
-      created_at: faker.date.between({
-        from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-        to: new Date(),
-      }),
+      created_at: currentTime,
+      error_hash: errorTemplate.hash,
+      error_pattern: errorTemplate.pattern,
+      is_new_pattern: false,
     }
-  })
+
+    logs.push(primaryError)
+
+    if (Math.random() < 0.4) {
+      const otherServices = errorTemplate.services.filter((s) => s !== primaryError.service_name)
+
+      // Only create related error if there are other services available
+      if (otherServices.length > 0) {
+        const relatedError = {
+          ...primaryError,
+          id: generateUUID(),
+          service_name: faker.helpers.arrayElement(otherServices),
+          created_at: new Date(
+            currentTime.getTime() + faker.number.int({ min: 1, max: 300 }) * 1000,
+          ), // 0-5 minutes later
+          request_id: generateUUID(),
+          correlation_id: generateUUID(),
+        }
+        logs.push(relatedError)
+      }
+    }
+
+    // Advance time by 1-60 minutes
+    currentTime = new Date(
+      currentTime.getTime() + faker.number.int({ min: 1, max: 60 }) * 60 * 1000,
+    )
+  }
 
   await bulkInsert(pool, 'error_logs', logs)
   return logs
