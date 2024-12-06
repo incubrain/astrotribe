@@ -1,23 +1,44 @@
-import formbricks from '@formbricks/js'
+// plugins/formbricks.client.ts
+import type {  } from '@formbricks/js'
+
+declare global {
+  interface Window {
+    formbricks: FormbricksAPI
+  }
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const { formbricksHost, formbricksEnvironment } = nuxtApp.$config.public
+  const { formbricksHost, formbricksEnvironment } = useRuntimeConfig().public
 
-  if (typeof window !== 'undefined') {
-    formbricks.init({
-      environmentId: formbricksEnvironment,
-      apiHost: formbricksHost,
-    })
+  if (import.meta.client) {
+    // Add Formbricks script tag
+    const script = document.createElement('script')
+    script.src = 'https://cdn.formbricks.com/formbricks.js'
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    // Initialize once script loads
+    script.onload = () => {
+      window.formbricks?.init({
+        environmentId: formbricksEnvironment,
+        apiHost: formbricksHost,
+      })
+      console.log('Formbricks initialized')
+    }
   }
-
-  console.log('Formbricks initialized', formbricks)
-  // Make formbricks available throughout the app
-  nuxtApp.provide('formbricks', formbricks)
 
   // Register route change handler
   nuxtApp.hook('page:finish', () => {
-    if (typeof formbricks !== 'undefined') {
-      formbricks.registerRouteChange()
+    if (import.meta.client && window.formbricks) {
+      window.formbricks.registerRouteChange()
     }
   })
+
+  // Provide formbricks to the app
+  return {
+    provide: {
+      formbricks: import.meta.client ? window.formbricks : undefined,
+    },
+  }
 })

@@ -21,10 +21,6 @@ const props = defineProps({
     required: false,
     default: 'profile',
   },
-  path: {
-    type: String,
-    required: true,
-  },
   requireCropping: {
     type: Boolean,
     default: true,

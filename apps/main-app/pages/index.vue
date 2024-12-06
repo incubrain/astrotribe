@@ -172,7 +172,7 @@ onMounted(() => {
       >
         <template #footer>
           <div class="mt-4">
-            <ProgressBar
+            <MetricProgressBar
               :value="voteAccuracy"
               :max="100"
               color="purple"

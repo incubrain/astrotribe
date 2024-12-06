@@ -1,4 +1,4 @@
-import { AppError, ErrorSeverity, ErrorType, useLogger } from '@ib/logger'
+import { AppError, ErrorSeverity, ErrorType } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { useRateLimit } from './useRateLimit'
