@@ -27,6 +27,7 @@ tmp
 **.data
 **.branches
 **/components.d.ts
+**/migration_backups
 
 # dependencies
 node_modules
