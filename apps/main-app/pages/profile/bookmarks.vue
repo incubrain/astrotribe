@@ -14,6 +14,7 @@ const { bookmarks, loading } = storeToRefs(bookmarkStore)
 const searchQuery = ref('')
 const searchResults = ref<any[]>([])
 const isMoving = ref(false)
+const movingFolderId = ref()
 
 const searchFuseOptions = {
   keys: ['metadata.title', 'metadata.description', 'metadata.author'],
@@ -66,13 +67,14 @@ const clearSelection = () => {
 }
 
 const handleMoveSelected = async () => {
-  if (!selectedFolderId.value || !bookmarkManager.selectedIds.value.length) return
+  if (!movingFolderId.value || !bookmarkManager.selectedIds.value.length) return
 
   isMoving.value = true
   try {
-    await bookmarkManager.handleMove(selectedFolderId.value)
+    await bookmarkManager.handleMove(movingFolderId.value)
     bookmarkManager.clearSelection()
   } finally {
+    movingFolderId.value = null
     isMoving.value = false
   }
 }
@@ -168,8 +170,8 @@ const isEmpty = computed(() => {
 
             <!-- Move to folder dropdown -->
             <PrimeSelect
-              v-model="selectedFolderId"
-              :options="folders"
+              v-model="movingFolderId"
+              :options="folders.filter((folder) => folder.id !== currentFolder?.id)"
               option-label="name"
               option-value="id"
               placeholder="Move to..."
