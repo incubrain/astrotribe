@@ -77,7 +77,6 @@ const reset = () => {
 
 const renderTurnstile = () => {
   if (window.turnstile) {
-    console.log('Rendering Turnstile', config)
     window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,
       'theme': colorMode.value === 'dark' ? 'dark' : 'light',

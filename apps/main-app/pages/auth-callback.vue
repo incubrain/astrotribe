@@ -7,6 +7,8 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useSupabaseClient } from '#imports'
 
+const logger = useLogger('auth')
+
 const route = useRoute()
 const router = useRouter()
 const supabase = useSupabaseClient()
@@ -20,7 +22,7 @@ const handleAuth = async () => {
   const code = route.query.code as string
 
   if (!code) {
-    console.error('No code found in URL')
+    logger.error('No code found in URL')
     router.push('/login')
     return
   }
@@ -31,13 +33,13 @@ const handleAuth = async () => {
     if (error) throw error
 
     if (data.session) {
-      console.log('Session established:', data.session)
+      logger.info('Session established:', { session: data.session })
       router.push('/')
     } else {
       throw new Error('No session established')
     }
   } catch (error) {
-    console.error('Error during authentication:', error)
+    logger.error('Error during authentication:', { error })
     router.push('/login')
   } finally {
     isProcessing.value = false

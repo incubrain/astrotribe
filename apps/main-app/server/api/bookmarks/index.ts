@@ -41,8 +41,6 @@ function normalizeContent(content: any, contentType: string): BookmarkMetadata {
   }
 }
 
-// server/api/bookmarks/index.ts
-// server/api/bookmarks/index.ts
 export default defineEventHandler(async (event) => {
   try {
     const { folder_id = null, include_subfolders = false } = getQuery(event)
