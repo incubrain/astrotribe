@@ -38,32 +38,8 @@ const score = ref(props.news.score || 0)
 
 const bookmarkStore = useBookmarkStore()
 const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
-const showBookmarkFeedback = ref(false)
 
 const folderStore = useFolderStore()
-
-const handleBookmark = async () => {
-  const folder = folderStore.getDefaultFolder
-
-  console.log('Bookmarking news:', props.news.id, folder.id)
-  try {
-    await bookmarkStore.toggleBookmark({
-      id: props.news.id,
-      type: 'news',
-      title: props.news.title,
-      thumbnail: props.news.featured_image,
-      url: props.news.url,
-      author: props.news.author,
-      folder_id: folder.id,
-    })
-    showBookmarkFeedback.value = true
-    setTimeout(() => {
-      showBookmarkFeedback.value = false
-    }, 1000)
-  } catch (error) {
-    console.error('Error handling bookmark:', error)
-  }
-}
 
 const displayScore = computed(() => {
   const currentScore = voteStore.getScore(props.news.id) ?? score.value
@@ -238,7 +214,9 @@ onBeforeUnmount(async () => {
               :url="news.url"
               :current-vote="currentVote"
               card-side="front"
-              :on-bookmark="handleBookmark"
+              :on-bookmark="
+                () => bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+              "
               :on-source-visit="handleSourceVisit"
               @vote-change="handleVoteChange"
               @open-modal="openModal"
@@ -271,7 +249,9 @@ onBeforeUnmount(async () => {
           :url="news.url"
           :current-vote="currentVote"
           card-side="back"
-          :on-bookmark="handleBookmark"
+          :on-bookmark="
+            () => bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+          "
           :on-source-visit="handleSourceVisit"
           @vote-change="handleVoteChange"
           @open-modal="openModal"
