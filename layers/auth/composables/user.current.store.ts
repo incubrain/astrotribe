@@ -1,7 +1,7 @@
 const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
-  const authUrl = useRuntimeConfig().public.aeAuthUrl
+  const authUrl = useRuntimeConfig().public.authURL
   const logger = useLogger(DOMAIN_KEY)
   const errors = useBaseError()
   const loading = useLoadingStore()

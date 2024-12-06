@@ -41,9 +41,8 @@ interface ConsoleData {
 export class CentralizedLogger<S extends Service = Service> {
   private static instance: CentralizedLogger | null = null
   private supabase: SupabaseClient | null = null
-  protected env = getEnvironment()
+  protected env: ReturnType<typeof getEnvironment>
   private currentService?: S
-  private currentDomain?: ServiceToDomain[S]
 
   // Defaults
   private service: string = 'initializing'
@@ -51,21 +50,21 @@ export class CentralizedLogger<S extends Service = Service> {
   private transport: LogTransport
 
   private constructor() {
+    this.env = getEnvironment()
     this.initSupabase()
 
-    // Choose transport based on environment
-    if (this.env.isNode) {
+    if (this.env.isBrowser || !this.env.isNode) {
+      this.transport = new BrowserConsoleTransport()
+    } else {
+      // Only use Winston in pure Node environments
       const nodeTransport = new NodeWinstonTransport(this.env.isDev)
-      // Call init after construction
       nodeTransport
         .init()
         .then(() => {
-          // Now the transport is ready
+          // Transport ready
         })
         .catch((err) => console.error('Failed to initialize node logger:', err))
       this.transport = nodeTransport
-    } else {
-      this.transport = new BrowserConsoleTransport()
     }
   }
 
@@ -86,7 +85,6 @@ export class CentralizedLogger<S extends Service = Service> {
     if (!this.currentService) {
       throw new Error('Service must be set before setting domain')
     }
-    this.currentDomain = domain
     this.domain = domain
   }
 

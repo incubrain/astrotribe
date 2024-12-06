@@ -343,6 +343,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-09-22',
 
   runtimeConfig: {
+    serviceName: 'website',
+    ...sharedConfig.private,
     public: {
       serviceName: 'website',
       ...sharedConfig.public,

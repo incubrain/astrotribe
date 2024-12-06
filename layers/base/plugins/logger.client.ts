@@ -4,7 +4,7 @@ import type { Service, CentralizedLogger } from '@ib/logger'
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
-  const serviceName = (config.serviceName ?? config.public.serviceName ?? 'main-app') as Service
+  const serviceName = (config.public.serviceName ?? 'main-app') as Service
 
   const logger = createCentralizedLogger<typeof serviceName>()
   logger.setServiceName(serviceName)

@@ -6,7 +6,7 @@
           class="right-0 z-30 gap-4 flex min-h-full w-full flex-col items-start from-transparent p-4 text-left md:absolute md:w-2/5 md:items-end md:justify-center md:bg-gradient-to-r md:text-right lg:gap-10 lg:px-8 lg:py-12 via-zinc-900 to-zinc-900"
         >
           <div class="md:w-96">
-            <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-5xl"> LET’S TALK </h1>
+            <h1 class="pb-2 text-2xl font-bold leading-10 sm:text-4xl md:text-4xl"> LET’S TALK </h1>
             <p class="py-4 text-base leading-normal md:mt-2">
               We'll happily answer any questions <br />you have about AstronEra
             </p>

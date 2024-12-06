@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { aeAppUrl } = useRuntimeConfig().public
+const { appURL } = useRuntimeConfig().public
 
 const adminLinks = ref([
   {
@@ -9,7 +9,7 @@ const adminLinks = ref([
       {
         id: 0,
         label: 'App',
-        slug: aeAppUrl,
+        slug: appURL,
         icon: 'mdi:apps',
       },
       {

@@ -5,8 +5,6 @@ export default defineEventHandler(async (event) => {
   const logger = useServerLogger('error-logs')
   const supabase = await serverSupabaseClient(event)
 
-  logger.error('Fetching error logs')
-
   return logger.handleQuery(async () => {
     const { from, to } = getQuery(useEvent())
     const query = supabase

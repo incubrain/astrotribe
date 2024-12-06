@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   console.log('AUTH_MIDDLEWARE', $formbricks)
 
-  const { aeLoginUrl, aeAuthUrl } = config.public
+  const { loginURL, authURL } = config.public
   const supabase = useSupabaseClient()
 
   // List of public routes that don't require authentication
@@ -20,8 +20,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const { data, error } = await supabase.auth.getSession()
 
   if (error || !data.session) {
-    console.log('USER_NOT_LOGGED_IN', `${aeAuthUrl}${aeLoginUrl}`)
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    console.log('USER_NOT_LOGGED_IN', `${authURL}${loginURL}`)
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   } else {
     console.log('USER_LOGGED_IN', data.session, $formbricks)
     // $formbricks.setUserId(data.session.user.id)

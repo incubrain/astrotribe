@@ -20,9 +20,9 @@ export const SettingsPasswordValidation = z
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
-  const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
-  const authUrl = aeAuthUrl
-  const appUrl = `${aeAppUrl}/auth-callback`
+  const { authURL, appURL } = useRuntimeConfig().public
+  const authUrl = authURL
+  const appUrl = `${appURL}/auth-callback`
 
   const logger = useLogger('auth')
   const toast = useNotification()
@@ -97,7 +97,7 @@ export function useAuth() {
 
     toast.success({ summary: 'Authenticated', message: 'Logging In...' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    navigateTo(aeAppUrl, { external: true })
+    navigateTo(appURL, { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
@@ -157,7 +157,7 @@ export function useAuth() {
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
-      navigateTo(aeAuthUrl, { external: true })
+      navigateTo(authURL, { external: true })
     }
   }
 
