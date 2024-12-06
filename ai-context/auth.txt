@@ -263,21 +263,21 @@ import { useRuntimeConfig } from '#imports'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const config = useRuntimeConfig()
-  const { aeLoginUrl, aeAuthUrl } = config.public
+  const { loginURL, authURL } = config.public
 
   try {
     const user = useSupabaseUser()
 
     if (!user.value) {
-      console.log('USER_NOT_LOGGED_IN', aeAuthUrl, aeLoginUrl)
+      console.log('USER_NOT_LOGGED_IN', authURL, loginURL)
 
-      return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+      return navigateTo(String(`${authURL}${loginURL}`), { external: true })
     } else {
       console.log('USER_LOGGED_IN', user.value)
     }
   } catch (error: any) {
-    console.error('redirect error', `${aeAuthUrl}${aeLoginUrl}`)
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    console.error('redirect error', `${authURL}${loginURL}`)
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   }
 })
 
@@ -288,7 +288,7 @@ File: apps/admin-dashboard/middleware/is-admin.ts
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // const user = useSupabaseUser()
-  // const authUrl = useRuntimeConfig().public.aeAuthUrl
+  // const authUrl = useRuntimeConfig().public.authURL
   // if (!isAdmin(user.value?.app_metadata.role)) {
   //   return navigateTo(authUrl, { external: true })
   // }
@@ -2429,9 +2429,9 @@ export const SettingsPasswordValidation = z
 export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
-  const { aeAuthUrl, aeAppUrl } = useRuntimeConfig().public
-  const authUrl = aeAuthUrl
-  const appUrl = `${aeAppUrl}/auth-callback`
+  const { authURL, appURL } = useRuntimeConfig().public
+  const authUrl = authURL
+  const appUrl = `${appURL}/auth-callback`
 
   const logger = useLogger('auth')
   const toast = useNotification()
@@ -2520,7 +2520,7 @@ export function useAuth() {
     if (error) throw error
     toast.success({ summary: 'Authenticated', message: 'Logging In...' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    navigateTo(aeAppUrl, { external: true })
+    navigateTo(appURL, { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
@@ -2580,7 +2580,7 @@ export function useAuth() {
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
-      navigateTo(aeAuthUrl, { external: true })
+      navigateTo(authURL, { external: true })
     }
   }
 
@@ -2716,7 +2716,7 @@ File: apps/auth-service/middleware/auth.global.ts
 // middleware/auth.ts
 export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
-  const { aeAppUrl } = config.public
+  const { appURL } = config.public
   const supabase = useSupabaseClient()
 
   // Define public routes that don't require authentication
@@ -2747,7 +2747,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // Redirect to main app for all other authenticated routes
   console.log('USER_LOGGED_IN', data.session)
-  return navigateTo(aeAppUrl, { external: true })
+  return navigateTo(appURL, { external: true })
 })
 
 ================
@@ -4114,7 +4114,7 @@ const userStore = useCurrentUser()
 const toast = useNotification()
 const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { aeAdminUrl, aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
+const { adminUrl, loginURL, authURL } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -4136,7 +4136,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => navigateTo(aeAdminUrl, { external: true }),
+      command: () => navigateTo(adminUrl, { external: true }),
     })
   }
 
@@ -4150,7 +4150,7 @@ const signOut = async () => {
     console.error(error.message)
     toast.error({ summary: 'Could not log out', message: error.message })
   } else {
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   }
 }
 
@@ -5123,7 +5123,7 @@ async function handleSetPassword() {
             <PrimeButton
               severity="secondary"
               size="small"
-              @click="navigateTo(`${aeAuthUrl}/settings/password`)"
+              @click="navigateTo(`${authURL}/settings/password`)"
             >
               Change Password
             </PrimeButton>
@@ -6318,7 +6318,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   console.log('AUTH_MIDDLEWARE', $formbricks)
 
-  const { aeLoginUrl, aeAuthUrl } = config.public
+  const { loginURL, authURL } = config.public
   const supabase = useSupabaseClient()
 
   // List of public routes that don't require authentication
@@ -6331,8 +6331,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const { data, error } = await supabase.auth.getSession()
 
   if (error || !data.session) {
-    console.log('USER_NOT_LOGGED_IN', `${aeAuthUrl}${aeLoginUrl}`)
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    console.log('USER_NOT_LOGGED_IN', `${authURL}${loginURL}`)
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   } else {
     console.log('USER_LOGGED_IN', data.session, $formbricks)
     // $formbricks.setUserId(data.session.user.id)
@@ -10411,7 +10411,7 @@ File: apps/website/components/home/HomeHero.vue
           cosmos together.
         </p>
         <div>
-          <NuxtLink :to="`${$config.public.aeAuthUrl}/register`">
+          <NuxtLink :to="`${$config.public.authURL}/register`">
             <PrimeButton> Signup, it's FREE! </PrimeButton>
           </NuxtLink>
         </div>
@@ -10774,7 +10774,7 @@ watch(
               <div class="space-x-2 lg:space-x-4">
                 <NuxtLink
                   v-ripple
-                  :to="$config.public.aeAuthUrl"
+                  :to="$config.public.authURL"
                 >
                   <PrimeButton
                     severity="contrast"
@@ -10786,7 +10786,7 @@ watch(
 
                 <NuxtLink
                   v-ripple
-                  :to="`${$config.public.aeAuthUrl}/register`"
+                  :to="`${$config.public.authURL}/register`"
                 >
                   <PrimeButton> Join AstronEra </PrimeButton>
                 </NuxtLink>

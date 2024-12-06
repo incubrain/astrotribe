@@ -1,12 +1,12 @@
 import { useConfirm } from 'primevue/useconfirm'
-import { useErrorHandler } from '@ib/logger'
+import { handleResponse } from '@ib/logger'
 import type { Folder } from '~/types/folder'
 
 export const useFolderStore = defineStore('folders', () => {
   const error = ref<string | null>(null)
   const confirm = useConfirm()
+  const logger = useLogger()
   const loading = ref(false)
-  const errorHandler = useErrorHandler('FolderSystem')
 
   const folders = ref<Folder[]>([])
   const selectedFolderId = ref<string | null>(null)
@@ -67,21 +67,22 @@ export const useFolderStore = defineStore('folders', () => {
   const createFolder = async (folder: Partial<Folder>) => {
     loading.value = true
     try {
-      const response = await $fetch('/api/folders', {
-        method: 'POST',
-        body: folder,
-      })
-      const data = errorHandler.handleFetchError({
-        response,
-        devMessage: 'Failed to create folder',
-        userMessage: 'Unable to create folder',
-      })
+      const data = await handleResponse(
+        logger,
+        () =>
+          $fetch('/api/folders', {
+            method: 'POST',
+            body: folder,
+          }),
+        'Fetching Folders',
+      )
+
       if (data) {
         await fetchFolders()
       }
       return data
     } catch (error) {
-      errorHandler.handleError(error, {
+      logger.error(error, {
         context: 'createFolder',
         userMessage: 'Failed to create folder',
       })
@@ -94,21 +95,22 @@ export const useFolderStore = defineStore('folders', () => {
   const updateFolder = async (folderId: string, updates: Partial<Folder>) => {
     loading.value = true
     try {
-      const response = await $fetch(`/api/folders/${folderId}`, {
-        method: 'PATCH',
-        body: updates,
-      })
-      const data = errorHandler.handleFetchError({
-        response,
-        devMessage: `Failed to update folder ${folderId}`,
-        userMessage: 'Unable to update folder',
-      })
+      const data = await handleResponse(
+        logger,
+        () =>
+          $fetch(`/api/folders/${folderId}`, {
+            method: 'PATCH',
+            body: updates,
+          }),
+        'Failed to update folder',
+      )
+
       if (data) {
         await fetchFolders()
       }
       return data
     } catch (error) {
-      errorHandler.handleError(error, {
+      logger.error(error, {
         context: 'updateFolder',
         userMessage: 'Failed to update folder',
       })
@@ -138,25 +140,24 @@ export const useFolderStore = defineStore('folders', () => {
           rejectLabel: 'Move to default folder',
           accept: async () => {
             try {
-              const response = await $fetch(`/api/folders/${folderId}`, {
-                method: 'DELETE',
-                body: {
-                  strategy: 'delete_all',
-                },
-              })
-
-              const data = errorHandler.handleFetchError({
-                response,
-                devMessage: `Failed to delete folder ${folderId}`,
-                userMessage: 'Unable to delete folder',
-              })
+              const data = await handleResponse(
+                logger,
+                () =>
+                  $fetch(`/api/folders/${folderId}`, {
+                    method: 'DELETE',
+                    body: {
+                      strategy: 'delete_all',
+                    },
+                  }),
+                'Deleting Folder',
+              )
 
               if (data !== null) {
                 await fetchFolders()
               }
               resolve(true)
             } catch (error) {
-              errorHandler.handleError(error, {
+              logger.error(error, {
                 context: 'deleteFolder',
                 userMessage: 'Failed to delete folder',
               })
@@ -173,7 +174,7 @@ export const useFolderStore = defineStore('folders', () => {
         })
       })
     } catch (error) {
-      errorHandler.handleError(error, {
+      logger.error(error, {
         context: 'deleteFolder',
         userMessage: 'Failed to delete folder',
       })
@@ -184,26 +185,25 @@ export const useFolderStore = defineStore('folders', () => {
 
   const handleMoveAndDelete = async (folderId: string, defaultFolderId: string) => {
     try {
-      const response = await $fetch(`/api/folders/${folderId}`, {
-        method: 'DELETE',
-        body: {
-          strategy: 'move_to_default',
-          defaultFolderId,
-        },
-      })
-
-      const data = errorHandler.handleFetchError({
-        response,
-        devMessage: `Failed to delete folder ${folderId}`,
-        userMessage: 'Unable to delete folder',
-      })
+      const data = await handleResponse(
+        logger,
+        () =>
+          $fetch(`/api/folders/${folderId}`, {
+            method: 'DELETE',
+            body: {
+              strategy: 'move_to_default',
+              defaultFolderId,
+            },
+          }),
+        'Moving and Deleting Folder',
+      )
 
       if (data !== null) {
         await fetchFolders()
       }
       return true
     } catch (error) {
-      errorHandler.handleError(error, {
+      logger.error(error, {
         context: 'handleMoveAndDelete',
         userMessage: 'Failed to move bookmarks and delete folder',
       })

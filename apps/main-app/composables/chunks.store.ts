@@ -1,5 +1,3 @@
-import { useLogger } from '@ib/logger'
-
 interface BaseNotification {
   summary: string
   message: string

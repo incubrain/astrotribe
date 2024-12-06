@@ -1,8 +1,11 @@
 <script setup lang="ts">
+const logger = useLogger('TESTER')
 definePageMeta({
   layoutTransition: false,
   name: 'Errors',
 })
+
+logger.error('TESTING ERROR LOGGER NUXT', {})
 </script>
 
 <template>

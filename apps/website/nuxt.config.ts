@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedRuntimeConfig from '../../shared-runtime.config'
+import sharedConfig from '../../shared-runtime.config'
 import prerenderRoutes from './prerender-routes.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
@@ -343,8 +343,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-09-22',
 
   runtimeConfig: {
+    serviceName: 'website',
+    ...sharedConfig.runtimeConfig.private,
     public: {
-      ...sharedRuntimeConfig.runtimeConfig.public,
+      serviceName: 'website',
+      ...sharedConfig.runtimeConfig.public,
     },
   },
 })

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
+import { AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
 import { useRateLimit } from './useRateLimit'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
@@ -35,7 +35,6 @@ interface UploadResult {
 
 export function useFileUpload() {
   const supabase = useSupabaseClient()
-  const { handleError } = useErrorHandler()
   const { checkRateLimit } = useRateLimit()
   const isUploading: Ref<boolean> = ref(false)
   const uploadProgress: Ref<number> = ref(0)
@@ -175,7 +174,7 @@ export function useFileUpload() {
 
       return result
     } catch (error: any) {
-      handleError(error, 'Error uploading file')
+      logger.error(error, 'Error uploading file')
       throw error
     } finally {
       isUploading.value = false

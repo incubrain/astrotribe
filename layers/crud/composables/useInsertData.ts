@@ -1,4 +1,4 @@
-import { useErrorHandler, AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
+import { AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { useRateLimit } from './useRateLimit'
@@ -30,7 +30,6 @@ export function useInsertData<T extends { id?: string | number }>(
 ) {
   const supabase = useSupabaseClient()
   const { insert } = useHttpHandler()
-  const { handleError } = useErrorHandler()
   const log = useLogger('useInsertData')
   const store = getOrCreateStore<T>(tableName)()
   const { checkRateLimit } = useRateLimit()
@@ -110,7 +109,7 @@ export function useInsertData<T extends { id?: string | number }>(
         return result
       }
     } catch (error: any) {
-      handleError(error, { userMessage: 'Error inserting data' })
+      logger.error(error, { userMessage: 'Error inserting data' })
       throw error // Re-throw to allow caller to handle if needed
     } finally {
       isInserting.value = false

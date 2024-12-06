@@ -2,7 +2,7 @@
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // const user = useSupabaseUser()
-  // const authUrl = useRuntimeConfig().public.aeAuthUrl
+  // const authUrl = useRuntimeConfig().public.authURL
   // if (!isAdmin(user.value?.app_metadata.role)) {
   //   return navigateTo(authUrl, { external: true })
   // }

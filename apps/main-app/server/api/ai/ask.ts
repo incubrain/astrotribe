@@ -1,13 +1,11 @@
-import { useLogger } from '@ib/logger'
 import { openAI } from '~/server/utils/openai/callOpenAI'
 import { serverSupabaseUser } from '#supabase/server'
-
-const log = useLogger('API:ASK')
 
 export default defineEventHandler({
   onRequest: [rateLimiter],
   onBeforeResponse: [],
   handler: async (event) => {
+    const log = useServerLogger('API:ASK')
     const { messages } = await readBody(event)
 
     if (!Array.isArray(messages) || messages.length === 0) {

@@ -1,6 +1,5 @@
 import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
 import {
-  useErrorHandler,
   ErrorType,
   useLogger,
   ErrorSeverity,
@@ -113,7 +112,6 @@ function applyFilter(query: any, column: string, filter: FilterOption): any {
 
 export function useHttpHandler() {
   const supabase = useSupabaseClient()
-  const { handleError } = useErrorHandler()
   const logger = useLogger('HttpHandler')
 
   async function handleDatabaseOperation<T>(
@@ -155,7 +153,7 @@ export function useHttpHandler() {
             pgError: pgError.details || pgError.hint || pgError.message,
             operation: context,
           })
-          throw handleError(appError)
+          throw logger.error(appError)
         }
 
         // Exponential backoff with jitter

@@ -67,9 +67,6 @@ export async function runSeeders() {
     const allContentIds = contents.map((c) => c.id)
 
     // Filter contents by type
-    const companyContentIds = contents
-      .filter((c) => c.content_type === 'companies')
-      .map((c) => c.id)
     const newsContentIds = contents.filter((c) => c.content_type === 'news').map((c) => c.id)
     const researchContentIds = contents
       .filter((c) => c.content_type === 'research')
@@ -80,7 +77,7 @@ export async function runSeeders() {
 
     // 3. Seed companies and related data
     const companies = await checkAndSeed(client, 'companies', () =>
-      seed.seedCompanies(client, companyContentIds),
+      seed.seedCompanies(client, config.counts.companies),
     )
 
     const companyIds = companies.map((c) => c.id)
@@ -177,7 +174,7 @@ export async function runSeeders() {
     await checkAndSeed(client, 'feedbacks', () => seed.seedFeedback(client, userIds))
 
     await checkAndSeed(client, 'follows', () =>
-      seed.seedFollows(client, userIds, companyContentIds),
+      seed.seedFollows(client, userIds, companyIds),
     )
 
     // 9. Seed feeds and feed categories

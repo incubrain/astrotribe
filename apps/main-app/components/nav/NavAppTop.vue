@@ -4,7 +4,7 @@ const userStore = useCurrentUser()
 const toast = useNotification()
 const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { aeAdminUrl, aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
+const { adminUrl, loginURL, authURL } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -26,7 +26,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => navigateTo(aeAdminUrl, { external: true }),
+      command: () => navigateTo(adminUrl, { external: true }),
     })
   }
 
@@ -40,7 +40,7 @@ const signOut = async () => {
     console.error(error.message)
     toast.error({ summary: 'Could not log out', message: error.message })
   } else {
-    return navigateTo(String(`${aeAuthUrl}${aeLoginUrl}`), { external: true })
+    return navigateTo(String(`${authURL}${loginURL}`), { external: true })
   }
 }
 

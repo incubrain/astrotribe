@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import runtimeConfig from '../../shared-runtime.config'
+import sharedConfig from '../../shared-runtime.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -114,6 +114,9 @@ export default defineNuxtConfig({
 
   // Add proper MIME type handling
   nitro: {
+    experimental: {
+      asyncContext: true,
+    },
     routeRules: {
       '/manifest.webmanifest': {
         headers: {
@@ -133,5 +136,12 @@ export default defineNuxtConfig({
     },
   },
 
-  ...runtimeConfig,
+  runtimeConfig: {
+    ...sharedConfig.runtimeConfig.private,
+    serviceName: 'main-app',
+    public: {
+      ...sharedConfig.runtimeConfig.public,
+      serviceName: 'main-app',
+    },
+  },
 })

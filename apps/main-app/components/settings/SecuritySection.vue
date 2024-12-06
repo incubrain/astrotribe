@@ -91,7 +91,7 @@ async function handleSetPassword() {
             <PrimeButton
               severity="secondary"
               size="small"
-              @click="navigateTo(`${aeAuthUrl}/settings/password`)"
+              @click="navigateTo(`${authURL}/settings/password`)"
             >
               Change Password
             </PrimeButton>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { useErrorHandler } from '@ib/logger'
 
 const supabase = useSupabaseClient()
-const { handleError } = useErrorHandler()
 const toast = useNotification()
+const logger = useLogger('table-growth-dashboard')
 
 const tables = [
   'news',
@@ -53,7 +52,7 @@ const fetchGrowthData = async (table: string) => {
       monthly: monthly.data,
     }
   } catch (error) {
-    handleError(error, `Error fetching growth data for ${table}`)
+    logger.error(error, `Error fetching growth data for ${table}`)
     return null
   }
 }
@@ -131,11 +130,11 @@ const getGrowthClass = (growth: number) => {
 
 const getGrowthIcon = (growth: number) => {
   if (isNaN(growth)) return 'mdi:minus-circle-outline'
-  return growth > 0 ?
-    'material-symbols:trending-up-rounded' :
-    growth < 0 ?
-      'material-symbols:trending-down-rounded' :
-      'mdi:minus-circle-outline'
+  return growth > 0
+    ? 'material-symbols:trending-up-rounded'
+    : growth < 0
+      ? 'material-symbols:trending-down-rounded'
+      : 'mdi:minus-circle-outline'
 }
 
 const totalRowCount = computed(() => {
@@ -172,32 +171,35 @@ const sparklineOptions = {
     legend: { display: false },
     tooltip: { enabled: false },
   },
-  scales: { x: { display: false }, y: { display: false } },
+  scales: {
+    x: { display: false },
+    y: {
+      display: false,
+      beginAtZero: false,
+    },
+  },
   elements: {
     line: {
-      tension: 0.4, // Smooth line
+      tension: 0.4,
+      borderWidth: 2,
     },
     point: {
-      radius: 0, // Hide points
+      radius: 0,
+      hoverRadius: 0,
     },
   },
   interaction: {
     intersect: false,
     mode: 'index',
-    hover: {
-      mode: null, // Disable hover mode
-    },
   },
-  animation: {
-    duration: 0, // Disable all animations
-  },
+  animation: false,
 }
 
 onMounted(async () => {
   try {
     await fetchAllGrowthData()
   } catch (error) {
-    handleError(error, 'Error loading dashboard data')
+    logger.error(error, 'Error loading dashboard data')
     toast.error({
       summary: 'Data Load Error',
       message: 'Failed to load dashboard data. Please try again later.',
@@ -207,79 +209,121 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="table-growth-dashboard overflow-hidden bg-gray-900 p-4 text-white">
-    <h1 class="mb-8 py-12 text-center text-5xl font-bold"> Table Growth Dashboard </h1>
+  <div
+    class="table-growth-dashboard min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8 text-white"
+  >
+    <!-- Header Section -->
+    <div class="mb-12 text-center">
+      <h1 class="text-6xl font-bold tracking-tight">
+        <span class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          Table Growth Dashboard
+        </span>
+      </h1>
+      <p class="mt-4 text-gray-400">Real-time database growth analytics</p>
+    </div>
+
+    <!-- Loading State -->
     <div
       v-if="isLoading"
-      class="flex h-64 items-center justify-center"
+      class="flex h-96 items-center justify-center"
     >
-      <PrimeProgressSpinner />
+      <PrimeProgressSpinner
+        class="h-16 w-16"
+        strokeWidth="4"
+      />
     </div>
-    <div v-else>
-      <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <IBGlass class="lg:col-start-2">
+
+    <div
+      v-else
+      class="mx-auto max-w-7xl"
+    >
+      <!-- Total Row Count Card -->
+      <div class="mb-12">
+        <IBGlass class="mx-auto max-w-md transform transition-all duration-300 hover:scale-105">
           <template #header>
-            <h2 class="mb-2 text-2xl font-semibold"> Total Row Count </h2>
-          </template>
-          <template #default>
-            <div class="text-5xl font-bold">
-              {{ formatNumber(totalRowCount) }}
+            <div class="text-center">
+              <h2 class="text-xl font-medium text-gray-400">Total Row Count</h2>
+              <div class="mt-2 text-5xl font-bold tracking-tight">
+                {{ formatNumber(totalRowCount) }}
+              </div>
             </div>
           </template>
         </IBGlass>
       </div>
-      <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+      <!-- Table Cards Grid -->
+      <div class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <IBGlass
           v-for="table in tables"
           :key="table"
+          class="transform transition-all duration-300 hover:scale-105"
         >
           <template #header>
-            <h2 class="pb-4 text-2xl font-bold">
-              {{ useChangeCase(table, 'capitalCase') }}
-            </h2>
+            <div class="flex items-center justify-between border-b border-gray-700 pb-4">
+              <h2 class="text-xl font-semibold">
+                {{ useChangeCase(table, 'capitalCase') }}
+              </h2>
+              <div class="rounded-full bg-gray-800 px-3 py-1 text-sm">
+                {{ formatNumber(growthData[table]?.daily?.latest?.row_count || 0) }} rows
+              </div>
+            </div>
           </template>
-          <template #default>
-            <div v-if="growthData[table]">
-              <div
-                v-for="period in ['daily', 'weekly', 'monthly']"
-                :key="period"
-                class="mb-2"
-              >
-                <div class="flex items-center justify-between">
-                  <strong class="capitalize">{{ period }} Growth:</strong>
-                  <div class="flex items-center">
-                    <Icon
-                      :name="getGrowthIcon(growthData[table][period].latest.growth_percentage)"
-                      :class="getGrowthClass(growthData[table][period].latest.growth_percentage)"
-                      class="mr-2"
-                      size="24px"
-                    />
-                    <span
-                      :class="getGrowthClass(growthData[table][period].latest.growth_percentage)"
-                    >
-                      {{ formatPercentage(growthData[table][period].latest.growth_percentage) }}
-                    </span>
-                  </div>
+
+          <div
+            v-if="growthData[table]"
+            class="space-y-6"
+          >
+            <div
+              v-for="period in ['daily', 'weekly', 'monthly']"
+              :key="period"
+              class="group relative"
+            >
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-400 capitalize">
+                  {{ period }}
+                </span>
+                <div class="flex items-center space-x-2">
+                  <Icon
+                    :name="getGrowthIcon(growthData[table][period].latest.growth_percentage)"
+                    :class="[
+                      getGrowthClass(growthData[table][period].latest.growth_percentage),
+                      'transition-transform group-hover:scale-110',
+                    ]"
+                    size="20"
+                  />
+                  <span
+                    :class="[
+                      getGrowthClass(growthData[table][period].latest.growth_percentage),
+                      'font-mono text-sm',
+                    ]"
+                  >
+                    {{ formatPercentage(growthData[table][period].latest.growth_percentage) }}
+                  </span>
                 </div>
+              </div>
+
+              <div class="relative h-12 overflow-hidden rounded-lg bg-gray-800/50">
                 <PrimeChart
                   type="line"
                   :data="getSparklineData(table, period)"
                   :options="sparklineOptions"
-                  class="mt-1 h-8"
+                  class="absolute inset-0"
                 />
               </div>
-              <div class="mt-4">
-                <strong>Total Rows:</strong>
-                {{ formatNumber(growthData[table].daily.latest.row_count) }}
-              </div>
             </div>
-            <div
-              v-else
-              class="italic text-gray-400"
-            >
-              No data available
-            </div>
-          </template>
+          </div>
+
+          <div
+            v-else
+            class="flex h-full items-center justify-center py-8 text-gray-500"
+          >
+            <Icon
+              name="mdi:database-off"
+              size="48"
+              class="mr-2"
+            />
+            <span>No data available</span>
+          </div>
         </IBGlass>
       </div>
     </div>
@@ -288,13 +332,18 @@ onMounted(async () => {
 
 <style scoped>
 .table-growth-dashboard {
-  font-family: 'Arial', sans-serif;
+  background-image: radial-gradient(circle at 10% 20%, rgba(91, 37, 195, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(37, 99, 195, 0.1) 0%, transparent 50%);
 }
-.p-card {
-  transition: all 0.3s ease;
+
+/* Smooth transitions */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
 }
-.p-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

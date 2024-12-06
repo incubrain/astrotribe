@@ -1,9 +1,12 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import runtimeConfig from '../../shared-runtime.config'
+import sharedConfig from '../../shared-runtime.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
+
+// REQUIRED FOR LOGGER
+process.env.SERVICE_NAME = 'auth-service'
 
 export default defineNuxtConfig({
   workspaceDir: '../../',
@@ -63,5 +66,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-10-03',
 
-  ...runtimeConfig,
+  runtimeConfig: {
+    serviceName: 'auth-service',
+    ...sharedConfig.runtimeConfig.private,
+    public: {
+      serviceName: 'auth-service',
+      ...sharedConfig.runtimeConfig.public,
+    },
+  },
 })
