@@ -8,6 +8,7 @@ const form = ref({
 const auth = useAuth()
 const currentUser = useCurrentUser()
 const { haveUserSession } = storeToRefs(currentUser)
+const turnstile = ref()
 const turnstileValid = ref(false)
 const turnstileToken = ref<string | null>(null)
 
@@ -18,6 +19,7 @@ const handleLogin = async () => {
 
   await auth.loginWithEmail(form.value.email, form.value.password, {
     turnstileToken: turnstileToken.value,
+    resetTurnstile: turnstile.value.reset,
   })
 }
 
@@ -108,6 +110,7 @@ definePageMeta({
         </div>
 
         <TurnstileChallenge
+          ref="turnstile"
           class="mb-4"
           :on-valid-token="onValidTurnstile"
         />
