@@ -11,7 +11,7 @@ const { store, loadMore, refresh } = useSelectData<News>('news', {
     // content_status: { eq: 'draft' },
     body: { neq: 'null' },
   },
-  orderBy: { column: 'created_at', ascending: false },
+  orderBy: { column: 'published_at', ascending: false },
   initialFetch: true,
   pagination: { page: 1, limit: 20 },
   storeKey: 'mainNewsFeed',
