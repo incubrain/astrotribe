@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { AppError, ErrorType, ErrorSeverity, useLogger } from '@ib/logger'
+import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useRateLimit } from './useRateLimit'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
