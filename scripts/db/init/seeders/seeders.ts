@@ -245,24 +245,54 @@ export async function seedBookmarkFolders(pool: Pool, userIds: string[]) {
   return folders
 }
 
-export async function seedBookmarks(
-  pool: Pool,
-  folderIds: string[],
-  contents: any[],
-  userIds: string[],
-): Promise<any> {
-  const bookmarks = contents.map((content) => ({
-    id: generateUUID(),
-    user_id: faker.helpers.arrayElement(userIds),
-    content_id: content.id,
-    content_type: content.content_type,
-    folder_id: faker.helpers.arrayElement(folderIds),
-    metadata: { notes: faker.lorem.sentence() },
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
-  }))
+export async function seedBookmarks(pool: Pool, folders: any[], contents: any[]): Promise<any> {
+  const bookmarks = [] as any[]
+  const userContentMap = new Map() // Track user's bookmarked content
 
-  await bulkInsert(pool, 'bookmarks', bookmarks)
+  // Sort folders by user_id to group them
+  const foldersByUser = folders.reduce((acc, folder) => {
+    if (!acc[folder.user_id]) {
+      acc[folder.user_id] = []
+    }
+    acc[folder.user_id].push(folder)
+    return acc
+  }, {})
+
+  // For each user
+  Object.entries(foldersByUser).forEach(([userId, userFolders]) => {
+    // Get a subset of contents for this user
+    const userContentCount = faker.number.int({ min: 5, max: 20 })
+    const userContents = faker.helpers.arrayElements(contents, userContentCount)
+
+    // Distribute these contents across user's folders
+    userContents.forEach((content) => {
+      // Get random folder from user's folders
+      const randomFolder = faker.helpers.arrayElement(userFolders as any[])
+
+      // Create unique key for user-content combination
+      const key = `${userId}-${content.content_type}-${content.id}`
+
+      // Only create bookmark if this combination doesn't exist
+      if (!userContentMap.has(key)) {
+        userContentMap.set(key, true)
+        bookmarks.push({
+          id: generateUUID(),
+          user_id: userId,
+          folder_id: randomFolder.id,
+          content_id: content.id,
+          content_type: content.content_type,
+          metadata: { notes: faker.lorem.sentence() },
+          created_at: faker.date.past(),
+          updated_at: faker.date.recent(),
+        })
+      }
+    })
+  })
+
+  if (bookmarks.length > 0) {
+    await bulkInsert(pool, 'bookmarks', bookmarks)
+  }
+  return bookmarks
 }
 
 export async function seedComments(
