@@ -65,7 +65,7 @@ onUnmounted(() => {
   }
 })
 
-const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
+const { loginURL, authURL } = useRuntimeConfig().public
 </script>
 
 <template>
@@ -149,7 +149,10 @@ const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
 
           <!-- CTA section -->
           <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
-            <NuxtLink :to="String(`${aeAuthUrl}${aeLoginUrl}`)" external>
+            <NuxtLink
+              :to="String(`${authURL}${loginURL}`)"
+              external
+            >
               <PrimeButton
                 size="large"
                 class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"

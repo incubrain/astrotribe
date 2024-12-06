@@ -49,7 +49,7 @@ onMounted(() => {
   })
 })
 
-const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
+const { loginURL, authURL } = useRuntimeConfig().public
 </script>
 
 <template>
@@ -120,7 +120,7 @@ const { aeLoginUrl, aeAuthUrl } = useRuntimeConfig().public
             <span class="text-sky-400">It's free!</span>
           </h3>
           <NuxtLink
-            :to="String(`${aeAuthUrl}${aeLoginUrl}`)"
+            :to="String(`${authURL}${loginURL}`)"
             external
           >
             <PrimeButton

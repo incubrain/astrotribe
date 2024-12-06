@@ -1,7 +1,6 @@
 // First in the types file (index.d.ts)
 import type { Consola } from 'consola'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { BaseLogger } from './src/logger'
 import type { LogMetadata } from './src/error-interface'
 import type { Service, ServiceToDomain } from './src/enums-domains'
 
@@ -12,7 +11,7 @@ export * from './src/enums-domains'
 export * from './types/nuxt.d'
 
 // Generic interface for the logger
-export interface CentralizedLogger<S extends Service = Service> extends BaseLogger {
+export class CentralizedLogger<S extends Service = Service> {
   setServiceName(service: S): void
   setDomain(domain: ServiceToDomain[S]): void
   error(message: string, metadata?: any): void
