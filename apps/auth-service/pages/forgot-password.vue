@@ -2,6 +2,13 @@
 
 <script setup lang="ts">
 // If you use PKCE (default), this link only works on the device or browser where the original reset request was made. Display a message to the user to make sure they don't change devices or browsers.
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
 
 const form = reactive({
   email: '',
@@ -32,11 +39,16 @@ definePageMeta({
           <label for="username">Your Registered Email</label>
         </PrimeFloatLabel>
       </div>
+      <TurnstileChallenge
+        class="mb-4"
+        :on-valid-token="onValidTurnstile"
+      />
     </template>
     <template #footer>
       <PrimeButton
         class="w-full flex justify-center"
-        @click="auth.password.forgot(form.email)"
+        :disabled="!turnstileValid"
+        @click="auth.password.forgot(form.email, turnstileToken)"
       >
         Request Reset Email
       </PrimeButton>

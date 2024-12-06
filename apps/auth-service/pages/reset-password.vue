@@ -9,20 +9,6 @@ const form = reactive({
   confirmPassword: '',
 })
 
-// Get the hash fragment from the URL (Supabase includes the token here)
-const hash = route.hash
-
-onMounted(() => {
-  // Verify the hash exists
-  if (!hash) {
-    toast.error({
-      summary: 'Invalid Reset Link',
-      message: 'This password reset link is invalid or has expired',
-    })
-    return
-  }
-})
-
 async function handlePasswordReset() {
   if (form.password !== form.confirmPassword) {
     toast.error({
@@ -54,35 +40,50 @@ async function handlePasswordReset() {
 
 <template>
   <AuthCard
-    title="Reset Password"
-    subtitle="Enter your new password below"
+    :show-title="false"
+    :title="{
+      main: 'Reset Password',
+      subtitle: 'Enter your new password below',
+    }"
   >
-    <form @submit.prevent="handlePasswordReset">
-      <div class="space-y-4">
-        <PrimeFloatLabel>
-          <PrimePassword
+    <template #content>
+      <form
+        class="space-y-4 w-100"
+        @submit.prevent="handlePasswordReset"
+      >
+        <div class="flex flex-col gap-2">
+          <label
+            for="password"
+            class="text-sm"
+            >Password</label
+          >
+          <FormPassword
+            id="password"
             v-model="form.password"
             :feedback="true"
+            toggle-mask
             required
           />
-          <label>New Password</label>
-        </PrimeFloatLabel>
-
-        <PrimeFloatLabel>
-          <PrimePassword
+        </div>
+        <div class="flex flex-col gap-2">
+          <label
+            for="confirm-password"
+            class="text-sm"
+            >Confirm Password</label
+          >
+          <FormPassword
+            id="confirm-password"
             v-model="form.confirmPassword"
             required
           />
-          <label>Confirm Password</label>
-        </PrimeFloatLabel>
-
+        </div>
         <PrimeButton
           type="submit"
           class="w-full"
         >
           Reset Password
         </PrimeButton>
-      </div>
-    </form>
+      </form>
+    </template>
   </AuthCard>
 </template>
