@@ -19,86 +19,81 @@ onMounted(() => {
 
 <template>
   <section class="py-24">
-    <GlassPanel
-      gradient="purple"
-      intensity="medium"
+    <LandingTitle
+      title="Hear From The Community"
+      subtitle="Discover How We're Making a Difference"
+      class="!pb-12"
+    />
+    <!-- Testimonials Carousel -->
+    <AppSwiper
+      :items="testimonials"
+      type="testimonial"
+      class="testimonials-carousel"
     >
-      <LandingTitle
-        title="Hear From The Community"
-        subtitle="Discover How We're Making a Difference"
-        class="!pb-12"
-      />
-      <!-- Testimonials Carousel -->
-      <AppSwiper
-        :items="testimonials"
-        type="testimonial"
-        class="testimonials-carousel"
-      >
-        <template #default="{ item }: { item: Testimonial }">
-          <div class="testimonial-item group">
-            <!-- Card with glass effect -->
+      <template #default="{ item }: { item: Testimonial }">
+        <div class="testimonial-item group">
+          <!-- Card with glass effect -->
+          <div
+            class="relative h-full rounded-xl bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 p-8"
+          >
+            <!-- Hover gradient -->
             <div
-              class="relative h-full rounded-xl bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 p-8"
-            >
-              <!-- Hover gradient -->
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
-              ></div>
+              class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+            ></div>
 
-              <!-- Content -->
-              <div class="relative z-10">
-                <!-- Profile section -->
-                <div class="flex items-center mb-8">
-                  <div class="relative">
-                    <IBImage
-                      :img="{
-                        src: item.image,
-                        alt: item.name,
-                        width: '60px',
-                        height: '60px',
-                        loading: 'lazy',
-                        quality: '80',
-                        format: 'webp',
-                      }"
-                      class="min-h-16 min-w-16 rounded-full ring-2 ring-sky-500/20"
-                    />
-                    <!-- Glow behind image -->
-                    <div class="absolute inset-0 bg-sky-500/20 blur-xl -z-10"></div>
-                  </div>
-
-                  <div class="flex flex-col pl-4">
-                    <h3 class="text-xl font-semibold text-white">{{ item.name }}</h3>
-                    <p class="text-sky-400">{{ item.company }}</p>
-                  </div>
+            <!-- Content -->
+            <div class="relative z-10">
+              <!-- Profile section -->
+              <div class="flex items-center mb-8">
+                <div class="relative">
+                  <IBImage
+                    :img="{
+                      src: item.image,
+                      alt: item.name,
+                      width: '60px',
+                      height: '60px',
+                      loading: 'lazy',
+                      quality: '80',
+                      format: 'webp',
+                    }"
+                    class="min-h-16 min-w-16 rounded-full ring-2 ring-sky-500/20"
+                  />
+                  <!-- Glow behind image -->
+                  <div class="absolute inset-0 bg-sky-500/20 blur-xl -z-10"></div>
                 </div>
 
-                <!-- Quote section -->
-                <div class="relative">
-                  <div class="relative rounded-xl foreground p-6">
-                    <Icon
-                      name="mdi:format-quote-open"
-                      class="absolute -top-4 left-4 text-sky-400/40"
-                      size="32px"
-                    />
-                    <p class="text-gray-300 italic relative z-10">{{ item.quote }}</p>
-                    <Icon
-                      name="mdi:format-quote-close"
-                      class="absolute -bottom-4 right-4 text-sky-400/40"
-                      size="32px"
-                    />
-                  </div>
+                <div class="flex flex-col pl-4">
+                  <h3 class="text-xl font-semibold text-white">{{ item.name }}</h3>
+                  <p class="text-sky-400">{{ item.company }}</p>
+                </div>
+              </div>
+
+              <!-- Quote section -->
+              <div class="relative">
+                <div class="relative rounded-xl foreground p-6">
+                  <Icon
+                    name="mdi:format-quote-open"
+                    class="absolute -top-4 left-4 text-sky-400/40"
+                    size="32px"
+                  />
+                  <p class="text-gray-300 italic relative z-10">{{ item.quote }}</p>
+                  <Icon
+                    name="mdi:format-quote-close"
+                    class="absolute -bottom-4 right-4 text-sky-400/40"
+                    size="32px"
+                  />
                 </div>
               </div>
             </div>
-
-            <!-- Card glow effect -->
-            <div
-              class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
-            ></div>
           </div>
-        </template>
-      </AppSwiper>
-    </GlassPanel>
+
+          <!-- Card glow effect -->
+          <div
+            class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
+          ></div>
+        </div>
+      </template>
+    </AppSwiper>
   </section>
 </template>
 

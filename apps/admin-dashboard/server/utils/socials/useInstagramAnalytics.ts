@@ -1,18 +1,15 @@
-import { useErrorHandler, useLoggerAsync } from '@ib/logger'
-
 const INSTAGRAM_API_URL = 'https://graph.instagram.com'
 const ACCESS_TOKEN = 'YOUR_INSTAGRAM_ACCESS_TOKEN'
 const PREFIX = 'useInstagramAnalytics'
 
 export async function useInstagramAnalytics() {
-  const log = await useLoggerAsync(PREFIX)
-  const errors = useErrorHandler(PREFIX)
+  const logger = useServerLogger(PREFIX)
 
   async function fetchProfileStatistics(userId: string) {
     log.info(`Fetching instagram profile statistics for: ${userId}`)
     const url = `${INSTAGRAM_API_URL}/${userId}?fields=id,username,media_count,followers_count,follows_count&access_token=${ACCESS_TOKEN}`
     const response = await $fetch(url)
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch profile statistics for ${userId}`,
       userMessage: `Failed to fetch statistics for profile ${userId}`,
@@ -27,7 +24,7 @@ export async function useInstagramAnalytics() {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     })
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch business analytics for ${username}`,
       userMessage: `Failed to fetch analytics for ${username}`,

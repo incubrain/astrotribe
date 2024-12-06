@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     },
   ],
 
+  nitro: {
+    experimental: {
+      asyncContext: true,
+    },
+  },
+
   icon: {
     preload: true,
     provider: 'server',

@@ -1,5 +1,3 @@
-import { useErrorHandler } from '@ib/logger'
-
 interface YouTubeVideo {
   title: string
   description: string
@@ -70,23 +68,23 @@ export async function getYoutubeContent(username: string): Promise<YouTubeProfil
 }
 
 export function useYoutubeChannel(channelId: string) {
-  const errors = useErrorHandler('getYoutubeChannelAnalytics')
+  const logger = useServerLogger('getYoutubeChannelAnalytics')
 
   async function fetchChannelStatistics() {
     const url = `${YOUTUBE_API_URL}channels?part=statistics&id=${channelId}&key=${GOOGLE_API_KEY}`
     const response = await $fetch(url)
-    const data = errors.handleFetchError({
+    const data = logger.error(`Failed to fetch channel statistics for ${channelId}`, {
       response,
-      devMessage: `Failed to fetch channel statistics for ${channelId}`,
       userMessage: `Failed to fetch statistics for channel ${channelId}`,
     })
+
     return data.items[0].statistics
   }
 
   async function fetchChannelVideos() {
     const url = `${YOUTUBE_API_URL}search?key=${GOOGLE_API_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=5`
     const response = await $fetch(url)
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch channel videos for ${channelId}`,
       userMessage: `Failed to fetch videos for channel ${channelId}`,
@@ -98,7 +96,7 @@ export function useYoutubeChannel(channelId: string) {
   async function fetchVideoStatistics(videoId: string) {
     const url = `${YOUTUBE_API_URL}videos?part=statistics&id=${videoId}&key=${GOOGLE_API_KEY}`
     const response = await $fetch(url)
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch video statistics for ${channelId}`,
       userMessage: `Failed to fetch video statistics for channel ${channelId}`,

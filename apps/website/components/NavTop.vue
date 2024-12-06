@@ -230,7 +230,7 @@ watch(
               <div class="space-x-2 lg:space-x-4">
                 <NuxtLink
                   v-ripple
-                  :to="$config.public.aeAuthUrl"
+                  :to="$config.public.authURL"
                 >
                   <PrimeButton
                     severity="contrast"
@@ -242,7 +242,7 @@ watch(
 
                 <NuxtLink
                   v-ripple
-                  :to="`${$config.public.aeAuthUrl}/register`"
+                  :to="`${$config.public.authURL}/register`"
                 >
                   <PrimeButton> Join AstronEra </PrimeButton>
                 </NuxtLink>

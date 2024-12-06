@@ -1,8 +1,5 @@
 import dns from 'dns/promises'
 import { defineEventHandler, getHeaders, setResponseStatus, send } from 'h3'
-import { useLogger } from '@ib/logger'
-
-const logger = useLogger()
 
 const ALLOWED_CRAWLER_PATTERNS: RegExp[] = [
   /googlebot/i,
@@ -54,6 +51,8 @@ const rdnsCache = new Map<string, { hostnames: string[]; expiresAt: number }>()
 const RDNS_CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
 
 export default defineEventHandler(async (event) => {
+  const logger = useServerLogger()
+
   if (import.meta.prerender) {
     logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return

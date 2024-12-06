@@ -75,18 +75,6 @@ const reset = () => {
   }
 }
 
-onMounted(() => {
-  if (document.querySelector(`script[src="${TURNSTILE_URL}"]`)) {
-    renderTurnstile()
-  }
-
-  watch(scriptLoaded, (loaded) => {
-    if (loaded) {
-      renderTurnstile()
-    }
-  })
-})
-
 const renderTurnstile = () => {
   if (window.turnstile) {
     window.turnstile.render('.cf-turnstile', {
@@ -98,6 +86,18 @@ const renderTurnstile = () => {
     })
   }
 }
+
+onMounted(() => {
+  if (document.querySelector(`script[src="${TURNSTILE_URL}"]`)) {
+    renderTurnstile()
+  }
+
+  watch(scriptLoaded, (loaded) => {
+    if (loaded) {
+      renderTurnstile()
+    }
+  })
+})
 
 // Expose reset method to parent components
 defineExpose({ reset })

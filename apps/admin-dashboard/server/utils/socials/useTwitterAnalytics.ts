@@ -1,5 +1,3 @@
-import { useErrorHandler } from '@ib/logger'
-
 // user tweet timeline
 // https://developer.twitter.com/en/docs/twitter-api/tweets/timelines/api-reference/get-users-id-tweets
 
@@ -20,7 +18,7 @@ const TWITTER_API_URL = 'https://api.twitter.com/2/tweets'
 const BEARER_TOKEN = 'YOUR_TWITTER_BEARER_TOKEN'
 
 export function useTwitterAnalytics(postId: string) {
-  const errors = useErrorHandler('getTwitterPostAnalytics')
+  const logger = useServerLogger('getTwitterPostAnalytics')
 
   //
   async function fetchPostAnalytics() {
@@ -30,7 +28,7 @@ export function useTwitterAnalytics(postId: string) {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     })
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch post analytics for ${postId}`,
       userMessage: `Failed to fetch analytics for post ${postId}`,
@@ -54,7 +52,7 @@ export function useTwitterAnalytics(postId: string) {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     })
-    const data = errors.handleFetchError({
+    const data = logger.error({
       response,
       devMessage: `Failed to fetch user profile for ${userId}`,
       userMessage: `Failed to fetch profile for user ${userId}`,

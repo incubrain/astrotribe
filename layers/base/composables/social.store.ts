@@ -1,5 +1,3 @@
-import { useLogger } from '@ib/logger'
-
 export const useSocialStore = defineStore('settingsStore', () => {
   const errors = useBaseError()
   const logger = useLogger('useSocialStore')

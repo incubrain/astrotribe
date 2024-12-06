@@ -1,12 +1,11 @@
 import { defineEventHandler, getQuery } from 'h3'
-import { useLoggerAsync, useErrorHandler } from '@ib/logger'
+
 import { useInstagramAnalytics } from '#imports'
 
 const PREFIX = 'social/instagram/insights'
 
 export default defineEventHandler(async (event) => {
-  const log = await useLoggerAsync(PREFIX)
-  const errors = await useErrorHandler(PREFIX)
+  const logger = useServerLogger(PREFIX)
 
   const { userId } = getQuery(event) as { userId: string }
 
@@ -24,7 +23,7 @@ export default defineEventHandler(async (event) => {
       data: businessAnalytics,
     }
   } catch (error: any) {
-    errors.handleError({
+    logger.error({
       error,
       devMessage: 'Error fetching Instagram insights',
       userMessage: 'Error fetching Instagram insights',

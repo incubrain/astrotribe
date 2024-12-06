@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useErrorHandler } from '@ib/logger'
-
 const { store, loadMore, refresh, isSelecting } = useSelectData('table_statistics', {
   columns: 'table_name, table_size, row_count, capture_time',
   orderBy: { column: 'capture_time', ascending: false },
@@ -8,7 +6,7 @@ const { store, loadMore, refresh, isSelecting } = useSelectData('table_statistic
   initialFetch: true,
 })
 
-const { handleError } = useErrorHandler()
+const logger = useLogger('growth-metrics')
 const toast = useNotification()
 const { format, calculate } = useBaseMetrics()
 
@@ -74,14 +72,14 @@ const processData = () => {
       growth: calculate.percentile(
         [
           latestData.table_size / uniqueTables.size,
-          previousWeekData ?
-            previousWeekData.table_size /
-            new Set(
-              data
-                .filter((d) => d.capture_time <= previousWeekData.capture_time)
-                .map((d) => d.table_name),
-            ).size :
-            0,
+          previousWeekData
+            ? previousWeekData.table_size /
+              new Set(
+                data
+                  .filter((d) => d.capture_time <= previousWeekData.capture_time)
+                  .map((d) => d.table_name),
+              ).size
+            : 0,
         ],
         50,
       ),
@@ -115,7 +113,7 @@ onMounted(async () => {
     await loadMore()
     processData()
   } catch (error) {
-    handleError(error, 'Error loading dashboard data')
+    logger.error('Error loading dashboard data', error)
     toast.error({
       summary: 'Data Load Error',
       message: 'Failed to load dashboard data. Please try again later.',

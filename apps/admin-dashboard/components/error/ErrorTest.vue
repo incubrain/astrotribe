@@ -32,9 +32,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { createCentralizedLogger } from '@ib/logger'
 
-const logger = createCentralizedLogger('error-test')
+const logger = useLogger('error-test')
 const router = useRouter()
 
 const loading = ref(false)

@@ -1,7 +1,5 @@
 import { defineEventHandler, type H3Event } from 'h3'
-import { useLogger } from '@ib/logger'
 
-const logger = useLogger()
 // Load thresholds from environment variables or use default values
 const THRESHOLD_REQUESTS_PER_MINUTE = Number(process.env.THRESHOLD_REQUESTS_PER_MINUTE ?? 100)
 const THRESHOLD_UNIQUE_PATHS_PER_MINUTE = Number(
@@ -52,13 +50,15 @@ function checkAnomalies(path: string): string[] {
   return anomalies
 }
 
-function notifyAnomalies(anomalies: string[]) {
+function notifyAnomalies(anomalies: string[], logger: any) {
   logger.error('Anomalies detected:', anomalies)
   // Future implementation: Send notifications to monitoring services
 }
 
 // Define the middleware event handler
 export default defineEventHandler((event: H3Event) => {
+  const logger = useServerLogger()
+
   const url = event.node.req.url || '/'
   const host = event.node.req.headers.host || 'localhost'
   const path = new URL(url, `http://${host}`).pathname
@@ -70,7 +70,7 @@ export default defineEventHandler((event: H3Event) => {
 
   const anomalies = checkAnomalies(path)
   if (anomalies.length > 0) {
-    notifyAnomalies(anomalies)
+    notifyAnomalies(anomalies, logger)
   }
 
   // Continue processing the request

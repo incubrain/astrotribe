@@ -1,7 +1,7 @@
 // middleware/auth.ts
 export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
-  const { aeAppUrl } = config.public
+  const { appURL } = config.public
   const supabase = useSupabaseClient()
   const { data, error } = await supabase.auth.getSession()
   // Define public routes that don't require authentication
@@ -36,8 +36,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // Don't redirect to app if user is logged in and accessing the password settings
   // If user is logged in and tries to access a public route, redirect to app
   if (isPublicRoute) {
-    return navigateTo(aeAppUrl, { external: true })
+    return navigateTo(appURL, { external: true })
   }
   // Redirect to main app for all other authenticated routes
-  return navigateTo(aeAppUrl, { external: true })
+  return navigateTo(appURL, { external: true })
 })
