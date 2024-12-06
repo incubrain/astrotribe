@@ -63,7 +63,7 @@ const filteredBookmarks = computed(() => {
 // Methods
 const clearSelection = () => {
   bookmarkManager.clearSelection()
-  selectedFolderId.value = null
+  movingFolderId.value = null
 }
 
 const handleMoveSelected = async () => {
@@ -180,10 +180,10 @@ const isEmpty = computed(() => {
 
             <!-- Move button -->
             <PrimeButton
-              :disabled="!selectedFolderId || isMoving"
+              :disabled="!movingFolderId || !bookmarkManager.selectedIds.value.length || isMoving"
               :loading="isMoving"
-              @click="handleMoveSelected"
               class="!p-2 lg:!p-3"
+              @click="handleMoveSelected"
             >
               <Icon
                 name="mdi:folder-move"
@@ -196,6 +196,7 @@ const isEmpty = computed(() => {
 
             <!-- Delete button -->
             <PrimeButton
+              :disabled="!bookmarkManager.selectedIds.value.length"
               severity="danger"
               class="!p-2 lg:!p-3"
               @click="handleDeleteSelected"
@@ -209,9 +210,10 @@ const isEmpty = computed(() => {
 
             <!-- Clear selection button -->
             <PrimeButton
+              :disabled="!bookmarkManager.selectedIds.value.length && !movingFolderId"
               severity="secondary"
-              @click="clearSelection"
               class="!p-2 lg:!p-3"
+              @click="clearSelection"
             >
               <Icon
                 name="mdi:close"
