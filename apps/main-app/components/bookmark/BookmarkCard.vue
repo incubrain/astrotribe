@@ -13,17 +13,15 @@ defineEmits<{
   (e: 'select', id: string): void
 }>()
 
-console.log('BookmarkCard props', props)
-
 const bookmarkStore = useBookmarkStore()
 
 const isBookmarked = computed(() =>
-bookmarkStore.isBookmarked(props.bookmark.content_id, props.bookmark.content_type),
+  bookmarkStore.isBookmarked(props.bookmark.content_id, props.bookmark.content_type),
 )
 
 const handleBookmark = async () => {
   try {
-    await bookmarkStore.toggleBookmark({
+    await bookmarkStore.handleToggleBookmark({
       id: props.bookmark.content_id,
       type: props.bookmark.content_type,
       title: props.bookmark.metadata.title,

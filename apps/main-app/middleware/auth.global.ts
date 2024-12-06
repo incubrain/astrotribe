@@ -19,11 +19,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const { data, error } = await supabase.auth.getSession()
 
-  if (error || !data.session) {
+  if (data.session && $formbricks) {
+    try {
+      $formbricks.setUserId(data.session.user.id)
+    } catch (err) {
+      console.warn('Failed to set Formbricks user ID:', err)
+    }
+  } else if (!data.session) {
     console.log('USER_NOT_LOGGED_IN', `${authURL}${loginURL}`)
     return navigateTo(String(`${authURL}${loginURL}`), { external: true })
-  } else {
-    console.log('USER_LOGGED_IN', data.session, $formbricks)
-    // $formbricks.setUserId(data.session.user.id)
+  } else if (data.session) {
+    console.log('USER_LOGGED_IN', data.session)
   }
 })

@@ -41,10 +41,23 @@ interface Bookmark {
   }
 }
 
+interface BookmarkableContent {
+  id: string
+  type: 'news' | 'research' | 'newsletters' // add other types as needed
+  title: string
+  url?: string
+  description?: string
+  featured_image?: string
+  author?: string
+  metadata?: Record<string, any>
+  folder_id?: string
+}
+
 // stores/useBookmarkStore.ts
 export const useBookmarkStore = defineStore('bookmarks', () => {
   const bookmarks = ref<Bookmark[]>([])
   const bookmarksByFolder = ref<Map<string, Bookmark[]>>(new Map())
+  const showBookmarkFeedback = ref(false)
 
   const folderBookmarkCounts = ref<Record<string, number>>({})
 
@@ -305,6 +318,29 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     await fetchBookmarks()
   }
 
+  const handleToggleBookmark = async (content: any, folder_id?: string) => {
+    try {
+      const bookmarkData = {
+        id: content.id,
+        type: content.content_type || 'news',
+        title: content.title || content.metadata?.title,
+        thumbnail: content.featured_image || content.metadata?.featured_image,
+        url: content.url || content.metadata?.url,
+        author: content.author || content.metadata?.author,
+        description: content.description || content.metadata?.description,
+        folder_id,
+      }
+
+      await toggleBookmark(bookmarkData)
+      showBookmarkFeedback.value = true
+      setTimeout(() => {
+        showBookmarkFeedback.value = false
+      }, 1000)
+    } catch (error) {
+      console.error('Error handling bookmark:', error)
+    }
+  }
+
   return {
     bookmarks,
     loading,
@@ -316,8 +352,10 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
 
     // Computed
     filteredBookmarks,
+    showBookmarkFeedback,
 
     // Actions
+    handleToggleBookmark,
     removeBookmarks,
     fetchBookmarks,
     setCurrentFolder,

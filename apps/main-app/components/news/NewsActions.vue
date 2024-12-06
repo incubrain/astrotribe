@@ -3,7 +3,7 @@
 interface Props {
   newsId: string
   score: number
-  commentsCount: number
+  commentsCount?: number
   bookmarked: boolean
   currentVote: number | null // Add this
   url: string
@@ -55,7 +55,7 @@ const emit = defineEmits<{
           name="mdi:comment-outline"
           size="20px"
         />
-        <span v-if="cardSide === 'back'">{{ commentsCount }}</span>
+        <span v-if="cardSide === 'back' && commentsCount">{{ commentsCount }}</span>
       </button>
     </div>
     <div class="flex items-center gap-2 justify-center">
