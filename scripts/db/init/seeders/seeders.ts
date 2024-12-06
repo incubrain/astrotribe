@@ -214,7 +214,7 @@ export async function seedContents(pool: Pool, count: number) {
     contents.push({
       id: generateUUID(),
       url,
-      content_type: faker.helpers.arrayElement(['companies', 'news', 'research', 'newsletters']),
+      content_type: faker.helpers.arrayElement(['news', 'research', 'newsletters']),
       title: faker.company.name(),
       rss_url: rssUrl,
       created_at: faker.date.past(),
@@ -276,7 +276,7 @@ export async function seedComments(
       content: faker.lorem.paragraph(),
       user_id: faker.helpers.arrayElement(userIds),
       content_id: contentId,
-      content_type: faker.helpers.arrayElement(['companies', 'news', 'research']),
+      content_type: faker.helpers.arrayElement(['news', 'research']),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     })),
@@ -306,7 +306,7 @@ export async function seedVotes(pool: Pool, contentIds: string[], userIds: strin
     const shuffledUsers = faker.helpers.shuffle([...userIds]).slice(0, numberOfVoters)
 
     for (const userId of shuffledUsers) {
-      const contentType = faker.helpers.arrayElement(['companies', 'news', 'research'])
+      const contentType = faker.helpers.arrayElement(['news', 'research'])
 
       // Create a unique key for this combination
       const combinationKey = `${contentType}-${contentId}-${userId}`
@@ -340,7 +340,6 @@ export async function seedContentSources(pool: Pool, companyIds: string[]) {
     'events',
     'jobs',
     'research',
-    'companies',
     'contact',
     'people',
     'unknown',
@@ -701,8 +700,9 @@ export async function seedResearch(pool: Pool, contentIds: string[]) {
   return research
 }
 
-export async function seedCompanies(pool: Pool, contentIds: string[]) {
-  const companies = contentIds.map((id) => {
+export async function seedCompanies(pool: Pool, count: number) {
+  const companies = Array.from({ length: count }, () => {
+    const id = generateUUID()
     const contentStatus = faker.helpers.arrayElement(['draft', 'published', 'archived'] as const)
     return {
       id,
@@ -710,7 +710,7 @@ export async function seedCompanies(pool: Pool, contentIds: string[]) {
       url: faker.internet.url(),
       description: faker.company.catchPhrase(),
       category: faker.company.buzzPhrase(),
-      content_status: contentStatus,
+      content_status: contentStatus, // This field exists directly on companies table
       is_english: true,
       founding_year: faker.number.int({ min: 1900, max: 2024 }),
       created_at: faker.date.past(),
@@ -720,9 +720,6 @@ export async function seedCompanies(pool: Pool, contentIds: string[]) {
 
   // Insert company entries
   await bulkInsert(pool, 'companies', companies)
-
-  // Create corresponding content statuses
-  await createContentStatuses(pool, companies, 'company')
 
   return companies
 }
@@ -1095,10 +1092,9 @@ export async function seedContentSourceVisits(pool: Pool, userIds: string[], con
   const contentTypeWeights = {
     news: 0.45, // Most common
     research: 0.15, // Higher value content
-    companies: 0.15, // Company profiles
-    events: 0.05, // Occasional
-    jobs: 0.05, // Job searches
-    newsletters: 0.05, // Newsletter views
+    events: 0.1, // Occasional
+    jobs: 0.1, // Job searches
+    newsletters: 0.1, // Newsletter views
     people: 0.05, // People profiles
     contact: 0.03, // Contact pages
     unknown: 0.02, // Edge cases
