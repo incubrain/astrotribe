@@ -235,10 +235,11 @@ const toggleFavorite = async (folder: Folder) => {
 const handleDelete = async (folder: Folder) => {
   const success = await folderStore.deleteFolder(folder.id)
   if (success) {
-    if (currentFolderId.value === folder.id) {
+    if (currentFolderId?.value === folder.id) {
       currentFolderId.value = null
     }
     await bookmarkStore.fetchBookmarks()
+    await bookmarkStore.fetchBookmarkCounts()
     activeActionsFolder.value = null
   }
 }
