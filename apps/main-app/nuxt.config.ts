@@ -114,6 +114,9 @@ export default defineNuxtConfig({
 
   // Add proper MIME type handling
   nitro: {
+    experimental: {
+      asyncContext: true,
+    },
     routeRules: {
       '/manifest.webmanifest': {
         headers: {
@@ -135,9 +138,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     ...sharedConfig.runtimeConfig.private,
+    serviceName: 'main-app',
     public: {
-      serviceName: 'app',
       ...sharedConfig.runtimeConfig.public,
+      serviceName: 'main-app',
     },
   },
 })

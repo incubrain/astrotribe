@@ -2,23 +2,38 @@
 import type { Service, ServiceToDomain } from '@ib/logger'
 
 export function useLogger(domain: ServiceToDomain[Service]) {
-  const { $logger } = useNuxtApp()
+  const nuxtApp = useNuxtApp()
+
+  // Ensure logger exists
+  if (!nuxtApp.$logger) {
+    console.warn('Logger not initialized')
+    // Return a dummy logger to prevent errors
+    return {
+      error: console.error,
+      warn: console.warn,
+      info: console.info,
+      setDomain: () => {},
+      handleResponse: async <T>(operation: () => Promise<T>) => operation(),
+    }
+  }
 
   // Set domain if provided
-  $logger.setDomain(domain)
+  if (domain) {
+    nuxtApp.$logger.setDomain(domain)
+  }
 
   return {
-    error: (msg: string, meta?: any) => $logger.error(msg, meta),
-    warn: (msg: string, meta?: any) => $logger.warn(msg, meta),
-    info: (msg: string, meta?: any) => $logger.info(msg, meta),
-    setDomain: (newDomain: ServiceToDomain[Service]) => $logger.setDomain(newDomain),
+    error: (msg: string, meta?: any) => nuxtApp.$logger.error(msg, meta),
+    warn: (msg: string, meta?: any) => nuxtApp.$logger.warn(msg, meta),
+    info: (msg: string, meta?: any) => nuxtApp.$logger.info(msg, meta),
+    setDomain: (newDomain: ServiceToDomain[Service]) => nuxtApp.$logger.setDomain(newDomain),
     handleResponse: <T>(
       operation: () => Promise<T>,
       operationDomain: ServiceToDomain[Service],
       options = {},
     ) => {
-      $logger.setDomain(operationDomain)
-      return $logger.handleResponse(operation, options)
+      nuxtApp.$logger.setDomain(operationDomain)
+      return nuxtApp.$logger.handleResponse(operation, options)
     },
   }
 }
