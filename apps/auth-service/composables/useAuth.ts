@@ -122,10 +122,11 @@ export function useAuth() {
     }
   }
 
-  async function forgotPassword(email: string) {
+  async function forgotPassword(email: string, turnstileToken: string | null) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${authUrl}settings/password`,
+      redirectTo: encodeURIComponent(`${authUrl}/reset-password`),
+      captchaToken: turnstileToken,
     })
 
     if (error) {
