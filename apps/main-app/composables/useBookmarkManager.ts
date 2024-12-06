@@ -59,6 +59,7 @@ export const useBookmarkManager = () => {
           await bookmarkStore.fetchBookmarks({})
         },
       })
+      await fetchBookmarkCounts()
     } catch (error) {
       console.error('Failed to delete bookmarks:', error)
     }
