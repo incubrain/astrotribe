@@ -130,7 +130,7 @@ const websiteLinks = [
 </script>
 
 <template>
-  <footer class="container py-8 gap-8 w-full relative flex">
+  <footer class="container py-8 gap-8 w-full relative flex flex-col">
     <LandingGlass
       hover-effect="glow"
       glow-color="purple"
@@ -139,21 +139,19 @@ const websiteLinks = [
       interactive
     >
       <!-- Content -->
-      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[180px_3fr_180px] gap-8 w-full">
+      <div class="relative z-10 flex flex-col gap-8 w-full lg:grid lg:grid-cols-[180px_3fr_180px]">
         <!-- Logo Section -->
-        <div class="flex items-start">
+        <div class="flex items-center justify-center lg:items-start lg:justify-start">
           <NuxtLink
             to="/"
             class="flex items-center gap-4 group"
           >
-            <div class="hidden gap-4 rounded-md p-1 lg:flex">
+            <div class="flex gap-4 rounded-md p-1">
               <div
                 class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
               >
                 <IBImage
-                  :img="{
-                    src: '/astronera-logo.jpg',
-                  }"
+                  :img="{ src: '/astronera-logo.jpg' }"
                   class="h-full w-full opacity-90"
                 />
               </div>
@@ -162,7 +160,7 @@ const websiteLinks = [
                   class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
                 >
                   Astron
-                  <strong class="font-extrabold text-primary-400"> Era </strong>
+                  <strong class="font-extrabold text-primary-400">Era</strong>
                 </h1>
               </div>
             </div>
@@ -170,23 +168,24 @@ const websiteLinks = [
         </div>
 
         <!-- Links Section -->
-        <div class="grid grid-cols-3 gap-8 mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full">
           <div
             v-for="link in websiteLinks"
             :key="link.key"
             class="space-y-4"
           >
-            <h4 class="font-space text-lg text-white">
+            <h4 class="font-space text-lg text-white text-center lg:text-left">
               {{ link.label }}
             </h4>
             <ul class="space-y-2">
               <li
                 v-for="item in link.items"
                 :key="item.key"
+                class="text-center lg:text-left"
               >
                 <NuxtLink
                   :to="item.url"
-                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300 text-sm max-w-xl text-wrap"
+                  class="text-gray-400 hover:text-sky-400 transition-colors duration-300 text-sm inline-block"
                 >
                   {{ item.label }}
                 </NuxtLink>
@@ -196,7 +195,7 @@ const websiteLinks = [
         </div>
 
         <!-- Social Links -->
-        <div class="flex flex-col items-end gap-4">
+        <div class="flex flex-row justify-center gap-4 lg:flex-col lg:items-end lg:justify-start">
           <NuxtLink
             v-for="social in socials"
             :key="social.id"
