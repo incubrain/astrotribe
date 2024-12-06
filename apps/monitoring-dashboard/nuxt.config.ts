@@ -54,10 +54,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    ...sharedConfig.private,
+    ...sharedConfig.runtimeConfig.private,
     public: {
       serviceName: 'auth-service',
-      ...sharedConfig.public,
+      ...sharedConfig.runtimeConfig.public,
     },
   },
 })

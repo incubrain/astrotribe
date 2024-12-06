@@ -67,10 +67,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-10-03',
 
   runtimeConfig: {
-    ...sharedConfig.private,
+    serviceName: 'auth-service',
+    ...sharedConfig.runtimeConfig.private,
     public: {
       serviceName: 'auth-service',
-      ...sharedConfig.public,
+      ...sharedConfig.runtimeConfig.public,
     },
   },
 })
