@@ -1,7 +1,6 @@
 import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
 import {
   ErrorType,
-  useLogger,
   ErrorSeverity,
   AppError,
   mapErrorSeverity,
