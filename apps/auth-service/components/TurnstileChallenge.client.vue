@@ -75,6 +75,19 @@ const reset = () => {
   }
 }
 
+const renderTurnstile = () => {
+  if (window.turnstile) {
+    console.log('Rendering Turnstile', config)
+    window.turnstile.render('.cf-turnstile', {
+      'sitekey': config.public.turnstileSiteKey,
+      'theme': colorMode.value === 'dark' ? 'dark' : 'light',
+      'callback': onSuccess,
+      'error-callback': onError,
+      'expired-callback': onExpired,
+    })
+  }
+}
+
 onMounted(() => {
   if (document.querySelector(`script[src="${TURNSTILE_URL}"]`)) {
     renderTurnstile()
@@ -86,18 +99,6 @@ onMounted(() => {
     }
   })
 })
-
-const renderTurnstile = () => {
-  if (window.turnstile) {
-    window.turnstile.render('.cf-turnstile', {
-      'sitekey': config.public.turnstileSiteKey,
-      'theme': colorMode.value === 'dark' ? 'dark' : 'light',
-      'callback': onSuccess,
-      'error-callback': onError,
-      'expired-callback': onExpired,
-    })
-  }
-}
 
 // Expose reset method to parent components
 defineExpose({ reset })

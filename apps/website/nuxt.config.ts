@@ -344,10 +344,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     serviceName: 'website',
-    ...sharedConfig.private,
+    ...sharedConfig.runtimeConfig.private,
     public: {
       serviceName: 'website',
-      ...sharedConfig.public,
+      ...sharedConfig.runtimeConfig.public,
     },
   },
 })

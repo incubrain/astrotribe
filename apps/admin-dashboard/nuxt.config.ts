@@ -66,10 +66,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    ...sharedConfig.private,
+    ...sharedConfig.runtimeConfig.private,
     serviceName: 'admin-dashboard',
     public: {
-      ...sharedConfig.public,
+      ...sharedConfig.runtimeConfig.public,
       serviceName: 'admin-dashboard',
     },
   },
