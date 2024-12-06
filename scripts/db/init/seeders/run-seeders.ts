@@ -141,14 +141,7 @@ export async function runSeeders() {
       seed.seedBookmarkFolders(client, userIds),
     )
 
-    await checkAndSeed(client, 'bookmarks', () =>
-      seed.seedBookmarks(
-        client,
-        folders.map((f) => f.id),
-        contents,
-        userIds,
-      ),
-    )
+    await checkAndSeed(client, 'bookmarks', () => seed.seedBookmarks(client, folders, contents))
 
     await checkAndSeed(client, 'content_source_visits', () =>
       seed.seedContentSourceVisits(client, userIds, newsContentIds),
@@ -173,9 +166,7 @@ export async function runSeeders() {
     // 8. Seed feedback and follows
     await checkAndSeed(client, 'feedbacks', () => seed.seedFeedback(client, userIds))
 
-    await checkAndSeed(client, 'follows', () =>
-      seed.seedFollows(client, userIds, companyIds),
-    )
+    await checkAndSeed(client, 'follows', () => seed.seedFollows(client, userIds, companyIds))
 
     // 9. Seed feeds and feed categories
     const feeds = await checkAndSeed(client, 'feeds', () => seed.seedFeeds(client, userIds))
