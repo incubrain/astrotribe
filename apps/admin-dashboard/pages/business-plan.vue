@@ -33,6 +33,9 @@ const businessPlanTabs = businessPlanSections.map((section, index) => ({
       :tabs="businessPlanTabs"
       class="relative h-full w-full pb-4"
     >
+      <template #start>
+        <h1 class="text-xl font-semibold text-white">Business Plan</h1>
+      </template>
       <template
         v-for="tab in businessPlanTabs"
         :key="tab.slotName"
