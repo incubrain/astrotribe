@@ -1,28 +1,5 @@
-// alter table "public"."role_permissions" add column "inherit_from" (public.)app_role_enum[];
-
-// create table "public"."role_hierarchy" (
-//   "parent_role" public.app_role_enum not null,
-//   "child_role" public.app_role_enum not null
-// );
-
-// create policy "delete_policy"
-// on "public"."bookmark_folders"
-// as permissive
-// for delete
-// to public
-// using ((public.)authorize('bookmark_folders.delete'::text));
-
-// alter table "public"."user_profiles" alter column "role" set default 'user'::public.app_role_enum;
-
-// p_role_key::app_role_enum,
-
-// alter table "public"."categories" alter column "id" set default nextval('public.categories_id_seq'::regclass);
-
-// CREATE OR REPLACE FUNCTION public.get_inherited_permissions(p_role app_role_enum)
-
-// CREATE TRIGGER ensure_default_bookmark_folder AFTER INSERT ON public.user_profiles FOR EACH ROW EXECUTE FUNCTION public.create_default_bookmark_folder();
-
 // scripts/fix-migration.ts
+
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
@@ -39,27 +16,53 @@ const __dirname = path.dirname(__filename)
 interface Replacement {
   find: RegExp
   replace: string
+  description: string // For better logging and maintenance
 }
 
-// Get the migration file path from command-line arguments
-const migrationFilePath = process.argv[2]
-
-if (!migrationFilePath) {
-  console.error('Usage: npx ts-node scripts/2.fix-migration.ts <migration_file.sql>')
-  process.exit(1)
-}
-
-// List of replacements to perform
 const replacements: Replacement[] = [
   {
     // Add 'public.' schema to unqualified function calls
     find: /EXECUTE FUNCTION (\w+\(.*?\))/g,
     replace: 'EXECUTE FUNCTION public.$1',
+    description: 'Function calls in triggers',
   },
-  // Add more replacements as needed
+  {
+    // Add public schema to unqualified app_role_enum type usage
+    find: /([^.])app_role_enum([^a-zA-Z])/g,
+    replace: '$1public.app_role_enum$2',
+    description: 'Unqualified app_role_enum types',
+  },
+  {
+    // Fix references to sequence class
+    find: /nextval\('(\w+)_id_seq'/g,
+    replace: "nextval('public.$1_id_seq'",
+    description: 'Sequence references',
+  },
+  {
+    // Add public schema to authorize function calls in policies
+    find: /\(\(([^.])authorize\(/g,
+    replace: '((public.authorize(',
+    description: 'Authorize function in policies',
+  },
+  {
+    // Add public schema to table references in alter table statements
+    find: /alter table "(\w+)" /gi,
+    replace: 'alter table "public.$1" ',
+    description: 'Table references in alter statements',
+  },
+  {
+    // Add public schema to table references in create table statements
+    find: /create table "(\w+)" /gi,
+    replace: 'create table "public.$1" ',
+    description: 'Table references in create statements',
+  },
+  {
+    // Add public schema to FROM clause references
+    find: /FROM (?!public\.)(\w+);/g,
+    replace: 'FROM public.$1;',
+    description: 'FROM clause table references',
+  },
 ]
-
-const backupDir = path.join(migrationFilePath, '../migration_backups')
 
 function backupMigrationFile(filePath: string) {
   ensureBackupDirExists()
@@ -92,16 +95,40 @@ function backupMigrationFile(filePath: string) {
 }
 
 function performReplacements(filePath: string) {
-  const content = fs.readFileSync(filePath, 'utf-8')
-  let updatedContent = content
+  let content = fs.readFileSync(filePath, 'utf-8')
+  let changesMade = false
 
-  replacements.forEach(({ find, replace }) => {
-    updatedContent = updatedContent.replace(find, replace)
+  replacements.forEach(({ find, replace, description }) => {
+    const newContent = content.replace(find, replace)
+    if (newContent !== content) {
+      console.log(`Applied fix: ${description}`)
+      changesMade = true
+      content = newContent
+    }
   })
 
-  fs.writeFileSync(filePath, updatedContent, 'utf-8')
-  console.log(`Migration file updated: ${filePath}`)
+  if (changesMade) {
+    fs.writeFileSync(filePath, content, 'utf-8')
+    console.log(`Migration file updated: ${filePath}`)
+  } else {
+    console.log('No changes were necessary')
+  }
 }
 
-backupMigrationFile(migrationFilePath)
-performReplacements(migrationFilePath)
+// Main execution
+const migrationFilePath = process.argv[2]
+
+if (!migrationFilePath) {
+  console.error('Usage: npx ts-node scripts/fix-migration.ts <migration_file.sql>')
+  process.exit(1)
+}
+
+const backupDir = path.join(path.dirname(migrationFilePath), 'migration_backups')
+
+try {
+  backupMigrationFile(migrationFilePath)
+  performReplacements(migrationFilePath)
+} catch (error) {
+  console.error('Error processing migration file:', error)
+  process.exit(1)
+}
