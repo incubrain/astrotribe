@@ -86,13 +86,6 @@ export async function insertTestData(pool: Pool): Promise<InsertedData> {
   }
 }
 
-// Function to get the next ID for a table (if needed)
-async function getNextId(client: PoolClient, table: string): Promise<number> {
-  const { rows } = await client.query(`
-      SELECT last_value FROM ${table}_id_seq
-    `)
-  return parseInt(rows[0].last_value) + 1
-}
 export async function cleanUpTestData(pool: Pool) {
   const client = await pool.connect()
   try {
@@ -125,6 +118,7 @@ export async function cleanUpTestData(pool: Pool) {
       'feature_requests',
       'feature_rankings',
       'content_source_visits',
+      'error_logs',
     ]
 
     for (const table of tables) {
@@ -154,148 +148,4 @@ export async function cleanUpTestData(pool: Pool) {
   } finally {
     client.release()
   }
-}
-
-async function insertReferenceData(client: PoolClient, insertedData: InsertedData) {
-  // Insert categories
-  const { rows: categories } = await client.query(
-    `
-    INSERT INTO categories (id, name)
-    SELECT * FROM json_populate_recordset(null::categories, $1)
-    RETURNING *
-  `,
-    [JSON.stringify(REFERENCE_DATA.categories)],
-  )
-  insertedData.categories = categories
-
-  // Insert countries
-  await client.query(
-    `
-    INSERT INTO countries (id, name, code, code_3)
-    SELECT * FROM json_populate_recordset(null::countries, $1)
-  `,
-    [JSON.stringify(REFERENCE_DATA.countries)],
-  )
-
-  // Insert cities
-  await client.query(
-    `
-    INSERT INTO cities (id, name, country_id)
-    SELECT * FROM json_populate_recordset(null::cities, $1)
-  `,
-    [JSON.stringify(REFERENCE_DATA.cities)],
-  )
-
-  // Insert tags
-  const { rows: tags } = await client.query(
-    `
-    INSERT INTO tags (id, name)
-    SELECT * FROM json_populate_recordset(null::tags, $1)
-    RETURNING *
-  `,
-    [JSON.stringify(REFERENCE_DATA.tags)],
-  )
-  insertedData.tags = tags
-}
-
-async function insertUserData(
-  client: PoolClient,
-  context: TestDataContext,
-  insertedData: InsertedData,
-) {
-  const userData = generateTestData('user_profiles', context)
-  const {
-    rows: [user],
-  } = await client.query(
-    `
-    INSERT INTO user_profiles (
-      id, email, given_name, surname, username, role, plan
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-    RETURNING *
-  `,
-    [
-      userData.id,
-      userData.email,
-      userData.given_name,
-      userData.surname,
-      userData.username,
-      userData.role,
-      userData.plan,
-    ],
-  )
-  insertedData.users.push(user)
-}
-
-async function insertContentData(
-  client: PoolClient,
-  context: TestDataContext,
-  insertedData: InsertedData,
-) {
-  // Insert content
-  const contentData = generateTestData('contents', context, {
-    content_type: 'news',
-    title: faker.lorem.sentence(),
-    url: faker.internet.url(),
-  })
-
-  const {
-    rows: [content],
-  } = await client.query(
-    `
-    INSERT INTO contents (
-      content_type, url, title
-    ) VALUES ($1, $2, $3)
-    RETURNING *
-  `,
-    [contentData.content_type, contentData.url, contentData.title],
-  )
-
-  insertedData.contents.push(content)
-  context.contentIds.news = content.id
-
-  // Insert news
-  const newsData = generateTestData('news', context, {
-    id: content.id,
-    title: content.title,
-    category_id: context.categoryIds[0],
-  })
-
-  await client.query(
-    `
-    INSERT INTO news (
-      id, title, category_id, url
-    ) VALUES ($1, $2, $3, $4)
-  `,
-    [newsData.id, newsData.title, newsData.category_id, contentData.url],
-  )
-}
-
-async function insertUserGeneratedContent(
-  client: PoolClient,
-  context: TestDataContext,
-  insertedData: InsertedData,
-) {
-  // Insert bookmarks
-  const bookmarkData = generateTestData('bookmarks', context)
-  await client.query(
-    `
-    INSERT INTO bookmarks (
-      user_id, content_id, content_type
-    ) VALUES ($1, $2, $3)
-  `,
-    [bookmarkData.user_id, bookmarkData.content_id, bookmarkData.content_type],
-  )
-
-  // Insert comments
-  const commentData = generateTestData('comments', context)
-  await client.query(
-    `
-    INSERT INTO comments (
-      user_id, content_id, content_type, content
-    ) VALUES ($1, $2, $3, $4)
-  `,
-    [commentData.user_id, commentData.content_id, commentData.content_type, commentData.content],
-  )
-
-  // Add other user-generated content insertions
 }
