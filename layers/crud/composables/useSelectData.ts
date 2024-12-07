@@ -80,7 +80,7 @@ export function useSelectData<T extends { id: string | number }>(
           })
         }
       } else if (options.value.limit) {
-        queryvalue.range = { from: 0, to: options.value.limit - 1 }
+        queryOptions.range = { from: 0, to: options.value.limit - 1 }
       }
 
       const result = await select<T>(tableName, queryOptions)
