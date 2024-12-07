@@ -80,7 +80,7 @@ const handleSubmit = async () => {
     <div class="grid grid-cols-2 gap-4">
       <div class="space-y-2">
         <label class="block text-sm font-medium">Status</label>
-        <PrimeDropdown
+        <PrimeSelect
           v-model="form.status"
           :options="statusOptions"
           optionLabel="label"
