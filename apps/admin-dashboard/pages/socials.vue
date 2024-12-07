@@ -54,6 +54,9 @@ const socialsTabs = [
       :tabs="socialsTabs"
       class="h-full w-full"
     >
+      <template #start>
+        <h1 class="text-xl font-semibold text-white">Socials</h1>
+      </template>
       <template
         v-for="tab in socialsTabs"
         :key="tab.tabName"

@@ -22,27 +22,40 @@ defineProps<{
   >
     <PrimeTabList
       :pt="{
-        root: 'gap-4 sticky top-0 left-0 z-50 flex text-nowrap flex-grow w-full overflow-scroll bg-black no-scrollbar border-b border-color',
+        root: 'gap-4 sticky top-0 left-0 z-50 flex items-center text-nowrap w-full overflow-scroll bg-black no-scrollbar border-b border-color',
       }"
       :pt-options="{ mergeSections: true, mergeProps: true }"
     >
-      <PrimeTab
-        v-for="tab in tabs"
-        :key="tab.title"
-        :value="tab.value"
-        :pt="{
-          root: ({ context }) => ({
-            class: [
-              'text-nowrap px-6 py-4 border-x border-color h-full',
-              { 'bg-primary-900': context.active },
-            ],
-          }),
-        }"
-        :pt-options="{ mergeSections: true, mergeProps: true }"
-      >
-        {{ tab.title }}
-      </PrimeTab>
+      <!-- Start Slot -->
+
+      <!-- Tabs -->
+      <div class="flex-1 flex items-center">
+        <div class="flex-none px-4">
+          <slot name="start" />
+        </div>
+        <PrimeTab
+          v-for="tab in tabs"
+          :key="tab.title"
+          :value="tab.value"
+          :pt="{
+            root: ({ context }) => ({
+              class: [
+                'text-nowrap px-6 py-4 border-x border-color h-full',
+                { 'bg-primary-900': context.active },
+              ],
+            }),
+          }"
+          :pt-options="{ mergeSections: true, mergeProps: true }"
+        >
+          {{ tab.title }}
+        </PrimeTab>
+        <!-- End Slot -->
+        <div class="flex-none px-4">
+          <slot name="end" />
+        </div>
+      </div>
     </PrimeTabList>
+
     <PrimeTabPanel
       v-for="tab in tabs"
       :key="`tab-index-${tab.title}`"
@@ -57,4 +70,13 @@ defineProps<{
   </PrimeTabs>
 </template>
 
-<style></style>
+<style scoped>
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+</style>
