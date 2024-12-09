@@ -23,4 +23,11 @@ export default defineWorkspace([
       root: './apps/admin-dashboard',
     },
   },
+  {
+    extends: './vitest.shared.config.ts',
+    test: {
+      name: 'auth-service',
+      root: './apps/auth-service',
+    },
+  },
 ])

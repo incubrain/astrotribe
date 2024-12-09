@@ -12,7 +12,11 @@ const orderBy = computed(() => ({
   ascending: false,
 }))
 
-const { store, loadMore, refresh } = useSelectData<News>('contents', {
+const {
+  store,
+  loadMore: originalLoadMore,
+  refresh,
+} = useSelectData<News>('contents', {
   columns:
     'id, title, url, created_at, content_type, hot_score, news(published_at, description, category_id, author, keywords, featured_image, company_id, score, companies(name, logo_url))',
   filters: {
@@ -46,32 +50,77 @@ function mapContentToNews(item: any): News {
 const { items: proxyNews } = storeToRefs(store)
 // Add transition state
 
-// Modify how the news items are displayed
-const visibleNews = computed(() => {
-  return proxyNews.value.map((item) => mapContentToNews(toRaw(item)))
-})
+const {
+  topBannerAd, // This is now already a computed value from the store
+  integrateAdsIntoFeed,
+  resetAdTracking,
+  isLoading: adsLoading,
+} = useAdsStore()
 
 const loading = useLoadingStore()
 const isTransitioning = ref(false)
 
+// A ref to store the fully integrated feed (news + ads)
+const displayedFeed = ref<
+  Array<
+    | News
+    | {
+        id: string
+        type: 'sponsored'
+        content: Ad
+        sortIndex: number
+        adIndex: number
+      }
+  >
+>([])
+
+const visibleNews = computed(() => displayedFeed.value)
+
+const updateDisplayedFeed = (newsItems: News[], isFullRefresh = false) => {
+  const mappedNews = newsItems.map((item) => mapContentToNews(toRaw(item)))
+
+  if (isFullRefresh) {
+    resetAdTracking()
+    displayedFeed.value = integrateAdsIntoFeed(mappedNews, true)
+  } else {
+    const integratedChunk = integrateAdsIntoFeed(mappedNews, false)
+    displayedFeed.value = [...displayedFeed.value, ...integratedChunk]
+  }
+}
+
+// Initialize displayedFeed after initial fetch
+watch(proxyNews, (newVal) => {
+  if (isTransitioning.value) {
+    // Sorting refresh scenario
+    updateDisplayedFeed(newVal, true)
+  } else if (displayedFeed.value.length === 0) {
+    // Initial load scenario
+    updateDisplayedFeed(newVal, true)
+  } else {
+    // If this triggers after infinite scroll additions,
+    // new items are appended to proxyNews so we only integrate the added portion:
+    if (newVal.length > displayedFeed.value.length) {
+      const addedItems = newVal.slice(displayedFeed.value.length)
+      updateDisplayedFeed(addedItems, false)
+    }
+  }
+})
+
 const showSkeletonGrid = computed(() => {
   const isLoadingState = loading.isLoading(domainKey)
   const isTransitioningState = isTransitioning.value
-  console.log('Loading states:', { isLoadingState, isTransitioningState })
-  return isLoadingState || isTransitioningState
+  const isAdsLoading = adsLoading.value
+  return isLoadingState || isTransitioningState || isAdsLoading
 })
 
 async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
-  // Remove this line since we're now getting the new value directly
-  // sortingMethod.value = sortingMethod.value === 'created_at' ? 'hot_score' : 'created_at'
-
   isTransitioning.value = true
   loading.setLoading(domainKey, true)
 
   const scrollPosition = window.scrollY
 
   try {
-    // Use the new value directly
+    // Sorting changed - full refresh scenario
     sortingMethod.value = newValue
     await refresh()
     await nextTick()
@@ -86,6 +135,13 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
   }
 }
 
+// Wrap loadMore to append new items incrementally
+async function handleLoadMore() {
+  // Load more data
+  await originalLoadMore()
+  // The watch(proxyNews) logic will handle appending the new integrated ads
+}
+
 definePageMeta({
   name: 'News',
 })
@@ -94,8 +150,13 @@ definePageMeta({
 <template>
   <div>
     <FeedTitle title="News Feed" />
+
     <BlackFridayBanner />
 
+    <AdsBanner
+      v-if="topBannerAd"
+      :ad="topBannerAd"
+    />
     <FeedHotToggle
       v-model="sortingMethod"
       @update:model-value="toggleHotScore"
@@ -106,19 +167,31 @@ definePageMeta({
         name="fade"
         mode="out-in"
       >
-        <!-- Real Content -->
         <IBInfiniteScroll
           v-if="!showSkeletonGrid"
-          @update:scroll-end="loadMore()"
+          @update:scroll-end="handleLoadMore"
         >
           <div
             class="mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:col-start-2 gap-4 md:gap-8 p-4 md:p-8 max-w-[940px]"
           >
-            <NewsCard
-              v-for="item in visibleNews"
+            <template
+              v-for="(item, index) in visibleNews"
               :key="item.id"
-              :news="item"
-            />
+            >
+              <div
+                :id="`feed-item-${index}`"
+                class="grid-item"
+              >
+                <NewsCard
+                  v-if="item.type !== 'sponsored'"
+                  :news="item"
+                />
+                <AdsFeedCard
+                  v-else
+                  :ad="item.content"
+                />
+              </div>
+            </template>
           </div>
         </IBInfiniteScroll>
 
@@ -146,5 +219,10 @@ definePageMeta({
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.grid-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 </style>

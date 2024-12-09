@@ -44,6 +44,7 @@ interface ChartProps {
 }
 
 const props = defineProps<{
+  optionsVisible: boolean
   chart: ChartProps
 }>()
 
@@ -193,7 +194,7 @@ function generateScales(
           position: 'right',
           title: {
             display: true,
-            text: formatTitle(dataset.valueType),
+            text: dataset.label,
           },
           ticks: {
             callback: dataFormatters[dataset.valueType],
@@ -211,7 +212,7 @@ function generateScales(
           type: scaleType,
           title: {
             display: true,
-            text: formatTitle(dataset.valueType),
+            text: dataset.label,
           },
           ticks: {
             callback: dataFormatters[dataset.valueType],
@@ -241,6 +242,8 @@ function formatTitle(dataType: DataType) {
       return 'Percent'
     case 'users':
       return 'Users'
+    case 'views':
+      return 'Views'
     case 'employees':
       return 'Employees'
     default:
@@ -334,7 +337,10 @@ const dataFormatters = {
       :plugins="[customPaddingPlugin]"
       :options="chartOptions"
     />
-    <div class="border-color flex w-full gap-2 rounded-lg border px-3 py-2">
+    <div
+      v-if="optionsVisible"
+      class="border-color flex w-full gap-2 rounded-lg border px-3 py-2"
+    >
       <button
         class="border-color flex gap-2 border-r pr-2"
         @click="isFullScreen = true"

@@ -61,6 +61,12 @@ const adminLinks = ref([
         icon: 'mdi:alert-circle-outline',
       },
       {
+        id: 10,
+        label: 'Advertising',
+        slug: '/advertising',
+        icon: 'mdi:google-ads',
+      },
+      {
         id: 11,
         label: 'Financials',
         slug: '/financials',

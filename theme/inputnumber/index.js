@@ -14,7 +14,7 @@ export default {
           parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       {
-        'border-0 border-y border-l last:border-r border-surface-600':
+        'border-0 border-y border-l last:border-r border-surface-800':
           parent.instance.$name == 'InputGroup' && !props.showButtons,
       },
       { 'first:ml-0 -ml-px': parent.instance.$name == 'InputGroup' && !props.showButtons },
@@ -23,7 +23,7 @@ export default {
       { '!w-16': props.showButtons && props.buttonLayout == 'vertical' },
     ],
   }),
-  pcInput: {
+  pcInputText: {
     root: ({ parent, context }) => ({
       class: [
         // Font
@@ -31,8 +31,8 @@ export default {
         // 'leading-[normal]',
 
         // Display
-        'flex-auto',
-        { 'w-[1%]': parent.props.fluid },
+        'flex flex-grow',
+        'min-w-full',
 
         // Text
         { 'text-center': parent.props.showButtons && parent.props.buttonLayout == 'vertical' },
@@ -59,7 +59,7 @@ export default {
         'placeholder:text-surface-100',
         { 'bg-surface-900': !context.disabled },
         'border',
-        { 'border-surface-300 ': !parent.props.invalid },
+        { 'border-surface-800 ': !parent.props.invalid },
 
         // Invalid State
         'invalid:focus:ring-red-200',
@@ -68,14 +68,14 @@ export default {
 
         // States
         { 'hover:border-primary': !parent.props.invalid },
-        'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-400/50 focus:z-10',
+        'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-700/50 focus:z-10',
         { 'opacity-60 select-none pointer-events-none cursor-default': context.disabled },
 
         // Filled State *for FloatLabel
         {
           filled:
-            parent.instance?.$parentInstance?.$name == 'FloatLabel'
-            && parent.state.d_modelValue !== null,
+            parent.instance?.$parentInstance?.$name == 'FloatLabel' &&
+            parent.state.d_modelValue !== null,
         },
 
         // Position

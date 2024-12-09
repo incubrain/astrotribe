@@ -100,7 +100,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray-900 border-b border-gray-800">
+  <div class="bg-primary-950">
     <div class="max-w-[940px] mx-auto px-4 py-6 md:px-8">
       <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold text-white">{{ title }}</h1>

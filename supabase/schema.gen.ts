@@ -2152,46 +2152,46 @@ export type Database = {
       }
       binary_quantize:
         | {
-          Args: {
-            '': string
+            Args: {
+              '': string
+            }
+            Returns: unknown
           }
-          Returns: unknown
-        }
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
           }
-          Returns: unknown
-        }
       calculate_table_growth:
         | {
-          Args: {
-            p_table_name: string
-            p_end_date?: string
+            Args: {
+              p_table_name: string
+              p_end_date?: string
+            }
+            Returns: {
+              period: string
+              start_date: string
+              end_date: string
+              start_row_count: number
+              end_row_count: number
+              row_growth: number
+              growth_percentage: number
+            }[]
           }
-          Returns: {
-            period: string
-            start_date: string
-            end_date: string
-            start_row_count: number
-            end_row_count: number
-            row_growth: number
-            growth_percentage: number
-          }[]
-        }
         | {
-          Args: {
-            p_table_name: string
-            p_time_period: unknown
-            p_num_periods: number
+            Args: {
+              p_table_name: string
+              p_time_period: unknown
+              p_num_periods: number
+            }
+            Returns: {
+              period_end_time: string
+              row_count: number
+              growth_count: number
+              growth_percentage: number
+            }[]
           }
-          Returns: {
-            period_end_time: string
-            row_count: number
-            growth_count: number
-            growth_percentage: number
-          }[]
-        }
       cleanup_table_stats: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -2378,36 +2378,36 @@ export type Database = {
       }
       l2_norm:
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: number
           }
-          Returns: number
-        }
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: number
           }
-          Returns: number
-        }
       l2_normalize:
         | {
-          Args: {
-            '': string
+            Args: {
+              '': string
+            }
+            Returns: string
           }
-          Returns: string
-        }
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
           }
-          Returns: unknown
-        }
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: unknown
           }
-          Returns: unknown
-        }
       match_research: {
         Args: {
           query_embedding: string
@@ -2466,17 +2466,17 @@ export type Database = {
       }
       vector_dims:
         | {
-          Args: {
-            '': string
+            Args: {
+              '': string
+            }
+            Returns: number
           }
-          Returns: number
-        }
         | {
-          Args: {
-            '': unknown
+            Args: {
+              '': unknown
+            }
+            Returns: number
           }
-          Returns: number
-        }
       vector_norm: {
         Args: {
           '': string
@@ -2754,7 +2754,7 @@ export type Database = {
           owner_id: string | null
           part_number: number
           size: number
-          upload_id: string
+          upload_uuid: string
           version: string
         }
         Insert: {
@@ -2766,7 +2766,7 @@ export type Database = {
           owner_id?: string | null
           part_number: number
           size?: number
-          upload_id: string
+          upload_uuid: string
           version: string
         }
         Update: {
@@ -2778,7 +2778,7 @@ export type Database = {
           owner_id?: string | null
           part_number?: number
           size?: number
-          upload_id?: string
+          upload_uuid?: string
           version?: string
         }
         Relationships: [
@@ -2790,8 +2790,8 @@ export type Database = {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey'
-            columns: ['upload_id']
+            foreignKeyName: 's3_multipart_uploads_parts_upload_uuid_fkey'
+            columns: ['upload_uuid']
             isOneToOne: false
             referencedRelation: 's3_multipart_uploads'
             referencedColumns: ['id']
@@ -2902,23 +2902,23 @@ type PublicSchema = Database[Extract<keyof Database, 'public'>]
 
 export type Tables<
   PublicTableNameOrOptions extends
-  | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
-  | { schema: keyof Database },
+    | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])
+        Database[PublicTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-    Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
-    Row: infer R
-  }
+      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
+      Row: infer R
+    }
     ? R
     : never
   : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] & PublicSchema['Views'])
     ? (PublicSchema['Tables'] & PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
+        Row: infer R
+      }
       ? R
       : never
     : never
@@ -2930,14 +2930,14 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-    Insert: infer I
-  }
+      Insert: infer I
+    }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
     ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
+        Insert: infer I
+      }
       ? I
       : never
     : never
@@ -2949,14 +2949,14 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-    Update: infer U
-  }
+      Update: infer U
+    }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
     ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
+        Update: infer U
+      }
       ? U
       : never
     : never
