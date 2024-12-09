@@ -4,6 +4,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import { fileURLToPath } from 'url'
 import chalk from 'chalk'
+import { preMigrationChecks } from './0.pre-migration-checks'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -70,6 +71,10 @@ function findLatestMigrationFile(migrationName: string): string | null {
 
 async function runMigration() {
   try {
+    // Step 0: Pre-migration checks
+    console.log(chalk.blue('🔍 Step 0: Running pre-migration checks'))
+    await preMigrationChecks()
+
     // Step 1: Generate the migration
     console.log(chalk.blue('📝 Step 1: Generating migration'))
     await runCommand(`supabase db diff -f "${migrationName}"`)
