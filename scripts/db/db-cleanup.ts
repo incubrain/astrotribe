@@ -1,5 +1,5 @@
 import pool from 'pg-pool'
-import { cleanUpTestData } from '../../libs/db-testing/src/data-inserter'
+import { cleanUpTestData } from '../../libs/db-testing/src/data-cleaner'
 import client from './client'
 
 async function runCleanup() {
