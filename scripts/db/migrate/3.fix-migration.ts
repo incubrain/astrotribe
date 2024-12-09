@@ -1,5 +1,7 @@
 // scripts/fix-migration.ts
 
+// JOIN ad_variants needed to be JOIN public.ad_variants
+
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
@@ -39,10 +41,10 @@ const replacements: Replacement[] = [
     description: 'Sequence references',
   },
   {
-    // Add public schema to authorize function calls in policies
-    find: /\(\(([^.])authorize\(/g,
-    replace: '((public.authorize(',
-    description: 'Authorize function in policies',
+    // Ensure authorize function calls in policies include public schema
+    find: /using \(([^.])authorize\(/g,
+    replace: 'using (public.authorize(',
+    description: 'Authorize function in policies (using clause)',
   },
   {
     // Add public schema to table references in alter table statements

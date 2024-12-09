@@ -1400,7 +1400,7 @@ export async function seedAdVariants(pool: Pool, adIds: string[]) {
     // Create 2-3 variants for each ad
     Array.from({ length: faker.number.int({ min: 2, max: 3 }) }, (_, index) => ({
       id: generateUUID(),
-      ad_uuid: adId,
+      ad_id: adId,
       content: generateAdContent(),
       is_control: index === 0, // First variant is control
       active: true,
