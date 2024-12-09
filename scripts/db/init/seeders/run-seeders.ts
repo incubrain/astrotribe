@@ -97,6 +97,31 @@ export async function runSeeders() {
       seed.seedNewsletters(client, newsletterContentIds),
     )
 
+    // Seed ads and related data
+    const adPackages = await checkAndSeed(client, 'ad_packages', () => seed.seedAdPackages(client))
+
+    const ads = await checkAndSeed(client, 'ads', () =>
+      seed.seedAds(
+        client,
+        companyIds,
+        adPackages.map((p) => p.id),
+      ),
+    )
+
+    const adVariants = await checkAndSeed(client, 'ad_variants', () =>
+      seed.seedAdVariants(
+        client,
+        ads.map((a) => a.id),
+      ),
+    )
+
+    await checkAndSeed(client, 'ad_daily_metrics', () =>
+      seed.seedAdDailyMetrics(
+        client,
+        adVariants.map((v) => v.id),
+      ),
+    )
+
     // 4. Seed content relationships
     await checkAndSeed(client, 'content_categories', () =>
       seed.seedContentCategories(client, allContentIds, categoryIds),

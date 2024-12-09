@@ -1285,3 +1285,156 @@ export async function seedErrorLogs(pool: Pool, userIds: string[], count = 1000)
   await bulkInsert(pool, 'error_logs', logs)
   return logs
 }
+
+// ADS
+
+// Helper for generating ad content variants
+function generateAdContent() {
+  return {
+    title: faker.company.catchPhrase(),
+    description: faker.company.buzzPhrase(),
+    featured_image: faker.image.urlLoremFlickr({ category: 'technology' }),
+    background_image: faker.image.urlLoremFlickr({ category: 'space' }),
+    cta_text: faker.helpers.arrayElement([
+      'Learn More',
+      'Get Started',
+      'Discover Now',
+      'See Details',
+      'Join Today',
+    ]),
+    cta_url: faker.internet.url(),
+    tagline: faker.company.catchPhrase(),
+  }
+}
+
+export async function seedAdPackages(pool: Pool) {
+  const packages = [
+    {
+      id: generateUUID(),
+      name: 'Orbital Premium',
+      position: 'top',
+      description: 'Premium visibility with top banner placement',
+      price: 2000.0,
+      features: [
+        'Top banner placement',
+        'Maximum visibility across platform',
+        'Custom branding options',
+        'Advanced A/B testing',
+        'Real-time analytics dashboard',
+        'Priority support channel',
+      ],
+      active: true,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      name: 'Deep Space Feed',
+      position: 'feed',
+      description: 'Seamless integration in content feed',
+      price: 1000.0,
+      features: [
+        'Strategic feed placement',
+        'Native content integration',
+        'Basic analytics package',
+        'Standard A/B testing',
+        'Regular support access',
+      ],
+      active: true,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      name: 'Newsletter Sponsor',
+      position: 'newsletter',
+      description: 'Reach our dedicated subscriber base',
+      price: 1500.0,
+      features: [
+        'Featured newsletter placement',
+        'Targeted audience reach',
+        'Performance tracking',
+        'Custom email templates',
+        'Engagement analytics',
+      ],
+      active: true,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+  ]
+
+  await bulkInsert(pool, 'ad_packages', packages)
+  return packages
+}
+
+export async function seedAds(pool: Pool, companyIds: string[], packageIds: string[]) {
+  const ads = Array.from({ length: 10 }, () => {
+    // Start date between now and 7 days ago
+    const startDate = faker.date.between({
+      from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      to: new Date(),
+    })
+
+    // End date one year from start date
+    const endDate = new Date(startDate)
+    endDate.setFullYear(endDate.getFullYear() + 1)
+
+    return {
+      id: generateUUID(),
+      company_id: faker.helpers.arrayElement(companyIds),
+      package_id: faker.helpers.arrayElement(packageIds),
+      start_date: startDate,
+      end_date: endDate,
+      active: true,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    }
+  })
+
+  await bulkInsert(pool, 'ads', ads)
+  return ads
+}
+
+export async function seedAdVariants(pool: Pool, adIds: string[]) {
+  const variants = adIds.flatMap((adId) =>
+    // Create 2-3 variants for each ad
+    Array.from({ length: faker.number.int({ min: 2, max: 3 }) }, (_, index) => ({
+      id: generateUUID(),
+      ad_uuid: adId,
+      content: generateAdContent(),
+      is_control: index === 0, // First variant is control
+      active: true,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    })),
+  )
+
+  await bulkInsert(pool, 'ad_variants', variants)
+  return variants
+}
+
+export async function seedAdDailyMetrics(pool: Pool, variantIds: string[]) {
+  // Generate 30 days of metrics for each variant
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+  const metrics = variantIds.flatMap((variantId) =>
+    Array.from({ length: 30 }, (_, i) => {
+      const date = new Date(thirtyDaysAgo)
+      date.setDate(date.getDate() + i)
+
+      return {
+        id: generateUUID(),
+        variant_id: variantId,
+        date: date.toISOString().split('T')[0],
+        views: faker.number.int({ min: 100, max: 1000 }),
+        clicks: faker.number.int({ min: 5, max: 50 }),
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
+      }
+    }),
+  )
+
+  await bulkInsert(pool, 'ad_daily_metrics', metrics)
+  return metrics
+}

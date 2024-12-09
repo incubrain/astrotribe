@@ -1,0 +1,48 @@
+
+graph TD
+    %% Initial Impression Metrics
+    subgraph Visibility["Initial Ad Exposure"]
+        V1[Ad Enters Viewport] -->|50% Visible| FirstView[Record View]
+        FirstView -->|Track| UniqueView[Unique View Count]
+        FirstView -->|Start| ViewDuration[View Duration Timer]
+    end
+
+    %% Engagement Metrics
+    subgraph Engagement["User Engagement"]
+        ViewDuration -->|Measures| TimeVisible[Time in Viewport]
+        
+        FeedCard{Feed Card Type?}
+        FeedCard -->|Yes| FlipCard[Card Flip]
+        FeedCard -->|No| NoFlip[Banner View]
+        
+        FlipCard -->|Track| ReadTime[Content Read Time]
+        FlipCard -->|Record| FlipRate[Flip Rate]
+        
+        ReadTime --> EngagementScore[Engagement Score]
+        TimeVisible --> EngagementScore
+    end
+
+    %% Interaction Metrics
+    subgraph Conversion["Conversion Actions"]
+        Click[Click Event] -->|Record| CTR[Click-Through Rate]
+        Click -->|Calculate| ClickLatency[Time to Click]
+        
+        ViewDuration --> ConversionMetrics[Conversion Metrics]
+        CTR --> ConversionMetrics
+        ClickLatency --> ConversionMetrics
+    end
+
+    %% Package Performance
+    subgraph Performance["Package Analytics"]
+        ConversionMetrics -->|Calculate| PackageROI[Package ROI]
+        EngagementScore -->|Influence| PackageROI
+        
+        PackageROI -->|Update| ExpectedCTR[Expected CTR]
+        PackageROI -->|Update| AvgROI[Average ROI]
+        PackageROI -->|Update| ViewFreq[View Frequency]
+    end
+
+    classDef metrics fill:#1a365d,stroke:#2c5282,color:#fff;
+    classDef actions fill:#2d3748,stroke:#4a5568,color:#fff;
+    class FirstView,UniqueView,ViewDuration,CTR,EngagementScore,PackageROI metrics;
+    class Click,FlipCard,NoFlip actions;
