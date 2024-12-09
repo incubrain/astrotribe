@@ -113,6 +113,7 @@ onBeforeUnmount(() => {
               >
                 {{ variant.content.title }}
               </h3>
+              <p>{{ variant.content.tagline }}</p>
             </div>
             <div>
               <div class="mb-4">
@@ -124,12 +125,12 @@ onBeforeUnmount(() => {
                   />
                 </div>
               </div>
-              <div class="flex items-center justify-between">
+              <div class="flex w-full">
                 <a
                   :href="variant.content.cta_url"
                   target="_blank"
                   rel="noopener noreferrer sponsored"
-                  class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  class="bg-blue-600 text-white px-4 flex justify-center items-center w-full py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   @click="() => handleSourceVisit(isVisible, startTime)"
                 >
                   {{ variant.content.cta_text || 'Learn More' }}
