@@ -17,6 +17,10 @@ const handleLogin = async () => {
     return
   }
 
+  const event = useRequestEvent()
+  const cookies = event.node.req.headers.cookie
+  console.log('COOKIES =>', cookies)
+
   await auth.loginWithEmail(form.value.email, form.value.password, {
     turnstileToken: turnstileToken.value,
     resetTurnstile: turnstile.value.reset,
