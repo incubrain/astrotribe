@@ -91,7 +91,7 @@ const renderTurnstile = () => {
     turnstileWidgetId.value = window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,
       'theme': colorMode.value === 'dark' ? 'dark' : 'light',
-      'callback': onSuccess,
+      'callback': onValidToken,
       'error-callback': onError,
       'expired-callback': onExpired,
     })
