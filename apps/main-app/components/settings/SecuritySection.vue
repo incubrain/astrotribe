@@ -12,6 +12,10 @@ const form = reactive({
   confirmPassword: '',
 })
 
+const hasEmailProvider = computed(() => {
+  return profile.value?.providers?.includes('email')
+})
+
 onMounted(async () => {
   loading.value = true
   linkedIdentities.value = await security.getLinkedIdentities()
