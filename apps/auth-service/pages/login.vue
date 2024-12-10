@@ -120,7 +120,7 @@ definePageMeta({
           :disabled="!turnstileValid"
           @click="handleLogin"
         >
-          Sign in with email
+          Login
         </PrimeButton>
       </div>
     </template>
