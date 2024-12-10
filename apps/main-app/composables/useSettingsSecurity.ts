@@ -1,6 +1,7 @@
 // composables/useSettingsSecurity.ts
 export function useSettingsSecurity() {
   const supabase = useSupabaseClient()
+  const currentUser = useCurrentUser()
   const toast = useNotification()
 
   // Linked Identities
@@ -81,10 +82,53 @@ export function useSettingsSecurity() {
     return true
   }
 
+  async function verifyLogin(password?: string) {
+    if (!password) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: currentUser.profile.providers[0],
+        options: { skipBrowserRedirect: true },
+      })
+
+      return error
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: currentUser.profile.email,
+        password,
+      })
+
+      return error
+    }
+  }
+
+  async function deleteAccount(password?: string) {
+    const error = await verifyLogin(password)
+    const { authUrl } = useRuntimeConfig().public
+
+    if (error) {
+      toast.error({ summary: 'Deletion Failed', message: error.message })
+      return
+    }
+
+    const { error: deleteError } = await supabase.rpc('delete_user', {
+      user_id: currentUser.profile.id,
+    })
+
+    if (deleteError) {
+      toast.error({ summary: 'Deletion Failed', message: deleteError.message })
+      return
+    }
+
+    toast.success({ summary: 'Account Deleted', message: 'Redirecting...' })
+    const { error: signOutError } = await supabase.auth.signOut()
+
+    setTimeout(() => navigateTo(authUrl, { external: true }), 1000)
+  }
+
   return {
     getLinkedIdentities,
     linkIdentity,
     unlinkIdentity,
+    deleteAccount,
     setPassword,
     setupTwoFactor,
     verifyTwoFactor,
