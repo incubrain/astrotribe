@@ -1,10 +1,10 @@
 // server/api/ads/track.post.ts
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { variantId, type, engagementTime = null } = body
-  const client = await serverSupabaseClient(event)
+  const client = serverSupabaseServiceRole(event)
 
   const today = new Date().toISOString().split('T')[0]
 
