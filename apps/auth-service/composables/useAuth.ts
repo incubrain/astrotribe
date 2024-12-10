@@ -68,6 +68,13 @@ export function useAuth() {
       },
     })
 
+    console.log('DATA', data)
+    if (data.user!.identities!.isEmpty) {
+      toast.error({ summary: 'Registration Failure', message: 'User already exists' })
+      if (formData.resetTurnstile) formData.resetTurnstile()
+      return
+    }
+
     if (error) {
       toast.error({ summary: 'Registration Failure', message: error.message })
       if (formData.resetTurnstile) formData.resetTurnstile()
