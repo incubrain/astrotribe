@@ -2,13 +2,13 @@
 import { useTimeAgo } from '@vueuse/core'
 import { ref, onMounted } from 'vue'
 
-export interface Company {
+interface Company {
   id: string
   name: string
   logo_url?: string
 }
 
-export interface NewsCardT {
+interface NewsCardT {
   id: string
   title: string
   description: string
@@ -21,6 +21,12 @@ export interface NewsCardT {
   score?: number
   company_id?: string
   companies?: Company
+  summary?: {
+    // Add this
+    id: string
+    summary: string
+    news_id: string
+  }
 }
 
 interface Props {
@@ -64,6 +70,12 @@ const sourceDisplay = computed(() => {
   }
   return 'Unknown source'
 })
+
+const hasSummary = computed(() => props.news.summary && props.news.summary.length > 0)
+
+const summary = computed(() =>
+  hasSummary.value ? props.news.summary![0].summary : props.news.description,
+)
 
 const formatSourceName = (name: string) => {
   // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
@@ -237,7 +249,7 @@ onBeforeUnmount(async () => {
           >
             {{ news.title }}</h3
           >
-          <p class="text-base overflow-y-auto flex-grow">{{ news.description }}</p>
+          <p class="text-sm overflow-y-auto flex-grow">{{ summary ?? news.description }}</p>
         </div>
 
         <!-- Back side actions -->
