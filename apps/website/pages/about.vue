@@ -6,7 +6,7 @@
         main: 'The AstronEra Journey',
       }"
       fit="cover"
-      object-position="object-top"
+      object-position="center"
     />
     <div class="container mx-auto flex flex-col gap-12 xl:gap-24 xl:py-24">
       <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">

@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 // If you use PKCE (default), this link only works on the device or browser where the original reset request was made. Display a message to the user to make sure they don't change devices or browsers.
+const turnstile = ref()
 const turnstileValid = ref(false)
 const turnstileToken = ref<string | null>(null)
 
@@ -40,6 +41,7 @@ definePageMeta({
         </PrimeFloatLabel>
       </div>
       <TurnstileChallenge
+        ref="turnstile"
         class="mb-4"
         :on-valid-token="onValidTurnstile"
       />
@@ -48,7 +50,7 @@ definePageMeta({
       <PrimeButton
         class="w-full flex justify-center"
         :disabled="!turnstileValid"
-        @click="auth.password.forgot(form.email, turnstileToken)"
+        @click="auth.password.forgot(form.email, turnstileToken, turnstile.reset)"
       >
         Request Reset Email
       </PrimeButton>

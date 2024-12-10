@@ -53,6 +53,7 @@ export function useAuth() {
     given_name: string
     surname: string
     turnstileToken?: string | null
+    resetTurnstile?: () => void
   }) => {
     // Proceed with registration
     const { data, error } = await supabase.auth.signUp({
@@ -69,6 +70,7 @@ export function useAuth() {
 
     if (error) {
       toast.error({ summary: 'Registration Failure', message: error.message })
+      if (formData.resetTurnstile) formData.resetTurnstile()
       return
     }
 
@@ -81,7 +83,10 @@ export function useAuth() {
   const loginWithEmail = async (
     email: string,
     password: string,
-    options?: { turnstileToken: string | null },
+    options?: {
+      turnstileToken: string | null
+      resetTurnstile: () => void
+    },
   ) => {
     // Proceed with login
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -92,6 +97,7 @@ export function useAuth() {
 
     if (error) {
       toast.error({ summary: 'Authentication Failure', message: error.message })
+      options?.resetTurnstile()
       return
     }
 
@@ -122,7 +128,11 @@ export function useAuth() {
     }
   }
 
-  async function forgotPassword(email: string, turnstileToken: string | null) {
+  async function forgotPassword(
+    email: string,
+    turnstileToken: string | null,
+    resetTurnstile: (() => void) | null,
+  ) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: encodeURIComponent(`${authUrl}/reset-password`),
@@ -132,6 +142,7 @@ export function useAuth() {
     if (error) {
       console.error('Forgot password failed:', error)
       toast.error({ summary: 'Password Reset Failed', message: error.message })
+      if (resetTurnstile) resetTurnstile()
     } else {
       toast.success({
         summary: 'Email Sent',

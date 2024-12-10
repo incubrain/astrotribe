@@ -14,6 +14,7 @@ const { bookmarks, loading } = storeToRefs(bookmarkStore)
 const searchQuery = ref('')
 const searchResults = ref<any[]>([])
 const isMoving = ref(false)
+const movingFolderId = ref()
 
 const searchFuseOptions = {
   keys: ['metadata.title', 'metadata.description', 'metadata.author'],
@@ -62,17 +63,18 @@ const filteredBookmarks = computed(() => {
 // Methods
 const clearSelection = () => {
   bookmarkManager.clearSelection()
-  selectedFolderId.value = null
+  movingFolderId.value = null
 }
 
 const handleMoveSelected = async () => {
-  if (!selectedFolderId.value || !bookmarkManager.selectedIds.value.length) return
+  if (!movingFolderId.value || !bookmarkManager.selectedIds.value.length) return
 
   isMoving.value = true
   try {
-    await bookmarkManager.handleMove(selectedFolderId.value)
+    await bookmarkManager.handleMove(movingFolderId.value)
     bookmarkManager.clearSelection()
   } finally {
+    movingFolderId.value = null
     isMoving.value = false
   }
 }
@@ -168,8 +170,8 @@ const isEmpty = computed(() => {
 
             <!-- Move to folder dropdown -->
             <PrimeSelect
-              v-model="selectedFolderId"
-              :options="folders"
+              v-model="movingFolderId"
+              :options="folders.filter((folder) => folder.id !== currentFolder?.id)"
               option-label="name"
               option-value="id"
               placeholder="Move to..."
@@ -178,10 +180,10 @@ const isEmpty = computed(() => {
 
             <!-- Move button -->
             <PrimeButton
-              :disabled="!selectedFolderId || isMoving"
+              :disabled="!movingFolderId || !bookmarkManager.selectedIds.value.length || isMoving"
               :loading="isMoving"
-              @click="handleMoveSelected"
               class="!p-2 lg:!p-3"
+              @click="handleMoveSelected"
             >
               <Icon
                 name="mdi:folder-move"
@@ -194,6 +196,7 @@ const isEmpty = computed(() => {
 
             <!-- Delete button -->
             <PrimeButton
+              :disabled="!bookmarkManager.selectedIds.value.length"
               severity="danger"
               class="!p-2 lg:!p-3"
               @click="handleDeleteSelected"
@@ -207,9 +210,10 @@ const isEmpty = computed(() => {
 
             <!-- Clear selection button -->
             <PrimeButton
+              :disabled="!bookmarkManager.selectedIds.value.length && !movingFolderId"
               severity="secondary"
-              @click="clearSelection"
               class="!p-2 lg:!p-3"
+              @click="clearSelection"
             >
               <Icon
                 name="mdi:close"

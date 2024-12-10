@@ -80,7 +80,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     const updatedData: any = {}
     const toast = useNotification()
 
-    logger.debug('Cleaning data for update')
+    logger.info('Cleaning data for update')
     // Compare newData with fullProfile and only include changed values
     const { noDataUpdated, data } = cleanDataForUpdate(newData, profile.value)
 
@@ -89,7 +89,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       return
     }
 
-    logger.debug('Changes detected', { changedData: data })
+    logger.info('Changes detected', { changedData: data })
 
     try {
       logger.info('Sending update request to server')
@@ -103,7 +103,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
           body: JSON.stringify(data),
         })
       }
-      logger.debug('Received response from server', { response })
+      logger.info('Received response from server', { response })
 
       const validData = errors.server({
         response,
@@ -125,11 +125,11 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       logger.info('Successfully validated server response', { validData })
 
       // update state
-      logger.debug('Updating user profile state')
+      logger.info('Updating user profile state')
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           profile.value[key] = data[key]
-          logger.debug(`Updating profile field: ${key}`, {
+          logger.info(`Updating profile field: ${key}`, {
             newValue: data[key],
           })
         }

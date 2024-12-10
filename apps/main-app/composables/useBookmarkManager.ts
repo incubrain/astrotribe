@@ -1,7 +1,7 @@
 export const useBookmarkManager = () => {
   const selectedIds = ref<string[]>([])
   const targetFolderId = ref<string | null>(null)
-  const { moveBookmarks, fetchBookmarks } = useBookmarkStore()
+  const { moveBookmarks, fetchBookmarks, fetchBookmarkCounts } = useBookmarkStore()
   const confirm = useConfirm()
 
   const hasSelection = computed(() => selectedIds.value.length > 0)
@@ -28,6 +28,7 @@ export const useBookmarkManager = () => {
       await moveBookmarks(selectedIds.value, targetFolder)
       // Refresh bookmarks
       await fetchBookmarks({})
+      await fetchBookmarkCounts()
       // Clear selection
       clearSelection()
     } catch (error) {
@@ -49,9 +50,7 @@ export const useBookmarkManager = () => {
         },
         optimisticUpdate: () => {
           // Update local state
-          bookmarks.value = bookmarks.value.filter(
-            b => !ids.includes(b.id)
-          )
+          bookmarks.value = bookmarks.value.filter((b) => !ids.includes(b.id))
           // Update selection state
           selectedIds.value = selectedIds.value.filter((id) => !ids.includes(id))
         },
@@ -60,6 +59,7 @@ export const useBookmarkManager = () => {
           await bookmarkStore.fetchBookmarks({})
         },
       })
+      await fetchBookmarkCounts()
     } catch (error) {
       console.error('Failed to delete bookmarks:', error)
     }
