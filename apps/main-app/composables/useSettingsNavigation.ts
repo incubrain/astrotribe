@@ -49,7 +49,7 @@ export function useSettingsNavigation() {
           key: 'settings-password',
           label: 'Password',
           url: '/settings/security/password',
-          visible: user.profile?.providers.includes('email'),
+          visible: user.profile?.providers?.includes('email'),
           disabled: false,
         },
       ],

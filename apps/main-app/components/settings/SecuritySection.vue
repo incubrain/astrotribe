@@ -1,13 +1,18 @@
 <script setup lang="ts">
+const { authURL } = useRuntimeConfig().public
+
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
 const security = useSettingsSecurity()
+const toast = useNotification()
 
 const linkedIdentities = ref([])
 const loading = ref(false)
 const showSetPasswordModal = ref(false)
+const showDeleteUserModal = ref(false)
 
 const form = reactive({
+  passwordForDeletion: '',
   password: '',
   confirmPassword: '',
 })
@@ -36,6 +41,17 @@ async function handleUnlinkIdentity(identity) {
   if (!error) {
     linkedIdentities.value = await security.getLinkedIdentities()
   }
+}
+
+async function handleDeleteUser() {
+  if (hasEmailProvider.value && !form.passwordForDeletion) {
+    toast.error({
+      summary: 'Account Deletion',
+      message: 'Please enter your password',
+    })
+    return
+  }
+  await security.deleteAccount(form.passwordForDeletion)
 }
 
 async function handleSetPassword() {
@@ -173,7 +189,51 @@ async function handleSetPassword() {
         <h3 class="text-lg font-medium">Two-Step Verification</h3>
         <Settings2FA />
       </section>
+      <section class="space-y-4">
+        <h3 class="text-lg font-medium">Delete Account</h3>
+        <div class="flex items-center justify-between rounded-lg bg-black/20 p-4">
+          <PrimeButton
+            severity="danger"
+            size="small"
+            :feedback="false"
+            required
+            @click="showDeleteUserModal = true"
+          >
+            Delete Account
+          </PrimeButton>
+        </div>
+      </section>
     </div>
+
+    <!-- Delete Account Modal -->
+    <PrimeDialog
+      v-model:visible="showDeleteUserModal"
+      modal
+      header="You are about to delete your account"
+    >
+      <span class="text-red-500">This action is irreversible</span>
+      <div class="space-y-4">
+        <PrimePassword
+          v-if="hasEmailProvider"
+          v-model="form.passwordForDeletion"
+          :feedback="true"
+          toggleMask
+          placeholder="Enter your password"
+        />
+      </div>
+      <template #footer>
+        <PrimeButton
+          label="Cancel"
+          severity="secondary"
+          @click="showSetPasswordModal = false"
+        />
+        <PrimeButton
+          severity="danger"
+          label="Delete Account Permanently"
+          @click="handleDeleteUser"
+        />
+      </template>
+    </PrimeDialog>
 
     <!-- Set Password Modal -->
     <PrimeDialog
