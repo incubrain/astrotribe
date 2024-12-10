@@ -8,6 +8,7 @@ const form = reactive({
 })
 
 const auth = useAuth()
+const turnstile = ref()
 const turnstileValid = ref(false)
 const turnstileToken = ref<string | null>(null)
 
@@ -39,6 +40,7 @@ const handleRegister = async () => {
   await auth.registerWithEmail({
     ...form,
     turnstileToken: turnstileToken.value,
+    resetTurnstile: turnstile.value.reset,
   })
 }
 
@@ -103,7 +105,10 @@ definePageMeta({
           :feedback="false"
         />
 
-        <TurnstileChallenge :on-valid-token="onValidTurnstile" />
+        <TurnstileChallenge
+          ref="turnstile"
+          :on-valid-token="onValidTurnstile"
+        />
 
         <PrimeButton
           class="justify-center"

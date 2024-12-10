@@ -12,6 +12,10 @@ const form = reactive({
   confirmPassword: '',
 })
 
+const hasEmailProvider = computed(() => {
+  return profile.value?.providers?.includes('email')
+})
+
 onMounted(async () => {
   loading.value = true
   linkedIdentities.value = await security.getLinkedIdentities()
@@ -91,7 +95,7 @@ async function handleSetPassword() {
             <PrimeButton
               severity="secondary"
               size="small"
-              @click="navigateTo(`${authURL}/settings/password`)"
+              @click="navigateTo(`${authURL}/settings/password`, { external: true })"
             >
               Change Password
             </PrimeButton>

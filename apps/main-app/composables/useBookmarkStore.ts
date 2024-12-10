@@ -332,6 +332,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
       }
 
       await toggleBookmark(bookmarkData)
+      await fetchBookmarkCounts()
       showBookmarkFeedback.value = true
       setTimeout(() => {
         showBookmarkFeedback.value = false

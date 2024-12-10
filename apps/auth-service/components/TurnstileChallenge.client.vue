@@ -13,6 +13,7 @@ const props = defineProps({
 })
 
 const scriptLoaded = ref(false)
+const turnstileWidgetId = ref(null)
 
 const emit = defineEmits(['error', 'expired', 'success'])
 const config = useRuntimeConfig()
@@ -70,17 +71,27 @@ const onExpired = () => {
 }
 
 const reset = () => {
-  if (window.turnstile) {
-    window.turnstile.reset()
+  const cloudflareCookies = ['__cf_bm', 'cf_clearance', '__cfwaitingroom']
+
+  cloudflareCookies.forEach((cookieName) => {
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+  })
+
+  if (window.turnstile && turnstileWidgetId.value) {
+    window.turnstile.reset(turnstileWidgetId.value)
   }
 }
 
 const renderTurnstile = () => {
   if (window.turnstile) {
-    window.turnstile.render('.cf-turnstile', {
+    if (turnstileWidgetId.value) {
+      window.turnstile.remove(turnstileWidgetId.value)
+    }
+
+    turnstileWidgetId.value = window.turnstile.render('.cf-turnstile', {
       'sitekey': config.public.turnstileSiteKey,
       'theme': colorMode.value === 'dark' ? 'dark' : 'light',
-      'callback': onSuccess,
+      'callback': props.onValidToken,
       'error-callback': onError,
       'expired-callback': onExpired,
     })
