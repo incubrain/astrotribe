@@ -19,13 +19,19 @@
         "cwd": "layers/auth"
       }
     },
+    "build:advert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/advert && npx nuxi build"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "npx nuxi build",
         "cwd": "apps/admin-dashboard"
       },
-      "dependsOn": ["build:base", "build:auth"]
+      "dependsOn": ["build:base", "build:auth", "build:advert"]
     },
     "serve": {
       "executor": "nx:run-commands",

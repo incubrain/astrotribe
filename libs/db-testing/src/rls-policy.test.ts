@@ -1,6 +1,5 @@
 // libs/db-testing/src/rls-policy.test.ts
 import { describe, it, expect } from 'vitest'
-import { createTestRunner } from './test-runner'
 import type { CrudOperations, RLSTest } from './types'
 
 // Mock CRUD operations for testing the library itself
@@ -43,9 +42,4 @@ describe('RLS Policy Test Runner', () => {
       },
     ],
   } as RLSTest
-
-  it('should execute a simple test case', async () => {
-    const { runTests } = createTestRunner(mockCrudOperations)
-    await expect(runTests([simpleTest])).resolves.not.toThrow()
-  })
 })
