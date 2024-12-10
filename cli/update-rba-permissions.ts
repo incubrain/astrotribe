@@ -22,7 +22,7 @@ async function main() {
     // Read the generated file
     const configPath = path.join(__dirname, '../generated/role-permissions.json')
     const config = JSON.parse(await fs.readFile(configPath, 'utf-8'))
-
+    await generatePermissions()
     console.log(chalk.green('✓ New permissions configuration generated\n'))
 
     // Step 2: Update database permissions

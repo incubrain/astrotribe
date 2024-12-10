@@ -48,11 +48,14 @@ function categorizeTable(tableName: string, schemas: any[]): string {
     return 'reference_tables'
   }
 
-  // Public content tables
+  // Public content tables and their related tables
   if (
     ['companies', 'news', 'research', 'contents', 'newsletters', 'content_sources'].includes(
       tableName,
-    )
+    ) ||
+    tableName.endsWith('_summaries') ||
+    tableName.endsWith('_embeddings') ||
+    ['feed_sources', 'news_tags', 'content_statuses'].includes(tableName)
   ) {
     return 'public_content_tables'
   }
@@ -69,13 +72,28 @@ function categorizeTable(tableName: string, schemas: any[]): string {
       'follows',
       'feedbacks',
       'user_followers',
+      'feature_requests',
+      'feature_rankings',
     ].includes(tableName)
   ) {
     return 'user_content_tables'
   }
 
   // User data tables
-  if (['user_profiles', 'addresses', 'contacts', 'searches'].includes(tableName)) {
+  if (
+    [
+      'user_profiles',
+      'addresses',
+      'contacts',
+      'searches',
+      'user_metrics',
+      'company_contacts',
+      'company_employees',
+      'company_extras',
+      'company_urls',
+      'company_metrics',
+    ].includes(tableName)
+  ) {
     return 'user_data_tables'
   }
 
@@ -84,12 +102,30 @@ function categorizeTable(tableName: string, schemas: any[]): string {
     tableName.includes('permission') ||
     tableName.includes('blacklist') ||
     tableName.includes('customer_') ||
-    tableName.includes('payment')
+    tableName.includes('payment') ||
+    ['error_logs', 'role_hierarchy'].includes(tableName)
   ) {
     return 'security_tables'
   }
 
-  // Operational tables (default for remaining tables)
+  // Advertising and analytics tables go to operational
+  if (
+    tableName.startsWith('ad_') ||
+    tableName === 'ads' ||
+    tableName.includes('_metrics') ||
+    [
+      'spider_metrics',
+      'social_media',
+      'embedding_reviews',
+      'classified_urls',
+      'content_source_visits',
+      'responses',
+    ].includes(tableName)
+  ) {
+    return 'operational_tables'
+  }
+
+  // Fallback to operational tables
   return 'operational_tables'
 }
 
