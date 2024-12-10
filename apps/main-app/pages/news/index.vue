@@ -17,10 +17,14 @@ const {
   loadMore: originalLoadMore,
   refresh,
 } = useSelectData<News>('contents', {
-  columns:
-    'id, title, url, created_at, content_type, hot_score, news(published_at, description, category_id, author, keywords, featured_image, company_id, score, companies(name, logo_url))',
+  columns: `id, title, url, created_at, content_type, hot_score,
+    news!inner(published_at, description, category_id, author, keywords, featured_image, company_id, score,
+      companies(name, logo_url),
+      news_summaries!inner(id, summary, complexity_level, version)
+    )`,
   filters: {
-    content_type: { eq: 'news' },
+    'content_type': { eq: 'news' },
+    'news.news_summaries.is_current': { eq: true },
   },
   orderBy: orderBy.value,
   initialFetch: true,
@@ -42,6 +46,7 @@ function mapContentToNews(item: any): News {
     category_id: item.news?.category_id || null,
     company_id: item.news?.company_id || null,
     companies: item.news?.companies || [],
+    summary: item.news?.news_summaries || {},
     url: item.url,
     created_at: item.created_at || null,
   }
