@@ -658,6 +658,63 @@ export async function seedCategories(pool: Pool, count: number) {
   return categories
 }
 
+export async function seedNewsSummaries(pool: Pool, news: any[]) {
+  // Helper function to get first 60 words
+  const getFirst60Words = (text: string): string => {
+    const words = text.split(/\s+/)
+    return words.slice(0, 34).join(' ')
+  }
+
+  try {
+    // First, delete any existing summaries for these news items
+    await pool.query('DELETE FROM news_summaries WHERE news_id = ANY($1)', [news.map((n) => n.id)])
+
+    // Create summaries for each complexity level
+    const complexityLevels = ['beginner', 'intermediate', 'expert'] as const
+    const summaries = news.flatMap((newsItem) =>
+      complexityLevels.map((level) => ({
+        news_id: newsItem.id,
+        summary: getFirst60Words(newsItem.body),
+        version: 1,
+        complexity_level: level,
+        is_current: true,
+      })),
+    )
+
+    if (summaries.length > 0) {
+      // Create the parameterized query
+      const valueParams: any[] = []
+      const valuePlaceholders = summaries.map((_, index) => {
+        const offset = index * 5 // 5 parameters per summary
+        valueParams.push(
+          summaries[index].news_id,
+          summaries[index].summary,
+          summaries[index].version,
+          summaries[index].complexity_level,
+          summaries[index].is_current,
+        )
+        return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5})`
+      })
+
+      const query = `
+        INSERT INTO news_summaries (
+          news_id, summary, version, complexity_level, is_current
+        )
+        VALUES ${valuePlaceholders.join(',')}
+        RETURNING id
+      `
+
+      const result = await pool.query(query, valueParams)
+      return result.rows
+    }
+
+    return []
+  } catch (error) {
+    console.error('Error in seedNewsSummaries:', error)
+    throw error
+  }
+}
+
 export async function seedNews(
   pool: Pool,
   contentIds: string[],
@@ -699,6 +756,8 @@ export async function seedNews(
 
   // Then create corresponding content statuses
   await createContentStatuses(pool, news, 'news')
+
+  await seedNewsSummaries(pool, news)
 
   return news
 }
