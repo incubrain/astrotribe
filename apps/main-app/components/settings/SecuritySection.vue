@@ -95,7 +95,7 @@ async function handleSetPassword() {
             <PrimeButton
               severity="secondary"
               size="small"
-              @click="navigateTo(`${authURL}/settings/password`)"
+              @click="navigateTo(`${authURL}/settings/password`, { external: true })"
             >
               Change Password
             </PrimeButton>

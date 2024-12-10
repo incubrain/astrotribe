@@ -1,5 +1,7 @@
 <!-- pages/settings/password.vue -->
 <script setup lang="ts">
+const { appUrl } = useRuntimeConfig().public
+
 const auth = useAuth()
 const toast = useNotification()
 const supabase = useSupabaseClient()
@@ -40,7 +42,7 @@ async function handleUpdatePassword() {
   try {
     // First verify current password
     const { error: verifyError } = await supabase.auth.signInWithPassword({
-      email: auth.user.email,
+      email: currentUser.profile.email,
       password: form.currentPassword,
     })
 
@@ -59,6 +61,8 @@ async function handleUpdatePassword() {
     form.currentPassword = ''
     form.newPassword = ''
     form.confirmNewPassword = ''
+
+    navigateTo(appUrl, { external: true })
   } catch (error) {
     toast.error({
       summary: 'Update Failed',
