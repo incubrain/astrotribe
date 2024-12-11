@@ -1,4 +1,4 @@
-// src/generators/schema-analyzer.ts
+// src/scripts/db/schema-analyzer.ts
 import Pool from 'pg-pool'
 
 interface TableSchema {

@@ -419,7 +419,7 @@ export async function seedCompanyEmployees(
   const employees = companyIds.flatMap((companyId) =>
     Array.from({ length: faker.number.int({ min: 2, max: 5 }) }, () => ({
       company_id: companyId,
-      user_profile_id: faker.helpers.arrayElement(userIds),
+      user_id: faker.helpers.arrayElement(userIds),
       role: faker.person.jobTitle(),
       job_description: faker.lorem.paragraph(),
       access_level: randomEnum(accessLevels),
@@ -547,7 +547,7 @@ export async function seedFollows(pool: Pool, userIds: string[], contentIds: str
   const usedCombinations = new Set<string>()
   const follows: Array<{
     id: string
-    follower_id: string
+    user_id: string
     followed_id: string
     followed_entity: FollowedEntity
     created_at: Date
@@ -561,7 +561,7 @@ export async function seedFollows(pool: Pool, userIds: string[], contentIds: str
     const maxAttempts = 20 // Prevent infinite loops
 
     while (
-      follows.filter((f) => f.follower_id === userId).length < numberOfFollows &&
+      follows.filter((f) => f.user_id === userId).length < numberOfFollows &&
       attempts < maxAttempts
     ) {
       const followed_entity = randomEnum(followedEntities)
@@ -584,7 +584,7 @@ export async function seedFollows(pool: Pool, userIds: string[], contentIds: str
         usedCombinations.add(combinationKey)
         follows.push({
           id: generateUUID(),
-          follower_id: userId,
+          user_id: userId,
           followed_id,
           followed_entity,
           created_at: faker.date.past(),

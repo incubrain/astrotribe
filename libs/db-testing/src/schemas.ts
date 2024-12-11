@@ -630,7 +630,7 @@ export const tables = {
   company_employees: {
     inbound: z
       .object({
-        user_profile_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         role: z.string().optional(),
         job_description: z.string().nullable().optional(),
         start_date: z
@@ -681,7 +681,7 @@ export const tables = {
       .optional(),
     outbound: z
       .object({
-        user_profile_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         role: z.string().optional(),
         job_description: z.string().nullable().optional(),
         start_date: z.date().nullable().optional(),
@@ -1635,7 +1635,7 @@ export const tables = {
     inbound: z
       .object({
         id: z.string().uuid().optional(),
-        follower_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         followed_id: z.string().uuid().optional(),
         followed_entity: z.string().optional(),
         created_at: z
@@ -1654,7 +1654,7 @@ export const tables = {
     outbound: z
       .object({
         id: z.string().uuid().optional(),
-        follower_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         followed_id: z.string().uuid().optional(),
         followed_entity: z.string().optional(),
         created_at: z.date().nullable().optional(),
@@ -2573,7 +2573,7 @@ export const tables = {
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .nullable()
           .optional(),
-        follower_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         followed_id: z.string().uuid().optional(),
         id: z.string().uuid().optional(),
       })
@@ -2582,7 +2582,7 @@ export const tables = {
     outbound: z
       .object({
         created_at: z.date().nullable().optional(),
-        follower_id: z.string().uuid().optional(),
+        user_id: z.string().uuid().optional(),
         followed_id: z.string().uuid().optional(),
         id: z.string().uuid().optional(),
       })
