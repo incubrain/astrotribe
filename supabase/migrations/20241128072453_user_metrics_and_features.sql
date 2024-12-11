@@ -156,7 +156,7 @@ BEGIN
    ) THEN
        alter table "public"."user_metrics" 
        add constraint "user_metrics_user_id_fkey" 
-       FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) not valid;
+       FOREIGN KEY (user_id) REFERENCES public.user_profiles(id) on delete restrict on update cascade not valid;
 
        alter table "public"."user_metrics" 
        validate constraint "user_metrics_user_id_fkey";

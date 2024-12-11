@@ -216,7 +216,7 @@ async function handleSetPassword() {
         <PrimePassword
           v-if="hasEmailProvider"
           v-model="form.passwordForDeletion"
-          :feedback="true"
+          :feedback="false"
           toggleMask
           placeholder="Enter your password"
         />
