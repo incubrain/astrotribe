@@ -30,6 +30,12 @@ const adminLinks = ref([
         slug: '/analytics',
         icon: 'mdi:chart-line',
       },
+      {
+        id: 3,
+        label: 'Permissions',
+        slug: '/permissions',
+        icon: 'mdi:shield-account',
+      },
       // {
       //   id: 4,
       //   label: 'Users',

@@ -50,28 +50,8 @@
       v-if="selectedRole"
       class="space-y-8"
     >
-      <!-- Table Groups -->
-      <div
-        v-for="(group, groupKey) in tableGroups"
-        :key="groupKey"
-        class="rounded-lg shadow"
-      >
-        <div class="border-b border-color p-4">
-          <h2 class="text-lg font-medium">{{ formatGroupName(groupKey) }}</h2>
-          <p class="text-sm">{{ group.description }}</p>
-          <div class="flex items-center mt-2 space-x-2">
-            <PrimeBadge
-              :value="group.audit_level"
-              :severity="getAuditLevelSeverity(group.audit_level)"
-            />
-            <PrimeBadge
-              v-if="group.requires_user_check"
-              value="Requires User Check"
-              severity="warning"
-            />
-          </div>
-        </div>
-
+      <!-- Permissions Table -->
+      <div class="rounded-lg shadow">
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divider-color">
             <thead class="background">
@@ -98,21 +78,21 @@
             </thead>
             <tbody class="divide-y divider-color">
               <tr
-                v-for="table in group.tables"
-                :key="table"
+                v-for="permission in rolePermissions"
+                :key="permission.table_name"
               >
                 <td class="px-4 py-3 text-sm">
-                  {{ formatTableName(table) }}
+                  {{ formatTableName(permission.table_name) }}
                 </td>
                 <td class="px-4 py-3 text-center">
                   <div class="flex justify-center items-center">
                     <PrimeCheckbox
-                      :model-value="hasPermission(table, 'select')"
+                      :model-value="permission.permissions.select"
                       disabled
                       binary
                     />
                     <PrimeTag
-                      v-if="isInheritedPermission(table, 'select')"
+                      v-if="isInheritedPermission(permission.table_name, 'select')"
                       value="Inherited"
                       severity="info"
                       class="ml-2 text-xs"
@@ -122,12 +102,12 @@
                 <td class="px-4 py-3 text-center">
                   <div class="flex justify-center items-center">
                     <PrimeCheckbox
-                      :model-value="hasPermission(table, 'insert')"
+                      :model-value="permission.permissions.insert"
                       disabled
                       binary
                     />
                     <PrimeTag
-                      v-if="isInheritedPermission(table, 'insert')"
+                      v-if="isInheritedPermission(permission.table_name, 'insert')"
                       value="Inherited"
                       severity="info"
                       class="ml-2 text-xs"
@@ -137,12 +117,12 @@
                 <td class="px-4 py-3 text-center">
                   <div class="flex justify-center items-center">
                     <PrimeCheckbox
-                      :model-value="hasPermission(table, 'update')"
+                      :model-value="permission.permissions.update"
                       disabled
                       binary
                     />
                     <PrimeTag
-                      v-if="isInheritedPermission(table, 'update')"
+                      v-if="isInheritedPermission(permission.table_name, 'update')"
                       value="Inherited"
                       severity="info"
                       class="ml-2 text-xs"
@@ -152,12 +132,12 @@
                 <td class="px-4 py-3 text-center">
                   <div class="flex justify-center items-center">
                     <PrimeCheckbox
-                      :model-value="hasPermission(table, 'delete')"
+                      :model-value="permission.permissions.delete"
                       disabled
                       binary
                     />
                     <PrimeTag
-                      v-if="isInheritedPermission(table, 'delete')"
+                      v-if="isInheritedPermission(permission.table_name, 'delete')"
                       value="Inherited"
                       severity="info"
                       class="ml-2 text-xs"
@@ -166,11 +146,11 @@
                 </td>
                 <td class="px-4 py-3 text-sm">
                   <div
-                    v-if="getConditions(table)"
+                    v-if="permission.conditions"
                     class="text-xs"
                   >
                     <PrimeButton
-                      v-tooltip.bottom="getConditions(table)"
+                      v-tooltip.bottom="JSON.stringify(permission.conditions, null, 2)"
                       icon="pi pi-info-circle"
                       text
                       severity="info"
@@ -196,132 +176,159 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import permissionsConfig from '../../../generated/role-permissions.json'
+import { useSupabaseClient } from '#imports'
 
 interface Role {
   label: string
   value: string
 }
 
-interface RoleHierarchyLevel {
+interface RolePermission {
+  id: number
   role: string
-  inheritsFrom?: string
+  inherit_from: string[]
+  table_name: string
+  permissions: {
+    delete: boolean
+    insert: boolean
+    select: boolean
+    update: boolean
+  }
+  conditions: Record<string, any>
+  last_updated: string
 }
 
+const supabase = useSupabaseClient()
 const selectedRole = ref<Role | null>(null)
+const permissionsData = ref<RolePermission[]>([])
+const loading = ref(false)
 
-// Define role hierarchy
+// Role hierarchy
 const roleHierarchy = [
   { role: 'super_admin' },
   { role: 'admin', inheritsFrom: 'super_admin' },
   { role: 'moderator', inheritsFrom: 'admin' },
-  { role: 'user', inheritsFrom: 'guest' },
-  { role: 'guest' },
+  { role: 'user', inheritsFrom: 'moderator' },
+  { role: 'guest', inheritsFrom: 'user' },
 ]
 
-// Transform roles into dropdown options
-const roles = computed(() => {
-  return Object.keys(permissionsConfig.roles).map((role) => ({
-    label: formatRoleName(role),
-    value: role,
-  }))
-})
-
-const tableGroups = computed(() => {
-  return permissionsConfig.table_groups
-})
-
-// Get inherited roles for a given role
-function getInheritedRoles(role: string): string[] {
-  const inherited: string[] = []
+// Get all ancestor roles including the current role
+function getAllAncestorRoles(role: string): string[] {
+  const ancestors = [role]
   let currentRole = role
 
   while (currentRole) {
-    const hierarchyEntry = roleHierarchy.find((r) => r.role === currentRole)
-    if (hierarchyEntry?.inheritsFrom) {
-      inherited.push(hierarchyEntry.inheritsFrom)
-      currentRole = hierarchyEntry.inheritsFrom
+    const parent = roleHierarchy.find((r) => r.role === currentRole)?.inheritsFrom
+    if (parent) {
+      ancestors.push(parent)
+      currentRole = parent
     } else {
       break
     }
   }
 
-  return inherited
+  return ancestors
 }
 
-// Get permissions for selected role and table, including inherited permissions
-function hasPermission(tableName: string, action: string): boolean {
+// Check if a role has a permission (including inherited)
+function hasPermission(
+  tableName: string,
+  action: 'select' | 'update' | 'delete' | 'insert',
+): boolean {
   if (!selectedRole.value) return false
 
-  const currentRole = selectedRole.value.value
-  const inheritedRoles = getInheritedRoles(currentRole)
-  const rolesToCheck = [currentRole, ...inheritedRoles]
+  const allRoles = getAllAncestorRoles(selectedRole.value.value)
 
-  for (const roleToCheck of rolesToCheck) {
-    const role = permissionsConfig.roles[roleToCheck]
-
-    // Check if role has all_tables permission
-    if (role.all_tables?.permissions.includes(action)) {
-      return true
-    }
-
-    // Find the table group that contains this table
-    for (const [groupKey, group] of Object.entries(permissionsConfig.table_groups)) {
-      if (group.tables.includes(tableName)) {
-        if (role[groupKey]?.permissions.includes(action)) {
-          return true
-        }
-      }
-    }
-  }
-
-  return false
+  return permissionsData.value.some(
+    (permission) =>
+      allRoles.includes(permission.role) &&
+      permission.table_name === tableName &&
+      permission.permissions?.[action],
+  )
 }
 
 // Check if a permission is inherited
-function isInheritedPermission(tableName: string, action: string): boolean {
+function isInheritedPermission(
+  tableName: string,
+  action: 'select' | 'update' | 'delete' | 'insert',
+): boolean {
   if (!selectedRole.value) return false
 
-  const currentRole = selectedRole.value.value
-  const role = permissionsConfig.roles[currentRole]
+  // Check if permission exists directly on the role
+  const directPermission = permissionsData.value.find(
+    (p) =>
+      p.role === selectedRole.value?.value && p.table_name === tableName && p.permissions?.[action],
+  )
 
-  // Check direct permissions first
-  if (role.all_tables?.permissions.includes(action)) {
-    return false
-  }
+  if (directPermission) return false
 
-  for (const [groupKey, group] of Object.entries(permissionsConfig.table_groups)) {
-    if (group.tables.includes(tableName)) {
-      if (role[groupKey]?.permissions.includes(action)) {
-        return false
-      }
-    }
-  }
-
-  // If we have the permission but it's not direct, it must be inherited
+  // If we have the permission but not directly, it must be inherited
   return hasPermission(tableName, action)
 }
 
-// Get conditions for a table if any exist
-function getConditions(tableName: string): string {
-  if (!selectedRole.value) return ''
+async function fetchPermissions() {
+  loading.value = true
+  try {
+    const { data, error } = await supabase.from('role_permissions').select('*').order('table_name')
 
-  const role = permissionsConfig.roles[selectedRole.value.value]
-
-  // Find the table group that contains this table
-  for (const [groupKey, group] of Object.entries(permissionsConfig.table_groups)) {
-    if (group.tables.includes(tableName)) {
-      const conditions = role[groupKey]?.conditions
-      if (conditions) {
-        return JSON.stringify(conditions, null, 2)
-      }
-    }
+    if (error) throw error
+    permissionsData.value = data
+  } catch (error) {
+    console.error('Error fetching permissions:', error)
+  } finally {
+    loading.value = false
   }
-
-  return ''
 }
 
-// Helper functions for formatting
+// Transform roles into dropdown options
+const roles = computed(() => {
+  if (!permissionsData.value) return []
+
+  const uniqueRoles = new Set(permissionsData.value.map((p) => p.role))
+  return Array.from(uniqueRoles).map((role) => ({
+    label: formatRoleName(role),
+    value: role,
+  }))
+})
+
+// Get all permissions for the selected role (including inherited)
+const rolePermissions = computed(() => {
+  if (!selectedRole.value || !permissionsData.value) return []
+
+  // Get all unique table names
+  const tableNames = new Set(permissionsData.value.map((p) => p.table_name))
+
+  // For each table, combine direct and inherited permissions
+  return Array.from(tableNames).map((tableName) => ({
+    table_name: tableName,
+    permissions: {
+      select: hasPermission(tableName, 'select'),
+      insert: hasPermission(tableName, 'insert'),
+      update: hasPermission(tableName, 'update'),
+      delete: hasPermission(tableName, 'delete'),
+    },
+    conditions: getConditions(tableName),
+  }))
+})
+
+// Get conditions for a table
+function getConditions(tableName: string): Record<string, any> | null {
+  if (!selectedRole.value) return null
+
+  const allRoles = getAllAncestorRoles(selectedRole.value.value)
+
+  // Find first matching permission with conditions
+  const permissionWithConditions = permissionsData.value.find(
+    (permission) =>
+      allRoles.includes(permission.role) &&
+      permission.table_name === tableName &&
+      permission.conditions &&
+      Object.keys(permission.conditions).length > 0,
+  )
+
+  return permissionWithConditions?.conditions || null
+}
+
 function formatRoleName(role: string): string {
   return role
     .split('_')
@@ -336,27 +343,7 @@ function formatTableName(table: string): string {
     .join(' ')
 }
 
-function formatGroupName(group: string): string {
-  return group
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-}
-
-function getAuditLevelSeverity(level: string): string {
-  const severityMap: Record<string, string> = {
-    low: 'info',
-    medium: 'warning',
-    high: 'danger',
-    critical: 'danger',
-  }
-  return severityMap[level] || 'info'
-}
-
 onMounted(() => {
-  const userRole = roles.value.find((r) => r.value === 'user')
-  if (userRole) {
-    selectedRole.value = userRole
-  }
+  fetchPermissions()
 })
 </script>
