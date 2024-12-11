@@ -61,7 +61,7 @@ const schema = [
 <template>
   <SettingsCard
     :title="{
-      main: 'Account Profile',
+      main: 'Profile',
       subtitle: 'Update your account information',
     }"
   >

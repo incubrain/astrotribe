@@ -4,11 +4,11 @@
     class="relative"
   >
     <div
-      class="fixed top-0 left-0 right-0 px-4 py-2 flex items-center justify-between z-[1000] transition-colors duration-200"
+      class="px-4 py-1 flex items-center justify-between z-[1000] transition-colors duration-200"
       :class="bannerColorClass"
     >
-      <div class="flex items-center space-x-2">
-        <span class="font-medium text-white">
+      <div class="flex text-sm items-center space-x-2">
+        <span class="text-white">
           {{ currentRole ? `Viewing as ${currentRole}` : 'Using original role' }}
         </span>
         <span

@@ -1,56 +1,93 @@
 <script setup lang="ts">
-const emit = defineEmits(['update:scrollEnd'])
-const scrollContainer = ref<HTMLElement | null>(null)
+import { useDebounceFn } from '@vueuse/core'
+
+interface Props {
+  threshold?: number
+  disabled?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  threshold: 200,
+  disabled: false,
+})
+
+const emit = defineEmits<{
+  'update:scrollEnd': []
+}>()
+
+const triggerElement = ref<HTMLElement | null>(null) // Changed ref name to be more descriptive
 const observer = ref<IntersectionObserver | null>(null)
+const isLoading = ref(false)
+
+const triggerLoad = useDebounceFn(() => {
+  console.log('📜 triggerLoad called - Loading:', isLoading.value, 'Disabled:', props.disabled)
+  if (!isLoading.value && !props.disabled) {
+    console.log('📜 Triggering load...')
+    isLoading.value = true
+    emit('update:scrollEnd')
+    setTimeout(() => {
+      console.log('📜 Reset loading state')
+      isLoading.value = false
+    }, 300)
+  }
+}, 100)
 
 onMounted(() => {
+  console.log('📜 Component mounted, threshold:', props.threshold)
+  console.log('📜 Trigger element ref:', triggerElement.value)
+
   if ('IntersectionObserver' in window) {
+    console.log('📜 Using IntersectionObserver')
     observer.value = new IntersectionObserver(
       (entries) => {
+        console.log('📜 IntersectionObserver callback', {
+          isIntersecting: entries[0].isIntersecting,
+          intersectionRatio: entries[0].intersectionRatio,
+          boundingClientRect: entries[0].boundingClientRect,
+        })
+
         if (entries[0].isIntersecting) {
-          emit('update:scrollEnd')
+          console.log('📜 Intersection detected!')
+          triggerLoad()
         }
       },
       {
         root: null,
-        rootMargin: '200px', // Load more content when within 200px of the bottom
-        threshold: 0.1, // Trigger when at least 10% of the target is visible
+        threshold: 0,
       },
     )
 
-    if (scrollContainer.value) {
-      observer.value.observe(scrollContainer.value)
+    if (triggerElement.value) {
+      console.log('📜 Starting observation of trigger element')
+      observer.value.observe(triggerElement.value)
+    } else {
+      console.warn('📜 No trigger element found to observe!')
     }
-  } else {
-    // Fallback for browsers that don't support IntersectionObserver
-    window.addEventListener('scroll', handleScroll)
   }
 })
 
 onUnmounted(() => {
-  if (observer.value && scrollContainer.value) {
-    observer.value.unobserve(scrollContainer.value)
+  console.log('📜 Component unmounting, cleaning up observers')
+  if (observer.value && triggerElement.value) {
+    observer.value.unobserve(triggerElement.value)
   }
-  window.removeEventListener('scroll', handleScroll)
 })
 
-const handleScroll = () => {
-  if (scrollContainer.value) {
-    const rect = scrollContainer.value.getBoundingClientRect()
-    if (rect.top <= window.innerHeight) {
-      emit('update:scrollEnd')
-    }
-  }
-}
+// Watch for changes to the trigger element
+watch(triggerElement, (newVal) => {
+  console.log('📜 Trigger element ref changed:', newVal)
+})
 </script>
 
 <template>
-  <div>
+  <div class="infinite-scroll-container">
     <slot />
-    <div
-      ref="scrollContainer"
-      class="h-10 bg-transparent"
-      aria-hidden="true"
-    />
+    <div class="relative h-10">
+      <div
+        ref="triggerElement"
+        class="absolute inset-0 z-50 w-full h-32"
+        :style="`margin-top: -${props.threshold}px`"
+      />
+    </div>
   </div>
 </template>
