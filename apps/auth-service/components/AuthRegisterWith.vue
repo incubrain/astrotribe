@@ -1,5 +1,12 @@
 <script setup lang="ts">
 const auth = useAuth()
+
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    required: true,
+  },
+})
 </script>
 
 <template>
@@ -14,10 +21,12 @@ const auth = useAuth()
     </div>
     <div class="flex gap-4 xl:gap-6 w-full pt-4">
       <AuthSocialButton
+        :disabled="props.disabled"
         provider="twitter"
         @social-login="auth.loginSocial('twitter')"
       />
       <AuthSocialButton
+        :disabled="props.disabled"
         provider="linkedin"
         @social-login="auth.loginSocial('linkedin_oidc')"
       />

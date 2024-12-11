@@ -38,7 +38,7 @@ async function handlePasswordReset() {
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter' && turnstileValid.value) {
+  if (turnstileValid.value && event.key === 'Enter' && turnstileValid.value) {
     handlePasswordReset()
   }
 }
