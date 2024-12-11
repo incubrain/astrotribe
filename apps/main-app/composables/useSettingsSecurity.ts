@@ -4,6 +4,11 @@ export function useSettingsSecurity() {
   const currentUser = useCurrentUser()
   const toast = useNotification()
 
+  interface TurnstileOptions {
+    token: string
+    reset: () => void
+  }
+
   // Linked Identities
   async function getLinkedIdentities() {
     const { data, error } = await supabase.auth.getUserIdentities()
@@ -82,11 +87,11 @@ export function useSettingsSecurity() {
     return true
   }
 
-  async function verifyLogin(password?: string) {
+  async function verifyLogin(options: TurnstileOptions, password?: string) {
     if (!password) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: currentUser.profile.providers[0],
-        options: { skipBrowserRedirect: true },
+        options: { skipBrowserRedirect: true, catpchaToken: options.token },
       })
 
       return error
@@ -94,18 +99,20 @@ export function useSettingsSecurity() {
       const { error } = await supabase.auth.signInWithPassword({
         email: currentUser.profile.email,
         password,
+        options: { captchaToken: options.token },
       })
 
       return error
     }
   }
 
-  async function deleteAccount(password?: string) {
-    const error = await verifyLogin(password)
+  async function deleteAccount(options: TurnstileOptions, password?: string) {
+    const error = await verifyLogin(options, password)
     const { authUrl } = useRuntimeConfig().public
 
     if (error) {
       toast.error({ summary: 'Deletion Failed', message: error.message })
+      options.reset()
       return
     }
 
@@ -115,11 +122,12 @@ export function useSettingsSecurity() {
 
     if (deleteError) {
       toast.error({ summary: 'Deletion Failed', message: deleteError.message })
+      options.reset()
       return
     }
 
     toast.success({ summary: 'Account Deleted', message: 'Redirecting...' })
-    const { error: signOutError } = await supabase.auth.signOut()
+    await supabase.auth.signOut()
 
     setTimeout(() => navigateTo(authUrl, { external: true }), 1000)
   }

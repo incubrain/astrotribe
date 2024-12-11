@@ -8,6 +8,15 @@ const supabase = useSupabaseClient()
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
 
+const turnstile = ref()
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
+
 const form = reactive({
   currentPassword: '',
   newPassword: '',
@@ -44,6 +53,9 @@ async function handleUpdatePassword() {
     const { error: verifyError } = await supabase.auth.signInWithPassword({
       email: currentUser.profile.email,
       password: form.currentPassword,
+      options: {
+        captchaToken: turnstileToken.value,
+      },
     })
 
     if (verifyError) {
@@ -51,6 +63,7 @@ async function handleUpdatePassword() {
         summary: 'Invalid Password',
         message: 'Current password is incorrect',
       })
+      if (turnstile.value) turnstile.value.reset()
       return
     }
 
@@ -68,6 +81,7 @@ async function handleUpdatePassword() {
       summary: 'Update Failed',
       message: error.message,
     })
+    if (turnstile.value) turnstile.value.reset()
   }
 }
 </script>
@@ -138,8 +152,13 @@ async function handleUpdatePassword() {
             />
             <label>Confirm New Password</label>
           </PrimeFloatLabel>
-
+          <TurnstileChallenge
+            ref="turnstile"
+            class="mb-4"
+            :on-valid-token="onValidTurnstile"
+          />
           <PrimeButton
+            :disabled="!turnstileValid"
             type="submit"
             class="w-full"
           >
