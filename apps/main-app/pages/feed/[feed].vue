@@ -44,26 +44,28 @@ const newsQuery = computed(() => {
   const queryFilters: Record<string, FilterOption> = {}
 
   // Add all conditional filters
-  if (categories.value?.length) {
-    queryFilters['category_id'] = {
-      in: categories.value.map((category) => category.id),
-    }
-  }
+  // if (categories.value?.length) {
+  //   queryFilters['news.category_id'] = {
+  //     in: categories.value.map((category) => category.id),
+  //   }
+  // }
 
-  if (sources.value?.length) {
-    queryFilters['content_source_id'] = {
-      in: sources.value.map((source) => source.id),
-    }
-  }
+  // if (sources.value?.length) {
+  //   queryFilters['content_source_id'] = {
+  //     in: sources.value.map((source) => source.id),
+  //   }
+  // }
 
   // Body check is always included
-  queryFilters['body'] = { neq: null }
+  queryFilters['news.body'] = { neq: null }
 
   return {
     columns: `
-      id, title, body, published_at, created_at, description,
-      category_id, author, url, keywords, featured_image,
-      company_id, companies(*), content_source_id, content_sources(*), score
+      id, title, url, created_at, content_type, hot_score,
+      news!inner(published_at, description, category_id, author, keywords, featured_image, company_id, score,
+        companies(name, logo_url),
+        news_summaries!inner(id, summary, complexity_level, version)
+      )
     `,
     filters: queryFilters,
     orderBy: { column: 'created_at', ascending: false },
@@ -81,7 +83,7 @@ const {
   loadMore: loadMoreFunc,
   refresh: refreshNews,
   isSelecting: isLoadingNews,
-} = useSelectData<News>('news', newsQuery)
+} = useSelectData<News>('contents', newsQuery)
 
 // Watch for query changes to refresh
 watch(
@@ -128,6 +130,7 @@ const formatSourceUrl = (url: string) => {
     return url
   }
 }
+const { topBannerAd } = useAdsStore()
 
 // UI state
 const showFiltersModal = ref(false)
@@ -149,6 +152,11 @@ onUnmounted(() => {
     />
 
     <BlackFridayBanner />
+
+    <AdsBanner
+      v-if="topBannerAd"
+      :ad="topBannerAd"
+    />
 
     <IBInfiniteScroll
       :threshold="1400"
