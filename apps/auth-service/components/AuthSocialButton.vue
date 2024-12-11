@@ -1,7 +1,11 @@
 <script setup lang="ts">
 type Provider = 'twitter' | 'linkedin'
 
-defineProps({
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    required: true,
+  },
   provider: {
     type: String as PropType<Provider>,
     required: true,
@@ -16,7 +20,7 @@ const socialLogin = () => {
 </script>
 
 <template>
-  <PrimeButton @click="socialLogin">
+  <PrimeButton :disabled="props.disabled" @click="socialLogin">
     <span>
       <Icon
         class="flex items-center justify-center"
