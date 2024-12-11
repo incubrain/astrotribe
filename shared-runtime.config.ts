@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       adminUrl: process.env.NUXT_PUBLIC_ADMIN_URL,
       monitoringUrl: process.env.NUXT_PUBLIC_MONITORING_URL,
       websiteUrl: process.env.NUXT_PUBLIC_WEBSITE_URL,
-      nodeEnv: process.env.NUXT_PUBLIC_NODE_ENV,
+      nodeEnv: process.env.NODE_ENV,
       logLevel: process.env.NUXT_PUBLIC_LOG_LEVEL,
       posthogKey: process.env.NUXT_PUBLIC_POSTHOG_KEY,
       posthogUrl: process.env.NUXT_PUBLIC_POSTHOG_URL,
