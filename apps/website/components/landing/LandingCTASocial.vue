@@ -11,6 +11,7 @@ const socialMedia = computed(() => {
     return {
       name: social.platform,
       icon: social.icon,
+      link: social.url,
       gradient: `from-${social.color.from}-500 to-${social.color.to}-600`,
       hoverGradient: `hover:from-${social.color.from}-400 hover:to-${social.color.to}-500`,
     }
@@ -48,7 +49,7 @@ onMounted(() => {
             <NuxtLink
               v-for="platform in socialMedia"
               :key="platform.name"
-              href="#"
+              :href="platform.link"
               class="social-button group"
             >
               <div class="relative">
