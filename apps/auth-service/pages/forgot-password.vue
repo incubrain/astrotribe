@@ -21,7 +21,7 @@ const handleForgotPassword = () =>
   auth.password.forgot(form.email, turnstileToken.value, turnstile.value.reset)
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter' && turnstileValid.value) {
+  if (turnstileValid.value && event.key === 'Enter' && turnstileValid.value) {
     handleForgotPassword()
   }
 }
