@@ -17,6 +17,15 @@ const form = reactive({
 
 const auth = useAuth()
 
+const handleForgotPassword = () =>
+  auth.password.forgot(form.email, turnstileToken.value, turnstile.value.reset)
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && turnstileValid.value) {
+    handleForgotPassword()
+  }
+}
+
 definePageMeta({
   name: 'ForgotPassword',
 })
@@ -31,7 +40,10 @@ definePageMeta({
     }"
   >
     <template #content>
-      <div class="flex flex-col gap-4 xl:gap-6">
+      <div
+        class="flex flex-col gap-4 xl:gap-6"
+        @keydown="handleKeydown"
+      >
         <PrimeFloatLabel class="flex flex-col w-full">
           <PrimeInputText
             id="username"
@@ -50,7 +62,7 @@ definePageMeta({
       <PrimeButton
         class="w-full flex justify-center"
         :disabled="!turnstileValid"
-        @click="auth.password.forgot(form.email, turnstileToken, turnstile.reset)"
+        @click="handleForgotPassword"
       >
         Request Reset Email
       </PrimeButton>

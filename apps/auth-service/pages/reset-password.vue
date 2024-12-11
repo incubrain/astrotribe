@@ -36,6 +36,12 @@ async function handlePasswordReset() {
     })
   }
 }
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && turnstileValid.value) {
+    handlePasswordReset()
+  }
+}
 </script>
 
 <template>
@@ -49,6 +55,7 @@ async function handlePasswordReset() {
     <template #content>
       <form
         class="space-y-4 w-100"
+        @keydown="handleKeydown"
         @submit.prevent="handlePasswordReset"
       >
         <div class="flex flex-col gap-2">
