@@ -50,7 +50,7 @@ const onValidTurnstile = (token: string) => {
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter' && turnstileValid.value) {
+  if (turnstileValid.value && event.key === 'Enter' && turnstileValid.value) {
     handleRegister()
   }
 }
