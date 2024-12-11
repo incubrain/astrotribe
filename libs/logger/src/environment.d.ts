@@ -5,7 +5,7 @@ declare global {
       config?: {
         SUPABASE_URL?: string
         SUPABASE_KEY?: string
-        SUPABASE_SERVICE_KEY?: string
+        SUPABASE_SERVICE_ROLE_KEY?: string
         SERVICE_NAME?: string
         [key: string]: any
       }
@@ -19,7 +19,7 @@ declare global {
       __NUXT_PATHS__?: string
       SUPABASE_URL?: string
       SUPABASE_KEY?: string
-      SUPABASE_SERVICE_KEY?: string
+      SUPABASE_SERVICE_ROLE_KEY?: string
       SERVICE_NAME?: string
     }
   }
