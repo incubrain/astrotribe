@@ -142,9 +142,7 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  // Load more data
   await originalLoadMore()
-  // The watch(proxyNews) logic will handle appending the new integrated ads
 }
 
 definePageMeta({
@@ -174,6 +172,7 @@ definePageMeta({
       >
         <IBInfiniteScroll
           v-if="!showSkeletonGrid"
+          :threshold="1400"
           @update:scroll-end="handleLoadMore"
         >
           <div
