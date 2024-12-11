@@ -49,6 +49,12 @@ const onValidTurnstile = (token: string) => {
   turnstileToken.value = token
 }
 
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && turnstileValid.value) {
+    handleRegister()
+  }
+}
+
 definePageMeta({
   name: 'Register',
 })
@@ -64,7 +70,10 @@ definePageMeta({
     help-url="/login"
   >
     <template #content>
-      <div class="flex flex-col gap-4">
+      <div
+        class="flex flex-col gap-4"
+        @keydown="handleKeydown"
+      >
         <div class="flex w-full gap-4">
           <PrimeFloatLabel class="flex w-full flex-col">
             <PrimeInputText
