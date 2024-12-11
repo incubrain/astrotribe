@@ -459,7 +459,7 @@ export type Database = {
           start_date: string | null
           status: boolean | null
           updated_at: string | null
-          user_profile_id: string
+          user_id: string
         }
         Insert: {
           access_level?: Database['public']['Enums']['access_level']
@@ -471,7 +471,7 @@ export type Database = {
           start_date?: string | null
           status?: boolean | null
           updated_at?: string | null
-          user_profile_id: string
+          user_id: string
         }
         Update: {
           access_level?: Database['public']['Enums']['access_level']
@@ -483,12 +483,12 @@ export type Database = {
           start_date?: string | null
           status?: boolean | null
           updated_at?: string | null
-          user_profile_id?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'company_employees_user_profile_id_fkey'
-            columns: ['user_profile_id']
+            foreignKeyName: 'company_employees_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
             referencedRelation: 'user_profiles'
             referencedColumns: ['id']
@@ -1335,27 +1335,27 @@ export type Database = {
           created_at: string | null
           followed_entity: Database['public']['Enums']['followed_entity']
           followed_id: string
-          follower_id: string
+          user_id: string
           id: string
         }
         Insert: {
           created_at?: string | null
           followed_entity: Database['public']['Enums']['followed_entity']
           followed_id: string
-          follower_id: string
+          user_id: string
           id?: string
         }
         Update: {
           created_at?: string | null
           followed_entity?: Database['public']['Enums']['followed_entity']
           followed_id?: string
-          follower_id?: string
+          user_id?: string
           id?: string
         }
         Relationships: [
           {
-            foreignKeyName: 'follows_follower_id_fkey'
-            columns: ['follower_id']
+            foreignKeyName: 'follows_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
             referencedRelation: 'user_profiles'
             referencedColumns: ['id']
@@ -2057,19 +2057,19 @@ export type Database = {
         Row: {
           created_at: string | null
           followed_id: string
-          follower_id: string
+          user_id: string
           id: string
         }
         Insert: {
           created_at?: string | null
           followed_id: string
-          follower_id: string
+          user_id: string
           id: string
         }
         Update: {
           created_at?: string | null
           followed_id?: string
-          follower_id?: string
+          user_id?: string
           id?: string
         }
         Relationships: []

@@ -145,23 +145,12 @@ const createContentTagData = (
 // You can define similar patterns for other tables that need initial data.
 
 // Example for `follows` table
-const createFollowData = (
-  followerId: string,
-  followedId: string,
-): InboundTableSchema<'follows'> => ({
-  follower_id: followerId,
+const createFollowData = (userId: string, followedId: string): InboundTableSchema<'follows'> => ({
+  user_id: userId,
   followed_id: followedId,
   followed_entity: 'user',
   // Other fields as needed
 })
-
-// Example for `user_followers` table
-const userFollowersData: InboundTableSchema<'user_followers'>[] = [
-  {
-    follower_id: userProfiles[0].id,
-    followed_id: userProfiles[1].id,
-  },
-]
 
 // Example for `votes` table
 const createVoteData = (

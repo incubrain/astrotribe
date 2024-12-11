@@ -4,7 +4,7 @@ import path, { dirname } from 'path'
 import fs from 'fs/promises'
 import Pool from 'pg-pool'
 import dotenv from 'dotenv'
-import { SchemaAnalyzer } from '../../../generators/schema-analyzer'
+import { SchemaAnalyzer } from '../schema-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
