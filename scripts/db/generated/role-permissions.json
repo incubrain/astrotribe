@@ -11,9 +11,7 @@
         "categories",
         "tags"
       ],
-      "default_permissions": [
-        "select"
-      ],
+      "default_permissions": ["select"],
       "audit_level": "low"
     },
     "public_content_tables": {
@@ -31,9 +29,7 @@
         "contents",
         "news_summaries"
       ],
-      "default_permissions": [
-        "select"
-      ],
+      "default_permissions": ["select"],
       "audit_level": "medium"
     },
     "user_content_tables": {
@@ -113,35 +109,19 @@
   "roles": {
     "super_admin": {
       "all_tables": {
-        "permissions": [
-          "select",
-          "insert",
-          "update",
-          "delete"
-        ]
+        "permissions": ["select", "insert", "update", "delete"]
       }
     },
     "admin": {
-      "inherit_from": [
-        "super_admin"
-      ],
+      "inherit_from": ["super_admin"],
       "security_tables": {
-        "permissions": [
-          "select",
-          "insert",
-          "update"
-        ]
+        "permissions": ["select", "insert", "update"]
       }
     },
     "moderator": {
-      "inherit_from": [
-        "admin"
-      ],
+      "inherit_from": ["admin"],
       "operational_tables": {
-        "permissions": [
-          "select",
-          "update"
-        ],
+        "permissions": ["select", "update"],
         "conditions": {
           "select": {
             "sql": "is_active = true"
@@ -153,16 +133,9 @@
       }
     },
     "user": {
-      "inherit_from": [
-        "guest"
-      ],
+      "inherit_from": ["guest"],
       "user_content_tables": {
-        "permissions": [
-          "select",
-          "insert",
-          "update",
-          "delete"
-        ],
+        "permissions": ["select", "insert", "update", "delete"],
         "conditions": {
           "select": {
             "sql": "auth.uid() = user_id OR is_public = true"
@@ -179,12 +152,7 @@
         }
       },
       "user_data_tables": {
-        "permissions": [
-          "select",
-          "insert",
-          "update",
-          "delete"
-        ],
+        "permissions": ["select", "insert", "update", "delete"],
         "conditions": {
           "select": {
             "sql": "auth.uid() = user_id"
@@ -203,14 +171,10 @@
     },
     "guest": {
       "reference_tables": {
-        "permissions": [
-          "select"
-        ]
+        "permissions": ["select"]
       },
       "public_content_tables": {
-        "permissions": [
-          "select"
-        ]
+        "permissions": ["select"]
       }
     }
   }

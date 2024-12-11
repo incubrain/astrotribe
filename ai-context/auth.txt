@@ -3822,7 +3822,7 @@ EXPOSE 3000
 File: apps/auth-service/example-env
 ================
 SUPABASE_URL=""
-SUPABASE_SERVICE_ROLE_KEY=""
+SUPABASE_SERVICE_KEY=""
 SUPABASE_ANON_KEY=""
 
 ================

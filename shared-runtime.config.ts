@@ -36,7 +36,7 @@ export default defineNuxtConfig({
     private: {
       resendApiKey: process.env.NUXT_RESEND_API_KEY,
       strapiUrl: process.env.NUXT_STRAPI_URL,
-      supabaseServiceKey: process.env.NUXT_SUPABASE_SERVICE_ROLE_KEY,
+      supabaseServiceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
       googleApiKey: process.env.NUXT_GOOGLE_API_KEY,
       nasaApiKey: process.env.NUXT_NASA_API_KEY,
       openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
