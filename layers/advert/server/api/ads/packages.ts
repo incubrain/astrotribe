@@ -1,8 +1,8 @@
 // server/api/ads/packages.ts
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event)
+  const client = serverSupabaseServiceRole(event)
 
   const { data, error } = await client
     .from('ad_packages')

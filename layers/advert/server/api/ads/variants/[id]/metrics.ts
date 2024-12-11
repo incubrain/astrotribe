@@ -1,9 +1,9 @@
 // /api/ads/variants/[id]/metrics.ts
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const adId = event.context.params?.id
-  const client = await serverSupabaseClient(event)
+  const client = serverSupabaseServiceRole(event)
 
   console.log('Fetching variant metrics for ad:', adId)
   const { data, error } = await client.rpc('get_ad_variant_metrics', {
