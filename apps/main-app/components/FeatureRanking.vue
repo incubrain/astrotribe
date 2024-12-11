@@ -84,19 +84,19 @@ onMounted(() => {
       <TransitionGroup
         name="list"
         tag="div"
-        class="space-y-2"
+        class="space-y-4"
       >
         <div
           v-for="(feature, index) in features"
           :key="feature.id"
-          class="group bg-gray-800/50 p-4 rounded-lg border border-gray-700 transition-all duration-200 hover:bg-gray-800 flex"
+          class="group relative bg-gray-800/50 p-4 rounded-lg border border-gray-700 transition-all duration-200 hover:bg-gray-800 flex"
         >
-          <div class="flex items-start gap-4">
+          <div class="flex items-center gap-4">
             <!-- Rank Badge -->
             <div
-              class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center"
+              class="absolute -top-3 -left-3 flex-shrink-0 border border-color w-10 h-10 rounded-lg bg-primary-700 flex items-center justify-center"
             >
-              <span class="font-medium text-sm">{{ index + 1 }}</span>
+              <span class="font-semibold text-base">{{ index + 1 }}</span>
             </div>
 
             <!-- Content -->
@@ -106,28 +106,28 @@ onMounted(() => {
             </div>
 
             <!-- Controls -->
-            <div
-              class="flex flex-col gap-1 opacity-0 group-hover:opacity-100 h-full justify-center items-center transition-opacity"
-            >
+            <div class="flex flex-col gap-4 h-full justify-center items-center">
               <button
                 :disabled="index === 0"
-                class="p-2 hover:bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed flex"
+                class="p-3 hover:bg-gray-700 border border-color rounded disabled:opacity-50 disabled:cursor-not-allowed flex"
                 :class="{ 'cursor-not-allowed': index === 0 }"
                 @click="moveFeature(index, 'up')"
               >
                 <Icon
                   name="mdi:chevron-up"
+                  size="20"
                   :class="{ 'text-gray-400': index === 0 }"
                 />
               </button>
               <button
                 :disabled="index === features.length - 1"
-                class="p-2 hover:bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed flex"
+                class="p-3 hover:bg-gray-700 rounded disabled:opacity-50 border border-color disabled:cursor-not-allowed flex"
                 :class="{ 'cursor-not-allowed': index === features.length - 1 }"
                 @click="moveFeature(index, 'down')"
               >
                 <Icon
                   name="mdi:chevron-down"
+                  size="20"
                   :class="{ 'text-gray-400': index === features.length - 1 }"
                 />
               </button>
