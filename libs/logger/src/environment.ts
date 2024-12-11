@@ -33,7 +33,7 @@ export const getEnvironment = (): Environment => {
     supabase: {
       url: config.SUPABASE_URL || null,
       key: config.SUPABASE_KEY || null,
-      serviceKey: config.SUPABASE_SERVICE_KEY || null,
+      serviceKey: config.SUPABASE_SERVICE_ROLE_KEY || null,
     },
     serviceName: config.SERVICE_NAME ?? 'api-gateway',
   }

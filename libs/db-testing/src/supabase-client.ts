@@ -10,7 +10,7 @@ config({ path: envPath })
 
 // Replace with your Supabase URL and Anon Key
 const SUPABASE_URL = process.env.NUXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.NUXT_SUPABASE_SERVICE_KEY
+const SUPABASE_ANON_KEY = process.env.NUXT_SUPABASE_SERVICE_ROLE_KEY
 
 console.log('ENVS', SUPABASE_ANON_KEY, SUPABASE_URL)
 
