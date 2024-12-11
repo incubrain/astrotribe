@@ -32,8 +32,8 @@ defineProps({
 
 <template>
   <div class="space-between flex min-h-full flex-col space-y-4">
-    <div class="flex h-full flex-row items-center justify-center gap-4 py-8 text-white mx-auto">
-      <div class="border-color group relative rounded-full border bg-white p-4 hover:invert">
+    <div class="flex h-full flex-row items-center justify-center gap-4 text-white mx-auto">
+      <div class="border-color group relative rounded-full border bg-white p-3 hover:invert">
         <NuxtLink
           :to="websiteUrl"
           class="flex items-center justify-center"
@@ -43,30 +43,29 @@ defineProps({
             :img="{
               src: 'astronera-logo.jpg',
               alt: 'AstronEra Logo',
-              width: '60',
-              height: '60',
+              width: '48',
+              height: '48',
             }"
           />
           <p class="absolute mx-auto my-auto hidden text-black group-hover:flex"> Go Home </p>
         </NuxtLink>
       </div>
       <div class="w-full">
-        <h2 class="text-3xl font-extrabold lg:text-start">
+        <h2 class="text-2xl font-extrabold lg:text-start">
           {{ title.main }}
         </h2>
-        <span class="flex items-center gap-2 text-start font-bold lg:justify-start">
+        <span class="flex items-center gap-2 text-start lg:justify-start">
           {{ title.subtitle }}
           <NuxtLink
             v-if="helpUrl && title.label"
             :to="helpUrl"
-            class="text-primary-500 underline"
+            class="underline"
           >
-            <PrimeButton
-              link
-              class="!p-0 !m-0 leading-normal underline"
+            <button
+              class="!p-0 !m-0 leading-normal font-bold underline text-primary-500 hover:text-primary-400"
             >
               {{ title.label }}
-            </PrimeButton>
+            </button>
           </NuxtLink>
         </span>
       </div>
