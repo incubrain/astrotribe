@@ -23,8 +23,7 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    'content_type': { eq: 'news' },
-    'news.news_summaries.is_current': { eq: true },
+    content_type: { eq: 'news' },
   },
   orderBy: orderBy.value,
   initialFetch: true,

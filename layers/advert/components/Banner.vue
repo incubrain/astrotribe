@@ -31,7 +31,7 @@ const handleClick = async (isVisible: boolean, startTime: number) => {
     :threshold="0.8"
   >
     <div
-      class="bg-slate-900/80 backdrop-blur-sm"
+      class="bg-slate-900/80 backdrop-blur-sm border-color"
       :class="[position === 'bottom' ? 'border-t' : 'border-b']"
     >
       <div class="max-w-[940px] mx-auto px-4 py-6 md:px-8">
