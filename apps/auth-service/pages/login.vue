@@ -28,6 +28,12 @@ const onValidTurnstile = (token: string) => {
   turnstileToken.value = token
 }
 
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && turnstileValid.value) {
+    handleLogin()
+  }
+}
+
 definePageMeta({
   name: 'Login',
 })
@@ -57,7 +63,10 @@ definePageMeta({
     </template>
 
     <template #content>
-      <div class="flex flex-col w-full gap-4">
+      <div
+        class="flex flex-col w-full gap-4"
+        @keydown="handleKeydown"
+      >
         <div class="flex flex-col gap-2">
           <label
             for="email"

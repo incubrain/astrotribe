@@ -17,6 +17,15 @@ const form = reactive({
   confirmPassword: '',
 })
 
+const turnstile = ref()
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
+
 const hasEmailProvider = computed(() => {
   return profile.value?.providers?.includes('email')
 })
@@ -51,7 +60,13 @@ async function handleDeleteUser() {
     })
     return
   }
-  await security.deleteAccount(form.passwordForDeletion)
+
+  const options = {
+    reset: turnstile.value.reset,
+    token: turnstileToken.value,
+  }
+
+  await security.deleteAccount(options, form.passwordForDeletion)
 }
 
 async function handleSetPassword() {
@@ -216,9 +231,14 @@ async function handleSetPassword() {
         <PrimePassword
           v-if="hasEmailProvider"
           v-model="form.passwordForDeletion"
-          :feedback="true"
+          :feedback="false"
           toggleMask
           placeholder="Enter your password"
+        />
+        <TurnstileChallenge
+          ref="turnstile"
+          class="mb-4"
+          :on-valid-token="onValidTurnstile"
         />
       </div>
       <template #footer>
@@ -229,6 +249,7 @@ async function handleSetPassword() {
         />
         <PrimeButton
           severity="danger"
+          :disabled="!turnstileValid"
           label="Delete Account Permanently"
           @click="handleDeleteUser"
         />
