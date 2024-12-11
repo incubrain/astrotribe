@@ -38,28 +38,26 @@ watchEffect(() => {
 })
 
 // Initialize news only after dependencies are loaded
+// In your [feed].vue component
 const newsQuery = computed(() => {
-  const filters: any = {
-    body: { neq: 'null' },
-  }
+  // Start with base filters
+  const queryFilters: Record<string, FilterOption> = {}
 
-  const orConditions = []
-
+  // Add all conditional filters
   if (categories.value?.length) {
-    orConditions.push({
-      category_id: { in: categories.value.map((category) => category.id) },
-    })
+    queryFilters['category_id'] = {
+      in: categories.value.map((category) => category.id),
+    }
   }
 
   if (sources.value?.length) {
-    orConditions.push({
-      content_source_id: { in: sources.value.map((source) => source.id) },
-    })
+    queryFilters['content_source_id'] = {
+      in: sources.value.map((source) => source.id),
+    }
   }
 
-  if (orConditions.length) {
-    filters.or = orConditions
-  }
+  // Body check is always included
+  queryFilters['body'] = { neq: null }
 
   return {
     columns: `
@@ -67,7 +65,7 @@ const newsQuery = computed(() => {
       category_id, author, url, keywords, featured_image,
       company_id, companies(*), content_source_id, content_sources(*), score
     `,
-    filters,
+    filters: queryFilters,
     orderBy: { column: 'created_at', ascending: false },
     pagination: { page: 1, limit: 20 },
     storeKey: `customFeed_${feedId.value}`,

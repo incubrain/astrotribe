@@ -55,58 +55,65 @@ interface SelectOptions<T> {
 }
 
 function applyFilter(query: any, column: string, filter: FilterOption): any {
-  const [operator, value] = Object.entries(filter)[0]
-  switch (operator) {
-    case 'eq':
-      return query.eq(column, value)
-    case 'neq':
-      return query.neq(column, value)
-    case 'gt':
-      return query.gt(column, value)
-    case 'gte':
-      return query.gte(column, value)
-    case 'lt':
-      return query.lt(column, value)
-    case 'lte':
-      return query.lte(column, value)
-    case 'like':
-      return query.like(column, value)
-    case 'ilike':
-      return query.ilike(column, value)
-    case 'is':
-      return query.is(column, value)
-    case 'in':
-      return query.in(column, value as any[])
-    case 'contains':
-      return query.contains(column, value)
-    case 'containedBy':
-      return query.containedBy(column, value)
-    case 'rangeGt':
-      return query.rangeGt(column, value)
-    case 'rangeGte':
-      return query.rangeGte(column, value)
-    case 'rangeLt':
-      return query.rangeLt(column, value)
-    case 'rangeLte':
-      return query.rangeLte(column, value)
-    case 'rangeAdjacent':
-      return query.rangeAdjacent(column, value)
-    case 'overlaps':
-      return query.overlaps(column, value)
-    case 'textSearch':
-      return query.textSearch(column, value as string, { config: 'english' })
-    case 'match':
-      return query.match(column, value as Record<string, unknown>)
-    case 'not':
-      return applyFilter(query.not(), column, value as FilterOption)
-    case 'or':
-      return query.or(value as string)
-    case 'and':
-      return query.and(value as string)
-    default:
-      console.warn(`Unsupported filter operator: ${operator}`)
-      return query
-  }
+  // Handle each filter operator in the filter object
+  return Object.entries(filter).reduce((acc, [operator, value]) => {
+    console.log('operator:', operator, value)
+    if (typeof operator !== 'string') {
+      return acc
+    }
+
+    switch (operator as FilterOperator) {
+      case 'eq':
+        return acc.eq(column, value)
+      case 'neq':
+        return acc.neq(column, value)
+      case 'gt':
+        return acc.gt(column, value)
+      case 'gte':
+        return acc.gte(column, value)
+      case 'lt':
+        return acc.lt(column, value)
+      case 'lte':
+        return acc.lte(column, value)
+      case 'like':
+        return acc.like(column, value)
+      case 'ilike':
+        return acc.ilike(column, value)
+      case 'is':
+        return acc.is(column, value)
+      case 'in':
+        return acc.in(column, value as any[])
+      case 'contains':
+        return acc.contains(column, value)
+      case 'containedBy':
+        return acc.containedBy(column, value)
+      case 'rangeGt':
+        return acc.rangeGt(column, value)
+      case 'rangeGte':
+        return acc.rangeGte(column, value)
+      case 'rangeLt':
+        return acc.rangeLt(column, value)
+      case 'rangeLte':
+        return acc.rangeLte(column, value)
+      case 'rangeAdjacent':
+        return acc.rangeAdjacent(column, value)
+      case 'overlaps':
+        return acc.overlaps(column, value)
+      case 'textSearch':
+        return acc.textSearch(column, value as string, { config: 'english' })
+      case 'match':
+        return acc.match(column, value as Record<string, unknown>)
+      case 'not':
+        return applyFilter(acc.not(), column, value as FilterOption)
+      case 'or':
+        return acc.or(value as string)
+      case 'and':
+        return acc.and(value as string)
+      default:
+        console.warn(`Unsupported filter operator: ${operator}`)
+        return acc
+    }
+  }, query)
 }
 
 export function useHttpHandler() {
