@@ -1,16 +1,11 @@
 // scripts/fix-migration.ts
 
-// JOIN ad_variants needed to be JOIN public.ad_variants
-
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-
-function ensureBackupDirExists() {
-  if (!fs.existsSync(backupDir)) {
-    fs.mkdirSync(backupDir)
-  }
-}
+import type { Pool } from 'pg'
+import pool from '../client'
+import { SchemaAnalyzer } from '../schema-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,56 +13,74 @@ const __dirname = path.dirname(__filename)
 interface Replacement {
   find: RegExp
   replace: string
-  description: string // For better logging and maintenance
+  description: string
+  category?: string
 }
 
-const replacements: Replacement[] = [
-  {
-    // Add 'public.' schema to unqualified function calls
-    find: /EXECUTE FUNCTION (\w+\(.*?\))/g,
-    replace: 'EXECUTE FUNCTION public.$1',
-    description: 'Function calls in triggers',
-  },
-  {
-    // Add public schema to unqualified app_role_enum type usage
-    find: /([^.])app_role_enum([^a-zA-Z])/g,
-    replace: '$1public.app_role_enum$2',
-    description: 'Unqualified app_role_enum types',
-  },
-  {
-    // Fix references to sequence class
-    find: /nextval\('(\w+)_id_seq'/g,
-    replace: "nextval('public.$1_id_seq'",
-    description: 'Sequence references',
-  },
-  {
-    // Ensure authorize function calls in policies include public schema
-    find: /using \(([^.])authorize\(/g,
-    replace: 'using (public.authorize(',
-    description: 'Authorize function in policies (using clause)',
-  },
-  {
-    // Add public schema to table references in alter table statements
-    find: /alter table "(\w+)" /gi,
-    replace: 'alter table "public.$1" ',
-    description: 'Table references in alter statements',
-  },
-  {
-    // Add public schema to table references in create table statements
-    find: /create table "(\w+)" /gi,
-    replace: 'create table "public.$1" ',
-    description: 'Table references in create statements',
-  },
-  {
-    // Add public schema to FROM clause references
-    find: /FROM (?!public\.)(\w+);/g,
-    replace: 'FROM public.$1;',
-    description: 'FROM clause table references',
-  },
-]
+function generateReplacementPatterns(objNames: string[]): Replacement[] {
+  return objNames.map((name) => ({
+    find: new RegExp(`(?<!public\\.)(?<!\\.)(?<!public\\.)(${name})(?!\\.)`, 'g'),
+    replace: `public.${name}`,
+    description: `Add schema to ${name}`,
+    category: 'schema_prefix',
+  }))
+}
+
+async function generateReplacements(pool: Pool): Promise<Replacement[]> {
+  const analyzer = new SchemaAnalyzer(pool)
+  const schema = await analyzer.analyzeDatabase({
+    includeTables: true,
+    includeEnums: true,
+    includeFunctions: true,
+    includeTriggers: true,
+  })
+
+  // Collect all object names
+  const objectNames = new Set<string>()
+
+  // Add table names
+  schema.forEach((s) => objectNames.add(s.name))
+
+  // Add enum names
+  schema.forEach((s) => s.enums?.forEach((e) => objectNames.add(e.name)))
+
+  // Add function names
+  schema.forEach((s) => s.functions?.forEach((f) => objectNames.add(f.name)))
+
+  // Add trigger names
+  schema.forEach((s) => s.triggers?.forEach((t) => objectNames.add(t.name)))
+
+  // Generate patterns for all objects
+  const dynamicReplacements = generateReplacementPatterns(Array.from(objectNames))
+
+  // Add static patterns that shouldn't use the generic pattern
+  const staticReplacements: Replacement[] = [
+    {
+      find: /nextval\('(?!public\.)(\w+_id_seq)'/g,
+      replace: "nextval('public.$1'",
+      description: 'Sequence references',
+      category: 'sequences',
+    },
+    {
+      find: /EXECUTE\s+FUNCTION\s+(?!public\.)(\w+\()/g,
+      replace: 'EXECUTE FUNCTION public.$1',
+      description: 'Function execution',
+      category: 'functions',
+    },
+  ]
+
+  return [...dynamicReplacements, ...staticReplacements]
+}
+
+function ensureBackupDirExists(backupDir: string) {
+  if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir, { recursive: true })
+  }
+}
 
 function backupMigrationFile(filePath: string) {
-  ensureBackupDirExists()
+  const backupDir = path.join(path.dirname(filePath), 'migration_backups')
+  ensureBackupDirExists(backupDir)
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
   const fileName = path.basename(filePath)
@@ -96,41 +109,70 @@ function backupMigrationFile(filePath: string) {
   }
 }
 
-function performReplacements(filePath: string) {
+async function performReplacements(filePath: string, replacements: Replacement[]) {
   let content = fs.readFileSync(filePath, 'utf-8')
   let changesMade = false
+  const changes: { pattern: string; matches: string[] }[] = []
 
-  replacements.forEach(({ find, replace, description }) => {
-    const newContent = content.replace(find, replace)
-    if (newContent !== content) {
-      console.log(`Applied fix: ${description}`)
+  for (const { find, replace, description, category } of replacements) {
+    const matches = content.match(find)
+    if (matches) {
+      changes.push({
+        pattern: find.toString(),
+        matches,
+      })
+      content = content.replace(find, replace)
+      console.log(`Applied fix: ${description} (${matches.length} occurrences)`)
       changesMade = true
-      content = newContent
     }
-  })
+  }
 
   if (changesMade) {
-    fs.writeFileSync(filePath, content, 'utf-8')
+    // Save changes log
+    const logDir = path.join(path.dirname(filePath), 'migration_logs')
+    ensureBackupDirExists(logDir)
+
+    const log = {
+      timestamp: new Date().toISOString(),
+      file: path.basename(filePath),
+      changes,
+    }
+
+    const logPath = path.join(
+      logDir,
+      `changes_${path.basename(filePath, '.sql')}_${new Date().toISOString().replace(/[:.]/g, '-')}.json`,
+    )
+
+    fs.writeFileSync(logPath, JSON.stringify(log, null, 2))
+    fs.writeFileSync(filePath, content)
+
     console.log(`Migration file updated: ${filePath}`)
+    console.log(`Changes log saved: ${logPath}`)
   } else {
     console.log('No changes were necessary')
   }
 }
 
 // Main execution
-const migrationFilePath = process.argv[2]
+async function main() {
+  const migrationFilePath = process.argv[2]
 
-if (!migrationFilePath) {
-  console.error('Usage: npx ts-node scripts/fix-migration.ts <migration_file.sql>')
-  process.exit(1)
+  if (!migrationFilePath) {
+    console.error('Usage: npx ts-node scripts/fix-migration.ts <migration_file.sql>')
+    process.exit(1)
+  }
+
+  try {
+    const replacements = await generateReplacements(pool)
+
+    backupMigrationFile(migrationFilePath)
+    await performReplacements(migrationFilePath, replacements)
+
+    await pool.end()
+  } catch (error) {
+    console.error('Error processing migration file:', error)
+    process.exit(1)
+  }
 }
 
-const backupDir = path.join(path.dirname(migrationFilePath), 'migration_backups')
-
-try {
-  backupMigrationFile(migrationFilePath)
-  performReplacements(migrationFilePath)
-} catch (error) {
-  console.error('Error processing migration file:', error)
-  process.exit(1)
-}
+main()
