@@ -6,7 +6,7 @@ export default defineEventHandler(async (event: H3Event) => {
   try {
     const user = await serverSupabaseUser(event)
     if (!user) {
-      throw createError({ statusCode: 401, message: 'Unauthorized' })
+      throw createError({ statusCode: 401, message: 'Unauthorized: No user object' })
     }
 
     const supabase = await serverSupabaseClient(event)

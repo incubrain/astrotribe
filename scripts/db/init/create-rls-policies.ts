@@ -5,6 +5,14 @@ function getConditionsFor(
   tableName: string,
   action: 'select' | 'insert' | 'update' | 'delete',
 ): string {
+  // Special case for role_permissions_materialized (required for authorize function)
+  if (tableName === 'role_permissions_materialized') {
+    if (action === 'select') {
+      return 'TRUE' // Allow all authenticated users to read
+    }
+    return 'FALSE' // No other operations allowed
+  }
+
   // User-specific tables that need auth.uid() check
   const userSpecificTables = [
     'bookmarks',
@@ -65,7 +73,22 @@ export async function updateRLSPolicies(pool: Pool): Promise<boolean> {
       // Create new policies
       for (const { tablename } of tablesResult.rows) {
         try {
-          console.log(chalk.blue(`Processing table: ${tablename}`)) // Add this line
+          console.log(chalk.blue(`Processing table: ${tablename}`))
+
+          // Special handling for role_permissions_materialized table
+          if (tablename === 'role_permissions_materialized') {
+            await client.query(`
+              ALTER TABLE public.role_permissions_materialized FORCE ROW LEVEL SECURITY;
+              ALTER TABLE public.role_permissions_materialized ENABLE ROW LEVEL SECURITY;
+              
+              CREATE POLICY "allow_read_permissions"
+              ON public.role_permissions_materialized
+              FOR SELECT
+              TO authenticated
+              USING (true);
+            `)
+            continue
+          }
 
           const selectCondition = getConditionsFor(tablename, 'select')
           const insertCondition = getConditionsFor(tablename, 'insert')

@@ -1,5 +1,5 @@
 // server/api/bookmarks/counts.ts
-import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   console.log('fetch bookmark counts endpoint fired')
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const supabase = await serverSupabaseClient(event)
+    const supabase = serverSupabaseServiceRole(event)
 
     // Using a raw SQL query with Supabase
     const { data, error } = await supabase.rpc('get_bookmark_counts_by_folder', {
