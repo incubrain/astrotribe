@@ -249,7 +249,28 @@ onBeforeUnmount(async () => {
           >
             {{ news.title }}</h3
           >
-          <p class="text-sm overflow-y-auto flex-grow">{{ summary ?? news.description }}</p>
+          <div
+            v-if="hasSummary"
+            class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
+          >
+            <div
+              class="inline-flex items-center gap-1 px-2 py-1 rounded-full  foreground text-primary-200 font-semibold"
+            >
+              <Icon
+                name="material-symbols:alarm-add-outline-rounded"
+                size="20"
+              />
+              <span>AI Summary</span>
+              <Icon
+                name="material-symbols:alarm-add-outline-rounded"
+                size="20"
+              />
+            </div>
+          </div>
+
+          <p class="text-sm overflow-y-auto flex-grow">
+            {{ summary }}
+          </p>
         </div>
 
         <!-- Back side actions -->
