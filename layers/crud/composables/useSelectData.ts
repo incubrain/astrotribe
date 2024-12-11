@@ -94,7 +94,7 @@ export function useSelectData<T extends { id: string | number }>(
       lastSelectTime = Date.now()
       return result
     } catch (error: any) {
-      logger.error(error, { userMessage: 'Error selecting data' })
+      logger.error('Error selecting data', { error })
       throw error
     } finally {
       isSelecting.value = false

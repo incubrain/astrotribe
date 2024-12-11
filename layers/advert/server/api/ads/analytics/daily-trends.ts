@@ -1,8 +1,8 @@
 // server/api/ads/analytics/daily-trends.ts
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event)
+  const client = serverSupabaseServiceRole(event)
   const { period = '300', adId } = getQuery(event)
 
   const startDate = new Date()

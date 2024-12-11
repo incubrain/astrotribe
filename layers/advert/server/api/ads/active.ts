@@ -1,9 +1,9 @@
 // server/api/ads/active.ts
 
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event)
+  const client = await serverSupabaseServiceRole(event)
 
   const { data, error } = await client.rpc('get_active_ads')
 
