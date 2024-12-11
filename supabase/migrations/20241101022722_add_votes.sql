@@ -24,7 +24,7 @@ alter table "public"."votes" add constraint "votes_pkey" PRIMARY KEY using index
 
 alter table "public"."votes" add constraint "votes_content_type_content_id_user_id_key" UNIQUE using index "votes_content_type_content_id_user_id_key";
 
-alter table "public"."votes" add constraint "votes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) not valid;
+alter table "public"."votes" add constraint "votes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) on delete cascade on update cascade not valid;
 
 alter table "public"."votes" validate constraint "votes_user_id_fkey";
 

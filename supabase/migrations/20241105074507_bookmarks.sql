@@ -71,7 +71,7 @@ alter table "public"."bookmark_folders" add constraint "bookmark_folders_parent_
 
 alter table "public"."bookmark_folders" validate constraint "bookmark_folders_parent_id_fkey";
 
-alter table "public"."bookmark_folders" add constraint "bookmark_folders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) not valid;
+alter table "public"."bookmark_folders" add constraint "bookmark_folders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) on delete cascade on update cascade not valid;
 
 alter table "public"."bookmark_folders" validate constraint "bookmark_folders_user_id_fkey";
 
@@ -89,7 +89,7 @@ alter table "public"."bookmarks" validate constraint "bookmarks_folder_id_fkey";
 
 alter table "public"."bookmarks" add constraint "bookmarks_user_id_content_type_content_id_key" UNIQUE using index "bookmarks_user_id_content_type_content_id_key";
 
-alter table "public"."bookmarks" add constraint "bookmarks_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) not valid;
+alter table "public"."bookmarks" add constraint "bookmarks_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) on delete cascade on update cascade not valid;
 
 alter table "public"."bookmarks" validate constraint "bookmarks_user_id_fkey";
 
