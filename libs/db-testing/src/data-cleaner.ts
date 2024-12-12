@@ -31,7 +31,7 @@ export async function cleanUpTestData(pool: Pool) {
       'votes',
       'user_metrics',
       'feature_requests',
-      'feature_rankings',
+      'feature_votes',
       'content_source_visits',
       'error_logs',
       'ads',

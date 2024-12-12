@@ -180,12 +180,8 @@ export async function runSeeders() {
       seed.seedFeatureRequests(client),
     )
 
-    await checkAndSeed(client, 'feature_rankings', () =>
-      seed.seedFeatureRankings(
-        client,
-        userIds,
-        features.map((f) => f.id),
-      ),
+    await checkAndSeed(client, 'feature_votes', () =>
+      seed.seedFeatureVotes(client, userIds, features),
     )
 
     // 8. Seed feedback and follows
