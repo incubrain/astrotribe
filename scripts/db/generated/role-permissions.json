@@ -3,8 +3,8 @@
     "reference_tables": {
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
-        "metric_definitions",
         "content_categories",
+        "metric_definitions",
         "content_tags",
         "cities",
         "countries",
@@ -19,6 +19,7 @@
     "public_content_tables": {
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
+        "companies",
         "content_sources",
         "news",
         "feed_sources",
@@ -28,8 +29,7 @@
         "contents",
         "research",
         "content_statuses",
-        "research_embeddings",
-        "companies"
+        "research_embeddings"
       ],
       "default_permissions": [
         "select"
@@ -39,10 +39,10 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "feeds",
         "comments",
         "bookmarks",
         "bookmark_folders",
+        "feeds",
         "feed_categories",
         "follows",
         "feedbacks",
@@ -57,12 +57,12 @@
     "user_data_tables": {
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
-        "searches",
-        "company_metrics",
-        "user_profiles",
         "contacts",
         "company_contacts",
         "addresses",
+        "searches",
+        "company_metrics",
+        "user_profiles",
         "company_employees",
         "company_extras",
         "company_urls",
@@ -102,9 +102,9 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions",
-        "role_permissions_materialized",
         "blacklisted_urls",
-        "error_logs"
+        "error_logs",
+        "role_permissions_materialized"
       ],
       "default_permissions": [],
       "audit_level": "critical"

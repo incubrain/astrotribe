@@ -18,12 +18,26 @@ interface Replacement {
 }
 
 function generateReplacementPatterns(objNames: string[]): Replacement[] {
-  return objNames.map((name) => ({
-    find: new RegExp(`(?<!public\\.)(?<!\\.)(?<!public\\.)(${name})(?!\\.)`, 'g'),
-    replace: `public.${name}`,
-    description: `Add schema to ${name}`,
-    category: 'schema_prefix',
-  }))
+  return [
+    {
+      find: /"([a-zA-Z_][a-zA-Z0-9_]*)"/g,
+      replace: (match, p1) => {
+        if (p1.includes('.') || !isValidIdentifier(p1)) {
+          return match
+        }
+        return `"public"."${p1}"` // Ensure correct quoting
+      },
+    },
+    {
+      find: /\b(ON|SOME|REFERENCES)\s+"?([a-zA-Z_][a-zA-Z0-9_]*)"?/gi,
+      replace: (match, p1) => {
+        if (p1.includes('.') || !isValidIdentifier(p1)) {
+          return match
+        }
+        return `ON "public"."${p1}"`
+      },
+    },
+  ]
 }
 
 async function generateReplacements(pool: Pool): Promise<Replacement[]> {
@@ -37,6 +51,11 @@ async function generateReplacements(pool: Pool): Promise<Replacement[]> {
 
   // Collect all object names
   const objectNames = new Set<string>()
+  schema.forEach((s) => {
+    if (isValidIdentifier(s.name)) {
+      objectNames.add(s.name)
+    }
+  })
 
   // Add table names
   schema.forEach((s) => objectNames.add(s.name))
@@ -55,6 +74,16 @@ async function generateReplacements(pool: Pool): Promise<Replacement[]> {
 
   // Add static patterns that shouldn't use the generic pattern
   const staticReplacements: Replacement[] = [
+    {
+      find: /"([^"]+)"/g,
+      replace: (match, p1) => {
+        // Don't modify already qualified names or composite identifiers
+        if (p1.includes('.') || p1.includes('_public')) return match
+        return `"public.${p1}"`
+      },
+      description: 'Quoted identifiers',
+      category: 'quoted_identifiers',
+    },
     {
       find: /nextval\('(?!public\.)(\w+_id_seq)'/g,
       replace: "nextval('public.$1'",
@@ -76,6 +105,11 @@ function ensureBackupDirExists(backupDir: string) {
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true })
   }
+}
+
+function isValidIdentifier(name: string): boolean {
+  // Don't qualify if already has schema or contains invalid characters
+  return !name.includes('.') && !name.includes('_public') && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)
 }
 
 function backupMigrationFile(filePath: string) {
@@ -126,6 +160,8 @@ async function performReplacements(filePath: string, replacements: Replacement[]
       changesMade = true
     }
   }
+
+  content = cleanOutput(content)
 
   if (changesMade) {
     // Save changes log

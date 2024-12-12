@@ -1,5 +1,5 @@
 
-create function delete_user(user_id uuid)
+CREATE OR REPLACE function public.delete_user(user_id uuid)
 returns void
 language plpgsql
 security definer
