@@ -12,22 +12,37 @@ const orderBy = computed(() => ({
   ascending: false,
 }))
 
+const content_ids = []
+
 const {
-  store,
-  loadMore: originalLoadMore,
-  refresh,
-} = useSelectData<News>('contents', {
-  columns: `id, title, url, created_at, content_type, hot_score,
-    news!inner(published_at, description, category_id, author, keywords, featured_image, company_id, score,
-      companies(name, logo_url),
-      news_summaries!inner(id, summary, complexity_level, version)
-    )`,
+  store: contentStore,
+  loadMore,
+  refresh: contentsRefresh,
+} = useSelectData('contents', {
+  columns: 'id, title, url, created_at, content_type, hot_score',
   filters: {
-    content_type: { eq: 'news' },
+    content_type: 'news',
   },
   orderBy: orderBy.value,
   initialFetch: true,
   pagination: { page: 1, limit: 20 },
+})
+
+const { items: proxyContents } = storeToRefs(contentStore)
+
+const {
+  store,
+  loadMore: originalLoadMore,
+  refresh,
+} = useSelectData<News>('news', {
+  columns: `id, title, published_at, description, category_id, author, keywords, featured_image, company_id, score, companies!inner(name, logo_url),
+      news_summaries!inner(id, summary, complexity_level, version)
+    )`,
+  filters: {
+    id: { in: proxyContents.value.map((item) => toRaw(item).id) },
+  },
+  orderBy: orderBy.value,
+  initialFetch: true,
   storeKey: 'mainFeed',
 })
 
@@ -141,7 +156,7 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  await originalLoadMore()
+  await loadMore()
 }
 
 definePageMeta({
