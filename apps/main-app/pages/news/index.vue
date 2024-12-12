@@ -12,8 +12,8 @@ const orderBy = computed(() => ({
   ascending: false,
 }))
 
-const supabase = useSupabaseClient()
-const { data, error } = await supabase.rpc('get_contents')
+// const supabase = useSupabaseClient()
+// const { data, error } = await supabase.rpc('get_contents')
 
 const {
   store,
@@ -24,7 +24,8 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    id: { in: data.map((item) => item.id) },
+    // id: { in: data.map((item) => item.id) },
+    featured_image: { neq: null },
   },
   orderBy: orderBy.value,
   initialFetch: true,
