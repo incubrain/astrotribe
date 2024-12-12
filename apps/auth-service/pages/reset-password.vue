@@ -9,6 +9,15 @@ const form = reactive({
   confirmPassword: '',
 })
 
+const turnstile = ref()
+const turnstileValid = ref(false)
+const turnstileToken = ref<string | null>(null)
+
+const onValidTurnstile = (token: string) => {
+  turnstileValid.value = true
+  turnstileToken.value = token
+}
+
 async function handlePasswordReset() {
   if (form.password !== form.confirmPassword) {
     toast.error({
@@ -20,7 +29,7 @@ async function handlePasswordReset() {
 
   try {
     // Update the password
-    await auth.password.update(form.password)
+    await auth.password.updatePassword(form.password)
 
     // Redirect to login
     navigateTo('/login', {
@@ -84,7 +93,13 @@ const handleKeydown = (event: KeyboardEvent) => {
             required
           />
         </div>
+        <TurnstileChallenge
+          ref="turnstile"
+          class="mb-4"
+          :on-valid-token="onValidTurnstile"
+        />
         <PrimeButton
+          :disabled="!turnstileValid"
           type="submit"
           class="w-full"
         >
