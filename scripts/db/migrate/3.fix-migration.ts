@@ -5,7 +5,7 @@ import * as path from 'path'
 import { fileURLToPath } from 'url'
 import type { Pool } from 'pg'
 import pool from '../client'
-import { SchemaAnalyzer } from '../schema-analyzer'
+import { SchemaAnalyzer } from '../../schema-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

@@ -1,5 +1,6 @@
 // src/scripts/db/schema-analyzer.ts
 import type { PoolClient, Pool } from 'pg'
+import { domainMap, inferDomain, domainConfig, type DomainName } from './api/domain-config'
 
 type AnalyzerResult =
   | ColumnDefinition[]
@@ -13,7 +14,7 @@ interface BaseAnalyzer<T extends AnalyzerResult = AnalyzerResult> {
   analyze(client: PoolClient, table?: string): Promise<T>
 }
 
-interface ColumnDefinition {
+export interface ColumnDefinition {
   name: string
   type: string
   nullable: boolean
@@ -26,7 +27,7 @@ interface ColumnDefinition {
   hasDefault: boolean
 }
 
-interface Relationship {
+export interface Relationship {
   table: string
   type: 'oneToOne' | 'oneToMany' | 'manyToOne' | 'manyToMany'
   throughTable?: string
@@ -34,9 +35,10 @@ interface Relationship {
   columnName: string
 }
 
-// Original interfaces remain the same
-interface TableSchema {
+// Update TableSchema to include domain-specific properties
+export interface TableSchema {
   name: string
+  domain?: string
   columns?: ColumnDefinition[]
   relationships?: Relationship[]
   securityLevel?: 'public' | 'private' | 'protected'
@@ -48,6 +50,17 @@ interface TableSchema {
   functions?: FunctionDefinition[]
   triggers?: TriggerDefinition[]
   policies?: PolicyDefinition[]
+  // Add domain-specific properties
+  requiresAuth?: boolean
+  defaultPermissions?: string[]
+  supportsSoftDelete?: boolean
+  supportsVersioning?: boolean
+  requiresCompany?: boolean
+  requiresUser?: boolean
+  requiresEncryption?: boolean
+  supportsCaching?: boolean
+  requiresAdmin?: boolean
+  sensitiveFields?: string[]
 }
 
 // Add new interfaces for additional schema objects
@@ -277,20 +290,79 @@ class RelationshipAnalyzer implements BaseAnalyzer {
   }
 }
 
-class EnumAnalyzer implements BaseAnalyzer {
-  async analyze(client: PoolClient): Promise<EnumDefinition[]> {
-    const result = await client.query(`
+export class EnumAnalyzer implements BaseAnalyzer<EnumDefinition[]> {
+  async analyze(client: PoolClient, table?: string): Promise<EnumDefinition[]> {
+    if (table) {
+      // If table is provided, get enum definitions for specific table
+      return this.getTableEnumDefinitions(client, table)
+    }
+
+    // If no table provided, get all enum definitions
+    return this.getAllEnumDefinitions(client)
+  }
+
+  private async getTableEnumDefinitions(
+    client: PoolClient,
+    tableName: string,
+  ): Promise<EnumDefinition[]> {
+    // Get all enum columns for this table
+    const enumColumnsQuery = `
+      SELECT 
+        column_name,
+        udt_name as enum_type
+      FROM information_schema.columns
+      WHERE table_name = $1
+      AND data_type = 'USER-DEFINED'
+    `
+
+    const enumColumns = await client.query(enumColumnsQuery, [tableName])
+    const definitions: EnumDefinition[] = []
+
+    for (const column of enumColumns.rows) {
+      const values = await this.getEnumValues(client, column.enum_type)
+      if (values.length) {
+        definitions.push({
+          name: column.column_name,
+          type: column.enum_type,
+          values,
+          schema: 'public',
+        })
+      }
+    }
+
+    return definitions
+  }
+
+  private async getAllEnumDefinitions(client: PoolClient): Promise<EnumDefinition[]> {
+    const query = `
       SELECT 
         t.typname as name,
         n.nspname as schema,
-        array_agg(e.enumlabel) as values
+        array_agg(e.enumlabel ORDER BY e.enumsortorder) as values
       FROM pg_type t 
       JOIN pg_enum e ON t.oid = e.enumtypid  
       JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
       WHERE n.nspname = 'public'
       GROUP BY t.typname, n.nspname
-    `)
+    `
+
+    const result = await client.query(query)
     return result.rows
+  }
+
+  private async getEnumValues(client: PoolClient, enumTypeName: string): Promise<string[]> {
+    const query = `
+      SELECT e.enumlabel as value
+      FROM pg_type t
+      JOIN pg_enum e ON t.oid = e.enumtypid
+      JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+      WHERE t.typname = $1
+      AND n.nspname = 'public'
+      ORDER BY e.enumsortorder
+    `
+
+    const result = await client.query(query, [enumTypeName])
+    return result.rows.map((row) => row.value)
   }
 }
 
@@ -400,6 +472,65 @@ class PolicyAnalyzer implements BaseAnalyzer<PolicyDefinition[]> {
   }
 }
 
+export class DomainValidator {
+  static validateSchema(schema: TableSchema): void {
+    if (!schema.domain) {
+      throw new Error(`No domain assigned for table: ${schema.name}`)
+    }
+
+    const config = domainConfig[schema.domain as DomainName]
+    if (!config) {
+      if (schema.domain !== 'common') {
+        throw new Error(`Invalid domain "${schema.domain}" for table: ${schema.name}`)
+      }
+      return
+    }
+
+    // Check required relations only if not implicitly handled
+    if (config.requiresUser && !config.implicitRelations?.user && !schema.hasUserRelation) {
+      throw new Error(`Table ${schema.name} in domain ${schema.domain} requires user relation`)
+    }
+    if (
+      config.requiresCompany &&
+      !config.implicitRelations?.company &&
+      !schema.hasCompanyRelation
+    ) {
+      throw new Error(`Table ${schema.name} in domain ${schema.domain} requires company relation`)
+    }
+  }
+
+  static validateDomainConsistency(schemas: TableSchema[]): void {
+    for (const schema of schemas) {
+      if (!schema.relationships) continue
+
+      const relatedDomains = new Set(
+        schema.relationships
+          .map((rel) => {
+            const relatedSchema = schemas.find((s) => s.name === rel.table)
+            return relatedSchema?.domain
+          })
+          .filter(Boolean),
+      )
+
+      // Check if relationships are allowed for this domain
+      const config = domainConfig[schema.domain as DomainName]
+      if (config && config.allowedRelations) {
+        const invalidDomains = Array.from(relatedDomains).filter((domain) => {
+          return (
+            !config.allowedRelations!.includes('*') && !config.allowedRelations!.includes(domain)
+          )
+        })
+
+        if (invalidDomains.length > 0) {
+          console.warn(
+            `Warning: Table ${schema.name} has unauthorized relationships with domains: ${invalidDomains.join(', ')}`,
+          )
+        }
+      }
+    }
+  }
+}
+
 // Enhanced SchemaAnalyzer
 export class SchemaAnalyzer {
   private analyzers: Map<string, BaseAnalyzer<AnalyzerResult>>
@@ -418,22 +549,53 @@ export class SchemaAnalyzer {
   async analyzeDatabase(options: AnalyzerOptions = {}): Promise<TableSchema[]> {
     const client: PoolClient = await this.pool.connect()
     try {
-      const tables = options.tables || (await this.getTables(client))
-      const schemas: TableSchema[] = []
+      const schemas = await this.performAnalysis(client, options)
 
-      // Global analyses that don't depend on specific tables
-      const globalAnalyses: Record<string, any> = {}
-      if (options.includeEnums) {
-        globalAnalyses.enums = await this.analyzers.get('enums')!.analyze(client)
+      // Validate each schema
+      for (const schema of schemas) {
+        try {
+          DomainValidator.validateSchema(schema)
+        } catch (error) {
+          console.error(`Validation error: ${error.message}`)
+          // Set to common domain if validation fails
+          schema.domain = 'common'
+        }
       }
-      if (options.includeFunctions) {
-        globalAnalyses.functions = await this.analyzers.get('functions')!.analyze(client)
+
+      // Check domain consistency
+      DomainValidator.validateDomainConsistency(schemas)
+
+      return schemas
+    } finally {
+      client.release()
+    }
+  }
+
+  private async performAnalysis(
+    client: PoolClient,
+    options: AnalyzerOptions,
+  ): Promise<TableSchema[]> {
+    const tables = options.tables || (await this.getTables(client))
+    let schemas: TableSchema[] = []
+
+    // Global analyses that don't depend on specific tables
+    const globalAnalyses: Record<string, any> = {}
+    if (options.includeEnums) {
+      globalAnalyses.enums = await this.analyzers.get('enums')!.analyze(client)
+    }
+    if (options.includeFunctions) {
+      globalAnalyses.functions = await this.analyzers.get('functions')!.analyze(client)
+    }
+
+    // Process each table
+    for (const table of tables) {
+      const schema: TableSchema = {
+        name: table,
+        domain: this.assignInitialDomain(table),
       }
 
-      // Table-specific analyses
-      for (const table of tables) {
-        const schema: TableSchema = { name: table }
-
+      // Perform requested analysis
+      try {
         if (options.includeColumns) {
           schema.columns = await this.analyzers.get('columns')!.analyze(client, table)
         }
@@ -446,32 +608,155 @@ export class SchemaAnalyzer {
           schema.policies = await this.analyzers.get('policies')!.analyze(client, table)
         }
 
-        if (options.includeSecurityAnalysis && schema.columns && schema.relationships) {
-          schema.hasUserRelation = this.checkUserRelation(schema.columns, schema.relationships)
-          schema.hasCompanyRelation = this.checkCompanyRelation(
-            schema.columns,
-            schema.relationships,
+        if (options.includeEnums) {
+          // For enums, we'll use both global enums and table-specific enums
+          schema.enums = await this.analyzers.get('enums')!.analyze(client, table)
+        }
+
+        if (options.includeFunctions) {
+          schema.functions = globalAnalyses.functions.filter((f: FunctionDefinition) =>
+            f.name.toLowerCase().includes(table.toLowerCase()),
           )
-          schema.isAuditTable = this.isAuditTable(table, schema.columns)
-          schema.hasSensitiveData = this.hasSensitiveData(table, schema.columns)
-          schema.securityLevel = this.determineSecurityLevel({
-            table,
-            columns: schema.columns,
-            relationships: schema.relationships,
-            hasUserRelation: schema.hasUserRelation,
-            hasCompanyRelation: schema.hasCompanyRelation,
-            isAuditTable: schema.isAuditTable,
-            hasSensitiveData: schema.hasSensitiveData,
-          })
+        }
+
+        // Perform security analysis if requested and required data is available
+        if (options.includeSecurityAnalysis && schema.columns && schema.relationships) {
+          await this.enrichSchemaWithSecurity(schema)
         }
 
         schemas.push(schema)
+      } catch (error) {
+        console.error(`Error analyzing table ${table}:`, error)
+        // Add table with minimal info even if analysis fails
+        schemas.push({
+          name: table,
+          domain: 'common',
+          error: error.message,
+        })
+      }
+    }
+
+    // Post-processing
+    if (options.includeRelationships) {
+      schemas = this.finalizeDomains(schemas)
+    }
+
+    // Apply domain-specific configurations
+    schemas = this.applyDomainConfigs(schemas)
+
+    return schemas
+  }
+
+  private assignInitialDomain(tableName: string): string {
+    // First check explicit mapping
+    if (domainMap[tableName]) {
+      return domainMap[tableName]
+    }
+
+    // Then try to infer from name
+    return inferDomain(tableName)
+  }
+
+  private finalizeDomains(schemas: TableSchema[]): TableSchema[] {
+    // First pass: Build a map of table relationships
+    const relationshipMap = new Map<string, Set<string>>()
+
+    for (const schema of schemas) {
+      if (!schema.relationships) continue
+
+      const relatedTables = new Set<string>()
+      for (const rel of schema.relationships) {
+        relatedTables.add(rel.table)
+      }
+      relationshipMap.set(schema.name, relatedTables)
+    }
+
+    // Second pass: Refine domains based on relationships
+    for (const schema of schemas) {
+      if (schema.domain && schema.domain !== 'common') continue
+
+      const relatedTables = relationshipMap.get(schema.name)
+      if (!relatedTables) continue
+
+      // Get domains of related tables
+      const relatedDomains = new Set<string>()
+      for (const relatedTable of relatedTables) {
+        const relatedSchema = schemas.find((s) => s.name === relatedTable)
+        if (relatedSchema?.domain && relatedSchema.domain !== 'common') {
+          relatedDomains.add(relatedSchema.domain)
+        }
       }
 
-      return schemas
-    } finally {
-      client.release()
+      // If all related tables are in the same domain, use that domain
+      if (relatedDomains.size === 1) {
+        schema.domain = Array.from(relatedDomains)[0]
+      }
+      // If related tables are in multiple domains, use the most specific one
+      else if (relatedDomains.size > 1) {
+        // Prioritize certain domains (e.g., content > common)
+        const domainPriority: Record<string, number> = {
+          content: 5,
+          auth: 4,
+          org: 3,
+          payments: 2,
+          common: 1,
+        }
+
+        const sortedDomains = Array.from(relatedDomains).sort(
+          (a, b) => (domainPriority[b] || 0) - (domainPriority[a] || 0),
+        )
+
+        schema.domain = sortedDomains[0]
+      }
     }
+
+    return schemas
+  }
+
+  private applyDomainConfigs(schemas: TableSchema[]): TableSchema[] {
+    return schemas.map((schema) => {
+      if (!schema.domain || !(schema.domain in domainConfig)) {
+        return schema
+      }
+
+      const config = domainConfig[schema.domain as DomainName]
+
+      // Apply domain-specific configurations
+      return {
+        ...schema,
+        requiresAuth: config.requiresAuth,
+        defaultPermissions: config.defaultPermissions,
+        supportsSoftDelete: config.supportsSoftDelete,
+        supportsVersioning: config.supportsVersioning,
+        requiresCompany: config.requiresCompany,
+        requiresUser: config.requiresUser,
+        requiresEncryption: config.requiresEncryption,
+        supportsCaching: config.supportsCaching,
+        requiresAdmin: config.requiresAdmin,
+        sensitiveFields: config.sensitiveFields,
+      }
+    })
+  }
+
+  private async enrichSchemaWithSecurity(schema: TableSchema): Promise<void> {
+    if (!schema.columns || !schema.relationships) return
+
+    schema.hasUserRelation = this.checkUserRelation(schema.columns, schema.relationships)
+    schema.hasCompanyRelation = this.checkCompanyRelation(schema.columns, schema.relationships)
+    schema.isAuditTable = this.isAuditTable(schema.name, schema.columns)
+    schema.hasSensitiveData = this.hasSensitiveData(schema.name, schema.columns)
+
+    // Determine security level considering domain
+    schema.securityLevel = this.determineSecurityLevel({
+      table: schema.name,
+      columns: schema.columns,
+      relationships: schema.relationships,
+      hasUserRelation: schema.hasUserRelation,
+      hasCompanyRelation: schema.hasCompanyRelation,
+      isAuditTable: schema.isAuditTable,
+      hasSensitiveData: schema.hasSensitiveData,
+      domain: schema.domain,
+    })
   }
 
   private async getTables(client: PoolClient): Promise<string[]> {
@@ -550,10 +835,19 @@ export class SchemaAnalyzer {
     hasCompanyRelation: boolean
     isAuditTable: boolean
     hasSensitiveData: boolean
+    domain?: string
   }): 'public' | 'private' | 'protected' {
-    const { table, hasUserRelation, hasCompanyRelation, isAuditTable, hasSensitiveData } = params
+    const { table, hasUserRelation, hasCompanyRelation, isAuditTable, hasSensitiveData, domain } =
+      params
 
-    // Protected tables
+    // Domain-specific security rules
+    if (domain) {
+      const config = domainConfig[domain as DomainName]
+      if (config?.requiresAdmin) return 'protected'
+      if (config?.requiresAuth) return 'private'
+    }
+
+    // Original security level logic
     if (
       isAuditTable ||
       hasSensitiveData ||
@@ -566,7 +860,6 @@ export class SchemaAnalyzer {
       return 'protected'
     }
 
-    // Private tables
     if (
       hasUserRelation ||
       hasCompanyRelation ||
@@ -579,7 +872,6 @@ export class SchemaAnalyzer {
       return 'private'
     }
 
-    // Public tables
     return 'public'
   }
 }

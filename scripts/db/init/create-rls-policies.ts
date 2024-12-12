@@ -22,7 +22,7 @@ function getConditionsFor(
     'follows',
     'feedbacks',
     'votes',
-    'feature_rankings',
+    'feature_votes',
     // 'user_profiles', add this back if we change id
     'addresses',
     'contacts',
