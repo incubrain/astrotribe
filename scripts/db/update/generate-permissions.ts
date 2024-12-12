@@ -4,7 +4,7 @@ import path, { dirname } from 'path'
 import fs from 'fs/promises'
 import Pool from 'pg-pool'
 import dotenv from 'dotenv'
-import { SchemaAnalyzer } from '../schema-analyzer'
+import { SchemaAnalyzer } from '../../schema-analyzer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -73,7 +73,7 @@ function categorizeTable(tableName: string, schemas: any[]): string {
       'feedbacks',
       'user_followers',
       'feature_requests',
-      'feature_rankings',
+      'feature_votes',
     ].includes(tableName)
   ) {
     return 'user_content_tables'
