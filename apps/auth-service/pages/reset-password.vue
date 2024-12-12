@@ -41,7 +41,7 @@ async function handlePasswordReset() {
   } catch (error) {
     toast.error({
       summary: 'Reset Failed',
-      message: 'Unable to reset password. Please try again.',
+      message: error.message,
     })
   }
 }
