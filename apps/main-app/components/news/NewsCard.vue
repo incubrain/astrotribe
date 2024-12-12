@@ -210,11 +210,8 @@ onBeforeUnmount(async () => {
             <div class="mb-4">
               <div class="relative w-full pb-[56.25%]">
                 <NuxtImg
-                  :src="
-                    news.featured_image
-                      ? news.featured_image.replace('news/original/', '/news/')
-                      : ''
-                  "
+                  :provider="news.featured_image ? 'supabase' : undefined"
+                  :src="imageSource"
                   :alt="news.title"
                   class="absolute inset-0 w-full h-full object-cover rounded-lg"
                   sizes="sm:100vw md:50vw lg:400px"
