@@ -104,7 +104,7 @@ function applyFilter(query: any, column: string, filter: FilterOption): any {
       case 'match':
         return acc.match(column, value as Record<string, unknown>)
       case 'not':
-        return applyFilter(acc.not(), column, value as FilterOption)
+        return acc.not(column, Object.keys(value)[0], `(${Object.values(value)[0].join(',')})`)
       case 'or':
         return acc.or(value as string)
       case 'and':
