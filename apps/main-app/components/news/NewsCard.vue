@@ -210,8 +210,11 @@ onBeforeUnmount(async () => {
             <div class="mb-4">
               <div class="relative w-full pb-[56.25%]">
                 <NuxtImg
-                  :provider="news.featured_image ? 'supabase' : undefined"
-                  :src="imageSource"
+                  :src="
+                    news.featured_image
+                      ? news.featured_image.replace('news/original/', '/news/')
+                      : ''
+                  "
                   :alt="news.title"
                   class="absolute inset-0 w-full h-full object-cover rounded-lg"
                   sizes="sm:100vw md:50vw lg:400px"
@@ -254,7 +257,7 @@ onBeforeUnmount(async () => {
             class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
           >
             <div
-              class="inline-flex items-center gap-1 px-2 py-1 rounded-full  foreground text-primary-200 font-semibold"
+              class="inline-flex items-center gap-1 px-2 py-1 rounded-full foreground text-primary-200 font-semibold"
             >
               <Icon
                 name="material-symbols:alarm-add-outline-rounded"
