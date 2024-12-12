@@ -1122,49 +1122,103 @@ export async function seedFeatureRequests(pool: Pool) {
   const features = [
     {
       id: generateUUID(),
-      title: 'Advanced News Filtering',
-      description: 'Filter news by multiple categories, sources, and keywords',
-      status: 'planned',
-      priority: 1,
-      created_at: faker.date.past(),
-      updated_at: faker.date.recent(),
-    },
-    {
-      id: generateUUID(),
-      title: 'Custom News Digest',
-      description: 'Personalized daily/weekly email digest of space news',
+      title: 'Company Database Launch',
+      description:
+        'Comprehensive database of space industry companies including funding history, key personnel, and market segments',
       status: 'in_progress',
-      priority: 2,
+      upvotes: faker.number.int({ min: 50, max: 200 }),
+      downvotes: faker.number.int({ min: 0, max: 30 }),
+      priority_score: 0, // Will be calculated
+      engagement_score: 0, // Will be calculated
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     },
     {
       id: generateUUID(),
-      title: 'Company Comparisons',
-      description: 'Compare multiple space companies side by side',
+      title: 'Job Board and Tracking System',
+      description:
+        'Automated job aggregation from space industry companies with AI-powered categorization and skill matching',
       status: 'planned',
-      priority: 3,
+      upvotes: faker.number.int({ min: 40, max: 150 }),
+      downvotes: faker.number.int({ min: 0, max: 20 }),
+      priority_score: 0,
+      engagement_score: 0,
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     },
-    // Add more predefined features
-  ]
+    {
+      id: generateUUID(),
+      title: 'Daily Space Industry Newsletter',
+      description: 'AI-curated daily digest of space industry news with automated summarization',
+      status: 'planned',
+      upvotes: faker.number.int({ min: 30, max: 120 }),
+      downvotes: faker.number.int({ min: 0, max: 15 }),
+      priority_score: 0,
+      engagement_score: 0,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      title: 'Launch Calendar Integration',
+      description:
+        'Interactive calendar for upcoming launches, satellite deployments, and industry events',
+      status: 'planned',
+      upvotes: faker.number.int({ min: 25, max: 100 }),
+      downvotes: faker.number.int({ min: 0, max: 10 }),
+      priority_score: 0,
+      engagement_score: 0,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+    {
+      id: generateUUID(),
+      title: 'Investment Analytics Dashboard',
+      description:
+        'Track and visualize investment activities, funding rounds, and market trends in the space industry',
+      status: 'planned',
+      upvotes: faker.number.int({ min: 20, max: 80 }),
+      downvotes: faker.number.int({ min: 0, max: 12 }),
+      priority_score: 0,
+      engagement_score: 0,
+      created_at: faker.date.past(),
+      updated_at: faker.date.recent(),
+    },
+  ].map((feature) => ({
+    ...feature,
+    priority_score: feature.upvotes - feature.downvotes,
+    engagement_score: feature.upvotes + feature.downvotes,
+  }))
 
   await bulkInsert(pool, 'feature_requests', features)
   return features
 }
 
-export async function seedFeatureRankings(pool: Pool, userIds: string[], featureIds: string[]) {
-  const rankings = userIds.map((userId) => ({
-    id: generateUUID(),
-    user_id: userId,
-    rankings: JSON.stringify(faker.helpers.shuffle([...featureIds])),
-    created_at: faker.date.past(),
-    updated_at: faker.date.recent(),
-  }))
+export async function seedFeatureVotes(pool: Pool, userIds: string[], features: any[]) {
+  const votes: any[] = []
 
-  await bulkInsert(pool, 'feature_rankings', rankings)
-  return rankings
+  // Generate some votes for each user
+  userIds.forEach((userId) => {
+    // Each user votes on 2-4 random features
+    const numVotes = faker.number.int({ min: 2, max: 4 })
+    const shuffledFeatures = faker.helpers.shuffle([...features])
+
+    for (let i = 0; i < numVotes; i++) {
+      const feature = shuffledFeatures[i]
+      votes.push({
+        id: generateUUID(),
+        feature_id: feature.id,
+        user_id: userId,
+        vote_type: faker.helpers.arrayElement([1, -1]), // Random upvote or downvote
+        feedback: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.3 }), // 30% chance of feedback
+        created_at: faker.date.past(),
+        updated_at: faker.date.recent(),
+      })
+    }
+  })
+
+  await bulkInsert(pool, 'feature_votes', votes)
+  return votes
 }
 
 export async function seedContentSourceVisits(pool: Pool, userIds: string[], contentIds: string[]) {

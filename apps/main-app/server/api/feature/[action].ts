@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       const body = await readBody(event)
       const { rankings } = body
 
-      const { error: rankError } = await client.from('feature_rankings').upsert(
+      const { error: rankError } = await client.from('feature_votes').upsert(
         {
           user_id: user.id,
           rankings: rankings,
