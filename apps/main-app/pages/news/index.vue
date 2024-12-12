@@ -12,23 +12,8 @@ const orderBy = computed(() => ({
   ascending: false,
 }))
 
-const content_ids = []
-
-const {
-  store: contentStore,
-  loadMore,
-  refresh: contentsRefresh,
-} = useSelectData('contents', {
-  columns: 'id, title, url, created_at, content_type, hot_score',
-  filters: {
-    content_type: 'news',
-  },
-  orderBy: orderBy.value,
-  initialFetch: true,
-  pagination: { page: 1, limit: 20 },
-})
-
-const { items: proxyContents } = storeToRefs(contentStore)
+const supabase = useSupabaseClient()
+const { data, error } = await supabase.rpc('get_contents')
 
 const {
   store,
@@ -39,11 +24,12 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    id: { in: proxyContents.value.map((item) => toRaw(item).id) },
+    id: { in: data.map((item) => item.id) },
   },
   orderBy: orderBy.value,
   initialFetch: true,
   storeKey: 'mainFeed',
+  pagination: { page: 1, limit: 20 },
 })
 
 function mapContentToNews(item: any): News {
@@ -156,7 +142,7 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  await loadMore()
+  // await originalLoadMore()
 }
 
 definePageMeta({
