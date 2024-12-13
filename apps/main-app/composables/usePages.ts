@@ -23,6 +23,20 @@ export interface BreadcrumbLink {
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+const createFeedItem = {
+  id: 'create_feed',
+  label: '+ Create Feed',
+  slug: '/feed/add',
+  icon: 'mdi:plus',
+}
+
+const upgradePlan = {
+  id: 'upgrade_plan',
+  label: 'Upgrade to add more feed',
+  slug: '/settings/payments',
+  icon: 'mdi:exclamation',
+}
+
 const navigationCategories = ref([
   {
     id: 'main',
@@ -52,14 +66,7 @@ const navigationCategories = ref([
         slug: '#',
         icon: 'mdi:rss',
         isExpanded: false,
-        children: [
-          {
-            id: '3',
-            label: '+ Create Feed',
-            slug: '/feed/add',
-            icon: 'mdi:plus',
-          },
-        ],
+        children: [],
       },
     ],
   },
@@ -81,6 +88,7 @@ export default function usePages() {
   const client = useSupabaseClient()
   const { profile } = useCurrentUser()
   const route = useRoute()
+  const { getFeatureUsage } = usePlan()
 
   const getFeedName = (feedId: string): string => {
     // Return empty string if it's a UUID
@@ -155,6 +163,8 @@ export default function usePages() {
         icon: 'mdi:newspaper-variant-multiple-outline',
       })
     }
+
+    checkUsage(myFeeds)
   }
 
   const initializeFeeds = () => {
@@ -177,7 +187,6 @@ export default function usePages() {
           const myFeeds = newsCategory?.items.find((item) => item.id === 'my-feeds')
 
           if (myFeeds) {
-            myFeeds.children = [myFeeds.children[0]]
             data.forEach((feed) => {
               if (!myFeeds.children.some((item) => item.id === feed.id)) {
                 myFeeds.children.push({
@@ -188,6 +197,7 @@ export default function usePages() {
                 })
               }
             })
+            checkUsage(myFeeds)
           }
         })
     }
@@ -203,6 +213,19 @@ export default function usePages() {
         myFeeds.children.splice(index, 1)
       }
     }
+
+    checkUsage(myFeeds)
+  }
+
+  const checkUsage = (myFeeds: Record<string, any>) => {
+    const feedsWithoutCreate = myFeeds.children.filter((feed) => feed.id !== 'create_feed')
+
+    const usage = getFeatureUsage('CUSTOM_FEEDS', feedsWithoutCreate.length)
+
+    myFeeds.children =
+      !usage.isUnlimited && usage.used >= usage.limit
+        ? feedsWithoutCreate
+        : [createFeedItem, ...feedsWithoutCreate]
   }
 
   onMounted(initializeFeeds)

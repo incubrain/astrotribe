@@ -24,4 +24,12 @@ export const FEATURES = {
     description: 'Personalize your folders with custom colors',
     comingSoon: true,
   },
+  CUSTOM_FEEDS: {
+    name: 'Custom Feed',
+    limit: {
+      free: 1,
+      pro: -1,
+    },
+    description: 'Personalize your feeds',
+  },
 } as const
