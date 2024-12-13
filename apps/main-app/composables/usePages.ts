@@ -32,9 +32,9 @@ const createFeedItem = {
 
 const upgradePlan = {
   id: 'upgrade_plan',
-  label: 'Upgrade to add more feed',
+  label: 'Upgrade to add more feeds',
   slug: '/settings/payments',
-  icon: 'mdi:exclamation',
+  icon: 'mdi:star',
 }
 
 const navigationCategories = ref([
@@ -218,14 +218,16 @@ export default function usePages() {
   }
 
   const checkUsage = (myFeeds: Record<string, any>) => {
-    const feedsWithoutCreate = myFeeds.children.filter((feed) => feed.id !== 'create_feed')
+    const feeds = myFeeds.children.filter(
+      (feed) => feed.id !== 'create_feed' && feed.id !== 'upgrade_plan',
+    )
 
-    const usage = getFeatureUsage('CUSTOM_FEEDS', feedsWithoutCreate.length)
+    const usage = getFeatureUsage('CUSTOM_FEEDS', feeds.length)
 
     myFeeds.children =
       !usage.isUnlimited && usage.used >= usage.limit
-        ? feedsWithoutCreate
-        : [createFeedItem, ...feedsWithoutCreate]
+        ? [upgradePlan, ...feeds]
+        : [createFeedItem, ...feeds]
   }
 
   onMounted(initializeFeeds)

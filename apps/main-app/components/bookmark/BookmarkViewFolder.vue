@@ -169,6 +169,23 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-if="!folderUsage.isUnlimited && folderUsage.used >= folderUsage.limit"
+      class="bg-amber-300 p-2 text-black rounded flex items-center justify-between"
+    >
+      <span>Upgrade to <b>Pro</b> plan to create more folders</span>
+      <NuxtLink
+        to="/settings/payments"
+        class="text-black gap-2 border-black border-2 flex rounded items-center bg-white p-2"
+      >
+        <Icon
+          class="text-amber-500"
+          name="mdi-star"
+        />
+        <b>Upgrade</b>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
