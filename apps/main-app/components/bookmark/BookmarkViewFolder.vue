@@ -1,8 +1,42 @@
 <template>
+  <PrimeDialog
+    v-model:visible="showNewFolderModal"
+    modal
+    header="Create New Folder"
+  >
+    <div class="space-y-4 flex flex-col">
+      <PrimeInputText
+        v-model="newFolderName"
+        :feedback="true"
+        placeholder="Enter Folder Name"
+      />
+      <div class="flex gap-2">
+        <PrimeCheckbox
+          id="default"
+          v-model="makeDefault"
+          binary
+        />
+        <label for="default">Make Default</label>
+      </div>
+    </div>
+    <template #footer>
+      <PrimeButton
+        label="Cancel"
+        severity="secondary"
+        @click="showNewFolderModal = false"
+      />
+      <PrimeButton
+        severity="danger"
+        label="Create"
+        @click="createFolder"
+      />
+    </template>
+  </PrimeDialog>
   <div class="space-y-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Folders</h2>
       <PrimeButton
+        :disabled="!folderUsage.isUnlimited && folderUsage.used >= folderUsage.limit"
         class="p-button-primary"
         @click="showNewFolderModal = true"
       >
@@ -145,6 +179,10 @@ const folderStore = useFolderStore()
 const bookmarkStore = useBookmarkStore()
 const { handleFolderSelect } = useBookmarkView()
 const { getFeatureUsage } = usePlan()
+const toast = useNotification()
+
+const newFolderName = ref('')
+const makeDefault = ref(false)
 
 const editingFolderId = ref<string | null>(null)
 const editingName = ref('')
@@ -241,6 +279,27 @@ const handleDelete = async (folder: Folder) => {
     await bookmarkStore.fetchBookmarks()
     await bookmarkStore.fetchBookmarkCounts()
     activeActionsFolder.value = null
+  }
+}
+
+const createFolder = async () => {
+  const folder: Partial<Folder> = {
+    name: newFolderName.value,
+    is_default: makeDefault.value,
+  }
+
+  try {
+    await folderStore.createFolder(folder)
+    toast.success({
+      summary: 'Folder created',
+      message: `Folder ${newFolderName.value} was created successfully`,
+    })
+    showNewFolderModal.value = false
+    newFolderName.value = ''
+    makeDefault.value = ''
+  } catch (error) {
+    console.error('Error Creating Folder', error)
+    toast.error({ summary: 'COuld not create folder', message: error.message })
   }
 }
 
