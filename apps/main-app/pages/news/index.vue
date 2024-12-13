@@ -6,14 +6,30 @@
 const domainKey = 'mainFeed'
 
 const sortingMethod = ref<'created_at' | 'hot_score'>('created_at')
+const currentContents = ref([])
 
 const orderBy = computed(() => ({
   column: sortingMethod.value,
   ascending: false,
 }))
 
-const supabase = useSupabaseClient()
-const { data, error } = await supabase.rpc('get_contents')
+const getContents = async (getMore: boolean = false) => {
+  const supabase = useSupabaseClient()
+  const { data, error } = await supabase.rpc(
+    'get_contents',
+    getMore
+      ? { last_created_at: currentContents.value[currentContents.value.length - 1].created_at }
+      : {},
+  )
+
+  if (error) {
+    console.log('Error getting contents', error)
+  } else {
+    currentContents.value = data
+  }
+}
+
+await getContents()
 
 const {
   store,
@@ -24,12 +40,10 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    id: { in: data.map((item) => item.id) },
+    id: { in: currentContents.value.map((item) => item.id) },
   },
-  orderBy: orderBy.value,
   initialFetch: true,
   storeKey: 'mainFeed',
-  pagination: { page: 1, limit: 20 },
 })
 
 function mapContentToNews(item: any): News {
@@ -104,6 +118,8 @@ watch(proxyNews, (newVal) => {
   } else {
     // If this triggers after infinite scroll additions,
     // new items are appended to proxyNews so we only integrate the added portion:
+    updateDisplayedFeed(newVal, false)
+
     if (newVal.length > displayedFeed.value.length) {
       const addedItems = newVal.slice(displayedFeed.value.length)
       updateDisplayedFeed(addedItems, false)
@@ -142,7 +158,10 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  // await originalLoadMore()
+  if (!currentContents.value.length) return
+  await getContents(true)
+
+  await originalLoadMore({ id: { in: currentContents.value.map((item) => item.id) } })
 }
 
 definePageMeta({
