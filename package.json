@@ -110,7 +110,7 @@
     "pdf-lib": "^1.17.1",
     "pg-pool": "^3.7.0",
     "pinia": "^2.2.2",
-    "posthog-js": "^1.164.3",
+    "posthog-js": "^1.167.1",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "qrcode": "^1.5.4",
     "qs": "^6.13.0",
