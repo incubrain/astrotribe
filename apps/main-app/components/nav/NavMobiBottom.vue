@@ -23,16 +23,16 @@ const mainNavItems = computed(() => {
   }
 
   // Get profile section
-  const profileCategory = appLinks.value.find((cat) => cat.id === 'profile')
-  if (profileCategory?.items?.[0]) {
-    // Add first profile item (or you can create a specific profile route)
-    items.push({
-      id: profileCategory.items[0].id,
-      label: 'Profile',
-      slug: '/profile',
-      icon: 'mdi:account-circle-outline',
-    })
-  }
+  // const profileCategory = appLinks.value.find((cat) => cat.id === 'profile')
+  // if (profileCategory?.items?.[0]) {
+  //   // Add first profile item (or you can create a specific profile route)
+  //   items.push({
+  //     id: profileCategory.items[0].id,
+  //     label: 'Profile',
+  //     slug: '/profile',
+  //     icon: 'mdi:account-circle-outline',
+  //   })
+  // }
 
   return items
 })
