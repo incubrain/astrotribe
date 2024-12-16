@@ -32,7 +32,7 @@ const createFeedItem = {
 
 const upgradePlan = {
   id: 'upgrade_plan',
-  label: 'Upgrade to add more feeds',
+  label: 'Upgrade to create custom feeds',
   slug: '/settings/payments',
   icon: 'mdi:star',
 }
