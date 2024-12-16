@@ -178,12 +178,12 @@ definePageMeta({
   <div>
     <FeedTitle title="News Feed" />
 
-    <BlackFridayBanner />
+    <!-- <BlackFridayBanner />
 
     <AdsBanner
       v-if="topBannerAd"
       :ad="topBannerAd"
-    />
+    /> -->
     <FeedHotToggle
       v-model="sortingMethod"
       @update:model-value="toggleHotScore"

@@ -62,14 +62,14 @@ export function useSettingsNavigation() {
       visible: true,
       disabled: false,
     },
-    {
-      key: 'settings-notifications',
-      label: 'Notifications',
-      url: '/settings/notifications',
-      icon: 'material-symbols:notifications',
-      visible: true,
-      disabled: false,
-    },
+    // {
+    //   key: 'settings-notifications',
+    //   label: 'Notifications',
+    //   url: '/settings/notifications',
+    //   icon: 'material-symbols:notifications',
+    //   visible: true,
+    //   disabled: false,
+    // },
   ])
 
   return {

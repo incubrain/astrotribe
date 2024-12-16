@@ -155,14 +155,12 @@ onMounted(() => {
 
     <!-- Bottom Stats Row -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Level Progress -->
-      <MetricLevelProgress
+      <!-- <MetricLevelProgress
         :level="currentLevel"
         :progress="levelProgress"
         :loading="isLoading"
       />
 
-      <!-- Vote Accuracy -->
       <MetricStatCard
         title="Vote Accuracy"
         :value="`${voteAccuracy}%`"
@@ -180,7 +178,7 @@ onMounted(() => {
             />
           </div>
         </template>
-      </MetricStatCard>
+      </MetricStatCard> -->
     </div>
   </div>
 </template>
