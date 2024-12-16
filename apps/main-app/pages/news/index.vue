@@ -166,7 +166,7 @@ async function handleLoadMore() {
   if (!contentIds.value.length) return
   await getContents(true)
 
-  await originalLoadMore({ id: { in: contentIds } })
+  await originalLoadMore({ id: { in: contentIds.value } })
 }
 
 definePageMeta({
