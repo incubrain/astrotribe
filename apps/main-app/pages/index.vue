@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid w-full gap-6 p-6">
+  <div class="grid w-full min-h-screen gap-6 p-6">
     <!-- Welcome Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Welcome Card -->

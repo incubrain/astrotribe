@@ -18,7 +18,7 @@ definePageMeta({ name: 'Companies' })
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-full">Coming Soon</div>
+  <div class="flex justify-center items-center min-h-screen">Coming Soon</div>
   <!-- <div>
     <IBInfiniteScroll @update:scroll-end="loadMore">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
