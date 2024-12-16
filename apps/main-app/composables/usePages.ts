@@ -48,6 +48,12 @@ const navigationCategories = ref([
         slug: '/',
         icon: 'material-symbols:home-rounded',
       },
+      {
+        id: '2',
+        label: 'Companies',
+        slug: '/companies',
+        icon: 'material-symbols:domain',
+      },
     ],
   },
   {
