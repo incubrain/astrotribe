@@ -8,6 +8,8 @@ const domainKey = 'mainFeed'
 const sortingMethod = ref<'created_at' | 'hot_score'>('created_at')
 const currentContents = ref([])
 
+const contentIds = computed(() => currentContents.value.map((item) => item.id))
+
 const orderBy = computed(() => ({
   column: sortingMethod.value,
   ascending: false,
@@ -15,12 +17,12 @@ const orderBy = computed(() => ({
 
 const getContents = async (getMore: boolean = false) => {
   const supabase = useSupabaseClient()
-  const { data, error } = await supabase.rpc(
-    'get_contents',
-    getMore
+  const { data, error } = await supabase.rpc('get_contents', {
+    order_by: sortingMethod.value,
+    ...(getMore
       ? { last_created_at: currentContents.value[currentContents.value.length - 1].created_at }
-      : {},
-  )
+      : {}),
+  })
 
   if (error) {
     console.log('Error getting contents', error)
@@ -40,7 +42,7 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    id: { in: currentContents.value.map((item) => item.id) },
+    id: { in: contentIds.value },
   },
   initialFetch: true,
   storeKey: 'mainFeed',
@@ -96,7 +98,9 @@ const displayedFeed = ref<
 const visibleNews = computed(() => displayedFeed.value)
 
 const updateDisplayedFeed = (newsItems: News[], isFullRefresh = false) => {
-  const mappedNews = newsItems.map((item) => mapContentToNews(toRaw(item)))
+  const mappedNews = newsItems
+    .map((item) => mapContentToNews(toRaw(item)))
+    .sort((a, b) => contentIds.value.indexOf(a.id) - contentIds.value.indexOf(b.id))
 
   if (isFullRefresh) {
     resetAdTracking()
@@ -143,6 +147,7 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
   try {
     // Sorting changed - full refresh scenario
     sortingMethod.value = newValue
+    await getContents()
     await refresh()
     await nextTick()
     window.scrollTo(0, scrollPosition)
@@ -158,10 +163,10 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  if (!currentContents.value.length) return
+  if (!contentIds.value.length) return
   await getContents(true)
 
-  await originalLoadMore({ id: { in: currentContents.value.map((item) => item.id) } })
+  await originalLoadMore({ id: { in: contentIds } })
 }
 
 definePageMeta({
