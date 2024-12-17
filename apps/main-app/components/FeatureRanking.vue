@@ -37,8 +37,8 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold">Help Shape Our Roadmap</h3>
-      <p class="text-sm text-gray-400">Vote on features you'd like to see</p>
+      <h3 class="text-lg font-semibold">Shape Our Roadmap</h3>
+      <p class="text-sm text-gray-400">Vote on features</p>
     </div>
 
     <div
