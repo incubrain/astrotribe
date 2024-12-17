@@ -1,7 +1,12 @@
 <script setup lang="ts">
 const isAuthenticating = ref(true)
+
+const loading = useLoadingStore()
+const isLoading = computed(() => loading.isLoading('currentUser'))
+
 const route = useRoute()
 onMounted(async () => {
+  loading.setLoading('currentUser', true)
   const toast = useNotification()
   const supabase = useSupabaseClient()
   const { data, error } = await supabase.auth.getSession()
@@ -9,12 +14,15 @@ onMounted(async () => {
     isAuthenticating.value = false
   } else {
     if (route.path === '/reset-password') {
+      loading.setLoading('currentUser', false)
       return
     }
 
     toast.success({ summary: 'Authenticated', message: 'Found user session' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
+
+  loading.setLoading('currentUser', false)
 })
 
 // !todo:consider:2 - add a delay to function execution, fade out the auth cards so the bg image is fully visible for a few seconds, then execute
@@ -25,10 +33,15 @@ onMounted(async () => {
 
 <template>
   <div
-    v-if="isAuthenticating && !route.path.includes('settings') && !route.path.includes('password')"
+    v-if="isLoading && !route.path.includes('settings') && !route.path.includes('password')"
     class="text-white w-screen flex justify-center items-center absolute h-screen z-50 bg-black bg-opacity-50"
-    >Looking for a session...</div
   >
+    <Icon
+      :name="isLoading ? 'mdi:loading' : 'mdi:send'"
+      class="font-bold text-primary-500"
+      size="50px"
+      :class="isLoading ? 'animate-spin' : ''"
+  /></div>
   <div
     :class="{
       'pointer-events-none':

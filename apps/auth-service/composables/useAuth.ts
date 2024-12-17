@@ -55,6 +55,7 @@ export function useAuth() {
     turnstileToken?: string | null
     resetTurnstile?: () => void
   }) => {
+    loading.setLoading('currentUser', true)
     // Proceed with registration
     const { data, error } = await supabase.auth.signUp({
       email: formData.email,
@@ -71,18 +72,21 @@ export function useAuth() {
     if (!data.user!.identities!.length) {
       toast.error({ summary: 'Registration Failure', message: 'User already exists' })
       if (formData.resetTurnstile) formData.resetTurnstile()
+      loading.setLoading('currentUser', false)
       return
     }
 
     if (error) {
       toast.error({ summary: 'Registration Failure', message: error.message })
       if (formData.resetTurnstile) formData.resetTurnstile()
+      loading.setLoading('currentUser', false)
       return
     }
 
     // Handle successful registration
     toast.success({ summary: 'Registeration Successful', message: 'Redirecting...' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
+    loading.setLoading('currentUser', false)
     navigateTo('/success')
   }
 
@@ -94,6 +98,7 @@ export function useAuth() {
       resetTurnstile: () => void
     },
   ) => {
+    loading.setLoading('currentUser', true)
     // Proceed with login
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -104,15 +109,18 @@ export function useAuth() {
     if (error) {
       toast.error({ summary: 'Authentication Failure', message: error.message })
       options?.resetTurnstile()
+      loading.setLoading('currentUser', false)
       return
     }
 
     toast.success({ summary: 'Authenticated', message: 'Logging In...' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
+    loading.setLoading('currentUser', false)
     navigateTo(appURL, { external: true })
   }
 
   async function loginSocial(provider: 'linkedin_oidc' | 'twitter') {
+    loading.setLoading('currentUser', true)
     const { data: user, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -132,6 +140,8 @@ export function useAuth() {
         message: `there was an error logging in with ${provider}, no user returned`,
       })
     }
+
+    loading.setLoading('currentUser', false)
   }
 
   async function forgotPassword(
@@ -139,6 +149,7 @@ export function useAuth() {
     turnstileToken: string | null,
     resetTurnstile: (() => void) | null,
   ) {
+    loading.setLoading('currentUser', true)
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: encodeURIComponent(`${authUrl}/reset-password`),
@@ -155,9 +166,11 @@ export function useAuth() {
         message: 'Check your email for a password reset link',
       })
     }
+    loading.setLoading('currentUser', false)
   }
 
   async function updatePassword(newPassword: string) {
+    loading.setLoading('currentUser', true)
     const { error } = await supabase.auth.updateUser({ password: newPassword })
 
     if (error) {
@@ -166,9 +179,11 @@ export function useAuth() {
     } else {
       toast.success({ summary: 'Password Updated', message: 'Your password has been updated' })
     }
+    loading.setLoading('currentUser', false)
   }
 
   async function logout() {
+    loading.setLoading('currentUser', true)
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error('Logout failed:', error)
@@ -177,6 +192,7 @@ export function useAuth() {
       toast.success({ summary: 'You Logged Out', message: 'You have been logged out' })
       navigateTo(authURL, { external: true })
     }
+    loading.setLoading('currentUser', false)
   }
 
   return {

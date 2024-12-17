@@ -51,42 +51,42 @@ const plans: PlanConfig[] = [
       amount: 500,
     },
   },
-  {
-    name: 'Pro',
-    price: '₹1,800',
-    period: '/month',
-    description: 'For growing businesses',
-    features: [
-      'Everything in Basic, plus:',
-      '24/7 priority support',
-      'Up to 15 team members',
-      'API access',
-    ],
-    isActive: false,
-    availableFrom: 'Coming Q2 2025',
-    razorpayConfig: {
-      subscription_id: 'sub_pro_id',
-      amount: 1800,
-    },
-  },
-  {
-    name: 'Expert',
-    price: '₹4,000',
-    period: '/month',
-    description: 'For large enterprises',
-    features: [
-      'Everything in Pro, plus:',
-      'Dedicated support',
-      'Unlimited team members',
-      'Custom development',
-    ],
-    isActive: false,
-    availableFrom: 'Coming Q4 2025',
-    razorpayConfig: {
-      subscription_id: 'sub_expert_id',
-      amount: 4000,
-    },
-  },
+  // {
+  //   name: 'Pro',
+  //   price: '₹1,800',
+  //   period: '/month',
+  //   description: 'For growing businesses',
+  //   features: [
+  //     'Everything in Basic, plus:',
+  //     '24/7 priority support',
+  //     'Up to 15 team members',
+  //     'API access',
+  //   ],
+  //   isActive: false,
+  //   availableFrom: 'Coming Q2 2025',
+  //   razorpayConfig: {
+  //     subscription_id: 'sub_pro_id',
+  //     amount: 1800,
+  //   },
+  // },
+  // {
+  //   name: 'Expert',
+  //   price: '₹4,000',
+  //   period: '/month',
+  //   description: 'For large enterprises',
+  //   features: [
+  //     'Everything in Pro, plus:',
+  //     'Dedicated support',
+  //     'Unlimited team members',
+  //     'Custom development',
+  //   ],
+  //   isActive: false,
+  //   availableFrom: 'Coming Q4 2025',
+  //   razorpayConfig: {
+  //     subscription_id: 'sub_expert_id',
+  //     amount: 4000,
+  //   },
+  // },
 ]
 
 const handlePaymentSuccess = (response: any) => {
@@ -198,7 +198,7 @@ const customerInfo = computed(() => ({
       </div>
 
       <!-- Simplified Payment Methods Section -->
-      <div class="mt-8 border-t border-gray-800 pt-6">
+      <!-- <div class="mt-8 border-t border-gray-800 pt-6">
         <div class="flex items-center justify-between">
           <div>
             <h3 class="text-sm font-medium text-white">Payment Methods</h3>
@@ -214,7 +214,7 @@ const customerInfo = computed(() => ({
             Manage Methods
           </button>
         </div>
-      </div>
+      </div> -->
     </SettingsCard>
   </div>
 </template>

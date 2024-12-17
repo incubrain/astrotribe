@@ -5,6 +5,7 @@ const expandToc = computed(() => width.value < 1280)
 
 const articleContent = ref<HTMLElement | null>(null)
 const articleHtml = ref<string>('')
+const tocLinks = ref<TocLink[]>([])
 
 const p = defineProps({
   article: {
@@ -34,6 +35,7 @@ const renderBlocksAsMarkdown = (blocks) => {
 onBeforeMount(async () => {
   if (p.article.blocks) {
     const markdown = renderBlocksAsMarkdown(p.article.blocks)
+    extractToc(p.article.blocks)
     ast.value = await parse(markdown)
   }
 })
@@ -46,7 +48,6 @@ interface TocLink {
 }
 
 const extractToc = (markdown: any): TocLink[] => {
-  const tocLinks: TocLink[] = []
   let currentH2: TocLink | null = null
 
   console.log('Markdown:', markdown)
@@ -70,20 +71,18 @@ const extractToc = (markdown: any): TocLink[] => {
 
         if (depth === 2) {
           currentH2 = tocLink
-          tocLinks.push(tocLink)
+          tocLinks.value.push(tocLink)
         } else if (depth === 3) {
           if (currentH2) {
             currentH2.children.push(tocLink)
           } else {
             // If there's no current H2, treat H3 as top-level
-            tocLinks.push(tocLink)
+            tocLinks.value.push(tocLink)
           }
         }
       }
     })
   })
-
-  return tocLinks
 }
 
 watch(
@@ -108,9 +107,9 @@ console.log('Article:', p.article)
       >
         <div class="w-full xl:col-start-1">
           <BlogArticleToc
-            v-if="article.blocks"
+            v-if="tocLinks.length"
             class="background border-color rounded-md border p-4 xl:sticky xl:left-0 xl:top-24 xl:border-none xl:p-0"
-            :toc="extractToc(article.blocks)"
+            :toc="tocLinks"
             :updated-at="article.updatedAt"
             :expanded="expandToc"
           />

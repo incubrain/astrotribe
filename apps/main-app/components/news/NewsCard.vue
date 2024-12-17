@@ -254,7 +254,7 @@ onBeforeUnmount(async () => {
             class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
           >
             <div
-              class="inline-flex items-center gap-1 px-2 py-1 rounded-full  foreground text-primary-200 font-semibold"
+              class="inline-flex items-center gap-1 px-2 py-1 rounded-full foreground text-primary-200 font-semibold"
             >
               <Icon
                 name="material-symbols:alarm-add-outline-rounded"

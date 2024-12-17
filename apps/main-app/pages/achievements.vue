@@ -1,8 +1,6 @@
 <template>
-  <div class="h-full flex justify-center items-center">
-    <div
-      class="max-w-md mx-auto mt-10 p-8 background rounded-xl shadow-lg text-center space-y-6 w-full"
-    >
+  <div class="min-h-screen flex justify-center items-center">
+    <div class="max-w-md mx-auto p-8 background rounded-xl shadow-lg text-center space-y-6 w-full">
       <!-- Achievements Header with Icon -->
       <div class="flex flex-col items-center">
         <Icon
