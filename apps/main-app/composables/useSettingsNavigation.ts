@@ -62,6 +62,14 @@ export function useSettingsNavigation() {
       visible: true,
       disabled: false,
     },
+    {
+      key: 'settings-contact',
+      label: 'Contact Us',
+      url: '/settings/contact',
+      icon: 'mdi:phone-classic',
+      visible: true,
+      disabled: false,
+    },
     // {
     //   key: 'settings-notifications',
     //   label: 'Notifications',
