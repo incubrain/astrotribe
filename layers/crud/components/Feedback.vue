@@ -11,7 +11,7 @@ const handleVote = (rating: number) => {
 defineProps({
   cta: {
     type: String,
-    required: true,
+    required: false,
     default: 'How could we improve?',
   },
 })
