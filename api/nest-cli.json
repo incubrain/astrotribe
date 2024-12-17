@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": false,
+    "builder": "swc",
+    "typeCheck": true,
+    "tsConfigPath": "tsconfig.json",
+    "watchAssets": true,
+    "assets": [
+      {
+        "include": "**/*.json",
+        "outDir": "dist",
+        "watchAssets": true
+      },
+      {
+        "include": "**/*.yml",
+        "outDir": "dist",
+        "watchAssets": true
+      },
+      {
+        "include": "templates/**/*",
+        "outDir": "dist/templates"
+      }
+    ],
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": true,
+          "introspectComments": true
+        }
+      }
+    ]
+  }
+}
