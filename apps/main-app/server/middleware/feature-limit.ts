@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
   const featureMap: Record<string, string> = {
     '/api/bookmarks': 'BOOKMARKS',
     '/api/folders': 'BOOKMARK_FOLDERS',
+    '/api/feeds': 'CUSTOM_FEEDS',
   }
 
   const feature = featureMap[path]

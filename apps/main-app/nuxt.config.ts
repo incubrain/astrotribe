@@ -121,6 +121,9 @@ export default defineNuxtConfig({
       '/api/folders/**': {
         appMiddleware: ['feature-limit'],
       },
+      '/api/feeds/**': {
+        appMiddleware: ['feature-limit'],
+      },
     },
     alias: {
       '#shared': fileURLToPath(new URL('./shared', import.meta.url)),
