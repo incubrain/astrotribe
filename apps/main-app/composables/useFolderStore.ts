@@ -86,7 +86,7 @@ export const useFolderStore = defineStore('folders', () => {
         context: 'createFolder',
         userMessage: 'Failed to create folder',
       })
-      return null
+      throw error
     } finally {
       loading.value = false
     }
@@ -114,7 +114,7 @@ export const useFolderStore = defineStore('folders', () => {
         context: 'updateFolder',
         userMessage: 'Failed to update folder',
       })
-      return null
+      throw error
     } finally {
       loading.value = false
     }

@@ -31,7 +31,7 @@ export default defineEventHandler(async (event: H3Event) => {
       if (!body.name?.trim()) {
         throw createError({
           statusCode: 400,
-          message: 'Folder name is required',
+          statusMessage: 'Folder name is required',
         })
       }
 
@@ -59,12 +59,12 @@ export default defineEventHandler(async (event: H3Event) => {
       return { data }
     }
 
-    throw createError({ statusCode: 405, message: 'Method not allowed' })
+    throw createError({ statusCode: 405, statusMessage: 'Method not allowed' })
   } catch (err) {
     console.error('Folder API Error:', err)
     throw createError({
-      statusCode: err.statusCode || 500,
-      message: err.message || 'Internal server error',
+      statusCode: err?.statusCode || 500,
+      statusMessage: err?.message || 'Internal server error',
     })
   }
 })

@@ -243,6 +243,7 @@ const updateFolder = async (folder: Folder, data: Partial<Folder>) => {
     await folderStore.updateFolder(folder.id, data)
   } catch (error) {
     console.error('Error updating folder:', error)
+    toast.error({ summary: 'Could not update folder', message: error.message })
   }
 }
 
@@ -316,7 +317,7 @@ const createFolder = async () => {
     makeDefault.value = ''
   } catch (error) {
     console.error('Error Creating Folder', error)
-    toast.error({ summary: 'COuld not create folder', message: error.message })
+    toast.error({ summary: 'Could not create folder', message: error.message })
   }
 }
 
