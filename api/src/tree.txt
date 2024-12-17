@@ -1,0 +1,154 @@
+.
+├── app.module.ts
+├── audit.log
+├── content
+│   ├── __tests__
+│   │   ├── categories.test.ts
+│   │   ├── content-categories.test.ts
+│   │   ├── content-source-visits.test.ts
+│   │   ├── content-sources.test.ts
+│   │   ├── content-statuses.test.ts
+│   │   ├── content-tags.test.ts
+│   │   ├── contents.test.ts
+│   │   ├── embedding-reviews.test.ts
+│   │   ├── feed-categories.test.ts
+│   │   ├── feed-sources.test.ts
+│   │   ├── feeds.test.ts
+│   │   ├── news-summaries.test.ts
+│   │   ├── news-tags.test.ts
+│   │   ├── news.test.ts
+│   │   ├── newsletters.test.ts
+│   │   ├── research-embeddings.test.ts
+│   │   ├── research.test.ts
+│   │   ├── tags.test.ts
+│   │   └── utils
+│   │       ├── sample-data.utils.ts
+│   │       └── test.utils.ts
+│   ├── content.module.ts
+│   ├── controllers
+│   │   ├── categories.controller.ts
+│   │   ├── content-categories.controller.ts
+│   │   ├── content-source-visits.controller.ts
+│   │   ├── content-sources.controller.ts
+│   │   ├── content-statuses.controller.ts
+│   │   ├── content-tags.controller.ts
+│   │   ├── contents.controller.ts
+│   │   ├── embedding-reviews.controller.ts
+│   │   ├── feed-categories.controller.ts
+│   │   ├── feed-sources.controller.ts
+│   │   ├── feeds.controller.ts
+│   │   ├── news-summaries.controller.ts
+│   │   ├── news-tags.controller.ts
+│   │   ├── news.controller.ts
+│   │   ├── newsletters.controller.ts
+│   │   ├── research-embeddings.controller.ts
+│   │   ├── research.controller.ts
+│   │   └── tags.controller.ts
+│   ├── dto
+│   ├── index.ts
+│   ├── models
+│   │   ├── categories.model.ts
+│   │   ├── content-categories.model.ts
+│   │   ├── content-source-visits.model.ts
+│   │   ├── content-sources.model.ts
+│   │   ├── content-statuses.model.ts
+│   │   ├── content-tags.model.ts
+│   │   ├── contents.model.ts
+│   │   ├── embedding-reviews.model.ts
+│   │   ├── feed-categories.model.ts
+│   │   ├── feed-sources.model.ts
+│   │   ├── feeds.model.ts
+│   │   ├── news-summaries.model.ts
+│   │   ├── news-tags.model.ts
+│   │   ├── news.model.ts
+│   │   ├── newsletters.model.ts
+│   │   ├── research-embeddings.model.ts
+│   │   ├── research.model.ts
+│   │   └── tags.model.ts
+│   └── services
+│       ├── categories.service.ts
+│       ├── content-categories.service.ts
+│       ├── content-source-visits.service.ts
+│       ├── content-sources.service.ts
+│       ├── content-statuses.service.ts
+│       ├── content-tags.service.ts
+│       ├── contents.service.ts
+│       ├── embedding-reviews.service.ts
+│       ├── feed-categories.service.ts
+│       ├── feed-sources.service.ts
+│       ├── feeds.service.ts
+│       ├── news-summaries.service.ts
+│       ├── news-tags.service.ts
+│       ├── news.service.ts
+│       ├── newsletters.service.ts
+│       ├── research-embeddings.service.ts
+│       ├── research.service.ts
+│       └── tags.service.ts
+├── core
+│   ├── __tests__
+│   │   ├── permission.guard.test.ts
+│   │   └── permission.service.test.ts
+│   ├── base
+│   │   ├── base.controller.ts
+│   │   ├── base.model.ts
+│   │   └── base.service.ts
+│   ├── config
+│   │   ├── configuration.ts
+│   │   └── domain-config.ts
+│   ├── core.module.ts
+│   ├── decorators
+│   │   ├── current-user.decorator.ts
+│   │   ├── permissions.decorator.ts
+│   │   ├── plan.decorator.ts
+│   │   ├── roles.decorator.ts
+│   │   └── validate.decorator.ts
+│   ├── dto
+│   │   └── pagination.dto.ts
+│   ├── filters
+│   │   └── http-exception.filter.ts
+│   ├── guards
+│   │   ├── permission.guard.ts
+│   │   ├── plan.guard.ts
+│   │   └── throttler.guard.ts
+│   ├── index.ts
+│   ├── interceptors
+│   │   ├── logging.interceptor.ts
+│   │   └── pagination.interceptor.ts
+│   ├── logger
+│   │   ├── custom.logger.ts
+│   │   ├── logger.colors.ts
+│   │   └── logger.module.ts
+│   ├── middleware
+│   │   └── auth.middleware.ts
+│   ├── permission.module.ts
+│   ├── pipes
+│   │   ├── transformation.pipe.ts
+│   │   ├── trim.pipe.ts
+│   │   ├── type-conversion.pipe.ts
+│   │   └── validation.pipe.ts
+│   ├── prisma.module.ts
+│   ├── services
+│   │   ├── base.service.ts
+│   │   ├── cache.service.ts
+│   │   ├── config.service.ts
+│   │   ├── pagination.service.ts
+│   │   ├── permission.service.ts
+│   │   └── prisma.service.ts
+│   ├── types
+│   │   ├── index.ts
+│   │   ├── pagination.types.ts
+│   │   ├── permission.types.ts
+│   │   └── plan.types.ts
+│   └── utils
+│       ├── auth.utils.ts
+│       └── permission.utils.ts
+├── health
+│   └── health.controller.ts
+├── main.ts
+├── metadata.ts
+├── tree.txt
+└── types
+    ├── index.ts
+    └── permissions.types.ts
+
+25 directories, 127 files
