@@ -15,7 +15,7 @@ export const useFeedbackStore = defineStore('feedbackStore', () => {
     loading.setLoading(storeKey, true)
 
     try {
-      const response = await fetch('/api/feedback/insert/single', {
+      const response = await fetch('/api/feedback', {
         method: 'POST',
         body: newFeedback,
       })

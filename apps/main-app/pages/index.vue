@@ -34,7 +34,7 @@ onMounted(() => {
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Welcome Card -->
       <div
-        class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:row-span-2"
+        class="bg-gray-900/50 flex flex-col rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:row-span-2"
       >
         <div class="space-y-4">
           <div class="flex items-center justify-between">
@@ -51,6 +51,7 @@ onMounted(() => {
           </div>
           <FeatureRanking class="mt-4" />
         </div>
+        <Feedback />
       </div>
 
       <!-- Stats Grid -->

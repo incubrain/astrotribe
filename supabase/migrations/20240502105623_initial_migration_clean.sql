@@ -300,6 +300,7 @@ CREATE TABLE "public"."feedbacks" (
     "id" INT GENERATED ALWAYS AS IDENTITY,
     "user_id" UUID,
     "page_identifier" VARCHAR(255) NOT NULL,
+    "rating" INT DEFAULT 0,
     "feedback_type" public.feedback_type,
     "message" TEXT NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
