@@ -2,6 +2,11 @@
 import { z } from 'zod'
 
 const feedbackStore = useFeedbackStore()
+const stars = ref(3)
+
+const handleVote = (rating: number) => {
+  stars.value = rating
+}
 
 defineProps({
   cta: {
@@ -33,7 +38,7 @@ const initialFeedback = () => ({
   feedback_type: null,
   message: '',
   device_info: '',
-  content_status: 'new',
+  feedback_status: 'new',
 })
 
 const feedback = ref(initialFeedback())
@@ -73,13 +78,19 @@ const resetFeedback = () => {
 }
 
 const submitFeedback = async () => {
-  await feedbackStore.submitFeedback(feedback.value)
+  const { feedback_type } = feedback.value
+
+  await feedbackStore.submitFeedback({
+    ...feedback.value,
+    feedback_type: feedback_type.value,
+    rating: stars.value,
+  })
   resetFeedback()
 }
 </script>
 
 <template>
-  <div class="w-52">
+  <div class="w-52 mt-auto">
     <h2 class="text-lg mb-4 text-left font-bold">
       {{ cta }}
     </h2>
@@ -104,6 +115,23 @@ const submitFeedback = async () => {
         :disabled="isMessageDisabled"
         :invalid="isMessageInvalid"
       />
+      <span v-show="feedback.feedback_type">Rate our app</span>
+      <div class="flex flex-row gap-2">
+        <button
+          v-for="i in 5"
+          v-show="feedback.feedback_type"
+          :key="i"
+          type="button"
+          class="cursor-pointer"
+          @click="handleVote(i)"
+        >
+          <Icon
+            :label="stars"
+            size="25px"
+            :name="i <= stars ? 'mdi:star' : 'mdi:star-outline'"
+          />
+        </button>
+      </div>
       <div>
         <PrimeButton
           v-show="feedback.feedback_type"
