@@ -1,8 +1,42 @@
 <template>
+  <PrimeDialog
+    v-model:visible="showNewFolderModal"
+    modal
+    header="Create New Folder"
+  >
+    <div class="space-y-4 flex flex-col">
+      <PrimeInputText
+        v-model="newFolderName"
+        :feedback="true"
+        placeholder="Enter Folder Name"
+      />
+      <div class="flex gap-2">
+        <PrimeCheckbox
+          id="default"
+          v-model="makeDefault"
+          binary
+        />
+        <label for="default">Make Default</label>
+      </div>
+    </div>
+    <template #footer>
+      <PrimeButton
+        label="Cancel"
+        severity="secondary"
+        @click="showNewFolderModal = false"
+      />
+      <PrimeButton
+        severity="danger"
+        label="Create"
+        @click="createFolder"
+      />
+    </template>
+  </PrimeDialog>
   <div class="space-y-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold">Folders</h2>
       <PrimeButton
+        :disabled="!folderUsage.isUnlimited && folderUsage.used >= folderUsage.limit"
         class="p-button-primary"
         @click="showNewFolderModal = true"
       >
@@ -135,6 +169,23 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-if="!folderUsage.isUnlimited && folderUsage.used >= folderUsage.limit"
+      class="bg-amber-300 p-2 text-black rounded flex items-center justify-between"
+    >
+      <span>Upgrade to <b>Pro</b> plan to create more folders</span>
+      <NuxtLink
+        to="/settings/payments"
+        class="text-black gap-2 border-black border-2 flex rounded items-center bg-white p-2"
+      >
+        <Icon
+          class="text-amber-500"
+          name="mdi-star"
+        />
+        <b>Upgrade</b>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -145,6 +196,10 @@ const folderStore = useFolderStore()
 const bookmarkStore = useBookmarkStore()
 const { handleFolderSelect } = useBookmarkView()
 const { getFeatureUsage } = usePlan()
+const toast = useNotification()
+
+const newFolderName = ref('')
+const makeDefault = ref(false)
 
 const editingFolderId = ref<string | null>(null)
 const editingName = ref('')
@@ -188,6 +243,7 @@ const updateFolder = async (folder: Folder, data: Partial<Folder>) => {
     await folderStore.updateFolder(folder.id, data)
   } catch (error) {
     console.error('Error updating folder:', error)
+    toast.error({ summary: 'Could not update folder', message: error.message })
   }
 }
 
@@ -241,6 +297,27 @@ const handleDelete = async (folder: Folder) => {
     await bookmarkStore.fetchBookmarks()
     await bookmarkStore.fetchBookmarkCounts()
     activeActionsFolder.value = null
+  }
+}
+
+const createFolder = async () => {
+  const folder: Partial<Folder> = {
+    name: newFolderName.value,
+    is_default: makeDefault.value,
+  }
+
+  try {
+    await folderStore.createFolder(folder)
+    toast.success({
+      summary: 'Folder created',
+      message: `Folder ${newFolderName.value} was created successfully`,
+    })
+    showNewFolderModal.value = false
+    newFolderName.value = ''
+    makeDefault.value = ''
+  } catch (error) {
+    console.error('Error Creating Folder', error)
+    toast.error({ summary: 'Could not create folder', message: error.message })
   }
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const { addFeed } = usePages()
-const client = useSupabaseClient()
+import { handleResponse } from '@ib/logger'
 
+const logger = useLogger()
 // Fetch categories
 const { store: categoriesStore } = useSelectData('categories', {
   columns: 'id, name',
@@ -60,71 +60,27 @@ const filteredSources = computed(() => {
 const save = async () => {
   const toast = useNotification()
 
-  if (!name.value) {
-    toast.error({ summary: 'Feed name required', message: 'Please enter a feed name' })
-    return
+  const feed = {
+    name: name.value,
+    selectedCategories: selectedCategories.value,
+    selectedSourceIds: selectedSourceIds.value,
   }
 
-  if (!selectedCategories.value.length && !selectedSourceIds.value.size) {
-    toast.error({
-      summary: 'Selection required',
-      message: 'Please select at least one category or source',
-    })
-    return
-  }
+  try {
+    const data = await handleResponse(
+      logger,
+      () =>
+        $fetch('/api/feeds', {
+          method: 'POST',
+          body: feed,
+        }),
+      'Failed to create feed',
+    )
 
-  const { profile } = useCurrentUser()
-
-  if (profile?.id) {
-    try {
-      // Create feed
-      const { data: feedData, error: feedError } = await client
-        .from('feeds')
-        .insert({ user_id: profile.id, name: name.value })
-        .select('id')
-        .single()
-
-      if (feedError) throw feedError
-
-      const feed_id = feedData.id
-
-      // Insert categories
-      if (selectedCategories.value.length) {
-        const { error: categoriesError } = await client.from('feed_categories').insert(
-          selectedCategories.value.map((cat) => ({
-            feed_id,
-            category_id: cat.id,
-          })),
-        )
-
-        if (categoriesError) throw categoriesError
-      }
-
-      // Insert sources
-      if (selectedSourceIds.value.size) {
-        const { error: sourcesError } = await client.from('feed_sources').insert(
-          Array.from(selectedSourceIds.value).map((companyId) => ({
-            feed_id,
-            content_source_id: companyId,
-          })),
-        )
-
-        if (sourcesError) throw sourcesError
-      }
-
-      toast.success({
-        summary: 'Feed created',
-        message: `${name.value} has been created successfully`,
-      })
-
-      addFeed(feed_id, name.value)
-      navigateTo('/')
-    } catch (error) {
-      toast.error({
-        summary: 'Error creating feed',
-        message: error.message,
-      })
-    }
+    toast.success({ summary: 'Feed added', message: `${feed.name} was created successfully` })
+    navigateTo('/')
+  } catch (error) {
+    toast.error({ summary: 'Error creating feed', message: error.message })
   }
 }
 

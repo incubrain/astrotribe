@@ -63,13 +63,21 @@ export function useSettingsNavigation() {
       disabled: false,
     },
     {
-      key: 'settings-notifications',
-      label: 'Notifications',
-      url: '/settings/notifications',
-      icon: 'material-symbols:notifications',
+      key: 'settings-contact',
+      label: 'Contact Us',
+      url: '/settings/contact',
+      icon: 'mdi:phone-classic',
       visible: true,
       disabled: false,
     },
+    // {
+    //   key: 'settings-notifications',
+    //   label: 'Notifications',
+    //   url: '/settings/notifications',
+    //   icon: 'material-symbols:notifications',
+    //   visible: true,
+    //   disabled: false,
+    // },
   ])
 
   return {

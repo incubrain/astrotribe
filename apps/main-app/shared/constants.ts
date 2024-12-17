@@ -2,7 +2,7 @@ export const FEATURES = {
   BOOKMARK_FOLDERS: {
     name: 'Bookmark Folders',
     limit: {
-      free: 2,
+      free: 3,
       pro: -1, // unlimited
     },
     description: 'Organize your bookmarks into folders',
@@ -23,5 +23,13 @@ export const FEATURES = {
     },
     description: 'Personalize your folders with custom colors',
     comingSoon: true,
+  },
+  CUSTOM_FEEDS: {
+    name: 'Custom Feed',
+    limit: {
+      free: 0,
+      pro: -1,
+    },
+    description: 'Personalize your feeds',
   },
 } as const

@@ -6,29 +6,32 @@
 const domainKey = 'mainFeed'
 
 const sortingMethod = ref<'created_at' | 'hot_score'>('created_at')
+const currentContents = ref([])
+
+const contentIds = computed(() => currentContents.value.map((item) => item.id))
 
 const orderBy = computed(() => ({
   column: sortingMethod.value,
   ascending: false,
 }))
 
-const content_ids = []
+const getContents = async (getMore: boolean = false) => {
+  const supabase = useSupabaseClient()
+  const { data, error } = await supabase.rpc('get_contents', {
+    order_by: sortingMethod.value,
+    ...(getMore
+      ? { last_created_at: currentContents.value[currentContents.value.length - 1].created_at }
+      : {}),
+  })
 
-const {
-  store: contentStore,
-  loadMore,
-  refresh: contentsRefresh,
-} = useSelectData('contents', {
-  columns: 'id, title, url, created_at, content_type, hot_score',
-  filters: {
-    content_type: 'news',
-  },
-  orderBy: orderBy.value,
-  initialFetch: true,
-  pagination: { page: 1, limit: 20 },
-})
+  if (error) {
+    console.log('Error getting contents', error)
+  } else {
+    currentContents.value = data
+  }
+}
 
-const { items: proxyContents } = storeToRefs(contentStore)
+await getContents()
 
 const {
   store,
@@ -39,9 +42,8 @@ const {
       news_summaries!inner(id, summary, complexity_level, version)
     )`,
   filters: {
-    id: { in: proxyContents.value.map((item) => toRaw(item).id) },
+    id: { in: contentIds.value },
   },
-  orderBy: orderBy.value,
   initialFetch: true,
   storeKey: 'mainFeed',
 })
@@ -51,16 +53,16 @@ function mapContentToNews(item: any): News {
     id: item.id,
     title: item.title,
     content_type: item.content_type,
-    published_at: item.news?.published_at || null,
-    featured_image: item.news?.featured_image || '',
-    description: item.news?.description || '',
-    author: item.news?.author || '',
-    keywords: item.news?.keywords || {},
+    published_at: item.published_at || null,
+    featured_image: item.featured_image || '',
+    description: item.description || '',
+    author: item.author || '',
+    keywords: item.keywords || {},
     hot_score: item.hot_score || 0,
-    category_id: item.news?.category_id || null,
-    company_id: item.news?.company_id || null,
-    companies: item.news?.companies || [],
-    summary: item.news?.news_summaries || {},
+    category_id: item.category_id || null,
+    company_id: item.company_id || null,
+    companies: item.companies || [],
+    summary: item.news_summaries || {},
     url: item.url,
     created_at: item.created_at || null,
   }
@@ -96,7 +98,9 @@ const displayedFeed = ref<
 const visibleNews = computed(() => displayedFeed.value)
 
 const updateDisplayedFeed = (newsItems: News[], isFullRefresh = false) => {
-  const mappedNews = newsItems.map((item) => mapContentToNews(toRaw(item)))
+  const mappedNews = newsItems
+    .map((item) => mapContentToNews(toRaw(item)))
+    .sort((a, b) => contentIds.value.indexOf(a.id) - contentIds.value.indexOf(b.id))
 
   if (isFullRefresh) {
     resetAdTracking()
@@ -118,6 +122,8 @@ watch(proxyNews, (newVal) => {
   } else {
     // If this triggers after infinite scroll additions,
     // new items are appended to proxyNews so we only integrate the added portion:
+    updateDisplayedFeed(newVal, false)
+
     if (newVal.length > displayedFeed.value.length) {
       const addedItems = newVal.slice(displayedFeed.value.length)
       updateDisplayedFeed(addedItems, false)
@@ -141,6 +147,7 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
   try {
     // Sorting changed - full refresh scenario
     sortingMethod.value = newValue
+    await getContents()
     await refresh()
     await nextTick()
     window.scrollTo(0, scrollPosition)
@@ -156,7 +163,10 @@ async function toggleHotScore(newValue: 'created_at' | 'hot_score') {
 
 // Wrap loadMore to append new items incrementally
 async function handleLoadMore() {
-  await loadMore()
+  if (!contentIds.value.length) return
+  await getContents(true)
+
+  await originalLoadMore({ id: { in: contentIds.value } })
 }
 
 definePageMeta({
@@ -168,12 +178,12 @@ definePageMeta({
   <div>
     <FeedTitle title="News Feed" />
 
-    <BlackFridayBanner />
+    <!-- <BlackFridayBanner />
 
     <AdsBanner
       v-if="topBannerAd"
       :ad="topBannerAd"
-    />
+    /> -->
     <FeedHotToggle
       v-model="sortingMethod"
       @update:model-value="toggleHotScore"

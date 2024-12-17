@@ -101,7 +101,7 @@ export function useSelectData<T extends { id: string | number }>(
     }
   }
 
-  const loadMore = async () => {
+  const loadMore = async (filters?: Record<string, any>) => {
     if (paginationStore) {
       console.log('loading more data')
       const newData = await fetchData()
@@ -112,6 +112,7 @@ export function useSelectData<T extends { id: string | number }>(
         paginationStore.incrementPagination(storeKey)
       }
     } else {
+      if (filters) optionsRef.filters = { ...optionsRef.filters, ...filters }
       const data = await fetchData()
       store.setItems(data)
     }
