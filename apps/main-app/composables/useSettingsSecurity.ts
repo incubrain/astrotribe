@@ -22,7 +22,9 @@ export function useSettingsSecurity() {
     return data?.identities || []
   }
 
-  async function linkIdentity(provider: 'twitter' | 'google' | 'facebook' | 'linkedin_oidc') {
+  async function linkIdentity(
+    provider: 'email' | 'twitter' | 'google' | 'facebook' | 'linkedin_oidc',
+  ) {
     const { data, error } = await supabase.auth.linkIdentity({ provider })
     if (error) {
       toast.error({
@@ -47,6 +49,8 @@ export function useSettingsSecurity() {
   // Password Management
   async function setPassword(password: string) {
     const { error } = await supabase.auth.updateUser({ password })
+
+    await linkIdentity('email')
     if (error) {
       toast.error({
         summary: 'Error',
