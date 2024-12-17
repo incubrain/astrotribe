@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { PrismaService } from "./prisma.service";
 import { CustomLogger } from "@core/logger/custom.logger";
 import { ConfigService } from "./config.service";
-import { DatabaseAction, TokenPayload, PermissionCondition } from "../../types/permissions.types"
+import { DatabaseAction, TokenPayload, PermissionCondition } from "@types"
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { app_role_enum } from "@prisma/client";
 
