@@ -38,9 +38,11 @@ const voteStore = useVoteStore()
 const isFlipped = ref(false)
 
 const showModal = ref(false)
+const showBookmarkFolders = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
 const score = ref(props.news.score || 0)
+const bookmarkFolderSelected = ref(null)
 
 const bookmarkStore = useBookmarkStore()
 const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
@@ -76,6 +78,14 @@ const hasSummary = computed(() => props.news.summary && props.news.summary.lengt
 const summary = computed(() =>
   hasSummary.value ? props.news.summary![0].summary : props.news.description,
 )
+
+const submitFolder = async () => {
+  showBookmarkFolders.value = false
+  setTimeout(
+    () => bookmarkStore.handleToggleBookmark(props.news, bookmarkFolderSelected.value),
+    500,
+  )
+}
 
 const formatSourceName = (name: string) => {
   // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
@@ -227,7 +237,16 @@ onBeforeUnmount(async () => {
               :current-vote="currentVote"
               card-side="front"
               :on-bookmark="
-                () => bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+                async () => {
+                  if (folderStore.folders.length > 1) {
+                    await folderStore.fetchFolders()
+                    bookmarkFolderSelected =
+                      folderStore.folders.find((folder) => folder.is_default) || null
+                    showBookmarkFolders = true
+                    return
+                  }
+                  bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+                }
               "
               :on-source-visit="handleSourceVisit"
               @vote-change="handleVoteChange"
@@ -283,7 +302,16 @@ onBeforeUnmount(async () => {
           :current-vote="currentVote"
           card-side="back"
           :on-bookmark="
-            () => bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+            async () => {
+              if (folderStore.folders.length > 1) {
+                await folderStore.fetchFolders()
+                bookmarkFolderSelected =
+                  folderStore.folders.find((folder) => folder.is_default)?.id || null
+                showBookmarkFolders = true
+                return
+              }
+              bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
+            }
           "
           :on-source-visit="handleSourceVisit"
           @vote-change="handleVoteChange"
@@ -292,7 +320,30 @@ onBeforeUnmount(async () => {
       </div>
     </div>
   </div>
-
+  <PrimeDialog
+    v-model:visible="showBookmarkFolders"
+    modal
+    header="Choose Folder"
+    :style="{ width: '50vw' }"
+  >
+    <PrimeSelect
+      v-model="bookmarkFolderSelected"
+      class="w-full"
+      :options="folderStore.folders"
+      option-label="name"
+      option-value="id"
+    />
+    <template #footer>
+      <PrimeButton
+        label="Cancel"
+        @click="showBookmarkFolders = false"
+      />
+      <PrimeButton
+        label="Submit"
+        @click="submitFolder"
+      />
+    </template>
+  </PrimeDialog>
   <PrimeDialog
     v-model:visible="showModal"
     modal
