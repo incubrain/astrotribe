@@ -1,5 +1,5 @@
 {
-  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
+  "extends": ["../../tsconfig.base.json"],
   "compilerOptions": {
     "module": "ESNext",
     "declaration": true,
@@ -10,7 +10,7 @@
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -35,6 +35,6 @@
       "@advertising/*": ["src/advertising/*"]
     }
   },
-  "include": ["src/**/*", "env.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "test", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**", "scripts"]
 }
