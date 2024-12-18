@@ -10,7 +10,7 @@
     "dev:strapi": "docker compose -f docker-compose.strapi.yml up",
     "dev:website": "nx serve website",
     "dev:auth": "nx serve auth-service --verbose",
-    "dev:app": "nx run-many -t serve -p auth-service,main-app --parallel --verbose",
+    "dev:app": "nx run-many -t serve -p auth-service,main-app,api --parallel --verbose",
     "dev:monitoring": "nx serve monitoring-dashboard",
     "dev:admin": "nx run-many -t serve -p admin-dashboard,auth-service --parallel --verbose",
     "dev:test": "nx serve build-works --verbose",
