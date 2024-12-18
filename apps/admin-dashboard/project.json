@@ -19,6 +19,12 @@
         "cwd": "layers/auth"
       }
     },
+    "build:referral": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/referral && npx nuxi build"
+      }
+    },
     "build:advert": {
       "executor": "nx:run-commands",
       "options": {
@@ -31,7 +37,7 @@
         "command": "npx nuxi build",
         "cwd": "apps/admin-dashboard"
       },
-      "dependsOn": ["build:base", "build:auth", "build:advert"]
+      "dependsOn": ["build:base", "build:auth", "build:advert", "build:referral"]
     },
     "serve": {
       "executor": "nx:run-commands",
