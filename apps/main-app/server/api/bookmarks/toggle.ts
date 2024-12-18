@@ -3,7 +3,7 @@ import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const user = await serverSupabaseUser(event)
-  const { content_id, content_type, metadata } = body
+  const { content_id, content_type, folder_id, metadata } = body
 
   if (!user) {
     return createError({
@@ -43,17 +43,12 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get default folder if needed
-  let folder_id = null
   const { data: defaultFolder } = await supabase
     .from('bookmark_folders')
     .select('id')
     .eq('user_id', user.id)
     .eq('is_default', true)
     .single()
-
-  if (defaultFolder) {
-    folder_id = defaultFolder.id
-  }
 
   // Create new bookmark
   const { data: newBookmark, error: bookError } = await supabase
@@ -62,7 +57,7 @@ export default defineEventHandler(async (event) => {
       user_id: user.id,
       content_id,
       content_type,
-      folder_id,
+      folder_id: folder_id || defaultFolder?.id,
       metadata: {
         ...metadata,
         bookmarked_at: new Date().toISOString(),
