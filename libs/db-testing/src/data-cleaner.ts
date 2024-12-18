@@ -38,6 +38,9 @@ export async function cleanUpTestData(pool: Pool) {
       'ad_daily_metrics',
       'ad_packages',
       'ad_variants',
+      'referrals',
+      'referrer_blocks',
+      'blocked_ips',
     ]
 
     for (const table of tables) {

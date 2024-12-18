@@ -48,6 +48,7 @@ useHead({
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
+    <ReferralCapture />
     <!-- <Notification /> -->
   </div>
 </template>

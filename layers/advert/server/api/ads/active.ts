@@ -3,7 +3,7 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseServiceRole(event)
+  const client = serverSupabaseServiceRole(event)
 
   const { data, error } = await client.rpc('get_active_ads')
 

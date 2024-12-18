@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { defineConfig } from 'vite'
+import { resolve } from 'path'
 
 export default defineConfig({
   test: {
@@ -24,4 +24,4 @@ export default defineConfig({
       { find: '@advertising', replacement: resolve(__dirname, './src/advertising') },
     ],
   },
-});
+})

@@ -5,6 +5,13 @@ export default defineWorkspace([
   {
     extends: './vitest.shared.config.ts',
     test: {
+      name: 'api',
+      root: './api',
+    },
+  },
+  {
+    extends: './vitest.shared.config.ts',
+    test: {
       name: 'website',
       root: './apps/website',
     },

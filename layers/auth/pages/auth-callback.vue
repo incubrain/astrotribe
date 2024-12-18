@@ -1,4 +1,4 @@
-// pages/auth-callback.vue
+<!-- pages/auth-callback.vue -->
 <template>
   <div class="w-full h-full flex justify-center items-center">Authenticating...</div>
 </template>
@@ -8,9 +8,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useSupabaseClient } from '#imports'
 
 const logger = useLogger('auth')
+const env = useRuntimeConfig().public
 
 const route = useRoute()
-const router = useRouter()
 const supabase = useSupabaseClient()
 
 const isProcessing = ref(false)
@@ -23,7 +23,7 @@ const handleAuth = async () => {
 
   if (!code) {
     logger.error('No code found in URL')
-    router.push('/login')
+    await navigateTo(`${env.authUrl}${env.loginUrl}`, { external: true })
     return
   }
 
@@ -34,13 +34,13 @@ const handleAuth = async () => {
 
     if (data.session) {
       logger.info('Session established:', { session: data.session })
-      router.push('/')
+      navigateTo('/')
     } else {
       throw new Error('No session established')
     }
   } catch (error) {
     logger.error('Error during authentication:', { error })
-    router.push('/login')
+    await navigateTo(`${env.authUrl}${env.loginUrl}`, { external: true })
   } finally {
     isProcessing.value = false
   }

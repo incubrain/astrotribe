@@ -1,4 +1,5 @@
-alter table "public"."research_embeddings" drop constraint "public_research_embeddings_research_id_fkey";
+alter table "public"."research_embeddings" drop constraint if exists "research_embeddings_research_id_fkey";
+alter table "public"."research_embeddings" drop constraint if exists "public_research_embeddings_research_id_fkey";
 
 alter table "public"."companies" alter column "category_id" set data type bigint using "category_id"::bigint;
 

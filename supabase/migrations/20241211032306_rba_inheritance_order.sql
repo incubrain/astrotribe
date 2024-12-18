@@ -462,14 +462,6 @@ drop policy "select_policy" on "public"."spider_metrics";
 
 drop policy "update_policy" on "public"."spider_metrics";
 
-drop policy "delete_policy" on "public"."table_maintenance_log";
-
-drop policy "insert_policy" on "public"."table_maintenance_log";
-
-drop policy "select_policy" on "public"."table_maintenance_log";
-
-drop policy "update_policy" on "public"."table_maintenance_log";
-
 drop policy "delete_policy" on "public"."table_query_performance";
 
 drop policy "insert_policy" on "public"."table_query_performance";
@@ -2424,39 +2416,6 @@ as permissive
 for update
 to public
 using (public.authorize('spider_metrics.update'::text) AND false);
-
-
-create policy "delete_policy"
-on "public"."table_maintenance_log"
-as permissive
-for delete
-to public
-using (public.authorize('table_maintenance_log.delete'::text) AND false);
-
-
-create policy "insert_policy"
-on "public"."table_maintenance_log"
-as permissive
-for insert
-to public
-with check (public.authorize('table_maintenance_log.insert'::text) AND false);
-
-
-create policy "select_policy"
-on "public"."table_maintenance_log"
-as permissive
-for select
-to public
-using (public.authorize('table_maintenance_log.select'::text) AND true);
-
-
-create policy "update_policy"
-on "public"."table_maintenance_log"
-as permissive
-for update
-to public
-using (public.authorize('table_maintenance_log.update'::text) AND false);
-
 
 create policy "delete_policy"
 on "public"."table_query_performance"
