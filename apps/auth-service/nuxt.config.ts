@@ -11,7 +11,7 @@ process.env.SERVICE_NAME = 'auth-service'
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
+  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud', '../../layers/referral'],
   build: {
     transpile: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
   },

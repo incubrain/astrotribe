@@ -8,7 +8,13 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud', '../../layers/advert'],
+  extends: [
+    '../../layers/base',
+    '../../layers/auth',
+    '../../layers/crud',
+    '../../layers/advert',
+    '../../layers/referral',
+  ],
 
   vite: {
     optimizeDeps: {

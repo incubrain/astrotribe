@@ -5,11 +5,11 @@
       "tables": [
         "cities",
         "countries",
-        "content_categories",
         "content_tags",
         "metric_definitions",
         "categories",
-        "tags"
+        "tags",
+        "content_categories"
       ],
       "default_permissions": [
         "select"
@@ -22,14 +22,14 @@
         "research_embeddings",
         "content_statuses",
         "newsletters",
-        "companies",
         "research",
         "content_sources",
         "news",
         "news_tags",
         "feed_sources",
         "contents",
-        "news_summaries"
+        "news_summaries",
+        "companies"
       ],
       "default_permissions": [
         "select"
@@ -64,9 +64,9 @@
         "company_extras",
         "company_urls",
         "company_metrics",
-        "user_profiles",
         "user_metrics",
-        "company_employees"
+        "company_employees",
+        "user_profiles"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -84,7 +84,10 @@
         "ad_packages",
         "ad_variants",
         "ads",
-        "classified_urls"
+        "classified_urls",
+        "blocked_ips",
+        "referrals",
+        "referrer_blocks"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -102,9 +105,9 @@
         "customer_subscriptions",
         "payment_providers",
         "role_hierarchy",
-        "role_permissions_materialized",
         "role_permissions",
-        "error_logs"
+        "error_logs",
+        "role_permissions_materialized"
       ],
       "default_permissions": [],
       "audit_level": "critical"

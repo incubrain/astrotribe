@@ -29,6 +29,9 @@ export async function runSeeders() {
       socialMedia: 100,
       categories: 20,
       newsletters: 15,
+      referrers: 10,
+      referralsPerReferrer: { min: 10, max: 50 },
+      blockedIPs: { min: 5, max: 15 },
     },
   }
 
@@ -207,10 +210,46 @@ export async function runSeeders() {
 
     await checkAndSeed(client, 'error_logs', () => seed.seedErrorLogs(client, userIds))
 
+    await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_referral_stats_trigger')
+    await client.query('ALTER TABLE referrals DISABLE TRIGGER refresh_risk_metrics_trigger')
+
+    // First check and seed referrals
+    const referrers = await checkAndSeed(client, 'referrals', () =>
+      seed.seedReferrers(client, userIds),
+    )
+
+    // Then seed referral records
+    const referrals = await checkAndSeed(client, 'referrals', () =>
+      seed.seedReferrals(client, referrers),
+    )
+
+    // Seed blocked IPs
+    const blockedIPs = await checkAndSeed(client, 'blocked_ips', () => seed.seedBlockedIPs(client))
+
+    // Seed referrer blocks
+    const referrerBlocks = await checkAndSeed(client, 'referrer_blocks', () =>
+      seed.seedReferrerBlocks(client, referrers),
+    )
+
+    // Re-enable triggers
+    await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_referral_stats_trigger')
+    await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_risk_metrics_trigger')
+
+    // Manually refresh materialized views once after all data is inserted
+    await client.query('REFRESH MATERIALIZED VIEW referral_stats')
+    await client.query('REFRESH MATERIALIZED VIEW referrer_risk_metrics')
+
     console.log(chalk.blue('✓ Database seeding completed successfully'))
     return true
   } catch (error) {
     console.error(chalk.red('Error during database seeding:'), error)
+    try {
+      await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_referral_stats_trigger')
+      await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_risk_metrics_trigger')
+    } catch (triggerError) {
+      console.error(chalk.red('Error re-enabling triggers:'), triggerError)
+      return false
+    }
     return false
   }
 }

@@ -1,5 +1,5 @@
 // composables/useAdvertising.ts
-import type { AdPackage } from '~/types/ads'
+import type { AdPackage } from '~/types/referrals'
 
 export const useAdvertising = () => {
   const selectedPackageId = useState<string | null>('selected-package-id', () => null)

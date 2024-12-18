@@ -1551,3 +1551,204 @@ export async function seedAdDailyMetrics(pool: Pool, variantIds: string[]) {
   await bulkInsert(pool, 'ad_daily_metrics', metrics)
   return metrics
 }
+
+export async function seedReferrers(pool: Pool, userIds: string[]) {
+  return ['ruturaj', 'shweta', 'ruchira', 'mac'].map((code) => ({
+    referrer_code: code,
+  }))
+}
+
+export async function seedReferrals(pool: Pool, referrers: any[]) {
+  const referrals: any[] = []
+
+  const endDate = new Date()
+  const startDate = new Date()
+  startDate.setDate(endDate.getDate() - 7)
+
+  const generateRecentDate = () => {
+    const daysAgo = faker.number.int({ min: 0, max: 7 })
+    const hoursInDay = faker.number.int({ min: 0, max: 23 })
+    const minutesInHour = faker.number.int({ min: 0, max: 59 })
+
+    const date = new Date(endDate)
+    date.setDate(date.getDate() - daysAgo)
+    date.setHours(hoursInDay, minutesInHour)
+    return date
+  }
+
+  // Helper to generate conversion date
+  const generateConversionDate = (creationDate: Date) => {
+    // Generate conversion between 1 min and 12 hours after creation
+    const conversionDate = new Date(creationDate)
+    conversionDate.setMinutes(
+      conversionDate.getMinutes() + faker.number.int({ min: 1, max: 12 * 60 }), // Random minutes up to 12 hours
+    )
+
+    // If conversion would be after now, cap it to now
+    return conversionDate > endDate ? endDate : conversionDate
+  }
+
+  // More varied data
+  const deviceTypes = ['desktop', 'mobile', 'tablet']
+  const deviceDistribution = [50, 35, 15] // percentages
+  const browsers = ['Chrome', 'Firefox', 'Safari', 'Edge']
+  const browserDistribution = [45, 25, 20, 10] // percentages
+  const countryCodes = ['US', 'GB', 'IN', 'CA', 'AU', 'DE', 'FR', 'JP']
+  const regions = {
+    US: ['California', 'New York', 'Texas'],
+    GB: ['England', 'Scotland', 'Wales'],
+    IN: ['Maharashtra', 'Karnataka', 'Delhi'],
+    // Add more as needed
+  }
+
+  for (const referrer of referrers) {
+    // Generate 15-40 referrals per referrer for better distribution
+    const numReferrals = faker.number.int({ min: 15, max: 40 })
+
+    for (let i = 0; i < numReferrals; i++) {
+      const createdAt = generateRecentDate()
+
+      // Better status distribution
+      const status = faker.helpers.weightedArrayElement([
+        { value: 'pending', weight: 40 },
+        { value: 'converted', weight: 35 },
+        { value: 'abandoned', weight: 25 },
+      ]) as 'pending' | 'converted' | 'abandoned'
+
+      const countryCode = faker.helpers.arrayElement(countryCodes)
+
+      const convertedAt = status === 'converted' ? generateConversionDate(createdAt) : null
+
+      referrals.push({
+        id: generateUUID(),
+        referrer_code: referrer.referrer_code,
+        visitor_id: generateUUID(),
+        created_at: createdAt,
+        converted_at: convertedAt,
+        status,
+        conversion_value:
+          status === 'converted'
+            ? faker.number.float({ min: 100, max: 2000, fractionDigits: 2 })
+            : null,
+        user_agent: faker.internet.userAgent(),
+        ip_address: faker.internet.ip(),
+        landing_page: faker.helpers.weightedArrayElement([
+          { value: '/', weight: 40 },
+          { value: '/products', weight: 25 },
+          { value: '/pricing', weight: 20 },
+          { value: '/about', weight: 15 },
+        ]),
+        utm_source: faker.helpers.maybe(
+          () =>
+            faker.helpers.weightedArrayElement([
+              { value: 'google', weight: 40 },
+              { value: 'facebook', weight: 30 },
+              { value: 'twitter', weight: 20 },
+              { value: 'linkedin', weight: 10 },
+            ]),
+          { probability: 0.8 },
+        ),
+        utm_medium: faker.helpers.maybe(
+          () =>
+            faker.helpers.weightedArrayElement([
+              { value: 'cpc', weight: 35 },
+              { value: 'social', weight: 35 },
+              { value: 'email', weight: 30 },
+            ]),
+          { probability: 0.8 },
+        ),
+        utm_campaign: faker.helpers.maybe(
+          () =>
+            faker.helpers.weightedArrayElement([
+              { value: 'spring2024', weight: 40 },
+              { value: 'launch', weight: 30 },
+              { value: 'promo', weight: 30 },
+            ]),
+          { probability: 0.8 },
+        ),
+        device_type: faker.helpers.weightedArrayElement(
+          deviceTypes.map((type, index) => ({
+            value: type,
+            weight: deviceDistribution[index],
+          })),
+        ),
+        browser: faker.helpers.weightedArrayElement(
+          browsers.map((browser, index) => ({
+            value: browser,
+            weight: browserDistribution[index],
+          })),
+        ),
+        country_code: countryCode,
+        region: faker.helpers.arrayElement(regions[countryCode] || ['Unknown']),
+        is_suspicious: faker.helpers.maybe(() => true, { probability: 0.05 }),
+        security_flags: faker.helpers.maybe(
+          () => JSON.stringify(['suspicious_ip', 'multiple_attempts']),
+          { probability: 0.05 },
+        ),
+        validation_attempts: faker.number.int({ min: 1, max: 5 }),
+        last_failed_attempt: faker.helpers.maybe(() => faker.date.recent(), { probability: 0.1 }),
+        client_fingerprint: faker.string.alphanumeric(32),
+      })
+    }
+  }
+
+  await bulkInsert(pool, 'referrals', referrals)
+  return referrals
+}
+
+export async function seedBlockedIPs(pool: Pool) {
+  const numBlocked = faker.number.int({ min: 3, max: 8 })
+  const blockedIPs = []
+
+  for (let i = 0; i < numBlocked; i++) {
+    const blockedAt = faker.date.recent()
+    blockedIPs.push({
+      id: generateUUID(),
+      ip_address: faker.internet.ip(),
+      blocked_at: blockedAt,
+      blocked_until: faker.date.future({ refDate: blockedAt }),
+      failed_attempts: faker.number.int({ min: 3, max: 10 }),
+      reason: faker.helpers.arrayElement([
+        'Rate limit exceeded',
+        'Suspicious activity detected',
+        'Multiple failed attempts',
+        'Bot behavior detected',
+      ]),
+      created_at: blockedAt,
+      updated_at: faker.date.recent(),
+    })
+  }
+
+  console.log(`Seeding ${blockedIPs.length} blocked IPs`)
+  await bulkInsert(pool, 'blocked_ips', blockedIPs)
+  return blockedIPs
+}
+
+export async function seedReferrerBlocks(pool: Pool, referrers: any[]) {
+  // Block ~20% of referrers
+  const blockedCount = Math.max(1, Math.floor(referrers.length * 0.2))
+  const blockedReferrers = faker.helpers.shuffle([...referrers]).slice(0, blockedCount)
+
+  const blocks = blockedReferrers.map((referrer) => {
+    const blockedAt = faker.date.recent()
+    return {
+      id: generateUUID(),
+      referrer_code: referrer.referrer_code,
+      blocked_at: blockedAt,
+      blocked_by: 'admin',
+      reason: faker.helpers.arrayElement([
+        'Suspicious referral pattern',
+        'Terms of service violation',
+        'Fraudulent activity detected',
+        'Multiple suspicious conversions',
+      ]),
+      is_permanent: faker.datatype.boolean(),
+      created_at: blockedAt,
+      updated_at: faker.date.recent(),
+    }
+  })
+
+  console.log(`Seeding ${blocks.length} referrer blocks`)
+  await bulkInsert(pool, 'referrer_blocks', blocks)
+  return blocks
+}

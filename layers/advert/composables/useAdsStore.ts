@@ -1,6 +1,6 @@
 // stores/ads.ts
 import { defineStore } from 'pinia'
-import type { AdPackage, Ad } from '~/types/ads'
+import type { AdPackage, Ad } from '~/types/referrals'
 
 export const useAdsStore = defineStore('ads', () => {
   // State

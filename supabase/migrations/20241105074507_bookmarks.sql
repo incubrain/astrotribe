@@ -73,7 +73,7 @@ alter table "public"."bookmark_folders" validate constraint "bookmark_folders_pa
 
 alter table "public"."bookmark_folders" add constraint "bookmark_folders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) on delete cascade on update cascade not valid;
 
-alter table "public"."bookmark_folders" add constraint "no_duplicate_folder_name" UNIQUE (user_id, name) not valid;
+alter table "public"."bookmark_folders" add constraint "no_duplicate_folder_name" UNIQUE (user_id, name);
 
 alter table "public"."bookmark_folders" validate constraint "bookmark_folders_user_id_fkey";
 
