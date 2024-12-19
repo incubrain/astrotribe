@@ -5,7 +5,6 @@ import { useAnimation } from '~/composables/useAnimation'
 const { fadeInUp } = useAnimation()
 const loadVideo = ref(false)
 
-
 const patreonPerks = [
   'Behind-the-scenes content',
   'Early access to episodes',
@@ -28,7 +27,7 @@ onMounted(() => {
     />
     <div class="content-section space-y-8">
       <!-- Main Grid -->
-      <div class="grid md:grid-cols-2 gap-8">
+      <!-- <div class="grid md:grid-cols-2 gap-8">
         <LandingGlass
           hover-effect="glow"
           glow-color="purple"
@@ -37,12 +36,10 @@ onMounted(() => {
           interactive
           isolate-content
         >
-          <!-- Series Info -->
           <div class="relative group">
             <div
               class="relative rounded-xl transition-all duration-500 hover:border-sky-500/30 h-full"
             >
-              <!-- Content -->
               <div class="relative z-10 h-full flex flex-col">
                 <Icon
                   name="mdi:video-vintage"
@@ -66,7 +63,6 @@ onMounted(() => {
           </div>
         </LandingGlass>
 
-        <!-- Patreon Support -->
         <LandingGlass
           hover-effect="glow"
           glow-color="purple"
@@ -79,7 +75,6 @@ onMounted(() => {
             <div
               class="relative rounded-xl transition-all duration-500 hover:border-sky-500/30 h-full"
             >
-              <!-- Content -->
               <div class="relative z-10 h-full flex flex-col">
                 <Icon
                   name="mdi:patreon"
@@ -119,7 +114,7 @@ onMounted(() => {
             </div>
           </div>
         </LandingGlass>
-      </div>
+      </div> -->
 
       <!-- Video Section -->
       <LandingGlass
