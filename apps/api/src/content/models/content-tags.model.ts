@@ -1,18 +1,18 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import {} from "@prisma/client";
+import { BaseModel } from '@core/base/base.model'
+import {} from '@prisma/client'
 
-import { ContentsModel } from "@content/models/contents.model";
+import { ContentsModel } from '@content/models/contents.model'
 
-import { TagsModel } from "@content/models/tags.model";
+import { TagsModel } from '@content/models/tags.model'
 
 // Model interface
 export interface ContentTagsModel extends BaseModel {
-  content_id: string;
+  content_id: string
 
-  tag_id: number;
+  tag_id: number
 
-  contents: ContentsModel;
+  contents: ContentsModel
 
-  tags: TagsModel;
+  tags: TagsModel
 }

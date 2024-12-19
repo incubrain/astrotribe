@@ -1,20 +1,20 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import {} from "@prisma/client";
+import { BaseModel } from '@core/base/base.model'
+import {} from '@prisma/client'
 
-import { ContentsModel } from "@content/models/contents.model";
+import { ContentsModel } from '@content/models/contents.model'
 
 // Model interface
 export interface ContentSourceVisitsModel extends BaseModel {
-  id: string;
+  id: string
 
-  content_id: string;
+  content_id: string
 
-  user_id?: string;
+  user_id?: string
 
-  created_at?: Date;
+  created_at?: Date
 
-  contents: ContentsModel;
+  contents: ContentsModel
 
   // userProfiles?: UserProfilesModel;
 }

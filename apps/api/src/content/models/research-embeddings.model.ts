@@ -1,33 +1,33 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import { EmbeddingReviewsModel } from "@content/models/embedding-reviews.model";
-import { ContentsModel } from "@content/models/contents.model";
+import { BaseModel } from '@core/base/base.model'
+import { EmbeddingReviewsModel } from '@content/models/embedding-reviews.model'
+import { ContentsModel } from '@content/models/contents.model'
 
-import { ResearchModel } from "@content/models/research.model";
+import { ResearchModel } from '@content/models/research.model'
 
 // Model interface
 export interface ResearchEmbeddingsModel extends BaseModel {
-  id: number;
+  id: number
 
-  research_id: string;
+  research_id: string
 
-  chunk: string;
+  chunk: string
 
-  url?: string;
+  url?: string
 
-  embedding?: string;
+  embedding?: string
 
-  created_at?: Date;
+  created_at?: Date
 
-  is_flagged?: boolean;
+  is_flagged?: boolean
 
-  updated_at: Date;
+  updated_at: Date
 
-  embedding_review_id?: string;
+  embedding_review_id?: string
 
-  embeddingReviews?: EmbeddingReviewsModel;
+  embeddingReviews?: EmbeddingReviewsModel
 
-  contents: ContentsModel[];
+  contents: ContentsModel[]
 
-  research: ResearchModel;
+  research: ResearchModel
 }

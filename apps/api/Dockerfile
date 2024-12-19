@@ -5,22 +5,22 @@ WORKDIR /usr/src/app
 # Install system dependencies
 RUN apk add --no-cache python3 make g++ gcc
 
-# Copy package files first
+# Copy key files first
 COPY package*.json ./
 COPY tsconfig*.json ./
+COPY prisma ./prisma/
 
 # Install dependencies
 RUN npm install
 
-# Copy prisma schema and generate
-COPY prisma ./prisma/
+# Generate Prisma client
 RUN npx prisma generate
 
-# Copy rest of the application
+# Copy the rest of the application
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build the application with verbose logging
+RUN npm run build -- --verbose
 
 # Final image stage
 FROM node:20-alpine AS final
@@ -30,6 +30,7 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/prisma ./prisma
 
 EXPOSE 3000
 CMD ["npm", "run", "start:prod"]

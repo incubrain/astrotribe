@@ -1,45 +1,45 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import { content_type, scrape_frequency, priority } from "@prisma/client";
-import { CategoriesModel } from "@content/models/categories.model";
+import { BaseModel } from '@core/base/base.model'
+import { content_type, scrape_frequency, priority } from '@prisma/client'
+import { CategoriesModel } from '@content/models/categories.model'
 
 // Model interface
 export interface ContentSourcesModel extends BaseModel {
-  id: string;
+  id: string
 
-  url: string;
+  url: string
 
-  content_type: content_type;
+  content_type: content_type
 
-  scrape_frequency: scrape_frequency;
+  scrape_frequency: scrape_frequency
 
-  created_at?: Date;
+  created_at?: Date
 
-  updated_at?: Date;
+  updated_at?: Date
 
-  refreshed_at?: Date;
+  refreshed_at?: Date
 
-  has_failed?: boolean;
+  has_failed?: boolean
 
-  failed_count?: number;
+  failed_count?: number
 
-  priority: priority;
+  priority: priority
 
-  hash?: string;
+  hash?: string
 
-  scraped_at?: Date;
+  scraped_at?: Date
 
-  expected_count?: number;
+  expected_count?: number
 
-  company_id?: string;
+  company_id?: string
 
-  rss_urls?: string[];
+  rss_urls?: string[]
 
   // companies?: CompaniesModel;
 
-  contentSources?: ContentSourcesModel[];
+  contentSources?: ContentSourcesModel[]
 
   // socialMedia?: SocialMediaModel[];
 
-  categories?: CategoriesModel[];
+  categories?: CategoriesModel[]
 }
