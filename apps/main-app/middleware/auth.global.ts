@@ -3,9 +3,7 @@ import { useRuntimeConfig, useSupabaseClient } from '#imports'
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
-  const { $formbricks } = useNuxtApp()
-
-  console.log('AUTH_MIDDLEWARE', $formbricks)
+  // const { $formbricks } = useNuxtApp()
 
   const { loginURL, authURL } = config.public
   const supabase = useSupabaseClient()
@@ -19,16 +17,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const { data, error } = await supabase.auth.getSession()
 
-  if (data.session && $formbricks) {
-    try {
-      $formbricks.setUserId(data.session.user.id)
-    } catch (err) {
-      console.warn('Failed to set Formbricks user ID:', err)
-    }
+  if (data.session) {
+    // try {
+    //   $formbricks.setUserId(data.session.user.id)
+    // } catch (err) {
+    //   console.warn('Failed to set Formbricks user ID:', err)
+    // }
   } else if (!data.session) {
     console.log('USER_NOT_LOGGED_IN', `${authURL}${loginURL}`)
     return navigateTo(String(`${authURL}${loginURL}`), { external: true })
-  } else if (data.session) {
-    console.log('USER_LOGGED_IN', data.session)
   }
 })

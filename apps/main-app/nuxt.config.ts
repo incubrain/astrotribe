@@ -22,9 +22,9 @@ export default defineNuxtConfig({
     },
   },
 
-  build: {
-    transpile: ['@formbricks/js'],
-  },
+  // build: {
+  //   transpile: ['@formbricks/js'],
+  // },
 
   debug: true,
 
@@ -88,7 +88,7 @@ export default defineNuxtConfig({
 
   pwa: {
     registerType: 'autoUpdate',
-    manifest: false, // We'll use our own manifest file
+    manifest: false,
     workbox: {
       navigateFallback: '/offline',
       globPatterns: ['**/*.{js,css,html,ico,png,svg}'],

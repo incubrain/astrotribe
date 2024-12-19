@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
 
+  // remove after debuggin
+  sourcemap: true,
+
   components: [
     {
       path: './components',
@@ -12,6 +15,14 @@ export default defineNuxtConfig({
       global: true,
     },
   ],
+
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        prefetch: false,
+      },
+    },
+  },
 
   nitro: {
     experimental: {
