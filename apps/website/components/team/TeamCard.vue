@@ -10,8 +10,13 @@ defineProps({
 </script>
 
 <template>
-  <IBGlass
-    class="flex w-full flex-col items-center justify-between rounded-md backdrop-blur-lg backdrop-filter transition-all duration-300 hover:-translate-y-1 hover:drop-shadow-2xl"
+  <LandingGlass
+    hover-effect="glow"
+    glow-color="purple"
+    gradient="mixed"
+    intensity="low"
+    interactive
+    isolate-content
   >
     <div class="absolute h-full w-full animate-pulse">
       <SvgStars
@@ -74,7 +79,7 @@ defineProps({
         </div>
       </div>
     </div>
-  </IBGlass>
+  </LandingGlass>
 </template>
 
 <style scoped></style>
