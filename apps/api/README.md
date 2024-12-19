@@ -150,11 +150,9 @@ src/
 # Build the API image
 docker build -t astronera-api .
 
-# Run database migrations
-docker-compose exec api npx prisma migrate deploy
-
-# Generate Prisma client
-docker-compose exec api npx prisma generate
+# Manually update prisma from api dir
+dotenv -e ../../.env -- npx prisma db pull
+dotenv -e ../../.env -- npx prisma generate
 
 # View container logs
 docker-compose logs -f [service_name]

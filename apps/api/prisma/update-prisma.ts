@@ -14,7 +14,10 @@ const TYPE_MAPPINGS = {
 
 async function execCommand(command: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
+    const rootEnvPath = path.resolve(process.cwd(), '../../.env');
+    const cmdWithEnv = `dotenv -e ${rootEnvPath} -- ${command}`;
+
+    exec(cmdWithEnv, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing command: ${error}`);
         console.error(`stderr: ${stderr}`);
