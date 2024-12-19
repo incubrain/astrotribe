@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     components: {
       prefix: 'Prime',
       include: '*',
-      exclude: ['Editor'],
+      // exclude: ['Editor'],
     },
 
     composables: {
