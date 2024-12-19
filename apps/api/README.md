@@ -1,6 +1,7 @@
 # Astronera API
 
-A NestJS-based API service with role-based permissions, authentication, and content management capabilities.
+A NestJS-based API service with role-based permissions, authentication, and content management
+capabilities.
 
 ## Quick Links
 
@@ -60,6 +61,7 @@ src/
 ## Core Modules
 
 ### Permission Module
+
 - Handles role-based access control (RBAC)
 - Manages user permissions and authorization
 - Files:
@@ -69,14 +71,15 @@ src/
   - `permission.decorator.ts`: Custom decorators for routes
 
 ### Domain Module
+
 - Manages domain-specific configuration
 - Handles middleware and guard setup
 - Provides logging capabilities
 - Files:
   - `domain-config.ts`: Domain configuration
-  - `auth.middleware.ts`: Authentication middleware
 
 ### Content Module
+
 - Manages various content types (news, articles, research)
 - Handles content categorization and tagging
 - Provides content search and filtering
@@ -124,16 +127,19 @@ src/
 ### Docker Deployment
 
 1. Build and start the containers:
+
    ```bash
    docker-compose up -d --build
    ```
 
 2. Stop the containers:
+
    ```bash
    docker-compose down
    ```
 
 3. View logs:
+
    ```bash
    docker-compose logs -f api
    ```
@@ -167,6 +173,7 @@ docker-compose down -v
 ## API Documentation
 
 The API documentation is available through Swagger UI at http://localhost:3000/docs. This provides:
+
 - Detailed endpoint documentation
 - Request/response schemas
 - Testing interface
@@ -205,4 +212,4 @@ npm run test:cov
 
 ## License
 
-[MIT License](LICENSE) 
+[MIT License](LICENSE)

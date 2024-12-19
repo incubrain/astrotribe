@@ -10,6 +10,8 @@ import {
   Query,
   ParseUUIDPipe,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { Prisma } from '@prisma/client'
@@ -20,14 +22,14 @@ import { PaginationService } from '@core/services/pagination.service'
 import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionGuard } from '@core/guards/permission.guard'
-import { ContentsService } from '../services/contents.service'
+import { ContentService } from '../services/content.service'
 
 @Controller('contents')
 @UseGuards(PermissionGuard)
 @ApiTags('Contents')
 export class ContentController extends BaseController {
   constructor(
-    protected readonly contentsService: ContentsService,
+    protected readonly contentService: ContentService,
     prisma: PrismaService,
     config: ConfigService,
     paginationService: PaginationService,
@@ -37,16 +39,15 @@ export class ContentController extends BaseController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all Contents' })
-  async findAllContents(
-    @Query() query: PaginatedQuery,
-  ): Promise<
-    PaginatedResponse<unknown> | { success: boolean; error: any; timestamp: string; code: any }
-  > {
+  @ApiOperation({ summary: 'Get all content with company logos' })
+  async getAllContent(@Query() query: PaginatedQuery) {
     try {
-      return await super.findAll(query)
+      return await this.contentService.getAllContent(query)
     } catch (error) {
-      return this.handleError(error)
+      throw new HttpException(
+        error.message || 'An error occurred',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      )
     }
   }
 

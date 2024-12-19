@@ -1,5 +1,5 @@
 export interface PaginatedResponse<T> {
-  items: T[];
+  data: T[];
   meta: PaginationMeta;
   success: boolean;
   timestamp: string;

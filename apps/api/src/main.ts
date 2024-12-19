@@ -1,9 +1,11 @@
 // main.ts
 import { NestFactory, Reflector } from '@nestjs/core'
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { ConfigService } from '@nestjs/config';
-import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { ConfigService } from '@nestjs/config'
+import compression from 'compression'
+
+import { AppModule } from './app.module'
 import { HttpExceptionFilter } from '@core/filters/http-exception.filter'
 import { LoggingInterceptor } from '@core/interceptors/logging.interceptor'
 import { CustomLogger } from '@core/logger/custom.logger'
@@ -12,10 +14,15 @@ import { TrimPipe } from '@core/pipes/trim.pipe'
 import { TypeConversionPipe } from '@core/pipes/type-conversion.pipe'
 import { CustomThrottlerGuard } from '@core/guards/throttler.guard'
 import { CustomThrottlerStorage } from '@core/storage/throttler.storage'
-import compression from 'compression'
+
 import helmet from 'helmet'
-import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerStorage } from '@nestjs/throttler'
+import { PermissionGuard } from '@core/guards/permission.guard'
+import { PermissionService } from '@core/services/permission.service'
+import { APP_GUARD } from '@nestjs/core'
+
+// INTERCEPTORS
+import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
 
 async function bootstrap() {
   // Create the app with custom logger
@@ -29,31 +36,15 @@ async function bootstrap() {
   app.use(helmet())
   app.use(compression())
 
-  // Global guards
-  app.useGlobalGuards(
-    new CustomThrottlerGuard(
-      {
-        throttlers: [
-          {
-            ttl: 60000, // 1 minute in milliseconds
-            limit: 10,
-          },
-          {
-            ttl: 3600000, // 1 hour in milliseconds
-            limit: 100,
-          },
-        ],
-      },
-      new CustomThrottlerStorage(),
-      new Reflector(),
-    ),
-  )
-
   // Global filters
   app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
 
   // Global interceptors
-  app.useGlobalInterceptors(new LoggingInterceptor(new CustomLogger()), new PaginationInterceptor())
+  app.useGlobalInterceptors(
+    new BigIntSerializationInterceptor(),
+    new LoggingInterceptor(new CustomLogger()),
+    new PaginationInterceptor(),
+  )
 
   // Global pipes
   app.useGlobalPipes(
@@ -84,11 +75,47 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('docs', app, document)
 
+  // PERMISSION GUARD
+  // app.useGlobalGuards(
+  //   new PermissionGuard(app.get(PermissionService), new CustomLogger('PermissionGuard')),
+  // )
+
   // CORS
+  const corsOrigins = configService.get('app.api_cors_origins')
+  // CORS Configuration
   app.enableCors({
-    origin: configService.get('app.api_cors_origins'),
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin) {
+        callback(null, true)
+        return
+      }
+
+      const allowedOrigins = Array.isArray(corsOrigins)
+        ? corsOrigins
+        : corsOrigins.split(',').map((o) => o.trim())
+
+      if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+        callback(null, true)
+      } else {
+        logger.warn(`Blocked CORS request from origin: ${origin}`)
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+      'Origin',
+      'sentry-trace',
+      'baggage',
+      'x-api-key',
+    ],
+    exposedHeaders: ['Content-Disposition'], // If you need to expose any headers
+    maxAge: 3600, // Cache preflight requests for 1 hour
   })
 
   // Startup

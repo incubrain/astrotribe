@@ -106,8 +106,8 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions",
-        "error_logs",
-        "role_permissions_materialized"
+        "role_permissions_materialized",
+        "error_logs"
       ],
       "default_permissions": [],
       "audit_level": "critical"
