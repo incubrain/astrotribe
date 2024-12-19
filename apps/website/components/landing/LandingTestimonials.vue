@@ -33,14 +33,19 @@ onMounted(() => {
       <template #default="{ item }: { item: Testimonial }">
         <div class="testimonial-item group">
           <!-- Card with glass effect -->
+          <!-- Hover gradient -->
           <div
-            class="relative h-full rounded-xl bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 p-8"
-          >
-            <!-- Hover gradient -->
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
-            ></div>
+            class="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+          ></div>
 
+          <LandingGlass
+            hover-effect="glow"
+            glow-color="purple"
+            gradient="mixed"
+            intensity="low"
+            interactive
+            isolate-content
+          >
             <!-- Content -->
             <div class="relative z-10">
               <!-- Profile section -->
@@ -85,12 +90,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <!-- Card glow effect -->
-          <div
-            class="absolute inset-0 bg-sky-500/5 group-hover:bg-sky-500/10 blur-xl transition-all duration-500 -z-10 rounded-xl"
-          ></div>
+          </LandingGlass>
         </div>
       </template>
     </AppSwiper>
