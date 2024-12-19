@@ -123,7 +123,7 @@ const heroImage = computed(() => {
 
   switch (categoryParam.value) {
     case 'people-of-space':
-      return (src += '1.20-people-who-influenced-the-space-industry.webp')
+      return (src += 'people-of-space.webp')
     case 'space-exploration':
       return (src += '1.starship-lands-on-mars.webp')
     case 'dark-sky-conservation':
