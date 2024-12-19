@@ -4,9 +4,9 @@ const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
 </script>
 
 <template>
-  <div class="h-screen flex flex-col relative ">
+  <div class="h-screen flex flex-col relative background">
     <RoleOverride />
-    <div class="w-full flex background overflow-hidden lg:py-4 lg:pr-4">
+    <div class="w-full flex background overflow-hidden lg:py-4 lg:pr-4 h-full">
       <IBMenuSidebar
         v-model:is-sidebar-open="isSidebarOpen"
         v-model:is-mobile-sidebar-open="isMobileSidebarOpen"

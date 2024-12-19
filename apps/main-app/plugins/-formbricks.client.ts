@@ -1,5 +1,5 @@
 // plugins/formbricks.client.ts
-import type {  } from '@formbricks/js'
+import type {} from '@formbricks/js'
 
 declare global {
   interface Window {
@@ -21,7 +21,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     // Initialize once script loads
     script.onload = () => {
       window.formbricks?.init({
-        environmentId: formbricksEnvironment,
+        environmentId: for
+        mbricksEnvironment,
         apiHost: formbricksHost,
       })
       console.log('Formbricks initialized')
