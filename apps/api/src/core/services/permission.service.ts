@@ -1,11 +1,11 @@
 // services/permission.service.ts
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { app_role_enum } from "@prisma/client";
 import { PrismaService } from "./prisma.service";
 import { CustomLogger } from "@core/logger/custom.logger";
 import { DatabaseAction, TokenPayload, PermissionCondition } from "@types"
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { app_role_enum } from "@prisma/client";
 
 @Injectable()
 export class PermissionService implements OnModuleInit {

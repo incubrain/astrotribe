@@ -17,7 +17,7 @@ import { NewsController } from "./controllers/news.controller";
 import { NewsTagController } from "./controllers/news-tags.controller";
 import { ContentSourceVisitController } from "./controllers/content-source-visits.controller";
 import { FeedSourceController } from "./controllers/feed-sources.controller";
-import { ContentController } from "./controllers/contents.controller";
+import { ContentController } from "./controllers/content.controller";
 import { NewsSummaryController } from "./controllers/news-summaries.controller";
 import { ResearchEmbeddingsService } from "./services/research-embeddings.service";
 import { EmbeddingReviewsService } from "./services/embedding-reviews.service";

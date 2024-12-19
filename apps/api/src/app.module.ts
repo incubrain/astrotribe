@@ -4,13 +4,13 @@ import { ConfigModule } from '@nestjs/config'
 import { ThrottlerModule } from '@nestjs/throttler'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { PrismaModule } from '@/core/prisma.module'
+import { PrismaModule } from '@core/prisma.module'
 import { CoreModule } from '@core/core.module'
 import configuration from '@core/config/configuration'
 
 import { ContentModule } from '@content/content.module'
+import { MonitoringModule } from '@monitoring/monitoring.module'
 import { LoggerModule } from './core/logger/logger.module'
-
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { LoggerModule } from './core/logger/logger.module'
     PrismaModule,
     CoreModule,
     ContentModule,
+    MonitoringModule,
     LoggerModule,
   ],
 })

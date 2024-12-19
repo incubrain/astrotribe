@@ -13,12 +13,12 @@ import {
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { Prisma } from '@prisma/client'
 import { ConfigService } from '@nestjs/config'
-import { BaseController } from '../../core/base/base.controller'
-import { PrismaService } from '../../core/services/prisma.service'
-import { PaginationService } from '../../core/services/pagination.service'
-import { PaginatedResponse, PaginatedQuery } from '../../core/types/pagination.types'
+import { BaseController } from '@core/base/base.controller'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
+import { CustomLogger } from '@core/logger/custom.logger'
 import { EmbeddingReviewsService } from '../services/embedding-reviews.service'
-import { CustomLogger } from '../../core/logger/custom.logger'
 
 @Controller('embedding-reviews')
 @ApiTags('EmbeddingReviews')

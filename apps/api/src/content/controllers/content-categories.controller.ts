@@ -11,7 +11,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import { BaseController } from '@/core/base/base.controller'
+import { BaseController } from '@core/base/base.controller'
 import { Prisma } from '@prisma/client'
 import { PrismaService } from '@core/services/prisma.service'
 import { ConfigService } from '@nestjs/config'

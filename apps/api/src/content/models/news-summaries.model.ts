@@ -1,40 +1,39 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import { ContentSourcesModel } from "@content/models/content-sources.model";
-import { NewsModel } from "@content/models/news.model";
-import { CategoriesModel } from "@content/models/categories.model";
-import { ContentsModel } from "@content/models/contents.model";
-
+import { BaseModel } from '@core/base/base.model'
+import { ContentSourcesModel } from '@content/models/content-sources.model'
+import { NewsModel } from '@content/models/news.model'
+import { CategoriesModel } from '@content/models/categories.model'
+import { ContentsModel } from '@content/models/contents.model'
 
 // import { CompaniesModel } from "@org/models/companies.model";
 
 // Model interface
 export interface NewsSummariesModel extends BaseModel {
-  id: string;
+  id: string
 
-  news_id: string;
+  news_id: string
 
-  summary?: string;
+  summary?: string
 
-  embedding?: string;
+  embedding?: string
 
-  complexity_level?: string;
+  complexity_level?: string
 
-  version: number;
+  version: number
 
-  is_current?: boolean;
+  is_current?: boolean
 
-  created_at?: Date;
+  created_at?: Date
 
-  updated_at?: Date;
+  updated_at?: Date
 
-  content_sources: ContentSourcesModel[];
+  content_sources: ContentSourcesModel[]
 
-  news: NewsModel;
+  news: NewsModel
 
-  categories: CategoriesModel[];
+  categories: CategoriesModel[]
 
   // companies: CompaniesModel[];
 
-  contents: ContentsModel[];
+  contents: ContentsModel[]
 }

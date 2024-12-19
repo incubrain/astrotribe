@@ -11,14 +11,15 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import { BaseController } from '@/core/base/base.controller'
 import { Prisma } from '@prisma/client'
-import { PrismaService } from '@core/services/prisma.service'
 import { ConfigService } from '@nestjs/config'
+
+import { BaseController } from '@core/base/base.controller'
+import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
-import { NewsService } from '../services/news.service'
 import { CustomLogger } from '@core/logger/custom.logger'
+import { NewsService } from '../services/news.service'
 
 @Controller('news')
 @ApiTags('News')

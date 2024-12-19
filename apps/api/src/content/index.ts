@@ -6,7 +6,7 @@ export * from './controllers/content-source-visits.controller';
 export * from './controllers/content-sources.controller';
 export * from './controllers/content-statuses.controller';
 export * from './controllers/content-tags.controller';
-export * from './controllers/contents.controller';
+export * from './controllers/content.controller';
 export * from './controllers/embedding-reviews.controller';
 export * from './controllers/feed-categories.controller';
 export * from './controllers/feed-sources.controller';

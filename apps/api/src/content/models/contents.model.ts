@@ -1,24 +1,24 @@
 // templates/entity/model.ejs
-import { BaseModel } from "@/core/base/base.model";
-import { content_type } from "@prisma/client";
+import { BaseModel } from '@core/base/base.model'
+import { content_type } from '@prisma/client'
 
 // Model interface
 export interface ContentsModel extends BaseModel {
-  id: string;
+  id: string
 
-  content_type: content_type;
+  content_type: content_type
 
-  title?: string;
+  title?: string
 
-  created_at?: Date;
+  created_at?: Date
 
-  updated_at?: Date;
+  updated_at?: Date
 
-  url: string;
+  url: string
 
-  rss_url?: string;
+  rss_url?: string
 
-  hot_score?: number;
+  hot_score?: number
 
-  contents: ContentsModel[];
+  contents: ContentsModel[]
 }
