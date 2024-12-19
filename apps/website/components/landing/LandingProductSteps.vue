@@ -1,36 +1,39 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useAnimation } from '~/composables/useAnimation'
 
 const { fadeInUp } = useAnimation()
 
 const steps = [
   {
-    icon: 'mdi:checkbox-marked-circle-outline',
-    title: 'Customize Your Feed',
-    description: 'Select your favorite topics and interests to personalize your news feed.',
-    gif: '/images/gifs/select-interests.gif',
+    icon: 'mdi:earth',
+    title: 'Global Space Coverage',
+    description:
+      'Stay informed with comprehensive space news coverage from every corner of the globe.',
+    img: '/images/features/news.jpeg',
     color: 'from-blue-500/20 to-purple-500/20',
   },
   {
     icon: 'mdi:newspaper-variant-outline',
-    title: '',
-    description: '',
-    gif: '/images/gifs/explore-content.gif',
+    title: 'Daily Newsletter',
+    description:
+      'Get curated summaries of the most important space sector developments, delivered daily.',
+    img: '/images/features/summaries.jpeg',
     color: 'from-sky-500/20 to-blue-500/20',
   },
   {
-    icon: 'mdi:bell-outline',
-    title: 'Stay Updated',
-    description: 'Receive personalized notifications for events and breaking news.',
-    gif: '/images/gifs/track-missions.gif',
+    icon: 'mdi:telescope',
+    title: 'Industry Insights',
+    description:
+      'Track the latest developments from leading space tech companies and emerging startups.',
+    img: '/images/features/companies.jpeg',
     color: 'from-purple-500/20 to-blue-500/20',
   },
   {
-    icon: 'mdi:clock-time-four-outline',
-    title: 'Save Time',
-    description: 'The more you use it, the better it gets at delivering the news you care about.',
-    gif: '/images/gifs/stay-updated.gif',
+    icon: 'mdi:briefcase-search',
+    title: 'Career Opportunities',
+    description:
+      'Discover your next role in the space sector with our curated job listings and career resources.',
+    img: '/images/features/jobs.jpeg',
     color: 'from-indigo-500/20 to-sky-500/20',
   },
 ]
@@ -49,28 +52,34 @@ onMounted(() => {
     />
 
     <!-- Steps Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 max-w-5xl mx-auto">
       <div
         v-for="(step, index) in steps"
         :key="index"
         class="step-item group relative"
       >
         <!-- Step Number -->
-        <div
+        <!-- <div
           class="absolute -top-6 -left-6 w-12 h-12 rounded-full bg-primary-900/50 backdrop-blur-lg flex items-center justify-center border border-sky-500/20 z-10 transition-all duration-300 group-hover:border-sky-500/40 group-hover:bg-primary-900/70"
         >
           <span class="font-space text-sky-400 text-xl">{{ index + 1 }}</span>
-        </div>
+        </div> -->
 
         <PrimeCard
-          class="h-full bg-primary-900/30 backdrop-blur-md border border-primary-800/30 hover:border-sky-500/30 transition-all duration-500 overflow-hidden"
+          class="h-full bg-slate-900/30 backdrop-blur-md border border-slate-800/30 hover:border-sky-500/30 transition-all duration-500 overflow-hidden"
         >
           <!-- Content -->
           <template #header>
-            <div class="relative w-full aspect-video rounded-lg overflow-hidden bg-primary-950/50">
+            <div class="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-950/50">
               <!-- Replace with actual GIF -->
               <div class="absolute inset-0 flex items-center justify-center">
-                <span class="text-gray-400">GIF Placeholder</span>
+                <NuxtImg
+                  :src="step.img"
+                  :width="260"
+                  :height="260"
+                  alt="Featured image"
+                  class="relative md:rounded-md"
+                />
               </div>
 
               <!-- Overlay with icon -->
@@ -79,7 +88,7 @@ onMounted(() => {
               >
                 <Icon
                   :name="step.icon"
-                  size="48"
+                  size="32"
                   class="absolute bottom-4 right-4 text-sky-400/80 transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
@@ -87,7 +96,7 @@ onMounted(() => {
           </template>
 
           <template #title>
-            <h3 class="text-2xl font-space text-white mb-2 relative z-10">
+            <h3 class="text-xl font-space text-white mb-2 relative z-10">
               {{ step.title }}
             </h3>
           </template>
