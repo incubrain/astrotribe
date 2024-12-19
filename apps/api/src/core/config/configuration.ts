@@ -1,7 +1,5 @@
 // config/configuration.ts
 import { registerAs } from '@nestjs/config'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
 
 export default registerAs('app', () => ({
   environment: process.env.NODE_ENV || 'development',

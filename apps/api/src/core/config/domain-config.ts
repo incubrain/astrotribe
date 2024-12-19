@@ -1,17 +1,15 @@
 // templates/core/config/domain-config.ejs
 import { DynamicModule, Provider, MiddlewareConsumer } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { ConfigService } from '@nestjs/config'
+
 import { AuthMiddleware } from '@core/middleware/auth.middleware'
-
 import { PermissionGuard } from '@core/guards/permission.guard'
-
 import { PlanGuard } from '@core/guards/plan.guard'
-
 import { DomainConfig, CrossDomainConfig } from '@core/types'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionService } from '@core/services/permission.service'
 import { PrismaService } from '@core/services/prisma.service'
-import { ConfigService } from '@nestjs/config'
 import { PermissionModule } from '@core/modules/permission.module'
 
 export function createDomainModule(

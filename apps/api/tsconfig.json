@@ -1,13 +1,14 @@
 {
   "extends": ["../../tsconfig.base.json"],
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ESNext",
+    "target": "ES2022",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -18,6 +19,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"],
     "paths": {
       "@/*": ["src/*"],
       "@types": ["src/types/index.ts"],

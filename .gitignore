@@ -13,6 +13,7 @@ node_modules
 .cli-store
 
 
+**/logs/**
 
 # compiled output
 dist

@@ -2,13 +2,15 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ThrottlerModule } from '@nestjs/throttler'
+import * as path from 'path'
+import { fileURLToPath } from 'url'
 import { PrismaModule } from '@/core/prisma.module'
 import { CoreModule } from '@core/core.module'
 import configuration from '@core/config/configuration'
 
 import { ContentModule } from '@content/content.module'
 import { LoggerModule } from './core/logger/logger.module'
-// app.module.ts
+
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { LoggerModule } from './core/logger/logger.module'
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+      envFilePath: path.resolve(__dirname, '../../../.env'),
+      cache: true,
     }),
     PrismaModule,
     CoreModule,
