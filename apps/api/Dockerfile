@@ -20,7 +20,7 @@ RUN npx prisma generate
 COPY . .
 
 # Build the application with verbose logging
-RUN npm run build -- --verbose
+RUN npm run build
 
 # Final image stage
 FROM node:20-alpine AS final
