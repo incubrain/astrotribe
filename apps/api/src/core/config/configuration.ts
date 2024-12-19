@@ -2,6 +2,11 @@
 import { registerAs } from '@nestjs/config'
 
 export default registerAs('app', () => ({
+  supabase: {
+    anon_key: process.env.SUPABASE_ANON_KEY,
+    url: process.env.SUPABASE_URL,
+    jwt_secret: process.env.SUPABASE_JWT_SECRET,
+  },
   environment: process.env.NODE_ENV || 'development',
   api_cors_origins: process.env.API_CORS_ORIGINS || '*',
   api_port: parseInt(process.env.API_PORT, 10) || 3030,

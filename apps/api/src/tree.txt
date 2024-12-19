@@ -119,7 +119,6 @@
 │   │   ├── logger.colors.ts
 │   │   └── logger.module.ts
 │   ├── middleware
-│   │   └── auth.middleware.ts
 │   ├── permission.module.ts
 │   ├── pipes
 │   │   ├── transformation.pipe.ts

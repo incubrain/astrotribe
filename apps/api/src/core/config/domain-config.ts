@@ -1,46 +1,29 @@
-// templates/core/config/domain-config.ejs
-import { DynamicModule, Provider, MiddlewareConsumer } from '@nestjs/common'
-import { APP_GUARD } from '@nestjs/core'
-import { ConfigService } from '@nestjs/config'
-
-import { AuthMiddleware } from '@core/middleware/auth.middleware'
-import { PermissionGuard } from '@core/guards/permission.guard'
-import { PlanGuard } from '@core/guards/plan.guard'
-import { DomainConfig, CrossDomainConfig } from '@core/types'
+// core/config/domain-config.ts
+import { DynamicModule, Module } from '@nestjs/common'
+import { PermissionModule } from '../permission.module'
 import { CustomLogger } from '@core/logger/custom.logger'
-import { PermissionService } from '@core/services/permission.service'
-import { PrismaService } from '@core/services/prisma.service'
-import { PermissionModule } from '@core/modules/permission.module'
 
-export function createDomainModule(
-  domainName: string,
-  config: DomainConfig & CrossDomainConfig,
-): DynamicModule {
-  const providers: Provider[] = [
-    // Logger provider with domain context
-    {
-      provide: CustomLogger,
-      useFactory: () => {
-        return new CustomLogger(domainName)
-      },
-    },
-  ]
+// Define the options interface
+export interface DomainModuleOptions {
+  requiresAuth?: boolean
+  requiresCompany?: boolean
+  // Add other options as needed
+}
 
-  if (config.requiresAuth) {
-    providers.push({
-      provide: APP_GUARD,
-      useClass: PermissionGuard,
-    })
-  }
+// Define a base module class
+@Module({})
+class DomainModule {}
 
+export function createDomainModule(name: string, options: DomainModuleOptions): DynamicModule {
   return {
-    module: class DynamicDomainModule {
-      configure(consumer: MiddlewareConsumer) {
-        consumer.apply(AuthMiddleware).forRoutes('*')
-      }
-    },
+    module: DomainModule,
     imports: [PermissionModule],
-    providers,
+    providers: [
+      {
+        provide: CustomLogger,
+        useFactory: () => new CustomLogger(name),
+      },
+    ],
     exports: [CustomLogger],
     global: true,
   }

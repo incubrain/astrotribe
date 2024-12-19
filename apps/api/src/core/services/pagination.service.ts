@@ -22,12 +22,12 @@ export class PaginationService {
   }
 
   getPaginatedResponse<T>(
-    items: T[],
+    data: T[],
     total: number,
     query: PaginatedQuery
   ): PaginatedResponse<T> {
     return {
-      items,
+      data,
       meta: this.getPaginationMeta(total, query),
       success: true,
       timestamp: new Date().toISOString(),

@@ -18,7 +18,6 @@ export * from './interceptors/pagination.interceptor';
 export * from './logger/custom.logger';
 export * from './logger/logger.colors';
 export * from './logger/logger.module';
-export * from './middleware/auth.middleware';
 export * from './pipes/transformation.pipe';
 export * from './pipes/trim.pipe';
 export * from './pipes/type-conversion.pipe';

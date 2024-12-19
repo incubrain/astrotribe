@@ -42,7 +42,7 @@ export * from './services/content-source-visits.service';
 export * from './services/content-sources.service';
 export * from './services/content-statuses.service';
 export * from './services/content-tags.service';
-export * from './services/contents.service';
+export * from './services/content.service';
 export * from './services/embedding-reviews.service';
 export * from './services/feed-categories.service';
 export * from './services/feed-sources.service';
