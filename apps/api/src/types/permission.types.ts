@@ -19,3 +19,22 @@ export interface Permission {
   resource: ResourceType
   conditions?: Record<string, any>
 }
+
+export type DatabaseAction = 'select' | 'insert' | 'update' | 'delete'
+
+export interface PermissionCondition {
+  sql: string
+}
+
+export interface TokenPayload {
+  role: string
+  user_id: string
+  email: string
+  aud: string
+  exp: number
+}
+
+export interface AuthError extends Error {
+  status: number
+  code: string
+}

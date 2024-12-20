@@ -2,20 +2,15 @@
 import type { ExecutionContext } from '@nestjs/common'
 import { Injectable, SetMetadata } from '@nestjs/common'
 import type { Reflector } from '@nestjs/core'
-import type {
-  ThrottlerModuleOptions,
-  ThrottlerGuard,
-  type ThrottlerRequest,
-  type ThrottlerStorage,
-} from '@nestjs/throttler'
+import type { ThrottlerModuleOptions, ThrottlerRequest, ThrottlerStorage } from '@nestjs/throttler'
+import { ThrottlerGuard } from '@nestjs/throttler'
 import { CustomLogger } from '@core/logger/custom.logger'
 
 // Decorator to skip throttling for specific routes
 export const SkipThrottle = () => SetMetadata('skipThrottle', true)
 
 // Decorator to set custom limits for specific routes
-export const Throttle = (limit: number, ttl: number) =>
-  SetMetadata('throttle', { limit, ttl })
+export const Throttle = (limit: number, ttl: number) => SetMetadata('throttle', { limit, ttl })
 
 @Injectable()
 export class CustomThrottlerGuard extends ThrottlerGuard {
@@ -46,10 +41,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
 
   protected async handleRequest(input: ThrottlerRequest): Promise<boolean> {
     // Check if route should skip throttling
-    const skipThrottle = this.reflector.get<boolean>(
-      'skipThrottle',
-      input.context.getHandler(),
-    )
+    const skipThrottle = this.reflector.get<boolean>('skipThrottle', input.context.getHandler())
     if (skipThrottle) {
       return true
     }
@@ -65,9 +57,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
       input.ttl = customLimits.ttl
     }
 
-    const tracker = await this.getTracker(
-      input.context.switchToHttp().getRequest(),
-    )
+    const tracker = await this.getTracker(input.context.switchToHttp().getRequest())
     const key = this.getKeyForRoute(input.context)
     const record = await this.storageService.increment(
       `${key}-${tracker}`,
@@ -77,9 +67,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
       input.throttler.name ?? 'throttler',
     )
 
-    this.logger.debug(
-      `Request ${key} from ${tracker}: ${record.totalHits}/${input.limit}`,
-    )
+    this.logger.debug(`Request ${key} from ${tracker}: ${record.totalHits}/${input.limit}`)
 
     if (record.totalHits > input.limit) {
       this.logger.warn(

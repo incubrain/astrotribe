@@ -1,3 +1,5 @@
+import type { DomainConfig, CrossDomainConfig } from '../../apps/api/src/types'
+
 export const domainMap: Record<string, string> = {
   // Content Domain
   contents: 'content',
@@ -116,29 +118,6 @@ export function inferDomain(tableName: string): string {
 
   // Default domain for tables that don't match any patterns
   return 'common'
-}
-
-// Original interfaces remain the same
-export interface DomainConfig {
-  requiresAuth: boolean
-  defaultPermissions: string[]
-  supportsSoftDelete?: boolean
-  supportsVersioning?: boolean
-  requiresCompany?: boolean
-  requiresUser?: boolean
-  requiresEncryption?: boolean
-  supportsCaching?: boolean
-  requiresAdmin?: boolean
-  sensitiveFields?: string[]
-  exclude?: boolean
-}
-
-export interface CrossDomainConfig {
-  allowedRelations: string[]
-  implicitRelations?: {
-    user?: boolean
-    company?: boolean
-  }
 }
 
 export const domainConfig: Record<string, DomainConfig & CrossDomainConfig> = {
