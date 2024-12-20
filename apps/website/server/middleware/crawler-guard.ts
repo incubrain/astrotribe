@@ -42,6 +42,7 @@ const HOSTNAME_PATTERNS: { [key: string]: RegExp[] } = {
     /\.facebook\.com$/i,
     /meta-externalagent/i,
     // Add Meta's known IP ranges
+    /^57\.141\./i,
     /^157\.(240|241|242|243)\./i,
     /^69\.(63|171)\./i,
     /^66\.220\./i,
