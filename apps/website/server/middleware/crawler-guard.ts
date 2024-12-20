@@ -38,7 +38,16 @@ const HOSTNAME_PATTERNS: { [key: string]: RegExp[] } = {
   duckduckbot: [/\.duckduckgo\.com$/i],
   baiduspider: [/\.baidu\.com$/i],
   facebookexternalhit: [/\.facebook\.com$/i],
-  ['meta-externalagent']: [/\.facebook\.com$/i, /meta-externalagent/i],
+  ['meta-externalagent']: [
+    /\.facebook\.com$/i,
+    /meta-externalagent/i,
+    // Add Meta's known IP ranges
+    /^157\.(240|241|242|243)\./i,
+    /^69\.(63|171)\./i,
+    /^66\.220\./i,
+    /^31\.13\./i,
+    /^173\.252\./i,
+  ],
   twitterbot: [/\.twitter\.com$/i],
   linkedinbot: [/\.linkedin\.com$/i],
   pinterest: [/\.pinterest\.com$/i],
@@ -110,9 +119,12 @@ export default defineEventHandler(async (event) => {
     const crawlerName = matchedPattern?.source.toLowerCase()
     if (crawlerName && HOSTNAME_PATTERNS[crawlerName]) {
       const patterns = HOSTNAME_PATTERNS[crawlerName]
-      const isValidHostname = hostnames.some((hostname) =>
-        patterns.some((pattern) => pattern.test(hostname)),
-      )
+      const isValidHostname =
+        hostnames.length === 0
+          ? // If reverse DNS fails, check IP directly against patterns
+            patterns.some((pattern) => pattern.test(clientIP))
+          : // Otherwise check hostnames as before
+            hostnames.some((hostname) => patterns.some((pattern) => pattern.test(hostname)))
 
       if (!isValidHostname) {
         logger.warn(`Hostname verification failed for crawler: ${userAgent} | IP: ${clientIP}`)
