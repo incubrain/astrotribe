@@ -1,26 +1,27 @@
-import { content_type, Prisma, content_status, priority } from "@prisma/client";
-import { faker } from "@faker-js/faker";
+import type { Prisma } from '@prisma/client'
+import { content_type, content_status, priority } from '@prisma/client'
+import { faker } from '@faker-js/faker'
 
 export const createSampleCategory = (): Prisma.categoriesCreateInput => ({
   id: faker.number.int(),
   name: faker.commerce.department(),
-});
+})
 
 export const createSampleContentCategory =
   (): Prisma.content_categoriesCreateInput => ({
     is_primary: faker.datatype.boolean(),
     contents: { connect: { id: faker.string.uuid() } },
     categories: { connect: { id: faker.number.int() } },
-  });
+  })
 
 export const createSampleContentSource =
   (): Prisma.content_sourcesCreateInput => ({
     url: faker.internet.url(),
     content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
     scrape_frequency: faker.helpers.arrayElement([
-      "daily",
-      "weekly",
-      "monthly",
+      'daily',
+      'weekly',
+      'monthly',
     ]),
     refreshed_at: faker.date.recent(),
     has_failed: faker.datatype.boolean(),
@@ -30,13 +31,13 @@ export const createSampleContentSource =
     scraped_at: faker.date.recent(),
     expected_count: faker.number.int({ min: 1, max: 100 }),
     rss_urls: [faker.internet.url(), faker.internet.url()],
-  });
+  })
 
 export const createSampleContentSourceVisit =
   (): Prisma.content_source_visitsCreateInput => ({
     contents: { connect: { id: faker.string.uuid() } },
     user_profiles: { connect: { id: faker.string.uuid() } },
-  });
+  })
 
 export const createSampleContentStatus =
   (): Prisma.content_statusesCreateInput => ({
@@ -45,12 +46,12 @@ export const createSampleContentStatus =
     content_status: faker.helpers.arrayElement([
       ...Object.values(content_status),
     ]),
-  });
+  })
 
 export const createSampleContentTag = (): Prisma.content_tagsCreateInput => ({
   contents: { connect: { id: faker.string.uuid() } },
   tags: { connect: { id: faker.number.int() } },
-});
+})
 
 export const createSampleContent = (): Prisma.contentsCreateInput => ({
   content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
@@ -61,4 +62,4 @@ export const createSampleContent = (): Prisma.contentsCreateInput => ({
     faker.number.int({ min: 0, max: 100 }),
     null,
   ]),
-});
+})

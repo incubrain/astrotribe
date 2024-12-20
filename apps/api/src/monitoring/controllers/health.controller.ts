@@ -1,10 +1,11 @@
 // src/monitoring/controllers/health.controller.ts
 import { Controller, Get } from '@nestjs/common'
-import {
+import type {
   HealthCheckService,
   HttpHealthIndicator,
   DiskHealthIndicator,
-  MemoryHealthIndicator,
+  MemoryHealthIndicator } from '@nestjs/terminus'
+import {
   HealthCheck,
 } from '@nestjs/terminus'
 

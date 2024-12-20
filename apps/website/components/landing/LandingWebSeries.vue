@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-24 space-y-8">
+  <section class="space-y-8">
     <!-- Optional Title Section -->
     <LandingTitle
       title="Startups Guide to the Galaxy"

@@ -1,9 +1,9 @@
 // app.module.ejs
+import * as path from 'path'
+import { fileURLToPath } from 'url'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { ThrottlerModule } from '@nestjs/throttler'
-import * as path from 'path'
-import { fileURLToPath } from 'url'
 import { PrismaModule } from '@core/prisma.module'
 import { CoreModule } from '@core/core.module'
 import configuration from '@core/config/configuration'

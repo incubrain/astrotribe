@@ -1,5 +1,5 @@
-import { Global, Module } from "@nestjs/common";
-import { CustomLogger } from "./custom.logger";
+import { Global, Module } from '@nestjs/common'
+import { CustomLogger } from './custom.logger'
 
 @Global()
 @Module({
@@ -7,7 +7,7 @@ import { CustomLogger } from "./custom.logger";
     {
       provide: CustomLogger,
       useFactory: () => {
-        return new CustomLogger();
+        return new CustomLogger()
       },
     },
   ],

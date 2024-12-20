@@ -1,26 +1,27 @@
 // pipes/type-conversion.pipe.ejs
-import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+import type { PipeTransform, ArgumentMetadata } from '@nestjs/common'
+import { Injectable, BadRequestException } from '@nestjs/common'
 
 @Injectable()
 export class TypeConversionPipe implements PipeTransform {
   constructor(private readonly targetType: 'number' | 'boolean' | 'string') {}
 
   transform(value: any, metadata: ArgumentMetadata) {
-    if (value === undefined) return value;
+    if (value === undefined) return value
 
     try {
       switch (this.targetType) {
         case 'number':
-          return Number(value);
+          return Number(value)
         case 'boolean':
-          return value === 'true' || value === '1' || value === true;
+          return value === 'true' || value === '1' || value === true
         case 'string':
-          return String(value);
+          return String(value)
         default:
-          return value;
+          return value
       }
     } catch (error) {
-      throw new BadRequestException(`Type conversion failed: ${error.message}`);
+      throw new BadRequestException(`Type conversion failed: ${error.message}`)
     }
   }
 }

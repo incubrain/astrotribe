@@ -62,8 +62,8 @@ const { loginURL, authURL } = useRuntimeConfig().public
     >
       <div class="py-8 md:py-12 space-y-8">
         <LandingTitle
-          title="Your Space News Hub"
-          subtitle="All your space news in one place"
+          title="Your Space Hub"
+          subtitle="All your space in one place"
           class="!pb-8"
         />
 
@@ -106,32 +106,72 @@ const { loginURL, authURL } = useRuntimeConfig().public
             </PrimeCard>
           </div>
         </div>
-        <div class="w-full flex justify-center items-center">
-          <PrimeMessage class="text-lg text-gray-400 mx-auto"
-            >More features launching soon</PrimeMessage
-          >
-        </div>
-
-        <div
-          class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left"
-        >
-          <h3 class="text-2xl md:text-3xl font-bold text-white">
-            Begin exploring today.
-            <span class="text-sky-400">It's free!</span>
-          </h3>
-          <NuxtLink
-            :to="String(`${authURL}${loginURL}`)"
-            external
-          >
-            <PrimeButton
-              label="Start Reading Now"
-              icon="mdi:rocket-launch-outline"
-              size="large"
-              class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg"
-            />
-          </NuxtLink>
-        </div>
       </div>
     </LandingGlass>
+    <div class="mt-6 flex justify-center">
+      <NuxtLink
+        :to="String(`${authURL}${loginURL}`)"
+        external
+        class="relative group"
+      >
+        <PrimeButton
+          size="large"
+          class="flex !text-2xl gap-4 min-w-[280px] relative z-10 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 hover:from-primary-500 hover:via-primary-400 hover:to-primary-600 transition-all duration-300 text-lg shadow-lg shadow-primary-600/30 hover:shadow-primary-500/40 hover:-translate-y-0.5"
+        >
+          Start Exploring Today,
+          <strong>
+            It's Free
+          </strong>
+          <Icon
+            name="mdi:rocket"
+            size="48"
+            class="text-white"
+          />
+        </PrimeButton>
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-primary-600/20 to-primary-400/20 blur-xl group-hover:blur-2xl transition-all duration-300 z-0"
+        ></div>
+      </NuxtLink>
+    </div>
   </section>
 </template>
+
+<style scoped>
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.animate-twinkle-delayed {
+  animation: twinkle 2s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+</style>

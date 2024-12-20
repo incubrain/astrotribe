@@ -201,7 +201,7 @@ const websiteLinks = [
             :key="social.id"
             :to="social.url"
             target="_blank"
-            class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-sky-500/10"
+            class="group relative p-2 rounded-lg transition-all duration-300 hover:bg-sky-500/10 flex"
           >
             <Icon
               :name="social.icon"

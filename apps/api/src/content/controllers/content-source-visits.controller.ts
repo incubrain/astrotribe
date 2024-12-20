@@ -11,14 +11,14 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
+import type { Prisma } from '@prisma/client'
+import type { PrismaService } from '@core/services/prisma.service'
+import type { ConfigService } from '@nestjs/config'
+import type { PaginationService } from '@core/services/pagination.service'
+import type { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
+import type { CustomLogger } from '@core/logger/custom.logger'
+import type { ContentSourceVisitService } from '../services/content-source-visits.service'
 import { BaseController } from '../../core/base/base.controller'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from '@core/services/prisma.service'
-import { ConfigService } from '@nestjs/config'
-import { PaginationService } from '@core/services/pagination.service'
-import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
-import { ContentSourceVisitService } from '../services/content-source-visits.service'
-import { CustomLogger } from '@core/logger/custom.logger'
 
 @Controller('content-source-visits')
 @ApiTags('ContentSourceVisits')

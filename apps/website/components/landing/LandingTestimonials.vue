@@ -18,7 +18,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-24">
+  <section>
     <LandingTitle
       title="Hear From The Community"
       subtitle="Discover How We're Making a Difference"

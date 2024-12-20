@@ -1,8 +1,8 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model'
-import { content_status } from '@prisma/client'
+import type { BaseModel } from '@core/base/base.model'
+import type { content_status } from '@prisma/client'
 
-import { ContentsModel } from '@content/models/contents.model'
+import type { ContentsModel } from '@content/models/contents.model'
 
 // Model interface
 export interface ResearchModel extends BaseModel {

@@ -10,16 +10,16 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import { ConfigService } from '@nestjs/config'
+import type { ConfigService } from '@nestjs/config'
 
 import { BaseController } from '@core/base/base.controller'
-import { PrismaService } from '@core/services/prisma.service'
-import { PaginationService } from '@core/services/pagination.service'
-import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
-import { CustomLogger } from '@core/logger/custom.logger'
-import { NewsTagsService } from '../services/news-tags.service'
+import type { PrismaService } from '@core/services/prisma.service'
+import type { PaginationService } from '@core/services/pagination.service'
+import type { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
+import type { CustomLogger } from '@core/logger/custom.logger'
+import type { NewsTagsService } from '../services/news-tags.service'
 
 @Controller('news-tags')
 @ApiTags('NewsTags')

@@ -14,15 +14,16 @@ import {
   HttpStatus,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import { Prisma } from '@prisma/client'
-import { ConfigService } from '@nestjs/config'
+import type { Prisma } from '@prisma/client'
+import type { ConfigService } from '@nestjs/config'
 import { BaseController } from '@core/base/base.controller'
-import { PrismaService } from '@core/services/prisma.service'
-import { PaginationService } from '@core/services/pagination.service'
-import { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
-import { CustomLogger } from '@core/logger/custom.logger'
+import type { PrismaService } from '@core/services/prisma.service'
+import type { PaginationService } from '@core/services/pagination.service'
+import type { PaginatedQuery } from '@core/types/pagination.types'
+import { PaginatedResponse } from '@core/types/pagination.types'
+import type { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionGuard } from '@core/guards/permission.guard'
-import { ContentService } from '../services/content.service'
+import type { ContentService } from '../services/content.service'
 
 @Controller('contents')
 @UseGuards(PermissionGuard)

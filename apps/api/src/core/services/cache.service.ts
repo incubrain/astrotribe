@@ -1,8 +1,8 @@
 // services/cache.service.ts
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
+import type { Cache } from 'cache-manager'
 import { Inject, Injectable } from '@nestjs/common'
-import { CustomLogger } from '../logger/custom.logger'
+import type { CustomLogger } from '../logger/custom.logger'
 
 @Injectable()
 export class CacheService {

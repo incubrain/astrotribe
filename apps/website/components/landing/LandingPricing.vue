@@ -128,27 +128,27 @@ onMounted(() => {
         </div>
 
         <!-- CTA Section -->
-        <div class="text-center space-y-6 max-w-2xl">
-          <p class="text-gray-300">Start exploring the cosmos today - no credit card required!</p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <PrimeButton
-              label="Start Reading Now"
-              icon="mdi:rocket-launch-outline"
+      </div>
+      <div class="text-center space-y-6 max-w-2xl">
+        <p class="text-gray-300">Start exploring the cosmos today - no credit card required!</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <PrimeButton
+            label="Start Reading Now"
+            icon="mdi:rocket-launch-outline"
+            size="large"
+            class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
+          />
+            <!-- <PrimeButton
+              label="How It Works"
               size="large"
-              class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
-            />
-              <!-- <PrimeButton
-                label="How It Works"
-                size="large"
-                outlined
-                severity="secondary"
-                class="min-w-[200px] border-sky-500/30 hover:border-sky-500/50 text-sky-400 transition-all duration-300"
-              /> -->
-          </div>
-          <p class="text-sm text-gray-400">
-            Join the growing community of space enthusiasts at AstronEra
-          </p>
+              outlined
+              severity="secondary"
+              class="min-w-[200px] border-sky-500/30 hover:border-sky-500/50 text-sky-400 transition-all duration-300"
+            /> -->
         </div>
+        <p class="text-sm text-gray-400">
+          Join the growing community of space enthusiasts at AstronEra
+        </p>
       </div>
     </LandingGlass>
   </section>
