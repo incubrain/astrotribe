@@ -1,24 +1,21 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { content_source_visits } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { ContentSourceVisitsModel } from '../models/content-source-visits.model'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { ContentSourceVisitsModel } from '../models/content-source-visits.model'
 
 @Injectable()
 export class ContentSourceVisitService extends BaseService<'content_source_visits'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'content_source_visits')
+    super('content_source_visits')
   }
 
-  async findWithRelations(
-    id: string,
-  ): Promise<ContentSourceVisitsModel | null> {
+  async findWithRelations(id: string): Promise<ContentSourceVisitsModel | null> {
     const result = await this.prisma.content_source_visits.findUnique({
       where: { id },
       include: {

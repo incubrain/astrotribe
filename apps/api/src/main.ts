@@ -1,5 +1,5 @@
 // main.ts
-import { NestFactory, Reflector } from '@nestjs/core'
+import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
@@ -10,15 +10,7 @@ import { LoggingInterceptor } from '@core/interceptors/logging.interceptor'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { PaginationInterceptor } from '@core/interceptors/pagination.interceptor'
 import { TrimPipe } from '@core/pipes/trim.pipe'
-import { TypeConversionPipe } from '@core/pipes/type-conversion.pipe'
-import { CustomThrottlerGuard } from '@core/guards/throttler.guard'
-import { CustomThrottlerStorage } from '@core/storage/throttler.storage'
-
 import helmet from 'helmet'
-import { ThrottlerStorage } from '@nestjs/throttler'
-import { PermissionGuard } from '@core/guards/permission.guard'
-import { PermissionService } from '@core/services/permission.service'
-import { APP_GUARD } from '@nestjs/core'
 
 // INTERCEPTORS
 import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
@@ -75,10 +67,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('docs', app, document)
 
-  // PERMISSION GUARD
-  // app.useGlobalGuards(
-  //   new PermissionGuard(app.get(PermissionService), new CustomLogger('PermissionGuard')),
-  // )
 
   // CORS
   const corsOrigins = configService.get('app.api_cors_origins')

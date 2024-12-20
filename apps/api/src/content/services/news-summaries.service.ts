@@ -2,18 +2,18 @@
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
 import { news_summaries } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { NewsSummariesModel } from '../models/news-summaries.model'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { NewsSummariesModel } from '../models/news-summaries.model'
 
 @Injectable()
 export class NewsSummariesService extends BaseService<'news_summaries'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'news_summaries')
+    super('news_summaries')
   }
 
   async findWithRelations(id: string): Promise<NewsSummariesModel | null> {
@@ -26,9 +26,7 @@ export class NewsSummariesService extends BaseService<'news_summaries'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.news_summariesDefaultArgs,
-  ): Promise<NewsSummariesModel[]> {
+  async findMany(params: Prisma.news_summariesDefaultArgs): Promise<NewsSummariesModel[]> {
     const items = await this.prisma.news_summaries.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

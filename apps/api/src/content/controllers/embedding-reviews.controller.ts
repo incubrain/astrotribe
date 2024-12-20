@@ -11,26 +11,27 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import type { Prisma } from '@prisma/client'
-import type { ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { PaginationService } from '@core/services/pagination.service'
+import { EmbeddingReviewsService } from '../services/embedding-reviews.service'
+
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { CustomLogger } from '@core/logger/custom.logger'
-import type { EmbeddingReviewsService } from '../services/embedding-reviews.service'
+import type { Prisma } from '@prisma/client'
 
 @Controller('embedding-reviews')
 @ApiTags('EmbeddingReviews')
 export class EmbeddingReviewController extends BaseController {
   constructor(
     protected readonly embeddingReviewsService: EmbeddingReviewsService,
-    prisma: PrismaService,
-    config: ConfigService,
-    paginationService: PaginationService,
-    logger: CustomLogger,
+    protected readonly prisma: PrismaService,
+    protected readonly config: ConfigService,
+    protected readonly paginationService: PaginationService,
+    protected readonly logger: CustomLogger,
   ) {
-    super(prisma, 'embedding_reviews', config, paginationService, logger)
+    super('embedding_reviews')
   }
 
   @Get()

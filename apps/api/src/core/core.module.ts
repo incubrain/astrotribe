@@ -1,12 +1,15 @@
+// core.module.ts
 import { Module, Global } from '@nestjs/common'
-import { LoggerModule } from './logger/logger.module'
-import { PrismaService } from './services/prisma.service'
+import { ConfigModule } from '@nestjs/config'
+import { LoggerModule } from './modules/logger.module'
 import { PaginationService } from './services/pagination.service'
-import { PermissionModule } from './permission.module'
+import { PermissionModule } from './modules/permission.module'
+import { PrismaModule } from './modules/prisma.module'
 
 @Global()
 @Module({
-  providers: [LoggerModule, PrismaService, PaginationService, PermissionModule],
-  exports: [LoggerModule, PrismaService, PaginationService, PermissionModule],
+  imports: [ConfigModule, PrismaModule, LoggerModule, PermissionModule],
+  providers: [PaginationService],
+  exports: [PaginationService, LoggerModule, PermissionModule],
 })
 export class CoreModule {}

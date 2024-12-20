@@ -1,5 +1,5 @@
 // pipes/type-conversion.pipe.ejs
-import type { PipeTransform, ArgumentMetadata } from '@nestjs/common'
+import { PipeTransform, ArgumentMetadata } from '@nestjs/common'
 import { Injectable, BadRequestException } from '@nestjs/common'
 
 @Injectable()

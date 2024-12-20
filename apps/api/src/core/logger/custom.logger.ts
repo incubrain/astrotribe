@@ -1,4 +1,4 @@
-import type { LoggerService } from '@nestjs/common'
+import { LoggerService } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import * as winston from 'winston'
 import { LoggerColors } from './logger.colors'

@@ -1,9 +1,9 @@
 // guards/permission.guard.ts
-import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
-import type { Reflector } from '@nestjs/core'
-import type { CustomLogger } from '@core/logger/custom.logger'
-import type { PermissionService } from '../services/permission.service'
+import { Reflector } from '@nestjs/core'
+import { CustomLogger } from '@core/logger/custom.logger'
+import { PermissionService } from '../services/permission.service'
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

@@ -1,7 +1,7 @@
 // core/services/prisma.service.ejs
-import type { OnModuleInit, OnModuleDestroy } from '@nestjs/common'
+import { OnModuleInit, OnModuleDestroy } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
-import type { ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
 import { PrismaClient } from '@prisma/client'
 
 @Injectable()

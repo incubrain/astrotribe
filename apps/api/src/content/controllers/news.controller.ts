@@ -11,27 +11,27 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import type { Prisma } from '@prisma/client'
-import type { ConfigService } from '@nestjs/config'
-
+import { NewsService } from '../services/news.service'
+import { ConfigService } from '@nestjs/config'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { PaginationService } from '@core/services/pagination.service'
+
+import type { Prisma } from '@prisma/client'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { CustomLogger } from '@core/logger/custom.logger'
-import type { NewsService } from '../services/news.service'
 
 @Controller('news')
 @ApiTags('News')
 export class NewsController extends BaseController {
   constructor(
     protected readonly newsService: NewsService,
-    prisma: PrismaService,
-    config: ConfigService,
-    paginationService: PaginationService,
-    logger: CustomLogger,
+    protected readonly prisma: PrismaService,
+    protected readonly config: ConfigService,
+    protected readonly paginationService: PaginationService,
+    protected readonly logger: CustomLogger,
   ) {
-    super(prisma, 'news', config, paginationService, logger)
+    super('news')
   }
 
   @Get()

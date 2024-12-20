@@ -1,19 +1,18 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { news } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { NewsModel } from '../models/news.model'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { NewsModel } from '../models/news.model'
 
 @Injectable()
 export class NewsService extends BaseService<'news'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'news')
+    super('news')
   }
 
   async findWithRelations(id: string): Promise<NewsModel | null> {

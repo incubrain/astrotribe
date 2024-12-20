@@ -1,25 +1,21 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { content_categories } from '@prisma/client'
+import { PaginationService } from '@core/services/pagination.service'
+import { PrismaService } from '@core/services/prisma.service'
 import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
 import type { ContentCategoriesModel } from '../models/content-categories.model'
 
 @Injectable()
 export class ContentCategoriesService extends BaseService<'content_categories'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'content_categories')
+    super('content_categories')
   }
 
-  async findWithRelations(
-    id: string,
-    categoryId: number,
-  ): Promise<ContentCategoriesModel | null> {
+  async findWithRelations(id: string, categoryId: number): Promise<ContentCategoriesModel | null> {
     const result = await this.prisma.content_categories.findUnique({
       where: {
         content_id_category_id: {
@@ -35,9 +31,7 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.content_categoriesDefaultArgs,
-  ): Promise<ContentCategoriesModel[]> {
+  async findMany(params: Prisma.content_categoriesDefaultArgs): Promise<ContentCategoriesModel[]> {
     const items = await this.prisma.content_categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

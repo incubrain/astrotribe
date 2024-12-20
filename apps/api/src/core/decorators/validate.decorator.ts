@@ -1,5 +1,5 @@
 // decorators/validate.decorator.ejs
-import type { ValidationOptions, ValidationArguments } from 'class-validator'
+import { ValidationOptions, ValidationArguments } from 'class-validator'
 import { registerDecorator } from 'class-validator'
 
 export function IsCustomValue(property: string, validationOptions?: ValidationOptions) {

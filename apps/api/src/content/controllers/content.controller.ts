@@ -14,29 +14,30 @@ import {
   HttpStatus,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import type { Prisma } from '@prisma/client'
-import type { ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PaginatedQuery } from '@types'
-import { PaginatedResponse } from '@types'
-import type { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionGuard } from '@core/guards/permission.guard'
-import type { ContentService } from '../services/content.service'
+import { ContentService } from '../services/content.service'
+
+import type { Prisma } from '@prisma/client'
+import type { PaginatedQuery, PaginatedResponse } from '@types'
 
 @Controller('contents')
 @UseGuards(PermissionGuard)
 @ApiTags('Contents')
 export class ContentController extends BaseController {
+  
   constructor(
     protected readonly contentService: ContentService,
-    prisma: PrismaService,
-    config: ConfigService,
-    paginationService: PaginationService,
-    logger: CustomLogger,
+    protected readonly prisma: PrismaService,
+    protected readonly config: ConfigService,
+    protected readonly paginationService: PaginationService,
+    protected readonly logger: CustomLogger,
   ) {
-    super(prisma, 'contents', config, paginationService, logger)
+    super('contents')
   }
 
   @Get()

@@ -1,8 +1,7 @@
 // templates/entity/model.ejs
-import type { BaseModel } from '@core/base/base.model'
+import { BaseModel } from '@core'
 import type { EmbeddingReviewsModel } from '@content/models/embedding-reviews.model'
-import type { ContentsModel } from '@content/models/contents.model'
-
+import { ContentsModel, CategoriesModel } from '@content'
 import type { ResearchModel } from '@content/models/research.model'
 
 // Model interface

@@ -1,19 +1,18 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { embedding_reviews } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '../../core/services/pagination.service'
-import type { PrismaService } from '../../core/services/prisma.service'
-import type { EmbeddingReviewsModel } from '../models/embedding-reviews.model'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { EmbeddingReviewsModel } from '../models/embedding-reviews.model'
 
 @Injectable()
 export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'embedding_reviews')
+    super('embedding_reviews')
   }
 
   async findWithRelations(id: number): Promise<EmbeddingReviewsModel | null> {
@@ -26,9 +25,7 @@ export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.embedding_reviewsDefaultArgs,
-  ): Promise<EmbeddingReviewsModel[]> {
+  async findMany(params: Prisma.embedding_reviewsDefaultArgs): Promise<EmbeddingReviewsModel[]> {
     const items = await this.prisma.embedding_reviews.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { feed_categories } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
 import type { FeedCategoriesModel } from '../models/feed-categories.model'
 
 @Injectable()
 export class FeedCategoriesService extends BaseService<'feed_categories'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'feed_categories')
+    super('feed_categories')
   }
 
   async findWithRelations(id: number): Promise<FeedCategoriesModel | null> {
@@ -26,9 +25,7 @@ export class FeedCategoriesService extends BaseService<'feed_categories'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.feed_categoriesDefaultArgs,
-  ): Promise<FeedCategoriesModel[]> {
+  async findMany(params: Prisma.feed_categoriesDefaultArgs): Promise<FeedCategoriesModel[]> {
     const items = await this.prisma.feed_categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
