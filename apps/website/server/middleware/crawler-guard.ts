@@ -99,7 +99,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    logger.info({
+    logger.info('Crawler Detected', {
       event: 'crawler_access',
       userAgent,
       clientIP,
