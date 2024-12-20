@@ -1,9 +1,9 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model'
-import { EmbeddingReviewsModel } from '@content/models/embedding-reviews.model'
-import { ContentsModel } from '@content/models/contents.model'
+import type { BaseModel } from '@core/base/base.model'
+import type { EmbeddingReviewsModel } from '@content/models/embedding-reviews.model'
+import type { ContentsModel } from '@content/models/contents.model'
 
-import { ResearchModel } from '@content/models/research.model'
+import type { ResearchModel } from '@content/models/research.model'
 
 // Model interface
 export interface ResearchEmbeddingsModel extends BaseModel {

@@ -1,12 +1,12 @@
 // test/permission.guard.spec.ts
 import { Test } from '@nestjs/testing'
-import { ExecutionContext } from '@nestjs/common'
+import type { ExecutionContext } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { Reflector } from '@nestjs/core'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PermissionGuard } from '../guards/permission.guard'
 import { PermissionService } from '../services/permission.service'
 import { CustomLogger } from '../logger/custom.logger'
-import { Reflector } from '@nestjs/core'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 
 describe('PermissionGuard', () => {
   let guard: PermissionGuard

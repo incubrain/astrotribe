@@ -1,12 +1,14 @@
 // services/permission.service.ts
-import { Injectable, OnModuleInit, UnauthorizedException } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import type { OnModuleInit } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import type { ConfigService } from '@nestjs/config'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 import { app_role_enum } from '@prisma/client'
-import { PrismaService } from './prisma.service'
-import { CustomLogger } from '@core/logger/custom.logger'
+import type { CustomLogger } from '@core/logger/custom.logger'
 import { DatabaseAction, TokenPayload, PermissionCondition } from '@types'
 import * as jwt from 'jsonwebtoken'
+import type { PrismaService } from './prisma.service'
 
 interface SupabaseJwtPayload {
   aud: string
@@ -21,8 +23,7 @@ interface SupabaseJwtPayload {
 export class PermissionService implements OnModuleInit {
   private supabase: SupabaseClient
   private jwtSecret: string
-  private roleHierarchyCache: Map<string, string[]>;
-
+  private roleHierarchyCache: Map<string, string[]>
 
   constructor(
     private readonly config: ConfigService,
@@ -35,7 +36,7 @@ export class PermissionService implements OnModuleInit {
     )
     // Get this from your Supabase dashboard > Project Settings > API
     this.jwtSecret = this.config.get('app.supabase.jwt_secret')
-    this.roleHierarchyCache = new Map(); 
+    this.roleHierarchyCache = new Map()
   }
 
   async onModuleInit() {

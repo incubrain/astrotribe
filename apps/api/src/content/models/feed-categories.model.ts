@@ -1,10 +1,10 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model'
+import type { BaseModel } from '@core/base/base.model'
 import {} from '@prisma/client'
 
-import { CategoriesModel } from '@content/models/categories.model'
+import type { CategoriesModel } from '@content/models/categories.model'
 
-import { FeedsModel } from '@content/models/feeds.model'
+import type { FeedsModel } from '@content/models/feeds.model'
 
 // import { UserProfilesModel } from "@auth/models/user-profiles.model";
 

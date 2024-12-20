@@ -1,20 +1,20 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client'
 
-export type DatabaseAction = 'select' | 'insert' | 'update' | 'delete';
+export type DatabaseAction = 'select' | 'insert' | 'update' | 'delete'
 
 export interface PermissionCondition {
-  sql: string;
+  sql: string
 }
 
 export interface TokenPayload {
-  role: string;
-  user_id: string;
-  email: string;
-  aud: string;
-  exp: number;
+  role: string
+  user_id: string
+  email: string
+  aud: string
+  exp: number
 }
 
 export interface AuthError extends Error {
-  status: number;
-  code: string;
-} 
+  status: number
+  code: string
+}

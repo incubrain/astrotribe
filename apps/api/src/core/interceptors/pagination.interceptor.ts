@@ -1,42 +1,42 @@
 // templates/core/interceptors/pagination.interceptor.ejs
-import {
-  Injectable,
+import type {
   NestInterceptor,
   ExecutionContext,
-  CallHandler,
-} from "@nestjs/common";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { PaginatedResponse } from "../types/pagination.types";
+  CallHandler } from '@nestjs/common'
+import {
+  Injectable,
+} from '@nestjs/common'
+import type { Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
+import type { PaginatedResponse } from '../types/pagination.types'
 
 @Injectable()
 export class PaginationInterceptor<T>
-  implements NestInterceptor<T, PaginatedResponse<T>>
-{
+  implements NestInterceptor<T, PaginatedResponse<T>> {
   intercept(
     context: ExecutionContext,
-    next: CallHandler
+    next: CallHandler,
   ): Observable<PaginatedResponse<T>> {
     return next.handle().pipe(
       map((data) => {
         // If data is already paginated, return as is
         if (this.isPaginated(data)) {
-          return data;
+          return data
         }
 
         // Get pagination params from request query
-        const request = context.switchToHttp().getRequest();
-        const { page = 1, limit = 10 } = request.query;
+        const request = context.switchToHttp().getRequest()
+        const { page = 1, limit = 10 } = request.query
 
         // If data is an array, paginate it
         if (Array.isArray(data)) {
-          const total = data.length;
-          const totalPages = Math.ceil(total / limit);
-          const start = (page - 1) * limit;
-          const end = start + limit;
+          const total = data.length
+          const totalPages = Math.ceil(total / limit)
+          const start = (page - 1) * limit
+          const end = start + limit
 
           return {
-            items: data.slice(start, end),
+            data: data.slice(start, end),
             meta: {
               total,
               page: Number(page),
@@ -47,12 +47,12 @@ export class PaginationInterceptor<T>
             },
             success: true,
             timestamp: new Date().toISOString(),
-          };
+          }
         }
 
         // If not an array, wrap in paginated response
         return {
-          items: [data],
+          data: [data],
           meta: {
             total: 1,
             page: 1,
@@ -63,20 +63,20 @@ export class PaginationInterceptor<T>
           },
           success: true,
           timestamp: new Date().toISOString(),
-        };
-      })
-    );
+        }
+      }),
+    )
   }
 
   private isPaginated(data: any): data is PaginatedResponse<T> {
     return (
       data &&
-      "data" in data &&
-      "meta" in data &&
-      "total" in data.meta &&
-      "page" in data.meta &&
-      "limit" in data.meta &&
-      "totalPages" in data.meta
-    );
+      'data' in data &&
+      'meta' in data &&
+      'total' in data.meta &&
+      'page' in data.meta &&
+      'limit' in data.meta &&
+      'totalPages' in data.meta
+    )
   }
 }
