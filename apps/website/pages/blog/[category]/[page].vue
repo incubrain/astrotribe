@@ -188,7 +188,7 @@ const heroImage = computed(() => {
     <Pagination
       :current-page="pageParam"
       :total-pages="totalPages"
-      :base-url="`/blog/category/${categoryParam}`"
+      :base-url="`/blog/${categoryParam}`"
     />
   </div>
 </template>
