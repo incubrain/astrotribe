@@ -99,12 +99,12 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    logger.info('Crawler Detected', {
+    logger.info(`Crawler Detected, {
       event: 'crawler_access',
-      userAgent,
-      clientIP,
-      hostnames,
-    })
+      userAgent: ${userAgent},
+      clientIP: ${clientIP},
+      hostnames: ${hostnames},
+    }`)
 
     // Hostname Verification
     const crawlerName = matchedPattern?.source.toLowerCase()
