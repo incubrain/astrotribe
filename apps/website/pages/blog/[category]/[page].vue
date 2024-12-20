@@ -38,12 +38,17 @@ const categoryInfo = {
   },
 }
 
-const { data: pageData } = await useAsyncData(
+const { data: pageData, error } = await useAsyncData(
   `articles-${route.params.category}-page-${route.params.page}`,
   () =>
     fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.page)),
   { server: false, immediate: true },
 )
+
+if (error) {
+  console.error('Error fetching articles:', error)
+  throw error
+}
 
 const articles = computed(() => pageData.value?.articles || [])
 const totalPages = computed(() => pageData.value?.totalPages || 1)
