@@ -38,7 +38,7 @@ const HOSTNAME_PATTERNS: { [key: string]: RegExp[] } = {
   duckduckbot: [/\.duckduckgo\.com$/i],
   baiduspider: [/\.baidu\.com$/i],
   facebookexternalhit: [/\.facebook\.com$/i],
-  ['meta-externalagent']: [/\.facebook\.com$/i],
+  ['meta-externalagent']: [/\.facebook\.com$/i, /meta-externalagent/i],
   twitterbot: [/\.twitter\.com$/i],
   linkedinbot: [/\.linkedin\.com$/i],
   pinterest: [/\.pinterest\.com$/i],
