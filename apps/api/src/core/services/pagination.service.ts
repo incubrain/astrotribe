@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import type { PaginatedQuery, PaginatedResponse, PaginationMeta } from '@core/types/pagination.types'
+import type { PaginatedQuery, PaginatedResponse, PaginationMeta } from '@types'
 
 @Injectable()
 export class PaginationService {
-  getPaginationMeta(
-    total: number,
-    query: PaginatedQuery,
-  ): PaginationMeta {
+  getPaginationMeta(total: number, query: PaginatedQuery): PaginationMeta {
     const page = Number(query.page) || 1
     const limit = Number(query.limit) || 10
     const totalPages = Math.ceil(total / limit)
@@ -21,11 +18,7 @@ export class PaginationService {
     }
   }
 
-  getPaginatedResponse<T>(
-    data: T[],
-    total: number,
-    query: PaginatedQuery,
-  ): PaginatedResponse<T> {
+  getPaginatedResponse<T>(data: T[], total: number, query: PaginatedQuery): PaginatedResponse<T> {
     return {
       data,
       meta: this.getPaginationMeta(total, query),

@@ -5,7 +5,7 @@ import { contents } from '@prisma/client'
 import { BaseService } from '@core/base/base.service'
 import type { PaginationService } from '@core/services/pagination.service'
 import type { PrismaService } from '@core/services/prisma.service'
-import type { PaginatedQuery } from '@types/pagination.types'
+import type { PaginatedQuery } from '@types'
 import type { ContentsModel } from '../models/contents.model'
 
 @Injectable()

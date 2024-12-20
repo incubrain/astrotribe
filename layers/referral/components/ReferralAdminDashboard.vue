@@ -1,4 +1,119 @@
 <!-- pages/admin/referrals.vue -->
+<script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+
+const store = useReferralStore()
+const { metrics, isLoading, error, timeRange, conversionTrend } = storeToRefs(store)
+
+// Table data computations
+const deviceDistributionData = computed(() => {
+  if (!metrics.value) return []
+  return Object.entries(metrics.value.deviceBreakdown || {}).map(([device, percentage]) => ({
+    device,
+    percentage,
+    count: Math.round((percentage / 100) * metrics.value!.totalReferrals),
+  }))
+})
+
+const countryDistributionData = computed(() => {
+  if (!metrics.value) return []
+  return Object.entries(metrics.value.countryBreakdown || {}).map(([country, percentage]) => ({
+    country,
+    percentage,
+    count: Math.round((percentage / 100) * metrics.value!.totalReferrals),
+  }))
+})
+
+// Chart data computation
+const conversionChartData = computed(() => {
+  if (!conversionTrend.value || !metrics.value)
+    return {
+      labels: [],
+      datasets: [
+        {
+          label: 'Conversion Rate',
+          data: [],
+          fill: false,
+          borderColor: '#2563eb',
+          tension: 0.4,
+        },
+      ],
+    }
+
+  return {
+    labels: conversionTrend.value.map((item) => item.date),
+    datasets: [
+      {
+        label: 'Conversion Rate',
+        data: conversionTrend.value.map((item) => item.conversionRate),
+        fill: false,
+        borderColor: '#2563eb',
+        tension: 0.4,
+      },
+    ],
+  }
+})
+
+const chartOptions = {
+  conversion: {
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Conversion Rate (%)',
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+    },
+  },
+}
+
+// Formatting functions
+function getTrendSeverity(trend: number): string {
+  if (trend > 10) return 'success'
+  if (trend > 0) return 'info'
+  if (trend > -10) return 'warning'
+  return 'danger'
+}
+
+function formatPercent(value: number): string {
+  return `${value.toFixed(1)}%`
+}
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value)
+}
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat('en-US').format(value)
+}
+
+function refreshMetrics() {
+  store.fetchMetrics()
+}
+
+onMounted(() => {
+  refreshMetrics()
+})
+</script>
+
 <template>
   <div class="p-4">
     <!-- Header with Date Range -->
@@ -212,118 +327,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-
-const store = useReferralStore()
-const { metrics, isLoading, error, timeRange, conversionTrend } = storeToRefs(store)
-
-// Table data computations
-const deviceDistributionData = computed(() => {
-  if (!metrics.value) return []
-  return Object.entries(metrics.value.deviceBreakdown || {}).map(([device, percentage]) => ({
-    device,
-    percentage,
-    count: Math.round((percentage / 100) * metrics.value!.totalReferrals),
-  }))
-})
-
-const countryDistributionData = computed(() => {
-  if (!metrics.value) return []
-  return Object.entries(metrics.value.countryBreakdown || {}).map(([country, percentage]) => ({
-    country,
-    percentage,
-    count: Math.round((percentage / 100) * metrics.value!.totalReferrals),
-  }))
-})
-
-// Chart data computation
-const conversionChartData = computed(() => {
-  if (!conversionTrend.value || !metrics.value)
-    return {
-      labels: [],
-      datasets: [
-        {
-          label: 'Conversion Rate',
-          data: [],
-          fill: false,
-          borderColor: '#2563eb',
-          tension: 0.4,
-        },
-      ],
-    }
-
-  return {
-    labels: conversionTrend.value.map((item) => item.date),
-    datasets: [
-      {
-        label: 'Conversion Rate',
-        data: conversionTrend.value.map((item) => item.conversionRate),
-        fill: false,
-        borderColor: '#2563eb',
-        tension: 0.4,
-      },
-    ],
-  }
-})
-
-const chartOptions = {
-  conversion: {
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Conversion Rate (%)',
-        },
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'Date',
-        },
-      },
-    },
-  },
-}
-
-// Formatting functions
-function getTrendSeverity(trend: number): string {
-  if (trend > 10) return 'success'
-  if (trend > 0) return 'info'
-  if (trend > -10) return 'warning'
-  return 'danger'
-}
-
-function formatPercent(value: number): string {
-  return `${value.toFixed(1)}%`
-}
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(value)
-}
-
-function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value)
-}
-
-function refreshMetrics() {
-  store.fetchMetrics()
-}
-
-onMounted(() => {
-  refreshMetrics()
-})
-</script>

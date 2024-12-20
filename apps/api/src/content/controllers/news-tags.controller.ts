@@ -17,7 +17,7 @@ import type { ConfigService } from '@nestjs/config'
 import { BaseController } from '@core/base/base.controller'
 import type { PrismaService } from '@core/services/prisma.service'
 import type { PaginationService } from '@core/services/pagination.service'
-import type { PaginatedResponse, PaginatedQuery } from '@core/types/pagination.types'
+import type { PaginatedResponse, PaginatedQuery } from '@types'
 import type { CustomLogger } from '@core/logger/custom.logger'
 import type { NewsTagsService } from '../services/news-tags.service'
 

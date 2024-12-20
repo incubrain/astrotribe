@@ -1,6 +1,5 @@
 // base.controller.ts
-import type {
-  Response } from '@nestjs/common'
+
 import {
   Injectable,
   UnauthorizedException,
@@ -10,13 +9,12 @@ import {
   BadRequestException,
   ConflictException,
 } from '@nestjs/common'
-import type { Request } from 'express'
+import type { Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import type { ConfigService } from '@nestjs/config'
 import { Prisma } from '@prisma/client'
+import type { PaginatedResponse, PaginatedQuery } from '@types'
 import type { PrismaService } from '../services/prisma.service'
-import type { PaginatedQuery } from '../types/pagination.types'
-import { PaginatedResponse } from '../types/pagination.types'
 import type { PaginationService } from '../services/pagination.service'
 import type { CustomLogger } from '../logger/custom.logger'
 
@@ -161,18 +159,16 @@ export abstract class BaseController {
     }
   }
 
-  protected handleSuccess<T>(data: T): Response<T> {
-    return {
-      data,
-      timestamp: new Date().toISOString(),
-    }
+  protected handleSuccess<T>(data: T): Partial<Response<T>> {
+    return data
   }
 
-  protected handlePaginatedSuccess<T>(data: T[], meta: any): Response<T[]> {
+  protected handlePaginatedSuccess<T>(data: T[], meta: any): PaginatedResponse<T> {
     return {
       data,
       meta,
       timestamp: new Date().toISOString(),
+      success: true,
     }
   }
 

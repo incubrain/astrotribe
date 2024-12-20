@@ -3,6 +3,8 @@
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api'
 
 const adsAdminStore = useAdsAdminStore()
+const { overview } = storeToRefs(adsAdminStore)
+
 const selectedPeriod = ref('30')
 const selectedAdId = ref<string | null>(null)
 const dialogVisible = computed(() => !!selectedAdId.value)
@@ -91,27 +93,27 @@ watch(selectedPeriod, async (newPeriod) => {
 
 // Computed metrics for the summary cards
 const summaryMetrics = computed(() => {
-  if (!adsAdminStore.overview) return []
+  if (!overview.value) return []
 
   return [
     {
       label: 'Total Views',
-      value: adsAdminStore.overview.reduce((sum, ad) => sum + ad.total_views, 0).toLocaleString(),
+      value: overview.value.reduce((sum, ad) => sum + ad.total_views, 0).toLocaleString(),
       icon: 'i-lucide-eye',
     },
     {
       label: 'Total Clicks',
-      value: adsAdminStore.overview.reduce((sum, ad) => sum + ad.total_clicks, 0).toLocaleString(),
+      value: overview.value.reduce((sum, ad) => sum + ad.total_clicks, 0).toLocaleString(),
       icon: 'i-lucide-mouse-pointer',
     },
     {
       label: 'Average CTR',
-      value: `${(adsAdminStore.overview.reduce((sum, ad) => sum + ad.ctr, 0) / adsAdminStore.overview.length).toFixed(2)}%`,
+      value: `${(overview.value.reduce((sum, ad) => sum + ad.ctr, 0) / overview.value.length).toFixed(2)}%`,
       icon: 'i-lucide-percent',
     },
     {
       label: 'Active Ads',
-      value: adsAdminStore.overview.length,
+      value: overview.value.length,
       icon: 'i-lucide-layout-template',
     },
   ]

@@ -15,10 +15,6 @@
     "gen:exports": "npx tsx scripts/barrel.generator.ts",
     "test:coverage": "vitest run --coverage"
   },
-  "dependencies": {
-    
-  },
-  "devDependencies": {
-    
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

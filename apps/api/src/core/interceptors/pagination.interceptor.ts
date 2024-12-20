@@ -1,22 +1,13 @@
 // templates/core/interceptors/pagination.interceptor.ejs
-import type {
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler } from '@nestjs/common'
-import {
-  Injectable,
-} from '@nestjs/common'
+import type { NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import type { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import type { PaginatedResponse } from '../types/pagination.types'
+import type { PaginatedResponse } from '@types'
 
 @Injectable()
-export class PaginationInterceptor<T>
-  implements NestInterceptor<T, PaginatedResponse<T>> {
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<PaginatedResponse<T>> {
+export class PaginationInterceptor<T> implements NestInterceptor<T, PaginatedResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<PaginatedResponse<T>> {
     return next.handle().pipe(
       map((data) => {
         // If data is already paginated, return as is
