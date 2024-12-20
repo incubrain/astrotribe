@@ -41,6 +41,7 @@ const { data, pending, error } = await useAsyncData(
 
       if (!response || !response.data || response.data.length === 0) {
         console.error({ statusCode: 404, message: 'Article not found' })
+        throw new Error('Article not found')
       }
 
       const article = response.data[0]
@@ -48,10 +49,16 @@ const { data, pending, error } = await useAsyncData(
       return article
     } catch (e) {
       console.error('Error fetching article:', e)
+      throw e
     }
   },
   { server: true },
 )
+
+if (error) {
+  console.error('Error fetching article:', error)
+  throw error
+}
 
 const article = computed(() => data.value)
 

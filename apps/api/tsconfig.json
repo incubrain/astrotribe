@@ -24,6 +24,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@types": ["src/types/index.ts"],
+      "@core": ["src/core/index.ts"],
+      "@content": ["src/content/index.ts"],
+      "@monitoring": ["src/monitoring/index.ts"],
       "@auth/*": ["src/auth/*"],
       "@common/*": ["src/common/*"],
       "@content/*": ["src/content/*"],

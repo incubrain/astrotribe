@@ -50,16 +50,16 @@ const websiteLinks = [
         visible: true,
         disabled: false,
       },
-      // {
-      //   key: 'astrotribe',
-      //   label: 'Astrotribe',
-      //   icon: 'material-symbols:groups',
-      //   url: 'projects/astrotribe',
-      //   visible: true,
-      //   disabled: false
-      // },
     ],
   },
+  // {
+  //   key: 'astrotribe',
+  //   label: 'Astrotribe',
+  //   icon: 'material-symbols:groups',
+  //   url: 'projects/astrotribe',
+  //   visible: true,
+  //   disabled: false
+  // },
   // {
   //   key: 'events',
   //   label: 'Events',
