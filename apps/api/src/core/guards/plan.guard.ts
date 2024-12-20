@@ -1,9 +1,9 @@
 // guards/plan.guard.ejs
-import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
-import type { Reflector } from '@nestjs/core'
+import { Reflector } from '@nestjs/core'
 import { PLAN_KEY } from '../decorators/plan.decorator'
-import type { PrismaService } from '../services/prisma.service'
+import { PrismaService } from '../services/prisma.service'
 
 @Injectable()
 export class PlanGuard implements CanActivate {

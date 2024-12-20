@@ -1,8 +1,6 @@
 // templates/entity/model.ejs
-import type { BaseModel } from '@core/base/base.model'
-import {} from '@prisma/client'
-
-import type { TagsModel } from '@content/models/tags.model'
+import { BaseModel } from '@core'
+import { TagsModel } from '@content'
 
 // Model interface
 export interface NewsTagsModel extends BaseModel {

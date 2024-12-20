@@ -1,9 +1,6 @@
 // templates/entity/model.ejs
-import type { BaseModel } from '@core/base/base.model'
-import type { ContentSourcesModel } from '@content/models/content-sources.model'
-import type { NewsModel } from '@content/models/news.model'
-import type { CategoriesModel } from '@content/models/categories.model'
-import type { ContentsModel } from '@content/models/contents.model'
+import { BaseModel } from '@core'
+import { ContentsModel, CategoriesModel, NewsModel, ContentSourcesModel } from '@content'
 
 // import { CompaniesModel } from "@org/models/companies.model";
 

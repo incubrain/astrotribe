@@ -1,9 +1,5 @@
 // templates/entity/model.ejs
-import type { BaseModel } from '@core/base/base.model'
-import {} from '@prisma/client'
-
-// import { CompaniesModel } from "@org/models/companies.model";
-// import { UserProfilesModel } from "@auth/models/user-profiles.model";
+import { BaseModel } from '@core'
 
 import type { FeedsModel } from '@content/models/feeds.model'
 

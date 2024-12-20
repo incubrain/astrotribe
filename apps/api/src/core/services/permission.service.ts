@@ -1,14 +1,14 @@
 // services/permission.service.ts
-import type { OnModuleInit } from '@nestjs/common'
+import { OnModuleInit } from '@nestjs/common'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
-import type { ConfigService } from '@nestjs/config'
-import type { SupabaseClient } from '@supabase/supabase-js'
+import { ConfigService } from '@nestjs/config'
+import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@supabase/supabase-js'
 import { app_role_enum } from '@prisma/client'
-import type { CustomLogger } from '@core/logger/custom.logger'
-import { DatabaseAction, TokenPayload, PermissionCondition } from '@types'
+import { CustomLogger } from '@core/logger/custom.logger'
 import * as jwt from 'jsonwebtoken'
-import type { PrismaService } from './prisma.service'
+import { PrismaService } from './prisma.service'
+import type { DatabaseAction, TokenPayload, PermissionCondition } from '@types'
 
 interface SupabaseJwtPayload {
   aud: string

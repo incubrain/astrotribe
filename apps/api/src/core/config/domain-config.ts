@@ -1,8 +1,11 @@
 // core/config/domain-config.ts
-import type { DynamicModule } from '@nestjs/common'
+import { DynamicModule } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
 import { Module } from '@nestjs/common'
-import { CustomLogger } from '@core/logger/custom.logger'
-import { PermissionModule } from '../permission.module'
+import { CustomLogger } from '@core'
+import { CoreModule } from '../core.module'
+import { PrismaModule } from '../modules/prisma.module'
+import { PermissionModule } from '../modules/permission.module'
 
 // Define the options interface
 export interface DomainModuleOptions {
@@ -15,17 +18,17 @@ export interface DomainModuleOptions {
 @Module({})
 class DomainModule {}
 
+// core/config/domain-config.ts
 export function createDomainModule(name: string, options: DomainModuleOptions): DynamicModule {
   return {
     module: DomainModule,
-    imports: [PermissionModule],
     providers: [
       {
         provide: CustomLogger,
         useFactory: () => new CustomLogger(name),
       },
     ],
-    exports: [CustomLogger],
-    global: true,
+    exports: [],
+    global: false,
   }
 }

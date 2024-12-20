@@ -1,5 +1,5 @@
 // pipes/validation.pipe.ts
-import type {
+import {
   PipeTransform,
   ArgumentMetadata } from '@nestjs/common'
 import {
@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
-import type { CustomLogger } from '@core/logger/custom.logger'
+import { CustomLogger } from '@core/logger/custom.logger'
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {

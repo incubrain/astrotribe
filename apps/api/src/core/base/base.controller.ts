@@ -9,24 +9,25 @@ import {
   BadRequestException,
   ConflictException,
 } from '@nestjs/common'
-import type { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
-import type { ConfigService } from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
 import { Prisma } from '@prisma/client'
-import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { PrismaService } from '../services/prisma.service'
-import type { PaginationService } from '../services/pagination.service'
-import type { CustomLogger } from '../logger/custom.logger'
+import { PrismaService } from '../services/prisma.service'
+import { PaginationService } from '../services/pagination.service'
+import { CustomLogger } from '../logger/custom.logger'
 
+import type { PaginatedResponse, PaginatedQuery } from '@types'
 @Injectable()
 export abstract class BaseController {
   constructor(
-    protected readonly prisma: PrismaService,
-    protected readonly modelName: keyof Prisma.TypeMap['model'],
-    protected readonly config: ConfigService,
-    protected readonly paginationService: PaginationService,
-    protected readonly logger: CustomLogger,
+    protected readonly modelName: keyof Prisma.TypeMap['model']
   ) {}
+
+  protected abstract get prisma(): PrismaService;
+  protected abstract get config(): ConfigService;
+  protected abstract get paginationService(): PaginationService;
+  protected abstract get logger(): CustomLogger;
 
   protected get model(): any {
     return this.prisma[this.modelName]

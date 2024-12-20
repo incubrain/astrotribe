@@ -11,28 +11,27 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
-import type { Prisma } from '@prisma/client'
-import type { ConfigService } from '@nestjs/config'
-
+import { ConfigService } from '@nestjs/config'
+import { FeedSourceService } from '../services/feed-sources.service'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { CustomLogger } from '@core/logger/custom.logger'
 
-import type { FeedSourceService } from '../services/feed-sources.service'
+import type { Prisma } from '@prisma/client'
+import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('feed-sources')
 @ApiTags('FeedSources')
 export class FeedSourceController extends BaseController {
   constructor(
     protected readonly feedSourceService: FeedSourceService,
-    prisma: PrismaService,
-    config: ConfigService,
-    paginationService: PaginationService,
-    logger: CustomLogger,
+    protected readonly prisma: PrismaService,
+    protected readonly config: ConfigService,
+    protected readonly paginationService: PaginationService,
+    protected readonly logger: CustomLogger,
   ) {
-    super(prisma, 'feed_sources', config, paginationService, logger)
+    super('feed_sources')
   }
 
   @Get()

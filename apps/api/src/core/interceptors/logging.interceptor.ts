@@ -6,9 +6,9 @@ import type {
 import {
   Injectable,
 } from '@nestjs/common'
-import type { Observable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
-import type { CustomLogger } from '@core/logger/custom.logger'
+import { CustomLogger } from '@core/logger/custom.logger'
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

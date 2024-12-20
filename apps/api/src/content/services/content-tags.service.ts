@@ -1,19 +1,18 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { ContentTagsModel } from '../models/content-tags.model'
 import type { Prisma } from '@prisma/client'
-import { content_tags } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { ContentTagsModel } from '../models/content-tags.model'
 
 @Injectable()
 export class ContentTagsService extends BaseService<'content_tags'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'content_tags')
+    super('content_tags')
   }
 
   async findWithRelations(id: string, tagId: number): Promise<ContentTagsModel | null> {
@@ -27,9 +26,7 @@ export class ContentTagsService extends BaseService<'content_tags'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.content_tagsDefaultArgs,
-  ): Promise<ContentTagsModel[]> {
+  async findMany(params: Prisma.content_tagsDefaultArgs): Promise<ContentTagsModel[]> {
     const items = await this.prisma.content_tags.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

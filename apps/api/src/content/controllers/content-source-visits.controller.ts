@@ -11,26 +11,27 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
+import { PrismaService } from '@core/services/prisma.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { CustomLogger } from '@core/logger/custom.logger'
+import { BaseController } from '@core/base/base.controller'
+import { ConfigService } from '@nestjs/config'
+import { ContentSourceVisitService } from '../services/content-source-visits.service'
+
 import type { Prisma } from '@prisma/client'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { ConfigService } from '@nestjs/config'
-import type { PaginationService } from '@core/services/pagination.service'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { CustomLogger } from '@core/logger/custom.logger'
-import type { ContentSourceVisitService } from '../services/content-source-visits.service'
-import { BaseController } from '../../core/base/base.controller'
 
 @Controller('content-source-visits')
 @ApiTags('ContentSourceVisits')
 export class ContentSourceVisitController extends BaseController {
   constructor(
     protected readonly contentSourceVisitService: ContentSourceVisitService,
-    prisma: PrismaService,
-    config: ConfigService,
-    paginationService: PaginationService,
-    logger: CustomLogger,
+    protected readonly prisma: PrismaService,
+    protected readonly config: ConfigService,
+    protected readonly paginationService: PaginationService,
+    protected readonly logger: CustomLogger,
   ) {
-    super(prisma, 'content_source_visits', config, paginationService, logger)
+    super('content_source_visits')
   }
 
   @Get()

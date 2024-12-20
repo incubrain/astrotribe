@@ -1,5 +1,5 @@
 // templates/entity/model.ejs
-import type { BaseModel } from '@core/base/base.model'
+import { BaseModel } from '@core'
 import type { content_type } from '@prisma/client'
 
 // Model interface

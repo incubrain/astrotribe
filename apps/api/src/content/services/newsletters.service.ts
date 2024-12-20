@@ -1,19 +1,18 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
 import type { Prisma } from '@prisma/client'
-import { newsletters } from '@prisma/client'
-import { BaseService } from '@core/base/base.service'
-import type { PaginationService } from '@core/services/pagination.service'
-import type { PrismaService } from '@core/services/prisma.service'
-import type { NewslettersModel } from '../models/newsletters.model'
+import { BaseService } from '@/core/base/base.service'
+import { PaginationService } from '@/core/services/pagination.service'
+import { PrismaService } from '@/core/services/prisma.service'
+import { NewslettersModel } from '../models/newsletters.model'
 
 @Injectable()
 export class NewslettersService extends BaseService<'newsletters'> {
   constructor(
-    private prisma: PrismaService,
-    paginationService: PaginationService,
+    protected readonly prisma: PrismaService,
+    protected readonly paginationService: PaginationService,
   ) {
-    super(paginationService, 'newsletters')
+    super('newsletters')
   }
 
   async findWithRelations(id: string): Promise<NewslettersModel | null> {
@@ -26,9 +25,7 @@ export class NewslettersService extends BaseService<'newsletters'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.newslettersDefaultArgs,
-  ): Promise<NewslettersModel[]> {
+  async findMany(params: Prisma.newslettersDefaultArgs): Promise<NewslettersModel[]> {
     const items = await this.prisma.newsletters.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

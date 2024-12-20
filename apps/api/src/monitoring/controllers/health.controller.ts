@@ -1,6 +1,6 @@
 // src/monitoring/controllers/health.controller.ts
 import { Controller, Get } from '@nestjs/common'
-import type {
+import {
   HealthCheckService,
   HttpHealthIndicator,
   DiskHealthIndicator,
