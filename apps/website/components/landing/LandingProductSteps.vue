@@ -44,11 +44,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-24 container">
+  <section class="container">
     <LandingTitle
       class="mb-12"
-      title="How it works"
-      subtitle="Discover the universe effortlessly with our intuitive platform. Here's how:"
+      title="Not Just News"
+      subtitle="Just like the universe... we're expanding!"
     />
 
     <!-- Steps Grid -->
