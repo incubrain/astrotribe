@@ -15,7 +15,7 @@ export enum ResourceType {
 }
 
 export interface Permission {
-  action: PermissionAction;
-  resource: ResourceType;
-  conditions?: Record<string, any>;
+  action: PermissionAction
+  resource: ResourceType
+  conditions?: Record<string, any>
 }

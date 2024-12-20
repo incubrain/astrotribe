@@ -1,7 +1,7 @@
 export interface DomainConfig {
-  requiresAuth?: boolean;
-  requiresUser?: boolean;
-  requiresCompany?: boolean;
+  requiresAuth?: boolean
+  requiresUser?: boolean
+  requiresCompany?: boolean
 }
 
 export interface CrossDomainConfig {
@@ -9,6 +9,6 @@ export interface CrossDomainConfig {
 }
 
 export interface LoggerConfig {
-  domainName: string;
-  subContexts?: string[];
-} 
+  domainName: string
+  subContexts?: string[]
+}

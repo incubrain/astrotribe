@@ -1,4 +1,6 @@
 // base.controller.ts
+import type {
+  Response } from '@nestjs/common'
 import {
   Injectable,
   UnauthorizedException,
@@ -8,14 +10,15 @@ import {
   BadRequestException,
   ConflictException,
 } from '@nestjs/common'
-import { Request } from 'express'
+import type { Request } from 'express'
 import { verify } from 'jsonwebtoken'
-import { ConfigService } from '@nestjs/config'
+import type { ConfigService } from '@nestjs/config'
 import { Prisma } from '@prisma/client'
-import { PrismaService } from '../services/prisma.service'
-import { PaginatedResponse, PaginatedQuery } from '../types/pagination.types'
-import { PaginationService } from '../services/pagination.service'
-import { CustomLogger } from '../logger/custom.logger'
+import type { PrismaService } from '../services/prisma.service'
+import type { PaginatedQuery } from '../types/pagination.types'
+import { PaginatedResponse } from '../types/pagination.types'
+import type { PaginationService } from '../services/pagination.service'
+import type { CustomLogger } from '../logger/custom.logger'
 
 @Injectable()
 export abstract class BaseController {
@@ -158,14 +161,14 @@ export abstract class BaseController {
     }
   }
 
-  protected handleSuccess<T>(data: T): BaseResponse<T> {
+  protected handleSuccess<T>(data: T): Response<T> {
     return {
       data,
       timestamp: new Date().toISOString(),
     }
   }
 
-  protected handlePaginatedSuccess<T>(data: T[], meta: any): BaseResponse<T[]> {
+  protected handlePaginatedSuccess<T>(data: T[], meta: any): Response<T[]> {
     return {
       data,
       meta,

@@ -1,9 +1,9 @@
 // test/permission.service.spec.ts
 import { Test } from '@nestjs/testing'
 import { ConfigService } from '@nestjs/config'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { PermissionService } from '../services/permission.service'
 import { CustomLogger } from '../logger/custom.logger'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
 
 // Mock Supabase client
 vi.mock('@supabase/supabase-js', () => ({

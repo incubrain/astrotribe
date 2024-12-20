@@ -59,18 +59,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-24">
-    <LandingTitle
-      title="Supported by"
-    />
+  <section class="pt-16">
+    <LandingTitle title="Supported by" />
     <!-- Partner Stats -->
 
     <!-- Partners Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center mb-16">
+    <div class="grid grid-cols-2 gap-8 items-center justify-items-center mb-16">
       <div
         v-for="(partner, index) in trustedPartners"
         :key="index"
-        class="partner-logo group relative"
+        class="partner-logo group relative w-full"
       >
         <!-- Partner Card -->
         <div
@@ -83,15 +81,13 @@ onMounted(() => {
           ></div>
 
           <!-- Logo -->
-          <div class="relative z-10">
+          <div class="relative z-10 w-full">
             <NuxtImg
               :id="'partner-logo-' + index"
               v-tooltip="partner.description"
               :src="partner.image"
               :alt="partner.name"
-              :class="[
-                'max-h-16 w-auto object-contain transition-all duration-300 group-hover:scale-110',
-              ]"
+              :class="[' w-full object-contain transition-all duration-300 group-hover:scale-110']"
             />
           </div>
         </div>
@@ -131,10 +127,5 @@ onMounted(() => {
 <style scoped>
 .filter.invert {
   filter: invert(1);
-}
-
-/* Ensure proper stacking */
-.partner-logo {
-  isolation: isolate;
 }
 </style>

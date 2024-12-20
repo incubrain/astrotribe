@@ -7,15 +7,15 @@ export enum PlanType {
 }
 
 export interface PlanFeature {
-  name: string;
-  limit?: number;
-  enabled: boolean;
+  name: string
+  limit?: number
+  enabled: boolean
 }
 
 export interface Plan {
-  id: string;
-  name: string;
-  type: PlanType;
-  features: PlanFeature[];
-  price: number;
+  id: string
+  name: string
+  type: PlanType
+  features: PlanFeature[]
+  price: number
 }

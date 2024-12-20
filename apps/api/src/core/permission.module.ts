@@ -1,9 +1,9 @@
 // permission.module.ts
 import { Global, Module } from '@nestjs/common'
+import { CustomLogger } from '@core/logger/custom.logger'
+import { APP_GUARD, Reflector } from '@nestjs/core'
 import { PermissionService } from './services/permission.service'
 import { PermissionGuard } from './guards/permission.guard'
-import { CustomLogger } from '@core/logger/custom.logger'
-import { APP_GUARD, Reflector } from "@nestjs/core";
 
 @Global()
 @Module({
