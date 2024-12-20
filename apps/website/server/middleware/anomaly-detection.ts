@@ -51,7 +51,7 @@ function checkAnomalies(path: string): string[] {
 }
 
 function notifyAnomalies(anomalies: string[], logger: any) {
-  logger.error('Anomalies detected:', anomalies)
+  logger.error(`Anomalies detected: ${anomalies}`)
   // Future implementation: Send notifications to monitoring services
 }
 
