@@ -22,7 +22,7 @@ const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
       <NuxtLink
         v-for="cat in CATEGORIES"
         :key="`astronera-blog-${cat}`"
-        :to="`/blog/category/${cat}/page/1`"
+        :to="`/blog/${cat}/1`"
       >
         <PrimeButton
           color="primary"
