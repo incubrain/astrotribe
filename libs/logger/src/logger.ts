@@ -47,8 +47,8 @@ export class NodeWinstonTransport implements LogTransport {
     const winston = w ?? w
 
     const format = winston.format.combine(
-      winston.format.printf(({ message }) => {
-        return `${message}`
+      winston.format.printf(({ message, ...metadata }) => {
+        return `${message} ${JSON.stringify(metadata)}`
       }),
     )
 
