@@ -1,15 +1,15 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model'
-import { scrape_frequency, content_status } from '@prisma/client'
+import type { BaseModel } from '@core/base/base.model'
+import type { scrape_frequency, content_status } from '@prisma/client'
 
 // import { CompaniesModel } from "@org/models/companies.model";
 // import { SocialMediaModel } from "@org/models/social-media.model";
 
-import { ContentSourcesModel } from '@content/models/content-sources.model'
+import type { ContentSourcesModel } from '@content/models/content-sources.model'
 
-import { CategoriesModel } from '@content/models/categories.model'
+import type { CategoriesModel } from '@content/models/categories.model'
 
-import { ContentsModel } from '@content/models/contents.model'
+import type { ContentsModel } from '@content/models/contents.model'
 
 // Model interface
 export interface NewsModel extends BaseModel {

@@ -1,20 +1,20 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model';
-import { Prisma } from '@prisma/client';
+import type { BaseModel } from '@core/base/base.model'
+import { Prisma } from '@prisma/client'
 
 // import { UserProfilesModel } from '@auth/models/user-profiles.model';
 
 // Model interface
 export interface FeedsModel extends BaseModel {
-  id: string;
+  id: string
 
-  created_at: Date;
+  created_at: Date
 
-  name?: string;
+  name?: string
 
-  user_id?: string;
+  user_id?: string
 
-  feeds?: FeedsModel[];
+  feeds?: FeedsModel[]
 
   // user_profiles?: UserProfilesModel;
 }

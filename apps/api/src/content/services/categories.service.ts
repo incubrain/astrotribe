@@ -1,18 +1,19 @@
 // templates/service/service.ejs
-import { Injectable } from "@nestjs/common";
-import { Prisma, categories } from "@prisma/client";
-import { BaseService } from "@core/base/base.service";
-import { PaginationService } from "@core/services/pagination.service";
-import { PrismaService } from "@core/services/prisma.service";
-import { CategoriesModel } from "../models/categories.model";
+import { Injectable } from '@nestjs/common'
+import type { Prisma } from '@prisma/client'
+import { categories } from '@prisma/client'
+import { BaseService } from '@core/base/base.service'
+import type { PaginationService } from '@core/services/pagination.service'
+import type { PrismaService } from '@core/services/prisma.service'
+import type { CategoriesModel } from '../models/categories.model'
 
 @Injectable()
-export class CategoriesService extends BaseService<"categories"> {
+export class CategoriesService extends BaseService<'categories'> {
   constructor(
     private prisma: PrismaService,
-    paginationService: PaginationService
+    paginationService: PaginationService,
   ) {
-    super(paginationService, "categories");
+    super(paginationService, 'categories')
   }
 
   async findWithRelations(id: number): Promise<CategoriesModel | null> {
@@ -24,19 +25,19 @@ export class CategoriesService extends BaseService<"categories"> {
         feed_categories: true,
         news: true,
       },
-    });
-    return result ? this.mapToModel(result) : null;
+    })
+    return result ? this.mapToModel(result) : null
   }
 
   async findMany(
-    params: Prisma.categoriesDefaultArgs
+    params: Prisma.categoriesDefaultArgs,
   ): Promise<CategoriesModel[]> {
-    const items = await this.prisma.categories.findMany(params);
-    return items.map((item) => this.mapToModel(item));
+    const items = await this.prisma.categories.findMany(params)
+    return items.map((item) => this.mapToModel(item))
   }
 
   async findAllCategories(
-    query: Prisma.categoriesFindManyArgs
+    query: Prisma.categoriesFindManyArgs,
   ): Promise<{ items: CategoriesModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.categories.findMany({
@@ -46,17 +47,17 @@ export class CategoriesService extends BaseService<"categories"> {
         orderBy: query.orderBy,
       }),
       this.prisma.categories.count({ where: query.where }),
-    ]);
+    ])
 
     return {
       items: items.map((item) => this.mapToModel(item)),
       total,
-    };
+    }
   }
 
   private mapToModel(data: any): CategoriesModel {
     return {
       ...data,
-    };
+    }
   }
 }

@@ -1,7 +1,8 @@
 // core/config/domain-config.ts
-import { DynamicModule, Module } from '@nestjs/common'
-import { PermissionModule } from '../permission.module'
+import type { DynamicModule } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { CustomLogger } from '@core/logger/custom.logger'
+import { PermissionModule } from '../permission.module'
 
 // Define the options interface
 export interface DomainModuleOptions {

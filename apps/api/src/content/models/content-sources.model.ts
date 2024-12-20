@@ -1,7 +1,7 @@
 // templates/entity/model.ejs
-import { BaseModel } from '@core/base/base.model'
-import { content_type, scrape_frequency, priority } from '@prisma/client'
-import { CategoriesModel } from '@content/models/categories.model'
+import type { BaseModel } from '@core/base/base.model'
+import type { content_type, scrape_frequency, priority } from '@prisma/client'
+import type { CategoriesModel } from '@content/models/categories.model'
 
 // Model interface
 export interface ContentSourcesModel extends BaseModel {

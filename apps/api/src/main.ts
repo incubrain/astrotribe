@@ -5,7 +5,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import compression from 'compression'
 
-import { AppModule } from './app.module'
 import { HttpExceptionFilter } from '@core/filters/http-exception.filter'
 import { LoggingInterceptor } from '@core/interceptors/logging.interceptor'
 import { CustomLogger } from '@core/logger/custom.logger'
@@ -23,6 +22,7 @@ import { APP_GUARD } from '@nestjs/core'
 
 // INTERCEPTORS
 import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
   // Create the app with custom logger
@@ -91,9 +91,9 @@ async function bootstrap() {
         return
       }
 
-      const allowedOrigins = Array.isArray(corsOrigins)
-        ? corsOrigins
-        : corsOrigins.split(',').map((o) => o.trim())
+      const allowedOrigins = Array.isArray(corsOrigins) ?
+        corsOrigins :
+        corsOrigins.split(',').map((o) => o.trim())
 
       if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
         callback(null, true)

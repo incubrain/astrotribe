@@ -1,8 +1,9 @@
 // guards/plan.guard.ejs
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { PLAN_KEY } from "../decorators/plan.decorator";
-import { PrismaService } from "../services/prisma.service";
+import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import type { Reflector } from '@nestjs/core'
+import { PLAN_KEY } from '../decorators/plan.decorator'
+import type { PrismaService } from '../services/prisma.service'
 
 @Injectable()
 export class PlanGuard implements CanActivate {
@@ -12,20 +13,20 @@ export class PlanGuard implements CanActivate {
     const requiredPlans = this.reflector.getAllAndOverride<string[]>(PLAN_KEY, [
       context.getHandler(),
       context.getClass(),
-    ]);
+    ])
 
     if (!requiredPlans) {
-      return true;
+      return true
     }
 
-    const { user } = context.switchToHttp().getRequest();
-    if (!user) return false;
+    const { user } = context.switchToHttp().getRequest()
+    if (!user) return false
 
     const userSubscription = await this.prisma.customer_subscriptions.findFirst(
       {
         where: {
           user_id: user.id,
-          status: "ACTIVE",
+          status: 'ACTIVE',
         },
         include: {
           customer_subscription_plans: {
@@ -34,8 +35,8 @@ export class PlanGuard implements CanActivate {
             },
           },
         },
-      }
-    );
+      },
+    )
 
     // return requiredPlans.includes(userSubscription?.subscription_plan?.name);
   }

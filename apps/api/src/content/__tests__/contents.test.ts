@@ -1,10 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { faker } from '@faker-js/faker'
+import type { Prisma } from '@prisma/client'
+import { content_type } from '@prisma/client'
 import { ContentController } from '../controllers/contents.controller'
 import { ContentService } from '../services/contents.service'
 import { PrismaService } from '../../core/services/prisma.service'
 import { PaginationService } from '../../core/services/pagination.service'
 import { CustomLogger } from '../../core/logger/custom.logger'
-import { faker } from '@faker-js/faker'
+import { PermissionGuard } from '../../core/guards/permission.guard'
+import type {
+  MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -12,10 +17,7 @@ import {
   createErrorResponse,
   createPaginatedResponse,
   mockControllerProperties,
-  MockType,
 } from './utils/test.utils'
-import { Prisma, content_type } from '@prisma/client'
-import { PermissionGuard } from '../../core/guards/permission.guard'
 
 const mockPermissionGuard = {
   canActivate: () => true,

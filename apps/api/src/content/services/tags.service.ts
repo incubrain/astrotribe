@@ -1,18 +1,19 @@
 // templates/service/service.ejs
-import { Injectable } from "@nestjs/common";
-import { Prisma, tags } from "@prisma/client";
-import { BaseService } from "@core/base/base.service";
-import { PaginationService } from "@core/services/pagination.service";
-import { PrismaService } from "@core/services/prisma.service";
-import { TagsModel } from "../models/tags.model";
+import { Injectable } from '@nestjs/common'
+import type { Prisma } from '@prisma/client'
+import { tags } from '@prisma/client'
+import { BaseService } from '@core/base/base.service'
+import type { PaginationService } from '@core/services/pagination.service'
+import type { PrismaService } from '@core/services/prisma.service'
+import type { TagsModel } from '../models/tags.model'
 
 @Injectable()
-export class TagsService extends BaseService<"tags"> {
+export class TagsService extends BaseService<'tags'> {
   constructor(
     private prisma: PrismaService,
-    paginationService: PaginationService
+    paginationService: PaginationService,
   ) {
-    super(paginationService, "tags");
+    super(paginationService, 'tags')
   }
 
   async findWithRelations(id: number): Promise<TagsModel | null> {
@@ -22,17 +23,17 @@ export class TagsService extends BaseService<"tags"> {
         content_tags: true,
         news_tags: true,
       },
-    });
-    return result ? this.mapToModel(result) : null;
+    })
+    return result ? this.mapToModel(result) : null
   }
 
   async findMany(params: Prisma.tagsDefaultArgs): Promise<TagsModel[]> {
-    const items = await this.prisma.tags.findMany(params);
-    return items.map((item) => this.mapToModel(item));
+    const items = await this.prisma.tags.findMany(params)
+    return items.map((item) => this.mapToModel(item))
   }
 
   async findAllTags(
-    query: Prisma.tagsFindManyArgs
+    query: Prisma.tagsFindManyArgs,
   ): Promise<{ items: TagsModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.tags.findMany({
@@ -42,17 +43,17 @@ export class TagsService extends BaseService<"tags"> {
         orderBy: query.orderBy,
       }),
       this.prisma.tags.count({ where: query.where }),
-    ]);
+    ])
 
     return {
       items: items.map((item) => this.mapToModel(item)),
       total,
-    };
+    }
   }
 
   private mapToModel(data: any): TagsModel {
     return {
       ...data,
-    };
+    }
   }
 }
