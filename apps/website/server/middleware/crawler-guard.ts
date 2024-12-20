@@ -8,6 +8,7 @@ const ALLOWED_CRAWLER_PATTERNS: RegExp[] = [
   /duckduckbot/i,
   /baiduspider/i,
   /facebookexternalhit/i,
+  /meta-externalagent/i,
   /twitterbot/i,
   /rogerbot/i,
   /linkedinbot/i,
@@ -37,6 +38,7 @@ const HOSTNAME_PATTERNS: { [key: string]: RegExp[] } = {
   duckduckbot: [/\.duckduckgo\.com$/i],
   baiduspider: [/\.baidu\.com$/i],
   facebookexternalhit: [/\.facebook\.com$/i],
+  ['meta-externalagent']: [/\.facebook\.com$/i, /meta-externalagent/i],
   twitterbot: [/\.twitter\.com$/i],
   linkedinbot: [/\.linkedin\.com$/i],
   pinterest: [/\.pinterest\.com$/i],
@@ -97,7 +99,7 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    logger.info({
+    logger.info('Crawler Detected', {
       event: 'crawler_access',
       userAgent,
       clientIP,
