@@ -746,7 +746,6 @@ export async function seedNews(
       hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
       failed_count: faker.number.int({ min: 0, max: 5 }),
       keywords: JSON.stringify(Array.from({ length: 5 }, () => faker.word.noun())),
-      score: faker.number.int({ min: 0, max: 100 }),
       featured_image: Math.random() > 0.5 ? faker.image.url() : null,
       scraped_at: faker.date.past(),
     }

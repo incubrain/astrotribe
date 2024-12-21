@@ -1746,7 +1746,6 @@ export const tables = {
           .optional(),
         content_status: enums.content_status.optional(),
         keywords: z.unknown().nullable().optional(),
-        score: z.number().int().nullable().optional(),
       })
       .strict()
       .optional(),
@@ -1771,7 +1770,6 @@ export const tables = {
         scraped_at: z.date().nullable().optional(),
         content_status: enums.content_status.optional(),
         keywords: z.unknown().nullable().optional(),
-        score: z.number().nullable().optional(),
       })
       .strict()
       .optional(),

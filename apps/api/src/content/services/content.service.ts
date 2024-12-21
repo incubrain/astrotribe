@@ -63,7 +63,6 @@ export class ContentService extends BaseService<'contents'> {
               featured_image: true,
               author: true,
               published_at: true,
-              score: true,
               news_summaries: {
                 where: {
                   is_current: true, // Only get current summaries
@@ -125,7 +124,6 @@ export class ContentService extends BaseService<'contents'> {
       featuredImage: content.news?.featured_image,
       author: content.news?.author,
       publishedAt: content.news?.published_at?.toISOString(), // Format optional date
-      score: content.news?.score,
       summary: content.news?.news_summaries?.[0]?.summary, // Get the current summary
       summaryComplexity: content.news?.news_summaries?.[0]?.complexity_level,
       summaryVersion: content.news?.news_summaries?.[0]?.version,
