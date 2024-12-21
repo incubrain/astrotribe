@@ -2,8 +2,8 @@
 import { useTimeAgo } from '@vueuse/core'
 import { ref, onMounted } from 'vue'
 
+// Update the interfaces to match our materialized view
 interface Company {
-  id: string
   name: string
   logo_url?: string
 }
@@ -11,21 +11,43 @@ interface Company {
 interface NewsCardT {
   id: string
   title: string
-  description: string
-  author: string
-  published_at?: string
-  featured_image: string
-  created_at: string
   url: string
-  comments: number
-  score?: number
-  company_id?: string
-  companies?: Company
-  summary?: {
-    // Add this
-    id: string
-    summary: string
-    news_id: string
+  hot_score: number
+  created_at: string
+  updated_at: string
+  categories: {
+    name: string
+    isPrimary: boolean
+  }[]
+  tags: string[]
+  status: string
+  published_at: string | null
+  featured_image: string | null
+  author: string | null
+  description: string | null
+  company_name: string | null
+  company_logo: string | null
+  summaries: {
+    undefined: Array<{
+      id: string
+      summary: string
+      version: number
+    }> | null
+    beginner: Array<{
+      id: string
+      summary: string
+      version: number
+    }> | null
+    intermediate: Array<{
+      id: string
+      summary: string
+      version: number
+    }> | null
+    expert: Array<{
+      id: string
+      summary: string
+      version: number
+    }> | null
   }
 }
 
@@ -33,7 +55,34 @@ interface Props {
   news: NewsCardT
 }
 
+// Update computed properties
+const sourceDisplay = computed(() => {
+  const companyName = props.news.company_name
+  const author = props.news.author
+
+  if (companyName && author) {
+    return `${author} • ${companyName}`
+  } else if (companyName) {
+    return companyName
+  } else if (author) {
+    return author
+  }
+  return 'Unknown source'
+})
+
 const props = defineProps<Props>()
+
+const hasSummary = computed(() => {
+  return props.news.summaries?.undefined?.[0]?.summary !== undefined
+})
+
+const summary = computed(() => {
+  if (hasSummary.value) {
+    return props.news.summaries.undefined[0].summary
+  }
+  return props.news.description
+})
+
 const voteStore = useVoteStore()
 const isFlipped = ref(false)
 
@@ -41,7 +90,7 @@ const showModal = ref(false)
 const showBookmarkFolders = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
-const score = ref(props.news.score || 0)
+const score = ref(props.news.hot_score || 0)
 const bookmarkFolderSelected = ref(null)
 
 const bookmarkStore = useBookmarkStore()
@@ -58,26 +107,6 @@ const displayScore = computed(() => {
   }
   return currentScore
 })
-
-const sourceDisplay = computed(() => {
-  const company = props.news.companies
-  const author = props.news.author
-
-  if (company?.name && author) {
-    return `${author} • ${company.name}`
-  } else if (company?.name) {
-    return company.name
-  } else if (author) {
-    return author
-  }
-  return 'Unknown source'
-})
-
-const hasSummary = computed(() => props.news.summary && props.news.summary.length > 0)
-
-const summary = computed(() =>
-  hasSummary.value ? props.news.summary![0].summary : props.news.description,
-)
 
 const submitFolder = async () => {
   showBookmarkFolders.value = false
@@ -102,7 +131,7 @@ const readTime = computed(() => {
 onMounted(async () => {
   try {
     if (voteStore.getScore(props.news.id) == null)
-      voteStore.setVotes(props.news.id, props.news.score || 0)
+      voteStore.setVotes(props.news.id, props.news.hot_score || 0)
   } catch (error) {
     console.error('Error fetching vote status:', error)
   }
@@ -181,7 +210,7 @@ onBeforeUnmount(async () => {
               <!-- Company logo or random image -->
               <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
                 <NuxtImg
-                  :src="news.companies?.logo_url ?? `https://picsum.photos/24/24?random=${news.id}`"
+                  :src="news.company_logo ?? `https://picsum.photos/24/24?random=${news.id}`"
                   alt="Source"
                   class="w-full h-full object-cover"
                   width="24"
@@ -191,10 +220,10 @@ onBeforeUnmount(async () => {
               <!-- Source and author info -->
               <div class="flex flex-col min-w-0">
                 <span
-                  v-if="news.companies?.name"
+                  v-if="news.company_name"
                   class="font-medium text-sm truncate"
                 >
-                  {{ formatSourceName(news.companies.name) }}
+                  {{ formatSourceName(news.company_name) }}
                 </span>
                 <span
                   v-if="news.author"
@@ -263,7 +292,7 @@ onBeforeUnmount(async () => {
         <!-- Back side content -->
         <div class="flex-grow overflow-hidden flex flex-col">
           <h3
-            class="text-xl font-bold mb-4 line-clamp-3 min-h-[3.5rem]"
+            class="text-xl font-bold mb-4 line-clamp-3"
             :title="news.title"
           >
             {{ news.title }}</h3
@@ -272,24 +301,10 @@ onBeforeUnmount(async () => {
             v-if="hasSummary"
             class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
           >
-            <div
-              class="inline-flex items-center gap-1 px-2 py-1 rounded-full foreground text-primary-200 font-semibold"
-            >
-              <Icon
-                name="material-symbols:alarm-add-outline-rounded"
-                size="20"
-              />
-              <span>AI Summary</span>
-              <Icon
-                name="material-symbols:alarm-add-outline-rounded"
-                size="20"
-              />
-            </div>
+            <p class="text-sm overflow-y-auto flex-grow">
+              {{ summary }}
+            </p>
           </div>
-
-          <p class="text-sm overflow-y-auto flex-grow">
-            {{ summary }}
-          </p>
         </div>
 
         <!-- Back side actions -->

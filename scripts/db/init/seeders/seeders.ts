@@ -18,7 +18,6 @@ import {
 } from './errors'
 
 // Add to your seed-helpers.ts or create a new helpers file
-
 const formatTimeWithZone = (date: Date) => {
   return (
     date.toLocaleTimeString('en-US', {
@@ -213,14 +212,16 @@ export async function seedContents(pool: Pool, count: number) {
       usedUrls.add(rssUrl)
     }
 
+    const date = faker.date.recent()
+
     contents.push({
       id: generateUUID(),
       url,
       content_type: faker.helpers.arrayElement(['news', 'research', 'newsletters']),
       title: faker.company.name(),
       rss_url: rssUrl,
-      created_at: faker.date.past(),
-      updated_at: faker.date.recent(),
+      created_at: date,
+      updated_at: date,
     })
   }
 
@@ -670,7 +671,7 @@ export async function seedNewsSummaries(pool: Pool, news: any[]) {
     await pool.query('DELETE FROM news_summaries WHERE news_id = ANY($1)', [news.map((n) => n.id)])
 
     // Create summaries for each complexity level
-    const complexityLevels = ['beginner', 'intermediate', 'expert'] as const
+    const complexityLevels = ['beginner', 'intermediate', 'expert', 'undefined'] as const
     const summaries = news.flatMap((newsItem) =>
       complexityLevels.map((level) => ({
         news_id: newsItem.id,
@@ -717,19 +718,19 @@ export async function seedNewsSummaries(pool: Pool, news: any[]) {
 
 export async function seedNews(
   pool: Pool,
-  contentIds: string[],
+  content: any[],
   companyIds: string[],
   contentSourceIds: number[],
 ) {
   const usedUrls = new Set<string>()
   const newsStatuses = getContentStatusFlow('news')
 
-  const news = contentIds.map((id) => {
+  const news = content.map((item) => {
     const contentStatus = faker.helpers.arrayElement(newsStatuses)
     return {
-      id,
+      id: item.id,
       url: generateUniqueUrl(usedUrls, 'https://', '.com/news'),
-      category_id: 16n,
+      category_id: 16,
       has_summary: false,
       scrape_frequency: 'daily' as const,
       content_status: contentStatus,
@@ -741,7 +742,7 @@ export async function seedNews(
       author: faker.person.fullName(),
       company_id: faker.helpers.arrayElement(companyIds),
       content_source_id: faker.helpers.arrayElement(contentSourceIds),
-      published_at: faker.date.past(),
+      published_at: item.created_at,
       hash: BigInt(faker.number.int({ min: 1000000, max: 9999999 })),
       failed_count: faker.number.int({ min: 0, max: 5 }),
       keywords: JSON.stringify(Array.from({ length: 5 }, () => faker.word.noun())),

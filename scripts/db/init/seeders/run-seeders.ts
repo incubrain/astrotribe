@@ -159,7 +159,7 @@ export async function runSeeders() {
 
     // 6. Seed news and research
     await checkAndSeed(client, 'news', () =>
-      seed.seedNews(client, newsContentIds, companyIds, contentSourceIds),
+      seed.seedNews(client, contents, companyIds, contentSourceIds),
     )
 
     await checkAndSeed(client, 'research', () => seed.seedResearch(client, researchContentIds))
