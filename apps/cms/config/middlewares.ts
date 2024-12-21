@@ -17,7 +17,7 @@ export default [
             'https:',
             'cms.astronera.org',
             '*.astronera.org',
-            process.env.SUPABASE_STORAGE_URL.replace('https://', ''),
+            process.env.SUPABASE_STORAGE_URL?.replace('https://', ''),
           ],
           'media-src': [
             "'self'",
@@ -27,7 +27,7 @@ export default [
             'https:',
             'cms.astronera.org',
             '*.astronera.org',
-            process.env.SUPABASE_STORAGE_URL.replace('https://', ''),
+            process.env.SUPABASE_STORAGE_URL?.replace('https://', ''),
           ],
           'upgradeInsecureRequests': null,
         },

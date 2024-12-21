@@ -2,14 +2,26 @@ FROM node:18-slim
 
 WORKDIR /app
 
-COPY package.json ./
+# Copy package files first for better caching
+COPY package.json package-lock.json ./
 
-RUN npm i
+RUN npm ci
 
-# Install nodemon for development
-RUN npm install -g nodemon
+# Install nodemon and tsx for development and seeding
+RUN npm install -g nodemon tsx
+
+# Copy the rest of the application
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p data/uploads
 
 EXPOSE 1337
 
-# Use nodemon instead of npm run start
-CMD ["npm", "run", "dev"]
+# Copy env file if it exists
+COPY .env* ./
+
+# Make the seed script executable (just in case)
+RUN chmod +x ./scripts/seed.ts
+
+CMD ["npm", "run", "dev", "--debug"]
