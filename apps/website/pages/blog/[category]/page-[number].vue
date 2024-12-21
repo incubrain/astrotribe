@@ -39,15 +39,14 @@ const categoryInfo = {
 }
 
 const { data: pageData, error } = await useAsyncData(
-  `articles-${route.params.category}-page-${route.params.page}`,
+  `articles-${route.params.category}-page-${route.params.number}`,
   () =>
-    fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.page)),
+    fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.number)),
   { server: false, immediate: true },
 )
 
 if (error) {
   console.error('Error fetching articles:', error)
-  throw error
 }
 
 const articles = computed(() => pageData.value?.articles || [])
@@ -55,11 +54,28 @@ const totalPages = computed(() => pageData.value?.totalPages || 1)
 const categoryParam = computed(() => route.params.category || 'all')
 const pageParam = computed(() => pageData.value?.page || 1)
 
+const isValidCategory = computed(() =>
+  validCategories.includes(categoryParam.value as ArticleCategoriesT),
+)
+
+// Add a watch to handle invalid categories
+watch(categoryParam, (newCategory) => {
+  if (!validCategories.includes(newCategory as ArticleCategoriesT)) {
+    navigateTo('/404')
+  }
+})
+
+console.log({
+  routeParams: route.params,
+  category: categoryParam.value,
+  pageNum: route.params.number,
+})
+
 // Use the pageData in your component
 
 console.log('useRuntimeConfig:', useRuntimeConfig().public, categoryParam.value, pageData)
 
-async function fetchArticlesFromAPI(category: string, page: number) {
+async function fetchArticlesFromAPI(category: ArticleCategoriesT, page: number) {
   console.log('Fetching articles:', category, page)
   const params: any = {
     sort: ['publishedAt:desc'],

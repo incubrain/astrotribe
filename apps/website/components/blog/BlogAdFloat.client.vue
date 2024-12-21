@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-24">
+  <div class="lg:sticky top-24">
     <LandingGlass
       v-if="adVisible"
       hover-effect="glow"
@@ -22,15 +22,6 @@
           />
         </div>
         <h3 class="text-2xl font-semibold"> Hi 👋, I'm Shweta </h3>
-      </div>
-      <div
-        class="background absolute -top-3 right-2 flex cursor-pointer items-center justify-center rounded-full p-3 lg:hidden"
-      >
-        <Icon
-          name="mdi:close"
-          class="absolute"
-          @click="toggleAd"
-        />
       </div>
       <div class="pt-8 space-y-8">
         <div class="flex w-full flex-col items-start justify-start gap-4">

@@ -3,13 +3,13 @@
     "reference_tables": {
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
+        "content_categories",
+        "metric_definitions",
+        "content_tags",
         "cities",
         "countries",
-        "content_tags",
-        "metric_definitions",
         "categories",
-        "tags",
-        "content_categories"
+        "tags"
       ],
       "default_permissions": [
         "select"
@@ -19,17 +19,17 @@
     "public_content_tables": {
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
-        "research_embeddings",
-        "content_statuses",
+        "content_sources",
+        "feed_sources",
+        "news_tags",
         "newsletters",
         "research",
-        "content_sources",
-        "news_tags",
-        "feed_sources",
+        "content_statuses",
+        "research_embeddings",
         "companies",
         "news",
-        "contents",
-        "news_summaries"
+        "news_summaries",
+        "contents"
       ],
       "default_permissions": [
         "select"
@@ -39,14 +39,14 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "bookmark_folders",
-        "bookmarks",
-        "votes",
         "comments",
+        "bookmarks",
+        "bookmark_folders",
+        "feed_categories",
         "follows",
+        "votes",
         "feature_requests",
         "feature_votes",
-        "feed_categories",
         "feeds",
         "feedbacks"
       ],
@@ -57,16 +57,16 @@
     "user_data_tables": {
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
-        "searches",
-        "addresses",
-        "company_contacts",
-        "contacts",
-        "company_extras",
         "company_urls",
+        "contacts",
+        "company_contacts",
+        "addresses",
+        "searches",
         "company_metrics",
+        "company_extras",
         "user_metrics",
-        "company_employees",
-        "user_profiles"
+        "user_profiles",
+        "company_employees"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -76,18 +76,18 @@
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
         "responses",
-        "social_media",
         "embedding_reviews",
         "spider_metrics",
         "content_source_visits",
-        "ad_daily_metrics",
-        "ad_packages",
-        "ad_variants",
         "ads",
-        "classified_urls",
-        "blocked_ips",
+        "social_media",
         "referrals",
         "referrer_blocks",
+        "blocked_ips",
+        "ad_variants",
+        "ad_daily_metrics",
+        "ad_packages",
+        "classified_urls",
         "scoring_weights"
       ],
       "default_permissions": [],
@@ -97,7 +97,6 @@
       "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
       "tables": [
         "plan_permissions",
-        "blacklisted_urls",
         "blacklisted_domains",
         "customer_payments",
         "customer_processed_webhooks",
@@ -107,6 +106,7 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions",
+        "blacklisted_urls",
         "error_logs",
         "role_permissions_materialized"
       ],
@@ -116,6 +116,9 @@
   },
   "roles": {
     "super_admin": {
+      "inherit_from": [
+        "admin"
+      ],
       "all_tables": {
         "permissions": [
           "select",
@@ -127,7 +130,7 @@
     },
     "admin": {
       "inherit_from": [
-        "super_admin"
+        "moderator"
       ],
       "security_tables": {
         "permissions": [
@@ -139,7 +142,7 @@
     },
     "moderator": {
       "inherit_from": [
-        "admin"
+        "user"
       ],
       "operational_tables": {
         "permissions": [
