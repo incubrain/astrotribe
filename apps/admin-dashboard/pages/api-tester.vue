@@ -64,12 +64,9 @@
                     <p class="font-medium">Status: {{ endpoint.response.status }}</p>
                   </div>
                 </PrimeMessage>
-                <PrimeEditor
-                  v-model="endpoint.responseStr"
-                  readonly
-                  class="w-full border-round overflow-scroll "
-                  style="height: 200px"
-                />
+                <div class="whitespace-pre-wrap text-sm p-4 rounded-lg overflow-x-auto max-h-96 overflow-scroll">
+                  <code>{{ formattedResponse(endpoint.responseStr) }}</code>
+                </div>
               </div>
             </div>
           </div>
@@ -264,7 +261,6 @@ const testEndpoint = async (endpoint) => {
     }
     endpoint.responseStr = JSON.stringify(data, null, 2)
 
-
     addLog(`Response: 200 OK`)
     notification.success({
       summary: 'API Response',
@@ -283,6 +279,20 @@ const testEndpoint = async (endpoint) => {
     })
   } finally {
     endpoint.isLoading = false
+  }
+}
+
+const formattedResponse = (output: any) => {
+  try {
+    // First remove any extra backslashes and newlines
+    const cleanStr = output.replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\/g, '')
+
+    // Parse and re-stringify with proper formatting
+    const parsed = JSON.parse(cleanStr)
+    return JSON.stringify(parsed, null, 2)
+  } catch (e) {
+    console.error('JSON parsing error:', e)
+    return output // Fallback to raw string if parsing fails
   }
 }
 </script>

@@ -138,9 +138,9 @@ function calculateHealthScore(services: ServiceHealth[]) {
 function getStatusColor(status: string) {
   return (
     {
-      healthy: 'rgb(34 197 94)', // green-500
-      degraded: 'rgb(234 179 8)', // yellow-500
-      critical: 'rgb(239 68 68)', // red-500
+      healthy: 'rgb(22 163 74)', // green-600
+      degraded: 'rgb(202 138 4)', // yellow-600
+      critical: 'rgb(220 38 38)', // red-600
     }[status] || 'rgb(161 161 170)'
   ) // zinc-400
 }
@@ -219,7 +219,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen  text-white p-6 space-y-6">
+  <div class="min-h-screen text-white p-6 space-y-6">
     <!-- Header with Controls -->
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-xl font-medium">System Health</h1>
@@ -337,9 +337,9 @@ onMounted(() => {
               "
               :class="
                 service.trend.direction === 'up'
-                  ? 'text-red-400'
+                  ? 'text-red-600'
                   : service.trend.direction === 'down'
-                    ? 'text-green-400'
+                    ? 'text-green-600'
                     : 'text-zinc-400'
               "
               class="h-5 w-5"
@@ -348,9 +348,9 @@ onMounted(() => {
               class="text-sm"
               :class="
                 service.trend.direction === 'up'
-                  ? 'text-red-400'
+                  ? 'text-red-600'
                   : service.trend.direction === 'down'
-                    ? 'text-green-400'
+                    ? 'text-green-600'
                     : 'text-zinc-400'
               "
             >
@@ -417,7 +417,7 @@ onMounted(() => {
     <!-- Error Trends Chart -->
     <div class="bg-zinc-800 rounded-lg p-6">
       <h3 class="text-lg font-medium mb-4">Error Trends</h3>
-      <div class="h-64">
+      <div class="h-auto">
         <PrimeChart
           v-if="trendChartData"
           type="line"

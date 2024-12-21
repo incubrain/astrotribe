@@ -235,7 +235,7 @@ onMounted(() => {
                 :key="performer.referrerCode"
                 class="mb-4"
               >
-                <div class="flex justify-content-between align-items-center mb-2">
+                <div class="flex justify-content-between align-items-center gap-2 mb-2">
                   <span class="font-medium">{{ performer.referrerCode }}</span>
                   <span>{{ formatCurrency(performer.totalValue) }}</span>
                 </div>
