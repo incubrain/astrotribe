@@ -212,9 +212,38 @@ export function useHttpHandler() {
   async function select<T>(tableName: string, options: SelectOptions<T> = {}): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')
 
+    // Apply filters using direct query builder methods
     if (options.filters) {
-      Object.entries(options.filters).forEach(([column, filterOption]) => {
-        query = applyFilter(query, column, filterOption)
+      Object.entries(options.filters).forEach(([column, filter]) => {
+        Object.entries(filter).forEach(([operator, value]) => {
+          switch (operator) {
+            case 'eq':
+              query = query.eq(column, value)
+              break
+            case 'neq':
+              query = query.neq(column, value)
+              break
+            case 'gt':
+              query = query.gt(column, value)
+              break
+            case 'gte':
+              query = query.gte(column, value)
+              break
+            case 'lt':
+              query = query.lt(column, value)
+              break
+            case 'lte':
+              query = query.lte(column, value)
+              break
+            case 'in':
+              query = query.in(column, value as any[])
+              break
+            case 'is':
+              query = query.is(column, value)
+              break
+            // Add other operators as needed
+          }
+        })
       })
     }
 
@@ -225,6 +254,8 @@ export function useHttpHandler() {
     if (options.order) {
       query = query.order(options.order.column, { ascending: options.order.ascending })
     }
+
+    console.log('Final query config:', query) // Debug log
 
     return handleDatabaseOperation(() => query, `Select from ${tableName}`)
   }
