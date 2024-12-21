@@ -43,10 +43,6 @@ const createSampleNews = (): Prisma.newsCreateInput => ({
     null,
   ]),
   keywords: faker.helpers.arrayElement([faker.lorem.words(5).split(' '), null]),
-  score: faker.helpers.arrayElement([
-    faker.number.int({ min: 0, max: 100 }),
-    null,
-  ]),
   companies: { connect: { id: faker.string.uuid() } },
   contents: { connect: { id: faker.string.uuid() } },
 })
@@ -193,7 +189,6 @@ describe('News Module', () => {
       const updateData: Prisma.newsUpdateInput = {
         title: faker.lorem.words(3),
         content_status: 'published',
-        score: faker.number.int({ min: 0, max: 100 }),
         companies: { connect: { id: faker.string.uuid() } },
       }
       const updatedNews = {

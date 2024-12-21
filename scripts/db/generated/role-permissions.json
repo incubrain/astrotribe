@@ -24,12 +24,12 @@
         "newsletters",
         "research",
         "content_sources",
-        "news",
         "news_tags",
         "feed_sources",
+        "companies",
+        "news",
         "contents",
-        "news_summaries",
-        "companies"
+        "news_summaries"
       ],
       "default_permissions": [
         "select"
@@ -39,16 +39,16 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "feedbacks",
         "bookmark_folders",
         "bookmarks",
-        "feed_categories",
-        "feeds",
         "votes",
         "comments",
         "follows",
         "feature_requests",
-        "feature_votes"
+        "feature_votes",
+        "feed_categories",
+        "feeds",
+        "feedbacks"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -87,7 +87,8 @@
         "classified_urls",
         "blocked_ips",
         "referrals",
-        "referrer_blocks"
+        "referrer_blocks",
+        "scoring_weights"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -106,8 +107,8 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions",
-        "role_permissions_materialized",
-        "error_logs"
+        "error_logs",
+        "role_permissions_materialized"
       ],
       "default_permissions": [],
       "audit_level": "critical"
