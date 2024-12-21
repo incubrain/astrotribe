@@ -20,6 +20,7 @@ RUN npx prisma generate
 COPY . .
 
 # Build the application with verbose logging
+RUN npm install -D @nestjs/cli
 RUN npm run build
 
 # Final image stage
