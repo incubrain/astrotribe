@@ -84,6 +84,12 @@ const adminLinks = ref([
         slug: '/referrals',
         icon: 'mdi:account-multiple',
       },
+      {
+        id: 13,
+        label: 'API Testing',
+        slug: '/api-tester',
+        icon: 'mdi:api',
+      },
       // {
       //   id: 12,
       //   label: 'Classifier',
