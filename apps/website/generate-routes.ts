@@ -32,8 +32,8 @@ async function generateRoutes() {
     const totalCount = countData.meta.pagination.total
     const totalPages = Math.ceil(totalCount / pageSize)
 
-    for (let page = 1; page <= totalPages; page++) {
-      routes.push(`/blog/${category}/${page}`)
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      routes.push(`/blog/${category}/page-${pageNum}`)
     }
   }
 

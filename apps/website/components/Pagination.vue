@@ -2,21 +2,21 @@
   <nav class="pagination">
     <ul class="pagination-list">
       <li v-if="currentPage > 1">
-        <NuxtLink :to="`${baseUrl}/page/${currentPage - 1}`">Previous</NuxtLink>
+        <NuxtLink :to="`${baseUrl}/page-${currentPage - 1}`">Previous</NuxtLink>
       </li>
       <li
         v-for="page in pages"
         :key="page"
       >
         <NuxtLink
-          :to="`${baseUrl}/page/${page}`"
+          :to="`${baseUrl}/page-${page}`"
           :class="{ 'is-current': page === currentPage }"
         >
           {{ page }}
         </NuxtLink>
       </li>
       <li v-if="currentPage < totalPages">
-        <NuxtLink :to="`${baseUrl}/page/${currentPage + 1}`">Next</NuxtLink>
+        <NuxtLink :to="`${baseUrl}/page-${currentPage + 1}`">Next</NuxtLink>
       </li>
     </ul>
   </nav>

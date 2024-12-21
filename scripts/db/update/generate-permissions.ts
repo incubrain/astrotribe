@@ -204,18 +204,19 @@ async function generatePermissions() {
       table_groups: tableGroups,
       roles: {
         super_admin: {
+          inherit_from: ['admin'],
           all_tables: {
             permissions: ['select', 'insert', 'update', 'delete'],
           },
         },
         admin: {
-          inherit_from: ['super_admin'],
+          inherit_from: ['moderator'],
           security_tables: {
             permissions: ['select', 'insert', 'update'],
           },
         },
         moderator: {
-          inherit_from: ['admin'],
+          inherit_from: ['user'],
           operational_tables: {
             permissions: ['select', 'update'],
             conditions: {

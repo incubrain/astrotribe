@@ -8,8 +8,6 @@ const p = defineProps({
   },
 })
 
-// "/uploads/Screenshot_2024_10_09_at_11_34_50_AM_3839858f26.png"
-
 console.log('Article:', p.article)
 </script>
 
@@ -23,12 +21,17 @@ console.log('Article:', p.article)
         class="p-4"
       />
       <NuxtImg
+        v-if="article.cover?.url"
         provider="strapi"
         :src="article.cover.url.replace('/uploads/', '')"
         width="400"
         height="300"
         quality="80"
         class="aspect-video w-full object-cover"
+      />
+      <div
+        v-else
+        class="aspect-video w-full bg-gray-200"
       />
     </template>
     <template #title>

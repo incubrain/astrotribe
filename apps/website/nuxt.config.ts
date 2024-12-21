@@ -58,6 +58,11 @@ export default defineNuxtConfig({
     ],
   },
 
+  routeRules: {
+    '/blog/:category': { redirect: '/blog/:category/page-1' },
+    '/blog/:category/': { redirect: '/blog/:category/page-1' },
+  },
+
   // routeRules: {
   //   '/': { prerender: true },
   //   '/about': { prerender: true },
