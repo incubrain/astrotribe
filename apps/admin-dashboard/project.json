@@ -25,6 +25,12 @@
         "command": "cd layers/referral && npx nuxi build"
       }
     },
+    "build:testing": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/testing && npx nuxi build"
+      }
+    },
     "build:advert": {
       "executor": "nx:run-commands",
       "options": {

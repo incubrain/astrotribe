@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
-  name: 'Redis',
+  name: 'Referrals',
 })
 </script>
 

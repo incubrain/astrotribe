@@ -227,7 +227,11 @@ function calculateSuspiciousPercentage(referrer: any): number {
 function formatDate(date: string) {
   if (!date) return ''
 
-  return new Date(date).toLocaleString()
+  const dateObj = new Date(date)
+
+  if (isNaN(dateObj.getTime())) return date
+
+  return dateObj.toLocaleString()
 }
 
 async function handleBlockReferrer(code: string) {
