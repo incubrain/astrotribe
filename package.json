@@ -7,7 +7,7 @@
   "scripts": {
     "mig:fix": "npx tsx scripts/db/migrate/3.fix-migration.ts",
     "gen:api": "npx tsx scripts/api/create-api",
-    "doc:strapi": "docker compose -f docker-compose.strapi.yml",
+    "doc:strapi": "docker compose -p astronera-cms -f docker-compose.strapi.yml",
     "dev:website": "nx serve website",
     "dev:auth": "nx serve auth-service --verbose",
     "dev:app": "nx run-many -t serve -p auth-service,main-app,api --parallel --verbose",
