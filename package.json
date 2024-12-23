@@ -145,6 +145,8 @@
     "webpack-bundle-analyzer": "^4.10.2",
     "@nestjs/swagger": "^7.1.17",
     "winston": "^3.14.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -155,8 +157,6 @@
     "@swc/cli": "^0.5.2",
     "@types/express": "^4.17.17",
     "@types/passport-local": "^1.0.38",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
     "vitest-mock-extended": "^2.0.2",
     "@eslint/js": "^9.8.0",
     "@nuxt/devtools": "^1.0.0",

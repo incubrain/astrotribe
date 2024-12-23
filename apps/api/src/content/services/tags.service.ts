@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import { TagsModel } from '../models/tags.model'
+import { TagModel } from '../models/tags.model'
 
 @Injectable()
 export class TagsService extends BaseService<'tags'> {
@@ -15,7 +15,7 @@ export class TagsService extends BaseService<'tags'> {
     super('tags')
   }
 
-  async findWithRelations(id: number): Promise<TagsModel | null> {
+  async findWithRelations(id: number): Promise<TagModel | null> {
     const result = await this.prisma.tags.findUnique({
       where: { id },
       include: {
@@ -26,14 +26,12 @@ export class TagsService extends BaseService<'tags'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.tagsDefaultArgs): Promise<TagsModel[]> {
+  async findMany(params: Prisma.tagsDefaultArgs): Promise<TagModel[]> {
     const items = await this.prisma.tags.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
-  async findAllTags(
-    query: Prisma.tagsFindManyArgs,
-  ): Promise<{ items: TagsModel[]; total: number }> {
+  async findAllTags(query: Prisma.tagsFindManyArgs): Promise<{ items: TagModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.tags.findMany({
         skip: query.skip,
@@ -50,7 +48,7 @@ export class TagsService extends BaseService<'tags'> {
     }
   }
 
-  private mapToModel(data: any): TagsModel {
+  private mapToModel(data: any): TagModel {
     return {
       ...data,
     }

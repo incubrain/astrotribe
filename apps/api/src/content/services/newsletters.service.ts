@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import { NewslettersModel } from '../models/newsletters.model'
+import { NewsletterModel } from '../models/newsletters.model'
 
 @Injectable()
 export class NewslettersService extends BaseService<'newsletters'> {
@@ -15,7 +15,7 @@ export class NewslettersService extends BaseService<'newsletters'> {
     super('newsletters')
   }
 
-  async findWithRelations(id: string): Promise<NewslettersModel | null> {
+  async findWithRelations(id: string): Promise<NewsletterModel | null> {
     const result = await this.prisma.newsletters.findUnique({
       where: { id },
       include: {
@@ -25,14 +25,14 @@ export class NewslettersService extends BaseService<'newsletters'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.newslettersDefaultArgs): Promise<NewslettersModel[]> {
+  async findMany(params: Prisma.newslettersDefaultArgs): Promise<NewsletterModel[]> {
     const items = await this.prisma.newsletters.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllNewsletters(
     query: Prisma.newslettersFindManyArgs,
-  ): Promise<{ items: NewslettersModel[]; total: number }> {
+  ): Promise<{ items: NewsletterModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.newsletters.findMany({
         skip: query.skip,
@@ -49,7 +49,7 @@ export class NewslettersService extends BaseService<'newsletters'> {
     }
   }
 
-  private mapToModel(data: any): NewslettersModel {
+  private mapToModel(data: any): NewsletterModel {
     return {
       ...data,
     }

@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import type { CategoriesModel } from '../models/categories.model'
+import type { CategoryModel } from '../models/categories.model'
 
 @Injectable()
 export class CategoriesService extends BaseService<'categories'> {
@@ -15,7 +15,7 @@ export class CategoriesService extends BaseService<'categories'> {
     super('categories')
   }
 
-  async findWithRelations(id: number): Promise<CategoriesModel | null> {
+  async findWithRelations(id: number): Promise<CategoryModel | null> {
     const result = await this.prisma.categories.findUnique({
       where: { id },
       include: {
@@ -28,14 +28,14 @@ export class CategoriesService extends BaseService<'categories'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.categoriesDefaultArgs): Promise<CategoriesModel[]> {
+  async findMany(params: Prisma.categoriesDefaultArgs): Promise<CategoryModel[]> {
     const items = await this.prisma.categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllCategories(
     query: Prisma.categoriesFindManyArgs,
-  ): Promise<{ items: CategoriesModel[]; total: number }> {
+  ): Promise<{ items: CategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.categories.findMany({
         skip: query.skip,
@@ -52,7 +52,7 @@ export class CategoriesService extends BaseService<'categories'> {
     }
   }
 
-  private mapToModel(data: any): CategoriesModel {
+  private mapToModel(data: any): CategoryModel {
     return {
       ...data,
     }

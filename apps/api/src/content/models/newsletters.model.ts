@@ -1,10 +1,10 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
 import type { content_status } from '@prisma/client'
-import { ContentsModel, CategoriesModel } from '@content'
+import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
-export interface NewslettersModel extends BaseModel {
+export interface NewsletterModel extends BaseModel {
   id: string
   title: string
   frequency: string
@@ -14,5 +14,5 @@ export interface NewslettersModel extends BaseModel {
   created_at?: Date
   updated_at?: Date
   content_status: content_status
-  contents: ContentsModel
+  contents: ContentModel
 }
