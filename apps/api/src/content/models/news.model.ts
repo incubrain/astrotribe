@@ -1,7 +1,7 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
 import type { scrape_frequency, content_status } from '@prisma/client'
-import type { ContentSourcesModel, ContentsModel, CategoriesModel } from '@content'
+import type { ContentSourceModel, ContentModel, CategoryModel } from '@content'
 
 // Model interface
 export interface NewsModel extends BaseModel {
@@ -27,10 +27,10 @@ export interface NewsModel extends BaseModel {
   keywords?: Record<string, any>
   score?: number
   content_source_id?: string
-  content_sources?: ContentSourcesModel
+  content_sources?: ContentSourceModel
   news: NewsModel[]
-  categories?: CategoriesModel[]
-  contents: ContentsModel
+  categories?: CategoryModel[]
+  contents: ContentModel
   // companies?: CompaniesModel[];
   // social_media?: SocialMediaModel[];
 }

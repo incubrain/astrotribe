@@ -1,16 +1,12 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import { ContentsModel, CategoriesModel } from '@content'
+import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
-export interface ContentCategoriesModel extends BaseModel {
+export interface ContentCategoryModel extends BaseModel {
   content_id: string
 
-  category_id: string
-
   is_primary: boolean
-
-  categories: CategoriesModel
-
-  contents: ContentsModel
+  categories: CategoryModel
+  contents: ContentModel
 }
