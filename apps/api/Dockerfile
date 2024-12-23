@@ -40,7 +40,6 @@ COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
 # Copy assets if needed (based on your nest-cli.json assets configuration)
-COPY --from=builder /usr/src/app/apps/api/src/templates ./dist/templates
 COPY --from=builder /usr/src/app/apps/api/src/**/*.json ./dist/
 COPY --from=builder /usr/src/app/apps/api/src/**/*.yml ./dist/
 

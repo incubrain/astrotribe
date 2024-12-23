@@ -19,10 +19,6 @@
         "include": "**/*.yml",
         "outDir": "dist",
         "watchAssets": true
-      },
-      {
-        "include": "templates/**/*",
-        "outDir": "dist/templates"
       }
     ],
     "plugins": [
