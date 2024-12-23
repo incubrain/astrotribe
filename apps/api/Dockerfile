@@ -16,7 +16,6 @@ ENV NX_DAEMON=false
 ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
-
 # Install dependencies
 RUN npm ci
 
@@ -33,15 +32,18 @@ COPY . .
 # Build the application (using Nx)
 RUN npx nx build api --verbose --skip-nx-cache
 
+# Add debugging to see where files are
+RUN ls -la /usr/src/app/apps/api/dist
+
 # Final image stage
 FROM node:20-alpine AS final
 WORKDIR /app
 
-# Copy necessary files from builder
-COPY --from=builder /usr/src/app/dist/apps/api ./dist
+# Copy necessary files from builder - updated paths based on nest build location
+COPY --from=builder /usr/src/app/apps/api/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
 EXPOSE 3000
-CMD ["node", "/app/apps/api/dist/main.js"]
+CMD ["node", "dist/main.js"]
