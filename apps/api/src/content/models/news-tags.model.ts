@@ -1,14 +1,11 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import { TagsModel } from '@content'
+import { TagModel } from '@content'
 
 // Model interface
-export interface NewsTagsModel extends BaseModel {
+export interface NewsTagModel extends BaseModel {
   id: number
-
   tag_id: number
-
   news_id?: string
-
-  tags: TagsModel
+  tags: TagModel
 }

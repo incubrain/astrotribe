@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import type { FeedCategoriesModel } from '../models/feed-categories.model'
+import type { FeedCategoryModel } from '../models/feed-categories.model'
 
 @Injectable()
 export class FeedCategoriesService extends BaseService<'feed_categories'> {
@@ -14,7 +14,7 @@ export class FeedCategoriesService extends BaseService<'feed_categories'> {
     super('feed_categories')
   }
 
-  async findWithRelations(id: number): Promise<FeedCategoriesModel | null> {
+  async findWithRelations(id: number): Promise<FeedCategoryModel | null> {
     const result = await this.prisma.feed_categories.findUnique({
       where: { id },
       include: {
@@ -25,14 +25,14 @@ export class FeedCategoriesService extends BaseService<'feed_categories'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.feed_categoriesDefaultArgs): Promise<FeedCategoriesModel[]> {
+  async findMany(params: Prisma.feed_categoriesDefaultArgs): Promise<FeedCategoryModel[]> {
     const items = await this.prisma.feed_categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllFeedCategories(
     query: Prisma.feed_categoriesFindManyArgs,
-  ): Promise<{ items: FeedCategoriesModel[]; total: number }> {
+  ): Promise<{ items: FeedCategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.feed_categories.findMany({
         skip: query.skip,
@@ -49,7 +49,7 @@ export class FeedCategoriesService extends BaseService<'feed_categories'> {
     }
   }
 
-  private mapToModel(data: any): FeedCategoriesModel {
+  private mapToModel(data: any): FeedCategoryModel {
     return {
       ...data,
     }

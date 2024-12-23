@@ -1,12 +1,12 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
 
-import type { FeedsModel } from '@content/models/feeds.model'
+import type { FeedModel } from '@content/models/feeds.model'
 
-import type { ContentSourcesModel } from '@content/models/content-sources.model'
+import type { ContentSourceModel } from '@content/models/content-sources.model'
 
 // Model interface
-export interface FeedSourcesModel extends BaseModel {
+export interface FeedSourceModel extends BaseModel {
   id: string
 
   feed_id?: string
@@ -15,10 +15,10 @@ export interface FeedSourcesModel extends BaseModel {
 
   content_source_id?: string
 
-  feeds?: FeedsModel
+  feeds?: FeedModel
 
   // companies?: CompaniesModel[];
   // user_profiles?: UserProfilesModel[];
 
-  content_sources?: ContentSourcesModel
+  content_sources?: ContentSourceModel
 }

@@ -1,13 +1,12 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import { ContentsModel, CategoriesModel, NewsModel, ContentSourcesModel } from '@content'
+import { ContentModel, CategoryModel, NewsModel, ContentSourceModel } from '@content'
 
 // import { CompaniesModel } from "@org/models/companies.model";
 
 // Model interface
-export interface NewsSummariesModel extends BaseModel {
+export interface NewsSummaryModel extends BaseModel {
   id: string
-
   news_id: string
 
   summary?: string
@@ -24,13 +23,13 @@ export interface NewsSummariesModel extends BaseModel {
 
   updated_at?: Date
 
-  content_sources: ContentSourcesModel[]
+  content_sources: ContentSourceModel[]
 
   news: NewsModel
 
-  categories: CategoriesModel[]
+  categories: CategoryModel[]
 
   // companies: CompaniesModel[];
 
-  contents: ContentsModel[]
+  contents: ContentModel[]
 }

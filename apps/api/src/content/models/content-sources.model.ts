@@ -1,11 +1,10 @@
 // templates/entity/model.ejs
 import type { content_type, scrape_frequency, priority } from '@prisma/client'
 import { BaseModel } from '@core'
-import type { CategoriesModel } from '@content'
-
+import type { CategoryModel } from '@content'
 
 // Model interface
-export interface ContentSourcesModel extends BaseModel {
+export interface ContentSourceModel extends BaseModel {
   id: string
 
   url: string
@@ -38,9 +37,9 @@ export interface ContentSourcesModel extends BaseModel {
 
   // companies?: CompaniesModel;
 
-  contentSources?: ContentSourcesModel[]
+  contentSources?: ContentSourceModel[]
 
   // socialMedia?: SocialMediaModel[];
 
-  categories?: CategoriesModel[]
+  categories?: CategoryModel[]
 }
