@@ -11,29 +11,37 @@ COPY tsconfig.base.json ./
 COPY apps/api/tsconfig.json ./
 COPY apps/api/prisma ./prisma/
 
+# Disable Nx Daemon, Nx Cloud, and Caching for more reliable builds
+ENV NX_DAEMON=false
+ENV NX_CLOUD=false
+ENV NX_CACHE_SKIP=true
+
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Generate Prisma client
 RUN npx prisma generate
 
+# Reset Nx cache and verify version
+RUN npx nx reset
+RUN npx nx --version
+
 # Copy the rest of the application
 COPY . .
 
-# Build the application with verbose logging
-RUN npm install -D @nestjs/cli
-RUN npm run build
+# Build the application (using Nx)
+RUN npx nx build api --verbose --skip-nx-cache
 
 # Final image stage
 FROM node:20-alpine AS final
 WORKDIR /app
 
 # Copy necessary files from builder
-COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/dist/apps/api ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
 EXPOSE 3000
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "/app/apps/api/dist/main.js"]
