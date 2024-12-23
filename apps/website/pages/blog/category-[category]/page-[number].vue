@@ -209,7 +209,7 @@ const heroImage = computed(() => {
     <Pagination
       :current-page="pageParam"
       :total-pages="totalPages"
-      :base-url="`/blog/${categoryParam}`"
+      :base-url="`/blog/category-${categoryParam}`"
     />
   </div>
 </template>
