@@ -51,6 +51,7 @@ const handleRetry = () => {
 }
 
 const handleHome = () => {
+  clearError()
   router.push('/')
 }
 </script>
