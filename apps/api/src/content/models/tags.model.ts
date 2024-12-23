@@ -2,22 +2,14 @@
 import { BaseModel } from '@core'
 
 // Model interface
-export interface TagsModel extends BaseModel {
+export interface TagModel extends BaseModel {
   id: number
-
   body?: string
-
   name: string
-
   document_id?: string
-
   locale?: string
-
   published_at?: string
-
   created_at?: Date
-
   updated_at?: Date
-
-  tags: TagsModel[]
+  tags: TagModel[]
 }

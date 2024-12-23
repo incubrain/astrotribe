@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import { EmbeddingReviewsModel } from '../models/embedding-reviews.model'
+import { EmbeddingReviewModel } from '../models/embedding-reviews.model'
 
 @Injectable()
 export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
@@ -15,7 +15,7 @@ export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
     super('embedding_reviews')
   }
 
-  async findWithRelations(id: number): Promise<EmbeddingReviewsModel | null> {
+  async findWithRelations(id: number): Promise<EmbeddingReviewModel | null> {
     const result = await this.prisma.embedding_reviews.findUnique({
       where: { id },
       include: {
@@ -25,14 +25,14 @@ export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.embedding_reviewsDefaultArgs): Promise<EmbeddingReviewsModel[]> {
+  async findMany(params: Prisma.embedding_reviewsDefaultArgs): Promise<EmbeddingReviewModel[]> {
     const items = await this.prisma.embedding_reviews.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllEmbeddingReviews(
     query: Prisma.embedding_reviewsFindManyArgs,
-  ): Promise<{ items: EmbeddingReviewsModel[]; total: number }> {
+  ): Promise<{ items: EmbeddingReviewModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.embedding_reviews.findMany({
         skip: query.skip,
@@ -49,7 +49,7 @@ export class EmbeddingReviewsService extends BaseService<'embedding_reviews'> {
     }
   }
 
-  private mapToModel(data: any): EmbeddingReviewsModel {
+  private mapToModel(data: any): EmbeddingReviewModel {
     return {
       ...data,
     }

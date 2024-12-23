@@ -18,13 +18,19 @@
         "command": "cd layers/referral && npx nuxi build"
       }
     },
+    "build:auth": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/auth && npx nuxi build"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "npx nuxi build",
         "cwd": "apps/auth-service"
       },
-      "dependsOn": ["build:base", "client:build", "server:build", "build:referral"]
+      "dependsOn": ["build:base", "build:auth", "build:referral"]
     },
 
     "serve": {

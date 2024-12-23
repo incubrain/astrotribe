@@ -2,7 +2,7 @@
 import { BaseModel } from '@core'
 
 // Model interface
-export interface EmbeddingReviewsModel extends BaseModel {
+export interface EmbeddingReviewModel extends BaseModel {
   id: string
 
   created_at: Date
@@ -15,5 +15,5 @@ export interface EmbeddingReviewsModel extends BaseModel {
 
   notes?: string
 
-  embeddingReviews?: EmbeddingReviewsModel[]
+  embeddingReviews?: EmbeddingReviewModel[]
 }

@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
 import { BaseService } from '@core/base/base.service'
-import type { ContentCategoriesModel } from '../models/content-categories.model'
+import type { ContentCategoryModel } from '../models/content-categories.model'
 
 @Injectable()
 export class ContentCategoriesService extends BaseService<'content_categories'> {
@@ -15,7 +15,7 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
     super('content_categories')
   }
 
-  async findWithRelations(id: string, categoryId: number): Promise<ContentCategoriesModel | null> {
+  async findWithRelations(id: string, categoryId: number): Promise<ContentCategoryModel | null> {
     const result = await this.prisma.content_categories.findUnique({
       where: {
         content_id_category_id: {
@@ -31,14 +31,14 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.content_categoriesDefaultArgs): Promise<ContentCategoriesModel[]> {
+  async findMany(params: Prisma.content_categoriesDefaultArgs): Promise<ContentCategoryModel[]> {
     const items = await this.prisma.content_categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllContentCategories(
     query: Prisma.content_categoriesFindManyArgs,
-  ): Promise<{ items: ContentCategoriesModel[]; total: number }> {
+  ): Promise<{ items: ContentCategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.content_categories.findMany({
         skip: query.skip,
@@ -61,7 +61,7 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
     }
   }
 
-  private mapToModel(data: any): ContentCategoriesModel {
+  private mapToModel(data: any): ContentCategoryModel {
     return {
       ...data,
     }

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
-import { ContentSourcesModel } from '../models/content-sources.model'
+import { ContentSourceModel } from '../models/content-sources.model'
 import { Prisma } from '@prisma/client'
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ContentSourcesService extends BaseService<'content_sources'> {
     super('content_sources')
   }
 
-  async findWithRelations(id: number): Promise<ContentSourcesModel | null> {
+  async findWithRelations(id: number): Promise<ContentSourceModel | null> {
     const result = await this.prisma.content_sources.findUnique({
       where: { id },
       include: {
@@ -27,14 +27,14 @@ export class ContentSourcesService extends BaseService<'content_sources'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.content_sourcesDefaultArgs): Promise<ContentSourcesModel[]> {
+  async findMany(params: Prisma.content_sourcesDefaultArgs): Promise<ContentSourceModel[]> {
     const items = await this.prisma.content_sources.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllContentSources(
     query: Prisma.content_sourcesFindManyArgs,
-  ): Promise<{ items: ContentSourcesModel[]; total: number }> {
+  ): Promise<{ items: ContentSourceModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.content_sources.findMany({
         skip: query.skip,
@@ -51,7 +51,7 @@ export class ContentSourcesService extends BaseService<'content_sources'> {
     }
   }
 
-  private mapToModel(data: any): ContentSourcesModel {
+  private mapToModel(data: any): ContentSourceModel {
     return {
       ...data,
     }

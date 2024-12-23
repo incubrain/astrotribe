@@ -1,7 +1,7 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
 import type { content_status } from '@prisma/client'
-import { ContentsModel, CategoriesModel } from '@content'
+import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
 export interface ResearchModel extends BaseModel {
@@ -30,6 +30,6 @@ export interface ResearchModel extends BaseModel {
   summary?: string
   content_status: content_status
   affiliations?: Record<string, any>
-  contents: ContentsModel
+  contents: ContentModel
   research: ResearchModel[]
 }

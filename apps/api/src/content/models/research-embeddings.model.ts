@@ -1,11 +1,11 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { EmbeddingReviewsModel } from '@content/models/embedding-reviews.model'
-import { ContentsModel, CategoriesModel } from '@content'
+import type { EmbeddingReviewModel } from '@content/models/embedding-reviews.model'
+import { ContentModel, CategoryModel } from '@content'
 import type { ResearchModel } from '@content/models/research.model'
 
 // Model interface
-export interface ResearchEmbeddingsModel extends BaseModel {
+export interface ResearchEmbeddingModel extends BaseModel {
   id: number
 
   research_id: string
@@ -24,9 +24,9 @@ export interface ResearchEmbeddingsModel extends BaseModel {
 
   embedding_review_id?: string
 
-  embeddingReviews?: EmbeddingReviewsModel
+  embeddingReviews?: EmbeddingReviewModel
 
-  contents: ContentsModel[]
+  contents: ContentModel[]
 
   research: ResearchModel
 }

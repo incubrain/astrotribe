@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import { ContentsModel } from '../models/contents.model'
+import { ContentModel } from '../models/contents.model'
 import type { Prisma } from '@prisma/client'
 import type { PaginatedQuery } from '@types'
 
@@ -16,7 +16,7 @@ export class ContentService extends BaseService<'contents'> {
     super('contents')
   }
 
-  async findWithRelations(id: string): Promise<ContentsModel | null> {
+  async findWithRelations(id: string): Promise<ContentModel | null> {
     const result = await this.prisma.contents.findUnique({
       where: { id },
       include: {
@@ -33,7 +33,7 @@ export class ContentService extends BaseService<'contents'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.contentsDefaultArgs): Promise<ContentsModel[]> {
+  async findMany(params: Prisma.contentsDefaultArgs): Promise<ContentModel[]> {
     const items = await this.prisma.contents.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
@@ -143,7 +143,7 @@ export class ContentService extends BaseService<'contents'> {
     }
   }
 
-  private mapToModel(data: any): ContentsModel {
+  private mapToModel(data: any): ContentModel {
     return {
       ...data,
     }

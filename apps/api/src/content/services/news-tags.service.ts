@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { BaseService } from '@/core/base/base.service'
 import { PaginationService } from '@/core/services/pagination.service'
 import { PrismaService } from '@/core/services/prisma.service'
-import { NewsTagsModel } from '../models/news-tags.model'
+import { NewsTagModel } from '../models/news-tags.model'
 
 @Injectable()
 export class NewsTagsService extends BaseService<'news_tags'> {
@@ -15,7 +15,7 @@ export class NewsTagsService extends BaseService<'news_tags'> {
     super('news_tags')
   }
 
-  async findWithRelations(id: number): Promise<NewsTagsModel | null> {
+  async findWithRelations(id: number): Promise<NewsTagModel | null> {
     const result = await this.prisma.news_tags.findUnique({
       where: { id },
       include: {
@@ -25,14 +25,14 @@ export class NewsTagsService extends BaseService<'news_tags'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.news_tagsDefaultArgs): Promise<NewsTagsModel[]> {
+  async findMany(params: Prisma.news_tagsDefaultArgs): Promise<NewsTagModel[]> {
     const items = await this.prisma.news_tags.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllNewsTags(
     query: Prisma.news_tagsFindManyArgs,
-  ): Promise<{ items: NewsTagsModel[]; total: number }> {
+  ): Promise<{ items: NewsTagModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.news_tags.findMany({
         skip: query.skip,
@@ -49,7 +49,7 @@ export class NewsTagsService extends BaseService<'news_tags'> {
     }
   }
 
-  private mapToModel(data: any): NewsTagsModel {
+  private mapToModel(data: any): NewsTagModel {
     return {
       ...data,
     }
