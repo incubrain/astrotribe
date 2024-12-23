@@ -7,8 +7,10 @@ RUN apk add --no-cache python3 make g++ gcc
 
 # Copy key files first
 COPY package*.json ./
-COPY tsconfig*.json ./
-COPY prisma ./prisma/
+COPY tsconfig.base.json ./
+COPY apps/api/tsconfig.json ./
+COPY apps/api/prisma ./prisma/
+
 
 # Install dependencies
 RUN npm install
