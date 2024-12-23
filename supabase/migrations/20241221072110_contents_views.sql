@@ -178,7 +178,7 @@ create materialized view "public"."news_details" as  WITH vote_counts AS (
           GROUP BY news_summaries.news_id
         )
  SELECT c.id,
-    c.title,
+    n.title,
     c.url,
     c.hot_score,
     c.created_at,
