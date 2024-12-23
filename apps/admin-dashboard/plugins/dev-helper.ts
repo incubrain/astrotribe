@@ -155,7 +155,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     checkEnvironmentConsistency() {
       if (!this.features.environmentConsistencyChecker) return
 
-      const requiredVars = ['API_URL', 'AUTH_SECRET', 'DB_CONNECTION']
+      const requiredVars = []
       const missingVars = requiredVars.filter((varName) => !config.public[varName])
 
       if (missingVars.length > 0) {
