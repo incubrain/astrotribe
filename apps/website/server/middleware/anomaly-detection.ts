@@ -63,6 +63,8 @@ export default defineEventHandler((event: H3Event) => {
   const host = event.node.req.headers.host || 'localhost'
   const path = new URL(url, `http://${host}`).pathname
 
+  logger.info(`Traversing URL: ${url}, Host: ${host}, path: ${path}`)
+
   if (import.meta.prerender) {
     logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return
