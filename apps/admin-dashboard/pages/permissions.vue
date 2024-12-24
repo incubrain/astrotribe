@@ -209,7 +209,7 @@ const roleHierarchy = [
   { role: 'admin', inheritsFrom: 'super_admin' },
   { role: 'moderator', inheritsFrom: 'admin' },
   { role: 'user', inheritsFrom: 'moderator' },
-  { role: 'guest', inheritsFrom: 'user' },
+  { role: 'guest' },
 ]
 
 // Get all ancestor roles including the current role
