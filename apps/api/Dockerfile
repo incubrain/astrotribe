@@ -37,23 +37,13 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/apps/api/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
-# Copy assets
-COPY --from=builder /usr/src/app/apps/api/src/**/*.json ./dist/
-COPY --from=builder /usr/src/app/apps/api/src/**/*.yml ./dist/
-
-# Create a new package.json without type: module
-RUN node -e "const pkg = JSON.parse(require('fs').readFileSync('./package.json')); \
-    delete pkg.type; \
-    require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));"
-
-# Rename main.js to main.cjs for explicit CommonJS
-RUN mv dist/main.js dist/main.cjs && \
-    find dist -type f -name "*.js" -exec sh -c 'mv "$0" "${0%.js}.cjs"' {} \; && \
-    find dist -type f -name "*.cjs" -exec sed -i 's/require([^)]*\.js/&.replace(".js", ".cjs")/g' {} \;
+# Override the type: module in the root directory
+RUN echo '{"type":"commonjs"}' > ./package.json
 
 EXPOSE 3000
 
-# Run with explicit CommonJS entry point
-CMD ["node", "dist/main.cjs"]
+# Force CommonJS mode
+ENV NODE_OPTIONS="--no-warnings --experimental-detect-module"
+
+CMD ["node", "dist/main"]
