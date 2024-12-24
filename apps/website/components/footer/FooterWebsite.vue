@@ -52,31 +52,6 @@ const websiteLinks = [
       },
     ],
   },
-  // {
-  //   key: 'astrotribe',
-  //   label: 'Astrotribe',
-  //   icon: 'material-symbols:groups',
-  //   url: 'projects/astrotribe',
-  //   visible: true,
-  //   disabled: false
-  // },
-  // {
-  //   key: 'events',
-  //   label: 'Events',
-  //   icon: 'material-symbols:event',
-  //   visible: false,
-  //   disabled: false,
-  //   items: [
-  //     {
-  //       key: 'stargazing',
-  //       label: 'Stargazing',
-  //       icon: 'material-symbols:dark-mode',
-  //       url: '/events/stargazing',
-  //       visible: false,
-  //       disabled: false
-  //     }
-  //   ]
-  // },
   {
     key: 'blog',
     label: 'Blog',
