@@ -50,7 +50,7 @@ function fixMigrationSQL(sql: string): string {
 function createBackup(filePath: string): void {
   // Create migrations-backup directory in the same directory as the migration file
   const migrationDir = path.dirname(filePath)
-  const backupDir = path.join(migrationDir, 'migration-backups')
+  const backupDir = path.join(migrationDir, 'migration_backups')
 
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true })
