@@ -37,12 +37,10 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/apps/api/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
-# Copy assets if needed
-COPY --from=builder /usr/src/app/apps/api/src/**/*.json ./dist/
-COPY --from=builder /usr/src/app/apps/api/src/**/*.yml ./dist/
+# Create a package.json that forces CommonJS
+RUN echo '{"type":"commonjs"}' > ./package.json
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/main"]

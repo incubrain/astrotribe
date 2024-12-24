@@ -9,9 +9,6 @@
         "name": "@nestjs/swagger"
       }
     ],
-    "assets": ["**/*.json"],
-    "options": {
-      "module": "ESNext"
-    }
+    "assets": ["**/*.json"]
   }
 }
