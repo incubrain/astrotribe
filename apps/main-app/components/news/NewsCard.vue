@@ -13,6 +13,7 @@ interface NewsCardT {
   title: string
   url: string
   hot_score: number
+  vote_count: number
   created_at: string
   updated_at: string
   categories: {
@@ -90,7 +91,7 @@ const showModal = ref(false)
 const showBookmarkFolders = ref(false)
 const modalContent = ref('')
 const currentVote = ref<number | null>(null)
-const score = ref(props.news.hot_score || 0)
+const votes = ref(props.news.hot_score || 0)
 const bookmarkFolderSelected = ref(null)
 
 const bookmarkStore = useBookmarkStore()
@@ -99,7 +100,7 @@ const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
 const folderStore = useFolderStore()
 
 const displayScore = computed(() => {
-  const currentScore = voteStore.getScore(props.news.id) ?? score.value
+  const currentScore = voteStore.getScore(props.news.id) ?? votes.value
 
   // Only show negative numbers if user has downvoted
   if (currentScore < 0 && currentVote.value !== -1) {
@@ -131,14 +132,14 @@ const readTime = computed(() => {
 onMounted(async () => {
   try {
     if (voteStore.getScore(props.news.id) == null)
-      voteStore.setVotes(props.news.id, props.news.hot_score || 0)
+      voteStore.setVotes(props.news.id, props.news.vote_count || 0)
   } catch (error) {
     console.error('Error fetching vote status:', error)
   }
 })
 
 const handleVoteChange = ({ change }: { voteType: number | null; change: number }) => {
-  score.value += change
+  votes.value += change
 }
 
 const openModal = (feature: string) => {
