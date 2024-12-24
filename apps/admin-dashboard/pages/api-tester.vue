@@ -64,7 +64,9 @@
                     <p class="font-medium">Status: {{ endpoint.response.status }}</p>
                   </div>
                 </PrimeMessage>
-                <div class="whitespace-pre-wrap text-sm p-4 rounded-lg overflow-x-auto max-h-96 overflow-scroll">
+                <div
+                  class="whitespace-pre-wrap text-sm p-4 rounded-lg overflow-x-auto max-h-96 overflow-scroll"
+                >
                   <code>{{ formattedResponse(endpoint.responseStr) }}</code>
                 </div>
               </div>
@@ -110,8 +112,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const env = useRuntimeConfig().public
+
 const notification = useNotification()
-const baseUrl = ref('http://localhost:3030')
+const baseUrl = ref(env.apiUrl ?? 'http://localhost:3030')
 const isLoading = ref(false)
 const logs = ref([])
 const supabase = useSupabaseClient()
