@@ -5,6 +5,7 @@ import * as fs from 'fs'
 import { fileURLToPath } from 'url'
 import chalk from 'chalk'
 import { preMigrationChecks } from './0.pre-migration-checks'
+import { appendCronJobs } from './tasks/extractCronJobs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -87,16 +88,19 @@ async function runMigration() {
       throw new Error(`Migration file for "${migrationName}" not found.`)
     }
 
+    console.log(chalk.blue('🔧 Step 3: Extract and append cron jobs'))
+    await appendCronJobs(migrationFilePath)
+
     // Step 3: Fix the migration file
-    console.log(chalk.blue('🔧 Step 3: Fixing migration file'))
+    console.log(chalk.blue('🔧 Step 4: Fixing migration file'))
     await runCommand(`npx tsx "${fixMigrationScript}" "${migrationFilePath}"`)
 
     // Step 4: Reset the database
-    console.log(chalk.blue('🔄 Step 4: Resetting database'))
+    console.log(chalk.blue('🔄 Step 5: Resetting database'))
     await runCommand('supabase db reset')
 
     // Step 5: Setup the database
-    console.log(chalk.blue('🚀 Step 5: Setting up database'))
+    console.log(chalk.blue('🚀 Step 6: Setting up database'))
     await runCommand('npm run db:setup')
 
     console.log(chalk.green(`\n✨ Migration "${migrationName}" completed successfully! ✨\n`))
