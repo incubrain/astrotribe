@@ -7,6 +7,7 @@ interface InitSteps {
   updatePermissions: boolean
   updateRLSPolicies: boolean
   generatePermissions: boolean
+  refreshViews: boolean
 }
 
 export interface DatabaseConfig {
@@ -56,6 +57,7 @@ export const databaseConfig: DatabaseConfig = {
     updatePermissions: true,
     updateRLSPolicies: true,
     generatePermissions: true,
+    refreshViews: true,
   },
 
   admins: ['e8976b16-02a9-4595-a8a9-6457548eec12', 'e1bf12c6-aad4-4905-bda2-127c027504a3'],
