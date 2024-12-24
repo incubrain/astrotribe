@@ -306,6 +306,14 @@ onBeforeUnmount(async () => {
               {{ summary }}
             </p>
           </div>
+          <div
+            v-else
+            class="flex items-center w-full justify-center gap-2 pb-4 text-xs"
+          >
+            <p class="text-sm overflow-y-auto flex-grow">
+              {{ news.description }}
+            </p>
+          </div>
         </div>
 
         <!-- Back side actions -->
