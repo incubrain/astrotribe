@@ -75,7 +75,7 @@ const handleClick = async (isVisible: boolean, startTime: number) => {
             </div>
 
             <button
-              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all group-hover:scale-105 flex items-center gap-2"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all group-hover:scale-105 flex items-center gap-2 text-nowrap"
               @click="() => handleClick(isVisible, startTime)"
             >
               {{ variant.content.cta_text || 'Learn More' }}

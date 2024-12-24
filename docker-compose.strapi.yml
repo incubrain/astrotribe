@@ -2,8 +2,8 @@ services:
   strapi:
     build:
       context: ./apps/cms
+      image: astrotribe-cms
       dockerfile: Dockerfile.develop
-    image: astrotribe-cms
     container_name: astrotribe-strapi
     volumes:
       - ./apps/cms:/app
