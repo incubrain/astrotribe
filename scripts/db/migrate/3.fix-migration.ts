@@ -1,214 +1,96 @@
-// scripts/fix-migration.ts
-
 import * as fs from 'fs'
+import { promises as fsPromise, constants } from 'fs'
 import * as path from 'path'
-import { fileURLToPath } from 'url'
-import type { Pool } from 'pg'
-import pool from '../client'
-import { SchemaAnalyzer } from '../../schema-analyzer'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-interface Replacement {
-  find: RegExp
+interface Pattern {
+  find: RegExp | string
   replace: string
   description: string
-  category?: string
 }
 
-function generateReplacementPatterns(objNames: string[]): Replacement[] {
-  return [
-    {
-      find: /"([a-zA-Z_][a-zA-Z0-9_]*)"/g,
-      replace: (match, p1) => {
-        if (p1.includes('.') || !isValidIdentifier(p1)) {
-          return match
-        }
-        return `"public"."${p1}"` // Ensure correct quoting
-      },
-    },
-    {
-      find: /\b(ON|SOME|REFERENCES)\s+"?([a-zA-Z_][a-zA-Z0-9_]*)"?/gi,
-      replace: (match, p1) => {
-        if (p1.includes('.') || !isValidIdentifier(p1)) {
-          return match
-        }
-        return `ON "public"."${p1}"`
-      },
-    },
-  ]
-}
+const patterns: Pattern[] = [
+  {
+    find: /\(authorize\(/g,
+    replace: '(public.authorize(',
+    description: 'Add public schema to authorize function calls',
+  },
+]
 
-async function generateReplacements(pool: Pool): Promise<Replacement[]> {
-  const analyzer = new SchemaAnalyzer(pool)
-  const schema = await analyzer.analyzeDatabase({
-    includeTables: true,
-    includeEnums: true,
-    includeFunctions: true,
-    includeTriggers: true,
-  })
+function fixMigrationSQL(sql: string): string {
+  // Split into statements and filter out strapi-related ones
+  const statements = sql
+    .split(';')
+    .map((stmt) => stmt.trim())
+    .filter((stmt) => stmt)
+    .filter((stmt) => {
+      if (stmt.toLowerCase().includes('strapi')) {
+        console.log('Removing strapi-related statement')
+        return false
+      }
+      return true
+    })
 
-  // Collect all object names
-  const objectNames = new Set<string>()
-  schema.forEach((s) => {
-    if (isValidIdentifier(s.name)) {
-      objectNames.add(s.name)
+  // Apply fix patterns to remaining statements
+  const fixedStatements = statements.map((stmt) => {
+    let fixed = stmt
+    for (const pattern of patterns) {
+      const matches = fixed.match(pattern.find)
+      if (matches) {
+        console.log(`Found ${matches.length} instances of: ${pattern.description}`)
+        fixed = fixed.replace(pattern.find, pattern.replace)
+      }
     }
+    return fixed
   })
 
-  // Add table names
-  schema.forEach((s) => objectNames.add(s.name))
-
-  // Add enum names
-  schema.forEach((s) => s.enums?.forEach((e) => objectNames.add(e.name)))
-
-  // Add function names
-  schema.forEach((s) => s.functions?.forEach((f) => objectNames.add(f.name)))
-
-  // Add trigger names
-  schema.forEach((s) => s.triggers?.forEach((t) => objectNames.add(t.name)))
-
-  // Generate patterns for all objects
-  const dynamicReplacements = generateReplacementPatterns(Array.from(objectNames))
-
-  // Add static patterns that shouldn't use the generic pattern
-  const staticReplacements: Replacement[] = [
-    {
-      find: /"([^"]+)"/g,
-      replace: (match, p1) => {
-        // Don't modify already qualified names or composite identifiers
-        if (p1.includes('.') || p1.includes('_public')) return match
-        return `"public.${p1}"`
-      },
-      description: 'Quoted identifiers',
-      category: 'quoted_identifiers',
-    },
-    {
-      find: /nextval\('(?!public\.)(\w+_id_seq)'/g,
-      replace: "nextval('public.$1'",
-      description: 'Sequence references',
-      category: 'sequences',
-    },
-    {
-      find: /EXECUTE\s+FUNCTION\s+(?!public\.)(\w+\()/g,
-      replace: 'EXECUTE FUNCTION public.$1',
-      description: 'Function execution',
-      category: 'functions',
-    },
-  ]
-
-  return [...dynamicReplacements, ...staticReplacements]
+  // Rejoin with proper formatting
+  return fixedStatements.join(';\n\n') + ';\n'
 }
 
-function ensureBackupDirExists(backupDir: string) {
+function createBackup(filePath: string): void {
+  // Create migrations-backup directory in the same directory as the migration file
+  const migrationDir = path.dirname(filePath)
+  const backupDir = path.join(migrationDir, 'migration-backups')
+
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true })
   }
-}
 
-function isValidIdentifier(name: string): boolean {
-  // Don't qualify if already has schema or contains invalid characters
-  return !name.includes('.') && !name.includes('_public') && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)
-}
-
-function backupMigrationFile(filePath: string) {
-  const backupDir = path.join(path.dirname(filePath), 'migration_backups')
-  ensureBackupDirExists(backupDir)
-
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+  // Create backup with timestamp
+  const timestamp = new Date().toISOString().replace(/[:\.]/g, '-')
   const fileName = path.basename(filePath)
-  const backupFileName = `${fileName}.${timestamp}.bak`
-  const backupFilePath = path.join(backupDir, backupFileName)
+  const backupPath = path.join(backupDir, `${fileName}.${timestamp}.bak`)
 
-  fs.copyFileSync(filePath, backupFilePath)
-  console.log(`Backup created: ${backupFilePath}`)
-
-  // Clean up old backups (keep last 10)
-  const backups = fs
-    .readdirSync(backupDir)
-    .filter((file) => file.startsWith(fileName))
-    .map((file) => ({
-      name: file,
-      time: fs.statSync(path.join(backupDir, file)).mtime.getTime(),
-    }))
-    .sort((a, b) => b.time - a.time)
-
-  if (backups.length > 10) {
-    const oldBackups = backups.slice(10)
-    for (const backup of oldBackups) {
-      fs.unlinkSync(path.join(backupDir, backup.name))
-      console.log(`Old backup removed: ${backup.name}`)
-    }
-  }
+  fs.copyFileSync(filePath, backupPath)
+  console.log(`Backup created: ${backupPath}`)
 }
 
-async function performReplacements(filePath: string, replacements: Replacement[]) {
-  let content = fs.readFileSync(filePath, 'utf-8')
-  let changesMade = false
-  const changes: { pattern: string; matches: string[] }[] = []
-
-  for (const { find, replace, description, category } of replacements) {
-    const matches = content.match(find)
-    if (matches) {
-      changes.push({
-        pattern: find.toString(),
-        matches,
-      })
-      content = content.replace(find, replace)
-      console.log(`Applied fix: ${description} (${matches.length} occurrences)`)
-      changesMade = true
-    }
-  }
-
-  content = cleanOutput(content)
-
-  if (changesMade) {
-    // Save changes log
-    const logDir = path.join(path.dirname(filePath), 'migration_logs')
-    ensureBackupDirExists(logDir)
-
-    const log = {
-      timestamp: new Date().toISOString(),
-      file: path.basename(filePath),
-      changes,
-    }
-
-    const logPath = path.join(
-      logDir,
-      `changes_${path.basename(filePath, '.sql')}_${new Date().toISOString().replace(/[:.]/g, '-')}.json`,
-    )
-
-    fs.writeFileSync(logPath, JSON.stringify(log, null, 2))
-    fs.writeFileSync(filePath, content)
-
-    console.log(`Migration file updated: ${filePath}`)
-    console.log(`Changes log saved: ${logPath}`)
-  } else {
-    console.log('No changes were necessary')
-  }
-}
-
-// Main execution
 async function main() {
   const migrationFilePath = process.argv[2]
 
   if (!migrationFilePath) {
-    console.error('Usage: npx ts-node scripts/fix-migration.ts <migration_file.sql>')
+    console.error('Usage: npx ts-node fix-migration.ts <migration_file.sql>')
     process.exit(1)
   }
 
   try {
-    const replacements = await generateReplacements(pool)
+    const content = fs.readFileSync(migrationFilePath, 'utf-8')
 
-    backupMigrationFile(migrationFilePath)
-    await performReplacements(migrationFilePath, replacements)
+    // Create backup in migrations-backup directory
+    createBackup(migrationFilePath)
 
-    await pool.end()
+    // Fix and write the content
+    const fixedContent = fixMigrationSQL(content)
+    fs.writeFileSync(migrationFilePath, fixedContent)
+    console.log(`Fixed migration written to: ${migrationFilePath}`)
   } catch (error) {
     console.error('Error processing migration file:', error)
     process.exit(1)
   }
 }
 
-main()
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main()
+}
+
+export { fixMigrationSQL, patterns }
