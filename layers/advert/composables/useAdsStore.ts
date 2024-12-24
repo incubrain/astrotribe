@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 import type { AdPackage, Ad } from '~/types/referrals'
 
 export const useAdsStore = defineStore('ads', () => {
+  const MIN_POST_GAP = 7
+  const MAX_POST_GAP = 18
+
   // State
   const isLoading = ref(true)
   const totalProcessedItems = ref(0)
@@ -10,6 +13,28 @@ export const useAdsStore = defineStore('ads', () => {
   const nextAdPosition = ref(0)
   const adPackages = ref<AdPackage[]>([])
   const activeAds = ref<Ad[]>([])
+
+  // Helper function to shuffle array
+  function shuffleArray<T>(array: T[]): T[] {
+    const newArray = [...array]
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[newArray[i], newArray[j]] = [newArray[j], newArray[i]]
+    }
+    return newArray
+  }
+
+  // Get next ad from the queue, reshuffling if necessary
+  const currentAdQueue = ref<Ad[]>([])
+  function getNextAd(): Ad {
+    if (currentAdQueue.value.length === 0) {
+      // We've used all ads, create a new shuffled queue
+      currentAdQueue.value = shuffleArray(feedAds.value)
+      console.log('Reshuffled ad queue:', currentAdQueue.value)
+    }
+
+    return currentAdQueue.value.shift()!
+  }
 
   // Getters
   const feedAds = computed(() => {
@@ -64,15 +89,6 @@ export const useAdsStore = defineStore('ads', () => {
     }
   }
 
-  function resetAdTracking() {
-    lastAdPosition.value = 0
-    nextAdPosition.value = 0
-    totalProcessedItems.value = 0
-  }
-
-  const MIN_POST_GAP = 7
-  const MAX_POST_GAP = 18
-
   function getNextAdPosition(currentPosition: number, adPackage: AdPackage) {
     const gap = Math.floor(Math.random() * (MAX_POST_GAP - MIN_POST_GAP + 1) + MIN_POST_GAP)
     return currentPosition + gap
@@ -88,32 +104,34 @@ export const useAdsStore = defineStore('ads', () => {
       resetAdTracking()
     }
 
+    // Initialize ad queue if empty
+    if (currentAdQueue.value.length === 0 && totalProcessedItems.value === 0) {
+      currentAdQueue.value = shuffleArray(availableFeedAds)
+      console.log('Initial ad queue:', currentAdQueue.value)
+    }
+
     if (totalProcessedItems.value === 0) {
-      const firstAdPackage = adPackages.value.find(
-        (pkg) => pkg.id === availableFeedAds[0].package_id,
-      )!
-      console.log('First ad package:', firstAdPackage)
+      const firstAd = currentAdQueue.value[0]
+      const firstAdPackage = adPackages.value.find((pkg) => pkg.id === firstAd.package_id)!
       nextAdPosition.value = getNextAdPosition(0, firstAdPackage)
     }
 
-    let currentAdIndex = 0
     const adPositions: Array<{ position: number; ad: Ad }> = []
 
     // Calculate positions for new ads
     while (nextAdPosition.value < result.length + totalProcessedItems.value) {
-      const currentAd = availableFeedAds[currentAdIndex]
-      const adPackage = adPackages.value.find((pkg) => pkg.id === currentAd.package_id)!
+      const nextAd = getNextAd()
+      const adPackage = adPackages.value.find((pkg) => pkg.id === nextAd.package_id)!
       const adjustedPosition = nextAdPosition.value - totalProcessedItems.value
 
       if (adjustedPosition < result.length) {
         adPositions.push({
           position: adjustedPosition,
-          ad: currentAd,
+          ad: nextAd,
         })
       }
 
       nextAdPosition.value = getNextAdPosition(nextAdPosition.value, adPackage)
-      currentAdIndex = (currentAdIndex + 1) % availableFeedAds.length
     }
 
     // Insert ads from back to front
@@ -135,7 +153,6 @@ export const useAdsStore = defineStore('ads', () => {
           active: ad.active,
         },
         sortIndex: globalPosition,
-        adIndex: currentAdIndex,
       })
     }
 
@@ -143,9 +160,20 @@ export const useAdsStore = defineStore('ads', () => {
       totalProcessedItems.value += result.length
     }
 
-    console.log('Integrated ads into feed:', result, availableFeedAds, adPositions)
+    console.log('Integrated ads into feed:', {
+      resultLength: result.length,
+      remainingAdsInQueue: currentAdQueue.value.length,
+      adPositions,
+    })
 
     return result
+  }
+
+  function resetAdTracking() {
+    lastAdPosition.value = 0
+    nextAdPosition.value = 0
+    totalProcessedItems.value = 0
+    currentAdQueue.value = [] // This will trigger a reshuffle on next use
   }
 
   // Initialize
@@ -163,6 +191,7 @@ export const useAdsStore = defineStore('ads', () => {
     // Getters
     topBannerAd,
     feedAds,
+    currentAdQueue,
 
     // Actions
     initialize,

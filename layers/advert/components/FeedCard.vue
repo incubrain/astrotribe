@@ -7,7 +7,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { trackInteraction } = useAdsStore()
+const ads = useAdsStore()
+const { currentAdQueue } = storeToRefs(ads)
+
+
 const isFlipped = ref(false)
 const startTime = ref(Date.now())
 const flipStartTime = ref(0)
@@ -29,14 +32,14 @@ const handleClick = async (event: MouseEvent, isVisible: boolean, startTime: num
     flipStartTime.value = Date.now()
   } else if (flipStartTime.value > 0) {
     const flipEngagementTime = (Date.now() - flipStartTime.value) / 1000
-    await trackInteraction(variant.value.id, 'view', flipEngagementTime)
+    await ads.trackInteraction(variant.value.id, 'view', flipEngagementTime)
   }
 }
 
 const handleSourceVisit = async (isVisible: boolean, startTime: number) => {
   if (!isVisible) return
   const engagementTime = (Date.now() - startTime) / 1000
-  await trackInteraction(variant.value.id, 'click', engagementTime)
+  await ads.trackInteraction(variant.value.id, 'click', engagementTime)
 }
 
 const handleMouseEnter = () => {
@@ -49,20 +52,20 @@ const handleMouseLeave = () => {
   if (flipStartTime.value > 0) {
     // Track engagement time when mouse leaves
     const flipEngagementTime = (Date.now() - flipStartTime.value) / 1000
-    trackInteraction(variant.value.id, 'view', flipEngagementTime)
+    ads.trackInteraction(variant.value.id, 'view', flipEngagementTime)
     flipStartTime.value = 0
   }
 }
 
 // Track initial view
 onMounted(() => {
-  trackInteraction(variant.value.id, 'view')
+  ads.trackInteraction(variant.value.id, 'view')
 })
 
 // Track final engagement time when component is unmounted
 onBeforeUnmount(() => {
   const totalEngagementTime = (Date.now() - startTime.value) / 1000
-  trackInteraction(variant.value.id, 'view', totalEngagementTime)
+  ads.trackInteraction(variant.value.id, 'view', totalEngagementTime)
 })
 </script>
 
@@ -90,6 +93,7 @@ onBeforeUnmount(() => {
         class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border-2 border-blue-500/30 rounded-lg"
         :class="[{ 'rotate-y-180': isFlipped }]"
       >
+        test: {{ currentAdQueue }}
         <!-- Front of card -->
         <div class="absolute w-full h-full backface-hidden">
           <div class="p-4 flex flex-col justify-between h-full">
