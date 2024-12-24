@@ -37,13 +37,12 @@ WORKDIR /app
 COPY --from=builder /usr/src/app/apps/api/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
 
-# Override the type: module in the root directory
-RUN echo '{"type":"commonjs"}' > ./package.json
+# Copy assets if needed
+COPY --from=builder /usr/src/app/apps/api/src/**/*.json ./dist/
+COPY --from=builder /usr/src/app/apps/api/src/**/*.yml ./dist/
 
 EXPOSE 3000
 
-# Force CommonJS mode
-ENV NODE_OPTIONS="--no-warnings --experimental-detect-module"
-
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]

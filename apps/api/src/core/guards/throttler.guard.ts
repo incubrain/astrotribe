@@ -2,7 +2,7 @@
 import { ExecutionContext } from '@nestjs/common'
 import { Injectable, SetMetadata } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { ThrottlerModuleOptions, ThrottlerRequest, ThrottlerStorage } from '@nestjs/throttler'
+import { type ThrottlerModuleOptions, ThrottlerRequest, ThrottlerStorage } from '@nestjs/throttler'
 import { ThrottlerGuard } from '@nestjs/throttler'
 import { CustomLogger } from '@core/logger/custom.logger'
 
