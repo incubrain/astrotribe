@@ -293,7 +293,7 @@ onBeforeUnmount(async () => {
         <!-- Back side content -->
         <div class="flex-grow overflow-hidden flex flex-col">
           <h3
-            class="text-xl font-bold mb-4 line-clamp-3"
+            class="text-xl font-bold mb-4 line-clamp-1"
             :title="news.title"
           >
             {{ news.title }}</h3
