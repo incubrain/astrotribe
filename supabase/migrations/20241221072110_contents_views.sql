@@ -38,8 +38,6 @@ revoke select on table "public"."role_permissions_materialized" from "authentica
 
 alter table "public"."news_summaries" drop constraint "news_summaries_complexity_level_check";
 
-alter table "public"."research_embeddings" drop constraint "research_embeddings_research_fk";
-
 drop index if exists "public"."idx_news_score";
 
 
@@ -61,7 +59,8 @@ create table "public"."scoring_weights" (
 
 alter table "public"."scoring_weights" enable row level security;
 
-alter table "public"."feedbacks" add column "rating" integer default 0;
+ALTER TABLE "public"."feedbacks" 
+ADD COLUMN IF NOT EXISTS "rating" integer default 0;
 
 alter table "public"."news" drop column "score";
 

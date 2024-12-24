@@ -10,6 +10,7 @@ import { enableRLSOnAllTables } from './enable-rls'
 import { updateDatabasePermissions } from './upsert-permissions'
 import { runSeeders } from './seeders/run-seeders'
 import { updateRLSPolicies } from './create-rls-policies'
+import { refreshDatabaseViews } from './refresh-views'
 
 async function main() {
   console.log(chalk.blue('🚀 Starting database initialization...'))
@@ -67,11 +68,25 @@ async function main() {
       console.log(chalk.green('✓ RLS policies updated'))
     }
 
+    // Refresh database views
+
+    if (databaseConfig.steps.refreshViews) {
+      // Add this to your config
+      console.log(chalk.blue('\n🔄 Refreshing database views...'))
+      const viewsRefreshed = await refreshDatabaseViews(client)
+      if (!viewsRefreshed) {
+        throw new Error('Failed to refresh views')
+      }
+      console.log(chalk.green('✓ Database views refreshed'))
+    }
+
     console.log(chalk.green('\n✨ Database initialization completed successfully'))
     process.exit(0)
   } catch (error) {
     console.error(chalk.red('\n❌ Error during database initialization:'), error)
     process.exit(1)
+  } finally {
+    await client.end()
   }
 }
 

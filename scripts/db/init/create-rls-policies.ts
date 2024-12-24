@@ -133,7 +133,5 @@ export async function updateRLSPolicies(pool: Pool): Promise<boolean> {
   } catch (error) {
     console.error(chalk.red('Error updating RLS policies:'), error)
     return false
-  } finally {
-    await pool.end()
   }
 }
