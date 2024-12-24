@@ -286,17 +286,66 @@ const testEndpoint = async (endpoint) => {
   }
 }
 
-const formattedResponse = (output: any) => {
-  try {
-    // First remove any extra backslashes and newlines
-    const cleanStr = output.replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\/g, '')
+const formattedResponse = (output: any): string => {
+  console.info('RAW_OUTPUT', output)
+  // If output is already an object, stringify it
+  if (typeof output === 'object' && output !== null) {
+    return JSON.stringify(output, null, 2)
+  }
 
-    // Parse and re-stringify with proper formatting
+  // Ensure we're working with a string
+  const str = String(output)
+
+  try {
+    // Step 1: Try parsing as-is first
+    try {
+      const parsed = JSON.parse(str)
+      return JSON.stringify(parsed, null, 2)
+    } catch (e) {
+      // Continue to cleaning steps if direct parse fails
+    }
+
+    // Step 2: Clean the string
+    const cleanStr = str
+      // Fix newlines
+      .replace(/\\n/g, '\n')
+      // Fix quotes
+      .replace(/\\"/g, '"')
+      // Remove extra backslashes before quotes
+      .replace(/\\+"/g, '"')
+      // Remove standalone backslashes
+      .replace(/([^\\])\\([^"\\])/g, '$1$2')
+      // Fix double escaped unicode
+      .replace(/\\\\u/g, '\\u')
+      // Remove any remaining consecutive backslashes
+      .replace(/\\+/g, '\\')
+      // Trim whitespace
+      .trim()
+
+    // Step 3: Handle potential leading/trailing quotes
+    if (cleanStr.startsWith('"') && cleanStr.endsWith('"')) {
+      try {
+        // If it's a quoted string, try parsing the inner content
+        const innerContent = cleanStr.slice(1, -1)
+        const parsed = JSON.parse(innerContent)
+        return JSON.stringify(parsed, null, 2)
+      } catch (e) {
+        // If inner parsing fails, try the whole string
+      }
+    }
+
+    // Step 4: Final parse attempt
     const parsed = JSON.parse(cleanStr)
     return JSON.stringify(parsed, null, 2)
   } catch (e) {
-    console.error('JSON parsing error:', e)
-    return output // Fallback to raw string if parsing fails
+    console.error('JSON parsing error:', {
+      error: e,
+      originalString: str.slice(0, 100) + (str.length > 100 ? '...' : ''),
+      attemptedClean: cleanStr?.slice(0, 100) + (cleanStr?.length > 100 ? '...' : ''),
+    })
+
+    // Return original string if all parsing attempts fail
+    return str
   }
 }
 </script>
