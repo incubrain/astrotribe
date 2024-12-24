@@ -6,23 +6,26 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
-      strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL,
       formbricksEnvironment: process.env.NUXT_PUBLIC_FORMBRICKS_ENVIRONMENT,
       formbricksHost: process.env.NUXT_PUBLIC_FORMBRICKS_HOST,
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
       supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+      // App URLS
+      strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL,
       authURL: process.env.NUXT_PUBLIC_AUTH_URL,
       loginURL: process.env.NUXT_PUBLIC_LOGIN_URL,
       appURL: process.env.NUXT_PUBLIC_APP_URL,
+      apiURL: process.env.NUXT_PUBLIC_API_URL,
       adminUrl: process.env.NUXT_PUBLIC_ADMIN_URL,
       monitoringUrl: process.env.NUXT_PUBLIC_MONITORING_URL,
       websiteUrl: process.env.NUXT_PUBLIC_WEBSITE_URL,
+      scraperUrl: process.env.NUXT_PUBLIC_SCRAPER_URL,
+      //
       nodeEnv: process.env.NODE_ENV,
       logLevel: process.env.NUXT_PUBLIC_LOG_LEVEL,
       posthogKey: process.env.NUXT_PUBLIC_POSTHOG_KEY,
       posthogUrl: process.env.NUXT_PUBLIC_POSTHOG_URL,
       studioTokens: process.env.NUXT_PUBLIC_STUDIO_TOKENS,
-      scraperUrl: process.env.NUXT_PUBLIC_SCRAPER_URL,
       devHelper: {
         enabled: true,
         features: {
