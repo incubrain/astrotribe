@@ -9,7 +9,7 @@ interface SponsoredAd {
 }
 
 const { store, loadMore } = useSelectData<News>('news_details', {
-  orderBy: { column: 'created_at', ascending: false },
+  orderBy: { column: 'published_at', ascending: false },
   pagination: {
     page: 1,
     limit: 21,
