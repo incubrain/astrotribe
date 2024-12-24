@@ -10,7 +10,7 @@ const projects = [
               officials, engineers, architects, and space policy representatives.`,
     date: '24th-26th November 2023',
     image: {
-      src: 'conference/photos/IDSPAC23-ruchira-huchgol.jpg',
+      src: '/conference/photos/IDSPAC23-ruchira-huchgol.jpg',
       description: 'Featured image for the Dark Sky Conservation India Conference',
     },
     slug: '/projects/dark-sky-conference-2023',
@@ -22,7 +22,7 @@ const projects = [
   <div>
     <CommonHero
       :img="{
-        src: 'images/events/astrotribe-paid-events-shweta-hosting-event.png',
+        src: '/images/events/astrotribe-paid-events-shweta-hosting-event.png',
         alt: `AstronEra Rocket Launch Hero Image`,
         width: 1080,
         height: 720,

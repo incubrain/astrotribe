@@ -43,7 +43,6 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
-const { clearError } = useError()
 
 const handleRetry = () => {
   if (props.error?.retryAction && typeof props.error.retryAction === 'function') {
