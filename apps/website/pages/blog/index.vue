@@ -26,8 +26,8 @@
             }"
           />
         </template>
-        <NuxtLink to="/blog/all/page-1">
-          <PrimeButton to="/blog/all/page-1"> All Articles </PrimeButton>
+        <NuxtLink to="/blog/category-all/page-1">
+          <PrimeButton to="/blog/category-all/page-1"> All Articles </PrimeButton>
         </NuxtLink>
       </BlogShowcase>
       <!-- <BlogNews :news-category="'all'" /> -->

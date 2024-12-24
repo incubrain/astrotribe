@@ -33,7 +33,7 @@ async function generateRoutes() {
     const totalPages = Math.ceil(totalCount / pageSize)
 
     for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-      routes.push(`/blog/${category}/page-${pageNum}`)
+      routes.push(`/blog/category-${category}/page-${pageNum}`)
     }
   }
 

@@ -48,15 +48,15 @@ const { data, pending, error } = await useAsyncData(
 
       return article
     } catch (e) {
-      console.error('Error fetching article:', e)
+      console.error('Error fetching article in function:', e)
       throw e
     }
   },
   { server: true },
 )
 
-if (error) {
-  console.error('Error fetching article:', error)
+if (error.value) {
+  console.error('Error fetching article outside function:', error)
   throw error
 }
 
