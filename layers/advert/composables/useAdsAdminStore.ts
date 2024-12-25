@@ -41,8 +41,8 @@ export interface AdVariantMetrics {
 
 export const useAdsAdminStore = defineStore('adsAdmin', () => {
   // State
-  const overview = ref<AdMetrics | null>(null)
-  const trends = ref<Record<string, AdMetrics[]>>({})
+  const overview = ref<AdMetrics[]>([])
+  const trends = ref<Record<string, DailyMetrics[]>>({})
   const variants = ref<Record<string, AdVariantMetrics[]>>({})
   const isLoading = ref(false)
   const error = ref<string | null>(null)
