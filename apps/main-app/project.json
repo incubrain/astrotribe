@@ -5,6 +5,12 @@
   "sourceRoot": "packages/main-app",
   "// targets": "to see all targets run: nx show project main-app --web",
   "targets": {
+    "build:libs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build:libs"
+      }
+    },
     "build:base": {
       "executor": "nx:run-commands",
       "options": {
@@ -35,7 +41,7 @@
       "options": {
         "command": "cd apps/main-app && npx nuxi build"
       },
-      "dependsOn": ["build:base", "build:auth", "build:advert", "build:referral"]
+      "dependsOn": ["build:base", "build:auth", "build:advert", "build:referral", "build:libs"]
     },
     "serve": {
       "executor": "nx:run-commands",
