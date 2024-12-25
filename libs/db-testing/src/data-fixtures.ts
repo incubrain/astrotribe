@@ -203,7 +203,6 @@ export {
   createContentTagData,
   createBookmarkData,
   createCommentData,
-  userFollowersData,
   createFollowData,
   createVoteData,
   feedbacksData,

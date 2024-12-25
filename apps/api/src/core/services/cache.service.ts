@@ -10,7 +10,7 @@ export class CacheService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private logger: CustomLogger,
   ) {
-    this.logger.setContext('CacheService')
+    this.logger.setDomain('storage')
   }
 
   async get<T>(key: string): Promise<T | undefined> {

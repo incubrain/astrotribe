@@ -13,7 +13,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
   constructor(private logger: CustomLogger) {
-    this.logger.setContext('ValidationPipe')
+    this.logger.setDomain('validation')
   }
 
   async transform(value: any, { metatype }: ArgumentMetadata) {

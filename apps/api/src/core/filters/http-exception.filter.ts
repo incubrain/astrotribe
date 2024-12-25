@@ -7,7 +7,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private logger: CustomLogger) {
-    this.logger.setContext('HttpExceptionFilter')
+    this.logger.setDomain('filter')
   }
 
   catch(exception: HttpException, host: ArgumentsHost) {

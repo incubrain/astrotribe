@@ -14,7 +14,7 @@ import { MonitoringService } from './services/monitoring.service'
     CoreModule,
     TerminusModule,
     HttpModule,
-    createDomainModule('Monitoring', {
+    createDomainModule('monitoring', {
       requiresAuth: true,
       requiresCompany: false,
     }),

@@ -6,9 +6,7 @@ import { CustomLogger } from '../logger/custom.logger'
   providers: [
     {
       provide: CustomLogger,
-      useFactory: () => {
-        return new CustomLogger()
-      },
+      useValue: new CustomLogger(),
     },
   ],
   exports: [CustomLogger],

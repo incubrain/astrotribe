@@ -14,14 +14,38 @@
     }
   },
   "targets": {
-    "build": {
+    "build:cjs": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/logger/dist",
-        "main": "libs/logger/src/index.ts",
-        "tsConfig": "libs/logger/tsconfig.lib.json",
+        "outputPath": "libs/logger/dist/cjs",
+        "main": "libs/logger/index.ts",
+        "tsConfig": "libs/logger/tsconfig.cjs.json",
         "assets": ["libs/logger/*.md"]
+      }
+    },
+    "build:esm": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/logger/dist/esm",
+        "main": "libs/logger/index.ts",
+        "tsConfig": "libs/logger/tsconfig.esm.json",
+        "assets": ["libs/logger/*.md"]
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx run logger:build:cjs"
+          },
+          {
+            "command": "nx run logger:build:esm"
+          }
+        ],
+        "parallel": false
       }
     }
   }

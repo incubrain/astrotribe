@@ -49,7 +49,7 @@ import { NewsSummariesService } from '@content/services/news-summaries.service'
     PrismaModule,
     PermissionModule,
     CoreModule,
-    createDomainModule('Content', {
+    createDomainModule('content', {
       requiresAuth: true,
       requiresCompany: false,
     }),

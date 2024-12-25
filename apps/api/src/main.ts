@@ -19,7 +19,7 @@ import { AppModule } from './app.module'
 async function bootstrap() {
   // Create the app with custom logger
   const app = await NestFactory.create(AppModule, {
-    logger: new CustomLogger(),
+    logger: new CustomLogger('NestBootstrap'),
   })
 
   const configService = app.get(ConfigService)
