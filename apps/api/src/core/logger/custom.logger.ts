@@ -8,8 +8,8 @@ export class CustomLogger extends ConsoleLogger implements LoggerService {
   constructor(context?: string) {
     super(context)
     // Optionally set the service & domain here or in your Modules
-    this.centralLogger.setServiceName(Service.AUTH_SERVICE)
-    this.centralLogger.setDomain('auth')
+    this.centralLogger.setServiceName(Service.API)
+    this.centralLogger.setDomain('logging')
   }
 
   // Override log calls
