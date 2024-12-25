@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     return {
       voteType: data?.vote_type || null,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get vote error:', error)
     throw createError({
       statusCode: 500,

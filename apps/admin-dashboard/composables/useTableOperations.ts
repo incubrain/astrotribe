@@ -57,7 +57,7 @@ export function useTableOperations(data: Ref<any[]>, tableName: string) {
       const result = await store.insertRecord(tableName, newRow)
       data.value = [...data.value, result]
       logger.info('Row added successfully', { tableName })
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error adding row:', { error })
     }
   }
@@ -69,7 +69,7 @@ export function useTableOperations(data: Ref<any[]>, tableName: string) {
       data.value[event.index] = result
       logger.info('Row updated successfully', { tableName })
       return true
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error updating row:', { error })
       return false
     }
@@ -105,7 +105,7 @@ export function useTableOperations(data: Ref<any[]>, tableName: string) {
       data.value = freshData
       clearSelection()
       logger.info('Data refreshed successfully', { tableName })
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error refreshing data:', { error })
     } finally {
       loading.value = false

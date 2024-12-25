@@ -119,7 +119,7 @@ export async function updateRLSPolicies(pool: Pool): Promise<boolean> {
             FOR DELETE 
             USING (public.authorize('${tablename}.delete') AND ${deleteCondition})
           `)
-        } catch (error) {
+        } catch (error: any) {
           console.error(chalk.red(`Error processing table ${tablename}:`), error)
           throw error // Re-throw to stop the process
         }
@@ -130,7 +130,7 @@ export async function updateRLSPolicies(pool: Pool): Promise<boolean> {
     } finally {
       client.release()
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error updating RLS policies:'), error)
     return false
   }

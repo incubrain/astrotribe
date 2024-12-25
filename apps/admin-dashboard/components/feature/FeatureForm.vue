@@ -45,7 +45,7 @@ const handleSubmit = async () => {
     })
 
     emit('close')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting feature:', error)
   } finally {
     isSubmitting.value = false

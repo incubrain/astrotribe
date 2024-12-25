@@ -6,7 +6,7 @@ export class AuthUtils {
   static verifyToken(token: string, secret: string): any {
     try {
       return verify(token, secret)
-    } catch (error) {
+    } catch (error: any) {
       throw new UnauthorizedException('Invalid token')
     }
   }

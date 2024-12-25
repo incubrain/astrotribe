@@ -69,10 +69,10 @@ class DocVersionTracker {
     docPath: string,
     content: string,
   ): Promise<{
-      isNew: boolean
-      isUpdated: boolean
-      docMeta: DocMetadata
-    }> {
+    isNew: boolean
+    isUpdated: boolean
+    docMeta: DocMetadata
+  }> {
     const currentHash = this.calculateHash(content)
     const existing = this.metadata.get(docPath)
 
@@ -289,11 +289,11 @@ class NuxtDocsManager {
   ): Promise<any> {
     const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`
     const response = await axios.get(url, {
-      headers: process.env.GH_PERSONAL_TOKEN ?
-        {
-          Authorization: `token ${process.env.GH_PERSONAL_TOKEN}`,
-        } :
-        {},
+      headers: process.env.GH_PERSONAL_TOKEN
+        ? {
+            Authorization: `token ${process.env.GH_PERSONAL_TOKEN}`,
+          }
+        : {},
     })
     return response.data
   }
@@ -343,7 +343,7 @@ class NuxtDocsManager {
         await fs.writeFile(filePath, processedContent)
         await this.processDocument(targetPath, processedContent)
         console.log(chalk.green(`✓ Downloaded: ${targetPath}`))
-      } catch (error) {
+      } catch (error: any) {
         console.error(chalk.red(`✗ Error processing ${file.path}:`, error.message))
       }
     }
@@ -382,7 +382,7 @@ class NuxtDocsManager {
         const frontMatter = yaml.load(match[1]) as Record<string, any>
         const cleanContent = content.replace(frontMatterRegex, '').trim()
         return { frontMatter, content: cleanContent }
-      } catch (error) {
+      } catch (error: any) {
         console.warn(chalk.yellow(`Warning: Failed to parse front matter: ${error.message}`))
         return { frontMatter: {}, content }
       }
@@ -492,7 +492,7 @@ class NuxtDocsManager {
         try {
           const content = await fs.readFile(localPath, 'utf-8')
           return this.processDocument(githubPath, content)
-        } catch (error) {
+        } catch (error: any) {
           console.error(chalk.yellow(`Warning: Could not read file ${localPath}`))
           return null
         }
@@ -562,7 +562,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
           throw new Error(`Unknown command: ${command}`)
       }
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.error(chalk.red(`Error: ${error.message}`))
       process.exit(1)
     })

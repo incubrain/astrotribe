@@ -45,7 +45,7 @@ const updateActualCategory = async (id: number, category: string) => {
         summary: 'Category updated',
         message: 'The category has been successfully updated.',
       })
-    } catch (error) {
+    } catch (error: any) {
       notification.error({
         summary: 'Update failed',
         message: 'Failed to update the category. Please try again.',
@@ -82,7 +82,7 @@ const deleteUrls = async () => {
     })
     // Refresh data after operation
     await refresh()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error deleting URLs:', error)
   }
 }
@@ -97,7 +97,7 @@ const addToTrainingData = async (rows) => {
     })
     // Optionally refresh data after operation
     await refresh()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error adding to training data:', error)
   }
 }
@@ -118,7 +118,7 @@ const selectUrls = async () => {
     })
     fetchedUrls.value = data.data // Assuming the response structure matches
     console.log('Training Urls', fetchedUrls.value)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching URLs:', error)
   }
 }

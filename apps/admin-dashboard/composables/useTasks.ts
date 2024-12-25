@@ -48,7 +48,7 @@ export default function useTasks() {
       } else {
         throw new Error(response.message)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching goals:', error)
       throw error
     }
@@ -139,7 +139,7 @@ export default function useTasks() {
       } else {
         throw new Error(response.message)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error ${action}ing goal:`, error)
       throw error
     }
@@ -172,7 +172,7 @@ export default function useTasks() {
       }
       const data = await response.json()
       milestones.value = data
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching milestones:', error)
       toast.error({ message: 'Failed to fetch milestones', summary: 'Error' })
     }

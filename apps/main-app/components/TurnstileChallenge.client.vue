@@ -54,13 +54,13 @@ const onSuccess = async (token) => {
       console.error('Turnstile validation failed')
       emit('error', new Error('Validation failed'))
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error validating Turnstile token:', error)
     emit('error', error)
   }
 }
 
-const onError = (error) => {
+const onError = (error: any) => {
   console.error('Turnstile error:', error)
   emit('error', error)
 }

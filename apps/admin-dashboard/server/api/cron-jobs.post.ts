@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error in scraper request: ${error}`)
     throw createError({
       statusCode: 500,

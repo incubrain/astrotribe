@@ -40,7 +40,7 @@ async function generateRoutes() {
   fs.writeFileSync('prerender-routes.json', JSON.stringify(routes, null, 2))
 }
 
-generateRoutes().catch((error) => {
-  console.error(error)
+generateRoutes().catch((error: any) => {
+  console.error(error: any)
   process.exit(1)
 })

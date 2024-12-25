@@ -46,7 +46,7 @@ export class ComplexityScanner implements ScannerPlugin {
         success: true,
         data: complexityIssues,
       }
-    } catch (error) {
+    } catch (error: any) {
       return {
         pluginName: this.name,
         success: false,

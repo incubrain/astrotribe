@@ -41,7 +41,7 @@ export const useRoleOverride = () => {
       }
 
       return session
-    } catch (error) {
+    } catch (error: any) {
       console.error('Role update failed:', error)
       throw error
     } finally {

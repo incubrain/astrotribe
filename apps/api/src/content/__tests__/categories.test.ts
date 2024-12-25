@@ -71,7 +71,7 @@ describe('CategoryController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      categoriesService.findAllCategories.mockRejectedValue(error)
+      categoriesService.findAllCategories.mockRejectedValue(error: any)
 
       const result = await controller.findAllCategories({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -97,7 +97,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaModel.findUnique.mockRejectedValue(error)
+      mockPrismaModel.findUnique.mockRejectedValue(error: any)
 
       const result = await controller.findOneCategories(id)
       expect(result).toEqual(createErrorResponse('Not found'))
@@ -119,7 +119,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const createData = createSampleCategory()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error)
+      mockPrismaModel.create.mockRejectedValue(error: any)
 
       const result = await controller.createCategories(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -148,7 +148,7 @@ describe('CategoryController', () => {
         name: faker.commerce.department(),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error)
+      mockPrismaModel.update.mockRejectedValue(error: any)
 
       const result = await controller.updateCategories(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -170,7 +170,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaModel.delete.mockRejectedValue(error)
+      mockPrismaModel.delete.mockRejectedValue(error: any)
 
       const result = await controller.removeCategories(id)
       expect(result).toEqual(createErrorResponse('Delete failed'))

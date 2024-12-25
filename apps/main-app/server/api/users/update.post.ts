@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
       status: 500,
       message: 'Something went wrong',
     }
-  } catch (error) {
+  } catch (error: any) {
     return {
       error,
       data: [],

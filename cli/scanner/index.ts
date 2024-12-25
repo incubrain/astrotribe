@@ -43,7 +43,7 @@ export async function runScan(options: {
     }
 
     return results
-  } catch (error) {
+  } catch (error: any) {
     console.error('Scan failed:', error)
     throw error
   }

@@ -45,7 +45,7 @@ export class ContentController extends BaseController {
   async getAllContent(@Query() query: PaginatedQuery) {
     try {
       return await this.contentService.getAllContent(query)
-    } catch (error) {
+    } catch (error: any) {
       throw new HttpException(
         error.message || 'An error occurred',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -61,8 +61,8 @@ export class ContentController extends BaseController {
   ) {
     try {
       return await super.findOne(id, include)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -71,8 +71,8 @@ export class ContentController extends BaseController {
   async createContents(@Body() data: Prisma.contentsCreateInput) {
     try {
       return await super.create(data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -84,8 +84,8 @@ export class ContentController extends BaseController {
   ) {
     try {
       return await super.update(id, data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -94,8 +94,8 @@ export class ContentController extends BaseController {
   async removeContents(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await super.remove(id)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

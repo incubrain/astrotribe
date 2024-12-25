@@ -13,7 +13,7 @@ const loadFiles = async () => {
   try {
     const response = await $fetch('/api/list-files')
     files.value = response.files
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error loading files:', error)
   }
 }
@@ -26,7 +26,7 @@ const viewFile = async (fileName: string) => {
     })
     selectedFile.value = fileName
     fileContent.value = response.content
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error viewing file:', error)
     fileContent.value = 'Error loading file content'
   }

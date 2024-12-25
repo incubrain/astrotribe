@@ -38,7 +38,7 @@ async function handlePasswordReset() {
         message: 'Password successfully reset. Please log in with your new password.',
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     toast.error({
       summary: 'Reset Failed',
       message: error.message,

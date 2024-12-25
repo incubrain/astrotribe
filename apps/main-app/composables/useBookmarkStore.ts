@@ -106,7 +106,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
 
       console.log('Old counts:', oldCounts)
       console.log('New counts:', folderBookmarkCounts.value)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch bookmark counts:', error)
     }
   }
@@ -337,7 +337,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
       setTimeout(() => {
         showBookmarkFeedback.value = false
       }, 1000)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error handling bookmark:', error)
     }
   }

@@ -28,7 +28,7 @@ const handleVote = async (featureId: string, voteType: 1 | -1) => {
     }
     // After successful vote, hide the feature
     featureStore.hideFeature(featureId)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error voting on feature:', error)
   }
 }

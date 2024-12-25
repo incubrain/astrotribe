@@ -40,7 +40,7 @@ export class BundleAnalyzerPlugin implements ScannerPlugin {
         success: true,
         data: result,
       }
-    } catch (error) {
+    } catch (error: any) {
       return {
         pluginName: this.name,
         success: false,

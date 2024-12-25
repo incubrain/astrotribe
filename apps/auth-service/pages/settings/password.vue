@@ -76,7 +76,7 @@ async function handleUpdatePassword() {
     form.confirmNewPassword = ''
 
     navigateTo(appUrl, { external: true })
-  } catch (error) {
+  } catch (error: any) {
     toast.error({
       summary: 'Update Failed',
       message: error.message,

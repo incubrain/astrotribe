@@ -163,8 +163,8 @@ const main = async () => {
   try {
     await runDockerBuildWithLogs({ project })
     await runDockerContainerWithEnv({ project })
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    console.error(error: any)
     process.exit(1)
   }
 }

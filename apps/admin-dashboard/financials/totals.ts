@@ -269,7 +269,7 @@ export function calculateBusinessMetrics(params: BusinessMetricsConfig): AllData
     // Calculate new MAU
     let mau = Math.ceil(
       previousMonth.mau.total * (1 + params.PROJECTION.MONTHLY_GROWTH_RATE) +
-      params.PROJECTION.MANUAL_GROWTH_RATE * month,
+        params.PROJECTION.MANUAL_GROWTH_RATE * month,
     )
 
     const churnedMAU = Math.ceil(previousMonth.mau.total * previousMonth.mau.churnRate)
@@ -730,7 +730,7 @@ export async function generateBusinessMetrics() {
     // Write the data to a JSON file
     await fs.writeFile('./financials/business-financials.json', JSON.stringify(data, null, 2))
     console.log('Business metrics data has been written to business-metrics.json')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error writing business metrics data to file:', error)
   }
 }

@@ -67,7 +67,7 @@ export const useAdsStore = defineStore('ads', () => {
       if (response.data) {
         activeAds.value = response.data
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading active ads:', error)
     } finally {
       isLoading.value = false
@@ -84,7 +84,7 @@ export const useAdsStore = defineStore('ads', () => {
         method: 'POST',
         body: { variantId, type, engagementTime },
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error tracking ad interaction:', error)
     }
   }

@@ -137,7 +137,7 @@ export interface GetStorageImagesOptions extends Omit<UrlConstructorOptions, 'ba
 
 //   const { data, error } = await client.storage.from(bucket).list(folderPath)
 
-//   if (error) {
+//   if (error: any) {
 //     console.error(`Error fetching images from ${bucket}:`, error)
 //     return []
 //   }

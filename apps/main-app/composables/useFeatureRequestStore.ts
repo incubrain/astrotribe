@@ -48,7 +48,7 @@ export const useFeatureRequestStore = defineStore('features', () => {
 
       // Also fetch user's votes
       await fetchUserVotes()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching features:', error)
       error.value = error as Error
     } finally {

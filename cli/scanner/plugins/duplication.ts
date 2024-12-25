@@ -46,7 +46,7 @@ export class DuplicationParser {
   private async readFile(filePath: string): Promise<string> {
     try {
       return await fs.readFile(filePath, 'utf-8')
-    } catch (error) {
+    } catch (error: any) {
       console.warn(`Warning: Could not read file ${filePath}:`, error)
       return ''
     }
@@ -219,7 +219,7 @@ export class DuplicationScanner implements ScannerPlugin {
         success: true,
         data: duplicates,
       }
-    } catch (error) {
+    } catch (error: any) {
       return {
         pluginName: this.name,
         success: false,

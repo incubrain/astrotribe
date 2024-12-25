@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       .eq('email', profile.email)
       .select()
 
-    if (error) {
+    if (error: any) {
       throw createError({ message: `error updating users: ${error.message}` })
     }
 
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
       message: 'Users have been inserted successfully',
       data,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error updating user ${userId}:`, error)
     return {
       status: 500,

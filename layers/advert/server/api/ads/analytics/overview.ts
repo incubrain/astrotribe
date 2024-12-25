@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     start_date: startDate.toISOString(),
   })
 
-  if (error) {
+  if (error: any) {
     throw createError({
       statusCode: 500,
       message: 'Error fetching analytics overview',

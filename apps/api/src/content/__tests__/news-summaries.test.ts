@@ -77,7 +77,7 @@ describe('NewsSummary Module', () => {
 
     it('should handle errors when fetching news summaries', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error)
+      mockPrismaModel.findMany.mockRejectedValue(error: any)
 
       const result = await controller.findAllNewsSummaries({
         page: 1,
@@ -159,7 +159,7 @@ describe('NewsSummary Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleNewsSummary()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error)
+      mockPrismaModel.create.mockRejectedValue(error: any)
 
       const result = await controller.createNewsSummaries(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -200,7 +200,7 @@ describe('NewsSummary Module', () => {
         summary: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error)
+      mockPrismaModel.update.mockRejectedValue(error: any)
 
       const result = await controller.updateNewsSummaries(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

@@ -43,7 +43,7 @@ async function generateNestJSApp(options: Partial<NestJSGeneratorOptions> = {}) 
     await generator.generate()
 
     console.log('NestJS API generation completed successfully!')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating NestJS API:', error)
     throw error
   } finally {
@@ -51,7 +51,7 @@ async function generateNestJSApp(options: Partial<NestJSGeneratorOptions> = {}) 
   }
 }
 
-generateNestJSApp().catch((error) => {
-  console.error(error)
+generateNestJSApp().catch((error: any) => {
+  console.error(error: any)
   process.exit(1)
 })

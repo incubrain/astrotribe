@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       user_id_param: user.id,
     })
 
-    if (error) throw error
+    if (error: any) throw error
 
     console.log('FETCHED DATA', data?.length)
 
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     console.log('TRANSFORMED DATA', transformedData)
 
     return { data: transformedData }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching bookmark counts:', error)
     throw createError({
       statusCode: error.statusCode || 500,

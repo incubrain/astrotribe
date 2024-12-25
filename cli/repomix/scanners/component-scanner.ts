@@ -21,7 +21,7 @@ export class ComponentScanner {
     const appName = path.basename(appPath)
     const [filesScan, nuxtConfig] = await Promise.all([
       this.scanFiles(appPath, options),
-      await this.isNuxtApp(appPath) ? this.nuxtConfigScanner.scan(appPath, options) : null,
+      (await this.isNuxtApp(appPath)) ? this.nuxtConfigScanner.scan(appPath, options) : null,
     ])
 
     return {
@@ -91,7 +91,7 @@ export class ComponentScanner {
           })
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       if (options.debug) {
         console.error(`Error scanning files in ${appPath}:`, error)
       }

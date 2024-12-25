@@ -8,13 +8,13 @@ export async function enableRLSOnAllTables(pool: Pool): Promise<boolean> {
     try {
       await client.query('SELECT enable_rls_on_all_tables()')
       return true
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error enabling RLS on tables:', error)
       throw error
     } finally {
       client.release()
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error updating RLS policies:'), error)
     return false
   }

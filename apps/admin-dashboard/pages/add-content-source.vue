@@ -52,7 +52,7 @@ const submit = async () => {
     priority: 'high',
   })
 
-  if (error) {
+  if (error: any) {
     toast.error({ message: error.message, summary: 'Failed To Add Source' })
   } else {
     toast.success({ message: 'Content Source Added', summary: 'Submitted' })

@@ -45,7 +45,7 @@ export function useFormSubmission(
       })
 
       return result
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error adding row:', {
         tableName,
         error,

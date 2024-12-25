@@ -145,7 +145,7 @@ describe('ContentCategoryController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      mockPrismaService.content_categories.findMany.mockRejectedValue(error)
+      mockPrismaService.content_categories.findMany.mockRejectedValue(error: any)
 
       const result = await controller.findAllContentCategories({ page: 1, limit: 10 })
       expect(result).toEqual({
@@ -176,7 +176,7 @@ describe('ContentCategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaService.content_categories.findUnique.mockRejectedValue(error)
+      mockPrismaService.content_categories.findUnique.mockRejectedValue(error: any)
 
       const result = await controller.findOneContentCategories(id)
       expect(result).toEqual({
@@ -207,7 +207,7 @@ describe('ContentCategoryController', () => {
     it('should handle errors', async () => {
       const createData: Prisma.content_categoriesCreateInput = createSampleContentCategory()
       const error = new Error('Creation failed')
-      mockPrismaService.content_categories.create.mockRejectedValue(error)
+      mockPrismaService.content_categories.create.mockRejectedValue(error: any)
 
       const result = await controller.createContentCategories(createData)
       expect(result).toEqual({
@@ -244,7 +244,7 @@ describe('ContentCategoryController', () => {
         is_primary: faker.datatype.boolean(),
       }
       const error = new Error('Update failed')
-      mockPrismaService.content_categories.update.mockRejectedValue(error)
+      mockPrismaService.content_categories.update.mockRejectedValue(error: any)
 
       const result = await controller.updateContentCategories(id, updateData)
       expect(result).toEqual({
@@ -275,7 +275,7 @@ describe('ContentCategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaService.content_categories.delete.mockRejectedValue(error)
+      mockPrismaService.content_categories.delete.mockRejectedValue(error: any)
 
       const result = await controller.removeContentCategories(id)
       expect(result).toEqual({

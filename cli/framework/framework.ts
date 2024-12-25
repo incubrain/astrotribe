@@ -128,7 +128,7 @@ export class CLIFramework {
       }
 
       return nextStep
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.red(`\nError in flow ${flowId}, step ${step.id}:`), error)
       if (process.env.DEBUG === 'true') {
         console.error('DEBUG: Error details:', error)

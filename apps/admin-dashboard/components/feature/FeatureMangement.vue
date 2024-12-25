@@ -19,7 +19,7 @@ const fetchFeatures = async () => {
   try {
     const { data } = await useFetch('/api/admin/features/list')
     features.value = data.value as Feature[]
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching features:', error)
   } finally {
     isLoading.value = false
@@ -33,7 +33,7 @@ const handleDelete = async (id: string) => {
       body: { id },
     })
     features.value = features.value.filter((f) => f.id !== id)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error deleting feature:', error)
   }
 }

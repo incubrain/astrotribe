@@ -159,7 +159,7 @@ export default defineEventHandler(async (event) => {
         upsert: true,
       })
 
-    if (error) {
+    if (error: any) {
       throw createError({ statusCode: 500, statusMessage: error.message })
     }
 

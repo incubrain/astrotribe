@@ -1,0 +1,35 @@
+{
+  "extends": ["../../tsconfig.base.json"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@types": ["./src/types/index.ts"],
+      "@helpers": ["./src/helpers/index.ts"],
+      "@core": ["./src/core/index.ts"],
+      "@jobs": ["./src/jobs/config/index.ts"]
+    }
+  },
+  "include": ["./src/**/*"],
+  "exclude": [
+    "node_modules",
+    "test",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/__tests__/**",
+    "scripts",
+    "dist"
+  ]
+}

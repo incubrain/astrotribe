@@ -53,16 +53,16 @@ export abstract class BaseService<ModelName extends Prisma.ModelName> {
     try {
       const result = await operation()
       return result as R
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
   protected async executePrismaQuery<R>(operation: () => Promise<R>): Promise<R> {
     try {
       return await operation()
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

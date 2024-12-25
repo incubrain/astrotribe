@@ -135,7 +135,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         }
       }
       logger.info('Profile update completed successfully')
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error occurred during profile update', { error })
       throw error // Re-throw the error for the caller to handle
     }
@@ -154,7 +154,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         console.log('Testing with data:', testCase)
         await updateProfile(testCase, true) // Use mock API
         console.log('Test passed successfully')
-      } catch (error) {
+      } catch (error: any) {
         console.error('Test failed:', error.message)
       }
       console.log('---')

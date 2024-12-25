@@ -93,7 +93,7 @@ describe('ContentController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error)
+      mockPrismaModel.findMany.mockRejectedValue(error: any)
 
       const result = await controller.findAllContents({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -115,7 +115,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaModel.findUnique.mockRejectedValue(error)
+      mockPrismaModel.findUnique.mockRejectedValue(error: any)
 
       const result = await controller.findOneContents(id)
       expect(result).toEqual(createErrorResponse('Not found'))
@@ -146,7 +146,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const createData = createSampleContent()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error)
+      mockPrismaModel.create.mockRejectedValue(error: any)
 
       const result = await controller.createContents(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -188,7 +188,7 @@ describe('ContentController', () => {
         content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error)
+      mockPrismaModel.update.mockRejectedValue(error: any)
 
       const result = await controller.updateContents(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -210,7 +210,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaModel.delete.mockRejectedValue(error)
+      mockPrismaModel.delete.mockRejectedValue(error: any)
 
       const result = await controller.removeContents(id)
       expect(result).toEqual(createErrorResponse('Delete failed'))

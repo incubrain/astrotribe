@@ -37,7 +37,7 @@ export function useOptimisticUpdate() {
       const result = await apiCall()
 
       return result
-    } catch (error) {
+    } catch (error: any) {
       // Rollback on error
       rollback()
       throw error

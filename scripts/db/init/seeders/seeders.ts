@@ -710,7 +710,7 @@ export async function seedNewsSummaries(pool: Pool, news: any[]) {
     }
 
     return []
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in seedNewsSummaries:', error)
     throw error
   }

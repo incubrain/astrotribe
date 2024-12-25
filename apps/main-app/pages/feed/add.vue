@@ -79,7 +79,7 @@ const save = async () => {
 
     toast.success({ summary: 'Feed added', message: `${feed.name} was created successfully` })
     navigateTo('/')
-  } catch (error) {
+  } catch (error: any) {
     toast.error({ summary: 'Error creating feed', message: error.message })
   }
 }

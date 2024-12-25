@@ -173,7 +173,7 @@ async function trackBundleSize(): Promise<void> {
     }
 
     console.log(`Keeping the last ${N} reports.`)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error tracking bundle size:', error)
   }
 }

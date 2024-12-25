@@ -29,7 +29,7 @@ export default defineEventHandler(async (event: H3Event) => {
       .select()
       .single()
 
-    if (error) throw error
+    if (error: any) throw error
     return { data }
   } catch (err) {
     console.error('Folder Update Error:', err)

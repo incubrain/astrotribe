@@ -241,7 +241,7 @@ export async function runSeeders() {
 
     console.log(chalk.blue('✓ Database seeding completed successfully'))
     return true
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error during database seeding:'), error)
     try {
       await client.query('ALTER TABLE referrals ENABLE TRIGGER refresh_referral_stats_trigger')

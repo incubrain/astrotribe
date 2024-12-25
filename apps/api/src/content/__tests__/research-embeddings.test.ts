@@ -84,7 +84,7 @@ describe('ResearchEmbedding Module', () => {
 
     it('should handle errors when fetching research embeddings', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error)
+      mockPrismaModel.findMany.mockRejectedValue(error: any)
 
       const result = await controller.findAllResearchEmbeddings({
         page: 1,
@@ -165,7 +165,7 @@ describe('ResearchEmbedding Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleResearchEmbedding()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error)
+      mockPrismaModel.create.mockRejectedValue(error: any)
 
       const result = await controller.createResearchEmbeddings(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -206,7 +206,7 @@ describe('ResearchEmbedding Module', () => {
         chunk: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error)
+      mockPrismaModel.update.mockRejectedValue(error: any)
 
       const result = await controller.updateResearchEmbeddings(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

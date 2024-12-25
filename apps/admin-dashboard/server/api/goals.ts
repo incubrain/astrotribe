@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
     try {
       const data = await fs.readFile(goalsFilePath, 'utf-8')
       return JSON.parse(data)
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'ENOENT') {
         return []
       }
@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
       success: true,
       message: action === 'read' ? 'Goals fetched successfully' : `Goal ${action}d successfully`,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error performing goal action:', error)
     return { success: false, message: `Failed to ${action} goal`, error: error.message }
   }

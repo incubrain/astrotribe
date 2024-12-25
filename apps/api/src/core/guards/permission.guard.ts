@@ -28,7 +28,7 @@ export class PermissionGuard implements CanActivate {
       const userData = await this.permissionService.validateToken(token)
       request.user = userData // Attach user data to request
       return true
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Permission check failed', error.stack)
       throw new UnauthorizedException('Invalid token')
     }

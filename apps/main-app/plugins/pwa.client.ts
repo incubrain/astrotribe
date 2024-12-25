@@ -15,7 +15,7 @@ export default defineNuxtPlugin(() => {
             console.log('Service worker unregistered:', registration.scope)
           })
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.error('Service worker cleanup failed:', error)
         })
     }

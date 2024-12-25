@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
           message: 'Invalid action',
         })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Metrics API error (${action}):`, error)
     throw createError({
       statusCode: 500,
@@ -59,7 +59,7 @@ async function getUserMetrics(client: any, userId: string) {
     .eq('user_id', userId)
     .single()
 
-  if (error) throw error
+  if (error: any) throw error
 
   // Get today's activity for real-time tracking
   const today = new Date().toISOString().split('T')[0]
@@ -116,7 +116,7 @@ async function getAchievements(client: any, userId: string) {
     .eq('user_id', userId)
     .single()
 
-  if (error) throw error
+  if (error: any) throw error
 
   // Get completed achievements count
   const completedCount = countCompletedAchievements(metrics.achievements)
@@ -137,7 +137,7 @@ async function updateTitle(client: any, userId: string, newTitle: string) {
     .eq('user_id', userId)
     .single()
 
-  if (error) throw error
+  if (error: any) throw error
 
   // Verify title is unlocked
   if (!metrics.titles.unlocked_titles.includes(newTitle)) {
@@ -172,7 +172,7 @@ async function getReadingTime(client: any, userId: string, newsId: string) {
     .order('created_at', { ascending: false })
     .limit(1)
 
-  if (error) throw error
+  if (error: any) throw error
 
   return {
     lastVisit: data?.[0]?.created_at || null,

@@ -16,6 +16,6 @@ export default defineEventHandler(async (event) => {
     app_metadata: { role },
 })
 
-  if (error) throw error
+  if (error: any) throw error
   return data
 })

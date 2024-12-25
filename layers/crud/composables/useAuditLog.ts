@@ -58,10 +58,10 @@ export function useAuditLog() {
       try {
         const { error } = await supabase.from('audit_logs').insert(logEntry)
 
-        if (error) {
+        if (error: any) {
           console.error('Error logging audit event to database:', error)
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error logging audit event to database:', error)
       }
     }
@@ -73,7 +73,7 @@ export function useAuditLog() {
           method: 'POST',
           body: JSON.stringify(logEntry),
         })
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error sending log to external service:', error)
       }
     }
@@ -109,7 +109,7 @@ export function useAuditLog() {
       .range(pagination.page * pagination.pageSize, (pagination.page + 1) * pagination.pageSize - 1)
       .order('timestamp', { ascending: false })
 
-    if (error) {
+    if (error: any) {
       console.error('Error fetching audit logs:', error)
       throw error
     }

@@ -56,7 +56,7 @@ export class PermissionService implements OnModuleInit {
       })
 
       this.logger.debug(`Loaded role hierarchy for ${this.roleHierarchyCache.size} roles`)
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to load role hierarchy', error.stack)
       throw error
     }
@@ -73,7 +73,7 @@ export class PermissionService implements OnModuleInit {
       }
 
       return decoded
-    } catch (error) {
+    } catch (error: any) {
       throw new UnauthorizedException('Invalid token')
     }
   }

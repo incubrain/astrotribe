@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
 
     console.log(`Script execution completed: ${scriptName}`)
     return { output }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error executing script ${scriptName}:`, error)
     throw createError({
       statusCode: 500,

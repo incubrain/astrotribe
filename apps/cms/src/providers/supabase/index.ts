@@ -133,7 +133,7 @@ module.exports = {
         )
 
         file.url = getFileUrl(key)
-      } catch (error) {
+      } catch (error: any) {
         console.error('Multipart upload error:', error)
         throw error
       }
@@ -167,7 +167,7 @@ module.exports = {
 
           await s3.send(new PutObjectCommand(params))
           file.url = getFileUrl(key)
-        } catch (error) {
+        } catch (error: any) {
           console.error('Upload error:', error)
           throw error
         }
@@ -184,8 +184,8 @@ module.exports = {
               stream.push(null)
               resolve(stream)
             })
-            .catch((error) => {
-              reject(error)
+            .catch((error: any) => {
+              reject(error: any)
             })
         })
       },

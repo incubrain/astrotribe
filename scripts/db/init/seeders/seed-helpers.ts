@@ -87,7 +87,7 @@ export async function bulkInsert<T extends Record<string, any>>(
     const result = await client.query(query)
     console.log(chalk.green(`✓ Inserted ${records.length} records into ${tableName}`))
     return result.rows
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red(`Error inserting into ${tableName}:`), error)
     throw error
   } finally {
@@ -118,7 +118,7 @@ export async function checkAndSeed<T>(
     const result = await seederFn()
     console.log(chalk.green(`✓ Successfully seeded ${tableName}`))
     return result
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red(`Error while seeding ${tableName}:`), error)
     throw error
   }

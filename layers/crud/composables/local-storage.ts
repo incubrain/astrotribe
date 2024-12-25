@@ -55,7 +55,7 @@ export function useBaseLocalStorage() {
         clearCache(key)
         return null
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error parsing cached data for ${key}:`, error)
       clearCache(key)
       return null
@@ -81,7 +81,7 @@ export function useBaseLocalStorage() {
       const fetchedData = await fetchFn()
       setCache(key, fetchedData)
       return fetchedData
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching data for ${key}:`, error)
       throw error
     }

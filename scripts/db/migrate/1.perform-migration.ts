@@ -33,10 +33,10 @@ function runCommand(command: string): Promise<void> {
     console.log(chalk.gray(`$ ${command}\n`))
 
     exec(command, (error, stdout, stderr) => {
-      if (error) {
+      if (error: any) {
         console.error(chalk.red('✖ Command failed:'))
         console.error(chalk.red(stderr))
-        reject(error)
+        reject(error: any)
       } else {
         if (stdout.trim()) {
           console.log(chalk.gray(stdout))
@@ -104,9 +104,9 @@ async function runMigration() {
     await runCommand('npm run db:setup')
 
     console.log(chalk.green(`\n✨ Migration "${migrationName}" completed successfully! ✨\n`))
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red(`\n✖ Migration "${migrationName}" failed.\n`))
-    console.error(chalk.red(error))
+    console.error(chalk.red(error: any))
     process.exit(1)
   }
 }

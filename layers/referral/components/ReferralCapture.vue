@@ -67,7 +67,7 @@ const captureReferral = async () => {
     })
 
     localStorage.setItem('referral_code', referrerCode)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to capture referral:', error)
   }
 }
@@ -87,7 +87,7 @@ const markAsConverted = async (conversionValue?: number) => {
         conversion_value: conversionValue || null,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to mark referral as converted:', error)
   }
 }
