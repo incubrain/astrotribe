@@ -22,7 +22,7 @@ async function saveNotificationPreferences() {
       summary: 'Success',
       message: 'Your notification preferences have been saved',
     })
-  } catch (error) {
+  } catch (error: any) {
     toast.error({
       summary: 'Error',
       message: 'Failed to save notification preferences',

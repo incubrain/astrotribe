@@ -160,7 +160,7 @@ async function fetchMetrics() {
     } else {
       console.warn('No data in response:', response)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to fetch metrics:', error)
   } finally {
     loading.value = false

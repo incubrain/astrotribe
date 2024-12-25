@@ -15,7 +15,7 @@ export const handleResponse = async <T>(
     const result = await operation()
     logger.info(options.successMessage || `${context} succeeded`)
     return result
-  } catch (error) {
+  } catch (error: any) {
     logger.error(options.errorMessage || `${context} failed`, {
       error,
       context,

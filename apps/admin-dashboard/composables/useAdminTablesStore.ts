@@ -16,11 +16,11 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
     loading.value = true
     try {
       const { data, error } = await supabase.rpc('get_available_tables')
-      if (error) throw error
+      if (error: any) throw error
       tables.value = data
       logger.info('Tables fetched:', { tables: tables.value })
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error fetching tables:', { error })
       throw error
     } finally {
@@ -61,7 +61,7 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
       structureCache.set(tableName, typedStructure)
 
       return typedStructure
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error fetching table structure:', { error, tableName })
       throw error
     }
@@ -70,9 +70,9 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
   const fetchTableData = async (tableName: string) => {
     try {
       const { data, error } = await supabase.from(tableName).select('*')
-      if (error) throw error
+      if (error: any) throw error
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching table data for ${tableName}`, { error })
       throw error
     }
@@ -87,11 +87,11 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
         .select()
         .single()
 
-      if (error) throw error
+      if (error: any) throw error
 
       logger.info('Record updated:', { tableName, recordId: record.id })
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error updating record:', { tableName, error })
       throw error
     }
@@ -101,11 +101,11 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
     try {
       const { error } = await supabase.from(tableName).delete().in('id', ids)
 
-      if (error) throw error
+      if (error: any) throw error
 
       logger.info('Records deleted:', { tableName, count: ids.length })
       return true
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error deleting records:', { tableName, error })
       throw error
     }
@@ -115,11 +115,11 @@ export const useAdminTablesStore = defineStore('adminTables', () => {
     try {
       const { data, error } = await supabase.from(tableName).insert(record).select().single()
 
-      if (error) throw error
+      if (error: any) throw error
 
       logger.info('Record inserted:', { tableName, recordId: data.id })
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error inserting record:', { tableName, error })
       throw error
     }

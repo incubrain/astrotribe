@@ -60,7 +60,7 @@ export function useSettingsProfile() {
         .update(validatedData)
         .eq('id', currentUser.profile?.id)
 
-      if (error) throw error
+      if (error: any) throw error
 
       // Update local state
       Object.assign(profile.value, validatedData)
@@ -72,7 +72,7 @@ export function useSettingsProfile() {
         summary: 'Profile Updated',
         message: 'Your profile has been successfully updated',
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Profile update failed:', error)
       toast.error({
         summary: 'Update Failed',

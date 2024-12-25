@@ -40,7 +40,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
       })
 
       instagram.value = data
-    } catch (error) {
+    } catch (error: any) {
       errors.client({
         error,
         devOnly: false,
@@ -67,7 +67,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
       })
 
       linkedin.value = data
-    } catch (error) {
+    } catch (error: any) {
       errors.client({
         error,
         devOnly: false,
@@ -94,7 +94,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
       })
 
       twitter.value = data
-    } catch (error) {
+    } catch (error: any) {
       errors.client({
         error,
         devOnly: false,

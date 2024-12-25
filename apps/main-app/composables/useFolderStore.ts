@@ -81,7 +81,7 @@ export const useFolderStore = defineStore('folders', () => {
         await fetchFolders()
       }
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error(error, {
         context: 'createFolder',
         userMessage: 'Failed to create folder',
@@ -109,7 +109,7 @@ export const useFolderStore = defineStore('folders', () => {
         await fetchFolders()
       }
       return data
-    } catch (error) {
+    } catch (error: any) {
       logger.error(error, {
         context: 'updateFolder',
         userMessage: 'Failed to update folder',
@@ -156,7 +156,7 @@ export const useFolderStore = defineStore('folders', () => {
                 await fetchFolders()
               }
               resolve(true)
-            } catch (error) {
+            } catch (error: any) {
               logger.error(error, {
                 context: 'deleteFolder',
                 userMessage: 'Failed to delete folder',
@@ -173,7 +173,7 @@ export const useFolderStore = defineStore('folders', () => {
           },
         })
       })
-    } catch (error) {
+    } catch (error: any) {
       logger.error(error, {
         context: 'deleteFolder',
         userMessage: 'Failed to delete folder',
@@ -202,7 +202,7 @@ export const useFolderStore = defineStore('folders', () => {
         await fetchFolders()
       }
       return true
-    } catch (error) {
+    } catch (error: any) {
       logger.error(error, {
         context: 'handleMoveAndDelete',
         userMessage: 'Failed to move bookmarks and delete folder',

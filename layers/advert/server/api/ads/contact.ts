@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
     })
 
     return { success: true }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Advertising inquiry error:', error)
     throw createError({
       statusCode: 400,

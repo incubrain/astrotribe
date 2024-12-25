@@ -103,7 +103,7 @@ const handleLoadMore = async () => {
 
   try {
     await loadMoreFunc()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error loading more news:', error)
   }
 }

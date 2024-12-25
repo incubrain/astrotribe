@@ -30,7 +30,7 @@ const handleAuth = async () => {
   try {
     const { data, error } = await supabase.auth.getSession()
 
-    if (error) throw error
+    if (error: any) throw error
 
     if (data.session) {
       logger.info('Session established:', { session: data.session })
@@ -38,7 +38,7 @@ const handleAuth = async () => {
     } else {
       throw new Error('No session established')
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error('Error during authentication:', { error })
     await navigateTo(`${env.authUrl}${env.loginUrl}`, { external: true })
   } finally {

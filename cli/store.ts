@@ -21,7 +21,7 @@ export class FileStore {
       const filePath = path.join(this.storePath, `${key}.json`)
       const data = await fs.readFile(filePath, 'utf-8')
       return JSON.parse(data)
-    } catch (error) {
+    } catch (error: any) {
       return null
     }
   }
@@ -40,7 +40,7 @@ export class FileStore {
         // Remove the entire store directory
         await fs.rm(this.storePath, { recursive: true, force: true })
       }
-    } catch (error) {
+    } catch (error: any) {
       // Ignore errors if directory doesn't exist
       if (error.code !== 'ENOENT') {
         throw error

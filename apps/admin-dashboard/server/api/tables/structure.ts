@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     table_name,
   })
 
-  if (error) {
+  if (error: any) {
     throw createError({
       statusCode: 500,
       message: error.message,

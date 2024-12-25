@@ -13,7 +13,7 @@ export const executeTest = (crudOperations: CrudOperations) => {
           const { insertData } = crudOperations.useInsert(tableName, {})
           result = await insertData(dataToTest)
           return { success: true, data: result }
-        } catch (error) {
+        } catch (error: any) {
           return { success: false, error }
         }
 
@@ -23,7 +23,7 @@ export const executeTest = (crudOperations: CrudOperations) => {
           const updatedData = { ...dataToTest, some_field: 'newValue' } // Adjust as needed
           result = await updateData(dataToTest.id, updatedData)
           return { success: true, data: result }
-        } catch (error) {
+        } catch (error: any) {
           return { success: false, error }
         }
 
@@ -32,7 +32,7 @@ export const executeTest = (crudOperations: CrudOperations) => {
           const { deleteData } = crudOperations.useDelete(tableName, {})
           await deleteData(dataToTest.id)
           return { success: true }
-        } catch (error) {
+        } catch (error: any) {
           return { success: false, error }
         }
 
@@ -48,7 +48,7 @@ export const executeTest = (crudOperations: CrudOperations) => {
           } else {
             throw new Error('Item not found')
           }
-        } catch (error) {
+        } catch (error: any) {
           return { success: false, error }
         }
 

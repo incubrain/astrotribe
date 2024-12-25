@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
       user_id: currentUser.id,
       ...body,
     })
-  } catch (error) {
+  } catch (error: any) {
     return { message: error.message }
   }
 

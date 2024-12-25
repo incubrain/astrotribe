@@ -9,7 +9,7 @@ onMounted(async () => {
   try {
     await Promise.all([folderStore.fetchFolders(), bookmarkStore.fetchBookmarks()])
     await bookmarkStore.fetchBookmarkCounts() // Add error handling here
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error initializing data:', error)
   }
 })

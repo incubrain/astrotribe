@@ -32,7 +32,7 @@ const loadKeys = async (page = 0, pageSize = PAGE_SIZE) => {
     console.log('REDIS DATA', data)
     tableData.value = data.keys.map(parseKey)
     totalRecords.value = data.total
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to fetch keys', error)
   } finally {
     loading.value = false
@@ -84,7 +84,7 @@ const saveEditedValue = async () => {
     })
     dialogVisible.value = false
     loadKeys() // Refresh the data
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to update value', error)
   }
 }
@@ -94,7 +94,7 @@ const deleteKey = async (key: string) => {
     try {
       await fetch(`${scraperUrl}/admin/redis/keys/${encodeURIComponent(key)}`, { method: 'DELETE' })
       loadKeys() // Refresh the data
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to delete key', error)
     }
   }
@@ -106,7 +106,7 @@ const flushDatabase = async () => {
       await fetch(`${scraperUrl}/admin/redis/flush`, { method: 'POST' })
       alert('Database flushed successfully')
       loadKeys()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to flush database', error)
     }
   }

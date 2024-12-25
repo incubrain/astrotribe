@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
       streakData: [],
       votesByDate: {},
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get user metrics error:', error)
     throw createError({
       statusCode: 500,

@@ -76,7 +76,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
         return { feed_id, name }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Feeds API Error:', err)
       throw createError({
         statusCode: err.statusCode || 500,

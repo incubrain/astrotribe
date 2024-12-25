@@ -43,8 +43,8 @@ export class NewsSummaryController extends BaseController {
   > {
     try {
       return await super.findAll(query)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -56,8 +56,8 @@ export class NewsSummaryController extends BaseController {
   ) {
     try {
       return await super.findOne(id, include)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -66,8 +66,8 @@ export class NewsSummaryController extends BaseController {
   async createNewsSummaries(@Body() data: Prisma.news_summariesCreateInput) {
     try {
       return await super.create(data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -79,8 +79,8 @@ export class NewsSummaryController extends BaseController {
   ) {
     try {
       return await super.update(id, data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -89,8 +89,8 @@ export class NewsSummaryController extends BaseController {
   async removeNewsSummaries(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await super.remove(id)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

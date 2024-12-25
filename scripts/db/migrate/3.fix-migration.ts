@@ -83,7 +83,7 @@ async function main() {
     const fixedContent = fixMigrationSQL(content)
     fs.writeFileSync(migrationFilePath, fixedContent)
     console.log(`Fixed migration written to: ${migrationFilePath}`)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error processing migration file:', error)
     process.exit(1)
   }

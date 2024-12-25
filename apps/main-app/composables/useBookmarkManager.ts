@@ -31,7 +31,7 @@ export const useBookmarkManager = () => {
       await fetchBookmarkCounts()
       // Clear selection
       clearSelection()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to move bookmarks:', error)
     }
   }
@@ -60,7 +60,7 @@ export const useBookmarkManager = () => {
         },
       })
       await fetchBookmarkCounts()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to delete bookmarks:', error)
     }
   }

@@ -43,8 +43,8 @@ export class NewsController extends BaseController {
   > {
     try {
       return await super.findAll(query)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -53,8 +53,8 @@ export class NewsController extends BaseController {
   async findOneNews(@Param('id', ParseUUIDPipe) id: string, @Query('include') include?: string[]) {
     try {
       return await super.findOne(id, include)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -63,8 +63,8 @@ export class NewsController extends BaseController {
   async createNews(@Body() data: Prisma.newsCreateInput) {
     try {
       return await super.create(data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -73,8 +73,8 @@ export class NewsController extends BaseController {
   async updateNews(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.newsUpdateInput) {
     try {
       return await super.update(id, data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -83,8 +83,8 @@ export class NewsController extends BaseController {
   async removeNews(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await super.remove(id)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

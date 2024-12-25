@@ -25,7 +25,7 @@ async function runCI() {
     await runScript('trackBundleSize.ts')
     await runScript('runLighthouseCI.ts')
     console.log('All CI scripts completed successfully')
-  } catch (error) {
+  } catch (error: any) {
     console.error('CI failed:', error)
     process.exit(1)
   }

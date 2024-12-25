@@ -18,7 +18,7 @@ const executeScript = async (scriptName: string) => {
       body: { scriptName },
     })
     output.value = response.output
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error executing script:', error)
     output.value = 'Error executing script. Check console for details.'
   }

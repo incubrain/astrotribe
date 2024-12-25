@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     const outcome = await result.json()
     return outcome
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error validating Turnstile token:', error)
     return {
       success: false,

@@ -44,8 +44,8 @@ export class FeedController extends BaseController {
   > {
     try {
       return await super.findAll(query)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -54,8 +54,8 @@ export class FeedController extends BaseController {
   async findOneFeeds(@Param('id', ParseUUIDPipe) id: string, @Query('include') include?: string[]) {
     try {
       return await super.findOne(id, include)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -64,8 +64,8 @@ export class FeedController extends BaseController {
   async createFeeds(@Body() data: Prisma.feedsCreateInput) {
     try {
       return await super.create(data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -74,8 +74,8 @@ export class FeedController extends BaseController {
   async updateFeeds(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.feedsUpdateInput) {
     try {
       return await super.update(id, data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -84,8 +84,8 @@ export class FeedController extends BaseController {
   async removeFeeds(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await super.remove(id)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

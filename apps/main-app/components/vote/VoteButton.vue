@@ -50,7 +50,7 @@ const handleVote = async () => {
         change: result.change,
       })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Vote error:', error)
   }
 }

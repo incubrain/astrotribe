@@ -34,9 +34,9 @@ async function seedExampleApp({ strapi }: SeedOptions) {
       console.log('Setting up the template with production data...')
       await importSeedData(strapi)
       console.log('Ready to go')
-    } catch (error) {
+    } catch (error: any) {
       console.log('Could not import seed data')
-      console.error(error)
+      console.error(error: any)
     }
   } else {
     console.log('Seed data has already been imported.')
@@ -131,7 +131,7 @@ async function createEntry(strapi: Core.Strapi, { model, entry }: { model: strin
     await strapi.query(schemaPath).create({
       data: entry,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error({ model, entry, error })
   }
 }
@@ -310,7 +310,7 @@ export default async ({ strapi }: BootstrapInput) => {
 try {
     await seedExampleApp({ strapi })
     console.log('Bootstrap: Seeding completed successfully')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Bootstrap: Seeding failed:', error)
     throw error
   }

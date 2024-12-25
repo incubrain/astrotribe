@@ -52,7 +52,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
       const handleRowEditSave = async (event: { data: T; newData: Partial<T> }) => {
         try {
           await updateEntity(event.data.id, event.newData)
-        } catch (error) {
+        } catch (error: any) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -71,7 +71,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           console.log('updating', newValue, oldValue)
           try {
             await updateEntity(data.id, { [field]: newValue })
-          } catch (error) {
+          } catch (error: any) {
             // Handle error (e.g., show toast message)
           }
         }
@@ -86,7 +86,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
             try {
               await deleteEntity(item.id)
               // Show success message
-            } catch (error) {
+            } catch (error: any) {
               // Handle error (e.g., show toast message)
             }
           },
@@ -99,7 +99,7 @@ export function createAdminDashboard<T extends { id: string | number }>(
           showInsertDialog.value = false
           newEntity.value = {} as Omit<T, 'id'>
           // Show success message
-        } catch (error) {
+        } catch (error: any) {
           // Handle error (e.g., show toast message)
         }
       }
@@ -125,9 +125,9 @@ export function createAdminDashboard<T extends { id: string | number }>(
     render() {
       return h('div', { class: 'admin-dashboard-wrapper' }, [
         h('div', { class: 'admin-dashboard-headder p-4' }, [
-          this.$slots.title ?
-            this.$slots.title() :
-            h('h2', { class: 'text-2xl font-bold mb-4' }, this.title),
+          this.$slots.title
+            ? this.$slots.title()
+            : h('h2', { class: 'text-2xl font-bold mb-4' }, this.title),
           h(Button, {
             label: `Add New ${entityName}`,
             class: 'p-button-success mb-4',
@@ -182,17 +182,17 @@ export function createAdminDashboard<T extends { id: string | number }>(
                       },
                       {
                         body: (slotProps) =>
-                          col.bodyComponent ?
-                            col.bodyComponent(slotProps.data) :
-                            slotProps.data[col.field],
+                          col.bodyComponent
+                            ? col.bodyComponent(slotProps.data)
+                            : slotProps.data[col.field],
                         editor: (slotProps) =>
-                          col.editComponent ?
-                            col.editComponent(slotProps.data, col.field) :
-                            h(InputText, {
-                              'modelValue': slotProps.data[col.field],
-                              'onUpdate:modelValue': (value) =>
-                                (slotProps.data[col.field] = value),
-                            }),
+                          col.editComponent
+                            ? col.editComponent(slotProps.data, col.field)
+                            : h(InputText, {
+                                'modelValue': slotProps.data[col.field],
+                                'onUpdate:modelValue': (value) =>
+                                  (slotProps.data[col.field] = value),
+                              }),
                       },
                     )
                   })
@@ -246,14 +246,14 @@ export function createAdminDashboard<T extends { id: string | number }>(
                   .map((col) =>
                     h('div', { class: 'field' }, [
                       h('label', { for: col.field }, col.header),
-                      col.insertComponent ?
-                        col.insertComponent() :
-                        h(InputText, {
-                          'id': col.field,
-                          'modelValue': this.newEntity[col.field],
-                          'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
-                          'class': 'w-full',
-                        }),
+                      col.insertComponent
+                        ? col.insertComponent()
+                        : h(InputText, {
+                            'id': col.field,
+                            'modelValue': this.newEntity[col.field],
+                            'onUpdate:modelValue': (value) => (this.newEntity[col.field] = value),
+                            'class': 'w-full',
+                          }),
                     ]),
                   ),
                 h(Button, {

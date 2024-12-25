@@ -20,7 +20,7 @@ export class TypeConversionPipe implements PipeTransform {
         default:
           return value
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new BadRequestException(`Type conversion failed: ${error.message}`)
     }
   }

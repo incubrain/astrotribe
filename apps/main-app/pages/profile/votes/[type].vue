@@ -13,7 +13,7 @@ const fetchVotedPosts = async () => {
   isLoading.value = true
   try {
     posts.value = await voteStore.fetchVotedPosts(voteType.value)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching voted posts:', error)
   } finally {
     isLoading.value = false

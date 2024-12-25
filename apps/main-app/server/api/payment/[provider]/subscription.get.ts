@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       },
     })
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error fetching subscription from ${provider}:`, error)
     throw createError({
       statusCode: 500,

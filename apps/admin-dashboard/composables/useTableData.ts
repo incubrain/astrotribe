@@ -60,7 +60,7 @@ export function useTableData(tableName: string) {
       data.value = tableData
 
       logger.info('Data loaded successfully', { tableName })
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error loading data:', { error, tableName })
     } finally {
       loading.value = false

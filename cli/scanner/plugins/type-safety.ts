@@ -50,7 +50,7 @@ export class TypeSafetyPlugin implements ScannerPlugin {
         success: true,
         data: metrics,
       }
-    } catch (error) {
+    } catch (error: any) {
       return {
         pluginName: this.name,
         success: false,

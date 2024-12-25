@@ -72,7 +72,7 @@ async function fetchErrorLogs() {
     } else {
       console.warn('No data in response:', response)
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to fetch error logs:', error)
   } finally {
     loading.value = false

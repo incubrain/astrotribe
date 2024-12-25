@@ -234,7 +234,7 @@ const testConnection = async () => {
       summary: 'Connection Test',
       message: 'Connection established successfully',
     })
-  } catch (error) {
+  } catch (error: any) {
     addLog(`Error: ${error.message}`)
     notification.error({
       summary: 'Connection Test',
@@ -270,7 +270,7 @@ const testEndpoint = async (endpoint) => {
       summary: 'API Response',
       message: `Successfully received response from ${endpoint.path}`,
     })
-  } catch (error) {
+  } catch (error: any) {
     addLog(`Error: ${error.message}`)
     endpoint.response = {
       status: error.status || 'Error',

@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
       const newFileName = `avatar_${userId}.jpg`
       await upload(`${userId}/avatar/${newFileName}`, file)
     })
-  } catch (error) {
+  } catch (error: any) {
     console.log('upload error', error)
     throw createError({ statusMessage: error.message })
   }

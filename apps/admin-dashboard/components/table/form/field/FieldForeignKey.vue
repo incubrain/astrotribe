@@ -44,13 +44,13 @@ const loadOptions = async () => {
           name
         `)
 
-    if (error) throw error
+    if (error: any) throw error
 
     options.value = data.map((item) => ({
       label: item.name || item[props.field.foreign_key_info.foreign_column],
       value: item[props.field.foreign_key_info.foreign_column],
     }))
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error loading foreign key options:', error)
   } finally {
     loading.value = false

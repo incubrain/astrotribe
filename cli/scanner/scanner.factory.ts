@@ -77,7 +77,7 @@ export class CodeScanner {
     for (const [projectName] of projects) {
       try {
         results[projectName] = await this.scanProject(projectName)
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error scanning project ${projectName}:`, error)
       }
     }

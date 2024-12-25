@@ -38,7 +38,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
         body: { plan_id: planId },
       })
       return response
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error creating order with ${provider}:`, error)
     } finally {
       isLoading.value = false

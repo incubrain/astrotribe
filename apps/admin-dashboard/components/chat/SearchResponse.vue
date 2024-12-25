@@ -8,7 +8,7 @@ const renderLatex = (text: string) => {
       return katex.renderToString(match.replace(/\$/g, ''), {
         throwOnError: true,
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error rendering LaTeX:', error)
       return `failed(${match})`
     }

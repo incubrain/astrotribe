@@ -74,7 +74,7 @@ describe('Feed Module', () => {
 
     it('should handle errors when fetching feeds', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error)
+      mockPrismaModel.findMany.mockRejectedValue(error: any)
 
       const result = await controller.findAllFeeds({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -149,7 +149,7 @@ describe('Feed Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleFeed()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error)
+      mockPrismaModel.create.mockRejectedValue(error: any)
 
       const result = await controller.createFeeds(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -187,7 +187,7 @@ describe('Feed Module', () => {
         name: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error)
+      mockPrismaModel.update.mockRejectedValue(error: any)
 
       const result = await controller.updateFeeds(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

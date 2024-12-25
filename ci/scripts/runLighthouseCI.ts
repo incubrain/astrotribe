@@ -32,7 +32,7 @@ async function readJsonSafely(filePath: string, retries = 3): Promise<Lighthouse
     try {
       const content = await fs.readFile(filePath, 'utf-8')
       return JSON.parse(content) as LighthouseRun
-    } catch (error) {
+    } catch (error: any) {
       if (i === retries - 1) throw error
       await sleep(1000) // Wait for 1 second before retrying
     }
@@ -114,7 +114,7 @@ async function runLighthouseCI() {
     console.log('Custom Lighthouse report saved:', customReportPath)
 
     await removeOldReports(reportDir)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Lighthouse CI error:', error)
     if (error instanceof Error) {
       console.error('Error message:', error.message)

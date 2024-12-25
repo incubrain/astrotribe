@@ -181,7 +181,7 @@ const crop = async (toggleModalOpen: () => void) => {
       try {
         await uploadImage(blob)
         toggleModalOpen()
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error uploading cropped image:', error)
       }
     },

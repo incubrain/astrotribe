@@ -21,7 +21,7 @@ export function useAdmin() {
       email,
       password,
     })
-    if (error) {
+    if (error: any) {
       throw createError({
         statusCode: 401,
         message: error.message,
@@ -42,13 +42,13 @@ export function useAdmin() {
       const { data, error } = await client.storage
         .from('profile-public')
         .upload(`${userId}/avatar/${file.name}`, file)
-      if (error) {
+      if (error: any) {
         throw createError(
           `Error uploading profile picture for user with ID ${userId}: ${error.message}`,
         )
       }
       console.log(`Profile picture uploaded successfully for user with ID ${userId}`)
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error uploading profile picture for user with ID ${userId}:`, error)
     }
   }
@@ -83,7 +83,7 @@ export function useAdmin() {
 
         // update user profile with data
         await updateSingle(user, newUser.id)
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Failed to register user with email ${user.email}:`, error)
       }
     }
@@ -123,7 +123,7 @@ export function useAdmin() {
       })
 
       // maybe update state here
-    } catch (error) {
+    } catch (error: any) {
       errors.client({
         error,
         devOnly: false,

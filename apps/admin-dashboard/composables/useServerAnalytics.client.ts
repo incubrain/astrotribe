@@ -99,7 +99,7 @@ export const useServerAnalyticsStore = defineStore('serverAnalytics', () => {
       }
     }
 
-    socket.value.onerror = (error) => {
+    socket.value.onerror = (error: any) => {
       console.error('WebSocket error:', error)
     }
 

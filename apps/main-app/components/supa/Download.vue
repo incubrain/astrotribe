@@ -18,16 +18,16 @@ const files2 = ref(null)
 
 const tester = async () => {
   const { data, error } = await download.folder('9465747a-47a0-46ac-93a7-5151e62b8eff', true)
-  if (error) {
-    return console.error(error)
+  if (error: any) {
+    return console.error(error: any)
   }
   files.value = data
 }
 
 const tester2 = async () => {
   const { data, error } = await download.avatar('9465747a-47a0-46ac-93a7-5151e62b8eff', true)
-  if (error) {
-    return console.error(error)
+  if (error: any) {
+    return console.error(error: any)
   }
   files2.value = data
 }

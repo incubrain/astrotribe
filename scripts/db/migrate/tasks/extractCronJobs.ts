@@ -66,7 +66,7 @@ END $$;`.trim()
     })
 
     return statements.join('\n\n') + '\n'
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error extracting cron jobs:', error)
     throw error
   }
@@ -94,9 +94,9 @@ ${cronJobs}`
     } else {
       console.log(chalk.gray('No new cron jobs found to migrate'))
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.yellow('⚠ Warning: Failed to extract cron jobs'))
-    console.error(chalk.gray(error))
+    console.error(chalk.gray(error: any))
   }
 }
 

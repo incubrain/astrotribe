@@ -82,7 +82,7 @@ export default defineEventHandler(async (event) => {
           message: 'Invalid action',
         })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Admin features API error (${action}):`, error)
     throw createError({
       statusCode: 500,

@@ -30,7 +30,7 @@ const handleBookmark = async () => {
       thumbnail: props.bookmark.metadata.featured_image,
       author: props.bookmark.metadata.author,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error handling bookmark:', error)
   }
 }

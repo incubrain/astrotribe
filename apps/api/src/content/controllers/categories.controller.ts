@@ -45,7 +45,7 @@ export class CategoryController extends BaseController {
     try {
       this.logger.log('Fetching all categories')
       return super.findAll(query)
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error('Failed to fetch categories', error.stack)
       throw error
     }
@@ -59,8 +59,8 @@ export class CategoryController extends BaseController {
   ) {
     try {
       return await super.findOne(id, include)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -69,8 +69,8 @@ export class CategoryController extends BaseController {
   async createCategories(@Body() data: Prisma.categoriesCreateInput) {
     try {
       return await super.create(data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -82,8 +82,8 @@ export class CategoryController extends BaseController {
   ) {
     try {
       return await super.update(id, data)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 
@@ -92,8 +92,8 @@ export class CategoryController extends BaseController {
   async removeCategories(@Param('id', ParseUUIDPipe) id: string) {
     try {
       return await super.remove(id)
-    } catch (error) {
-      return this.handleError(error)
+    } catch (error: any) {
+      return this.handleError(error: any)
     }
   }
 }

@@ -157,7 +157,7 @@ class Democker {
           this.currentModified = value
           result[key] = value
         }
-      } catch (error) {
+      } catch (error: any) {
         this.logError(error as Error, 'democking')
         result[key] = value
       }

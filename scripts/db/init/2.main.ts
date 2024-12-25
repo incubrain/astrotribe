@@ -82,7 +82,7 @@ async function main() {
 
     console.log(chalk.green('\n✨ Database initialization completed successfully'))
     process.exit(0)
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('\n❌ Error during database initialization:'), error)
     process.exit(1)
   } finally {

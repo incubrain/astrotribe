@@ -288,7 +288,7 @@ async function generatePermissions() {
     )
 
     console.log('Successfully generated role permissions configuration!')
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating permissions:', error)
     process.exit(1)
   } finally {

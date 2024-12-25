@@ -164,7 +164,7 @@ export class CentralizedLogger<S extends Service = Service> {
         timestamp: new Date().toISOString(),
         path: event.path,
       }
-    } catch (error) {
+    } catch (error: any) {
       return null
     }
   }

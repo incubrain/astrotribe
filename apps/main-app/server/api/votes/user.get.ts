@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       .eq('content_type', 'news')
       .eq('user_id', user.id)
 
-    if (error) throw error
+    if (error: any) throw error
 
     // Transform into a more efficient lookup object
     const voteLookup = data.reduce(
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     return {
       votes: voteLookup,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get votes error:', error)
     throw createError({
       statusCode: 500,

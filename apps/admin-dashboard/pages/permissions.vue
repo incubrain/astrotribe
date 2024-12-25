@@ -271,9 +271,9 @@ async function fetchPermissions() {
   try {
     const { data, error } = await supabase.from('role_permissions').select('*').order('table_name')
 
-    if (error) throw error
+    if (error: any) throw error
     permissionsData.value = data
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching permissions:', error)
   } finally {
     loading.value = false

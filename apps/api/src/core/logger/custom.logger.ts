@@ -13,29 +13,29 @@ export class CustomLogger extends ConsoleLogger implements LoggerService {
   }
 
   // Override log calls
-  log(message: string, context?: string) {
+  log(message: string, context?: any) {
     super.log(message, context)
-    void this.centralLogger.info(message, { context })
+    void this.centralLogger.info(message, context)
   }
 
-  error(message: string, trace?: string, context?: string) {
-    super.error(message, trace, context)
-    void this.centralLogger.error(message, { error: { stack: trace }, context })
+  error(message: string, context?: any) {
+    super.error(message, context)
+    void this.centralLogger.error(message, context)
   }
 
-  warn(message: string, context?: string) {
+  warn(message: string, context?: any) {
     super.warn(message, context)
-    void this.centralLogger.warn(message, { context })
+    void this.centralLogger.warn(message, context)
   }
 
-  debug(message: string, context?: string) {
+  debug(message: string, context?: any) {
     super.debug(message, context)
-    void this.centralLogger.debug(message, { context })
+    void this.centralLogger.debug(message, context)
   }
 
-  verbose(message: string, context?: string) {
+  verbose(message: string, context?: any) {
     super.verbose(message, context)
-    void this.centralLogger.verbose(message, { context })
+    void this.centralLogger.verbose(message, context)
   }
 
   setDomain(domain: DomainsForService<Service.API>) {

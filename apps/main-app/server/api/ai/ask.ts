@@ -55,7 +55,7 @@ export default defineEventHandler({
         statusCode: 200,
         data: chatCompletion || '',
       }
-    } catch (error) {
+    } catch (error: any) {
       log.error('error', error)
       return {
         data: null,

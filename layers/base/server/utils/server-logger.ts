@@ -64,7 +64,7 @@ export function useServerLogger(domain: ServiceToDomain[Service]) {
     async handleQuery<T>(queryFn: () => Promise<{ data: T; error: any }>) {
       return this.handle(async () => {
         const { data, error } = await queryFn()
-        if (error) {
+        if (error: any) {
           this.error('Query failed', {
             error,
             statusCode: error.code === '22P02' ? 400 : 500,

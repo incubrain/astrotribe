@@ -76,7 +76,7 @@ const handleRoleChange = async () => {
     // Check a few times after change to ensure we catch the update
     const checks = [100, 500, 1000, 2000] // Check at different intervals
     checks.forEach((delay) => setTimeout(checkRole, delay))
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to change role:', error)
     // Maybe reset the select?
     currentRole.value = actualRole.value

@@ -133,7 +133,7 @@ onMounted(async () => {
   try {
     if (voteStore.getScore(props.news.id) == null)
       voteStore.setVotes(props.news.id, props.news.vote_count || 0)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching vote status:', error)
   }
 })

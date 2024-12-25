@@ -63,7 +63,7 @@ const connectToAnalyticsServer = () => {
     scheduleReconnect()
   })
 
-  serverWs.on('error', (error) => {
+  serverWs.on('error', (error: any) => {
     console.error('Error with Analytics WebSocket connection:', error)
     if (serverWs) {
       serverWs.close()
@@ -123,7 +123,7 @@ export default defineWebSocketHandler({
           serverWs ? serverWs.readyState : 'null',
         )
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error parsing or handling message:', error)
     }
   },

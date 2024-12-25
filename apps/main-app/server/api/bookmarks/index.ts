@@ -123,7 +123,7 @@ export default defineEventHandler(async (event) => {
     await Promise.all(
       Object.entries(bookmarksByType).map(async ([type, ids]) => {
         const { data, error } = await supabase.from(type).select('*').in('id', ids)
-        if (error) throw error
+        if (error: any) throw error
         contentTypeData[type] = data || []
       }),
     )
@@ -156,7 +156,7 @@ export default defineEventHandler(async (event) => {
     console.log('Normalized bookmarks:', normalizedBookmarks)
 
     return { data: normalizedBookmarks }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in bookmark endpoint:', error)
     throw createError({
       statusCode: error.statusCode || 500,

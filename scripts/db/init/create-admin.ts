@@ -35,7 +35,7 @@ export async function setAdminUser(pool: Pool, usersToUpgrade: string[]) {
     `)
 
     console.log(chalk.green('✓ Admin users configured successfully'))
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Error configuring admin users:'), error)
     throw error
   } finally {

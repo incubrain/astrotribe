@@ -28,7 +28,7 @@ export class RepomixRunner {
         await fs.mkdir(outputDir, { recursive: true })
         console.log(chalk.gray(`Ensured output directory exists: ${outputDir}`))
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.yellow(`Warning: Could not create output directory: ${error.message}`))
     }
   }
@@ -53,7 +53,7 @@ export class RepomixRunner {
 
       console.log(chalk.green(`Successfully generated: ${config.name}`))
       return true
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.red(`Failed to generate context: ${config.name}`))
       console.error(chalk.red('Error details:'), error)
       return false
@@ -125,7 +125,7 @@ export class RepomixRunner {
       }
 
       return path.relative(process.cwd(), configPath)
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.red(`Failed to save config: ${error.message}`))
       throw error
     }
@@ -160,7 +160,7 @@ export class RepomixRunner {
             name: path.basename(file, '.json'),
             content,
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error(chalk.red(`Error reading config ${file}:`), error)
           return null
         }

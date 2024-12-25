@@ -52,8 +52,8 @@ export abstract class BaseController {
         items,
         this.paginationService.getPaginationMeta(total, query),
       )
-    } catch (error) {
-      throw this.handleError(error)
+    } catch (error: any) {
+      throw this.handleError(error: any)
     }
   }
 
@@ -68,8 +68,8 @@ export abstract class BaseController {
         throw new NotFoundException(`${this.modelName} not found`)
       }
       return this.handleSuccess(data)
-    } catch (error) {
-      throw this.handleError(error)
+    } catch (error: any) {
+      throw this.handleError(error: any)
     }
   }
 
@@ -77,8 +77,8 @@ export abstract class BaseController {
     try {
       const result = await this.model.create({ data })
       return this.handleSuccess(result)
-    } catch (error) {
-      throw this.handleError(error)
+    } catch (error: any) {
+      throw this.handleError(error: any)
     }
   }
 
@@ -89,8 +89,8 @@ export abstract class BaseController {
         data,
       })
       return this.handleSuccess(result)
-    } catch (error) {
-      throw this.handleError(error)
+    } catch (error: any) {
+      throw this.handleError(error: any)
     }
   }
 
@@ -102,8 +102,8 @@ export abstract class BaseController {
       }
       await this.model.delete({ where: { id } })
       return this.handleSuccess(existing)
-    } catch (error) {
-      throw this.handleError(error)
+    } catch (error: any) {
+      throw this.handleError(error: any)
     }
   }
 
@@ -134,7 +134,7 @@ export abstract class BaseController {
       }
 
       return user
-    } catch (error) {
+    } catch (error: any) {
       throw new UnauthorizedException('Invalid token')
     }
   }

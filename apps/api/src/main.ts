@@ -67,7 +67,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('docs', app, document)
 
-
   // CORS
   const corsOrigins = configService.get('app.api_cors_origins')
   // CORS Configuration
@@ -79,9 +78,9 @@ async function bootstrap() {
         return
       }
 
-      const allowedOrigins = Array.isArray(corsOrigins) ?
-        corsOrigins :
-        corsOrigins.split(',').map((o) => o.trim())
+      const allowedOrigins = Array.isArray(corsOrigins)
+        ? corsOrigins
+        : corsOrigins.split(',').map((o) => o.trim())
 
       if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
         callback(null, true)
@@ -115,7 +114,7 @@ async function bootstrap() {
   logger.log(`Swagger documentation is available at: http://localhost:${port}/docs`)
 }
 
-bootstrap().catch((error) => {
+bootstrap().catch((error: any) => {
   const logger = new CustomLogger('Bootstrap')
   logger.error('Failed to start application', error.stack)
   process.exit(1)

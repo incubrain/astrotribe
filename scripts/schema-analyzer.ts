@@ -143,7 +143,7 @@ class TriggerAnalyzer implements BaseAnalyzer<TriggerDefinition[]> {
         definition: row.definition,
         schema: row.schema_name,
       }))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing triggers:', error)
       throw error
     }
@@ -402,7 +402,7 @@ class FunctionAnalyzer implements BaseAnalyzer<FunctionDefinition[]> {
         kind: row.kind,
         definition: row.definition,
       }))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing functions:', error)
       throw error
     }
@@ -465,7 +465,7 @@ class PolicyAnalyzer implements BaseAnalyzer<PolicyDefinition[]> {
         withCheck: row.with_check,
         roles: row.role_names ? row.role_names.split(', ') : [],
       }))
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing policies:', error)
       throw error
     }
@@ -555,7 +555,7 @@ export class SchemaAnalyzer {
       for (const schema of schemas) {
         try {
           DomainValidator.validateSchema(schema)
-        } catch (error) {
+        } catch (error: any) {
           console.error(`Validation error: ${error.message}`)
           // Set to common domain if validation fails
           schema.domain = 'common'
@@ -625,7 +625,7 @@ export class SchemaAnalyzer {
         }
 
         schemas.push(schema)
-      } catch (error) {
+      } catch (error: any) {
         console.error(`Error analyzing table ${table}:`, error)
         // Add table with minimal info even if analysis fails
         schemas.push({

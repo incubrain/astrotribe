@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
   console.log('Daily trends:', data, error)
 
-  if (error) {
+  if (error: any) {
     throw createError({
       statusCode: 500,
       message: 'Error fetching daily trends',

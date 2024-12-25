@@ -35,7 +35,7 @@ onMounted(async () => {
     const data = await fetchAnalyticsOverview('30')
     // Update metrics with real data when available
     isLoading.value = false
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching metrics:', error)
     isLoading.value = false
   }

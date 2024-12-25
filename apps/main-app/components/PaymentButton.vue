@@ -108,7 +108,7 @@ const handlePayment = () => {
   try {
     loading.value = true
     rzp.open()
-  } catch (error) {
+  } catch (error: any) {
     emit('payment-error', error)
     loading.value = false
   }

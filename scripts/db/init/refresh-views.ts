@@ -87,7 +87,7 @@ export async function refreshDatabaseViews(
               }view: ${view.view_name}`,
             ),
           )
-        } catch (error) {
+        } catch (error: any) {
           console.error(
             chalk.red(
               `Error refreshing ${
@@ -106,7 +106,7 @@ export async function refreshDatabaseViews(
     } finally {
       poolClient.release()
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('Database connection error:'), error)
     return false
   }

@@ -74,7 +74,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         ],
       }
 
-      nuxtApp.hook('app:error', (error) => {
+      nuxtApp.hook('app:error', (error: any) => {
         let category = 'unknown'
         const errorCode = error.statusCode?.toString() || error.name
 
@@ -174,7 +174,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       DevHelper.initUnhandledPromiseRejectionTracker()
       DevHelper.checkEnvironmentConsistency()
       logger.info('Initialization complete')
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Initialization failed:', { error })
     }
   } else {

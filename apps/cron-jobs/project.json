@@ -1,0 +1,117 @@
+{
+  "name": "cron-jobs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/cron-jobs",
+  "// targets": "to see all targets run: nx show project cron-jobs --web",
+  "targets": {
+    "build:libs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build:libs"
+      }
+    },
+
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rimraf dist", "tsc -p tsconfig.json"],
+        "cwd": "apps/cron-jobs",
+        "parallel": false
+      },
+      "dependsOn": ["build:libs"]
+    },
+
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx watch src/index.ts",
+        "cwd": "apps/cron-jobs",
+        "env": {
+          "NODE_ENV": "development",
+          "DEBUG": "true"
+        }
+      }
+    },
+
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node dist/index.js",
+        "cwd": "apps/cron-jobs",
+        "env": {
+          "NODE_ENV": "production"
+        }
+      }
+    },
+
+    "debug": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx --inspect-brk src/index.ts",
+        "cwd": "apps/cron-jobs",
+        "env": {
+          "NODE_ENV": "development",
+          "DEBUG": "true"
+        }
+      }
+    },
+
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint 'src/**/*.{js,ts}'",
+        "cwd": "apps/cron-jobs"
+      }
+    },
+
+    "lint:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint 'src/**/*.{js,ts}' --fix",
+        "cwd": "apps/cron-jobs"
+      }
+    },
+
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "apps/cron-jobs"
+      }
+    },
+
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run --coverage",
+        "cwd": "apps/cron-jobs",
+        "env": {
+          "NODE_ENV": "test",
+          "VITEST_MODE": "true"
+        }
+      }
+    },
+
+    "test:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest",
+        "cwd": "apps/cron-jobs",
+        "env": {
+          "NODE_ENV": "test",
+          "VITEST_MODE": "true"
+        }
+      }
+    },
+
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rimraf dist", "rimraf coverage", "rimraf .turbo"],
+        "cwd": "apps/cron-jobs",
+        "parallel": true
+      }
+    }
+  }
+}

@@ -32,10 +32,10 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     try {
       categories.value = await localStorage.getCachedOrFetch('astronera-categories', async () => {
         const { data, error } = await client.from('categories').select('id, name')
-        if (error) throw error
+        if (error: any) throw error
         return z.array(CategorySchema).parse(data)
       })
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error fetching categories:', error)
       errors.server({
         error,
@@ -50,10 +50,10 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     try {
       tags.value = await localStorage.getCachedOrFetch('astronera-tags', async () => {
         const { data, error } = await client.from('tags').select('id, name')
-        if (error) throw error
+        if (error: any) throw error
         return z.array(TagSchema).parse(data)
       })
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error fetching tags:', error)
       errors.server({
         error,

@@ -13,7 +13,7 @@ export default ({ env }) => ({
       console.log('Imported seed module successfully')
       await seedData({ strapi })
       console.log('Bootstrap: Seeding completed successfully')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Bootstrap: Error during seeding:', error)
     }
     console.log('Bootstrap process completed')

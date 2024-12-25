@@ -32,7 +32,7 @@ const handleNewFolder = async () => {
     await createFolder(newFolder.value)
     showNewFolderModal.value = false
     resetNewFolder()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to create folder:', error)
   }
 }

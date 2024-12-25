@@ -56,7 +56,7 @@ export const handleSearch = async (context: SearchContext) => {
             files: [...(scanResult.fileMatches || [])],
           })
         }
-      } catch (error) {
+      } catch (error: any) {
         console.warn(chalk.yellow(`Warning: Could not scan app ${app}: ${error.message}`))
       }
     }
@@ -216,7 +216,7 @@ export const handleAllFeatures = async () => {
         name: config.name,
         content: repomixConfig,
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.red(`Failed to generate config for ${config.name}:`), error)
       results[id] = { configPath: '', success: false }
     }
@@ -274,7 +274,7 @@ async function scanForFeature(config: FeatureConfig) {
         const relativePath = path.join('apps', appName, file)
         results.files.add(relativePath)
       })
-    } catch (error) {
+    } catch (error: any) {
       console.warn(chalk.yellow(`Warning: Could not scan app ${appName}: ${error.message}`))
     }
   }
@@ -300,7 +300,7 @@ async function getApps(): Promise<string[]> {
   try {
     const apps = await fs.readdir(appsDir)
     return apps.filter((app) => !app.startsWith('.')).map((app) => path.join(appsDir, app))
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red(`Error reading apps directory: ${error.message}`))
     return []
   }

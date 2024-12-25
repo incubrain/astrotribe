@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       .eq('user_id', user.id)
       .eq('vote_type', voteType)
 
-    if (error) throw error
+    if (error: any) throw error
 
     // Get the actual news items
     const { data: news, error: newsError } = await client
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
     if (newsError) throw newsError
 
     return news
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get voted news error:', error)
     throw createError({
       statusCode: 500,

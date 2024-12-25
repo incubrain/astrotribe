@@ -241,7 +241,7 @@ const cancelEdit = () => {
 const updateFolder = async (folder: Folder, data: Partial<Folder>) => {
   try {
     await folderStore.updateFolder(folder.id, data)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating folder:', error)
     toast.error({ summary: 'Could not update folder', message: error.message })
   }
@@ -315,7 +315,7 @@ const createFolder = async () => {
     showNewFolderModal.value = false
     newFolderName.value = ''
     makeDefault.value = ''
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error Creating Folder', error)
     toast.error({ summary: 'Could not create folder', message: error.message })
   }
@@ -338,7 +338,7 @@ onMounted(() => {
   try {
     folderStore.fetchFolders()
     bookmarkStore.fetchBookmarks()
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error initializing data:', error)
   }
 })

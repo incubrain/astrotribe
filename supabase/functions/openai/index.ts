@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
     console.log('PARSING REQUEST', req)
     requestBody = await req.json()
     console.log('PARSING REQUEST', requestBody)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Invalid JSON input:', error)
     return new Response(JSON.stringify({ error: 'Invalid JSON input' }), {
       headers,
@@ -153,7 +153,7 @@ Deno.serve(async (req) => {
       match_count: match_count || 10,
     })
 
-    if (error) {
+    if (error: any) {
       console.error('Error matching documents:', error)
       throw new Error(`Error matching documents: ${error.message}`)
     }

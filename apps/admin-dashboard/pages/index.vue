@@ -13,7 +13,7 @@ const scrapeNewsLinks = async () => {
       body: { action: 'scrapeNewsLinks' },
     })
     outputData.value = JSON.stringify(data, null, 2)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error scraping news links:', error)
     outputData.value = 'Error scraping news links. Check console for details.'
   }
@@ -26,7 +26,7 @@ const scrapeNewsArticles = async () => {
       body: { action: 'scrapeNewsArticles' },
     })
     outputData.value = JSON.stringify(data, null, 2)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error scraping news articles:', error)
     outputData.value = 'Error scraping news articles. Check console for details.'
   }

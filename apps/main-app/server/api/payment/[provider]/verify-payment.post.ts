@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
       },
     })
     return response
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error verifying payment with ${provider}:`, error)
     throw createError({
       statusCode: 500,

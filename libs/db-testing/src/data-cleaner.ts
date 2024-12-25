@@ -57,14 +57,14 @@ export async function cleanUpTestData(pool: Pool) {
               END IF;
             END $$;
           `)
-      } catch (error) {
+      } catch (error: any) {
         console.warn(`Warning: Could not clean up table ${table}:`, error)
       }
     }
 
     await client.query('COMMIT')
     console.log('Test data cleanup completed successfully')
-  } catch (error) {
+  } catch (error: any) {
     await client.query('ROLLBACK')
     throw error
   } finally {

@@ -62,7 +62,7 @@ async function main() {
     }
 
     console.log(chalk.green('\n✓ RBA permissions update process completed successfully!'))
-  } catch (error) {
+  } catch (error: any) {
     console.error(chalk.red('\nError during RBA permissions update:'), error)
     process.exit(1)
   }
