@@ -196,6 +196,7 @@ export class CentralizedLogger<S extends Service = Service> {
 
     const dbMetadata = {
       service_name: this.service,
+      domain: this.domain,
       error_type: userMetadata?.error?.name || 'UNKNOWN_ERROR',
       severity: this.getSeverity(level),
       message,
@@ -262,12 +263,25 @@ export class CentralizedLogger<S extends Service = Service> {
     }
   }
 
+  private shouldStoreLog(level: Level): boolean {
+    if (this.env.isDev) {
+      return true
+    }
+
+    return level === Level.Error || level === Level.Warn
+  }
+
   private async log(level: Level, message: string, metadata?: any) {
-    if (!this.shouldLogLevel(level)) return
+    if (!this.shouldLogLevel(level)) {
+      return
+    }
     const { consoleData, dbMetadata } = await this.prepareMetadata(level, message, metadata)
     const finalMessage = this.formatLog(consoleData)
     this.transport.log(level, finalMessage)
-    void this.logToDatabase(dbMetadata)
+
+    if (this.shouldStoreLog(level)) {
+      void this.logToDatabase(dbMetadata)
+    }
   }
 
   // Public logging methods
