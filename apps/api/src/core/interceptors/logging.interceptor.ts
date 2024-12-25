@@ -13,7 +13,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   constructor(private logger: CustomLogger) {
-    this.logger.setContext('LoggingInterceptor')
+    this.logger.setDomain('logging')
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

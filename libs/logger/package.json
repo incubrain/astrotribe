@@ -1,18 +1,24 @@
 {
   "name": "@ib/logger",
-  "version": "0.0.1",
-  "type": "module",
-  "main": "./index.ts",
-  "module": "./index.ts",
-  "types": "./index.d.ts",
+  "version": "0.0.2",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
-      "import": "./index.ts",
-      "require": "./index.ts",
-      "types": "./index.d.ts"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
   "files": [
-    "src"
-  ]
+    "dist"
+  ],
+  "scripts": {
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "npm run build:cjs && npm run build:esm"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  }
 }

@@ -12,7 +12,7 @@ export class PermissionGuard implements CanActivate {
     private readonly logger: CustomLogger,
     private readonly reflector: Reflector,
   ) {
-    this.logger.setContext('PermissionGuard')
+    this.logger.setDomain('permissions')
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

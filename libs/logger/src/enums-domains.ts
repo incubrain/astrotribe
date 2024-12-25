@@ -6,6 +6,7 @@ const CONTENT_DOMAINS = ['content', 'blog', 'news', 'feeds'] as const
 const SOCIAL_DOMAINS = ['social', 'notifications'] as const
 const MONITORING_DOMAINS = ['monitoring', 'error-logs', 'metrics'] as const
 const SYSTEM_DOMAINS = ['database', 'redis', 'server-jobs', 'websocket'] as const
+const API_DOMAINS = ['monitoring', 'cron', 'agents', 'validation', 'filter', 'logging'] as const
 
 // Admin-specific domains
 const ADMIN_SPECIFIC = [
@@ -28,6 +29,7 @@ export enum Service {
   MONITORING = 'monitoring-dashboard',
   WEBSITE = 'website',
   CMS = 'cms',
+  API = 'api',
 
   // Extensions
   CHROME_EXTENSION = 'chrome-extension',
@@ -56,6 +58,7 @@ export const ServiceDomains = {
   'website': [...CORE_DOMAINS, ...UI_DOMAINS, ...CONTENT_DOMAINS, 'search'],
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
+  'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
 } as const
 
 export type ServiceToDomain = {

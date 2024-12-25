@@ -40,7 +40,7 @@ export class PermissionService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.logger.setContext('PermissionService')
+    this.logger.setDomain('permissions')
     await this.loadRoleHierarchy()
     this.logger.log('Permission service initialized with role hierarchy')
   }
