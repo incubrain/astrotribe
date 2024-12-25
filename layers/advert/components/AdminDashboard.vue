@@ -50,37 +50,6 @@ const chartOptions = {
   },
 }
 
-const chartData = computed(() => {
-  if (!selectedAdId.value || !adsAdminStore.trends[selectedAdId.value]) return null
-
-  const trendData = adsAdminStore.trends[selectedAdId.value]
-
-  return {
-    labels: trendData.map((day) => day.date),
-    datasets: [
-      {
-        label: 'Views',
-        data: trendData.map((day) => day.views),
-        backgroundColor: 'rgba(33, 150, 243, 0.1)',
-        borderColor: '#2196F3',
-        type: 'line', // Make this a line
-        tension: 0.4,
-        yAxisID: 'y',
-        valueType: 'number',
-      },
-      {
-        label: 'Clicks',
-        data: trendData.map((day) => day.clicks),
-        backgroundColor: '#4CAF50',
-        borderColor: '#4CAF50',
-        type: 'bar', // Make this a bar
-        yAxisID: 'y-2', // Use secondary axis
-        valueType: 'number',
-      },
-    ],
-  }
-})
-
 // Load initial data
 onMounted(async () => {
   await adsAdminStore.fetchAnalyticsOverview(selectedPeriod.value)
@@ -91,24 +60,85 @@ watch(selectedPeriod, async (newPeriod) => {
   await adsAdminStore.fetchAnalyticsOverview(newPeriod)
 })
 
+const formatPercent = (value: number | null | undefined) => {
+  if (value == null) return '0%'
+  return `${value}%`
+}
+
+const formatNumber = (value: number | null | undefined) => {
+  if (value == null) return '0'
+  return value.toLocaleString()
+}
+
 // Computed metrics for the summary cards
+const chartData = computed(() => {
+  if (!selectedAdId.value || !adsAdminStore.trends[selectedAdId.value]) return null
+
+  const trendData = adsAdminStore.trends[selectedAdId.value] as DailyMetrics[]
+
+  return {
+    labels: trendData.map((day) => day.date),
+    datasets: [
+      {
+        label: 'Views',
+        data: trendData.map((day) => day.views ?? 0),
+        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+        borderColor: '#2196F3',
+        type: 'line',
+        tension: 0.4,
+        yAxisID: 'y',
+        valueType: 'number',
+      },
+      {
+        label: 'Clicks',
+        data: trendData.map((day) => day.clicks ?? 0),
+        backgroundColor: '#4CAF50',
+        borderColor: '#4CAF50',
+        type: 'bar',
+        yAxisID: 'y-2',
+        valueType: 'number',
+      },
+    ],
+  }
+})
+
+// Add these computed properties for the chart info
+const totalViews = computed(() => {
+  if (!selectedAdId.value || !adsAdminStore.trends[selectedAdId.value]) return 0
+  return adsAdminStore.trends[selectedAdId.value].reduce((sum, day) => sum + (day.views ?? 0), 0)
+})
+
+const totalClicks = computed(() => {
+  if (!selectedAdId.value || !adsAdminStore.trends[selectedAdId.value]) return 0
+  return adsAdminStore.trends[selectedAdId.value].reduce((sum, day) => sum + (day.clicks ?? 0), 0)
+})
+
+const avgCTR = computed(() => {
+  if (totalViews.value === 0) return 0
+  return ((totalClicks.value / totalViews.value) * 100).toFixed(2)
+})
+
+// Update summary metrics computation
 const summaryMetrics = computed(() => {
-  if (!overview.value) return []
+  if (!overview.value?.length) return []
+
+  const totalViews = overview.value.reduce((sum, ad) => sum + (ad.total_views ?? 0), 0)
+  const totalClicks = overview.value.reduce((sum, ad) => sum + (ad.total_clicks ?? 0), 0)
 
   return [
     {
       label: 'Total Views',
-      value: overview.value.reduce((sum, ad) => sum + ad.total_views, 0).toLocaleString(),
+      value: formatNumber(totalViews),
       icon: 'i-lucide-eye',
     },
     {
       label: 'Total Clicks',
-      value: overview.value.reduce((sum, ad) => sum + ad.total_clicks, 0).toLocaleString(),
+      value: formatNumber(totalClicks),
       icon: 'i-lucide-mouse-pointer',
     },
     {
       label: 'Average CTR',
-      value: `${(overview.value.reduce((sum, ad) => sum + ad.ctr, 0) / overview.value.length).toFixed(2)}%`,
+      value: formatPercent(totalViews > 0 ? (totalClicks / totalViews) * 100 : 0),
       icon: 'i-lucide-percent',
     },
     {
@@ -119,13 +149,12 @@ const summaryMetrics = computed(() => {
   ]
 })
 
-// Loading more details when an ad is selected
-const handleAdSelect = async (ad: any) => {
+const handleAdSelect = async (ad: AdMetrics) => {
   selectedAdId.value = ad.id
 
   await Promise.all([
-    adsAdminStore.fetchDailyTrends(ad.id, selectedPeriod.value), // now /api/ads/[adId]/trend
-    adsAdminStore.fetchVariantMetrics(ad.id), // /api/ads/[adId]/metrics
+    adsAdminStore.fetchDailyTrends(ad.id, selectedPeriod.value),
+    adsAdminStore.fetchVariantMetrics(ad.id),
   ])
 }
 </script>
@@ -203,30 +232,32 @@ const handleAdSelect = async (ad: any) => {
         <PrimeColumn
           field="total_views"
           header="Views"
-          dataType="numeric"
+          data-type="numeric"
           :sortable="true"
         >
           <template #body="{ data }">
-            {{ data.total_views.toLocaleString() }}
+            {{ formatNumber(data.total_views) }}
           </template>
         </PrimeColumn>
         <PrimeColumn
           field="total_clicks"
           header="Clicks"
-          dataType="numeric"
+          data-type="numeric"
           :sortable="true"
         >
           <template #body="{ data }">
-            {{ data.total_clicks.toLocaleString() }}
+            {{ formatNumber(data.total_clicks) }}
           </template>
         </PrimeColumn>
         <PrimeColumn
           field="ctr"
           header="CTR"
-          dataType="numeric"
+          data-type="numeric"
           :sortable="true"
         >
-          <template #body="{ data }"> {{ data.ctr }}% </template>
+          <template #body="{ data }">
+            {{ formatPercent(data.ctr) }}
+          </template>
         </PrimeColumn>
         <PrimeColumn
           field="ad_position"
@@ -291,16 +322,26 @@ const handleAdSelect = async (ad: any) => {
                 <PrimeColumn
                   field="total_views"
                   header="Views"
-                />
+                >
+                  <template #body="{ data }">
+                    {{ formatNumber(data.total_views) }}
+                  </template>
+                </PrimeColumn>
                 <PrimeColumn
                   field="total_clicks"
                   header="Clicks"
-                />
+                >
+                  <template #body="{ data }">
+                    {{ formatNumber(data.total_clicks) }}
+                  </template>
+                </PrimeColumn>
                 <PrimeColumn
                   field="ctr"
                   header="CTR"
                 >
-                  <template #body="{ data }"> {{ data.ctr }}% </template>
+                  <template #body="{ data }">
+                    {{ formatPercent(data.ctr) }}
+                  </template>
                 </PrimeColumn>
               </PrimeDataTable>
             </div>
