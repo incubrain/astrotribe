@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
@@ -14,6 +15,7 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"],
       "@types": ["./src/types/index.ts"],

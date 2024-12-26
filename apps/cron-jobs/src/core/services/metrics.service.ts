@@ -46,6 +46,13 @@ export class MetricsService {
     })
   }
 
+  public async flush() {
+    this.logger.info('Flushing metrics...')
+    // this.prisma.job_metrics.deleteMany()
+    // this.prisma.job_queue_stats.deleteMany()
+    // this.prisma.error_logs.deleteMany()
+  }
+
   private async calculateJobDuration(jobId: string): Promise<number> {
     const metric = await this.prisma.job_metrics.findFirst({
       where: { job_id: jobId, status: 'active' },
