@@ -24,8 +24,8 @@ RUN npm ci
 # Generate Prisma client
 RUN npx prisma generate
 
-# Copy the rest of the application
-COPY . .
+# Make scripts executable (if they exist)
+RUN if [ -d "scripts" ]; then chmod +x scripts/*.sh; fi
 
 # Build the application using SWC
 RUN npx nx build api --verbose --skip-nx-cache
