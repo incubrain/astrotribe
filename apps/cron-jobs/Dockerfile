@@ -89,7 +89,7 @@ ENV NODE_ENV=production \
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 
 # list out the contents of the . folder
-RUN ls -la .
+RUN ls -la . && ls -la ./dist && ls -la ./dist/src
 
 # No need for tsx since we're running compiled JS
-CMD ["node", "./dist/index.js"]
+CMD ["node", "./dist/src/index.js"]
