@@ -1,6 +1,6 @@
 // utils/job-factory.ts
 import { DomainsForService, Service } from '@ib/logger'
-import { JobName, JobConfig, JobHandlers } from '../../types'
+import { JobName, JobConfig, JobHandlers } from '../types'
 
 // src/utils/job-factory.ts
 export class JobFactory {

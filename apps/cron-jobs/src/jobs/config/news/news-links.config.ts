@@ -1,10 +1,9 @@
 // src/jobs/news/news-links.job.ts
-import { BaseJob } from '../../job.base'
 import { DomainsForService, Service } from '@ib/logger'
 import { NewsLinkExtractor } from '../../utils/link-extractor'
 import type { JobServices, ContentSource, JobConfig } from '@types'
 import { DatabaseUtils } from '../../utils/database.utils'
-import { JobFactory } from '../../utils/job-factory'
+import { JobFactory } from '../../job.factory'
 import { error_type } from '@prisma/client'
 
 interface ProcessedContent {
@@ -38,7 +37,7 @@ export const createNewsLinksJob = (services: JobServices) => {
     version: '1.2.0',
     changes: ['Added support for new sources'],
     schedule: {
-      customCron: '0 */1 * * *',
+      customCron: '*/20 * * * *', // Every 20 minutes
       type: 'cron',
       enabled: true,
     },

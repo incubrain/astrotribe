@@ -9,8 +9,7 @@ import type {
   CustomLogger,
   MetricsService,
 } from '@core'
-import type { JobVersionService } from '../jobs/utils/job-version.service'
-import type { BaseJob } from '../jobs/job.base'
+import type { JobVersionService } from '../jobs/job.versioning'
 import type { ScheduleConfig } from './schedule.types'
 
 // Required services for jobs
@@ -24,7 +23,7 @@ export interface JobServices {
   version: JobVersionService
 }
 
-export type JobClass = new (services: JobServices) => BaseJob
+export type JobClass = new (services: JobServices) => PgBoss.Job
 
 // Job status types
 export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'retrying'
