@@ -8,7 +8,7 @@ import {
   PrismaService,
 } from '@core'
 import { ShutdownService } from './core/shutdown.service'
-import { JobVersionService } from './jobs/utils/job-version.service'
+import { JobVersionService } from './jobs/job.versioning'
 import { JobRegistry } from './jobs/job.registry'
 import { ApplicationConfig } from './config'
 import type { JobServices } from '@types'
@@ -41,11 +41,10 @@ export class Application {
       scraper: new ScraperService(logger),
       version: new JobVersionService(logger, prisma),
     }
-
-    this.jobRegistry = new JobRegistry(this.services)
-
     // Initialize shutdown service last
     this.shutdownService = new ShutdownService(this.services)
+
+    this.jobRegistry = new JobRegistry(this.services)
   }
 
   async start(jobName?: string) {
@@ -62,15 +61,15 @@ export class Application {
         await this.services.queue.start()
       }
 
-      // Initialize other services as needed
-      // await this.initializeServices()
+      await this.jobRegistry.initialize()
 
       this.services.logger.info('Application started successfully', {
         timestamp: new Date().toISOString(),
       })
 
       if (jobName) {
-        await this.testJob(jobName)
+        console.log('Testing job:', jobName, this.jobRegistry)
+        await this.jobRegistry.testJob(jobName)
       }
     } catch (error: any) {
       this.services.logger.error('Failed to start application', {
@@ -97,48 +96,6 @@ export class Application {
       })
     } catch (error: any) {
       this.services.logger.error('Error stopping application', {
-        ...error,
-        timestamp: new Date().toISOString(),
-      })
-      throw error
-    }
-  }
-
-  async testJob(jobName: string) {
-    try {
-      this.services.logger.info(`Looking up job: ${jobName}`)
-      const job = this.jobRegistry.getJob(jobName)
-      if (!job) {
-        this.services.logger.warn(`Job ${jobName} not found`)
-        throw new Error(`Job ${jobName} not found`)
-      }
-
-      this.services.logger.info(`Testing job: ${jobName}`, {
-        jobVersion: job.version,
-        jobSchedule: job.schedule,
-      })
-
-      // Get initial data from beforeProcess if it exists
-      let jobData = {}
-      try {
-        this.services.logger.info(`Getting initial data for job ${jobName}`)
-        jobData = await job.handlers.beforeProcess()
-      } catch (error: any) {
-        this.services.logger.error(`Failed to get initial data for job ${jobName}`, {
-          error,
-        })
-        throw error
-      }
-
-      const jobId = await this.services.queue.testJob(jobName, jobData)
-      this.services.logger.info(`Test job queued with ID: ${jobId}`, {
-        jobName,
-        jobId,
-        timestamp: new Date().toISOString(),
-      })
-      return jobId
-    } catch (error: any) {
-      this.services.logger.error(`Failed to test job ${jobName}`, {
         ...error,
         timestamp: new Date().toISOString(),
       })

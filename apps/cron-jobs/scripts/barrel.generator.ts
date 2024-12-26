@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { CustomLogger } from '../src/core/logger/custom.logger'
+import { CustomLogger } from '../src/core/services/logger.service'
 
 interface BarrelConfig {
   // Root directory to start scanning from
@@ -36,7 +36,7 @@ export class BarrelGenerator {
 
   constructor(logger: CustomLogger) {
     this.logger = logger
-    this.logger.setContext('BarrelGenerator')
+    this.logger.setDomain('jobs')
   }
 
   private shouldExcludeDir(dirPath: string, excludeDirs: string[]): boolean {
@@ -54,7 +54,7 @@ export class BarrelGenerator {
       generateNestedBarrels = true,
     } = config
 
-    this.logger.log(`Starting barrel file generation for directories: ${directories.join(', ')}`)
+    this.logger.info(`Starting barrel file generation for directories: ${directories.join(', ')}`)
 
     for (const dir of directories) {
       const fullPath = path.join(rootDir, dir)
@@ -71,7 +71,7 @@ export class BarrelGenerator {
       })
     }
 
-    this.logger.log('Barrel file generation completed')
+    this.logger.info('Barrel file generation completed')
   }
 
   private async processDirectory(
@@ -84,7 +84,7 @@ export class BarrelGenerator {
       const files = await fs.promises.readdir(dirPath, { withFileTypes: true })
       const exports: string[] = []
       const rootDir = isRootDir ? dirPath : path.dirname(dirPath)
-      const excludeDirs = options.excludeDirs || this.defaultExcludeDirs
+      const excludeDirs = options.ignorePatterns || this.defaultExcludeDirs
 
       // Skip this directory if it's in the exclude list
       if (!isRootDir && this.shouldExcludeDir(dirPath, excludeDirs)) {
@@ -96,8 +96,8 @@ export class BarrelGenerator {
         .filter((file) => file.isFile())
         .map((file) => file.name)
         .filter((filename) => {
-          const isValidExtension = options.extensions.some((ext) => filename.endsWith(ext))
-          const shouldInclude = !options.ignorePatterns.some((pattern) =>
+          const isValidExtension = options.extensions?.some((ext) => filename.endsWith(ext))
+          const shouldInclude = !options.ignorePatterns?.some((pattern) =>
             filename.includes(pattern),
           )
           return isValidExtension && shouldInclude
