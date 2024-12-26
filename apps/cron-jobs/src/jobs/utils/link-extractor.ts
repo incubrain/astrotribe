@@ -69,7 +69,7 @@ export class NewsLinkExtractor {
           return this.createBlogPostObjects(rssItems)
         }
         logger.warn('No items found in RSS feeds, falling back to HTML scraping')
-      } catch (error) {
+      } catch (error: any) {
         logger.error('RSS extraction failed, falling back to HTML scraping', { error })
       }
     }
@@ -106,7 +106,7 @@ export class NewsLinkExtractor {
               extractedUrls.push(url)
               this.contentStash.addValidBlogUrl(new URL(url).hostname, url)
             }
-          } catch (error) {
+          } catch (error: any) {
             logger.error(`Error processing URL: ${url}`, { error })
           }
         }),
@@ -136,7 +136,7 @@ export class NewsLinkExtractor {
 
           logger.warn(`No items found in RSS feed: ${rssUrl}`)
           return []
-        } catch (error) {
+        } catch (error: any) {
           logger.error(`Failed to fetch RSS feed: ${rssUrl}`, { error })
           return []
         }
@@ -162,7 +162,7 @@ export class NewsLinkExtractor {
           ),
         ),
       ])
-    } catch (error) {
+    } catch (error: any) {
       this.services.logger.error(`RSS fetch failed for ${url}`, { error })
       throw error
     }
@@ -463,7 +463,9 @@ export class NewsLinkExtractor {
       exclusions.some((exclusion) => pathname.includes(exclusion)) ||
       datePattern.test(pathname)
 
-    this.services.logger.debug(`isExcludedLink check for pathname: ${pathname}, result: ${isExcluded}`)
+    this.services.logger.debug(
+      `isExcludedLink check for pathname: ${pathname}, result: ${isExcluded}`,
+    )
 
     return isExcluded
   }
@@ -563,7 +565,9 @@ export class NewsLinkExtractor {
         } else {
           this.services.logger.warn(`No items found in feed from ${rss_url}`)
           const duration = performance.now() - startTime
-          this.services.logger.info(`Processed feed from ${rss_url} (no items) in ${duration.toFixed(2)}ms`)
+          this.services.logger.info(
+            `Processed feed from ${rss_url} (no items) in ${duration.toFixed(2)}ms`,
+          )
           return []
         }
       } catch (error: any) {
@@ -735,9 +739,9 @@ export class NewsLinkExtractor {
 export async function scrapeNewsLinks(
   page: Page,
   source: ContentSource,
-  batchSize: number = 100,
+  services: { logger: CustomLogger; prisma: PrismaService },
 ): Promise<string[]> {
   console.info('Creating NewsLinkExtractor instance')
-  const scraper = new NewsLinkExtractor(page, source, batchSize)
+  const scraper = new NewsLinkExtractor(page, source, services)
   return scraper.extractBlogLinks()
 }

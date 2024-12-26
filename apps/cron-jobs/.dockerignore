@@ -1,13 +1,15 @@
 node_modules
 dist
-test
-**/*.test.ts
-**/*.spec.ts
-**/__tests__/**
-.nuxt
+coverage
+.git
 .env
-.DS_Store # macOS
-npm-debug.log
-yarn-debug.log
-.idea # JetBrains IDEs
-.vscode # VS Code
+*.log
+.nx/cache
+tmp
+**/*.spec.ts
+**/*.test.ts
+**/__tests__
+.next
+.nuxt
+.output
+.turbo

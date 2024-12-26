@@ -1,5 +1,4 @@
 // Original interfaces remain the same
-export type DomainKey = 'news' | 'company' | 'agent' | 'system'
 export enum Priority {
   Critical = 100,
   High = 75,

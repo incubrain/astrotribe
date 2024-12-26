@@ -1,5 +1,6 @@
 // src/types/job.types.ts
 import PgBoss from 'pg-boss'
+import { DomainsForService, Service } from '@ib/logger'
 import type {
   PrismaService,
   EventService,
@@ -10,7 +11,6 @@ import type {
 } from '@core'
 import type { JobVersionService } from '../jobs/utils/job-version.service'
 import type { BaseJob } from '../jobs/job.base'
-import type { DomainKey, PriorityLevel } from './domain.types'
 import type { ScheduleConfig } from './schedule.types'
 
 // Required services for jobs
@@ -40,7 +40,7 @@ export type JobName =
 
 export interface JobMetadata {
   name: JobName
-  domain: DomainKey
+  domain: DomainsForService<Service.JOBS>
   description: string
   priority: 'low' | 'normal' | 'high' | 'critical'
   schedule: ScheduleConfig
@@ -63,25 +63,40 @@ export interface CircuitBreakerConfig {
   halfOpenRetries?: number
 }
 
-export interface JobHandlers<TInput = any, TProcessed = any, TOutput = any> {
-  fetchFunction: (
-    client: PrismaService,
-    config: BatchConfig,
-    options?: { limit?: number; offset?: number },
-  ) => Promise<TInput[]>
+export interface JobSchedule {
+  customCron: string
+  type: 'cron' | 'interval'
+  enabled: boolean
+}
 
-  processFunction: (rows: TInput[], config: BatchConfig) => Promise<TProcessed[]>
-
-  storeFunction: (client: PrismaService, processedData: TProcessed[]) => Promise<TOutput>
-
+export interface JobHandlers<TInput, TProcessed, TOutput> {
+  beforeProcess?: () => Promise<TInput[]>
+  processFunction: (rows: TInput[]) => Promise<TProcessed[]>
+  afterProcess?: (processedData: TProcessed[]) => Promise<TOutput[]>
   onSuccess?: (result: TOutput) => Promise<void>
   onError?: (error: Error) => Promise<void>
 }
 
-export interface JobConfig<TInput = any, TProcessed = any, TOutput = any>
-  extends JobMetadata,
-    BatchConfig {
-  circuitBreaker?: CircuitBreakerConfig
-  dependencies?: JobName[]
+export interface JobConfig<TInput, TProcessed, TOutput> {
+  name: string
+  domain: DomainsForService<Service.JOBS>
+  version: string
+  changes: string[]
   handlers: JobHandlers<TInput, TProcessed, TOutput>
+  schedule?: {
+    customCron: string
+    type: 'cron' | 'interval'
+    enabled: boolean
+  }
+  priority?: 'low' | 'normal' | 'high' | 'critical'
+  batchSize?: number
+  processSize?: number
+  timeout?: number
+  retryLimit?: number
+  circuitBreaker?: {
+    enabled: boolean
+    failureThreshold: number
+    resetTimeout: number
+  }
+  tags?: string[]
 }

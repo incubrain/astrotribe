@@ -36,7 +36,7 @@ export async function bulkImageProcessing() {
 
     log.info('Bulk image processing completed')
   } catch (error: any) {
-    log.error('Error in bulkImageProcessing', { ...error })
+    log.error('Error in bulkImageProcessing', { error })
   }
 }
 
@@ -49,14 +49,14 @@ async function fetchNewsItemsToProcess(): Promise<any[]> {
       .limit(100)
 
     if (error) {
-      log.error('Error fetching news items', { ...error })
+      log.error('Error fetching news items', { error })
       throw error
     }
 
     log.info('Fetched news items to process', { count: data?.length || 0 })
     return data || []
   } catch (error: any) {
-    log.error('Error in fetchNewsItemsToProcess', { ...error })
+    log.error('Error in fetchNewsItemsToProcess', { error })
     throw error
   }
 }
@@ -71,7 +71,7 @@ async function processImagesInBatches(newsItems: any[], maxConcurrent: number) {
 
     const task = processSingleImage(item)
       .catch((error: any) => {
-        log.error('Error processing image', { ...error })
+        log.error('Error processing image', { error })
       })
       .finally(() => {
         queue.splice(queue.indexOf(task), 1)
@@ -116,7 +116,7 @@ async function handleImageProcessing(imageUrl: string, imageName: string): Promi
 
     return defaultImagePath
   } catch (error: any) {
-    log.error('Error in handleImageProcessing', { ...error })
+    log.error('Error in handleImageProcessing', { error })
     throw error
   }
 }
@@ -127,7 +127,7 @@ async function fetchImage(url: string): Promise<Buffer> {
     log.info('Image fetched successfully', { url })
     return Buffer.from(response.data, 'binary')
   } catch (error: any) {
-    log.error('Error fetching image', { ...error })
+    log.error('Error fetching image', { error })
     throw error
   }
 }
@@ -156,7 +156,7 @@ async function processAndStoreImage(imageBuffer: Buffer, imageName: string): Pro
           })
 
         if (error) {
-          log.error('Error uploading image', { ...error })
+          log.error('Error uploading image', { error })
         } else {
           log.info('Image uploaded successfully', { filePath })
 
@@ -166,7 +166,7 @@ async function processAndStoreImage(imageBuffer: Buffer, imageName: string): Pro
           }
         }
       } catch (error: any) {
-        log.error('Error processing image', { ...error })
+        log.error('Error processing image', { error })
       }
     }
   }
@@ -178,7 +178,7 @@ async function updateNewsItem(id: string, updates: Partial<any>): Promise<void> 
   const { error } = await supabase.from('news').update(updates).eq('id', id)
 
   if (error) {
-    log.error('Error updating news item', { ...error })
+    log.error('Error updating news item', { error })
     throw error
   }
 }

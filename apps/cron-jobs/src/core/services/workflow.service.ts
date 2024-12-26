@@ -10,7 +10,7 @@ export class WorkflowService {
 
   async createWorkflow(options: {
     name: string
-    jobs: JobConfig[]
+    jobs: JobConfig<any, any, any>[]
     onComplete?: (result: any) => Promise<void>
     onFail?: (error: Error) => Promise<void>
   }) {
