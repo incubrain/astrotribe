@@ -27,7 +27,7 @@ async function checkExistingFactors() {
     loading.value = true
     const { data, error } = await supabase.auth.mfa.listFactors()
 
-    if (error: any) throw error
+    if (error) throw error
 
     enrolledFactors.value = data.totp
   } catch (error: any) {
@@ -62,7 +62,7 @@ async function startSetup() {
       friendlyName: factorName.value.trim(),
     })
 
-    if (error: any) throw error
+    if (error) throw error
 
     if (data.type === 'phone') {
       throw new Error('Phone enrollment is not supported')
@@ -113,7 +113,7 @@ async function verifySetup() {
       factorId: factorId.value,
     })
 
-    if (error: any) throw error
+    if (error) throw error
 
     // Verify the challenge
     const { error: verifyError } = await supabase.auth.mfa.verify({
@@ -155,7 +155,7 @@ async function startEnrollment() {
       friendlyName: factorName.value,
     })
 
-    if (error: any) throw error
+    if (error) throw error
 
     // Generate QR code
     factorId.value = data.id
@@ -185,7 +185,7 @@ async function disableTwoFactor(factorId: string) {
       factorId,
     })
 
-    if (error: any) throw error
+    if (error) throw error
 
     toast.success({
       summary: '2FA Disabled',

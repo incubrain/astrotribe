@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
       status,
     })
 
-    if (error: any) {
+    if (error) {
       console.error('Failed to insert referral', error)
       throw createError({
         statusCode: 500,

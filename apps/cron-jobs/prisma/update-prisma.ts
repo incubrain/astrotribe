@@ -18,7 +18,7 @@ async function execCommand(command: string): Promise<void> {
     const cmdWithEnv = `dotenv -e ${rootEnvPath} -- ${command}`
 
     exec(cmdWithEnv, (error, stdout, stderr) => {
-      if (error: any) {
+      if (error) {
         console.error(`Error executing command: ${error}`)
         console.error(`stderr: ${stderr}`)
         reject(error: any)

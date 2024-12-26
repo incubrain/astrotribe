@@ -23,65 +23,132 @@ export abstract class BaseJob<TInput = any, TOutput = any> {
         return
       }
 
-      await this.services.versionService.createVersion(
-        this.name,
-        this.version,
-        this.changes,
-        this.getConfig(),
-      )
-    } catch (error) {
-      this.services.logger.error('Failed to register job version', { error })
+      const config = this.getConfig()
+      this.services.logger.debug(`Registering version for job: ${this.name}`, {
+        version: this.version,
+        changes: this.changes,
+        config,
+      })
+
+      await this.services.version.createVersion(this.name, this.version, this.changes, config)
+
+      this.services.logger.info(`Version registered for job: ${this.name}`, {
+        version: this.version,
+      })
+    } catch (error: any) {
+      this.services.logger.error('Failed to register job version', {
+        ...error,
+      })
     }
   }
 
   async register() {
+    const { logger } = this.services
     try {
-      await this.services.queue.processJob(this.name, async (job) => {
-        return this.execute(job)
+      logger.info(`Starting registration for job: ${this.name}`)
+
+      logger.debug(`Setting up job handler for: ${this.name}`)
+      await this.services.queue.processJob(this.name, async (job: any) => {
+        logger.info(`Executing job: ${this.name}`, {
+          jobId: job.id,
+          startTime: new Date().toISOString(),
+        })
+
+        try {
+          const result = await this.execute(job)
+          logger.info(`Job execution completed: ${this.name}`, {
+            jobId: job.id,
+            endTime: new Date().toISOString(),
+          })
+          return result
+        } catch (error: any) {
+          logger.error(`Job execution failed: ${this.name}`, {
+            error,
+          })
+          throw error
+        }
       })
 
       if (this.schedule) {
+        logger.debug(`Setting up job schedule for: ${this.name}`, {
+          schedule: this.schedule,
+        })
         await this.services.queue.scheduleJob(this.name, this.schedule, {})
       }
 
-      this.services.logger.info(`Registered job: ${this.name}`)
-    } catch (error) {
-      this.services.logger.error(`Failed to register job: ${this.name}`, { error })
+      logger.info(`Registration completed for job: ${this.name}`, {
+        version: this.version,
+        schedule: this.schedule,
+        timestamp: new Date().toISOString(),
+      })
+    } catch (error: any) {
+      logger.error(`Failed to register job: ${this.name}`, {
+        error,
+      })
       throw error
     }
   }
 
   protected abstract getDomain(): DomainsForService<Service.JOBS>
 
-  protected abstract process(data: TInput): Promise<TOutput>
+  protected abstract getConfig(): any
 
-  protected abstract getConfig(): Record<string, any>
+  protected abstract process(data: any[]): Promise<any[]>
 
-  async execute(job: QueueJob<TInput>): Promise<TOutput> {
+  protected abstract beforeProcess(data: any): Promise<any[]>
+
+  protected abstract afterProcess(data: any[]): Promise<any[]>
+
+  private async execute(job: QueueJob): Promise<TOutput> {
+    const { logger } = this.services
     const startTime = Date.now()
 
-    this.services.event.emit('job.started', this.name, job.id)
-
     try {
-      const result = await this.process(job.data)
-
-      const duration = Date.now() - startTime
-      this.services.logger.info(`Completed job in ${duration}ms`, {
+      logger.info(`Starting job execution: ${this.name}`, {
         jobId: job.id,
-        jobName: this.name,
-        duration,
+        startTime: new Date().toISOString(),
       })
 
-      this.services.event.emit('job.completed', this.name, job.id, result)
+      // Get initial data if beforeProcess exists
+      let data = job.data
+      const beforeProcess = await this.beforeProcess(data)
+
+      // Process the job
+      logger.debug(`Running process for job: ${this.name}`)
+      const result = await this.process(beforeProcess)
+      logger.debug(`Process completed for job: ${this.name}`)
+
+      // Run afterProcess if it exists
+      const afterProcess = await this.afterProcess(result)
+
+      const duration = Date.now() - startTime
+      logger.info(`Job execution completed: ${this.name}`, {
+        jobId: job.id,
+        duration,
+        endTime: new Date().toISOString(),
+      })
 
       return result
     } catch (error: any) {
-      this.services.event.emit('job.failed', this.name, job.id, error)
+      const duration = Date.now() - startTime
+      logger.error(`Job execution failed: ${this.name}`, {
+        error,
+      })
+
+      // Run error handler if it exists
+      if (typeof this['onError'] === 'function') {
+        try {
+          logger.debug(`Running error handler for job: ${this.name}`)
+          await this['onError'](error)
+          logger.debug(`Error handler completed for job: ${this.name}`)
+        } catch (handlerError: any) {
+          logger.error(`Error handler failed for job: ${this.name}`, {
+            error: handlerError,
+          })
+        }
+      }
+
       throw error
     }
-  }
-
-  protected emitProgress(jobId: string, progress: number) {
-    this.services.event.emit('job.progress', this.name, jobId, progress)
   }
 }

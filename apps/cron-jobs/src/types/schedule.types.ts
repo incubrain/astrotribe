@@ -23,4 +23,3 @@ export interface ScheduleConfig {
   customCron?: string
   enabled: boolean
 }
-

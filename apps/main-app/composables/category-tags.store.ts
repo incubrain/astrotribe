@@ -32,7 +32,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     try {
       categories.value = await localStorage.getCachedOrFetch('astronera-categories', async () => {
         const { data, error } = await client.from('categories').select('id, name')
-        if (error: any) throw error
+        if (error) throw error
         return z.array(CategorySchema).parse(data)
       })
     } catch (error: any) {
@@ -50,7 +50,7 @@ export const useCategoryTagStore = defineStore('categoryTagStore', () => {
     try {
       tags.value = await localStorage.getCachedOrFetch('astronera-tags', async () => {
         const { data, error } = await client.from('tags').select('id, name')
-        if (error: any) throw error
+        if (error) throw error
         return z.array(TagSchema).parse(data)
       })
     } catch (error: any) {

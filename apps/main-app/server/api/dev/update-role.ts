@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
     app_metadata: { role },
-})
+  })
 
-  if (error: any) throw error
+  if (error) throw error
   return data
 })

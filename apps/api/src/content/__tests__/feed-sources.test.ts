@@ -7,8 +7,7 @@ import type { Prisma } from '@prisma/client'
 import { NotFoundException, InternalServerErrorException } from '@nestjs/common'
 import { FeedSourceService } from '../services/feed-sources.service'
 import { FeedSourceController } from '../controllers/feed-sources.controller'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -95,9 +94,7 @@ describe('FeedSourceController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.findOneFeedSources(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.findOneFeedSources(id)).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -164,9 +161,7 @@ describe('FeedSourceController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.removeFeedSources(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.removeFeedSources(id)).rejects.toThrow(NotFoundException)
     })
   })
 })

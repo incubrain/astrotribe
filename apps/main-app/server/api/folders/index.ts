@@ -19,7 +19,7 @@ export default defineEventHandler(async (event: H3Event) => {
         .eq('user_id', user.id)
         .order('position')
 
-      if (error: any) throw error
+      if (error) throw error
       return { data }
     }
 

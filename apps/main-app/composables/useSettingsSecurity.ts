@@ -12,7 +12,7 @@ export function useSettingsSecurity() {
   // Linked Identities
   async function getLinkedIdentities() {
     const { data, error } = await supabase.auth.getUserIdentities()
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Could not fetch linked accounts',
@@ -26,7 +26,7 @@ export function useSettingsSecurity() {
     provider: 'email' | 'twitter' | 'google' | 'facebook' | 'linkedin_oidc',
   ) {
     const { data, error } = await supabase.auth.linkIdentity({ provider })
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Could not link account',
@@ -37,7 +37,7 @@ export function useSettingsSecurity() {
 
   async function unlinkIdentity(identity: any) {
     const { data, error } = await supabase.auth.unlinkIdentity(identity)
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Could not unlink account',
@@ -51,7 +51,7 @@ export function useSettingsSecurity() {
     const { error } = await supabase.auth.updateUser({ password })
 
     await linkIdentity('email')
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Could not set password',
@@ -66,7 +66,7 @@ export function useSettingsSecurity() {
     const { data, error } = await supabase.auth.mfa.enroll({
       factorType: 'totp',
     })
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Could not setup 2FA',
@@ -81,7 +81,7 @@ export function useSettingsSecurity() {
       factorId,
       code,
     })
-    if (error: any) {
+    if (error) {
       toast.error({
         summary: 'Error',
         message: 'Invalid verification code',
@@ -114,7 +114,7 @@ export function useSettingsSecurity() {
     const error = await verifyLogin(options, password)
     const { authUrl } = useRuntimeConfig().public
 
-    if (error: any) {
+    if (error) {
       toast.error({ summary: 'Deletion Failed', message: error.message })
       options.reset()
       return

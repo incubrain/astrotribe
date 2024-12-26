@@ -33,7 +33,7 @@ function runCommand(command: string): Promise<void> {
     console.log(chalk.gray(`$ ${command}\n`))
 
     exec(command, (error, stdout, stderr) => {
-      if (error: any) {
+      if (error) {
         console.error(chalk.red('✖ Command failed:'))
         console.error(chalk.red(stderr))
         reject(error: any)

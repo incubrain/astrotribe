@@ -56,9 +56,9 @@ function estimateUsage(params: LogsCostParams): UsageParams {
 
   const metricsIngestedDataPoints = MAU * 300 // Assuming 300 data points per MAU, 30 per day
   const additionalMetricsDataPoints =
-    metricsIngestedDataPoints > LOGS_METRIC_CONFIG.includedDataPoints ?
-      metricsIngestedDataPoints - LOGS_METRIC_CONFIG.includedDataPoints :
-      0
+    metricsIngestedDataPoints > LOGS_METRIC_CONFIG.includedDataPoints
+      ? metricsIngestedDataPoints - LOGS_METRIC_CONFIG.includedDataPoints
+      : 0
 
   return {
     MAU,

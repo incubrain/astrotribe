@@ -1,27 +1,33 @@
 // src/types/job.types.ts
 import PgBoss from 'pg-boss'
-import type { PrismaService, EventService, ScraperService, QueueService, CustomLogger, MetricsService } from '@core'
+import type {
+  PrismaService,
+  EventService,
+  ScraperService,
+  QueueService,
+  CustomLogger,
+  MetricsService,
+} from '@core'
 import type { JobVersionService } from '../jobs/utils/job-version.service'
-import type { BaseJob } from '../jobs/job.base';
+import type { BaseJob } from '../jobs/job.base'
 import type { DomainKey, PriorityLevel } from './domain.types'
 import type { ScheduleConfig } from './schedule.types'
 
 // Required services for jobs
 export interface JobServices {
-  queue: QueueService;
-  scraper: ScraperService;
-  logger: CustomLogger;
-  event: EventService;
-  metrics: MetricsService;
-  prisma: PrismaService;
-  version: JobVersionService;
+  queue: QueueService
+  scraper: ScraperService
+  logger: CustomLogger
+  event: EventService
+  metrics: MetricsService
+  prisma: PrismaService
+  version: JobVersionService
 }
 
-export type JobClass = new (services: JobServices) => BaseJob;
-
+export type JobClass = new (services: JobServices) => BaseJob
 
 // Job status types
-export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'retrying';
+export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'retrying'
 
 export type JobName =
   | 'news_links'
@@ -36,7 +42,7 @@ export interface JobMetadata {
   name: JobName
   domain: DomainKey
   description: string
-  priority: PgBoss.JobOptions['priority']
+  priority: 'low' | 'normal' | 'high' | 'critical'
   schedule: ScheduleConfig
   timeout?: number
   retryLimit?: number

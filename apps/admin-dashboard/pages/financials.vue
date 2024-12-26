@@ -104,7 +104,7 @@ const visibleRight = ref(false)
       :tabs="financialTabs"
       class="h-full w-full"
     >
-    <template #start>
+      <template #start>
         <h1 class="text-xl font-semibold text-white">Financials</h1>
       </template>
       <template

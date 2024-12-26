@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       .eq('user_id', user.id)
       .eq('vote_type', voteType)
 
-    if (error: any) throw error
+    if (error) throw error
 
     // Get the actual news items
     const { data: news, error: newsError } = await client

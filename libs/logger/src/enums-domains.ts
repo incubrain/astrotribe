@@ -9,6 +9,7 @@ const SYSTEM_DOMAINS = ['database', 'redis', 'server-jobs', 'websocket'] as cons
 const API_DOMAINS = ['monitoring', 'cron', 'agents', 'validation', 'filter', 'logging'] as const
 const JOBS_DOMAINS = ['news_links', 'job_events', 'job_versions', 'job_shutdown'] as const
 const URLS = ['url_classifier', 'url_spider'] as const
+const SCRAPERS = ['scraper', 'crawler', 'spider'] as const
 
 // Admin-specific domains
 const ADMIN_SPECIFIC = [
@@ -62,7 +63,7 @@ export const ServiceDomains = {
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
   'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
-  'jobs': ['api', 'errors', 'metrics', 'analytics', 'jobs', ...JOBS_DOMAINS, ...URLS],
+  'jobs': ['api', 'errors', 'metrics', 'analytics', 'jobs', ...JOBS_DOMAINS, ...URLS, ...SCRAPERS],
 } as const
 
 export type ServiceToDomain = {

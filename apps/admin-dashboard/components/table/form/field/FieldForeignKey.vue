@@ -44,7 +44,7 @@ const loadOptions = async () => {
           name
         `)
 
-    if (error: any) throw error
+    if (error) throw error
 
     options.value = data.map((item) => ({
       label: item.name || item[props.field.foreign_key_info.foreign_column],

@@ -123,7 +123,7 @@ export default defineEventHandler(async (event) => {
     await Promise.all(
       Object.entries(bookmarksByType).map(async ([type, ids]) => {
         const { data, error } = await supabase.from(type).select('*').in('id', ids)
-        if (error: any) throw error
+        if (error) throw error
         contentTypeData[type] = data || []
       }),
     )

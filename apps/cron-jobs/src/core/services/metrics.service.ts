@@ -2,6 +2,7 @@
 import { CustomLogger } from './logger.service'
 import { PrismaService } from './prisma.service'
 import { EventService } from './event.service'
+import { error_type } from '@prisma/client'
 
 export interface JobMetrics {
   duration: number
@@ -54,40 +55,67 @@ export class MetricsService {
 
   async trackJobStart(jobName: string, jobId: string) {
     this.logger.debug(`Tracking job start: ${jobName}`, { jobId })
-    await this.prisma.job_metrics.create({
-      data: {
-        job_id: jobId,
-        job_name: jobName,
-        status: 'active',
-        started_at: new Date(),
-      },
-    })
+    try {
+      await this.prisma.job_metrics.create({
+        data: {
+          job_id: jobId,
+          job_name: jobName,
+          status: 'active',
+          started_at: new Date(),
+        },
+      })
+    } catch (error: any) {
+      await this.logError('Failed to track job start', error, {
+        jobName,
+        jobId,
+      })
+    }
   }
 
   async trackJobSuccess(jobName: string, duration: number, itemsProcessed?: number) {
     this.logger.debug(`Tracking job success: ${jobName}`, { duration, itemsProcessed })
-    await this.prisma.job_metrics.updateMany({
-      where: { job_name: jobName, status: 'active' },
-      data: {
-        status: 'completed',
-        duration_ms: duration,
-        items_processed: itemsProcessed,
-        completed_at: new Date(),
-      },
-    })
+    try {
+      await this.prisma.job_metrics.updateMany({
+        where: { job_name: jobName, status: 'active' },
+        data: {
+          status: 'completed',
+          duration_ms: duration,
+          items_processed: itemsProcessed,
+          completed_at: new Date(),
+        },
+      })
+    } catch (error: any) {
+      await this.logError('Failed to track job success', error, {
+        jobName,
+        duration,
+        itemsProcessed,
+      })
+    }
   }
 
   async trackJobFailure(jobName: string, duration: number, error: Error) {
     this.logger.debug(`Tracking job failure: ${jobName}`, { duration, error })
-    await this.prisma.job_metrics.updateMany({
-      where: { job_name: jobName, status: 'active' },
-      data: {
-        status: 'failed',
-        duration_ms: duration,
-        error_message: error.message,
-        failed_at: new Date(),
-      },
-    })
+    try {
+      await this.prisma.job_metrics.updateMany({
+        where: { job_name: jobName, status: 'active' },
+        data: {
+          status: 'failed',
+          duration_ms: duration,
+          error_message: error.message,
+          failed_at: new Date(),
+        },
+      })
+      await this.logError('Job failed', error, {
+        jobName,
+        duration,
+      })
+    } catch (logError: any) {
+      await this.logError('Failed to track job failure', logError, {
+        jobName,
+        duration,
+        originalError: error.message,
+      })
+    }
   }
 
   async trackJobCompletion(jobName: string, metrics: JobMetrics) {
@@ -102,20 +130,49 @@ export class MetricsService {
   async trackQueueStats(queueName: string, stats: QueueStats) {
     this.logger.debug(`Tracking queue stats: ${queueName}`, stats)
     try {
+      const data = {
+        created_count: Math.max(0, Math.floor(Number(stats.created))),
+        retry_count: Math.max(0, Math.floor(Number(stats.retry))),
+        active_count: Math.max(0, Math.floor(Number(stats.active))),
+        completed_count: Math.max(0, Math.floor(Number(stats.completed))),
+        cancelled_count: Math.max(0, Math.floor(Number(stats.cancelled))),
+        failed_count: Math.max(0, Math.floor(Number(stats.failed))),
+        total_count: Math.max(0, Math.floor(Number(stats.all))),
+        updated_at: new Date(),
+      }
+
       await this.prisma.job_queue_stats.upsert({
         where: { queue_name: queueName },
         create: {
           queue_name: queueName,
-          ...stats,
-          updated_at: new Date(),
+          ...data,
         },
-        update: {
-          ...stats,
-          updated_at: new Date(),
-        },
+        update: data,
       })
     } catch (error: any) {
-      this.logger.error(`Failed to track queue stats for ${queueName}`, { ...error, stats })
+      await this.logError('Failed to track queue stats', error, {
+        queueName,
+        stats,
+      })
+    }
+  }
+
+  private async logError(message: string, error: Error, context: Record<string, any> = {}) {
+    try {
+      await this.prisma.error_logs.create({
+        data: {
+          service_name: 'jobs',
+          error_type: error_type.DATABASE_ERROR,
+          severity: 'high',
+          message: `${message}: ${error.message}`,
+          stack_trace: error.stack,
+          metadata: context,
+          environment: process.env.NODE_ENV || 'development',
+          domain: context.jobName || 'metrics',
+        },
+      })
+    } catch (logError: any) {
+      this.logger.error('Failed to log to database:', logError)
     }
   }
 
@@ -136,35 +193,48 @@ export class MetricsService {
         break
     }
 
-    return this.prisma.job_metrics.findMany({
-      where: {
-        job_name: jobName,
-        started_at: {
-          gte: startDate,
+    try {
+      return await this.prisma.job_metrics.findMany({
+        where: {
+          job_name: jobName,
+          started_at: {
+            gte: startDate,
+          },
         },
-      },
-      orderBy: {
-        started_at: 'desc',
-      },
-    })
+        orderBy: {
+          started_at: 'desc',
+        },
+      })
+    } catch (error: any) {
+      await this.logError('Failed to get job metrics', error, {
+        jobName,
+        period,
+      })
+      throw error
+    }
   }
 
   async getSystemMetrics() {
-    const [jobs, queues] = await Promise.all([
-      this.prisma.job_metrics.groupBy({
-        by: ['status'],
-        _count: true,
-        _avg: {
-          duration_ms: true,
-        },
-      }),
-      this.prisma.job_queue_stats.findMany(),
-    ])
+    try {
+      const [jobs, queues] = await Promise.all([
+        this.prisma.job_metrics.groupBy({
+          by: ['status'],
+          _count: true,
+          _avg: {
+            duration_ms: true,
+          },
+        }),
+        this.prisma.job_queue_stats.findMany(),
+      ])
 
-    return {
-      jobs,
-      queues,
-      timestamp: new Date(),
+      return {
+        jobs,
+        queues,
+        timestamp: new Date(),
+      }
+    } catch (error: any) {
+      await this.logError('Failed to get system metrics', error)
+      throw error
     }
   }
 }

@@ -1,6 +1,5 @@
 // src/jobs/job.events.ts
-import { CustomLogger, EventService } from "@/core"
-
+import { CustomLogger, EventService } from '@/core'
 
 export class JobEvents {
   constructor(
@@ -21,7 +20,7 @@ export class JobEvents {
     })
 
     this.eventService.on('job.failed', (jobName: string, jobId: string, error: Error) => {
-      this.logger.error(`Job failed`, error, { jobName, jobId })
+      this.logger.error(`Job failed`, { error, context: { jobName, jobId } })
     })
 
     this.eventService.on('job.progress', (jobName: string, jobId: string, progress: number) => {

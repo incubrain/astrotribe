@@ -124,7 +124,7 @@ export function useReferralSecurity() {
       .eq('is_suspicious', true)
       .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()) // Last 24 hours
 
-    if (error: any) throw error
+    if (error) throw error
 
     // Group by hour
     const hourlyData = Array(24).fill(0)
@@ -175,7 +175,7 @@ export function useReferralSecurity() {
         activeBlocks: (ips || []).filter((ip) => new Date(ip.blocked_until) > new Date()).length,
         suspiciousAttempts: suspiciousCount,
         lastUpdated: new Date().toISOString(),
-        hourlySuspiciousActivity: hourlyActivity
+        hourlySuspiciousActivity: hourlyActivity,
       })
 
       console.log('Updated security metrics:', store.metrics)
@@ -283,7 +283,7 @@ export function useReferralSecurity() {
       .eq('ip_address', ip)
       .gte('created_at', timeWindow.toISOString())
 
-    if (error: any) throw error
+    if (error) throw error
 
     return {
       isValid: count < MAX_REFERRALS_PER_IP,
@@ -301,7 +301,7 @@ export function useReferralSecurity() {
       .eq('referrer_code', code)
       .gte('created_at', timeWindow.toISOString())
 
-    if (error: any) throw error
+    if (error) throw error
 
     if (!count) return { isValid: true }
 
@@ -318,7 +318,7 @@ export function useReferralSecurity() {
       .select('id', { count: 'exact' })
       .eq('is_suspicious', true)
 
-    if (error: any) {
+    if (error) {
       console.error('Error getting suspicious count:', error)
       throw error
     }
@@ -329,7 +329,7 @@ export function useReferralSecurity() {
   async function updateReferralsStatus(code: string, status: string) {
     const { error } = await supabase.from('referrals').update({ status }).eq('referrer_code', code)
 
-    if (error: any) throw error
+    if (error) throw error
   }
 
   async function resetIPAttempts(address: string) {
@@ -341,7 +341,7 @@ export function useReferralSecurity() {
       })
       .eq('ip_address', address)
 
-    if (error: any) throw error
+    if (error) throw error
   }
 
   function showToast(severity: string, summary: string, detail: string) {

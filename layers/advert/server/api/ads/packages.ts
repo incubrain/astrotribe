@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     .eq('active', true)
     .order('name')
 
-  if (error: any) {
+  if (error) {
     throw createError({
       statusCode: 500,
       message: 'Error fetching ad packages',

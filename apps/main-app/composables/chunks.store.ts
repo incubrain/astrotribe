@@ -20,7 +20,7 @@ export const useChunksStore = defineStore('chunksStore', () => {
         .select()
 
       console.log('flagChunk: res', data, error)
-      if (error: any) {
+      if (error) {
         throw new Error(error.message)
       }
 
@@ -64,7 +64,7 @@ export const useChunksStore = defineStore('chunksStore', () => {
       const { data, error } = await query
       console.log('working 3', data, error)
 
-      if (error: any) {
+      if (error) {
         throw new Error(error.message)
       }
 
@@ -128,7 +128,7 @@ export const useChunksStore = defineStore('chunksStore', () => {
       const { error } = await client.from('research_embeddings').delete().eq('id', chunkId)
 
       console.log('deleteChunk: res', error)
-      if (error: any) {
+      if (error) {
         throw new Error(error.message)
       }
 

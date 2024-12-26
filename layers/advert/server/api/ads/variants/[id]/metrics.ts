@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   console.log('Variant metrics:', data, error)
 
-  if (error: any) {
+  if (error) {
     throw createError({
       statusCode: 500,
       message: 'Error fetching variant metrics',

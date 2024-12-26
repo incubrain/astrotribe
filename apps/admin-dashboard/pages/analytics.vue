@@ -64,9 +64,9 @@ definePageMeta({
     ref="analyticsTabView"
     :tabs="analyticsTabs"
   >
-  <template #start>
-    <h1 class="text-xl font-semibold text-white">Analytics</h1>
-  </template>
+    <template #start>
+      <h1 class="text-xl font-semibold text-white">Analytics</h1>
+    </template>
 
     <template
       v-for="tab in analyticsTabs"

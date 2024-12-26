@@ -60,7 +60,7 @@ export function useSettingsProfile() {
         .update(validatedData)
         .eq('id', currentUser.profile?.id)
 
-      if (error: any) throw error
+      if (error) throw error
 
       // Update local state
       Object.assign(profile.value, validatedData)

@@ -1576,10 +1576,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -1608,10 +1605,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -1815,10 +1809,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -1829,10 +1820,7 @@
             "table": "user_profiles",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "contact_id",
-              "id"
-            ],
+            "throughFields": ["contact_id", "id"],
             "foreignKey": "contact_id",
             "columnName": "id",
             "schema": "public",
@@ -1843,10 +1831,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2150,10 +2135,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2173,10 +2155,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2450,10 +2429,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2464,10 +2440,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2597,10 +2570,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -2611,10 +2581,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -3351,10 +3318,7 @@
             "table": "contents",
             "type": "manyToMany",
             "throughTable": "r",
-            "throughFields": [
-              "research_id",
-              "id"
-            ],
+            "throughFields": ["research_id", "id"],
             "foreignKey": "research_id",
             "columnName": "id",
             "schema": "public",
@@ -4365,10 +4329,7 @@
             "table": "user_profiles",
             "type": "manyToMany",
             "throughTable": "f",
-            "throughFields": [
-              "feed_id",
-              "id"
-            ],
+            "throughFields": ["feed_id", "id"],
             "foreignKey": "feed_id",
             "columnName": "id",
             "schema": "public",
@@ -4674,10 +4635,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -4697,10 +4655,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -5121,10 +5076,7 @@
             "table": "companies",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "content_source_id",
-              "id"
-            ],
+            "throughFields": ["content_source_id", "id"],
             "foreignKey": "content_source_id",
             "columnName": "id",
             "schema": "public",
@@ -5135,10 +5087,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -5167,10 +5116,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -5415,10 +5361,7 @@
             "table": "companies",
             "type": "manyToMany",
             "throughTable": "f",
-            "throughFields": [
-              "content_source_id",
-              "id"
-            ],
+            "throughFields": ["content_source_id", "id"],
             "foreignKey": "content_source_id",
             "columnName": "id",
             "schema": "public",
@@ -5438,10 +5381,7 @@
             "table": "user_profiles",
             "type": "manyToMany",
             "throughTable": "f",
-            "throughFields": [
-              "feed_id",
-              "id"
-            ],
+            "throughFields": ["feed_id", "id"],
             "foreignKey": "feed_id",
             "columnName": "id",
             "schema": "public",
@@ -5767,10 +5707,7 @@
             "table": "content_sources",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "news_id",
-              "id"
-            ],
+            "throughFields": ["news_id", "id"],
             "foreignKey": "news_id",
             "columnName": "id",
             "schema": "public",
@@ -5790,10 +5727,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "news_id",
-              "id"
-            ],
+            "throughFields": ["news_id", "id"],
             "foreignKey": "news_id",
             "columnName": "id",
             "schema": "public",
@@ -5804,10 +5738,7 @@
             "table": "companies",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "news_id",
-              "id"
-            ],
+            "throughFields": ["news_id", "id"],
             "foreignKey": "news_id",
             "columnName": "id",
             "schema": "public",
@@ -5818,10 +5749,7 @@
             "table": "contents",
             "type": "manyToMany",
             "throughTable": "n",
-            "throughFields": [
-              "news_id",
-              "id"
-            ],
+            "throughFields": ["news_id", "id"],
             "foreignKey": "news_id",
             "columnName": "id",
             "schema": "public",
@@ -6293,10 +6221,7 @@
             "table": "bookmark_folders",
             "type": "manyToMany",
             "throughTable": "b",
-            "throughFields": [
-              "folder_id",
-              "id"
-            ],
+            "throughFields": ["folder_id", "id"],
             "foreignKey": "folder_id",
             "columnName": "id",
             "schema": "public",
@@ -6841,10 +6766,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "b",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -6864,10 +6786,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "b",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -7471,10 +7390,7 @@
             "table": "payment_providers",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "subscription_id",
-              "id"
-            ],
+            "throughFields": ["subscription_id", "id"],
             "foreignKey": "subscription_id",
             "columnName": "id",
             "schema": "public",
@@ -7485,10 +7401,7 @@
             "table": "customer_subscription_plans",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "subscription_id",
-              "id"
-            ],
+            "throughFields": ["subscription_id", "id"],
             "foreignKey": "subscription_id",
             "columnName": "id",
             "schema": "public",
@@ -7499,10 +7412,7 @@
             "table": "user_profiles",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "subscription_id",
-              "id"
-            ],
+            "throughFields": ["subscription_id", "id"],
             "foreignKey": "subscription_id",
             "columnName": "id",
             "schema": "public",
@@ -7738,10 +7648,7 @@
             "table": "payment_providers",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "payment_id",
-              "id"
-            ],
+            "throughFields": ["payment_id", "id"],
             "foreignKey": "payment_id",
             "columnName": "id",
             "schema": "public",
@@ -7752,10 +7659,7 @@
             "table": "customer_subscriptions",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "payment_id",
-              "id"
-            ],
+            "throughFields": ["payment_id", "id"],
             "foreignKey": "payment_id",
             "columnName": "id",
             "schema": "public",
@@ -7766,10 +7670,7 @@
             "table": "user_profiles",
             "type": "manyToMany",
             "throughTable": "c",
-            "throughFields": [
-              "payment_id",
-              "id"
-            ],
+            "throughFields": ["payment_id", "id"],
             "foreignKey": "payment_id",
             "columnName": "id",
             "schema": "public",
@@ -9027,10 +8928,7 @@
             "table": "ads",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "variant_id",
-              "id"
-            ],
+            "throughFields": ["variant_id", "id"],
             "foreignKey": "variant_id",
             "columnName": "id",
             "schema": "public",
@@ -9330,10 +9228,7 @@
             "table": "companies",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "ad_id",
-              "id"
-            ],
+            "throughFields": ["ad_id", "id"],
             "foreignKey": "ad_id",
             "columnName": "id",
             "schema": "public",
@@ -9344,10 +9239,7 @@
             "table": "ad_packages",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "ad_id",
-              "id"
-            ],
+            "throughFields": ["ad_id", "id"],
             "foreignKey": "ad_id",
             "columnName": "id",
             "schema": "public",
@@ -9492,10 +9384,7 @@
             "table": "social_media",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -9506,10 +9395,7 @@
             "table": "categories",
             "type": "manyToMany",
             "throughTable": "a",
-            "throughFields": [
-              "company_id",
-              "id"
-            ],
+            "throughFields": ["company_id", "id"],
             "foreignKey": "company_id",
             "columnName": "id",
             "schema": "public",
@@ -10240,10 +10126,7 @@
           "table": "content_sources",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "news_id",
-            "id"
-          ],
+          "throughFields": ["news_id", "id"],
           "foreignKey": "news_id",
           "columnName": "id",
           "schema": "public",
@@ -10263,10 +10146,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "news_id",
-            "id"
-          ],
+          "throughFields": ["news_id", "id"],
           "foreignKey": "news_id",
           "columnName": "id",
           "schema": "public",
@@ -10277,10 +10157,7 @@
           "table": "companies",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "news_id",
-            "id"
-          ],
+          "throughFields": ["news_id", "id"],
           "foreignKey": "news_id",
           "columnName": "id",
           "schema": "public",
@@ -10291,10 +10168,7 @@
           "table": "contents",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "news_id",
-            "id"
-          ],
+          "throughFields": ["news_id", "id"],
           "foreignKey": "news_id",
           "columnName": "id",
           "schema": "public",
@@ -10523,10 +10397,7 @@
           "table": "ads",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "variant_id",
-            "id"
-          ],
+          "throughFields": ["variant_id", "id"],
           "foreignKey": "variant_id",
           "columnName": "id",
           "schema": "public",
@@ -10662,10 +10533,7 @@
           "table": "companies",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "ad_id",
-            "id"
-          ],
+          "throughFields": ["ad_id", "id"],
           "foreignKey": "ad_id",
           "columnName": "id",
           "schema": "public",
@@ -10676,10 +10544,7 @@
           "table": "ad_packages",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "ad_id",
-            "id"
-          ],
+          "throughFields": ["ad_id", "id"],
           "foreignKey": "ad_id",
           "columnName": "id",
           "schema": "public",
@@ -10824,10 +10689,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -10838,10 +10700,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -11328,10 +11187,7 @@
           "table": "companies",
           "type": "manyToMany",
           "throughTable": "f",
-          "throughFields": [
-            "content_source_id",
-            "id"
-          ],
+          "throughFields": ["content_source_id", "id"],
           "foreignKey": "content_source_id",
           "columnName": "id",
           "schema": "public",
@@ -11351,10 +11207,7 @@
           "table": "user_profiles",
           "type": "manyToMany",
           "throughTable": "f",
-          "throughFields": [
-            "feed_id",
-            "id"
-          ],
+          "throughFields": ["feed_id", "id"],
           "foreignKey": "feed_id",
           "columnName": "id",
           "schema": "public",
@@ -12054,10 +11907,7 @@
           "table": "companies",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "content_source_id",
-            "id"
-          ],
+          "throughFields": ["content_source_id", "id"],
           "foreignKey": "content_source_id",
           "columnName": "id",
           "schema": "public",
@@ -12068,10 +11918,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -12100,10 +11947,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "n",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -12557,10 +12401,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -12580,10 +12421,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -12950,10 +12788,7 @@
           "table": "user_profiles",
           "type": "manyToMany",
           "throughTable": "f",
-          "throughFields": [
-            "feed_id",
-            "id"
-          ],
+          "throughFields": ["feed_id", "id"],
           "foreignKey": "feed_id",
           "columnName": "id",
           "schema": "public",
@@ -13157,10 +12992,7 @@
           "table": "bookmark_folders",
           "type": "manyToMany",
           "throughTable": "b",
-          "throughFields": [
-            "folder_id",
-            "id"
-          ],
+          "throughFields": ["folder_id", "id"],
           "foreignKey": "folder_id",
           "columnName": "id",
           "schema": "public",
@@ -14026,10 +13858,7 @@
           "table": "payment_providers",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "payment_id",
-            "id"
-          ],
+          "throughFields": ["payment_id", "id"],
           "foreignKey": "payment_id",
           "columnName": "id",
           "schema": "public",
@@ -14040,10 +13869,7 @@
           "table": "customer_subscriptions",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "payment_id",
-            "id"
-          ],
+          "throughFields": ["payment_id", "id"],
           "foreignKey": "payment_id",
           "columnName": "id",
           "schema": "public",
@@ -14054,10 +13880,7 @@
           "table": "user_profiles",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "payment_id",
-            "id"
-          ],
+          "throughFields": ["payment_id", "id"],
           "foreignKey": "payment_id",
           "columnName": "id",
           "schema": "public",
@@ -14554,10 +14377,7 @@
           "table": "payment_providers",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "subscription_id",
-            "id"
-          ],
+          "throughFields": ["subscription_id", "id"],
           "foreignKey": "subscription_id",
           "columnName": "id",
           "schema": "public",
@@ -14568,10 +14388,7 @@
           "table": "customer_subscription_plans",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "subscription_id",
-            "id"
-          ],
+          "throughFields": ["subscription_id", "id"],
           "foreignKey": "subscription_id",
           "columnName": "id",
           "schema": "public",
@@ -14582,10 +14399,7 @@
           "table": "user_profiles",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "subscription_id",
-            "id"
-          ],
+          "throughFields": ["subscription_id", "id"],
           "foreignKey": "subscription_id",
           "columnName": "id",
           "schema": "public",
@@ -15409,10 +15223,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "b",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -15432,10 +15243,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "b",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -15999,10 +15807,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16013,10 +15818,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16284,10 +16086,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16298,10 +16097,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16497,10 +16293,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16511,10 +16304,7 @@
           "table": "user_profiles",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "contact_id",
-            "id"
-          ],
+          "throughFields": ["contact_id", "id"],
           "foreignKey": "contact_id",
           "columnName": "id",
           "schema": "public",
@@ -16525,10 +16315,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16832,10 +16619,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -16855,10 +16639,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "c",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -17093,10 +16874,7 @@
           "table": "social_media",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -17125,10 +16903,7 @@
           "table": "categories",
           "type": "manyToMany",
           "throughTable": "a",
-          "throughFields": [
-            "company_id",
-            "id"
-          ],
+          "throughFields": ["company_id", "id"],
           "foreignKey": "company_id",
           "columnName": "id",
           "schema": "public",
@@ -18061,10 +17836,7 @@
           "table": "contents",
           "type": "manyToMany",
           "throughTable": "r",
-          "throughFields": [
-            "research_id",
-            "id"
-          ],
+          "throughFields": ["research_id", "id"],
           "foreignKey": "research_id",
           "columnName": "id",
           "schema": "public",
@@ -19238,13 +19010,7 @@
     }
   ],
   "circularDependencies": [
-    [
-      "bookmark_folders",
-      "bookmark_folders"
-    ],
-    [
-      "comments",
-      "comments"
-    ]
+    ["bookmark_folders", "bookmark_folders"],
+    ["comments", "comments"]
   ]
 }

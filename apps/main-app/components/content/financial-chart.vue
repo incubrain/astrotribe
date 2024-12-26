@@ -86,7 +86,7 @@ function getAffiliateCommission(year: number): number {
 function calculatePayingUsers(
   freeUsers: number,
   conversionRate: number,
-): { proUsers: number, expertUsers: number } {
+): { proUsers: number; expertUsers: number } {
   const payingUsers = freeUsers * conversionRate
   const proUsers = payingUsers * 0.5
   const expertUsers = payingUsers * 0.5

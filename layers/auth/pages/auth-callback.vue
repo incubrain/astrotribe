@@ -30,7 +30,7 @@ const handleAuth = async () => {
   try {
     const { data, error } = await supabase.auth.getSession()
 
-    if (error: any) throw error
+    if (error) throw error
 
     if (data.session) {
       logger.info('Session established:', { session: data.session })

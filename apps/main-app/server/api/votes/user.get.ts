@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
       .eq('content_type', 'news')
       .eq('user_id', user.id)
 
-    if (error: any) throw error
+    if (error) throw error
 
     // Transform into a more efficient lookup object
     const voteLookup = data.reduce(

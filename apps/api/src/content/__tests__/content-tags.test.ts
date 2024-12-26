@@ -7,8 +7,7 @@ import type { Prisma } from '@prisma/client'
 import { NotFoundException, InternalServerErrorException } from '@nestjs/common'
 import { ContentTagsService } from '../services/content-tags.service'
 import { ContentTagController } from '../controllers/content-tags.controller'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -95,9 +94,7 @@ describe('ContentTagController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.findOneContentTags(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.findOneContentTags(id)).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -164,9 +161,7 @@ describe('ContentTagController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.removeContentTags(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.removeContentTags(id)).rejects.toThrow(NotFoundException)
     })
   })
 })

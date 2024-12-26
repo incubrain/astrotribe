@@ -4,10 +4,10 @@ export enum Priority {
   Critical = 100,
   High = 75,
   Normal = 50,
-  Low = 25
+  Low = 25,
 }
 
-export type PriorityLevel = keyof typeof Priority;
+export type PriorityLevel = keyof typeof Priority
 
 export interface DomainConfig {
   requiresAuth: boolean

@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     .eq('id', bookmarkId)
     .eq('user_id', user.id)
 
-  if (error: any) {
+  if (error) {
     throw createError({
       statusCode: 500,
       message: 'Failed to delete bookmark',

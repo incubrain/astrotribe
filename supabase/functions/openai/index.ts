@@ -153,7 +153,7 @@ Deno.serve(async (req) => {
       match_count: match_count || 10,
     })
 
-    if (error: any) {
+    if (error) {
       console.error('Error matching documents:', error)
       throw new Error(`Error matching documents: ${error.message}`)
     }

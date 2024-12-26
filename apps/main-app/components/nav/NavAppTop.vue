@@ -36,7 +36,7 @@ const items = computed(() => {
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
 
-  if (error: any) {
+  if (error) {
     console.error(error.message)
     toast.error({ summary: 'Could not log out', message: error.message })
   } else {

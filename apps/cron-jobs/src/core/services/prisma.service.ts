@@ -7,6 +7,7 @@ export class PrismaService extends PrismaClient {
   private isConnected = false
 
   constructor(private readonly logger: CustomLogger) {
+    console.log('config.database.url', config.database.url)
     super({
       datasources: {
         db: {
@@ -26,7 +27,7 @@ export class PrismaService extends PrismaClient {
   private setupLogging() {
     // Log queries in development
     if (config.app.environment === 'development') {
-      this.$on('query' as any, (e: Prisma.QueryEvent) => {
+      this.$on('query' as any, (e: any) => {
         this.logger.debug('Query executed', {
           query: e.query,
           duration: e.duration,
@@ -36,14 +37,13 @@ export class PrismaService extends PrismaClient {
     }
 
     // Always log errors
-    this.$on('error' as any, (e: Prisma.LogEvent) => {
+    this.$on('error' as any, (e: any) => {
       this.logger.error('Prisma error occurred', {
-        message: e.message,
-        name: e.target,
+        ...e,
       })
     })
 
-    this.$on('warn' as any, (e: Prisma.LogEvent) => {
+    this.$on('warn' as any, (e: any) => {
       this.logger.warn('Prisma warning', {
         message: e.message,
         target: e.target,

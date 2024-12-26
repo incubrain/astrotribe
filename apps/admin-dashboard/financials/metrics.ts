@@ -103,13 +103,13 @@ function calculateConversionRates(users: {
   pro: number
   expert: number
 }) {
-  return users.mau > 0 ?
-    {
-      total: parseInt((((users.pro + users.expert) / users.mau) * 100).toFixed(0)),
-      pro: parseInt(((users.pro / users.mau) * 100).toFixed(0)),
-      expert: parseInt(((users.expert / users.mau) * 100).toFixed(0)),
-    } :
-    { total: 0, pro: 0, expert: 0 }
+  return users.mau > 0
+    ? {
+        total: parseInt((((users.pro + users.expert) / users.mau) * 100).toFixed(0)),
+        pro: parseInt(((users.pro / users.mau) * 100).toFixed(0)),
+        expert: parseInt(((users.expert / users.mau) * 100).toFixed(0)),
+      }
+    : { total: 0, pro: 0, expert: 0 }
 }
 
 function calculateGrossMargin(revenue: number, costOfGoodsSold: number) {
