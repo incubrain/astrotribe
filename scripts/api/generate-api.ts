@@ -359,7 +359,7 @@ export class ${className}Module {}`
       .select('*')
       .eq('${rel.foreignKey}', id)
     
-    if (error: any) throw error
+    if (error) throw error
     return data
   }`)
         }
@@ -760,7 +760,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
   
       const { data, error } = await query;
   
-      if (error: any) throw error;
+      if (error) throw error;
       return data;
     }
   
@@ -771,7 +771,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
         .eq('id', id)
         .single();
   
-      if (error: any) throw error;
+      if (error) throw error;
       if (!data) throw new NotFoundException();
   
       await this.checkPermission(user, 'read', data);
@@ -786,7 +786,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
         .select()
         .single();
   
-      if (error: any) throw error;
+      if (error) throw error;
       return created;
     }
   
@@ -803,7 +803,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
   
       const { data: updated, error } = await query.select().single();
   
-      if (error: any) throw error;
+      if (error) throw error;
       if (!updated) throw new NotFoundException();
   
       return updated;
@@ -822,7 +822,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
   
       const { error } = await query;
   
-      if (error: any) throw error;
+      if (error) throw error;
     }
   
     protected hasUserColumn(): boolean {
@@ -914,7 +914,7 @@ export function is${enumName}(value: any): value is ${enumName}Enum {
         .select('permission')
         .eq('user_id', user.id);
   
-      if (error: any) return false;
+      if (error) return false;
   
       const userPermissionList = userPermissions.map(p => p.permission);
   

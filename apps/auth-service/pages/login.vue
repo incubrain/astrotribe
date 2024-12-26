@@ -135,7 +135,7 @@ definePageMeta({
     </template>
 
     <template #footer>
-      <AuthRegisterWith :disabled="!turnstileValid"/>
+      <AuthRegisterWith :disabled="!turnstileValid" />
     </template>
   </AuthCard>
 </template>

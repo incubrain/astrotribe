@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       .eq('visitor_id', visitor_id)
       .eq('referrer_code', referrer_code)
 
-    if (error: any) {
+    if (error) {
       console.log('Failed to mark as converted', error)
       throw createError({
         statusCode: 500,

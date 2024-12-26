@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
       .eq('email', profile.email)
       .select()
 
-    if (error: any) {
+    if (error) {
       throw createError({ message: `error updating users: ${error.message}` })
     }
 

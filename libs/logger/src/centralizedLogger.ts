@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { error_type } from '@prisma/client'
 import { getEnvironment } from './environment'
 import type { ErrorLogEntry } from './error-interface'
 import type { Service, ServiceToDomain } from './enums-domains'
@@ -197,7 +198,7 @@ export class CentralizedLogger<S extends Service = Service> {
     const dbMetadata = {
       service_name: this.service,
       domain: this.domain,
-      error_type: userMetadata?.error?.name || 'UNKNOWN_ERROR',
+      error_type: error_type.UNKNOWN_ERROR,
       severity: this.getSeverity(level),
       message,
       stack_trace: stack,
@@ -264,23 +265,42 @@ export class CentralizedLogger<S extends Service = Service> {
   }
 
   private shouldStoreLog(level: Level): boolean {
-    if (this.env.isDev) {
-      return true
-    }
-
     return level === Level.Error || level === Level.Warn
   }
 
   private async log(level: Level, message: string, metadata?: any) {
-    if (!this.shouldLogLevel(level)) {
-      return
-    }
-    const { consoleData, dbMetadata } = await this.prepareMetadata(level, message, metadata)
-    const finalMessage = this.formatLog(consoleData)
-    this.transport.log(level, finalMessage)
+    try {
+      // 1. Validate the level
+      if (!Object.values(Level).includes(level)) {
+        console.error('Invalid log level provided:', level)
+        level = Level.Error // fallback
+      }
 
-    if (this.shouldStoreLog(level)) {
-      void this.logToDatabase(dbMetadata)
+      // 2. Check if we should skip verbose logs in production, etc.
+      if (!this.shouldLogLevel(level)) {
+        return
+      }
+
+      // 3. Prepare metadata (can throw if data is non-serializable)
+      const { consoleData, dbMetadata } = await this.prepareMetadata(level, message, metadata)
+
+      // 4. Format and log to transport
+      const finalMessage = this.formatLog(consoleData)
+      this.transport.log(level, finalMessage)
+
+      // 5. If it’s an error or warning, store to DB
+      if (this.shouldStoreLog(level)) {
+        void this.logToDatabase(dbMetadata)
+      }
+    } catch (error: any) {
+      // Fallback in case something in prepareMetadata(), formatLog(), or transport fails
+      console.error('Logger encountered an internal error while logging:', {
+        originalLevel: level,
+        originalMessage: message,
+        originalMetadata: metadata,
+        loggerError: error?.message,
+        stack: error?.stack,
+      })
     }
   }
 

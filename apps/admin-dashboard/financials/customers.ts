@@ -41,21 +41,21 @@ function adjustConversionRates(MAU: number) {
   const { subscription } = INCOME_STREAMS
   subscription.pro.conversion.current = Math.min(
     subscription.pro.conversion.pessimistic +
-    (MAU / 150000) *
-    (subscription.pro.conversion.optimistic - subscription.pro.conversion.pessimistic),
+      (MAU / 150000) *
+        (subscription.pro.conversion.optimistic - subscription.pro.conversion.pessimistic),
     subscription.pro.conversion.optimistic,
   )
 
   subscription.expert.conversion.current =
-    MAU >= 5000 ?
-      Math.min(
-        subscription.expert.conversion.pessimistic +
-        (MAU / 100000) *
-        (subscription.expert.conversion.optimistic -
-          subscription.expert.conversion.pessimistic),
-        subscription.expert.conversion.optimistic,
-      ) :
-      0
+    MAU >= 5000
+      ? Math.min(
+          subscription.expert.conversion.pessimistic +
+            (MAU / 100000) *
+              (subscription.expert.conversion.optimistic -
+                subscription.expert.conversion.pessimistic),
+          subscription.expert.conversion.optimistic,
+        )
+      : 0
 }
 
 function newMauToCustomers(MAU: number) {

@@ -222,9 +222,9 @@ function calculateStorageCost(params: SupabaseCostParams): SupabaseCostBreakdown
     dbStorageGB > dbIncludedGB ? (dbStorageGB - dbIncludedGB) * dbPricePerGB : 0
 
   const additionalBandwidthCost =
-    bandwidthGB > bandwidthIncludedGB ?
-      (bandwidthGB - bandwidthIncludedGB) * bandwidthPricePerGB :
-      0
+    bandwidthGB > bandwidthIncludedGB
+      ? (bandwidthGB - bandwidthIncludedGB) * bandwidthPricePerGB
+      : 0
 
   const additionalFileStorageCost =
     fileStorageGB > storageIncludedGB ? (fileStorageGB - storageIncludedGB) * storagePricePerGB : 0

@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
         user_id: user.id,
       })
 
-      if (error: any) throw error
+      if (error) throw error
       return { success: true, action: 'removed' }
     }
 
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
       },
     )
 
-    if (error: any) throw error
+    if (error) throw error
     return { success: true, action: 'voted' }
   } catch (error: any) {
     console.error('Vote error:', error)

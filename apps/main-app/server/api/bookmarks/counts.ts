@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       user_id_param: user.id,
     })
 
-    if (error: any) throw error
+    if (error) throw error
 
     console.log('FETCHED DATA', data?.length)
 

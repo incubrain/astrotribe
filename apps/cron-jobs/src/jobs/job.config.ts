@@ -21,7 +21,7 @@ export const jobConfigs: JobConfig[] = [
   {
     name: 'news_links',
     Class: NewsLinksJob,
-    schedule: '0 */1 * * *', // Every hour
+    schedule: '*/2 * * * *', // Every 2 minutes
     priority: 'high',
     timeout: 600000, // 10 minutes
     retryLimit: 3,
@@ -32,7 +32,6 @@ export const jobConfigs: JobConfig[] = [
     },
     tags: ['news', 'content'],
   },
-  // ... other job configs
 ]
 
 // Helper functions to work with job configs

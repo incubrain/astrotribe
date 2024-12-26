@@ -11,20 +11,20 @@ const stripeTransactions = computed(() => {
   return stripePaymentTypes.reduce((acc, type) => {
     const transactions = payments.value.flatMap((month) =>
       month.stripe.transactions.flatMap((transaction) =>
-        transaction.paymentMethod === type ?
-          [
-            {
-              totalCost: transaction.pro.totalCost + transaction.expert.totalCost || 0,
-              totalTransactions: transaction.methodCustomers || 0,
-              additionalFees:
+        transaction.paymentMethod === type
+          ? [
+              {
+                totalCost: transaction.pro.totalCost + transaction.expert.totalCost || 0,
+                totalTransactions: transaction.methodCustomers || 0,
+                additionalFees:
                   transaction.pro.fees.additionalFees + transaction.expert.fees.additionalFees || 0,
-              gst: transaction.pro.fees.gst + transaction.expert.fees.gst || 0,
-              subscription:
+                gst: transaction.pro.fees.gst + transaction.expert.fees.gst || 0,
+                subscription:
                   transaction.pro.fees.subscription + transaction.expert.fees.subscription || 0,
-              platform: transaction.pro.fees.platform + transaction.expert.fees.platform || 0,
-            },
-          ] :
-          [],
+                platform: transaction.pro.fees.platform + transaction.expert.fees.platform || 0,
+              },
+            ]
+          : [],
       ),
     )
 
@@ -96,21 +96,21 @@ const razorpayTransactions = computed(() => {
   return razorpayPaymentTypes.reduce((acc, type) => {
     const transactions = payments.value.flatMap((month) =>
       month.razorpay.transactions.flatMap((transaction) =>
-        transaction.paymentMethod === type ?
-          [
-            {
-              totalCost: transaction.pro?.totalCost + transaction.expert?.totalCost || 0,
-              totalTransactions: transaction.methodCustomers || 0,
-              additionalFees:
+        transaction.paymentMethod === type
+          ? [
+              {
+                totalCost: transaction.pro?.totalCost + transaction.expert?.totalCost || 0,
+                totalTransactions: transaction.methodCustomers || 0,
+                additionalFees:
                   transaction.pro?.fees?.additionalFees +
-                  transaction.expert?.fees?.additionalFees || 0,
-              gst: transaction.pro?.fees?.gst + transaction.expert?.fees?.gst || 0,
-              subscription:
+                    transaction.expert?.fees?.additionalFees || 0,
+                gst: transaction.pro?.fees?.gst + transaction.expert?.fees?.gst || 0,
+                subscription:
                   transaction.pro?.fees?.subscription + transaction.expert?.fees?.subscription || 0,
-              platform: transaction.pro?.fees?.platform + transaction.expert?.fees?.platform || 0,
-            },
-          ] :
-          [],
+                platform: transaction.pro?.fees?.platform + transaction.expert?.fees?.platform || 0,
+              },
+            ]
+          : [],
       ),
     )
 

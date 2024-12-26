@@ -17,25 +17,155 @@ interface ClassifiedUrl {
 }
 
 export class NewsLinkExtractor {
-  private logger = new CustomLogger('NewsLinkExtractor')
+  private readonly REQUEST_TIMEOUT = 10000
+  private readonly MAX_CONCURRENT = 5
+  private readonly parser: Parser
+
   private contentStash: ContentStash
   private domain: string
   private classifier: UrlClassifier
-  private processedUrls: Set<string> = new Set()
+  private processedUrls = new Set<string>()
   private classifiedUrls: ClassifiedUrl[] = []
-  private db = new PrismaService(this.logger)
-  private readonly REQUEST_TIMEOUT = 10000
-  private readonly MAX_CONCURRENT_TASKS = 10
 
   constructor(
-    private page: Page,
-    private source: ContentSource,
-    batchSize: number = 100,
+    private readonly page: Page | null,
+    private readonly source: ContentSource,
+    private readonly services: {
+      logger: CustomLogger
+      prisma: PrismaService
+    },
   ) {
     this.domain = new URL(source.url).hostname
     this.contentStash = globalContentStash
     this.classifier = new UrlClassifier()
-    this.logger.info(`Initialized NewsLinkExtractor for domain: ${this.domain}`)
+    this.parser = new Parser({
+      timeout: this.REQUEST_TIMEOUT,
+      headers: { 'User-Agent': 'NewsBot/1.0 (Astrotribe RSS Fetcher)' },
+    })
+
+    this.services.logger.info(`Initialized NewsLinkExtractor for source: ${source.url}`)
+  }
+
+  public async extractLinks(): Promise<any[]> {
+    const { logger } = this.services
+
+    // First try RSS feeds if available
+    if (this.source.rss_urls?.length) {
+      logger.info('RSS feeds found, attempting RSS extraction first', {
+        feedCount: this.source.rss_urls.length,
+        feeds: this.source.rss_urls,
+      })
+
+      try {
+        const rssItems = await this.extractFromRSSFeeds()
+        if (rssItems.length > 0) {
+          logger.info('Successfully extracted items from RSS feeds', {
+            itemCount: rssItems.length,
+            samples: rssItems.slice(0, 3).map((item) => ({
+              title: item.title,
+              link: item.link,
+            })),
+          })
+          return this.createBlogPostObjects(rssItems)
+        }
+        logger.warn('No items found in RSS feeds, falling back to HTML scraping')
+      } catch (error) {
+        logger.error('RSS extraction failed, falling back to HTML scraping', { error })
+      }
+    }
+
+    // Fallback to HTML scraping if we have a page
+    if (!this.page) {
+      logger.warn('No page provided for HTML scraping')
+      return []
+    }
+
+    logger.info('Starting HTML scraping')
+    const urls = await this.extractAllLinks()
+    const validUrls = await this.filterAndClassifyUrls(urls)
+    return this.createBlogPostObjects(validUrls)
+  }
+
+  private async filterAndClassifyUrls(urls: string[]): Promise<string[]> {
+    const { logger } = this.services
+    const extractedUrls: string[] = []
+    const limit = pLimit(this.MAX_CONCURRENT)
+
+    await Promise.all(
+      urls.map((url) =>
+        limit(async () => {
+          if (this.processedUrls.has(url)) return
+          this.processedUrls.add(url)
+
+          try {
+            if (!this.isSameDomain(url) || !(await this.isScrapingAllowed(url))) {
+              return
+            }
+
+            if (await this.isBlogPost(url)) {
+              extractedUrls.push(url)
+              this.contentStash.addValidBlogUrl(new URL(url).hostname, url)
+            }
+          } catch (error) {
+            logger.error(`Error processing URL: ${url}`, { error })
+          }
+        }),
+      ),
+    )
+
+    await this.storeClassificationsInBulk()
+    return extractedUrls
+  }
+
+  private async extractFromRSSFeeds(): Promise<any[]> {
+    const { logger } = this.services
+    const limit = pLimit(this.MAX_CONCURRENT)
+
+    const feedPromises = (this.source.rss_urls || []).filter(Boolean).map((rssUrl) =>
+      limit(async () => {
+        try {
+          logger.debug(`Fetching RSS feed: ${rssUrl}`)
+          const feed = await this.fetchRSSWithTimeout(rssUrl)
+
+          if (feed?.items?.length) {
+            logger.info(`Successfully fetched RSS feed: ${rssUrl}`, {
+              itemCount: feed.items.length,
+            })
+            return feed.items
+          }
+
+          logger.warn(`No items found in RSS feed: ${rssUrl}`)
+          return []
+        } catch (error) {
+          logger.error(`Failed to fetch RSS feed: ${rssUrl}`, { error })
+          return []
+        }
+      }),
+    )
+
+    const feeds = await Promise.all(feedPromises)
+    return feeds
+      .flat()
+      .filter(
+        (item, index, self) => item.link && index === self.findIndex((i) => i.link === item.link),
+      )
+  }
+
+  private async fetchRSSWithTimeout(url: string): Promise<any> {
+    try {
+      return await Promise.race([
+        this.parser.parseURL(url),
+        new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error(`RSS fetch timeout after ${this.REQUEST_TIMEOUT}ms`)),
+            this.REQUEST_TIMEOUT,
+          ),
+        ),
+      ])
+    } catch (error) {
+      this.services.logger.error(`RSS fetch failed for ${url}`, { error })
+      throw error
+    }
   }
 
   private async storeClassificationsInBulk(): Promise<void> {
@@ -44,7 +174,7 @@ export class NewsLinkExtractor {
         return
       }
 
-      await this.db.$transaction(async (tx) => {
+      await this.services.prisma.$transaction(async (tx) => {
         // Process in chunks to avoid overwhelming the database
         const chunkSize = 100
         for (let i = 0; i < this.classifiedUrls.length; i += chunkSize) {
@@ -71,17 +201,17 @@ export class NewsLinkExtractor {
                   },
                 })
                 .catch((error: any) => {
-                  this.logger.warn(`Failed to update URL: ${url.url}`, { error })
+                  this.services.logger.warn(`Failed to update URL: ${url.url}`, { error })
                 }),
             ),
           )
         }
       })
 
-      this.logger.info(`Processed ${this.classifiedUrls.length} classifications in bulk`)
+      this.services.logger.info(`Processed ${this.classifiedUrls.length} classifications in bulk`)
       this.classifiedUrls = [] // Clear the array after processing
     } catch (error: any) {
-      this.logger.error('Error processing classifications in bulk', {
+      this.services.logger.error('Error processing classifications in bulk', {
         ...error,
         urlCount: this.classifiedUrls.length,
       })
@@ -91,14 +221,30 @@ export class NewsLinkExtractor {
 
   public async extractBlogLinks(): Promise<string[]> {
     let rss
-    if (this.source.rss_urls && this.source.rss_urls.length) rss = await this.extractRSSFeed()
+    if (this.source.rss_urls && this.source.rss_urls.length) {
+      this.services.logger.info('RSS URLs found, attempting to extract from RSS feed', {
+        rssUrls: this.source.rss_urls,
+      })
+      rss = await this.extractRSSFeed()
+    }
 
     if (rss) {
+      this.services.logger.info('Successfully extracted from RSS feed', {
+        itemCount: rss.length,
+        sampleItems: rss.slice(0, 3).map((item) => ({
+          title: item.title,
+          link: item.link,
+          date: item.isoDate,
+        })),
+      })
       return this.createBlogPostObjects(rss)
     }
 
+    this.services.logger.info('No RSS feed or RSS extraction failed, falling back to HTML scraping')
     const urls = await this.extractAllLinks()
-    this.logger.info(`Extracted ${urls.length} links`)
+    this.services.logger.info(`Extracted ${urls.length} links from HTML`, {
+      sampleUrls: urls.slice(0, 5),
+    })
 
     const startTime = performance.now()
     const extractedUrls: string[] = []
@@ -108,6 +254,7 @@ export class NewsLinkExtractor {
       urls.map((url) =>
         limit(async () => {
           if (this.processedUrls.has(url)) {
+            this.services.logger.debug(`Skipping already processed URL: ${url}`)
             return
           }
           this.processedUrls.add(url)
@@ -115,14 +262,17 @@ export class NewsLinkExtractor {
           const extractionStartTime = performance.now()
 
           if (!this.isSameDomain(url)) {
-            this.logger.verbose(`URL is on a different domain: ${url}`)
+            this.services.logger.debug(`URL is on a different domain: ${url}`, {
+              sourceDomain: this.domain,
+              urlDomain: new URL(url).hostname,
+            })
             logFile('excluded_urls', { url, reason: 'Different domain' })
             return
           }
 
           const isAllowed = await this.isScrapingAllowed(url)
           if (!isAllowed) {
-            this.logger.warn(`Scraping disallowed for URL: ${url}`)
+            this.services.logger.warn(`Scraping disallowed for URL: ${url}`)
             logFile('news/excluded_urls', {
               url,
               reason: 'Scraping disallowed',
@@ -135,15 +285,22 @@ export class NewsLinkExtractor {
             extractedUrls.push(url)
             this.contentStash.addValidBlogUrl(new URL(url).hostname, url)
             logFile('news/extracted_urls', url)
-            this.logger.debug(`URL added to extracted URLs: ${url}`)
+            this.services.logger.info(`URL identified as blog post: ${url}`, {
+              extractionTime: performance.now() - extractionStartTime,
+              totalExtracted: extractedUrls.length,
+            })
           } else {
-            this.logger.verbose(`URL is not an article: ${url}`)
+            this.services.logger.debug(`URL is not an article: ${url}`, {
+              extractionTime: performance.now() - extractionStartTime,
+            })
             logFile('news/excluded_urls', { url, reason: 'Not an article' })
           }
 
           const extractionTime = performance.now() - extractionStartTime
-
-          this.logger.info(`Extraction time for URL ${url}: ${extractionTime.toFixed(2)}ms`)
+          this.services.logger.debug(`URL processing complete: ${url}`, {
+            extractionTime: extractionTime.toFixed(2),
+            isArticle: isBlogPost,
+          })
         }),
       ),
     )
@@ -151,13 +308,26 @@ export class NewsLinkExtractor {
     const endTime = performance.now()
     const totalTime = endTime - startTime
 
-    this.logger.info(
-      `Total extraction time: ${totalTime.toFixed(2)}ms for ${extractedUrls.length} URLs`,
-    )
+    this.services.logger.info('Link extraction completed', {
+      totalTime: totalTime.toFixed(2),
+      totalUrls: urls.length,
+      extractedUrls: extractedUrls.length,
+      sampleExtractedUrls: extractedUrls.slice(0, 5),
+    })
 
     await this.storeClassificationsInBulk()
 
-    return this.createBlogPostObjects(extractedUrls)
+    const blogPosts = this.createBlogPostObjects(extractedUrls)
+    this.services.logger.info('Blog post objects created', {
+      count: blogPosts.length,
+      samplePosts: blogPosts.slice(0, 3).map((post) => ({
+        url: post.contents.url,
+        title: post.news.title,
+        publishedAt: post.news.published_at,
+      })),
+    })
+
+    return blogPosts
   }
 
   private async isBlogPost(url: string): Promise<boolean> {
@@ -166,13 +336,13 @@ export class NewsLinkExtractor {
       const pathname = parsedUrl.pathname.toLowerCase()
 
       if (this.isExcludedLink(pathname)) {
-        this.logger.debug(`URL excluded by pattern: ${url}`)
+        this.services.logger.debug(`URL excluded by pattern: ${url}`)
         logFile('news/excluded_urls', { url, reason: 'Excluded pattern' })
         return false
       }
 
       if (this.containsArticleIndicators(pathname)) {
-        this.logger.debug(`URL contains article indicators: ${url}`)
+        this.services.logger.debug(`URL contains article indicators: ${url}`)
         return true
       }
 
@@ -187,14 +357,14 @@ export class NewsLinkExtractor {
       })
 
       if (isArticle) {
-        this.logger.debug(`Classifier accepted URL: ${url}, category: ${category}`)
+        this.services.logger.debug(`Classifier accepted URL: ${url}, category: ${category}`)
         logFile('news/extracted_urls', {
           url,
           reason: 'Classifier Accepted',
           category,
         })
       } else {
-        this.logger.verbose(`Classifier rejected URL: ${url}, category: ${category}`)
+        this.services.logger.verbose(`Classifier rejected URL: ${url}, category: ${category}`)
         logFile('news/excluded_urls', {
           url,
           reason: 'Classifier rejected',
@@ -203,7 +373,7 @@ export class NewsLinkExtractor {
       }
       return isArticle
     } catch (error: any) {
-      this.logger.error(`Error in isBlogPost for URL: ${url}`, error)
+      this.services.logger.error(`Error in isBlogPost for URL: ${url}`, error)
       logFile('news/excluded_urls', { url, reason: 'Error in isBlogPost' })
       return false
     }
@@ -293,7 +463,7 @@ export class NewsLinkExtractor {
       exclusions.some((exclusion) => pathname.includes(exclusion)) ||
       datePattern.test(pathname)
 
-    this.logger.debug(`isExcludedLink check for pathname: ${pathname}, result: ${isExcluded}`)
+    this.services.logger.debug(`isExcludedLink check for pathname: ${pathname}, result: ${isExcluded}`)
 
     return isExcluded
   }
@@ -312,7 +482,7 @@ export class NewsLinkExtractor {
       indicator.test(pathname.toLowerCase()),
     )
 
-    this.logger.debug(
+    this.services.logger.debug(
       `containsArticleIndicators check for pathname: ${pathname}, result: ${hasIndicators}`,
     )
 
@@ -325,7 +495,7 @@ export class NewsLinkExtractor {
 
     // Allow subdomains of the base domain
     const isSame = urlDomain.endsWith(baseDomain)
-    this.logger.debug(
+    this.services.logger.debug(
       `isSameDomain check: baseDomain=${baseDomain}, urlDomain=${urlDomain}, result=${isSame}`,
     )
 
@@ -337,7 +507,7 @@ export class NewsLinkExtractor {
     const parts = hostname.split('.').slice(-2)
     const baseDomain = parts.join('.')
 
-    this.logger.debug(`getBaseDomain for URL: ${url}, baseDomain: ${baseDomain}`)
+    this.services.logger.debug(`getBaseDomain for URL: ${url}, baseDomain: ${baseDomain}`)
 
     return baseDomain
   }
@@ -348,7 +518,7 @@ export class NewsLinkExtractor {
     const failedCounts: Record<string, number> = {}
 
     // Initialize pLimit with maximum concurrent tasks
-    const limit = pLimit(this.MAX_CONCURRENT_TASKS)
+    const limit = pLimit(this.MAX_CONCURRENT)
 
     // Create an array of limited promises
 
@@ -386,14 +556,14 @@ export class NewsLinkExtractor {
           items.push(...feed.items)
           const duration = performance.now() - startTime
 
-          this.logger.info(
+          this.services.logger.info(
             `Successfully processed feed from ${rss_url} in ${duration.toFixed(2)}ms`,
           )
           return items
         } else {
-          this.logger.warn(`No items found in feed from ${rss_url}`)
+          this.services.logger.warn(`No items found in feed from ${rss_url}`)
           const duration = performance.now() - startTime
-          this.logger.info(`Processed feed from ${rss_url} (no items) in ${duration.toFixed(2)}ms`)
+          this.services.logger.info(`Processed feed from ${rss_url} (no items) in ${duration.toFixed(2)}ms`)
           return []
         }
       } catch (error: any) {
@@ -401,24 +571,26 @@ export class NewsLinkExtractor {
         failedCounts[rss_url] = (failedCounts[rss_url] || 0) + 1
 
         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-        this.logger.error(`RSS Parse Error for ${rss_url}`, {
+        this.services.logger.error(`RSS Parse Error for ${rss_url}`, {
           ...error,
           message: `Error occurred on ${retries} attempt while parsing RSS: ${errorMessage}`,
         })
 
         if (retries === maxRetries) {
           const duration = performance.now() - startTime
-          this.logger.error(
-            'Failed to fetch',
-            `Max retries reached for ${rss_url}. Failed ${failedCounts[rss_url]} times. ` +
-              `Total processing time: ${duration.toFixed(2)}ms`,
-          )
+          this.services.logger.error('Failed to fetch', {
+            context: {
+              message:
+                `Max retries reached for ${rss_url}. Failed ${failedCounts[rss_url]} times. ` +
+                `Total processing time: ${duration.toFixed(2)}ms`,
+            },
+          })
         }
       }
     }
 
     const duration = performance.now() - startTime
-    this.logger.info(`Processed feed from ${rss_url} in ${duration.toFixed(2)}ms`)
+    this.services.logger.info(`Processed feed from ${rss_url} in ${duration.toFixed(2)}ms`)
 
     return items
   }
@@ -436,46 +608,105 @@ export class NewsLinkExtractor {
   }
 
   private async extractAllLinks(): Promise<string[]> {
-    // Target main content areas using Playwright's Locator API
-    const contentSelectors = 'main, [role="main"], [class*="content"], article'
-    const mainContent = this.page.locator(contentSelectors)
+    this.services.logger.debug('Starting link extraction from page')
 
-    // Check if main content exists
-    const mainContentCount = await mainContent.count()
-    let links: string[] = []
+    try {
+      // Wait for content to load
+      await this.page.waitForLoadState('domcontentloaded')
 
-    if (mainContentCount > 0) {
-      // Extract links within main content
-      links = await mainContent.evaluateAll((nodes) => {
-        const hrefs = new Set<string>()
-        nodes.forEach((node) => {
-          const anchorTags = node.querySelectorAll('a[href]')
-          anchorTags.forEach((a) => hrefs.add((a as HTMLAnchorElement).href))
+      // First try specific content areas
+      const contentSelectors = [
+        'main',
+        '[role="main"]',
+        '[class*="content"]',
+        'article',
+        '.news-content',
+        '.article-content',
+        '.post-content',
+        '#content',
+      ].join(', ')
+
+      // Check if main content exists
+      const mainContent = this.page.locator(contentSelectors)
+      const mainContentCount = await mainContent.count()
+
+      this.services.logger.debug(`Found ${mainContentCount} main content areas`)
+
+      let links: string[] = []
+
+      if (mainContentCount > 0) {
+        // Extract links within main content
+        links = await mainContent.evaluateAll((nodes) => {
+          const hrefs = new Set<string>()
+          nodes.forEach((node) => {
+            const anchorTags = node.querySelectorAll('a[href]')
+            anchorTags.forEach((a) => {
+              const href = (a as HTMLAnchorElement).href
+              if (href && !href.startsWith('javascript:') && !href.startsWith('#')) {
+                hrefs.add(href)
+              }
+            })
+          })
+          return Array.from(hrefs)
         })
-        return Array.from(hrefs)
-      })
-      this.logger.debug(`Extracted ${links.length} links from main content`)
-    } else {
-      // Fallback: Extract all links from the page
-      this.logger.warn(
-        'Main content selectors not found. Falling back to extract all links from the page.',
+
+        this.services.logger.info(`Extracted ${links.length} links from main content areas`, {
+          sampleLinks: links.slice(0, 5),
+        })
+      } else {
+        // Fallback: Extract all links
+        this.services.logger.warn('No main content found, falling back to whole page extraction')
+
+        // Wait for any dynamic content
+        await this.page.waitForLoadState('networkidle')
+
+        links = await this.page.evaluate(() => {
+          const hrefs = new Set<string>()
+          document.querySelectorAll('a[href]').forEach((a) => {
+            const href = (a as HTMLAnchorElement).href
+            if (href && !href.startsWith('javascript:') && !href.startsWith('#')) {
+              hrefs.add(href)
+            }
+          })
+          return Array.from(hrefs)
+        })
+
+        this.services.logger.info(`Extracted ${links.length} links from entire page`, {
+          sampleLinks: links.slice(0, 5),
+        })
+      }
+
+      // Format and validate URLs
+      const { validUrls, contacts } = URLFormatter.formatURLs(
+        URLFormatter.getBaseUrl(this.source.url),
+        links,
       )
-      links = await this.page.evaluate(() => {
-        const hrefs = new Set<string>()
-        const anchorTags = document.querySelectorAll('a[href]')
-        anchorTags.forEach((a) => hrefs.add((a as HTMLAnchorElement).href))
-        return Array.from(hrefs)
+
+      if (contacts.length > 0) {
+        this.services.logger.info(`Found ${contacts.length} contacts during extraction`)
+      }
+
+      const uniqueLinks = Array.from(new Set(validUrls))
+
+      this.services.logger.info('Link extraction completed', {
+        totalRawLinks: links.length,
+        validLinks: validUrls.length,
+        contacts: contacts.length,
+        uniqueLinks: uniqueLinks.length,
+        sampleUniqueLinks: uniqueLinks.slice(0, 5),
       })
-      this.logger.debug(`Extracted ${links.length} links from the entire page`)
+
+      return uniqueLinks
+    } catch (error: any) {
+      this.services.logger.error('Error extracting links from page', {
+        error,
+        context: {
+          url: this.source.url,
+          pageTitle: await this.page.title(),
+        },
+      })
+      return []
     }
-
-    const uniqueLinks = Array.from(
-      new Set(URLFormatter.formatURLs(URLFormatter.getBaseUrl(this.source.url), links).validUrls),
-    )
-
-    this.logger.info(`Total unique links extracted: ${uniqueLinks.length}`)
-
-    return uniqueLinks
   }
 
   private async isScrapingAllowed(url: string): Promise<boolean> {
@@ -486,17 +717,17 @@ export class NewsLinkExtractor {
       const robotsTxt = await response.text()
       const robots = robotsParser(robotsUrl, robotsTxt)
       const isAllowed = robots.isAllowed(url, 'YourScraperUserAgent') || false
-      this.logger.debug(`Robots.txt check for URL: ${url}, isAllowed: ${isAllowed}`)
+      this.services.logger.debug(`Robots.txt check for URL: ${url}, isAllowed: ${isAllowed}`)
       return isAllowed
     } catch (error: any) {
-      this.logger.error(`Error fetching robots.txt from ${robotsUrl}`, error)
+      this.services.logger.error(`Error fetching robots.txt from ${robotsUrl}`, error)
       // Default to not scraping if unable to fetch robots.txt
       return false
     }
   }
 
   public getContentStashStats(): any {
-    this.logger.debug('Retrieving content stash stats')
+    this.services.logger.debug('Retrieving content stash stats')
     return this.contentStash.getAllStats()
   }
 }
@@ -506,7 +737,7 @@ export async function scrapeNewsLinks(
   source: ContentSource,
   batchSize: number = 100,
 ): Promise<string[]> {
-  this.logger.info('Creating NewsLinkExtractor instance')
+  console.info('Creating NewsLinkExtractor instance')
   const scraper = new NewsLinkExtractor(page, source, batchSize)
   return scraper.extractBlogLinks()
 }

@@ -4,10 +4,9 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
   DiskHealthIndicator,
-  MemoryHealthIndicator } from '@nestjs/terminus'
-import {
-  HealthCheck,
+  MemoryHealthIndicator,
 } from '@nestjs/terminus'
+import { HealthCheck } from '@nestjs/terminus'
 
 @Controller('health')
 export class HealthController {

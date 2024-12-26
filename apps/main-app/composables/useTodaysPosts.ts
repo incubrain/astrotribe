@@ -42,7 +42,7 @@ export function useTodaysPosts(filters?: {
 
     const { count, error } = await query
 
-    if (error: any) {
+    if (error) {
       console.error("Error fetching today's posts:", error)
       return
     }

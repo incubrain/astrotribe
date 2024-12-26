@@ -58,7 +58,7 @@ export function useAuditLog() {
       try {
         const { error } = await supabase.from('audit_logs').insert(logEntry)
 
-        if (error: any) {
+        if (error) {
           console.error('Error logging audit event to database:', error)
         }
       } catch (error: any) {
@@ -109,7 +109,7 @@ export function useAuditLog() {
       .range(pagination.page * pagination.pageSize, (pagination.page + 1) * pagination.pageSize - 1)
       .order('timestamp', { ascending: false })
 
-    if (error: any) {
+    if (error) {
       console.error('Error fetching audit logs:', error)
       throw error
     }

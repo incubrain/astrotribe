@@ -135,8 +135,8 @@ export default defineEventHandler(async (event) => {
     let finalMimeType: string
 
     const optimizerKey = mimeType.split('/')[0]
-    const optimizer
-      = optimizerFactory.getOptimizer(optimizerKey) || optimizerFactory.getOptimizer(mimeType)
+    const optimizer =
+      optimizerFactory.getOptimizer(optimizerKey) || optimizerFactory.getOptimizer(mimeType)
 
     if (optimizer) {
       const result = await optimizer.optimize(file.data, optimizationOptions)
@@ -159,7 +159,7 @@ export default defineEventHandler(async (event) => {
         upsert: true,
       })
 
-    if (error: any) {
+    if (error) {
       throw createError({ statusCode: 500, statusMessage: error.message })
     }
 

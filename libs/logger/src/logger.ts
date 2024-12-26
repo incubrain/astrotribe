@@ -34,6 +34,7 @@ export class BrowserConsoleTransport implements LogTransport {
 
 // Node Winston transport
 export class NodeWinstonTransport implements LogTransport {
+  public initialized = false
   private logger: import('winston').Logger | undefined
   private isDev: boolean
 
@@ -83,10 +84,11 @@ export class NodeWinstonTransport implements LogTransport {
         }),
       )
     }
+    this.initialized = true
   }
 
   log(level: Level, message: string) {
-    if (!this.logger) {
+    if (!this.initialized || !this.logger) {
       throw new Error('NodeWinstonTransport not initialized. Call await init() first.')
     }
     this.logger.log(level, message)

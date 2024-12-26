@@ -76,7 +76,7 @@ export function useAuth() {
       return
     }
 
-    if (error: any) {
+    if (error) {
       toast.error({ summary: 'Registration Failure', message: error.message })
       if (formData.resetTurnstile) formData.resetTurnstile()
       loading.setLoading('currentUser', false)
@@ -106,7 +106,7 @@ export function useAuth() {
       options: { captchaToken: options?.turnstileToken },
     })
 
-    if (error: any) {
+    if (error) {
       toast.error({ summary: 'Authentication Failure', message: error.message })
       options?.resetTurnstile()
       loading.setLoading('currentUser', false)
@@ -156,7 +156,7 @@ export function useAuth() {
       captchaToken: turnstileToken,
     })
 
-    if (error: any) {
+    if (error) {
       console.error('Forgot password failed:', error)
       toast.error({ summary: 'Password Reset Failed', message: error.message })
       if (resetTurnstile) resetTurnstile()
@@ -173,7 +173,7 @@ export function useAuth() {
     loading.setLoading('currentUser', true)
     const { error } = await supabase.auth.updateUser({ password: newPassword })
 
-    if (error: any) {
+    if (error) {
       console.error('Password update failed:', error)
       toast.error({ summary: 'Password Update Failed', message: error.message })
     } else {
@@ -185,7 +185,7 @@ export function useAuth() {
   async function logout() {
     loading.setLoading('currentUser', true)
     const { error } = await supabase.auth.signOut()
-    if (error: any) {
+    if (error) {
       console.error('Logout failed:', error)
       toast.error({ summary: 'Logout Failed', message: error.message })
     } else {

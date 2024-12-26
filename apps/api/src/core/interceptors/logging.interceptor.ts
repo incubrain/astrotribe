@@ -1,11 +1,6 @@
 // interceptors/logging.interceptor.ts
-import type {
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler } from '@nestjs/common'
-import {
-  Injectable,
-} from '@nestjs/common'
+import type { NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { CustomLogger } from '@core/logger/custom.logger'

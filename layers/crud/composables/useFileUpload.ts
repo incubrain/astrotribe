@@ -145,7 +145,7 @@ export function useFileUpload() {
           contentType: file.type,
         })
 
-        if (error: any) {
+        if (error) {
           throw new AppError({
             type: ErrorType.UPLOAD_ERROR,
             message: `Error uploading file: ${error.message}`,

@@ -4,11 +4,15 @@ import * as tf from '@tensorflow/tfjs'
 import '@tensorflow/tfjs-backend-cpu'
 import fs from 'fs'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
 import { FeaturePipeline } from './features/feature.pipeline'
 import { ensureDirectoryExists } from '@helpers'
-import { CustomLogger } from '@core' // Import the logger
+import { CustomLogger } from '@core'
 
 tf.setBackend('cpu')
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 interface TrainingSample {
   features: number[]
@@ -22,29 +26,113 @@ export class UrlClassifier {
   private featurePipeline: FeaturePipeline
   private categories: string[]
   private modelVersion = 'v1'
-  private modelPath = `./app/ai/models/urlClassifier/${this.modelVersion}`
-  private ready: Promise<void>
+  private modelPath = path.join(__dirname, './data/models/urlClassifier', this.modelVersion)
+  private isModelReady = false
 
   constructor() {
     this.categories = ['news', 'jobs', 'unknown']
-    this.loadTrainingData()
-    this.featurePipeline = new FeaturePipeline('./app/news/data/featuresConfig.json')
+    this.featurePipeline = new FeaturePipeline(path.join(__dirname, './data/featuresConfig.json'))
     ensureDirectoryExists(this.modelPath)
-    this.ready = this.initializeModel()
     this.log.setDomain('url_classifier')
-    this.watchTrainingDataFile()
+    void this.initializeModel()
   }
 
   private async initializeModel(): Promise<void> {
     try {
       await this.loadModel()
       this.log.info('Model loaded successfully.')
+      this.isModelReady = true
     } catch (error: any) {
-      this.log.warn('Model not found or input shape mismatch, creating and training a new one.')
-      const data = this.loadTrainingData()
-      this.model = this.createModel()
-      await this.trainModel(data)
-      await this.saveModel()
+      this.log.warn('Model not found or input shape mismatch, attempting to create new model.')
+      try {
+        const data = await this.loadTrainingDataWithFallback()
+        this.model = this.createModel()
+
+        if (data.length > 0) {
+          await this.trainModel(data)
+          await this.saveModel()
+          this.isModelReady = true
+          this.log.info('New model created and trained successfully.')
+        } else {
+          this.log.warn('No training data available. Model will use default classifications.')
+          // Still create model but don't train it
+          this.model = this.createModel()
+          this.isModelReady = true
+        }
+      } catch (trainError: any) {
+        this.log.error('Failed to create/train new model:', trainError)
+        // Create untrained model for default classifications
+        this.model = this.createModel()
+        this.isModelReady = true
+      }
+    }
+  }
+
+  private async loadTrainingDataWithFallback(): Promise<TrainingSample[]> {
+    try {
+      return this.loadTrainingData()
+    } catch (error: any) {
+      this.log.warn('No training data found, using default empty dataset')
+      return []
+    }
+  }
+
+  private getDefaultCategory(url: string): string {
+    // Simple heuristic-based classification when no model is available
+    const pathname = new URL(url).pathname.toLowerCase()
+
+    if (
+      pathname.includes('news') ||
+      pathname.includes('article') ||
+      pathname.includes('blog') ||
+      pathname.includes('post')
+    ) {
+      return 'news'
+    }
+
+    if (pathname.includes('jobs') || pathname.includes('career') || pathname.includes('position')) {
+      return 'jobs'
+    }
+
+    return 'unknown'
+  }
+
+  public async predict(url: string): Promise<string> {
+    try {
+      if (!this.isModelReady || !this.model) {
+        this.log.warn('Model not ready, using default classification')
+        return this.getDefaultCategory(url)
+      }
+
+      this.log.info(`Predicting category for URL: ${url}`)
+      const features = this.extractFeatures(url)
+
+      if (!features || features.some((f) => f === undefined)) {
+        this.log.warn('Invalid features extracted, using default classification')
+        return this.getDefaultCategory(url)
+      }
+
+      const inputTensor = tf.tensor2d([features])
+      const prediction = this.model.predict(inputTensor) as tf.Tensor
+      const predictionArray = prediction.dataSync()
+
+      const maxProbability = Math.max(...predictionArray)
+      const predictedIndex = predictionArray.indexOf(maxProbability)
+
+      const confidenceThreshold = 0.5
+      if (maxProbability < confidenceThreshold) {
+        this.log.debug(
+          `Low confidence prediction (${maxProbability}), using default classification`,
+        )
+        return this.getDefaultCategory(url)
+      }
+
+      const predictedCategory = this.categories[predictedIndex]
+      this.log.debug(`Predicted ${predictedCategory} with confidence ${maxProbability}`)
+      return predictedCategory
+    } catch (error: any) {
+      this.log.error(`Error in classifier prediction:`, error)
+      return this.getDefaultCategory(url)
     }
   }
 
@@ -133,7 +221,7 @@ export class UrlClassifier {
 
   private extractFeatures(url: string): number[] {
     if (!this.featurePipeline) {
-      this.log.error('Feature pipeline is not initialized')
+      this.log.warn('Feature pipeline is not initialized')
       return Array(10).fill(0) // Return default features
     }
     try {
@@ -147,42 +235,8 @@ export class UrlClassifier {
     }
   }
 
-  public async predict(url: string): Promise<string> {
-    await this.ready
-    try {
-      this.log.info(`[UrlClassifier] Predicting category for URL: ${url}`)
-      const features = this.extractFeatures(url)
-      this.log.debug(`[UrlClassifier] Features for ${url}:`, features)
-
-      const inputTensor = tf.tensor2d([features])
-      const prediction = this.model.predict(inputTensor) as tf.Tensor
-      const predictionArray = prediction.dataSync()
-      this.log.debug(`[UrlClassifier] Raw prediction for ${url}:`, predictionArray)
-
-      const maxProbability = Math.max(...predictionArray)
-      const predictedIndex = predictionArray.indexOf(maxProbability)
-
-      const confidenceThreshold = 0.5 // Adjust as needed
-      if (maxProbability < confidenceThreshold) {
-        this.log.warn(
-          `[UrlClassifier] Prediction below confidence threshold for ${url}. Returning 'unknown'.`,
-        )
-        return 'unknown'
-      }
-
-      const predictedCategory = this.categories[predictedIndex]
-      this.log.info(
-        `[UrlClassifier] Predicted category for ${url}: ${predictedCategory} (confidence: ${maxProbability})`,
-      )
-      return predictedCategory
-    } catch (error: any) {
-      this.log.error(`[UrlClassifier] Error in classifier predict for URL: ${url}`, error)
-      return 'unknown'
-    }
-  }
-
   private loadTrainingData(): TrainingSample[] {
-    const dataPath = './app/news/data/trainingData.json'
+    const dataPath = path.join(__dirname, './data/trainingData.json')
     this.log.debug(`[loadTrainingData] Attempting to load training data from: ${dataPath}`)
 
     let rawData: string
@@ -204,7 +258,7 @@ export class UrlClassifier {
     }
 
     if (!Array.isArray(jsonData) || jsonData.length === 0) {
-      this.log.error(`[loadTrainingData] Invalid training data: empty or not an array`)
+      this.log.warn(`[loadTrainingData] Invalid training data: empty or not an array`)
       throw new Error('Training data is empty or not an array')
     }
 
@@ -290,7 +344,7 @@ export class UrlClassifier {
   }
 
   private watchTrainingDataFile(): void {
-    const dataPath = './app/news/data/trainingData.json'
+    const dataPath = './data/trainingData.json'
     fs.watch(dataPath, (eventType, filename) => {
       if (eventType === 'change') {
         this.log.info(
@@ -302,7 +356,6 @@ export class UrlClassifier {
   }
 
   public async updateModel(newSamples: TrainingSample[]): Promise<void> {
-    await this.ready
     const data = this.loadTrainingData().concat(newSamples)
     await this.trainModel(data)
   }
@@ -379,14 +432,21 @@ export class UrlClassifier {
       const modelJSON = JSON.parse(fs.readFileSync(modelPath, 'utf8'))
       const weightData = fs.readFileSync(weightsPath)
 
+      const buffer =
+        weightData instanceof SharedArrayBuffer
+          ? new Uint8Array(weightData).buffer
+          : weightData instanceof ArrayBuffer
+            ? weightData
+            : new ArrayBuffer(0)
+
       const modelArtifacts: tf.io.ModelArtifacts = {
         modelTopology: modelJSON,
-        weightData,
+        weightData: buffer,
       }
 
       this.model = await tf.loadLayersModel(tf.io.fromMemory(modelArtifacts))
       this.log.info('Model loaded successfully from:', { modelPath: this.modelPath })
-      this.log.info('Model summary:', this.model.summary())
+      this.log.info('Model summary:', { summary: this.model.summary() })
     } catch (error: any) {
       this.log.error('Error loading model:', error)
       throw error

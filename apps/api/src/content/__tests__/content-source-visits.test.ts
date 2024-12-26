@@ -4,14 +4,10 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
-import {
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { NotFoundException, InternalServerErrorException } from '@nestjs/common'
 import { ContentSourceVisitService } from '../services/content-source-visits.service'
 import { ContentSourceVisitController } from '../controllers/content-source-visits.controller'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -21,11 +17,10 @@ import {
   mockControllerProperties,
 } from './utils/test.utils'
 
-const createSampleContentSourceVisit =
-  (): Prisma.content_source_visitsCreateInput => ({
-    contents: { connect: { id: faker.string.uuid() } },
-    user_profiles: { connect: { id: faker.string.uuid() } },
-  })
+const createSampleContentSourceVisit = (): Prisma.content_source_visitsCreateInput => ({
+  contents: { connect: { id: faker.string.uuid() } },
+  user_profiles: { connect: { id: faker.string.uuid() } },
+})
 
 describe('ContentSourceVisitController', () => {
   let controller: ContentSourceVisitController
@@ -44,9 +39,7 @@ describe('ContentSourceVisitController', () => {
       prismaModelName: 'content_source_visits',
     })
 
-    controller = module.get<ContentSourceVisitController>(
-      ContentSourceVisitController,
-    )
+    controller = module.get<ContentSourceVisitController>(ContentSourceVisitController)
     contentSourceVisitService = module.get(ContentSourceVisitService)
     prismaService = module.get<PrismaService>(PrismaService)
     logger = module.get<CustomLogger>(CustomLogger)
@@ -65,10 +58,7 @@ describe('ContentSourceVisitController', () => {
 
   describe('findAllContentSourceVisits', () => {
     it('should return paginated content source visits', async () => {
-      const visits = [
-        createSampleContentSourceVisit(),
-        createSampleContentSourceVisit(),
-      ]
+      const visits = [createSampleContentSourceVisit(), createSampleContentSourceVisit()]
       const query = { page: 1, limit: 10 }
 
       mockPrismaModel.findMany.mockResolvedValue(visits)
@@ -82,9 +72,9 @@ describe('ContentSourceVisitController', () => {
     it('should handle errors', async () => {
       mockPrismaModel.findMany.mockRejectedValue(new Error('Database error'))
 
-      await expect(
-        controller.findAllContentSourceVisits({ page: 1, limit: 10 }),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.findAllContentSourceVisits({ page: 1, limit: 10 })).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -104,9 +94,7 @@ describe('ContentSourceVisitController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.findOneContentSourceVisits(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.findOneContentSourceVisits(id)).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -126,9 +114,9 @@ describe('ContentSourceVisitController', () => {
       const createData = createSampleContentSourceVisit()
       mockPrismaModel.create.mockRejectedValue(new Error('Creation failed'))
 
-      await expect(
-        controller.createContentSourceVisits(createData),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.createContentSourceVisits(createData)).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -150,9 +138,9 @@ describe('ContentSourceVisitController', () => {
       const updateData = createSampleContentSourceVisit()
       mockPrismaModel.update.mockRejectedValue(new Error('Update failed'))
 
-      await expect(
-        controller.updateContentSourceVisits(id, updateData),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.updateContentSourceVisits(id, updateData)).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -173,9 +161,7 @@ describe('ContentSourceVisitController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.removeContentSourceVisits(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.removeContentSourceVisits(id)).rejects.toThrow(NotFoundException)
     })
   })
 })

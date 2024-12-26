@@ -21,7 +21,7 @@ export function useAdmin() {
       email,
       password,
     })
-    if (error: any) {
+    if (error) {
       throw createError({
         statusCode: 401,
         message: error.message,
@@ -42,7 +42,7 @@ export function useAdmin() {
       const { data, error } = await client.storage
         .from('profile-public')
         .upload(`${userId}/avatar/${file.name}`, file)
-      if (error: any) {
+      if (error) {
         throw createError(
           `Error uploading profile picture for user with ID ${userId}: ${error.message}`,
         )

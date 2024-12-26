@@ -10,6 +10,10 @@ dotenv.config({
 
 // Configuration schema
 const configSchema = z.object({
+  supabase: z.object({
+    url: z.string(),
+    serviceKey: z.string(),
+  }),
   environment: z.enum(['development', 'staging', 'production']).default('development'),
   app: z.object({
     name: z.string().default('cron-jobs'),
@@ -45,6 +49,10 @@ export type ApplicationConfig = z.infer<typeof configSchema>
 function loadConfig(): ApplicationConfig {
   const config = {
     environment: process.env.NODE_ENV,
+    supabase: {
+      url: process.env.SUPABASE_URL,
+      serviceKey: process.env.SUPABASE_SERVICE_KEY,
+    },
     app: {
       name: process.env.APP_NAME,
       port: parseInt(process.env.APP_PORT || '3000', 10),

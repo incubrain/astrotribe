@@ -53,7 +53,6 @@ export class SchedulerService {
   }
 
   async scheduleJob(config: JobConfig) {
-    
     try {
       const cronSchedule = this.getScheduleCron(config)
 

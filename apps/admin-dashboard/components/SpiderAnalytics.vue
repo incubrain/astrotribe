@@ -35,7 +35,7 @@ const commonChartOptions = {
     legend: {
       labels: {
         font: {
-          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
         },
       },
     },
@@ -48,7 +48,7 @@ const urlDepthChartOptions = {
     x: {
       ticks: {
         font: {
-          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
         },
       },
     },
@@ -56,7 +56,7 @@ const urlDepthChartOptions = {
       beginAtZero: true,
       ticks: {
         font: {
-          family: '\'Helvetica Neue\', \'Helvetica\', \'Arial\', sans-serif',
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
         },
       },
     },
@@ -109,29 +109,29 @@ const protocolChartData = computed(() => ({
 const isSpiderActive = computed(() => !!news_links.value?.crawlDuration)
 
 const rawDataArray = computed(() =>
-  isSpiderActive.value ?
-    [
-      {
-        title: 'Spider Metrics',
-        data: {
-          crawlDuration: news_links.value.crawlDuration,
-          urlsPerSecond: news_links.value.urlsPerSecond,
-          responseTimeStats: news_links.value.responseTimeStats,
-          urlCounts: news_links.value.urlCounts,
-          depthStats: news_links.value.depthStats,
-          protocolDistribution: news_links.value.protocolDistribution,
+  isSpiderActive.value
+    ? [
+        {
+          title: 'Spider Metrics',
+          data: {
+            crawlDuration: news_links.value.crawlDuration,
+            urlsPerSecond: news_links.value.urlsPerSecond,
+            responseTimeStats: news_links.value.responseTimeStats,
+            urlCounts: news_links.value.urlCounts,
+            depthStats: news_links.value.depthStats,
+            protocolDistribution: news_links.value.protocolDistribution,
+          },
         },
-      },
-      {
-        title: 'URL Depth Data',
-        data: urlDepthChartData.value,
-      },
-      {
-        title: 'Protocol Distribution Data',
-        data: protocolChartData.value,
-      },
-    ] :
-    [],
+        {
+          title: 'URL Depth Data',
+          data: urlDepthChartData.value,
+        },
+        {
+          title: 'Protocol Distribution Data',
+          data: protocolChartData.value,
+        },
+      ]
+    : [],
 )
 </script>
 

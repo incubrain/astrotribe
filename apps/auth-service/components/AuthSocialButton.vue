@@ -20,7 +20,10 @@ const socialLogin = () => {
 </script>
 
 <template>
-  <PrimeButton :disabled="props.disabled" @click="socialLogin">
+  <PrimeButton
+    :disabled="props.disabled"
+    @click="socialLogin"
+  >
     <span>
       <Icon
         class="flex items-center justify-center"

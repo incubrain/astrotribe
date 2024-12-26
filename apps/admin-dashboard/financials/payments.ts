@@ -107,9 +107,9 @@ interface PaymentCostsInput {
   gst: number
   additionalFees:
     | {
-      registration: number
-      autoDebit: number
-    }
+        registration: number
+        autoDebit: number
+      }
     | { conversionFee: number }
 }
 
@@ -226,9 +226,9 @@ export function handleSubscriptions({
   isInternational,
   frequency,
 }: HandleSubscriptionParams): ProviderChunk {
-  const paymentDistribution = isInternational ?
-    paymentMethodDistribution.international :
-    paymentMethodDistribution.domestic
+  const paymentDistribution = isInternational
+    ? paymentMethodDistribution.international
+    : paymentMethodDistribution.domestic
 
   const proDistribution = distributeCustomers(numCustomers.pro, paymentDistribution)
   const expertDistribution = distributeCustomers(numCustomers.expert, paymentDistribution)

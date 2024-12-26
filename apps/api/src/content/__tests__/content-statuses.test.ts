@@ -5,14 +5,10 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { faker } from '@faker-js/faker'
 import type { Prisma } from '@prisma/client'
 import { content_status } from '@prisma/client'
-import {
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { NotFoundException, InternalServerErrorException } from '@nestjs/common'
 import { ContentStatusesService } from '../services/content-statuses.service'
 import { ContentStatusController } from '../controllers/content-statuses.controller'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -24,9 +20,7 @@ import {
 
 const createSampleContentStatus = (): Prisma.content_statusesCreateInput => ({
   contents: { connect: { id: faker.string.uuid() } },
-  content_status: faker.helpers.arrayElement([
-    ...Object.values(content_status),
-  ]),
+  content_status: faker.helpers.arrayElement([...Object.values(content_status)]),
   created_at: faker.date.recent(),
   notes: faker.lorem.sentence(),
 })
@@ -67,10 +61,7 @@ describe('ContentStatusController', () => {
 
   describe('findAllContentStatuses', () => {
     it('should return paginated content statuses', async () => {
-      const contentStatuses = [
-        createSampleContentStatus(),
-        createSampleContentStatus(),
-      ]
+      const contentStatuses = [createSampleContentStatus(), createSampleContentStatus()]
       const query = { page: 1, limit: 10 }
 
       mockPrismaModel.findMany.mockResolvedValue(contentStatuses)
@@ -84,9 +75,9 @@ describe('ContentStatusController', () => {
     it('should handle errors', async () => {
       mockPrismaModel.findMany.mockRejectedValue(new Error('Database error'))
 
-      await expect(
-        controller.findAllContentStatuses({ page: 1, limit: 10 }),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.findAllContentStatuses({ page: 1, limit: 10 })).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -106,9 +97,7 @@ describe('ContentStatusController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.findOneContentStatuses(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.findOneContentStatuses(id)).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -128,9 +117,9 @@ describe('ContentStatusController', () => {
       const createData = createSampleContentStatus()
       mockPrismaModel.create.mockRejectedValue(new Error('Creation failed'))
 
-      await expect(
-        controller.createContentStatuses(createData),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.createContentStatuses(createData)).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -152,9 +141,9 @@ describe('ContentStatusController', () => {
       const updateData = createSampleContentStatus()
       mockPrismaModel.update.mockRejectedValue(new Error('Update failed'))
 
-      await expect(
-        controller.updateContentStatuses(id, updateData),
-      ).rejects.toThrow(InternalServerErrorException)
+      await expect(controller.updateContentStatuses(id, updateData)).rejects.toThrow(
+        InternalServerErrorException,
+      )
     })
   })
 
@@ -175,9 +164,7 @@ describe('ContentStatusController', () => {
       const id = faker.string.uuid()
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
-      await expect(controller.removeContentStatuses(id)).rejects.toThrow(
-        NotFoundException,
-      )
+      await expect(controller.removeContentStatuses(id)).rejects.toThrow(NotFoundException)
     })
   })
 })

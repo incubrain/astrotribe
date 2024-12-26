@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await client.rpc('get_active_ads')
 
-  if (error: any) {
+  if (error) {
     throw createError({
       statusCode: 500,
       message: 'Error fetching active ads',

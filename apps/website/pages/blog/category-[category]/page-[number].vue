@@ -45,7 +45,7 @@ const { data: pageData, error } = await useAsyncData(
   { server: false, immediate: true },
 )
 
-if (error: any) {
+if (error) {
   console.error('Error fetching articles:', error)
 }
 

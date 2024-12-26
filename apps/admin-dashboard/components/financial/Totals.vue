@@ -68,7 +68,7 @@ const charts = computed(() => {
       id: 1,
       title: 'Revenue Growth Over Time',
       subtitle:
-        'Shows the increase in revenue, highlighting the business\'s financial health and growth potential.',
+        "Shows the increase in revenue, highlighting the business's financial health and growth potential.",
       type: 'bar',
       data: {
         labels: months.value,

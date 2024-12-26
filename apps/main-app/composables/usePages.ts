@@ -181,7 +181,7 @@ export default function usePages() {
         .select('id, name')
         .eq('user_id', profile.id)
         .then(({ data, error }) => {
-          if (error: any) {
+          if (error) {
             toast.error({
               summary: 'Failed to get custom feeds',
               message: 'Could not get custom feeds',
