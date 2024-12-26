@@ -137,14 +137,12 @@ export class JobVersionService {
       await this.prisma.job_configs.update({
         where: { name: jobName },
         data: {
-          version: config.version,
           priority: config.priority,
-          batch_size: config.batchSize,
-          process_size: config.processSize,
-          timeout: config.timeout,
+          metadata: config.metadata,
           retry_limit: config.retryLimit,
           schedule: config.schedule,
-          circuit_breaker: config.circuitBreaker,
+          circuit_breaker_threshold: config.circuitBreaker?.failureThreshold,
+          circuit_breaker_timeout_ms: config.circuitBreaker?.resetTimeout,
           updated_at: new Date().toISOString(),
         },
       })
