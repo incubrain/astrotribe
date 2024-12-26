@@ -6,12 +6,7 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache python3 make g++ gcc
 
 # Copy key files first
-COPY package*.json ./
-COPY tsconfig.base.json ./
-COPY apps/api/tsconfig.json ./apps/api/
-COPY apps/api/nest-cli.json ./apps/api/
-COPY apps/api/prisma ./prisma/
-COPY scripts ./scripts/
+COPY . .
 
 # Disable Nx Daemon, Nx Cloud, and Caching
 ENV NX_DAEMON=false
