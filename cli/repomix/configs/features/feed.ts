@@ -27,9 +27,18 @@ const NEWSFEED_PATTERNS = [
   'supabase/migrations/**/*news*.sql',
   'supabase/migrations/**/*feed*.sql',
   'supabase/migrations/**/*content*.sql',
+
+  // News services and utilities
+  '**news**',
+  '**feed**',
+  '**content**',
+
+  '**/news/**',
+  '**/feed/**',
+  '**/content/**',
 ]
 
-export const newsfeedConfig = new FeatureConfigBuilder()
+export const contentFeedConfig = new FeatureConfigBuilder()
   .setId('newsfeed')
   .setName('News Feed')
   .description('News feed management and content delivery system')

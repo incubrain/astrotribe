@@ -68,18 +68,16 @@ export class FeatureConfigBuilder {
     return this
   }
 
-  withCommonConfigs(...configs: ConfigKey[]) {
-    console.log('Before merging, include:', this.config.include)
-    this.config.include = this.combinePatterns(this.config.include || [], configs, 'include')
-    console.log('After merging, include:', this.config.include)
+  withCommonConfigs(configKeys: ConfigKey[]) {
+    console.log('Configs received:', configKeys)
 
-    console.log('Before merging, customPatterns:', this.config.ignore.customPatterns)
+    this.config.include = this.combinePatterns(this.config.include || [], configKeys, 'include')
+
     this.config.ignore.customPatterns = this.combinePatterns(
       this.config.ignore.customPatterns || [],
-      configs,
+      configKeys,
       'ignore',
     )
-    console.log('After merging, customPatterns:', this.config.ignore.customPatterns)
 
     return this
   }
@@ -89,8 +87,11 @@ export class FeatureConfigBuilder {
     return this
   }
 
-  private getConfigValues(configs: ConfigKey[], property: ConfigProperty): string[] {
-    return configs.flatMap((key) => {
+  private getConfigValues(
+    configKeys: Array<keyof typeof COMMON_CONFIGS>,
+    property: ConfigProperty,
+  ): string[] {
+    return configKeys.flatMap((key) => {
       const configValue = COMMON_CONFIGS[key][property]
       if (
         property === 'ignore' &&
@@ -113,7 +114,7 @@ export class FeatureConfigBuilder {
     return Array.from(uniquePatterns)
   }
 
-  relatedTo(...features: string[]) {
+  relatedTo(features: string[]) {
     this.config.relatedFeatures = features
     return this
   }

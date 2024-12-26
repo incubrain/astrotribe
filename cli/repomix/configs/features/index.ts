@@ -2,6 +2,7 @@
 import type { FeatureConfig } from '../../types'
 import { authConfig } from './auth'
 import { bookmarksConfig } from './bookmarks'
+import { contentFeedConfig } from './feed'
 
 if (!authConfig || !bookmarksConfig) {
   throw new Error('Feature configs not properly initialized')
@@ -10,6 +11,7 @@ if (!authConfig || !bookmarksConfig) {
 export const FEATURE_CONFIGS: Record<string, FeatureConfig> = {
   bookmarks: bookmarksConfig,
   auth: authConfig,
+  feed: contentFeedConfig,
 } as const
 
 if (process.env.DEBUG === 'true') {

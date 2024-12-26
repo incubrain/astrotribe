@@ -33,7 +33,7 @@
     "clean:nuxi": "scripts/nuxi-cleanup.sh",
     "staging": "railway link -p d2993a83-20e2-4658-b045-8202866cd11f",
     "ai:docs": "./scripts/docs-manager.sh",
-    "ai:package": "bash scripts/package-repo.sh",
+    "ai:package": "npx tsx cli/index.ts",
     "ai:scan": "./scripts/scan-projects.sh",
     "test": "nx run-many --target=test --all",
     "test:watch": "nx run-many --target=test:watch --all",
