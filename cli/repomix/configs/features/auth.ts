@@ -9,9 +9,9 @@ export const authConfig = new FeatureConfigBuilder()
   .setName('Authentication')
   .description('Authentication and authorization features')
   .patterns(AUTH_PATTERNS)
-  .withCommonConfigs('api', 'types', 'stateManagement', 'nuxtApp')
+  .withCommonConfigs(['api', 'types', 'stateManagement', 'nuxtApp'])
   .ignore(['**/auth.test.*', '**/auth.spec.*', '**/auth.stories.*'])
-  .relatedTo('permissions', 'user-management')
+  .relatedTo(['permissions'])
   .setOutput({
     directory: FEATURE_SETTINGS.output.directory,
     filename: 'auth',

@@ -72,28 +72,129 @@ export const BASE_CONFIG = {
   },
 }
 
-export const COMMON_CONFIGS: Record<string, CommonConfig> = {
-  nuxtApp: {
-    description: 'Nuxt application configuration files',
-    include: ['nuxt.config.ts', 'app.config.ts', 'tailwind.config.ts'],
+type CommonConfigKey =
+  | 'base'
+  | 'auth'
+  | 'bookmarks'
+  | 'content'
+  | 'users'
+  | 'monitoring'
+  | 'feeds'
+  | 'advertising'
+  | 'jobs'
+  | 'social'
+  | 'payments'
+  | 'search'
+
+export const COMMON_CONFIGS: Record<CommonConfigKey, CommonConfig> = {
+  // Base infrastructure
+  base: {
+    description: 'Core infrastructure, utilities and shared code',
+    include: [
+      'libs/**/*',
+      'layers/base/**/*',
+      'layers/crud/**/*',
+      '**/utils/**',
+      '**/helpers/**',
+      '**/core/**',
+    ],
   },
-  stateManagement: {
-    description: 'State management related files',
-    include: ['apps/**/stores/**', 'apps/**/state/**'],
+
+  // Authentication & Authorization
+  auth: {
+    description: 'Authentication and authorization related code',
+    include: [
+      '**/auth/**',
+      '**/auth.*',
+      '**/login.*',
+      '**/register.*',
+      '**/permission*',
+      '**/role*',
+      '**/security*',
+      '**/middleware/auth*',
+    ],
   },
-  api: {
-    description: 'API endpoints and route handlers',
-    include: ['apps/**/server/api/**', 'apps/**/server/routes/**'],
+
+  // Bookmarks
+  bookmarks: {
+    description: 'Bookmark management functionality',
+    include: [
+      '**/bookmark*/**',
+      '**/folder*/**',
+      '**/components/**/bookmark*',
+      '**/composables/**/bookmark*',
+    ],
   },
-  types: {
-    description: 'TypeScript type definitions',
-    include: ['apps/**/types/**', 'libs/**/types/**'],
-    ignore: {
-      customPatterns: ['**/*.test.*', '**/*.spec.*'],
-    },
+
+  // Content Management
+  content: {
+    description: 'Content management and CMS functionality',
+    include: [
+      '**/cms/**',
+      '**/content*/**',
+      '**/article*/**',
+      '**/news*/**',
+      '**/blog*/**',
+      '**/research*/**',
+    ],
   },
-  composables: {
-    description: 'Vue composables and hooks',
-    include: ['apps/**/composables/**', 'libs/**/composables/**'],
+
+  // User Management
+  users: {
+    description: 'User management and profiles',
+    include: ['**/user*/**', '**/profile*/**', '**/settings/**', '**/account*/**'],
+  },
+
+  // Analytics & Monitoring
+  monitoring: {
+    description: 'Analytics, monitoring, and metrics',
+    include: [
+      '**/monitoring*/**',
+      '**/analytics*/**',
+      '**/metrics*/**',
+      '**/tracking*/**',
+      '**/logger*/**',
+    ],
+  },
+
+  // Feed Management
+  feeds: {
+    description: 'Feed and content stream functionality',
+    include: ['**/feed*/**', '**/stream*/**', '**/components/**/feed*', '**/composables/**/feed*'],
+  },
+
+  // Advertising
+  advertising: {
+    description: 'Advertising and promotion features',
+    include: ['**/advert*/**', '**/promotion*/**', '**/sponsor*/**', 'layers/advert/**'],
+  },
+
+  // Jobs & Tasks
+  jobs: {
+    description: 'Background jobs and task management',
+    include: ['**/cron-jobs/**', '**/jobs/**', '**/tasks/**', '**/worker*/**', '**/queue*/**'],
+  },
+
+  // Social Features
+  social: {
+    description: 'Social interactions and networking features',
+    include: ['**/social*/**', '**/comment*/**', '**/follow*/**', '**/share*/**', '**/vote*/**'],
+  },
+
+  // Payments & Subscriptions
+  payments: {
+    description: 'Payment processing and subscription management',
+    include: ['**/payment*/**', '**/subscription*/**', '**/billing*/**', '**/plan*/**'],
+  },
+
+  // Search
+  search: {
+    description: 'Search functionality',
+    include: [
+      '**/search/**',
+      '**/filter*/**',
+      '**/components/**/search*',
+      '**/composables/**/search*',
+    ],
   },
 } as const
