@@ -8,8 +8,7 @@ import { PrismaService } from '../../core/services/prisma.service'
 import { PaginationService } from '../../core/services/pagination.service'
 import { CustomLogger } from '../../core/logger/custom.logger'
 import { PermissionGuard } from '../../core/guards/permission.guard'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -93,7 +92,7 @@ describe('ContentController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllContents({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -115,7 +114,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaModel.findUnique.mockRejectedValue(error: any)
+      mockPrismaModel.findUnique.mockRejectedValue(error)
 
       const result = await controller.findOneContents(id)
       expect(result).toEqual(createErrorResponse('Not found'))
@@ -146,7 +145,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const createData = createSampleContent()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createContents(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -188,7 +187,7 @@ describe('ContentController', () => {
         content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateContents(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -210,7 +209,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaModel.delete.mockRejectedValue(error: any)
+      mockPrismaModel.delete.mockRejectedValue(error)
 
       const result = await controller.removeContents(id)
       expect(result).toEqual(createErrorResponse('Delete failed'))

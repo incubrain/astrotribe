@@ -75,7 +75,7 @@ describe('NewsTag Module', () => {
 
     it('should handle errors when fetching news tags', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllNewsTags({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -149,7 +149,7 @@ describe('NewsTag Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleNewsTag()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createNewsTags(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -187,7 +187,7 @@ describe('NewsTag Module', () => {
         tags: { connect: { id: faker.number.int() } },
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateNewsTags(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

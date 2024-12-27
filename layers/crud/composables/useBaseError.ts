@@ -43,7 +43,7 @@ export function useBaseError() {
   // }
 
   function formatErrorMessage({ userMessage, devMessage, error }: ErrorMessage) {
-    const devError = `${devMessage}: ${JSON.stringify(error: any)}`
+    const devError = `${devMessage}: ${JSON.stringify(error)}`
     logger.error(devError)
     const userError = userMessage || 'An unexpected error occurred. Please try again later.'
     return isAdmin ? devError : userError

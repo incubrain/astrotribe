@@ -7,8 +7,7 @@ import { ContentSourcesService } from '../services/content-sources.service'
 import { PrismaService } from '../../core/services/prisma.service'
 import { PaginationService } from '../../core/services/pagination.service'
 import { CustomLogger } from '../../core/logger/custom.logger'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -55,10 +54,7 @@ describe('ContentSourceController', () => {
 
   describe('findAllContentSources', () => {
     it('should return paginated content sources', async () => {
-      const contentSources = [
-        createSampleContentSource(),
-        createSampleContentSource(),
-      ]
+      const contentSources = [createSampleContentSource(), createSampleContentSource()]
       const query = { page: 1, limit: 10 }
 
       mockPrismaModel.findMany.mockResolvedValue(contentSources)
@@ -71,7 +67,7 @@ describe('ContentSourceController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllContentSources({
         page: 1,
@@ -96,7 +92,7 @@ describe('ContentSourceController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaModel.findUnique.mockRejectedValue(error: any)
+      mockPrismaModel.findUnique.mockRejectedValue(error)
 
       const result = await controller.findOneContentSources(id)
       expect(result).toEqual(createErrorResponse('Not found'))
@@ -118,7 +114,7 @@ describe('ContentSourceController', () => {
     it('should handle errors', async () => {
       const createData = createSampleContentSource()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createContentSources(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -130,9 +126,7 @@ describe('ContentSourceController', () => {
       const id = faker.string.uuid()
       const updateData: Prisma.content_sourcesUpdateInput = {
         url: faker.internet.url(),
-        content_type: faker.helpers.arrayElement([
-          ...Object.values(content_type),
-        ]),
+        content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
         updated_at: new Date(),
         companies: { connect: { id: faker.string.uuid() } },
       }
@@ -157,7 +151,7 @@ describe('ContentSourceController', () => {
         companies: { connect: { id: faker.string.uuid() } },
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateContentSources(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -179,7 +173,7 @@ describe('ContentSourceController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaModel.delete.mockRejectedValue(error: any)
+      mockPrismaModel.delete.mockRejectedValue(error)
 
       const result = await controller.removeContentSources(id)
       expect(result).toEqual(createErrorResponse('Delete failed'))

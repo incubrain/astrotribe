@@ -185,7 +185,7 @@ module.exports = {
               resolve(stream)
             })
             .catch((error: any) => {
-              reject(error: any)
+              reject(error)
             })
         })
       },

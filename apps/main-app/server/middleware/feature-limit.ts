@@ -46,6 +46,6 @@ export default defineEventHandler(async (event) => {
 
     await validateFeatureLimit(event, feature, count ?? 0)
   } catch (error: any) {
-    handleFeatureLimitError(error: any)
+    handleFeatureLimitError(error)
   }
 })

@@ -15,18 +15,17 @@ import {
   mockControllerProperties,
 } from './utils/test.utils'
 
-const createSampleResearchEmbedding =
-  (): Prisma.research_embeddingsCreateInput => ({
-    research: { connect: { id: faker.string.uuid() } },
-    chunk: faker.lorem.words(3),
-    url: faker.helpers.arrayElement([faker.internet.url(), null]),
-    // embedding: faker.helpers.arrayElement([faker.lorem.words(10).split(' '), null]),
-    is_flagged: faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    // embedding_reviews: faker.helpers.arrayElement([
-    //   { connect: { id: faker.string.uuid() } },
-    //   undefined
-    // ])
-  })
+const createSampleResearchEmbedding = (): Prisma.research_embeddingsCreateInput => ({
+  research: { connect: { id: faker.string.uuid() } },
+  chunk: faker.lorem.words(3),
+  url: faker.helpers.arrayElement([faker.internet.url(), null]),
+  // embedding: faker.helpers.arrayElement([faker.lorem.words(10).split(' '), null]),
+  is_flagged: faker.helpers.arrayElement([faker.datatype.boolean(), null]),
+  // embedding_reviews: faker.helpers.arrayElement([
+  //   { connect: { id: faker.string.uuid() } },
+  //   undefined
+  // ])
+})
 
 describe('ResearchEmbedding Module', () => {
   let controller: ResearchEmbeddingController
@@ -45,9 +44,7 @@ describe('ResearchEmbedding Module', () => {
       prismaModelName: 'research_embeddings',
     })
 
-    controller = module.get<ResearchEmbeddingController>(
-      ResearchEmbeddingController,
-    )
+    controller = module.get<ResearchEmbeddingController>(ResearchEmbeddingController)
     researchEmbeddingsService = module.get(ResearchEmbeddingsService)
     prismaService = module.get<PrismaService>(PrismaService)
     logger = module.get<CustomLogger>(CustomLogger)
@@ -84,7 +81,7 @@ describe('ResearchEmbedding Module', () => {
 
     it('should handle errors when fetching research embeddings', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllResearchEmbeddings({
         page: 1,
@@ -134,9 +131,7 @@ describe('ResearchEmbedding Module', () => {
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
       const result = await controller.findOneResearchEmbeddings('1')
-      expect(result).toEqual(
-        createErrorResponse('research_embeddings not found'),
-      )
+      expect(result).toEqual(createErrorResponse('research_embeddings not found'))
     })
   })
 
@@ -165,7 +160,7 @@ describe('ResearchEmbedding Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleResearchEmbedding()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createResearchEmbeddings(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -206,7 +201,7 @@ describe('ResearchEmbedding Module', () => {
         chunk: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateResearchEmbeddings(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -240,9 +235,7 @@ describe('ResearchEmbedding Module', () => {
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
       const result = await controller.removeResearchEmbeddings(id)
-      expect(result).toEqual(
-        createErrorResponse('research_embeddings not found'),
-      )
+      expect(result).toEqual(createErrorResponse('research_embeddings not found'))
     })
   })
 })

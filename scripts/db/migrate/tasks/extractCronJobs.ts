@@ -96,7 +96,7 @@ ${cronJobs}`
     }
   } catch (error: any) {
     console.error(chalk.yellow('⚠ Warning: Failed to extract cron jobs'))
-    console.error(chalk.gray(error: any))
+    console.error(chalk.gray(error))
   }
 }
 

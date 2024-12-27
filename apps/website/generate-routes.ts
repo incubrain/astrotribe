@@ -41,6 +41,6 @@ async function generateRoutes() {
 }
 
 generateRoutes().catch((error: any) => {
-  console.error(error: any)
+  console.error(error)
   process.exit(1)
 })
