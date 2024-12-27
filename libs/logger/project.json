@@ -21,7 +21,8 @@
         "outputPath": "libs/logger/dist/cjs",
         "main": "libs/logger/index.ts",
         "tsConfig": "libs/logger/tsconfig.cjs.json",
-        "assets": ["libs/logger/*.md"]
+        "assets": ["libs/logger/*.md"],
+        "rootDir": "libs/logger/src"
       }
     },
     "build:esm": {
@@ -31,7 +32,8 @@
         "outputPath": "libs/logger/dist/esm",
         "main": "libs/logger/index.ts",
         "tsConfig": "libs/logger/tsconfig.esm.json",
-        "assets": ["libs/logger/*.md"]
+        "assets": ["libs/logger/*.md"],
+        "rootDir": "libs/logger/src"
       }
     },
     "build": {

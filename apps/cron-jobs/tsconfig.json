@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "types": ["node"],
     "paths": {
-      "@ib/logger": ["../../libs/logger/index.ts"],
+      "@ib/logger": ["../../libs/logger"],
       "@/*": ["./src/*"],
       "@types": ["./src/types/index.ts"],
       "@helpers": ["./src/helpers/index.ts"],

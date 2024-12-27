@@ -3,11 +3,10 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ES2022",
-    "outDir": "dist/esm",
-    "baseUrl": ".",
-    "rootDir": ".",
+    "outDir": "./dist/esm",
+    "rootDir": "./src",
     "declaration": true,
-    "declarationMap": false,
+    "declarationMap": false
   },
-  "exclude": ["node_modules", "dist", "package.json", "project.json"]
+  "include": ["./src/**/*"]
 }
