@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ib/logger": "^0.0.3",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/supabase": "^1.4.0",
     "@sentry/vue": "^8.31.0",
     "posthog-js": "^1.164.3",

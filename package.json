@@ -1,5 +1,5 @@
 {
-  "name": "@astronera/monorepo",
+  "name": "ae-mono",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -28,8 +28,8 @@
     "build:layers": "scripts/build-layers.sh",
     "build:auth": "nx build @astroneraauth",
     "build:admin": "nx build @astronera/admin",
-    "build:all": "scripts/build-all.sh",
-    "build:debug": "npx tsx scripts/build-with-logs.ts -- --project",
+    "build:all": "npx tsx ./ci/1.build-with-logs.ts",
+    "build:debug": "npx tsx scripts/build-with-logs.ts",
     "db:migrate": "npx tsx scripts/db/migrate/1.perform-migration.ts",
     "db:setup": "npx tsx scripts/db/init/2.main.ts",
     "db:clean": "npx tsx ./scripts/db/db-cleanup.ts",
