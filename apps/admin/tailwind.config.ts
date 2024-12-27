@@ -5,7 +5,7 @@ import baseConfig from '../../tailwind.config.base'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-const config: Partial<Config> = {
+export default {
   presets: [baseConfig],
   content: [
     resolve(currentDir, 'pages/**/*.{js,vue,ts}'),
@@ -15,6 +15,4 @@ const config: Partial<Config> = {
     '../../theme/**/*.{js,css,ts}',
   ],
   exclude: ['server/**/*'],
-}
-
-export default config
+} satisfies Config

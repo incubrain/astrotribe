@@ -2,7 +2,6 @@
   "name": "@astronera/supabase",
   "version": "0.0.3",
   "private": true,
-  "type": "module",
   "scripts": {
     "lint": "nx lint @astronera/supabase",
     "test": "nx test @astronera/supabase",
