@@ -1,5 +1,5 @@
 // src/jobs/job.events.ts
-import { CustomLogger, EventService } from '@/core'
+import { CustomLogger, EventService } from '@core'
 
 export class JobEvents {
   constructor(

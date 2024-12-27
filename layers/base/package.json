@@ -3,8 +3,8 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "lint": "nx lint base",
-    "test": "nx test base",
+    "lint": "nx lint @astronera/base",
+    "test": "nx test @astronera/base",
     "dev": "nuxi dev",
     "build": "nuxi build",
     "prepare": "nuxi prepare"

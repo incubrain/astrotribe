@@ -4,6 +4,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@ib/logger": ["../../libs/logger"],
       "#layers/*": ["../../layers/*"],
       "@types/*": ["./types/*"],
       "#imports": ["./.nuxt/imports.d.ts"],

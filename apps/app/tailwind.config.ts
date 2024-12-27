@@ -8,9 +8,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default {
   presets: [baseConfig],
   theme: {
-    extend: {
-      // Add app-specific extensions here
-    },
+    extend: {},
   },
   content: [
     resolve(currentDir, './components/**/*.{vue,ts}'),
@@ -19,5 +17,4 @@ export default {
     resolve(currentDir, './composables/**/*.{vue,ts}'),
     '../../theme/**/*.{js,css,ts}',
   ],
-  exclude,
 } satisfies Config
