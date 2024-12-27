@@ -25,9 +25,16 @@ async function generateRoutes() {
     if (category !== 'all') {
       countQuery += `&filters[category][slug][$eq]=${category}`
     }
+
     const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
       headers: { 'Content-Type': 'application/json' },
     })
+
+    if (!response.ok) {
+      console.warn('Strapi server not available, skipping route generation')
+      return []
+    }
+
     const countData = await countRes.json()
     const totalCount = countData.meta.pagination.total
     const totalPages = Math.ceil(totalCount / pageSize)

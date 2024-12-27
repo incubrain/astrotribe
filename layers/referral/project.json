@@ -1,5 +1,5 @@
 {
-  "name": "referral",
+  "name": "@astronera/referral",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "layers/referral",

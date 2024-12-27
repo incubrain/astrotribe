@@ -53,9 +53,15 @@ async function runBuildWithLogs(projectPath: string): Promise<void> {
   fs.writeFileSync(errorLogFile, '')
   fs.writeFileSync(fullLogFile, '')
 
-  // Example Nx build: "nx build @astronera/admin"
-  // Adjust to your actual Nx naming: "@astronera/<folderName>"
-  const nxProjectName = `@astronera/${projectName}`
+  const libNames = ['db-testing', 'logger']
+
+  let projectPrefix = '@astronera'
+
+  if (libNames.includes(projectName)) {
+    projectPrefix = '@ib'
+  }
+
+  const nxProjectName = `${projectPrefix}/${projectName}`
 
   console.log(`Running build for ${nxProjectName}...`)
   const buildProcess = spawn('nx', ['build', nxProjectName], {
