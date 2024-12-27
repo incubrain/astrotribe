@@ -3,15 +3,14 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "baseUrl": ".",
-    "rootDir": ".",
     "types": ["node"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "index.d.ts", "index.ts", "types"],
-  "exclude": ["dist/**/*"],
-  "references": [{ "path": "./tsconfig.esm.json" }, { "path": "./tsconfig.cjs.json" }]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "package.json", "project.json"]
 }

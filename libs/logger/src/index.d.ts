@@ -1,14 +1,14 @@
 // First in the types file (index.d.ts)
 import type { Consola } from 'consola'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { LogMetadata } from './src/error-interface'
-import type { Service, ServiceToDomain } from './src/enums-domains'
+import type { LogMetadata } from './error-interface'
+import type { Service, ServiceToDomain } from './enums-domains'
 
-export * from './src/environment.d'
-export * from './src/error-interface'
-export * from './src/config'
-export * from './src/enums-domains'
-export * from './types/nuxt.d'
+export * from './environment'
+export * from './error-interface'
+export * from './config'
+export * from './enums-domains'
+export * from './types/nuxt'
 
 // Generic interface for the logger
 export class CentralizedLogger<S extends Service = Service> {
