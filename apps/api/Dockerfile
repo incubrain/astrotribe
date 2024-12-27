@@ -16,11 +16,12 @@ ENV NX_CACHE_SKIP=true
 # Install dependencies
 RUN npm ci
 
-# Generate Prisma client
-RUN npx prisma generate
+# Copy prisma from to the container
+COPY ./apps/api/prisma ./prisma
 
-# Make scripts executable (if they exist)
-RUN if [ -d "scripts" ]; then chmod +x scripts/*.sh; fi
+# Generate Prisma client
+RUN apt-get update && apt-get install -y openssl
+RUN npx prisma generate
 
 # Build the application using SWC
 RUN npx nx build api --verbose --skip-nx-cache

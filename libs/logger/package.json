@@ -1,24 +1,21 @@
 {
   "name": "@ib/logger",
   "version": "0.0.3",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
+  "private": true,
+  "type": "module",
   "scripts": {
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build": "npm run build:cjs && npm run build:esm"
+    "lint": "nx lint logger",
+    "test": "nx test logger",
+    "build": "nx build logger",
+    "dev": "nx build logger --watch"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "@supabase/supabase-js": "^2.47.8",
+    "npm": "^10.9.2",
+    "winston": "^3.14.2"
   },
   "devDependencies": {
-    "typescript": "^5.2.0"
+    "h3": "^1.8.2"
   }
 }

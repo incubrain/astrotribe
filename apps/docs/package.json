@@ -1,17 +1,16 @@
 {
-  "name": "@astronera/cms",
+  "name": "@astronera/docs",
   "version": "0.0.3",
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "nx lint cms",
-    "test": "nx test cms",
-    "dev": "nx serve cms",
-    "build": "nx build cms",
+    "lint": "nx lint docs",
+    "test": "nx test docs",
+    "dev": "nx serve docs",
+    "build": "nx build docs",
     "start": "node dist/main.js"
   },
   "dependencies": {
-    "axios": "^1.7.7",
     "npm": "^10.9.2"
   }
 }

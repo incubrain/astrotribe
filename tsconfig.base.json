@@ -5,7 +5,7 @@
     "paths": {
       "@ib/logger": ["libs/logger"],
       "@ib/logger/*": ["libs/logger/*"],
-      "@ib/db-testing": ["libs/db-testing/dist"],
+      "@ib/db-testing": ["libs/db-testing"],
       "@ib/db-testing/*": ["libs/db-testing/*"],
       "@website/*": ["apps/website/*"],
       "#layers/*": ["layers/*"],

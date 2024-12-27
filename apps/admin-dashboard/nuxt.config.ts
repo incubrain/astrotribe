@@ -24,7 +24,6 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/supabase',
     '@primevue/nuxt-module',
   ],
 
