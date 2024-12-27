@@ -30,7 +30,16 @@
         "command": "npx nuxi build",
         "cwd": "apps/auth-service"
       },
-      "dependsOn": ["build:base", "build:auth", "build:referral"]
+      "dependsOn": [
+        "build:base",
+        "build:auth",
+        "build:referral",
+        {
+          "target": "build",
+          "projects": "dependencies",
+          "params": "forward"
+        }
+      ]
     },
 
     "serve": {

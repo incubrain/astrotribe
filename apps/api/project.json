@@ -5,19 +5,19 @@
   "sourceRoot": "apps/api",
   "// targets": "to see all targets run: nx show project api --web",
   "targets": {
-    "build:libs": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npm run build:libs"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "NODE_ENV=production nest build",
         "cwd": "apps/api"
       },
-      "dependsOn": ["build:libs"]
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies",
+          "params": "forward"
+        }
+      ]
     },
 
     "serve": {

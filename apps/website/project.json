@@ -22,7 +22,15 @@
       "options": {
         "command": "cd apps/website && npx tsx generate-routes.ts && NODE_ENV=production npx nuxi build"
       },
-      "dependsOn": ["build:advert", "build:referral"]
+      "dependsOn": [
+        "build:advert",
+        "build:referral",
+        {
+          "target": "build",
+          "projects": "dependencies",
+          "params": "forward"
+        }
+      ]
     },
 
     "serve": {
