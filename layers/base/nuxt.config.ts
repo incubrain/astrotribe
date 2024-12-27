@@ -7,6 +7,8 @@ export default defineNuxtConfig({
   // remove after debuggin
   sourcemap: true,
 
+  modules: ['@nuxt/image'],
+
   components: [
     {
       path: './components',

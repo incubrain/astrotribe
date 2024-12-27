@@ -1,5 +1,3 @@
-import { useYoutubeChannel } from '#imports'
-
 const PREFIX = 'social/youtube/analytics'
 
 export default defineEventHandler(async (event) => {
