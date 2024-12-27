@@ -6,9 +6,12 @@
     "outDir": "dist",
     "baseUrl": ".",
     "rootDir": ".",
-    "types": ["node"]
+    "types": ["node"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*", "index.d.ts", "index.ts", "types"],
   "exclude": ["dist/**/*"],
-  "references": [{ "path": "./tsconfig.lib.json" }]
+  "references": [{ "path": "./tsconfig.esm.json" }, { "path": "./tsconfig.cjs.json" }]
 }

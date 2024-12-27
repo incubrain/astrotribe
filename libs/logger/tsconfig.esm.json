@@ -8,6 +8,6 @@
     "rootDir": ".",
     "declaration": true,
     "declarationMap": false,
-    "exclude": ["node_modules", "dist", "package.json", "project.json"]
-  }
+  },
+  "exclude": ["node_modules", "dist", "package.json", "project.json"]
 }

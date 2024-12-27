@@ -48,7 +48,7 @@ ENV NODE_ENV=production \
 WORKDIR /app/apps/cron-jobs
 RUN npx prisma generate
 RUN npm install -g typescript
-RUN tsc -p tsconfig.json
+RUN tsc -p tsconfig.json --outDir dist
 
 # Final stage
 FROM node:20.17.0-bookworm
@@ -88,8 +88,4 @@ ENV NODE_ENV=production \
 # Install tsx globally in the final stage
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 
-# list out the contents of the . folder
-RUN ls -la . && ls -la ./dist && ls -la ./dist/src
-
-# No need for tsx since we're running compiled JS
-CMD ["node", "./dist/src/index.js"]
+CMD ["node", "--experimental-specifier-resolution=node", "./dist/src/index.js"]
