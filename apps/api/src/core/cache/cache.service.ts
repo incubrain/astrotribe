@@ -9,7 +9,7 @@ export class CacheService {
     @Inject('REDIS_CACHE') private readonly cacheClient: Redis,
     private logger: CustomLogger,
   ) {
-    this.logger.setDomain('cache')
+    this.logger.setDomain('api')
   }
 
   async get<T>(key: string): Promise<T | null> {
@@ -45,7 +45,7 @@ export class CacheService {
 
     return keys.map((k, i) => ({
       key: k,
-      value: JSON.parse(results[i][1] || 'null'),
+      value: JSON.parse(String(results[i][1]) || 'null'),
     }))
   }
 }

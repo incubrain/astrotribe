@@ -14,7 +14,7 @@
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@ib/db-testing": "*",
-    "@ib/logger": "*",
+    "@ib/logger": "^0.0.3",
     "@influxdata/influxdb-client": "^1.35.0",
     "@jscpd/core": "^4.0.1",
     "@nestjs/axios": "^3.1.3",

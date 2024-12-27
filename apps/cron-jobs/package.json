@@ -12,7 +12,7 @@
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
   "dependencies": {
-    "@ib/logger": "*",
+    "@ib/logger": "^0.0.3",
     "@prisma/client": "^6.0.1",
     "@supabase/supabase-js": "^2.47.8",
     "@tensorflow/tfjs": "^4.22.0",
