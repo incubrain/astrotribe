@@ -1,24 +1,16 @@
 {
-  "name": "astronera-extension",
-  "version": "1.0.0",
-  "description": "Chrome extension to override new tab page",
+  "name": "@astronera/chrome-extension",
+  "version": "0.0.3",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "clean": "rimraf dist",
-    "copy-assets": "copyfiles -u 0 manifest.json newtab.html dist",
-    "build": "npm run clean && tsc && npm run copy-assets",
-    "build:store": "npm run build && cd dist && zip -r ../chrome-store.zip * && cd .. && node scripts/prepare-store-assets.js",
-    "dev": "npm run build -- --watch & chokidar \"*.html\" \"manifest.json\" -c \"npm run copy-assets\"",
-    "watch": "tsc --watch",
-    "zip": "npm run build && cd dist && zip -r ../extension.zip *",
-    "version:patch": "npm version patch && node updateManifest.js",
-    "version:minor": "npm version minor && node updateManifest.js",
-    "version:major": "npm version major && node updateManifest.js"
+    "lint": "nx lint chrome-extension",
+    "test": "nx test chrome-extension",
+    "dev": "nx serve chrome-extension",
+    "build": "nx build chrome-extension",
+    "start": "node dist/main.js"
   },
-  "devDependencies": {
-    "@types/chrome": "^0.0.254",
-    "copyfiles": "^2.4.1",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.0.0",
-    "chokidar-cli": "^3.0.0"
+  "dependencies": {
+    "npm": "^10.9.2"
   }
 }

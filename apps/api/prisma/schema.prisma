@@ -1,8 +1,9 @@
 generator client {
   provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
   previewFeatures = ["multiSchema"]
-  engineType      = "binary"
   mapperType      = "default"
+  engineType      = "binary"
 }
 
 datasource db {
@@ -411,16 +412,16 @@ model addresses {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model ads {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  company_id  String        @db.Uuid
-  package_id  String        @db.Uuid
+  company_id  String?       @db.Uuid
+  package_id  String?       @db.Uuid
   start_date  DateTime      @db.Timestamptz(6)
   end_date    DateTime      @db.Timestamptz(6)
   active      Boolean?      @default(true)
   created_at  DateTime?     @default(now()) @db.Timestamptz(6)
   updated_at  DateTime?     @default(now()) @db.Timestamptz(6)
   ad_variants ad_variants[]
-  companies   companies     @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ad_packages ad_packages   @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  companies   companies?    @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ad_packages ad_packages?  @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([start_date, end_date], map: "idx_ads_dates")
   @@schema("public")
@@ -972,6 +973,7 @@ model error_logs {
   github_repo    String?
   related_errors Json?
   frequency_data Json?
+  domain         String?        @db.VarChar
 
   @@index([created_at(sort: Desc)])
   @@index([error_type])
@@ -1126,7 +1128,6 @@ model news {
   scraped_at        DateTime?        @default(now()) @db.Timestamptz(6)
   content_status    content_status   @default(draft)
   keywords          Json?
-  score             Int?             @default(0)
   content_source_id BigInt?
   content_sources   content_sources? @relation(fields: [content_source_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   categories        categories?      @relation(fields: [category_id], references: [id], map: "public_news_category_id_fkey")
@@ -1135,7 +1136,6 @@ model news {
   news_summaries    news_summaries[]
 
   @@index([content_source_id], map: "idx_news_content_source_id")
-  @@index([score(sort: Desc)], map: "idx_news_score")
   @@schema("public")
 }
 
@@ -1146,14 +1146,13 @@ model news_summaries {
   news_id          String                 @db.Uuid
   summary          String?
   embedding        Unsupported("vector")?
-  complexity_level String?
   version          Int                    @default(1)
   is_current       Boolean?               @default(true)
   created_at       DateTime?              @default(now()) @db.Timestamptz(6)
   updated_at       DateTime?              @default(now()) @db.Timestamptz(6)
+  complexity_level complexity_level?      @default(undefined)
   news             news                   @relation(fields: [news_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "news_summaries_news_fk")
 
-  @@index([complexity_level])
   @@index([is_current])
   @@index([news_id])
   @@schema("public")
@@ -1235,7 +1234,7 @@ model research {
   summary             String?
   content_status      content_status       @default(draft)
   affiliations        Json?
-  contents            contents             @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "research_content_fk")
+  contents            contents             @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "research_content_fk")
   research_embeddings research_embeddings?
 
   @@schema("public")
@@ -1457,7 +1456,7 @@ model user_metrics {
   xp_to_next_level   Int?          @default(100)
   created_at         DateTime?     @default(now()) @db.Timestamptz(6)
   updated_at         DateTime?     @default(now()) @db.Timestamptz(6)
-  user_profiles      user_profiles @relation(fields: [user_id], references: [id])
+  user_profiles      user_profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([current_streak], map: "idx_user_metrics_current_streak")
   @@index([points], map: "idx_user_metrics_points")
@@ -1575,6 +1574,151 @@ model referrer_blocks {
   is_permanent  Boolean?  @default(true)
   created_at    DateTime? @default(now()) @db.Timestamptz(6)
   updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+model circuit_breaker_states {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_name      String    @unique
+  state         String    @default("closed")
+  failure_count Int?      @default(0)
+  last_failure  DateTime? @db.Timestamptz(6)
+  last_success  DateTime? @db.Timestamptz(6)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([job_name], map: "idx_circuit_breaker_job_name")
+  @@schema("public")
+}
+
+model job_configs {
+  id                         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                       String        @unique
+  schedule                   String?
+  priority                   job_priority? @default(normal)
+  timeout_ms                 Int?          @default(30000)
+  retry_limit                Int?          @default(3)
+  circuit_breaker_enabled    Boolean?      @default(true)
+  circuit_breaker_threshold  Int?          @default(5)
+  circuit_breaker_timeout_ms Int?          @default(300000)
+  enabled                    Boolean?      @default(true)
+  metadata                   Json?
+  created_at                 DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime?     @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+model job_locks {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_name    String
+  lock_key    String
+  lock_value  String
+  acquired_at DateTime  @default(now()) @db.Timestamptz(6)
+  expires_at  DateTime  @db.Timestamptz(6)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@unique([job_name, lock_key])
+  @@index([expires_at], map: "idx_job_locks_expires_at")
+  @@schema("public")
+}
+
+model job_metrics {
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_name        String
+  job_id          String     @db.Uuid
+  status          job_status
+  started_at      DateTime   @db.Timestamptz(6)
+  completed_at    DateTime?  @db.Timestamptz(6)
+  failed_at       DateTime?  @db.Timestamptz(6)
+  duration_ms     Int?
+  items_processed Int?
+  error_message   String?
+  error_stack     String?
+  metadata        Json?
+  created_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?  @default(now()) @db.Timestamptz(6)
+
+  @@index([created_at], map: "idx_job_metrics_created_at")
+  @@index([job_name], map: "idx_job_metrics_job_name")
+  @@index([status], map: "idx_job_metrics_status")
+  @@schema("public")
+}
+
+model job_queue_stats {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  queue_name      String    @unique
+  created_count   Int?      @default(0)
+  retry_count     Int?      @default(0)
+  active_count    Int?      @default(0)
+  completed_count Int?      @default(0)
+  cancelled_count Int?      @default(0)
+  failed_count    Int?      @default(0)
+  total_count     Int?      @default(0)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([queue_name], map: "idx_job_queue_stats_queue_name")
+  @@schema("public")
+}
+
+model job_versions {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_name   String
+  version    String
+  changes    String[]
+  config     Json
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([job_name, version])
+  @@index([created_at], map: "idx_job_versions_created_at")
+  @@index([job_name], map: "idx_job_versions_job_name")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model scoring_weights {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String    @unique
+  weight      Float
+  description String?
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+model workflow_jobs {
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflow_id     String     @db.Uuid
+  job_id          String     @db.Uuid
+  job_name        String
+  status          job_status @default(created)
+  sequence_number Int
+  depends_on      String[]   @default([]) @db.Uuid
+  started_at      DateTime?  @db.Timestamptz(6)
+  completed_at    DateTime?  @db.Timestamptz(6)
+  created_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  workflows       workflows  @relation(fields: [workflow_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([workflow_id, job_name])
+  @@index([status], map: "idx_workflow_jobs_status")
+  @@index([workflow_id], map: "idx_workflow_jobs_workflow_id")
+  @@schema("public")
+}
+
+model workflows {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  status        job_status      @default(created)
+  metadata      Json?
+  started_at    DateTime?       @db.Timestamptz(6)
+  completed_at  DateTime?       @db.Timestamptz(6)
+  created_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  workflow_jobs workflow_jobs[]
 
   @@schema("public")
 }
@@ -1735,6 +1879,11 @@ enum error_type {
   NETWORK_ERROR
   DATABASE_ERROR
   UNKNOWN_ERROR
+  SLOW_QUERY
+  ERROR_SPIKE
+  AUTH_ERROR
+  TABLE_ERROR
+  TABLE_OPERATION
 
   @@schema("public")
 }
@@ -1829,6 +1978,35 @@ enum referral_status {
   pending
   converted
   abandoned
+
+  @@schema("public")
+}
+
+enum complexity_level {
+  beginner
+  intermediate
+  expert
+  undefined
+
+  @@schema("public")
+}
+
+enum job_priority {
+  critical
+  high
+  normal
+  low
+
+  @@schema("public")
+}
+
+enum job_status {
+  created
+  active
+  completed
+  failed
+  cancelled
+  expired
 
   @@schema("public")
 }
