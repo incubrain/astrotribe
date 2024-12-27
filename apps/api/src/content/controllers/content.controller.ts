@@ -29,7 +29,6 @@ import type { PaginatedQuery, PaginatedResponse } from '@types'
 @UseGuards(PermissionGuard)
 @ApiTags('Contents')
 export class ContentController extends BaseController {
-  
   constructor(
     protected readonly contentService: ContentService,
     protected readonly prisma: PrismaService,
@@ -62,7 +61,7 @@ export class ContentController extends BaseController {
     try {
       return await super.findOne(id, include)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -72,7 +71,7 @@ export class ContentController extends BaseController {
     try {
       return await super.create(data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -85,7 +84,7 @@ export class ContentController extends BaseController {
     try {
       return await super.update(id, data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -95,7 +94,7 @@ export class ContentController extends BaseController {
     try {
       return await super.remove(id)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 }

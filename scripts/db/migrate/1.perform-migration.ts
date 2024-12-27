@@ -36,7 +36,7 @@ function runCommand(command: string): Promise<void> {
       if (error) {
         console.error(chalk.red('✖ Command failed:'))
         console.error(chalk.red(stderr))
-        reject(error: any)
+        reject(error)
       } else {
         if (stdout.trim()) {
           console.log(chalk.gray(stdout))
@@ -106,7 +106,7 @@ async function runMigration() {
     console.log(chalk.green(`\n✨ Migration "${migrationName}" completed successfully! ✨\n`))
   } catch (error: any) {
     console.error(chalk.red(`\n✖ Migration "${migrationName}" failed.\n`))
-    console.error(chalk.red(error: any))
+    console.error(chalk.red(error))
     process.exit(1)
   }
 }

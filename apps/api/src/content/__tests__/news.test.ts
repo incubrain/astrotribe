@@ -25,23 +25,10 @@ const createSampleNews = (): Prisma.newsCreateInput => ({
   published_at: faker.helpers.arrayElement([faker.date.recent(), null]),
   url: faker.internet.url(),
   hash: faker.number.bigInt(),
-  failed_count: faker.helpers.arrayElement([
-    faker.number.int({ min: 0, max: 10 }),
-    null,
-  ]),
-  scrape_frequency: faker.helpers.arrayElement([
-    'daily',
-    'weekly',
-    'monthly',
-    null,
-  ]),
+  failed_count: faker.helpers.arrayElement([faker.number.int({ min: 0, max: 10 }), null]),
+  scrape_frequency: faker.helpers.arrayElement(['daily', 'weekly', 'monthly', null]),
   scraped_at: faker.helpers.arrayElement([faker.date.recent(), null]),
-  content_status: faker.helpers.arrayElement([
-    'draft',
-    'published',
-    'archived',
-    null,
-  ]),
+  content_status: faker.helpers.arrayElement(['draft', 'published', 'archived', null]),
   keywords: faker.helpers.arrayElement([faker.lorem.words(5).split(' '), null]),
   companies: { connect: { id: faker.string.uuid() } },
   contents: { connect: { id: faker.string.uuid() } },
@@ -101,7 +88,7 @@ describe('News Module', () => {
 
     it('should handle errors when fetching news', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllNews({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -176,7 +163,7 @@ describe('News Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleNews()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createNews(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -216,7 +203,7 @@ describe('News Module', () => {
         title: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateNews(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

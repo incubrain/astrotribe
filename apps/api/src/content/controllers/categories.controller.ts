@@ -60,7 +60,7 @@ export class CategoryController extends BaseController {
     try {
       return await super.findOne(id, include)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -70,7 +70,7 @@ export class CategoryController extends BaseController {
     try {
       return await super.create(data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -83,7 +83,7 @@ export class CategoryController extends BaseController {
     try {
       return await super.update(id, data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -93,7 +93,7 @@ export class CategoryController extends BaseController {
     try {
       return await super.remove(id)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 }

@@ -54,7 +54,7 @@ export abstract class BaseService<ModelName extends Prisma.ModelName> {
       const result = await operation()
       return result as R
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -62,7 +62,7 @@ export abstract class BaseService<ModelName extends Prisma.ModelName> {
     try {
       return await operation()
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 }

@@ -52,6 +52,6 @@ async function generateNestJSApp(options: Partial<NestJSGeneratorOptions> = {}) 
 }
 
 generateNestJSApp().catch((error: any) => {
-  console.error(error: any)
+  console.error(error)
   process.exit(1)
 })

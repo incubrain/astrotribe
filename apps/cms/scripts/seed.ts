@@ -36,7 +36,7 @@ async function seedExampleApp({ strapi }: SeedOptions) {
       console.log('Ready to go')
     } catch (error: any) {
       console.log('Could not import seed data')
-      console.error(error: any)
+      console.error(error)
     }
   } else {
     console.log('Seed data has already been imported.')

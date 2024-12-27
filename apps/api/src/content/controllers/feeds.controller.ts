@@ -24,7 +24,6 @@ import type { PaginatedResponse, PaginatedQuery } from '@types'
 @Controller('feeds')
 @ApiTags('Feeds')
 export class FeedController extends BaseController {
-  
   constructor(
     protected readonly feedsService: FeedsService,
     protected readonly prisma: PrismaService,
@@ -45,7 +44,7 @@ export class FeedController extends BaseController {
     try {
       return await super.findAll(query)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -55,7 +54,7 @@ export class FeedController extends BaseController {
     try {
       return await super.findOne(id, include)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -65,7 +64,7 @@ export class FeedController extends BaseController {
     try {
       return await super.create(data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -75,7 +74,7 @@ export class FeedController extends BaseController {
     try {
       return await super.update(id, data)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 
@@ -85,7 +84,7 @@ export class FeedController extends BaseController {
     try {
       return await super.remove(id)
     } catch (error: any) {
-      return this.handleError(error: any)
+      return this.handleError(error)
     }
   }
 }

@@ -5,8 +5,7 @@ import { CategoriesService } from '../services/categories.service'
 import { PrismaService } from '../../core/services/prisma.service'
 import { PaginationService } from '../../core/services/pagination.service'
 import { CustomLogger } from '../../core/logger/custom.logger'
-import type {
-  MockType } from './utils/test.utils'
+import type { MockType } from './utils/test.utils'
 import {
   createTestModule,
   createBaseMockService,
@@ -58,9 +57,7 @@ describe('CategoryController', () => {
 
       mockPrismaModel.findMany.mockResolvedValue(categories)
       mockPrismaModel.count.mockResolvedValue(2)
-      categoriesService.findAllCategories.mockResolvedValue(
-        createPaginatedResponse(categories, 2),
-      )
+      categoriesService.findAllCategories.mockResolvedValue(createPaginatedResponse(categories, 2))
 
       const result = await controller.findAllCategories(query)
 
@@ -71,14 +68,11 @@ describe('CategoryController', () => {
 
     it('should handle errors', async () => {
       const error = new Error('Database error')
-      categoriesService.findAllCategories.mockRejectedValue(error: any)
+      categoriesService.findAllCategories.mockRejectedValue(error)
 
       const result = await controller.findAllCategories({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
-      expect(logger.error).toHaveBeenCalledWith(
-        'Failed to fetch categories',
-        error.stack,
-      )
+      expect(logger.error).toHaveBeenCalledWith('Failed to fetch categories', error.stack)
     })
   })
 
@@ -97,7 +91,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Not found')
-      mockPrismaModel.findUnique.mockRejectedValue(error: any)
+      mockPrismaModel.findUnique.mockRejectedValue(error)
 
       const result = await controller.findOneCategories(id)
       expect(result).toEqual(createErrorResponse('Not found'))
@@ -119,7 +113,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const createData = createSampleCategory()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createCategories(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -148,7 +142,7 @@ describe('CategoryController', () => {
         name: faker.commerce.department(),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateCategories(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -170,7 +164,7 @@ describe('CategoryController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const error = new Error('Delete failed')
-      mockPrismaModel.delete.mockRejectedValue(error: any)
+      mockPrismaModel.delete.mockRejectedValue(error)
 
       const result = await controller.removeCategories(id)
       expect(result).toEqual(createErrorResponse('Delete failed'))

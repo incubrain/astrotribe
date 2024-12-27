@@ -26,35 +26,18 @@ const createSampleResearch = (): Prisma.researchCreateInput => ({
   abstract_url: faker.internet.url(),
   category: faker.helpers.arrayElement([faker.lorem.words(3), null]),
   doi_url: faker.helpers.arrayElement([faker.internet.url(), null]),
-  figure_count: faker.helpers.arrayElement([
-    faker.number.int({ min: 0, max: 10 }),
-    null,
-  ]),
+  figure_count: faker.helpers.arrayElement([faker.number.int({ min: 0, max: 10 }), null]),
   has_embedding: faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-  page_count: faker.helpers.arrayElement([
-    faker.number.int({ min: 1, max: 100 }),
-    null,
-  ]),
+  page_count: faker.helpers.arrayElement([faker.number.int({ min: 1, max: 100 }), null]),
   pdf_url: faker.helpers.arrayElement([faker.internet.url(), null]),
   published_in: faker.helpers.arrayElement([faker.lorem.words(3), null]),
-  table_count: faker.helpers.arrayElement([
-    faker.number.int({ min: 0, max: 10 }),
-    null,
-  ]),
+  table_count: faker.helpers.arrayElement([faker.number.int({ min: 0, max: 10 }), null]),
   comments: faker.helpers.arrayElement([faker.lorem.words(3), null]),
   is_flagged: faker.datatype.boolean(),
   authors: faker.helpers.arrayElement([faker.lorem.words(5).split(' '), null]),
   summary: faker.helpers.arrayElement([faker.lorem.words(3), null]),
-  content_status: faker.helpers.arrayElement([
-    'draft',
-    'published',
-    'archived',
-    null,
-  ]),
-  affiliations: faker.helpers.arrayElement([
-    faker.lorem.words(5).split(' '),
-    null,
-  ]),
+  content_status: faker.helpers.arrayElement(['draft', 'published', 'archived', null]),
+  affiliations: faker.helpers.arrayElement([faker.lorem.words(5).split(' '), null]),
 })
 
 describe('Research Module', () => {
@@ -111,7 +94,7 @@ describe('Research Module', () => {
 
     it('should handle errors when fetching research', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllResearch({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -186,7 +169,7 @@ describe('Research Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleResearch()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createResearch(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -227,7 +210,7 @@ describe('Research Module', () => {
         title: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateResearch(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))

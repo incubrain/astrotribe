@@ -15,12 +15,11 @@ import {
   mockControllerProperties,
 } from './utils/test.utils'
 
-const createSampleEmbeddingReview =
-  (): Prisma.embedding_reviewsCreateInput => ({
-    agent_review: faker.helpers.arrayElement([true, false, null]),
-    human_review: faker.helpers.arrayElement([true, false, null]),
-    notes: faker.helpers.arrayElement([faker.lorem.words(3), null]),
-  })
+const createSampleEmbeddingReview = (): Prisma.embedding_reviewsCreateInput => ({
+  agent_review: faker.helpers.arrayElement([true, false, null]),
+  human_review: faker.helpers.arrayElement([true, false, null]),
+  notes: faker.helpers.arrayElement([faker.lorem.words(3), null]),
+})
 
 describe('EmbeddingReview Module', () => {
   let controller: EmbeddingReviewController
@@ -39,9 +38,7 @@ describe('EmbeddingReview Module', () => {
       prismaModelName: 'embedding_reviews',
     })
 
-    controller = module.get<EmbeddingReviewController>(
-      EmbeddingReviewController,
-    )
+    controller = module.get<EmbeddingReviewController>(EmbeddingReviewController)
     embeddingReviewsService = module.get(EmbeddingReviewsService)
     prismaService = module.get<PrismaService>(PrismaService)
     logger = module.get<CustomLogger>(CustomLogger)
@@ -78,7 +75,7 @@ describe('EmbeddingReview Module', () => {
 
     it('should handle errors when fetching embedding reviews', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllEmbeddingReviews({
         page: 1,
@@ -105,9 +102,7 @@ describe('EmbeddingReview Module', () => {
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
       const result = await controller.findOneEmbeddingReviews('1')
-      expect(result).toEqual(
-        createErrorResponse('embedding_reviews not found'),
-      )
+      expect(result).toEqual(createErrorResponse('embedding_reviews not found'))
     })
   })
 
@@ -134,7 +129,7 @@ describe('EmbeddingReview Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleEmbeddingReview()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createEmbeddingReviews(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -172,7 +167,7 @@ describe('EmbeddingReview Module', () => {
         agent_review: true,
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateEmbeddingReviews(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
@@ -200,9 +195,7 @@ describe('EmbeddingReview Module', () => {
       mockPrismaModel.findUnique.mockResolvedValue(null)
 
       const result = await controller.removeEmbeddingReviews(id)
-      expect(result).toEqual(
-        createErrorResponse('embedding_reviews not found'),
-      )
+      expect(result).toEqual(createErrorResponse('embedding_reviews not found'))
     })
   })
 })

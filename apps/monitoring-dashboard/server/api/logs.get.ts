@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const data = []
   await queryApi.collectRows(query, {
     next: (row) => data.push(row),
-    error: (error: any) => console.error(error: any),
+    error: (error: any) => console.error(error),
     complete: () => console.log('Query completed'),
   })
 

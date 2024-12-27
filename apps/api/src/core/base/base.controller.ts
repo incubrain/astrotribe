@@ -20,14 +20,12 @@ import { CustomLogger } from '../logger/custom.logger'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 @Injectable()
 export abstract class BaseController {
-  constructor(
-    protected readonly modelName: keyof Prisma.TypeMap['model']
-  ) {}
+  constructor(protected readonly modelName: keyof Prisma.TypeMap['model']) {}
 
-  protected abstract get prisma(): PrismaService;
-  protected abstract get config(): ConfigService;
-  protected abstract get paginationService(): PaginationService;
-  protected abstract get logger(): CustomLogger;
+  protected abstract get prisma(): PrismaService
+  protected abstract get config(): ConfigService
+  protected abstract get paginationService(): PaginationService
+  protected abstract get logger(): CustomLogger
 
   protected get model(): any {
     return this.prisma[this.modelName]
@@ -53,7 +51,7 @@ export abstract class BaseController {
         this.paginationService.getPaginationMeta(total, query),
       )
     } catch (error: any) {
-      throw this.handleError(error: any)
+      throw this.handleError(error)
     }
   }
 
@@ -69,7 +67,7 @@ export abstract class BaseController {
       }
       return this.handleSuccess(data)
     } catch (error: any) {
-      throw this.handleError(error: any)
+      throw this.handleError(error)
     }
   }
 
@@ -78,7 +76,7 @@ export abstract class BaseController {
       const result = await this.model.create({ data })
       return this.handleSuccess(result)
     } catch (error: any) {
-      throw this.handleError(error: any)
+      throw this.handleError(error)
     }
   }
 
@@ -90,7 +88,7 @@ export abstract class BaseController {
       })
       return this.handleSuccess(result)
     } catch (error: any) {
-      throw this.handleError(error: any)
+      throw this.handleError(error)
     }
   }
 
@@ -103,7 +101,7 @@ export abstract class BaseController {
       await this.model.delete({ where: { id } })
       return this.handleSuccess(existing)
     } catch (error: any) {
-      throw this.handleError(error: any)
+      throw this.handleError(error)
     }
   }
 

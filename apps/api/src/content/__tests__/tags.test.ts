@@ -21,10 +21,7 @@ const createSampleTag = (): Prisma.tagsCreateInput => ({
   name: faker.lorem.words(3),
   document_id: faker.helpers.arrayElement([faker.string.uuid(), null]),
   locale: faker.helpers.arrayElement(['en', 'es', 'fr', null]),
-  published_at: faker.helpers.arrayElement([
-    faker.date.recent().toString(),
-    null,
-  ]),
+  published_at: faker.helpers.arrayElement([faker.date.recent().toString(), null]),
 })
 
 describe('Tag Module', () => {
@@ -81,7 +78,7 @@ describe('Tag Module', () => {
 
     it('should handle errors when fetching tags', async () => {
       const error = new Error('Database error')
-      mockPrismaModel.findMany.mockRejectedValue(error: any)
+      mockPrismaModel.findMany.mockRejectedValue(error)
 
       const result = await controller.findAllTags({ page: 1, limit: 10 })
       expect(result).toEqual(createErrorResponse('Database error'))
@@ -155,7 +152,7 @@ describe('Tag Module', () => {
     it('should handle creation errors', async () => {
       const createData = createSampleTag()
       const error = new Error('Creation failed')
-      mockPrismaModel.create.mockRejectedValue(error: any)
+      mockPrismaModel.create.mockRejectedValue(error)
 
       const result = await controller.createTags(createData)
       expect(result).toEqual(createErrorResponse('Creation failed'))
@@ -196,7 +193,7 @@ describe('Tag Module', () => {
         name: faker.lorem.words(3),
       }
       const error = new Error('Update failed')
-      mockPrismaModel.update.mockRejectedValue(error: any)
+      mockPrismaModel.update.mockRejectedValue(error)
 
       const result = await controller.updateTags(id, updateData)
       expect(result).toEqual(createErrorResponse('Update failed'))
