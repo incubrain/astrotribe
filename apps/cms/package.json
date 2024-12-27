@@ -11,7 +11,7 @@
     "start": "node dist/main.js"
   },
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.7.8",
     "npm": "^10.9.2"
   }
 }
