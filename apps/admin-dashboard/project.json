@@ -43,7 +43,17 @@
         "command": "npx nuxi build",
         "cwd": "apps/admin-dashboard"
       },
-      "dependsOn": ["build:base", "build:auth", "build:advert", "build:referral"]
+      "dependsOn": [
+        "build:base",
+        "build:auth",
+        "build:advert",
+        "build:referral",
+        {
+          "target": "build",
+          "projects": "dependencies",
+          "params": "forward"
+        }
+      ]
     },
     "serve": {
       "executor": "nx:run-commands",
