@@ -1,5 +1,5 @@
 {
-  "name": "logger",
+  "name": "@ib/logger",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "root": "libs/logger",
   "sourceRoot": "libs/logger/src",
@@ -41,10 +41,10 @@
       "options": {
         "commands": [
           {
-            "command": "nx run logger:build:cjs"
+            "command": "nx run @ib/logger:build:cjs"
           },
           {
-            "command": "nx run logger:build:esm"
+            "command": "nx run @ib/logger:build:esm"
           }
         ],
         "parallel": false

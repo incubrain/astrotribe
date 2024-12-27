@@ -18,7 +18,6 @@ import { ContentModule } from '@content/content.module'
 import { MonitoringModule } from '@monitoring/monitoring.module'
 // New modules (for caching & jobs)
 import { RedisModule } from '@core/cache/cache.module'
-import { JobsModule } from '@/jobs/jobs.module'
 
 @Module({
   imports: [
@@ -49,7 +48,6 @@ import { JobsModule } from '@/jobs/jobs.module'
 
     // 5) Our new caching & jobs modules
     RedisModule,
-    JobsModule,
   ],
   providers: [
     {
