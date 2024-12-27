@@ -18,14 +18,14 @@ build_project() {
     fi
 }
 
-# Build auth-service first
-build_project auth-service
+# Build @astronera/auth first
+build_project @astronera/auth
 
 # Build other projects in parallel
-build_project website &
-build_project admin-dashboard &
-build_project main-app &
-build_project monitoring-dashboard &
+build_project @astronera/website &
+build_project @astronera/admin &
+build_project @astronera/app &
+build_project @astronera/monitoring &
 
 # Wait for all background processes to finish
 wait

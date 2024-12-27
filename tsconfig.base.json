@@ -9,7 +9,7 @@
       "@ib/db-testing/*": ["libs/db-testing/*"],
       "@website/*": ["apps/website/*"],
       "#layers/*": ["layers/*"],
-      "@auth-service/*": ["apps/auth-service/*"]
+      "@@astronera/auth/*": ["apps/auth/*"]
     },
     "esModuleInterop": true,
     "moduleResolution": "node",

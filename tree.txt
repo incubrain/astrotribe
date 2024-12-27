@@ -723,7 +723,7 @@
 │   │   └── tsconfig.json
 │   ├── docs
 │   │   └── debug-build.md
-│   ├── main-app
+│   ├── /app
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── app
@@ -979,7 +979,7 @@
 │   │   │   └── toasts.ts
 │   │   ├── vitest.config.ts
 │   │   └── vitest.setup.ts
-│   ├── monitoring-dashboard
+│   ├── monitoring
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── app.vue
@@ -1256,8 +1256,8 @@
 ├── debug
 │   ├── app-docker-build-errors.log
 │   ├── app-docker-full-build.log
-│   ├── main-app-docker-build-errors.log
-│   ├── main-app-docker-full-build.log
+│   ├── /app-docker-build-errors.log
+│   ├── /app-docker-full-build.log
 │   ├── website-build-errors.log
 │   ├── website-docker-build-errors.log
 │   ├── website-docker-full-build.log

@@ -22,14 +22,14 @@ const ADMIN_SPECIFIC = [
 ] as const
 
 // Main app specific domains
-const MAIN_APP_SPECIFIC = ['bookmarks', 'search', 'payments'] as const
+const APP_SPECIFIC = ['bookmarks', 'search', 'payments'] as const
 
 export enum Service {
   // Main Applications
-  ADMIN_DASHBOARD = 'admin-dashboard',
-  AUTH_SERVICE = 'auth-service',
-  MAIN_APP = 'main-app',
-  MONITORING = 'monitoring-dashboard',
+  ADMIN_DASHBOARD = 'admin',
+  AUTH_SERVICE = 'auth',
+  APP = 'app',
+  MONITORING = 'monitoring',
   WEBSITE = 'website',
   CMS = 'cms',
   API = 'api',
@@ -40,7 +40,7 @@ export enum Service {
 }
 
 export const ServiceDomains = {
-  'admin-dashboard': [
+  'admin': [
     ...CORE_DOMAINS,
     ...AUTH_DOMAINS,
     ...MONITORING_DOMAINS,
@@ -48,17 +48,17 @@ export const ServiceDomains = {
     ...STORAGE_DOMAINS,
     ...ADMIN_SPECIFIC,
   ],
-  'auth-service': [...CORE_DOMAINS, ...AUTH_DOMAINS],
-  'main-app': [
+  'auth': [...CORE_DOMAINS, ...AUTH_DOMAINS],
+  'app': [
     ...CORE_DOMAINS,
     ...AUTH_DOMAINS,
     ...UI_DOMAINS,
     ...STORAGE_DOMAINS,
     ...CONTENT_DOMAINS,
     ...SOCIAL_DOMAINS,
-    ...MAIN_APP_SPECIFIC,
+    ...APP_SPECIFIC,
   ],
-  'monitoring-dashboard': [...CORE_DOMAINS, ...MONITORING_DOMAINS, ...SYSTEM_DOMAINS],
+  'monitoring': [...CORE_DOMAINS, ...MONITORING_DOMAINS, ...SYSTEM_DOMAINS],
   'website': [...CORE_DOMAINS, ...UI_DOMAINS, ...CONTENT_DOMAINS, 'search'],
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],

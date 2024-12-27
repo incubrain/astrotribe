@@ -19,8 +19,8 @@ export default defineWorkspace([
   {
     extends: './vitest.shared.config.ts',
     test: {
-      name: 'main-app',
-      root: './apps/main-app',
+      name: 'app',
+      root: './apps/app',
     },
   },
   {
@@ -33,8 +33,8 @@ export default defineWorkspace([
   {
     extends: './vitest.shared.config.ts',
     test: {
-      name: 'auth-service',
-      root: './apps/auth-service',
+      name: '@astronera/auth',
+      root: './apps/auth',
     },
   },
 ])

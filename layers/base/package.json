@@ -14,7 +14,6 @@
     "@ib/logger": "^0.0.3",
     "@nuxtjs/supabase": "^1.4.0",
     "@sentry/vue": "^8.31.0",
-    "npm": "^10.9.2",
     "posthog-js": "^1.164.3",
     "zod": "^3.23.8"
   },

@@ -50,7 +50,7 @@ RUN npx prisma generate
 
 # Build the project using NX
 # This will automatically build all dependencies (like logger) first
-RUN npx nx build cron-jobs --verbose
+RUN npx nx build @astronera/cron-jobs --verbose
 
 # Final stage
 FROM node:20.17.0-bookworm

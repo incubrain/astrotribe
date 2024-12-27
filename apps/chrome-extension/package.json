@@ -10,7 +10,5 @@
     "build": "nx build chrome-extension",
     "start": "node dist/main.js"
   },
-  "dependencies": {
-    "npm": "^10.9.2"
-  }
+  "dependencies": {}
 }

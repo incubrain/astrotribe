@@ -17,7 +17,7 @@ RUN npm ci
 COPY . .
 
 # Build the application using Nx
-RUN npx nx build website
+RUN npx nx build @astronera/website
 
 # Stage 2: Production Stage
 FROM node:20-slim

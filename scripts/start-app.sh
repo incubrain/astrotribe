@@ -7,7 +7,7 @@ is_running() {
 
 # Start auth service
 echo "Starting auth service..."
-nx serve auth-service &
+nx serve @astronera/auth &
 
 # Wait for auth service to be ready
 while ! curl -s http://localhost:3009 >/dev/null; do
@@ -17,7 +17,7 @@ echo "Auth service is up and running"
 
 # Start main app
 echo "Starting main app..."
-nx serve main-app &
+nx serve @astronera/app &
 
 # Wait for both services to finish (for development)
 wait

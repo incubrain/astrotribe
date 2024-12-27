@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y openssl
 RUN npx prisma generate
 
 # Build the application using SWC
-RUN npx nx build api --verbose --skip-nx-cache
+RUN npx nx build @astronera/api --verbose --skip-nx-cache
 
 # Final image stage
 FROM node:20-alpine AS final

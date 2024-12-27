@@ -2,7 +2,7 @@
 import { FeatureConfigBuilder } from '../feature-builder'
 import { FEATURE_SETTINGS } from './conf'
 
-const AUTH_PATTERNS = ['apps/auth-service/**']
+const AUTH_PATTERNS = ['apps/auth/**']
 
 export const authConfig = new FeatureConfigBuilder()
   .setId('auth')

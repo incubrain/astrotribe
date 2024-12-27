@@ -1,0 +1,23 @@
+{
+  "name": "@astronera/monitoring",
+  "version": "0.0.3",
+  "scripts": {
+    "lint": "nx lint @astronera/monitoring",
+    "test": "nx test @astronera/monitoring",
+    "dev": "nx serve @astronera/monitoring",
+    "build": "nx build @astronera/monitoring",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.35.0",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "h3": "^1.8.2",
+    "nuxt": "^3.13.2",
+    "nx": "^20.3.0",
+    "tailwindcss": "^3.4.13"
+  },
+  "type": "module"
+}

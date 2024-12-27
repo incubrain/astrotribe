@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "nx lint api",
-    "test": "nx test api",
-    "dev": "nx serve api",
-    "build": "nx build api",
+    "lint": "nx lint @astronera/api",
+    "test": "nx test @astronera/api",
+    "dev": "nx serve @astronera/api",
+    "build": "nx build @astronera/api",
     "start": "node dist/main.js",
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
@@ -31,7 +31,6 @@
     "helmet": "^8.0.0",
     "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
-    "npm": "^10.9.2",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {

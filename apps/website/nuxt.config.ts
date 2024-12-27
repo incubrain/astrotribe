@@ -348,10 +348,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-09-22',
 
   runtimeConfig: {
-    serviceName: 'website',
+    serviceName: '@astronera/website',
     ...sharedConfig.runtimeConfig.private,
     public: {
-      serviceName: 'website',
+      serviceName: '@astronera/website',
       ...sharedConfig.runtimeConfig.public,
     },
   },
