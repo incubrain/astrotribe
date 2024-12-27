@@ -41,10 +41,8 @@ ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Copy the entire project (excluding node_modules via .dockerignore)
 COPY package.json package-lock.json ./
-RUN ls -la /app
 
 COPY . .
-RUN ls -la /app
 
 # Install dependencies
 RUN npm ci
