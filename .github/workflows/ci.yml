@@ -1,39 +1,217 @@
 name: CI
 
+# Configure GitHub Actions Cache for Nx
+env:
+  NX_SKIP_NX_CLOUD: true
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main, develop ]
   pull_request:
-
-permissions:
-  actions: read
-  contents: read
+    branches: [ main, develop ]
 
 jobs:
-  main:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Cache Nx
+        uses: actions/cache@v3
+        with:
+          path: node_modules/.cache/nx
+          key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+      
+      - name: TypeScript Check
+        run: npx nx affected --target=type-check --parallel=3
+      
+      - name: Lint
+        run: npx nx affected --target=lint --parallel=3
+      
+      - name: Test
+        run: npx nx affected --target=test --parallel=3
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+
+      - name: Build
+        run: npx nx affected --target=build --parallel=3
+
+  pr-feedback:
+    needs: docker
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      
+      - name: Add Labels
+        uses: actions/labeler@v4
         with:
-          fetch-depth: 0
-
-      # This enables task distribution via Nx Cloud
-      # Run this command as early as possible, before dependencies are installed
-      # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      - run:
-          npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
-
-      # Cache node_modules
-      - uses: actions/setup-node@v4
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      
+      - name: Comment Build Status
+        uses: actions/github-script@v6
         with:
-          node-version: 20
-          cache: 'npm'
+          script: |
+            const buildStatus = '${{ needs.docker.result }}';
+            const testStatus = '${{ needs.lint-and-test.result }}';
+            
+            const summary = `## Build Summary
+            - 🧪 Tests: ${testStatus}
+            - 🐳 Docker: ${buildStatus}
+            
+            [View detailed logs](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: summary
+            })
 
-      - run: npm ci --legacy-peer-deps
-      - uses: nrwl/nx-set-shas@v4
+  metrics:
+    if: always()
+    needs: [lint-and-test, docker, preview]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Collect Build Metrics
+        run: |
+          node tools/collect-metrics.js > build-metrics.json
+        
+      - name: Upload Metrics
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-metrics
+          path: build-metrics.json
+      
+      - name: Post to Slack
+        if: always()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data "@build-metrics.json" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
-      # - run: npx nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: npx nx affected -t lint test build e2e-ci
+  docker:
+    needs: lint-and-test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        app: ['api', 'web', 'admin'] # Add your app names here
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: apps/${{ matrix.app }}/Dockerfile
+          push: false # Set to true when pushing to registry
+          tags: ${{ matrix.app }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+# Add to package.json or project.json for each app
+{
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "lint": "eslint ."
+  }
+}
+
+# .eslintrc.js
+module.exports = {
+  root: true,
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-recommended', // For Nuxt apps
+    'plugin:nuxt/recommended',     // For Nuxt apps
+    'plugin:@nx/typescript'        // For Nx monorepo
+  ],
+  rules: {
+    // Add custom rules here
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-console': ['warn', { allow: ['warn', 'error'] }]
+  }
+}
+
+# jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  collectCoverage: true,
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+}
+
+# docker-compose.test.yml
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
