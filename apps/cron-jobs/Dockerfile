@@ -23,10 +23,17 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy package files
+# Copy package files and NX config
 COPY package*.json ./
-COPY scripts ./scripts/
+COPY nx.json ./
+COPY tsconfig*.json ./
 COPY apps/cron-jobs/prisma ./prisma/
+
+# Set NX environment variables
+ENV NODE_ENV=production \
+    NX_DAEMON=false \
+    NX_CLOUD=false \
+    NX_CACHE_SKIP=true
 
 # Install dependencies
 RUN npm ci
@@ -35,20 +42,15 @@ RUN npm ci
 RUN npx playwright install chromium
 RUN npx playwright install-deps
 
-# Copy source code
+# Copy the entire workspace
 COPY . .
 
-# Set environment variables
-ENV NODE_ENV=production \
-    NX_DAEMON=false \
-    NX_CLOUD=false \
-    NX_CACHE_SKIP=true
-
 # Generate Prisma client
-WORKDIR /app/apps/cron-jobs
 RUN npx prisma generate
-RUN npm install -g typescript
-RUN tsc -p tsconfig.json --outDir dist
+
+# Build the project using NX
+# This will automatically build all dependencies (like logger) first
+RUN npx nx build cron-jobs --verbose
 
 # Final stage
 FROM node:20.17.0-bookworm
@@ -76,16 +78,17 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy necessary files
+# Copy built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 
+# Make sure we copy the built logger library
+COPY --from=builder /app/libs/logger/dist ./node_modules/@ib/logger/dist
+
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 
-# Install tsx globally in the final stage
-COPY --from=builder /app/apps/cron-jobs/dist ./dist
-
+# Run with ESM support
 CMD ["node", "--experimental-specifier-resolution=node", "./dist/src/index.js"]
