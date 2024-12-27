@@ -1,8 +1,8 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import { BaseService } from '@/core/base/base.service'
-import { PaginationService } from '@/core/services/pagination.service'
-import { PrismaService } from '@/core/services/prisma.service'
+import { BaseService } from '@core/base/base.service'
+import { PaginationService } from '@core/services/pagination.service'
+import { PrismaService } from '@core/services/prisma.service'
 import { ContentTagModel } from '../models/content-tags.model'
 import type { Prisma } from '@prisma/client'
 

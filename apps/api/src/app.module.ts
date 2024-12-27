@@ -10,7 +10,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 // GUARDS
 import { PermissionGuard } from '@core/guards/permission.guard'
 // CORE modules
-import { LoggerModule } from '@/core/modules/logger.module'
+import { LoggerModule } from '@core/modules/logger.module'
 import { PrismaModule } from '@core/modules/prisma.module'
 import { CoreModule } from '@core/core.module'
 // Feature modules

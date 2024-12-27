@@ -1,7 +1,7 @@
 // cache.service.ts
 import { Inject, Injectable } from '@nestjs/common'
 import { Redis } from 'ioredis'
-import { CustomLogger } from '@/core/logger/custom.logger'
+import { CustomLogger } from '@core/logger/custom.logger'
 
 @Injectable()
 export class CacheService {
