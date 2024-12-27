@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Start auth-service
-nx serve auth-service &
+# Start @astronera/auth
+nx serve @astronera/auth &
 
-# Wait for auth-service to start (adjust sleep time as needed)
+# Wait for @astronera/auth to start (adjust sleep time as needed)
 sleep 10
 
 # Start other services
-nx serve website &
-nx serve admin-dashboard &
-nx serve main-app &
-nx serve monitoring-dashboard &
+nx serve @astronera/website &
+nx serve @astronera/admin &
+nx serve @astronera/app &
+nx serve @astronera/monitoring &
 
 # Wait for all background processes to finish
 wait

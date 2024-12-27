@@ -95,7 +95,7 @@ apps/
         session.ts
         signin.post.ts
         validate-turnstile.post.ts
-  main-app/
+  app/
     components/
       bookmark/
         BookmarkCard.vue
@@ -164,7 +164,7 @@ apps/
       constants.ts
     app.vue
     nuxt.config.ts
-  monitoring-dashboard/
+  monitoring/
     server/
       api/
         logs.get.ts
@@ -180,7 +180,7 @@ Repository Files
 ================================================================
 
 ================
-File: apps/admin-dashboard/server/api/classifier/[action].ts
+File: apps/admin/server/api/classifier/[action].ts
 ================
 import { defineEventHandler, getRouterParam, createError } from 'h3'
 import jwt from 'jsonwebtoken'
@@ -264,7 +264,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/create/many-public-users.post.ts
+File: apps/admin/server/api/create/many-public-users.post.ts
 ================
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
@@ -306,7 +306,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/create/roles.post.ts
+File: apps/admin/server/api/create/roles.post.ts
 ================
 import type { Role } from '@/types/roles'
 
@@ -336,7 +336,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/error/[type].ts
+File: apps/admin/server/api/error/[type].ts
 ================
 import { defineEventHandler, getQuery } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
@@ -544,7 +544,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/feature/[action].ts
+File: apps/admin/server/api/feature/[action].ts
 ================
 // server/api/admin/features/[action].ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -640,7 +640,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/instagram/analytics.ts
+File: apps/admin/server/api/social/instagram/analytics.ts
 ================
 import { defineEventHandler, getQuery } from 'h3'
 
@@ -676,7 +676,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/linkedin/analytics.ts
+File: apps/admin/server/api/social/linkedin/analytics.ts
 ================
 import { useLinkedinAnalytics } from '#imports'
 
@@ -708,7 +708,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/twitter/analytics.ts
+File: apps/admin/server/api/social/twitter/analytics.ts
 ================
 import { defineEventHandler, getQuery } from 'h3'
 
@@ -743,7 +743,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/youtube/analytics.ts
+File: apps/admin/server/api/social/youtube/analytics.ts
 ================
 import { useYoutubeChannel } from '#imports'
 
@@ -815,7 +815,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/youtube/channel-videos.ts
+File: apps/admin/server/api/social/youtube/channel-videos.ts
 ================
 export default defineEventHandler(async (event) => {
   const { channelName } = getQuery(event)
@@ -843,7 +843,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/tables/structure.ts
+File: apps/admin/server/api/tables/structure.ts
 ================
 // server/api/tables/structure.ts
 import { serverSupabaseClient } from '#supabase/server'
@@ -867,7 +867,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/update/user-profile.post.ts
+File: apps/admin/server/api/update/user-profile.post.ts
 ================
 export default defineEventHandler(async (event) => {
   const { userId, profile }: { userId: string; profile: any } = await readBody(event)
@@ -915,7 +915,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/users/bulk-upload.ts
+File: apps/admin/server/api/users/bulk-upload.ts
 ================
 import { readMultipartFormData, type MultiPartData } from 'h3'
 import { serverSupabaseServiceRole } from '#supabase/server'
@@ -989,7 +989,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/users/update.ts
+File: apps/admin/server/api/users/update.ts
 ================
 export default defineEventHandler(async (event) => {
   console.log('update user endpoint fired')
@@ -1016,7 +1016,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/_ws.ts
+File: apps/admin/server/api/_ws.ts
 ================
 export default defineWebSocketHandler({
   open(peer) {
@@ -1040,7 +1040,7 @@ export default defineWebSocketHandler({
 })
 
 ================
-File: apps/admin-dashboard/server/api/cron-jobs.post.ts
+File: apps/admin/server/api/cron-jobs.post.ts
 ================
 import jwt from 'jsonwebtoken'
 
@@ -1090,7 +1090,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/error-logs.get.ts
+File: apps/admin/server/api/error-logs.get.ts
 ================
 // server/api/error-logs.get.ts
 import { serverSupabaseClient } from '#supabase/server'
@@ -1121,7 +1121,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/execute-script.ts
+File: apps/admin/server/api/execute-script.ts
 ================
 import { execFile } from 'child_process'
 import { promisify } from 'util'
@@ -1195,7 +1195,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/goals.ts
+File: apps/admin/server/api/goals.ts
 ================
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -1282,7 +1282,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/healthy.ts
+File: apps/admin/server/api/healthy.ts
 ================
 import { defineEventHandler } from 'h3'
 
@@ -1328,7 +1328,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/milestones.ts
+File: apps/admin/server/api/milestones.ts
 ================
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -1389,7 +1389,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/server-jobs.ts
+File: apps/admin/server/api/server-jobs.ts
 ================
 import { defineWebSocketHandler } from 'h3'
 import { WebSocket } from 'ws'
@@ -1543,7 +1543,7 @@ export default defineWebSocketHandler({
 })
 
 ================
-File: apps/admin-dashboard/server/api/store-image.ts
+File: apps/admin/server/api/store-image.ts
 ================
 export default defineEventHandler(async (event) => {
   try {
@@ -1589,7 +1589,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/cookies.get.ts
+File: apps/auth/server/routes/cookies.get.ts
 ================
 export default defineEventHandler((event) => {
   const cookies = getHeaders(event)
@@ -1603,7 +1603,7 @@ export default defineEventHandler((event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/session.ts
+File: apps/auth/server/routes/session.ts
 ================
 export default defineEventHandler(async (event) => {
   try {
@@ -1638,7 +1638,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/signin.post.ts
+File: apps/auth/server/routes/signin.post.ts
 ================
 export default defineEventHandler(async (event) => {
   if (authenticated) {
@@ -1653,7 +1653,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/validate-turnstile.post.ts
+File: apps/auth/server/routes/validate-turnstile.post.ts
 ================
 import { defineEventHandler, readBody } from 'h3'
 
@@ -1689,7 +1689,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/components/bookmark/BookmarkCard.vue
+File: apps/app/components/bookmark/BookmarkCard.vue
 ================
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
@@ -1875,7 +1875,7 @@ const contentTypeIcon = computed(() => {
 </template>
 
 ================
-File: apps/main-app/components/bookmark/BookmarkGridAnimated.vue
+File: apps/app/components/bookmark/BookmarkGridAnimated.vue
 ================
 <script lang="ts" setup>
 import { gsap } from 'gsap'
@@ -1967,7 +1967,7 @@ const afterEnter = (el: Element) => {
 </template>
 
 ================
-File: apps/main-app/components/bookmark/BookmarkViewFolder.vue
+File: apps/app/components/bookmark/BookmarkViewFolder.vue
 ================
 <template>
   <PrimeDialog
@@ -2320,7 +2320,7 @@ onUnmounted(() => {
 </script>
 
 ================
-File: apps/main-app/components/folder/FolderItem.vue
+File: apps/app/components/folder/FolderItem.vue
 ================
 <!-- FolderItem.vue -->
 <template>
@@ -2424,7 +2424,7 @@ const handleDelete = () => {
 </script>
 
 ================
-File: apps/main-app/components/folder/FolderTree.vue
+File: apps/app/components/folder/FolderTree.vue
 ================
 <!-- FolderTree.vue -->
 <script setup lang="ts">
@@ -2644,7 +2644,7 @@ const resetNewFolder = () => {
 </template>
 
 ================
-File: apps/main-app/components/news/NewsCard.vue
+File: apps/app/components/news/NewsCard.vue
 ================
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
@@ -3059,7 +3059,7 @@ onBeforeUnmount(async () => {
 </style>
 
 ================
-File: apps/main-app/components/EmptyState.vue
+File: apps/app/components/EmptyState.vue
 ================
 <script setup lang="ts">
 defineProps<{
@@ -3081,7 +3081,7 @@ defineProps<{
 </template>
 
 ================
-File: apps/main-app/composables/useBookmarkManager.ts
+File: apps/app/composables/useBookmarkManager.ts
 ================
 export const useBookmarkManager = () => {
   const selectedIds = ref<string[]>([])
@@ -3164,7 +3164,7 @@ export const useBookmarkManager = () => {
 }
 
 ================
-File: apps/main-app/composables/useBookmarkStore.ts
+File: apps/app/composables/useBookmarkStore.ts
 ================
 // useBookmarkStore.ts
 import { defineStore } from 'pinia'
@@ -3541,7 +3541,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
 })
 
 ================
-File: apps/main-app/composables/useBookmarkView.ts
+File: apps/app/composables/useBookmarkView.ts
 ================
 // useBookmarkView.ts
 import { set } from 'zod'
@@ -3582,7 +3582,7 @@ export const useBookmarkView = () => {
 }
 
 ================
-File: apps/main-app/composables/useFolderStore.ts
+File: apps/app/composables/useFolderStore.ts
 ================
 import { useConfirm } from 'primevue/useconfirm'
 import { handleResponse } from '@ib/logger'
@@ -3818,7 +3818,7 @@ export const useFolderStore = defineStore('folders', () => {
 })
 
 ================
-File: apps/main-app/composables/usePages.ts
+File: apps/app/composables/usePages.ts
 ================
 import { ref } from 'vue'
 
@@ -4070,7 +4070,7 @@ export default function usePages() {
 }
 
 ================
-File: apps/main-app/pages/profile/bookmarks.vue
+File: apps/app/pages/profile/bookmarks.vue
 ================
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -4335,7 +4335,7 @@ const isEmpty = computed(() => {
 </template>
 
 ================
-File: apps/main-app/server/api/ai/ask.ts
+File: apps/app/server/api/ai/ask.ts
 ================
 import { openAI } from '~/server/utils/openai/callOpenAI'
 import { serverSupabaseUser } from '#supabase/server'
@@ -4406,7 +4406,7 @@ export default defineEventHandler({
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/[id].delete.ts
+File: apps/app/server/api/bookmarks/[id].delete.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -4441,7 +4441,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/counts.ts
+File: apps/app/server/api/bookmarks/counts.ts
 ================
 // server/api/bookmarks/counts.ts
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
@@ -4484,7 +4484,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/index.ts
+File: apps/app/server/api/bookmarks/index.ts
 ================
 // server/api/bookmarks/index.ts
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
@@ -4654,7 +4654,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/move.patch.ts
+File: apps/app/server/api/bookmarks/move.patch.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -4705,7 +4705,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/toggle.ts
+File: apps/app/server/api/bookmarks/toggle.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -4789,7 +4789,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/dev/update-role.ts
+File: apps/app/server/api/dev/update-role.ts
 ================
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 
@@ -4814,7 +4814,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/feature/[action].ts
+File: apps/app/server/api/feature/[action].ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -4869,7 +4869,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/feedback/index.post.ts
+File: apps/app/server/api/feedback/index.post.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -4892,7 +4892,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/feeds/index.ts
+File: apps/app/server/api/feeds/index.ts
 ================
 import type { H3Event } from 'h3'
 
@@ -4983,7 +4983,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/[id].delete.ts
+File: apps/app/server/api/folders/[id].delete.ts
 ================
 // server/api/folders/[id].delete.ts
 import type { H3Event } from 'h3'
@@ -5052,7 +5052,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/[id].patch.ts
+File: apps/app/server/api/folders/[id].patch.ts
 ================
 // server/api/folders/[id].patch.ts
 import type { H3Event } from 'h3'
@@ -5097,7 +5097,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/index.ts
+File: apps/app/server/api/folders/index.ts
 ================
 // server/api/folders/index.ts
 import type { H3Event } from 'h3'
@@ -5171,7 +5171,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/create-order.ts
+File: apps/app/server/api/payment/[provider]/create-order.ts
 ================
 // server/api/payment/[provider]/create-order.post.ts
 import { useRuntimeConfig } from '#imports'
@@ -5221,7 +5221,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/subscription.get.ts
+File: apps/app/server/api/payment/[provider]/subscription.get.ts
 ================
 import { useRuntimeConfig } from '#imports'
 import { generateServerToken } from '~/server/utils/generateServerToken'
@@ -5261,7 +5261,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/verify-payment.post.ts
+File: apps/app/server/api/payment/[provider]/verify-payment.post.ts
 ================
 // server/api/payment/[provider]/verify-payment.post.ts
 import { useRuntimeConfig } from '#imports'
@@ -5305,7 +5305,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/users/metrics/[action].ts
+File: apps/app/server/api/users/metrics/[action].ts
 ================
 // server/api/users/metrics/[action].ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -5518,7 +5518,7 @@ function getTotalAchievements(achievements: any) {
 }
 
 ================
-File: apps/main-app/server/api/users/metrics.ts
+File: apps/app/server/api/users/metrics.ts
 ================
 // server/api/users/metrics.ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -5604,7 +5604,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/users/update.post.ts
+File: apps/app/server/api/users/update.post.ts
 ================
 import { serverSupabaseClient } from '#supabase/server'
 
@@ -5654,7 +5654,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/[contentType]/[id].get.ts
+File: apps/app/server/api/votes/[contentType]/[id].get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -5697,7 +5697,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/[contentType]/[id].post.ts
+File: apps/app/server/api/votes/[contentType]/[id].post.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -5780,7 +5780,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/user/[voteType].get.ts
+File: apps/app/server/api/votes/user/[voteType].get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -5837,7 +5837,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/user.get.ts
+File: apps/app/server/api/votes/user.get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -5883,7 +5883,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/webhook/database.ts
+File: apps/app/server/api/webhook/database.ts
 ================
 export default defineEventHandler(async (event) => {
   const data = await readBody(event)
@@ -5892,7 +5892,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/upload.ts
+File: apps/app/server/api/upload.ts
 ================
 import crypto from 'crypto'
 import { defineEventHandler, createError } from 'h3'
@@ -6088,7 +6088,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/middleware/feature-limit.ts
+File: apps/app/server/middleware/feature-limit.ts
 ================
 import { handleFeatureLimitError } from '../utils/errors'
 import { validateFeatureLimit } from '../utils/featureLimits'
@@ -6143,7 +6143,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/shared/constants.ts
+File: apps/app/shared/constants.ts
 ================
 export const FEATURES = {
   BOOKMARK_FOLDERS: {
@@ -6182,7 +6182,7 @@ export const FEATURES = {
 } as const
 
 ================
-File: apps/main-app/app.vue
+File: apps/app/app.vue
 ================
 <script setup lang="ts">
 const catTagStore = useCategoryTagStore()
@@ -6265,7 +6265,7 @@ html {
 </style>
 
 ================
-File: apps/main-app/nuxt.config.ts
+File: apps/app/nuxt.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
@@ -6279,7 +6279,7 @@ export default defineNuxtConfig({
   srcDir: '.',
   extends: [
     '../../layers/base',
-    '../../layers/auth',
+    '../../layers/supabase',
     '../../layers/crud',
     '../../layers/advert',
     '../../layers/referral',
@@ -6407,16 +6407,16 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     ...sharedConfig.runtimeConfig.private,
-    serviceName: 'main-app',
+    serviceName: '/app',
     public: {
       ...sharedConfig.runtimeConfig.public,
-      serviceName: 'main-app',
+      serviceName: '/app',
     },
   },
 })
 
 ================
-File: apps/monitoring-dashboard/server/api/logs.get.ts
+File: apps/monitoring/server/api/logs.get.ts
 ================
 // server/api/logs.get.ts
 

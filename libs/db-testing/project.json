@@ -1,5 +1,5 @@
 {
-  "name": "db-testing",
+  "name": "@ib/db-testing",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "root": "libs/db-testing",
   "sourceRoot": "libs/db-testing/src",

@@ -12,7 +12,6 @@
     "@ib/logger": "^0.0.3",
     "@nuxtjs/supabase": "^1.4.0",
     "@supabase/supabase-js": "^2.47.8",
-    "npm": "^10.9.2",
     "pinia": "^2.2.2",
     "uuid": "^10.0.0"
   },

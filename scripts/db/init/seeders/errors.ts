@@ -17,7 +17,7 @@ export const ERROR_MESSAGES = [
 
 export const SERVICE_NAMES = [
   'api-gateway',
-  'auth-service',
+  '@astronera/auth',
   'user-service',
   'content-service',
   'notification-service',
@@ -45,7 +45,7 @@ export const COMMON_ERRORS = [
     message: 'Service unavailable',
     pattern: 'Service unavailable',
     hash: 'b57973df2513f0659c652aa7de3b870d',
-    services: ['auth-service', 'api-gateway', 'user-service'],
+    services: ['@astronera/auth', 'api-gateway', 'user-service'],
   },
   {
     message: 'Rate limit exceeded',
@@ -57,7 +57,7 @@ export const COMMON_ERRORS = [
     message: 'Authentication token expired',
     pattern: 'Authentication token expired',
     hash: 'f70f185c04fb7b8d43479355106d4df0',
-    services: ['auth-service', 'user-service', 'notification-service'],
+    services: ['@astronera/auth', 'user-service', 'notification-service'],
   },
 ]
 

@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "nx lint cron-jobs",
-    "test": "nx test cron-jobs",
-    "dev": "nx serve cron-jobs",
-    "build": "nx build cron-jobs",
+    "lint": "nx lint @astronera/cron-jobs",
+    "test": "nx test @astronera/cron-jobs",
+    "dev": "nx serve @astronera/cron-jobs",
+    "build": "nx build @astronera/cron-jobs",
     "start": "node dist/main.js",
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
@@ -19,7 +19,6 @@
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
-    "npm": "^10.9.2",
     "pg-boss": "^10.1.5",
     "playwright": "^1.41.1",
     "robots-parser": "^3.0.1",

@@ -140,7 +140,7 @@ apps/
     example-env
     nuxt.config.ts
     tailwind.config.ts
-  main-app/
+  app/
     components/
       bookmark/
         BookmarkCard.vue
@@ -211,7 +211,7 @@ apps/
       utils/
         errors.ts
     nuxt.config.ts
-  monitoring-dashboard/
+  monitoring/
     middleware/
       is-super-admin.ts
     pages/
@@ -256,7 +256,7 @@ Repository Files
 ================================================================
 
 ================
-File: apps/admin-dashboard/middleware/auth.global.ts
+File: apps/admin/middleware/auth.global.ts
 ================
 import { defineNuxtRouteMiddleware, navigateTo, useCookie } from '#app'
 import { useRuntimeConfig } from '#imports'
@@ -282,7 +282,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 })
 
 ================
-File: apps/admin-dashboard/middleware/is-admin.ts
+File: apps/admin/middleware/is-admin.ts
 ================
 // const isAdmin = (role: string) => role === 'admin' || role === 'super_admin'
 
@@ -295,7 +295,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 })
 
 ================
-File: apps/admin-dashboard/pages/business-systems/index.vue
+File: apps/admin/pages/business-systems/index.vue
 ================
 <script setup lang="ts">
 definePageMeta({
@@ -339,7 +339,7 @@ const systemsTabs = [
 <style scoped></style>
 
 ================
-File: apps/admin-dashboard/plugins/dev-helper.ts
+File: apps/admin/plugins/dev-helper.ts
 ================
 import { useLogger } from '@ib/logger'
 
@@ -516,7 +516,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/classifier/[action].ts
+File: apps/admin/server/api/classifier/[action].ts
 ================
 import { defineEventHandler, getRouterParam, createError } from 'h3'
 import jwt from 'jsonwebtoken'
@@ -600,7 +600,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/create/many-public-users.post.ts
+File: apps/admin/server/api/create/many-public-users.post.ts
 ================
 export default defineEventHandler(async (event) => {
   const users = await readBody(event)
@@ -642,7 +642,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/create/roles.post.ts
+File: apps/admin/server/api/create/roles.post.ts
 ================
 import type { Role } from '@/types/roles'
 
@@ -672,7 +672,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/error/[type].ts
+File: apps/admin/server/api/error/[type].ts
 ================
 import { defineEventHandler, getRouterParam, createError } from 'h3'
 import jwt from 'jsonwebtoken'
@@ -740,7 +740,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/feature/[action].ts
+File: apps/admin/server/api/feature/[action].ts
 ================
 // server/api/admin/features/[action].ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -836,7 +836,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/instagram/analytics.ts
+File: apps/admin/server/api/social/instagram/analytics.ts
 ================
 import { defineEventHandler, getQuery } from 'h3'
 import { useLoggerAsync, useErrorHandler } from '@ib/logger'
@@ -873,7 +873,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/linkedin/analytics.ts
+File: apps/admin/server/api/social/linkedin/analytics.ts
 ================
 import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 import { useLinkedinAnalytics } from '#imports'
@@ -908,7 +908,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/twitter/analytics.ts
+File: apps/admin/server/api/social/twitter/analytics.ts
 ================
 import { defineEventHandler, getQuery } from 'h3'
 import { useErrorHandler, useLoggerAsync } from '@ib/logger'
@@ -944,7 +944,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/youtube/analytics.ts
+File: apps/admin/server/api/social/youtube/analytics.ts
 ================
 import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 import { useYoutubeChannel } from '#imports'
@@ -991,7 +991,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/social/youtube/channel-videos.ts
+File: apps/admin/server/api/social/youtube/channel-videos.ts
 ================
 export default defineEventHandler(async (event) => {
   const { channelName } = getQuery(event)
@@ -1019,7 +1019,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/update/user-profile.post.ts
+File: apps/admin/server/api/update/user-profile.post.ts
 ================
 export default defineEventHandler(async (event) => {
   const { userId, profile }: { userId: string; profile: any } = await readBody(event)
@@ -1067,7 +1067,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/users/bulk-upload.ts
+File: apps/admin/server/api/users/bulk-upload.ts
 ================
 import { readMultipartFormData, type MultiPartData } from 'h3'
 import { serverSupabaseServiceRole } from '#supabase/server'
@@ -1141,7 +1141,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/users/update.ts
+File: apps/admin/server/api/users/update.ts
 ================
 export default defineEventHandler(async (event) => {
   console.log('update user endpoint fired')
@@ -1172,7 +1172,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/_ws.ts
+File: apps/admin/server/api/_ws.ts
 ================
 export default defineWebSocketHandler({
   open(peer) {
@@ -1196,7 +1196,7 @@ export default defineWebSocketHandler({
 })
 
 ================
-File: apps/admin-dashboard/server/api/cron-jobs.post.ts
+File: apps/admin/server/api/cron-jobs.post.ts
 ================
 import jwt from 'jsonwebtoken'
 
@@ -1246,7 +1246,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/execute-script.ts
+File: apps/admin/server/api/execute-script.ts
 ================
 import { execFile } from 'child_process'
 import { promisify } from 'util'
@@ -1320,7 +1320,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/goals.ts
+File: apps/admin/server/api/goals.ts
 ================
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -1407,7 +1407,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/healthy.ts
+File: apps/admin/server/api/healthy.ts
 ================
 import { defineEventHandler } from 'h3'
 
@@ -1453,7 +1453,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/milestones.ts
+File: apps/admin/server/api/milestones.ts
 ================
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -1514,7 +1514,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/api/server-jobs.ts
+File: apps/admin/server/api/server-jobs.ts
 ================
 import { defineWebSocketHandler } from 'h3'
 import { WebSocket } from 'ws'
@@ -1668,7 +1668,7 @@ export default defineWebSocketHandler({
 })
 
 ================
-File: apps/admin-dashboard/server/api/store-image.ts
+File: apps/admin/server/api/store-image.ts
 ================
 export default defineEventHandler(async (event) => {
   try {
@@ -1714,7 +1714,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/admin-dashboard/server/utils/socials/useInstagramAnalytics.ts
+File: apps/admin/server/utils/socials/useInstagramAnalytics.ts
 ================
 import { useErrorHandler, useLoggerAsync } from '@ib/logger'
 
@@ -1768,7 +1768,7 @@ export async function useInstagramAnalytics() {
 }
 
 ================
-File: apps/admin-dashboard/server/utils/socials/useLinkedinAnalytics.ts
+File: apps/admin/server/utils/socials/useLinkedinAnalytics.ts
 ================
 import { useErrorHandler } from '@ib/logger'
 
@@ -1826,7 +1826,7 @@ export function useLinkedinAnalytics(postId: string) {
 }
 
 ================
-File: apps/admin-dashboard/server/utils/socials/useTwitterAnalytics.ts
+File: apps/admin/server/utils/socials/useTwitterAnalytics.ts
 ================
 import { useErrorHandler } from '@ib/logger'
 
@@ -1914,7 +1914,7 @@ export function useTwitterAnalytics(postId: string) {
 }
 
 ================
-File: apps/admin-dashboard/nuxt.config.ts
+File: apps/admin/nuxt.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
@@ -1926,7 +1926,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud', '../../layers/advert'],
+  extends: ['../../layers/base', '../../layers/supabase', '../../layers/crud', '../../layers/advert'],
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -1986,7 +1986,7 @@ export default defineNuxtConfig({
 })
 
 ================
-File: apps/auth-service/components/form/FormPassword.vue
+File: apps/auth/components/form/FormPassword.vue
 ================
 <script setup lang="ts">
 interface Props {
@@ -2073,7 +2073,7 @@ const onPasswordChange = (value: string) => {
 <style scoped></style>
 
 ================
-File: apps/auth-service/components/AuthCard.vue
+File: apps/auth/components/AuthCard.vue
 ================
 <script setup lang="ts">
 import type { TitleType } from '@/types/content'
@@ -2184,7 +2184,7 @@ defineProps({
 <style scoped></style>
 
 ================
-File: apps/auth-service/components/AuthRegisterWith.vue
+File: apps/auth/components/AuthRegisterWith.vue
 ================
 <script setup lang="ts">
 const auth = useAuth()
@@ -2216,7 +2216,7 @@ const auth = useAuth()
 <style></style>
 
 ================
-File: apps/auth-service/components/AuthSocialButton.vue
+File: apps/auth/components/AuthSocialButton.vue
 ================
 <script setup lang="ts">
 type Provider = 'twitter' | 'linkedin'
@@ -2248,7 +2248,7 @@ const socialLogin = () => {
 </template>
 
 ================
-File: apps/auth-service/components/AuthVerifiedWith.vue
+File: apps/auth/components/AuthVerifiedWith.vue
 ================
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
@@ -2302,7 +2302,7 @@ const verifiedIcon = computed(() => {
 <style scoped></style>
 
 ================
-File: apps/auth-service/components/TurnstileChallenge.vue
+File: apps/auth/components/TurnstileChallenge.vue
 ================
 <template>
   <div>
@@ -2404,7 +2404,7 @@ defineExpose({ reset })
 </script>
 
 ================
-File: apps/auth-service/composables/useAuth.ts
+File: apps/auth/composables/useAuth.ts
 ================
 import { z } from 'zod'
 import { useLogger } from '@ib/logger'
@@ -2597,7 +2597,7 @@ export function useAuth() {
 }
 
 ================
-File: apps/auth-service/composables/useAuthUser.ts
+File: apps/auth/composables/useAuthUser.ts
 ================
 // composables/useAuth.ts
 export async function forgotPassword(email: string) {
@@ -2616,7 +2616,7 @@ export async function forgotPassword(email: string) {
 }
 
 ================
-File: apps/auth-service/composables/useResetPassword.ts
+File: apps/auth/composables/useResetPassword.ts
 ================
 export interface ResetPasswordParams {
   access_token?: string
@@ -2651,7 +2651,7 @@ export function useResetPassword() {
 }
 
 ================
-File: apps/auth-service/layouts/default.vue
+File: apps/auth/layouts/default.vue
 ================
 <script setup lang="ts">
 const isAuthenticating = ref(true)
@@ -2711,7 +2711,7 @@ onMounted(async () => {
 </style>
 
 ================
-File: apps/auth-service/middleware/auth.global.ts
+File: apps/auth/middleware/auth.global.ts
 ================
 // middleware/auth.ts
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -2751,7 +2751,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 })
 
 ================
-File: apps/auth-service/middleware/reset-password.ts
+File: apps/auth/middleware/reset-password.ts
 ================
 // middleware/reset-password.ts
 export default defineNuxtRouteMiddleware((to) => {
@@ -2762,7 +2762,7 @@ export default defineNuxtRouteMiddleware((to) => {
 })
 
 ================
-File: apps/auth-service/pages/settings/password.vue
+File: apps/auth/pages/settings/password.vue
 ================
 <!-- pages/settings/password.vue -->
 <script setup lang="ts">
@@ -2914,7 +2914,7 @@ async function handleUpdatePassword() {
 </template>
 
 ================
-File: apps/auth-service/pages/forgot-password.vue
+File: apps/auth/pages/forgot-password.vue
 ================
 <!-- /forgot-password -->
 
@@ -2963,7 +2963,7 @@ definePageMeta({
 </template>
 
 ================
-File: apps/auth-service/pages/index.vue
+File: apps/auth/pages/index.vue
 ================
 <script lang="ts" setup></script>
 
@@ -2974,7 +2974,7 @@ File: apps/auth-service/pages/index.vue
 <style></style>
 
 ================
-File: apps/auth-service/pages/login.vue
+File: apps/auth/pages/login.vue
 ================
 <script setup lang="ts">
 const form = ref({
@@ -3075,7 +3075,7 @@ definePageMeta({
 </template>
 
 ================
-File: apps/auth-service/pages/register.vue
+File: apps/auth/pages/register.vue
 ================
 <script setup lang="ts">
 const form = reactive({
@@ -3206,7 +3206,7 @@ definePageMeta({
 </template>
 
 ================
-File: apps/auth-service/pages/reset-password.vue
+File: apps/auth/pages/reset-password.vue
 ================
 <!-- pages/reset-password.vue -->
 <script setup lang="ts">
@@ -3298,7 +3298,7 @@ async function handlePasswordReset() {
 </template>
 
 ================
-File: apps/auth-service/pages/success.vue
+File: apps/auth/pages/success.vue
 ================
 <script setup lang="ts">
 const userStore = useCurrentUser()
@@ -3367,7 +3367,7 @@ definePageMeta({
 <style scoped></style>
 
 ================
-File: apps/auth-service/server/routes/session.ts
+File: apps/auth/server/routes/session.ts
 ================
 export default defineEventHandler(async (event) => {
   try {
@@ -3402,7 +3402,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/signin.post.ts
+File: apps/auth/server/routes/signin.post.ts
 ================
 export default defineEventHandler(async (event) => {
   if (authenticated) {
@@ -3417,7 +3417,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/routes/validate-turnstile.post.ts
+File: apps/auth/server/routes/validate-turnstile.post.ts
 ================
 import { defineEventHandler, readBody } from 'h3'
 
@@ -3453,7 +3453,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/auth-service/server/utils/getUserSession.ts
+File: apps/auth/server/utils/getUserSession.ts
 ================
 import { getCurrentSecret } from './secretManager'
 import { serverSupabaseSession, serverSupabaseClient } from '#supabase/server'
@@ -3690,7 +3690,7 @@ export async function hasFeaturePermission(
 }
 
 ================
-File: apps/auth-service/server/utils/secretManager.ts
+File: apps/auth/server/utils/secretManager.ts
 ================
 import * as uuid from 'uuid'
 
@@ -3736,13 +3736,13 @@ export function getPreviousSecret() {
 }
 
 ================
-File: apps/auth-service/.npmrc
+File: apps/auth/.npmrc
 ================
 shamefully-hoist=true
 strict-peer-dependencies=false
 
 ================
-File: apps/auth-service/app.vue
+File: apps/auth/app.vue
 ================
 <template>
   <div class="h-full w-full">
@@ -3780,7 +3780,7 @@ html {
 </style>
 
 ================
-File: apps/auth-service/Dockerfile
+File: apps/auth/Dockerfile
 ================
 # Use Node.js 20.17.0 as the base image
 FROM node:20.17.0
@@ -3799,7 +3799,7 @@ RUN npm ci
 COPY . .
 
 # List contents to verify files are copied correctly
-RUN ls -la && ls -la apps/auth-service
+RUN ls -la && ls -la apps/auth
 
 RUN npm install -g nx
 
@@ -3810,7 +3810,7 @@ RUN npx nx --version
 RUN nx build auth-service --verbose --skip-nx-cache
 
 # Set the working directory to the auth-service output
-WORKDIR /app/apps/auth-service/.output
+WORKDIR /app/apps/auth/.output
 
 # Command to run the application
 CMD ["node", "server/index.mjs"]
@@ -3819,14 +3819,14 @@ CMD ["node", "server/index.mjs"]
 EXPOSE 3000
 
 ================
-File: apps/auth-service/example-env
+File: apps/auth/example-env
 ================
 SUPABASE_URL=""
 SUPABASE_SERVICE_KEY=""
 SUPABASE_ANON_KEY=""
 
 ================
-File: apps/auth-service/nuxt.config.ts
+File: apps/auth/nuxt.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
@@ -3838,9 +3838,9 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
+  extends: ['../../layers/base', '../../layers/supabase', '../../layers/crud'],
   build: {
-    transpile: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
+    transpile: ['../../layers/base', '../../layers/supabase', '../../layers/crud'],
   },
   modules: [
     '@nuxt/devtools',
@@ -3897,7 +3897,7 @@ export default defineNuxtConfig({
 })
 
 ================
-File: apps/auth-service/tailwind.config.ts
+File: apps/auth/tailwind.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
@@ -3918,7 +3918,7 @@ const config: Partial<Config> = {
 export default config
 
 ================
-File: apps/main-app/components/bookmark/BookmarkCard.vue
+File: apps/app/components/bookmark/BookmarkCard.vue
 ================
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
@@ -4106,7 +4106,7 @@ const contentTypeIcon = computed(() => {
 </template>
 
 ================
-File: apps/main-app/components/nav/NavAppTop.vue
+File: apps/app/components/nav/NavAppTop.vue
 ================
 <script setup lang="ts">
 const router = useRouter()
@@ -4250,7 +4250,7 @@ const handleImageError = () => {
 </template>
 
 ================
-File: apps/main-app/components/news/NewsCard.vue
+File: apps/app/components/news/NewsCard.vue
 ================
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
@@ -4655,7 +4655,7 @@ onBeforeUnmount(async () => {
 </style>
 
 ================
-File: apps/main-app/components/settings/2FA.vue
+File: apps/app/components/settings/2FA.vue
 ================
 <script setup lang="ts">
 import { ref, computed } from 'vue'
@@ -5028,7 +5028,7 @@ onMounted(() => {
 </template>
 
 ================
-File: apps/main-app/components/settings/SecuritySection.vue
+File: apps/app/components/settings/SecuritySection.vue
 ================
 <script setup lang="ts">
 const currentUser = useCurrentUser()
@@ -5238,7 +5238,7 @@ async function handleSetPassword() {
 </template>
 
 ================
-File: apps/main-app/components/supa/Upload.vue
+File: apps/app/components/supa/Upload.vue
 ================
 <script setup lang="ts">
 const props = defineProps({
@@ -5413,10 +5413,10 @@ watch(
 </style>
 
 ================
-File: apps/main-app/composables/users/user.admin.composable.ts
+File: apps/app/composables/users/user.admin.composable.ts
 ================
 import { useLogger } from '@ib/logger'
-import { emailUnvalidatedUserSchema } from '../../../auth-service/types/auth'
+import { emailUnvalidatedUserSchema } from '../../..auth/types/auth'
 import type { UserRowType } from '~/types/users'
 
 interface NewUser {
@@ -5559,7 +5559,7 @@ export function useAdmin() {
 }
 
 ================
-File: apps/main-app/composables/useBookmarkStore.ts
+File: apps/app/composables/useBookmarkStore.ts
 ================
 // useBookmarkStore.ts
 import { defineStore } from 'pinia'
@@ -5840,7 +5840,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
 })
 
 ================
-File: apps/main-app/composables/usePlan.ts
+File: apps/app/composables/usePlan.ts
 ================
 import { FEATURES } from '#shared/constants'
 
@@ -5916,7 +5916,7 @@ export const usePlan = () => {
 }
 
 ================
-File: apps/main-app/composables/useSettingsSecurity.ts
+File: apps/app/composables/useSettingsSecurity.ts
 ================
 // composables/useSettingsSecurity.ts
 export function useSettingsSecurity() {
@@ -6012,7 +6012,7 @@ export function useSettingsSecurity() {
 }
 
 ================
-File: apps/main-app/composables/useVotesStore.ts
+File: apps/app/composables/useVotesStore.ts
 ================
 // stores/useVoteStore.ts
 import { defineStore } from 'pinia'
@@ -6307,7 +6307,7 @@ export const useVoteStore = defineStore('votes', () => {
 })
 
 ================
-File: apps/main-app/middleware/auth.global.ts
+File: apps/app/middleware/auth.global.ts
 ================
 import { defineNuxtRouteMiddleware, navigateTo, useNuxtApp } from '#app'
 import { useRuntimeConfig, useSupabaseClient } from '#imports'
@@ -6340,7 +6340,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 })
 
 ================
-File: apps/main-app/pages/feed/[feed].vue
+File: apps/app/pages/feed/[feed].vue
 ================
 <script setup lang="ts">
 const route = useRoute()
@@ -6550,7 +6550,7 @@ onUnmounted(() => {
 </template>
 
 ================
-File: apps/main-app/pages/news/index.vue
+File: apps/app/pages/news/index.vue
 ================
 <script setup lang="ts">
 // !todo:critical - add summaries for news articles
@@ -6607,7 +6607,7 @@ definePageMeta({
 <style scoped></style>
 
 ================
-File: apps/main-app/pages/profile/bookmarks.vue
+File: apps/app/pages/profile/bookmarks.vue
 ================
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -6858,7 +6858,7 @@ const isEmpty = computed(() => {
 </template>
 
 ================
-File: apps/main-app/pages/auth-callback.vue
+File: apps/app/pages/auth-callback.vue
 ================
 // pages/auth-callback.vue
 <template>
@@ -6912,7 +6912,7 @@ onMounted(() => {
 </script>
 
 ================
-File: apps/main-app/server/api/ai/ask.ts
+File: apps/app/server/api/ai/ask.ts
 ================
 import { useLogger } from '@ib/logger'
 import { openAI } from '~/server/utils/openai/callOpenAI'
@@ -6985,7 +6985,7 @@ export default defineEventHandler({
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/[id].delete.ts
+File: apps/app/server/api/bookmarks/[id].delete.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -7020,7 +7020,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/counts.ts
+File: apps/app/server/api/bookmarks/counts.ts
 ================
 // server/api/bookmarks/counts.ts
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
@@ -7063,7 +7063,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/index.ts
+File: apps/app/server/api/bookmarks/index.ts
 ================
 // server/api/bookmarks/index.ts
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
@@ -7245,7 +7245,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/move.patch.ts
+File: apps/app/server/api/bookmarks/move.patch.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -7296,7 +7296,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/bookmarks/toggle.ts
+File: apps/app/server/api/bookmarks/toggle.ts
 ================
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 
@@ -7385,7 +7385,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/feature/[action].ts
+File: apps/app/server/api/feature/[action].ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -7440,7 +7440,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/[id].delete.ts
+File: apps/app/server/api/folders/[id].delete.ts
 ================
 // server/api/folders/[id].delete.ts
 import type { H3Event } from 'h3'
@@ -7509,7 +7509,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/[id].patch.ts
+File: apps/app/server/api/folders/[id].patch.ts
 ================
 // server/api/folders/[id].patch.ts
 import type { H3Event } from 'h3'
@@ -7554,7 +7554,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/folders/index.ts
+File: apps/app/server/api/folders/index.ts
 ================
 // server/api/folders/index.ts
 import type { H3Event } from 'h3'
@@ -7628,7 +7628,7 @@ export default defineEventHandler(async (event: H3Event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/create-order.ts
+File: apps/app/server/api/payment/[provider]/create-order.ts
 ================
 // server/api/payment/[provider]/create-order.post.ts
 import { useRuntimeConfig } from '#imports'
@@ -7678,7 +7678,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/subscription.get.ts
+File: apps/app/server/api/payment/[provider]/subscription.get.ts
 ================
 import { useRuntimeConfig } from '#imports'
 import { generateServerToken } from '~/server/utils/generateServerToken'
@@ -7718,7 +7718,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/payment/[provider]/verify-payment.post.ts
+File: apps/app/server/api/payment/[provider]/verify-payment.post.ts
 ================
 // server/api/payment/[provider]/verify-payment.post.ts
 import { useRuntimeConfig } from '#imports'
@@ -7762,7 +7762,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/users/metrics/[action].ts
+File: apps/app/server/api/users/metrics/[action].ts
 ================
 // server/api/users/metrics/[action].ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -7975,7 +7975,7 @@ function getTotalAchievements(achievements: any) {
 }
 
 ================
-File: apps/main-app/server/api/users/metrics.ts
+File: apps/app/server/api/users/metrics.ts
 ================
 // server/api/users/metrics.ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
@@ -8061,7 +8061,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/users/update.post.ts
+File: apps/app/server/api/users/update.post.ts
 ================
 import { serverSupabaseClient } from '#supabase/server'
 
@@ -8111,7 +8111,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/[contentType]/[id].get.ts
+File: apps/app/server/api/votes/[contentType]/[id].get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -8154,7 +8154,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/[contentType]/[id].post.ts
+File: apps/app/server/api/votes/[contentType]/[id].post.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -8237,7 +8237,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/user/[voteType].get.ts
+File: apps/app/server/api/votes/user/[voteType].get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -8294,7 +8294,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/votes/user.get.ts
+File: apps/app/server/api/votes/user.get.ts
 ================
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
@@ -8340,7 +8340,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/webhook/database.ts
+File: apps/app/server/api/webhook/database.ts
 ================
 export default defineEventHandler(async (event) => {
   const data = await readBody(event)
@@ -8349,7 +8349,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/api/upload.ts
+File: apps/app/server/api/upload.ts
 ================
 import crypto from 'crypto'
 import { defineEventHandler, createError } from 'h3'
@@ -8545,7 +8545,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/middleware/feature-limit.ts
+File: apps/app/server/middleware/feature-limit.ts
 ================
 import { handleFeatureLimitError } from '../utils/errors'
 import { validateFeatureLimit } from '../utils/featureLimits'
@@ -8599,7 +8599,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/main-app/server/utils/errors.ts
+File: apps/app/server/utils/errors.ts
 ================
 export const handleFeatureLimitError = (error: any) => {
   // Feature limit errors
@@ -8646,7 +8646,7 @@ export const handleFeatureLimitError = (error: any) => {
 }
 
 ================
-File: apps/main-app/nuxt.config.ts
+File: apps/app/nuxt.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
@@ -8658,7 +8658,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth', '../../layers/crud'],
+  extends: ['../../layers/base', '../../layers/supabase', '../../layers/crud'],
 
   vite: {
     optimizeDeps: {
@@ -8787,7 +8787,7 @@ export default defineNuxtConfig({
 })
 
 ================
-File: apps/monitoring-dashboard/middleware/is-super-admin.ts
+File: apps/monitoring/middleware/is-super-admin.ts
 ================
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const user = useSupabaseUser()
@@ -8801,7 +8801,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 })
 
 ================
-File: apps/monitoring-dashboard/pages/not-authorized.vue
+File: apps/monitoring/pages/not-authorized.vue
 ================
 <template>
   <div> you are not authorized to see this </div>
@@ -8812,7 +8812,7 @@ File: apps/monitoring-dashboard/pages/not-authorized.vue
 <style scoped></style>
 
 ================
-File: apps/monitoring-dashboard/server/api/logs.get.ts
+File: apps/monitoring/server/api/logs.get.ts
 ================
 // server/api/logs.get.ts
 
@@ -8849,7 +8849,7 @@ export default defineEventHandler(async (event) => {
 })
 
 ================
-File: apps/monitoring-dashboard/nuxt.config.ts
+File: apps/monitoring/nuxt.config.ts
 ================
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
@@ -8861,7 +8861,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: ['../../layers/base', '../../layers/auth'],
+  extends: ['../../layers/base', '../../layers/supabase'],
   modules: ['@primevue/nuxt-module'],
 
   routeRules: {

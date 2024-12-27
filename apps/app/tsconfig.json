@@ -1,0 +1,21 @@
+{
+  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@base": ["../../layers/base"],
+      "#layers/*": ["../../layers/*"],
+      "@types/*": ["./types/*"],
+      "#imports": ["./.nuxt/imports.d.ts"],
+      "#shared/*": ["./shared/*"]
+    }
+  },
+  "include": [
+    "./types/**/*.d.ts",
+    "./**/*.ts",
+    "./**/*.d.ts",
+    "./.nuxt/imports.d.ts",
+    "pages/settings/index.vue"
+  ]
+}

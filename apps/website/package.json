@@ -4,10 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "nx lint website",
-    "test": "nx test website",
-    "dev": "nx serve website",
-    "build": "nx build website",
+    "lint": "nx lint @astronera/website",
+    "test": "nx test @astronera/website",
+    "dev": "nx serve @astronera/website",
+    "build": "nx build @astronera/website",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
@@ -17,13 +17,13 @@
     "@supabase/supabase-js": "^2.47.8",
     "dotenv": "^16.4.5",
     "gsap": "^3.12.5",
-    "npm": "^10.9.2",
     "ofetch": "^1.4.0",
     "pinia": "^2.2.2",
     "qs": "^6.13.0",
     "shiki": "^1.22.0",
     "uuid": "^10.0.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@nuxt/image": "^1.8.0"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.14.4",

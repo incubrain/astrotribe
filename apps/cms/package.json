@@ -1,17 +1,45 @@
 {
   "name": "@astronera/cms",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "A Strapi application",
   "scripts": {
-    "lint": "nx lint cms",
-    "test": "nx test cms",
-    "dev": "nx serve cms",
-    "build": "nx build cms",
-    "start": "node dist/main.js"
+    "build": "strapi build --debug",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop --debug",
+    "seed:example": "npx tsx ./scripts/seed.ts",
+    "start": "strapi start",
+    "strapi": "strapi"
   },
   "dependencies": {
-    "axios": "^1.7.7",
-    "npm": "^10.9.2"
+    "@aws-sdk/client-s3": "^3.679.0",
+    "@aws-sdk/s3-request-presigner": "^3.679.0",
+    "@offset-dev/strapi-calendar": "^1.0.0",
+    "@strapi/plugin-cloud": "5.1.0",
+    "@strapi/plugin-users-permissions": "5.1.0",
+    "@strapi/provider-upload-aws-s3": "^5.1.1",
+    "@strapi/strapi": "^5.1.0",
+    "fs-extra": "^10.0.0",
+    "mime-types": "^2.1.27",
+    "pg": "^8.13.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "strapi-provider-upload-supabase": "file:dist/src/providers/supabase",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^0.0.42",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "da9f4f19-1c80-4a29-a422-833b1bb1cde5"
   }
 }

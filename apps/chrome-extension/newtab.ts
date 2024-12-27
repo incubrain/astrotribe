@@ -1,4 +1,4 @@
-const APP_URL = 'https://app.astronera.org'
+const APP_URL = 'https:/app.astronera.org'
 
 document.addEventListener('DOMContentLoaded', () => {
   const frame = document.getElementById('app-frame') as HTMLIFrameElement
