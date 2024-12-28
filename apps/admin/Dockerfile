@@ -22,7 +22,7 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_VERBOSE_LOGGING=true
 
 # Install nx and build
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/admin --configuration=production
 

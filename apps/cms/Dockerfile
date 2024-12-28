@@ -34,7 +34,7 @@ ENV NX_SKIP_LOG_GROUPING=true
 ENV NX_VERBOSE_LOGGING=true
 
 # Install dependencies for this workspace only
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/cms --configuration=production
 
