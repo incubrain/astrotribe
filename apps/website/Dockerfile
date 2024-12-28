@@ -53,17 +53,16 @@ COPY layers layers
 # Install dependencies for website workspace only
 RUN npm ci --workspace=@astronera/website --include-workspace-root
 
-# Install nx globally
-RUN npm install -g nx
-
 # Disable Nx Daemon, Nx Cloud, and Caching
 ENV NX_DAEMON=false
 ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
 # Build auth service
+RUN npm install nx@20.0.0 -g
+RUN nx reset
 RUN npx tsx apps/website/generate-routes.ts
-RUN nx build @astronera/website --verbose --skip-nx-cache
+RUN nx build @astronera/website --configuration=production --skip-nx-cache
 
 WORKDIR /app/apps/website/.output
 
