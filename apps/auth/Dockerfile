@@ -15,11 +15,10 @@ COPY layers layers
 # Install dependencies for auth workspace only
 RUN npm ci --workspace=@astronera/auth --include-workspace-root
 
-# Install nx globally
-RUN npm install -g nx
-
-# Build auth service
-RUN nx build @astronera/auth --verbose --skip-nx-cache
+# Install nx globally (if needed)
+RUN npm install nx@20.0.0 -g
+RUN nx reset
+RUN nx build @astronera/auth --configuration=production --skip-nx-cache
 
 WORKDIR /app/apps/auth/.output
 

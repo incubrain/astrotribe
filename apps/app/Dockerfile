@@ -18,14 +18,15 @@ COPY apps/app apps/app
 COPY libs libs
 COPY layers layers
 
+
+
 # Install dependencies for this workspace only
 RUN npm ci --workspace=@astronera/app --include-workspace-root
 
 # Install nx globally (if needed)
-RUN npm install -g nx
-
-# Build the app
-RUN npx nx build @astronera/app --verbose --skip-nx-cache
+RUN npm install nx@20.0.0 -g
+RUN nx reset
+RUN nx build @astronera/app --configuration=production --skip-nx-cache
 
 # Set the working directory to the /app output
 WORKDIR /app/apps/app/.output
