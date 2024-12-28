@@ -8,8 +8,10 @@ ARG NUXT_PUBLIC_SUPABASE_URL
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     NODE_ENV=production \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     ROLLUP_SKIP_NODE_RESOLVE=true \
-    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+    ROLLUP_NATIVE=false \
+    npm_config_build_from_source=true
 
 # Install required build dependencies
 RUN apt-get update && \
@@ -22,14 +24,22 @@ COPY nx.json ./
 COPY tsconfig*.json ./
 COPY .npmrc ./
 
+# Pre-install specific platform dependencies
+RUN npm install -g @rollup/rollup-linux-x64-gnu @rollup/rollup-linux-x64-musl --no-save
+
+# Install root dependencies with platform specifics
+RUN npm install --no-progress --platform=linux --arch=x64
+
 # Copy only needed source files
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
 
-# Install dependencies with platform specifics
-RUN npm install --no-progress
+# Install workspace dependencies
 RUN npm install --workspaces
+
+# Now copy source files
+COPY . .
 
 # Install nx and build
 RUN npm install nx@latest -g
