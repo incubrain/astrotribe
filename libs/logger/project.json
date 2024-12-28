@@ -19,7 +19,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "libs/logger/dist/cjs",
-        "main": "libs/logger/index.ts",
+        "main": "libs/logger/src/index.ts",
         "tsConfig": "libs/logger/tsconfig.cjs.json",
         "assets": ["libs/logger/*.md"],
         "rootDir": "libs/logger/src"
@@ -30,7 +30,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "libs/logger/dist/esm",
-        "main": "libs/logger/index.ts",
+        "main": "libs/logger/src/index.ts",
         "tsConfig": "libs/logger/tsconfig.esm.json",
         "assets": ["libs/logger/*.md"],
         "rootDir": "libs/logger/src"

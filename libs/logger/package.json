@@ -20,9 +20,10 @@
     "lint": "nx lint @ib/logger",
     "test": "nx test @ib/logger",
     "dev": "nx build @ib/logger --watch",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "build": "npm run build:cjs && npm run build:esm"
+    "build:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
     "@prisma/client": "^6.0.1",

@@ -27,12 +27,42 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
+  vite: {
+    optimizeDeps: {
+      exclude: ['@ib/logger'],
+    },
+    resolve: {
+      alias: {
+        '@ib/logger': fileURLToPath(
+          new URL('../../libs/logger/dist/esm/index.js', import.meta.url),
+        ),
+      },
+    },
+  },
+
+  build: {
+    transpile: ['@ib/logger'],
+  },
+
   ssr: false,
 
   nitro: {
     experimental: {
       websocket: true,
       asyncContext: true,
+    },
+    rollupConfig: {
+      external: [
+        'winston',
+        'winston-transport',
+        'util',
+        'os',
+        'fs',
+        'path',
+        'zlib',
+        'http',
+        'https',
+      ],
     },
   },
 
