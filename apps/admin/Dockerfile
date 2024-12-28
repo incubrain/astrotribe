@@ -15,11 +15,10 @@ COPY layers layers
 # Install dependencies for admin workspace only
 RUN npm ci --workspace=@astronera/admin --include-workspace-root
 
-# Install nx globally
-RUN npm install -g nx
-
-# Build admin dashboard
-RUN nx build @astronera/admin --verbose --skip-nx-cache
+# Install nx globally (if needed)
+RUN npm install nx@20.0.0 -g
+RUN nx reset
+RUN nx build @astronera/admin --configuration=production --skip-nx-cache
 
 # Keep the working directory at /app
 WORKDIR /app
