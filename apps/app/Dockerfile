@@ -8,25 +8,24 @@ WORKDIR /app
 ARG NUXT_PUBLIC_SUPABASE_URL
 ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
-# Copy package.json and package-lock.json
+# Copy root workspace configuration files
 COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci
+# Copy only the app and its dependencies
+COPY apps/app apps/app
+COPY libs libs
+COPY layers layers
 
-# Copy the entire project, including configuration files
-COPY . .
+# Install dependencies for this workspace only
+RUN npm ci --workspace=@astronera/app --include-workspace-root
 
-# List contents to verify files are copied correctly
-RUN ls -la && ls -la apps/app
-
+# Install nx globally (if needed)
 RUN npm install -g nx
 
-RUN npx nx reset
-RUN npx nx --version
-
-# Build the @astronera/app
-RUN nx build @astronera/app --verbose --skip-nx-cache
+# Build the app
+RUN npx nx build @astronera/app --verbose --skip-nx-cache
 
 # Set the working directory to the /app output
 WORKDIR /app/apps/app/.output

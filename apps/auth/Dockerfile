@@ -1,35 +1,27 @@
-# Use Node.js 20.17.0 as the base image
 FROM node:20.17.0
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy workspace configuration files
 COPY package*.json ./
-COPY package-lock.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci
+# Copy auth service and its dependencies
+COPY apps/auth apps/auth
+COPY libs/logger libs/logger
+COPY layers layers
 
-# Copy the entire project, including configuration files
-COPY . .
+# Install dependencies for auth workspace only
+RUN npm ci --workspace=@astronera/auth --include-workspace-root
 
-# List contents to verify files are copied correctly
-RUN ls -la && ls -la apps/auth
-
+# Install nx globally
 RUN npm install -g nx
 
-RUN npx nx reset
-RUN npx nx --version
-
-# Build the @astronera/auth
+# Build auth service
 RUN nx build @astronera/auth --verbose --skip-nx-cache
 
-# Set the working directory to the @astronera/auth output
 WORKDIR /app/apps/auth/.output
 
-# Command to run the application
 CMD ["node", "server/index.mjs"]
-
-# Expose the port the app runs on
 EXPOSE 3000

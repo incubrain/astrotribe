@@ -23,11 +23,16 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy package files and NX config
+# Copy workspace configuration files
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
-COPY apps/cron-jobs/prisma ./prisma/
+
+# Copy only needed workspace packages
+COPY apps/cron-jobs apps/cron-jobs
+COPY libs/logger libs/logger
+COPY layers layers 
+COPY prisma prisma
 
 # Set NX environment variables
 ENV NODE_ENV=production \
@@ -35,21 +40,17 @@ ENV NODE_ENV=production \
     NX_CLOUD=false \
     NX_CACHE_SKIP=true
 
-# Install dependencies
-RUN npm ci
+# Install dependencies for cron-jobs workspace only
+RUN npm ci --workspace=@astronera/cron-jobs --include-workspace-root
 
 # Install Playwright browsers
 RUN npx playwright install chromium
 RUN npx playwright install-deps
 
-# Copy the entire workspace
-COPY . .
-
 # Generate Prisma client
 RUN npx prisma generate
 
 # Build the project using NX
-# This will automatically build all dependencies (like logger) first
 RUN npx nx build @astronera/cron-jobs --verbose
 
 # Final stage
@@ -78,13 +79,11 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy built files
+# Copy only the necessary built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
-
-# Make sure we copy the built logger library
 COPY --from=builder /app/libs/logger/dist ./node_modules/@ib/logger/dist
 
 ENV NODE_ENV=production \
