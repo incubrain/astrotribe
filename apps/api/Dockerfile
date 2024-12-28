@@ -27,6 +27,7 @@ RUN npm ci --workspace=@astronera/api --include-workspace-root
 RUN apk add --no-cache openssl
 RUN npx prisma generate
 
+ENV NX_DISABLE_DB=true
 RUN npm install nx@20.0.0 -g
 RUN nx reset
 RUN nx build @astronera/api --configuration=production --no-cache --skip-nx-cache 

@@ -28,6 +28,9 @@ RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 COPY apps/cms/scripts/seed.js apps/cms/scripts/
 
 # Build the admin panel
+ENV NX_DISABLE_DB=true
+RUN npm install nx@20.0.0 -g
+RUN nx reset
 RUN nx build @astronera/cms --no-cache --skip-nx-cache
 
 # Update working directory to the CMS app
