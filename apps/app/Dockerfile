@@ -28,7 +28,7 @@ COPY layers ./layers
 RUN npm ci --workspace=@astronera/app --include-workspace-root
 
 # Install nx and build
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/app --configuration=production
 

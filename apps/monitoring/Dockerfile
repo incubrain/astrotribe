@@ -19,7 +19,7 @@ RUN npm ci --workspace=@astronera/monitoring --include-workspace-root
 
 # Install nx globally
 ENV NX_DISABLE_DB=true
-RUN npm install -g nx@20.0.0
+RUN npm install -g nx@20.3.0
 RUN nx reset
 RUN nx build @astronera/monitoring --no-cache --skip-nx-cache
 

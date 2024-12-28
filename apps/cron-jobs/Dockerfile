@@ -51,7 +51,7 @@ RUN npx playwright install-deps
 RUN npx prisma generate
 
 # Install nx globally and build
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/cron-jobs --configuration=production
 

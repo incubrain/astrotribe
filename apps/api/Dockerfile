@@ -27,7 +27,7 @@ ENV NX_SKIP_NX_CACHE=true \
 
 # Generate Prisma client and build
 RUN npx prisma generate
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/api --configuration=production
 

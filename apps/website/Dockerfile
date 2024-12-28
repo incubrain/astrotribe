@@ -38,7 +38,7 @@ ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Install nx globally and run builds
-RUN npm install nx@20.0.0 -g
+RUN npm install nx@20.3.0 -g
 RUN nx reset
 RUN npx tsx apps/website/generate-routes.ts
 RUN nx build @astronera/admin --configuration=production
