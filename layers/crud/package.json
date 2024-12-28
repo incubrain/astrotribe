@@ -4,9 +4,9 @@
   "scripts": {
     "lint": "nx lint @astronera/crud",
     "test": "nx test @astronera/crud",
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "prepare": "nuxi prepare"
+    "dev": "npx nuxi dev",
+    "build": "npx nuxi build",
+    "prepare": "npx nuxi prepare"
   },
   "dependencies": {
     "@ib/logger": "^0.0.3",
