@@ -23,39 +23,37 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy workspace configuration files
+# First copy configuration files
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
+COPY prisma ./prisma
 
-# Copy only needed workspace packages
-COPY apps/cron-jobs apps/cron-jobs
-COPY libs/logger libs/logger
-COPY layers layers 
-COPY prisma prisma
+# Copy workspace files needed for build
+COPY apps/cron-jobs ./apps/cron-jobs
+COPY libs/logger ./libs/logger
+COPY layers ./layers
 
-# Set NX environment variables
-ENV NODE_ENV=production \
-    NX_DAEMON=false \
-    NX_CLOUD=false \
-    NX_CACHE_SKIP=true
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true \
+    NX_BATCH_MODE=true \
+    NX_SKIP_LOG_GROUPING=true \
+    NX_VERBOSE_LOGGING=true
 
-# Install dependencies for cron-jobs workspace only
+# Install dependencies
 RUN npm ci --workspace=@astronera/cron-jobs --include-workspace-root
 
-# Install Playwright browsers
+# Install Playwright browsers and deps
 RUN npx playwright install chromium
 RUN npx playwright install-deps
 
 # Generate Prisma client
 RUN npx prisma generate
 
-
-# Build the project using NX
-ENV NX_DISABLE_DB=true
+# Install nx globally and build
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/cron-jobs --no-cache --skip-nx-cache
+RUN nx build @astronera/cron-jobs --configuration=production
 
 # Final stage
 FROM node:20.17.0-bookworm

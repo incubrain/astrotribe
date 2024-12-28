@@ -3,34 +3,33 @@ FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 
 # Install system dependencies
-RUN apk add --no-cache python3 make g++ gcc
+RUN apk add --no-cache python3 make g++ gcc openssl
 
-# Copy workspace configuration files
+# Copy configuration files first
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
+COPY prisma ./prisma
 
-# Copy API and its dependencies
-COPY apps/api apps/api
-COPY libs/logger libs/logger
-COPY prisma prisma 
-
-# Disable Nx Daemon, Nx Cloud, and Caching
-ENV NX_DAEMON=false
-ENV NX_CLOUD=false
-ENV NX_CACHE_SKIP=true
-
-# Install dependencies for API workspace only
+# Install dependencies
 RUN npm ci --workspace=@astronera/api --include-workspace-root
 
-# Generate Prisma client
-RUN apk add --no-cache openssl
-RUN npx prisma generate
+# Copy only needed source files
+COPY apps/api ./apps/api
+COPY libs ./libs
+COPY layers ./layers
 
-ENV NX_DISABLE_DB=true
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true \
+    NX_BATCH_MODE=true \
+    NX_SKIP_LOG_GROUPING=true \
+    NX_VERBOSE_LOGGING=true
+
+# Generate Prisma client and build
+RUN npx prisma generate
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/api --configuration=production --no-cache --skip-nx-cache 
+RUN nx build @astronera/api --configuration=production
 
 # Final image stage
 FROM node:20-alpine AS final
@@ -42,9 +41,5 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/libs/logger/dist ./node_modules/@ib/logger/dist
 
-# Create a package.json that forces CommonJS
-# RUN echo '{"type":"commonjs"}' > ./package.json
-
 EXPOSE 3000
-
 CMD ["node", "dist/main"]
