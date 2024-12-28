@@ -26,7 +26,7 @@ async function generateRoutes() {
       countQuery += `&filters[category][slug][$eq]=${category}`
     }
 
-    const countRes = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
+    const response = await fetch(`${strapiBaseUrl}/api/articles${countQuery}`, {
       headers: { 'Content-Type': 'application/json' },
     })
 
@@ -35,7 +35,7 @@ async function generateRoutes() {
       return []
     }
 
-    const countData = await countRes.json()
+    const countData = await response.json()
     const totalCount = countData.meta.pagination.total
     const totalPages = Math.ceil(totalCount / pageSize)
 

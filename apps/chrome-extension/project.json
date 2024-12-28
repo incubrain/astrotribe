@@ -7,19 +7,19 @@
     "build:clean": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "rm -rf dist/apps/chrome-extension"
+        "command": "rm -rf apps/chrome-extension/dist/"
       }
     },
     "build:html": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "mkdir -p dist/apps/chrome-extension && cp apps/chrome-extension/newtab.html dist/apps/chrome-extension/"
+        "command": "mkdir -p apps/chrome-extension/dist && cp apps/chrome-extension/newtab.html apps/chrome-extension/dist/"
       }
     },
     "build:assets": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cp apps/chrome-extension/manifest.json dist/apps/chrome-extension/"
+        "command": "cp apps/chrome-extension/manifest.json apps/chrome-extension/dist/"
       }
     },
     "build": {
@@ -27,7 +27,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/chrome-extension",
+        "outputPath": "apps/chrome-extension/dist",
         "target": "chrome"
       },
       "configurations": {
@@ -77,7 +77,7 @@
     "package": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd dist/apps/chrome-extension && zip -r ../chrome-extension.zip ."
+        "command": "cd apps/chrome-extension/dist && zip -r ../chrome-extension.zip ."
       },
       "dependsOn": ["build"]
     }

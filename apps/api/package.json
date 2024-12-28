@@ -2,7 +2,7 @@
   "name": "@astronera/api",
   "version": "0.0.3",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "lint": "nx lint @astronera/api",
     "test": "nx test @astronera/api",

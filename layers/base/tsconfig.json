@@ -1,3 +1,7 @@
 {
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
   "exclude": ["node_modules", ".nuxt", "dist", ".output"]
 }
