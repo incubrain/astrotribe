@@ -24,14 +24,19 @@ RUN npm i typescript @types/node -D --workspace=@astronera/cms
 RUN mkdir -p apps/cms/dist/src/providers/supabase
 RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 
-# Copy scripts
-COPY apps/cms/scripts/seed.js apps/cms/scripts/
+# THEN - copy source files
+COPY . .
 
-# Build the admin panel
-ENV NX_DISABLE_DB=true
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true
+ENV NX_BATCH_MODE=true
+ENV NX_SKIP_LOG_GROUPING=true
+ENV NX_VERBOSE_LOGGING=true
+
+# Install dependencies for this workspace only
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/cms --no-cache --skip-nx-cache
+RUN nx build @astronera/cms --configuration=production
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms

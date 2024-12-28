@@ -2,75 +2,53 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Declare build-time arguments and set them as environment variables
-ARG NUXT_PUBLIC_POSTHOG_URL
-ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL}
-
-ARG NUXT_PUBLIC_POSTHOG_KEY
-ENV NUXT_PUBLIC_POSTHOG_KEY=${NUXT_PUBLIC_POSTHOG_KEY}
-
-ARG NUXT_PUBLIC_LOG_LEVEL
-ENV NUXT_PUBLIC_LOG_LEVEL=${NUXT_PUBLIC_LOG_LEVEL}
-
-ARG RAILWAY_DOCKERFILE_PATH
-ENV RAILWAY_DOCKERFILE_PATH=${RAILWAY_DOCKERFILE_PATH}
-
-ARG NUXT_PUBLIC_AUTH_URL
-ENV NUXT_PUBLIC_AUTH_URL=${NUXT_PUBLIC_AUTH_URL}
-
-ARG NUXT_PUBLIC_LOGIN_URL
-ENV NUXT_PUBLIC_LOGIN_URL=${NUXT_PUBLIC_LOGIN_URL}
-
-ARG NUXT_PUBLIC_STRAPI_URL
-ENV NUXT_PUBLIC_STRAPI_URL=${NUXT_PUBLIC_STRAPI_URL}
-
-ARG NUXT_STRAPI_URL
-ENV NUXT_STRAPI_URL=${NUXT_STRAPI_URL}
-
-ARG NODE_ENV
-ENV NODE_ENV=${NODE_ENV}
-
-ARG NUXT_PUBLIC_APP_URL
-ENV NUXT_PUBLIC_APP_URL=${NUXT_PUBLIC_APP_URL}
-
-ARG NUXT_PUBLIC_SUPABASE_KEY
-ENV NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY}
-
-ARG NUXT_PUBLIC_SUPABASE_URL
-ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
-
-# Copy the entire project (excluding node_modules via .dockerignore)
-# Copy workspace configuration files
+# First copy package files for dependency installation
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Copy auth service and its dependencies
-COPY apps/website apps/website
-COPY libs libs 
-COPY layers layers
+# Install dependencies
+RUN npm ci --workspace=@astronera/admin --include-workspace-root
 
-# Install dependencies for website workspace only
-RUN npm ci --workspace=@astronera/website --include-workspace-root
+# Copy source files (only what's needed)
+COPY apps/website ./apps/website
+COPY apps/admin ./apps/admin
+COPY libs ./libs
+COPY layers ./layers
 
-# Disable Nx Daemon, Nx Cloud, and Caching
-ENV NX_DAEMON=false
-ENV NX_CLOUD=false
-ENV NX_CACHE_SKIP=true
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true \
+    NX_BATCH_MODE=true \
+    NX_SKIP_LOG_GROUPING=true \
+    NX_VERBOSE_LOGGING=true
 
-# Build auth service
-ENV NX_DISABLE_DB=true
+# Declare build-time arguments and set them as environment variables
+# Group related environment variables together
+ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL} \
+    NUXT_PUBLIC_POSTHOG_KEY=${NUXT_PUBLIC_POSTHOG_KEY} \
+    NUXT_PUBLIC_LOG_LEVEL=${NUXT_PUBLIC_LOG_LEVEL} \
+    RAILWAY_DOCKERFILE_PATH=${RAILWAY_DOCKERFILE_PATH} \
+    NUXT_PUBLIC_AUTH_URL=${NUXT_PUBLIC_AUTH_URL} \
+    NUXT_PUBLIC_LOGIN_URL=${NUXT_PUBLIC_LOGIN_URL} \
+    NUXT_PUBLIC_STRAPI_URL=${NUXT_PUBLIC_STRAPI_URL} \
+    NUXT_STRAPI_URL=${NUXT_STRAPI_URL} \
+    NODE_ENV=${NODE_ENV} \
+    NUXT_PUBLIC_APP_URL=${NUXT_PUBLIC_APP_URL} \
+    NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY} \
+    NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
+
+# Install nx globally and run builds
 RUN npm install nx@20.0.0 -g
 RUN nx reset
 RUN npx tsx apps/website/generate-routes.ts
-RUN nx build @astronera/website --configuration=production --no-cache --skip-nx-cache
+RUN nx build @astronera/admin --configuration=production
 
+# Setup production stage
 WORKDIR /app/apps/website/.output
 
-# Set the port (default to 8080 if not provided)
+# Set and expose port
 ENV PORT=8080
-
-# Expose the port
 EXPOSE $PORT
 
+# Start the application
 CMD ["node", "server/index.mjs"]

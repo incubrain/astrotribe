@@ -2,29 +2,33 @@ FROM node:20.17.0
 
 WORKDIR /app
 
-# Copy workspace configuration files
+# First copy package files for dependency installation
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Copy admin app and its workspace dependencies
-COPY apps/admin apps/admin
-COPY libs libs        
-COPY layers layers        
-
-# Install dependencies for admin workspace only
+# Install dependencies
 RUN npm ci --workspace=@astronera/admin --include-workspace-root
 
-# Install nx globally (if needed)
-ENV NX_DISABLE_DB=true
+# Copy source files (only what's needed)
+COPY apps/admin ./apps/admin
+COPY libs ./libs 
+COPY layers ./layers 
+
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true \
+    NX_BATCH_MODE=true \
+    NX_SKIP_LOG_GROUPING=true \
+    NX_VERBOSE_LOGGING=true
+
+# Install nx and build
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/admin --configuration=production --no-cache --skip-nx-cache
+RUN nx build @astronera/admin --configuration=production
 
-# Keep the working directory at /app
-WORKDIR /app
+# Set working directory to output
+WORKDIR /app/apps/admin/.output
 
-# Command to run the application
-CMD ["node", "apps/admin/.output/server/index.mjs"]
-
+# Expose port and start command
 EXPOSE 3000
+CMD ["node", "server/index.mjs"]

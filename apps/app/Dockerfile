@@ -1,38 +1,35 @@
-# Use Node.js 20.17.0 as the base image
 FROM node:20.17.0
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Declare build-time arguments and set them as environment variables
-ARG NUXT_PUBLIC_SUPABASE_URL
-ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
-
-# Copy root workspace configuration files
+# First copy configuration files
 COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Copy only the app and its dependencies
-COPY apps/app apps/app
-COPY libs libs
-COPY layers layers
-
-
-
-# Install dependencies for this workspace only
+# Install dependencies
 RUN npm ci --workspace=@astronera/app --include-workspace-root
 
-# Install nx globally (if needed)
+# Copy only needed source files
+COPY apps/app ./apps/app
+COPY libs ./libs
+COPY layers ./layers
+
+# Set environment variables
+ENV NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
+    NX_SKIP_NX_CACHE=true \
+    NX_BATCH_MODE=true \
+    NX_SKIP_LOG_GROUPING=true \
+    NX_VERBOSE_LOGGING=true
+
+# Install nx and build
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/app --configuration=production --no-cache --skip-nx-cache
+RUN nx build @astronera/app --configuration=production
 
-# Set the working directory to the /app output
+# Set the working directory to the output
 WORKDIR /app/apps/app/.output
 
-# Command to run the application
-CMD ["node", "server/index.mjs"]
-
-# Expose the port the app runs on
+# Expose port and start command
 EXPOSE 3000
+CMD ["node", "server/index.mjs"]
