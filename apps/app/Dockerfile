@@ -3,15 +3,10 @@ FROM node:20.17.0
 WORKDIR /app
 
 ARG NX_CLOUD_ACCESS_TOKEN
-ARG NX_CLOUD_DISTRIBUTED_EXECUTION
-ARG NX_BRANCH
-ARG NX_CI_EXECUTION_ID
 ARG NUXT_PUBLIC_SUPABASE_URL
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    NX_CLOUD_DISTRIBUTED_EXECUTION=${NX_CLOUD_DISTRIBUTED_EXECUTION:-false} \
-    NX_BRANCH=${NX_BRANCH:-main} \
-    NX_CI_EXECUTION_ID=${NX_CI_EXECUTION_ID:-local} \
+    NODE_ENV=production \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # First copy configuration files
@@ -28,7 +23,7 @@ COPY layers ./layers
 RUN npm ci --workspace=@astronera/app --include-workspace-root
 
 # Install nx and build
-RUN npm install nx@20.3.0 -g
+RUN npm install nx@latest -g
 RUN nx reset
 RUN nx build @astronera/app --configuration=production
 
