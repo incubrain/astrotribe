@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ib/logger": "^0.0.3",
+    "playwright": "^1.41.1",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",

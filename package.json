@@ -145,7 +145,6 @@
     "pg-boss": "^10.1.5",
     "pg-pool": "^3.7.0",
     "pinia": "^2.2.2",
-    "playwright": "^1.41.1",
     "posthog-js": "^1.164.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "qrcode": "^1.5.4",
