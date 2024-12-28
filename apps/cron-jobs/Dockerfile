@@ -41,7 +41,7 @@ ENV NODE_ENV=production \
     NX_CACHE_SKIP=true
 
 # Install dependencies for cron-jobs workspace only
-RUN npm ci --workspace=@astronera/cron-jobs --include-workspace-root
+RUN npm ci --workspace=@astronera/cron-jobs --no-cache --include-workspace-root
 
 # Install Playwright browsers
 RUN npx playwright install chromium

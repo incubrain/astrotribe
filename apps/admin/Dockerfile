@@ -18,7 +18,7 @@ RUN npm ci --workspace=@astronera/admin --include-workspace-root
 # Install nx globally (if needed)
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/admin --configuration=production --skip-nx-cache
+RUN nx build @astronera/admin --configuration=production --no-cache --skip-nx-cache
 
 # Keep the working directory at /app
 WORKDIR /app
