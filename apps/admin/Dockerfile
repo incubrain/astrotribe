@@ -1,27 +1,24 @@
-# Use Node.js 20.17.0 as the base image
 FROM node:20.17.0
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy workspace configuration files
 COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci
+# Copy admin app and its workspace dependencies
+COPY apps/admin apps/admin
+COPY libs libs        
+COPY layers layers        
 
-# Copy the entire project, including configuration files
-COPY . .
+# Install dependencies for admin workspace only
+RUN npm ci --workspace=@astronera/admin --include-workspace-root
 
-# List contents to verify files are copied correctly
-RUN ls -la && ls -la apps/admin
-
+# Install nx globally
 RUN npm install -g nx
 
-RUN npx nx reset
-RUN npx nx --version
-
-# Build the @astronera/admin
+# Build admin dashboard
 RUN nx build @astronera/admin --verbose --skip-nx-cache
 
 # Keep the working directory at /app
@@ -30,5 +27,4 @@ WORKDIR /app
 # Command to run the application
 CMD ["node", "apps/admin/.output/server/index.mjs"]
 
-# Expose the port the app runs on
 EXPOSE 3000

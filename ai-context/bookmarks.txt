@@ -50,7 +50,7 @@ For more information about Repomix, visit: https://github.com/yamadashy/repomix
 Repository Structure
 ================================================================
 apps/
-  admin-dashboard/
+  admin/
     server/
       api/
         classifier/

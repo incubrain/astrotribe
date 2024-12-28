@@ -5,7 +5,7 @@ export const SERVICE_NAMES = {
   USER_SERVICE: 'user-service',
   PAYMENT_SERVICE: 'payment-service',
   CONTENT_SERVICE: 'content-service',
-  ADMIN_SERVICE: 'admin-dashboard',
+  ADMIN_SERVICE: 'admin',
   SEARCH_SERVICE: 'search-service',
   ANALYTICS_SERVICE: 'analytics-service',
   NOTIFICATION_SERVICE: 'notification-service',

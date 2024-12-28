@@ -26,8 +26,8 @@ export default defineWorkspace([
   {
     extends: './vitest.shared.config.ts',
     test: {
-      name: 'admin-dashboard',
-      root: './apps/admin-dashboard',
+      name: 'admin',
+      root: './apps/admin',
     },
   },
   {

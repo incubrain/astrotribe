@@ -1,35 +1,38 @@
-# Use an official Node.js runtime as a parent image
 FROM node:18-slim
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package.json ./
+# Copy workspace configuration files
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig*.json ./
 
 # Declare build-time args
 ARG SUPABASE_STORAGE_URL
 ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
-# Install dependencies
-RUN npm i
-RUN npm i @aws-sdk/client-s3
-RUN npm i typescript @types/node -D
+# Copy CMS app and its dependencies
+COPY apps/cms apps/cms
+COPY libs/logger libs/logger  
 
-# Copy the rest of the application code
-COPY . .
+# Install dependencies for CMS workspace only
+RUN npm ci --workspace=@astronera/cms --include-workspace-root
+RUN npm i @aws-sdk/client-s3 --workspace=@astronera/cms
+RUN npm i typescript @types/node -D --workspace=@astronera/cms
 
 # Create necessary directories and ensure proper file structure
-RUN mkdir -p dist/src/providers/supabase
-RUN cp -r src/providers dist/src/ || true
+RUN mkdir -p apps/cms/dist/src/providers/supabase
+RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 
-COPY ./scripts/seed.js ./scripts/
+# Copy scripts
+COPY apps/cms/scripts/seed.js apps/cms/scripts/
 
 # Build the admin panel
-RUN npm run build --debug
+RUN nx build @astronera/cms --verbose --skip-nx-cache
 
-# Expose port 1337
+# Update working directory to the CMS app
+WORKDIR /app/apps/cms
+
 EXPOSE 1337
 
-# Start the Strapi server
 CMD ["npm", "run", "start"]
