@@ -41,7 +41,7 @@ ENV NODE_ENV=production \
     NX_CACHE_SKIP=true
 
 # Install dependencies for cron-jobs workspace only
-RUN npm ci --workspace=@astronera/cron-jobs --no-cache --include-workspace-root
+RUN npm ci --workspace=@astronera/cron-jobs --include-workspace-root
 
 # Install Playwright browsers
 RUN npx playwright install chromium
@@ -50,8 +50,12 @@ RUN npx playwright install-deps
 # Generate Prisma client
 RUN npx prisma generate
 
+
 # Build the project using NX
-RUN npx nx build @astronera/cron-jobs --verbose
+ENV NX_DISABLE_DB=true
+RUN npm install nx@20.0.0 -g
+RUN nx reset
+RUN nx build @astronera/cron-jobs --no-cache --skip-nx-cache
 
 # Final stage
 FROM node:20.17.0-bookworm

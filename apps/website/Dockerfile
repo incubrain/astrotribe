@@ -59,6 +59,7 @@ ENV NX_CLOUD=false
 ENV NX_CACHE_SKIP=true
 
 # Build auth service
+ENV NX_DISABLE_DB=true
 RUN npm install nx@20.0.0 -g
 RUN nx reset
 RUN npx tsx apps/website/generate-routes.ts
