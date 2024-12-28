@@ -28,7 +28,7 @@ COPY libs ./libs
 COPY layers ./layers
 
 # Install dependencies with platform specifics
-RUN npm ci --workspace=@astronera/app --include-workspace-root --platform=linux --arch=x64
+RUN npm install --workspaces --include-workspace-root --ignore-scripts
 
 # Install nx and build
 RUN npm install nx@latest -g
