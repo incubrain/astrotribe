@@ -27,8 +27,9 @@ RUN npm ci --workspace=@astronera/api --include-workspace-root
 RUN apk add --no-cache openssl
 RUN npx prisma generate
 
-# Build the application using SWC
-RUN npx nx build @astronera/api --verbose --skip-nx-cache
+RUN npm install nx@20.0.0 -g
+RUN nx reset
+RUN nx build @astronera/api --configuration=production --no-cache --skip-nx-cache 
 
 # Final image stage
 FROM node:20-alpine AS final

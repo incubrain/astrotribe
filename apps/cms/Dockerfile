@@ -28,7 +28,7 @@ RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 COPY apps/cms/scripts/seed.js apps/cms/scripts/
 
 # Build the admin panel
-RUN nx build @astronera/cms --verbose --skip-nx-cache
+RUN nx build @astronera/cms --no-cache --skip-nx-cache
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms

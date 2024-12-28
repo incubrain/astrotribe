@@ -18,7 +18,7 @@ RUN npm ci --workspace=@astronera/auth --include-workspace-root
 # Install nx globally (if needed)
 RUN npm install nx@20.0.0 -g
 RUN nx reset
-RUN nx build @astronera/auth --configuration=production --skip-nx-cache
+RUN nx build @astronera/auth --configuration=production --no-cache --skip-nx-cache
 
 WORKDIR /app/apps/auth/.output
 

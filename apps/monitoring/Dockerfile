@@ -18,10 +18,9 @@ COPY layers/auth layers/auth
 RUN npm ci --workspace=@astronera/monitoring --include-workspace-root
 
 # Install nx globally
-RUN npm install -g nx
-
-# Build monitoring dashboard
-RUN nx build @astronera/monitoring --verbose --skip-nx-cache
+RUN npm install -g nx@20.0.0
+RUN nx reset
+RUN nx build @astronera/monitoring --no-cache --skip-nx-cache
 
 WORKDIR /app/apps/monitoring/.output
 

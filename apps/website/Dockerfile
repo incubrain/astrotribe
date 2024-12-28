@@ -62,7 +62,7 @@ ENV NX_CACHE_SKIP=true
 RUN npm install nx@20.0.0 -g
 RUN nx reset
 RUN npx tsx apps/website/generate-routes.ts
-RUN nx build @astronera/website --configuration=production --skip-nx-cache
+RUN nx build @astronera/website --configuration=production --no-cache --skip-nx-cache
 
 WORKDIR /app/apps/website/.output
 
