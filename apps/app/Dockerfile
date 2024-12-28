@@ -19,14 +19,13 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci --workspace=@astronera/app --include-workspace-root
-
 # Copy only needed source files
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
 
+# Install dependencies
+RUN npm ci --workspace=@astronera/app --include-workspace-root
 
 # Install nx and build
 RUN npm install nx@20.0.0 -g
