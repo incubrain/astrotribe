@@ -10,8 +10,9 @@ ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     ROLLUP_SKIP_NODE_RESOLVE=true \
-    ROLLUP_NATIVE=false \
-    npm_config_build_from_source=true
+    npm_config_build_from_source=true \
+    npm_config_target_libc=glibc
+
 
 # Install required build dependencies
 RUN apt-get update && \
@@ -25,10 +26,10 @@ COPY tsconfig*.json ./
 COPY .npmrc ./
 
 # Pre-install specific platform dependencies
-RUN npm install -g @rollup/rollup-linux-x64-gnu @rollup/rollup-linux-x64-musl --no-save
+RUN npm install -g @rollup/rollup-linux-x64-gnu --no-save
 
 # Install root dependencies with platform specifics
-RUN npm install --no-progress --platform=linux --arch=x64
+RUN npm install --no-progress --platform=linux --arch=x64 --libc=glibc
 
 # Copy only needed source files
 COPY apps/app ./apps/app
