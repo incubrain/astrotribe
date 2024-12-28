@@ -28,7 +28,8 @@ COPY libs ./libs
 COPY layers ./layers
 
 # Install dependencies with platform specifics
-RUN npm install --workspaces --include-workspace-root --ignore-scripts
+RUN npm install --no-progress
+RUN npm install --workspaces
 
 # Install nx and build
 RUN npm install nx@latest -g
