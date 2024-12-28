@@ -4,9 +4,9 @@
   "scripts": {
     "lint": "nx lint @astronera/referral",
     "test": "nx test @astronera/referral",
-    "dev": "nuxi dev",
-    "build": "nuxi build",
-    "prepare": "nuxi prepare"
+    "dev": "npx nuxi dev",
+    "build": "npx nuxi build",
+    "prepare": "npx nuxi prepare"
   },
   "dependencies": {
     "@nuxtjs/supabase": "^1.4.0",
