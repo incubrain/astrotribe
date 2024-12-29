@@ -4,6 +4,12 @@
   "projectType": "library",
   "sourceRoot": "layers/base",
   "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/base && npx nuxi prepare"
+      }
+    },
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": [

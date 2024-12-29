@@ -244,8 +244,5 @@
     "vitest-mock-extended": "^2.0.2",
     "vue-advanced-cropper": "^2.8.9",
     "vue-tsc": "^2.1.6"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "latest"
   }
 }
