@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/base",
+        "outputPath": "layers/base/dist",
         "tsConfig": "layers/base/tsconfig.json",
         "main": "layers/base/index.ts",
         "assets": [

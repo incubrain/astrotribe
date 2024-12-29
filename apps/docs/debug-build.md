@@ -106,7 +106,7 @@ RUN npx nx build $PROJECT_NAME
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "dist/apps/$PROJECT_NAME/main.js"]
+CMD ["node", "apps/$PROJECT_NAME/dist/main.js"]
 ```
 
 ### Notes:

@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/referral",
+        "outputPath": "layers/referral/dist",
         "tsConfig": "layers/referral/tsconfig.json",
         "main": "layers/referral/index.ts",
         "assets": [

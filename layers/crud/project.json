@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/crud",
+        "outputPath": "layers/crud/dist",
         "tsConfig": "layers/crud/tsconfig.json",
         "main": "layers/crud/index.ts",
         "assets": [

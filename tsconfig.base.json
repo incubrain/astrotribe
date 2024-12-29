@@ -3,8 +3,8 @@
   "compilerOptions": {
     "composite": true,
     "paths": {
-      "@ib/logger": ["libs/logger"],
-      "@ib/logger/*": ["libs/logger/*"],
+      "@ib/logger": ["libs/logger/src"],
+      "@ib/logger/*": ["libs/logger/src/*"],
       "@ib/db-testing": ["libs/db-testing"],
       "@ib/db-testing/*": ["libs/db-testing/*"],
       "@website/*": ["apps/website/*"],

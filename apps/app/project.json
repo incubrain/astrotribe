@@ -5,41 +5,12 @@
   "sourceRoot": "packages/app",
   "// targets": "to see all targets run: nx show project @astronera/app --web",
   "targets": {
-    "build:base": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/base && npx nuxi build"
-      }
-    },
-    "build:referral": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/referral && npx nuxi build"
-      }
-    },
-    "build:auth": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/supabase && npx nuxi build"
-      }
-    },
-
-    "build:advert": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/advert && npx nuxi build"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/app && npx nuxi build"
       },
       "dependsOn": [
-        "build:base",
-        "build:auth",
-        "build:advert",
-        "build:referral",
         {
           "target": "build",
           "projects": "dependencies",

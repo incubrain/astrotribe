@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/supabase",
+        "outputPath": "layers/supabase/dist",
         "tsConfig": "layers/supabase/tsconfig.json",
         "main": "layers/supabase/index.ts",
         "assets": [
