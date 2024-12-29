@@ -6,12 +6,13 @@ ARG NX_CLOUD_ACCESS_TOKEN
 ARG NUXT_PUBLIC_SUPABASE_URL
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    NODE_ENV=production \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    ROLLUP_SKIP_NODE_RESOLVE=true \
+    NX_DAEDOM=false \
     npm_config_build_from_source=true \
-    npm_config_target_libc=glibc
+    npm_config_target_libc=glibc \
+    NX_SKIP_NX_CLOUD=true
+
 
 
 # Install required build dependencies
@@ -20,24 +21,25 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # First copy configuration files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 COPY .npmrc ./
 
-# Pre-install specific platform dependencies
-RUN npm install -g @rollup/rollup-linux-x64-gnu --no-save
-
 # Install root dependencies with platform specifics
-RUN npm install --no-progress --platform=linux --arch=x64 --libc=glibc
+RUN npm install
 
 # Copy only needed source files
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
+COPY prisma ./prisma
 
 # Install workspace dependencies
 RUN npm install --workspaces
+
+# Generate Prisma client for logger
+RUN npx prisma generate
 
 # Now copy source files
 COPY . .
@@ -45,7 +47,10 @@ COPY . .
 # Install nx and build
 RUN npm install nx@latest -g
 RUN nx reset
-RUN NODE_ENV=production nx build @astronera/app --configuration=production
+RUN nx build @astronera/app
+    
+
+RUN npm prune --production
 
 # Set the working directory to the output
 WORKDIR /app/apps/app/.output

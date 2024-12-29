@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/advert",
+        "outputPath": "layers/advert/dist",
         "tsConfig": "layers/advert/tsconfig.json",
         "main": "layers/advert/index.ts",
         "assets": [

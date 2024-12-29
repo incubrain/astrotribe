@@ -10,7 +10,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/layers/testing",
+        "outputPath": "layers/testing/dist",
         "tsConfig": "layers/testing/tsconfig.json",
         "main": "layers/testing/index.ts",
         "assets": [

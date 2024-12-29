@@ -18,7 +18,6 @@
     "@jscpd/core": "^4.0.1",
     "@nuxtjs/mdc": "^0.9.0",
     "@nuxtjs/supabase": "^1.4.0",
-    "@prisma/client": "^6.0.1",
     "@sentry/vue": "^8.31.0",
     "@supabase/supabase-js": "^2.47.8",
     "@vueuse/core": "^11.1.0",
