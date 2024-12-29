@@ -44,6 +44,15 @@ RUN npx prisma generate
 # Now copy source files
 COPY . .
 
+WORKDIR /app/layers/advert
+RUN npx nuxi prepare
+WORKDIR /app/layers/base
+RUN npx nuxi prepare
+WORKDIR /app/layers/auth
+RUN npx nuxi prepare
+WORKDIR /app/layers/referral
+RUN npx nuxi prepare
+
 # Install nx and build
 RUN npm install nx@latest -g
 RUN nx reset
