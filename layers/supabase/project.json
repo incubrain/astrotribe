@@ -5,6 +5,12 @@
   "sourceRoot": "layers/supabase",
   "targets": {
     "build": {
+      "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/supabase && npx nuxi prepare"
+      }
+    },
       "executor": "@nx/js:tsc",
       "outputs": [
         "{options.outputPath}"

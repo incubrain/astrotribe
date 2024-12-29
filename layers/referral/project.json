@@ -4,6 +4,12 @@
   "projectType": "library",
   "sourceRoot": "layers/referral",
   "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/referral && npx nuxi prepare"
+      }
+    },
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": [

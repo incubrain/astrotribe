@@ -4,6 +4,12 @@
   "projectType": "library",
   "sourceRoot": "layers/advert",
   "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/advert && npx nuxi prepare"
+      }
+    },
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": [
