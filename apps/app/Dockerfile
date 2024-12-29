@@ -20,45 +20,37 @@ RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
     rm -rf /var/lib/apt/lists/*
 
-# First copy configuration files
-COPY package.json package-lock.json ./
-COPY nx.json ./
-COPY tsconfig*.json ./
-COPY .npmrc ./
+# Now copy source files
+COPY . .
 
 # Install root dependencies with platform specifics
 RUN npm install
 
-# Copy only needed source files
-COPY apps/app ./apps/app
-COPY libs ./libs
-COPY layers ./layers
-COPY prisma ./prisma
+# Prepare all Nuxt layers first
+RUN cd layers/base && npx nuxi prepare && cd ../..
+RUN cd layers/supabase && npx nuxi prepare && cd ../..
+RUN cd layers/advert && npx nuxi prepare && cd ../..
+RUN cd layers/referral && npx nuxi prepare && cd ../..
+RUN cd apps/app && npx nuxi prepare && cd ../..
+
+
+# # Copy only needed source files
+# COPY apps/app ./apps/app
+# COPY libs ./libs
+# COPY layers ./layers
+# COPY prisma ./prisma
 
 # Install workspace dependencies
-RUN npm install --workspaces
+# RUN npm install --workspaces
 
 # Generate Prisma client for logger
 RUN npx prisma generate
-
-# Now copy source files
-COPY . .
-
-WORKDIR /app/layers/advert
-RUN npx nuxi prepare
-WORKDIR /app/layers/base
-RUN npx nuxi prepare
-WORKDIR /app/layers/auth
-RUN npx nuxi prepare
-WORKDIR /app/layers/referral
-RUN npx nuxi prepare
 
 # Install nx and build
 RUN npm install nx@latest -g
 RUN nx reset
 RUN nx build @astronera/app
     
-
 RUN npm prune --production
 
 # Set the working directory to the output

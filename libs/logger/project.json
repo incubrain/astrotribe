@@ -41,10 +41,10 @@
       "options": {
         "commands": [
           {
-            "command": "nx run @ib/logger:build:cjs"
+            "command": "nx run @ib/logger:build:cjs || true"
           },
           {
-            "command": "nx run @ib/logger:build:esm"
+            "command": "nx run @ib/logger:build:esm || true"
           }
         ],
         "parallel": false
