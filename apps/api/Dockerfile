@@ -5,13 +5,16 @@ WORKDIR /app
 ARG NX_CLOUD_ACCESS_TOKEN
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     NX_DAEDOM=false \
     npm_config_build_from_source=true \
     npm_config_target_libc=glibc \
     NX_SKIP_NX_CLOUD=true
 
 # Install required build dependencies
-RUN apk add --no-cache python3 make g++ gcc openssl
+RUN apt-get update && \
+    apt-get install -y python3 make g++ git && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy entire project
 COPY . .
