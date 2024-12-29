@@ -22,7 +22,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
-      "@ib/logger": ["../../libs/logger"],
+      "@ib/logger": ["../../libs/logger/cjs"],
       "@types": ["src/types/index.ts"],
       "@core": ["src/core/index.ts"],
       "@content": ["src/content/index.ts"],
