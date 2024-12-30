@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import sharedConfig from '../../shared-runtime.config'
-import prerenderRoutes from './prerender-routes.json'
+import prerenderRoutes from './prerendered-routes.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -230,7 +230,7 @@ export default defineNuxtConfig({
     logLevel: 'debug',
     prerender: {
       crawlLinks: true,
-      routes: prerenderRoutes,
+      routes: prerenderRoutes ?? [],
     },
   },
 

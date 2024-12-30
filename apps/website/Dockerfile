@@ -2,6 +2,20 @@ FROM node:22.12.0-bookworm
 
 WORKDIR /app
 
+# Declare build arguments first
+ARG NUXT_PUBLIC_POSTHOG_URL
+ARG NUXT_PUBLIC_POSTHOG_KEY
+ARG NUXT_PUBLIC_LOG_LEVEL
+ARG RAILWAY_DOCKERFILE_PATH
+ARG NUXT_PUBLIC_AUTH_URL
+ARG NUXT_PUBLIC_LOGIN_URL
+ARG NUXT_PUBLIC_STRAPI_URL
+ARG NUXT_STRAPI_URL
+ARG NODE_ENV
+ARG NUXT_PUBLIC_APP_URL
+ARG NUXT_PUBLIC_SUPABASE_KEY
+ARG NUXT_PUBLIC_SUPABASE_URL
+
 # First copy package files for dependency installation
 COPY package*.json ./
 COPY nx.json ./
@@ -22,8 +36,7 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_SKIP_LOG_GROUPING=true \
     NX_VERBOSE_LOGGING=true
 
-# Declare build-time arguments and set them as environment variables
-# Group related environment variables together
+# Now set the environment variables from build args
 ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL} \
     NUXT_PUBLIC_POSTHOG_KEY=${NUXT_PUBLIC_POSTHOG_KEY} \
     NUXT_PUBLIC_LOG_LEVEL=${NUXT_PUBLIC_LOG_LEVEL} \

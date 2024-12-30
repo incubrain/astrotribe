@@ -10,7 +10,12 @@
     "allowJs": true,
     "isolatedModules": true,
     "types": ["node", "vue"],
-    "composite": true
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "incremental": true,
+    "noEmit": false
   },
   "exclude": ["node_modules", "**/dist", "**/.*/"]
 }

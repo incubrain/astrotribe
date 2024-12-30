@@ -2,15 +2,26 @@
   "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
   "compilerOptions": {
     "strict": true,
+    "composite": true,
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
-      "#layers/*": ["../../layers/*"],
       "@types/*": ["./types/*"],
       "#imports": ["./.nuxt/imports.d.ts"],
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "./.nuxt/imports.d.ts"],
+  "include": [
+    "./types/**/*.d.ts",
+    "./**/*.ts",
+    "./**/*.d.ts",
+    "./.nuxt/imports.d.ts",
+    "./prerendered-routes.json"
+  ],
+  "references": [
+    { "path": "../../layers/base" },
+    { "path": "../../layers/advert" },
+    { "path": "../../layers/crud" }
+  ],
   "exclude": ["node_modules", "dist", "tmp"]
-
 }
