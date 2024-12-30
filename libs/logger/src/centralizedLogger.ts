@@ -1,10 +1,15 @@
 import type { H3Event } from 'h3'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { error_type } from '@prisma/client'
-import { getEnvironment } from './environment'
-import type { ErrorLogEntry } from './error-interface'
-import type { Service, ServiceToDomain } from './enums-domains'
-import { NodeWinstonTransport, BrowserConsoleTransport, Level, type LogTransport } from './logger'
+import { getEnvironment } from './environment.js'
+import type { ErrorLogEntry } from './error-interface.js'
+import type { Service, ServiceToDomain } from './enums-domains.js'
+import {
+  NodeWinstonTransport,
+  BrowserConsoleTransport,
+  Level,
+  type LogTransport,
+} from './logger.js'
 
 // ANSI constants
 const ANSI = {

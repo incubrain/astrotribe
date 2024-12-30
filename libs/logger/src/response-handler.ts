@@ -1,6 +1,6 @@
 // @ib/logger/src/response-handler.ts
 import { createError } from 'h3'
-import type { Logger } from './error-interface'
+import type { Logger } from './error-interface.js'
 
 export const handleResponse = async <T>(
   logger: Logger,

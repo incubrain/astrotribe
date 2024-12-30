@@ -14,17 +14,6 @@
     }
   },
   "targets": {
-    "build:cjs": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "libs/logger/dist/cjs",
-        "main": "libs/logger/src/index.ts",
-        "tsConfig": "libs/logger/tsconfig.cjs.json",
-        "assets": ["libs/logger/*.md"],
-        "rootDir": "libs/logger/src"
-      }
-    },
     "build:esm": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
@@ -32,8 +21,29 @@
         "outputPath": "libs/logger/dist/esm",
         "main": "libs/logger/src/index.ts",
         "tsConfig": "libs/logger/tsconfig.esm.json",
-        "assets": ["libs/logger/*.md"],
-        "rootDir": "libs/logger/src"
+        "assets": [
+          {
+            "glob": "package.esm.json",
+            "input": "libs/logger",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "build:cjs": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/logger/dist/cjs",
+        "main": "libs/logger/src/index.ts",
+        "tsConfig": "libs/logger/tsconfig.cjs.json",
+        "assets": [
+          {
+            "glob": "package.cjs.json",
+            "input": "libs/logger",
+            "output": "."
+          }
+        ]
       }
     },
     "build": {

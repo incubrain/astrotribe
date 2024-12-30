@@ -1,5 +1,5 @@
 // src/environment.ts
-import type { Environment } from './environment.d'
+import type { Environment } from './environment.d.js'
 
 export const getEnvironment = (): Environment => {
   // More robust environment detection

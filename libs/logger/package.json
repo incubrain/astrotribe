@@ -2,12 +2,12 @@
   "name": "@ib/logger",
   "version": "0.0.3",
   "private": true,
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/esm/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/esm/src/index.js",
+      "require": "./dist/cjs/src/index.js",
+      "types": "./dist/esm/src/index.d.ts"
     }
   },
   "files": [
