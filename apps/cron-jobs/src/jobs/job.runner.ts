@@ -44,7 +44,7 @@ export class JobRunner {
   }
 
   private async scheduleJob(config: JobConfig<any, any, any>) {
-    await this.services.queue.scheduleJob(config.name, config.schedule.customCron, {
+    await this.services.queue.scheduleJob(config.name, config.schedule?.customCron ?? '', {
       timeout: config.timeout,
       retryLimit: config.retryLimit,
       priority: config.priority,

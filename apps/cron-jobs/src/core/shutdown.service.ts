@@ -58,16 +58,16 @@ export class ShutdownService {
   private async waitForActiveJobs(timeout: number = 30000): Promise<void> {
     const startTime = Date.now()
 
-    while (Date.now() - startTime < timeout) {
-      const activeJobs = await this.services.queue.getActiveJobs()
+    // while (Date.now() - startTime < timeout) {
+    //   const activeJobs = await this.services.queue.getActiveJobs()
 
-      if (activeJobs.length === 0) {
-        return
-      }
+    //   if (activeJobs.length === 0) {
+    //     return
+    //   }
 
-      this.services.logger.info(`Waiting for ${activeJobs.length} active jobs...`)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-    }
+    //   this.services.logger.info(`Waiting for ${activeJobs.length} active jobs...`)
+    //   await new Promise((resolve) => setTimeout(resolve, 1000))
+    // }
 
     this.services.logger.warn('Timeout waiting for active jobs')
   }

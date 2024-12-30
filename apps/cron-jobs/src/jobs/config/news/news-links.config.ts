@@ -79,7 +79,7 @@ export const createNewsLinksJob = (services: JobServices) => {
           batchSize: 10, // Process 10 sources at a time
           processor: async (batch) => {
             const startTime = Date.now()
-            const batchResults = []
+            const batchResults = [] as string[]
             let browserInitialized = false
 
             for (const source of batch) {

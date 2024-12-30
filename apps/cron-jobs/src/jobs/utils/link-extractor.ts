@@ -616,7 +616,7 @@ export class NewsLinkExtractor {
 
     try {
       // Wait for content to load
-      await this.page.waitForLoadState('domcontentloaded')
+      await this.page?.waitForLoadState('domcontentloaded')
 
       // First try specific content areas
       const contentSelectors = [
@@ -631,16 +631,16 @@ export class NewsLinkExtractor {
       ].join(', ')
 
       // Check if main content exists
-      const mainContent = this.page.locator(contentSelectors)
-      const mainContentCount = await mainContent.count()
+      const mainContent = this.page?.locator(contentSelectors)
+      const mainContentCount = await mainContent?.count()
 
       this.services.logger.debug(`Found ${mainContentCount} main content areas`)
 
       let links: string[] = []
 
-      if (mainContentCount > 0) {
+      if (!!mainContentCount && mainContentCount > 0) {
         // Extract links within main content
-        links = await mainContent.evaluateAll((nodes) => {
+        links = (await mainContent?.evaluateAll((nodes) => {
           const hrefs = new Set<string>()
           nodes.forEach((node) => {
             const anchorTags = node.querySelectorAll('a[href]')
@@ -652,7 +652,7 @@ export class NewsLinkExtractor {
             })
           })
           return Array.from(hrefs)
-        })
+        })) as string[]
 
         this.services.logger.info(`Extracted ${links.length} links from main content areas`, {
           sampleLinks: links.slice(0, 5),
@@ -662,9 +662,9 @@ export class NewsLinkExtractor {
         this.services.logger.warn('No main content found, falling back to whole page extraction')
 
         // Wait for any dynamic content
-        await this.page.waitForLoadState('networkidle')
+        await this.page?.waitForLoadState('networkidle')
 
-        links = await this.page.evaluate(() => {
+        links = (await this.page?.evaluate(() => {
           const hrefs = new Set<string>()
           document.querySelectorAll('a[href]').forEach((a) => {
             const href = (a as HTMLAnchorElement).href
@@ -673,7 +673,7 @@ export class NewsLinkExtractor {
             }
           })
           return Array.from(hrefs)
-        })
+        })) as string[]
 
         this.services.logger.info(`Extracted ${links.length} links from entire page`, {
           sampleLinks: links.slice(0, 5),
@@ -706,7 +706,7 @@ export class NewsLinkExtractor {
         error,
         context: {
           url: this.source.url,
-          pageTitle: await this.page.title(),
+          pageTitle: await this.page?.title(),
         },
       })
       return []

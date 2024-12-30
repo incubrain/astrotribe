@@ -35,8 +35,8 @@ export class CircuitBreakerService {
 
       return {
         state: state.state as CircuitState,
-        failures: state.failure_count,
-        lastFailure: state.last_failure,
+        failures: state.failure_count ?? 0,
+        lastFailure: state.last_failure ?? new Date(0),
       }
     } catch (error: any) {
       this.logger.error(`Failed to load circuit state for ${jobName}`, error)

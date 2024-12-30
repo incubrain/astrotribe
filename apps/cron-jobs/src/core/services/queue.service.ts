@@ -206,21 +206,22 @@ export class QueueService {
     }
   }
 
-  async getActiveJobs(name?: string): Promise<PgBoss.Job[]> {
-    if (!this.isStarted) {
-      throw new Error('Queue service not started')
-    }
+  // need to fetch with raw SQL
+  // async getActiveJobs(name?: string): Promise<PgBoss.Job[]> {
+  //   if (!this.isStarted) {
+  //     throw new Error('Queue service not started')
+  //   }
 
-    try {
-      return await this.boss.fetch(name)
-    } catch (error: any) {
-      this.logger.error('Failed to get active jobs', {
-        ...error,
-        name,
-      })
-      throw error
-    }
-  }
+  //   try {
+  //     return await this.boss.(name)
+  //   } catch (error: any) {
+  //     this.logger.error('Failed to get active jobs', {
+  //       ...error,
+  //       name,
+  //     })
+  //     throw error
+  //   }
+  // }
 
   async getSchedules() {
     if (!this.isStarted) {
@@ -253,13 +254,22 @@ export class QueueService {
     }
   }
 
-  async getWorkflowJob(name: string, jobId: string): Promise<WorkflowJob> {
+  async getWorkflowJob(name: string, jobId: string): Promise<WorkflowJob | null> {
     if (!this.isStarted) {
       throw new Error('Queue service not started')
     }
 
     try {
       const job = await this.boss.getJobById(name, jobId)
+
+      if (!job) {
+        this.logger.warn('Job not found', {
+          name,
+          jobId,
+        })
+        return null
+      }
+
       return {
         id: job.id,
         name: job.name,
@@ -267,7 +277,7 @@ export class QueueService {
         priority: job.priority,
         state: job.state as WorkflowJob['state'],
         startedAt: job.startedOn,
-        completedAt: job.completedOn,
+        completedAt: job.completedOn ?? undefined,
         createdAt: job.createdOn,
       }
     } catch (error: any) {
