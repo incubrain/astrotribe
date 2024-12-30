@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:22.12.0-bookworm
 
 WORKDIR /app
 
