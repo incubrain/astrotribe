@@ -1,4 +1,4 @@
-FROM node:20.17.0-bookworm AS builder
+FROM node:22.12.0-bookworm AS builder
 
 WORKDIR /app
 
@@ -56,7 +56,7 @@ RUN nx reset
 RUN nx build @astronera/cron-jobs --configuration=production
 
 # Final stage
-FROM node:20.17.0-bookworm
+FROM node:22.12.0-bookworm
 
 WORKDIR /app
 
