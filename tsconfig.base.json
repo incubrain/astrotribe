@@ -17,8 +17,10 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "vue"],
     "allowJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "rootDir": "."
   },
-  "include": ["./shared-runtime.config.ts"],
+  "include": ["./shared-runtime.config.ts", "./layers/**/*", "./apps/**/*", "./libs/**/*"],
   "exclude": ["node_modules"]
 }
