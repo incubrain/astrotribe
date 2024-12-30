@@ -6,6 +6,9 @@
       "schemaAnalyzer": ["../../generators/schema-analyzer.ts"]
     },
     "composite": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES2022",
     "declaration": true,
     "outDir": "dist",
     "rootDir": ".",

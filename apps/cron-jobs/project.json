@@ -37,7 +37,7 @@
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node dist/index.js",
+        "command": "node dist/src/index.js",
         "cwd": "apps/cron-jobs",
         "env": {
           "NODE_ENV": "production"
