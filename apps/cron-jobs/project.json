@@ -9,7 +9,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["rimraf dist", "tsc -p tsconfig.json"],
+        "commands": ["rimraf dist", "tsc -p tsconfig.json", "tsc-esm-fix --target='dist'"],
         "cwd": "apps/cron-jobs",
         "parallel": false
       },
