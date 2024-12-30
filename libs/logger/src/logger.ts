@@ -1,7 +1,3 @@
-// logger.ts
-
-import winston from 'winston/lib/winston/config'
-
 // Logging levels
 export enum Level {
   Error = 'error',

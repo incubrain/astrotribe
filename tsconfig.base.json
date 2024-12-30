@@ -5,26 +5,19 @@
     "paths": {
       "@ib/logger": ["libs/logger/src"],
       "@ib/logger/*": ["libs/logger/src/*"],
-      "@ib/db-testing": ["libs/db-testing"],
-      "@ib/db-testing/*": ["libs/db-testing/*"],
+      "@ib/db-testing": ["libs/db-testing/src"],
+      "@ib/db-testing/*": ["libs/db-testing/src/*"],
       "@website/*": ["apps/website/*"],
       "#layers/*": ["layers/*"],
       "@@astronera/auth/*": ["apps/auth/*"]
     },
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true, // good for performance, skips .d.ts files
+    "skipLibCheck": true,
     "target": "ESNext",
-    "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "vue"],
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "allowJs": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true
+    "isolatedModules": true
   },
   "exclude": ["node_modules"]
 }
