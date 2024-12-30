@@ -9,8 +9,8 @@ const envPath = path.resolve(__dirname, '../../../.env')
 config({ path: envPath })
 
 // Replace with your Supabase URL and Anon Key
-const SUPABASE_URL = process.env.NUXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.NUXT_SUPABASE_SERVICE_KEY
+const SUPABASE_URL = process.env.NUXT_PUBLIC_SUPABASE_URL ?? 'http://127.0.0.1:54321'
+const SUPABASE_ANON_KEY = process.env.NUXT_SUPABASE_SERVICE_KEY ?? 'undefined'
 
 console.log('ENVS', SUPABASE_ANON_KEY, SUPABASE_URL)
 

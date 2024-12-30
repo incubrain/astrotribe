@@ -1,5 +1,5 @@
 export function getImage(
-  src,
+  src: string,
   {
     modifiers = { width: null, height: null, format: null },
     baseURL = process.env.NUXT_PUBLIC_SUPABASE_URL,
