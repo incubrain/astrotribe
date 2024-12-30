@@ -2,8 +2,8 @@
   "extends": ["../../tsconfig.base.json"],
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,

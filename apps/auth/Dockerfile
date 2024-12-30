@@ -7,13 +7,13 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci --workspace=@astronera/auth --include-workspace-root
-
 # THEN copy source files
 COPY apps/auth ./apps/auth
 COPY libs ./libs
 COPY layers ./layers
+
+# Install dependencies
+RUN npm install
 
 # Set Nx environment variables
 ENV NX_SKIP_NX_CACHE=true \

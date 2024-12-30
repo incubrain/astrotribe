@@ -41,7 +41,7 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_VERBOSE_LOGGING=true
 
 # Install dependencies
-RUN npm ci --workspace=@astronera/cron-jobs --include-workspace-root
+RUN npm install
 
 # Install Playwright browsers and deps
 RUN npx playwright install chromium
@@ -92,4 +92,4 @@ ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 
 # Run with ESM support
-CMD ["node", "--experimental-specifier-resolution=node", "./dist/src/index.js"]
+CMD ["node", "./dist/src/index.js"]
