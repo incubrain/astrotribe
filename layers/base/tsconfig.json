@@ -1,7 +1,3 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": "."
-  },
-  "exclude": ["node_modules", ".nuxt", "dist", ".output"]
+  "extends": ["../tsconfig.shared.json", "./.nuxt/tsconfig.json"]
 }
