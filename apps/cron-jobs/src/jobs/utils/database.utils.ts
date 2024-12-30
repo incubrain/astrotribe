@@ -2,6 +2,91 @@
 import { PrismaClient } from '@prisma/client'
 import type { CustomLogger } from '@core'
 
+export type PrismaTables = {
+  ad_daily_metrics: PrismaClient['ad_daily_metrics']
+  ad_packages: PrismaClient['ad_packages']
+  ad_variants: PrismaClient['ad_variants']
+  addresses: PrismaClient['addresses']
+  ads: PrismaClient['ads']
+  blacklisted_domains: PrismaClient['blacklisted_domains']
+  blacklisted_urls: PrismaClient['blacklisted_urls']
+  blocked_ips: PrismaClient['blocked_ips']
+  bookmark_folders: PrismaClient['bookmark_folders']
+  bookmarks: PrismaClient['bookmarks']
+  categories: PrismaClient['categories']
+  cities: PrismaClient['cities']
+  classified_urls: PrismaClient['classified_urls']
+  comments: PrismaClient['comments']
+  companies: PrismaClient['companies']
+  company_contacts: PrismaClient['company_contacts']
+  company_employees: PrismaClient['company_employees']
+  company_extras: PrismaClient['company_extras']
+  company_metrics: PrismaClient['company_metrics']
+  company_urls: PrismaClient['company_urls']
+  contacts: PrismaClient['contacts']
+  content_categories: PrismaClient['content_categories']
+  content_source_visits: PrismaClient['content_source_visits']
+  content_sources: PrismaClient['content_sources']
+  content_statuses: PrismaClient['content_statuses']
+  content_tags: PrismaClient['content_tags']
+  contents: PrismaClient['contents']
+  countries: PrismaClient['countries']
+  customer_payments: PrismaClient['customer_payments']
+  customer_processed_webhooks: PrismaClient['customer_processed_webhooks']
+  customer_refunds: PrismaClient['customer_refunds']
+  customer_subscription_plans: PrismaClient['customer_subscription_plans']
+  customer_subscriptions: PrismaClient['customer_subscriptions']
+  embedding_reviews: PrismaClient['embedding_reviews']
+  error_logs: PrismaClient['error_logs']
+  error_metrics: PrismaClient['error_metrics']
+  feature_requests: PrismaClient['feature_requests']
+  feature_votes: PrismaClient['feature_votes']
+  feed_categories: PrismaClient['feed_categories']
+  feed_sources: PrismaClient['feed_sources']
+  feedbacks: PrismaClient['feedbacks']
+  feeds: PrismaClient['feeds']
+  follows: PrismaClient['follows']
+  metric_definitions: PrismaClient['metric_definitions']
+  news: PrismaClient['news']
+  news_summaries: PrismaClient['news_summaries']
+  news_tags: PrismaClient['news_tags']
+  newsletters: PrismaClient['newsletters']
+  payment_providers: PrismaClient['payment_providers']
+  plan_permissions: PrismaClient['plan_permissions']
+  referrals: PrismaClient['referrals']
+  referrer_blocks: PrismaClient['referrer_blocks']
+  research: PrismaClient['research']
+  research_embeddings: PrismaClient['research_embeddings']
+  responses: PrismaClient['responses']
+  role_hierarchy: PrismaClient['role_hierarchy']
+  role_permissions: PrismaClient['role_permissions']
+  role_permissions_materialized: PrismaClient['role_permissions_materialized']
+  scoring_weights: PrismaClient['scoring_weights']
+  searches: PrismaClient['searches']
+  security_metrics: PrismaClient['security_metrics']
+  social_media: PrismaClient['social_media']
+  spider_metrics: PrismaClient['spider_metrics']
+  strapi_migrations: PrismaClient['strapi_migrations']
+  strapi_migrations_internal: PrismaClient['strapi_migrations_internal']
+  table_maintenance_log: PrismaClient['table_maintenance_log']
+  table_query_performance: PrismaClient['table_query_performance']
+  table_sequence_usage: PrismaClient['table_sequence_usage']
+  table_statistics: PrismaClient['table_statistics']
+  tags: PrismaClient['tags']
+  user_metrics: PrismaClient['user_metrics']
+  user_profiles: PrismaClient['user_profiles']
+  votes: PrismaClient['votes']
+}
+
+export type PrismaTableNames = keyof PrismaTables
+
+export function getPrismaDelegate<T extends PrismaTableNames>(
+  prisma: PrismaClient,
+  table: T,
+): PrismaTables[T] {
+  return prisma[table] as PrismaTables[T]
+}
+
 export class DatabaseUtils {
   /**
    * Converts BigInt values to numbers recursively throughout an object/array
@@ -29,7 +114,7 @@ export class DatabaseUtils {
   static async handleEntityFailure<T extends { id: number | string }>(
     prisma: PrismaClient,
     logger: CustomLogger,
-    table: string,
+    table: PrismaTableNames,
     entity: T,
     error: Error,
     options?: {
@@ -38,7 +123,9 @@ export class DatabaseUtils {
     },
   ) {
     try {
-      await prisma[table].update({
+      const delegate = getPrismaDelegate(prisma, table)
+
+      await delegate.update({
         where: { id: entity.id },
         data: {
           has_failed: true,
@@ -55,14 +142,14 @@ export class DatabaseUtils {
         })
 
         if (updatedEntity?.failed_count >= options.maxFailures) {
-          await prisma[table].update({
+          await prisma[table as PrismaTableNames].update({
             where: { id: entity.id },
             data: { is_active: false },
           })
         }
       }
     } catch (updateError: any) {
-      logger.error(`Failed to update ${table} failure count`, {
+      logger.error(`Failed to update ${String(table)} failure count`, {
         error: updateError,
         context: { entityId: entity.id },
       })
@@ -170,7 +257,7 @@ export class DatabaseUtils {
   }: {
     prisma: PrismaClient
     logger: CustomLogger
-    table: string
+    table: PrismaTableNames
     where: any
     create: any
     update: any
