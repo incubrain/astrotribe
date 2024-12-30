@@ -1,9 +1,11 @@
 {
-  "extends": ["./.nuxt/tsconfig.json"],
+  "extends": ["../../tsconfig.web.json", "./.nuxt/tsconfig.json"],
   "compilerOptions": {
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "baseUrl": ".",
+    "paths": {
+      "#layers/*": ["../../layers/*"],
+      "#shared/*": ["./shared/*"]
+    }
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
-  "exclude": ["node_modules", "dist", "tmp"]
+  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"]
 }

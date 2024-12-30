@@ -1,22 +1,10 @@
 {
-  "extends": ["../../tsconfig.base.json"],
+  "extends": ["../../tsconfig.node.json"],
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
-    "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "outDir": "./dist",
-    "rootDir": ".",
     "baseUrl": ".",
-    "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "types": ["node"],
+    "outDir": "./dist",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "@types/node"],
     "paths": {
       "@ib/logger": ["../../libs/logger/dist/esm"],
       "@/*": ["./src/*"],
@@ -26,14 +14,5 @@
       "@jobs": ["./src/jobs/config/index.ts"]
     }
   },
-  "include": ["./src/**/*"],
-  "exclude": [
-    "node_modules",
-    "test",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**",
-    "scripts",
-    "dist"
-  ]
+  "include": ["./src/**/*"]
 }

@@ -1,15 +1,13 @@
 {
-  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
+  "extends": ["../../tsconfig.web.json", "./.nuxt/tsconfig.json"],
   "compilerOptions": {
-    "strict": true,
     "baseUrl": ".",
     "paths": {
       "@ib/logger": ["../../libs/logger"],
       "#layers/*": ["../../layers/*"],
       "@types/*": ["./types/*"],
-      "#imports": ["./.nuxt/imports.d.ts"],
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "./.nuxt/imports.d.ts"]
+  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts"]
 }

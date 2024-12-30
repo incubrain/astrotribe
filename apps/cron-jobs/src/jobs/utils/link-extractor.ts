@@ -9,6 +9,7 @@ import { logFile } from '@helpers'
 import { URLFormatter } from './url-formatter'
 import { UrlClassifier } from './url-classifier'
 import { ContentStash, globalContentStash } from './content-stash'
+import fetch from 'node-fetch'
 
 interface ClassifiedUrl {
   url: string
