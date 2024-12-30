@@ -62,7 +62,7 @@ export class WorkflowService {
 
       return {
         id: workflowId,
-        status: job.state,
+        status: job.state ?? 'pending',
         progress: job.data?.progress ?? 0,
         childJobs: job.data?.jobs ?? [],
       }
