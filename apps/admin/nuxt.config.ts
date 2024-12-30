@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     resolve: {
       alias: {
         '@ib/logger': fileURLToPath(
-          new URL('../../libs/logger/dist/esm/index.js', import.meta.url),
+          new URL('../../libs/logger/dist/esm/src/index.js', import.meta.url),
         ),
       },
     },

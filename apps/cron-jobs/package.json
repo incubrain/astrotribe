@@ -8,7 +8,7 @@
     "test": "nx test @astronera/cron-jobs",
     "dev": "nx serve @astronera/cron-jobs",
     "build": "nx build @astronera/cron-jobs",
-    "start": "node dist/main.js",
+    "start": "node dist/src/index.js",
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
   "dependencies": {

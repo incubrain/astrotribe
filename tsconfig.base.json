@@ -19,5 +19,6 @@
     "allowJs": true,
     "isolatedModules": true
   },
+  "include": ["./shared-runtime.config.ts"],
   "exclude": ["node_modules"]
 }

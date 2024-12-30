@@ -7,8 +7,7 @@
     "lint": "nx lint @astronera/admin",
     "test": "nx test @astronera/admin",
     "dev": "nx serve @astronera/admin",
-    "build": "nx build @astronera/admin",
-    "start": "node dist/main.js"
+    "build": "nx build @astronera/admin"
   },
   "dependencies": {
     "@ib/db-testing": "*",
