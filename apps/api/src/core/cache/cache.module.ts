@@ -17,6 +17,7 @@ import IORedis from 'ioredis'
           port: config.get<number>('app.redis.port') || 6379,
           password: config.get<string>('app.redis.password'),
           username: config.get<string>('app.redis.username'),
+          family: 0,
         })
       },
       inject: [ConfigService],
@@ -25,9 +26,7 @@ import IORedis from 'ioredis'
   exports: ['REDIS_CACHE'],
 })
 export class RedisModule implements OnApplicationShutdown {
-  constructor(
-    @Inject('REDIS_CACHE') private cacheClient: Redis,
-  ) {}
+  constructor(@Inject('REDIS_CACHE') private cacheClient: Redis) {}
 
   async onApplicationShutdown() {
     // Alternative place to close connections if desired
