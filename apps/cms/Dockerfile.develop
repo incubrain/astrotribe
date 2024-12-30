@@ -5,13 +5,13 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package.json package-lock.json ./
 
-RUN npm ci
+# Copy the rest of the application
+COPY . .
+
+RUN npm install
 
 # Install nodemon and tsx for development and seeding
 RUN npm install -g nodemon tsx
-
-# Copy the rest of the application
-COPY . .
 
 # Create necessary directories
 RUN mkdir -p data/uploads

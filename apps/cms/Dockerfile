@@ -16,7 +16,7 @@ COPY apps/cms apps/cms
 COPY libs/logger libs/logger  
 
 # Install dependencies for CMS workspace only
-RUN npm ci --workspace=@astronera/cms --include-workspace-root
+RUN npm install
 RUN npm i @aws-sdk/client-s3 --workspace=@astronera/cms
 RUN npm i typescript @types/node -D --workspace=@astronera/cms
 

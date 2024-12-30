@@ -8,7 +8,7 @@ COPY nx.json ./
 COPY tsconfig*.json ./
 
 # Install dependencies
-RUN npm ci --workspace=@astronera/admin --include-workspace-root
+RUN npm install
 
 # Copy source files (only what's needed)
 COPY apps/website ./apps/website

@@ -10,11 +10,11 @@ WORKDIR /app
 # Copy only package.json and package-lock.json first for better caching
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm ci
-
 # Copy the rest of the application code
 COPY . .
+
+# Install dependencies
+RUN npm install
 
 # Build the application using Nx
 RUN npx nx build @astronera/website
