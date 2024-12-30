@@ -2,7 +2,6 @@
   "name": "@astronera/website",
   "version": "0.0.3",
   "type": "module",
-  "private": true,
   "scripts": {
     "lint": "nx lint @astronera/website",
     "test": "nx test @astronera/website",

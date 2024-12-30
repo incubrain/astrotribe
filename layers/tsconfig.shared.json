@@ -6,6 +6,7 @@
     "composite": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "outDir": "./dist",
     "paths": {
       "#layers/*": ["../*"],
       "#imports": ["./.nuxt/imports.d.ts"]

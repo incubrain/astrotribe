@@ -1,6 +1,7 @@
 {
   "name": "@astronera/app",
   "version": "0.0.3",
+  "type": "module",
   "scripts": {
     "lint": "nx lint @astronera/app",
     "test": "nx test @astronera/app",
@@ -37,6 +38,5 @@
     "vitest": "^2.1.5",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
-  },
-  "type": "module"
+  }
 }
