@@ -13,8 +13,6 @@ ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     npm_config_target_libc=glibc \
     NX_SKIP_NX_CLOUD=true
 
-
-
 # Install required build dependencies
 RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
