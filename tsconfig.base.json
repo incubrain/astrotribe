@@ -1,21 +1,28 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "allowJs": true,
-    "isolatedModules": true,
-    "types": ["node", "vue"],
+    // Build options
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "incremental": true,
-    "noEmit": false
+
+    // Type checking
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Base paths
+    "baseUrl": ".",
+    "paths": {
+      "#layers/*": ["layers/*"],
+      "@ib/*": ["libs/*/src"]
+    },
+
+    // Common types
+    "types": ["node"]
   },
   "exclude": ["node_modules", "**/dist", "**/.*/"]
 }

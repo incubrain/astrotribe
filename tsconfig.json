@@ -8,19 +8,24 @@
     }
   },
   "references": [
-    { "path": "apps/app" },
+    // Applications
     { "path": "apps/api" },
-    { "path": "apps/website" },
     { "path": "apps/cron-jobs" },
-    { "path": "apps/monitoring" },
+    { "path": "apps/chrome-extension" },
+
+    // Nuxt Applications
+    { "path": "apps/app" },
+    { "path": "apps/website" },
     { "path": "apps/cms" },
-    { "path": "apps/docs" },
     { "path": "apps/auth" },
-    { "path": "layers/crud" },
+
+    // Nuxt Layers
     { "path": "layers/base" },
+    { "path": "layers/crud" },
     { "path": "layers/advert" },
     { "path": "layers/supabase" },
-    { "path": "layers/crud" },
+
+    // Shared Libraries
     { "path": "libs/logger" },
     { "path": "libs/db-testing" }
   ]
