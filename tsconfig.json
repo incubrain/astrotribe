@@ -1,0 +1,18 @@
+{
+  "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#layers/*": ["layers/*"],
+      "@ib/*": ["libs/*/src"]
+    }
+  },
+  "references": [
+    { "path": "apps/app" },
+    { "path": "apps/cron-jobs" },
+    { "path": "layers/base" },
+    { "path": "layers/advert" },
+    { "path": "layers/crud" },
+    { "path": "libs/logger" }
+  ]
+}

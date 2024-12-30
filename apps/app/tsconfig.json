@@ -2,7 +2,9 @@
   "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.base.json"],
   "compilerOptions": {
     "strict": true,
+    "composite": true,
     "baseUrl": ".",
+    "rootDir": "../..",
     "paths": {
       "@base": ["../../layers/base"],
       "#layers/*": ["../../layers/*"],
@@ -11,6 +13,11 @@
       "#shared/*": ["./shared/*"]
     }
   },
+  "references": [
+    { "path": "../../layers/base" },
+    { "path": "../../layers/advert" },
+    { "path": "../../layers/crud" }
+  ],
   "include": [
     "./types/**/*.d.ts",
     "./**/*.ts",

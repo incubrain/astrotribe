@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "outDir": "./dist",
     "rootDir": ".",
+    "baseUrl": ".",
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,

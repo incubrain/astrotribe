@@ -1,26 +1,16 @@
 {
-  "files": [],
   "compilerOptions": {
-    "composite": true,
-    "paths": {
-      "@ib/logger": ["libs/logger/src"],
-      "@ib/logger/*": ["libs/logger/src/*"],
-      "@ib/db-testing": ["libs/db-testing/src"],
-      "@ib/db-testing/*": ["libs/db-testing/src/*"],
-      "@website/*": ["apps/website/*"],
-      "#layers/*": ["layers/*"],
-      "@@astronera/auth/*": ["apps/auth/*"]
-    },
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["node", "vue"],
+    "strict": true,
     "allowJs": true,
     "isolatedModules": true,
-    "baseUrl": ".",
-    "rootDir": "."
+    "types": ["node", "vue"],
+    "composite": true
   },
-  "include": ["./shared-runtime.config.ts", "./layers/**/*", "./apps/**/*", "./libs/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/dist", "**/.*/"]
 }
