@@ -2,89 +2,96 @@
 import { PrismaClient } from '@prisma/client'
 import type { CustomLogger } from '@core'
 
-export type PrismaTables = {
-  ad_daily_metrics: PrismaClient['ad_daily_metrics']
-  ad_packages: PrismaClient['ad_packages']
-  ad_variants: PrismaClient['ad_variants']
-  addresses: PrismaClient['addresses']
-  ads: PrismaClient['ads']
-  blacklisted_domains: PrismaClient['blacklisted_domains']
-  blacklisted_urls: PrismaClient['blacklisted_urls']
-  blocked_ips: PrismaClient['blocked_ips']
-  bookmark_folders: PrismaClient['bookmark_folders']
-  bookmarks: PrismaClient['bookmarks']
-  categories: PrismaClient['categories']
-  cities: PrismaClient['cities']
-  classified_urls: PrismaClient['classified_urls']
-  comments: PrismaClient['comments']
-  companies: PrismaClient['companies']
-  company_contacts: PrismaClient['company_contacts']
-  company_employees: PrismaClient['company_employees']
-  company_extras: PrismaClient['company_extras']
-  company_metrics: PrismaClient['company_metrics']
-  company_urls: PrismaClient['company_urls']
-  contacts: PrismaClient['contacts']
-  content_categories: PrismaClient['content_categories']
-  content_source_visits: PrismaClient['content_source_visits']
-  content_sources: PrismaClient['content_sources']
-  content_statuses: PrismaClient['content_statuses']
-  content_tags: PrismaClient['content_tags']
-  contents: PrismaClient['contents']
-  countries: PrismaClient['countries']
-  customer_payments: PrismaClient['customer_payments']
-  customer_processed_webhooks: PrismaClient['customer_processed_webhooks']
-  customer_refunds: PrismaClient['customer_refunds']
-  customer_subscription_plans: PrismaClient['customer_subscription_plans']
-  customer_subscriptions: PrismaClient['customer_subscriptions']
-  embedding_reviews: PrismaClient['embedding_reviews']
-  error_logs: PrismaClient['error_logs']
-  error_metrics: PrismaClient['error_metrics']
-  feature_requests: PrismaClient['feature_requests']
-  feature_votes: PrismaClient['feature_votes']
-  feed_categories: PrismaClient['feed_categories']
-  feed_sources: PrismaClient['feed_sources']
-  feedbacks: PrismaClient['feedbacks']
-  feeds: PrismaClient['feeds']
-  follows: PrismaClient['follows']
-  metric_definitions: PrismaClient['metric_definitions']
-  news: PrismaClient['news']
-  news_summaries: PrismaClient['news_summaries']
-  news_tags: PrismaClient['news_tags']
-  newsletters: PrismaClient['newsletters']
-  payment_providers: PrismaClient['payment_providers']
-  plan_permissions: PrismaClient['plan_permissions']
-  referrals: PrismaClient['referrals']
-  referrer_blocks: PrismaClient['referrer_blocks']
-  research: PrismaClient['research']
-  research_embeddings: PrismaClient['research_embeddings']
-  responses: PrismaClient['responses']
-  role_hierarchy: PrismaClient['role_hierarchy']
-  role_permissions: PrismaClient['role_permissions']
-  role_permissions_materialized: PrismaClient['role_permissions_materialized']
-  scoring_weights: PrismaClient['scoring_weights']
-  searches: PrismaClient['searches']
-  security_metrics: PrismaClient['security_metrics']
-  social_media: PrismaClient['social_media']
-  spider_metrics: PrismaClient['spider_metrics']
-  strapi_migrations: PrismaClient['strapi_migrations']
-  strapi_migrations_internal: PrismaClient['strapi_migrations_internal']
-  table_maintenance_log: PrismaClient['table_maintenance_log']
-  table_query_performance: PrismaClient['table_query_performance']
-  table_sequence_usage: PrismaClient['table_sequence_usage']
-  table_statistics: PrismaClient['table_statistics']
-  tags: PrismaClient['tags']
-  user_metrics: PrismaClient['user_metrics']
-  user_profiles: PrismaClient['user_profiles']
-  votes: PrismaClient['votes']
-}
+const prismaTables = {
+  ad_daily_metrics: PrismaClient.prototype.ad_daily_metrics,
+  ad_packages: PrismaClient.prototype.ad_packages,
+  ad_variants: PrismaClient.prototype.ad_variants,
+  addresses: PrismaClient.prototype.addresses,
+  ads: PrismaClient.prototype.ads,
+  blacklisted_domains: PrismaClient.prototype.blacklisted_domains,
+  blacklisted_urls: PrismaClient.prototype.blacklisted_urls,
+  blocked_ips: PrismaClient.prototype.blocked_ips,
+  bookmark_folders: PrismaClient.prototype.bookmark_folders,
+  bookmarks: PrismaClient.prototype.bookmarks,
+  categories: PrismaClient.prototype.categories,
+  cities: PrismaClient.prototype.cities,
+  classified_urls: PrismaClient.prototype.classified_urls,
+  comments: PrismaClient.prototype.comments,
+  companies: PrismaClient.prototype.companies,
+  company_contacts: PrismaClient.prototype.company_contacts,
+  company_employees: PrismaClient.prototype.company_employees,
+  company_extras: PrismaClient.prototype.company_extras,
+  company_metrics: PrismaClient.prototype.company_metrics,
+  company_urls: PrismaClient.prototype.company_urls,
+  contacts: PrismaClient.prototype.contacts,
+  content_categories: PrismaClient.prototype.content_categories,
+  content_source_visits: PrismaClient.prototype.content_source_visits,
+  content_sources: PrismaClient.prototype.content_sources,
+  content_statuses: PrismaClient.prototype.content_statuses,
+  content_tags: PrismaClient.prototype.content_tags,
+  contents: PrismaClient.prototype.contents,
+  countries: PrismaClient.prototype.countries,
+  customer_payments: PrismaClient.prototype.customer_payments,
+  customer_processed_webhooks: PrismaClient.prototype.customer_processed_webhooks,
+  customer_refunds: PrismaClient.prototype.customer_refunds,
+  customer_subscription_plans: PrismaClient.prototype.customer_subscription_plans,
+  customer_subscriptions: PrismaClient.prototype.customer_subscriptions,
+  embedding_reviews: PrismaClient.prototype.embedding_reviews,
+  error_logs: PrismaClient.prototype.error_logs,
+  feature_requests: PrismaClient.prototype.feature_requests,
+  feature_votes: PrismaClient.prototype.feature_votes,
+  feed_categories: PrismaClient.prototype.feed_categories,
+  feed_sources: PrismaClient.prototype.feed_sources,
+  feedbacks: PrismaClient.prototype.feedbacks,
+  feeds: PrismaClient.prototype.feeds,
+  follows: PrismaClient.prototype.follows,
+  metric_definitions: PrismaClient.prototype.metric_definitions,
+  news: PrismaClient.prototype.news,
+  news_summaries: PrismaClient.prototype.news_summaries,
+  news_tags: PrismaClient.prototype.news_tags,
+  newsletters: PrismaClient.prototype.newsletters,
+  payment_providers: PrismaClient.prototype.payment_providers,
+  plan_permissions: PrismaClient.prototype.plan_permissions,
+  referrals: PrismaClient.prototype.referrals,
+  referrer_blocks: PrismaClient.prototype.referrer_blocks,
+  research: PrismaClient.prototype.research,
+  research_embeddings: PrismaClient.prototype.research_embeddings,
+  responses: PrismaClient.prototype.responses,
+  role_hierarchy: PrismaClient.prototype.role_hierarchy,
+  role_permissions: PrismaClient.prototype.role_permissions,
+  role_permissions_materialized: PrismaClient.prototype.role_permissions_materialized,
+  scoring_weights: PrismaClient.prototype.scoring_weights,
+  searches: PrismaClient.prototype.searches,
+  social_media: PrismaClient.prototype.social_media,
+  spider_metrics: PrismaClient.prototype.spider_metrics,
+  strapi_migrations: PrismaClient.prototype.strapi_migrations,
+  strapi_migrations_internal: PrismaClient.prototype.strapi_migrations_internal,
+  table_maintenance_log: PrismaClient.prototype.table_maintenance_log,
+  // security_metrics: PrismaClient.prototype.security_metrics,
+  // table_query_performance: PrismaClient.prototype.table_query_performance,
+  // error_metrics: PrismaClient.prototype.error_metrics,
+  // table_sequence_usage: PrismaClient.prototype.table_sequence_usage,
+  table_statistics: PrismaClient.prototype.table_statistics,
+  tags: PrismaClient.prototype.tags,
+  user_metrics: PrismaClient.prototype.user_metrics,
+  user_profiles: PrismaClient.prototype.user_profiles,
+  votes: PrismaClient.prototype.votes,
+} as const
 
-export type PrismaTableNames = keyof PrismaTables
+export type PrismaTables = typeof prismaTables
+export type PrismaTableNames = keyof typeof prismaTables
+
+type PrismaDelegate = {
+  update: (args: { where: { id: number | string }; data: any }) => Promise<any>
+  upsert: (args: { where: { id: number | string }; create: any; update: any }) => Promise<any>
+  findUnique: (args: { where: { id: number | string }; select?: any }) => Promise<any>
+}
 
 export function getPrismaDelegate<T extends PrismaTableNames>(
   prisma: PrismaClient,
   table: T,
-): PrismaTables[T] {
-  return prisma[table] as PrismaTables[T]
+): PrismaDelegate {
+  return prisma[table] as unknown as PrismaDelegate
 }
 
 export class DatabaseUtils {
@@ -136,13 +143,13 @@ export class DatabaseUtils {
 
       // Optional: Disable entity if it exceeds max failures
       if (options?.maxFailures) {
-        const updatedEntity = await prisma[table].findUnique({
+        const updatedEntity = await delegate.findUnique({
           where: { id: entity.id },
           select: { failed_count: true },
         })
 
         if (updatedEntity?.failed_count >= options.maxFailures) {
-          await prisma[table as PrismaTableNames].update({
+          await delegate.update({
             where: { id: entity.id },
             data: { is_active: false },
           })
@@ -263,7 +270,9 @@ export class DatabaseUtils {
     update: any
   }): Promise<T> {
     try {
-      return await prisma[table].upsert({
+      const delegate = getPrismaDelegate(prisma, table)
+
+      return delegate.upsert({
         where,
         create: {
           ...create,
