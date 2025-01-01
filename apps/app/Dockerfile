@@ -29,6 +29,7 @@ COPY theme ./theme
 COPY tsconfig.* ./
 COPY nx.json ./
 COPY shared-runtime.config.ts ./
+COPY tailwind.config.base.ts ./
 
 # Install dependencies for all required workspaces
 RUN pnpm install --filter @astronera/app... \

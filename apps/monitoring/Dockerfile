@@ -7,6 +7,7 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 COPY shared-runtime.config.ts ./
+COPY tailwind.config.base.ts ./
 
 # Copy monitoring app and its workspace dependencies
 COPY apps/monitoring apps/monitoring
