@@ -86,7 +86,11 @@ COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 
-RUN pnpx playwright --version
+RUN echo "Contents of dist:" && ls -la ./dist && \
+    echo "Contents of node_modules:" && ls -la ./node_modules && \
+    echo "Contents of node_modules/@ib:" && ls -la ./node_modules/@ib
+
+RUN npx playwright --version
 
 RUN echo "Verifying Playwright installation in final image:" && \
     ls -la /root/.cache/ms-playwright && \
