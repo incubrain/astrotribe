@@ -2,7 +2,9 @@
   "name": "@ib/logger",
   "version": "0.0.3",
   "private": true,
-  "types": "dist/index.esm.d.ts",
+  "types": "./dist/index.esm.d.ts",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
