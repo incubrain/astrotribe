@@ -9,10 +9,10 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "types": ["node"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "package.json", "project.json"]
+  "exclude": ["node_modules", "dist"]
 }
