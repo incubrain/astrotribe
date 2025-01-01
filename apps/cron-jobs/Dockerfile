@@ -40,6 +40,9 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_SKIP_LOG_GROUPING=true \
     NX_VERBOSE_LOGGING=true
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies
 RUN pnpm install
 

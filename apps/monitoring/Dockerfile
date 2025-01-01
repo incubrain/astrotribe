@@ -14,6 +14,9 @@ COPY layers layers
 COPY layers/crud layers/crud 
 COPY layers/auth layers/auth 
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies for monitoring workspace only
 RUN pnpm install
 

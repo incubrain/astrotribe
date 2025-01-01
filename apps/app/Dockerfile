@@ -19,6 +19,9 @@ RUN apt-get update && \
 # Now copy source files
 COPY . .
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install root dependencies with platform specifics
 RUN pnpm install
 

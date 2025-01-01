@@ -12,18 +12,22 @@ COPY apps/admin ./apps/admin
 COPY libs ./libs 
 COPY layers ./layers
 
-# Install dependencies
-RUN pnpm install
 
 ARG NX_CLOUD_ACCESS_TOKEN
 
 # Set Nx environment variables
 ENV NX_BATCH_MODE=true \
-    NX_SKIP_LOG_GROUPING=true \
-    NX_VERBOSE_LOGGING=true \
-    NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
-    NX_DAEDOM=false \
-    NX_SKIP_NX_CLOUD=true
+NX_SKIP_LOG_GROUPING=true \
+NX_VERBOSE_LOGGING=true \
+NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
+NX_DAEDOM=false \
+NX_SKIP_NX_CLOUD=true
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies
+RUN pnpm install
 
 # Install nx and build
 RUN pnpm install nx@20.3.0 -g

@@ -15,6 +15,15 @@ ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 COPY apps/cms apps/cms
 COPY libs/logger libs/logger  
 
+# Set Nx environment variables
+ENV NX_SKIP_NX_CACHE=true
+ENV NX_BATCH_MODE=true
+ENV NX_SKIP_LOG_GROUPING=true
+ENV NX_VERBOSE_LOGGING=true
+
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies for CMS workspace only
 RUN pnpm install
 RUN pnpm i @aws-sdk/client-s3 --workspace=@astronera/cms
@@ -26,12 +35,6 @@ RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 
 # THEN - copy source files
 COPY . .
-
-# Set Nx environment variables
-ENV NX_SKIP_NX_CACHE=true
-ENV NX_BATCH_MODE=true
-ENV NX_SKIP_LOG_GROUPING=true
-ENV NX_VERBOSE_LOGGING=true
 
 # Install dependencies for this workspace only
 RUN pnpm install nx@20.3.0 -g
