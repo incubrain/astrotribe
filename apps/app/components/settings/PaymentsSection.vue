@@ -3,7 +3,15 @@
 const { isLoading, subscription } = usePayments('razorpay')
 const { profile } = useCurrentUser()
 
+const { store, loadMore } = useSelectData('customer_subscription_plans', {
+  initialFetch: true,
+  storeKey: 'subscription_plans',
+})
+
+const { items } = storeToRefs(store)
+
 interface PlanConfig {
+  id: string
   name: string
   price: string
   period: string
@@ -17,12 +25,12 @@ interface PlanConfig {
   }
 }
 
-const plans: PlanConfig[] = [
-  {
+const plans = computed(() => [{
+    id: 1,
     name: 'Free',
     price: '₹0',
     period: 'forever',
-    description: 'Get started with basic features',
+    description: 'Get started with free features',
     features: [
       'Basic project access',
       'Community support',
@@ -32,62 +40,14 @@ const plans: PlanConfig[] = [
     ],
     isActive: true,
     availableFrom: null,
-  },
-  {
-    name: 'Basic',
-    price: '₹500',
-    period: '/month',
-    description: 'Perfect for small teams',
-    features: [
-      'Everything in Free, plus:',
-      'Priority support',
-      'Up to 5 team members',
-      'Custom domains',
-    ],
-    isActive: false,
-    availableFrom: 'Coming Q1 2025',
-    razorpayConfig: {
-      subscription_id: 'sub_basic_id',
-      amount: 500,
-    },
-  },
-  // {
-  //   name: 'Pro',
-  //   price: '₹1,800',
-  //   period: '/month',
-  //   description: 'For growing businesses',
-  //   features: [
-  //     'Everything in Basic, plus:',
-  //     '24/7 priority support',
-  //     'Up to 15 team members',
-  //     'API access',
-  //   ],
-  //   isActive: false,
-  //   availableFrom: 'Coming Q2 2025',
-  //   razorpayConfig: {
-  //     subscription_id: 'sub_pro_id',
-  //     amount: 1800,
-  //   },
-  // },
-  // {
-  //   name: 'Expert',
-  //   price: '₹4,000',
-  //   period: '/month',
-  //   description: 'For large enterprises',
-  //   features: [
-  //     'Everything in Pro, plus:',
-  //     'Dedicated support',
-  //     'Unlimited team members',
-  //     'Custom development',
-  //   ],
-  //   isActive: false,
-  //   availableFrom: 'Coming Q4 2025',
-  //   razorpayConfig: {
-  //     subscription_id: 'sub_expert_id',
-  //     amount: 4000,
-  //   },
-  // },
-]
+  }].concat(items.value.map((item: any) => ({
+  ...item,
+  availableFrom: item.created_at,
+  isActive: item.is_active,
+  period: `/${item.interval_type}`,
+  price: (item.monthly_amount) / 100,
+  id: item.external_plan_id,
+}))))
 
 const handlePaymentSuccess = (response: any) => {
   // Handle successful payment
@@ -164,13 +124,13 @@ const customerInfo = computed(() => ({
             <!-- Action Button -->
             <div class="mt-8">
               <div v-if="plan.isActive">
-                <RazorpayButton
-                  v-if="plan.razorpayConfig && profile?.user_plan !== plan.name.toLowerCase()"
+                <PaymentButton
+                  v-if="profile?.user_plan !== plan.name.toLowerCase()"
                   :plan="{
+                    id: plan.id,
                     name: plan.name,
                     description: `Monthly ${plan.name} Plan`,
-                    amount: plan.razorpayConfig.amount,
-                    subscription_id: plan.razorpayConfig.subscription_id,
+                    amount: plan.price,
                   }"
                   :customer="customerInfo"
                   button-label="Upgrade Plan"
