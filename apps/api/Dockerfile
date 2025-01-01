@@ -27,7 +27,7 @@ COPY apps/api ./apps/api
 COPY libs/logger ./libs/logger
 
 # Install dependencies for specific workspaces
-RUN pnpm install --filter @astronera/api --filter @astronera/logger
+RUN pnpm install --filter @astronera/api --filter @ib/logger
 
 # Generate Prisma client for logger
 RUN pnpx prisma generate
