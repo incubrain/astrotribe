@@ -28,12 +28,12 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libatspi2.0-0 \
     libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/* && \
-    npm install -g playwright
-
+    && rm -rf /var/lib/apt/lists/*
+    
 # Install pnpm
 RUN npm install -g pnpm
-
+RUN pnpm install -g playwright
+    
 # Copy only the necessary files first
 COPY pnpm-*.yaml package.json ./
 COPY apps/cron-jobs/package.json ./apps/cron-jobs/
@@ -80,7 +80,7 @@ RUN apt-get update && apt-get install -y \
     libatspi2.0-0 \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/* && \
-    pnpm install -g playwright
+    npm install -g playwright
 
 
 # Copy only the necessary built files
