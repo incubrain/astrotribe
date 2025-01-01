@@ -52,7 +52,7 @@ RUN pnpm install --filter @astronera/cron-jobs --filter @ib/logger
 RUN pnpx playwright install chromium && \
     pnpx playwright install-deps && \
     pnpx prisma generate && \
-    pnpx nx build @astronera/cron-jobs --configuration=production && 
+    pnpx nx build @astronera/cron-jobs --configuration=production
 
 # Final stage
 FROM node:22.12.0-bookworm
