@@ -39,6 +39,7 @@ export default defineConfig({
         'util',
         'os',
         'child_process',
+        'node-fetch',
         // External dependencies
         /^node:/,
         '@tensorflow/tfjs',
