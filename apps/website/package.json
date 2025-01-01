@@ -10,7 +10,6 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@ib/db-testing": "workspace:*",
     "@ib/logger": "workspace:*",
     "@nuxtjs/mdc": "^0.9.0",
     "@supabase/supabase-js": "^2.47.8",

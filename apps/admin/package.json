@@ -10,7 +10,6 @@
     "build": "nx build @astronera/admin"
   },
   "dependencies": {
-    "@ib/db-testing": "workspace:*",
     "@ib/logger": "workspace:*",
     "@supabase/supabase-js": "^2.47.8",
     "@vueuse/core": "^11.1.0",
