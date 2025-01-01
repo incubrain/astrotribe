@@ -34,11 +34,11 @@ COPY tailwind.config.base.ts ./
 # Install dependencies for required workspaces
 RUN pnpm install --filter @astronera/admin... \
     --filter @ib/logger \
-    --filter @astronera/base-layer \
-    --filter @astronera/supabase-layer \
-    --filter @astronera/crud-layer \
-    --filter @astronera/advert-layer \
-    --filter @astronera/referral-layer
+    --filter @astronera/base \
+    --filter @astronera/supabase \
+    --filter @astronera/crud \
+    --filter @astronera/advert \
+    --filter @astronera/referral
 
 # Prepare all Nuxt layers
 RUN pnpx nuxi prepare -r layers/base
