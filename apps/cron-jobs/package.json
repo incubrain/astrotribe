@@ -14,8 +14,7 @@
     "test": "pnpm pnpm nx test",
     "dev": "pnpm nx serve",
     "build": "pnpm nx build",
-    "start": "node dist/src/index.js",
-    "prisma:update": "tsx ./prisma/update-prisma.ts"
+    "start": "node dist/src/index.js"
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
@@ -26,7 +25,8 @@
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "pg-boss": "^10.1.5",
-    "playwright": "^1.41.1",
+    "playwright": "1.41.1",
+    "playwright-core": "1.41.1",
     "robots-parser": "^3.0.1",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.2",
