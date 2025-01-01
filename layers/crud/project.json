@@ -13,6 +13,7 @@
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["prepare"],
       "options": {
         "outputPath": "layers/crud/dist",
         "tsConfig": "layers/crud/tsconfig.json",

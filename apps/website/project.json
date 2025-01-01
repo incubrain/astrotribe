@@ -5,26 +5,12 @@
   "sourceRoot": "apps/website",
   "// targets": "to see all targets run: nx show project @astronera/website --web",
   "targets": {
-    "build:advert": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/advert && pnpx nuxi build"
-      }
-    },
-    "build:referral": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/referral && pnpx nuxi build"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/website && npx tsx generate-routes.ts && NODE_ENV=production pnpx nuxi build"
       },
       "dependsOn": [
-        "build:advert",
-        "build:referral",
         {
           "target": "build",
           "projects": "dependencies",

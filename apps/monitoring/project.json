@@ -5,24 +5,19 @@
   "sourceRoot": "apps/monitoring",
   "// targets": "to see all targets run: nx show project @astronera/monitoring --web",
   "targets": {
-    "build:base": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/base && pnpx nuxi build"
-      }
-    },
-    "build:auth": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/supabase && pnpx nuxi build"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/monitoring && pnpx nuxi build"
+        "command": "pnpx nuxi build",
+        "cwd": "apps/monitoring"
       },
-      "dependsOn": ["build:base", "build:auth"]
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies",
+          "params": "forward"
+        }
+      ]
     },
     "serve": {
       "executor": "nx:run-commands",
