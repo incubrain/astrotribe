@@ -176,7 +176,7 @@
     "@nx/rollup": "20.3.0",
     "@nx/eslint": "20.3.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "vite-plugin-dts": "~3.8.1",
+    "vite-plugin-dts": "~4.0.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vue-tsc": "^2.1.6"
   },
