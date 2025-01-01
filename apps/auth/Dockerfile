@@ -1,33 +1,54 @@
-    FROM node:22.12.0-bookworm
+FROM node:22.12.0-bookworm
 
 WORKDIR /app
 
-# First copy package files for dependency installation
-COPY package*.json ./
-COPY nx.json ./
-COPY tsconfig*.json ./
+ARG NX_CLOUD_ACCESS_TOKEN
 
-# THEN copy source files
-COPY apps/auth ./apps/auth
-COPY libs ./libs
-COPY layers ./layers
+ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    NX_DAEMON=false \
+    NX_SKIP_NX_CLOUD=true
+
+# Install required build dependencies
+RUN apt-get update && \
+    apt-get install -y python3 make g++ git && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
 RUN npm install -g pnpm
 
-# Install dependencies
-RUN pnpm install
+# Copy necessary files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/auth ./apps/auth
+COPY libs/logger ./libs/logger
+COPY layers ./layers
+COPY prisma ./prisma
+COPY tsconfig.* ./
+COPY nx.json ./
 
-# Set Nx environment variables
-ENV NX_SKIP_NX_CACHE=true \
-    NX_BATCH_MODE=true \
-    NX_SKIP_LOG_GROUPING=true \
-    NX_VERBOSE_LOGGING=true
+# Install dependencies for required workspaces
+RUN pnpm install --filter @astronera/auth... \
+    --filter @ib/logger \
+    --filter @astronera/base-layer \
+    --filter @astronera/supabase-layer \
+    --filter @astronera/crud-layer \
+    --filter @astronera/referral-layer
 
-# Install nx globally and build
-RUN pnpm install nx@20.3.0 -g
-RUN nx reset
-RUN nx build @astronera/auth --configuration=production
+# Prepare all Nuxt layers
+RUN pnpx nuxi prepare -r layers/base
+RUN pnpx nuxi prepare -r layers/supabase
+RUN pnpx nuxi prepare -r layers/crud
+RUN pnpx nuxi prepare -r layers/referral
+RUN pnpx nuxi prepare -r apps/auth
+
+# Generate Prisma client
+RUN pnpx prisma generate
+
+# Build with nx
+RUN pnpx nx reset
+RUN pnpx nx build @astronera/auth --configuration=production
+
+RUN pnpm prune --production
 
 # Set working directory to the output folder
 WORKDIR /app/apps/auth/.output

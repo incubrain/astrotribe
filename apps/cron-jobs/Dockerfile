@@ -2,6 +2,13 @@ FROM node:22.12.0-bookworm AS builder
 
 WORKDIR /app
 
+ARG NX_CLOUD_ACCESS_TOKEN
+
+ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    NX_DAEMON=false \
+    NX_SKIP_NX_CLOUD=true
+
 # Install essential system dependencies for Playwright
 RUN apt-get update && apt-get install -y \
     libnss3 \
@@ -23,28 +30,24 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# First copy configuration files
-COPY package*.json ./
-COPY nx.json ./
-COPY tsconfig*.json ./
-COPY prisma ./prisma
-
-# Copy workspace files needed for build
-COPY apps/cron-jobs ./apps/cron-jobs
-COPY libs/logger ./libs/logger
-COPY layers ./layers
-
-# Set Nx environment variables
-ENV NX_SKIP_NX_CACHE=true \
-    NX_BATCH_MODE=true \
-    NX_SKIP_LOG_GROUPING=true \
-    NX_VERBOSE_LOGGING=true
-
 # Install pnpm
 RUN npm install -g pnpm
 
-# Install dependencies
-RUN pnpm install
+# Copy only the necessary files first
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/cron-jobs/package.json ./apps/cron-jobs/
+COPY libs/logger/package.json ./libs/logger/
+
+# Copy the source files for the required workspaces
+COPY apps/cron-jobs ./apps/cron-jobs
+COPY libs/logger ./libs/logger
+COPY prisma ./prisma
+COPY tsconfig.* ./
+COPY nx.json ./
+COPY layers ./layers
+
+# Install dependencies for specific workspaces
+RUN pnpm install --filter @astronera/cron-jobs --filter @ib/logger
 
 # Install Playwright browsers and deps
 RUN pnpx playwright install chromium
@@ -53,10 +56,11 @@ RUN pnpx playwright install-deps
 # Generate Prisma client
 RUN pnpx prisma generate
 
-# Install nx globally and build
-RUN pnpm install nx@20.3.0 -g
-RUN nx reset
-RUN nx build @astronera/cron-jobs --configuration=production
+# Build with nx
+RUN pnpx nx reset
+RUN pnpx nx build @astronera/cron-jobs --configuration=production
+
+RUN pnpm prune --production
 
 # Final stage
 FROM node:22.12.0-bookworm
@@ -87,12 +91,9 @@ RUN apt-get update && apt-get install -y \
 # Copy only the necessary built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
-COPY --from=builder /app/libs/logger/dist ./node_modules/@ib/logger/dist
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 
-# Run with ESM support
 CMD ["node", "./dist/src/index.js"]
