@@ -27,23 +27,6 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
-  vite: {
-    optimizeDeps: {
-      exclude: ['@ib/logger'],
-    },
-    resolve: {
-      alias: {
-        '@ib/logger': fileURLToPath(
-          new URL('../../libs/logger/dist/index.js', import.meta.url),
-        ),
-      },
-    },
-  },
-
-  build: {
-    transpile: ['@ib/logger'],
-  },
-
   ssr: false,
 
   nitro: {
