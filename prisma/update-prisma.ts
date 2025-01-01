@@ -14,7 +14,7 @@ const TYPE_MAPPINGS = {
 
 async function execCommand(command: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const rootEnvPath = path.resolve(process.cwd(), '../../.env')
+    const rootEnvPath = path.resolve(process.cwd(), '.env')
     const cmdWithEnv = `dotenv -e ${rootEnvPath} -- ${command}`
 
     exec(cmdWithEnv, (error, stdout, stderr) => {
@@ -33,7 +33,7 @@ async function execCommand(command: string): Promise<void> {
 async function updateSchema(): Promise<void> {
   try {
     console.log('Running prisma db pull...')
-    await execCommand('npx prisma db pull')
+    await execCommand('pnpx prisma db pull')
 
     console.log('Reading schema file...')
     let schemaContent = await fs.readFile(SCHEMA_PATH, 'utf8')
@@ -60,10 +60,10 @@ async function updateSchema(): Promise<void> {
     await fs.writeFile(SCHEMA_PATH, schemaContent, 'utf8')
 
     console.log('Formatting schema...')
-    await execCommand('npx prisma format')
+    await execCommand('pnpx prisma format')
 
     console.log('Generating Prisma Client...')
-    await execCommand('npx prisma generate')
+    await execCommand('pnpx prisma generate')
 
     console.log('Schema update completed successfully!')
   } catch (error: any) {
