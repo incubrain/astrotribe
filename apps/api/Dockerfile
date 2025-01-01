@@ -17,11 +17,17 @@ RUN apt-get update && \
 # Install pnpm
 RUN npm install -g pnpm
 
-# Copy entire project
-COPY . .
+# Copy only the necessary files first
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json ./apps/api/
+COPY libs/logger/package.json ./libs/logger/
 
-# Install root dependencies with platform specifics
-RUN pnpm install
+# Copy the source files for the required workspaces
+COPY apps/api ./apps/api
+COPY libs/logger ./libs/logger
+
+# Install dependencies for specific workspaces
+RUN pnpm install --filter @astronera/api --filter @astronera/logger
 
 # Generate Prisma client for logger
 RUN pnpx prisma generate
