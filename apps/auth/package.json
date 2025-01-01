@@ -8,13 +8,15 @@
     "test": "pnpm nx test @astronera/auth",
     "dev": "nx serve @astronera/auth",
     "build": "nx build @astronera/auth",
-    "start": "node .output/server/index.mjs" 
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxt/image": "^1.8.1",
     "dotenv": "^16.4.5",
     "uuid": "^10.0.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@primevue/core": "^4.0.7",
+    "@primevue/nuxt-module": "^4.0.7"
   },
   "devDependencies": {
     "h3": "^1.8.2",

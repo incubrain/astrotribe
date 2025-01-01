@@ -7,7 +7,7 @@
     "test": "pnpm nx test @astronera/app",
     "dev": "nx serve @astronera/app",
     "build": "nx build @astronera/app",
-    "start": "node .output/server/index.mjs" 
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@formbricks/js": "^3.0.1",
@@ -24,7 +24,9 @@
     "pinia": "^2.2.2",
     "uuid": "^10.0.0",
     "zod": "^3.23.8",
-    "@nuxt/image": "^1.8.0"
+    "@nuxt/image": "^1.8.0",
+    "@primevue/core": "^4.0.7",
+    "@primevue/nuxt-module": "^4.0.7"
   },
   "devDependencies": {
     "@nuxt/schema": "^3.13.2",
