@@ -23,18 +23,7 @@
         "tsConfig": "libs/logger/tsconfig.json",
         "format": ["esm", "cjs"],
         "generateExportsField": true,
-        "assets": [
-          {
-            "glob": "README.md",
-            "input": "libs/logger",
-            "output": "."
-          },
-          {
-            "glob": "package.json",
-            "input": "libs/logger",
-            "output": "."
-          }
-        ]
+        "rollupConfig": "libs/logger/rollup.config.js"
       }
     }
   }
