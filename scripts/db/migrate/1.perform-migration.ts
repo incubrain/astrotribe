@@ -19,7 +19,7 @@ const migrationName = process.argv[2]
 
 if (!migrationName) {
   console.error(chalk.red('✖ Error: Missing migration name'))
-  console.error(chalk.yellow('\nUsage: npm run db:migrate <migration_name>\n'))
+  console.error(chalk.yellow('\nUsage: pnpm run db:migrate <migration_name>\n'))
   process.exit(1)
 }
 

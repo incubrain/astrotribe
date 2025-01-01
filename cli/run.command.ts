@@ -12,7 +12,7 @@ export const runCommand = new Command('run')
   .action(async (flowId, options) => {
     if (flowId === 'search') {
       console.log(chalk.yellow('Please use the "search" command for search functionality'))
-      console.log('Example: npm run ib search')
+      console.log('Example: pnpm run ib search')
       return
     }
 

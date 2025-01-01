@@ -16,9 +16,9 @@ COPY apps/cms apps/cms
 COPY libs/logger libs/logger  
 
 # Install dependencies for CMS workspace only
-RUN npm install
-RUN npm i @aws-sdk/client-s3 --workspace=@astronera/cms
-RUN npm i typescript @types/node -D --workspace=@astronera/cms
+RUN pnpm install
+RUN pnpm i @aws-sdk/client-s3 --workspace=@astronera/cms
+RUN pnpm i typescript @types/node -D --workspace=@astronera/cms
 
 # Create necessary directories and ensure proper file structure
 RUN mkdir -p apps/cms/dist/src/providers/supabase
@@ -34,7 +34,7 @@ ENV NX_SKIP_LOG_GROUPING=true
 ENV NX_VERBOSE_LOGGING=true
 
 # Install dependencies for this workspace only
-RUN npm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/cms --configuration=production
 
@@ -43,4 +43,4 @@ WORKDIR /app/apps/cms
 
 EXPOSE 1337
 
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "run", "start"]

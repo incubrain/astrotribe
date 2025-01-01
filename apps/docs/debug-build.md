@@ -93,14 +93,14 @@ COPY nx.json ./
 COPY tsconfig*.json ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Copy the project files and shared libraries
 COPY apps/$PROJECT_NAME ./apps/$PROJECT_NAME
 COPY libs ./libs
 
 # Build the specific Nx project
-RUN npx nx build $PROJECT_NAME
+RUN pnpx nx build $PROJECT_NAME
 
 # Expose the port (adjust according to your app's configuration)
 EXPOSE 3000

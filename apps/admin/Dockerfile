@@ -13,7 +13,7 @@ COPY libs ./libs
 COPY layers ./layers
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 ARG NX_CLOUD_ACCESS_TOKEN
 
@@ -23,12 +23,10 @@ ENV NX_BATCH_MODE=true \
     NX_VERBOSE_LOGGING=true \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
     NX_DAEDOM=false \
-    npm_config_build_from_source=true \
-    npm_config_target_libc=glibc \
     NX_SKIP_NX_CLOUD=true
 
 # Install nx and build
-RUN npm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/admin
 

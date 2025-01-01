@@ -10,7 +10,7 @@
 
 1. Install the PostHog client library:
    ```
-   npm install posthog-js
+   pnpm install posthog-js
    ```
 2. Set up the PostHog plugin in your Nuxt app as we discussed earlier.
 

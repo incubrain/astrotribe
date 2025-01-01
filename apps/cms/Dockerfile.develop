@@ -8,10 +8,10 @@ COPY package.json package-lock.json ./
 # Copy the rest of the application
 COPY . .
 
-RUN npm install
+RUN pnpm install
 
 # Install nodemon and tsx for development and seeding
-RUN npm install -g nodemon tsx
+RUN pnpm install -g nodemon tsx
 
 # Create necessary directories
 RUN mkdir -p data/uploads
@@ -24,4 +24,4 @@ COPY .env* ./
 # Make the seed script executable (just in case)
 RUN chmod +x ./scripts/seed.ts
 
-CMD ["npm", "run", "dev", "--debug"]
+CMD ["pnpm", "run", "dev", "--debug"]
