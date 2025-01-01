@@ -1,6 +1,7 @@
 <!-- components/payments/RazorpayButton.vue -->
 <script setup lang="ts">
 interface PlanDetails {
+  id: string
   name: string
   description: string
   amount: number
@@ -26,6 +27,8 @@ interface Props {
   }
   notes?: Record<string, string>
 }
+
+const razorpay = usePayments('razorpay')
 
 const props = withDefaults(defineProps<Props>(), {
   buttonLabel: 'Pay Now',
@@ -99,6 +102,13 @@ useHead({
   ],
 })
 
+const createSubscription = async () => {
+  const subscription = await razorpay.createOrder(props.plan.id)
+  razorpayOptions.value.subscription_id = subscription.id
+
+  handlePayment()
+}
+
 const handlePayment = () => {
   if (!isRazorpayLoaded.value) {
     emit('payment-error', new Error('Razorpay is not loaded yet'))
@@ -121,6 +131,6 @@ const handlePayment = () => {
     :icon="buttonIcon"
     :loading="loading"
     :disabled="!isRazorpayLoaded"
-    @click="handlePayment"
+    @click="createSubscription"
   />
 </template>
