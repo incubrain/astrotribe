@@ -1,6 +1,5 @@
 import type { H3Event } from 'h3'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { error_type } from '@prisma/client'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
@@ -21,6 +20,10 @@ const ANSI = {
   bgBlack: '\x1b[40m',
   bright: '\x1b[1m',
   dim: '\x1b[2m',
+} as const
+
+const error_type = {
+  UNKNOWN_ERROR: 'unknown_error',
 } as const
 
 // Icons for levels

@@ -11,10 +11,7 @@
     "types": ["node"],
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "@prisma/client": ["../../node_modules/.prisma/client/index.d.ts"]
-    }
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "package.json", "project.json"]
