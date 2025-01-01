@@ -5,6 +5,8 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
   const config = useRuntimeConfig()
   const isLoading = ref(false)
   const error = ref(null)
+  const currentUser = useCurrentUser()
+  const { profile } = storeToRefs(currentUser)
 
   const initializePayment = async (options: any) => {
     isLoading.value = true
@@ -35,8 +37,9 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     try {
       const response = await $fetch(`/api/payment/${provider}/create-order`, {
         method: 'POST',
-        body: { plan_id: planId },
+        body: { plan_id: planId, user_id: profile.value.id, total_count: 1 },
       })
+
       return response
     } catch (error: any) {
       console.error(`Error creating order with ${provider}:`, error)
@@ -53,6 +56,25 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
       const response = await $fetch(`/api/payment/${provider}/verify-payment`, {
         method: 'POST',
         body: paymentData,
+      })
+      return response
+    } catch (error: any) {
+      console.error(`Error verifying payment with ${provider}:`, error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const createSubscription = async (plan_id: string) => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await $fetch(`/api/payment/${provider}/create-order`, {
+        method: 'POST',
+        body: {
+          plan_id,
+        },
       })
       return response
     } catch (error: any) {
