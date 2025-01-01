@@ -8,8 +8,7 @@
     "test": "pnpm nx test @astronera/api",
     "dev": "nx serve @astronera/api",
     "build": "nx build @astronera/api",
-    "start": "node dist/main.js",
-    "prisma:update": "tsx ./prisma/update-prisma.ts"
+    "start": "node dist/main.js"
   },
   "dependencies": {
     "@ib/logger": "workspace:*",

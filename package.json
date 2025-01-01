@@ -10,6 +10,8 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
+    "init": "pnpm install && pnpm prisma:update && pnpm db:setup",
+    "prisma:update": "pnpx tsx prisma/update-prisma.ts",
     "debug:test": "echo \"Running from $npm_package_name\"",
     "install:all": "pnpm install --workspaces",
     "clean:modules": "rm -rf node_modules **/node_modules",

@@ -21,9 +21,6 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
-# Install dependencies
-RUN pnpm install
-
 # Copy source files (only what's needed)
 COPY apps/website ./apps/website
 COPY apps/admin ./apps/admin
@@ -49,6 +46,14 @@ ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL} \
     NUXT_PUBLIC_APP_URL=${NUXT_PUBLIC_APP_URL} \
     NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
+    
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies
+RUN pnpm install
+
+
 
 # Install nx globally and run builds
 RUN pnpm install nx@20.3.0 -g

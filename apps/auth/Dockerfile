@@ -12,6 +12,9 @@ COPY apps/auth ./apps/auth
 COPY libs ./libs
 COPY layers ./layers
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies
 RUN pnpm install
 
