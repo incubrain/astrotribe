@@ -1,8 +1,20 @@
-FROM node:22.12.0-bookworm
+FROM node:22-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
+# Install required system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM base AS build
 WORKDIR /app
 
-# Declare build arguments first
+# Declare build arguments
 ARG NUXT_PUBLIC_POSTHOG_URL
 ARG NUXT_PUBLIC_POSTHOG_KEY
 ARG NUXT_PUBLIC_LOG_LEVEL
@@ -17,7 +29,7 @@ ARG NUXT_PUBLIC_SUPABASE_KEY
 ARG NUXT_PUBLIC_SUPABASE_URL
 ARG NX_CLOUD_ACCESS_TOKEN
 
-# Set all environment variables
+# Set build environment variables
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     NX_DAEMON=false \
     NX_SKIP_NX_CLOUD=true \
@@ -34,59 +46,44 @@ ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
-# Install required build dependencies
-RUN apt-get update && \
-    apt-get install -y python3 make g++ git && \
-    rm -rf /var/lib/apt/lists/*
+# Copy workspace config files first
+COPY pnpm-*.yaml package.json ./
+COPY apps/website/package.json ./apps/website/
+COPY libs/logger/package.json ./libs/logger/
+COPY layers/*/package.json ./layers/
 
-# Install pnpm
-RUN npm install -g pnpm
+# Install dependencies with cache mount
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/website ./apps/website
-COPY libs/logger ./libs/logger
-COPY layers ./layers
-COPY prisma ./prisma
-COPY theme ./theme
-COPY tsconfig.* ./
-COPY nx.json ./
-COPY shared-runtime.config.ts ./
-COPY tailwind.config.base.ts ./
+# Copy source files
+COPY . .
 
-# Install dependencies for required workspaces
-RUN pnpm install --filter @astronera/website... \
-    --filter @ib/logger \
-    --filter @astronera/base \
-    --filter @astronera/supabase \
-    --filter @astronera/crud \
-    --filter @astronera/advert \
-    --filter @astronera/referral
+# Generate Prisma client and build
+RUN pnpm exec prisma Generate
 
-# Prepare all Nuxt layers
-RUN pnpx nuxi prepare -r layers/base
-RUN pnpx nuxi prepare -r layers/supabase
-RUN pnpx nuxi prepare -r layers/crud
-RUN pnpx nuxi prepare -r layers/advert
-RUN pnpx nuxi prepare -r layers/referral
-RUN pnpx nuxi prepare -r apps/website
+# Initialize NX workspace first
+RUN pnpm exec nx reset --all && \
+    rm -rf .nx/cache && \
+    pnpm exec nx-cloud start-local-cache
 
-# Generate Prisma client
-RUN pnpx prisma generate
+RUN NODE_ENV=production pnpm exec tsx apps/website/generate-routes.ts
 
-# Generate routes and build
-RUN pnpx tsx apps/website/generate-routes.ts
-RUN pnpx nx reset
-RUN pnpx nx build @astronera/website
+RUN pnpm exec nx build @astronera/website --verbose
 
-RUN pnpm prune --production
+# Create production deployment
+RUN pnpm deploy --filter @astronera/website --prod /prod/website
 
-# Setup production stage
-WORKDIR /app/apps/website/.output
+FROM base
 
-# Set and expose port
-ENV PORT=8080
+WORKDIR /app
+
+# Copy production files
+COPY --from=build /prod/website /app
+
+# Set runtime environment
+ENV PORT=8080 \
+    NODE_ENV=production
+
 EXPOSE $PORT
 
-# Start the application
-CMD ["node", "server/index.mjs"]
+CMD ["node", ".output/server/index.mjs"]

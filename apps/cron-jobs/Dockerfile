@@ -49,8 +49,8 @@ RUN pnpm exec playwright install chromium && \
     pnpm exec playwright install-deps && \
     pnpx prisma generate
 
-RUN pnpx nx reset && \
-    pnpx nx build @astronera/cron-jobs --configuration=production
+RUN pnpm exec nx reset
+RUN pnpx nx build @astronera/cron-jobs --configuration=production
 
 # Create production deployment
 RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
