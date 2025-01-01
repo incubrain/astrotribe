@@ -8,7 +8,7 @@ ARG NUXT_PUBLIC_SUPABASE_URL
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    NX_DAEDOM=false \
+    NX_DAEMON=false \
     NX_SKIP_NX_CLOUD=true
 
 # Install required build dependencies
@@ -16,40 +16,40 @@ RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
     rm -rf /var/lib/apt/lists/*
 
-# Now copy source files
-COPY . .
-
 # Install pnpm
 RUN npm install -g pnpm
 
-# Install root dependencies with platform specifics
-RUN pnpm install
+# Copy necessary files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/app ./apps/app
+COPY libs/logger ./libs/logger
+COPY layers ./layers
+COPY prisma ./prisma
+COPY tsconfig.* ./
+COPY nx.json ./
 
-# Prepare all Nuxt layers first
-RUN cd layers/base && pnpx nuxi prepare && cd ../..
-RUN cd layers/supabase && pnpx nuxi prepare && cd ../..
-RUN cd layers/advert && pnpx nuxi prepare && cd ../..
-RUN cd layers/referral && pnpx nuxi prepare && cd ../..
-RUN cd apps/app && pnpx nuxi prepare && cd ../..
+# Install dependencies for all required workspaces
+RUN pnpm install --filter @astronera/app... \
+    --filter @ib/logger \
+    --filter @astronera/base-layer \
+    --filter @astronera/supabase-layer \
+    --filter @astronera/advert-layer \
+    --filter @astronera/referral-layer
 
+# Prepare all Nuxt layers
+RUN pnpx nuxi prepare -r layers/base
+RUN pnpx nuxi prepare -r layers/supabase
+RUN pnpx nuxi prepare -r layers/advert
+RUN pnpx nuxi prepare -r layers/referral
+RUN pnpx nuxi prepare -r apps/app
 
-# # Copy only needed source files
-# COPY apps/app ./apps/app
-# COPY libs ./libs
-# COPY layers ./layers
-# COPY prisma ./prisma
-
-# Install workspace dependencies
-# RUN pnpm install --workspaces
-
-# Generate Prisma client for logger
+# Generate Prisma client
 RUN pnpx prisma generate
 
-# Install nx and build
-RUN pnpm install nx@latest -g
-RUN nx reset
-RUN nx build @astronera/app
-    
+# Build with nx
+RUN pnpx nx reset
+RUN pnpx nx build @astronera/app
+
 RUN pnpm prune --production
 
 # Set the working directory to the output

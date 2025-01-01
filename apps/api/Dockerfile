@@ -6,7 +6,7 @@ ARG NX_CLOUD_ACCESS_TOKEN
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    NX_DAEDOM=false \
+    NX_DAEMON=false \
     NX_SKIP_NX_CLOUD=true
 
 # Install required build dependencies
