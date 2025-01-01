@@ -31,62 +31,85 @@ export class BrowserConsoleTransport implements LogTransport {
 // Node Winston transport
 export class NodeWinstonTransport implements LogTransport {
   public initialized = false
+  private initPromise: Promise<void> | null = null
+
   private logger: import('winston').Logger | undefined
-  private isDev: boolean
+  private messageQueue: Array<{ level: Level; message: string }> = []
 
-  constructor(isDev: boolean) {
+  constructor(private isDev: boolean) {
     this.isDev = isDev
-    this.init()
+    this.initPromise = this.init()
   }
 
-  async init() {
-    const w = await import('winston')
-    const winston = w ?? w
+  async init(): Promise<void> {
+    if (this.initialized) return
 
-    const format = winston.format.combine(
-      winston.format.printf(({ message }) => {
-        return `${message}`
-      }),
-    )
+    try {
+      const w = await import('winston')
+      const winston = w ?? w
 
-    this.logger = winston.createLogger({
-      level: this.isDev ? 'silly' : 'info',
-      format,
-      transports: [new winston.transports.Console()],
-    })
-
-    if (!this.isDev) {
-      // Add file transports in production
-      this.logger.add(
-        new winston.transports.File({
-          filename: './logs/error.log',
-          level: 'error',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.uncolorize(),
-            winston.format.json(),
-          ),
-        }),
+      const format = winston.format.combine(
+        winston.format.printf(({ message }) => String(message ?? 'Message undefined')),
       )
 
-      this.logger.add(
-        new winston.transports.File({
-          filename: './logs/combined.log',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.uncolorize(),
-            winston.format.json(),
-          ),
-        }),
-      )
+      this.logger = winston.createLogger({
+        level: this.isDev ? 'silly' : 'info',
+        format,
+        transports: [new winston.transports.Console()],
+      })
+
+      if (!this.isDev) {
+        // Add file transports in production
+        this.logger.add(
+          new winston.transports.File({
+            filename: './logs/error.log',
+            level: 'error',
+            format: winston.format.combine(
+              winston.format.timestamp(),
+              winston.format.uncolorize(),
+              winston.format.json(),
+            ),
+          }),
+        )
+
+        this.logger.add(
+          new winston.transports.File({
+            filename: './logs/combined.log',
+            format: winston.format.combine(
+              winston.format.timestamp(),
+              winston.format.uncolorize(),
+              winston.format.json(),
+            ),
+          }),
+        )
+      }
+
+      this.initialized = true
+
+      // Process any queued messages
+      while (this.messageQueue.length > 0) {
+        const msg = this.messageQueue.shift()
+        if (msg) this.logger.log(msg.level, msg.message)
+      }
+    } catch (error) {
+      console.error('Failed to initialize Winston logger:', error)
+      // Fall back to console
+      this.logger = console as any
+      this.initialized = true
     }
-    this.initialized = true
   }
 
-  log(level: Level, message: string) {
+  async log(level: Level, message: string) {
+    if (this.initPromise) {
+      await this.initPromise
+    }
+
     if (!this.initialized || !this.logger) {
-      throw new Error('NodeWinstonTransport not initialized. Call await init() first.')
+      // Queue the message if not initialized
+      this.messageQueue.push({ level, message })
+      return
     }
+
     this.logger.log(level, message)
   }
 }

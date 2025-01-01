@@ -62,15 +62,7 @@ export class CentralizedLogger<S extends Service = Service> {
     if (this.env.isBrowser || !this.env.isNode) {
       this.transport = new BrowserConsoleTransport()
     } else {
-      // Only use Winston in pure Node environments
-      const nodeTransport = new NodeWinstonTransport(this.env.isDev)
-      nodeTransport
-        .init()
-        .then(() => {
-          // Transport ready
-        })
-        .catch((err) => console.error('Failed to initialize node logger:', err))
-      this.transport = nodeTransport
+      this.transport = new NodeWinstonTransport(this.env.isDev)
     }
   }
 
@@ -291,7 +283,8 @@ export class CentralizedLogger<S extends Service = Service> {
 
       // 4. Format and log to transport
       const finalMessage = this.formatLog(consoleData)
-      this.transport.log(level, finalMessage)
+
+      await (this.transport as NodeWinstonTransport).log(level, finalMessage)
 
       // 5. If it’s an error or warning, store to DB
       if (this.shouldStoreLog(level)) {
