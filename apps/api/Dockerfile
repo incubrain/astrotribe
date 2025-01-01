@@ -25,6 +25,10 @@ COPY libs/logger/package.json ./libs/logger/
 # Copy the source files for the required workspaces
 COPY apps/api ./apps/api
 COPY libs/logger ./libs/logger
+COPY prisma ./prisma
+COPY tsconfig.* ./
+COPY nx.json ./
+COPY pnpm-workspace.yaml ./
 
 # Install dependencies for specific workspaces
 RUN pnpm install --filter @astronera/api --filter @ib/logger
@@ -33,9 +37,8 @@ RUN pnpm install --filter @astronera/api --filter @ib/logger
 RUN pnpx prisma generate
 
 # Install nx and build
-RUN pnpm install nx@latest -g
-RUN nx reset
-RUN nx build @astronera/api
+RUN pnpx nx reset
+RUN pnpx nx build @astronera/api
 
 RUN pnpm prune --production
 
