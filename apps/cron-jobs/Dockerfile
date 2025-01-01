@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libatspi2.0-0 \
     libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && \
+    npm install -g playwright
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -79,7 +80,7 @@ RUN apt-get update && apt-get install -y \
     libatspi2.0-0 \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/* && \
-    npm install -g playwright
+    pnpm install -g playwright
 
 
 # Copy only the necessary built files
