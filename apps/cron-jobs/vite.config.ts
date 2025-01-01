@@ -52,6 +52,7 @@ export default defineConfig({
         'robots-parser',
         'rss-parser',
         'p-limit',
+        'tlds',
       ],
     },
   },
@@ -69,11 +70,9 @@ export default defineConfig({
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@core': path.resolve(__dirname, './src/core'),
       '@jobs': path.resolve(__dirname, './src/jobs/config'),
-      'tlds': path.resolve(__dirname, 'node_modules/tlds/index.json'),
     },
   },
   optimizeDeps: {
     exclude: ['@tensorflow/tfjs', '@tensorflow/tfjs-backend-cpu'],
-    include: ['tlds'],
   },
 })
