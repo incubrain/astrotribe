@@ -75,6 +75,8 @@ export default defineConfig({
       '@core': path.resolve(__dirname, './src/core'),
       '@jobs': path.resolve(__dirname, './src/jobs/config'),
     },
+    preserveSymlinks: true,
+    dedupe: ['playwright', 'playwright-core'],
   },
   optimizeDeps: {
     exclude: ['@tensorflow/tfjs', '@tensorflow/tfjs-backend-cpu'],

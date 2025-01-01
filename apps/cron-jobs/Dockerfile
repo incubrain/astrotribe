@@ -91,7 +91,7 @@ RUN apt-get update && apt-get install -y \
 # Copy only the necessary built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+COPY --from=builder /app/.cache/ms-playwright /root/.cache/ms-playwright 
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
