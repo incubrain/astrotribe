@@ -1,5 +1,6 @@
 // src/core/services/scraper.service.ts
-import { Browser, chromium, Page, type LaunchOptions, BrowserContext } from 'playwright'
+import { chromium } from 'playwright'
+import type { Browser, Page, LaunchOptions, BrowserContext } from 'playwright'
 import { CustomLogger } from '@core'
 
 const defaultLaunchOptions: LaunchOptions = {
