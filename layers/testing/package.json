@@ -45,7 +45,6 @@
     "inquirer": "^12.1.0",
     "msw": "^2.6.5",
     "pluralize": "^8.0.0",
-    "typescript": "~5.5.2",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.5",
