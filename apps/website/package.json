@@ -21,6 +21,7 @@
     "shiki": "^1.22.0",
     "uuid": "^10.0.0",
     "zod": "^3.23.8",
+    "node-fetch": "latest", 
     "@nuxt/image": "^1.8.0"
   },
   "devDependencies": {
