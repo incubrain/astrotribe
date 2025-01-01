@@ -11,7 +11,13 @@
       "options": {
         "commands": ["rimraf dist", "vite build"],
         "cwd": "apps/cron-jobs"
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": ["@ib/logger"]
+        }
+      ]
     },
     "serve": {
       "executor": "nx:run-commands",

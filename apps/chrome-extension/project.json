@@ -38,7 +38,15 @@
           "mode": "production"
         }
       },
-      "dependsOn": ["build:clean", "build:html", "build:assets"]
+      "dependsOn": [
+        "build:clean",
+        "build:html",
+        "build:assets",
+        {
+          "target": "build",
+          "projects": ["@ib/logger"]
+        }
+      ]
     },
     "serve": {
       "executor": "@nx/vite:dev-server",
