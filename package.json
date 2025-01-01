@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
-    "@ib/db-testing": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",
