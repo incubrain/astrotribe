@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "nx lint @astronera/auth",
-    "test": "nx test @astronera/auth",
+    "lint": "pnpm nx lint @astronera/auth",
+    "test": "pnpm nx test @astronera/auth",
     "dev": "nx serve @astronera/auth",
     "build": "nx build @astronera/auth",
-    "start": "node dist/main.js"
+    "start": "node .output/server/index.mjs" 
   },
   "dependencies": {
     "@nuxt/image": "^1.8.1",

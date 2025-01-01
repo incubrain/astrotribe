@@ -8,19 +8,19 @@
     "build:advert": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/advert && npx nuxi build"
+        "command": "cd layers/advert && pnpx nuxi build"
       }
     },
     "build:referral": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/referral && npx nuxi build"
+        "command": "cd layers/referral && pnpx nuxi build"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/website && npx tsx generate-routes.ts && NODE_ENV=production npx nuxi build"
+        "command": "cd apps/website && npx tsx generate-routes.ts && NODE_ENV=production pnpx nuxi build"
       },
       "dependsOn": [
         "build:advert",
@@ -36,7 +36,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/website && npx nuxi dev"
+        "command": "cd apps/website && pnpx nuxi dev"
       }
     },
     "lint": {

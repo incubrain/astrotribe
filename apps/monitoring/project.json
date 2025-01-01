@@ -8,26 +8,26 @@
     "build:base": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/base && npx nuxi build"
+        "command": "cd layers/base && pnpx nuxi build"
       }
     },
     "build:auth": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/supabase && npx nuxi build"
+        "command": "cd layers/supabase && pnpx nuxi build"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/monitoring && npx nuxi build"
+        "command": "cd apps/monitoring && pnpx nuxi build"
       },
       "dependsOn": ["build:base", "build:auth"]
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/monitoring && npx nuxi dev"
+        "command": "cd apps/monitoring && pnpx nuxi dev"
       }
     },
     "lint": {

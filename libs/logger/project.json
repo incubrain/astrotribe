@@ -14,50 +14,27 @@
     }
   },
   "targets": {
-    "build:esm": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "libs/logger/dist/esm",
-        "main": "libs/logger/src/index.ts",
-        "tsConfig": "libs/logger/tsconfig.esm.json",
-        "assets": [
-          {
-            "glob": "package.esm.json",
-            "input": "libs/logger",
-            "output": "."
-          }
-        ]
-      }
-    },
-    "build:cjs": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "libs/logger/dist/cjs",
-        "main": "libs/logger/src/index.ts",
-        "tsConfig": "libs/logger/tsconfig.cjs.json",
-        "assets": [
-          {
-            "glob": "package.cjs.json",
-            "input": "libs/logger",
-            "output": "."
-          }
-        ]
-      }
-    },
     "build": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{workspaceRoot}/libs/logger/dist"],
       "options": {
-        "commands": [
+        "main": "libs/logger/src/index.ts",
+        "outputPath": "libs/logger/dist",
+        "tsConfig": "libs/logger/tsconfig.json",
+        "format": ["esm", "cjs"],
+        "generateExportsField": true,
+        "assets": [
           {
-            "command": "nx run @ib/logger:build:cjs || true"
+            "glob": "README.md",
+            "input": "libs/logger",
+            "output": "."
           },
           {
-            "command": "nx run @ib/logger:build:esm || true"
+            "glob": "package.json",
+            "input": "libs/logger",
+            "output": "."
           }
-        ],
-        "parallel": false
+        ]
       }
     }
   }

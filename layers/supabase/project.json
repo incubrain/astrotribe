@@ -6,15 +6,13 @@
   "targets": {
     "build": {
       "prepare": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/supabase && npx nuxi prepare"
-      }
-    },
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "cd layers/supabase && pnpx nuxi prepare"
+        }
+      },
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "layers/supabase/dist",
         "tsConfig": "layers/supabase/tsconfig.json",
@@ -30,28 +28,19 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "layers/supabase/**/*.{ts,tsx,vue}"
-        ]
+        "lintFilePatterns": ["layers/supabase/**/*.{ts,tsx,vue}"]
       }
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/layers/{projectRoot}"
       }
     }
   },
-  "tags": [
-    "type:layer",
-    "scope:shared"
-  ]
+  "tags": ["type:layer", "scope:shared"]
 }

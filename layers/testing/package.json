@@ -3,17 +3,17 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "lint": "nx lint @astronera/testing",
-    "test": "nx test @astronera/testing",
-    "dev": "npx nuxi dev",
-    "build": "npx nuxi build",
-    "prepare": "npx nuxi prepare"
+    "lint": "pnpm nx lint @astronera/testing",
+    "test": "pnpm nx test @astronera/testing",
+    "dev": "pnpx nuxi dev",
+    "build": "pnpx nuxi build",
+    "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
-    "@ib/db-testing": "*",
-    "@ib/logger": "^0.0.3",
+    "@ib/db-testing": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@influxdata/influxdb-client": "^1.35.0",
     "@jscpd/core": "^4.0.1",
     "@nuxtjs/mdc": "^0.9.0",
@@ -30,7 +30,6 @@
     "openai": "^4.64.0",
     "rxjs": "^7.8.1",
     "shiki": "^1.22.0",
-    "tlds": "^1.255.0",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
   },

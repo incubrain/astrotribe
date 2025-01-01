@@ -7,14 +7,12 @@
     "prepare": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/testing && npx nuxi prepare"
+        "command": "cd layers/testing && pnpx nuxi prepare"
       }
     },
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "layers/testing/dist",
         "tsConfig": "layers/testing/tsconfig.json",
@@ -30,28 +28,19 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "layers/testing/**/*.{ts,tsx,vue}"
-        ]
+        "lintFilePatterns": ["layers/testing/**/*.{ts,tsx,vue}"]
       }
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/layers/{projectRoot}"
       }
     }
   },
-  "tags": [
-    "type:layer",
-    "scope:shared"
-  ]
+  "tags": ["type:layer", "scope:shared"]
 }

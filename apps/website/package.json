@@ -3,15 +3,15 @@
   "version": "0.0.3",
   "type": "module",
   "scripts": {
-    "lint": "nx lint @astronera/website",
-    "test": "nx test @astronera/website",
-    "dev": "nx serve @astronera/website",
-    "build": "nx build @astronera/website",
+    "lint": "pnpm nx lint @astronera/website",
+    "test": "pnpm nx test @astronera/website",
+    "dev": "pnpm nx serve @astronera/website",
+    "build": "pnpm nx build @astronera/website",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@ib/db-testing": "*",
-    "@ib/logger": "^0.0.3",
+    "@ib/db-testing": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@nuxtjs/mdc": "^0.9.0",
     "@supabase/supabase-js": "^2.47.8",
     "dotenv": "^16.4.5",

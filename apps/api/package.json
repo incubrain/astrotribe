@@ -4,15 +4,15 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "lint": "nx lint @astronera/api",
-    "test": "nx test @astronera/api",
+    "lint": "pnpm nx lint @astronera/api",
+    "test": "pnpm nx test @astronera/api",
     "dev": "nx serve @astronera/api",
     "build": "nx build @astronera/api",
     "start": "node dist/main.js",
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
   "dependencies": {
-    "@ib/logger": "^0.0.3",
+    "@ib/logger": "workspace:*",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",
