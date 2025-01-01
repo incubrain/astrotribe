@@ -23,7 +23,7 @@
         "tsConfig": "libs/logger/tsconfig.json",
         "format": ["esm", "cjs"],
         "generateExportsField": true,
-        "rollupConfig": "libs/logger/rollup.config.js"
+        "rollupConfig": "libs/logger/rollup.config.ts"
       }
     }
   }
