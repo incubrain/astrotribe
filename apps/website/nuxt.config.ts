@@ -231,6 +231,8 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       routes: prerenderRoutes ?? [],
+      failOnError: false,
+      ignore: ['/api/**'],
     },
   },
 
