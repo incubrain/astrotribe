@@ -49,8 +49,8 @@ COPY layers ./layers
 # Install dependencies for specific workspaces
 RUN pnpm install --filter @astronera/cron-jobs --filter @ib/logger
 
-RUN pnpx playwright install chromium && \
-    pnpx playwright install-deps && \
+RUN pnpm exec playwright install chromium && \
+    pnpm exec playwright install-deps && \
     pnpx prisma generate && \
     pnpx nx build @astronera/cron-jobs --configuration=production
 
@@ -78,7 +78,9 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libatspi2.0-0 \
     libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && \
+    npm install -g playwright
+
 
 # Copy only the necessary built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
@@ -89,7 +91,7 @@ RUN echo "Contents of dist:" && ls -la ./dist && \
     echo "Contents of node_modules:" && ls -la ./node_modules && \
     echo "Contents of node_modules/@ib:" && ls -la ./node_modules/@ib
 
-RUN npx playwright --version
+RUN playwright --version
 
 RUN echo "Verifying Playwright installation in final image:" && \
     ls -la /root/.cache/ms-playwright && \
