@@ -50,6 +50,7 @@ export default defineConfig({
         '@supabase/supabase-js',
         'robots-parser',
         'rss-parser',
+        'p-limit',
       ],
     },
   },

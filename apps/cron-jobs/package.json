@@ -31,7 +31,8 @@
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.2",
     "zod": "^3.23.8",
-    "tlds": "^1.255.0"
+    "tlds": "^1.255.0",
+    "p-limit": "latest"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
