@@ -34,33 +34,26 @@ RUN apt-get update && apt-get install -y \
 RUN npm install -g pnpm
 
 # Copy only the necessary files first
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY pnpm-*.yaml package.json ./
 COPY apps/cron-jobs/package.json ./apps/cron-jobs/
 COPY libs/logger/package.json ./libs/logger/
 
 # Copy the source files for the required workspaces
+COPY tsconfig.* ./
+COPY nx.json ./
 COPY apps/cron-jobs ./apps/cron-jobs
 COPY libs/logger ./libs/logger
 COPY prisma ./prisma
-COPY tsconfig.* ./
-COPY nx.json ./
 COPY layers ./layers
 
 # Install dependencies for specific workspaces
 RUN pnpm install --filter @astronera/cron-jobs --filter @ib/logger
 
-# Install Playwright browsers and deps
-RUN pnpx playwright install chromium
-RUN pnpx playwright install-deps
-
-# Generate Prisma client
-RUN pnpx prisma generate
-
-# Build with nx
-RUN pnpx nx reset
-RUN pnpx nx build @astronera/cron-jobs --configuration=production
-
-RUN pnpm prune --production
+RUN pnpx playwright install chromium && \
+    pnpx playwright install-deps && \
+    pnpx prisma generate && \
+    pnpx nx build @astronera/cron-jobs --configuration=production && \
+    pnpm prune --production
 
 # Final stage
 FROM node:22.12.0-bookworm
@@ -91,7 +84,21 @@ RUN apt-get update && apt-get install -y \
 # Copy only the necessary built files
 COPY --from=builder /app/apps/cron-jobs/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.cache/ms-playwright /root/.cache/ms-playwright 
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+
+RUN pnpx playwright --version
+
+RUN echo "Verifying Playwright installation in final image:" && \
+    ls -la /root/.cache/ms-playwright && \
+    node -e "const { chromium } = require('playwright'); \
+    async function test() { \
+      console.log('Testing browser launch...'); \
+      const browser = await chromium.launch(); \
+      console.log('Browser launched successfully'); \
+      await browser.close(); \
+      console.log('Browser closed successfully'); \
+    } \
+    test().catch(console.error);"
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
