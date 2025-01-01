@@ -14,6 +14,7 @@ COPY libs libs
 COPY layers layers 
 COPY layers/crud layers/crud 
 COPY layers/auth layers/auth 
+COPY theme ./theme
 
 # Install pnpm
 RUN npm install -g pnpm
