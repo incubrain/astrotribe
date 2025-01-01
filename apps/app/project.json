@@ -12,11 +12,6 @@
       },
       "dependsOn": [
         {
-          "target": "prepare",
-          "projects": "dependencies",
-          "params": "forward"
-        },
-        {
           "target": "build",
           "projects": "dependencies",
           "params": "forward"

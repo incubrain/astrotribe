@@ -31,9 +31,6 @@
         "cwd": "apps/auth"
       },
       "dependsOn": [
-        "build:base",
-        "build:auth",
-        "build:referral",
         {
           "target": "build",
           "projects": "dependencies",
