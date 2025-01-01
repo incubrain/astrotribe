@@ -27,6 +27,7 @@ COPY layers ./layers
 COPY prisma ./prisma
 COPY tsconfig.* ./
 COPY nx.json ./
+COPY shared-runtime.config.ts ./
 
 # Install dependencies for all required workspaces
 RUN pnpm install --filter @astronera/app... \
