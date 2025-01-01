@@ -1,16 +1,14 @@
-FROM node:22.12.0-bookworm AS builder
+FROM node:22-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-WORKDIR /app
-
-ARG NX_CLOUD_ACCESS_TOKEN
-
-ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    NX_DAEMON=false \
-    NX_SKIP_NX_CLOUD=true
-
-# Install essential system dependencies for Playwright
+# Install Playwright system dependencies
 RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    git \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -29,73 +27,46 @@ RUN apt-get update && apt-get install -y \
     libatspi2.0-0 \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
-    
-# Install pnpm
-RUN npm install -g pnpm
-RUN pnpm install -g playwright
-    
-# Copy only the necessary files first
+
+FROM base AS build
+WORKDIR /app
+
+# Copy workspace config files
 COPY pnpm-*.yaml package.json ./
 COPY apps/cron-jobs/package.json ./apps/cron-jobs/
 COPY libs/logger/package.json ./libs/logger/
 
-# Copy the source files for the required workspaces
-COPY tsconfig.* ./
-COPY nx.json ./
-COPY apps/cron-jobs ./apps/cron-jobs
-COPY libs/logger ./libs/logger
-COPY prisma ./prisma
-COPY layers ./layers
+# Install all dependencies with cache mount
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install -g playwright && \
+    pnpm install --frozen-lockfile
 
-# Install dependencies for specific workspaces
-RUN pnpm install --filter @astronera/cron-jobs --filter @ib/logger
+# Copy source files
+COPY . .
 
+# Build application
 RUN pnpm exec playwright install chromium && \
     pnpm exec playwright install-deps && \
-    pnpx prisma generate && \
+    pnpx prisma generate
+
+RUN pnpx nx reset && \
     pnpx nx build @astronera/cron-jobs --configuration=production
 
-# Final stage
-FROM node:22.12.0-bookworm
+# Create production deployment
+RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
+
+FROM base
 
 WORKDIR /app
 
-# Install runtime dependencies for Playwright
-RUN apt-get update && apt-get install -y \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libpangocairo-1.0-0 \
-    libpango-1.0-0 \
-    libcairo2 \
-    libatspi2.0-0 \
-    libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/* && \
-    npm install -g playwright
+RUN pnpm install -g playwright
 
+# Copy production files
+COPY --from=build /prod/cron-jobs ./
+COPY --from=build /root/.cache/ms-playwright /root/.cache/ms-playwright
 
-# Copy only the necessary built files
-COPY --from=builder /app/apps/cron-jobs/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
-
-RUN echo "Contents of dist:" && ls -la ./dist && \
-    echo "Contents of node_modules:" && ls -la ./node_modules && \
-    echo "Contents of node_modules/@ib:" && ls -la ./node_modules/@ib
-
-RUN playwright --version
-
-RUN echo "Verifying Playwright installation in final image:" && \
-    ls -la /root/.cache/ms-playwright && \
+# Verify Playwright installation
+RUN pnpm exec playwright --version && \
     node -e "const { chromium } = require('playwright'); \
     async function test() { \
       console.log('Testing browser launch...'); \
@@ -104,9 +75,9 @@ RUN echo "Verifying Playwright installation in final image:" && \
       await browser.close(); \
       console.log('Browser closed successfully'); \
     } \
-    test().catch(console.error);"
+    test().catch(err => { console.error(err); process.exit(1); });"
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 
-CMD ["node", "./dist/src/index.js"]
+CMD ["pnpm", "start"]
