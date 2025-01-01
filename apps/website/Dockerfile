@@ -53,7 +53,7 @@ COPY libs/logger/package.json ./libs/logger/
 COPY layers/*/package.json ./layers/
 
 # Install dependencies with cache mount
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,--mount=id=pnpm,--mount=target=/pnpm/store pnpm install --frozen-lockfile
 
 # Copy source files
 COPY . .
