@@ -3,7 +3,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-# Install Playwright system dependencies
+# Install system dependencies in base to be reused
 RUN apt-get update && apt-get install -y \
     python3 \
     make \
@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-FROM base AS build
+FROM base AS deps
 WORKDIR /app
 
 # Copy workspace config files
@@ -36,48 +36,54 @@ COPY pnpm-*.yaml package.json ./
 COPY apps/cron-jobs/package.json ./apps/cron-jobs/
 COPY libs/logger/package.json ./libs/logger/
 
-# Install all dependencies with cache mount
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install -g playwright && \
+# Install dependencies with proper cache mounting
+RUN --mount=type=cache,id=/pnpm/store,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
-# Copy source files
-COPY . .
-
-# Build application
-RUN pnpm exec playwright install chromium && \
-    pnpm exec playwright install-deps && \
-    pnpx prisma generate
-
-RUN pnpm exec nx reset
-RUN pnpx nx build @astronera/cron-jobs --configuration=production
-
-# Create production deployment
-RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
-
-FROM base
-
+FROM deps AS builder
 WORKDIR /app
 
+# Copy remaining source files
+COPY . .
+
+# Install Playwright
 RUN pnpm install -g playwright
 
-# Copy production files
-COPY --from=build /prod/cron-jobs ./
-COPY --from=build /root/.cache/ms-playwright /root/.cache/ms-playwright
+RUN pnpm exec playwright install chromium && \
+    pnpm exec playwright install-deps
 
-# Verify Playwright installation
+# Generate Prisma client
+RUN pnpx prisma generate
+
+# Build application
+RUN pnpm exec nx reset && \
+    NODE_ENV=production pnpx nx build @astronera/cron-jobs --configuration=production
+
+# Create production deployment with only necessary files
+RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
+
+FROM base AS runner
+WORKDIR /app
+
+# Install only Playwright in the final stage
+RUN pnpm install -g playwright
+
+# Copy production files and Playwright cache
+COPY --from=builder /prod/cron-jobs ./
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+
+# Health check for Playwright
 RUN pnpm exec playwright --version && \
     node -e "const { chromium } = require('playwright'); \
     async function test() { \
-      console.log('Testing browser launch...'); \
       const browser = await chromium.launch(); \
-      console.log('Browser launched successfully'); \
       await browser.close(); \
-      console.log('Browser closed successfully'); \
+      console.log('Playwright health check passed'); \
     } \
-    test().catch(err => { console.error(err); process.exit(1); });"
+    test().catch(err => { console.error('Playwright health check failed:', err); process.exit(1); });"
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
+
 
 CMD ["pnpm", "start"]
