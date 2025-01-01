@@ -5,38 +5,6 @@
   "sourceRoot": "apps/admin",
   "// targets": "to see all targets run: nx show project @astronera/admin --web",
   "targets": {
-    "build:base": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpx nuxi build",
-        "cwd": "layers/base"
-      }
-    },
-    "build:auth": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpx nuxi build",
-        "cwd": "layers/supabase"
-      }
-    },
-    "build:referral": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/referral && pnpx nuxi build"
-      }
-    },
-    "build:testing": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/testing && pnpx nuxi build"
-      }
-    },
-    "build:advert": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd layers/advert && pnpx nuxi build"
-      }
-    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
@@ -44,14 +12,16 @@
         "cwd": "apps/admin"
       },
       "dependsOn": [
-        "build:base",
-        "build:auth",
-        "build:advert",
-        "build:referral",
         {
           "target": "build",
-          "projects": "dependencies",
-          "params": "forward"
+          "projects": [
+            "@ib/logger",
+            "@astronera/base",
+            "@astronera/supabase",
+            "@astronera/crud",
+            "@astronera/advert",
+            "@astronera/referral"
+          ]
         }
       ]
     },
