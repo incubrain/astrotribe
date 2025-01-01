@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 import { describe } from 'vitest'
-import { createTestRunner, generateTestsFromPermissions } from '@ib/db-testing'
+import { createTestRunner, generateTestsFromPermissions } from '../../../libs/db'
 import { useSelectData, useInsertData, useUpdateData, useDeleteData } from '#imports'
 
 console.log('Setting up public access test file')

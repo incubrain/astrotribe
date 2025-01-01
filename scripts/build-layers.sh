@@ -16,7 +16,7 @@ for layer in layers/*/; do
         echo "Building layer: $layer"
         (
             cd "$layer"
-            npx nuxi build
+            pnpx nuxi build
         )
         if [ $? -eq 0 ]; then
             echo "Successfully built layer: $layer"

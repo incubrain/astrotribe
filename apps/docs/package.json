@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "nx lint docs",
-    "test": "nx test docs",
+    "lint": "pnpm nx lint docs",
+    "test": "pnpm nx test docs",
     "dev": "nx serve docs",
     "build": "nx build docs",
     "start": "node dist/main.js"

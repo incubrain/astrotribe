@@ -6,5 +6,5 @@
       "#layers/*": ["../../layers/*"]
     }
   },
-  "exclude": ["node_modules", "dist", ".output"]
+  "exclude": ["node_modules", "dist", ".output", ".nuxt"]
 }

@@ -27,11 +27,16 @@
         "buildTargetName": "build",
         "testTargetName": "test"
       }
+    },
+    {
+      "plugin": "@nx/rollup",
+      "options": {
+        "buildTargetName": "build"
+      }
     }
   ],
   "namedInputs": {
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml", "{workspaceRoot}/.env"],
-    "default": ["{projectRoot}/**/*", "!{projectRoot}/**/*.spec.ts", "sharedGlobals"],
+    "default": ["{projectRoot}/**/*", "!{projectRoot}/**/*.spec.ts"],
     "production": [
       "default",
       "!{projectRoot}/eslint.config.js",
@@ -39,32 +44,32 @@
       "!{projectRoot}/cypress/**/*",
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s",
-      "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/**/*.spec.ts"
-    ]
+      "!{projectRoot}/tsconfig.spec.json"
+    ],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml", "{workspaceRoot}/.env"]
   },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production", "sharedGlobals"]
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore",
+        "sharedGlobals"
+      ]
     },
     "format": {
-      "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
+      "inputs": ["default", "{workspaceRoot}/.prettierrc.js", "sharedGlobals"]
     },
     "format:check": {
-      "inputs": ["default", "{workspaceRoot}/.prettierrc.js"]
+      "inputs": ["default", "{workspaceRoot}/.prettierrc.js", "sharedGlobals"]
     },
     "test": {
-      "inputs": ["default", "^default"],
+      "inputs": ["default", "^default", "sharedGlobals"],
       "cache": true
-    }
-  },
-  "release": {
-    "version": {
-      "preVersionCommand": "npx nx run-many -t build"
     }
   }
 }

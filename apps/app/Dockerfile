@@ -25,11 +25,11 @@ COPY . .
 RUN npm install
 
 # Prepare all Nuxt layers first
-RUN cd layers/base && npx nuxi prepare && cd ../..
-RUN cd layers/supabase && npx nuxi prepare && cd ../..
-RUN cd layers/advert && npx nuxi prepare && cd ../..
-RUN cd layers/referral && npx nuxi prepare && cd ../..
-RUN cd apps/app && npx nuxi prepare && cd ../..
+RUN cd layers/base && pnpx nuxi prepare && cd ../..
+RUN cd layers/supabase && pnpx nuxi prepare && cd ../..
+RUN cd layers/advert && pnpx nuxi prepare && cd ../..
+RUN cd layers/referral && pnpx nuxi prepare && cd ../..
+RUN cd apps/app && pnpx nuxi prepare && cd ../..
 
 
 # # Copy only needed source files

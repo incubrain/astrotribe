@@ -520,7 +520,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "paths": {
-      "@ib/logger": ["../../libs/logger/dist/cjs"],
+      "@ib/logger": ["../../libs/logger/dis"],
       "@types": ["src/types/index.ts"],
       "@core": ["src/core/index.ts"],
       "@content": ["src/content/index.ts"],

@@ -28,5 +28,6 @@
     // Shared Libraries
     { "path": "libs/logger" },
     { "path": "libs/db-testing" }
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

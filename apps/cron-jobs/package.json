@@ -3,16 +3,22 @@
   "version": "0.0.3",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "imports": {
+    "#/*": "./dist/*"
+  },
   "scripts": {
-    "lint": "nx lint @astronera/cron-jobs",
-    "test": "nx test @astronera/cron-jobs",
-    "dev": "nx serve @astronera/cron-jobs",
-    "build": "nx build @astronera/cron-jobs",
+    "lint": "pnpm nx lint",
+    "test": "pnpm pnpm nx test",
+    "dev": "pnpm nx serve",
+    "build": "pnpm nx build",
     "start": "node dist/src/index.js",
     "prisma:update": "tsx ./prisma/update-prisma.ts"
   },
   "dependencies": {
-    "@ib/logger": "^0.0.3",
+    "@ib/logger": "workspace:*",
     "@prisma/client": "^6.0.1",
     "@supabase/supabase-js": "^2.47.8",
     "@tensorflow/tfjs": "^4.22.0",
@@ -24,7 +30,12 @@
     "robots-parser": "^3.0.1",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.2",
-    "tlds": "^1.255.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "tlds": "^1.255.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0",
+    "vite": "^6.0.6",
+    "vite-node": "^2.1.8"
   }
 }

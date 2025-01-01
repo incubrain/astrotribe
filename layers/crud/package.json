@@ -2,14 +2,14 @@
   "name": "@astronera/crud",
   "version": "0.0.3",
   "scripts": {
-    "lint": "nx lint @astronera/crud",
-    "test": "nx test @astronera/crud",
-    "dev": "npx nuxi dev",
-    "build": "npx nuxi build",
-    "prepare": "npx nuxi prepare"
+    "lint": "pnpm nx lint @astronera/crud",
+    "test": "pnpm nx test @astronera/crud",
+    "dev": "pnpx nuxi dev",
+    "build": "pnpx nuxi build",
+    "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@ib/logger": "^0.0.3",
+    "@ib/logger": "workspace:*",
     "@nuxtjs/supabase": "^1.4.0",
     "@supabase/supabase-js": "^2.47.8",
     "pinia": "^2.2.2",

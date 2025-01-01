@@ -4,14 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "nx lint @astronera/admin",
-    "test": "nx test @astronera/admin",
+    "lint": "pnpm nx lint @astronera/admin",
+    "test": "pnpm nx test @astronera/admin",
     "dev": "nx serve @astronera/admin",
     "build": "nx build @astronera/admin"
   },
   "dependencies": {
-    "@ib/db-testing": "*",
-    "@ib/logger": "^0.0.3",
+    "@ib/db-testing": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@supabase/supabase-js": "^2.47.8",
     "@vueuse/core": "^11.1.0",
     "dotenv": "^16.4.5",

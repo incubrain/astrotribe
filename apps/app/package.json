@@ -3,16 +3,16 @@
   "version": "0.0.3",
   "type": "module",
   "scripts": {
-    "lint": "nx lint @astronera/app",
-    "test": "nx test @astronera/app",
+    "lint": "pnpm nx lint @astronera/app",
+    "test": "pnpm nx test @astronera/app",
     "dev": "nx serve @astronera/app",
     "build": "nx build @astronera/app",
-    "start": "node dist/main.js"
+    "start": "node .output/server/index.mjs" 
   },
   "dependencies": {
     "@formbricks/js": "^3.0.1",
-    "@ib/db-testing": "*",
-    "@ib/logger": "^0.0.3",
+    "@ib/db-testing": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@supabase/supabase-js": "^2.47.8",
     "dotenv": "^16.4.5",
     "fluent-ffmpeg": "^2.1.3",

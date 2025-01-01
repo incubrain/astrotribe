@@ -1,18 +1,27 @@
 {
-  "extends": ["../../tsconfig.node.json"],
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node", "@types/node"],
+    "rootDir": "./src",
+
+    // Module settings
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+
+    // Type checking
+    "strict": true,
+    "skipLibCheck": true,
+
+    // Path aliases
     "paths": {
-      "@ib/logger": ["../../libs/logger/dist/esm"],
       "@/*": ["./src/*"],
-      "@types": ["./src/types/index.ts"],
-      "@helpers": ["./src/helpers/index.ts"],
-      "@core": ["./src/core/index.ts"],
-      "@jobs": ["./src/jobs/config/index.ts"]
+      "@types": ["./src/types"],
+      "@helpers": ["./src/helpers"],
+      "@core": ["./src/core"],
+      "@jobs": ["./src/jobs/config"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

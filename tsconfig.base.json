@@ -1,28 +1,21 @@
 {
   "compilerOptions": {
-    // Build options
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "incremental": true,
-
-    // Type checking
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
-    // Base paths
     "baseUrl": ".",
     "paths": {
       "#layers/*": ["layers/*"],
       "@ib/*": ["libs/*/src"]
     },
-
-    // Common types
     "types": ["node"]
   },
-  "exclude": ["node_modules", "**/dist", "**/.*/", "shared-runtime.config.ts"]
+  "exclude": ["node_modules", "**/dist", "**/.*/", "**/.*", "**/*.spec.ts", "**/.nuxt", "**/output"]
 }

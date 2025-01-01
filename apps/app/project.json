@@ -8,7 +8,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/app && npx nuxi build"
+        "command": "cd apps/app && pnpx nuxi build"
       },
       "dependsOn": [
         {
@@ -26,7 +26,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/app && npx nuxi dev"
+        "command": "cd apps/app && pnpx nuxi dev"
       }
     },
 
@@ -56,6 +56,14 @@
           "VITEST_MODE": "true"
         }
       }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node .output/server/index.mjs",
+        "cwd": "apps/app"
+      },
+      "dependsOn": ["build"]
     },
     "test:ui": {
       "executor": "nx:run-commands",

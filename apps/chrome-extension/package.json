@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "nx lint chrome-extension",
-    "test": "nx test chrome-extension",
+    "lint": "pnpm nx lint chrome-extension",
+    "test": "pnpm nx test chrome-extension",
     "dev": "nx serve chrome-extension",
     "build": "nx build chrome-extension",
     "start": "node dist/main.js"

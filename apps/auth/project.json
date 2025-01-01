@@ -8,26 +8,26 @@
     "build:base": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/base && npx nuxi build"
+        "command": "cd layers/base && pnpx nuxi build"
       }
     },
 
     "build:referral": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/referral && npx nuxi build"
+        "command": "cd layers/referral && pnpx nuxi build"
       }
     },
     "build:auth": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd layers/supabase && npx nuxi build"
+        "command": "cd layers/supabase && pnpx nuxi build"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx nuxi build",
+        "command": "pnpx nuxi build",
         "cwd": "apps/auth"
       },
       "dependsOn": [
@@ -45,7 +45,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx nuxi dev",
+        "command": "pnpx nuxi dev",
         "cwd": "apps/auth"
       }
     },
