@@ -9,7 +9,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["rimraf dist", "vite build"],
+        "commands": ["rm -rf dist", "vite build"],
         "cwd": "apps/cron-jobs"
       },
       "dependsOn": [
@@ -97,7 +97,7 @@
     "clean": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["rimraf dist", "rimraf coverage", "rimraf .turbo"],
+        "commands": ["rm -rf dist", "rm -rf coverage", "rm -rf .turbo"],
         "cwd": "apps/cron-jobs",
         "parallel": true
       }
