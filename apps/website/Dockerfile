@@ -22,7 +22,7 @@ COPY nx.json ./
 COPY tsconfig*.json ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Copy source files (only what's needed)
 COPY apps/website ./apps/website
@@ -51,9 +51,9 @@ ENV NUXT_PUBLIC_POSTHOG_URL=${NUXT_PUBLIC_POSTHOG_URL} \
     NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Install nx globally and run builds
-RUN npm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
-RUN npx tsx apps/website/generate-routes.ts
+RUN pnpx tsx apps/website/generate-routes.ts
 RUN nx build @astronera/admin --configuration=production
 
 # Setup production stage

@@ -13,7 +13,7 @@ capabilities.
 
 - Node.js (v20.x recommended)
 - PostgreSQL (via Supabase)
-- npm or yarn
+- pnpm or yarn
 - Docker and Docker Compose (for containerized deployment)
 
 ## Environment Setup
@@ -113,7 +113,7 @@ src/
 1. Clone the repository
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Set up environment variables:
    ```bash
@@ -121,7 +121,7 @@ src/
    ```
 4. Start the development server:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 ### Docker Deployment

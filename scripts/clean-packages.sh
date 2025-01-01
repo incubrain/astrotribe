@@ -37,9 +37,9 @@ find . -name "node_modules" -type d -exec rm -rf {} +
 
 echo "Cleanup complete!"
 
-# Optional: Clear npm cache
-if confirm "Do you also want to clear the npm cache?"; then
-    npm cache clean --force
+# Optional: Clear pnpm cache
+if confirm "Do you also want to clear the pnpm cache?"; then
+    pnpm cache clean --force
     echo "npm cache cleared."
 fi
 

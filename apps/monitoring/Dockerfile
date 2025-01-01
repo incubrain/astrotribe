@@ -15,11 +15,11 @@ COPY layers/crud layers/crud
 COPY layers/auth layers/auth 
 
 # Install dependencies for monitoring workspace only
-RUN npm install
+RUN pnpm install
 
 # Install nx globally
 ENV NX_DISABLE_DB=true
-RUN npm install -g nx@20.3.0
+RUN pnpm install -g nx@20.3.0
 RUN nx reset
 RUN nx build @astronera/monitoring --no-cache --skip-nx-cache
 

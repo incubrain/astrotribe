@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '18'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run zip
+      - run: pnpm ci
+      - run: pnpm run build
+      - run: pnpm run zip
       - uses: actions/upload-artifact@v2
         with:
           name: extension

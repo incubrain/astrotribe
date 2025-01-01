@@ -1,4 +1,4 @@
-FROM node:22.12.0-bookworm
+    FROM node:22.12.0-bookworm
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY libs ./libs
 COPY layers ./layers
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Set Nx environment variables
 ENV NX_SKIP_NX_CACHE=true \
@@ -22,7 +22,7 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_VERBOSE_LOGGING=true
 
 # Install nx globally and build
-RUN npm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/auth --configuration=production
 

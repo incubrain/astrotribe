@@ -7,19 +7,19 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/cms && npm run build"
+        "command": "cd apps/cms && pnpm run build"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/cms && npm run dev"
+        "command": "cd apps/cms && pnpm run dev"
       }
     },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/cms && npm run dev"
+        "command": "cd apps/cms && pnpm run dev"
       }
     },
     "migrate": {

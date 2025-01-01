@@ -41,17 +41,17 @@ ENV NX_SKIP_NX_CACHE=true \
     NX_VERBOSE_LOGGING=true
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # Install Playwright browsers and deps
-RUN npx playwright install chromium
-RUN npx playwright install-deps
+RUN pnpx playwright install chromium
+RUN pnpx playwright install-deps
 
 # Generate Prisma client
-RUN npx prisma generate
+RUN pnpx prisma generate
 
 # Install nx globally and build
-RUN npm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/cron-jobs --configuration=production
 

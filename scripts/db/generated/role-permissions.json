@@ -75,14 +75,6 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
-        "job_metrics",
-        "job_locks",
-        "job_configs",
-        "workflows",
-        "workflow_jobs",
-        "circuit_breaker_states",
-        "job_versions",
-        "job_queue_stats",
         "responses",
         "social_media",
         "embedding_reviews",
@@ -96,7 +88,15 @@
         "blocked_ips",
         "referrals",
         "referrer_blocks",
-        "scoring_weights"
+        "scoring_weights",
+        "job_locks",
+        "workflow_jobs",
+        "workflows",
+        "circuit_breaker_states",
+        "job_configs",
+        "job_metrics",
+        "job_queue_stats",
+        "job_versions"
       ],
       "default_permissions": [],
       "audit_level": "high"

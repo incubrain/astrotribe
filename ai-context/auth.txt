@@ -3793,7 +3793,7 @@ COPY package*.json ./
 COPY package-lock.json ./
 
 # Install dependencies
-RUN npm ci
+RUN pnpm ci
 
 # Copy the entire project, including configuration files
 COPY . .
@@ -3801,10 +3801,10 @@ COPY . .
 # List contents to verify files are copied correctly
 RUN ls -la && ls -la apps/auth
 
-RUN npm install -g nx
+RUN pnpm install -g nx
 
-RUN npx nx reset
-RUN npx nx --version
+RUN pnpx nx reset
+RUN pnpx nx --version
 
 # Build the auth-service
 RUN nx build auth-service --verbose --skip-nx-cache
