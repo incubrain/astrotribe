@@ -23,7 +23,6 @@
     "build": "nx build @ib/logger"
   },
   "dependencies": {
-    "@prisma/client": "^6.0.1",
     "@supabase/supabase-js": "^2.47.8",
     "winston": "^3.14.2"
   },
