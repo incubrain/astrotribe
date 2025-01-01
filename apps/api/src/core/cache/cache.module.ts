@@ -3,6 +3,7 @@ import { Module, Global, OnApplicationShutdown, Inject } from '@nestjs/common'
 import { ConfigService, ConfigModule } from '@nestjs/config'
 import { Redis } from 'ioredis'
 import IORedis from 'ioredis'
+import { MockCacheService } from './cache.mock'
 
 @Global()
 @Module({
@@ -12,6 +13,10 @@ import IORedis from 'ioredis'
     {
       provide: 'REDIS_CACHE',
       useFactory: (config: ConfigService) => {
+        if (process.env.NODE_ENV === 'development') {
+          return new MockCacheService()
+        }
+
         return new IORedis({
           host: config.get<string>('app.redis.host') || 'redis.railway.internal',
           port: config.get<number>('app.redis.port') || 6379,
