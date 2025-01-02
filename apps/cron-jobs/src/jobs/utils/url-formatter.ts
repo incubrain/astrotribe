@@ -1,5 +1,5 @@
-import tlds from 'tlds'
 import { URL } from 'url'
+import tlds from 'tlds/index.json' assert { type: 'json' }
 import { URLValidator } from './url-validator'
 
 export interface FormattedURLs {
