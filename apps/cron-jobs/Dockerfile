@@ -37,7 +37,7 @@ COPY apps/cron-jobs/package.json ./apps/cron-jobs/
 COPY libs/logger/package.json ./libs/logger/
 
 # Install dependencies with proper cache mounting
-RUN --mount=type=cache,id=s/cron-jobs-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/3c9904ae-05e1-4a46-a525-fca654d7d374-/pnpm/store,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 FROM deps AS builder
