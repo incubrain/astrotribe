@@ -64,8 +64,7 @@ RUN pnpm exec prisma generate
 
 # Initialize NX workspace first
 RUN pnpm exec nx reset --all && \
-    rm -rf .nx/cache && \
-    pnpm exec nx-cloud start-local-cache
+    rm -rf .nx/cache
 
 RUN NODE_ENV=production pnpm exec tsx apps/website/generate-routes.ts
 
