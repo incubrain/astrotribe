@@ -60,7 +60,7 @@ RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm/store,tar
 COPY . .
 
 # Generate Prisma client and build
-RUN pnpm exec prisma Generate
+RUN pnpm exec prisma generate
 
 # Initialize NX workspace first
 RUN pnpm exec nx reset --all && \
