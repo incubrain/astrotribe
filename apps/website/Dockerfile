@@ -68,7 +68,7 @@ RUN pnpm exec nx reset --all && \
 
 RUN NODE_ENV=production pnpx tsx apps/website/generate-routes.ts
 
-RUN pnpm exec nx build @astronera/website --verbose
+RUN pnpm exec nx build @astronera/website --verbose --offline
 
 # Create production deployment
 RUN pnpm deploy --filter @astronera/website --prod /prod/website
