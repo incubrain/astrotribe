@@ -16,6 +16,19 @@ export default defineConfig({
       input: {
         index: path.resolve(__dirname, 'src/index.ts'),
       },
+      plugins: [
+        {
+          name: 'json-assert',
+          transform(code, id) {
+            if (id.endsWith('.json')) {
+              return {
+                code: `${code}\nexport default JSON.parse('${JSON.stringify(code)}')`,
+                map: null,
+              }
+            }
+          },
+        },
+      ],
       output: {
         dir: 'dist/src',
         format: 'esm',
@@ -66,6 +79,17 @@ export default defineConfig({
       compact: true,
       namedExports: true,
     }),
+    {
+      name: 'handle-json-imports',
+      transform(code, id) {
+        if (id.endsWith('.json')) {
+          return {
+            code: `export default ${code}`,
+            map: null,
+          }
+        }
+      },
+    },
   ],
   resolve: {
     alias: {
