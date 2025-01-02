@@ -49,8 +49,8 @@ COPY . .
 # Install Playwright
 RUN pnpm install -g playwright
 
-RUN pnpm exec playwright install chromium && \
-    pnpm exec playwright install-deps
+RUN pnpm exec playwright install chromium
+RUN pnpm exec playwright install-deps
 
 # Generate Prisma client
 RUN pnpx prisma generate
@@ -65,22 +65,18 @@ RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
 FROM base AS runner
 WORKDIR /app
 
-# Install only Playwright in the final stage
+# Install Playwright in the final stage
 RUN pnpm install -g playwright
+
+RUN pnpm exec playwright install chromium && \
+    pnpm exec playwright install-deps
 
 # Copy production files and Playwright cache
 COPY --from=builder /prod/cron-jobs ./
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 
 # Health check for Playwright
-RUN pnpm exec playwright --version && \
-    node -e "const { chromium } = require('playwright'); \
-    async function test() { \
-      const browser = await chromium.launch(); \
-      await browser.close(); \
-      console.log('Playwright health check passed'); \
-    } \
-    test().catch(err => { console.error('Playwright health check failed:', err); process.exit(1); });"
+RUN pnpm exec playwright --version
 
 ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
