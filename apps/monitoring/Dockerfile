@@ -27,7 +27,7 @@ RUN pnpm install
 ENV NX_DISABLE_DB=true
 RUN pnpm install -g nx@20.3.0
 RUN nx reset
-RUN nx build @astronera/monitoring --no-cache --skip-nx-cache
+RUN nx build @astronera/monitoring --no-cache --skip-nx-cache --offline
 
 WORKDIR /app/apps/monitoring/.output
 
