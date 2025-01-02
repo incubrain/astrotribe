@@ -65,15 +65,15 @@ RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
 FROM base AS runner
 WORKDIR /app
 
+# Copy production files first
+COPY --from=builder /prod/cron-jobs ./
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
+
 # Install Playwright in the final stage
 RUN pnpm install -g playwright
 
 RUN pnpm exec playwright install chromium && \
     pnpm exec playwright install-deps
-
-# Copy production files and Playwright cache
-COPY --from=builder /prod/cron-jobs ./
-COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 
 # Health check for Playwright
 RUN pnpm exec playwright --version
