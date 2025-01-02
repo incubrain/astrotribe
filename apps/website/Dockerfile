@@ -66,7 +66,7 @@ RUN pnpm exec prisma generate
 RUN pnpm exec nx reset --all && \
     rm -rf .nx/cache
 
-RUN NODE_ENV=production pnpm exec tsx apps/website/generate-routes.ts
+RUN NODE_ENV=production pnpx tsx apps/website/generate-routes.ts
 
 RUN pnpm exec nx build @astronera/website --verbose
 
