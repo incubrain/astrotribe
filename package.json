@@ -56,6 +56,7 @@
     "ib": "pnpx tsx cli/index.ts"
   },
   "dependencies": {
+    "@astronera/app": "workspace:^0.0.3",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",
@@ -157,12 +158,15 @@
     "postcss": "^8.4.47",
     "posthog-js": "^1.164.3",
     "primevue": "^4.2.5",
+    "prisma": "^6.1.0",
     "qrcode": "^1.5.4",
     "qs": "^6.13.0",
     "quill": "^2.0.3",
+    "razorpay": "^2.9.5",
     "reflect-metadata": "^0.1.13",
     "resend": "^4.0.1",
     "robots-parser": "^3.0.1",
+    "rollup": "^4.14.0",
     "rss-parser": "^3.13.0",
     "rxjs": "^7.8.1",
     "sass": "^1.79.3",
@@ -180,8 +184,6 @@
     "vue-tsc": "~2.1.6",
     "winston": "^3.14.2",
     "zod": "^3.23.8",
-    "prisma": "^6.1.0",
-    "rollup": "^4.14.0",
     "@types/node": "22.10.3"
   },
   "devDependencies": {
@@ -245,6 +247,9 @@
     "vitest-mock-extended": "^2.0.2",
     "vue-advanced-cropper": "^2.8.9",
     "webpack-bundle-analyzer": "^4.10.2"
+  },
+  "resolutions": {
+    "cookie": "0.7.2"
   },
   "pnpm": {
     "overrides": {
