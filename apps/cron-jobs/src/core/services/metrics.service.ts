@@ -2,7 +2,7 @@
 import { CustomLogger } from './logger.service'
 import { PrismaService } from './prisma.service'
 import { EventService } from './event.service'
-import { error_type } from '@prisma/client'
+import type { error_type } from '@prisma/client'
 
 export interface JobMetrics {
   duration: number

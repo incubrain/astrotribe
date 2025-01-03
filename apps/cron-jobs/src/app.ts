@@ -29,7 +29,7 @@ export class Application {
     const metricsService = new MetricsService(logger, prisma, event)
 
     // Initialize queue service if needed
-    const queue = new QueueService(config.database.url, logger, metricsService)
+    const queue = new QueueService(config.database.directUrl, logger, metricsService)
 
     // Create services object
     this.services = {
@@ -51,31 +51,24 @@ export class Application {
     try {
       this.services.logger.info('Starting application initialization')
 
-      // Initialize database connection
+      // Initialize database connection first
       this.services.logger.info('Connecting to database')
       await this.services.prisma.connect()
 
-      // Start core services
-      if (this.services.queue) {
-        this.services.logger.info('Starting queue service')
-        await this.services.queue.start()
-      }
+      // Initialize and start queue service
+      this.services.logger.info('Initializing queue service')
+      await this.services.queue.init()
+      await this.services.queue.start()
 
       await this.jobRegistry.initialize()
 
-      this.services.logger.info('Application started successfully', {
-        timestamp: new Date().toISOString(),
-      })
+      this.services.logger.info('Application started successfully')
 
       if (jobName) {
-        console.log('Testing job:', jobName, this.jobRegistry)
         await this.jobRegistry.testJob(jobName)
       }
     } catch (error: any) {
-      this.services.logger.error('Failed to start application', {
-        ...error,
-        timestamp: new Date().toISOString(),
-      })
+      this.services.logger.error('Failed to start application', error)
       throw error
     }
   }

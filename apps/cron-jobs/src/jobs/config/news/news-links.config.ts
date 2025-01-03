@@ -4,7 +4,6 @@ import { NewsLinkExtractor } from '../../utils/link-extractor'
 import type { JobServices, ContentSource, JobConfig } from '@types'
 import { DatabaseUtils } from '../../utils/database.utils'
 import { JobFactory } from '../../job.factory'
-import { error_type } from '@prisma/client'
 
 interface ProcessedContent {
   contents: {
