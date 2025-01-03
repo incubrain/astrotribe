@@ -35,7 +35,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/create-order`, {
+      const response = await $fetch(`/api/payment/${provider}/subscriptions/create`, {
         method: 'POST',
         body: { plan_id: planId, user_id: profile.value.id, total_count: 1 },
       })
@@ -65,31 +65,12 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     }
   }
 
-  const createSubscription = async (plan_id: string) => {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const response = await $fetch(`/api/payment/${provider}/create-order`, {
-        method: 'POST',
-        body: {
-          plan_id,
-        },
-      })
-      return response
-    } catch (error: any) {
-      console.error(`Error verifying payment with ${provider}:`, error)
-    } finally {
-      isLoading.value = false
-    }
-  }
-
   const fetchSubscription = async () => {
     isLoading.value = true
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/subscription`)
+      const response = await $fetch(`/api/payment/${provider}/subscriptions`)
       return response
     } catch (error: any) {
       console.error(`Error verifying payment with ${provider}:`, error)
