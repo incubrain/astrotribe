@@ -22,9 +22,9 @@ WORKDIR /app
 # Copy all files
 COPY . .
 
-# Install dependencies, generate Prisma client, and build
+# Install only website dependencies and build
 RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile && \
+    pnpm install --filter @astronera/website... --frozen-lockfile && \
     pnpm exec prisma generate && \
     rm -rf layers/*/dist && \
     NODE_ENV=production pnpx tsx apps/website/generate-routes.ts && \
