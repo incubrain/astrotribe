@@ -57,7 +57,7 @@ RUN pnpx prisma generate
 
 # Build application
 RUN pnpm exec nx reset && \
-    NODE_ENV=production pnpx nx build @astronera/cron-jobs --configuration=production --offline
+    NODE_ENV=production pnpx nx build @astronera/cron-jobs --configuration=production --skip-nx-cache
 
 # Create production deployment with only necessary files
 RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs

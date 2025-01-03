@@ -39,7 +39,7 @@ COPY . .
 # Install dependencies for this workspace only
 RUN pnpm install nx@20.3.0 -g
 RUN nx reset
-RUN nx build @astronera/cms --configuration=production --offline
+RUN nx build @astronera/cms --configuration=production --skip-nx-cache
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
