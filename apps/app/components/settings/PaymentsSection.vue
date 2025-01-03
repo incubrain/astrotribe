@@ -1,14 +1,30 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
-const { isLoading, subscription } = usePayments('razorpay')
+
 const { profile } = useCurrentUser()
 
-const { store, loadMore } = useSelectData('customer_subscription_plans', {
+const { store: subscriptionStore } = await useSelectData('customer_subscriptions', {
+  filters: {
+    user_id: { eq: profile.id },
+  },
+  initialFetch: true,
+  storeKey: 'subscriptions',
+})
+
+const { store, loadMore } = await useSelectData('customer_subscription_plans', {
   initialFetch: true,
   storeKey: 'subscription_plans',
 })
 
 const { items } = storeToRefs(store)
+
+const { items: subscriptionItems } = storeToRefs(subscriptionStore)
+
+console.log(subscriptionItems, 'Subscription Items')
+
+const subscription = computed(() => subscriptionItems.value?.[0])
+
+console.log('Subscription', subscription)
 
 interface PlanConfig {
   id: string
@@ -25,29 +41,46 @@ interface PlanConfig {
   }
 }
 
-const plans = computed(() => [{
-    id: 1,
-    name: 'Free',
-    price: '₹0',
-    period: 'forever',
-    description: 'Get started with free features',
-    features: [
-      'Basic project access',
-      'Community support',
-      '2 team members',
-      '1GB storage',
-      'Basic analytics',
-    ],
-    isActive: true,
-    availableFrom: null,
-  }].concat(items.value.map((item: any) => ({
-  ...item,
-  availableFrom: item.created_at,
-  isActive: item.is_active,
-  period: `/${item.interval_type}`,
-  price: (item.monthly_amount) / 100,
-  id: item.external_plan_id,
-}))))
+const plans = computed<PlanConfig>(() =>
+  [
+    {
+      id: 1,
+      name: 'Free',
+      price: '0',
+      period: 'forever',
+      description: 'Get started with free features',
+      features: [
+        'Basic project access',
+        'Community support',
+        '2 team members',
+        '1GB storage',
+        'Basic analytics',
+      ],
+      isActive: profile.user_plan === 'free',
+      availableFrom: null,
+    },
+  ].concat(
+    items.value.map((item: any) => {
+      const isActive = profile.user_plan === item.name.toLowerCase()
+
+      const razorPayConfig = isActive &&
+        subscription.value && {
+          subscription_id: subscription.value.external_subscription_id,
+          subscription_status: subscription.value.status,
+        }
+
+      return {
+        ...item,
+        availableFrom: item.created_at,
+        isActive: true,
+        period: `/${item.interval_type}`,
+        price: item.monthly_amount / 100,
+        id: item.external_plan_id,
+        razorPayConfig,
+      }
+    }),
+  ),
+)
 
 const handlePaymentSuccess = (response: any) => {
   // Handle successful payment
@@ -100,7 +133,7 @@ const customerInfo = computed(() => ({
             <div>
               <h3 class="text-xl font-semibold text-white">{{ plan.name }}</h3>
               <div class="mt-2 flex items-baseline">
-                <span class="text-3xl font-bold text-white">{{ plan.price }}</span>
+                <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
                 <span class="ml-1 text-sm text-gray-400">{{ plan.period }}</span>
               </div>
               <p class="mt-3 text-sm text-gray-400">{{ plan.description }}</p>
@@ -125,12 +158,16 @@ const customerInfo = computed(() => ({
             <div class="mt-8">
               <div v-if="plan.isActive">
                 <PaymentButton
-                  v-if="profile?.user_plan !== plan.name.toLowerCase()"
+                  v-if="
+                    profile?.user_plan !== plan.name.toLowerCase() ||
+                    plan.razorPayConfig?.subscription_status === 'charged'
+                  "
                   :plan="{
                     id: plan.id,
                     name: plan.name,
                     description: `Monthly ${plan.name} Plan`,
                     amount: plan.price,
+                    subscription_id: plan.razorPayConfig?.subscription_id,
                   }"
                   :customer="customerInfo"
                   button-label="Upgrade Plan"
