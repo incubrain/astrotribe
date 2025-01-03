@@ -3,7 +3,6 @@ import PgBoss from 'pg-boss'
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
 import type { WorkflowJob, WorkflowJobData } from '@types'
-import { error_type } from '@prisma/client'
 
 export interface QueueOptions {
   timeout?: number
@@ -53,11 +52,17 @@ export class QueueService {
       migrate: false, // Enable migrations
       // Other existing options...
       application_name: 'jobs_service',
-      max: 20,
+      max: 10,
+      ssl: {
+        rejectUnauthorized: false, // Required for Supabase
+      },
+      // Add proper keepalive settings for pooler
       monitorStateIntervalMinutes: 1,
       archiveCompletedAfterSeconds: 43200,
       deleteAfterDays: 7,
       maintenanceIntervalMinutes: 5,
+      retryLimit: 3,
+      retryDelay: 5000,
     })
     this.setupEventHandlers()
   }
