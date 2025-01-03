@@ -103,13 +103,16 @@ useHead({
 })
 
 const createSubscription = async () => {
+  console.log(props.plan.id, 'PLAN ID')
   const subscription = await razorpay.createOrder(props.plan.id)
-  razorpayOptions.value.subscription_id = subscription.id
 
-  handlePayment()
+  console.log(subscription, 'SUBSCRIPTION')
+  razorpayOptions.value.subscription_id = subscription.id
 }
 
-const handlePayment = () => {
+const handlePayment = async () => {
+  if (!razorpayOptions.value.subscription_id) await createSubscription()
+
   if (!isRazorpayLoaded.value) {
     emit('payment-error', new Error('Razorpay is not loaded yet'))
     return
@@ -131,6 +134,6 @@ const handlePayment = () => {
     :icon="buttonIcon"
     :loading="loading"
     :disabled="!isRazorpayLoaded"
-    @click="createSubscription"
+    @click="handlePayment"
   />
 </template>
