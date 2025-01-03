@@ -7,6 +7,7 @@ ENV PORT=8080
 ENV NODE_ENV=production
 ENV NX_DAEMON=false
 ENV NX_SKIP_NX_CLOUD=true
+ENV NODE_PATH=/app/node_modules
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -31,5 +32,7 @@ RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,tar
     pnpm exec nx build @astronera/website --verbose --skip-nx-cache
 
 EXPOSE $PORT
+
+WORKDIR /app/apps/website
 
 CMD ["node", ".output/server/index.mjs"]
