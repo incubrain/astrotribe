@@ -50,9 +50,8 @@ COPY . .
 RUN pnpx prisma generate && \
     rm -rf layers/*/dist && \
     pnpm exec nx reset && \
-    pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose && \
-    pnpm deploy --filter @astronera/cron-jobs --prod /app/prod
+    pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose
 
-# Could clean and optimize here if needed
+WORKDIR /app/apps/cron-jobs
 
-CMD ["pnpm", "start"]
+CMD ["node", "dist/src/index.js"]
