@@ -51,17 +51,24 @@ export class PrismaService extends PrismaClient {
     })
   }
 
-  async connect(): Promise<void> {
-    if (this.isConnected) {
-      return
-    }
-
+  async connect() {
     try {
-      await this.$connect()
+      this.logger.info('Connecting to database', {
+        // Log redacted URLs for debugging
+        url: config.database.url?.replace(/:[^:\/]+@/, ':****@'),
+        directUrl: config.database.directUrl?.replace(/:[^:\/]+@/, ':****@'),
+      })
+
+      await this.$connect() // Use $connect from super
       this.isConnected = true
       this.logger.info('Database connected successfully')
     } catch (error: any) {
-      this.logger.error('Database connection failed', error)
+      this.logger.error('Database connection failed', {
+        error,
+        context: {
+          stack: error.stack,
+        },
+      })
       throw error
     }
   }
@@ -72,7 +79,7 @@ export class PrismaService extends PrismaClient {
     }
 
     try {
-      await this.$disconnect()
+      await this.$disconnect() // Use $disconnect from super
       this.isConnected = false
       this.logger.info('Database disconnected successfully')
     } catch (error: any) {

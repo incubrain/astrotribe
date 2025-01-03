@@ -22,6 +22,7 @@ const configSchema = z.object({
     logLevel: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
   }),
   database: z.object({
+    url: z.string(),
     directUrl: z.string(),
     maxConnections: z.number().default(20),
     idleTimeout: z.number().default(60000),
@@ -60,6 +61,7 @@ function loadConfig(): ApplicationConfig {
       logLevel: process.env.LOG_LEVEL || 'info',
     },
     database: {
+      url: process.env.DATABASE_URL,
       directUrl: process.env.DATABASE_DIRECT_URL,
       maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS || '20', 10),
       idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT || '60000', 10),
