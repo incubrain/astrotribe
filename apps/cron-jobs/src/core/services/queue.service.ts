@@ -48,17 +48,17 @@ export class QueueService {
   ) {
     this.boss = new PgBoss({
       connectionString,
-      // Connection settings
+      // Add schema migration options
+      schema: 'pgboss', // Explicitly set schema
+      migrate: false, // Enable migrations
+      // Other existing options...
       application_name: 'jobs_service',
       max: 20,
-      // Monitoring
       monitorStateIntervalMinutes: 1,
-      // Maintenance settings
-      archiveCompletedAfterSeconds: 43200, // 12 hours
+      archiveCompletedAfterSeconds: 43200,
       deleteAfterDays: 7,
       maintenanceIntervalMinutes: 5,
     })
-
     this.setupEventHandlers()
   }
 
@@ -125,19 +125,49 @@ export class QueueService {
 
   async start(): Promise<void> {
     try {
+      // First verify installation status
+      const isInstalled = await this.boss.isInstalled()
+      if (!isInstalled) {
+        this.logger.info('PgBoss schema not found, will be installed during startup...')
+      } else {
+        // Check schema version
+        const version = await this.boss.schemaVersion()
+        this.logger.info(`Found PgBoss schema version: ${version}`)
+      }
+
+      // Start boss - this will handle installation/migration automatically
       await this.boss.start()
       this.isStarted = true
-      this.logger.info('Queue service started')
-    } catch (error: any) {
-      this.logger.error('Failed to start queue service', {
-        ...error,
+
+      this.logger.info('Queue service started successfully', {
+        schema: 'pgboss',
+        installed: isInstalled,
       })
-      throw error
+    } catch (error: any) {
+      if (error.code === '42P16') {
+        // Multiple primary keys error
+        this.logger.warn('Found corrupted schema, attempting cleanup...')
+        await this.clearStorage()
+        // Retry startup
+        await this.boss.start()
+        this.isStarted = true
+        this.logger.info('Queue service started after schema cleanup')
+      } else {
+        this.logger.error('Failed to start queue service', {
+          error,
+        })
+        throw error
+      }
     }
   }
 
-  async stop(options?: StopOptions): Promise<void> {
-    const defaults = { wait: true, graceful: true, close: true, timeout: 30000 }
+  async stop(options: StopOptions = {}): Promise<void> {
+    const defaults = {
+      wait: true,
+      graceful: true,
+      close: true,
+      timeout: 30000, // 30 seconds
+    }
     const opts = { ...defaults, ...options }
 
     try {
@@ -146,8 +176,20 @@ export class QueueService {
       this.logger.info('Queue service stopping...', { options: opts })
     } catch (error: any) {
       this.logger.error('Failed to stop queue service', {
+        error_code: error.code,
+        error_message: error.message,
         ...error,
       })
+      throw error
+    }
+  }
+
+  async clearStorage(): Promise<void> {
+    try {
+      await this.boss.clearStorage()
+      this.logger.info('Successfully cleared queue storage')
+    } catch (error: any) {
+      this.logger.error('Failed to clear storage', error)
       throw error
     }
   }
@@ -502,11 +544,6 @@ export class QueueService {
 
   async getSchemaVersion(): Promise<Number> {
     return this.boss.schemaVersion()
-  }
-
-  async clearStorage(): Promise<void> {
-    await this.boss.clearStorage()
-    this.logger.warn('Queue storage cleared')
   }
 
   private serializeData(data: any): any {
