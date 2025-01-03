@@ -38,7 +38,7 @@ RUN pnpx prisma generate
 
 # Install nx and build
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/api --offline
+RUN pnpx nx build @astronera/api --skip-nx-cache
 
 RUN pnpm prune --production
 
