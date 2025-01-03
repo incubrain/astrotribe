@@ -9,7 +9,7 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "types": ["node"],
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },

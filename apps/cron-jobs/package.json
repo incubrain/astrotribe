@@ -24,16 +24,15 @@
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "node-fetch": "latest",
+    "p-limit": "latest",
     "pg-boss": "^10.1.5",
     "playwright": "1.41.1",
     "playwright-core": "1.41.1",
     "robots-parser": "^3.0.1",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.2",
-    "zod": "^3.23.8",
-    "tlds": "1.255.0",
-    "p-limit": "latest",
-    "node-fetch": "latest"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
