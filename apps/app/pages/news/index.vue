@@ -13,6 +13,8 @@ const { topBannerAd } = useAdsStore()
       :ad="topBannerAd"
     />
 
+    <!-- <AdsDiscountBanner /> -->
+
     <FeedHotToggle v-model="sortingMethod" />
 
     <Transition

@@ -93,7 +93,6 @@ onBeforeUnmount(() => {
         class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border-2 border-blue-500/30 rounded-lg"
         :class="[{ 'rotate-y-180': isFlipped }]"
       >
-        test: {{ currentAdQueue }}
         <!-- Front of card -->
         <div class="absolute w-full h-full backface-hidden">
           <div class="p-4 flex flex-col justify-between h-full">
