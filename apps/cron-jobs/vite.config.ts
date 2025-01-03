@@ -21,6 +21,7 @@ export default defineConfig({
         preserveModulesRoot: 'src',
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
+        interop: 'auto',
       },
       external: [
         // Node.js built-in modules
@@ -73,6 +74,7 @@ export default defineConfig({
       '@core': path.resolve(__dirname, './src/core'),
       '@jobs': path.resolve(__dirname, './src/jobs/config'),
     },
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'main'],
     preserveSymlinks: true,
     dedupe: ['playwright', 'playwright-core'],
   },
