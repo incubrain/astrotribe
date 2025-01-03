@@ -57,7 +57,7 @@ function loadConfig(): ApplicationConfig {
       name: process.env.APP_NAME,
       port: parseInt(process.env.APP_PORT || '3000', 10),
       environment: process.env.NODE_ENV,
-      logLevel: process.env.LOG_LEVEL,
+      logLevel: process.env.LOG_LEVEL || 'info',
     },
     database: {
       url: process.env.DATABASE_URL,
