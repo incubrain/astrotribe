@@ -1,6 +1,8 @@
 FROM node:22-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
 RUN corepack enable
 
 # Install system dependencies in base to be reused
@@ -55,9 +57,13 @@ RUN pnpm exec playwright install-deps
 # Generate Prisma client
 RUN pnpx prisma generate
 
+RUN ls -la apps/cron-jobs/project.json
+
 # Build application
-RUN pnpm exec nx reset && \
-    NODE_ENV=production pnpx nx build @astronera/cron-jobs --configuration=production --skip-nx-cache
+RUN rm -rf layers/*/dist
+RUN pnpm exec nx reset
+RUN pnpm exec nx graph --file=graph.json
+RUN pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose
 
 # Create production deployment with only necessary files
 RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs

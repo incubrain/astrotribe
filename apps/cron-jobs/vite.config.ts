@@ -2,8 +2,6 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import json from '@rollup/plugin-json'
 
-console.log('Building cron jobs...', __dirname)
-
 export default defineConfig({
   build: {
     target: 'node22',
@@ -16,19 +14,6 @@ export default defineConfig({
       input: {
         index: path.resolve(__dirname, 'src/index.ts'),
       },
-      plugins: [
-        {
-          name: 'json-assert',
-          transform(code, id) {
-            if (id.endsWith('.json')) {
-              return {
-                code: `${code}\nexport default JSON.parse('${JSON.stringify(code)}')`,
-                map: null,
-              }
-            }
-          },
-        },
-      ],
       output: {
         dir: 'dist/src',
         format: 'esm',
@@ -69,7 +54,6 @@ export default defineConfig({
         'robots-parser',
         'rss-parser',
         'p-limit',
-        'tlds',
       ],
     },
   },
@@ -78,18 +62,8 @@ export default defineConfig({
       preferConst: true,
       compact: true,
       namedExports: true,
+      include: ['node_modules/**/*.json', '**/*.json'],
     }),
-    {
-      name: 'handle-json-imports',
-      transform(code, id) {
-        if (id.endsWith('.json')) {
-          return {
-            code: `export default ${code}`,
-            map: null,
-          }
-        }
-      },
-    },
   ],
   resolve: {
     alias: {
