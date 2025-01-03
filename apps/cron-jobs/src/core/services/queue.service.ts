@@ -1,5 +1,8 @@
 // src/core/services/queue.service.ts
 import PgBoss from 'pg-boss'
+import pool from 'pg-pool'
+import type { Pool } from 'pg'
+
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
 import type { WorkflowJob, WorkflowJobData } from '@types'
@@ -37,7 +40,8 @@ export interface StopOptions {
 }
 
 export class QueueService {
-  private boss: PgBoss
+  private boss: PgBoss | null = null
+  private pgPool: Pool | null = null
   private isStarted = false
 
   constructor(
@@ -45,38 +49,89 @@ export class QueueService {
     private readonly logger: CustomLogger,
     private readonly metrics: MetricsService,
   ) {
-    this.boss = new PgBoss({
-      connectionString,
-      // Add schema migration options
-      schema: 'pgboss', // Explicitly set schema
-      migrate: false, // Enable migrations
-      // Other existing options...
-      application_name: 'jobs_service',
-      max: 10,
-      ssl: {
-        rejectUnauthorized: false, // Required for Supabase
-      },
-      // Add proper keepalive settings for pooler
-      monitorStateIntervalMinutes: 1,
-      archiveCompletedAfterSeconds: 43200,
-      deleteAfterDays: 7,
-      maintenanceIntervalMinutes: 5,
-      retryLimit: 3,
-      retryDelay: 5000,
-    })
-    this.setupEventHandlers()
+    this.logger.setDomain('jobs')
+  }
+
+  // postgresql://postgres:[YOUR-PASSWORD]@db.idsifamzvzlpgnmlnldw.supabase.co:5432/postgres
+  // postgresql://postgres.idsifamzvzlpgnmlnldw:XH8dQ64z191A2QMU@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+
+  async init(): Promise<void> {
+    try {
+      const isSupabase = this.connectionString.includes('supabase')
+      // Initialize pg Pool
+      this.pgPool = new pool({
+        connectionString: this.connectionString,
+        ssl: isSupabase
+          ? {
+              rejectUnauthorized: false,
+            }
+          : false, // Disable SSL for local development
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      })
+
+      // Test the connection
+      await this.pgPool.query('SELECT 1')
+      this.logger.info('Database pool initialized successfully')
+
+      // Drop the pgboss schema if it exists
+      await this.pgPool.query('DROP SCHEMA IF EXISTS pgboss CASCADE')
+      this.logger.info('Cleaned up existing pgboss schema')
+
+      // Initialize pg-boss
+      this.boss = new PgBoss({
+        db: {
+          executeSql: async (text: string, values?: any[]) => {
+            if (!this.pgPool) throw new Error('Database pool not initialized')
+            return await this.pgPool.query(text, values)
+          },
+        },
+        schema: 'pgboss',
+        application_name: 'jobs_service',
+        monitorStateIntervalMinutes: 1,
+        archiveCompletedAfterSeconds: 43200,
+        deleteAfterDays: 7,
+        maintenanceIntervalMinutes: 5,
+      })
+
+      this.setupEventHandlers()
+      this.logger.info('Queue service initialized')
+    } catch (error: any) {
+      this.logger.error('Failed to initialize queue service', {
+        error,
+      })
+      throw error
+    }
+  }
+
+  async start(): Promise<void> {
+    if (!this.boss) {
+      throw new Error('Queue service not initialized. Call init() first')
+    }
+
+    try {
+      await this.boss?.start()
+      this.isStarted = true
+      this.logger.info('Queue service started successfully')
+    } catch (error: any) {
+      this.logger.error('Failed to start queue service', {
+        error,
+      })
+      throw error
+    }
   }
 
   private setupEventHandlers() {
     // Error handling
-    this.boss.on('error', (error: any) => {
+    this.boss?.on('error', (error: any) => {
       this.logger.error('Queue error', {
         ...error,
       })
     })
 
     // State monitoring
-    this.boss.on('monitor-states', async (states: any) => {
+    this.boss?.on('monitor-states', async (states: any) => {
       this.logger.debug('Queue states', {
         states,
         timestamp: new Date().toISOString(),
@@ -105,7 +160,7 @@ export class QueueService {
     })
 
     // Worker monitoring
-    this.boss.on('wip', (workers) => {
+    this.boss?.on('wip', (workers) => {
       this.logger.debug('Active workers', {
         count: workers.length,
         workers: workers.map((w) => ({
@@ -120,7 +175,7 @@ export class QueueService {
     })
 
     // Lifecycle events
-    this.boss.on('stopped', () => {
+    this.boss?.on('stopped', () => {
       this.isStarted = false
       this.logger.info('Queue service stopped', {
         timestamp: new Date().toISOString(),
@@ -128,70 +183,34 @@ export class QueueService {
     })
   }
 
-  async start(): Promise<void> {
+  async stop(options: StopOptions = {}): Promise<void> {
     try {
-      // First verify installation status
-      const isInstalled = await this.boss.isInstalled()
-      if (!isInstalled) {
-        this.logger.info('PgBoss schema not found, will be installed during startup...')
-      } else {
-        // Check schema version
-        const version = await this.boss.schemaVersion()
-        this.logger.info(`Found PgBoss schema version: ${version}`)
+      if (this.boss) {
+        await this.boss?.stop(options)
       }
-
-      // Start boss - this will handle installation/migration automatically
-      await this.boss.start()
-      this.isStarted = true
-
-      this.logger.info('Queue service started successfully', {
-        schema: 'pgboss',
-        installed: isInstalled,
-      })
+      if (this.pgPool) {
+        await this.pgPool.end()
+      }
+      this.isStarted = false
+      this.logger.info('Queue service stopped')
     } catch (error: any) {
-      if (error.code === '42P16') {
-        // Multiple primary keys error
-        this.logger.warn('Found corrupted schema, attempting cleanup...')
-        await this.clearStorage()
-        // Retry startup
-        await this.boss.start()
-        this.isStarted = true
-        this.logger.info('Queue service started after schema cleanup')
-      } else {
-        this.logger.error('Failed to start queue service', {
-          error,
-        })
-        throw error
-      }
+      this.logger.error('Failed to stop queue service', error)
+      throw error
     }
   }
 
-  async stop(options: StopOptions = {}): Promise<void> {
-    const defaults = {
-      wait: true,
-      graceful: true,
-      close: true,
-      timeout: 30000, // 30 seconds
-    }
-    const opts = { ...defaults, ...options }
-
-    try {
-      await this.boss.stop(opts)
-      // 'stopped' event handler will update isStarted
-      this.logger.info('Queue service stopping...', { options: opts })
-    } catch (error: any) {
-      this.logger.error('Failed to stop queue service', {
-        error_code: error.code,
-        error_message: error.message,
-        ...error,
-      })
-      throw error
+  // Update all other methods to check for this.boss existence
+  private checkInitialized(): void {
+    if (!this.boss) {
+      throw new Error('Queue service not initialized. Call init() first')
     }
   }
 
   async clearStorage(): Promise<void> {
     try {
-      await this.boss.clearStorage()
+      this.checkInitialized()
+
+      await this.boss?.clearStorage()
       this.logger.info('Successfully cleared queue storage')
     } catch (error: any) {
       this.logger.error('Failed to clear storage', error)
@@ -201,7 +220,9 @@ export class QueueService {
 
   async createQueue(name: string, options: Queue): Promise<void> {
     try {
-      await this.boss.createQueue(name, options)
+      this.checkInitialized()
+
+      await this.boss?.createQueue(name, options)
       this.logger.info(`Queue created: ${name}`, { options })
     } catch (error: any) {
       this.logger.error(`Failed to create queue: ${name}`, {
@@ -214,7 +235,9 @@ export class QueueService {
 
   async updateQueue(name: string, options: PgBoss.Queue): Promise<void> {
     try {
-      await this.boss.updateQueue(name, options)
+      this.checkInitialized()
+
+      await this.boss?.updateQueue(name, options)
       this.logger.info(`Queue updated: ${name}`, { options })
     } catch (error: any) {
       this.logger.error(`Failed to update queue: ${name}`, {
@@ -229,7 +252,7 @@ export class QueueService {
     if (!this.isStarted) throw new Error('Queue service not started')
 
     try {
-      const jobId = await this.boss.send(name, data, {
+      const jobId = await this.boss?.send(name, data, {
         ...options,
         priority: this.convertPriorityToInteger(options.priority),
         retryLimit: options.retryLimit ?? 3,
@@ -260,7 +283,7 @@ export class QueueService {
   //   }
 
   //   try {
-  //     return await this.boss.(name)
+  //     return await this.boss?.(name)
   //   } catch (error: any) {
   //     this.logger.error('Failed to get active jobs', {
   //       ...error,
@@ -276,7 +299,7 @@ export class QueueService {
     }
 
     try {
-      return await this.boss.getSchedules()
+      return await this.boss?.getSchedules()
     } catch (error: any) {
       this.logger.error('Failed to get schedules', {
         ...error,
@@ -291,7 +314,7 @@ export class QueueService {
     }
 
     try {
-      await this.boss.unschedule(name)
+      await this.boss?.unschedule(name)
       this.logger.info(`Unscheduled job: ${name}`)
     } catch (error: any) {
       this.logger.error(`Failed to unschedule job: ${name}`, {
@@ -307,7 +330,7 @@ export class QueueService {
     }
 
     try {
-      const job = await this.boss.getJobById(name, jobId)
+      const job = await this.boss?.getJobById(name, jobId)
 
       if (!job) {
         this.logger.warn('Job not found', {
@@ -359,15 +382,21 @@ export class QueueService {
     if (!this.isStarted) throw new Error('Queue service not started')
 
     try {
-      await this.createQueueIfNotExists(name)
+      // First create the queue
+      await this.boss?.createQueue(name)
+      this.logger.info(`Created queue: ${name}`)
 
-      this.logger.info(`Scheduling job: ${name}`, {
-        cronSchedule,
-        options,
-        timestamp: new Date().toISOString(),
-      })
+      // Then remove any existing schedules
+      try {
+        await this.boss?.unschedule(name)
+        this.logger.info(`Unscheduled existing job: ${name}`)
+      } catch (error) {
+        // Ignore errors if schedule doesn't exist
+        this.logger.debug(`No existing schedule found for: ${name}`)
+      }
 
-      const jobId = await this.boss.schedule(name, cronSchedule, data, {
+      // Now schedule the new job
+      const jobId = await this.boss?.schedule(name, cronSchedule, data, {
         retryLimit: options.retryLimit ?? 3,
         retryDelay: 60,
         priority: this.convertPriorityToInteger(options.priority),
@@ -376,19 +405,13 @@ export class QueueService {
       this.logger.info(`Scheduled job ${name}`, {
         jobId,
         cronSchedule,
-        options,
         scheduleTime: new Date().toISOString(),
       })
 
       return jobId
     } catch (error: any) {
       this.logger.error(`Failed to schedule job ${name}`, {
-        ...error,
-        cronSchedule,
-        options,
-        error_message: error.message,
-        error_stack: error.stack,
-        timestamp: new Date().toISOString(),
+        error,
       })
       throw error
     }
@@ -397,14 +420,30 @@ export class QueueService {
   private async createQueueIfNotExists(name: string) {
     try {
       // First check if queue exists
-      const queue = await this.boss.getQueue(name)
+      const queue = await this.boss?.getQueue(name)
 
       if (!queue) {
         this.logger.info(`Creating queue: ${name}`)
-        await this.boss.createQueue(name)
+        try {
+          await this.boss?.createQueue(name)
+        } catch (error: any) {
+          // If the error is "relation already exists" (code 42P07), we can ignore it
+          // This happens in race conditions when multiple workers try to create the same queue
+          if (error.code === '42P07') {
+            this.logger.info(`Queue ${name} already exists, continuing...`)
+            return
+          }
+          throw error
+        }
+      } else {
+        this.logger.debug(`Queue ${name} already exists`)
       }
     } catch (error: any) {
       this.logger.error(`Failed to create queue: ${name}`, {
+        error_code: error.code,
+        error_message: error.message,
+        error_detail: error.detail,
+        error_hint: error.hint,
         ...error,
       })
       throw error
@@ -413,7 +452,7 @@ export class QueueService {
 
   async unschedule(name: string): Promise<void> {
     try {
-      await this.boss.unschedule(name)
+      await this.boss?.unschedule(name)
       this.logger.info(`Unscheduled jobs for: ${name}`)
     } catch (error: any) {
       this.logger.error(`Failed to unschedule jobs: ${name}`, {
@@ -427,7 +466,7 @@ export class QueueService {
     if (!this.isStarted) throw new Error('Queue service not started')
 
     try {
-      await this.boss.work(name, async (job) => {
+      await this.boss?.work(name, async (job) => {
         const startTime = Date.now()
 
         try {
@@ -491,64 +530,64 @@ export class QueueService {
 
   // Queue management
   async getQueueSize(name: string) {
-    return this.boss.getQueueSize(name)
+    return this.boss?.getQueueSize(name)
   }
 
   async purgeQueue(name: string) {
-    await this.boss.purgeQueue(name)
+    await this.boss?.purgeQueue(name)
     this.logger.info(`Queue purged: ${name}`)
   }
 
   async deleteQueue(name: string) {
-    await this.boss.deleteQueue(name)
+    await this.boss?.deleteQueue(name)
     this.logger.info(`Queue deleted: ${name}`)
   }
 
   async getQueues() {
-    return this.boss.getQueues()
+    return this.boss?.getQueues()
   }
 
   async getQueue(name: string) {
-    return this.boss.getQueue(name)
+    return this.boss?.getQueue(name)
   }
 
   // Job management
   async completeJob(name: string, jobId: string, data?: any) {
-    await this.boss.complete(name, jobId, data)
+    await this.boss?.complete(name, jobId, data)
     this.logger.info(`Job completed: ${name}`, { jobId })
   }
 
   async failJob(name: string, jobId: string, error: Error) {
-    await this.boss.fail(name, jobId, error)
+    await this.boss?.fail(name, jobId, error)
     this.logger.info(`Job failed: ${name}`, { jobId, error })
   }
 
   async cancelJob(name: string, jobId: string) {
-    await this.boss.cancel(name, jobId)
+    await this.boss?.cancel(name, jobId)
     this.logger.info(`Job cancelled: ${name}`, { jobId })
   }
 
   async resumeJob(name: string, jobId: string) {
-    await this.boss.resume(name, jobId)
+    await this.boss?.resume(name, jobId)
     this.logger.info(`Job resumed: ${name}`, { jobId })
   }
 
   async getJobById(name: string, id: string) {
-    return this.boss.getJobById(name, id)
+    return this.boss?.getJobById(name, id)
   }
 
   async deleteJob(name: string, jobId: string) {
-    await this.boss.deleteJob(name, jobId)
+    await this.boss?.deleteJob(name, jobId)
     this.logger.info(`Job deleted: ${name}`, { jobId })
   }
 
   // Utility methods
   async isInstalled(): Promise<Boolean> {
-    return this.boss.isInstalled()
+    return this.boss?.isInstalled() ?? false
   }
 
   async getSchemaVersion(): Promise<Number> {
-    return this.boss.schemaVersion()
+    return this.boss?.schemaVersion() ?? 0
   }
 
   private serializeData(data: any): any {
@@ -597,7 +636,7 @@ export class QueueService {
       // Serialize the data to ensure it can be stored in PostgreSQL
       const serializedData = this.serializeData(data)
 
-      const jobId = await this.boss.send(name, serializedData, {
+      const jobId = await this.boss?.send(name, serializedData, {
         retryLimit: options.retryLimit ?? 3,
         retryDelay: 60,
         priority: this.convertPriorityToInteger('critical'), // Use critical priority for test runs

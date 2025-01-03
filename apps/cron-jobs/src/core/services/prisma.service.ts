@@ -7,11 +7,11 @@ export class PrismaService extends PrismaClient {
   private isConnected = false
 
   constructor(private readonly logger: CustomLogger) {
-    console.log('config.database.url', config.database.url)
+    console.log('config.database.url', config.database.directUrl)
     super({
       datasources: {
         db: {
-          url: config.database.url,
+          url: config.database.directUrl,
         },
       },
       log: [
