@@ -23,7 +23,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies, generate Prisma client, and build
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile && \
     pnpm exec prisma generate && \
     rm -rf layers/*/dist && \
