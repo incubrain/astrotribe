@@ -1,12 +1,15 @@
-FROM node:22-slim AS base
+FROM node:22-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
 ENV NX_VERBOSE_LOGGING=true
 RUN corepack enable
 
-# Install system dependencies in base to be reused
-RUN apt-get update && apt-get install -y \
+WORKDIR /app
+
+# Enable pnpm and install system dependencies
+RUN apt-get update && \
+    apt-get install -y \
     python3 \
     make \
     g++ \
@@ -27,65 +30,29 @@ RUN apt-get update && apt-get install -y \
     libpango-1.0-0 \
     libcairo2 \
     libatspi2.0-0 \
-    libgtk-3-0 \
-    && rm -rf /var/lib/apt/lists/*
+    libgtk-3-0 && \
+    rm -rf /var/lib/apt/lists/*
 
-FROM base AS deps
-WORKDIR /app
-
-# Copy workspace config files
+# Copy package files
 COPY pnpm-*.yaml package.json ./
 COPY apps/cron-jobs/package.json ./apps/cron-jobs/
 COPY libs/logger/package.json ./libs/logger/
 
-# Install dependencies with proper cache mounting
+# Install dependencies and Playwright
 RUN --mount=type=cache,id=s/3c9904ae-05e1-4a46-a525-fca654d7d374-/pnpm/store,target=/pnpm/store \
-    pnpm install --frozen-lockfile
-
-FROM deps AS builder
-WORKDIR /app
-
-# Copy remaining source files
-COPY . .
-
-# Install Playwright
-RUN pnpm install -g playwright
-
-RUN pnpm exec playwright install chromium
-RUN pnpm exec playwright install-deps
-
-# Generate Prisma client
-RUN pnpx prisma generate
-
-RUN ls -la apps/cron-jobs/project.json
-
-# Build application
-RUN rm -rf layers/*/dist
-RUN pnpm exec nx reset
-RUN pnpm exec nx graph --file=graph.json
-RUN pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose
-
-# Create production deployment with only necessary files
-RUN pnpm deploy --filter @astronera/cron-jobs --prod /prod/cron-jobs
-
-FROM base AS runner
-WORKDIR /app
-
-# Copy production files first
-COPY --from=builder /prod/cron-jobs ./
-COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
-
-# Install Playwright in the final stage
-RUN pnpm install -g playwright
-
-RUN pnpm exec playwright install chromium && \
+    pnpm install --frozen-lockfile && \
+    pnpm install -g playwright && \
+    pnpm exec playwright install chromium && \
     pnpm exec playwright install-deps
 
-# Health check for Playwright
-RUN pnpm exec playwright --version
+# Copy source files and build
+COPY . .
+RUN pnpx prisma generate && \
+    rm -rf layers/*/dist && \
+    pnpm exec nx reset && \
+    pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose && \
+    pnpm deploy --filter @astronera/cron-jobs --prod /app/prod
 
-ENV NODE_ENV=production \
-    PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
-
+# Could clean and optimize here if needed
 
 CMD ["pnpm", "start"]
