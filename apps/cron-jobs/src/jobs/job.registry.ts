@@ -1,12 +1,11 @@
 // src/jobs/job.registry.ts
 import PgBoss from 'pg-boss'
-import { JobServices, QueueJob, JobClass, JobConfig } from '@types'
+import { JobServices, QueueJob, JobClass, JobConfig, JobModule } from '@types'
 import { CustomLogger } from '../core/services/logger.service'
 import { QueueService } from '../core/services/queue.service'
 import { createNewsLinksJob } from './config/news/news-links.config'
 import { JobRunner } from './job.runner'
 import { JobVersionService } from './job.versioning'
-import { TestJobsSeeder } from './con'
 
 export class JobRegistry {
   private jobs = new Map<string, JobConfig<any, any, any>>()
@@ -76,7 +75,7 @@ export class JobRegistry {
         try {
           // Execute job handlers in sequence
           const input = (await config.handlers.beforeProcess?.()) || []
-          const processed = await config.handlers.processFunction(input)
+          const processed = await config.handlers.processFunction(input, job)
           const output = (await config.handlers.afterProcess?.(processed)) || processed
 
           return output

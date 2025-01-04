@@ -68,7 +68,7 @@ export const createNewsLinksJob = (services: JobServices) => {
           throw error
         }
       },
-      processFunction: async (sources: ContentSource[]): Promise<ProcessedContent[]> => {
+      processFunction: async (sources: ContentSource[], job): Promise<ProcessedContent[]> => {
         const { scraper, logger, prisma, metrics } = services
         const results: ProcessedContent[] = []
 
@@ -95,7 +95,7 @@ export const createNewsLinksJob = (services: JobServices) => {
                 const links = await extractor.extractBlogLinks()
                 batchResults.push(...links)
 
-                await metrics.trackJobCompletion('news_links', {
+                await metrics.trackJobCompletion('news_links', job.id, {
                   itemsProcessed: links.length,
                   success: true,
                   duration: Date.now() - startTime,

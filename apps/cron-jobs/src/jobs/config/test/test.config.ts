@@ -62,8 +62,8 @@ export const createTestJob = (
           },
         ]
       },
-      processFunction: async (input) => {
-        logger.info(`[${options.name}] Processing items`, { batchId: input.batchId })
+      processFunction: async (input: any[], job: any) => {
+        logger.info(`[${options.name}] Processing items`, { jobId: job.id })
 
         const startTime = Date.now()
         await new Promise((resolve) =>
@@ -74,7 +74,7 @@ export const createTestJob = (
           throw new Error('Simulated random processing error')
         }
 
-        const processedItems = input.items.map((item) => {
+        const processedItems = input.map((item) => {
           if (faker.number.int({ min: 1, max: 10 }) > 8) {
             return 0 // Simulate failed item
           }

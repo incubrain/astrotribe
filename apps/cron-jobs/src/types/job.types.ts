@@ -11,6 +11,7 @@ import type {
 } from '@core'
 import type { JobVersionService } from '../jobs/job.versioning'
 import type { ScheduleConfig } from './schedule.types'
+import type { QueueJob } from './queue.types'
 
 // Required services for jobs
 export interface JobServices {
@@ -70,7 +71,7 @@ export interface JobSchedule {
 
 export interface JobHandlers<TInput, TProcessed, TOutput> {
   beforeProcess?: () => Promise<TInput[]>
-  processFunction: (rows: TInput[]) => Promise<TProcessed[]>
+  processFunction: (rows: TInput[], job: QueueJob) => Promise<TProcessed[]>
   afterProcess?: (processedData: TProcessed[]) => Promise<TOutput[]>
   onSuccess?: (result: TOutput) => Promise<void>
   onError?: (error: Error) => Promise<void>

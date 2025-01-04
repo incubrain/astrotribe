@@ -11,6 +11,7 @@ const handledJobs = [
   'SELECT public.perform_weekly_maintenance()',
   'SELECT public.refresh_content_views()',
   'SELECT public.sync_all_logs()',
+  'SELECT sync_all_logs()',
 ]
 
 // Helper to generate a job name from command
