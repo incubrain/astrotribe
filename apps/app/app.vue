@@ -1,19 +1,4 @@
 <script setup lang="ts">
-const catTagStore = useCategoryTagStore()
-const currentUser = useCurrentUser()
-const folderStore = useFolderStore()
-const bookmarkStore = useBookmarkStore()
-
-onMounted(async () => {
-  document.documentElement.classList.add('dark')
-  try {
-    await Promise.all([folderStore.fetchFolders(), bookmarkStore.fetchBookmarks()])
-    await bookmarkStore.fetchBookmarkCounts() // Add error handling here
-  } catch (error: any) {
-    console.error('Error initializing data:', error)
-  }
-})
-
 useHead({
   htmlAttrs: {
     lang: 'en',
@@ -31,6 +16,24 @@ useHead({
       href: '/favicon.png',
     },
   ],
+})
+
+const catTagStore = useCategoryTagStore()
+const currentUser = useCurrentUser()
+const folderStore = useFolderStore()
+const bookmarkStore = useBookmarkStore()
+
+onMounted(async () => {
+  document.documentElement.classList.add('dark')
+  try {
+    await Promise.all([
+      folderStore.fetchFolders(),
+      bookmarkStore.fetchBookmarks(),
+      bookmarkStore.fetchBookmarkCounts(),
+    ])
+  } catch (error: any) {
+    console.error('Error initializing data:', error)
+  }
 })
 </script>
 

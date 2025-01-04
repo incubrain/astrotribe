@@ -88,34 +88,14 @@ const voteStore = useVoteStore()
 const isFlipped = ref(false)
 
 const showModal = ref(false)
-const showBookmarkFolders = ref(false)
 const modalContent = ref('')
-const currentVote = ref<number | null>(null)
 const votes = ref(props.news.hot_score || 0)
-const bookmarkFolderSelected = ref(null)
+
+const currentVote = computed(() => voteStore.getVoteType(props.news.id))
+const displayScore = computed(() => voteStore.getScore(props.news.id) ?? props.news.vote_count ?? 0)
 
 const bookmarkStore = useBookmarkStore()
-const bookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
-
-const folderStore = useFolderStore()
-
-const displayScore = computed(() => {
-  const currentScore = voteStore.getScore(props.news.id) ?? votes.value
-
-  // Only show negative numbers if user has downvoted
-  if (currentScore < 0 && currentVote.value !== -1) {
-    return 0
-  }
-  return currentScore
-})
-
-const submitFolder = async () => {
-  showBookmarkFolders.value = false
-  setTimeout(
-    () => bookmarkStore.handleToggleBookmark(props.news, bookmarkFolderSelected.value),
-    500,
-  )
-}
+const isBookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
 
 const formatSourceName = (name: string) => {
   // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
@@ -201,7 +181,7 @@ onBeforeUnmount(async () => {
   >
     <div
       class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border rounded-lg"
-      :class="[{ 'rotate-y-180': isFlipped }, bookmarked ? 'border-amber-500/30 ' : 'border-color']"
+      :class="[{ 'rotate-y-180': isFlipped }, isBookmarked ? 'border-amber-500/30 ' : 'border-color']"
     >
       <!-- Front of card -->
       <div class="absolute w-full h-full backface-hidden">
@@ -259,16 +239,13 @@ onBeforeUnmount(async () => {
               </div>
             </div>
             <NewsActions
-              :news-id="news.id"
+              :content="news"
               :score="displayScore"
               :comments-count="null"
-              :bookmarked="bookmarked"
+              :bookmarked="isBookmarked"
               :url="news.url"
               :current-vote="currentVote"
               card-side="front"
-              :on-bookmark="
-                bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
-              "
               :on-source-visit="handleSourceVisit"
               @vote-change="handleVoteChange"
               @open-modal="openModal"
@@ -309,14 +286,13 @@ onBeforeUnmount(async () => {
 
         <!-- Back side actions -->
         <NewsActions
-          :news-id="news.id"
           :score="displayScore"
           :comments-count="null"
-          :bookmarked="bookmarked"
+          :bookmarked="isBookmarked"
           :url="news.url"
           :current-vote="currentVote"
           card-side="back"
-          :on-bookmark="bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)"
+          :content="news"
           :on-source-visit="handleSourceVisit"
           @vote-change="handleVoteChange"
           @open-modal="openModal"

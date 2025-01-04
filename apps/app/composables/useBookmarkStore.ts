@@ -318,7 +318,9 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     await fetchBookmarks()
   }
 
-  const handleToggleBookmark = async (content: any, folder_id?: string) => {
+  const handleToggleBookmark = async (content: any) => {
+    const folderStore = useFolderStore()
+    const defaultFolderId = folderStore.getDefaultFolder?.id
     try {
       const bookmarkData = {
         id: content.id,
@@ -328,11 +330,10 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
         url: content.url || content.metadata?.url,
         author: content.author || content.metadata?.author,
         description: content.description || content.metadata?.description,
-        folder_id,
+        folder_id: defaultFolderId,
       }
 
       await toggleBookmark(bookmarkData)
-      await fetchBookmarkCounts()
       showBookmarkFeedback.value = true
       setTimeout(() => {
         showBookmarkFeedback.value = false

@@ -1,5 +1,5 @@
-<script setup lang="ts">
 // components/VoteButton.vue
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 
 interface Props {
@@ -15,13 +15,12 @@ const props = withDefaults(defineProps<Props>(), {
   count: 0,
 })
 
-const emit = defineEmits<{
-  (e: 'vote-change', value: { voteType: number | null; change: number }): void
-}>()
-
 const voteStore = useVoteStore()
 const notification = useNotification()
 const animationRef = ref()
+
+// Convert direction to vote type (1 for up, -1 for down)
+const voteType = computed(() => (props.direction === 'up' ? 1 : -1))
 
 const currentVoteType = computed(() => voteStore.getVoteType(props.contentId))
 const isPending = computed(() => voteStore.isVotePending(props.contentId))
@@ -35,23 +34,17 @@ onMounted(async () => {
 })
 
 const handleVote = async () => {
-  if (isPending.value) return
-
-  const voteType = props.direction === 'up' ? 1 : -1
-
-  // Trigger animation
-  animationRef.value?.triggerAnimation()
-
   try {
-    const result = await voteStore.submitVote(props.contentId, voteType, props.contentType)
-    if (result) {
-      emit('vote-change', {
-        voteType: voteStore.getVoteType(props.contentId),
-        change: result.change,
-      })
+    await voteStore.submitVote(props.contentId, voteType.value, props.contentType)
+    // Optionally trigger animation
+    if (animationRef.value) {
+      animationRef.value.triggerAnimation()
     }
-  } catch (error: any) {
-    console.error('Vote error:', error)
+  } catch (error) {
+    notification.error({
+      summary: 'Vote Error',
+      message: 'Failed to submit vote',
+    })
   }
 }
 </script>

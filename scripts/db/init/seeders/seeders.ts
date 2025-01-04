@@ -1625,7 +1625,7 @@ export async function seedReferrals(pool: Pool, referrers: any[]) {
         visitor_id: generateUUID(),
         created_at: createdAt,
         converted_at: convertedAt,
-        status,
+        referral_status: status,
         conversion_value:
           status === 'converted'
             ? faker.number.float({ min: 100, max: 2000, fractionDigits: 2 })
