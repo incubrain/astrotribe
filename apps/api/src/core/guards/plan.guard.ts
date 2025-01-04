@@ -14,7 +14,6 @@ export class PlanGuard implements CanActivate {
     private prisma: PrismaService,
   ) {}
 
-
   // guards/plan.guard.ts
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredPlans = this.reflector.getAllAndOverride<string[]>(PLAN_KEY, [
@@ -38,7 +37,7 @@ export class PlanGuard implements CanActivate {
       requiredPlans,
     })
 
-    const userSubscription = await this.prisma.customer_subscription.findFirst({
+    const userSubscription = await this.prisma.customer_subscriptions.findFirst({
       where: {
         user_id: user.id,
         status: 'ACTIVE',
