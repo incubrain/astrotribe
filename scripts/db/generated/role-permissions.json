@@ -3,13 +3,13 @@
     "reference_tables": {
       "description": "Read-only reference data accessible to all users. Contains foundational data that rarely changes and requires no user interaction.",
       "tables": [
-        "categories",
-        "cities",
-        "countries",
-        "tags",
+        "metric_definitions",
         "content_categories",
         "content_tags",
-        "metric_definitions"
+        "cities",
+        "countries",
+        "categories",
+        "tags"
       ],
       "default_permissions": [
         "select"
@@ -19,17 +19,17 @@
     "public_content_tables": {
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
-        "companies",
-        "news_tags",
-        "research",
-        "news",
-        "research_embeddings",
         "content_sources",
-        "contents",
-        "content_statuses",
-        "newsletters",
+        "news",
         "feed_sources",
-        "news_summaries"
+        "news_summaries",
+        "news_tags",
+        "newsletters",
+        "contents",
+        "research",
+        "content_statuses",
+        "research_embeddings",
+        "companies"
       ],
       "default_permissions": [
         "select"
@@ -39,14 +39,14 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "feedbacks",
-        "bookmarks",
-        "comments",
-        "follows",
-        "feed_categories",
         "feeds",
-        "votes",
+        "comments",
+        "bookmarks",
         "bookmark_folders",
+        "feed_categories",
+        "follows",
+        "feedbacks",
+        "votes",
         "feature_requests",
         "feature_votes"
       ],
@@ -57,15 +57,15 @@
     "user_data_tables": {
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
-        "addresses",
-        "company_employees",
-        "contacts",
         "searches",
         "user_profiles",
+        "company_metrics",
+        "contacts",
         "company_contacts",
+        "addresses",
+        "company_employees",
         "company_extras",
         "company_urls",
-        "company_metrics",
         "user_metrics"
       ],
       "default_permissions": [],
@@ -75,28 +75,28 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
+        "scoring_weights",
         "responses",
-        "social_media",
+        "classified_urls",
         "embedding_reviews",
         "spider_metrics",
-        "classified_urls",
-        "content_source_visits",
-        "ad_daily_metrics",
-        "ad_packages",
-        "ad_variants",
-        "ads",
-        "blocked_ips",
-        "referrals",
-        "referrer_blocks",
-        "scoring_weights",
         "job_locks",
+        "job_versions",
         "workflow_jobs",
         "workflows",
         "circuit_breaker_states",
         "job_configs",
         "job_metrics",
         "job_queue_stats",
-        "job_versions"
+        "content_source_visits",
+        "ads",
+        "ad_variants",
+        "ad_daily_metrics",
+        "social_media",
+        "ad_packages",
+        "referrals",
+        "referrer_blocks",
+        "blocked_ips"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -106,7 +106,6 @@
       "tables": [
         "plan_permissions",
         "role_permissions",
-        "blacklisted_urls",
         "blacklisted_domains",
         "customer_payments",
         "customer_processed_webhooks",
@@ -116,6 +115,7 @@
         "payment_providers",
         "role_hierarchy",
         "role_permissions_materialized",
+        "blacklisted_urls",
         "error_logs"
       ],
       "default_permissions": [],

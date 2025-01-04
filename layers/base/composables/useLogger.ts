@@ -1,7 +1,7 @@
 // composables/useLogger.ts
-import type { Service, ServiceToDomain } from '@ib/logger'
+import type { Service, DomainsForService } from '@ib/logger'
 
-export function useLogger(domain: ServiceToDomain[Service]) {
+export function useLogger(domain: DomainsForService<Service.ADMIN>) {
   const nuxtApp = useNuxtApp()
 
   // Ensure logger exists
