@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import features from '../../data/home/features.json'
+
+// must list out icons for them to work, for some reason they don't load directly from JSON (nuxthq/ui bug)
+const icons = [
+  'material-symbols:group-add',
+  'material-symbols:calendar-month',
+  'material-symbols:android-messages-outline',
+  'mdi:briefcase',
+  'mdi:telescope',
+  'material-symbols:circle-notifications',
+]
+</script>
+
 <template>
   <div class="mx-auto py-[40px] md:py-[80px] lg:py-[160px]">
     <div class="mx-auto">
@@ -51,19 +65,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import features from '@/data/home/features.json'
-
-// must list out icons for them to work, for some reason they don't load directly from JSON (nuxthq/ui bug)
-const icons = [
-  'material-symbols:group-add',
-  'material-symbols:calendar-month',
-  'material-symbols:android-messages-outline',
-  'mdi:briefcase',
-  'mdi:telescope',
-  'material-symbols:circle-notifications',
-]
-</script>
 
 <style scoped></style>

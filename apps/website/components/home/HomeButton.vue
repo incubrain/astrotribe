@@ -1,16 +1,3 @@
-<template>
-  <PrimeButton
-    color="primary"
-    size="large"
-  >
-    <Icon
-      :class="hasIcon ? 'flex' : 'hidden absolute'"
-      :name="icon"
-    />
-    {{ cta }}
-  </PrimeButton>
-</template>
-
 <script setup lang="ts">
 defineProps({
   cta: {
@@ -27,5 +14,18 @@ defineProps({
   },
 })
 </script>
+
+<template>
+  <PrimeButton
+    color="primary"
+    size="large"
+  >
+    <Icon
+      :class="hasIcon ? 'flex' : 'hidden absolute'"
+      :name="icon"
+    />
+    {{ cta }}
+  </PrimeButton>
+</template>
 
 <style scoped></style>

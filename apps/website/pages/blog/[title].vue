@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import qs from 'qs'
 import { computed } from 'vue'
-import { useRoute, useStrapi } from '#imports'
 
 const route = useRoute()
-const strapi = useStrapi()
+
+const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
+const strapi = useStrapi(strapiURL)
 
 const slug = computed(() => String(route.params.title))
 
-const { data, pending, error } = await useAsyncData(
+const { data, status, error } = await useAsyncData(
   `article-${slug.value}`,
   async () => {
     try {
@@ -52,7 +52,9 @@ const { data, pending, error } = await useAsyncData(
       throw e
     }
   },
-  { server: true },
+  {
+    server: false,
+  },
 )
 
 if (error.value) {
@@ -60,14 +62,14 @@ if (error.value) {
   throw error
 }
 
-const article = computed(() => data.value)
+const isLoading = computed(() => status.value === 'pending')
 
-console.log('Article:', article.value)
+const article = computed(() => data.value)
 </script>
 
 <template>
   <div>
-    <div v-if="pending">Loading...</div>
+    <div v-if="isLoading">Loading...</div>
     <div v-else-if="error">{{ error.message }}</div>
     <BlogArticle
       v-else-if="article"

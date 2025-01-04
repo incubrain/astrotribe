@@ -1,3 +1,21 @@
+<script setup lang="ts">
+interface Feature {
+  icon: string
+  title: string
+  description: string
+  link: string
+  linkText: string
+}
+
+interface Props {
+  title: string
+  description: string
+  features: Feature[]
+}
+
+const props = defineProps<Props>()
+</script>
+
 <template>
   <div class="px-4 py-8">
     <h1 class="mb-4 text-center text-4xl font-bold">
@@ -36,21 +54,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-interface Feature {
-  icon: string
-  title: string
-  description: string
-  link: string
-  linkText: string
-}
-
-interface Props {
-  title: string
-  description: string
-  features: Feature[]
-}
-
-const props = defineProps<Props>()
-</script>

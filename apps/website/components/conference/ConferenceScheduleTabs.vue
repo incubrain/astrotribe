@@ -1,97 +1,3 @@
-<template>
-  <div class="py-12">
-    <CommonTitle
-      :title="{
-        main: 'Conference Schedule',
-      }"
-    />
-    <PrimeTabs
-      value="0"
-      select-on-focus
-    >
-      <PrimeTabList pt:tablist:class="flex gap-4 pl-4 pb-4 text-lg">
-        <PrimeTab
-          v-for="(day, i) in schedule"
-          :key="`tab-${i}`"
-          :value="`${day.value}`"
-        >
-          <span>
-            {{ `${day.label} ${day.day}th Nov` }}
-          </span>
-        </PrimeTab>
-      </PrimeTabList>
-      <PrimeTabPanels>
-        <PrimeTabPanel
-          v-for="(day, i) in schedule"
-          :key="`tab-${i}`"
-          :value="`${i}`"
-        >
-          <div class="border-color rounded-md border">
-            <PrimeDataTable
-              :value="day.items"
-              :pt="{
-                header: ({ props }) => ({
-                  cell: 'bg-red-500',
-                }),
-                thead: ({ context }) => ({
-                  class: 'bg-primary-800',
-                }),
-                bodyrow: ({ props }) => ({
-                  class: 'odd:bg-gray-950 even:bg-gray-900',
-                }),
-              }"
-              :pt-options="{ mergeSections: true, mergeProps: true }"
-            >
-              <PrimeColumn
-                style="width: 20%"
-                field="time"
-                :header="`Time ${timezone}`"
-              >
-                <template #body="{ data }">
-                  <span class="flex items-center gap-2 text-sm">
-                    <Icon
-                      :name="data.icon"
-                      size="24px"
-                    />
-
-                    {{ convertISTtoLocal(day.day, data.time) }}
-                  </span>
-                </template>
-              </PrimeColumn>
-              <PrimeColumn
-                style="width: 35%"
-                field="speaker"
-                header="Speaker"
-              >
-                <template #body="slotProps">
-                  <span class="flex items-center text-sm leading-none">
-                    <div
-                      v-if="slotProps.data.online"
-                      class="mr-1 h-3 w-3 rounded-full bg-emerald-500"
-                    />
-                    {{ slotProps.data.speaker }}
-                  </span>
-                </template>
-              </PrimeColumn>
-              <PrimeColumn
-                style="width: 40%"
-                field="topic"
-                header="Topic"
-              >
-                <template #body="slotProps">
-                  <div class="text-sm">
-                    {{ slotProps.data.topic }}
-                  </div>
-                </template>
-              </PrimeColumn>
-            </PrimeDataTable>
-          </div>
-        </PrimeTabPanel>
-      </PrimeTabPanels>
-    </PrimeTabs>
-  </div>
-</template>
-
 <script setup lang="ts">
 function convertISTtoLocal(day: number, time: { start: string; end: string }) {
   const start = `2023-11-${day}T${time.start}:00+05:30` // '+05:30' is the offset for IST
@@ -198,7 +104,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic: 'Astronomy\'s Impact on Sustainability',
+        topic: "Astronomy's Impact on Sustainability",
         speaker: 'María Alejandra Díaz Teodori',
         time: { start: '15:30', end: '16:00' },
       },
@@ -425,7 +331,7 @@ const schedule = [
         online: true,
         icon: 'mdi:microphone',
         topic:
-          'Empowering Ghana\'s STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation',
+          "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
         speaker: 'Albert Kuntu Forson ',
         time: { start: '11:00', end: '11:30' },
       },
@@ -537,3 +443,97 @@ const schedule = [
   },
 ]
 </script>
+
+<template>
+  <div class="py-12">
+    <CommonTitle
+      :title="{
+        main: 'Conference Schedule',
+      }"
+    />
+    <PrimeTabs
+      value="0"
+      select-on-focus
+    >
+      <PrimeTabList pt:tablist:class="flex gap-4 pl-4 pb-4 text-lg">
+        <PrimeTab
+          v-for="(day, i) in schedule"
+          :key="`tab-${i}`"
+          :value="`${day.value}`"
+        >
+          <span>
+            {{ `${day.label} ${day.day}th Nov` }}
+          </span>
+        </PrimeTab>
+      </PrimeTabList>
+      <PrimeTabPanels>
+        <PrimeTabPanel
+          v-for="(day, i) in schedule"
+          :key="`tab-${i}`"
+          :value="`${i}`"
+        >
+          <div class="border-color rounded-md border">
+            <PrimeDataTable
+              :value="day.items"
+              :pt="{
+                header: ({ props }) => ({
+                  cell: 'bg-red-500',
+                }),
+                thead: ({ context }) => ({
+                  class: 'bg-primary-800',
+                }),
+                bodyrow: ({ props }) => ({
+                  class: 'odd:bg-gray-950 even:bg-gray-900',
+                }),
+              }"
+              :pt-options="{ mergeSections: true, mergeProps: true }"
+            >
+              <PrimeColumn
+                style="width: 20%"
+                field="time"
+                :header="`Time ${timezone}`"
+              >
+                <template #body="{ data }">
+                  <span class="flex items-center gap-2 text-sm">
+                    <Icon
+                      :name="data.icon"
+                      size="24px"
+                    />
+
+                    {{ convertISTtoLocal(day.day, data.time) }}
+                  </span>
+                </template>
+              </PrimeColumn>
+              <PrimeColumn
+                style="width: 35%"
+                field="speaker"
+                header="Speaker"
+              >
+                <template #body="slotProps">
+                  <span class="flex items-center text-sm leading-none">
+                    <div
+                      v-if="slotProps.data.online"
+                      class="mr-1 h-3 w-3 rounded-full bg-emerald-500"
+                    />
+                    {{ slotProps.data.speaker }}
+                  </span>
+                </template>
+              </PrimeColumn>
+              <PrimeColumn
+                style="width: 40%"
+                field="topic"
+                header="Topic"
+              >
+                <template #body="slotProps">
+                  <div class="text-sm">
+                    {{ slotProps.data.topic }}
+                  </div>
+                </template>
+              </PrimeColumn>
+            </PrimeDataTable>
+          </div>
+        </PrimeTabPanel>
+      </PrimeTabPanels>
+    </PrimeTabs>
+  </div>
+</template>

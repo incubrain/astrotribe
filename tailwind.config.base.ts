@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
+import typography from '@tailwindcss/typography'
 
-const baseConfig: Partial<Config> = {
+export default {
   darkMode: 'selector',
   safelist: [
     '-inset-[10%]',
@@ -89,7 +90,5 @@ const baseConfig: Partial<Config> = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('tailwindcss-primeui')],
-}
-
-export default baseConfig
+  plugins: [typography, require('tailwindcss-primeui')],
+} as Partial<Config>

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-const uuid = useId()
-
 const props = defineProps({
   img: {
     type: Object,
@@ -22,6 +20,7 @@ watch(
   { immediate: true },
 )
 
+const uuid = useId()
 function loadFallbackImage(error: Error) {
   console.error('Image loading error:', error)
   imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`

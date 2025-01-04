@@ -57,23 +57,19 @@ function notifyAnomalies(anomalies: string[], logger: any) {
 
 // Define the middleware event handler
 export default defineEventHandler((event: H3Event) => {
-  const logger = useServerLogger()
-
   const url = event.node.req.url || '/'
   const host = event.node.req.headers.host || 'localhost'
   const path = new URL(url, `http://${host}`).pathname
 
-  logger.info(`Traversing URL: ${url}, Host: ${host}, path: ${path}`)
+  console.info(`Traversing URL: ${url}, Host: ${host}, path: ${path}`)
 
   if (import.meta.prerender) {
-    logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
+    console.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return
   }
 
   const anomalies = checkAnomalies(path)
   if (anomalies.length > 0) {
-    notifyAnomalies(anomalies, logger)
+    notifyAnomalies(anomalies, console)
   }
-
-  // Continue processing the request
 })

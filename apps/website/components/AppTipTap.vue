@@ -118,7 +118,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const editor = useEditor({
   content: '<p>I\'m running Tiptap with Vue.js. 🎉</p>',
   extensions: [TiptapStarterKit],

@@ -2,7 +2,7 @@
   <button @click="initiateLogin"> Login </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const user = ref(null)
 
 const initiateLogin = () => {

@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const files = ref(null)
 const files2 = ref(null)
 

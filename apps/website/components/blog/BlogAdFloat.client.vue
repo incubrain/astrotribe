@@ -46,8 +46,9 @@
 </template>
 
 <script setup lang="ts">
-const { width } = useWindowSize()
 const hideAd = ref(false)
+
+const { width } = useWindowSize()
 const adVisible = computed(() => !hideAd.value || width.value > 1024)
 
 const toggleAd = () => {

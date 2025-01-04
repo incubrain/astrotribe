@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 
-const p = defineProps({
+defineProps({
   project: {
     type: Object,
     required: true,

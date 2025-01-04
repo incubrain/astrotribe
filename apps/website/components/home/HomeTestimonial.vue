@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import testimonials from '../../data/home/testimonials.json'
+
+interface Testimonial {
+  image: string
+  name: string
+  company: string
+  quote: string
+}
+</script>
+
 <template>
   <div>
     <HomeHeading
@@ -53,18 +64,5 @@
     </AppSwiper>
   </div>
 </template>
-
-<script setup lang="ts">
-import testimonials from '@/data/home/testimonials.json'
-
-interface Testimonial {
-  image: string
-  name: string
-  company: string
-  quote: string
-}
-
-// !TODO: - allow users to add testimonials, fetch from supabase
-</script>
 
 <style></style>

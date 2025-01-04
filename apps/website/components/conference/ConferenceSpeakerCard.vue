@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import type { SpeakerType } from '@/types/conference'
+
+const isOpen = ref(false)
+
+defineProps({
+  speaker: {
+    type: Object as PropType<SpeakerType>,
+    required: true,
+  },
+  featured: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+})
+</script>
+
 <template>
   <LandingGlass
     hover-effect="glow"
@@ -11,7 +29,6 @@
   >
     <template #header>
       <div class="p-2">
-
         <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
         <IBImage
           :img="{
@@ -68,23 +85,5 @@
     </div>
   </LandingGlass>
 </template>
-
-<script setup lang="ts">
-import type { SpeakerType } from '@/types/conference'
-
-const isOpen = ref(false)
-
-defineProps({
-  speaker: {
-    type: Object as PropType<SpeakerType>,
-    required: true,
-  },
-  featured: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-})
-</script>
 
 <style scoped></style>

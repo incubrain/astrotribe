@@ -1,3 +1,15 @@
+<script setup lang="ts">
+const route = useRoute()
+
+const { data: navigation } = await useAsyncData('navigation', () =>
+  queryContent()
+    .where({ _partial: { $ne: true }, status: 'published' })
+    .only(['_path', 'title', 'publishedAt'])
+    .sort({ publishedAt: 1 })
+    .findSurround(route.path),
+)
+</script>
+
 <template>
   <div
     v-if="navigation"
@@ -37,17 +49,5 @@
     </NuxtLink>
   </div>
 </template>
-
-<script setup lang="ts">
-const route = useRoute()
-
-const { data: navigation } = await useAsyncData('navigation', () =>
-  queryContent()
-    .where({ _partial: { $ne: true }, status: 'published' })
-    .only(['_path', 'title', 'publishedAt'])
-    .sort({ publishedAt: 1 })
-    .findSurround(route.path),
-)
-</script>
 
 <style scoped></style>

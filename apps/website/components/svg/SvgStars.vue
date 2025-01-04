@@ -1,3 +1,17 @@
+<script setup lang="ts">
+defineProps({
+  size: {
+    type: Number,
+    required: true,
+  },
+  svgColor: {
+    type: String,
+    required: false,
+    default: '#3d3d3d',
+  },
+})
+</script>
+
 <template>
   <svg
     class="absolute"
@@ -12,17 +26,3 @@
     />
   </svg>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  size: {
-    type: Number,
-    required: true,
-  },
-  svgColor: {
-    type: String,
-    required: false,
-    default: '#3d3d3d',
-  },
-})
-</script>

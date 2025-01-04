@@ -15,8 +15,8 @@ const props = defineProps({
 const articlesShowcase = ref<ArticleCardT[]>([])
 const category = computed(() => props.articleCategory)
 const haveArticles = computed(() => articlesShowcase.value.length > 0)
-
-const strapi = useStrapi()
+const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
+const strapi = useStrapi(strapiURL)
 
 // Fetch articles on server and client
 const { data, error, status } = await useAsyncData(`blog-showcase-${category.value}`, async () => {

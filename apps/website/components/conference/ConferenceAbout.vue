@@ -1,3 +1,25 @@
+<script setup lang="ts">
+const about = {
+  title: {
+    main: 'Uniting Stakeholders for the Preservation of Dark Skies and Astro-Tourism',
+  },
+}
+const themes = {
+  title: 'Key Themes',
+  img: {
+    src: 'conference/photos/IDSPAC23-shweta-and-participants.jpg',
+    alt: 'Shweta Kulkarni talking to an audience about astronomy',
+  },
+  points: [
+    'Satellite constellations and space debris impact on observations',
+    'Astronomy in everyday life: bridging science and culture',
+    'Controlling light pollution for enhanced astronomical visibility',
+    'Advancing astronomy research and outreach initiatives',
+    'Art and astronomy: unveiling creative cosmos connections',
+  ],
+}
+</script>
+
 <template>
   <div>
     <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
@@ -69,25 +91,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const about = {
-  title: {
-    main: 'Uniting Stakeholders for the Preservation of Dark Skies and Astro-Tourism',
-  },
-}
-const themes = {
-  title: 'Key Themes',
-  img: {
-    src: 'conference/photos/IDSPAC23-shweta-and-participants.jpg',
-    alt: 'Shweta Kulkarni talking to an audience about astronomy',
-  },
-  points: [
-    'Satellite constellations and space debris impact on observations',
-    'Astronomy in everyday life: bridging science and culture',
-    'Controlling light pollution for enhanced astronomical visibility',
-    'Advancing astronomy research and outreach initiatives',
-    'Art and astronomy: unveiling creative cosmos connections',
-  ],
-}
-</script>

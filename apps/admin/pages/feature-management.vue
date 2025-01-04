@@ -1,4 +1,4 @@
-<script>
+<script setup lang="ts">
 definePageMeta({
   layoutTransition: false,
   name: 'FeatureManagement',

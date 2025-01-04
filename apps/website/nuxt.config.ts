@@ -1,8 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
-import { defineNuxtConfig } from 'nuxt/config'
 import sharedConfig from '../../shared-runtime.config'
-import prerenderRoutes from './prerendered-routes.json'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -58,16 +56,32 @@ export default defineNuxtConfig({
     ],
   },
 
-  // routeRules: {
-  //   '/': { prerender: true },
-  //   '/about': { prerender: true },
-  //   '/contact': { prerender: true },
-  //   '/team/**': { prerender: true },
-  //   '/projects/**': { prerender: true },
-  //   '/policies/**': { prerender: true },
-  //   '/blog': { isr: true },
-  //   '/blog/**': { isr: 60 }, // Revalidate every 60 seconds
-  // },
+  routeRules: {
+    '/': { prerender: true },
+    '/blog': { prerender: true },
+    '/blog/category-*/page-*': {
+      isr: 3600, // Cache for 1 hour
+      swr: true, // Stale-while-revalidate
+    },
+    '/blog/*': {
+      // Individual article routes
+      isr: 3600,
+      swr: true,
+    },
+
+    '/sitemap.xml': {
+      headers: {
+        'Content-Type': 'application/xml',
+        'Cache-Control': 'max-age=3600',
+      },
+    },
+    '/api/__sitemap__/**': {
+      cors: true,
+      headers: {
+        'Cache-Control': 'max-age=3600',
+      },
+    },
+  },
 
   content: {
     highlight: {
@@ -225,14 +239,41 @@ export default defineNuxtConfig({
     sri: false,
   },
 
+  sitemap: {
+    // Exclude default app sources since we're handling routes manually
+    excludeAppSources: true,
+
+    // Enable caching for better performance
+    cacheMaxAgeSeconds: 3600, // 1 hour
+
+    // Split into multiple sitemaps for better organization
+    sitemaps: {
+      blog: {
+        sources: ['/api/__sitemap__/blog'],
+      },
+    },
+
+    // Only prerender sitemap in production
+    defaults: {
+      // We don't need these as per best practices
+      // changefreq: 'daily',
+      // priority: 0.8,
+    },
+
+    // Enable experimental features for better performance
+    experimentalCompression: true,
+    experimentalWarmUp: true,
+  },
+
   nitro: {
     debug: true,
     logLevel: 'debug',
+    routeRules: {
+      '/**': { cache: false }, // Disable caching during debugging
+    },
     prerender: {
+      routes: ['/sitemap.xml'],
       crawlLinks: true,
-      routes: prerenderRoutes ?? [],
-      failOnError: false,
-      ignore: ['/api/**'],
     },
   },
 
@@ -275,9 +316,14 @@ export default defineNuxtConfig({
       exclude: ['Editor'],
     },
 
-    composables: {
-      include: '*',
-    },
+  //   composables: {
+  //     include: '*',
+  //   },
+
+  nitro: {
+    debug: true,
+    logLevel: 'debug',
+  },
 
     options: {
       ripple: true,
@@ -298,16 +344,6 @@ export default defineNuxtConfig({
     description: 'Astronomy Hub',
     defaultLocale: 'en',
   },
-
-  // seo: {
-  //   redirectToCanonicalSiteUrl: true,
-  // },
-
-  // ogImage: {
-  //   componentOptions: {
-  //     global: true,
-  //   },
-  // },
 
   fonts: {
     families: [

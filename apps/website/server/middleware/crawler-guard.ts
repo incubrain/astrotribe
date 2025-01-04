@@ -63,10 +63,8 @@ const rdnsCache = new Map<string, { hostnames: string[]; expiresAt: number }>()
 const RDNS_CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
 
 export default defineEventHandler(async (event) => {
-  const logger = useServerLogger()
-
   if (import.meta.prerender) {
-    logger.info('crawlerGuard: Skipping middleware during prerender (build phase)')
+    console.info('crawlerGuard: Skipping middleware during prerender (build phase)')
     return
   }
 
@@ -104,12 +102,12 @@ export default defineEventHandler(async (event) => {
         hostnames = await dns.reverse(clientIP)
         rdnsCache.set(clientIP, { hostnames, expiresAt: currentTime + RDNS_CACHE_TTL })
       } catch (err: any) {
-        logger.warn(`Reverse DNS Lookup Failed for IP: ${clientIP} | Error: ${err.message}`)
+        console.warn(`Reverse DNS Lookup Failed for IP: ${clientIP} | Error: ${err.message}`)
         hostnames = []
       }
     }
 
-    logger.info(`Crawler Detected, {
+    console.info(`Crawler Detected, {
       event: 'crawler_access',
       userAgent: ${userAgent},
       clientIP: ${clientIP},
@@ -128,7 +126,7 @@ export default defineEventHandler(async (event) => {
             hostnames.some((hostname) => patterns.some((pattern) => pattern.test(hostname)))
 
       if (!isValidHostname) {
-        logger.warn(`Hostname verification failed for crawler: ${userAgent} | IP: ${clientIP}`)
+        console.warn(`Hostname verification failed for crawler: ${userAgent} | IP: ${clientIP}`)
         setResponseStatus(event, 403)
         send(event, '403 Forbidden')
         return
@@ -138,14 +136,14 @@ export default defineEventHandler(async (event) => {
 
   // Access Control Logic
   if (isCrawler && !isAllowedCrawler) {
-    logger.warn(`Unrecognized crawler detected: ${userAgent} | IP: ${clientIP}`)
+    console.warn(`Unrecognized crawler detected: ${userAgent} | IP: ${clientIP}`)
     setResponseStatus(event, 403)
     send(event, '403 Forbidden')
     return
   }
 
   if (pathDepth > MAX_PATH_DEPTH) {
-    logger.warn(`Accessing deep path: ${path} | IP: ${clientIP}`)
+    console.warn(`Accessing deep path: ${path} | IP: ${clientIP}`)
     setResponseStatus(event, 403)
     send(event, '403 Forbidden')
     return

@@ -1,3 +1,19 @@
+<script setup lang="ts">
+const p = defineProps<{
+  currentPage: number
+  totalPages: number
+  baseUrl: string
+}>()
+
+const pages = computed(() => {
+  const pagesArray = []
+  for (let i = 1; i <= p.totalPages; i++) {
+    pagesArray.push(i)
+  }
+  return pagesArray
+})
+</script>
+
 <template>
   <nav class="pagination">
     <ul class="pagination-list">
@@ -21,22 +37,6 @@
     </ul>
   </nav>
 </template>
-
-<script setup lang="ts">
-const p = defineProps<{
-  currentPage: number
-  totalPages: number
-  baseUrl: string
-}>()
-
-const pages = computed(() => {
-  const pagesArray = []
-  for (let i = 1; i <= p.totalPages; i++) {
-    pagesArray.push(i)
-  }
-  return pagesArray
-})
-</script>
 
 <style scoped>
 .pagination {

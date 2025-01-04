@@ -1,6 +1,4 @@
 // First in the types file (index.d.ts)
-import type { Consola } from 'consola'
-import type { SupabaseClient } from '@supabase/supabase-js'
 import type { LogMetadata } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
 
