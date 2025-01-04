@@ -6,27 +6,38 @@ import { QueueService } from '../core/services/queue.service'
 import { createNewsLinksJob } from './config/news/news-links.config'
 import { JobRunner } from './job.runner'
 import { JobVersionService } from './job.versioning'
+import { TestJobsSeeder } from './con'
 
-// src/jobs/job.registry.ts
 export class JobRegistry {
   private jobs = new Map<string, JobConfig<any, any, any>>()
   private versionService: JobVersionService
+  private jobModules: JobModule[] = []
 
   constructor(private services: JobServices) {
     this.versionService = new JobVersionService(services.logger, services.prisma)
   }
 
-  async initialize() {
+  registerJobModule(jobModule: JobModule) {
+    if (this.jobModules.find((m) => m.name === jobModule.name)) {
+      throw new Error(`Job module ${jobModule.name} already registered`)
+    }
+    this.jobModules.push(jobModule)
+  }
 
+  async initialize(
+    options: { environment: 'development' | 'production' } = { environment: 'production' },
+  ) {
     try {
-      // First ensure queue service is started
       if (!(await this.services.queue.isInstalled())) {
         this.services.logger.info('Installing queue schema...')
         await this.services.queue.start()
       }
 
-      // Register core jobs
-      await this.registerCoreJobs()
+      // Initialize all registered job modules
+      for (const module of this.jobModules) {
+        const jobConfig = module.createJob(this.services)
+        await this.registerJob(jobConfig)
+      }
 
       this.services.logger.info('Job registry initialized successfully')
     } catch (error: any) {

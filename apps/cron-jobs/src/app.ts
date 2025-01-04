@@ -42,9 +42,9 @@ export class Application {
       version: new JobVersionService(logger, prisma),
     }
     // Initialize shutdown service last
-    this.shutdownService = new ShutdownService(this.services)
-
     this.jobRegistry = new JobRegistry(this.services)
+
+    this.shutdownService = new ShutdownService(this.services)
   }
 
   async start(jobName?: string) {

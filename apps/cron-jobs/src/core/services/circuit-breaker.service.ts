@@ -1,13 +1,6 @@
 // src/infrastructure/circuit-breaker/circuit-breaker.service.ts
-import { CustomLogger, PrismaService } from '@core'
-
-type CircuitState = 'closed' | 'open' | 'half-open'
-
-interface CircuitStatus {
-  state: CircuitState
-  failures: number
-  lastFailure: Date
-}
+import { CustomLogger, PrismaService, EventService } from '@core'
+import { CircuitState, CircuitStatus } from '@types'
 
 export class CircuitBreakerService {
   private readonly states = new Map<string, CircuitStatus>()
@@ -17,7 +10,10 @@ export class CircuitBreakerService {
   constructor(
     private readonly logger: CustomLogger,
     private readonly prisma: PrismaService,
-  ) {}
+    private readonly events: EventService,
+  ) {
+    this.logger.setDomain('circuit_breaker')
+  }
 
   private async loadCircuitState(jobName: string): Promise<CircuitStatus> {
     try {
@@ -39,7 +35,10 @@ export class CircuitBreakerService {
         lastFailure: state.last_failure ?? new Date(0),
       }
     } catch (error: any) {
-      this.logger.error(`Failed to load circuit state for ${jobName}`, error)
+      this.logger.error(`Failed to load circuit state for ${jobName}`, {
+        error,
+        context: { jobName },
+      })
       return {
         state: 'closed',
         failures: 0,
@@ -48,7 +47,11 @@ export class CircuitBreakerService {
     }
   }
 
-  private async saveCircuitState(jobName: string, status: CircuitStatus): Promise<void> {
+  private async saveCircuitState(
+    jobName: string,
+    status: CircuitStatus,
+    previousState?: CircuitState,
+  ): Promise<void> {
     try {
       await this.prisma.circuit_breaker_states.upsert({
         where: { job_name: jobName },
@@ -66,8 +69,29 @@ export class CircuitBreakerService {
           updated_at: new Date(),
         },
       })
+
+      if (previousState && previousState !== status.state) {
+        this.events.emit('circuit-breaker.state-changed', {
+          jobName,
+          previousState,
+          newState: status.state,
+          failures: status.failures,
+        })
+
+        this.logger.info(`Circuit state changed for ${jobName}`, {
+          context: {
+            jobName,
+            previousState,
+            newState: status.state,
+            failures: status.failures,
+          },
+        })
+      }
     } catch (error: any) {
-      this.logger.error(`Failed to save circuit state for ${jobName}`, error)
+      this.logger.error(`Failed to save circuit state for ${jobName}`, {
+        error,
+        context: { jobName, status },
+      })
     }
   }
 
@@ -79,15 +103,14 @@ export class CircuitBreakerService {
       this.states.set(jobName, status)
     }
 
-    // Check if circuit should be reset
     if (status.state === 'open') {
       const now = new Date().getTime()
       const failureTime = status.lastFailure.getTime()
 
       if (now - failureTime > this.resetTimeout) {
+        const previousState = status.state
         status.state = 'half-open'
-        await this.saveCircuitState(jobName, status)
-        this.logger.info(`Circuit for ${jobName} changed to half-open`)
+        await this.saveCircuitState(jobName, status, previousState)
       }
     }
 
@@ -96,28 +119,49 @@ export class CircuitBreakerService {
 
   async recordSuccess(jobName: string): Promise<void> {
     const status = await this.getCircuitState(jobName)
+    const previousState = status.state
 
     if (status.state === 'half-open') {
       status.state = 'closed'
       status.failures = 0
-      await this.saveCircuitState(jobName, status)
-      this.logger.info(`Circuit for ${jobName} closed after success`)
+      await this.saveCircuitState(jobName, status, previousState)
+
+      this.events.emit('circuit-breaker.success', {
+        jobName,
+        previousState,
+      })
     }
 
     this.states.set(jobName, status)
   }
 
-  async recordFailure(jobName: string): Promise<void> {
+  async recordFailure(jobName: string, error: Error): Promise<void> {
     const status = await this.getCircuitState(jobName)
+    const previousState = status.state
+
     status.failures++
     status.lastFailure = new Date()
 
     if (status.failures >= this.failureThreshold) {
       status.state = 'open'
-      this.logger.warn(`Circuit for ${jobName} opened after ${status.failures} failures`)
+
+      this.events.emit('circuit-breaker.failure', {
+        jobName,
+        error,
+        failures: status.failures,
+        threshold: this.failureThreshold,
+      })
+
+      this.logger.warn(`Circuit opened after ${status.failures} failures`, {
+        context: {
+          jobName,
+          failures: status.failures,
+          error: error.message,
+        },
+      })
     }
 
-    await this.saveCircuitState(jobName, status)
+    await this.saveCircuitState(jobName, status, previousState)
     this.states.set(jobName, status)
   }
 
@@ -129,38 +173,58 @@ export class CircuitBreakerService {
     const status = await this.getCircuitState(jobName)
 
     if (status.state === 'open') {
-      this.logger.warn(`Circuit breaker is open for ${jobName}`)
+      this.logger.warn(`Circuit breaker is open`, {
+        context: {
+          jobName,
+          failures: status.failures,
+          lastFailure: status.lastFailure,
+        },
+      })
       throw new Error('Circuit breaker is open')
     }
 
     try {
       const result = (await Promise.race([
         operation(),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Operation timed out')), timeout),
-        ),
+        new Promise((_, reject) => {
+          setTimeout(() => {
+            const timeoutError = new Error('Operation timed out')
+            this.events.emit('circuit-breaker.timeout', {
+              jobName,
+              timeoutMs: timeout,
+            })
+            reject(timeoutError)
+          }, timeout)
+        }),
       ])) as T
 
       await this.recordSuccess(jobName)
       return result
     } catch (error: any) {
-      await this.recordFailure(jobName)
-      this.logger.error(`Circuit breaker caught error for ${jobName}`, error)
+      await this.recordFailure(jobName, error)
       throw error
     }
   }
 
-  // Utility methods
   async resetCircuit(jobName: string): Promise<void> {
+    const currentStatus = await this.getCircuitState(jobName)
+    const previousState = currentStatus.state
+
     const status = {
       state: 'closed' as CircuitState,
       failures: 0,
       lastFailure: new Date(0),
     }
 
-    await this.saveCircuitState(jobName, status)
+    await this.saveCircuitState(jobName, status, previousState)
     this.states.set(jobName, status)
-    this.logger.info(`Circuit for ${jobName} manually reset`)
+
+    this.logger.info(`Circuit manually reset`, {
+      context: {
+        jobName,
+        previousState: currentStatus.state,
+      },
+    })
   }
 
   async getCircuitStats(jobName: string) {
