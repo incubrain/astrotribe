@@ -5,6 +5,5 @@
     "paths": {
       "#layers/*": ["../../layers/*"]
     }
-  },
-  "exclude": ["node_modules", "dist", ".output", ".nuxt"]
+  }
 }
