@@ -1,22 +1,16 @@
 <!-- components/NewsActions.vue -->
 <script setup lang="ts">
 interface Props {
-  newsId: string
   score: number
   commentsCount?: number
   bookmarked: boolean
-  currentVote: number | null // Add this
   url: string
-  onVoteChange: (payload: { voteType: number | null; change: number }) => void
-  onBookmark: () => Promise<void>
+  content: any
   onSourceVisit: () => Promise<void>
   cardSide: 'front' | 'back'
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  'open-modal': [feature: string]
-}>()
+defineProps<Props>()
 </script>
 
 <template>
@@ -32,22 +26,18 @@ const emit = defineEmits<{
         ]"
       >
         <VoteButton
-          :content-id="newsId"
+          :content-id="content.id"
           direction="up"
           :card-side="cardSide"
-          :initial-vote-type="currentVote"
-          @vote-change="onVoteChange"
         />
         <span class="text-sm font-medium pl-1 pr-2">{{ score }}</span>
         <VoteButton
-          :content-id="newsId"
+          :content-id="content.id"
           direction="down"
           :card-side="cardSide"
-          :initial-vote-type="currentVote"
-          @vote-change="onVoteChange"
         />
       </div>
-      <button
+      <!-- <button
         v-if="commentsCount"
         class="flex items-center gap-2 hover:text-primary-600"
         @click="$emit('open-modal', 'Comments')"
@@ -57,13 +47,10 @@ const emit = defineEmits<{
           size="20px"
         />
         <span v-if="cardSide === 'back' && commentsCount">{{ commentsCount }}</span>
-      </button>
+      </button> -->
     </div>
     <div class="flex items-center gap-2 justify-center">
-      <BookmarkButton
-        :bookmarked="bookmarked"
-        :on-bookmark="onBookmark"
-      />
+      <BookmarkButton :content />
       <NuxtLink
         :to="url"
         target="_blank"

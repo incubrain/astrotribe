@@ -1,23 +1,28 @@
 <!-- components/BookmarkButton.vue -->
 <script setup lang="ts">
 interface Props {
-  bookmarked: boolean
-  onBookmark: () => Promise<void>
+  content: any
 }
 
 const props = defineProps<Props>()
+const bookmarkStore = useBookmarkStore()
 
+const bookmarked = computed(() => bookmarkStore.isBookmarked(props.content.id))
 const showFeedback = ref(false)
 const fadeOutComplete = ref(true)
 
 const handleClick = async () => {
-  await props.onBookmark()
-  showFeedback.value = true
-  fadeOutComplete.value = false
+  try {
+    await bookmarkStore.handleToggleBookmark(props.content)
+    showFeedback.value = true
+    fadeOutComplete.value = false
 
-  setTimeout(() => {
-    showFeedback.value = false
-  }, 1500)
+    setTimeout(() => {
+      showFeedback.value = false
+    }, 1500)
+  } catch (error) {
+    console.error('Failed to toggle bookmark:', error)
+  }
 }
 </script>
 
