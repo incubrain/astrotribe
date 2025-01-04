@@ -1,7 +1,7 @@
 import { defineNuxtRouteMiddleware, navigateTo, useCookie } from '#app'
 import { useRuntimeConfig } from '#imports'
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const config = useRuntimeConfig()
   const { loginURL, authURL } = config.public
 

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usePrimeVue } from 'primevue/config'
 
 const mode = useColorMode()

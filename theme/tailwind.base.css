@@ -152,27 +152,6 @@
     @apply text-[var(--p-primary-color-500)];
   }
 
-  .glass-primary {
-    @apply relative w-full overflow-hidden rounded-md border border-primary-500/30 bg-primary-900/20 p-6 text-left leading-7 text-primary-100 shadow-xl ring-2 ring-inset ring-white/10 backdrop-blur-md backdrop-filter transition-all duration-300 hover:border-primary-400/40 hover:bg-primary-800/30 hover:shadow-2xl;
-  }
-
-  .glass-primary::before {
-    @apply absolute inset-0 z-[-1] bg-gradient-to-br from-primary-500/10 to-primary-700/10 opacity-50 content-[''];
-  }
-  .glass-primary:hover {
-    overflow: hidden;
-    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
-  }
-  .glass-primary::after {
-    @apply pointer-events-none absolute inset-0 opacity-30 content-[''];
-    background: radial-gradient(
-      circle 80px at var(--x) var(--y),
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    transition: opacity 0.2s;
-  }
-
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

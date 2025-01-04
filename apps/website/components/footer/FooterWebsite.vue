@@ -114,7 +114,7 @@ const websiteLinks = [
       interactive
     >
       <!-- Content -->
-      <div class="relative z-10 flex flex-col gap-8 w-full lg:grid lg:grid-cols-[180px_3fr_180px]">
+      <div class="relative z-10 flex flex-col gap-8 w-full lg:grid lg:grid-cols-[140px_3fr_140px]">
         <!-- Logo Section -->
         <div class="flex items-center justify-center lg:items-start lg:justify-start">
           <NuxtLink
@@ -143,7 +143,7 @@ const websiteLinks = [
         </div>
 
         <!-- Links Section -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 xl:gap-8 w-full shrink-0">
           <div
             v-for="link in websiteLinks"
             :key="link.key"

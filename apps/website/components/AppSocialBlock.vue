@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import type { UserSocialType } from '#types/users'
+
+defineProps({
+  socials: {
+    type: Array as PropType<UserSocialType[]>,
+    required: true,
+  },
+  hasTitle: {
+    type: Boolean,
+    default: true,
+  },
+  position: {
+    type: String,
+    required: false,
+    default: 'justify-center',
+  },
+  iconSize: {
+    type: Number,
+    default: 24,
+  },
+})
+</script>
+
 <template>
   <div class="flex flex-col space-y-2">
     <h2
@@ -22,29 +46,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { UserSocialType } from '#types/users'
-
-defineProps({
-  socials: {
-    type: Array as PropType<UserSocialType[]>,
-    required: true,
-  },
-  hasTitle: {
-    type: Boolean,
-    default: true,
-  },
-  position: {
-    type: String,
-    required: false,
-    default: 'justify-center',
-  },
-  iconSize: {
-    type: Number,
-    default: 24,
-  },
-})
-</script>
 
 <style scoped></style>

@@ -23,17 +23,6 @@ onMounted(async () => {
   carouselLoaded.value = true
 })
 
-// watch(
-//   [carouselLoaded],
-//   () => {
-//     console.log('reInit', breakpoints.value, emblaApi.value)
-//     if (emblaApi.value) {
-//       emblaApi.value.reInit(breakpoints.value)
-//     }
-//   },
-//   { deep: true, immediate: true },
-// )
-
 defineProps<{
   items: T[]
   type: string
@@ -59,23 +48,10 @@ defineProps<{
 </template>
 
 <style scoped>
-
 .embla__container {
   display: flex;
 }
 .embla__slide {
   min-width: 340px;
 }
-
-/* @media (min-width: 768px) {
-  .embla__slide {
-    flex: 0 0 50%;
-  }
-}
-
-@media (min-width: 1280px) {
-  .embla__slide {
-    flex: 0 0 33.333%;
-  }
-} */
 </style>

@@ -1,3 +1,28 @@
+<script setup lang="ts">
+const isOpen = ref(false)
+
+const handleClicked = () => {
+  isOpen.value = true
+}
+
+type VideoType = {
+  url: string
+  thumbnail: string
+  alt: string
+}
+
+defineProps({
+  video: {
+    type: Object as PropType<VideoType>,
+    default: () => ({
+      url: '',
+      thumbnail: '',
+      alt: '',
+    }),
+  },
+})
+</script>
+
 <template>
   <PrimeCard
     :pt="{
@@ -50,32 +75,5 @@
     </template>
   </PrimeCard>
 </template>
-
-<script setup lang="ts">
-const isOpen = ref(false)
-
-const handleClicked = () => {
-  isOpen.value = true
-}
-
-type VideoType = {
-  url: string
-  thumbnail: string
-  alt: string
-}
-
-defineProps({
-  video: {
-    type: Object as PropType<VideoType>,
-    default: () => ({
-      url: '',
-      thumbnail: '',
-      alt: '',
-    }),
-  },
-})
-
-// todo:med:easy - make the modal a base component
-</script>
 
 <style></style>

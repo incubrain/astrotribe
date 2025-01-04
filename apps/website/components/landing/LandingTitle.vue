@@ -1,3 +1,22 @@
+<script setup lang="ts">
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  subtitle: {
+    type: String,
+    required: false,
+    default: '',
+  },
+  padding: {
+    type: String,
+    required: false,
+    default: 'pb-8',
+  },
+})
+</script>
+
 <template>
   <div
     class="flex flex-col text-center gap-4"
@@ -35,25 +54,6 @@
     </h4>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  subtitle: {
-    type: String,
-    required: false,
-    default: '',
-  },
-  padding: {
-    type: String,
-    required: false,
-    default: 'pb-8',
-  },
-})
-</script>
 
 <style scoped>
 /* Optional: Add hover effect */

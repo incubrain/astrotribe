@@ -1,27 +1,21 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-
-    // Web-specific settings
     "allowJs": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
-    "types": ["node", "vue"]
-  },
-  "include": [
-    "./components/**/*.{ts,vue}",
-    "./composables/**/*.{ts,vue}",
-    "./layouts/**/*.{ts,vue}",
-    "./pages/**/*.{ts,vue}",
-    "./plugins/**/*.{ts,vue}",
-    "./store/**/*.{ts,vue}",
-    "./types/**/*.{ts,vue}",
-    "./**/*.ts",
-    "./**/*.d.ts"
-  ]
+    "types": [
+      "node",
+      "vue",
+      "@nuxt/types",
+      "@nuxt/content",
+      "@nuxtjs/i18n",
+      "@pinia/nuxt",
+      "@types/node"
+    ]
+  }
 }

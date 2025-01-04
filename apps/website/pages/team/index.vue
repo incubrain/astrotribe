@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import teamMembers from '@/data/home/team.json'
+import teamMembers from '../../data/home/team.json'
 
 definePageMeta({
   name: 'Team',

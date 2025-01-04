@@ -1,6 +1,5 @@
 import { type FetchOptions, $fetch } from 'ofetch'
 import qs from 'qs'
-import { useRuntimeConfig } from '#imports'
 
 interface Strapi5ResponseSingle<T> {
   data: T
@@ -61,11 +60,8 @@ interface StrapiV5Client {
   ): Promise<Strapi5ResponseSingle<T>>
 }
 
-export const useStrapi = (): StrapiV5Client => {
-  const config = useRuntimeConfig()
-  const baseUrl = config.public.strapiURL.endsWith('/')
-    ? config.public.strapiURL.slice(0, -1)
-    : config.public.strapiURL
+export const useStrapi = (strapiURL: string): StrapiV5Client => {
+  const baseUrl = strapiURL.endsWith('/') ? strapiURL.slice(0, -1) : strapiURL
   // Create a custom fetch client with base URL
   const client = (url: string, params?: Record<string, any>, options?: FetchOptions) => {
     let queryString = ''

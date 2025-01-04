@@ -1,9 +1,11 @@
+<!-- page-[number].vue -->
 <script setup lang="ts">
 import { useChangeCase } from '@vueuse/integrations/useChangeCase'
-import { useRoute, useRuntimeConfig, useStrapi } from '#imports'
 
 const route = useRoute()
-const strapi = useStrapi()
+
+const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
+const strapi = useStrapi(strapiURL)
 
 const validCategories = [
   'all',
@@ -42,7 +44,9 @@ const { data: pageData, error } = await useAsyncData(
   `articles-${route.params.category}-page-${route.params.number}`,
   () =>
     fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.number)),
-  { server: false, immediate: true },
+  {
+    server: false,
+  },
 )
 
 if (error) {
@@ -72,8 +76,6 @@ console.log({
 })
 
 // Use the pageData in your component
-
-console.log('useRuntimeConfig:', useRuntimeConfig().public, categoryParam.value, pageData)
 
 async function fetchArticlesFromAPI(category: ArticleCategoriesT, page: number) {
   console.log('Fetching articles:', category, page)

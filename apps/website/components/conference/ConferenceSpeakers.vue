@@ -1,36 +1,3 @@
-<template>
-  <div class="w-full">
-    <CommonTitle
-      :title="{
-        main: 'Meet The IDSPC2023 Group',
-      }"
-    />
-    <p class="text-primary-700 text-sm font-bold uppercase">
-      offline / online Chairperson
-    </p>
-    <ConferenceChairperson
-      class="pt-6"
-      :hosts="hosts"
-    />
-    <p class="text-primary-700 text-sm font-bold uppercase pt-4 lg:pt-8">
-      Conference Speakers
-    </p>
-    <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
-      <ConferenceSpeakerCard
-        v-for="speaker in filterSpeakers(true)"
-        :key="speaker.given_name"
-        :speaker="speaker"
-        featured
-      />
-      <ConferenceSpeakerCard
-        v-for="speaker in filterSpeakers(false, true)"
-        :key="speaker.given_name"
-        :speaker="speaker"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import type { SpeakerType } from '@/types/conference'
 
@@ -88,8 +55,8 @@ const speakers = [
     given_name: 'Constance (Connie)',
     surname: 'Walker',
     professional_title:
-      'Head of Office of Site Protection, NSF\'s NOIRLab, USA and Co-Director, IAU CPS',
-    bio: 'Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she\'s devoted two decades at NSF\'s National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.',
+      "Head of Office of Site Protection, NSF's NOIRLab, USA and Co-Director, IAU CPS",
+    bio: "Astronomer Dr. Connie E. Walker is celebrated for her dark skies education advocacy. With a journey sparked by celestial fascinations, she's devoted two decades at NSF's National Optical-Infrared Astronomy Research Lab, crafting global innovative programs. Her academic trail from Physics to a Ph.D. in Astronomy underscores a lifelong dedication to astronomical education.",
     abstract: {
       title:
         'Astronomy and Satellite Constellations: Pathways Forward for Light Pollution from Space',
@@ -150,7 +117,7 @@ const speakers = [
     given_name: 'Bhakti',
     surname: 'Mithagri',
     professional_title: 'MSc Astrophysics',
-    bio: 'Curious learner and astronomy enthusiast. Graduated with a Master\'s degree in Astrophysics from St. Xavier\'s College in Mumbai and currently preparing for Ph.D.',
+    bio: "Curious learner and astronomy enthusiast. Graduated with a Master's degree in Astrophysics from St. Xavier's College in Mumbai and currently preparing for Ph.D.",
     abstract: {
       title: 'Indian successors to the Indian Gamma-Ray Observatory(IGRO) Mission',
       description: `Ms. Bhakti Mithagri, an MSc Astrophysics graduate and avid astronomy
@@ -169,9 +136,9 @@ const speakers = [
     given_name: 'Anita',
     surname: 'Gupta',
     professional_title: 'Adviser/Scientist G at DST, Govt. of India',
-    bio: 'Dr. Anita Gupta, an Adviser/Scientist G at India\'s DST, has over 25 years of experience in innovation, entrepreneurship, and start-ups. As Associate Head of Innovation and Entrepreneurship, she leads initiatives like Startup India, fostering over 150 technology business incubators across premier institutes and engaging in Public-Private Partnerships with major MNCs to enhance India\'s innovation landscape.',
+    bio: "Dr. Anita Gupta, an Adviser/Scientist G at India's DST, has over 25 years of experience in innovation, entrepreneurship, and start-ups. As Associate Head of Innovation and Entrepreneurship, she leads initiatives like Startup India, fostering over 150 technology business incubators across premier institutes and engaging in Public-Private Partnerships with major MNCs to enhance India's innovation landscape.",
     abstract: {
-      title: 'Harnessing India\'s  potential to fight Climate Change',
+      title: "Harnessing India's  potential to fight Climate Change",
       description: `Dr. Anita Gupta. Representing the Climate Change & Clean Energy (C3E) Division within
         the Department of Science and Technology, Government of India, Dr.
         Gupta underscored the government's cognizance of pressing concerns such
@@ -192,7 +159,7 @@ const speakers = [
     bio: `Alejandra, with a Physics degree from UAM, Spain, has worked at the European Space Agency and is pursuing a PhD in Turku.
     Passionate about astronomy's societal impact, she's contributed to IAU's OAD projects and operates a telescope in La Palma alongside her thesis.`,
     abstract: {
-      title: 'Astronomy\'s Impact on Sustainability',
+      title: "Astronomy's Impact on Sustainability",
       description: `Maria Alejandra Díaz is an astronomer with a Physics degree from UAM, Spain, and is
         pursuing a PhD in Turku. Passionate about astronomy's societal impact, she's contributed to
         IAU's OAD projects and operates a telescope in La Palma alongside her thesis. Her talk was
@@ -409,7 +376,7 @@ const speakers = [
     given_name: 'Kiran',
     surname: 'Kulkarni',
     professional_title: 'Indian Administrative Service Officer',
-    bio: 'Dr. Kulkarni has significantly contributed to tribal development, notably as Tribal Development Commissioner. While his work doesn\'t directly involve astronomy, his extensive outreach in education and governance innovations hints at a potential for fostering astronomy-related initiatives within tribal communities. His campaigns like Dream Melghat showcase his commitment to community upliftment, possibly providing a platform for intertwining traditional tribal knowledge with astronomical insights.',
+    bio: "Dr. Kulkarni has significantly contributed to tribal development, notably as Tribal Development Commissioner. While his work doesn't directly involve astronomy, his extensive outreach in education and governance innovations hints at a potential for fostering astronomy-related initiatives within tribal communities. His campaigns like Dream Melghat showcase his commitment to community upliftment, possibly providing a platform for intertwining traditional tribal knowledge with astronomical insights.",
     abstract: {
       title: 'Sustainable Development through Astronomy: A Tribal Perspective',
       description: `Dr. Kiran Kulkarni (IAS), former Commissioner of the
@@ -458,7 +425,7 @@ const speakers = [
     bio: 'Albert, an engineer specializing in Radio Astronomy Instrumentation and radio interferometer designs at the University of Mauritius, holds the esteemed role of IAU-OAD National Astronomy Education Coordinator for Ghana. Additionally, he serves as the President for PRAGSAC and is highly enthusiastic about science communication.',
     abstract: {
       title:
-        'Empowering Ghana\'s STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation',
+        "Empowering Ghana's STEM Education: Bridging the Gap through Capacity Building in Astronomy Instrumentation",
       description: `Mr. Albert Kuntu Forson, a Ph.D. Research Student and
         the IAU-OAD National Astronomy Education Coordinator for Ghana,
         presented on "Empowering Ghana's STEM Education: Bridging the Gap
@@ -568,5 +535,34 @@ const filterSpeakers = (featured: boolean, toSort = false) => {
     })
 }
 </script>
+
+<template>
+  <div class="w-full">
+    <CommonTitle
+      :title="{
+        main: 'Meet The IDSPC2023 Group',
+      }"
+    />
+    <p class="text-primary-700 text-sm font-bold uppercase"> offline / online Chairperson </p>
+    <ConferenceChairperson
+      class="pt-6"
+      :hosts="hosts"
+    />
+    <p class="text-primary-700 text-sm font-bold uppercase pt-4 lg:pt-8"> Conference Speakers </p>
+    <div class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
+      <ConferenceSpeakerCard
+        v-for="speaker in filterSpeakers(true)"
+        :key="speaker.given_name"
+        :speaker="speaker"
+        featured
+      />
+      <ConferenceSpeakerCard
+        v-for="speaker in filterSpeakers(false, true)"
+        :key="speaker.given_name"
+        :speaker="speaker"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped></style>

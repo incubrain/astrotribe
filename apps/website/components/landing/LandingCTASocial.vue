@@ -22,6 +22,7 @@ onMounted(() => {
   fadeInUp('.social-media-cta')
   scaleIn('.social-button')
 })
+
 </script>
 
 <template>

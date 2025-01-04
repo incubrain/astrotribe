@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import about from '@/data/home/about.json'
+import about from '../data/home/about.json'
 
 definePageMeta({
   name: 'About',

@@ -74,7 +74,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
       <ClientOnly>
         <template #fallback>
           <NuxtImg
-            src="hero-image.jpg"
+            src="images/hero-image.jpg"
             alt="Space background"
             class="absolute inset-0 w-full h-full object-cover"
           />
@@ -82,7 +82,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
 
         <NuxtImg
           v-show="!videoLoaded"
-          src="hero-image.jpg"
+          src="images/hero-image.jpg"
           alt="Space background"
           class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
         />
@@ -95,7 +95,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
           loop
           playsinline
           preload="auto"
-          poster="/hero-image.jpg"
+          poster="/images/hero-image.jpg"
           @loadeddata="handleVideoLoad"
         >
           <source

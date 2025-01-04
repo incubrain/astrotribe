@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import team from '../../data/home/team.json'
+
+definePageMeta({
+  name: 'TeamIndividual',
+})
+
+const { name } = useRoute().params
+const user = computed(() =>
+  team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name),
+)
+</script>
+
 <template>
   <div
     v-if="user"
@@ -38,17 +51,7 @@
               {{ section }}
             </p>
           </div>
-          <!-- <div v-if="user.achievements.length > 0">
-            <h4 class="mb-4 text-xl font-semibold">Achievements</h4>
-            <div
-              v-for="(achievement, i) in user?.achievements"
-              :key="i"
-              class="space-y-2"
-            >
-              <p class="font-semibold text-base">{{ achievement.title }}</p>
-              <p class="text-sm">{{ achievement.body }}</p>
-            </div>
-          </div> -->
+
           <div>
             <h4 class="mb-4 text-xl font-semibold"> Connect with {{ user.given_name }} </h4>
             <AppSocialBlock
@@ -62,18 +65,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import team from '@/data/home/team.json'
-
-const { name } = useRoute().params
-const user = computed(() =>
-  team.find((user) => user.name.toLowerCase().replaceAll(' ', '-') === name),
-)
-
-definePageMeta({
-  name: 'TeamIndividual',
-})
-</script>
 
 <style scoped></style>

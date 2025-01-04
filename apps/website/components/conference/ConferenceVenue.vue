@@ -1,37 +1,3 @@
-<template>
-  <div class="relative grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
-    <CommonTitle
-      class="row-start-1"
-      :title="venue.title"
-    >
-      <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
-        <p class="font-normal">
-          {{ venue.about }}
-        </p>
-        <PrimeButton
-          as="a"
-          href="https://www.manuallaya.com/"
-          target="_blank"
-          variant="outline"
-        >
-          Manu Allaya Website
-        </PrimeButton>
-      </div>
-    </CommonTitle>
-    <div class="h-full w-full">
-      <IBImage
-        :img="{
-          src: image.src,
-          alt: image.alt,
-          width: '440',
-          height: '520',
-        }"
-        class="mx-auto w-full rounded-md"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 const venue = {
   title: {
@@ -53,3 +19,37 @@ const image = {
   alt: 'Manu Allaya resort at night with the milky way in the background',
 }
 </script>
+
+<template>
+  <div class="relative grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
+    <CommonTitle
+      class="row-start-1"
+      :title="venue.title"
+    >
+      <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
+        <p class="font-normal">
+          {{ venue.about }}
+        </p>
+        <PrimeButton
+          as="a"
+          href="https://www.manuallaya.com/"
+          target="_blank"
+          variant="outlined"
+        >
+          Manu Allaya Website
+        </PrimeButton>
+      </div>
+    </CommonTitle>
+    <div class="h-full w-full">
+      <IBImage
+        :img="{
+          src: image.src,
+          alt: image.alt,
+          width: '440',
+          height: '520',
+        }"
+        class="mx-auto w-full rounded-md"
+      />
+    </div>
+  </div>
+</template>

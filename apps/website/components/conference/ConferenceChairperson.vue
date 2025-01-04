@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import type { SpeakerType } from '@/types/conference'
+
+defineProps({
+  hosts: {
+    type: Object as PropType<SpeakerType[]>,
+    required: true,
+  },
+})
+</script>
+
 <template>
   <div class="grid gap-8 lg:grid-cols-2">
     <PrimeCard
@@ -45,16 +56,5 @@
     </PrimeCard>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { SpeakerType } from '@/types/conference'
-
-defineProps({
-  hosts: {
-    type: Object as PropType<SpeakerType[]>,
-    required: true,
-  },
-})
-</script>
 
 <style scoped></style>

@@ -1,3 +1,13 @@
+<script setup lang="ts">
+const video = {
+  url: 'https://www.youtube.com/embed/x5ijmeCJ42s?si=V_t46bCe9ClaKmrN?mute=0&autoplay=1',
+  thumbnail: 'images/hero-image.jpg',
+  alt: 'Astron Era Hero Video',
+}
+
+const bgImg = 'images/hero-image.jpg'
+</script>
+
 <template>
   <div class="relative min-h-screen text-white w-full">
     <IBImage
@@ -44,13 +54,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const video = {
-  url: 'https://www.youtube.com/embed/x5ijmeCJ42s?si=V_t46bCe9ClaKmrN?mute=0&autoplay=1',
-  thumbnail: 'images/hero-image.jpg',
-  alt: 'Astron Era Hero Video',
-}
-
-const bgImg = '/hero-image.jpg'
-</script>

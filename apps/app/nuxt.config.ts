@@ -6,6 +6,8 @@ import sharedConfig from '../../shared-runtime.config'
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
+  debug: true,
+  sourcemap: true,
   workspaceDir: '../../',
   srcDir: '.',
   extends: [

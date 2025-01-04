@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const rssFeeds = ref([])
 const contentTypes = [
   { label: 'News', value: 'news' },
