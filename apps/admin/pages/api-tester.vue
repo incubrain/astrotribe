@@ -1,179 +1,31 @@
-<template>
-  <div class="card p-4">
-    <div class="mb-4 flex gap-4">
-      <PrimeInputText
-        id="apiUrl"
-        v-model="baseUrl"
-        class="w-full"
-      />
-
-      <PrimeButton
-        @click="testConnection"
-        :loading="isLoading"
-        severity="info"
-        class="text-nowrap"
-      >
-        Test Connection
-      </PrimeButton>
-    </div>
-
-    <!-- Endpoints List -->
-    <PrimeDataView :value="endpoints">
-      <template #list="slotProps">
-        <div class="flex flex-col">
-          <div
-            v-for="(endpoint, index) in slotProps.items"
-            :key="endpoint.path"
-          >
-            <div
-              class="flex flex-col p-6 gap-4"
-              :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }"
-            >
-              <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div class="flex items-center gap-3">
-                  <PrimeTag
-                    :value="endpoint.method"
-                    :severity="getMethodSeverity(endpoint.method)"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium text-lg">{{ endpoint.path }}</span>
-                    <span class="text-surface-500">{{
-                      endpoint.description || 'No description available'
-                    }}</span>
-                  </div>
-                </div>
-                <PrimeButton
-                  @click="testEndpoint(endpoint)"
-                  :loading="endpoint.isLoading"
-                  label="Test Endpoint"
-                  size="small"
-                />
-              </div>
-
-              <!-- Response Section -->
-              <div
-                v-if="endpoint.response"
-                class="mt-2"
-              >
-                <PrimeMessage :severity="getResponseSeverity(endpoint.response.status)">
-                  <div class="w-full flex flex-row items-center gap-2">
-                    <Icon
-                      name="mdi:information"
-                      class="flex"
-                    />
-                    <p class="font-medium">Status: {{ endpoint.response.status }}</p>
-                  </div>
-                </PrimeMessage>
-                <div
-                  class="whitespace-pre-wrap text-sm p-4 rounded-lg overflow-x-auto max-h-96 overflow-scroll"
-                >
-                  <code>{{ formattedResponse(endpoint.responseStr) }}</code>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-    </PrimeDataView>
-
-    <!-- Response Log -->
-    <PrimeAccordion
-      v-if="logs.length"
-      class="mt-4"
-    >
-      <PrimeAccordionPanel value="0">
-        <PrimeAccordionHeader>
-          <div class="flex items-center gap-2">
-            <Icon name="mdi:format-list-bulleted" />
-            <span>Request Log</span>
-            <PrimeBadge
-              :value="logs.length.toString()"
-              severity="info"
-            />
-          </div>
-        </PrimeAccordionHeader>
-        <PrimeAccordionContent>
-          <div class="w-full h-[200px] rounded-lg border border-color relative overflow-auto">
-            <div
-              v-for="(log, index) in logs"
-              :key="index"
-              class="p-2 border-b flex items-center gap-2"
-            >
-              <Icon name="mdi:information" />
-              <span class="font-mono text-sm">{{ log }}</span>
-            </div>
-          </div>
-        </PrimeAccordionContent>
-      </PrimeAccordionPanel>
-    </PrimeAccordion>
-  </div>
-</template>
-
+<!-- components/ApiTester.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+interface Endpoint {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  path: string
+  description: string
+  isLoading: boolean
+  responseStr: string
+  response: {
+    status: number | string
+    data: any
+  } | null
+}
+
+interface ApiResponse {
+  status: number | string
+  data: any
+}
 
 const env = useRuntimeConfig().public
-
 const notification = useNotification()
-const baseUrl = ref(env.apiUrl ?? 'http://localhost:3030')
-const isLoading = ref(false)
-const logs = ref([])
 const supabase = useSupabaseClient()
 
-// Create authenticated API instance
-const createApi = () => {
-  return $fetch.create({
-    baseURL: baseUrl.value,
-    async onRequest({ options }) {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
+const url = ref<string>(String(env.apiUrl ?? 'http://localhost:3030'))
+const isLoading = ref<boolean>(false)
+const logs = ref<string[]>([])
 
-      if (!session?.access_token) {
-        throw new Error('No authentication session found')
-      }
-
-      // Add all required headers
-      options.headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    },
-    // Add error handling
-    onResponseError({ response }) {
-      switch (response.status) {
-        case 401:
-          addLog('Authentication failed: Invalid or expired token')
-          break
-        case 403:
-          addLog('Authorization failed: Insufficient permissions')
-          break
-        default:
-          addLog(`Request failed with status: ${response.status}`)
-      }
-    },
-  })
-}
-
-// Add session check before making requests
-const checkSession = async () => {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
-    notification.error({
-      summary: 'Authentication Error',
-      message: 'Please sign in to use the API tester',
-    })
-    return false
-  }
-  return true
-}
-
-// Enhanced endpoints with descriptions
-const endpoints = ref([
+const endpoints = ref<Endpoint[]>([
   {
     method: 'GET',
     path: '/api/v1/feed-sources',
@@ -200,52 +52,92 @@ const endpoints = ref([
   },
 ])
 
-// Your existing helper methods remain the same
-const getMethodSeverity = (method) => {
-  const severities = {
-    GET: 'info',
-    POST: 'success',
-    PUT: 'warning',
-    DELETE: 'danger',
+const createApi = () => {
+  return $fetch.create({
+    baseURL: url.value,
+    async onRequest({ options }) {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.access_token) {
+        throw new Error('No authentication session found')
+      }
+
+      options.headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    },
+    onResponseError({ response }) {
+      const message = `Request failed: ${response.status} - ${response.statusText}`
+      addLog(message)
+      notification.error({ summary: 'API Error', message })
+    },
+  })
+}
+
+const checkSession = async (): Promise<boolean> => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session) {
+    notification.error({
+      summary: 'Authentication Error',
+      message: 'Please sign in to use the API tester',
+    })
+    return false
   }
-  return severities[method] || 'info'
+  return true
 }
 
-const getResponseSeverity = (status) => {
-  if (status >= 200 && status < 300) return 'success'
-  if (status >= 300 && status < 400) return 'info'
-  if (status >= 400 && status < 500) return 'warning'
-  return 'danger'
+const getMethodStyles = (method: Endpoint['method']) => {
+  const styles = {
+    GET: 'bg-blue-500',
+    POST: 'bg-green-500',
+    PUT: 'bg-amber-500',
+    DELETE: 'bg-red-500',
+  }
+  return styles[method] || 'bg-gray-500'
 }
 
-const addLog = (message) => {
+const getStatusColor = (status: number | string) => {
+  const statusNum = Number(status)
+  if (statusNum >= 200 && statusNum < 300) return 'text-green-500'
+  if (statusNum >= 300 && statusNum < 400) return 'text-amber-500'
+  if (statusNum >= 400 && statusNum < 500) return 'text-red-500'
+  return 'text-gray-500'
+}
+
+const addLog = (message: string) => {
   const timestamp = new Date().toISOString()
   logs.value.unshift(`[${timestamp}] ${message}`)
 }
 
 const testConnection = async () => {
+  if (!(await checkSession())) return
+
   try {
     isLoading.value = true
     const api = createApi()
-    const data = await api('/api/v1/health')
-    addLog(`Health check: Success`)
+    await api('/api/v1/health')
 
+    addLog('Connection test successful')
     notification.success({
-      summary: 'Connection Test',
-      message: 'Connection established successfully',
+      summary: 'Success',
+      message: 'API connection established',
     })
   } catch (error: any) {
-    addLog(`Error: ${error.message}`)
-    notification.error({
-      summary: 'Connection Test',
-      message: error.message,
-    })
+    addLog(`Connection test failed: ${error.message}`)
   } finally {
     isLoading.value = false
   }
 }
 
-const testEndpoint = async (endpoint) => {
+const testEndpoint = async (endpoint: Endpoint) => {
   if (!(await checkSession())) return
 
   try {
@@ -253,99 +145,153 @@ const testEndpoint = async (endpoint) => {
     addLog(`Testing ${endpoint.method} ${endpoint.path}`)
 
     const api = createApi()
-    const data = await api(endpoint.path, {
-      method: endpoint.method,
-    })
+    const data = await api(endpoint.path, { method: endpoint.method })
 
-    console.log('returned data', data)
-
-    endpoint.response = {
-      status: 200,
-      data,
-    }
+    endpoint.response = { status: 200, data }
     endpoint.responseStr = JSON.stringify(data, null, 2)
 
-    addLog(`Response: 200 OK`)
-    notification.success({
-      summary: 'API Response',
-      message: `Successfully received response from ${endpoint.path}`,
-    })
+    addLog(`${endpoint.method} ${endpoint.path}: 200 OK`)
   } catch (error: any) {
-    addLog(`Error: ${error.message}`)
     endpoint.response = {
-      status: error.status || 'Error',
+      status: error.status || 500,
       data: { error: error.message },
     }
-    endpoint.responseStr = JSON.stringify(endpoint.response.data, null, 2)
-    notification.error({
-      summary: 'API Error',
-      message: error.message,
-    })
+    endpoint.responseStr = JSON.stringify({ error: error.message }, null, 2)
+    addLog(`${endpoint.method} ${endpoint.path}: ${error.status || 500} Error`)
   } finally {
     endpoint.isLoading = false
   }
 }
 
-const formattedResponse = (output: any): string => {
-  console.info('RAW_OUTPUT', output)
-  // If output is already an object, stringify it
-  if (typeof output === 'object' && output !== null) {
-    return JSON.stringify(output, null, 2)
-  }
-
-  // Ensure we're working with a string
-  const str = String(output)
-
+const formatResponse = (response: string): string => {
   try {
-    // Step 1: Try parsing as-is first
-    try {
-      const parsed = JSON.parse(str)
-      return JSON.stringify(parsed, null, 2)
-    } catch (e) {
-      // Continue to cleaning steps if direct parse fails
-    }
-
-    // Step 2: Clean the string
-    const cleanStr = str
-      // Fix newlines
-      .replace(/\\n/g, '\n')
-      // Fix quotes
-      .replace(/\\"/g, '"')
-      // Remove extra backslashes before quotes
-      .replace(/\\+"/g, '"')
-      // Remove standalone backslashes
-      .replace(/([^\\])\\([^"\\])/g, '$1$2')
-      // Fix double escaped unicode
-      .replace(/\\\\u/g, '\\u')
-      // Remove any remaining consecutive backslashes
-      .replace(/\\+/g, '\\')
-      // Trim whitespace
-      .trim()
-
-    // Step 3: Handle potential leading/trailing quotes
-    if (cleanStr.startsWith('"') && cleanStr.endsWith('"')) {
-      try {
-        // If it's a quoted string, try parsing the inner content
-        const innerContent = cleanStr.slice(1, -1)
-        const parsed = JSON.parse(innerContent)
-        return JSON.stringify(parsed, null, 2)
-      } catch (e) {
-        // If inner parsing fails, try the whole string
-      }
-    }
-
-    // Step 4: Final parse attempt
-    const parsed = JSON.parse(cleanStr)
-    return JSON.stringify(parsed, null, 2)
-  } catch (e) {
-    console.error('JSON parsing error:', {
-      error: e,
-      originalString: str.slice(0, 100) + (str.length > 100 ? '...' : ''),
-      attemptedClean: cleanStr?.slice(0, 100) + (cleanStr?.length > 100 ? '...' : ''),
-    })
-
-    // Return original string if all parsing attempts fail
-    return str
+    return JSON.stringify(JSON.parse(response), null, 2)
+  } catch {
+    return response
   }
 }
 </script>
+
+<template>
+  <div class="h-full bg-gray-950 p-6">
+    <div class="mx-auto max-w-7xl">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-white">API Tester</h1>
+        <p class="mt-1 text-gray-400">Test and validate API endpoints</p>
+      </div>
+
+      <!-- URL Input -->
+      <div class="mb-8 flex items-center gap-4">
+        <div class="flex-1">
+          <label
+            for="apiUrl"
+            class="mb-2 block text-sm font-medium text-gray-400"
+            >API URL</label
+          >
+          <input
+            v-model="url"
+            id="apiUrl"
+            type="text"
+            class="w-full rounded-lg border border-gray-800 bg-gray-900 px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary focus:outline-none"
+            placeholder="Enter API URL"
+          />
+        </div>
+        <button
+          @click="testConnection"
+          :disabled="isLoading"
+          class="mt-6 flex h-10 items-center gap-2 rounded-lg bg-primary px-4 font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
+        >
+          <div
+            v-if="isLoading"
+            class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+          />
+          <span>Test Connection</span>
+        </button>
+      </div>
+
+      <!-- Endpoints -->
+      <div class="space-y-4">
+        <div
+          v-for="endpoint in endpoints"
+          :key="endpoint.path"
+          class="overflow-hidden rounded-lg bg-gray-900"
+        >
+          <div class="p-4">
+            <!-- Endpoint Header -->
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-start gap-3">
+                <span
+                  :class="[
+                    getMethodStyles(endpoint.method),
+                    'rounded px-2 py-1 text-xs font-medium text-white',
+                  ]"
+                >
+                  {{ endpoint.method }}
+                </span>
+                <div>
+                  <h3 class="font-mono text-white">{{ endpoint.path }}</h3>
+                  <p class="mt-1 text-sm text-gray-400">{{ endpoint.description }}</p>
+                </div>
+              </div>
+              <button
+                @click="testEndpoint(endpoint)"
+                :disabled="endpoint.isLoading"
+                class="flex items-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700"
+              >
+                <div
+                  v-if="endpoint.isLoading"
+                  class="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"
+                />
+                <span>Test</span>
+              </button>
+            </div>
+
+            <!-- Response -->
+            <div
+              v-if="endpoint.response"
+              class="mt-4"
+            >
+              <div class="mb-2 flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-400">Response</span>
+                <span :class="[getStatusColor(endpoint.response.status), 'text-sm font-medium']">
+                  Status: {{ endpoint.response.status }}
+                </span>
+              </div>
+              <pre
+                class="max-h-96 overflow-auto rounded-lg bg-gray-950 p-4 font-mono text-sm text-gray-300"
+                >{{ formatResponse(endpoint.responseStr) }}</pre
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logs -->
+      <div
+        v-if="logs.length"
+        class="mt-8"
+      >
+        <div class="mb-2 flex items-center justify-between">
+          <h2 class="text-lg font-medium text-white">Request Log</h2>
+          <span class="rounded-full bg-gray-800 px-2 py-0.5 text-xs text-gray-400">
+            {{ logs.length }} entries
+          </span>
+        </div>
+        <div class="max-h-48 overflow-auto rounded-lg bg-gray-900 p-4">
+          <div
+            v-for="(log, index) in logs"
+            :key="index"
+            class="py-1 text-sm text-gray-400"
+          >
+            {{ log }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+/* Add any additional styles here */
+</style>

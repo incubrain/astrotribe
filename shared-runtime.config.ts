@@ -12,8 +12,8 @@ export default defineNuxtConfig({
       supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
       // App URLS
       strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL,
-      authURL: process.env.NUXT_PUBLIC_AUTH_URL,
-      loginURL: process.env.NUXT_PUBLIC_LOGIN_URL,
+      authUrl: process.env.NUXT_PUBLIC_AUTH_URL,
+      loginUrl: process.env.NUXT_PUBLIC_LOGIN_URL,
       appURL: process.env.NUXT_PUBLIC_APP_URL,
       apiURL: process.env.NUXT_PUBLIC_API_URL,
       adminUrl: process.env.NUXT_PUBLIC_ADMIN_URL,

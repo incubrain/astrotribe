@@ -7,48 +7,13 @@ const { overview } = storeToRefs(adsAdminStore)
 
 const selectedPeriod = ref('30')
 const selectedAdId = ref<string | null>(null)
-const dialogVisible = computed(() => !!selectedAdId.value)
+const dialogVisible = ref(false)
 
 const periods = [
   { label: 'Last 7 Days', value: '7' },
   { label: 'Last 30 Days', value: '30' },
   { label: 'Last 90 Days', value: '90' },
 ]
-
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    tooltip: {
-      mode: 'index',
-      intersect: false,
-    },
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false,
-      },
-      ticks: {
-        maxTicksLimit: 10, // Limit number of x-axis labels
-      },
-    },
-    y: {
-      beginAtZero: true,
-      grid: {
-        borderDash: [2, 4],
-      },
-    },
-  },
-  interaction: {
-    mode: 'nearest',
-    axis: 'x',
-    intersect: false,
-  },
-}
 
 // Load initial data
 onMounted(async () => {
@@ -151,12 +116,19 @@ const summaryMetrics = computed(() => {
 
 const handleAdSelect = async (ad: AdMetrics) => {
   selectedAdId.value = ad.id
+  dialogVisible.value = true // Open dialog when ad is selected
 
   await Promise.all([
     adsAdminStore.fetchDailyTrends(ad.id, selectedPeriod.value),
     adsAdminStore.fetchVariantMetrics(ad.id),
   ])
 }
+
+watch(dialogVisible, (newValue) => {
+  if (!newValue) {
+    selectedAdId.value = null
+  }
+})
 </script>
 
 <template>

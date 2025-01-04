@@ -11,17 +11,18 @@
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
-    "@supabase/supabase-js": "^2.47.8",
-    "@vueuse/core": "^11.1.0",
-    "dotenv": "^16.4.5",
-    "jsonwebtoken": "^9.0.2",
-    "pinia": "^2.2.2",
-    "uuid": "^10.0.0",
-    "zod": "^3.23.8",
     "@nuxt/image": "^1.8.0",
     "@primevue/core": "^4.2.5",
     "@primevue/nuxt-module": "^4.2.5",
-    "primevue": "^4.2.5"
+    "@supabase/supabase-js": "^2.47.8",
+    "@vueuse/core": "^11.1.0",
+    "cronstrue": "^2.52.0",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "pinia": "^2.2.2",
+    "primevue": "^4.2.5",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.14.4",

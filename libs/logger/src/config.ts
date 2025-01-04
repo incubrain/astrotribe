@@ -1,11 +1,11 @@
 // config.ts
 export const SERVICE_NAMES = {
   API_GATEWAY: 'api-gateway',
-  AUTH_SERVICE: '@astronera/auth',
+  AUTH_SERVICE: 'auth',
   USER_SERVICE: 'user-service',
   PAYMENT_SERVICE: 'payment-service',
   CONTENT_SERVICE: 'content-service',
-  ADMIN_SERVICE: 'admin',
+  ADMIN_SERVICE: 'admin-service',
   SEARCH_SERVICE: 'search-service',
   ANALYTICS_SERVICE: 'analytics-service',
   NOTIFICATION_SERVICE: 'notification-service',

@@ -8,7 +8,7 @@
     <!-- Role Hierarchy Visualization -->
     <div class="mb-8 p-4 rounded-lg border border-color">
       <h2 class="text-lg font-medium mb-4">Role Inheritance Flow</h2>
-      <div class="flex items-center justify-start">
+      <div class="flex flex-wrap gap-2 items-center justify-start">
         <template
           v-for="(level, index) in roleHierarchy"
           :key="index"
@@ -20,16 +20,10 @@
             >
               {{ formatRoleName(level.role) }}
             </div>
-            <div
-              v-if="level.inheritsFrom"
-              class="text-sm text-center uppercase"
-            >
-              inherits
-            </div>
           </div>
           <div
             v-if="index < roleHierarchy.length - 1"
-            class="pr-4 pl-1 flex"
+            class="pr-2 pl-1 flex"
           >
             <Icon name="mdi:arrow-right" />
           </div>
