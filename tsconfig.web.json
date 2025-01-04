@@ -12,5 +12,16 @@
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
     "types": ["node", "vue"]
-  }
+  },
+  "include": [
+    "./components/**/*.{ts,vue}",
+    "./composables/**/*.{ts,vue}",
+    "./layouts/**/*.{ts,vue}",
+    "./pages/**/*.{ts,vue}",
+    "./plugins/**/*.{ts,vue}",
+    "./store/**/*.{ts,vue}",
+    "./types/**/*.{ts,vue}",
+    "./**/*.ts",
+    "./**/*.d.ts"
+  ]
 }
