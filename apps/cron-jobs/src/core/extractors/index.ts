@@ -1,0 +1,6 @@
+export * from './extractAuthor'
+export * from './extractDate'
+export * from './extractFeaturedImage'
+export * from './extractKeywords'
+export * from './extractTitle'
+export * from './extractor.module'

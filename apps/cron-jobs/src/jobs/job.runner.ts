@@ -31,7 +31,7 @@ export class JobRunner {
 
       try {
         const input = (await config.handlers.beforeProcess?.()) || []
-        const processed = await config.handlers.processFunction(input)
+        const processed = await config.handlers.processFunction(input, job)
         const output = (await config.handlers.afterProcess?.(processed)) || processed
 
         await config.handlers.onSuccess?.(output as TOutput)

@@ -23,7 +23,10 @@
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "chrono-node": "^2.7.7",
     "dotenv": "^16.4.5",
+    "natural": "^8.0.1",
     "node-fetch": "latest",
     "p-limit": "latest",
     "pg-boss": "^10.1.5",
@@ -32,10 +35,12 @@
     "robots-parser": "^3.0.1",
     "rss-parser": "^3.13.0",
     "sharp": "^0.33.2",
+    "turndown": "^7.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
+    "@types/turndown": "^5.0.5",
     "vite": "^6.0.6",
     "vite-node": "^2.1.8"
   }

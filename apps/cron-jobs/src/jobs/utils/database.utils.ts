@@ -194,7 +194,7 @@ export class DatabaseUtils {
    */
   static async batchProcess<T, R>({
     items,
-    batchSize = 1000,
+    batchSize = 20,
     processor,
     logger,
   }: {

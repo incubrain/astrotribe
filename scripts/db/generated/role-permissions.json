@@ -114,9 +114,9 @@
         "customer_subscriptions",
         "payment_providers",
         "role_hierarchy",
-        "role_permissions_materialized",
         "blacklisted_urls",
-        "error_logs"
+        "error_logs",
+        "role_permissions_materialized"
       ],
       "default_permissions": [],
       "audit_level": "critical"
