@@ -4,7 +4,7 @@ const userStore = useCurrentUser()
 const toast = useNotification()
 const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { adminUrl, loginURL, authURL } = useRuntimeConfig().public
+const { adminURL, loginURL, authURL } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -26,7 +26,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => navigateTo(adminUrl, { external: true }),
+      command: () => navigateTo(adminURL, { external: true }),
     })
   }
 

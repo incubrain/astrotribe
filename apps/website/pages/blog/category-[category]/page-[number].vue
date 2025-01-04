@@ -129,7 +129,7 @@ async function fetchArticlesFromAPI(category: ArticleCategoriesT, page: number) 
 //     twitterCard: 'summary_large_image',
 //     twitterTitle: categoryInfo[categoryParam.value].title,
 //     twitterDescription: categoryInfo[categoryParam.value].description,
-//     twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`,
+//     twitterImage: `${websiteURL}/images/icons/blog-icon.svg`,
 //   })
 
 //   defineOgImageComponent('OgImageDefault', {

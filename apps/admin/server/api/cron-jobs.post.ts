@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
 
   let endpoint = ''
   switch (action) {

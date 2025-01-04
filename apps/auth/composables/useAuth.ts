@@ -21,7 +21,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const { authURL, appURL } = useRuntimeConfig().public
-  const authUrl = authURL
+  const authURL = authURL
   const appUrl = `${appURL}/auth-callback`
 
   const logger = useLogger('auth')
@@ -152,7 +152,7 @@ export function useAuth() {
     loading.setLoading('currentUser', true)
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: encodeURIComponent(`${authUrl}/reset-password`),
+      redirectTo: encodeURIComponent(`${authURL}/reset-password`),
       captchaToken: turnstileToken,
     })
 

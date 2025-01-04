@@ -5,11 +5,11 @@ export default defineNuxtPlugin((nuxtApp) => {
   const env2 = useRuntimeConfig().public
 
   const posthogKey = env.posthogKey || env2.posthogKey
-  const posthogUrl = env.posthogUrl || env2.posthogUrl
+  const posthogURL = env.posthogURL || env2.posthogURL
 
   // Initialize PostHog
   posthog.init(posthogKey, {
-    api_host: posthogUrl,
+    api_host: posthogURL,
     autocapture: false, // Disable autocapture as we'll handle events manually
     capture_pageview: false, // We'll capture pageviews manually for more control
     persistence: 'localStorage+cookie',

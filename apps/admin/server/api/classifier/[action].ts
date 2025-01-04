@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     })
 
     if (action === 'insert') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'delete') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls/${id}`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'select') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

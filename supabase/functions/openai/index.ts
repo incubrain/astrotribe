@@ -5,7 +5,7 @@ import OpenAI from 'https://deno.land/x/openai@v4.51.0/mod.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const openAiApiKey = Deno.env.get('OPENAI_API_KEY')
-const supabaseUrl = Deno.env.get('SUPABASE_URL')
+const supabaseURL = Deno.env.get('SUPABASE_URL')
 const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
 const supabaseSerciceKey = Deno.env.get('SUPABASE_SERVICE_KEY')
 
@@ -19,7 +19,7 @@ if (!openAiApiKey) {
   throw new Error('OpenAI API key not set in environment variables')
 }
 
-if (!supabaseUrl) {
+if (!supabaseURL) {
   console.error('Error: Supabase URL not set in environment variables')
   throw new Error('Supabase URL not set in environment variables')
 }
@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
 
   try {
     const normalizedQuery = query.trim().toLowerCase()
-    const supabaseServiceClient = createClient(supabaseUrl, supabaseSerciceKey)
+    const supabaseServiceClient = createClient(supabaseURL, supabaseSerciceKey)
 
     // Check if the query already exists
     console.log(
