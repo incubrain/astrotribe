@@ -48,6 +48,7 @@ const emit = defineEmits<{
         />
       </div>
       <button
+        v-if="commentsCount"
         class="flex items-center gap-2 hover:text-primary-600"
         @click="$emit('open-modal', 'Comments')"
       >
