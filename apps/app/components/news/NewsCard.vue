@@ -261,22 +261,13 @@ onBeforeUnmount(async () => {
             <NewsActions
               :news-id="news.id"
               :score="displayScore"
-              :comments-count="news.comments"
+              :comments-count="null"
               :bookmarked="bookmarked"
               :url="news.url"
               :current-vote="currentVote"
               card-side="front"
               :on-bookmark="
-                async () => {
-                  if (folderStore.folders.length > 1) {
-                    await folderStore.fetchFolders()
-                    bookmarkFolderSelected =
-                      folderStore.folders.find((folder) => folder.is_default) || null
-                    showBookmarkFolders = true
-                    return
-                  }
-                  bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
-                }
+                bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
               "
               :on-source-visit="handleSourceVisit"
               @vote-change="handleVoteChange"
@@ -320,23 +311,12 @@ onBeforeUnmount(async () => {
         <NewsActions
           :news-id="news.id"
           :score="displayScore"
-          :comments-count="news.comments"
+          :comments-count="null"
           :bookmarked="bookmarked"
           :url="news.url"
           :current-vote="currentVote"
           card-side="back"
-          :on-bookmark="
-            async () => {
-              if (folderStore.folders.length > 1) {
-                await folderStore.fetchFolders()
-                bookmarkFolderSelected =
-                  folderStore.folders.find((folder) => folder.is_default)?.id || null
-                showBookmarkFolders = true
-                return
-              }
-              bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)
-            }
-          "
+          :on-bookmark="bookmarkStore.handleToggleBookmark(news, folderStore.getDefaultFolder?.id)"
           :on-source-visit="handleSourceVisit"
           @vote-change="handleVoteChange"
           @open-modal="openModal"
@@ -344,7 +324,7 @@ onBeforeUnmount(async () => {
       </div>
     </div>
   </div>
-  <PrimeDialog
+  <!-- <PrimeDialog
     v-model:visible="showBookmarkFolders"
     modal
     header="Choose Folder"
@@ -366,16 +346,25 @@ onBeforeUnmount(async () => {
         label="Submit"
         @click="submitFolder"
       />
+      async () => {
+              if (folderStore.folders.length > 1) {
+                await folderStore.fetchFolders()
+                bookmarkFolderSelected =
+                  folderStore.folders.find((folder) => folder.is_default)?.id || null
+                showBookmarkFolders = true
+                return
+              }
+          }
     </template>
-  </PrimeDialog>
-  <PrimeDialog
+  </PrimeDialog> -->
+  <!-- <PrimeDialog
     v-model:visible="showModal"
     modal
     header="Coming Soon"
     :style="{ width: '50vw' }"
   >
     <p>{{ modalContent }}</p>
-  </PrimeDialog>
+  </PrimeDialog> -->
 </template>
 
 <style scoped>
