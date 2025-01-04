@@ -22,7 +22,7 @@ const connectToAnalyticsServer = () => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
   const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
 
   console.log(`Connecting to WebSocket URL: ${wsUrl}`)

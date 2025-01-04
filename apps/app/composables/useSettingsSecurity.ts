@@ -112,7 +112,7 @@ export function useSettingsSecurity() {
 
   async function deleteAccount(options: TurnstileOptions, password?: string) {
     const error = await verifyLogin(options, password)
-    const { authUrl } = useRuntimeConfig().public
+    const { authURL } = useRuntimeConfig().public
 
     if (error) {
       toast.error({ summary: 'Deletion Failed', message: error.message })
@@ -133,7 +133,7 @@ export function useSettingsSecurity() {
     toast.success({ summary: 'Account Deleted', message: 'Redirecting...' })
     await supabase.auth.signOut()
 
-    setTimeout(() => navigateTo(authUrl, { external: true }), 1000)
+    setTimeout(() => navigateTo(authURL, { external: true }), 1000)
   }
 
   return {

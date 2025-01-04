@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TitleType } from '@/types/content'
 
-const { websiteUrl } = useRuntimeConfig().public
+const { websiteURL } = useRuntimeConfig().public
 
 defineProps({
   title: {
@@ -35,7 +35,7 @@ defineProps({
     <div class="flex h-full flex-row items-center justify-center gap-4 text-white mx-auto">
       <div class="border-color group relative rounded-full border bg-white p-3 hover:invert">
         <NuxtLink
-          :to="websiteUrl"
+          :to="websiteURL"
           class="flex items-center justify-center"
         >
           <IBImage

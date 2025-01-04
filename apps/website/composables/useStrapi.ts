@@ -63,9 +63,9 @@ interface StrapiV5Client {
 
 export const useStrapi = (): StrapiV5Client => {
   const config = useRuntimeConfig()
-  const baseUrl = config.public.strapiUrl.endsWith('/') ?
-    config.public.strapiUrl.slice(0, -1) :
-    config.public.strapiUrl
+  const baseUrl = config.public.strapiURL.endsWith('/')
+    ? config.public.strapiURL.slice(0, -1)
+    : config.public.strapiURL
   // Create a custom fetch client with base URL
   const client = (url: string, params?: Record<string, any>, options?: FetchOptions) => {
     let queryString = ''

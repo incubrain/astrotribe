@@ -119,9 +119,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
           class="flex !text-2xl gap-4 min-w-[280px] relative z-10 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-700 hover:from-primary-500 hover:via-primary-400 hover:to-primary-600 transition-all duration-300 text-lg shadow-lg shadow-primary-600/30 hover:shadow-primary-500/40 hover:-translate-y-0.5"
         >
           Start Exploring Today,
-          <strong>
-            It's Free
-          </strong>
+          <strong> It's Free </strong>
           <Icon
             name="mdi:rocket"
             size="48"

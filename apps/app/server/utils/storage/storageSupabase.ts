@@ -100,7 +100,7 @@ function formatImageInput(fileType: FileType, data: any) {
 }
 
 export const getImageURL = ({ data, fileType, transform }: GetImageUrlOptions): string => {
-  const baseURL = useRuntimeConfig().public.supabaseUrl
+  const baseURL = useRuntimeConfig().public.supabaseURL
   const { bucket, folderPath, isPrivate, file } = formatImageInput(fileType, data)
   if (!baseURL) {
     throw createError({
@@ -127,7 +127,7 @@ export interface GetStorageImagesOptions extends Omit<UrlConstructorOptions, 'ba
 
 // export async function getStorageImages(options: GetStorageImagesOptions): Promise<string[]> {
 //   const { bucket, fileType, folderPath, isPrivate, transform } = options
-//   const baseURL = useRuntimeConfig().public.supabaseUrl
+//   const baseURL = useRuntimeConfig().public.supabaseURL
 //   if (!bucket || !folderPath) {
 //     console.error('Bucket and folder are required parameters')
 //     return []

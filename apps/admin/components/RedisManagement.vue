@@ -3,7 +3,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 
 const PAGE_SIZE = 50
 
-const scraperUrl = useRuntimeConfig().public.scraperUrl
+const scraperURL = useRuntimeConfig().public.scraperURL
 
 const tableData = ref([])
 const loading = ref(false)
@@ -25,7 +25,7 @@ const loadKeys = async (page = 0, pageSize = PAGE_SIZE) => {
   loading.value = true
   try {
     const response = await fetch(
-      `${scraperUrl}/admin/redis/keys?page=${page}&pageSize=${pageSize}&includeValues=true`,
+      `${scraperURL}/admin/redis/keys?page=${page}&pageSize=${pageSize}&includeValues=true`,
     )
 
     const data = await response.json()
@@ -77,7 +77,7 @@ const editValue = (data: any) => {
 
 const saveEditedValue = async () => {
   try {
-    await fetch(`${scraperUrl}/admin/redis/keys/${encodeURIComponent(selectedKey.value)}`, {
+    await fetch(`${scraperURL}/admin/redis/keys/${encodeURIComponent(selectedKey.value)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ value: editedValue.value }),
@@ -92,7 +92,7 @@ const saveEditedValue = async () => {
 const deleteKey = async (key: string) => {
   if (confirm('Are you sure you want to delete this key?')) {
     try {
-      await fetch(`${scraperUrl}/admin/redis/keys/${encodeURIComponent(key)}`, { method: 'DELETE' })
+      await fetch(`${scraperURL}/admin/redis/keys/${encodeURIComponent(key)}`, { method: 'DELETE' })
       loadKeys() // Refresh the data
     } catch (error: any) {
       console.error('Failed to delete key', error)
@@ -103,7 +103,7 @@ const deleteKey = async (key: string) => {
 const flushDatabase = async () => {
   if (confirm('Are you sure you want to flush the entire database?')) {
     try {
-      await fetch(`${scraperUrl}/admin/redis/flush`, { method: 'POST' })
+      await fetch(`${scraperURL}/admin/redis/flush`, { method: 'POST' })
       alert('Database flushed successfully')
       loadKeys()
     } catch (error: any) {

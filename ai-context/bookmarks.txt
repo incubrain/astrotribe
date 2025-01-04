@@ -214,7 +214,7 @@ export default defineEventHandler(async (event) => {
     })
 
     if (action === 'insert') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -226,7 +226,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'delete') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls/${id}`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -237,7 +237,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'select') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1053,7 +1053,7 @@ export default defineEventHandler(async (event) => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
 
   let endpoint = ''
   switch (action) {
@@ -1415,7 +1415,7 @@ const connectToAnalyticsServer = () => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
   const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
 
   console.log(`Connecting to WebSocket URL: ${wsUrl}`)
@@ -5184,7 +5184,7 @@ export default defineEventHandler(async (event) => {
 
   console.log('provider:', provider)
 
-  let backendUrl = config.scraperUrl
+  let backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     console.log('provider is razorpay')
     backendUrl = backendUrl.concat('/api/customer/subscription/create')
@@ -5230,7 +5230,7 @@ export default defineEventHandler(async (event) => {
   const provider = getRouterParam(event, 'provider')
   const config = useRuntimeConfig().public
 
-  const backendUrl = config.scraperUrl
+  const backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription')
   } else if (provider === 'stripe') {
@@ -5272,7 +5272,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const config = useRuntimeConfig().public
 
-  const backendUrl = config.scraperUrl
+  const backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription/verify-payment')
   } else if (provider === 'stripe') {

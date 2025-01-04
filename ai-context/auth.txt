@@ -288,9 +288,9 @@ File: apps/admin/middleware/is-admin.ts
 
 export default defineNuxtRouteMiddleware((to, from) => {
   // const user = useSupabaseUser()
-  // const authUrl = useRuntimeConfig().public.authURL
+  // const authURL = useRuntimeConfig().public.authURL
   // if (!isAdmin(user.value?.app_metadata.role)) {
-  //   return navigateTo(authUrl, { external: true })
+  //   return navigateTo(authURL, { external: true })
   // }
 })
 
@@ -550,7 +550,7 @@ export default defineEventHandler(async (event) => {
     })
 
     if (action === 'insert') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -562,7 +562,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'delete') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls/${id}`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -573,7 +573,7 @@ export default defineEventHandler(async (event) => {
         data: response,
       }
     } else if (action === 'select') {
-      const response = await $fetch(`${config.public.scraperUrl}/api/classifier/urls`, {
+      const response = await $fetch(`${config.public.scraperURL}/api/classifier/urls`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -695,7 +695,7 @@ export default defineEventHandler(async (event) => {
       algorithm: 'HS256',
     })
 
-    const response = await $fetch(`${config.public.scraperUrl}/api/error/${type}`, {
+    const response = await $fetch(`${config.public.scraperURL}/api/error/${type}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1209,7 +1209,7 @@ export default defineEventHandler(async (event) => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
 
   let endpoint = ''
   switch (action) {
@@ -1540,7 +1540,7 @@ const connectToAnalyticsServer = () => {
     algorithm: 'HS256',
   })
 
-  const scraperBaseURL = useRuntimeConfig().public.scraperUrl
+  const scraperBaseURL = useRuntimeConfig().public.scraperURL
   const wsUrl = `${scraperBaseURL.replace(/^http/, 'ws')}/analytics`
 
   console.log(`Connecting to WebSocket URL: ${wsUrl}`)
@@ -2430,7 +2430,7 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const { authURL, appURL } = useRuntimeConfig().public
-  const authUrl = authURL
+  const authURL = authURL
   const appUrl = `${appURL}/auth-callback`
 
   const logger = useLogger('auth')
@@ -2548,7 +2548,7 @@ export function useAuth() {
   async function forgotPassword(email: string) {
     // infra:critical:easy:1 - add correct redirect for userId/settings/password
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${authUrl}settings/password`,
+      redirectTo: `${authURL}settings/password`,
     })
 
     if (error) {
@@ -2602,7 +2602,7 @@ File: apps/auth/composables/useAuthUser.ts
 // composables/useAuth.ts
 export async function forgotPassword(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${authUrl}/reset-password`, // Public reset password page
+    redirectTo: `${authURL}/reset-password`, // Public reset password page
   })
   if (error) {
     console.error('Forgot password failed:', error)
@@ -4114,7 +4114,7 @@ const userStore = useCurrentUser()
 const toast = useNotification()
 const supabase = useSupabaseClient()
 const { profile, isAdmin } = storeToRefs(userStore)
-const { adminUrl, loginURL, authURL } = useRuntimeConfig().public
+const { adminURL, loginURL, authURL } = useRuntimeConfig().public
 
 const profileMenu = ref(null)
 const toggleMenu = (e) => {
@@ -4136,7 +4136,7 @@ const items = computed(() => {
   if (isAdmin.value) {
     menuItems.splice(2, 0, {
       label: 'Admin',
-      command: () => navigateTo(adminUrl, { external: true }),
+      command: () => navigateTo(adminURL, { external: true }),
     })
   }
 
@@ -7641,7 +7641,7 @@ export default defineEventHandler(async (event) => {
 
   console.log('provider:', provider)
 
-  let backendUrl = config.scraperUrl
+  let backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     console.log('provider is razorpay')
     backendUrl = backendUrl.concat('/api/customer/subscription/create')
@@ -7687,7 +7687,7 @@ export default defineEventHandler(async (event) => {
   const provider = getRouterParam(event, 'provider')
   const config = useRuntimeConfig().public
 
-  const backendUrl = config.scraperUrl
+  const backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription')
   } else if (provider === 'stripe') {
@@ -7729,7 +7729,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const config = useRuntimeConfig().public
 
-  const backendUrl = config.scraperUrl
+  const backendUrl = config.scraperURL
   if (provider === 'razorpay') {
     backendUrl.concat('/api/customer/subscription/verify-payment')
   } else if (provider === 'stripe') {
@@ -10950,7 +10950,7 @@ async function fetchArticlesFromAPI(category: string, page: number) {
 //     twitterCard: 'summary_large_image',
 //     twitterTitle: categoryInfo[categoryParam.value].title,
 //     twitterDescription: categoryInfo[categoryParam.value].description,
-//     twitterImage: `${websiteUrl}/images/icons/blog-icon.svg`,
+//     twitterImage: `${websiteURL}/images/icons/blog-icon.svg`,
 //   })
 
 //   defineOgImageComponent('OgImageDefault', {

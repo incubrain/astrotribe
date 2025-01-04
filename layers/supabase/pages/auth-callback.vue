@@ -23,7 +23,7 @@ const handleAuth = async () => {
 
   if (!code) {
     logger.error('No code found in URL')
-    await navigateTo(`${env.authUrl}${env.loginUrl}`, { external: true })
+    await navigateTo(`${env.authURL}${env.loginURL}`, { external: true })
     return
   }
 
@@ -40,7 +40,7 @@ const handleAuth = async () => {
     }
   } catch (error: any) {
     logger.error('Error during authentication:', { error })
-    await navigateTo(`${env.authUrl}${env.loginUrl}`, { external: true })
+    await navigateTo(`${env.authURL}${env.loginURL}`, { external: true })
   } finally {
     isProcessing.value = false
   }
