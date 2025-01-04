@@ -2,6 +2,8 @@ import { faker } from '@faker-js/faker'
 import chalk from 'chalk'
 import type { Pool } from 'pg'
 
+const DEFAULT_SCHEMA = 'public'
+
 // Helper to safely format SQL values
 export function formatValue(value: any): string {
   if (value === null || value === undefined) return 'NULL'
@@ -66,6 +68,7 @@ export async function bulkInsert<T extends Record<string, any>>(
   tableName: string,
   records: T[],
   columns?: string[],
+  schema: string = DEFAULT_SCHEMA,
 ): Promise<any> {
   if (!records.length) return
 
@@ -77,7 +80,7 @@ export async function bulkInsert<T extends Record<string, any>>(
     .join(',')
 
   const query = `
-      INSERT INTO ${tableName} (${cols.join(',')})
+    INSERT INTO ${schema}.${tableName} (${cols.join(',')})
       VALUES ${values}
       RETURNING *;
     `

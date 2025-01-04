@@ -10,7 +10,6 @@ async function bootstrap() {
   const testJobArg = process.argv.find((arg) => arg.startsWith('--test-job='))
   const testJobName = testJobArg ? testJobArg.split('=')[1] : undefined
 
-  console.log('Starting application with test job:', testJobName)
   await app.start(testJobName)
 
   // Handle shutdown gracefully

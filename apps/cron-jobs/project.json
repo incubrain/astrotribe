@@ -22,7 +22,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "vite-node src/index.ts",
+        "command": "pnpx vite-node src/index.ts",
         "cwd": "apps/cron-jobs"
       }
     },

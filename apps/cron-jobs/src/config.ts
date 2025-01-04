@@ -56,7 +56,7 @@ function loadConfig(): ApplicationConfig {
     },
     app: {
       name: process.env.APP_NAME,
-      port: parseInt(process.env.APP_PORT || '3000', 10),
+      port: parseInt(process.env.APP_PORT || '3050', 10),
       environment: process.env.NODE_ENV,
       logLevel: process.env.LOG_LEVEL || 'info',
     },

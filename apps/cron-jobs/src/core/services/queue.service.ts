@@ -52,9 +52,6 @@ export class QueueService {
     this.logger.setDomain('jobs')
   }
 
-  // postgresql://postgres:[YOUR-PASSWORD]@db.idsifamzvzlpgnmlnldw.supabase.co:5432/postgres
-  // postgresql://postgres.idsifamzvzlpgnmlnldw:XH8dQ64z191A2QMU@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
-
   async init(): Promise<void> {
     try {
       const isSupabase = this.connectionString.includes('supabase')

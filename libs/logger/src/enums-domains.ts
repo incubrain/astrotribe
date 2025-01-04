@@ -19,6 +19,11 @@ const ADMIN_SPECIFIC = [
   'tasks',
   'spider',
   'classifier',
+  'jobs',
+  'users',
+  'referrals',
+  'billing',
+  'growth',
 ] as const
 
 // Main app specific domains
@@ -26,8 +31,8 @@ const APP_SPECIFIC = ['bookmarks', 'search', 'payments'] as const
 
 export enum Service {
   // Main Applications
-  ADMIN_DASHBOARD = 'admin',
-  AUTH_SERVICE = 'auth',
+  ADMIN = 'admin',
+  AUTH = 'auth',
   APP = 'app',
   MONITORING = 'monitoring',
   WEBSITE = 'website',
@@ -63,7 +68,18 @@ export const ServiceDomains = {
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
   'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
-  'jobs': ['api', 'errors', 'metrics', 'analytics', 'jobs', ...JOBS_DOMAINS, ...URLS, ...SCRAPERS],
+  'jobs': [
+    'test',
+    'circuit_breaker',
+    'api',
+    'errors',
+    'metrics',
+    'analytics',
+    'jobs',
+    ...JOBS_DOMAINS,
+    ...URLS,
+    ...SCRAPERS,
+  ],
 } as const
 
 export type ServiceToDomain = {

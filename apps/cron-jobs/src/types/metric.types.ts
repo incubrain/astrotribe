@@ -1,13 +1,52 @@
+import { error_type, job_status } from '@prisma/client'
+
 // types/metrics.types.ts
 export interface JobMetrics {
-  totalRuns: number
-  successCount: number
-  failureCount: number
-  avgDuration: number
-  lastRunTime?: Date
-  lastStatus?: 'success' | 'failure'
-  consecutiveFailures: number
-  itemsProcessed: number
+  duration: number
+  success: boolean
+  error?: Error
+  itemsProcessed?: number
+  memoryUsage?: {
+    heapUsed: number
+    heapTotal: number
+    external: number
+  }
+  performance?: {
+    itemsPerSecond: number
+    avgProcessingTime: number
+    batchSize: number
+  }
+}
+
+export interface JobExecutionMetrics {
+  jobName: string
+  jobId: string
+  status: job_status
+  startTime: Date
+  duration?: number
+  itemsProcessed?: number
+  performance?: {
+    itemsPerSecond: number
+    avgProcessingTime: number
+    peakMemoryUsage: number
+  }
+  error?: {
+    message: string
+    stack?: string
+    code?: string
+    type: error_type
+  }
+  metadata?: Record<string, any>
+}
+
+export interface CircuitBreakerMetrics {
+  jobName: string
+  state: 'closed' | 'open' | 'half-open'
+  failures: number
+  lastFailure: Date
+  lastSuccess?: Date
+  recoveryAttempts: number
+  timeInCurrentState: number
 }
 
 export interface QueueMetrics {
