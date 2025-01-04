@@ -137,11 +137,10 @@ export class DatabaseUtils {
         data: {
           has_failed: true,
           failed_count: { increment: 1 },
-          ...(options?.disableAfterFailure ? { is_active: false } : {}),
         },
       })
 
-      // Optional: Disable entity if it exceeds max failures
+      // Check max failures if specified
       if (options?.maxFailures) {
         const updatedEntity = await delegate.findUnique({
           where: { id: entity.id },
@@ -149,9 +148,14 @@ export class DatabaseUtils {
         })
 
         if (updatedEntity?.failed_count >= options.maxFailures) {
+          // Instead of using is_active, we'll just keep has_failed as true
+          // and use a high failed_count to indicate disabled state
           await delegate.update({
             where: { id: entity.id },
-            data: { is_active: false },
+            data: {
+              has_failed: true,
+              updated_at: new Date(),
+            },
           })
         }
       }
