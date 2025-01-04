@@ -26,8 +26,8 @@ import type { Prisma } from '@prisma/client'
 import type { PaginatedQuery, PaginatedResponse } from '@types'
 
 @Controller('contents')
-@UseGuards(PermissionGuard)
 @ApiTags('Contents')
+@UseGuards(PermissionGuard)
 export class ContentController extends BaseController {
   constructor(
     protected readonly contentService: ContentService,

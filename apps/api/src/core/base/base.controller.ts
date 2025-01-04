@@ -63,7 +63,7 @@ export abstract class BaseController {
         include: includes,
       })
       if (!data) {
-        throw new NotFoundException(`${this.modelName} not found`)
+        throw new NotFoundException(`${String(this.modelName)} not found`)
       }
       return this.handleSuccess(data)
     } catch (error: any) {
@@ -96,65 +96,12 @@ export abstract class BaseController {
     try {
       const existing = await this.model.findUnique({ where: { id } })
       if (!existing) {
-        throw new NotFoundException(`${this.modelName} not found`)
+        throw new NotFoundException(`${String(this.modelName)} not found`)
       }
       await this.model.delete({ where: { id } })
       return this.handleSuccess(existing)
     } catch (error: any) {
       throw this.handleError(error)
-    }
-  }
-
-  protected async getUserFromRequest(req: Request) {
-    const authHeader = req.headers.authorization
-    if (!authHeader) {
-      throw new UnauthorizedException('No authorization header')
-    }
-
-    const token = authHeader.replace('Bearer ', '')
-    try {
-      const decoded = verify(token, this.config.get('JWT_SECRET')) as {
-        userId: string
-      }
-
-      const user = await this.prisma.user_profiles.findUnique({
-        where: { id: decoded.userId },
-        select: {
-          id: true,
-          email: true,
-          role: true,
-          is_active: true,
-        },
-      })
-
-      if (!user || !user.is_active) {
-        throw new UnauthorizedException('Invalid or inactive user')
-      }
-
-      return user
-    } catch (error: any) {
-      throw new UnauthorizedException('Invalid token')
-    }
-  }
-
-  protected async validateRequest(req: Request) {
-    const user = await this.getUserFromRequest(req)
-    if (!user) {
-      throw new UnauthorizedException('Unauthorized')
-    }
-    return user
-  }
-
-  protected async checkPermission(userRole: any) {
-    const permission = await this.prisma.role_permissions.findFirst({
-      where: {
-        role: userRole,
-        table_name: this.modelName,
-      },
-    })
-
-    if (!permission) {
-      throw new UnauthorizedException('Insufficient permissions')
     }
   }
 
@@ -181,22 +128,22 @@ export abstract class BaseController {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
         case 'P2002':
-          throw new ConflictException(`Duplicate entry on ${this.modelName}`)
+          throw new ConflictException(`Duplicate entry on ${String(this.modelName)}`)
         case 'P2003':
-          throw new BadRequestException(`Referenced record not found on ${this.modelName}`)
+          throw new BadRequestException(`Referenced record not found on ${String(this.modelName)}`)
         case 'P2021':
-          throw new NotFoundException(`Table not found for ${this.modelName}`)
+          throw new NotFoundException(`Table not found for ${String(this.modelName)}`)
         case 'P2025':
-          throw new NotFoundException(`${this.modelName} not found`)
+          throw new NotFoundException(`${String(this.modelName)} not found`)
         case 'P2010':
-          throw new BadRequestException(`Invalid query on ${this.modelName}`)
+          throw new BadRequestException(`Invalid query on ${String(this.modelName)}`)
         default:
-          throw new InternalServerErrorException(`Database error on ${this.modelName}`)
+          throw new InternalServerErrorException(`Database error on ${String(this.modelName)}`)
       }
     }
 
     if (error instanceof Prisma.PrismaClientValidationError) {
-      throw new BadRequestException(`Validation error on ${this.modelName}`)
+      throw new BadRequestException(`Validation error on ${String(this.modelName)}`)
     }
 
     throw new InternalServerErrorException(error.message || 'An unexpected error occurred')
