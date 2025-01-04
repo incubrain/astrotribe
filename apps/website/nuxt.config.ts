@@ -268,12 +268,11 @@ export default defineNuxtConfig({
   nitro: {
     debug: true,
     logLevel: 'debug',
-    routeRules: {
-      '/**': { cache: false }, // Disable caching during debugging
-    },
+
     prerender: {
       routes: ['/sitemap.xml'],
       crawlLinks: true,
+      failOnError: false,
     },
   },
 
@@ -316,14 +315,9 @@ export default defineNuxtConfig({
       exclude: ['Editor'],
     },
 
-  //   composables: {
-  //     include: '*',
-  //   },
-
-  nitro: {
-    debug: true,
-    logLevel: 'debug',
-  },
+    //   composables: {
+    //     include: '*',
+    //   },
 
     options: {
       ripple: true,
@@ -338,6 +332,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   site: {
     url: og.url,
     name: 'AstronEra',
