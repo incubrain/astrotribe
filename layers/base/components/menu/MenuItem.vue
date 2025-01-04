@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const emit = defineEmits(['click'])
+
 defineProps<{
   icon?: string
   label: string
@@ -7,6 +9,10 @@ defineProps<{
   isMobile?: boolean
   isSidebarOpen?: boolean
 }>()
+
+const handleClick = (e: Event) => {
+  emit('click')
+}
 </script>
 
 <template>
@@ -15,6 +21,7 @@ defineProps<{
     :to="to"
     class="flex items-center rounded-lg px-2 py-2 text-sm font-medium hover:bg-primary-700"
     :class="{ 'bg-primary-800': isActive }"
+    @click.up="handleClick"
   >
     <Icon
       v-if="icon"

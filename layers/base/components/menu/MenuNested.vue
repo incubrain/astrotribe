@@ -25,15 +25,22 @@ watch(
   },
 )
 
-const handleClick = () => {
+const handleClick = (e: Event) => {
+  e.preventDefault() // Prevent default only for the menu toggle
   if (!props.isMobile && !props.isSidebarOpen) {
     emit('expand-sidebar')
     // Wait for sidebar expansion animation to complete before expanding nested menu
     setTimeout(() => {
       isExpanded.value = true
-    }, 300) // Match this with the sidebar's transition duration
+    }, 300)
   } else {
     isExpanded.value = !isExpanded.value
+  }
+}
+
+const handleItemClick = async (slug: string) => {
+  if (props.isMobile) {
+    isExpanded.value = false
   }
 }
 </script>
@@ -88,6 +95,7 @@ const handleClick = () => {
             :is-active="route.path === item.slug"
             :is-mobile="isMobile"
             :is-sidebar-open="isSidebarOpen"
+            @click="handleItemClick(item.slug)"
           />
         </li>
       </ul>
