@@ -64,16 +64,32 @@ export class PermissionService implements OnModuleInit {
 
   async validateToken(token: string): Promise<SupabaseJwtPayload> {
     try {
-      // First verify the JWT signature
+      this.logger.debug('Attempting to validate Supabase token', {
+        tokenLength: token.length,
+        tokenPrefix: token.substring(0, 10) + '...', // Safe logging
+      })
+
       const decoded = jwt.verify(token, this.jwtSecret) as SupabaseJwtPayload
 
-      // Optional: Additional validation
-      if (Date.now() >= decoded.exp * 1000) {
-        throw new UnauthorizedException('Token expired')
+      this.logger.debug('Token decoded successfully', {
+        sub: decoded.sub,
+        role: decoded.role,
+        exp: new Date(decoded.exp * 1000).toISOString(),
+        aud: decoded.aud,
+      })
+
+      // Verify the token is a Supabase token
+      if (decoded.aud !== 'authenticated') {
+        this.logger.warn('Invalid audience in token', { aud: decoded.aud })
+        throw new UnauthorizedException('Invalid token audience')
       }
 
       return decoded
     } catch (error: any) {
+      this.logger.error('Token validation failed', {
+        error: error.message,
+        stack: error.stack,
+      })
       throw new UnauthorizedException('Invalid token')
     }
   }

@@ -21,7 +21,6 @@ export type SettingsPasswordType = z.infer<typeof SettingsPasswordValidation>
 
 export function useAuth() {
   const { authURL, appURL } = useRuntimeConfig().public
-  const authURL = authURL
   const appUrl = `${appURL}/auth-callback`
 
   const logger = useLogger('auth')

@@ -137,12 +137,25 @@ const testConnection = async () => {
   }
 }
 
+// ApiTester.vue
 const testEndpoint = async (endpoint: Endpoint) => {
   if (!(await checkSession())) return
 
   try {
     endpoint.isLoading = true
     addLog(`Testing ${endpoint.method} ${endpoint.path}`)
+
+    // Get current session from Supabase
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    if (!session) {
+      throw new Error('No active Supabase session')
+    }
+
+    // Log the token info (safely)
+    addLog(`Using token: ${session.access_token.substring(0, 10)}...`)
 
     const api = createApi()
     const data = await api(endpoint.path, { method: endpoint.method })
@@ -157,7 +170,7 @@ const testEndpoint = async (endpoint: Endpoint) => {
       data: { error: error.message },
     }
     endpoint.responseStr = JSON.stringify({ error: error.message }, null, 2)
-    addLog(`${endpoint.method} ${endpoint.path}: ${error.status || 500} Error`)
+    addLog(`${endpoint.method} ${endpoint.path}: ${error.status || 500} Error - ${error.message}`)
   } finally {
     endpoint.isLoading = false
   }
