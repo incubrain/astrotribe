@@ -9,12 +9,12 @@ interface NotificationOptions {
 }
 
 class NotificationService {
-  private whatsappApiUrl: string
+  private whatsappApiURL: string
   private whatsappApiToken: string
 
   constructor() {
     const config = useRuntimeConfig().public
-    this.whatsappApiUrl = config.whatsappUrl
+    this.whatsappApiURL = config.whatsappURL
     this.whatsappApiToken = config.whatsappToken
   }
 
@@ -40,7 +40,7 @@ class NotificationService {
   }
 
   private async sendToWhatsApp(message: string): Promise<void> {
-    await axios.post(this.whatsappApiUrl, {
+    await axios.post(this.whatsappApiURL, {
       message,
       token: this.whatsappApiToken,
     })

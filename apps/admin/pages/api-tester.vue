@@ -21,7 +21,7 @@ const env = useRuntimeConfig().public
 const notification = useNotification()
 const supabase = useSupabaseClient()
 
-const url = ref<string>(String(env.apiUrl ?? 'http://localhost:3030'))
+const url = ref<string>(String(env.apiURL ?? 'http://localhost:3030'))
 const isLoading = ref<boolean>(false)
 const logs = ref<string[]>([])
 
@@ -198,13 +198,13 @@ const formatResponse = (response: string): string => {
       <div class="mb-8 flex items-center gap-4">
         <div class="flex-1">
           <label
-            for="apiUrl"
+            for="apiURL"
             class="mb-2 block text-sm font-medium text-gray-400"
             >API URL</label
           >
           <input
             v-model="url"
-            id="apiUrl"
+            id="apiURL"
             type="text"
             class="w-full rounded-lg border border-gray-800 bg-gray-900 px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary focus:outline-none"
             placeholder="Enter API URL"

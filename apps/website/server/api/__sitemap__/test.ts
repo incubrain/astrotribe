@@ -7,10 +7,10 @@ export default defineEventHandler(async (event) => {
   return {
     status: 'ok',
     config: {
-      strapiUrl: config.public.strapiURL,
-      siteUrl: config.public.siteURL,
+      strapiURL: config.public.strapiURL,
+      siteURL: config.public.siteRLL,
     },
-    testUrl: `${config.public.strapiURL}/api/articles`,
+    testURL: `${config.public.strapiURL}/api/articles`,
     timestamp: new Date().toISOString(),
   }
 })
