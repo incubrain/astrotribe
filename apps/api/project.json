@@ -27,6 +27,13 @@
         "cwd": "apps/api"
       }
     },
+    "serve:prod": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run start",
+        "cwd": "apps/api"
+      }
+    },
     "lint": {
       "executor": "nx:run-commands",
       "options": {

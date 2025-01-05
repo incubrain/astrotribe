@@ -8,7 +8,7 @@
     "test": "pnpm nx test @astronera/api",
     "dev": "nx serve @astronera/api",
     "build": "nx build @astronera/api",
-    "start": "node main.js"
+    "start": "node dist/main.js --port=8080"
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
