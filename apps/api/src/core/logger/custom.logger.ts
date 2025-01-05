@@ -1,6 +1,6 @@
 // custom.logger.ts
 import { ConsoleLogger, LoggerService } from '@nestjs/common'
-const { createCentralizedLogger, Service, DomainsForService } = require('@ib/logger')
+import { createCentralizedLogger, Service, DomainsForService } from '@ib/logger'
 
 export class CustomLogger extends ConsoleLogger implements LoggerService {
   private centralLogger = createCentralizedLogger<Service>()
