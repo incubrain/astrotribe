@@ -66,27 +66,27 @@ async function bootstrap() {
   // })
 
   // Global filters
-  app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
+  // app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
 
   // Global interceptors
-  app.useGlobalInterceptors(
-    new BigIntSerializationInterceptor(),
-    new LoggingInterceptor(new CustomLogger()),
-    new PaginationInterceptor(),
-  )
+  // app.useGlobalInterceptors(
+  //   new BigIntSerializationInterceptor(),
+  //   new LoggingInterceptor(new CustomLogger()),
+  //   new PaginationInterceptor(),
+  // )
 
   // Global pipes
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
-    }),
-    new TrimPipe(),
-  )
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     transform: true,
+  //     whitelist: true,
+  //     forbidNonWhitelisted: true,
+  //     transformOptions: {
+  //       enableImplicitConversion: true,
+  //     },
+  //   }),
+  //   new TrimPipe(),
+  // )
 
   // API Prefix
   app.setGlobalPrefix('api/v1')
@@ -108,7 +108,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3030
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
-  await app.listen(port, host) // Listen on all interfaces
+  await app.listen(Number(port), host) // Listen on all interfaces
 
   logger.log(`Application is running on: http://${host}:${port}`)
   logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)

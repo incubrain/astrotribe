@@ -8,10 +8,11 @@
     "test": "pnpm nx test @astronera/api",
     "dev": "nx serve @astronera/api",
     "build": "nx build @astronera/api",
-    "start": "node dist/main.js"
+    "start": "node main.js"
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
+    "@nestjs/cli": "^10.0.0",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",
