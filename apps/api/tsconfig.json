@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@ib/logger": ["../../libs/logger/dist"],
+      "@ib/logger": ["../../libs/logger/dist/index.cjs.js"],
       "@types": ["src/types/index.ts"],
       "@core": ["src/core/index.ts"],
       "@content": ["src/content/index.ts"],

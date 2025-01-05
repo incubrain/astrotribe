@@ -17,7 +17,6 @@ export default async (config: RollupOptions): Promise<RollupOptions> => {
 
             const transformedPackageJson = {
               ...packageJson,
-              type: 'module',
               types: './index.esm.d.ts',
               main: './index.cjs.js',
               module: './index.esm.js',
