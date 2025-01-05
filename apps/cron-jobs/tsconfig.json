@@ -19,7 +19,8 @@
       "@types": ["./src/types"],
       "@helpers": ["./src/helpers"],
       "@core": ["./src/core"],
-      "@jobs": ["./src/jobs/config"]
+      "@jobs": ["./src/jobs/config"],
+      "@agents": ["./src/agents"]
     }
   },
   "include": ["src/**/*"],
