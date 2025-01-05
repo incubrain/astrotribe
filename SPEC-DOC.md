@@ -1,7 +1,9 @@
 Rules:
 
-Mac Pro M3 Nuxt 3.15 PNPM >=9.0.0 Node 22.12 Typescript ^5.6.3 Pinia for state, composition API
-syntax ALWAYS use Tailwind, Primevue with prefix of 'Prime' for components
+- Always add try catch and logging around CRITICAL func
+- Fail quickly, white space programming
+- Mac Pro M3 Nuxt 3.15 PNPM >=9.0.0 Node 22.12 Typescript ^5.6.3 Pinia for state, composition API
+    syntax ALWAYS use Tailwind, Primevue with prefix of 'Prime' for components
 
 Booleans - ALWAYS prefix with 'is'
 

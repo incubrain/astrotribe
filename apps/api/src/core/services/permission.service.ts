@@ -41,8 +41,13 @@ export class PermissionService implements OnModuleInit {
 
   async onModuleInit() {
     this.logger.setDomain('permissions')
-    await this.loadRoleHierarchy()
-    this.logger.log('Permission service initialized with role hierarchy')
+    try {
+      await this.loadRoleHierarchy()
+      this.logger.log('Permission service initialized with role hierarchy')
+    } catch (error) {
+      this.logger.error('Failed to initialize permission service', error)
+      throw error // rethrow so Nest knows to fail startup
+    }
   }
 
   private async loadRoleHierarchy() {
