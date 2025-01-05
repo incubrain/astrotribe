@@ -72,7 +72,6 @@ async function bootstrap() {
   // CORS Configuration
   app.enableCors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, Postman)
       if (!origin) {
         callback(null, true)
         return
@@ -82,7 +81,11 @@ async function bootstrap() {
         ? corsOrigins
         : corsOrigins.split(',').map((o) => o.trim())
 
+      logger.debug(`Incoming request from origin: ${origin}`)
+      logger.debug(`Allowed origins: ${allowedOrigins.join(', ')}`)
+
       if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+        logger.debug(`Origin ${origin} is allowed`)
         callback(null, true)
       } else {
         logger.warn(`Blocked CORS request from origin: ${origin}`)
@@ -100,6 +103,9 @@ async function bootstrap() {
       'sentry-trace',
       'baggage',
       'x-api-key',
+      'Access-Control-Allow-Origin',
+      'Access-Control-Allow-Credentials',
+      'Access-Control-Allow-Headers',
     ],
     exposedHeaders: ['Content-Disposition'], // If you need to expose any headers
     maxAge: 3600, // Cache preflight requests for 1 hour
@@ -107,7 +113,7 @@ async function bootstrap() {
 
   // Startup
   const port = configService.get('app.api_port')
-  await app.listen(port)
+  await app.listen(port, '0.0.0.0')
 
   const logger = new CustomLogger('Bootstrap')
   logger.log(`Application is running on: http://localhost:${port}`)
