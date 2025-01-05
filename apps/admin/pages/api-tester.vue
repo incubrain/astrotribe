@@ -123,7 +123,7 @@ const testConnection = async () => {
   try {
     isLoading.value = true
     const api = createApi()
-    await api('/api/v1/health')
+    await api('/api/v1/health', { method: 'GET', credentials: 'include' })
 
     addLog('Connection test successful')
     notification.success({
@@ -158,7 +158,7 @@ const testEndpoint = async (endpoint: Endpoint) => {
     addLog(`Using token: ${session.access_token.substring(0, 10)}...`)
 
     const api = createApi()
-    const data = await api(endpoint.path, { method: endpoint.method })
+    const data = await api(endpoint.path, { method: endpoint.method, credentials: 'include' })
 
     endpoint.response = { status: 200, data }
     endpoint.responseStr = JSON.stringify(data, null, 2)
