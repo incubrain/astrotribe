@@ -105,7 +105,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document)
 
   // Startup
-  const port = process.env.PORT || 3030
+  const port = process.env.PORT || 8080
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
   await app.listen(Number(port), host) // Listen on all interfaces
