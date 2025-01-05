@@ -15,6 +15,10 @@ import helmet from 'helmet'
 // INTERCEPTORS
 import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
 import { AppModule } from './app.module'
+import { Logger } from '@nestjs/common';
+
+Logger.overrideLogger(['log', 'error', 'warn', 'debug', 'verbose']);
+
 
 async function bootstrap() {
   // Create the app with custom logger
@@ -92,26 +96,29 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1')
 
   // Swagger Setup
-  const config = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('The API description')
-    .setVersion('1.0')
-    .addTag('api')
-    .addBearerAuth()
-    .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'api-key')
-    .build()
+  // const config = new DocumentBuilder()
+  //   .setTitle('API Documentation')
+  //   .setDescription('The API description')
+  //   .setVersion('1.0')
+  //   .addTag('api')
+  //   .addBearerAuth()
+  //   .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'api-key')
+  //   .build()
 
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('docs', app, document)
+  // const document = SwaggerModule.createDocument(app, config)
+  // SwaggerModule.setup('docs', app, document)
 
   // Startup
   const port = process.env.PORT || 8080
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
-  await app.listen(Number(port), host) // Listen on all interfaces
+  await app.listen(Number(port), host, () => {
+    console.log('app has started...')
+    logger.log(`Application is running on: http://${host}:${port}`)
+    logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)
+  }) // Listen on all interfaces
 
-  logger.log(`Application is running on: http://${host}:${port}`)
-  logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)
+  console.log('after app has started...')
 }
 
 bootstrap().catch((error: any) => {
