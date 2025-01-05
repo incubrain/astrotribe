@@ -1,5 +1,6 @@
 // src/monitoring/controllers/health.controller.ts
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Options } from '@nestjs/common'
+import { Public } from '@core/decorators/public.decorator'
 import {
   HealthCheckService,
   HttpHealthIndicator,
@@ -18,6 +19,7 @@ export class HealthController {
   ) {}
 
   @Get()
+  @Public()
   @HealthCheck()
   async check() {
     return this.health.check([
