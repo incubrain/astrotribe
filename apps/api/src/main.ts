@@ -1,6 +1,7 @@
 // main.ts
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
+import tcpPortUsed from 'tcp-port-used'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import compression from 'compression'
@@ -109,14 +110,29 @@ async function bootstrap() {
 
   // Startup
   const port = process.env.PORT || 8080
-  const host = '0.0.0.0' // Important for Railway
+  const host = 'localhost' // Important for Railway
   console.log('Starting application on:', host, port)
+
   try {
-    await app.listen(Number(port), host)
-    console.log('11. Listen successful!')
-    logger.log(`Application is running on: http://${host}:${port}`)
+    const inUse = await tcpPortUsed.check(Number(port), host)
+    console.log('Port status:', { port, inUse })
+    if (inUse) {
+      console.error(`Port ${port} is already in use!`)
+      process.exit(1)
+    }
   } catch (error) {
-    console.error('Failed during app.listen():', error)
+    console.error('Error checking port:', error)
+  }
+
+  const listenPromise = app.listen(Number(port), host)
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('Listen timeout after 10 seconds')), 10000)
+  })
+  try {
+    await Promise.race([listenPromise, timeoutPromise])
+    console.log('Listen successful!')
+  } catch (error) {
+    console.error('Listen failed or timed out:', error)
     throw error
   }
 
