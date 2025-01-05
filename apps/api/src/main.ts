@@ -36,7 +36,7 @@ async function bootstrap() {
           scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
           styleSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: ["'self'", 'data:', 'https:'],
-          connectSrc: ["'self'", 'https:', 'wss:'],
+          connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
         },
       },
     }),
@@ -89,6 +89,9 @@ async function bootstrap() {
     origin: [
       'https://astronera.org',
       'https://www.astronera.org',
+      'https://admin.astronera.org',
+      'https://app.astronera.org',
+      'https://monitoring.astronera.org',
       /\.astronera\.org$/,
       'http://localhost:3000',
     ],
@@ -105,6 +108,18 @@ async function bootstrap() {
     ],
     credentials: true,
     optionsSuccessStatus: 204,
+  })
+
+  // After all middleware
+  app.use((req, res, next) => {
+    // Debug logging
+    console.log('Incoming request:', {
+      origin: req.headers.origin,
+      method: req.method,
+      path: req.path,
+      headers: req.headers,
+    })
+    next()
   })
 
   // Startup
