@@ -46,5 +46,5 @@ RUN pnpm prune --production
 WORKDIR /app/apps/api/dist
 
 # Expose port and start command
-EXPOSE 3000
+EXPOSE 3030
 CMD ["node", "main.js"]
