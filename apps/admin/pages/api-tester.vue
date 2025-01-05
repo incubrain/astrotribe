@@ -72,6 +72,19 @@ const createApi = () => {
       headers.set('Origin', window.location.origin)
       options.headers = headers
     },
+    async onResponse({ response }) {
+      // Log Railway request ID for debugging
+      const requestId = response.headers.get('X-Railway-Request-Id')
+      if (requestId) {
+        addLog(`Railway Request ID: ${requestId}`)
+      }
+
+      // Check protocol
+      const protocol = response.headers.get('X-Forwarded-Proto')
+      if (protocol !== 'https') {
+        addLog('Warning: Connection not using HTTPS')
+      }
+    },
     onResponseError({ response }) {
       const message = `Request failed: ${response.status} - ${response.statusText}`
       addLog(message)
