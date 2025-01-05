@@ -62,11 +62,27 @@ async function bootstrap() {
 
   // CORS Configuration - Let's use enableCors() instead of manual middleware
   app.enableCors({
-    origin: true, // Allow all origins
+    origin: [
+      'https://admin.astronera.org',
+      'https://app.astronera.org',
+      'http://localhost:3000',
+      'http://localhost:4200',
+    ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: '*',
-
+    allowedHeaders: [
+      'Content-Type',
+      'Accept',
+      'Authorization',
+      'x-api-key',
+      'Origin',
+      'X-Requested-With',
+      'Access-Control-Request-Method',
+      'Access-Control-Request-Headers',
+    ],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 
   // Global filters
@@ -92,6 +108,10 @@ async function bootstrap() {
     new TrimPipe(),
   )
 
+  // ToDo - add favicon to public folder
+  app.use('/favicon.ico', (req, res) => {
+    res.status(204).end()
+  })
   // API Prefix
   app.setGlobalPrefix('api/v1')
 
