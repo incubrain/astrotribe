@@ -31,46 +31,46 @@ async function bootstrap() {
       crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: false,
       crossOriginResourcePolicy: false,
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
-          imgSrc: ["'self'", 'data:', 'https:'],
-          connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
-        },
-      },
+      contentSecurityPolicy: false,
+      // contentSecurityPolicy: {
+      //   directives: {
+      //     defaultSrc: ["'self'"],
+      //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      //     styleSrc: ["'self'", "'unsafe-inline'"],
+      //     imgSrc: ["'self'", 'data:', 'https:'],
+      //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
+      //   },
+      // },
     }),
   )
   app.use(compression())
 
   // CORS Configuration - Let's use enableCors() instead of manual middleware
   app.enableCors({
-    origin: [
-      'https://admin.astronera.org',
-      'https://app.astronera.org',
-      'https://auth.astronera.org',
-      'https://monitoring.astronera.org',
-      'https://www.astronera.org',
-      'https://astronera.org',
-      /\.astronera\.org$/,
-      'http://localhost:3000',
-    ],
+    // origin: [
+    //   'https://admin.astronera.org',
+    //   'https://app.astronera.org',
+    //   'https://auth.astronera.org',
+    //   'https://monitoring.astronera.org',
+    //   'https://www.astronera.org',
+    //   'https://astronera.org',
+    //   /\.astronera\.org$/,
+    //   'http://localhost:3000',
+    // ],
+    origin: true, // Allow all origins
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'Accept',
-      'Origin',
-      'sentry-trace',
-      'baggage',
-      'x-api-key',
-    ],
+    allowedHeaders: '*',
+    // allowedHeaders: [
+    //   'Content-Type',
+    //   'Authorization',
+    //   'X-Requested-With',
+    //   'Accept',
+    //   'Origin',
+    //   'sentry-trace',
+    //   'baggage',
+    //   'x-api-key',
+    // ],
     credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    maxAge: 86400, // 24 hours
   })
 
   // Debug middleware - after CORS
