@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client'
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor(private readonly configService: ConfigService) {
     super({
+      log: ['query', 'info', 'warn', 'error'],
       datasources: {
         db: {
           url: configService.get<string>('app.database.url'),
@@ -18,7 +19,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   async onModuleInit() {
     try {
+      console.log('Prisma connecting...')
       await this.$connect()
+      console.log('Prisma connected')
     } catch (error) {
       console.error('Prisma connection failed', error)
       throw error
@@ -27,5 +30,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   async onModuleDestroy() {
     await this.$disconnect()
+    console.log('Prisma disconnected')
   }
 }

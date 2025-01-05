@@ -110,7 +110,7 @@ async function bootstrap() {
 
   // Startup
   const port = process.env.PORT || 8080
-  const host = 'localhost' // Important for Railway
+  const host = process.env.HOST ?? 'localhost' // Important for Railway
   console.log('Starting application on:', host, port)
 
   try {
