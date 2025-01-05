@@ -15,10 +15,9 @@ import helmet from 'helmet'
 // INTERCEPTORS
 import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
 import { AppModule } from './app.module'
-import { Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common'
 
-Logger.overrideLogger(['log', 'error', 'warn', 'debug', 'verbose']);
-
+Logger.overrideLogger(['log', 'error', 'warn', 'debug', 'verbose'])
 
 async function bootstrap() {
   // Create the app with custom logger
@@ -41,87 +40,95 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
 
   // Security
-  // app.use(
-  //   helmet({
-  //     crossOriginEmbedderPolicy: false,
-  //     crossOriginOpenerPolicy: false,
-  //     crossOriginResourcePolicy: false,
-  //     contentSecurityPolicy: false,
-  //     // contentSecurityPolicy: {
-  //     //   directives: {
-  //     //     defaultSrc: ["'self'"],
-  //     //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-  //     //     styleSrc: ["'self'", "'unsafe-inline'"],
-  //     //     imgSrc: ["'self'", 'data:', 'https:'],
-  //     //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
-  //     //   },
-  //     // },
-  //   }),
-  // )
-  // app.use(compression())
+  app.use(
+    helmet({
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: false,
+      crossOriginResourcePolicy: false,
+      contentSecurityPolicy: false,
+      // contentSecurityPolicy: {
+      //   directives: {
+      //     defaultSrc: ["'self'"],
+      //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      //     styleSrc: ["'self'", "'unsafe-inline'"],
+      //     imgSrc: ["'self'", 'data:', 'https:'],
+      //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
+      //   },
+      // },
+    }),
+  )
+  app.use(compression())
 
   // CORS Configuration - Let's use enableCors() instead of manual middleware
-  // app.enableCors({
-  //   origin: true, // Allow all origins
-  //   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-  //   allowedHeaders: '*',
+  app.enableCors({
+    origin: true, // Allow all origins
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: '*',
 
-  //   credentials: true,
-  // })
+    credentials: true,
+  })
 
   // Global filters
-  // app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
+  app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
 
   // Global interceptors
-  // app.useGlobalInterceptors(
-  //   new BigIntSerializationInterceptor(),
-  //   new LoggingInterceptor(new CustomLogger()),
-  //   new PaginationInterceptor(),
-  // )
+  app.useGlobalInterceptors(
+    new BigIntSerializationInterceptor(),
+    new LoggingInterceptor(new CustomLogger()),
+    new PaginationInterceptor(),
+  )
 
   // Global pipes
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     transform: true,
-  //     whitelist: true,
-  //     forbidNonWhitelisted: true,
-  //     transformOptions: {
-  //       enableImplicitConversion: true,
-  //     },
-  //   }),
-  //   new TrimPipe(),
-  // )
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+    new TrimPipe(),
+  )
 
   // API Prefix
   app.setGlobalPrefix('api/v1')
 
   // Swagger Setup
-  // const config = new DocumentBuilder()
-  //   .setTitle('API Documentation')
-  //   .setDescription('The API description')
-  //   .setVersion('1.0')
-  //   .addTag('api')
-  //   .addBearerAuth()
-  //   .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'api-key')
-  //   .build()
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setDescription('The API description')
+    .setVersion('1.0')
+    .addTag('api')
+    .addBearerAuth()
+    .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'api-key')
+    .build()
 
-  // const document = SwaggerModule.createDocument(app, config)
-  // SwaggerModule.setup('docs', app, document)
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('docs', app, document)
 
   // Startup
   const port = process.env.PORT || 8080
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
-  await app.listen(Number(port), host, () => {
-    console.log('app has started...')
+  try {
+    await app.listen(Number(port), host)
+    console.log('11. Listen successful!')
     logger.log(`Application is running on: http://${host}:${port}`)
-    logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)
-  }) // Listen on all interfaces
+  } catch (error) {
+    console.error('Failed during app.listen():', error)
+    throw error
+  }
 
-  console.log('after app has started...')
+  console.log('12. Bootstrap process complete!')
 }
 
 bootstrap().catch((error: any) => {
-  console.error('Failed to start application', error.stack)
+  console.error('Bootstrap failed with error:', {
+    message: error.message,
+    stack: error.stack,
+    code: error.code,
+    errno: error.errno,
+  })
   process.exit(1)
 })
