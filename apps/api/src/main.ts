@@ -86,59 +86,36 @@ async function bootstrap() {
   const corsOrigins = configService.get('app.api_cors_origins')
   // CORS Configuration
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin) {
-        callback(null, true)
-        return
-      }
-
-      const allowedOrigins = Array.isArray(corsOrigins)
-        ? corsOrigins
-        : corsOrigins.split(',').map((o) => o.trim())
-
-      logger.debug(`Incoming request from origin: ${origin}`)
-      logger.debug(`Allowed origins: ${allowedOrigins.join(', ')}`)
-
-      if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
-        logger.debug(`Origin ${origin} is allowed`)
-        callback(null, true)
-      } else {
-        logger.warn(`Blocked CORS request from origin: ${origin}`)
-        callback(new Error('Not allowed by CORS'))
-      }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: [
+      'https://astronera.org',
+      'https://www.astronera.org',
+      /\.astronera\.org$/,
+      'http://localhost:3000',
+    ],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
       'Content-Type',
       'Authorization',
       'X-Requested-With',
       'Accept',
       'Origin',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Credentials',
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Methods',
-      'Access-Control-Expose-Headers',
-      'Access-Control-Max-Age',
       'sentry-trace',
       'baggage',
       'x-api-key',
     ],
-
-    exposedHeaders: ['Content-Disposition', 'Content-Type'],
     credentials: true,
-    preflightContinue: false,
     optionsSuccessStatus: 204,
-    maxAge: 3600,
   })
 
   // Startup
   const port = configService.get('app.api_port')
-  await app.listen(port, '::') // Listen on both IPv6 and IPv4
+  const host = '0.0.0.0' // Important for Railway
+  console.log('Starting application on:', host, port)
+  await app.listen(port, host) // Listen on all interfaces
 
   const logger = new CustomLogger('Bootstrap')
-  logger.log(`Application is running on: http://localhost:${port}`)
-  logger.log(`Swagger documentation is available at: http://localhost:${port}/docs`)
+  logger.log(`Application is running on: http://${host}:${port}`)
+  logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)
 }
 
 bootstrap().catch((error: any) => {
