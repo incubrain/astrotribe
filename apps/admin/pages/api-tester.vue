@@ -55,6 +55,7 @@ const endpoints = ref<Endpoint[]>([
 const createApi = () => {
   return $fetch.create({
     baseURL: url.value,
+    credentials: 'include',
     async onRequest({ options }) {
       const {
         data: { session },
@@ -64,12 +65,12 @@ const createApi = () => {
         throw new Error('No authentication session found')
       }
 
-      options.headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
+      const headers = new Headers(options.headers)
+      headers.set('Authorization', `Bearer ${session.access_token}`)
+      headers.set('Content-Type', 'application/json')
+      headers.set('Accept', 'application/json')
+      headers.set('Origin', window.location.origin)
+      options.headers = headers
     },
     onResponseError({ response }) {
       const message = `Request failed: ${response.status} - ${response.statusText}`
@@ -158,7 +159,10 @@ const testEndpoint = async (endpoint: Endpoint) => {
     addLog(`Using token: ${session.access_token.substring(0, 10)}...`)
 
     const api = createApi()
-    const data = await api(endpoint.path, { method: endpoint.method, credentials: 'include' })
+    const data = await api(endpoint.path, {
+      method: endpoint.method,
+      credentials: 'include',
+    })
 
     endpoint.response = { status: 200, data }
     endpoint.responseStr = JSON.stringify(data, null, 2)

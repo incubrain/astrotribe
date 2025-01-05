@@ -23,58 +23,9 @@ async function bootstrap() {
     logger,
   })
 
-  const configService = app.get(ConfigService)
-
-  // Security
-  app.use(
-    helmet({
-      crossOriginEmbedderPolicy: false,
-      crossOriginOpenerPolicy: false,
-      crossOriginResourcePolicy: false,
-      contentSecurityPolicy: false,
-      // contentSecurityPolicy: {
-      //   directives: {
-      //     defaultSrc: ["'self'"],
-      //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      //     styleSrc: ["'self'", "'unsafe-inline'"],
-      //     imgSrc: ["'self'", 'data:', 'https:'],
-      //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
-      //   },
-      // },
-    }),
-  )
-  app.use(compression())
-
-  // CORS Configuration - Let's use enableCors() instead of manual middleware
-  app.enableCors({
-    // origin: [
-    //   'https://admin.astronera.org',
-    //   'https://app.astronera.org',
-    //   'https://auth.astronera.org',
-    //   'https://monitoring.astronera.org',
-    //   'https://www.astronera.org',
-    //   'https://astronera.org',
-    //   /\.astronera\.org$/,
-    //   'http://localhost:3000',
-    // ],
-    origin: true, // Allow all origins
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: '*',
-    // allowedHeaders: [
-    //   'Content-Type',
-    //   'Authorization',
-    //   'X-Requested-With',
-    //   'Accept',
-    //   'Origin',
-    //   'sentry-trace',
-    //   'baggage',
-    //   'x-api-key',
-    // ],
-    credentials: true,
-  })
-
-  // Debug middleware - after CORS
+  // Debug middleware
   app.use((req, res, next) => {
+    const logger = new CustomLogger('HTTP')
     logger.debug(`${req.method} ${req.path}`, {
       origin: req.headers.origin,
       method: req.method,
@@ -82,6 +33,37 @@ async function bootstrap() {
     })
     next()
   })
+
+  const configService = app.get(ConfigService)
+
+  // Security
+  // app.use(
+  //   helmet({
+  //     crossOriginEmbedderPolicy: false,
+  //     crossOriginOpenerPolicy: false,
+  //     crossOriginResourcePolicy: false,
+  //     contentSecurityPolicy: false,
+  //     // contentSecurityPolicy: {
+  //     //   directives: {
+  //     //     defaultSrc: ["'self'"],
+  //     //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+  //     //     styleSrc: ["'self'", "'unsafe-inline'"],
+  //     //     imgSrc: ["'self'", 'data:', 'https:'],
+  //     //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
+  //     //   },
+  //     // },
+  //   }),
+  // )
+  // app.use(compression())
+
+  // CORS Configuration - Let's use enableCors() instead of manual middleware
+  // app.enableCors({
+  //   origin: true, // Allow all origins
+  //   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: '*',
+
+  //   credentials: true,
+  // })
 
   // Global filters
   app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
@@ -122,51 +104,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('docs', app, document)
 
-  app.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-      // Preflight request - return early with CORS headers
-      res.header('Access-Control-Allow-Origin', req.headers.origin || '*')
-      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS')
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Content-Type, Authorization, X-Requested-With, Accept, Origin, sentry-trace, baggage, x-api-key',
-      )
-      res.header('Access-Control-Allow-Credentials', 'true')
-      res.header('Access-Control-Max-Age', '86400') // 24 hours
-      res.status(204).end()
-      return
-    }
-    next()
-  })
-
-  // CORS Configuration
-  app.enableCors({
-    origin: [
-      'https://admin.astronera.org',
-      'https://app.astronera.org',
-      'https://auth.astronera.org',
-      'https://monitoring.astronera.org',
-      'https://www.astronera.org',
-      'https://astronera.org',
-      /\.astronera\.org$/,
-      'http://localhost:3000',
-    ],
-    credentials: true,
-  })
-
-  // Debug middleware
-  app.use((req, res, next) => {
-    const logger = new CustomLogger('HTTP')
-    logger.debug(`${req.method} ${req.path}`, {
-      origin: req.headers.origin,
-      method: req.method,
-      path: req.path,
-    })
-    next()
-  })
-
   // Startup
-  const port = process.env.PORT || configService.get('app.api_port')
+  const port = process.env.PORT || 3030
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
   await app.listen(port, host) // Listen on all interfaces
