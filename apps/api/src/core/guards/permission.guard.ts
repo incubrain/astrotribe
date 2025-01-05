@@ -3,6 +3,7 @@ import { CanActivate, ExecutionContext } from '@nestjs/common'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { CustomLogger } from '@core/logger/custom.logger'
+import { IS_PUBLIC_KEY } from '@core/decorators/public.decorator'
 import { PermissionService } from '../services/permission.service'
 
 @Injectable()
@@ -16,6 +17,15 @@ export class PermissionGuard implements CanActivate {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ])
+
+    if (isPublic) {
+      return true
+    }
+
     const request = context.switchToHttp().getRequest()
     const token = this.extractToken(request)
 

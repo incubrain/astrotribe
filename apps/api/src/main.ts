@@ -18,8 +18,9 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   // Create the app with custom logger
+  const logger = new CustomLogger('Bootstrap')
   const app = await NestFactory.create(AppModule, {
-    logger: new CustomLogger('NestBootstrap'),
+    logger,
   })
 
   const configService = app.get(ConfigService)
@@ -42,6 +43,45 @@ async function bootstrap() {
     }),
   )
   app.use(compression())
+
+  // CORS Configuration - Let's use enableCors() instead of manual middleware
+  app.enableCors({
+    origin: [
+      'https://admin.astronera.org',
+      'https://app.astronera.org',
+      'https://auth.astronera.org',
+      'https://monitoring.astronera.org',
+      'https://www.astronera.org',
+      'https://astronera.org',
+      /\.astronera\.org$/,
+      'http://localhost:3000',
+    ],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+      'Origin',
+      'sentry-trace',
+      'baggage',
+      'x-api-key',
+    ],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    maxAge: 86400, // 24 hours
+  })
+
+  // Debug middleware - after CORS
+  app.use((req, res, next) => {
+    logger.debug(`${req.method} ${req.path}`, {
+      origin: req.headers.origin,
+      method: req.method,
+      path: req.path,
+    })
+    next()
+  })
 
   // Global filters
   app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))
@@ -82,59 +122,60 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('docs', app, document)
 
-  // CORS
-  const corsOrigins = configService.get('app.api_cors_origins')
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      // Preflight request - return early with CORS headers
+      res.header('Access-Control-Allow-Origin', req.headers.origin || '*')
+      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS')
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization, X-Requested-With, Accept, Origin, sentry-trace, baggage, x-api-key',
+      )
+      res.header('Access-Control-Allow-Credentials', 'true')
+      res.header('Access-Control-Max-Age', '86400') // 24 hours
+      res.status(204).end()
+      return
+    }
+    next()
+  })
+
   // CORS Configuration
   app.enableCors({
     origin: [
-      'https://astronera.org',
-      'https://www.astronera.org',
       'https://admin.astronera.org',
       'https://app.astronera.org',
+      'https://auth.astronera.org',
       'https://monitoring.astronera.org',
+      'https://www.astronera.org',
+      'https://astronera.org',
       /\.astronera\.org$/,
       'http://localhost:3000',
     ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'Accept',
-      'Origin',
-      'sentry-trace',
-      'baggage',
-      'x-api-key',
-    ],
     credentials: true,
-    optionsSuccessStatus: 204,
   })
 
-  // After all middleware
+  // Debug middleware
   app.use((req, res, next) => {
-    // Debug logging
-    console.log('Incoming request:', {
+    const logger = new CustomLogger('HTTP')
+    logger.debug(`${req.method} ${req.path}`, {
       origin: req.headers.origin,
       method: req.method,
       path: req.path,
-      headers: req.headers,
     })
     next()
   })
 
   // Startup
-  const port = configService.get('app.api_port')
+  const port = process.env.PORT || configService.get('app.api_port')
   const host = '0.0.0.0' // Important for Railway
   console.log('Starting application on:', host, port)
   await app.listen(port, host) // Listen on all interfaces
 
-  const logger = new CustomLogger('Bootstrap')
   logger.log(`Application is running on: http://${host}:${port}`)
   logger.log(`Swagger documentation is available at: http://${host}:${port}/docs`)
 }
 
 bootstrap().catch((error: any) => {
-  const logger = new CustomLogger('Bootstrap')
-  logger.error('Failed to start application', error.stack)
+  console.error('Failed to start application', error.stack)
   process.exit(1)
 })
