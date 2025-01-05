@@ -66,7 +66,7 @@ const createApi = () => {
       }
 
       const headers = new Headers(options.headers)
-      // headers.set('Authorization', `Bearer ${session.access_token}`)
+      headers.set('Authorization', `Bearer ${session.access_token}`)
       headers.set('Content-Type', 'application/json')
       headers.set('Accept', 'application/json')
       headers.set('Origin', window.location.origin)
