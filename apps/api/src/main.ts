@@ -25,7 +25,22 @@ async function bootstrap() {
   const configService = app.get(ConfigService)
 
   // Security
-  app.use(helmet())
+  app.use(
+    helmet({
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: false,
+      crossOriginResourcePolicy: false,
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
+          connectSrc: ["'self'", 'https:', 'wss:'],
+        },
+      },
+    }),
+  )
   app.use(compression())
 
   // Global filters
@@ -93,27 +108,33 @@ async function bootstrap() {
       }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
     allowedHeaders: [
       'Content-Type',
       'Authorization',
       'X-Requested-With',
       'Accept',
       'Origin',
-      'sentry-trace',
-      'baggage',
-      'x-api-key',
       'Access-Control-Allow-Origin',
       'Access-Control-Allow-Credentials',
       'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Methods',
+      'Access-Control-Expose-Headers',
+      'Access-Control-Max-Age',
+      'sentry-trace',
+      'baggage',
+      'x-api-key',
     ],
-    exposedHeaders: ['Content-Disposition'], // If you need to expose any headers
-    maxAge: 3600, // Cache preflight requests for 1 hour
+
+    exposedHeaders: ['Content-Disposition', 'Content-Type'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    maxAge: 3600,
   })
 
   // Startup
   const port = configService.get('app.api_port')
-  await app.listen(port, '0.0.0.0')
+  await app.listen(port, '::') // Listen on both IPv6 and IPv4
 
   const logger = new CustomLogger('Bootstrap')
   logger.log(`Application is running on: http://localhost:${port}`)
