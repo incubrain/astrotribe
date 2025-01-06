@@ -19,12 +19,12 @@ export default defineEventHandler(async (event) => {
   const log = useServerLogger()
 
   try {
-    const { data: plan, error } = await client
+    const { data, error } = await client
     .from('customer_subscription_plans')
     .select('*')
     .eq('external_plan_id', plan_id)
 
-    console.log(plan)
+    const plan = data[0]
 
     if (!plan || error) throw new Error('Plan not found', error)
 
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
       charge_at: subscription.charge_at && new Date(subscription.charge_at * 1000).toISOString(),
       start_at: subscription.start_at && new Date(subscription.start_at * 1000).toISOString(),
       end_at: subscription.end_at && new Date(subscription.end_at * 1000).toISOString(),
-      notes: subscription.notes,
+      notes: Array.isArray(subscription.notes) ? subscription.notes : [],
     })
 
     if (SQLError) console.log('SQL ERROR', SQLError)
