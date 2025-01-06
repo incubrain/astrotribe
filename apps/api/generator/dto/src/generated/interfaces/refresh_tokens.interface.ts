@@ -1,109 +1,68 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+import { BaseEntity } from '@core/base/entity';
+import { Isessions } from './sessions.interface';
+
+
+/**
+ * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface refresh_tokens {
+ */
+export interface Irefresh_tokens extends BaseEntity {
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    instance_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    token{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    revoked{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    parent{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    session_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    sessions{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface refresh_tokensWithsessions extends refresh_tokens {
-    sessions: Isessions;
-  }
-  
-  /**
-   * Helper types for working with refresh_tokens
+   * 
+   * @validation @IsString
    */
-  export type Partialrefresh_tokens = Partial<refresh_tokens>
-  export type Requiredrefresh_tokens = Required<refresh_tokens>
-  export type Pickrefresh_tokens<K extends keyof refresh_tokens> = Pick<refresh_tokens, K>
+  instance_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  id: bigint;
+  /**
+   * 
+   * @validation @IsString
+   */
+  token?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  user_id?: string;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  revoked?: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  parent?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  session_id?: string;
+  /**
+   * 
+   */
+  sessions?: any;
+}
+
+export interface Irefresh_tokensWithsessions
+extends Irefresh_tokens
+{
+sessions:
+Isessions; }
+
+export type Partialrefresh_tokens = Partial<Irefresh_tokens>;
+export type Requiredrefresh_tokens = Required<Irefresh_tokens>;

@@ -1,104 +1,70 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface metric_definitions {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    category{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    type{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    unit{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_dimensional{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    company_metrics{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    spider_metrics{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface metric_definitionsWithcompany_metrics extends metric_definitions {
-    company_metrics: Icompany_metrics;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icompany_metrics } from './company_metrics.interface';
+import { Ispider_metrics } from './spider_metrics.interface';
 
-export interface metric_definitionsWithspider_metrics extends metric_definitions {
-    spider_metrics: Ispider_metrics;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Imetric_definitions extends BaseEntity {
   /**
-   * Helper types for working with metric_definitions
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialmetric_definitions = Partial<metric_definitions>
-  export type Requiredmetric_definitions = Required<metric_definitions>
-  export type Pickmetric_definitions<K extends keyof metric_definitions> = Pick<metric_definitions, K>
+  id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  name: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  description?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  category?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  type: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  unit?: string;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_dimensional?: boolean;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  company_metrics: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  spider_metrics: any;
+}
+
+export interface Imetric_definitionsWithcompany_metrics
+extends Imetric_definitions
+{
+company_metrics:
+Icompany_metrics; }
+
+export interface Imetric_definitionsWithspider_metrics
+extends Imetric_definitions
+{
+spider_metrics:
+Ispider_metrics; }
+
+export type Partialmetric_definitions = Partial<Imetric_definitions>;
+export type Requiredmetric_definitions = Required<Imetric_definitions>;

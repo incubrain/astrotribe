@@ -1,82 +1,48 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * 
+ */
+export interface Ijob_locks extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface job_locks {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    job_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    lock_key{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    lock_value{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    acquired_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    expires_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with job_locks
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialjob_locks = Partial<job_locks>
-  export type Requiredjob_locks = Required<job_locks>
-  export type Pickjob_locks<K extends keyof job_locks> = Pick<job_locks, K>
+  job_name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  lock_key: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  lock_value: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  acquired_at: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  expires_at: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+}
+
+
+
+export type Partialjob_locks = Partial<Ijob_locks>;
+export type Requiredjob_locks = Required<Ijob_locks>;

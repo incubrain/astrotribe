@@ -1,320 +1,211 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Ipayment_providers } from './payment_providers.interface';
+import { Icustomer_subscriptions } from './customer_subscriptions.interface';
+import { Iuser_profiles } from './user_profiles.interface';
+import { Icustomer_refunds } from './customer_refunds.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icustomer_payments extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export interface customer_payments {
+  id: number;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    subscription_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    payment_provider_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    external_payment_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    external_order_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    amount{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    currency{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    status{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    method{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    fee{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    tax{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    error_code{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    error_description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    acquirer_data{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    notes{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    order_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    invoice_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    international{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    amount_refunded{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    amount_transferred{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    refund_status{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    captured{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    bank{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    wallet{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    vpa{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    error_source{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    error_step{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    error_reason{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    payment_providers{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    customer_subscriptions{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    user_profiles{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_refunds{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface customer_paymentsWithpayment_providers extends customer_payments {
-    payment_providers: Ipayment_providers;
-  }
-
-export interface customer_paymentsWithcustomer_subscriptions extends customer_payments {
-    customer_subscriptions: Icustomer_subscriptions;
-  }
-
-export interface customer_paymentsWithuser_profiles extends customer_payments {
-    user_profiles: Iuser_profiles;
-  }
-
-export interface customer_paymentsWithcustomer_refunds extends customer_payments {
-    customer_refunds: Icustomer_refunds;
-  }
-  
-  /**
-   * Helper types for working with customer_payments
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialcustomer_payments = Partial<customer_payments>
-  export type Requiredcustomer_payments = Required<customer_payments>
-  export type Pickcustomer_payments<K extends keyof customer_payments> = Pick<customer_payments, K>
+  user_id: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  subscription_id?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  payment_provider_id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  external_payment_id: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  external_order_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  amount: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  currency: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  status: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  method?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  description?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  fee?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  tax?: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  error_code?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  error_description?: string;
+  /**
+   * 
+   */
+  acquirer_data?: Record<string, any>;
+  /**
+   * 
+   */
+  notes?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  order_id?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  invoice_id?: string;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  international?: boolean;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  amount_refunded?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  amount_transferred?: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  refund_status?: string;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  captured?: boolean;
+  /**
+   * 
+   * @validation @IsString
+   */
+  bank?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  wallet?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  vpa?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  error_source?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  error_step?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  error_reason?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  payment_providers: any;
+  /**
+   * 
+   */
+  customer_subscriptions?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  user_profiles: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_refunds: any;
+}
+
+export interface Icustomer_paymentsWithpayment_providers
+extends Icustomer_payments
+{
+payment_providers:
+Ipayment_providers; }
+
+export interface Icustomer_paymentsWithcustomer_subscriptions
+extends Icustomer_payments
+{
+customer_subscriptions:
+Icustomer_subscriptions; }
+
+export interface Icustomer_paymentsWithuser_profiles
+extends Icustomer_payments
+{
+user_profiles:
+Iuser_profiles; }
+
+export interface Icustomer_paymentsWithcustomer_refunds
+extends Icustomer_payments
+{
+customer_refunds:
+Icustomer_refunds; }
+
+export type Partialcustomer_payments = Partial<Icustomer_payments>;
+export type Requiredcustomer_payments = Required<Icustomer_payments>;

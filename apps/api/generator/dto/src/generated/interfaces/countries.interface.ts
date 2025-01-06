@@ -1,80 +1,55 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface countries {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    code{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    code_3{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    addresses{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    cities{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface countriesWithaddresses extends countries {
-    addresses: Iaddresses;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Iaddresses } from './addresses.interface';
+import { Icities } from './cities.interface';
 
-export interface countriesWithcities extends countries {
-    cities: Icities;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icountries extends BaseEntity {
   /**
-   * Helper types for working with countries
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialcountries = Partial<countries>
-  export type Requiredcountries = Required<countries>
-  export type Pickcountries<K extends keyof countries> = Pick<countries, K>
+  id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  code: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  code_3?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  addresses: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  cities: any;
+}
+
+export interface IcountriesWithaddresses
+extends Icountries
+{
+addresses:
+Iaddresses; }
+
+export interface IcountriesWithcities
+extends Icountries
+{
+cities:
+Icities; }
+
+export type Partialcountries = Partial<Icountries>;
+export type Requiredcountries = Required<Icountries>;

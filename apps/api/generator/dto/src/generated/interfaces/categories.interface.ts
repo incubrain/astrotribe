@@ -1,136 +1,99 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Icompanies } from './companies.interface';
+import { Icontent_categories } from './content_categories.interface';
+import { Ifeed_categories } from './feed_categories.interface';
+import { Inews } from './news.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icategories extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty
    */
-  export interface categories {
+  id: bigint;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    body{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    document_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    locale{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    published_at{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    companies{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_categories{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    feed_categories{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    news{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface categoriesWithcompanies extends categories {
-    companies: Icompanies;
-  }
-
-export interface categoriesWithcontent_categories extends categories {
-    content_categories: Icontent_categories;
-  }
-
-export interface categoriesWithfeed_categories extends categories {
-    feed_categories: Ifeed_categories;
-  }
-
-export interface categoriesWithnews extends categories {
-    news: Inews;
-  }
-  
-  /**
-   * Helper types for working with categories
+   * 
+   * @validation @IsNotEmpty, @IsDate
    */
-  export type Partialcategories = Partial<categories>
-  export type Requiredcategories = Required<categories>
-  export type Pickcategories<K extends keyof categories> = Pick<categories, K>
+  created_at: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  body?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  name: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  document_id?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  locale?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  published_at?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  companies: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_categories: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  feed_categories: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  news: any;
+}
+
+export interface IcategoriesWithcompanies
+extends Icategories
+{
+companies:
+Icompanies; }
+
+export interface IcategoriesWithcontent_categories
+extends Icategories
+{
+content_categories:
+Icontent_categories; }
+
+export interface IcategoriesWithfeed_categories
+extends Icategories
+{
+feed_categories:
+Ifeed_categories; }
+
+export interface IcategoriesWithnews
+extends Icategories
+{
+news:
+Inews; }
+
+export type Partialcategories = Partial<Icategories>;
+export type Requiredcategories = Required<Icategories>;

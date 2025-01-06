@@ -1,85 +1,54 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+import { BaseEntity } from '@core/base/entity';
+import { Iusers } from './users.interface';
+
+
+/**
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface votes {
+ */
+export interface Ivotes extends BaseEntity {
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    content_type{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    content_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    vote_type{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    users{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface votesWithusers extends votes {
-    users: Iusers;
-  }
-  
-  /**
-   * Helper types for working with votes
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialvotes = Partial<votes>
-  export type Requiredvotes = Required<votes>
-  export type Pickvotes<K extends keyof votes> = Pick<votes, K>
+  id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  content_type: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  content_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  user_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  vote_type: number;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  users: any;
+}
+
+export interface IvotesWithusers
+extends Ivotes
+{
+users:
+Iusers; }
+
+export type Partialvotes = Partial<Ivotes>;
+export type Requiredvotes = Required<Ivotes>;

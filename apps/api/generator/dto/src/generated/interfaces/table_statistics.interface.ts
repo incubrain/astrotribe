@@ -1,138 +1,75 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Itable_statistics extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface table_statistics {
+  table_name: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    table_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    row_count{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    table_size{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    index_size{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    live_tuples{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    dead_tuples{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_vacuum{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_analyze{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    estimated_bloat_ratio{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    buffer_cache_hit_ratio{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    index_usage{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    seq_scan_count{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    index_scan_count{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    capture_time{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with table_statistics
+   * 
    */
-  export type Partialtable_statistics = Partial<table_statistics>
-  export type Requiredtable_statistics = Required<table_statistics>
-  export type Picktable_statistics<K extends keyof table_statistics> = Pick<table_statistics, K>
+  row_count?: bigint;
+  /**
+   * 
+   */
+  table_size?: bigint;
+  /**
+   * 
+   */
+  index_size?: bigint;
+  /**
+   * 
+   */
+  live_tuples?: bigint;
+  /**
+   * 
+   */
+  dead_tuples?: bigint;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_vacuum?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_analyze?: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  estimated_bloat_ratio?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  buffer_cache_hit_ratio?: number;
+  /**
+   * 
+   */
+  index_usage?: Record<string, any>;
+  /**
+   * 
+   */
+  seq_scan_count?: bigint;
+  /**
+   * 
+   */
+  index_scan_count?: bigint;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  capture_time: Date;
+}
+
+
+
+export type Partialtable_statistics = Partial<Itable_statistics>;
+export type Requiredtable_statistics = Required<Itable_statistics>;

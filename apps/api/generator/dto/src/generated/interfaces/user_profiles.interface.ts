@@ -1,304 +1,238 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iaddresses } from './addresses.interface';
+import { Icomments } from './comments.interface';
+import { Icompany_employees } from './company_employees.interface';
+import { Icontacts } from './contacts.interface';
+import { Icontent_source_visits } from './content_source_visits.interface';
+import { Icustomer_payments } from './customer_payments.interface';
+import { Icustomer_subscriptions } from './customer_subscriptions.interface';
+import { Ifeedbacks } from './feedbacks.interface';
+import { Ifeeds } from './feeds.interface';
+import { Ifollows } from './follows.interface';
+import { Iuser_metrics } from './user_metrics.interface';
+import { Iusers } from './users.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Iuser_profiles extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface user_profiles {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    email{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    given_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    surname{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    username{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    dob{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    gender_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_seen{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    avatar{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    introduction{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    followed_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    followers_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    plan{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    role{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_active{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    addresses{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    comments{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    company_employees{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    contacts{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_source_visits{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_payments{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_subscriptions{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    feedbacks{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    feeds{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    follows{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    user_metrics{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    users{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface user_profilesWithaddresses extends user_profiles {
-    addresses: Iaddresses;
-  }
-
-export interface user_profilesWithcomments extends user_profiles {
-    comments: Icomments;
-  }
-
-export interface user_profilesWithcompany_employees extends user_profiles {
-    company_employees: Icompany_employees;
-  }
-
-export interface user_profilesWithcontacts extends user_profiles {
-    contacts: Icontacts;
-  }
-
-export interface user_profilesWithcontent_source_visits extends user_profiles {
-    content_source_visits: Icontent_source_visits;
-  }
-
-export interface user_profilesWithcustomer_payments extends user_profiles {
-    customer_payments: Icustomer_payments;
-  }
-
-export interface user_profilesWithcustomer_subscriptions extends user_profiles {
-    customer_subscriptions: Icustomer_subscriptions;
-  }
-
-export interface user_profilesWithfeedbacks extends user_profiles {
-    feedbacks: Ifeedbacks;
-  }
-
-export interface user_profilesWithfeeds extends user_profiles {
-    feeds: Ifeeds;
-  }
-
-export interface user_profilesWithfollows extends user_profiles {
-    follows: Ifollows;
-  }
-
-export interface user_profilesWithuser_metrics extends user_profiles {
-    user_metrics: Iuser_metrics;
-  }
-
-export interface user_profilesWithusers extends user_profiles {
-    users: Iusers;
-  }
-  
-  /**
-   * Helper types for working with user_profiles
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialuser_profiles = Partial<user_profiles>
-  export type Requireduser_profiles = Required<user_profiles>
-  export type Pickuser_profiles<K extends keyof user_profiles> = Pick<user_profiles, K>
+  email: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  given_name?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  surname?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  username?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  dob?: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  gender_id?: number;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_seen?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  avatar?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  introduction?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  followed_count?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  followers_count?: number;
+  /**
+   * 
+   */
+  plan?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  role: any;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_active?: boolean;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  addresses: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  comments: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  company_employees: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  contacts: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_source_visits: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_payments: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_subscriptions: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  feedbacks: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  feeds: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  follows: any;
+  /**
+   * 
+   */
+  user_metrics?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  users: any;
+}
+
+export interface Iuser_profilesWithaddresses
+extends Iuser_profiles
+{
+addresses:
+Iaddresses; }
+
+export interface Iuser_profilesWithcomments
+extends Iuser_profiles
+{
+comments:
+Icomments; }
+
+export interface Iuser_profilesWithcompany_employees
+extends Iuser_profiles
+{
+company_employees:
+Icompany_employees; }
+
+export interface Iuser_profilesWithcontacts
+extends Iuser_profiles
+{
+contacts:
+Icontacts; }
+
+export interface Iuser_profilesWithcontent_source_visits
+extends Iuser_profiles
+{
+content_source_visits:
+Icontent_source_visits; }
+
+export interface Iuser_profilesWithcustomer_payments
+extends Iuser_profiles
+{
+customer_payments:
+Icustomer_payments; }
+
+export interface Iuser_profilesWithcustomer_subscriptions
+extends Iuser_profiles
+{
+customer_subscriptions:
+Icustomer_subscriptions; }
+
+export interface Iuser_profilesWithfeedbacks
+extends Iuser_profiles
+{
+feedbacks:
+Ifeedbacks; }
+
+export interface Iuser_profilesWithfeeds
+extends Iuser_profiles
+{
+feeds:
+Ifeeds; }
+
+export interface Iuser_profilesWithfollows
+extends Iuser_profiles
+{
+follows:
+Ifollows; }
+
+export interface Iuser_profilesWithuser_metrics
+extends Iuser_profiles
+{
+user_metrics:
+Iuser_metrics; }
+
+export interface Iuser_profilesWithusers
+extends Iuser_profiles
+{
+users:
+Iusers; }
+
+export type Partialuser_profiles = Partial<Iuser_profiles>;
+export type Requireduser_profiles = Required<Iuser_profiles>;

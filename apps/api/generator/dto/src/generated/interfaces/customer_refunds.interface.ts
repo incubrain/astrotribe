@@ -1,140 +1,86 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Icustomer_payments } from './customer_payments.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icustomer_refunds extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export interface customer_refunds {
+  id: number;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    payment_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    external_refund_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    amount{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    status{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    speed_processed{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    speed_requested{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    notes{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    currency{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    receipt{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    acquirer_data{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    batch_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_payments{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface customer_refundsWithcustomer_payments extends customer_refunds {
-    customer_payments: Icustomer_payments;
-  }
-  
-  /**
-   * Helper types for working with customer_refunds
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialcustomer_refunds = Partial<customer_refunds>
-  export type Requiredcustomer_refunds = Required<customer_refunds>
-  export type Pickcustomer_refunds<K extends keyof customer_refunds> = Pick<customer_refunds, K>
+  payment_id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  external_refund_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  amount: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  status: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  speed_processed?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  speed_requested?: string;
+  /**
+   * 
+   */
+  notes?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  currency?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  receipt?: string;
+  /**
+   * 
+   */
+  acquirer_data?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsString
+   */
+  batch_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_payments: any;
+}
+
+export interface Icustomer_refundsWithcustomer_payments
+extends Icustomer_refunds
+{
+customer_payments:
+Icustomer_payments; }
+
+export type Partialcustomer_refunds = Partial<Icustomer_refunds>;
+export type Requiredcustomer_refunds = Required<Icustomer_refunds>;

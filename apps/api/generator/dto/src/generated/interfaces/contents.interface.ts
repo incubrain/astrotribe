@@ -1,184 +1,144 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Ibookmarks } from './bookmarks.interface';
+import { Icontent_categories } from './content_categories.interface';
+import { Icontent_source_visits } from './content_source_visits.interface';
+import { Icontent_statuses } from './content_statuses.interface';
+import { Icontent_tags } from './content_tags.interface';
+import { Inews } from './news.interface';
+import { Inewsletters } from './newsletters.interface';
+import { Iresearch } from './research.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icontents extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface contents {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_type{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    title{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    rss_url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    hot_score{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    bookmarks{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_categories{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_source_visits{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_statuses{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_tags{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    news{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    newsletters{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    research{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface contentsWithbookmarks extends contents {
-    bookmarks: Ibookmarks;
-  }
-
-export interface contentsWithcontent_categories extends contents {
-    content_categories: Icontent_categories;
-  }
-
-export interface contentsWithcontent_source_visits extends contents {
-    content_source_visits: Icontent_source_visits;
-  }
-
-export interface contentsWithcontent_statuses extends contents {
-    content_statuses: Icontent_statuses;
-  }
-
-export interface contentsWithcontent_tags extends contents {
-    content_tags: Icontent_tags;
-  }
-
-export interface contentsWithnews extends contents {
-    news: Inews;
-  }
-
-export interface contentsWithnewsletters extends contents {
-    newsletters: Inewsletters;
-  }
-
-export interface contentsWithresearch extends contents {
-    research: Iresearch;
-  }
-  
-  /**
-   * Helper types for working with contents
+   * 
+   * @validation @IsNotEmpty
    */
-  export type Partialcontents = Partial<contents>
-  export type Requiredcontents = Required<contents>
-  export type Pickcontents<K extends keyof contents> = Pick<contents, K>
+  content_type: any;
+  /**
+   * 
+   * @validation @IsString
+   */
+  title?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  url: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  rss_url?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  hot_score?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  bookmarks: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_categories: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_source_visits: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_statuses: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_tags: any;
+  /**
+   * 
+   */
+  news?: any;
+  /**
+   * 
+   */
+  newsletters?: any;
+  /**
+   * 
+   */
+  research?: any;
+}
+
+export interface IcontentsWithbookmarks
+extends Icontents
+{
+bookmarks:
+Ibookmarks; }
+
+export interface IcontentsWithcontent_categories
+extends Icontents
+{
+content_categories:
+Icontent_categories; }
+
+export interface IcontentsWithcontent_source_visits
+extends Icontents
+{
+content_source_visits:
+Icontent_source_visits; }
+
+export interface IcontentsWithcontent_statuses
+extends Icontents
+{
+content_statuses:
+Icontent_statuses; }
+
+export interface IcontentsWithcontent_tags
+extends Icontents
+{
+content_tags:
+Icontent_tags; }
+
+export interface IcontentsWithnews
+extends Icontents
+{
+news:
+Inews; }
+
+export interface IcontentsWithnewsletters
+extends Icontents
+{
+newsletters:
+Inewsletters; }
+
+export interface IcontentsWithresearch
+extends Icontents
+{
+research:
+Iresearch; }
+
+export type Partialcontents = Partial<Icontents>;
+export type Requiredcontents = Required<Icontents>;

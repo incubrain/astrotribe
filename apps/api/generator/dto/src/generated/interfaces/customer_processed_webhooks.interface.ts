@@ -1,58 +1,33 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icustomer_processed_webhooks extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export interface customer_processed_webhooks {
+  id: number;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    event_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    event_type{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    processed_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with customer_processed_webhooks
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialcustomer_processed_webhooks = Partial<customer_processed_webhooks>
-  export type Requiredcustomer_processed_webhooks = Required<customer_processed_webhooks>
-  export type Pickcustomer_processed_webhooks<K extends keyof customer_processed_webhooks> = Pick<customer_processed_webhooks, K>
+  event_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  event_type: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  processed_at: Date;
+}
+
+
+
+export type Partialcustomer_processed_webhooks = Partial<Icustomer_processed_webhooks>;
+export type Requiredcustomer_processed_webhooks = Required<Icustomer_processed_webhooks>;

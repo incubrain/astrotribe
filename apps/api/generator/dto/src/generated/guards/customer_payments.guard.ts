@@ -1,147 +1,107 @@
-import { Icustomer_payments } from "./interfaces";
-import { customer_paymentsSchema } from "./schemas";
+
+import { Icustomer_payments } from './interfaces'
+import { customer_paymentsSchema } from './schemas'
 
 /**
  * Type guard for customer_payments
  * Ensures that an unknown value matches the expected structure
  */
-export function iscustomer_payments(
-  value: unknown,
-): value is Icustomer_payments {
-  return customer_paymentsSchema.safeParse(value).success;
+export function iscustomer_payments(value: unknown): value is Icustomer_payments {
+  return customer_paymentsSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialcustomer_payments(
-  value: unknown,
-): value is Partial<Icustomer_payments> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialcustomer_payments(value: unknown): value is Partial<Icustomer_payments> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "id",
-    "user_id",
-    "subscription_id",
-    "payment_provider_id",
-    "external_payment_id",
-    "external_order_id",
-    "amount",
-    "currency",
-    "status",
-    "method",
-    "description",
-    "fee",
-    "tax",
-    "error_code",
-    "error_description",
-    "acquirer_data",
-    "notes",
-    "created_at",
-    "order_id",
-    "invoice_id",
-    "international",
-    "amount_refunded",
-    "amount_transferred",
-    "refund_status",
-    "captured",
-    "bank",
-    "wallet",
-    "vpa",
-    "error_source",
-    "error_step",
-    "error_reason",
-    "payment_providers",
-    "customer_subscriptions",
-    "user_profiles",
-    "customer_refunds",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["id","user_id","subscription_id","payment_provider_id","external_payment_id","external_order_id","amount","currency","status","method","description","fee","tax","error_code","error_description","acquirer_data","notes","created_at","order_id","invoice_id","international","amount_refunded","amount_transferred","refund_status","captured","bank","wallet","vpa","error_source","error_step","error_reason","payment_providers","customer_subscriptions","user_profiles","customer_refunds"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "id":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'id':
       return typeof value === "number" && !isNaN(value);
-    case "user_id":
+    case 'user_id':
       return typeof value === "string";
-    case "subscription_id":
+    case 'subscription_id':
       return typeof value === "number" && !isNaN(value);
-    case "payment_provider_id":
+    case 'payment_provider_id':
       return typeof value === "number" && !isNaN(value);
-    case "external_payment_id":
+    case 'external_payment_id':
       return typeof value === "string";
-    case "external_order_id":
+    case 'external_order_id':
       return typeof value === "string";
-    case "amount":
+    case 'amount':
       return typeof value === "number" && !isNaN(value);
-    case "currency":
+    case 'currency':
       return typeof value === "string";
-    case "status":
+    case 'status':
       return typeof value === "string";
-    case "method":
+    case 'method':
       return typeof value === "string";
-    case "description":
+    case 'description':
       return typeof value === "string";
-    case "fee":
+    case 'fee':
       return typeof value === "number" && !isNaN(value);
-    case "tax":
+    case 'tax':
       return typeof value === "number" && !isNaN(value);
-    case "error_code":
+    case 'error_code':
       return typeof value === "string";
-    case "error_description":
+    case 'error_description':
       return typeof value === "string";
-    case "acquirer_data":
+    case 'acquirer_data':
       return true; // Complex type requiring deeper validation
-    case "notes":
+    case 'notes':
       return true; // Complex type requiring deeper validation
-    case "created_at":
+    case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "order_id":
+    case 'order_id':
       return typeof value === "string";
-    case "invoice_id":
+    case 'invoice_id':
       return typeof value === "string";
-    case "international":
+    case 'international':
       return typeof value === "boolean";
-    case "amount_refunded":
+    case 'amount_refunded':
       return typeof value === "number" && !isNaN(value);
-    case "amount_transferred":
+    case 'amount_transferred':
       return typeof value === "number" && !isNaN(value);
-    case "refund_status":
+    case 'refund_status':
       return typeof value === "string";
-    case "captured":
+    case 'captured':
       return typeof value === "boolean";
-    case "bank":
+    case 'bank':
       return typeof value === "string";
-    case "wallet":
+    case 'wallet':
       return typeof value === "string";
-    case "vpa":
+    case 'vpa':
       return typeof value === "string";
-    case "error_source":
+    case 'error_source':
       return typeof value === "string";
-    case "error_step":
+    case 'error_step':
       return typeof value === "string";
-    case "error_reason":
+    case 'error_reason':
       return typeof value === "string";
-    case "payment_providers":
+    case 'payment_providers':
       return true; // Complex type requiring deeper validation
-    case "customer_subscriptions":
+    case 'customer_subscriptions':
       return true; // Complex type requiring deeper validation
-    case "user_profiles":
+    case 'user_profiles':
       return true; // Complex type requiring deeper validation
-    case "customer_refunds":
+    case 'customer_refunds':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -150,17 +110,14 @@ function isValidField(key: string, value: unknown): boolean {
 /**
  * Type guard for arrays of customer_payments
  */
-export function iscustomer_paymentsArray(
-  value: unknown,
-): value is Icustomer_payments[] {
-  return Array.isArray(value) && value.every(iscustomer_payments);
+export function iscustomer_paymentsArray(value: unknown): value is Icustomer_payments[] {
+  return Array.isArray(value) && value.every(iscustomer_payments)
 }
 
 /**
  * Type guard for partial arrays of customer_payments
  */
-export function isPartialcustomer_paymentsArray(
-  value: unknown,
-): value is Partial<Icustomer_payments>[] {
-  return Array.isArray(value) && value.every(isPartialcustomer_payments);
+export function isPartialcustomer_paymentsArray(value: unknown): value is Partial<Icustomer_payments>[] {
+  return Array.isArray(value) && value.every(isPartialcustomer_payments)
 }
+

@@ -1,29 +1,39 @@
 // tools/generators/dto/utils/template-engine.ts
-import Handlebars from 'handlebars'
+import * as Handlebars from 'handlebars'
 
 /**
  * Template engine for processing Handlebars templates
  */
 export class TemplateEngine {
-  /**
-   * Process a template with the given context
-   */
-  static process(template: string, context: Record<string, any>): string {
-    const compiledTemplate = Handlebars.compile(template)
-    return compiledTemplate(context)
-  }
+  private static readonly engine = Handlebars.create()
 
   /**
-   * Register a helper function with Handlebars
+   * Registers a Handlebars helper
    */
   static registerHelper(name: string, fn: Handlebars.HelperDelegate): void {
-    Handlebars.registerHelper(name, fn)
+    this.engine.registerHelper(name, fn)
   }
 
   /**
-   * Register a partial template with Handlebars
+   * Registers a Handlebars partial
    */
-  static registerPartial(name: string, partial: string): void {
-    Handlebars.registerPartial(name, partial)
+  static registerPartial(name: string, template: string): void {
+    this.engine.registerPartial(name, template)
+  }
+
+  /**
+   * Processes a template with the given context
+   */
+  static process(template: string, context: Record<string, any>): string {
+    const compiledTemplate = this.engine.compile(template)
+    const result = compiledTemplate(context)
+
+    // Decode HTML entities in the result
+    return result
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
   }
 }

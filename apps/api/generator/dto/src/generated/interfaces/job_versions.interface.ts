@@ -1,82 +1,48 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * 
+ */
+export interface Ijob_versions extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface job_versions {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    job_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    version{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    changes{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    config{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with job_versions
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialjob_versions = Partial<job_versions>
-  export type Requiredjob_versions = Required<job_versions>
-  export type Pickjob_versions<K extends keyof job_versions> = Pick<job_versions, K>
+  job_name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  version: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  changes: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  config: Record<string, any>;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  created_at: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  updated_at: Date;
+}
+
+
+
+export type Partialjob_versions = Partial<Ijob_versions>;
+export type Requiredjob_versions = Required<Ijob_versions>;

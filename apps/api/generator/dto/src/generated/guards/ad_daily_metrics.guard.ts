@@ -1,64 +1,53 @@
-import { Iad_daily_metrics } from "./interfaces";
-import { ad_daily_metricsSchema } from "./schemas";
+
+import { Iad_daily_metrics } from './interfaces'
+import { ad_daily_metricsSchema } from './schemas'
 
 /**
  * Type guard for ad_daily_metrics
  * Ensures that an unknown value matches the expected structure
  */
 export function isad_daily_metrics(value: unknown): value is Iad_daily_metrics {
-  return ad_daily_metricsSchema.safeParse(value).success;
+  return ad_daily_metricsSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialad_daily_metrics(
-  value: unknown,
-): value is Partial<Iad_daily_metrics> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialad_daily_metrics(value: unknown): value is Partial<Iad_daily_metrics> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "id",
-    "variant_id",
-    "date",
-    "views",
-    "clicks",
-    "created_at",
-    "updated_at",
-    "ad_variants",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["id","variant_id","date","views","clicks","created_at","updated_at","ad_variants"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "id":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'id':
       return typeof value === "string";
-    case "variant_id":
+    case 'variant_id':
       return typeof value === "string";
-    case "date":
+    case 'date':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "views":
+    case 'views':
       return typeof value === "number" && !isNaN(value);
-    case "clicks":
+    case 'clicks':
       return typeof value === "number" && !isNaN(value);
-    case "created_at":
+    case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "updated_at":
+    case 'updated_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "ad_variants":
+    case 'ad_variants':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -67,17 +56,14 @@ function isValidField(key: string, value: unknown): boolean {
 /**
  * Type guard for arrays of ad_daily_metrics
  */
-export function isad_daily_metricsArray(
-  value: unknown,
-): value is Iad_daily_metrics[] {
-  return Array.isArray(value) && value.every(isad_daily_metrics);
+export function isad_daily_metricsArray(value: unknown): value is Iad_daily_metrics[] {
+  return Array.isArray(value) && value.every(isad_daily_metrics)
 }
 
 /**
  * Type guard for partial arrays of ad_daily_metrics
  */
-export function isPartialad_daily_metricsArray(
-  value: unknown,
-): value is Partial<Iad_daily_metrics>[] {
-  return Array.isArray(value) && value.every(isPartialad_daily_metrics);
+export function isPartialad_daily_metricsArray(value: unknown): value is Partial<Iad_daily_metrics>[] {
+  return Array.isArray(value) && value.every(isPartialad_daily_metrics)
 }
+

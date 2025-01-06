@@ -1,58 +1,49 @@
-import { Iblacklisted_urls } from "./interfaces";
-import { blacklisted_urlsSchema } from "./schemas";
+
+import { Iblacklisted_urls } from './interfaces'
+import { blacklisted_urlsSchema } from './schemas'
 
 /**
  * Type guard for blacklisted_urls
  * Ensures that an unknown value matches the expected structure
  */
 export function isblacklisted_urls(value: unknown): value is Iblacklisted_urls {
-  return blacklisted_urlsSchema.safeParse(value).success;
+  return blacklisted_urlsSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialblacklisted_urls(
-  value: unknown,
-): value is Partial<Iblacklisted_urls> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialblacklisted_urls(value: unknown): value is Partial<Iblacklisted_urls> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "id",
-    "url",
-    "reason",
-    "created_at",
-    "company_id",
-    "companies",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["id","url","reason","created_at","company_id","companies"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "id":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'id':
       return typeof value === "number" && !isNaN(value);
-    case "url":
+    case 'url':
       return typeof value === "string";
-    case "reason":
+    case 'reason':
       return typeof value === "string";
-    case "created_at":
+    case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "company_id":
+    case 'company_id':
       return typeof value === "string";
-    case "companies":
+    case 'companies':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -61,17 +52,14 @@ function isValidField(key: string, value: unknown): boolean {
 /**
  * Type guard for arrays of blacklisted_urls
  */
-export function isblacklisted_urlsArray(
-  value: unknown,
-): value is Iblacklisted_urls[] {
-  return Array.isArray(value) && value.every(isblacklisted_urls);
+export function isblacklisted_urlsArray(value: unknown): value is Iblacklisted_urls[] {
+  return Array.isArray(value) && value.every(isblacklisted_urls)
 }
 
 /**
  * Type guard for partial arrays of blacklisted_urls
  */
-export function isPartialblacklisted_urlsArray(
-  value: unknown,
-): value is Partial<Iblacklisted_urls>[] {
-  return Array.isArray(value) && value.every(isPartialblacklisted_urls);
+export function isPartialblacklisted_urlsArray(value: unknown): value is Partial<Iblacklisted_urls>[] {
+  return Array.isArray(value) && value.every(isPartialblacklisted_urls)
 }
+

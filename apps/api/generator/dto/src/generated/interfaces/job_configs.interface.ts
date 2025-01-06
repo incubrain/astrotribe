@@ -1,130 +1,76 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * 
+ */
+export interface Ijob_configs extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface job_configs {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    schedule{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    priority{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    timeout_ms{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    retry_limit{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    circuit_breaker_enabled{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    circuit_breaker_threshold{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    circuit_breaker_timeout_ms{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    enabled{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    metadata{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with job_configs
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialjob_configs = Partial<job_configs>
-  export type Requiredjob_configs = Required<job_configs>
-  export type Pickjob_configs<K extends keyof job_configs> = Pick<job_configs, K>
+  name: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  schedule?: string;
+  /**
+   * 
+   */
+  priority?: any;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  timeout_ms?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  retry_limit?: number;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  circuit_breaker_enabled?: boolean;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  circuit_breaker_threshold?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  circuit_breaker_timeout_ms?: number;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  enabled?: boolean;
+  /**
+   * 
+   */
+  metadata?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+}
+
+
+
+export type Partialjob_configs = Partial<Ijob_configs>;
+export type Requiredjob_configs = Required<Ijob_configs>;

@@ -1,127 +1,95 @@
-import { Iuser_profiles } from "./interfaces";
-import { user_profilesSchema } from "./schemas";
+
+import { Iuser_profiles } from './interfaces'
+import { user_profilesSchema } from './schemas'
 
 /**
  * Type guard for user_profiles
  * Ensures that an unknown value matches the expected structure
  */
 export function isuser_profiles(value: unknown): value is Iuser_profiles {
-  return user_profilesSchema.safeParse(value).success;
+  return user_profilesSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialuser_profiles(
-  value: unknown,
-): value is Partial<Iuser_profiles> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialuser_profiles(value: unknown): value is Partial<Iuser_profiles> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "id",
-    "email",
-    "given_name",
-    "surname",
-    "username",
-    "dob",
-    "gender_id",
-    "created_at",
-    "updated_at",
-    "last_seen",
-    "avatar",
-    "introduction",
-    "followed_count",
-    "followers_count",
-    "plan",
-    "role",
-    "is_active",
-    "addresses",
-    "comments",
-    "company_employees",
-    "contacts",
-    "content_source_visits",
-    "customer_payments",
-    "customer_subscriptions",
-    "feedbacks",
-    "feeds",
-    "follows",
-    "user_metrics",
-    "users",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["id","email","given_name","surname","username","dob","gender_id","created_at","updated_at","last_seen","avatar","introduction","followed_count","followers_count","plan","role","is_active","addresses","comments","company_employees","contacts","content_source_visits","customer_payments","customer_subscriptions","feedbacks","feeds","follows","user_metrics","users"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "id":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'id':
       return typeof value === "string";
-    case "email":
+    case 'email':
       return typeof value === "string";
-    case "given_name":
+    case 'given_name':
       return typeof value === "string";
-    case "surname":
+    case 'surname':
       return typeof value === "string";
-    case "username":
+    case 'username':
       return typeof value === "string";
-    case "dob":
+    case 'dob':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "gender_id":
+    case 'gender_id':
       return typeof value === "number" && !isNaN(value);
-    case "created_at":
+    case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "updated_at":
+    case 'updated_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "last_seen":
+    case 'last_seen':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "avatar":
+    case 'avatar':
       return typeof value === "string";
-    case "introduction":
+    case 'introduction':
       return typeof value === "string";
-    case "followed_count":
+    case 'followed_count':
       return typeof value === "number" && !isNaN(value);
-    case "followers_count":
+    case 'followers_count':
       return typeof value === "number" && !isNaN(value);
-    case "plan":
+    case 'plan':
       return true; // Complex type requiring deeper validation
-    case "role":
+    case 'role':
       return true; // Complex type requiring deeper validation
-    case "is_active":
+    case 'is_active':
       return typeof value === "boolean";
-    case "addresses":
+    case 'addresses':
       return true; // Complex type requiring deeper validation
-    case "comments":
+    case 'comments':
       return true; // Complex type requiring deeper validation
-    case "company_employees":
+    case 'company_employees':
       return true; // Complex type requiring deeper validation
-    case "contacts":
+    case 'contacts':
       return true; // Complex type requiring deeper validation
-    case "content_source_visits":
+    case 'content_source_visits':
       return true; // Complex type requiring deeper validation
-    case "customer_payments":
+    case 'customer_payments':
       return true; // Complex type requiring deeper validation
-    case "customer_subscriptions":
+    case 'customer_subscriptions':
       return true; // Complex type requiring deeper validation
-    case "feedbacks":
+    case 'feedbacks':
       return true; // Complex type requiring deeper validation
-    case "feeds":
+    case 'feeds':
       return true; // Complex type requiring deeper validation
-    case "follows":
+    case 'follows':
       return true; // Complex type requiring deeper validation
-    case "user_metrics":
+    case 'user_metrics':
       return true; // Complex type requiring deeper validation
-    case "users":
+    case 'users':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -130,17 +98,14 @@ function isValidField(key: string, value: unknown): boolean {
 /**
  * Type guard for arrays of user_profiles
  */
-export function isuser_profilesArray(
-  value: unknown,
-): value is Iuser_profiles[] {
-  return Array.isArray(value) && value.every(isuser_profiles);
+export function isuser_profilesArray(value: unknown): value is Iuser_profiles[] {
+  return Array.isArray(value) && value.every(isuser_profiles)
 }
 
 /**
  * Type guard for partial arrays of user_profiles
  */
-export function isPartialuser_profilesArray(
-  value: unknown,
-): value is Partial<Iuser_profiles>[] {
-  return Array.isArray(value) && value.every(isPartialuser_profiles);
+export function isPartialuser_profilesArray(value: unknown): value is Partial<Iuser_profiles>[] {
+  return Array.isArray(value) && value.every(isPartialuser_profiles)
 }
+

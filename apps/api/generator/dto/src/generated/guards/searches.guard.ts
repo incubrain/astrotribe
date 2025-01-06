@@ -1,56 +1,49 @@
-import { Isearches } from "./interfaces";
-import { searchesSchema } from "./schemas";
+
+import { Isearches } from './interfaces'
+import { searchesSchema } from './schemas'
 
 /**
  * Type guard for searches
  * Ensures that an unknown value matches the expected structure
  */
 export function issearches(value: unknown): value is Isearches {
-  return searchesSchema.safeParse(value).success;
+  return searchesSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialsearches(value: unknown): value is Partial<Isearches> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialsearches(value: unknown): value is Partial<Isearches> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "id",
-    "input",
-    "created_at",
-    "tokens_used",
-    "user_ids",
-    "responses",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["id","input","created_at","tokens_used","user_ids","responses"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "id":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'id':
       return true; // Complex type requiring deeper validation
-    case "input":
+    case 'input':
       return typeof value === "string";
-    case "created_at":
+    case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "tokens_used":
+    case 'tokens_used':
       return typeof value === "number" && !isNaN(value);
-    case "user_ids":
+    case 'user_ids':
       return typeof value === "string";
-    case "responses":
+    case 'responses':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -60,14 +53,13 @@ function isValidField(key: string, value: unknown): boolean {
  * Type guard for arrays of searches
  */
 export function issearchesArray(value: unknown): value is Isearches[] {
-  return Array.isArray(value) && value.every(issearches);
+  return Array.isArray(value) && value.every(issearches)
 }
 
 /**
  * Type guard for partial arrays of searches
  */
-export function isPartialsearchesArray(
-  value: unknown,
-): value is Partial<Isearches>[] {
-  return Array.isArray(value) && value.every(isPartialsearches);
+export function isPartialsearchesArray(value: unknown): value is Partial<Isearches>[] {
+  return Array.isArray(value) && value.every(isPartialsearches)
 }
+

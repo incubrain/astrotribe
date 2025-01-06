@@ -1,248 +1,157 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface research {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    published_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    title{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    version{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    abstract{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    keywords{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    month{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    year{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    abstract_url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    category{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    doi_url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    figure_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    has_embedding{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    page_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    pdf_url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    published_in{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    table_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    comments{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsBoolean{{/if}}
-     */
-    is_flagged{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    authors{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    summary{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    affiliations{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    contents{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    research_embeddings{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface researchWithcontents extends research {
-    contents: Icontents;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icontents } from './contents.interface';
+import { Iresearch_embeddings } from './research_embeddings.interface';
 
-export interface researchWithresearch_embeddings extends research {
-    research_embeddings: Iresearch_embeddings;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Iresearch extends BaseEntity {
   /**
-   * Helper types for working with research
+   * 
+   * @validation @IsNotEmpty, @IsDate
    */
-  export type Partialresearch = Partial<research>
-  export type Requiredresearch = Required<research>
-  export type Pickresearch<K extends keyof research> = Pick<research, K>
+  created_at: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  published_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  title?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  version?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  id: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  abstract?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  keywords?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  month?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  year?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  abstract_url: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  category?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  doi_url?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  figure_count?: number;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  has_embedding?: boolean;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  page_count?: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  pdf_url?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  published_in?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  table_count?: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  comments?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsBoolean
+   */
+  is_flagged: boolean;
+  /**
+   * 
+   */
+  authors?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsString
+   */
+  summary?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_status: any;
+  /**
+   * 
+   */
+  affiliations?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  contents: any;
+  /**
+   * 
+   */
+  research_embeddings?: any;
+}
+
+export interface IresearchWithcontents
+extends Iresearch
+{
+contents:
+Icontents; }
+
+export interface IresearchWithresearch_embeddings
+extends Iresearch
+{
+research_embeddings:
+Iresearch_embeddings; }
+
+export type Partialresearch = Partial<Iresearch>;
+export type Requiredresearch = Required<Iresearch>;

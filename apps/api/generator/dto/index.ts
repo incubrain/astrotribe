@@ -16,7 +16,7 @@ import { SchemaGenerator } from './modules/schemas'
 import { TypeGuardGenerator } from './modules/type-guard'
 import { TypeMapper } from './utils/type-mapper'
 import { OpenAPIMetadataGenerator } from './modules/openapi-metadata'
-import type { GeneratorOptions, ModelMetadata, GeneratedFile } from './types'
+import type { GeneratorOptions, ModelMetadata, GeneratedFile, FieldMetadata } from './types'
 
 const chalk = new Chalk()
 
@@ -49,7 +49,7 @@ export async function main() {
     const prisma = new PrismaClient()
 
     // Initialize generators
-    const schemaPath = path.resolve(__dirname, '../../../../prisma/schema.prisma')
+    const schemaPath = '/Users/mac/Development/astronera/astrotribe/prisma/schema.prisma'
     const fileManager = new FileManager(config.outputPath)
     const dmmf: DMMF.Document = await getDMMF({
       datamodelPath: schemaPath,
@@ -95,7 +95,7 @@ class DTOGenerator extends BaseGenerator {
     this.schemaGenerator = new SchemaGenerator(this.typeMapper, this.documentationParser)
     this.typeGuardGenerator = new TypeGuardGenerator()
 
-    this.documentationGenerator = new DocumentationGenerator([], options, fileManager)
+    this.documentationGenerator = new DocumentationGenerator([], options, this.fileManager)
 
     this.initializeDocumentationGenerator()
   }
@@ -142,37 +142,71 @@ class DTOGenerator extends BaseGenerator {
     let content = `${imports}\n\n`
 
     // Add class documentation if available
-    if (metadata.documentation.description) {
+    if (metadata.documentation?.description) {
       content += `/**\n * ${metadata.documentation.description}\n */\n`
     }
 
-    // Add class decorators for Swagger
-    content += `@ApiExcludeController()\n`
+    // Add class definition
     content += `export class ${metadata.name}DTO {\n`
 
     // Generate properties with decorators
     for (const field of metadata.fields) {
-      // Skip generated fields like updatedAt unless specifically configured
+      // Skip generated fields unless specifically configured
       if (field.isGenerated && !this.options.includeGeneratedFields) {
         continue
       }
 
       // Add property documentation
-      if (field.documentation?.description) {
-        content += `  /**\n   * ${field.documentation.description}\n   */\n`
+      if (field.documentation) {
+        content += `  /**\n   * ${field.documentation}\n   */\n`
       }
 
-      // Add Swagger @ApiProperty decorator
-      content += this.generateApiPropertyDecorator(field)
+      // Add validation decorators
+      if (field.isRequired) {
+        content += `  @IsNotEmpty()\n`
+      } else {
+        content += `  @IsOptional()\n`
+      }
 
-      // Add validation decorators based on field type and constraints
-      content += this.generateValidationDecorators(field)
+      // Add type-specific validation
+      switch (field.type) {
+        case 'String':
+          content += `  @IsString()\n`
+          if (field.nativeType === 'Uuid') {
+            content += `  @IsUUID()\n`
+          }
+          break
+        case 'Int':
+          content += `  @IsInt()\n`
+          break
+        case 'Float':
+        case 'Decimal':
+          content += `  @IsNumber()\n`
+          break
+        case 'Boolean':
+          content += `  @IsBoolean()\n`
+          break
+        case 'DateTime':
+          content += `  @IsDate()\n`
+          content += `  @Transform(({ value }) => value ? new Date(value) : null)\n`
+          break
+        case 'Json':
+          content += `  @IsJSON()\n`
+          break
+      }
 
-      // Handle transformations for dates and special types
-      content += this.generateTransformDecorators(field)
+      // Add Swagger documentation
+      content += `  @ApiProperty({\n`
+      content += `    description: ${JSON.stringify(field.documentation || '')},\n`
+      content += `    type: ${this.getSwaggerType(field)},\n`
+      content += `    required: ${field.isRequired},\n`
+      if (field.kind === 'enum') {
+        content += `    enum: ${field.type},\n`
+      }
+      content += `  })\n`
 
-      // Add the property definition
-      content += `  ${field.name}${field.isRequired ? '' : '?'}: ${this.mapPrismaToTypeScriptType(field)};\n\n`
+      // Add property definition
+      content += `  ${field.name}${field.isRequired ? '' : '?'}: ${this.typeMapper.mapPrismaToTypeScript(field)};\n\n`
     }
 
     // Close the class
@@ -184,168 +218,26 @@ class DTOGenerator extends BaseGenerator {
     }
   }
 
-  private generateApiPropertyDecorator(field: DMMF.Field): string {
-    let decorator = `  @ApiProperty({\n`
-    decorator += `    description: ${JSON.stringify(field.documentation || '')},\n`
-    decorator += `    type: ${OpenAPIMetadataGenerator.getSwaggerType(field)},\n`
-    decorator += `    required: ${field.isRequired},\n`
-
-    if (field.kind === 'enum') {
-      decorator += `    enum: ${field.type},\n`
-    }
-
-    // Handle arrays
-    if (field.isList) {
-      decorator += `    isArray: true,\n`
-    }
-
-    // Add example if available
-    if (field.documentation?.includes('@example')) {
-      const example = this.extractExample(field.documentation)
-      if (example) {
-        decorator += `    example: ${JSON.stringify(example)},\n`
-      }
-    }
-
-    decorator += `  })\n`
-    return decorator
-  }
-
-  private generateValidationDecorators(field: DMMF.Field): string {
-    const decorators: string[] = []
-
-    // Handle required/optional
-    if (field.isRequired) {
-      decorators.push('@IsNotEmpty()')
-    } else {
-      decorators.push('@IsOptional()')
-    }
-
-    // Type-specific validation
+  private getSwaggerType(field: FieldMetadata): string {
     switch (field.type) {
       case 'String':
-        decorators.push('@IsString()')
-        if (field.nativeType?.[0] === 'Uuid') {
-          decorators.push('@IsUUID()')
-        }
-        break
+        return 'String'
       case 'Int':
-        decorators.push('@IsInt()')
-        break
       case 'Float':
       case 'Decimal':
-        decorators.push('@IsNumber()')
-        break
+        return 'Number'
       case 'Boolean':
-        decorators.push('@IsBoolean()')
-        break
+        return 'Boolean'
       case 'DateTime':
-        decorators.push('@IsDate()')
-        break
+        return 'Date'
       case 'Json':
-        decorators.push('@IsJSON()')
-        break
+        return 'Object'
+      default:
+        if (field.kind === 'enum') {
+          return field.type
+        }
+        return 'String'
     }
-
-    // Handle enums
-    if (field.kind === 'enum') {
-      decorators.push(`@IsEnum(${field.type})`)
-    }
-
-    return decorators.map((d) => `  ${d}\n`).join('')
-  }
-
-  private generateTransformDecorators(field: DMMF.Field): string {
-    const decorators: string[] = []
-
-    // Transform for dates
-    if (field.type === 'DateTime') {
-      decorators.push('  @Transform(({ value }) => value ? new Date(value) : null)\n')
-    }
-
-    // Transform for decimals
-    if (field.type === 'Decimal') {
-      decorators.push('  @Transform(({ value }) => new Decimal(value))\n')
-    }
-
-    return decorators.join('')
-  }
-
-  private mapPrismaToTypeScriptType(field: DMMF.Field): string {
-    const baseType = this.getTypeScriptType(field)
-    return field.isList ? `${baseType}[]` : baseType
-  }
-
-  private getTypeScriptType(field: DMMF.Field): string {
-    const typeMap: Record<string, string> = {
-      String: 'string',
-      Boolean: 'boolean',
-      Int: 'number',
-      Float: 'number',
-      DateTime: 'Date',
-      Json: 'Record<string, any>',
-      Decimal: 'Decimal',
-      BigInt: 'bigint',
-      Bytes: 'Buffer',
-    }
-
-    return field.kind === 'enum' ? field.type : typeMap[field.type] || 'any'
-  }
-
-  /**
-   * Merges OpenAPI metadata with the base DTO content.
-   * This ensures decorators are properly placed and imports are combined.
-   */
-  private mergeOpenApiMetadata(baseContent: string, openApiMetadata: string): string {
-    // Extract imports from both contents
-    const baseImports = this.extractImports(baseContent)
-    const openApiImports = this.extractImports(openApiMetadata)
-
-    // Combine imports without duplicates
-    const combinedImports = this.combineImports(baseImports, openApiImports)
-
-    // Extract class content without imports
-    const baseClass = this.extractClassContent(baseContent)
-    const openApiDecorators = this.extractClassDecorators(openApiMetadata)
-
-    // Combine everything
-    return `
-      ${combinedImports}
-      ${openApiDecorators}
-      ${baseClass}
-    `
-  }
-
-  /**
-   * Extracts import statements from content
-   */
-  private extractImports(content: string): string[] {
-    const importRegex = /import.*?;/g
-    return content.match(importRegex) || []
-  }
-
-  /**
-   * Combines import statements removing duplicates
-   */
-  private combineImports(imports1: string[], imports2: string[]): string {
-    return [...new Set([...imports1, ...imports2])].join('\n')
-  }
-
-  /**
-   * Extracts class content without imports
-   */
-  private extractClassContent(content: string): string {
-    const classStart = content.indexOf('export class')
-    return content.slice(classStart)
-  }
-
-  /**
-   * Extracts class decorators from OpenAPI metadata
-   */
-  private extractClassDecorators(content: string): string {
-    const classStart = content.indexOf('export class')
-    const decoratorEnd = classStart
-    return content.slice(0, decoratorEnd).trim()
   }
 
   /**
