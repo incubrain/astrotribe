@@ -75,6 +75,8 @@ async function bootstrap() {
       'Authorization',
       'x-api-key',
       'Origin',
+      'baggage',
+      'sentry-trace',
       'X-Requested-With',
       'Access-Control-Request-Method',
       'Access-Control-Request-Headers',

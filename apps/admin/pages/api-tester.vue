@@ -21,7 +21,7 @@ const env = useRuntimeConfig().public
 const notification = useNotification()
 const supabase = useSupabaseClient()
 
-const url = ref<string>(String(env.apiURL ?? 'http://localhost:3030'))
+const url = ref<string>(String(env.apiURL ?? 'http://localhost:8080'))
 const isLoading = ref<boolean>(false)
 const logs = ref<string[]>([])
 
@@ -65,12 +65,12 @@ const createApi = () => {
         throw new Error('No authentication session found')
       }
 
-      const headers = new Headers(options.headers)
-      headers.set('Authorization', `Bearer ${session.access_token}`)
-      headers.set('Content-Type', 'application/json')
-      headers.set('Accept', 'application/json')
-      headers.set('Origin', window.location.origin)
-      options.headers = headers
+      options.headers = {
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': window.location.origin,
+      }
     },
     async onResponse({ response }) {
       // Log Railway request ID for debugging
