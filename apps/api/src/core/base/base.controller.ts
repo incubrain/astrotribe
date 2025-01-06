@@ -10,6 +10,7 @@ import {
   ConflictException,
   Inject,
   Scope,
+  applyDecorators,
 } from '@nestjs/common'
 import { REQUEST } from '@nestjs/core'
 import { Request, Response } from 'express'
@@ -20,7 +21,19 @@ import { PrismaService } from '../services/prisma.service'
 import { PaginationService } from '../services/pagination.service'
 import { CustomLogger } from '../logger/custom.logger'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
+import { ApiTags, ApiSecurity } from '@nestjs/swagger'
+import { Controller } from '@nestjs/common'
 
+
+export function ApiBaseController(name: string) {
+  return applyDecorators(
+    Controller(name),
+    ApiTags(name),
+    ApiSecurity('bearer')
+  )
+}
+
+@ApiBaseController('base')
 @Injectable({ scope: Scope.REQUEST })
 export abstract class BaseController {
   @Inject(REQUEST)

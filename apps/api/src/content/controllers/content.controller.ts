@@ -21,12 +21,13 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 import { PermissionGuard } from '@core/guards/permission.guard'
 import { ContentService } from '../services/content.service'
+import { ApiBaseController } from '@core/base/base.controller'
+import { ApiPaginatedResponse, ApiGetByIdResponse } from '@core/decorators/api.decorator'
 
 import type { Prisma } from '@prisma/client'
 import type { PaginatedQuery, PaginatedResponse } from '@types'
 
-@Controller('contents')
-@ApiTags('Contents')
+@ApiBaseController('contents')
 @UseGuards(PermissionGuard)
 export class ContentController extends BaseController {
   constructor(
@@ -40,6 +41,7 @@ export class ContentController extends BaseController {
   }
 
   @Get()
+  @ApiPaginatedResponse(ContentDto)
   @ApiOperation({ summary: 'Get all content with company logos' })
   async getAllContent(@Query() query: PaginatedQuery) {
     try {
@@ -53,6 +55,7 @@ export class ContentController extends BaseController {
   }
 
   @Get(':id')
+  @ApiGetByIdResponse(ContentDto)
   @ApiOperation({ summary: 'Get Contents by id' })
   async findOneContents(
     @Param('id', ParseUUIDPipe) id: string,
