@@ -24,28 +24,12 @@ export class HealthController implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   onModuleInit() {
-    // Log health status every minute
-    this.healthCheckInterval = setInterval(async () => {
-      try {
-        const status = await this.performHealthCheck()
-        this.logger.log('Periodic Health Check:', {
-          timestamp: new Date().toISOString(),
-          status,
-          pid: process.pid,
-          memoryUsage: process.memoryUsage(),
-          uptime: process.uptime(),
-        })
-      } catch (error) {
-        this.logger.error('Health Check Failed:', error)
-      }
-    }, 60000)
-  }
-
-  onModuleDestroy() {
-    if (this.healthCheckInterval) {
-      clearInterval(this.healthCheckInterval)
-      this.healthCheckInterval = null
-    }
+    this.healthCheckInterval = setInterval(
+      () => {
+        this.performHealthCheck()
+      },
+      60 * 1000 * 30,
+    )
   }
 
   private async performHealthCheck() {
@@ -54,6 +38,12 @@ export class HealthController implements OnModuleInit, OnModuleDestroy {
       () => this.disk.checkStorage('storage', { path: '/', thresholdPercent: 0.9 }),
       () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
     ])
+  }
+
+  onModuleDestroy() {
+    if (this.healthCheckInterval) {
+      clearInterval(this.healthCheckInterval)
+    }
   }
 
   @Get()

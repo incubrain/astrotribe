@@ -64,6 +64,26 @@ export class PermissionService implements OnModuleInit {
     }
   }
 
+  async getRoleHierarchy(role: string): Promise<string[]> {
+    try {
+      // First, get direct hierarchy from cache
+      const directHierarchy = this.roleHierarchyCache.get(role) || []
+
+      // Then get inherited permissions by recursively checking parent roles
+      const allRoles = new Set<string>([role, ...directHierarchy])
+
+      for (const parentRole of directHierarchy) {
+        const parentHierarchy = await this.getRoleHierarchy(parentRole)
+        parentHierarchy.forEach((r) => allRoles.add(r))
+      }
+
+      return Array.from(allRoles)
+    } catch (error) {
+      this.logger.error(`Failed to get role hierarchy for ${role}`, error)
+      return [role] // Return just the current role if hierarchy lookup fails
+    }
+  }
+
   async validateToken(token: string): Promise<SupabaseJwtPayload> {
     try {
       this.logger.debug('Attempting to validate Supabase token', {

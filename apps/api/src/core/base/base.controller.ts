@@ -8,7 +8,9 @@ import {
   InternalServerErrorException,
   BadRequestException,
   ConflictException,
+  Inject,
 } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
 import { Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { ConfigService } from '@nestjs/config'
@@ -16,10 +18,14 @@ import { Prisma } from '@prisma/client'
 import { PrismaService } from '../services/prisma.service'
 import { PaginationService } from '../services/pagination.service'
 import { CustomLogger } from '../logger/custom.logger'
-
+import { DebugService } from '../services/debug.service'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
+
 @Injectable()
 export abstract class BaseController {
+  @Inject()
+  private readonly debugService: DebugService
+
   constructor(protected readonly modelName: keyof Prisma.TypeMap['model']) {}
 
   protected abstract get prisma(): PrismaService
@@ -106,16 +112,47 @@ export abstract class BaseController {
   }
 
   protected handleSuccess<T>(data: T): Partial<Response<T>> {
-    return data
+    const req = this.getRequest()
+    const debug = this.config.get('app.debug')
+
+    const response: any = { data }
+
+    if (debug && req?.permissions) {
+      response.debug = {
+        permissions: req.permissions,
+        timestamp: new Date().toISOString(),
+      }
+    }
+
+    return response
   }
 
   protected handlePaginatedSuccess<T>(data: T[], meta: any): PaginatedResponse<T> {
-    return {
+    const req = this.getRequest()
+    const debug = this.config.get('app.debug')
+
+    const response: PaginatedResponse<T> = {
       data,
       meta,
       timestamp: new Date().toISOString(),
       success: true,
     }
+
+    if (debug && req.permissions) {
+      response.debug = {
+        permissions: req.permissions,
+        timestamp: new Date().toISOString(),
+      }
+    }
+
+    return response
+  }
+
+  private getRequest() {
+    // get httpContext from the current request scope
+    const httpContext = require('@nestjs/core').HttpAdapterHost
+    const req = httpContext.HttpAdapterHost.getRequestScope()
+    return req
   }
 
   protected handleError(error: any): never {

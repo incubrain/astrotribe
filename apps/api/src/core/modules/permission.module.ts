@@ -6,6 +6,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionService } from '../services/permission.service'
 import { PermissionGuard } from '../guards/permission.guard'
 import { PrismaModule } from '../modules/prisma.module'
+import { DebugService } from '../services/debug.service'
 
 @Global()
 @Module({
@@ -23,12 +24,13 @@ import { PrismaModule } from '../modules/prisma.module'
         permissionService: PermissionService,
         logger: CustomLogger,
         reflector: Reflector,
+        debugService: DebugService,
       ) => {
-        return new PermissionGuard(permissionService, logger, reflector)
+        return new PermissionGuard(permissionService, logger, reflector, debugService)
       },
-      inject: [PermissionService, CustomLogger, Reflector],
+      inject: [PermissionService, CustomLogger, Reflector, DebugService],
     },
   ],
-  exports: [PermissionService, CustomLogger],
+  exports: [PermissionService],
 })
 export class PermissionModule {}
