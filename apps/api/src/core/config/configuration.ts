@@ -2,6 +2,7 @@
 import { registerAs } from '@nestjs/config'
 
 export default registerAs('app', () => ({
+  debug: process.env.APP_DEBUG === 'true',
   supabase: {
     anon_key: process.env.SUPABASE_ANON_KEY,
     url: process.env.SUPABASE_URL,
