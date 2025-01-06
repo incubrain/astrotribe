@@ -20,11 +20,7 @@ const { items } = storeToRefs(store)
 
 const { items: subscriptionItems } = storeToRefs(subscriptionStore)
 
-console.log(subscriptionItems, 'Subscription Items')
-
 const subscription = computed(() => subscriptionItems.value?.[0])
-
-console.log('Subscription', subscription)
 
 interface PlanConfig {
   id: string
