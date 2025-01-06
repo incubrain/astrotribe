@@ -47,7 +47,7 @@ export function isPartialtable_statistics(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "table_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "row_count":
       return true; // Complex type requiring deeper validation
     case "table_size":
@@ -59,13 +59,13 @@ function isValidField(key: string, value: unknown): boolean {
     case "dead_tuples":
       return true; // Complex type requiring deeper validation
     case "last_vacuum":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "last_analyze":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "estimated_bloat_ratio":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "buffer_cache_hit_ratio":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "index_usage":
       return true; // Complex type requiring deeper validation
     case "seq_scan_count":
@@ -73,7 +73,7 @@ function isValidField(key: string, value: unknown): boolean {
     case "index_scan_count":
       return true; // Complex type requiring deeper validation
     case "capture_time":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

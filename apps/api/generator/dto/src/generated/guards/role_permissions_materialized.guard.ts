@@ -38,7 +38,7 @@ function isValidField(key: string, value: unknown): boolean {
     case "permissions":
       return true; // Complex type requiring deeper validation
     case "last_updated":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

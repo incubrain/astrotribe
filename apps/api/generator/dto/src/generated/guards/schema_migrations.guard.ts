@@ -34,7 +34,7 @@ export function isPartialschema_migrations(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "version":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
   }
   return false;
 }

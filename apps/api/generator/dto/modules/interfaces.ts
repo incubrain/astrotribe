@@ -1,7 +1,10 @@
 // tools/generators/dto/modules/interfaces.ts
 import { TypeMapper } from '../utils/type-mapper'
 import { DocumentationParser } from '../utils/documentation-parser'
-import { InterfaceTemplate } from '../template/interface.template'
+import { TemplateEngine } from '../utils/template-engine'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+import { registerHandlebarsHelpers } from '../utils/handlebars-helpers'
 import type { ModelMetadata, FieldMetadata, RelationshipMetadata, ValidationRule } from '../types'
 
 /**
@@ -10,41 +13,69 @@ import type { ModelMetadata, FieldMetadata, RelationshipMetadata, ValidationRule
  * maintaining consistent formatting and documentation standards.
  */
 export class InterfaceGenerator {
+  private readonly templates: {
+    interface: string
+    imports: string
+    documentation: string
+    property: string
+    relation: string
+    typeHelpers: string
+  }
+
   constructor(
     private readonly typeMapper: TypeMapper,
     private readonly docParser: DocumentationParser,
-  ) {}
+  ) {
+    // Register Handlebars helpers
+    registerHandlebarsHelpers()
+
+    // Load the template file
+    const templatesDir = join(__dirname, '../templates')
+    this.templates = {
+      interface: readFileSync(join(templatesDir, 'interface.hbs'), 'utf-8'),
+      imports: readFileSync(join(templatesDir, 'imports.hbs'), 'utf-8'),
+      documentation: readFileSync(join(templatesDir, 'documentation.hbs'), 'utf-8'),
+      property: readFileSync(join(templatesDir, 'property.hbs'), 'utf-8'),
+      relation: readFileSync(join(templatesDir, 'relation.hbs'), 'utf-8'),
+      typeHelpers: readFileSync(join(templatesDir, 'type-helpers.hbs'), 'utf-8'),
+    }
+  }
 
   /**
    * Generates a complete interface file for a model, including all related
    * interfaces and type helpers. Uses templates to ensure consistency.
    */
   generateInterface(model: ModelMetadata): string {
-    // First, we prepare all the components needed for our interface
     const context = {
       imports: this.prepareImports(model),
       documentation: this.prepareDocumentation(model),
-      interfaceName: model.name,
       properties: this.prepareProperties(model.fields),
-      relationInterfaces: this.prepareRelationInterfaces(model),
+      relations: this.prepareRelationInterfaces(model),
       typeHelpers: this.prepareTypeHelpers(model),
+      model: {
+        name: model.name,
+        documentation: model.documentation,
+        fields: model.fields.map((field) => ({
+          name: field.name,
+          type: field.type,
+          isRequired: field.isRequired,
+          isList: field.isList,
+          documentation: field.documentation,
+          kind: field.kind,
+          validationRules: this.formatValidationRules(field.validationRules),
+          tsType: this.typeMapper.mapPrismaToTypeScript(field),
+        })),
+        relations: model.relations,
+      },
     }
 
-    // Then we use our template to generate the final output
-    return this.applyTemplate(InterfaceTemplate.MAIN_TEMPLATE, context)
+    return TemplateEngine.process(this.templates.interface, context)
   }
 
-  /**
-   * Prepares import statements based on model relationships and dependencies.
-   * Groups imports by source for better organization.
-   */
   private prepareImports(model: ModelMetadata): string {
     const imports = new Set<{ what: string; from: string }>()
-
-    // Add base imports
     imports.add({ what: 'BaseEntity', from: '@core/base/entity' })
 
-    // Add relationship imports
     model.relationships.forEach((relation) => {
       imports.add({
         what: `I${relation.type}`,
@@ -52,7 +83,7 @@ export class InterfaceGenerator {
       })
     })
 
-    return this.applyTemplate(InterfaceTemplate.IMPORTS_TEMPLATE, { imports: Array.from(imports) })
+    return TemplateEngine.process(this.templates.imports, { imports: Array.from(imports) })
   }
 
   /**
@@ -61,7 +92,7 @@ export class InterfaceGenerator {
    */
   private prepareDocumentation(model: ModelMetadata): string {
     const docs = model.documentation
-    return this.applyTemplate(InterfaceTemplate.DOCUMENTATION_TEMPLATE, {
+    return TemplateEngine.process(this.templates.documentation, {
       description: docs.description,
       deprecated: docs.deprecated,
       example: docs.example,
@@ -76,7 +107,7 @@ export class InterfaceGenerator {
   private prepareProperties(fields: FieldMetadata[]): string {
     return fields
       .map((field) => {
-        return this.applyTemplate(InterfaceTemplate.PROPERTY_TEMPLATE, {
+        return TemplateEngine.process(this.templates.property, {
           description: field.documentation.description,
           example: field.documentation.example,
           validation: this.formatValidationRules(field.validationRules),
@@ -95,7 +126,7 @@ export class InterfaceGenerator {
   private prepareRelationInterfaces(model: ModelMetadata): string {
     return model.relationships
       .map((relation) => {
-        return this.applyTemplate(InterfaceTemplate.RELATION_INTERFACE_TEMPLATE, {
+        return TemplateEngine.process(this.templates.relation, {
           interfaceName: model.name,
           relationName: relation.name,
           relationProperty: relation.name,
@@ -110,14 +141,11 @@ export class InterfaceGenerator {
    * Includes common type transformations like Partial and Required.
    */
   private prepareTypeHelpers(model: ModelMetadata): string {
-    return this.applyTemplate(InterfaceTemplate.TYPE_HELPERS_TEMPLATE, {
+    return TemplateEngine.process(this.templates.typeHelpers, {
       interfaceName: model.name,
     })
   }
 
-  /**
-   * Formats validation rules into a readable string for documentation.
-   */
   private formatValidationRules(rules: ValidationRule[]): string {
     if (!rules.length) return ''
     return rules
@@ -125,9 +153,6 @@ export class InterfaceGenerator {
       .join(', ')
   }
 
-  /**
-   * Determines the correct TypeScript type for a relationship.
-   */
   private getRelationType(relation: RelationshipMetadata): string {
     const baseType = `I${relation.type}`
     return relation.isArray ? `${baseType}[]` : baseType

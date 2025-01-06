@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    plan{{#unless required}}?{{/unless}}: unknown;
+    plan{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    feature{{#unless required}}?{{/unless}}: unknown;
+    feature{{#unless required}}?{{/unless}}: string;
   }
   
   

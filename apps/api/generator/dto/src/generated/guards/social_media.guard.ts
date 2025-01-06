@@ -42,21 +42,21 @@ export function isPartialsocial_media(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "facebook_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "twitter_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "linkedin_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "instagram_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "youtube_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "companies":
       return true; // Complex type requiring deeper validation
   }

@@ -47,31 +47,31 @@ export function isPartialcustomer_refunds(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "payment_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "external_refund_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "amount":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "status":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "speed_processed":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "speed_requested":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "notes":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "currency":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "receipt":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "acquirer_data":
       return true; // Complex type requiring deeper validation
     case "batch_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "customer_payments":
       return true; // Complex type requiring deeper validation
   }

@@ -45,21 +45,21 @@ export function isPartialsaml_relay_states(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "sso_provider_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "request_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "for_email":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "redirect_to":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "flow_state_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "flow_state":
       return true; // Complex type requiring deeper validation
     case "sso_providers":

@@ -34,13 +34,13 @@ export function isPartialcustomer_processed_webhooks(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "event_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "event_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "processed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

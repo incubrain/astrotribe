@@ -47,21 +47,21 @@ export function isPartialcontents(value: unknown): value is Partial<Icontents> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_type":
       return true; // Complex type requiring deeper validation
     case "title":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "rss_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "hot_score":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "bookmarks":
       return true; // Complex type requiring deeper validation
     case "content_categories":

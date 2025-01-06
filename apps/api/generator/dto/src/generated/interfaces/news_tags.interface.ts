@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    tag_id{{#unless required}}?{{/unless}}: unknown;
+    tag_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    news_id{{#unless required}}?{{/unless}}: unknown;
+    news_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    tags{{#unless required}}?{{/unless}}: unknown;
+    tags{{#unless required}}?{{/unless}}: any;
   }
   
   export interface news_tagsWithtags extends news_tags {

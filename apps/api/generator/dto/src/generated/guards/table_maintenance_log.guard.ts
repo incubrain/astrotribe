@@ -34,13 +34,13 @@ export function isPartialtable_maintenance_log(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "operation":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "detail":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "logged_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

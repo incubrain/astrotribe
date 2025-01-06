@@ -24,7 +24,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    instance_id{{#unless required}}?{{/unless}}: unknown;
+    instance_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -32,7 +32,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -40,7 +40,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    aud{{#unless required}}?{{/unless}}: unknown;
+    aud{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -48,7 +48,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    role{{#unless required}}?{{/unless}}: unknown;
+    role{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -56,7 +56,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    email{{#unless required}}?{{/unless}}: unknown;
+    email{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -64,7 +64,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    encrypted_password{{#unless required}}?{{/unless}}: unknown;
+    encrypted_password{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -72,7 +72,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    email_confirmed_at{{#unless required}}?{{/unless}}: unknown;
+    email_confirmed_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -80,7 +80,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    invited_at{{#unless required}}?{{/unless}}: unknown;
+    invited_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -88,7 +88,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    confirmation_token{{#unless required}}?{{/unless}}: unknown;
+    confirmation_token{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -96,7 +96,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    confirmation_sent_at{{#unless required}}?{{/unless}}: unknown;
+    confirmation_sent_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -104,7 +104,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    recovery_token{{#unless required}}?{{/unless}}: unknown;
+    recovery_token{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -112,7 +112,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    recovery_sent_at{{#unless required}}?{{/unless}}: unknown;
+    recovery_sent_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -120,7 +120,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    email_change_token_new{{#unless required}}?{{/unless}}: unknown;
+    email_change_token_new{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -128,7 +128,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    email_change{{#unless required}}?{{/unless}}: unknown;
+    email_change{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -136,7 +136,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    email_change_sent_at{{#unless required}}?{{/unless}}: unknown;
+    email_change_sent_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -144,7 +144,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_sign_in_at{{#unless required}}?{{/unless}}: unknown;
+    last_sign_in_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -152,7 +152,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation {{/if}}
      */
-    raw_app_meta_data{{#unless required}}?{{/unless}}: unknown;
+    raw_app_meta_data{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -160,7 +160,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation {{/if}}
      */
-    raw_user_meta_data{{#unless required}}?{{/unless}}: unknown;
+    raw_user_meta_data{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -176,7 +176,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -184,7 +184,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -192,7 +192,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    phone{{#unless required}}?{{/unless}}: unknown;
+    phone{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -200,7 +200,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    phone_confirmed_at{{#unless required}}?{{/unless}}: unknown;
+    phone_confirmed_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -208,7 +208,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    phone_change{{#unless required}}?{{/unless}}: unknown;
+    phone_change{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -216,7 +216,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    phone_change_token{{#unless required}}?{{/unless}}: unknown;
+    phone_change_token{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -224,7 +224,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    phone_change_sent_at{{#unless required}}?{{/unless}}: unknown;
+    phone_change_sent_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -232,7 +232,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    confirmed_at{{#unless required}}?{{/unless}}: unknown;
+    confirmed_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -240,7 +240,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    email_change_token_current{{#unless required}}?{{/unless}}: unknown;
+    email_change_token_current{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -248,7 +248,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    email_change_confirm_status{{#unless required}}?{{/unless}}: unknown;
+    email_change_confirm_status{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -256,7 +256,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    banned_until{{#unless required}}?{{/unless}}: unknown;
+    banned_until{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -264,7 +264,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    reauthentication_token{{#unless required}}?{{/unless}}: unknown;
+    reauthentication_token{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -272,7 +272,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    reauthentication_sent_at{{#unless required}}?{{/unless}}: unknown;
+    reauthentication_sent_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -288,7 +288,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    deleted_at{{#unless required}}?{{/unless}}: unknown;
+    deleted_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -304,7 +304,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    identities{{#unless required}}?{{/unless}}: unknown;
+    identities{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -312,7 +312,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    mfa_factors{{#unless required}}?{{/unless}}: unknown;
+    mfa_factors{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -320,7 +320,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    one_time_tokens{{#unless required}}?{{/unless}}: unknown;
+    one_time_tokens{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -328,7 +328,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    sessions{{#unless required}}?{{/unless}}: unknown;
+    sessions{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -336,7 +336,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    bookmark_folders{{#unless required}}?{{/unless}}: unknown;
+    bookmark_folders{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -344,7 +344,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    bookmarks{{#unless required}}?{{/unless}}: unknown;
+    bookmarks{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -352,7 +352,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation {{/if}}
      */
-    user_profiles{{#unless required}}?{{/unless}}: unknown;
+    user_profiles{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -360,7 +360,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    votes{{#unless required}}?{{/unless}}: unknown;
+    votes{{#unless required}}?{{/unless}}: any;
   }
   
   export interface usersWithidentities extends users {

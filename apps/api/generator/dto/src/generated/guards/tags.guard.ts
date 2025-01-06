@@ -41,21 +41,21 @@ export function isPartialtags(value: unknown): value is Partial<Itags> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "body":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "document_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "locale":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "published_at":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "content_tags":
       return true; // Complex type requiring deeper validation
     case "news_tags":

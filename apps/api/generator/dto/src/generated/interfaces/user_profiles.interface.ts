@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    email{{#unless required}}?{{/unless}}: unknown;
+    email{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    given_name{{#unless required}}?{{/unless}}: unknown;
+    given_name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    surname{{#unless required}}?{{/unless}}: unknown;
+    surname{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    username{{#unless required}}?{{/unless}}: unknown;
+    username{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    dob{{#unless required}}?{{/unless}}: unknown;
+    dob{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    gender_id{{#unless required}}?{{/unless}}: unknown;
+    gender_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_seen{{#unless required}}?{{/unless}}: unknown;
+    last_seen{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    avatar{{#unless required}}?{{/unless}}: unknown;
+    avatar{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    introduction{{#unless required}}?{{/unless}}: unknown;
+    introduction{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    followed_count{{#unless required}}?{{/unless}}: unknown;
+    followed_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    followers_count{{#unless required}}?{{/unless}}: unknown;
+    followers_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    plan{{#unless required}}?{{/unless}}: unknown;
+    plan{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    role{{#unless required}}?{{/unless}}: unknown;
+    role{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    addresses{{#unless required}}?{{/unless}}: unknown;
+    addresses{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    comments{{#unless required}}?{{/unless}}: unknown;
+    comments{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    company_employees{{#unless required}}?{{/unless}}: unknown;
+    company_employees{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -181,7 +181,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contacts{{#unless required}}?{{/unless}}: unknown;
+    contacts{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_source_visits{{#unless required}}?{{/unless}}: unknown;
+    content_source_visits{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -197,7 +197,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    customer_payments{{#unless required}}?{{/unless}}: unknown;
+    customer_payments{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -205,7 +205,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    customer_subscriptions{{#unless required}}?{{/unless}}: unknown;
+    customer_subscriptions{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -213,7 +213,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    feedbacks{{#unless required}}?{{/unless}}: unknown;
+    feedbacks{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -221,7 +221,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    feeds{{#unless required}}?{{/unless}}: unknown;
+    feeds{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -229,7 +229,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    follows{{#unless required}}?{{/unless}}: unknown;
+    follows{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -237,7 +237,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    user_metrics{{#unless required}}?{{/unless}}: unknown;
+    user_metrics{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -245,7 +245,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    users{{#unless required}}?{{/unless}}: unknown;
+    users{{#unless required}}?{{/unless}}: any;
   }
   
   export interface user_profilesWithaddresses extends user_profiles {

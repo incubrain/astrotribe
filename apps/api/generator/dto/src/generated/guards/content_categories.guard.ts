@@ -40,7 +40,7 @@ export function isPartialcontent_categories(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "content_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "category_id":
       return true; // Complex type requiring deeper validation
     case "is_primary":

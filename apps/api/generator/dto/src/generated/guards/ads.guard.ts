@@ -42,21 +42,21 @@ export function isPartialads(value: unknown): value is Partial<Iads> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "company_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "package_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "start_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "end_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "active":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "ad_variants":
       return true; // Complex type requiring deeper validation
     case "companies":

@@ -53,33 +53,33 @@ function isValidField(key: string, value: unknown): boolean {
     case "id":
       return true; // Complex type requiring deeper validation
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_type":
       return true; // Complex type requiring deeper validation
     case "scrape_frequency":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "refreshed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "has_failed":
       return typeof value === "boolean";
     case "failed_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "priority":
       return true; // Complex type requiring deeper validation
     case "hash":
       return true; // Complex type requiring deeper validation
     case "scraped_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "expected_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "company_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "rss_urls":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "companies":
       return true; // Complex type requiring deeper validation
     case "feed_sources":

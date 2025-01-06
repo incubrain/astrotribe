@@ -58,51 +58,51 @@ export function isPartialresearch(value: unknown): value is Partial<Iresearch> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "published_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "title":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "version":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "abstract":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "keywords":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "month":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "year":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "abstract_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "category":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "doi_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "figure_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "has_embedding":
       return typeof value === "boolean";
     case "page_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "pdf_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "published_in":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "table_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "comments":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_flagged":
       return typeof value === "boolean";
     case "authors":
       return true; // Complex type requiring deeper validation
     case "summary":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_status":
       return true; // Complex type requiring deeper validation
     case "affiliations":

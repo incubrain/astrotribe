@@ -45,27 +45,27 @@ export function isPartialsessions(value: unknown): value is Partial<Isessions> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "factor_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "aal":
       return true; // Complex type requiring deeper validation
     case "not_after":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "refreshed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "user_agent":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "ip":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "tag":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "mfa_amr_claims":
       return true; // Complex type requiring deeper validation
     case "refresh_tokens":

@@ -44,17 +44,17 @@ export function isPartialmetric_definitions(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "category":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "unit":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_dimensional":
       return typeof value === "boolean";
     case "company_metrics":

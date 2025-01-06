@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    published_at{{#unless required}}?{{/unless}}: unknown;
+    published_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    title{{#unless required}}?{{/unless}}: unknown;
+    title{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    version{{#unless required}}?{{/unless}}: unknown;
+    version{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    abstract{{#unless required}}?{{/unless}}: unknown;
+    abstract{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    keywords{{#unless required}}?{{/unless}}: unknown;
+    keywords{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    month{{#unless required}}?{{/unless}}: unknown;
+    month{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    year{{#unless required}}?{{/unless}}: unknown;
+    year{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    abstract_url{{#unless required}}?{{/unless}}: unknown;
+    abstract_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    category{{#unless required}}?{{/unless}}: unknown;
+    category{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    doi_url{{#unless required}}?{{/unless}}: unknown;
+    doi_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    figure_count{{#unless required}}?{{/unless}}: unknown;
+    figure_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    page_count{{#unless required}}?{{/unless}}: unknown;
+    page_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    pdf_url{{#unless required}}?{{/unless}}: unknown;
+    pdf_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    published_in{{#unless required}}?{{/unless}}: unknown;
+    published_in{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    table_count{{#unless required}}?{{/unless}}: unknown;
+    table_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    comments{{#unless required}}?{{/unless}}: unknown;
+    comments{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    authors{{#unless required}}?{{/unless}}: unknown;
+    authors{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -197,7 +197,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    summary{{#unless required}}?{{/unless}}: unknown;
+    summary{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -205,7 +205,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_status{{#unless required}}?{{/unless}}: unknown;
+    content_status{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -213,7 +213,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    affiliations{{#unless required}}?{{/unless}}: unknown;
+    affiliations{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -221,7 +221,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contents{{#unless required}}?{{/unless}}: unknown;
+    contents{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -229,7 +229,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    research_embeddings{{#unless required}}?{{/unless}}: unknown;
+    research_embeddings{{#unless required}}?{{/unless}}: any;
   }
   
   export interface researchWithcontents extends research {

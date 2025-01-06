@@ -42,19 +42,19 @@ export function isPartialnews_summaries(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "news_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "summary":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "version":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "is_current":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "complexity_level":
       return true; // Complex type requiring deeper validation
     case "news":

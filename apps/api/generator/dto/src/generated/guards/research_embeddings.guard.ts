@@ -45,19 +45,19 @@ export function isPartialresearch_embeddings(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "research_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "chunk":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "is_flagged":
       return typeof value === "boolean";
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "embedding_review_id":
       return true; // Complex type requiring deeper validation
     case "embedding_reviews":

@@ -42,21 +42,21 @@ export function isPartialcomments(value: unknown): value is Partial<Icomments> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_type":
       return true; // Complex type requiring deeper validation
     case "parent_comment_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "comments":
       return true; // Complex type requiring deeper validation
     case "other_comments":

@@ -46,29 +46,29 @@ export function isPartialad_packages(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "position":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "active":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "price":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "features":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "expected_ctr":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "avg_roi":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "view_frequency":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "ads":
       return true; // Complex type requiring deeper validation
   }

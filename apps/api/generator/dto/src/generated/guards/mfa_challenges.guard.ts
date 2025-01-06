@@ -41,17 +41,17 @@ export function isPartialmfa_challenges(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "factor_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "verified_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "ip_address":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "otp_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "web_authn_session_data":
       return true; // Complex type requiring deeper validation
     case "mfa_factors":

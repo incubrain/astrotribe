@@ -39,13 +39,13 @@ function isValidField(key: string, value: unknown): boolean {
     case "id":
       return true; // Complex type requiring deeper validation
     case "input":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "tokens_used":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "user_ids":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "responses":
       return true; // Complex type requiring deeper validation
   }

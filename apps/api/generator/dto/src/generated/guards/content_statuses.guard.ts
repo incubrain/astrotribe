@@ -39,13 +39,13 @@ export function isPartialcontent_statuses(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "notes":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "content_status":
       return true; // Complex type requiring deeper validation
     case "contents":

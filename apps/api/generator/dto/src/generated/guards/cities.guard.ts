@@ -37,13 +37,13 @@ export function isPartialcities(value: unknown): value is Partial<Icities> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "country_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "state":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "addresses":
       return true; // Complex type requiring deeper validation
     case "countries":
