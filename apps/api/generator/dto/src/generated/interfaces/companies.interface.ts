@@ -1,308 +1,233 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iaddresses } from './addresses.interface';
+import { Iads } from './ads.interface';
+import { Iblacklisted_urls } from './blacklisted_urls.interface';
+import { Isocial_media } from './social_media.interface';
+import { Icategories } from './categories.interface';
+import { Icompany_contacts } from './company_contacts.interface';
+import { Icompany_extras } from './company_extras.interface';
+import { Icompany_urls } from './company_urls.interface';
+import { Icontacts } from './contacts.interface';
+import { Icontent_sources } from './content_sources.interface';
+import { Inews } from './news.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icompanies extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsString
    */
-  export interface companies {
+  name?: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    logo_url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    social_media_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    scrape_frequency{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    category_id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    founding_year{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_government{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    category{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    failed_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_english{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    scrape_rating{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    scraped_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    keywords{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    addresses{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    ads{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    blacklisted_urls{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    social_media{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    categories{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    company_contacts{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    company_extras{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    company_urls{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    contacts{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_sources{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    news{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface companiesWithaddresses extends companies {
-    addresses: Iaddresses;
-  }
-
-export interface companiesWithads extends companies {
-    ads: Iads;
-  }
-
-export interface companiesWithblacklisted_urls extends companies {
-    blacklisted_urls: Iblacklisted_urls;
-  }
-
-export interface companiesWithsocial_media extends companies {
-    social_media: Isocial_media;
-  }
-
-export interface companiesWithcategories extends companies {
-    categories: Icategories;
-  }
-
-export interface companiesWithcompany_contacts extends companies {
-    company_contacts: Icompany_contacts;
-  }
-
-export interface companiesWithcompany_extras extends companies {
-    company_extras: Icompany_extras;
-  }
-
-export interface companiesWithcompany_urls extends companies {
-    company_urls: Icompany_urls;
-  }
-
-export interface companiesWithcontacts extends companies {
-    contacts: Icontacts;
-  }
-
-export interface companiesWithcontent_sources extends companies {
-    content_sources: Icontent_sources;
-  }
-
-export interface companiesWithnews extends companies {
-    news: Inews;
-  }
-  
-  /**
-   * Helper types for working with companies
+   * 
+   * @validation @IsString
    */
-  export type Partialcompanies = Partial<companies>
-  export type Requiredcompanies = Required<companies>
-  export type Pickcompanies<K extends keyof companies> = Pick<companies, K>
+  description?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  logo_url?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  url: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  social_media_id?: number;
+  /**
+   * 
+   */
+  scrape_frequency?: any;
+  /**
+   * 
+   */
+  category_id?: bigint;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  founding_year?: number;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_government?: boolean;
+  /**
+   * 
+   * @validation @IsString
+   */
+  category?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  failed_count?: number;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_english?: boolean;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  scrape_rating?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  id: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  scraped_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_status: any;
+  /**
+   * 
+   */
+  keywords?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  addresses: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  ads: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  blacklisted_urls: any;
+  /**
+   * 
+   */
+  social_media?: any;
+  /**
+   * 
+   */
+  categories?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  company_contacts: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  company_extras: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  company_urls: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  contacts: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_sources: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  news: any;
+}
+
+export interface IcompaniesWithaddresses
+extends Icompanies
+{
+addresses:
+Iaddresses; }
+
+export interface IcompaniesWithads
+extends Icompanies
+{
+ads:
+Iads; }
+
+export interface IcompaniesWithblacklisted_urls
+extends Icompanies
+{
+blacklisted_urls:
+Iblacklisted_urls; }
+
+export interface IcompaniesWithsocial_media
+extends Icompanies
+{
+social_media:
+Isocial_media; }
+
+export interface IcompaniesWithcategories
+extends Icompanies
+{
+categories:
+Icategories; }
+
+export interface IcompaniesWithcompany_contacts
+extends Icompanies
+{
+company_contacts:
+Icompany_contacts; }
+
+export interface IcompaniesWithcompany_extras
+extends Icompanies
+{
+company_extras:
+Icompany_extras; }
+
+export interface IcompaniesWithcompany_urls
+extends Icompanies
+{
+company_urls:
+Icompany_urls; }
+
+export interface IcompaniesWithcontacts
+extends Icompanies
+{
+contacts:
+Icontacts; }
+
+export interface IcompaniesWithcontent_sources
+extends Icompanies
+{
+content_sources:
+Icontent_sources; }
+
+export interface IcompaniesWithnews
+extends Icompanies
+{
+news:
+Inews; }
+
+export type Partialcompanies = Partial<Icompanies>;
+export type Requiredcompanies = Required<Icompanies>;

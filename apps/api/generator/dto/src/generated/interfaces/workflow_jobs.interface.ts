@@ -1,124 +1,78 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iworkflows } from './workflows.interface';
+
+
+/**
+ * 
+ */
+export interface Iworkflow_jobs extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface workflow_jobs {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    workflow_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    job_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    job_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    sequence_number{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    depends_on{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    started_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    completed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    workflows{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface workflow_jobsWithworkflows extends workflow_jobs {
-    workflows: Iworkflows;
-  }
-  
-  /**
-   * Helper types for working with workflow_jobs
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialworkflow_jobs = Partial<workflow_jobs>
-  export type Requiredworkflow_jobs = Required<workflow_jobs>
-  export type Pickworkflow_jobs<K extends keyof workflow_jobs> = Pick<workflow_jobs, K>
+  workflow_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  job_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  job_name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  status: any;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  sequence_number: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  depends_on: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  started_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  completed_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  workflows: any;
+}
+
+export interface Iworkflow_jobsWithworkflows
+extends Iworkflow_jobs
+{
+workflows:
+Iworkflows; }
+
+export type Partialworkflow_jobs = Partial<Iworkflow_jobs>;
+export type Requiredworkflow_jobs = Required<Iworkflow_jobs>;

@@ -37,6 +37,12 @@ export abstract class BaseGenerator {
     this.typeMapper = new TypeMapper()
     this.openApiGenerator = new OpenAPIMetadataGenerator(this.typeMapper)
     this.fieldParser = new FieldParser()
+    console.log('Generator options:', {
+      outputPath: this.options.outputPath,
+      typescript: this.options.typescript,
+      validation: this.options.validation,
+      documentation: this.options.documentation
+    })
   }
 
   /**
@@ -44,17 +50,23 @@ export abstract class BaseGenerator {
    * Each step is isolated and can be enabled/disabled via options.
    */
   async generate(): Promise<void> {
+    console.log('Starting DTO generation...')
+
     // Create necessary directories
     await this.fileManager.initializeDirectory()
+    console.log('Directory initialized')
 
     // Process each model
+    console.log(`Processing ${this.dmmf.datamodel.models.length} models`)
     for (const model of this.dmmf.datamodel.models) {
+      console.log(`Processing model: ${model.name}`)
       const metadata = await this.processModel(model)
 
       // Generate different artifacts based on options
       const files: GeneratedFile[] = []
 
       if (this.options.typescript.generateInterfaces) {
+        console.log(`Generating interface for ${model.name}`)
         files.push(await this.generateInterface(metadata))
       }
 
@@ -71,6 +83,7 @@ export abstract class BaseGenerator {
       }
 
       // Write all generated files
+      console.log(`Writing ${files.length} files for ${model.name}`)
       await Promise.all(files.map((file) => this.fileManager.writeFile(file.path, file.content)))
     }
 
@@ -81,6 +94,8 @@ export abstract class BaseGenerator {
 
     await this.generateIndexFile()
     await this.generateUtilityFiles()
+
+    console.log('DTO generation completed')
   }
 
   /**

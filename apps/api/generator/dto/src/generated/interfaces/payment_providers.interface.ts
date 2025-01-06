@@ -1,88 +1,60 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface payment_providers {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_active{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_payments{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    customer_subscriptions{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface payment_providersWithcustomer_payments extends payment_providers {
-    customer_payments: Icustomer_payments;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icustomer_payments } from './customer_payments.interface';
+import { Icustomer_subscriptions } from './customer_subscriptions.interface';
 
-export interface payment_providersWithcustomer_subscriptions extends payment_providers {
-    customer_subscriptions: Icustomer_subscriptions;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Ipayment_providers extends BaseEntity {
   /**
-   * Helper types for working with payment_providers
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialpayment_providers = Partial<payment_providers>
-  export type Requiredpayment_providers = Required<payment_providers>
-  export type Pickpayment_providers<K extends keyof payment_providers> = Pick<payment_providers, K>
+  id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  name: string;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_active?: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_payments: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  customer_subscriptions: any;
+}
+
+export interface Ipayment_providersWithcustomer_payments
+extends Ipayment_providers
+{
+customer_payments:
+Icustomer_payments; }
+
+export interface Ipayment_providersWithcustomer_subscriptions
+extends Ipayment_providers
+{
+customer_subscriptions:
+Icustomer_subscriptions; }
+
+export type Partialpayment_providers = Partial<Ipayment_providers>;
+export type Requiredpayment_providers = Required<Ipayment_providers>;

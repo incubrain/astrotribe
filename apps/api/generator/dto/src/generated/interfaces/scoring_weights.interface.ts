@@ -1,66 +1,38 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Iscoring_weights extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface scoring_weights {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    weight{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with scoring_weights
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialscoring_weights = Partial<scoring_weights>
-  export type Requiredscoring_weights = Required<scoring_weights>
-  export type Pickscoring_weights<K extends keyof scoring_weights> = Pick<scoring_weights, K>
+  name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  weight: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  description?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+}
+
+
+
+export type Partialscoring_weights = Partial<Iscoring_weights>;
+export type Requiredscoring_weights = Required<Iscoring_weights>;

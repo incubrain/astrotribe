@@ -1,403 +1,282 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+import { BaseEntity } from '@core/base/entity';
+import { Iidentities } from './identities.interface';
+import { Imfa_factors } from './mfa_factors.interface';
+import { Ione_time_tokens } from './one_time_tokens.interface';
+import { Isessions } from './sessions.interface';
+import { Ibookmark_folders } from './bookmark_folders.interface';
+import { Ibookmarks } from './bookmarks.interface';
+import { Iuser_profiles } from './user_profiles.interface';
+import { Ivotes } from './votes.interface';
+
+
+/**
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface users {
+ */
+export interface Iusers extends BaseEntity {
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    instance_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    aud{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    role{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    email{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    encrypted_password{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    email_confirmed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    invited_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    confirmation_token{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    confirmation_sent_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    recovery_token{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    recovery_sent_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    email_change_token_new{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    email_change{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    email_change_sent_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_sign_in_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    raw_app_meta_data{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    raw_user_meta_data{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    is_super_admin{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    phone{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    phone_confirmed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    phone_change{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    phone_change_token{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    phone_change_sent_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    confirmed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    email_change_token_current{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    email_change_confirm_status{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    banned_until{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    reauthentication_token{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    reauthentication_sent_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsBoolean{{/if}}
-     */
-    is_sso_user{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    deleted_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsBoolean{{/if}}
-     */
-    is_anonymous{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    identities{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    mfa_factors{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    one_time_tokens{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    sessions{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    bookmark_folders{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    bookmarks{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    user_profiles{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    votes{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface usersWithidentities extends users {
-    identities: Iidentities;
-  }
-
-export interface usersWithmfa_factors extends users {
-    mfa_factors: Imfa_factors;
-  }
-
-export interface usersWithone_time_tokens extends users {
-    one_time_tokens: Ione_time_tokens;
-  }
-
-export interface usersWithsessions extends users {
-    sessions: Isessions;
-  }
-
-export interface usersWithbookmark_folders extends users {
-    bookmark_folders: Ibookmark_folders;
-  }
-
-export interface usersWithbookmarks extends users {
-    bookmarks: Ibookmarks;
-  }
-
-export interface usersWithuser_profiles extends users {
-    user_profiles: Iuser_profiles;
-  }
-
-export interface usersWithvotes extends users {
-    votes: Ivotes;
-  }
-  
-  /**
-   * Helper types for working with users
+   * 
+   * @validation @IsString
    */
-  export type Partialusers = Partial<users>
-  export type Requiredusers = Required<users>
-  export type Pickusers<K extends keyof users> = Pick<users, K>
+  instance_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  id: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  aud?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  role?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  email?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  encrypted_password?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  email_confirmed_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  invited_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  confirmation_token?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  confirmation_sent_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  recovery_token?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  recovery_sent_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  email_change_token_new?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  email_change?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  email_change_sent_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_sign_in_at?: Date;
+  /**
+   * 
+   */
+  raw_app_meta_data?: Record<string, any>;
+  /**
+   * 
+   */
+  raw_user_meta_data?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  is_super_admin?: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  phone?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  phone_confirmed_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  phone_change?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  phone_change_token?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  phone_change_sent_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  confirmed_at?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  email_change_token_current?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  email_change_confirm_status?: number;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  banned_until?: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  reauthentication_token?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  reauthentication_sent_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsBoolean
+   */
+  is_sso_user: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  deleted_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsBoolean
+   */
+  is_anonymous: boolean;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  identities: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  mfa_factors: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  one_time_tokens: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  sessions: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  bookmark_folders: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  bookmarks: any;
+  /**
+   * 
+   */
+  user_profiles?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  votes: any;
+}
+
+export interface IusersWithidentities
+extends Iusers
+{
+identities:
+Iidentities; }
+
+export interface IusersWithmfa_factors
+extends Iusers
+{
+mfa_factors:
+Imfa_factors; }
+
+export interface IusersWithone_time_tokens
+extends Iusers
+{
+one_time_tokens:
+Ione_time_tokens; }
+
+export interface IusersWithsessions
+extends Iusers
+{
+sessions:
+Isessions; }
+
+export interface IusersWithbookmark_folders
+extends Iusers
+{
+bookmark_folders:
+Ibookmark_folders; }
+
+export interface IusersWithbookmarks
+extends Iusers
+{
+bookmarks:
+Ibookmarks; }
+
+export interface IusersWithuser_profiles
+extends Iusers
+{
+user_profiles:
+Iuser_profiles; }
+
+export interface IusersWithvotes
+extends Iusers
+{
+votes:
+Ivotes; }
+
+export type Partialusers = Partial<Iusers>;
+export type Requiredusers = Required<Iusers>;

@@ -1,90 +1,53 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+
+
+/**
+ * 
+ */
+export interface Icircuit_breaker_states extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface circuit_breaker_states {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    job_name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    state{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    failure_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_failure{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    last_success{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-  }
-  
-  
-  
-  /**
-   * Helper types for working with circuit_breaker_states
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialcircuit_breaker_states = Partial<circuit_breaker_states>
-  export type Requiredcircuit_breaker_states = Required<circuit_breaker_states>
-  export type Pickcircuit_breaker_states<K extends keyof circuit_breaker_states> = Pick<circuit_breaker_states, K>
+  job_name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  state: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  failure_count?: number;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_failure?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  last_success?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+}
+
+
+
+export type Partialcircuit_breaker_states = Partial<Icircuit_breaker_states>;
+export type Requiredcircuit_breaker_states = Required<Icircuit_breaker_states>;

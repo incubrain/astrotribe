@@ -1,244 +1,164 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Icontent_sources } from './content_sources.interface';
+import { Icategories } from './categories.interface';
+import { Icompanies } from './companies.interface';
+import { Icontents } from './contents.interface';
+import { Inews_summaries } from './news_summaries.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Inews extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsDate
    */
-  export interface news {
+  created_at: Date;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    title{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    body{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    category_id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    author{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    description{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    featured_image{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsBoolean{{/if}}
-     */
-    has_summary{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    published_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    hash{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    company_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    failed_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    scrape_frequency{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    scraped_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    keywords{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    content_source_id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    content_sources{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    categories{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    companies{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    contents{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    news_summaries{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface newsWithcontent_sources extends news {
-    content_sources: Icontent_sources;
-  }
-
-export interface newsWithcategories extends news {
-    categories: Icategories;
-  }
-
-export interface newsWithcompanies extends news {
-    companies: Icompanies;
-  }
-
-export interface newsWithcontents extends news {
-    contents: Icontents;
-  }
-
-export interface newsWithnews_summaries extends news {
-    news_summaries: Inews_summaries;
-  }
-  
-  /**
-   * Helper types for working with news
+   * 
+   * @validation @IsNotEmpty, @IsDate
    */
-  export type Partialnews = Partial<news>
-  export type Requirednews = Required<news>
-  export type Picknews<K extends keyof news> = Pick<news, K>
+  updated_at: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  title?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  body?: string;
+  /**
+   * 
+   */
+  category_id?: bigint;
+  /**
+   * 
+   * @validation @IsString
+   */
+  author?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  description?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  featured_image?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsBoolean
+   */
+  has_summary: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  published_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  url: string;
+  /**
+   * 
+   */
+  hash?: bigint;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  id: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  company_id?: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  failed_count?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  scrape_frequency: any;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  scraped_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_status: any;
+  /**
+   * 
+   */
+  keywords?: Record<string, any>;
+  /**
+   * 
+   */
+  content_source_id?: bigint;
+  /**
+   * 
+   */
+  content_sources?: any;
+  /**
+   * 
+   */
+  categories?: any;
+  /**
+   * 
+   */
+  companies?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  contents: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  news_summaries: any;
+}
+
+export interface InewsWithcontent_sources
+extends Inews
+{
+content_sources:
+Icontent_sources; }
+
+export interface InewsWithcategories
+extends Inews
+{
+categories:
+Icategories; }
+
+export interface InewsWithcompanies
+extends Inews
+{
+companies:
+Icompanies; }
+
+export interface InewsWithcontents
+extends Inews
+{
+contents:
+Icontents; }
+
+export interface InewsWithnews_summaries
+extends Inews
+{
+news_summaries:
+Inews_summaries; }
+
+export type Partialnews = Partial<Inews>;
+export type Requirednews = Required<Inews>;

@@ -1,76 +1,48 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iresponses } from './responses.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Isearches extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty
    */
-  export interface searches {
+  id: bigint;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    input{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    tokens_used{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    user_ids{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    responses{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface searchesWithresponses extends searches {
-    responses: Iresponses;
-  }
-  
-  /**
-   * Helper types for working with searches
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialsearches = Partial<searches>
-  export type Requiredsearches = Required<searches>
-  export type Picksearches<K extends keyof searches> = Pick<searches, K>
+  input: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  tokens_used?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  user_ids: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  responses: any;
+}
+
+export interface IsearchesWithresponses
+extends Isearches
+{
+responses:
+Iresponses; }
+
+export type Partialsearches = Partial<Isearches>;
+export type Requiredsearches = Required<Isearches>;

@@ -1,76 +1,47 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Imetric_definitions } from './metric_definitions.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Ispider_metrics extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty
    */
-  export interface spider_metrics {
+  id: bigint;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    crawl_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    metric_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    timestamp{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    value{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    metric_definitions{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface spider_metricsWithmetric_definitions extends spider_metrics {
-    metric_definitions: Imetric_definitions;
-  }
-  
-  /**
-   * Helper types for working with spider_metrics
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialspider_metrics = Partial<spider_metrics>
-  export type Requiredspider_metrics = Required<spider_metrics>
-  export type Pickspider_metrics<K extends keyof spider_metrics> = Pick<spider_metrics, K>
+  crawl_id: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  metric_id?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  timestamp: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  value: Record<string, any>;
+  /**
+   * 
+   */
+  metric_definitions?: any;
+}
+
+export interface Ispider_metricsWithmetric_definitions
+extends Ispider_metrics
+{
+metric_definitions:
+Imetric_definitions; }
+
+export type Partialspider_metrics = Partial<Ispider_metrics>;
+export type Requiredspider_metrics = Required<Ispider_metrics>;

@@ -1,60 +1,38 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Itags } from './tags.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Inews_tags extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export interface news_tags {
+  id: number;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    tag_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    news_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    tags{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface news_tagsWithtags extends news_tags {
-    tags: Itags;
-  }
-  
-  /**
-   * Helper types for working with news_tags
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialnews_tags = Partial<news_tags>
-  export type Requirednews_tags = Required<news_tags>
-  export type Picknews_tags<K extends keyof news_tags> = Pick<news_tags, K>
+  tag_id: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  news_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  tags: any;
+}
+
+export interface Inews_tagsWithtags
+extends Inews_tags
+{
+tags:
+Itags; }
+
+export type Partialnews_tags = Partial<Inews_tags>;
+export type Requirednews_tags = Required<Inews_tags>;

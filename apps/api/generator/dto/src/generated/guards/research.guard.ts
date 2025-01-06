@@ -1,119 +1,91 @@
-import { Iresearch } from "./interfaces";
-import { researchSchema } from "./schemas";
+
+import { Iresearch } from './interfaces'
+import { researchSchema } from './schemas'
 
 /**
  * Type guard for research
  * Ensures that an unknown value matches the expected structure
  */
 export function isresearch(value: unknown): value is Iresearch {
-  return researchSchema.safeParse(value).success;
+  return researchSchema.safeParse(value).success
 }
 
 /**
  * Specialized type guards for checking partial data
  */
 
-export function isPartialresearch(value: unknown): value is Partial<Iresearch> {
-  if (typeof value !== "object" || value === null) return false;
+      export function isPartialresearch(value: unknown): value is Partial<Iresearch> {
+        if (typeof value !== 'object' || value === null) return false;
 
-  const knownKeys = [
-    "created_at",
-    "updated_at",
-    "published_at",
-    "title",
-    "version",
-    "id",
-    "abstract",
-    "keywords",
-    "month",
-    "year",
-    "abstract_url",
-    "category",
-    "doi_url",
-    "figure_count",
-    "has_embedding",
-    "page_count",
-    "pdf_url",
-    "published_in",
-    "table_count",
-    "comments",
-    "is_flagged",
-    "authors",
-    "summary",
-    "content_status",
-    "affiliations",
-    "contents",
-    "research_embeddings",
-  ];
-  return Object.keys(value).every(
-    (key) =>
-      knownKeys.includes(key) &&
-      isValidField(key, value[key as keyof typeof value]),
-  );
-}
+        const knownKeys = ["created_at","updated_at","published_at","title","version","id","abstract","keywords","month","year","abstract_url","category","doi_url","figure_count","has_embedding","page_count","pdf_url","published_in","table_count","comments","is_flagged","authors","summary","content_status","affiliations","contents","research_embeddings"];
+        return Object.keys(value).every(key => 
+          knownKeys.includes(key) && isValidField(key, value[key as keyof typeof value])
+        );
+      }
 
-/**
- * Validates individual fields based on their expected types.
- */
-function isValidField(key: string, value: unknown): boolean {
-  switch (key) {
-    case "created_at":
+      /**
+       * Validates individual fields based on their expected types.
+       */
+      function isValidField(key: string, value: unknown): boolean {
+        switch (key) {
+          case 'created_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "updated_at":
+    case 'updated_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "published_at":
+    case 'published_at':
       return value instanceof Date || !isNaN(Date.parse(String(value)));
-    case "title":
+    case 'title':
       return typeof value === "string";
-    case "version":
+    case 'version':
       return typeof value === "number" && !isNaN(value);
-    case "id":
+    case 'id':
       return typeof value === "string";
-    case "abstract":
+    case 'abstract':
       return typeof value === "string";
-    case "keywords":
+    case 'keywords':
       return typeof value === "string";
-    case "month":
+    case 'month':
       return typeof value === "string";
-    case "year":
+    case 'year':
       return typeof value === "string";
-    case "abstract_url":
+    case 'abstract_url':
       return typeof value === "string";
-    case "category":
+    case 'category':
       return typeof value === "string";
-    case "doi_url":
+    case 'doi_url':
       return typeof value === "string";
-    case "figure_count":
+    case 'figure_count':
       return typeof value === "number" && !isNaN(value);
-    case "has_embedding":
+    case 'has_embedding':
       return typeof value === "boolean";
-    case "page_count":
+    case 'page_count':
       return typeof value === "number" && !isNaN(value);
-    case "pdf_url":
+    case 'pdf_url':
       return typeof value === "string";
-    case "published_in":
+    case 'published_in':
       return typeof value === "string";
-    case "table_count":
+    case 'table_count':
       return typeof value === "number" && !isNaN(value);
-    case "comments":
+    case 'comments':
       return typeof value === "string";
-    case "is_flagged":
+    case 'is_flagged':
       return typeof value === "boolean";
-    case "authors":
+    case 'authors':
       return true; // Complex type requiring deeper validation
-    case "summary":
+    case 'summary':
       return typeof value === "string";
-    case "content_status":
+    case 'content_status':
       return true; // Complex type requiring deeper validation
-    case "affiliations":
+    case 'affiliations':
       return true; // Complex type requiring deeper validation
-    case "contents":
+    case 'contents':
       return true; // Complex type requiring deeper validation
-    case "research_embeddings":
+    case 'research_embeddings':
       return true; // Complex type requiring deeper validation
-  }
-  return false;
-}
+        }
+        return false;
+      }
+      
 
 /**
  * Type guard utilities for arrays and relationships
@@ -123,14 +95,13 @@ function isValidField(key: string, value: unknown): boolean {
  * Type guard for arrays of research
  */
 export function isresearchArray(value: unknown): value is Iresearch[] {
-  return Array.isArray(value) && value.every(isresearch);
+  return Array.isArray(value) && value.every(isresearch)
 }
 
 /**
  * Type guard for partial arrays of research
  */
-export function isPartialresearchArray(
-  value: unknown,
-): value is Partial<Iresearch>[] {
-  return Array.isArray(value) && value.every(isPartialresearch);
+export function isPartialresearchArray(value: unknown): value is Partial<Iresearch>[] {
+  return Array.isArray(value) && value.every(isPartialresearch)
 }
+

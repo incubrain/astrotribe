@@ -1,124 +1,86 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface comments {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    content{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    content_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_type{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    parent_comment_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    comments{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    other_comments{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    user_profiles{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface commentsWithcomments extends comments {
-    comments: Icomments;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icomments } from './comments.interface';
+import { Icomments } from './comments.interface';
+import { Iuser_profiles } from './user_profiles.interface';
 
-export interface commentsWithother_comments extends comments {
-    other_comments: Icomments;
-  }
 
-export interface commentsWithuser_profiles extends comments {
-    user_profiles: Iuser_profiles;
-  }
-  
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icomments extends BaseEntity {
   /**
-   * Helper types for working with comments
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialcomments = Partial<comments>
-  export type Requiredcomments = Required<comments>
-  export type Pickcomments<K extends keyof comments> = Pick<comments, K>
+  id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  content: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  user_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  content_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_type: any;
+  /**
+   * 
+   * @validation @IsString
+   */
+  parent_comment_id?: string;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   */
+  comments?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  other_comments: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  user_profiles: any;
+}
+
+export interface IcommentsWithcomments
+extends Icomments
+{
+comments:
+Icomments; }
+
+export interface IcommentsWithother_comments
+extends Icomments
+{
+other_comments:
+Icomments; }
+
+export interface IcommentsWithuser_profiles
+extends Icomments
+{
+user_profiles:
+Iuser_profiles; }
+
+export type Partialcomments = Partial<Icomments>;
+export type Requiredcomments = Required<Icomments>;

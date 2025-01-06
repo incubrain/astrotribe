@@ -1,80 +1,52 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface feed_sources {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    feed_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    content_source_id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    feeds{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    content_sources{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface feed_sourcesWithfeeds extends feed_sources {
-    feeds: Ifeeds;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Ifeeds } from './feeds.interface';
+import { Icontent_sources } from './content_sources.interface';
 
-export interface feed_sourcesWithcontent_sources extends feed_sources {
-    content_sources: Icontent_sources;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Ifeed_sources extends BaseEntity {
   /**
-   * Helper types for working with feed_sources
+   * 
+   * @validation @IsNotEmpty
    */
-  export type Partialfeed_sources = Partial<feed_sources>
-  export type Requiredfeed_sources = Required<feed_sources>
-  export type Pickfeed_sources<K extends keyof feed_sources> = Pick<feed_sources, K>
+  id: bigint;
+  /**
+   * 
+   * @validation @IsString
+   */
+  feed_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  created_at: Date;
+  /**
+   * 
+   */
+  content_source_id?: bigint;
+  /**
+   * 
+   */
+  feeds?: any;
+  /**
+   * 
+   */
+  content_sources?: any;
+}
+
+export interface Ifeed_sourcesWithfeeds
+extends Ifeed_sources
+{
+feeds:
+Ifeeds; }
+
+export interface Ifeed_sourcesWithcontent_sources
+extends Ifeed_sources
+{
+content_sources:
+Icontent_sources; }
+
+export type Partialfeed_sources = Partial<Ifeed_sources>;
+export type Requiredfeed_sources = Required<Ifeed_sources>;

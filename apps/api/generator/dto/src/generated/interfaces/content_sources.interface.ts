@@ -1,180 +1,120 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface content_sources {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    url{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    content_type{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    scrape_frequency{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    refreshed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    has_failed{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    failed_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    priority{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    hash{{#unless required}}?{{/unless}}: bigint;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    scraped_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    expected_count{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    company_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    rss_urls{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    companies{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    feed_sources{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    news{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface content_sourcesWithcompanies extends content_sources {
-    companies: Icompanies;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icompanies } from './companies.interface';
+import { Ifeed_sources } from './feed_sources.interface';
+import { Inews } from './news.interface';
 
-export interface content_sourcesWithfeed_sources extends content_sources {
-    feed_sources: Ifeed_sources;
-  }
 
-export interface content_sourcesWithnews extends content_sources {
-    news: Inews;
-  }
-  
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icontent_sources extends BaseEntity {
   /**
-   * Helper types for working with content_sources
+   * 
+   * @validation @IsNotEmpty
    */
-  export type Partialcontent_sources = Partial<content_sources>
-  export type Requiredcontent_sources = Required<content_sources>
-  export type Pickcontent_sources<K extends keyof content_sources> = Pick<content_sources, K>
+  id: bigint;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  url: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  content_type: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  scrape_frequency: any;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  refreshed_at?: Date;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  has_failed?: boolean;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  failed_count?: number;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  priority: any;
+  /**
+   * 
+   */
+  hash?: bigint;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  scraped_at?: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  expected_count?: number;
+  /**
+   * 
+   * @validation @IsString
+   */
+  company_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  rss_urls: string;
+  /**
+   * 
+   */
+  companies?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  feed_sources: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  news: any;
+}
+
+export interface Icontent_sourcesWithcompanies
+extends Icontent_sources
+{
+companies:
+Icompanies; }
+
+export interface Icontent_sourcesWithfeed_sources
+extends Icontent_sources
+{
+feed_sources:
+Ifeed_sources; }
+
+export interface Icontent_sourcesWithnews
+extends Icontent_sources
+{
+news:
+Inews; }
+
+export type Partialcontent_sources = Partial<Icontent_sources>;
+export type Requiredcontent_sources = Required<Icontent_sources>;

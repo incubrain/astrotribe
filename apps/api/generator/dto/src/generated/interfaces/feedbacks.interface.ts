@@ -1,124 +1,75 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iuser_profiles } from './user_profiles.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Ifeedbacks extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export interface feedbacks {
+  id: number;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    page_identifier{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    rating{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    feedback_type{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    message{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    device_info{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    resolution_comment{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    feedback_status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    user_profiles{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface feedbacksWithuser_profiles extends feedbacks {
-    user_profiles: Iuser_profiles;
-  }
-  
-  /**
-   * Helper types for working with feedbacks
+   * 
+   * @validation @IsString
    */
-  export type Partialfeedbacks = Partial<feedbacks>
-  export type Requiredfeedbacks = Required<feedbacks>
-  export type Pickfeedbacks<K extends keyof feedbacks> = Pick<feedbacks, K>
+  user_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  page_identifier: string;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  rating?: number;
+  /**
+   * 
+   */
+  feedback_type?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  message: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  created_at: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  updated_at: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  device_info?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  resolution_comment?: string;
+  /**
+   * 
+   */
+  feedback_status?: any;
+  /**
+   * 
+   */
+  user_profiles?: any;
+}
+
+export interface IfeedbacksWithuser_profiles
+extends Ifeedbacks
+{
+user_profiles:
+Iuser_profiles; }
+
+export type Partialfeedbacks = Partial<Ifeedbacks>;
+export type Requiredfeedbacks = Required<Ifeedbacks>;

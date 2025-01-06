@@ -1,76 +1,48 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iuser_profiles } from './user_profiles.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Ifollows extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface follows {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    followed_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    followed_entity{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    user_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    user_profiles{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface followsWithuser_profiles extends follows {
-    user_profiles: Iuser_profiles;
-  }
-  
-  /**
-   * Helper types for working with follows
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialfollows = Partial<follows>
-  export type Requiredfollows = Required<follows>
-  export type Pickfollows<K extends keyof follows> = Pick<follows, K>
+  followed_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  followed_entity: any;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsString
+   */
+  user_id: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  user_profiles: any;
+}
+
+export interface IfollowsWithuser_profiles
+extends Ifollows
+{
+user_profiles:
+Iuser_profiles; }
+
+export type Partialfollows = Partial<Ifollows>;
+export type Requiredfollows = Required<Ifollows>;

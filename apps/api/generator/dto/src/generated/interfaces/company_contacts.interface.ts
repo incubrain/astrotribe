@@ -1,88 +1,59 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface company_contacts {
-  /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
-     */
-    contact_id{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    company_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    companies{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    contacts{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface company_contactsWithcompanies extends company_contacts {
-    companies: Icompanies;
-  }
+import { BaseEntity } from '@core/base/entity';
+import { Icompanies } from './companies.interface';
+import { Icontacts } from './contacts.interface';
 
-export interface company_contactsWithcontacts extends company_contacts {
-    contacts: Icontacts;
-  }
-  
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Icompany_contacts extends BaseEntity {
   /**
-   * Helper types for working with company_contacts
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
    */
-  export type Partialcompany_contacts = Partial<company_contacts>
-  export type Requiredcompany_contacts = Required<company_contacts>
-  export type Pickcompany_contacts<K extends keyof company_contacts> = Pick<company_contacts, K>
+  id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsNumber([object Object])
+   */
+  contact_id: number;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  created_at: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  updated_at: Date;
+  /**
+   * 
+   * @validation @IsString
+   */
+  company_id?: string;
+  /**
+   * 
+   */
+  companies?: any;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  contacts: any;
+}
+
+export interface Icompany_contactsWithcompanies
+extends Icompany_contacts
+{
+companies:
+Icompanies; }
+
+export interface Icompany_contactsWithcontacts
+extends Icompany_contacts
+{
+contacts:
+Icontacts; }
+
+export type Partialcompany_contacts = Partial<Icompany_contacts>;
+export type Requiredcompany_contacts = Required<Icompany_contacts>;

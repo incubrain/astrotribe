@@ -1,92 +1,57 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iad_variants } from './ad_variants.interface';
+
+
+/**
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export interface Iad_daily_metrics extends BaseEntity {
   /**
-   * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface ad_daily_metrics {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    variant_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    date{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    views{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNumber([object Object]){{/if}}
-     */
-    clicks{{#unless required}}?{{/unless}}: number;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    ad_variants{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface ad_daily_metricsWithad_variants extends ad_daily_metrics {
-    ad_variants: Iad_variants;
-  }
-  
-  /**
-   * Helper types for working with ad_daily_metrics
+   * 
+   * @validation @IsString
    */
-  export type Partialad_daily_metrics = Partial<ad_daily_metrics>
-  export type Requiredad_daily_metrics = Required<ad_daily_metrics>
-  export type Pickad_daily_metrics<K extends keyof ad_daily_metrics> = Pick<ad_daily_metrics, K>
+  variant_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  date: Date;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  views?: number;
+  /**
+   * 
+   * @validation @IsNumber([object Object])
+   */
+  clicks?: number;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   */
+  ad_variants?: any;
+}
+
+export interface Iad_daily_metricsWithad_variants
+extends Iad_daily_metrics
+{
+ad_variants:
+Iad_variants; }
+
+export type Partialad_daily_metrics = Partial<Iad_daily_metrics>;
+export type Requiredad_daily_metrics = Required<Iad_daily_metrics>;

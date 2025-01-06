@@ -1,125 +1,86 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
-  /**
-   * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+import { BaseEntity } from '@core/base/entity';
+import { Iad_variants } from './ad_variants.interface';
+import { Icompanies } from './companies.interface';
+import { Iad_packages } from './ad_packages.interface';
+
+
+/**
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
-   */
-  export interface ads {
+ */
+export interface Iads extends BaseEntity {
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    company_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsString{{/if}}
-     */
-    package_id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    start_date{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsDate{{/if}}
-     */
-    end_date{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsBoolean{{/if}}
-     */
-    active{{#unless required}}?{{/unless}}: boolean;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    ad_variants{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    companies{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    ad_packages{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface adsWithad_variants extends ads {
-    ad_variants: Iad_variants;
-  }
-
-export interface adsWithcompanies extends ads {
-    companies: Icompanies;
-  }
-
-export interface adsWithad_packages extends ads {
-    ad_packages: Iad_packages;
-  }
-  
-  /**
-   * Helper types for working with ads
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialads = Partial<ads>
-  export type Requiredads = Required<ads>
-  export type Pickads<K extends keyof ads> = Pick<ads, K>
+  id: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  company_id?: string;
+  /**
+   * 
+   * @validation @IsString
+   */
+  package_id?: string;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  start_date: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty, @IsDate
+   */
+  end_date: Date;
+  /**
+   * 
+   * @validation @IsBoolean
+   */
+  active?: boolean;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  ad_variants: any;
+  /**
+   * 
+   */
+  companies?: any;
+  /**
+   * 
+   */
+  ad_packages?: any;
+}
+
+export interface IadsWithad_variants
+extends Iads
+{
+ad_variants:
+Iad_variants; }
+
+export interface IadsWithcompanies
+extends Iads
+{
+companies:
+Icompanies; }
+
+export interface IadsWithad_packages
+extends Iads
+{
+ad_packages:
+Iad_packages; }
+
+export type Partialads = Partial<Iads>;
+export type Requiredads = Required<Iads>;

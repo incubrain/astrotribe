@@ -1,100 +1,62 @@
-// This file is auto-generated. Do not modify manually.
-  {{#each imports}}
-  import {  } from ''
-  {{/each}}
-  
+import { BaseEntity } from '@core/base/entity';
+import { Iworkflow_jobs } from './workflow_jobs.interface';
+
+
+/**
+ * 
+ */
+export interface Iworkflows extends BaseEntity {
   /**
    * 
-   *{{#if deprecated}}
-   * @deprecated {{/if}}
-   *{{#if example}}
-   * @example
-   * {{/if}}
-   *{{#if version}}
-   * @version {{/if}}
+   * @validation @IsNotEmpty, @IsString
    */
-  export interface workflows {
+  id: string;
   /**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    id{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty, @IsString{{/if}}
-     */
-    name{{#unless required}}?{{/unless}}: string;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    status{{#unless required}}?{{/unless}}: any;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation {{/if}}
-     */
-    metadata{{#unless required}}?{{/unless}}: Record<string, any>;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    started_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    completed_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    created_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsDate{{/if}}
-     */
-    updated_at{{#unless required}}?{{/unless}}: Date;
-/**
-     * 
-     *{{#if example}}
-     * @example {{/if}}
-     *{{#if validation}}
-     * @validation @IsNotEmpty{{/if}}
-     */
-    workflow_jobs{{#unless required}}?{{/unless}}: any;
-  }
-  
-  export interface workflowsWithworkflow_jobs extends workflows {
-    workflow_jobs: Iworkflow_jobs;
-  }
-  
-  /**
-   * Helper types for working with workflows
+   * 
+   * @validation @IsNotEmpty, @IsString
    */
-  export type Partialworkflows = Partial<workflows>
-  export type Requiredworkflows = Required<workflows>
-  export type Pickworkflows<K extends keyof workflows> = Pick<workflows, K>
+  name: string;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  status: any;
+  /**
+   * 
+   */
+  metadata?: Record<string, any>;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  started_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  completed_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  created_at?: Date;
+  /**
+   * 
+   * @validation @IsDate
+   */
+  updated_at?: Date;
+  /**
+   * 
+   * @validation @IsNotEmpty
+   */
+  workflow_jobs: any;
+}
+
+export interface IworkflowsWithworkflow_jobs
+extends Iworkflows
+{
+workflow_jobs:
+Iworkflow_jobs; }
+
+export type Partialworkflows = Partial<Iworkflows>;
+export type Requiredworkflows = Required<Iworkflows>;
