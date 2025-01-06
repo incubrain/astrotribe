@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -30,7 +30,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -38,7 +38,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    friendly_name{{#unless required}}?{{/unless}}: unknown;
+    friendly_name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -46,7 +46,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    factor_type{{#unless required}}?{{/unless}}: unknown;
+    factor_type{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -54,7 +54,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    status{{#unless required}}?{{/unless}}: unknown;
+    status{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -62,7 +62,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -70,7 +70,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -78,7 +78,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    secret{{#unless required}}?{{/unless}}: unknown;
+    secret{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -86,7 +86,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    phone{{#unless required}}?{{/unless}}: unknown;
+    phone{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -94,7 +94,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_challenged_at{{#unless required}}?{{/unless}}: unknown;
+    last_challenged_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -102,7 +102,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation {{/if}}
      */
-    web_authn_credential{{#unless required}}?{{/unless}}: unknown;
+    web_authn_credential{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -110,7 +110,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    web_authn_aaguid{{#unless required}}?{{/unless}}: unknown;
+    web_authn_aaguid{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -118,7 +118,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    mfa_challenges{{#unless required}}?{{/unless}}: unknown;
+    mfa_challenges{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -126,7 +126,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    users{{#unless required}}?{{/unless}}: unknown;
+    users{{#unless required}}?{{/unless}}: any;
   }
   
   export interface mfa_factorsWithmfa_challenges extends mfa_factors {

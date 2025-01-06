@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    role{{#unless required}}?{{/unless}}: unknown;
+    role{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    table_name{{#unless required}}?{{/unless}}: unknown;
+    table_name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    conditions{{#unless required}}?{{/unless}}: unknown;
+    conditions{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    permissions{{#unless required}}?{{/unless}}: unknown;
+    permissions{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    cached_permissions{{#unless required}}?{{/unless}}: unknown;
+    cached_permissions{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    inherit_from{{#unless required}}?{{/unless}}: unknown;
+    inherit_from{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_updated{{#unless required}}?{{/unless}}: unknown;
+    last_updated{{#unless required}}?{{/unless}}: Date;
   }
   
   

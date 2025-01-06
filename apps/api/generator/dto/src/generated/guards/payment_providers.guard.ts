@@ -42,15 +42,15 @@ export function isPartialpayment_providers(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_active":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "customer_payments":
       return true; // Complex type requiring deeper validation
     case "customer_subscriptions":

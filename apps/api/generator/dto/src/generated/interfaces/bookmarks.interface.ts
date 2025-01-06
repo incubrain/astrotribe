@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    content_id{{#unless required}}?{{/unless}}: unknown;
+    content_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    content_type{{#unless required}}?{{/unless}}: unknown;
+    content_type{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    folder_id{{#unless required}}?{{/unless}}: unknown;
+    folder_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    metadata{{#unless required}}?{{/unless}}: unknown;
+    metadata{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contents{{#unless required}}?{{/unless}}: unknown;
+    contents{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    bookmark_folders{{#unless required}}?{{/unless}}: unknown;
+    bookmark_folders{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    users{{#unless required}}?{{/unless}}: unknown;
+    users{{#unless required}}?{{/unless}}: any;
   }
   
   export interface bookmarksWithcontents extends bookmarks {

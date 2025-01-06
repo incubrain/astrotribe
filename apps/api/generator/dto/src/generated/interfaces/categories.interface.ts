@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    body{{#unless required}}?{{/unless}}: unknown;
+    body{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    name{{#unless required}}?{{/unless}}: unknown;
+    name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    document_id{{#unless required}}?{{/unless}}: unknown;
+    document_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    locale{{#unless required}}?{{/unless}}: unknown;
+    locale{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    published_at{{#unless required}}?{{/unless}}: unknown;
+    published_at{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    companies{{#unless required}}?{{/unless}}: unknown;
+    companies{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_categories{{#unless required}}?{{/unless}}: unknown;
+    content_categories{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    feed_categories{{#unless required}}?{{/unless}}: unknown;
+    feed_categories{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    news{{#unless required}}?{{/unless}}: unknown;
+    news{{#unless required}}?{{/unless}}: any;
   }
   
   export interface categoriesWithcompanies extends categories {

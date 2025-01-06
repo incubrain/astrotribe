@@ -45,25 +45,25 @@ export function isPartialcompany_extras(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "success":
       return typeof value === "boolean";
     case "category":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "level":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "company_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "body":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "found_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "review":
       return true; // Complex type requiring deeper validation
     case "companies":

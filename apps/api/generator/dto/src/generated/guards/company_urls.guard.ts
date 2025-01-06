@@ -43,23 +43,23 @@ export function isPartialcompany_urls(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "success":
       return typeof value === "boolean";
     case "category":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "company_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "distance":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "companies":
       return true; // Complex type requiring deeper validation
   }

@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    name{{#unless required}}?{{/unless}}: unknown;
+    name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    description{{#unless required}}?{{/unless}}: unknown;
+    description{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    logo_url{{#unless required}}?{{/unless}}: unknown;
+    logo_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    url{{#unless required}}?{{/unless}}: unknown;
+    url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    social_media_id{{#unless required}}?{{/unless}}: unknown;
+    social_media_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    scrape_frequency{{#unless required}}?{{/unless}}: unknown;
+    scrape_frequency{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    category_id{{#unless required}}?{{/unless}}: unknown;
+    category_id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    founding_year{{#unless required}}?{{/unless}}: unknown;
+    founding_year{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    category{{#unless required}}?{{/unless}}: unknown;
+    category{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    failed_count{{#unless required}}?{{/unless}}: unknown;
+    failed_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    scrape_rating{{#unless required}}?{{/unless}}: unknown;
+    scrape_rating{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    scraped_at{{#unless required}}?{{/unless}}: unknown;
+    scraped_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_status{{#unless required}}?{{/unless}}: unknown;
+    content_status{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    keywords{{#unless required}}?{{/unless}}: unknown;
+    keywords{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    addresses{{#unless required}}?{{/unless}}: unknown;
+    addresses{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -181,7 +181,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    ads{{#unless required}}?{{/unless}}: unknown;
+    ads{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    blacklisted_urls{{#unless required}}?{{/unless}}: unknown;
+    blacklisted_urls{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -197,7 +197,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    social_media{{#unless required}}?{{/unless}}: unknown;
+    social_media{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -205,7 +205,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    categories{{#unless required}}?{{/unless}}: unknown;
+    categories{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -213,7 +213,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    company_contacts{{#unless required}}?{{/unless}}: unknown;
+    company_contacts{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -221,7 +221,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    company_extras{{#unless required}}?{{/unless}}: unknown;
+    company_extras{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -229,7 +229,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    company_urls{{#unless required}}?{{/unless}}: unknown;
+    company_urls{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -237,7 +237,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contacts{{#unless required}}?{{/unless}}: unknown;
+    contacts{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -245,7 +245,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_sources{{#unless required}}?{{/unless}}: unknown;
+    content_sources{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -253,7 +253,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    news{{#unless required}}?{{/unless}}: unknown;
+    news{{#unless required}}?{{/unless}}: any;
   }
   
   export interface companiesWithaddresses extends companies {

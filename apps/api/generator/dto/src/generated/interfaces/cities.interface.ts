@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    name{{#unless required}}?{{/unless}}: unknown;
+    name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    country_id{{#unless required}}?{{/unless}}: unknown;
+    country_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    state{{#unless required}}?{{/unless}}: unknown;
+    state{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    addresses{{#unless required}}?{{/unless}}: unknown;
+    addresses{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    countries{{#unless required}}?{{/unless}}: unknown;
+    countries{{#unless required}}?{{/unless}}: any;
   }
   
   export interface citiesWithaddresses extends cities {

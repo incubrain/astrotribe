@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    contact_id{{#unless required}}?{{/unless}}: unknown;
+    contact_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    company_id{{#unless required}}?{{/unless}}: unknown;
+    company_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    companies{{#unless required}}?{{/unless}}: unknown;
+    companies{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contacts{{#unless required}}?{{/unless}}: unknown;
+    contacts{{#unless required}}?{{/unless}}: any;
   }
   
   export interface company_contactsWithcompanies extends company_contacts {

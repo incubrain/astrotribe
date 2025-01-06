@@ -70,67 +70,67 @@ export function isPartialcustomer_payments(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "subscription_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "payment_provider_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "external_payment_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "external_order_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "amount":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "currency":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "status":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "method":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "fee":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "tax":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "error_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "acquirer_data":
       return true; // Complex type requiring deeper validation
     case "notes":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "order_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "invoice_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "international":
       return typeof value === "boolean";
     case "amount_refunded":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "amount_transferred":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "refund_status":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "captured":
       return typeof value === "boolean";
     case "bank":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "wallet":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "vpa":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_source":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_step":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_reason":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "payment_providers":
       return true; // Complex type requiring deeper validation
     case "customer_subscriptions":

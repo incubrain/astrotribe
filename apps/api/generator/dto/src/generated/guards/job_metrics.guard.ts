@@ -47,33 +47,33 @@ export function isPartialjob_metrics(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "status":
       return true; // Complex type requiring deeper validation
     case "started_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "completed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "failed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "duration_ms":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "items_processed":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "error_message":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_stack":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "metadata":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

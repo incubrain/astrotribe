@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    service_name{{#unless required}}?{{/unless}}: unknown;
+    service_name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    error_type{{#unless required}}?{{/unless}}: unknown;
+    error_type{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    severity{{#unless required}}?{{/unless}}: unknown;
+    severity{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    message{{#unless required}}?{{/unless}}: unknown;
+    message{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    stack_trace{{#unless required}}?{{/unless}}: unknown;
+    stack_trace{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    metadata{{#unless required}}?{{/unless}}: unknown;
+    metadata{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    context{{#unless required}}?{{/unless}}: unknown;
+    context{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    request_id{{#unless required}}?{{/unless}}: unknown;
+    request_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    correlation_id{{#unless required}}?{{/unless}}: unknown;
+    correlation_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    environment{{#unless required}}?{{/unless}}: unknown;
+    environment{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_hash{{#unless required}}?{{/unless}}: unknown;
+    error_hash{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_pattern{{#unless required}}?{{/unless}}: unknown;
+    error_pattern{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    github_repo{{#unless required}}?{{/unless}}: unknown;
+    github_repo{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    related_errors{{#unless required}}?{{/unless}}: unknown;
+    related_errors{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    frequency_data{{#unless required}}?{{/unless}}: unknown;
+    frequency_data{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    domain{{#unless required}}?{{/unless}}: unknown;
+    domain{{#unless required}}?{{/unless}}: string;
   }
   
   

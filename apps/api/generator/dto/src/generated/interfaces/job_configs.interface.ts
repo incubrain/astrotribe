@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    name{{#unless required}}?{{/unless}}: unknown;
+    name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    schedule{{#unless required}}?{{/unless}}: unknown;
+    schedule{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    priority{{#unless required}}?{{/unless}}: unknown;
+    priority{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    timeout_ms{{#unless required}}?{{/unless}}: unknown;
+    timeout_ms{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    retry_limit{{#unless required}}?{{/unless}}: unknown;
+    retry_limit{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    circuit_breaker_threshold{{#unless required}}?{{/unless}}: unknown;
+    circuit_breaker_threshold{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    circuit_breaker_timeout_ms{{#unless required}}?{{/unless}}: unknown;
+    circuit_breaker_timeout_ms{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    metadata{{#unless required}}?{{/unless}}: unknown;
+    metadata{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
   }
   
   

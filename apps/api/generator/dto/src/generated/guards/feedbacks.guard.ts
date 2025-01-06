@@ -45,25 +45,25 @@ export function isPartialfeedbacks(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "page_identifier":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "rating":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "feedback_type":
       return true; // Complex type requiring deeper validation
     case "message":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "device_info":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "resolution_comment":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "feedback_status":
       return true; // Complex type requiring deeper validation
     case "user_profiles":

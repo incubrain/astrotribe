@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -30,7 +30,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    news_id{{#unless required}}?{{/unless}}: unknown;
+    news_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -38,7 +38,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    summary{{#unless required}}?{{/unless}}: unknown;
+    summary{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -46,7 +46,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    version{{#unless required}}?{{/unless}}: unknown;
+    version{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -62,7 +62,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -70,7 +70,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -78,7 +78,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation {{/if}}
      */
-    complexity_level{{#unless required}}?{{/unless}}: unknown;
+    complexity_level{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -86,7 +86,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    news{{#unless required}}?{{/unless}}: unknown;
+    news{{#unless required}}?{{/unless}}: any;
   }
   
   export interface news_summariesWithnews extends news_summaries {

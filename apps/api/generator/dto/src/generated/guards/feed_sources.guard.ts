@@ -41,9 +41,9 @@ function isValidField(key: string, value: unknown): boolean {
     case "id":
       return true; // Complex type requiring deeper validation
     case "feed_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "content_source_id":
       return true; // Complex type requiring deeper validation
     case "feeds":

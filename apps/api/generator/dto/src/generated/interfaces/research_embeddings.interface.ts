@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    research_id{{#unless required}}?{{/unless}}: unknown;
+    research_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    chunk{{#unless required}}?{{/unless}}: unknown;
+    chunk{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    url{{#unless required}}?{{/unless}}: unknown;
+    url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    embedding_review_id{{#unless required}}?{{/unless}}: unknown;
+    embedding_review_id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    embedding_reviews{{#unless required}}?{{/unless}}: unknown;
+    embedding_reviews{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    research{{#unless required}}?{{/unless}}: unknown;
+    research{{#unless required}}?{{/unless}}: any;
   }
   
   export interface research_embeddingsWithembedding_reviews extends research_embeddings {

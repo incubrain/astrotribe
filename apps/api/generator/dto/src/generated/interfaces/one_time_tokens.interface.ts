@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -30,7 +30,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -38,7 +38,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    token_type{{#unless required}}?{{/unless}}: unknown;
+    token_type{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -46,7 +46,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    token_hash{{#unless required}}?{{/unless}}: unknown;
+    token_hash{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -54,7 +54,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    relates_to{{#unless required}}?{{/unless}}: unknown;
+    relates_to{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -62,7 +62,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -70,7 +70,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -78,7 +78,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    users{{#unless required}}?{{/unless}}: unknown;
+    users{{#unless required}}?{{/unless}}: any;
   }
   
   export interface one_time_tokensWithusers extends one_time_tokens {

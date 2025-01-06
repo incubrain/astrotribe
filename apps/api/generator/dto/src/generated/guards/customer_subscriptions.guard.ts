@@ -70,67 +70,67 @@ export function isPartialcustomer_subscriptions(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "plan_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "payment_provider_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "external_subscription_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "status":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "quantity":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "current_start":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "current_end":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "ended_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "cancel_at_period_end":
       return typeof value === "boolean";
     case "total_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "paid_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "remaining_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "auth_attempts":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "notes":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "charge_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "start_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "end_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "customer_notify":
       return typeof value === "boolean";
     case "expire_by":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "short_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "has_scheduled_changes":
       return typeof value === "boolean";
     case "change_scheduled_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "source":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "offer_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "pause_initiated_by":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "cancel_initiated_by":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "customer_payments":
       return true; // Complex type requiring deeper validation
     case "payment_providers":

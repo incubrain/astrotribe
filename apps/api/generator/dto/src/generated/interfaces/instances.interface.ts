@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -30,7 +30,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    uuid{{#unless required}}?{{/unless}}: unknown;
+    uuid{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -38,7 +38,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    raw_base_config{{#unless required}}?{{/unless}}: unknown;
+    raw_base_config{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -46,7 +46,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -54,7 +54,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
   }
   
   

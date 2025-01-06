@@ -41,19 +41,19 @@ export function isPartialone_time_tokens(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "token_type":
       return true; // Complex type requiring deeper validation
     case "token_hash":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "relates_to":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "users":
       return true; // Complex type requiring deeper validation
   }

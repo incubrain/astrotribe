@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    feed_id{{#unless required}}?{{/unless}}: unknown;
+    feed_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    category_id{{#unless required}}?{{/unless}}: unknown;
+    category_id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    categories{{#unless required}}?{{/unless}}: unknown;
+    categories{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    feeds{{#unless required}}?{{/unless}}: unknown;
+    feeds{{#unless required}}?{{/unless}}: any;
   }
   
   export interface feed_categoriesWithcategories extends feed_categories {

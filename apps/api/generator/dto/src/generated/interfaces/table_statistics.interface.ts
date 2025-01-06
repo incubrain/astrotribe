@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    table_name{{#unless required}}?{{/unless}}: unknown;
+    table_name{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    row_count{{#unless required}}?{{/unless}}: unknown;
+    row_count{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    table_size{{#unless required}}?{{/unless}}: unknown;
+    table_size{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    index_size{{#unless required}}?{{/unless}}: unknown;
+    index_size{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    live_tuples{{#unless required}}?{{/unless}}: unknown;
+    live_tuples{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    dead_tuples{{#unless required}}?{{/unless}}: unknown;
+    dead_tuples{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_vacuum{{#unless required}}?{{/unless}}: unknown;
+    last_vacuum{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_analyze{{#unless required}}?{{/unless}}: unknown;
+    last_analyze{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    estimated_bloat_ratio{{#unless required}}?{{/unless}}: unknown;
+    estimated_bloat_ratio{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    buffer_cache_hit_ratio{{#unless required}}?{{/unless}}: unknown;
+    buffer_cache_hit_ratio{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    index_usage{{#unless required}}?{{/unless}}: unknown;
+    index_usage{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    seq_scan_count{{#unless required}}?{{/unless}}: unknown;
+    seq_scan_count{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    index_scan_count{{#unless required}}?{{/unless}}: unknown;
+    index_scan_count{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    capture_time{{#unless required}}?{{/unless}}: unknown;
+    capture_time{{#unless required}}?{{/unless}}: Date;
   }
   
   

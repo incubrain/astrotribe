@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    parent_role{{#unless required}}?{{/unless}}: unknown;
+    parent_role{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    child_role{{#unless required}}?{{/unless}}: unknown;
+    child_role{{#unless required}}?{{/unless}}: any;
   }
   
   

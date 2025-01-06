@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    content_id{{#unless required}}?{{/unless}}: unknown;
+    content_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    notes{{#unless required}}?{{/unless}}: unknown;
+    notes{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_status{{#unless required}}?{{/unless}}: unknown;
+    content_status{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contents{{#unless required}}?{{/unless}}: unknown;
+    contents{{#unless required}}?{{/unless}}: any;
   }
   
   export interface content_statusesWithcontents extends content_statuses {

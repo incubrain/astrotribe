@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    plan_id{{#unless required}}?{{/unless}}: unknown;
+    plan_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    payment_provider_id{{#unless required}}?{{/unless}}: unknown;
+    payment_provider_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    external_subscription_id{{#unless required}}?{{/unless}}: unknown;
+    external_subscription_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    status{{#unless required}}?{{/unless}}: unknown;
+    status{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    quantity{{#unless required}}?{{/unless}}: unknown;
+    quantity{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    current_start{{#unless required}}?{{/unless}}: unknown;
+    current_start{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    current_end{{#unless required}}?{{/unless}}: unknown;
+    current_end{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    ended_at{{#unless required}}?{{/unless}}: unknown;
+    ended_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    total_count{{#unless required}}?{{/unless}}: unknown;
+    total_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    paid_count{{#unless required}}?{{/unless}}: unknown;
+    paid_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    remaining_count{{#unless required}}?{{/unless}}: unknown;
+    remaining_count{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    auth_attempts{{#unless required}}?{{/unless}}: unknown;
+    auth_attempts{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    notes{{#unless required}}?{{/unless}}: unknown;
+    notes{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    type{{#unless required}}?{{/unless}}: unknown;
+    type{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    charge_at{{#unless required}}?{{/unless}}: unknown;
+    charge_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -181,7 +181,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    start_at{{#unless required}}?{{/unless}}: unknown;
+    start_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    end_at{{#unless required}}?{{/unless}}: unknown;
+    end_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -205,7 +205,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    expire_by{{#unless required}}?{{/unless}}: unknown;
+    expire_by{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -213,7 +213,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    short_url{{#unless required}}?{{/unless}}: unknown;
+    short_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -229,7 +229,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    change_scheduled_at{{#unless required}}?{{/unless}}: unknown;
+    change_scheduled_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -237,7 +237,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    source{{#unless required}}?{{/unless}}: unknown;
+    source{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -245,7 +245,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    offer_id{{#unless required}}?{{/unless}}: unknown;
+    offer_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -253,7 +253,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    pause_initiated_by{{#unless required}}?{{/unless}}: unknown;
+    pause_initiated_by{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -261,7 +261,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    cancel_initiated_by{{#unless required}}?{{/unless}}: unknown;
+    cancel_initiated_by{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -269,7 +269,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    customer_payments{{#unless required}}?{{/unless}}: unknown;
+    customer_payments{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -277,7 +277,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    payment_providers{{#unless required}}?{{/unless}}: unknown;
+    payment_providers{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -285,7 +285,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    customer_subscription_plans{{#unless required}}?{{/unless}}: unknown;
+    customer_subscription_plans{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -293,7 +293,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    user_profiles{{#unless required}}?{{/unless}}: unknown;
+    user_profiles{{#unless required}}?{{/unless}}: any;
   }
   
   export interface customer_subscriptionsWithcustomer_payments extends customer_subscriptions {

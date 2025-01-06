@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_type{{#unless required}}?{{/unless}}: unknown;
+    content_type{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    title{{#unless required}}?{{/unless}}: unknown;
+    title{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    url{{#unless required}}?{{/unless}}: unknown;
+    url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    rss_url{{#unless required}}?{{/unless}}: unknown;
+    rss_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    hot_score{{#unless required}}?{{/unless}}: unknown;
+    hot_score{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    bookmarks{{#unless required}}?{{/unless}}: unknown;
+    bookmarks{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_categories{{#unless required}}?{{/unless}}: unknown;
+    content_categories{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_source_visits{{#unless required}}?{{/unless}}: unknown;
+    content_source_visits{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_statuses{{#unless required}}?{{/unless}}: unknown;
+    content_statuses{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    content_tags{{#unless required}}?{{/unless}}: unknown;
+    content_tags{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    news{{#unless required}}?{{/unless}}: unknown;
+    news{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    newsletters{{#unless required}}?{{/unless}}: unknown;
+    newsletters{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    research{{#unless required}}?{{/unless}}: unknown;
+    research{{#unless required}}?{{/unless}}: any;
   }
   
   export interface contentsWithbookmarks extends contents {

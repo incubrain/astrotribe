@@ -39,15 +39,15 @@ export function isPartialmfa_amr_claims(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "session_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "authentication_method":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "sessions":
       return true; // Complex type requiring deeper validation
   }

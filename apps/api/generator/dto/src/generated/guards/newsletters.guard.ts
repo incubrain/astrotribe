@@ -43,21 +43,21 @@ export function isPartialnewsletters(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "title":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "frequency":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "start_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "end_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "generated_content":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "content_status":
       return true; // Complex type requiring deeper validation
     case "contents":

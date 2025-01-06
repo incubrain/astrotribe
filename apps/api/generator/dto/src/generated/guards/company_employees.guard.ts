@@ -47,27 +47,27 @@ export function isPartialcompany_employees(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "role":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "start_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "end_date":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "status":
       return typeof value === "boolean";
     case "access_level":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "company_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_profiles":
       return true; // Complex type requiring deeper validation
   }

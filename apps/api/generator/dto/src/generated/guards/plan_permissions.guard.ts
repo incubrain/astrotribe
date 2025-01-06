@@ -32,11 +32,11 @@ export function isPartialplan_permissions(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "plan":
       return true; // Complex type requiring deeper validation
     case "feature":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
   }
   return false;
 }

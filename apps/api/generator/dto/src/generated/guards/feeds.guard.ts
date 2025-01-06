@@ -38,13 +38,13 @@ export function isPartialfeeds(value: unknown): value is Partial<Ifeeds> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "feed_categories":
       return true; // Complex type requiring deeper validation
     case "feed_sources":

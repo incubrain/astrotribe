@@ -40,19 +40,19 @@ export function isPartialjob_versions(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "version":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "changes":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "config":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

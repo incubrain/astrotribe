@@ -55,49 +55,49 @@ export function isPartialreferrals(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "referrer_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "visitor_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "converted_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "status":
       return true; // Complex type requiring deeper validation
     case "conversion_value":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "user_agent":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "ip_address":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "landing_page":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "utm_source":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "utm_medium":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "utm_campaign":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "device_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "browser":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "country_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "region":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_suspicious":
       return typeof value === "boolean";
     case "security_flags":
       return true; // Complex type requiring deeper validation
     case "validation_attempts":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "last_failed_attempt":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "client_fingerprint":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
   }
   return false;
 }

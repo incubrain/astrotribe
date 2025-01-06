@@ -62,33 +62,33 @@ export function isPartialuser_profiles(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "given_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "surname":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "username":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "dob":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "gender_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "last_seen":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "avatar":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "introduction":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "followed_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "followers_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "plan":
       return true; // Complex type requiring deeper validation
     case "role":

@@ -32,9 +32,9 @@ export function isPartialcontent_tags(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "content_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "tag_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "contents":
       return true; // Complex type requiring deeper validation
     case "tags":

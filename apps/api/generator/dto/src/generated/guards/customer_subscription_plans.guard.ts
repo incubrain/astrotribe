@@ -49,31 +49,31 @@ export function isPartialcustomer_subscription_plans(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "external_plan_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "interval":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "interval_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "monthly_amount":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "annual_amount":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "currency":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "features":
       return true; // Complex type requiring deeper validation
     case "is_active":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "customer_subscriptions":
       return true; // Complex type requiring deeper validation
   }

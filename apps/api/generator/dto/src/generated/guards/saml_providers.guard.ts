@@ -43,23 +43,23 @@ export function isPartialsaml_providers(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "sso_provider_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "entity_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "metadata_xml":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "metadata_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "attribute_mapping":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "name_id_format":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "sso_providers":
       return true; // Complex type requiring deeper validation
   }

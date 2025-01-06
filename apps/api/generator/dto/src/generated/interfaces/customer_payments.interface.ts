@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    subscription_id{{#unless required}}?{{/unless}}: unknown;
+    subscription_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    payment_provider_id{{#unless required}}?{{/unless}}: unknown;
+    payment_provider_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    external_payment_id{{#unless required}}?{{/unless}}: unknown;
+    external_payment_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    external_order_id{{#unless required}}?{{/unless}}: unknown;
+    external_order_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    amount{{#unless required}}?{{/unless}}: unknown;
+    amount{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    currency{{#unless required}}?{{/unless}}: unknown;
+    currency{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    status{{#unless required}}?{{/unless}}: unknown;
+    status{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    method{{#unless required}}?{{/unless}}: unknown;
+    method{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    description{{#unless required}}?{{/unless}}: unknown;
+    description{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    fee{{#unless required}}?{{/unless}}: unknown;
+    fee{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    tax{{#unless required}}?{{/unless}}: unknown;
+    tax{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_code{{#unless required}}?{{/unless}}: unknown;
+    error_code{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_description{{#unless required}}?{{/unless}}: unknown;
+    error_description{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    acquirer_data{{#unless required}}?{{/unless}}: unknown;
+    acquirer_data{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    notes{{#unless required}}?{{/unless}}: unknown;
+    notes{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -157,7 +157,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    order_id{{#unless required}}?{{/unless}}: unknown;
+    order_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    invoice_id{{#unless required}}?{{/unless}}: unknown;
+    invoice_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    amount_refunded{{#unless required}}?{{/unless}}: unknown;
+    amount_refunded{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -197,7 +197,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    amount_transferred{{#unless required}}?{{/unless}}: unknown;
+    amount_transferred{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -205,7 +205,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    refund_status{{#unless required}}?{{/unless}}: unknown;
+    refund_status{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -221,7 +221,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    bank{{#unless required}}?{{/unless}}: unknown;
+    bank{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -229,7 +229,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    wallet{{#unless required}}?{{/unless}}: unknown;
+    wallet{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -237,7 +237,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    vpa{{#unless required}}?{{/unless}}: unknown;
+    vpa{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -245,7 +245,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_source{{#unless required}}?{{/unless}}: unknown;
+    error_source{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -253,7 +253,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_step{{#unless required}}?{{/unless}}: unknown;
+    error_step{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -261,7 +261,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    error_reason{{#unless required}}?{{/unless}}: unknown;
+    error_reason{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -269,7 +269,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    payment_providers{{#unless required}}?{{/unless}}: unknown;
+    payment_providers{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -277,7 +277,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    customer_subscriptions{{#unless required}}?{{/unless}}: unknown;
+    customer_subscriptions{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -285,7 +285,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    user_profiles{{#unless required}}?{{/unless}}: unknown;
+    user_profiles{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -293,7 +293,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    customer_refunds{{#unless required}}?{{/unless}}: unknown;
+    customer_refunds{{#unless required}}?{{/unless}}: any;
   }
   
   export interface customer_paymentsWithpayment_providers extends customer_payments {

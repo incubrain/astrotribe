@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    role{{#unless required}}?{{/unless}}: unknown;
+    role{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    permissions{{#unless required}}?{{/unless}}: unknown;
+    permissions{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_updated{{#unless required}}?{{/unless}}: unknown;
+    last_updated{{#unless required}}?{{/unless}}: Date;
   }
   
   

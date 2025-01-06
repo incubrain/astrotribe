@@ -41,11 +41,11 @@ export function isPartialrole_permissions(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "role":
       return true; // Complex type requiring deeper validation
     case "table_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "conditions":
       return true; // Complex type requiring deeper validation
     case "permissions":
@@ -55,7 +55,7 @@ function isValidField(key: string, value: unknown): boolean {
     case "inherit_from":
       return true; // Complex type requiring deeper validation
     case "last_updated":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

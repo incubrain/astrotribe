@@ -32,15 +32,15 @@ export function isPartialscoring_weights(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "weight":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

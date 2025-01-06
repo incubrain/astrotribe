@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    operation{{#unless required}}?{{/unless}}: unknown;
+    operation{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    detail{{#unless required}}?{{/unless}}: unknown;
+    detail{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    logged_at{{#unless required}}?{{/unless}}: unknown;
+    logged_at{{#unless required}}?{{/unless}}: Date;
   }
   
   

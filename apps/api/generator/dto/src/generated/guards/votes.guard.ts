@@ -38,17 +38,17 @@ export function isPartialvotes(value: unknown): value is Partial<Ivotes> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "content_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "vote_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "users":
       return true; // Complex type requiring deeper validation
   }

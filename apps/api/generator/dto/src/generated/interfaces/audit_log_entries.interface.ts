@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    instance_id{{#unless required}}?{{/unless}}: unknown;
+    instance_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -30,7 +30,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -38,7 +38,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation {{/if}}
      */
-    payload{{#unless required}}?{{/unless}}: unknown;
+    payload{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -46,7 +46,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -54,7 +54,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    ip_address{{#unless required}}?{{/unless}}: unknown;
+    ip_address{{#unless required}}?{{/unless}}: string;
   }
   
   

@@ -45,27 +45,27 @@ export function isPartialworkflow_jobs(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "workflow_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "job_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "status":
       return true; // Complex type requiring deeper validation
     case "sequence_number":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "depends_on":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "started_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "completed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "workflows":
       return true; // Complex type requiring deeper validation
   }

@@ -74,37 +74,37 @@ export function isPartialusers(value: unknown): value is Partial<Iusers> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "instance_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "aud":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "role":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "encrypted_password":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email_confirmed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "invited_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "confirmation_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "confirmation_sent_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "recovery_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "recovery_sent_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "email_change_token_new":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email_change":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email_change_sent_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "last_sign_in_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "raw_app_meta_data":
       return true; // Complex type requiring deeper validation
     case "raw_user_meta_data":
@@ -112,35 +112,35 @@ function isValidField(key: string, value: unknown): boolean {
     case "is_super_admin":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "phone":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "phone_confirmed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "phone_change":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "phone_change_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "phone_change_sent_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "confirmed_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "email_change_token_current":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "email_change_confirm_status":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "banned_until":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "reauthentication_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "reauthentication_sent_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "is_sso_user":
       return typeof value === "boolean";
     case "deleted_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "is_anonymous":
       return typeof value === "boolean";
     case "identities":

@@ -53,45 +53,45 @@ export function isPartialerror_logs(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "service_name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_type":
       return true; // Complex type requiring deeper validation
     case "severity":
       return true; // Complex type requiring deeper validation
     case "message":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "stack_trace":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "metadata":
       return true; // Complex type requiring deeper validation
     case "context":
       return true; // Complex type requiring deeper validation
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "request_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "correlation_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "environment":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "error_hash":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "error_pattern":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_new_pattern":
       return typeof value === "boolean";
     case "github_repo":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "related_errors":
       return true; // Complex type requiring deeper validation
     case "frequency_data":
       return true; // Complex type requiring deeper validation
     case "domain":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
   }
   return false;
 }

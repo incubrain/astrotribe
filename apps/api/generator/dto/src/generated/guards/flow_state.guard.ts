@@ -46,29 +46,29 @@ export function isPartialflow_state(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "auth_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "code_challenge_method":
       return true; // Complex type requiring deeper validation
     case "code_challenge":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "provider_type":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "provider_access_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "provider_refresh_token":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "authentication_method":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "auth_code_issued_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "saml_relay_states":
       return true; // Complex type requiring deeper validation
   }

@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: bigint;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    crawl_id{{#unless required}}?{{/unless}}: unknown;
+    crawl_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    company_id{{#unless required}}?{{/unless}}: unknown;
+    company_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    metric_id{{#unless required}}?{{/unless}}: unknown;
+    metric_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsDate{{/if}}
      */
-    timestamp{{#unless required}}?{{/unless}}: unknown;
+    timestamp{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    value{{#unless required}}?{{/unless}}: unknown;
+    value{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    metric_definitions{{#unless required}}?{{/unless}}: unknown;
+    metric_definitions{{#unless required}}?{{/unless}}: any;
   }
   
   export interface company_metricsWithmetric_definitions extends company_metrics {

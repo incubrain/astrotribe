@@ -41,21 +41,21 @@ export function isPartialreferrer_blocks(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "referrer_code":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "blocked_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "blocked_by":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "reason":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_permanent":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

@@ -34,13 +34,13 @@ export function isPartialblacklisted_domains(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "reason":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
   }
   return false;
 }

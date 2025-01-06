@@ -22,7 +22,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    version{{#unless required}}?{{/unless}}: unknown;
+    version{{#unless required}}?{{/unless}}: string;
   }
   
   

@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    referrer_code{{#unless required}}?{{/unless}}: unknown;
+    referrer_code{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    visitor_id{{#unless required}}?{{/unless}}: unknown;
+    visitor_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    converted_at{{#unless required}}?{{/unless}}: unknown;
+    converted_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    status{{#unless required}}?{{/unless}}: unknown;
+    status{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    conversion_value{{#unless required}}?{{/unless}}: unknown;
+    conversion_value{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    user_agent{{#unless required}}?{{/unless}}: unknown;
+    user_agent{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    ip_address{{#unless required}}?{{/unless}}: unknown;
+    ip_address{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    landing_page{{#unless required}}?{{/unless}}: unknown;
+    landing_page{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    utm_source{{#unless required}}?{{/unless}}: unknown;
+    utm_source{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    utm_medium{{#unless required}}?{{/unless}}: unknown;
+    utm_medium{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    utm_campaign{{#unless required}}?{{/unless}}: unknown;
+    utm_campaign{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    device_type{{#unless required}}?{{/unless}}: unknown;
+    device_type{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -133,7 +133,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    browser{{#unless required}}?{{/unless}}: unknown;
+    browser{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -141,7 +141,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    country_code{{#unless required}}?{{/unless}}: unknown;
+    country_code{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -149,7 +149,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    region{{#unless required}}?{{/unless}}: unknown;
+    region{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -165,7 +165,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    security_flags{{#unless required}}?{{/unless}}: unknown;
+    security_flags{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -173,7 +173,7 @@
      *{{#if validation}}
      * @validation @IsNumber([object Object]){{/if}}
      */
-    validation_attempts{{#unless required}}?{{/unless}}: unknown;
+    validation_attempts{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -181,7 +181,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    last_failed_attempt{{#unless required}}?{{/unless}}: unknown;
+    last_failed_attempt{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -189,7 +189,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    client_fingerprint{{#unless required}}?{{/unless}}: unknown;
+    client_fingerprint{{#unless required}}?{{/unless}}: string;
   }
   
   

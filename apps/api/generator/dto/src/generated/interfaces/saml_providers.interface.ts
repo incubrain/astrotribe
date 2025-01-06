@@ -23,7 +23,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -31,7 +31,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    sso_provider_id{{#unless required}}?{{/unless}}: unknown;
+    sso_provider_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -39,7 +39,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    entity_id{{#unless required}}?{{/unless}}: unknown;
+    entity_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -47,7 +47,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    metadata_xml{{#unless required}}?{{/unless}}: unknown;
+    metadata_xml{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -55,7 +55,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    metadata_url{{#unless required}}?{{/unless}}: unknown;
+    metadata_url{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -63,7 +63,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation {{/if}}
      */
-    attribute_mapping{{#unless required}}?{{/unless}}: unknown;
+    attribute_mapping{{#unless required}}?{{/unless}}: Record<string, any>;
 /**
      * 
      *{{#if example}}
@@ -71,7 +71,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -79,7 +79,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -87,7 +87,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    name_id_format{{#unless required}}?{{/unless}}: unknown;
+    name_id_format{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -95,7 +95,7 @@ This model contains row level security and requires additional setup for migrati
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    sso_providers{{#unless required}}?{{/unless}}: unknown;
+    sso_providers{{#unless required}}?{{/unless}}: any;
   }
   
   export interface saml_providersWithsso_providers extends saml_providers {

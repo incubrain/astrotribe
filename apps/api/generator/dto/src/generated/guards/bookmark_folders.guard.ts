@@ -47,25 +47,25 @@ export function isPartialbookmark_folders(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "color":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "parent_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "is_default":
       return typeof value === "boolean";
     case "is_favorite":
       return typeof value === "boolean";
     case "position":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "bookmark_folders":
       return true; // Complex type requiring deeper validation
     case "other_bookmark_folders":

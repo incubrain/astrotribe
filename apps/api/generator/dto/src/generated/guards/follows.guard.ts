@@ -37,15 +37,15 @@ export function isPartialfollows(value: unknown): value is Partial<Ifollows> {
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "followed_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "followed_entity":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_profiles":
       return true; // Complex type requiring deeper validation
   }

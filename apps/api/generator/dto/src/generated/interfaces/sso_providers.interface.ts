@@ -24,7 +24,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -32,7 +32,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    resource_id{{#unless required}}?{{/unless}}: unknown;
+    resource_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -40,7 +40,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -48,7 +48,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -56,7 +56,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    saml_providers{{#unless required}}?{{/unless}}: unknown;
+    saml_providers{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -64,7 +64,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    saml_relay_states{{#unless required}}?{{/unless}}: unknown;
+    saml_relay_states{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -72,7 +72,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    sso_domains{{#unless required}}?{{/unless}}: unknown;
+    sso_domains{{#unless required}}?{{/unless}}: any;
   }
   
   export interface sso_providersWithsaml_providers extends sso_providers {

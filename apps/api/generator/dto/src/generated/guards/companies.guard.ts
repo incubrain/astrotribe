@@ -63,39 +63,39 @@ export function isPartialcompanies(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "name":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "description":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "logo_url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "social_media_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "scrape_frequency":
       return true; // Complex type requiring deeper validation
     case "category_id":
       return true; // Complex type requiring deeper validation
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "founding_year":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "is_government":
       return typeof value === "boolean";
     case "category":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "failed_count":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "is_english":
       return typeof value === "boolean";
     case "scrape_rating":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "scraped_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "content_status":
       return true; // Complex type requiring deeper validation
     case "keywords":

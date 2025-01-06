@@ -24,7 +24,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -32,7 +32,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    sso_provider_id{{#unless required}}?{{/unless}}: unknown;
+    sso_provider_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -40,7 +40,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    domain{{#unless required}}?{{/unless}}: unknown;
+    domain{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -48,7 +48,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -56,7 +56,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -64,7 +64,7 @@ This model contains an expression index which requires additional setup for migr
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    sso_providers{{#unless required}}?{{/unless}}: unknown;
+    sso_providers{{#unless required}}?{{/unless}}: any;
   }
   
   export interface sso_domainsWithsso_providers extends sso_domains {

@@ -41,9 +41,9 @@ export function isPartialclassified_urls(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "number" && !isNaN(value);
     case "url":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "predicted_category":
       return true; // Complex type requiring deeper validation
     case "actual_category":
@@ -53,9 +53,9 @@ function isValidField(key: string, value: unknown): boolean {
     case "added_to_training":
       return typeof value === "boolean";
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
   }
   return false;
 }

@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    id{{#unless required}}?{{/unless}}: unknown;
+    id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    title{{#unless required}}?{{/unless}}: unknown;
+    title{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    email{{#unless required}}?{{/unless}}: unknown;
+    email{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -53,7 +53,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    contact_type{{#unless required}}?{{/unless}}: unknown;
+    contact_type{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -61,7 +61,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    privacy_level{{#unless required}}?{{/unless}}: unknown;
+    privacy_level{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -69,7 +69,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    user_id{{#unless required}}?{{/unless}}: unknown;
+    user_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -77,7 +77,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    created_at{{#unless required}}?{{/unless}}: unknown;
+    created_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -85,7 +85,7 @@
      *{{#if validation}}
      * @validation @IsDate{{/if}}
      */
-    updated_at{{#unless required}}?{{/unless}}: unknown;
+    updated_at{{#unless required}}?{{/unless}}: Date;
 /**
      * 
      *{{#if example}}
@@ -93,7 +93,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    phone{{#unless required}}?{{/unless}}: unknown;
+    phone{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -101,7 +101,7 @@
      *{{#if validation}}
      * @validation @IsString{{/if}}
      */
-    company_id{{#unless required}}?{{/unless}}: unknown;
+    company_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -109,7 +109,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    company_contacts{{#unless required}}?{{/unless}}: unknown;
+    company_contacts{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -117,7 +117,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    companies{{#unless required}}?{{/unless}}: unknown;
+    companies{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -125,7 +125,7 @@
      *{{#if validation}}
      * @validation {{/if}}
      */
-    user_profiles{{#unless required}}?{{/unless}}: unknown;
+    user_profiles{{#unless required}}?{{/unless}}: any;
   }
   
   export interface contactsWithcompany_contacts extends contacts {

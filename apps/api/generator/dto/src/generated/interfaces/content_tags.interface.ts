@@ -21,7 +21,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsString{{/if}}
      */
-    content_id{{#unless required}}?{{/unless}}: unknown;
+    content_id{{#unless required}}?{{/unless}}: string;
 /**
      * 
      *{{#if example}}
@@ -29,7 +29,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty, @IsNumber([object Object]){{/if}}
      */
-    tag_id{{#unless required}}?{{/unless}}: unknown;
+    tag_id{{#unless required}}?{{/unless}}: number;
 /**
      * 
      *{{#if example}}
@@ -37,7 +37,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    contents{{#unless required}}?{{/unless}}: unknown;
+    contents{{#unless required}}?{{/unless}}: any;
 /**
      * 
      *{{#if example}}
@@ -45,7 +45,7 @@
      *{{#if validation}}
      * @validation @IsNotEmpty{{/if}}
      */
-    tags{{#unless required}}?{{/unless}}: unknown;
+    tags{{#unless required}}?{{/unless}}: any;
   }
   
   export interface content_tagsWithcontents extends content_tags {

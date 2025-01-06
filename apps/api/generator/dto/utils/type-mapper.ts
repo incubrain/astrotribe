@@ -7,18 +7,26 @@ export class TypeMapper {
   private readonly typeMap: Record<string, string> = {
     // Prisma scalar types
     'String': 'string',
+    'string': 'string',
     'Boolean': 'boolean',
+    'boolean': 'boolean',
     'Int': 'number',
-    'BigInt': 'bigint',
     'Float': 'number',
+    'number': 'number',
+    'BigInt': 'bigint',
+    'bigint': 'bigint',
     'Decimal': 'number',
+    'decimal': 'number',
     'DateTime': 'Date',
+    'Date': 'Date',
+    'date': 'Date',
     'Json': 'Record<string, any>',
+    'json': 'Record<string, any>',
     'Bytes': 'Buffer',
+    'bytes': 'Buffer',
 
     // Special types
     'Record<string, any>': 'Record<string, any>',
-    'Date': 'Date',
     'unknown': 'unknown',
     'any': 'any',
   }
@@ -27,34 +35,65 @@ export class TypeMapper {
    * Maps a Prisma type to a TypeScript type
    */
   mapType(type: string): string {
+    // Try exact match first
     const mappedType = this.typeMap[type]
-    if (!mappedType) {
-      console.warn(`No explicit mapping found for type: ${type}. Defaulting to 'unknown'`)
-      return 'unknown'
+    if (mappedType) {
+      return mappedType
     }
-    return mappedType
+
+    // Try case-insensitive match
+    const lowerType = type.toLowerCase()
+    for (const [key, value] of Object.entries(this.typeMap)) {
+      if (key.toLowerCase() === lowerType) {
+        return value
+      }
+    }
+
+    console.warn(`No explicit mapping found for type: ${type}. Defaulting to 'unknown'`)
+    return 'unknown'
+  }
+
+  /**
+   * Maps a Prisma field to a TypeScript type
+   */
+  mapPrismaToTypeScript(field: { type: string; isList: boolean; kind?: string }): string {
+    let baseType = this.mapType(field.type)
+
+    // Handle enums
+    if (field.kind === 'enum') {
+      baseType = field.type
+    }
+
+    // Handle arrays
+    if (field.isList) {
+      baseType = `${baseType}[]`
+    }
+
+    return baseType
   }
 
   /**
    * Maps a Prisma type to a Zod type
    */
   mapToZodType(type: string): string {
-    switch (type) {
-      case 'String':
+    switch (type.toLowerCase()) {
+      case 'string':
         return 'string'
-      case 'Boolean':
+      case 'boolean':
         return 'boolean'
-      case 'Int':
-      case 'Float':
-      case 'Decimal':
+      case 'int':
+      case 'float':
+      case 'decimal':
+      case 'number':
         return 'number'
-      case 'BigInt':
+      case 'bigint':
         return 'bigint'
-      case 'DateTime':
+      case 'datetime':
+      case 'date':
         return 'date'
-      case 'Json':
+      case 'json':
         return 'record'
-      case 'Bytes':
+      case 'bytes':
         return 'instanceof(Buffer)'
       default:
         console.warn(`No explicit Zod mapping found for type: ${type}. Defaulting to 'any'`)

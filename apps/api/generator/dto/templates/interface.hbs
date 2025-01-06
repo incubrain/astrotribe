@@ -1,34 +1,21 @@
-// This file is auto-generated. Do not modify manually.
-{{#if imports}}
-{{#each imports}}
-import { {{types}} } from '{{from}}'
-{{/each}}
-{{/if}}
+{{{imports}}}
 
-{{#if model.documentation}}
-/**
- * {{model.documentation}}
- */
-{{/if}}
-export interface {{model.name}} {
-  {{#each model.fields}}
-  {{#if documentation}}
+{{{documentation}}}
+export interface I{{model.name}} extends BaseEntity {
+{{#each model.fields}}
   /**
-   * {{documentation}}
+   * {{documentation.description}}
+   {{#if documentation.example}}
+   * @example {{documentation.example}}
+   {{/if}}
+   {{#if validationRules}}
+   * @validation {{validationRules}}
+   {{/if}}
    */
-  {{/if}}
-  {{name}}{{#unless isRequired}}?{{/unless}}: {{type}}{{#if isList}}[]{{/if}};
-  {{/each}}
-}
-
-{{#if model.relations}}
-{{#each model.relations}}
-export interface {{../model.name}}With{{name}} extends {{../model.name}} {
-  {{name}}: I{{name}};
-}
+  {{name}}{{#unless isRequired}}?{{/unless}}: {{tsType}};
 {{/each}}
-{{/if}}
+}
 
-export type Partial{{model.name}} = Partial<{{model.name}}>
-export type Required{{model.name}} = Required<{{model.name}}>
-export type Pick{{model.name}}<K extends keyof {{model.name}}> = Pick<{{model.name}}, K>
+{{{relations}}}
+
+{{{typeHelpers}}}

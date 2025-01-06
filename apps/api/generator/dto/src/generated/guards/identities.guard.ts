@@ -43,23 +43,23 @@ export function isPartialidentities(
 function isValidField(key: string, value: unknown): boolean {
   switch (key) {
     case "provider_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "user_id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "identity_data":
       return true; // Complex type requiring deeper validation
     case "provider":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "last_sign_in_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "created_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "updated_at":
-      return true; // Complex type requiring deeper validation
+      return value instanceof Date || !isNaN(Date.parse(String(value)));
     case "email":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "id":
-      return true; // Complex type requiring deeper validation
+      return typeof value === "string";
     case "users":
       return true; // Complex type requiring deeper validation
   }

@@ -16,7 +16,7 @@ export const {{model.name}}Schema = z.object({
   {{#if documentation}}
   /** {{documentation}} */
   {{/if}}
-  {{name}}: {{#if isRequired}}z.{{type}}(){{else}}z.{{type}}().optional(){{/if}}{{#if isList}}.array(){{/if}},
+  {{name}}: {{#if isRequired}}z.{{mapToZodType type}}(){{else}}z.{{mapToZodType type}}().optional(){{/if}}{{#if isList}}.array(){{/if}},
   {{/each}}
 })
 
