@@ -1,0 +1,6518 @@
+dto/
+  core/
+    base.generator.ts
+    config-manager.ts
+    config-validator.ts
+    default-config.ts
+    template-system.ts
+    types.ts
+  decorators/
+    custom.decorators.ts
+  modules/
+    documentation.ts
+    interfaces.ts
+    openapi-metadata.ts
+    schemas.ts
+    transformers.ts
+    type-guard.ts
+    validators.ts
+  types/
+    config.types.ts
+    postgresql.types.ts
+  utils/
+    documentation-parser.ts
+    field-parser.ts
+    file-manager.ts
+    template-engine.ts
+    type-mapper.ts
+  config.ts
+  index.ts
+template/
+  dto.template.ts
+  interface.template.ts
+  request.dto.template.ts
+  response.dto.template.ts
+  schema.template.ts
+
+================================================================
+Repository Files
+================================================================
+
+================
+File: dto/core/base.generator.ts
+================
+// tools/generators/dto/core/base.generator.ts
+import { DMMF } from '@prisma/client/extension'
+import type { GeneratorOptions, ModelMetadata, GeneratedFile } from './types'
+import { FileManager } from '../utils/file-manager'
+import { FieldParser } from '../utils/field-parser'
+import { DocumentationParser } from '../utils/documentation-parser'
+
+/**
+ * Base generator class that orchestrates the DTO generation process.
+ * This class coordinates between different modules while maintaining
+ * separation of concerns.
+ */
+export abstract class BaseGenerator {
+  protected fileManager: FileManager
+  protected fieldParser: FieldParser
+  protected documentationParser: DocumentationParser
+  protected typeMapper: TypeMapper
+  protected openApiGenerator: OpenAPIMetadataGenerator
+
+
+  constructor(
+    protected readonly dmmf: DMMF.Document,
+    protected readonly options: GeneratorOptions,
+  ) {
+    this.fileManager = new FileManager(options.outputPath)
+    this.fieldParser = new FieldParser()
+    this.documentationParser = new DocumentationParser()
+    this.openApiGenerator = new OpenAPIMetadataGenerator(this.typeMapper)
+  }
+
+  /**
+   * Main generation process that coordinates all generator modules.
+   * Each step is isolated and can be enabled/disabled via options.
+   */
+  async generate(): Promise<void> {
+    // Create necessary directories
+    await this.fileManager.initializeDirectory()
+
+    // Process each model
+    for (const model of this.dmmf.datamodel.models) {
+      const metadata = await this.processModel(model)
+
+      // Generate different artifacts based on options
+      const files: GeneratedFile[] = []
+
+      if (this.options.typescript.generateInterfaces) {
+        files.push(await this.generateInterface(metadata))
+      }
+
+      if (this.options.validation.enabled) {
+        files.push(await this.generateValidatedDTO(metadata))
+      }
+
+      if (this.options.typescript.generateTypeGuards) {
+        files.push(await this.generateTypeGuard(metadata))
+      }
+
+      if (this.options.validation.useZod) {
+        files.push(await this.generateZodSchema(metadata))
+      }
+
+      // Write all generated files
+      await Promise.all(files.map((file) => this.fileManager.writeFile(file.path, file.content)))
+    }
+
+    // Generate auxiliary files
+    if (this.options.documentation.enabled) {
+      await this.generateDocumentation()
+    }
+
+    await this.generateIndexFile()
+    await this.generateUtilityFiles()
+  }
+
+  /**
+   * Processes a Prisma model into our internal metadata format, now with view support.
+   * This method examines model attributes to determine if it represents a view and
+   * extracts view-specific metadata when applicable.
+   */
+  protected async processModel(model: DMMF.Model): Promise<ModelMetadata> {
+    const documentation = this.documentationParser.parseModelDocumentation(model)
+    const fields = await Promise.all(
+      model.fields.map((field) => this.fieldParser.parseField(field)),
+    )
+
+    // Determine if this model represents a view by checking Prisma metadata
+    const isView = this.isModelAView(model)
+    let viewMetadata: ViewMetadata | undefined
+
+    if (isView) {
+      viewMetadata = await this.extractViewMetadata(model)
+    }
+
+    return {
+      name: model.name,
+      documentation,
+      fields,
+      relationships: this.processRelationships(model),
+      isView,
+      viewMetadata,
+    }
+  }
+
+  /**
+   * Determines if a Prisma model represents a database view by examining
+   * its attributes and documentation.
+   */
+  private isModelAView(model: DMMF.Model): boolean {
+    // Check for view-specific markers in the model's documentation
+    const viewMarker = model.documentation?.includes('@view')
+
+    // Check for Prisma-specific view attributes
+    const hasViewAttribute =
+      model.documentation?.includes('@view') || model.documentation?.includes('@@view')
+
+    return viewMarker || hasViewAttribute
+  }
+
+  /**
+   * Extracts detailed metadata about a view from its Prisma model definition.
+   * This includes the view's source query, dependencies, and computed columns.
+   */
+  private async extractViewMetadata(model: DMMF.Model): Promise<ViewMetadata> {
+    const viewMetadata: ViewMetadata = {
+      sourceQuery: this.extractSourceQuery(model),
+      materialized: this.isViewMaterialized(model),
+      updatable: this.isViewUpdatable(model),
+      dependencies: this.extractViewDependencies(model),
+      computedColumns: [],
+    }
+
+    // Process computed columns
+    viewMetadata.computedColumns = await this.extractComputedColumns(model)
+
+    return viewMetadata
+  }
+
+  /**
+   * Extracts the SQL query that defines a view from model documentation.
+   * This is typically specified in a special documentation comment.
+   */
+  private extractSourceQuery(model: DMMF.Model): string {
+    const queryMatch = model.documentation?.match(/@view-query\s+{([^}]+)}/)
+    return queryMatch ? queryMatch[1].trim() : ''
+  }
+
+  /**
+   * Determines if a view is materialized by checking its attributes.
+   */
+  private isViewMaterialized(model: DMMF.Model): boolean {
+    return model.documentation?.includes('@materialized') || false
+  }
+
+  /**
+   * Checks if a view is updatable based on its definition and constraints.
+   */
+  private isViewUpdatable(model: DMMF.Model): boolean {
+    return model.documentation?.includes('@updatable') || false
+  }
+
+  /**
+   * Extracts a list of tables and views that this view depends on.
+   */
+  private extractViewDependencies(model: DMMF.Model): string[] {
+    const dependencyMatch = model.documentation?.match(/@dependencies\s+\[(.*?)\]/)
+    if (!dependencyMatch) return []
+
+    return dependencyMatch[1]
+      .split(',')
+      .map((dep) => dep.trim())
+      .filter(Boolean)
+  }
+
+  /**
+   * Extracts information about computed columns in the view.
+   */
+  private async extractComputedColumns(model: DMMF.Model): Promise<ComputedColumnMetadata[]> {
+    const computedColumns: ComputedColumnMetadata[] = []
+
+    for (const field of model.fields) {
+      if (this.isComputedColumn(field)) {
+        computedColumns.push({
+          name: field.name,
+          expression: this.extractComputedExpression(field),
+          dependsOn: this.extractColumnDependencies(field),
+          returnType: field.type,
+        })
+      }
+    }
+
+    return computedColumns
+  }
+
+  /**
+   * Determines if a field represents a computed column.
+   */
+  private isComputedColumn(field: DMMF.Field): boolean {
+    return field.documentation?.includes('@computed') || false
+  }
+
+  /**
+   * Extracts the SQL expression that computes a column's value.
+   */
+  private extractComputedExpression(field: DMMF.Field): string {
+    const expressionMatch = field.documentation?.match(/@computed-expression\s+{([^}]+)}/)
+    return expressionMatch ? expressionMatch[1].trim() : ''
+  }
+
+  /**
+   * Extracts the list of fields that a computed column depends on.
+   */
+  private extractColumnDependencies(field: DMMF.Field): string[] {
+    const dependencyMatch = field.documentation?.match(/@depends-on\s+\[(.*?)\]/)
+    if (!dependencyMatch) return []
+
+    return dependencyMatch[1]
+      .split(',')
+      .map((dep) => dep.trim())
+      .filter(Boolean)
+  }
+
+  /**
+   * Generates validation rules appropriate for a view-based DTO.
+   * Views require special handling as some fields may be computed
+   * or derived from complex expressions.
+   */
+  protected generateViewValidationRules(metadata: ModelMetadata): ValidationRule[] {
+    const rules: ValidationRule[] = []
+
+    if (!metadata.isView) return rules
+
+    // Add view-specific validation rules
+    rules.push({
+      decorator: 'IsViewDTO',
+      message: `This DTO represents a view: ${metadata.name}`,
+    })
+
+    // Handle computed columns differently
+    metadata.viewMetadata?.computedColumns.forEach((column) => {
+      rules.push({
+        decorator: 'IsComputed',
+        params: [column.name],
+        message: `${column.name} is a computed field`,
+      })
+    })
+
+    return rules
+  }
+
+  /**
+   * Abstract methods that must be implemented by specific generators
+   */
+  protected abstract generateInterface(metadata: ModelMetadata): Promise<GeneratedFile>
+  protected abstract generateValidatedDTO(metadata: ModelMetadata): Promise<GeneratedFile>
+  protected abstract generateTypeGuard(metadata: ModelMetadata): Promise<GeneratedFile>
+  protected abstract generateZodSchema(metadata: ModelMetadata): Promise<GeneratedFile>
+  protected abstract generateDocumentation(): Promise<void>
+  protected abstract generateIndexFile(): Promise<void>
+  protected abstract generateUtilityFiles(): Promise<void>
+
+  /**
+   * Processes model relationships to build a complete picture
+   * of how models are connected
+   */
+  private processRelationships(model: DMMF.Model): RelationshipMetadata[] {
+    return model.fields
+      .filter((field) => field.relationName)
+      .map((field) => ({
+        name: field.name,
+        type: field.type,
+        relationType: this.determineRelationType(field),
+        isRequired: field.isRequired,
+        foreign: {
+          model: field.type,
+          field: field.relationFromFields?.[0] || '',
+        },
+      }))
+  }
+
+  private determineRelationType(field: DMMF.Field): RelationshipMetadata['relationType'] {
+    if (field.isList) {
+      return field.relationToFields?.length ? 'many-to-many' : 'one-to-many'
+    }
+    return field.relationToFields?.length ? 'many-to-one' : 'one-to-one'
+  }
+}
+
+================
+File: dto/core/config-manager.ts
+================
+// tools/generators/dto/core/config-manager.ts
+
+import { cosmiconfig } from 'cosmiconfig'
+import { GeneratorConfig } from './config.types'
+import { defaultConfig } from './default-config'
+import { ConfigValidator } from './config-validator'
+
+/**
+ * Manages the configuration for the DTO generator, handling loading,
+ * validation, and merging of configuration from multiple sources.
+ */
+export class ConfigurationManager {
+  private config: GeneratorConfig
+
+  constructor() {
+    this.config = defaultConfig
+  }
+
+  /**
+   * Loads configuration from all available sources and merges them
+   * according to priority. Sources are loaded in this order:
+   * 1. Default configuration
+   * 2. Configuration file (.dtogenrc, package.json)
+   * 3. Environment variables
+   * 4. Command line arguments
+   */
+  async loadConfiguration(options: Partial<GeneratorConfig> = {}): Promise<GeneratorConfig> {
+    // Load configuration file using cosmiconfig
+    const explorer = cosmiconfig('dtogen')
+    const result = await explorer.search()
+    const fileConfig = result?.config || {}
+
+    // Load environment variables
+    const envConfig = this.loadEnvironmentConfig()
+
+    // Merge configurations with priority
+    this.config = this.mergeConfigurations([defaultConfig, fileConfig, envConfig, options])
+
+    // Validate final configuration
+    await validateConfig(this.config)
+
+    return this.config
+  }
+
+  /**
+   * Registers a custom type mapping that can be used in the generator.
+   * This allows adding support for new database types or overriding
+   * existing type mappings.
+   */
+  registerCustomType(dbType: string, tsType: string, converter?: TypeConverter): void {
+    this.config.types.customMappings[dbType] = tsType
+    if (converter) {
+      this.config.types.typeConverters[dbType] = converter
+    }
+  }
+
+  /**
+   * Registers a custom validation rule that can be used in generated DTOs.
+   * This allows adding new validation decorators and rules beyond
+   * what's built into the system.
+   */
+  registerValidationRule(rule: ValidationRuleDefinition): void {
+    this.config.validation.customRules.push(rule)
+  }
+
+  /**
+   * Registers a plugin that extends the generator's functionality.
+   * Plugins can add new generators, modify the generation process,
+   * or add new features to the generated code.
+   */
+  registerPlugin(plugin: PluginConfig): void {
+    this.config.plugins.push(plugin)
+  }
+
+  /**
+   * Gets the current configuration, optionally filtered to a specific section.
+   */
+  getConfig<K extends keyof GeneratorConfig>(section?: K): GeneratorConfig | GeneratorConfig[K] {
+    if (section) {
+      return this.config[section]
+    }
+    return this.config
+  }
+
+  /**
+   * Merges multiple configuration objects, handling deep merging of
+   * nested configuration options and arrays.
+   */
+  private mergeConfigurations(configs: Partial<GeneratorConfig>[]): GeneratorConfig {
+    return configs.reduce((merged, config) => {
+      return this.deepMerge(merged, config)
+    }, {} as GeneratorConfig)
+  }
+
+  /**
+   * Loads configuration from environment variables, converting them
+   * to the appropriate configuration structure.
+   */
+  private loadEnvironmentConfig(): Partial<GeneratorConfig> {
+    const config: Partial<GeneratorConfig> = {}
+
+    // Map environment variables to configuration options
+    Object.entries(process.env).forEach(([key, value]) => {
+      if (key.startsWith('DTOGEN_')) {
+        this.setConfigValue(config, key.slice(7).toLowerCase(), value)
+      }
+    })
+
+    return config
+  }
+
+  /**
+   * Sets a configuration value from a flat key path, handling
+   * nested configuration options.
+   */
+  private setConfigValue(config: any, key: string, value: string): void {
+    const parts = key.split('_')
+    let current = config
+
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i]
+      current[part] = current[part] || {}
+      current = current[part]
+    }
+
+    const lastPart = parts[parts.length - 1]
+    current[lastPart] = this.parseConfigValue(value)
+  }
+
+  /**
+   * Parses a configuration value, converting strings to appropriate
+   * types (boolean, number, etc.)
+   */
+  private parseConfigValue(value: string): any {
+    if (value.toLowerCase() === 'true') return true
+    if (value.toLowerCase() === 'false') return false
+    if (!isNaN(Number(value))) return Number(value)
+    try {
+      return JSON.parse(value)
+    } catch {
+      return value
+    }
+  }
+
+  /**
+   * Performs a deep merge of configuration objects, properly handling
+   * arrays and nested objects.
+   */
+  private deepMerge(target: any, source: any): any {
+    if (!source) return target
+
+    Object.keys(source).forEach((key) => {
+      if (source[key] instanceof Object && !Array.isArray(source[key])) {
+        target[key] = this.deepMerge(target[key] || {}, source[key])
+      } else {
+        target[key] = source[key]
+      }
+    })
+
+    return target
+  }
+}
+
+================
+File: dto/core/config-validator.ts
+================
+// tools/generators/dto/core/config-validator.ts
+
+import { GeneratorConfig, TypeConverter, ValidationRuleDefinition } from './config.types'
+import { existsSync } from 'fs'
+import { join } from 'path'
+
+/**
+ * Validates the generator configuration to ensure all required options
+ * are present and valid. This helps catch configuration errors early
+ * in the generation process.
+ */
+export class ConfigValidator {
+  /**
+   * Main validation method that coordinates all validation checks
+   */
+  static async validateConfig(config: GeneratorConfig): Promise<void> {
+    this.validateBasicConfig(config)
+    this.validateTypeSystem(config.types)
+    this.validateValidation(config.validation)
+    this.validateTemplates(config.templates)
+    this.validatePlugins(config.plugins)
+    this.validateOutput(config.output)
+    await this.validateHooks(config.hooks)
+  }
+
+  /**
+   * Validates basic configuration options including paths and essential settings
+   */
+  private static validateBasicConfig(config: GeneratorConfig): void {
+    if (!config.outputPath) {
+      throw new Error('Output path must be specified')
+    }
+
+    // Validate prettier configuration if specified
+    if (config.prettierConfig && !existsSync(config.prettierConfig)) {
+      throw new Error(`Prettier config file not found: ${config.prettierConfig}`)
+    }
+  }
+
+  /**
+   * Validates type system configuration including custom mappings and converters
+   */
+  private static validateTypeSystem(types: GeneratorConfig['types']): void {
+    // Validate custom type mappings
+    Object.entries(types.customMappings).forEach(([dbType, tsType]) => {
+      if (typeof tsType !== 'string') {
+        throw new Error(`Invalid TypeScript type mapping for ${dbType}`)
+      }
+    })
+
+    // Validate type converters
+    Object.entries(types.typeConverters).forEach(([type, converter]) => {
+      this.validateTypeConverter(type, converter)
+    })
+
+    // Validate generic type configurations
+    types.genericTypes.forEach((genericType) => {
+      if (genericType.typeParameters < 1) {
+        throw new Error(`Generic type ${genericType.name} must have at least one type parameter`)
+      }
+      if (!genericType.template.includes('${type}')) {
+        throw new Error(`Generic type ${genericType.name} template must include \${type}`)
+      }
+    })
+  }
+
+  /**
+   * Validates validation configuration including custom rules
+   */
+  private static validateValidation(validation: GeneratorConfig['validation']): void {
+    // Validate custom rules
+    validation.customRules.forEach((rule) => {
+      this.validateCustomRule(rule)
+    })
+
+    // Ensure required message templates exist
+    const requiredTemplates = ['required', 'string', 'number', 'boolean']
+    requiredTemplates.forEach((template) => {
+      if (!validation.messageTemplates[template]) {
+        throw new Error(`Missing required message template: ${template}`)
+      }
+    })
+  }
+
+  /**
+   * Validates template configuration including paths and overrides
+   */
+  private static validateTemplates(templates: GeneratorConfig['templates']): void {
+    // Validate template paths exist
+    templates.templatePaths?.forEach((path) => {
+      if (!existsSync(path)) {
+        throw new Error(`Template path not found: ${path}`)
+      }
+    })
+
+    // Validate template overrides
+    Object.entries(templates.overrides || {}).forEach(([name, template]) => {
+      if (typeof template !== 'string') {
+        throw new Error(`Invalid template override for ${name}`)
+      }
+    })
+  }
+
+  /**
+   * Validates plugin configuration including plugin existence and options
+   */
+  private static validatePlugins(plugins: GeneratorConfig['plugins']): void {
+    plugins.forEach((plugin) => {
+      if (!plugin.name) {
+        throw new Error('Plugin must have a name')
+      }
+      if (plugin.generators?.some((g) => !g.name || !g.generate)) {
+        throw new Error(`Invalid generator in plugin ${plugin.name}`)
+      }
+    })
+  }
+
+  /**
+   * Validates output configuration including format and structure
+   */
+  private static validateOutput(output: GeneratorConfig['output']): void {
+    const validFormats = ['typescript', 'javascript']
+    if (!validFormats.includes(output.format)) {
+      throw new Error(`Invalid output format: ${output.format}`)
+    }
+
+    const validModuleSystems = ['esm', 'commonjs']
+    if (!validModuleSystems.includes(output.moduleSystem)) {
+      throw new Error(`Invalid module system: ${output.moduleSystem}`)
+    }
+  }
+
+  /**
+   * Validates hook configuration ensuring all hooks are functions
+   */
+  private static async validateHooks(hooks: GeneratorConfig['hooks']): Promise<void> {
+    Object.entries(hooks).forEach(([name, hook]) => {
+      if (hook && typeof hook !== 'function') {
+        throw new Error(`Invalid hook: ${name}`)
+      }
+    })
+  }
+
+  /**
+   * Validates a type converter ensuring it has all required methods
+   */
+  private static validateTypeConverter(type: string, converter: TypeConverter): void {
+    const requiredMethods = ['toTypeScript', 'toDatabase', 'validate']
+    requiredMethods.forEach((method) => {
+      if (typeof converter[method] !== 'function') {
+        throw new Error(`Type converter for ${type} missing required method: ${method}`)
+      }
+    })
+  }
+
+  /**
+   * Validates a custom validation rule ensuring it has all required properties
+   */
+  private static validateCustomRule(rule: ValidationRuleDefinition): void {
+    if (!rule.name || !rule.decorator || !rule.validate) {
+      throw new Error('Custom validation rule missing required properties')
+    }
+    if (typeof rule.validate !== 'function') {
+      throw new Error(`Invalid validator function for rule: ${rule.name}`)
+    }
+  }
+}
+
+================
+File: dto/core/default-config.ts
+================
+// tools/generators/dto/core/default-config.ts
+
+import { GeneratorConfig } from './config.types'
+
+/**
+ * Default configuration for the DTO generator.
+ * This provides sensible defaults for all configuration options
+ * while allowing overrides through other configuration sources.
+ */
+export const defaultConfig: GeneratorConfig = {
+  // Base configuration with essential paths
+  outputPath: 'src/generated',
+  prettierConfig: undefined,
+
+  // Type system configuration with standard type mappings
+  types: {
+    defaultMappings: {
+      // PostgreSQL to TypeScript type mappings
+      varchar: 'string',
+      text: 'string',
+      char: 'string',
+      int2: 'number',
+      int4: 'number',
+      int8: 'number',
+      float4: 'number',
+      float8: 'number',
+      decimal: 'number',
+      numeric: 'number',
+      bool: 'boolean',
+      timestamp: 'Date',
+      timestamptz: 'Date',
+      date: 'Date',
+      time: 'string',
+      timetz: 'string',
+      interval: 'string',
+      uuid: 'string',
+      json: 'Record<string, any>',
+      jsonb: 'Record<string, any>',
+      bytea: 'Buffer',
+    },
+    customMappings: {},
+    typeConverters: {},
+    genericTypes: [
+      {
+        name: 'Array',
+        typeParameters: 1,
+        template: '${type}[]',
+      },
+      {
+        name: 'Nullable',
+        typeParameters: 1,
+        template: '${type} | null',
+      },
+    ],
+  },
+
+  // Validation configuration with common rules enabled
+  validation: {
+    enabledRules: [
+      'IsNotEmpty',
+      'IsOptional',
+      'IsString',
+      'IsNumber',
+      'IsBoolean',
+      'IsDate',
+      'IsEmail',
+      'MinLength',
+      'MaxLength',
+      'Min',
+      'Max',
+    ],
+    customRules: [],
+    messageTemplates: {
+      required: '${field} is required',
+      string: '${field} must be a string',
+      number: '${field} must be a number',
+      boolean: '${field} must be a boolean',
+      date: '${field} must be a valid date',
+      email: '${field} must be a valid email address',
+      minLength: '${field} must be at least ${min} characters',
+      maxLength: '${field} must be at most ${max} characters',
+    },
+    validators: {},
+  },
+
+  // Template configuration for code generation
+  templates: {
+    templatePaths: [],
+    overrides: {},
+    variables: {
+      projectName: 'Generated DTOs',
+      author: 'DTO Generator',
+      version: '1.0.0',
+    },
+    functions: {},
+  },
+
+  // Plugin system configuration
+  plugins: [],
+
+  // Output configuration for generated code
+  output: {
+    format: 'typescript',
+    moduleSystem: 'esm',
+    fileNaming: {
+      case: 'kebab',
+      prefix: '',
+      suffix: '.dto',
+    },
+    structure: {
+      baseDir: 'src/generated',
+      separateDirectories: true,
+      generateIndex: true,
+    },
+  },
+
+  // Lifecycle hooks configuration
+  hooks: {},
+}
+
+================
+File: dto/core/template-system.ts
+================
+// tools/generators/dto/core/template-system.ts
+
+import type { ModelMetadata, FieldMetadata, NestedTypeMetadata } from './types'
+import { TemplateEngine } from '../utils/template-engine'
+
+/**
+ * Enhanced template system that provides a flexible and extensible way to generate
+ * different types of DTOs and related classes. This system supports inheritance,
+ * custom decorators, and specialized NestJS features.
+ */
+export class TemplateSystem {
+  /**
+   * Maintains a registry of custom decorators that can be applied to
+   * DTOs and their properties. This allows for easy extension of the
+   * template system with new decorators.
+   */
+  private static customDecorators: Map<string, DecoratorDefinition> = new Map()
+
+  /**
+   * Registers a custom decorator for use in templates. This allows users
+   * to extend the system with their own decorators while maintaining
+   * type safety and documentation.
+   */
+  static registerDecorator(name: string, definition: DecoratorDefinition): void {
+    this.customDecorators.set(name, definition)
+  }
+
+  /**
+   * Generates a complete DTO class with all necessary imports, decorators,
+   * and class members. This is the main entry point for template generation.
+   */
+  static generateDTO(model: ModelMetadata, options: DTOGenerationOptions): string {
+    const templateParts = [
+      this.generateImports(model, options),
+      this.generateClassDecorators(model, options),
+      this.generateClassDefinition(model, options),
+      this.generateClassBody(model, options),
+    ]
+
+    return templateParts.join('\n\n')
+  }
+
+  /**
+   * Generates imports based on the features being used in the DTO.
+   * This includes framework imports, custom decorators, and base classes.
+   */
+  private static generateImports(model: ModelMetadata, options: DTOGenerationOptions): string {
+    const imports = new Set<string>()
+
+    // Add base NestJS imports
+    imports.add(`import { ApiProperty } from '@nestjs/swagger'`)
+
+    // Add validation imports if needed
+    if (options.useValidation) {
+      imports.add(`import { IsString, IsNumber, IsBoolean, IsOptional } from 'class-validator'`)
+    }
+
+    // Add transformation imports if needed
+    if (options.useTransformation) {
+      imports.add(`import { Transform } from 'class-transformer'`)
+    }
+
+    // Add inheritance-related imports
+    if (options.extends) {
+      imports.add(`import { ${options.extends} } from '../base'`)
+    }
+
+    // Add custom decorator imports
+    this.customDecorators.forEach((decorator) => {
+      if (decorator.importStatement) {
+        imports.add(decorator.importStatement)
+      }
+    })
+
+    return Array.from(imports).join('\n')
+  }
+
+  /**
+   * Generates class-level decorators including custom decorators,
+   * API documentation, and validation rules.
+   */
+  private static generateClassDecorators(
+    model: ModelMetadata,
+    options: DTOGenerationOptions,
+  ): string {
+    const decorators = []
+
+    // Add API documentation decorators
+    decorators.push(`@ApiTags('${model.name}')`)
+
+    // Add response type decorators for controllers
+    if (options.isResponse) {
+      decorators.push(this.generateResponseDecorators(model))
+    }
+
+    // Add custom class-level decorators
+    model.decorators?.forEach((decorator) => {
+      const customDecorator = this.customDecorators.get(decorator.name)
+      if (customDecorator) {
+        decorators.push(customDecorator.generate(decorator.params))
+      }
+    })
+
+    return decorators.join('\n')
+  }
+
+  /**
+   * Generates response type decorators for OpenAPI documentation.
+   * This method creates decorators that describe the structure and
+   * possible status codes of API responses.
+   */
+  private static generateResponseDecorators(model: ModelMetadata): string {
+    const decorators = [
+      `@ApiResponse({
+        status: 200,
+        description: 'Successful response',
+        type: ${model.name}DTO
+      })`,
+      `@ApiResponse({
+        status: 400,
+        description: 'Bad request - validation error'
+      })`,
+      `@ApiResponse({
+        status: 401,
+        description: 'Unauthorized - authentication required'
+      })`,
+    ]
+
+    // Add specific error responses if defined in model metadata
+    if (model.errorResponses) {
+      model.errorResponses.forEach((error) => {
+        decorators.push(`@ApiResponse({
+          status: ${error.status},
+          description: '${error.description}'
+        })`)
+      })
+    }
+
+    return decorators.join('\n')
+  }
+
+  /**
+   * Generates class methods based on the DTO type and options.
+   * This includes transformation methods, validation methods,
+   * and any custom business logic methods.
+   */
+  private static generateMethods(model: ModelMetadata, options: DTOGenerationOptions): string {
+    const methods = []
+
+    // Add toEntity transformation method
+    if (options.useTransformation) {
+      methods.push(`
+  /**
+   * Transforms this DTO to its corresponding entity
+   */
+  toEntity(): Record<string, any> {
+    return {
+      ${model.fields.map((field) => `${field.name}: this.${field.name}`).join(',\n      ')}
+    }
+  }`)
+    }
+
+    // Add validation method if needed
+    if (options.useValidation) {
+      methods.push(`
+  /**
+   * Validates this DTO instance
+   */
+  async validate(): Promise<ValidationError[]> {
+    return validate(this)
+  }`)
+    }
+
+    // Add custom business logic methods from metadata
+    if (model.methods) {
+      model.methods.forEach((method) => {
+        methods.push(
+          TemplateEngine.process(method.template, {
+            methodName: method.name,
+            params: method.parameters,
+            returnType: method.returnType,
+            body: method.body,
+          }),
+        )
+      })
+    }
+
+    return methods.join('\n\n')
+  }
+
+  /**
+   * Generates property decorators for a field including validation,
+   * transformation, and documentation decorators.
+   */
+  private static generatePropertyDecorators(
+    field: FieldMetadata,
+    options: DTOGenerationOptions,
+  ): string {
+    const decorators = []
+
+    // Add API documentation decorator
+    decorators.push(this.generateApiPropertyDecorator(field))
+
+    // Add validation decorators if enabled
+    if (options.useValidation) {
+      decorators.push(...this.generateValidationDecorators(field))
+    }
+
+    // Add transformation decorators if enabled
+    if (options.useTransformation) {
+      decorators.push(...this.generateTransformationDecorators(field))
+    }
+
+    // Add custom decorators from field metadata
+    field.decorators?.forEach((decorator) => {
+      const customDecorator = this.customDecorators.get(decorator.name)
+      if (customDecorator) {
+        decorators.push(customDecorator.generate(decorator.params))
+      }
+    })
+
+    return decorators.join('\n  ')
+  }
+
+  /**
+   * Generates the TypeScript type definition for a field,
+   * handling arrays, nested types, and generics.
+   */
+  private static generateTypeDefinition(field: FieldMetadata): string {
+    let type = field.type
+
+    // Handle array types
+    if (field.isArray) {
+      type = `${type}[]`
+    }
+
+    // Handle generic types
+    if (field.genericParams) {
+      type = `${type}<${field.genericParams.join(', ')}>`
+    }
+
+    // Handle nested types
+    if (field.nestedType) {
+      type = this.generateNestedTypeDefinition(field.nestedType)
+    }
+
+    return type
+  }
+
+  /**
+   * Helper method to generate API property decorator with complete metadata.
+   */
+  private static generateApiPropertyDecorator(field: FieldMetadata): string {
+    const options = {
+      description: field.documentation.description,
+      required: field.isRequired,
+      type: () => field.type,
+      isArray: field.isArray,
+      example: field.documentation.example,
+    }
+
+    return `@ApiProperty(${JSON.stringify(options, null, 2)})`
+  }
+
+  /**
+   * Helper method to generate validation decorators for a field.
+   */
+  private static generateValidationDecorators(field: FieldMetadata): string[] {
+    const decorators = []
+
+    if (field.isRequired) {
+      decorators.push('@IsNotEmpty()')
+    } else {
+      decorators.push('@IsOptional()')
+    }
+
+    // Add type-specific validation
+    switch (field.type) {
+      case 'string':
+        decorators.push('@IsString()')
+        break
+      case 'number':
+        decorators.push('@IsNumber()')
+        break
+      case 'boolean':
+        decorators.push('@IsBoolean()')
+        break
+      // Add more type validations as needed
+    }
+
+    return decorators
+  }
+
+  /**
+   * Helper method to generate transformation decorators for a field.
+   */
+  private static generateTransformationDecorators(field: FieldMetadata): string[] {
+    const decorators = []
+
+    if (field.transformationRules) {
+      field.transformationRules.forEach((rule) => {
+        decorators.push(`@Transform(${rule.transformer})`)
+      })
+    }
+
+    return decorators
+  }
+
+
+  /**
+   * Generates type definitions for nested types within our DTOs.
+   * This method handles complex object structures, allowing us to properly
+   * represent nested data in our TypeScript types.
+   */
+  private static generateNestedTypeDefinition(nestedType: NestedTypeMetadata): string {
+    // If it's a simple nested type, just return its name
+    if (typeof nestedType === 'string') {
+      return nestedType
+    }
+
+    // For object types, generate an inline interface
+    if (nestedType.type === 'object') {
+      const properties = nestedType.properties.map(prop => {
+        const type = this.generateTypeDefinition(prop)
+        return `${prop.name}${prop.isRequired ? '' : '?'}: ${type}`
+      })
+
+      return `{
+        ${properties.join(';\n        ')}
+      }`
+    }
+
+    // For enums, generate a union type
+    if (nestedType.type === 'enum') {
+      return nestedType.values.map(value => `'${value}'`).join(' | ')
+    }
+
+    // For nested arrays, recursively generate the item type
+    if (nestedType.type === 'array') {
+      const itemType = this.generateTypeDefinition(nestedType.itemType)
+      return `${itemType}[]`
+    }
+
+    // Default to any if we can't determine the type
+    return 'any'
+  }
+
+  /**
+   * Generates the class definition including inheritance if specified.
+   * This supports both single and multiple inheritance through mixins.
+   */
+  private static generateClassDefinition(
+    model: ModelMetadata,
+    options: DTOGenerationOptions,
+  ): string {
+    let definition = `export class ${model.name}DTO`
+
+    // Handle inheritance
+    if (options.extends) {
+      definition += ` extends ${options.extends}`
+    }
+
+    // Handle mixins if any
+    if (options.mixins?.length) {
+      const mixinChain = options.mixins.join(', ')
+      definition += ` implements ${mixinChain}`
+    }
+
+    return definition
+  }
+
+  /**
+   * Generates the complete class body including properties, methods,
+   * and any additional features required by the DTO type.
+   */
+  private static generateClassBody(model: ModelMetadata, options: DTOGenerationOptions): string {
+    const properties = this.generateProperties(model.fields, options)
+    const methods = this.generateMethods(model, options)
+    const pipes = options.usePipes ? this.generatePipes(model) : ''
+
+    return `{
+  ${properties}
+
+  ${methods}
+
+  ${pipes}
+}`
+  }
+
+  /**
+   * Generates property declarations with appropriate decorators
+   * for validation, transformation, and documentation.
+   */
+  private static generateProperties(
+    fields: FieldMetadata[],
+    options: DTOGenerationOptions,
+  ): string {
+    return fields
+      .map((field) => {
+        const decorators = this.generatePropertyDecorators(field, options)
+        const typeDefinition = this.generateTypeDefinition(field)
+
+        return `${decorators}
+  ${field.name}${field.isRequired ? '' : '?'}: ${typeDefinition}`
+      })
+      .join('\n\n')
+  }
+
+  /**
+   * Generates NestJS pipes for request validation and transformation.
+   * These pipes can be used in controllers to automatically validate
+   * and transform incoming requests.
+   */
+  private static generatePipes(model: ModelMetadata): string {
+    return `
+  /**
+   * Creates a validation pipe for this DTO
+   */
+  static createValidationPipe(): ValidationPipe {
+    return new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    })
+  }
+
+  /**
+   * Creates a transformation pipe for this DTO
+   */
+  static createTransformationPipe(): ParseDTO<${model.name}DTO> {
+    return new ParseDTO(${model.name}DTO)
+  }`
+  }
+}
+
+/**
+ * Options for customizing DTO generation including feature flags
+ * and inheritance configuration.
+ */
+interface DTOGenerationOptions {
+  useValidation: boolean
+  useTransformation: boolean
+  usePipes: boolean
+  isRequest: boolean
+  isResponse: boolean
+  extends?: string
+  mixins?: string[]
+}
+
+/**
+ * Definition of a custom decorator including its import statement
+ * and generation logic.
+ */
+interface DecoratorDefinition {
+  importStatement?: string
+  generate: (params?: any[]) => string
+}
+
+================
+File: dto/core/types.ts
+================
+// tools/generators/dto/core/types.ts
+import { DMMF } from '@prisma/client/extension'
+
+export interface GeneratorOptions {
+  outputPath: string
+  prettierConfig?: string
+  documentation: {
+    enabled: boolean
+    outputFormat: 'markdown' | 'html'
+    includeExamples: boolean
+  }
+  validation: {
+    enabled: boolean
+    useClassValidator: boolean
+    useZod: boolean
+  }
+  transformation: {
+    enabled: boolean
+    useCamelCase: boolean
+    dateTransformation: boolean
+  }
+  typescript: {
+    strict: boolean
+    generateInterfaces: boolean
+    generateTypeGuards: boolean
+  }
+}
+
+export interface DocumentationMetadata {
+  description: string
+  example: any
+  deprecated?: boolean
+  version?: string
+  since?: string
+}
+
+export interface FieldMetadata {
+  name: string
+  type: string
+  isRequired: boolean
+  isArray: boolean
+  documentation: DocumentationMetadata
+  validationRules: ValidationRule[]
+  transformationRules: TransformationRule[]
+  isComputed: boolean
+  computedMetadata?: ComputedColumnMetadata
+}
+
+export interface ValidationRule {
+  decorator: string
+  params?: any[]
+  message?: string
+}
+
+export interface TransformationRule {
+  type: 'toDate' | 'toString' | 'toNumber' | 'toBoolean' | 'custom'
+  params?: any[]
+}
+
+export interface ModelMetadata {
+  name: string
+  documentation: DocumentationMetadata
+  fields: FieldMetadata[]
+  relationships: RelationshipMetadata[]
+  // Add view-specific metadata
+  isView: boolean
+  viewMetadata?: ViewMetadata
+}
+
+export interface ComputedColumnMetadata {
+  name: string
+  expression: string
+  dependsOn: string[]
+  returnType: string
+}
+
+export interface ViewMetadata {
+  sourceQuery: string
+  materialized: boolean
+  updatable: boolean
+  dependencies: string[]
+  computedColumns: ComputedColumnMetadata[]
+}
+
+export interface RelationshipMetadata {
+  name: string
+  type: string
+  relationType: 'one-to-one' | 'one-to-many' | 'many-to-one' | 'many-to-many'
+  isRequired: boolean
+  foreign: {
+    model: string
+    field: string
+  }
+}
+
+export interface GeneratedFile {
+  path: string
+  content: string
+}
+
+export interface NestedTypeMetadata {
+  type: 'object' | 'enum' | 'array'
+  properties?: FieldMetadata[]
+  values?: string[]
+  itemType?: FieldMetadata
+}
+
+================
+File: dto/decorators/custom.decorators.ts
+================
+// tools/generators/dto/decorators/custom.decorators.ts
+import { TemplateSystem } from '../core/template-system'
+
+/**
+ * Registry of custom decorators that can be used in DTO generation.
+ * This allows users to extend the system with their own decorators.
+ */
+export function registerCustomDecorators(): void {
+  // Register a custom logging decorator
+  TemplateSystem.registerDecorator('Log', {
+    importStatement: `import { Log } from '@/decorators/log.decorator'`,
+    generate: (params?: string[]) => {
+      const level = params?.[0] || 'debug'
+      return `@Log('${level}')`
+    },
+  })
+
+  // Register a custom validation decorator
+  TemplateSystem.registerDecorator('ValidateBusinessRule', {
+    importStatement: `import { ValidateBusinessRule } from '@/decorators/validation.decorator'`,
+    generate: (params?: string[]) => {
+      const [ruleName, errorMessage] = params || []
+      return `@ValidateBusinessRule('${ruleName}', '${errorMessage}')`
+    },
+  })
+
+  // Register a custom transformation decorator
+  TemplateSystem.registerDecorator('TransformToDTO', {
+    importStatement: `import { TransformToDTO } from '@/decorators/transform.decorator'`,
+    generate: (params?: string[]) => {
+      const dtoName = params?.[0]
+      return `@TransformToDTO(${dtoName})`
+    },
+  })
+}
+
+================
+File: dto/modules/documentation.ts
+================
+// tools/generators/dto/modules/documentation.ts
+
+import { ModelMetadata, DocumentationMetadata, FieldMetadata } from '../core/types'
+import { FileManager } from '../utils/file-manager'
+
+/**
+ * Enhanced DocumentationGenerator that creates comprehensive documentation
+ * covering API usage, database structure, and OpenAPI specifications.
+ */
+export class DocumentationGenerator {
+  constructor(
+    private readonly models: ModelMetadata[],
+    private readonly options: GeneratorOptions,
+    private readonly fileManager: FileManager,
+  ) {}
+
+  /**
+   * Main generation process that coordinates the creation of all
+   * documentation artifacts. Each piece of documentation serves a
+   * different purpose and audience.
+   */
+  async generate(): Promise<void> {
+    // Create the main API documentation
+    await this.generateAPIDocumentation()
+
+    // Create OpenAPI specification
+    await this.generateOpenAPISpec()
+
+    // Generate database documentation
+    await this.generateDatabaseDocs()
+
+    // Generate relationship diagrams
+    await this.generateRelationshipDiagrams()
+
+    // Generate example usage documentation
+    await this.generateExampleDocs()
+  }
+
+  /**
+   * Generates comprehensive API documentation including controller
+   * usage, endpoint descriptions, and request/response examples.
+   */
+  private async generateAPIDocumentation(): Promise<void> {
+    let content = '# API Documentation\n\n'
+
+    // Add overview section
+    content += this.generateOverview()
+
+    // Generate documentation for each controller
+    for (const model of this.models) {
+      content += this.generateControllerDocs(model)
+    }
+
+    // Add authentication and error handling sections
+    content += this.generateAuthenticationDocs()
+    content += this.generateErrorHandlingDocs()
+
+    await this.fileManager.writeFile('docs/API.md', content)
+  }
+
+  /**
+   * Generates controller-specific documentation including all endpoints,
+   * request/response formats, and validation rules.
+   */
+  private generateControllerDocs(model: ModelMetadata): string {
+    let doc = `## ${model.name} Controller\n\n`
+    doc += `${model.documentation.description}\n\n`
+
+    // Base path information
+    doc += `**Base Path:** \`/${model.name.toLowerCase()}\`\n\n`
+
+    // Document each endpoint
+    const endpoints = this.getControllerEndpoints(model)
+    endpoints.forEach((endpoint) => {
+      doc += this.generateEndpointDocs(endpoint, model)
+    })
+
+    return doc
+  }
+
+  /**
+   * Generates detailed endpoint documentation including request/response
+   * formats, validation rules, and example usage.
+   */
+  private generateEndpointDocs(endpoint: EndpointMetadata, model: ModelMetadata): string {
+    let doc = `### ${endpoint.description}\n\n`
+
+    // Method and path
+    doc += `\`${endpoint.method} ${endpoint.path}\`\n\n`
+
+    // Authentication requirements
+    if (endpoint.auth) {
+      doc += '**Authentication Required**\n\n'
+    }
+
+    // Request body documentation
+    if (endpoint.requestBody) {
+      doc += '#### Request Body\n\n'
+      doc += this.generateTypeTable(endpoint.requestBody)
+      doc += '\n\n#### Example Request\n\n'
+      doc += '```json\n' + JSON.stringify(endpoint.example.request, null, 2) + '\n```\n\n'
+    }
+
+    // Response documentation
+    doc += '#### Response\n\n'
+    doc += this.generateTypeTable(endpoint.response)
+    doc += '\n\n#### Example Response\n\n'
+    doc += '```json\n' + JSON.stringify(endpoint.example.response, null, 2) + '\n```\n\n'
+
+    // Validation rules
+    doc += '#### Validation Rules\n\n'
+    doc += this.generateValidationTable(model.fields)
+
+    return doc
+  }
+
+  /**
+   * Generates OpenAPI/Swagger specification file that can be used
+   * with Swagger UI or other API documentation tools.
+   */
+  private async generateOpenAPISpec(): Promise<void> {
+    const spec = {
+      openapi: '3.0.0',
+      info: {
+        title: this.options.documentation.title,
+        version: this.options.documentation.version,
+        description: this.options.documentation.description,
+      },
+      paths: {},
+      components: {
+        schemas: {},
+        securitySchemes: this.generateSecuritySchemes(),
+      },
+    }
+
+    // Generate paths and schemas for each model
+    for (const model of this.models) {
+      spec.paths = {
+        ...spec.paths,
+        ...this.generateOpenAPIPaths(model),
+      }
+      spec.components.schemas = {
+        ...spec.components.schemas,
+        ...this.generateOpenAPISchemas(model),
+      }
+    }
+
+    await this.fileManager.writeFile('docs/openapi.json', JSON.stringify(spec, null, 2))
+  }
+
+  /**
+   * Generates database documentation including table structures,
+   * relationships, and constraints.
+   */
+  private async generateDatabaseDocs(): Promise<void> {
+    let content = '# Database Documentation\n\n'
+
+    // Overview of database structure
+    content += this.generateDatabaseOverview()
+
+    // Document each table/view
+    for (const model of this.models) {
+      content += this.generateTableDocs(model)
+    }
+
+    // Add sections for indexes and constraints
+    content += this.generateIndexDocs()
+    content += this.generateConstraintDocs()
+
+    await this.fileManager.writeFile('docs/DATABASE.md', content)
+  }
+
+  /**
+   * Generates relationship diagrams using Mermaid syntax to visualize
+   * database structure and entity relationships.
+   */
+  private async generateRelationshipDiagrams(): Promise<void> {
+    let diagram = 'erDiagram\n'
+
+    // Add entities
+    this.models.forEach((model) => {
+      diagram += this.generateEntityBlock(model)
+    })
+
+    // Add relationships
+    this.models.forEach((model) => {
+      model.relationships.forEach((rel) => {
+        diagram += this.generateRelationshipLine(model, rel)
+      })
+    })
+
+    await this.fileManager.writeFile('docs/diagrams/relationships.mmd', diagram)
+  }
+
+  /**
+   * Generates detailed usage examples including common scenarios,
+   * edge cases, and error handling.
+   */
+  private async generateExampleDocs(): Promise<void> {
+    for (const model of this.models) {
+      const examples = this.generateModelExamples(model)
+      await this.fileManager.writeFile(`docs/examples/${model.name.toLowerCase()}.md`, examples)
+    }
+  }
+
+  /**
+   * Helper method to generate a table of type information for
+   * request/response documentation.
+   */
+  private generateTypeTable(fields: FieldMetadata[]): string {
+    return `| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+${fields
+  .map(
+    (field) =>
+      `| ${field.name} | ${field.type} | ${field.isRequired ? 'Yes' : 'No'} | ${field.documentation.description} |`,
+  )
+  .join('\n')}`
+  }
+
+  /**
+   * Helper method to generate a table of validation rules for
+   * a set of fields.
+   */
+  private generateValidationTable(fields: FieldMetadata[]): string {
+    return `| Field | Validation Rules |
+|-------|------------------|
+${fields
+  .map((field) => `| ${field.name} | ${this.formatValidationRules(field.validationRules)} |`)
+  .join('\n')}`
+  }
+
+  /**
+   * Helper method to generate an entity block in Mermaid syntax
+   * for the relationship diagram.
+   */
+  private generateEntityBlock(model: ModelMetadata): string {
+    return `  ${model.name} {
+${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
+  }\n`
+  }
+
+  /**
+   * Helper method to generate a relationship line in Mermaid syntax
+   * for the relationship diagram.
+   */
+  private generateRelationshipLine(
+    model: ModelMetadata,
+    relationship: RelationshipMetadata,
+  ): string {
+    const cardinality = this.getRelationshipCardinality(relationship)
+    return `  ${model.name} ${cardinality} ${relationship.foreign.model}\n`
+  }
+
+  /**
+   * Determines the cardinality symbol for relationship diagrams.
+   * This helps visualize how entities are related to each other.
+   */
+  private getRelationshipCardinality(relationship: RelationshipMetadata): string {
+    const cardinalityMap = {
+      'one-to-one': '||--||',
+      'one-to-many': '||--{',
+      'many-to-one': '}--||',
+      'many-to-many': '}--{',
+    }
+
+    return cardinalityMap[relationship.relationType] || '||--||'
+  }
+
+  /**
+   * Formats validation rules into a human-readable string.
+   * This makes validation requirements clear in the documentation.
+   */
+  private formatValidationRules(rules: ValidationRule[]): string {
+    if (!rules.length) return 'No validation rules'
+
+    return rules
+      .map((rule) => {
+        if (rule.params) {
+          return `${rule.decorator}(${rule.params.join(', ')})`
+        }
+        return rule.decorator
+      })
+      .join(', ')
+  }
+
+  /**
+   * Generates comprehensive examples for a model, including common use cases
+   * and edge cases that demonstrate proper usage.
+   */
+  private generateModelExamples(model: ModelMetadata): string {
+    let examples = `# ${model.name} Examples\n\n`
+
+    // Create example
+    examples += `## Creating a ${model.name}\n\n`
+    examples += '```typescript\n'
+    examples += this.generateCreateExample(model)
+    examples += '\n```\n\n'
+
+    // Update example
+    examples += `## Updating a ${model.name}\n\n`
+    examples += '```typescript\n'
+    examples += this.generateUpdateExample(model)
+    examples += '\n```\n\n'
+
+    // Query examples
+    examples += `## Querying ${model.name}s\n\n`
+    examples += '```typescript\n'
+    examples += this.generateQueryExamples(model)
+    examples += '\n```\n\n'
+
+    // Error handling examples
+    examples += `## Error Handling\n\n`
+    examples += '```typescript\n'
+    examples += this.generateErrorHandlingExamples(model)
+    examples += '\n```\n'
+
+    return examples
+  }
+
+  /**
+   * Generates documentation for database constraints including foreign keys,
+   * unique constraints, and check constraints.
+   */
+  private generateConstraintDocs(): string {
+    let docs = '## Database Constraints\n\n'
+
+    // Foreign Key Constraints
+    docs += '### Foreign Key Constraints\n\n'
+    this.models.forEach((model) => {
+      model.relationships.forEach((rel) => {
+        docs += `- ${model.name}.${rel.name} → ${rel.foreign.model}.${rel.foreign.field}\n`
+      })
+    })
+
+    // Unique Constraints
+    docs += '\n### Unique Constraints\n\n'
+    this.models.forEach((model) => {
+      const uniqueConstraints = this.getUniqueConstraints(model)
+      uniqueConstraints.forEach((constraint) => {
+        docs += `- ${model.name}: (${constraint.fields.join(', ')})\n`
+      })
+    })
+
+    // Check Constraints
+    docs += '\n### Check Constraints\n\n'
+    this.models.forEach((model) => {
+      const checkConstraints = this.getCheckConstraints(model)
+      checkConstraints.forEach((constraint) => {
+        docs += `- ${model.name}.${constraint.field}: ${constraint.condition}\n`
+      })
+    })
+
+    return docs
+  }
+
+  /**
+   * Generates documentation for database indexes including
+   * their types, covered columns, and purposes.
+   */
+  private generateIndexDocs(): string {
+    let docs = '## Database Indexes\n\n'
+
+    this.models.forEach((model) => {
+      docs += `### ${model.name} Indexes\n\n`
+
+      const indexes = this.getModelIndexes(model)
+      indexes.forEach((index) => {
+        docs += `#### ${index.name}\n\n`
+        docs += `- **Type:** ${index.type}\n`
+        docs += `- **Columns:** ${index.columns.join(', ')}\n`
+        docs += `- **Purpose:** ${index.purpose}\n\n`
+      })
+    })
+
+    return docs
+  }
+
+  /**
+   * Generates detailed documentation for a database table/view
+   * including its structure, constraints, and usage.
+   */
+  private generateTableDocs(model: ModelMetadata): string {
+    let docs = `## ${model.name}\n\n`
+    docs += `${model.documentation.description}\n\n`
+
+    // Table structure
+    docs += '### Columns\n\n'
+    docs += this.generateColumnTable(model.fields)
+
+    // Primary Key
+    docs += '\n### Primary Key\n\n'
+    docs += this.getPrimaryKeyInfo(model)
+
+    // Foreign Keys
+    docs += '\n### Foreign Keys\n\n'
+    model.relationships.forEach((rel) => {
+      docs += `- ${rel.name} → ${rel.foreign.model} (${rel.relationType})\n`
+    })
+
+    // Indexes
+    docs += '\n### Indexes\n\n'
+    const indexes = this.getModelIndexes(model)
+    indexes.forEach((index) => {
+      docs += `- ${index.name} (${index.type}): ${index.columns.join(', ')}\n`
+    })
+
+    return docs
+  }
+
+  /**
+   * Generates an overview of the database structure including
+   * its schema, major entities, and their relationships.
+   */
+  private generateDatabaseOverview(): string {
+    let overview = '## Database Overview\n\n'
+
+    // List all entities
+    overview += '### Entities\n\n'
+    this.models.forEach((model) => {
+      overview += `- **${model.name}**: ${model.documentation.description}\n`
+    })
+
+    // Key relationships
+    overview += '\n### Key Relationships\n\n'
+    this.models.forEach((model) => {
+      model.relationships.forEach((rel) => {
+        overview += `- ${model.name} ${this.getRelationshipCardinality(rel)} ${rel.foreign.model}\n`
+      })
+    })
+
+    // Database notes
+    overview += '\n### Important Notes\n\n'
+    overview += '- All timestamps are stored in UTC\n'
+    overview += '- Soft deletes are implemented using `deleted_at` column\n'
+    overview += '- Foreign keys are enforced at the database level\n'
+
+    return overview
+  }
+
+  /**
+   * Generates OpenAPI parameter definition for ID parameters.
+   * This is commonly used in endpoints that operate on specific resources.
+   */
+  private generateIdParameter(): any {
+    return {
+      name: 'id',
+      in: 'path',
+      required: true,
+      description: 'Unique identifier of the resource',
+      schema: {
+        type: 'string',
+        format: 'uuid',
+      },
+    }
+  }
+
+  /**
+   * Creates a detailed example of creating a new entity.
+   * This shows developers what fields are required and how to structure
+   * their creation requests.
+   */
+  private generateCreateExample(model: ModelMetadata): string {
+    const example = model.fields
+      .filter((field) => !field.isComputed && field.name !== 'id')
+      .reduce(
+        (acc, field) => {
+          acc[field.name] = this.generateExampleValue(field)
+          return acc
+        },
+        {} as Record<string, any>,
+      )
+
+    return `// POST /${model.name.toLowerCase()}
+const createPayload = ${JSON.stringify(example, null, 2)};
+
+const response = await api.post('/${model.name.toLowerCase()}', createPayload);
+`
+  }
+
+  /**
+   * Creates a detailed example of updating an existing entity.
+   * This demonstrates how to modify existing resources through the API.
+   */
+  private generateUpdateExample(model: ModelMetadata): string {
+    const example = model.fields
+      .filter((field) => !field.isComputed && !field.isRequired && field.name !== 'id')
+      .reduce(
+        (acc, field) => {
+          acc[field.name] = this.generateExampleValue(field)
+          return acc
+        },
+        {} as Record<string, any>,
+      )
+
+    return `// PATCH /${model.name.toLowerCase()}/{id}
+const updatePayload = ${JSON.stringify(example, null, 2)};
+
+const response = await api.patch('/${model.name.toLowerCase()}/123', updatePayload);
+`
+  }
+
+  /**
+   * Creates examples of different query operations.
+   * This shows how to filter, sort, and paginate results.
+   */
+  private generateQueryExamples(model: ModelMetadata): string {
+    return `// Basic query - Get all ${model.name}s
+const allItems = await api.get('/${model.name.toLowerCase()}');
+
+// Pagination
+const pagedItems = await api.get('/${model.name.toLowerCase()}', {
+params: {
+  page: 1,
+  limit: 10
+}
+});
+
+// Filtering
+const filteredItems = await api.get('/${model.name.toLowerCase()}', {
+params: {
+  filter: {
+    ${model.fields[0].name}: 'value'
+  }
+}
+});
+
+// Sorting
+const sortedItems = await api.get('/${model.name.toLowerCase()}', {
+params: {
+  sort: '${model.fields[0].name}:desc'
+}
+});
+`
+  }
+
+  /**
+   * Creates examples of error handling scenarios.
+   * This helps developers understand how to handle various error cases.
+   */
+  private generateErrorHandlingExamples(model: ModelMetadata): string {
+    return `// Handle validation errors
+try {
+const response = await api.post('/${model.name.toLowerCase()}', {});
+} catch (error) {
+if (error.response?.status === 422) {
+  const validationErrors = error.response.data.errors;
+  console.error('Validation failed:', validationErrors);
+}
+}
+
+// Handle not found errors
+try {
+const response = await api.get('/${model.name.toLowerCase()}/nonexistent');
+} catch (error) {
+if (error.response?.status === 404) {
+  console.error('Resource not found');
+}
+}
+
+// Handle authentication errors
+try {
+const response = await api.get('/${model.name.toLowerCase()}');
+} catch (error) {
+if (error.response?.status === 401) {
+  console.error('Authentication required');
+}
+}
+`
+  }
+
+  /**
+   * Gets the unique constraints for a model.
+   * This extracts unique constraints from model metadata to document
+   * data integrity rules.
+   */
+  private getUniqueConstraints(model: ModelMetadata): Array<{ fields: string[] }> {
+    const constraints: Array<{ fields: string[] }> = []
+
+    // Single-field unique constraints
+    model.fields
+      .filter((field) => field.validationRules.some((rule) => rule.decorator === 'IsUnique'))
+      .forEach((field) => {
+        constraints.push({ fields: [field.name] })
+      })
+
+    // Composite unique constraints from model metadata
+    const compositeUnique = model.documentation.description.match(/@unique\s+\[(.*?)\]/g)
+    if (compositeUnique) {
+      compositeUnique.forEach((constraint) => {
+        const fields = constraint
+          .replace('@unique [', '')
+          .replace(']', '')
+          .split(',')
+          .map((field) => field.trim())
+        constraints.push({ fields })
+      })
+    }
+
+    return constraints
+  }
+
+  /**
+   * Gets the check constraints for a model.
+   * This extracts check constraints from model metadata to document
+   * business rules enforced at the database level.
+   */
+  private getCheckConstraints(model: ModelMetadata): Array<{ field: string; condition: string }> {
+    const constraints: Array<{ field: string; condition: string }> = []
+
+    model.fields.forEach((field) => {
+      const checkConstraint = field.documentation.description.match(/@check\s+{([^}]+)}/)
+      if (checkConstraint) {
+        constraints.push({
+          field: field.name,
+          condition: checkConstraint[1].trim(),
+        })
+      }
+    })
+
+    return constraints
+  }
+
+  /**
+   * Gets the indexes defined for a model.
+   * This extracts index information from model metadata to document
+   * performance optimization structures.
+   */
+  private getModelIndexes(model: ModelMetadata): Array<{
+    name: string
+    type: string
+    columns: string[]
+    purpose: string
+  }> {
+    const indexes: Array<{
+      name: string
+      type: string
+      columns: string[]
+      purpose: string
+    }> = []
+
+    // Extract index information from model metadata
+    const indexMatches = model.documentation.description.match(/@index\s+{([^}]+)}/g)
+    if (indexMatches) {
+      indexMatches.forEach((indexStr) => {
+        const [name, type, columnsStr, purpose] = indexStr
+          .replace('@index {', '')
+          .replace('}', '')
+          .split('|')
+          .map((s) => s.trim())
+
+        indexes.push({
+          name,
+          type,
+          columns: columnsStr.split(',').map((c) => c.trim()),
+          purpose,
+        })
+      })
+    }
+
+    return indexes
+  }
+
+  /**
+   * Generates a formatted table of column information.
+   * This creates a markdown table documenting all columns in a model.
+   */
+  private generateColumnTable(fields: FieldMetadata[]): string {
+    let table = '| Column | Type | Nullable | Default | Description |\n'
+    table += '|--------|------|----------|----------|-------------|\n'
+
+    fields.forEach((field) => {
+      table += `| ${field.name} | ${field.type} | ${field.isRequired ? 'No' : 'Yes'} | ${
+        field.documentation.description.match(/@default\s+([^\s]+)/)?.[1] || 'NULL'
+      } | ${field.documentation.description.split('.')[0]} |\n`
+    })
+
+    return table
+  }
+
+  /**
+   * Gets primary key information for a model.
+   * This documents the primary key structure and constraints.
+   */
+  private getPrimaryKeyInfo(model: ModelMetadata): string {
+    const pkFields = model.fields.filter((field) =>
+      field.validationRules.some((rule) => rule.decorator === 'IsPrimaryKey'),
+    )
+
+    if (pkFields.length === 0) {
+      return 'Primary Key: id (auto-generated UUID)'
+    }
+
+    return `Primary Key: ${pkFields.map((field) => field.name).join(', ')}`
+  }
+
+  /**
+   * Generates OpenAPI schema definitions for all our models.
+   * These schemas define the structure and validation rules for our API's
+   * data models in a format that OpenAPI tools can understand.
+   */
+  private generateOpenAPISchemas(model: ModelMetadata): Record<string, any> {
+    const schemas: Record<string, any> = {}
+
+    // Generate the main model schema
+    schemas[model.name] = {
+      type: 'object',
+      description: model.documentation.description,
+      properties: this.generateSchemaProperties(model.fields),
+      required: this.getRequiredFields(model.fields),
+    }
+
+    // Generate schemas for nested types and related models
+    model.relationships.forEach((relationship) => {
+      if (!schemas[relationship.foreign.model]) {
+        const relatedModel = this.findModelByName(relationship.foreign.model)
+        if (relatedModel) {
+          schemas[relationship.foreign.model] = {
+            type: 'object',
+            description: relatedModel.documentation.description,
+            properties: this.generateSchemaProperties(relatedModel.fields),
+            required: this.getRequiredFields(relatedModel.fields),
+          }
+        }
+      }
+    })
+
+    return schemas
+  }
+
+  /**
+   * Generates OpenAPI path definitions for our API endpoints.
+   * This includes all the CRUD operations and their request/response
+   * specifications, making our API self-documenting.
+   */
+  private generateOpenAPIPaths(model: ModelMetadata): Record<string, any> {
+    const basePath = `/${model.name.toLowerCase()}`
+    const paths: Record<string, any> = {}
+
+    // GET collection endpoint
+    paths[basePath] = {
+      get: {
+        summary: `Get all ${model.name}s`,
+        description: `Retrieves a list of ${model.name} entities`,
+        tags: [model.name],
+        parameters: this.generateQueryParameters(model),
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: { $ref: `#/components/schemas/${model.name}` },
+                },
+              },
+            },
+          },
+          ...this.generateCommonResponses(),
+        },
+      },
+      post: {
+        summary: `Create a new ${model.name}`,
+        description: `Creates a new ${model.name} entity`,
+        tags: [model.name],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: `#/components/schemas/${model.name}` },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Created successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: `#/components/schemas/${model.name}` },
+              },
+            },
+          },
+          ...this.generateCommonResponses(),
+        },
+      },
+    }
+
+    // Individual resource endpoints
+    paths[`${basePath}/{id}`] = {
+      get: {
+        summary: `Get a specific ${model.name}`,
+        description: `Retrieves a single ${model.name} entity by ID`,
+        tags: [model.name],
+        parameters: [this.generateIdParameter()],
+        responses: {
+          '200': {
+            description: 'Successful response',
+            content: {
+              'application/json': {
+                schema: { $ref: `#/components/schemas/${model.name}` },
+              },
+            },
+          },
+          ...this.generateCommonResponses(),
+        },
+      },
+      patch: {
+        summary: `Update a ${model.name}`,
+        description: `Updates an existing ${model.name} entity`,
+        tags: [model.name],
+        parameters: [this.generateIdParameter()],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: `#/components/schemas/${model.name}` },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Updated successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: `#/components/schemas/${model.name}` },
+              },
+            },
+          },
+          ...this.generateCommonResponses(),
+        },
+      },
+      delete: {
+        summary: `Delete a ${model.name}`,
+        description: `Deletes a ${model.name} entity`,
+        tags: [model.name],
+        parameters: [this.generateIdParameter()],
+        responses: {
+          '204': {
+            description: 'Deleted successfully',
+          },
+          ...this.generateCommonResponses(),
+        },
+      },
+    }
+
+    return paths
+  }
+
+  /**
+   * Generates security scheme definitions for our API.
+   * This tells API consumers how to authenticate their requests,
+   * whether through JWT tokens, API keys, or other methods.
+   */
+  private generateSecuritySchemes(): Record<string, any> {
+    return {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'JWT token authentication',
+      },
+      apiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'X-API-KEY',
+        description: 'API key authentication',
+      },
+    }
+  }
+
+  /**
+   * Helper method to generate schema properties from field metadata.
+   * This converts our internal field definitions into OpenAPI-compatible
+   * property definitions.
+   */
+  private generateSchemaProperties(fields: FieldMetadata[]): Record<string, any> {
+    const properties: Record<string, any> = {}
+
+    fields.forEach((field) => {
+      properties[field.name] = {
+        type: this.mapTypeToOpenAPI(field.type),
+        description: field.documentation.description,
+        example: field.documentation.example,
+      }
+
+      // Add format for special types
+      if (field.type === 'Date') {
+        properties[field.name].format = 'date-time'
+      }
+
+      // Add validation constraints
+      if (field.validationRules.length > 0) {
+        this.addValidationToSchema(properties[field.name], field.validationRules)
+      }
+    })
+
+    return properties
+  }
+
+  /**
+   * Helper method to find required fields in a model.
+   * This helps generate accurate OpenAPI schemas that reflect
+   * our data validation rules.
+   */
+  private getRequiredFields(fields: FieldMetadata[]): string[] {
+    return fields.filter((field) => field.isRequired).map((field) => field.name)
+  }
+
+  /**
+   * Helper method to map our internal types to OpenAPI types.
+   * This ensures our API documentation uses standard OpenAPI type definitions.
+   */
+  private mapTypeToOpenAPI(type: string): string {
+    const typeMap: Record<string, string> = {
+      string: 'string',
+      number: 'number',
+      boolean: 'boolean',
+      Date: 'string',
+      Object: 'object',
+      Array: 'array',
+    }
+
+    return typeMap[type] || 'string'
+  }
+
+  /**
+   * Helper method to add validation rules to OpenAPI schemas.
+   * This ensures our API documentation includes all validation constraints.
+   */
+  private addValidationToSchema(schema: any, rules: ValidationRule[]): void {
+    rules.forEach((rule) => {
+      switch (rule.decorator) {
+        case 'MinLength':
+          schema.minLength = rule.params?.[0]
+          break
+        case 'MaxLength':
+          schema.maxLength = rule.params?.[0]
+          break
+        case 'Min':
+          schema.minimum = rule.params?.[0]
+          break
+        case 'Max':
+          schema.maximum = rule.params?.[0]
+          break
+        case 'Pattern':
+          schema.pattern = rule.params?.[0]
+          break
+      }
+    })
+  }
+
+  /**
+   * Helper method to find a model by its name.
+   * Used when generating related model schemas.
+   */
+  private findModelByName(name: string): ModelMetadata | undefined {
+    return this.models.find((model) => model.name === name)
+  }
+
+  /**
+   * Retrieves all available endpoints for a given controller.
+   * This method analyzes the model metadata to determine what
+   * endpoints should be available based on the model's properties
+   * and relationships.
+   */
+  private getControllerEndpoints(model: ModelMetadata): EndpointMetadata[] {
+    const basePath = `/${model.name.toLowerCase()}`
+    const endpoints: EndpointMetadata[] = [
+      // GET collection endpoint
+      {
+        method: 'GET',
+        path: basePath,
+        description: `Retrieve all ${model.name}s`,
+        auth: true,
+        response: {
+          type: 'array',
+          items: model,
+        },
+        example: {
+          request: null,
+          response: this.generateCollectionExample(model),
+        },
+      },
+      // POST create endpoint
+      {
+        method: 'POST',
+        path: basePath,
+        description: `Create a new ${model.name}`,
+        auth: true,
+        requestBody: model,
+        response: model,
+        example: {
+          request: this.generateCreateExample(model),
+          response: this.generateSingleExample(model),
+        },
+      },
+      // GET single item endpoint
+      {
+        method: 'GET',
+        path: `${basePath}/:id`,
+        description: `Retrieve a single ${model.name} by ID`,
+        auth: true,
+        response: model,
+        example: {
+          request: null,
+          response: this.generateSingleExample(model),
+        },
+      },
+      // PATCH update endpoint
+      {
+        method: 'PATCH',
+        path: `${basePath}/:id`,
+        description: `Update an existing ${model.name}`,
+        auth: true,
+        requestBody: model,
+        response: model,
+        example: {
+          request: this.generateUpdateExample(model),
+          response: this.generateSingleExample(model),
+        },
+      },
+      // DELETE endpoint
+      {
+        method: 'DELETE',
+        path: `${basePath}/:id`,
+        description: `Delete a ${model.name}`,
+        auth: true,
+        response: null,
+        example: {
+          request: null,
+          response: null,
+        },
+      },
+    ]
+
+    // Add relationship endpoints if they exist
+    model.relationships.forEach((relationship) => {
+      endpoints.push(this.generateRelationshipEndpoint(model, relationship))
+    })
+
+    return endpoints
+  }
+
+  /**
+   * Generates the documentation for error handling across the API.
+   * This includes standard error responses, validation errors,
+   * and business logic errors.
+   */
+  private generateErrorHandlingDocs(): string {
+    let docs = '## Error Handling\n\n'
+    docs +=
+      'This API uses conventional HTTP response codes to indicate the success or failure of requests.\n\n'
+
+    // Standard error codes
+    docs += '### HTTP Status Codes\n\n'
+    docs += '| Code | Description |\n'
+    docs += '|------|-------------|\n'
+    docs += '| 200  | Success - The request was processed successfully |\n'
+    docs += '| 201  | Created - A new resource was created successfully |\n'
+    docs +=
+      '| 400  | Bad Request - The request could not be understood or was missing required parameters |\n'
+    docs += '| 401  | Unauthorized - Authentication failed or user lacks necessary permissions |\n'
+    docs += '| 404  | Not Found - Resource not found |\n'
+    docs += '| 422  | Validation Error - Request validation failed |\n'
+    docs += '| 500  | Server Error - Something went wrong on our end |\n\n'
+
+    // Validation errors
+    docs += '### Validation Errors\n\n'
+    docs +=
+      'When a request fails validation, the response will include detailed error information:\n\n'
+    docs += '```json\n'
+    docs += `{
+  "statusCode": 422,
+  "message": "Validation failed",
+  "errors": [
+    {
+      "field": "email",
+      "message": "Must be a valid email address"
+    }
+  ]
+}\n`
+    docs += '```\n\n'
+
+    // Business logic errors
+    docs += '### Business Logic Errors\n\n'
+    docs += 'These errors occur when a request violates business rules:\n\n'
+    docs += '```json\n'
+    docs += `{
+  "statusCode": 400,
+  "message": "Cannot delete an active subscription",
+  "code": "ACTIVE_SUBSCRIPTION"
+}\n`
+    docs += '```\n'
+
+    return docs
+  }
+
+  /**
+   * Generates documentation about authentication mechanisms
+   * and security requirements for the API.
+   */
+  private generateAuthenticationDocs(): string {
+    let docs = '## Authentication\n\n'
+    docs +=
+      'This API uses JWT Bearer token authentication. All authenticated endpoints require a valid JWT token.\n\n'
+
+    // Token acquisition
+    docs += '### Obtaining a Token\n\n'
+    docs += 'To obtain a token, make a POST request to the authentication endpoint:\n\n'
+    docs += '```bash\n'
+    docs += 'curl -X POST /auth/login \\\n'
+    docs += '  -H "Content-Type: application/json" \\\n'
+    docs += '  -d \'{"email": "user@example.com", "password": "yourpassword"}\'\n'
+    docs += '```\n\n'
+
+    // Using tokens
+    docs += '### Using the Token\n\n'
+    docs += 'Include the token in the Authorization header of your requests:\n\n'
+    docs += '```bash\n'
+    docs += 'curl -X GET /api/resource \\\n'
+    docs += '  -H "Authorization: Bearer your.jwt.token"\n'
+    docs += '```\n\n'
+
+    // Token refresh
+    docs += '### Token Refresh\n\n'
+    docs += 'Tokens expire after 24 hours. Use the refresh endpoint to obtain a new token:\n\n'
+    docs += '```bash\n'
+    docs += 'curl -X POST /auth/refresh \\\n'
+    docs += '  -H "Authorization: Bearer your.refresh.token"\n'
+    docs += '```\n'
+
+    return docs
+  }
+
+  /**
+   * Generates a high-level overview of the API, including its
+   * purpose, main features, and general usage guidelines.
+   */
+  private generateOverview(): string {
+    let overview = '## Overview\n\n'
+    overview += 'This API provides a RESTful interface for managing application resources. '
+    overview += 'It follows REST principles and uses standard HTTP methods for operations.\n\n'
+
+    // Base URL
+    overview += '### Base URL\n\n'
+    overview += '```\n'
+    overview += 'https://api.example.com/v1\n'
+    overview += '```\n\n'
+
+    // Versioning
+    overview += '### API Versioning\n\n'
+    overview += 'The API version is included in the URL path. The current version is `v1`.\n\n'
+
+    // Content Types
+    overview += '### Content Types\n\n'
+    overview += 'The API accepts and returns JSON data. All requests must include:\n\n'
+    overview += '```\n'
+    overview += 'Content-Type: application/json\n'
+    overview += 'Accept: application/json\n'
+    overview += '```\n\n'
+
+    // Rate Limiting
+    overview += '### Rate Limiting\n\n'
+    overview +=
+      'Requests are limited to 100 per minute per API key. Rate limit information is included in response headers:\n\n'
+    overview += '```\n'
+    overview += 'X-RateLimit-Limit: 100\n'
+    overview += 'X-RateLimit-Remaining: 95\n'
+    overview += 'X-RateLimit-Reset: 1623456789\n'
+    overview += '```\n'
+
+    return overview
+  }
+
+  /**
+   * Generates documentation for endpoints that handle relationships between models.
+   * This creates documentation for nested resources and related entity endpoints,
+   * showing how to access and manipulate related data.
+   */
+  private generateRelationshipEndpoint(
+    model: ModelMetadata,
+    relationship: RelationshipMetadata,
+  ): EndpointMetadata {
+    const basePath = `/${model.name.toLowerCase()}`
+    const relationPath = relationship.name.toLowerCase()
+
+    // The structure changes based on the relationship type
+    if (
+      relationship.relationType === 'one-to-many' ||
+      relationship.relationType === 'many-to-many'
+    ) {
+      return {
+        method: 'GET',
+        path: `${basePath}/:id/${relationPath}`,
+        description: `Retrieve all ${relationship.name} for a ${model.name}`,
+        auth: true,
+        response: {
+          type: 'array',
+          items: {
+            type: relationship.foreign.model,
+          },
+        },
+        example: {
+          request: null,
+          response: this.generateRelationshipExample(relationship),
+        },
+      }
+    } else {
+      return {
+        method: 'GET',
+        path: `${basePath}/:id/${relationPath}`,
+        description: `Retrieve the ${relationship.name} for a ${model.name}`,
+        auth: true,
+        response: {
+          type: relationship.foreign.model,
+        },
+        example: {
+          request: null,
+          response: this.generateSingleExample(this.findModelByName(relationship.foreign.model)),
+        },
+      }
+    }
+  }
+
+  /**
+   * Generates an example of a single resource response.
+   * This creates realistic example data for each field in the model,
+   * helping developers understand what the API returns.
+   */
+  private generateSingleExample(model: ModelMetadata | undefined): any {
+    if (!model) return {}
+
+    const example: Record<string, any> = {}
+
+    model.fields.forEach((field) => {
+      // Use explicit example if provided in documentation
+      if (field.documentation.example !== undefined) {
+        example[field.name] = field.documentation.example
+        return
+      }
+
+      // Generate sensible defaults based on field type
+      example[field.name] = this.generateExampleValue(field)
+    })
+
+    return example
+  }
+
+  /**
+   * Generates an example of a collection response.
+   * This creates an array of example resources, showing how
+   * list endpoints return multiple items.
+   */
+  private generateCollectionExample(model: ModelMetadata): any[] {
+    // Generate three example items to show variation
+    return [
+      this.generateSingleExample(model),
+      this.generateSingleExample(model),
+      this.generateSingleExample(model),
+    ].map((example, index) => ({
+      ...example,
+      id: index + 1, // Ensure unique IDs in collection
+    }))
+  }
+
+  /**
+   * Generates common response definitions used across multiple endpoints.
+   * This includes standard error responses and validation failures that
+   * might occur in any endpoint.
+   */
+  private generateCommonResponses(): Record<string, any> {
+    return {
+      '400': {
+        description: 'Bad Request - The request could not be understood',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                statusCode: {
+                  type: 'number',
+                  example: 400,
+                },
+                message: {
+                  type: 'string',
+                  example: 'Invalid request parameters',
+                },
+                errors: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      field: {
+                        type: 'string',
+                      },
+                      message: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '401': {
+        description: 'Unauthorized - Authentication is required',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                statusCode: {
+                  type: 'number',
+                  example: 401,
+                },
+                message: {
+                  type: 'string',
+                  example: 'Authentication required',
+                },
+              },
+            },
+          },
+        },
+      },
+      '403': {
+        description: 'Forbidden - Insufficient permissions',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                statusCode: {
+                  type: 'number',
+                  example: 403,
+                },
+                message: {
+                  type: 'string',
+                  example: 'Insufficient permissions to access this resource',
+                },
+              },
+            },
+          },
+        },
+      },
+      '404': {
+        description: 'Not Found - The requested resource does not exist',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                statusCode: {
+                  type: 'number',
+                  example: 404,
+                },
+                message: {
+                  type: 'string',
+                  example: 'Resource not found',
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+  }
+
+  /**
+   * Helper method to generate realistic example values for different field types.
+   * This creates appropriate sample data based on the field's type and validation rules.
+   */
+  private generateExampleValue(field: FieldMetadata): any {
+    switch (field.type) {
+      case 'string':
+        return this.generateStringExample(field)
+      case 'number':
+        return this.generateNumberExample(field)
+      case 'boolean':
+        return true
+      case 'Date':
+        return new Date().toISOString()
+      case 'object':
+        return this.generateObjectExample(field)
+      default:
+        return null
+    }
+  }
+
+  /**
+   * Helper method to generate example strings based on field context.
+   */
+  private generateStringExample(field: FieldMetadata): string {
+    // Use field name to generate contextual examples
+    if (field.name.includes('email')) {
+      return 'user@example.com'
+    }
+    if (field.name.includes('name')) {
+      return 'John Doe'
+    }
+    if (field.name.includes('phone')) {
+      return '+1 (555) 123-4567'
+    }
+    return 'example'
+  }
+
+  /**
+   * Helper method to generate example numbers based on field context.
+   */
+  private generateNumberExample(field: FieldMetadata): number {
+    // Use validation rules to generate appropriate numbers
+    const min = field.validationRules.find((rule) => rule.decorator === 'Min')?.params?.[0] ?? 0
+    const max = field.validationRules.find((rule) => rule.decorator === 'Max')?.params?.[0] ?? 100
+    return Math.floor((min + max) / 2)
+  }
+
+  /**
+   * Helper method to generate example objects for complex fields.
+   */
+  private generateObjectExample(field: FieldMetadata): Record<string, any> {
+    // If we have a nested type definition, use it
+    if (field.nestedType) {
+      return this.generateSingleExample(this.findModelByName(field.nestedType))
+    }
+    return {}
+  }
+
+  /**
+   * Generates OpenAPI parameter definitions for query parameters.
+   * This method creates documentation for common query parameters like
+   * pagination, filtering, and sorting that can be used to customize
+   * API responses.
+   */
+  private generateQueryParameters(model: ModelMetadata): any[] {
+    const parameters = [
+      // Pagination parameters
+      {
+        name: 'page',
+        in: 'query',
+        required: false,
+        description: 'Page number for paginated results',
+        schema: {
+          type: 'integer',
+          minimum: 1,
+          default: 1,
+        },
+      },
+      {
+        name: 'limit',
+        in: 'query',
+        required: false,
+        description: 'Number of items per page',
+        schema: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 100,
+          default: 10,
+        },
+      },
+      // Sorting parameter
+      {
+        name: 'sort',
+        in: 'query',
+        required: false,
+        description: 'Sort order for results. Format: field:direction (e.g., createdAt:desc)',
+        schema: {
+          type: 'string',
+          example: 'createdAt:desc',
+        },
+      },
+    ]
+
+    // Add filter parameters based on filterable fields
+    model.fields
+      .filter((field) => this.isFilterableField(field))
+      .forEach((field) => {
+        parameters.push({
+          name: `filter[${field.name}]`,
+          in: 'query',
+          required: false,
+          description: `Filter results by ${field.name}`,
+          schema: {
+            type: this.mapTypeToOpenAPI(field.type),
+          },
+        })
+      })
+
+    // Add include parameter for relationships
+    if (model.relationships.length > 0) {
+      parameters.push({
+        name: 'include',
+        in: 'query',
+        required: false,
+        description: 'Include related resources',
+        schema: {
+          type: 'string',
+          example: model.relationships.map((rel) => rel.name).join(','),
+        },
+      })
+    }
+
+    return parameters
+  }
+
+  /**
+   * Generates example responses for relationship endpoints.
+   * This method creates realistic example data for related entities,
+   * showing how relationship data is structured in API responses.
+   */
+  private generateRelationshipExample(relationship: RelationshipMetadata): any {
+    // Find the related model
+    const relatedModel = this.findModelByName(relationship.foreign.model)
+    if (!relatedModel) {
+      return []
+    }
+
+    // For one-to-many or many-to-many relationships, generate an array of examples
+    if (
+      relationship.relationType === 'one-to-many' ||
+      relationship.relationType === 'many-to-many'
+    ) {
+      return [
+        this.generateRelatedEntityExample(relatedModel, relationship),
+        this.generateRelatedEntityExample(relatedModel, relationship),
+      ]
+    }
+
+    // For one-to-one or many-to-one relationships, generate a single example
+    return this.generateRelatedEntityExample(relatedModel, relationship)
+  }
+
+  /**
+   * Helper method to generate an example of a related entity.
+   * This creates realistic example data while maintaining referential integrity
+   * in the examples.
+   */
+  private generateRelatedEntityExample(
+    model: ModelMetadata,
+    relationship: RelationshipMetadata,
+  ): any {
+    const example = this.generateSingleExample(model)
+
+    // Add relationship-specific fields
+    if (relationship.foreign.field) {
+      example[relationship.foreign.field] = this.generateExampleId()
+    }
+
+    return example
+  }
+
+  /**
+   * Helper method to determine if a field should be available for filtering.
+   * Not all fields make sense as filter parameters, so we need to be selective.
+   */
+  private isFilterableField(field: FieldMetadata): boolean {
+    // Don't allow filtering on computed fields or complex objects
+    if (field.isComputed || field.type === 'object') {
+      return false
+    }
+
+    // Don't allow filtering on sensitive fields
+    const sensitiveFields = ['password', 'token', 'secret']
+    if (sensitiveFields.includes(field.name)) {
+      return false
+    }
+
+    // Allow filtering on basic types that make sense to filter by
+    const filterableTypes = ['string', 'number', 'boolean', 'Date']
+    return filterableTypes.includes(field.type)
+  }
+
+  /**
+   * Helper method to generate example IDs for relationships.
+   * This ensures our examples use consistent ID formats.
+   */
+  private generateExampleId(): string {
+    // Generate a UUID-like string for example IDs
+    return '123e4567-e89b-12d3-a456-426614174000'
+  }
+}
+
+================
+File: dto/modules/interfaces.ts
+================
+// tools/generators/dto/modules/interfaces.ts
+import { ModelMetadata, FieldMetadata } from '../core/types'
+import { TypeMapper } from '../utils/type-mapper'
+import { DocumentationParser } from '../utils/documentation-parser'
+import { InterfaceTemplate } from '../templates/interface.template'
+
+/**
+ * InterfaceGenerator creates TypeScript interfaces using a template-based approach.
+ * This class transforms our model metadata into strongly-typed interfaces while
+ * maintaining consistent formatting and documentation standards.
+ */
+export class InterfaceGenerator {
+  constructor(
+    private readonly typeMapper: TypeMapper,
+    private readonly docParser: DocumentationParser,
+  ) {}
+
+  /**
+   * Generates a complete interface file for a model, including all related
+   * interfaces and type helpers. Uses templates to ensure consistency.
+   */
+  generateInterface(model: ModelMetadata): string {
+    // First, we prepare all the components needed for our interface
+    const context = {
+      imports: this.prepareImports(model),
+      documentation: this.prepareDocumentation(model),
+      interfaceName: model.name,
+      properties: this.prepareProperties(model.fields),
+      relationInterfaces: this.prepareRelationInterfaces(model),
+      typeHelpers: this.prepareTypeHelpers(model),
+    }
+
+    // Then we use our template to generate the final output
+    return this.applyTemplate(InterfaceTemplate.MAIN_TEMPLATE, context)
+  }
+
+  /**
+   * Prepares import statements based on model relationships and dependencies.
+   * Groups imports by source for better organization.
+   */
+  private prepareImports(model: ModelMetadata): string {
+    const imports = new Set<{ what: string; from: string }>()
+
+    // Add base imports
+    imports.add({ what: 'BaseEntity', from: '@core/base/entity' })
+
+    // Add relationship imports
+    model.relationships.forEach((relation) => {
+      imports.add({
+        what: `I${relation.type}`,
+        from: `./${relation.type.toLowerCase()}.interface`,
+      })
+    })
+
+    return this.applyTemplate(InterfaceTemplate.IMPORTS_TEMPLATE, { imports: Array.from(imports) })
+  }
+
+  /**
+   * Generates comprehensive documentation for the interface using JSDoc format.
+   * Includes description, examples, and deprecation notices if applicable.
+   */
+  private prepareDocumentation(model: ModelMetadata): string {
+    const docs = model.documentation
+    return this.applyTemplate(InterfaceTemplate.DOCUMENTATION_TEMPLATE, {
+      description: docs.description,
+      deprecated: docs.deprecated,
+      example: docs.example,
+      version: docs.version,
+    })
+  }
+
+  /**
+   * Generates property definitions with their respective types and documentation.
+   * Handles both simple properties and complex types.
+   */
+  private prepareProperties(fields: FieldMetadata[]): string {
+    return fields
+      .map((field) => {
+        return this.applyTemplate(InterfaceTemplate.PROPERTY_TEMPLATE, {
+          description: field.documentation.description,
+          example: field.documentation.example,
+          validation: this.formatValidationRules(field.validationRules),
+          name: field.name,
+          required: field.isRequired,
+          type: this.typeMapper.mapPrismaToTypeScript(field),
+        })
+      })
+      .join('\n')
+  }
+
+  /**
+   * Generates interfaces for handling relationships between models.
+   * Creates extended interfaces that include related entities.
+   */
+  private prepareRelationInterfaces(model: ModelMetadata): string {
+    return model.relationships
+      .map((relation) => {
+        return this.applyTemplate(InterfaceTemplate.RELATION_INTERFACE_TEMPLATE, {
+          interfaceName: model.name,
+          relationName: relation.name,
+          relationProperty: relation.name,
+          relationType: this.getRelationType(relation),
+        })
+      })
+      .join('\n\n')
+  }
+
+  /**
+   * Generates utility types for working with the interface.
+   * Includes common type transformations like Partial and Required.
+   */
+  private prepareTypeHelpers(model: ModelMetadata): string {
+    return this.applyTemplate(InterfaceTemplate.TYPE_HELPERS_TEMPLATE, {
+      interfaceName: model.name,
+    })
+  }
+
+  /**
+   * Formats validation rules into a readable string for documentation.
+   */
+  private formatValidationRules(rules: ValidationRule[]): string {
+    if (!rules.length) return ''
+    return rules
+      .map((rule) => `@${rule.decorator}${rule.params ? `(${rule.params.join(', ')})` : ''}`)
+      .join(', ')
+  }
+
+  /**
+   * Determines the correct TypeScript type for a relationship.
+   */
+  private getRelationType(relation: RelationshipMetadata): string {
+    const baseType = `I${relation.type}`
+    return relation.isArray ? `${baseType}[]` : baseType
+  }
+
+  /**
+   * Simple template engine that replaces placeholders with actual values.
+   * In a production environment, you might want to use a more robust template engine.
+   */
+  private applyTemplate(template: string, context: Record<string, any>): string {
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key) => context[key] || '')
+  }
+}
+
+================
+File: dto/modules/openapi-metadata.ts
+================
+// tools/generators/dto/modules/openapi-metadata.ts
+
+import { ModelMetadata, FieldMetadata } from '../core/types'
+import { TypeMapper } from '../utils/type-mapper'
+
+/**
+ * OpenAPIMetadataGenerator handles the creation of comprehensive OpenAPI/Swagger
+ * decorators and metadata. It ensures our DTOs are properly documented for API
+ * consumers with complete type information, examples, and security schemes.
+ */
+export class OpenAPIMetadataGenerator {
+  constructor(private readonly typeMapper: TypeMapper) {}
+
+  /**
+   * Generates all OpenAPI decorators for a DTO class. This includes class-level
+   * decorators for response types and field-level decorators for properties.
+   */
+  generateOpenAPIMetadata(model: ModelMetadata): string {
+    const imports = this.generateSwaggerImports()
+    const classDecorators = this.generateClassDecorators(model)
+    const propertyDecorators = this.generatePropertyDecorators(model.fields)
+
+    return `
+${imports}
+
+${classDecorators}
+export class ${model.name}DTO {
+${propertyDecorators}
+}
+`
+  }
+
+  /**
+   * Generates necessary imports for OpenAPI decorators. We import everything we
+   * need from @nestjs/swagger to support our enhanced documentation.
+   */
+  private generateSwaggerImports(): string {
+    return `
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  ApiExtraModels,
+  ApiResponse,
+  ApiResponseType,
+  ApiTags,
+  getSchemaPath,
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiOAuth2,
+  ApiCookieAuth
+} from '@nestjs/swagger';
+`
+  }
+
+  /**
+   * Generates class-level OpenAPI decorators including response types,
+   * authentication requirements, and tags for API grouping.
+   */
+  private generateClassDecorators(model: ModelMetadata): string {
+    const { documentation } = model
+
+    // Build array of class decorators
+    const decorators = [
+      `@ApiTags('${model.name}')`,
+      this.generateAuthDecorators(model),
+      this.generateResponseDecorators(model),
+      this.generateExtraModelsDecorator(model),
+    ].filter(Boolean)
+
+    return decorators.join('\n')
+  }
+
+  /**
+   * Generates @ApiProperty decorators for each field with comprehensive
+   * metadata including type information, examples, and validation rules.
+   */
+  private generatePropertyDecorators(fields: FieldMetadata[]): string {
+    return fields
+      .map((field) => {
+        const propertyDecorator = field.isRequired ? '@ApiProperty' : '@ApiPropertyOptional'
+        const options = this.buildPropertyOptions(field)
+
+        return `  ${propertyDecorator}(${options})
+  ${field.name}${field.isRequired ? '' : '?'}: ${this.typeMapper.mapPrismaToTypeScript(field)};`
+      })
+      .join('\n\n')
+  }
+
+  /**
+   * Builds comprehensive options for @ApiProperty decorators including
+   * type information, examples, and nested schema references.
+   */
+  private buildPropertyOptions(field: FieldMetadata): string {
+    const options: Record<string, any> = {
+      description: field.documentation.description,
+      type: this.getSwaggerType(field),
+      example: this.generateExample(field),
+    }
+
+    // Add validation rules metadata
+    if (field.validationRules.length > 0) {
+      options.minimum = this.extractMinimum(field.validationRules)
+      options.maximum = this.extractMaximum(field.validationRules)
+      options.minLength = this.extractMinLength(field.validationRules)
+      options.maxLength = this.extractMaxLength(field.validationRules)
+      options.pattern = this.extractPattern(field.validationRules)
+    }
+
+    // Add enum values if applicable
+    if (field.type === 'enum') {
+      options.enum = this.extractEnumValues(field)
+    }
+
+    // Add nested schema references if needed
+    if (this.isComplexType(field)) {
+      options.schema = this.generateNestedSchema(field)
+    }
+
+    return this.serializeOptions(options)
+  }
+
+  /**
+   * Generates authentication decorators based on security schemes
+   * defined in the model's metadata.
+   */
+  private generateAuthDecorators(model: ModelMetadata): string {
+    const authDecorators: string[] = []
+    const securitySchemes = this.extractSecuritySchemes(model)
+
+    securitySchemes.forEach((scheme) => {
+      switch (scheme.type) {
+        case 'bearer':
+          authDecorators.push('@ApiBearerAuth()')
+          break
+        case 'basic':
+          authDecorators.push('@ApiBasicAuth()')
+          break
+        case 'oauth2':
+          authDecorators.push(`@ApiOAuth2(${JSON.stringify(scheme.flows)})`)
+          break
+        case 'cookie':
+          authDecorators.push(`@ApiCookieAuth('${scheme.name}')`)
+          break
+      }
+    })
+
+    return authDecorators.join('\n')
+  }
+
+  /**
+   * Generates response decorators with proper type information and
+   * status codes. Handles both success and error responses.
+   */
+  private generateResponseDecorators(model: ModelMetadata): string {
+    const responseDecorators: string[] = []
+
+    // Success response
+    responseDecorators.push(`
+@ApiResponse({
+  status: 200,
+  description: 'Successful operation',
+  type: ${model.name}DTO
+})`)
+
+    // Error responses
+    responseDecorators.push(`
+@ApiResponse({
+  status: 400,
+  description: 'Bad request - validation error'
+})
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized - authentication required'
+})`)
+
+    return responseDecorators.join('\n')
+  }
+
+  /**
+   * Generates discriminator mapping for inheritance relationships,
+   * allowing proper type discrimination in polymorphic responses.
+   */
+  private generateExtraModelsDecorator(model: ModelMetadata): string {
+    if (!model.relationships.length) return ''
+
+    const relatedModels = model.relationships.map((rel) => rel.type).filter(Boolean)
+
+    if (relatedModels.length === 0) return ''
+
+    return `@ApiExtraModels(${relatedModels.join(', ')})`
+  }
+
+  /**
+   * Extracts security schemes from model metadata to determine
+   * which authentication decorators to generate.
+   */
+  private extractSecuritySchemes(model: ModelMetadata): any[] {
+    const securityMatch = model.documentation.description.match(/@security\s+({[\s\S]+?})/)
+    if (!securityMatch) return []
+
+    try {
+      return JSON.parse(securityMatch[1])
+    } catch {
+      console.warn(`Invalid security scheme definition in ${model.name}`)
+      return []
+    }
+  }
+
+  /**
+   * Generates example values for OpenAPI documentation. Tries to create
+   * realistic examples based on field type and validation rules.
+   */
+  private generateExample(field: FieldMetadata): any {
+    // First check if there's an explicit example in the documentation
+    if (field.documentation.example !== undefined) {
+      return field.documentation.example
+    }
+
+    // Generate example based on type and validation rules
+    switch (field.type) {
+      case 'string':
+        return this.generateStringExample(field)
+      case 'number':
+        return this.generateNumberExample(field)
+      case 'boolean':
+        return true
+      case 'Date':
+        return new Date().toISOString()
+      default:
+        return undefined
+    }
+  }
+
+  // Helper methods for example generation...
+  private generateStringExample(field: FieldMetadata): string {
+    const validationRules = field.validationRules
+    if (validationRules.some((rule) => rule.decorator === 'IsEmail')) {
+      return 'user@example.com'
+    }
+    if (validationRules.some((rule) => rule.decorator === 'IsUUID')) {
+      return '123e4567-e89b-12d3-a456-426614174000'
+    }
+    return 'example'
+  }
+
+  private generateNumberExample(field: FieldMetadata): number {
+    const min = this.extractMinimum(field.validationRules) ?? 0
+    const max = this.extractMaximum(field.validationRules) ?? 100
+    return Math.floor((min + max) / 2)
+  }
+}
+
+================
+File: dto/modules/schemas.ts
+================
+// tools/generators/dto/modules/schemas.ts
+import { ModelMetadata, FieldMetadata, ValidationRule, TransformationRule } from '../core/types'
+import { TypeMapper } from '../utils/type-mapper'
+import { DocumentationParser } from '../utils/documentation-parser'
+import { SchemaTemplate } from '../templates/schema.template'
+
+/**
+ * SchemaGenerator creates Zod validation schemas using a template-based approach.
+ * This class transforms our model metadata into runtime validation schemas while
+ * maintaining consistent formatting and comprehensive validation rules.
+ */
+export class SchemaGenerator {
+  constructor(
+    private readonly typeMapper: TypeMapper,
+    private readonly docParser: DocumentationParser,
+  ) {}
+
+  /**
+   * Generates a complete schema file for a model, including validation rules,
+   * transformations, and utility functions for runtime type checking.
+   */
+  generateSchema(model: ModelMetadata): string {
+    const context = {
+      imports: this.prepareImports(model),
+      documentation: this.prepareDocumentation(model),
+      schemaName: `${model.name}Schema`,
+      typeName: model.name,
+      properties: this.prepareProperties(model.fields),
+      validators: this.prepareValidators(model),
+      utilities: this.prepareUtilities(model),
+    }
+
+    return this.applyTemplate(SchemaTemplate.MAIN_TEMPLATE, context)
+  }
+
+  /**
+   * Prepares import statements, including Zod and any custom type imports.
+   * Groups imports logically for better code organization.
+   */
+  private prepareImports(model: ModelMetadata): string {
+    const customImports = new Set<{ what: string; from: string }>()
+
+    // Add imports for related schemas
+    model.relationships.forEach((relation) => {
+      customImports.add({
+        what: `${relation.type}Schema`,
+        from: `./${relation.type.toLowerCase()}.schema`,
+      })
+    })
+
+    return this.applyTemplate(SchemaTemplate.IMPORTS_TEMPLATE, {
+      customImports: Array.from(customImports),
+    })
+  }
+
+  /**
+   * Generates schema documentation that explains validation rules and usage.
+   * Includes examples and notes about runtime behavior.
+   */
+  private prepareDocumentation(model: ModelMetadata): string {
+    const docs = model.documentation
+    const docText = [
+      '/**',
+      ` * Zod schema for validating ${model.name} objects.`,
+      ` * ${docs.description}`,
+      ` * @see https://zod.dev/ for more information about Zod validation`,
+      docs.deprecated ? ' * @deprecated' : '',
+      docs.version ? ` * @version ${docs.version}` : '',
+      ' */',
+    ]
+      .filter(Boolean)
+      .join('\n')
+
+    return docText
+  }
+
+  /**
+   * Generates schema property definitions with their respective Zod validators.
+   * Handles both basic validations and complex transformations.
+   */
+  private prepareProperties(fields: FieldMetadata[]): string {
+    return fields
+      .map((field) => {
+        const context = {
+          description: field.documentation.description,
+          name: field.name,
+          zodType: this.typeMapper.mapPrismaToZod(field),
+          transforms: this.prepareTransforms(field.transformationRules),
+          validations: this.prepareValidations(field.validationRules),
+        }
+
+        return this.applyTemplate(SchemaTemplate.PROPERTY_TEMPLATE, context)
+      })
+      .join('\n\n')
+  }
+
+  /**
+   * Prepares transformation rules for a field, converting our metadata
+   * into Zod-compatible transformations.
+   */
+  private prepareTransforms(rules: TransformationRule[]): Array<{ transform: string }> {
+    return rules.map((rule) => {
+      let transform: string
+      switch (rule.type) {
+        case 'toDate':
+          transform = '(val) => new Date(val)'
+          break
+        case 'toString':
+          transform = 'String'
+          break
+        case 'toNumber':
+          transform =
+            rule.params?.[0] === 'integer'
+              ? '(val) => parseInt(String(val), 10)'
+              : '(val) => Number(val)'
+          break
+        case 'toBoolean':
+          transform = '(val) => Boolean(val)'
+          break
+        case 'custom':
+          transform = rule.params?.[0] || 'identity'
+          break
+        default:
+          transform = 'identity'
+      }
+      return { transform }
+    })
+  }
+
+  /**
+   * Converts validation rules into Zod-compatible validation chains.
+   * Handles both standard and custom validation rules.
+   */
+  private prepareValidations(rules: ValidationRule[]): Array<{ validation: string }> {
+    return rules.map((rule) => {
+      let validation: string
+      switch (rule.decorator) {
+        case 'IsEmail':
+          validation = 'email()'
+          break
+        case 'MinLength':
+          validation = `min(${rule.params?.[0]})`
+          break
+        case 'MaxLength':
+          validation = `max(${rule.params?.[0]})`
+          break
+        case 'IsInt':
+          validation = 'int()'
+          break
+        case 'IsPositive':
+          validation = 'positive()'
+          break
+        default:
+          validation = `refine(${rule.params?.[0] || 'true'})`
+      }
+      return { validation }
+    })
+  }
+
+  /**
+   * Generates validator functions for the schema, including both
+   * throwing and non-throwing variants for different use cases.
+   */
+  private prepareValidators(model: ModelMetadata): string {
+    return this.applyTemplate(SchemaTemplate.VALIDATORS_TEMPLATE, {
+      schemaName: `${model.name}Schema`,
+      typeName: model.name,
+    })
+  }
+
+  /**
+   * Generates utility functions for working with the schema,
+   * including helpers for common operations like creating partial schemas.
+   */
+  private prepareUtilities(model: ModelMetadata): string {
+    return this.applyTemplate(SchemaTemplate.UTILITIES_TEMPLATE, {
+      schemaName: `${model.name}Schema`,
+      typeName: model.name,
+    })
+  }
+
+  /**
+   * Simple template engine that replaces placeholders with actual values.
+   * For production use, consider using a more robust template engine.
+   */
+  private applyTemplate(template: string, context: Record<string, any>): string {
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key) => context[key] || '')
+  }
+}
+
+================
+File: dto/modules/transformers.ts
+================
+// tools/generators/dto/modules/transformers.ts
+import { TransformationRule, FieldMetadata, ModelMetadata } from '../core/types'
+
+/**
+ * Transformation Generator Module
+ * Handles the generation of transformation decorators and utility methods
+ * for converting data between different formats and types.
+ */
+export class TransformationGenerator {
+  /**
+   * Generates transformation decorators for a field based on its metadata
+   */
+  generateTransformationDecorators(field: FieldMetadata): TransformationRule[] {
+    const rules: TransformationRule[] = []
+
+    // Add type-specific transformations
+    rules.push(...this.getTypeTransformations(field))
+
+    // Add case transformations if needed
+    if (field.type === 'string') {
+      rules.push(...this.getCaseTransformations(field))
+    }
+
+    // Add custom transformations from documentation
+    rules.push(...this.parseCustomTransformations(field))
+
+    return rules
+  }
+
+  /**
+   * Determines specific transformation rules based on field type
+   */
+  private getTypeTransformations(field: FieldMetadata): TransformationRule[] {
+    const rules: TransformationRule[] = []
+
+    switch (field.type) {
+      case 'Date':
+        rules.push({
+          type: 'toDate',
+          params: ['ISO'],
+        })
+        break
+      case 'number':
+        rules.push({
+          type: 'toNumber',
+          params: [field.documentation.description.includes('@integer') ? 'integer' : 'float'],
+        })
+        break
+      case 'boolean':
+        rules.push({
+          type: 'toBoolean',
+        })
+        break
+    }
+
+    return rules
+  }
+
+  /**
+   * Generates case transformation rules for string fields
+   */
+  private getCaseTransformations(field: FieldMetadata): TransformationRule[] {
+    const rules: TransformationRule[] = []
+    const docs = field.documentation
+
+    if (docs.description.includes('@lowercase')) {
+      rules.push({
+        type: 'custom',
+        params: ['(value) => value?.toLowerCase()'],
+      })
+    }
+
+    if (docs.description.includes('@uppercase')) {
+      rules.push({
+        type: 'custom',
+        params: ['(value) => value?.toUpperCase()'],
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Generates utility methods for transforming entire DTOs
+   */
+  generateTransformationMethods(model: ModelMetadata): string {
+    return `
+  /**
+   * Transforms an entity to a DTO instance
+   */
+  static fromEntity(entity: Record<string, any>): ${model.name}DTO {
+    return plainToClass(${model.name}DTO, entity, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true
+    });
+  }
+
+  /**
+   * Transforms a DTO instance to an entity
+   */
+  toEntity(): Record<string, any> {
+    return classToPlain(this, {
+      excludeExtraneousValues: true
+    });
+  }
+`
+  }
+}
+
+================
+File: dto/modules/type-guard.ts
+================
+// tools/generators/dto/modules/type-guards.ts
+import { ModelMetadata, FieldMetadata } from '../core/types'
+import { TypeMapper } from '../utils/type-mapper'
+
+/**
+ * TypeGuardGenerator creates TypeScript type guards that provide
+ * runtime type checking with full type inference.
+ */
+export class TypeGuardGenerator {
+  private typeMapper: TypeMapper
+
+  constructor() {
+    this.typeMapper = new TypeMapper()
+  }
+
+  /**
+   * Generates type guard functions for a model that can be used
+   * to verify types at runtime.
+   */
+  generateTypeGuards(model: ModelMetadata): string {
+    const guardContent = `
+import { I${model.name} } from './interfaces'
+import { ${model.name}Schema } from './schemas'
+
+/**
+ * Type guard for ${model.name}
+ * Ensures that an unknown value matches the expected structure
+ */
+export function is${model.name}(value: unknown): value is I${model.name} {
+  return ${model.name}Schema.safeParse(value).success
+}
+
+/**
+ * Specialized type guards for checking partial data
+ */
+${this.generatePartialTypeGuards(model)}
+
+/**
+ * Type guard utilities for arrays and relationships
+ */
+${this.generateCollectionTypeGuards(model)}
+`
+    return guardContent
+  }
+
+  /**
+   * Generates type guards for checking partial objects that may
+   * only include some fields of the model.
+   */
+  private generatePartialTypeGuards(model: ModelMetadata): string {
+    return `
+export function isPartial${model.name}(value: unknown): value is Partial<I${model.name}> {
+  if (typeof value !== 'object' || value === null) return false
+  
+  const knownKeys = ${JSON.stringify(model.fields.map((f) => f.name))}
+  return Object.keys(value).every(key => 
+    knownKeys.includes(key) && this.isValidField(key, value[key as keyof typeof value])
+  )
+}
+
+/**
+ * Validates individual fields based on their expected types
+ */
+private function isValidField(key: string, value: unknown): boolean {
+  switch (key) {
+${this.generateFieldValidations(model.fields)}
+  }
+  return false
+}
+`
+  }
+
+  /**
+   * Generates type guards for handling arrays and related objects.
+   */
+  private generateCollectionTypeGuards(model: ModelMetadata): string {
+    return `
+/**
+ * Type guard for arrays of ${model.name}
+ */
+export function is${model.name}Array(value: unknown): value is I${model.name}[] {
+  return Array.isArray(value) && value.every(is${model.name})
+}
+
+/**
+ * Type guard for partial arrays of ${model.name}
+ */
+export function isPartial${model.name}Array(value: unknown): value is Partial<I${model.name}>[] {
+  return Array.isArray(value) && value.every(isPartial${model.name})
+}
+`
+  }
+
+  /**
+   * Generates individual field validation logic based on field types.
+   */
+  private generateFieldValidations(fields: FieldMetadata[]): string {
+    return fields
+      .map(
+        (field) => `    case '${field.name}':
+      ${this.generateFieldTypeCheck(field)}`,
+      )
+      .join('\n')
+  }
+
+  /**
+   * Generates type-specific validation logic for a field.
+   */
+  private generateFieldTypeCheck(field: FieldMetadata): string {
+    const type = this.typeMapper.mapPrismaToTypeScript(field)
+
+    switch (type) {
+      case 'string':
+        return 'return typeof value === "string";'
+      case 'number':
+        return 'return typeof value === "number" && !isNaN(value);'
+      case 'boolean':
+        return 'return typeof value === "boolean";'
+      case 'Date':
+        return 'return value instanceof Date || !isNaN(Date.parse(String(value)));'
+      default:
+        return 'return true; // Complex type requiring deeper validation'
+    }
+  }
+}
+
+================
+File: dto/modules/validators.ts
+================
+// tools/generators/dto/modules/validators.ts
+import type { ValidationRule, FieldMetadata, ModelMetadata } from '../core/types'
+
+/**
+ * Enhanced ValidationGenerator that infers validation rules from database constraints
+ * and generates sophisticated validation decorators for DTOs.
+ */
+export class ValidationGenerator {
+  /**
+   * Generates comprehensive validation rules by combining explicit decorators
+   * with inferred rules from database constraints.
+   */
+  async generateValidationRules(model: ModelMetadata): Promise<ValidationRule[]> {
+    // Start with basic validation rules
+    let rules = await this.getBasicValidationRules(model)
+
+    // Add database constraint validations
+    rules = [
+      ...rules,
+      ...(await this.inferDatabaseConstraints(model)),
+      ...(await this.generateCheckConstraints(model)),
+      ...(await this.generateUniqueConstraints(model)),
+      ...(await this.generateForeignKeyValidation(model)),
+      ...(await this.generateCrossFieldValidation(model)),
+    ]
+
+    return rules
+  }
+
+  /**
+   * Generates basic validation rules that apply to all models, independent
+   * of database constraints. These rules form the foundation of our validation
+   * strategy and are complemented by more specific rules from other sources.
+   */
+  private async getBasicValidationRules(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+
+    // Add type-specific validation for each field
+    for (const field of model.fields) {
+      // Add basic presence validation
+      if (field.isRequired) {
+        rules.push({
+          decorator: 'IsNotEmpty',
+          message: `${field.name} is required`,
+        })
+      } else {
+        rules.push({
+          decorator: 'IsOptional',
+        })
+      }
+
+      // Add type-specific validation
+      const typeRules = this.getTypeSpecificValidation(field)
+      rules.push(...typeRules)
+
+      // Add any explicitly defined validation from documentation
+      const docRules = this.parseValidationFromDocumentation(field)
+      rules.push(...docRules)
+    }
+
+    return rules
+  }
+
+  /**
+   * Determines specific validation rules based on the field's type.
+   * Each type has its own set of appropriate validators to ensure
+   * data integrity and type safety.
+   */
+  private getTypeSpecificValidation(field: FieldMetadata): ValidationRule[] {
+    const rules: ValidationRule[] = []
+
+    switch (field.type) {
+      case 'string':
+        rules.push({
+          decorator: 'IsString',
+          message: `${field.name} must be a string`,
+        })
+        break
+
+      case 'number':
+        rules.push({
+          decorator: 'IsNumber',
+          params: [{ allowNaN: false, allowInfinity: false }],
+          message: `${field.name} must be a valid number`,
+        })
+        break
+
+      case 'boolean':
+        rules.push({
+          decorator: 'IsBoolean',
+          message: `${field.name} must be a boolean`,
+        })
+        break
+
+      case 'Date':
+        rules.push({
+          decorator: 'IsDate',
+          message: `${field.name} must be a valid date`,
+        })
+        break
+
+      case 'array':
+        if (field.isArray) {
+          rules.push({
+            decorator: 'IsArray',
+            message: `${field.name} must be an array`,
+          })
+          // Add item type validation if specified
+          const itemType = field.arrayItemType
+          if (itemType) {
+            rules.push({
+              decorator: 'ArrayItems',
+              params: [itemType],
+              message: `Each item in ${field.name} must be of type ${itemType}`,
+            })
+          }
+        }
+        break
+    }
+
+    return rules
+  }
+
+  /**
+   * Extracts validation rules from field documentation comments.
+   * This allows developers to specify additional validation requirements
+   * through documentation annotations.
+   */
+  private parseValidationFromDocumentation(field: FieldMetadata): ValidationRule[] {
+    const rules: ValidationRule[] = []
+    const docs = field.documentation.description
+
+    // Parse @validate annotations
+    const validateMatches = docs.match(/@validate\((.*?)\)/g) || []
+    for (const match of validateMatches) {
+      const [decorator, ...params] = match
+        .replace('@validate(', '')
+        .replace(')', '')
+        .split(',')
+        .map((param) => param.trim())
+
+      rules.push({
+        decorator,
+        params: params.length ? params : undefined,
+      })
+    }
+
+    // Parse common validation patterns
+    if (docs.includes('@email')) {
+      rules.push({
+        decorator: 'IsEmail',
+        message: `${field.name} must be a valid email address`,
+      })
+    }
+
+    if (docs.includes('@url')) {
+      rules.push({
+        decorator: 'IsUrl',
+        message: `${field.name} must be a valid URL`,
+      })
+    }
+
+    // Parse length requirements
+    const lengthMatch = docs.match(/@length\((\d+),(\d+)\)/)
+    if (lengthMatch) {
+      rules.push({
+        decorator: 'Length',
+        params: [parseInt(lengthMatch[1]), parseInt(lengthMatch[2])],
+        message: `${field.name} must be between ${lengthMatch[1]} and ${lengthMatch[2]} characters`,
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Infers validation rules from PostgreSQL column constraints such as
+   * NOT NULL, length constraints, numeric ranges, etc.
+   */
+  private async inferDatabaseConstraints(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+
+    for (const field of model.fields) {
+      // Get PostgreSQL column metadata from field documentation
+      const columnMetadata = this.extractColumnMetadata(field)
+
+      if (columnMetadata.notNull) {
+        rules.push({
+          decorator: 'IsNotEmpty',
+          message: `${field.name} is required`,
+        })
+      }
+
+      // Handle character varying length constraints
+      if (columnMetadata.maxLength) {
+        rules.push({
+          decorator: 'MaxLength',
+          params: [columnMetadata.maxLength],
+          message: `${field.name} cannot be longer than ${columnMetadata.maxLength} characters`,
+        })
+      }
+
+      // Handle numeric precision and scale
+      if (columnMetadata.numericPrecision) {
+        rules.push({
+          decorator: 'IsNumber',
+          params: [
+            {
+              maxDecimalPlaces: columnMetadata.numericScale || 0,
+              max: Math.pow(10, columnMetadata.numericPrecision) - 1,
+            },
+          ],
+          message: `${field.name} must be a number with at most ${columnMetadata.numericScale} decimal places`,
+        })
+      }
+    }
+
+    return rules
+  }
+
+  /**
+   * Generates validation rules from PostgreSQL CHECK constraints.
+   * Converts CHECK expressions into class-validator decorators.
+   */
+  private async generateCheckConstraints(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+    const checkConstraints = this.extractCheckConstraints(model)
+
+    for (const constraint of checkConstraints) {
+      const validationRule = this.convertCheckToValidation(constraint)
+      if (validationRule) {
+        rules.push(validationRule)
+      }
+    }
+
+    return rules
+  }
+
+  /**
+   * Converts a PostgreSQL CHECK constraint into a corresponding validation rule.
+   * Handles common patterns like range checks, enum values, and regex patterns.
+   */
+  private convertCheckToValidation(checkConstraint: string): ValidationRule | null {
+    // Match common CHECK constraint patterns
+    const rangeMatch = checkConstraint.match(/(\w+)\s*(>=|<=|>|<)\s*(\d+)/)
+    if (rangeMatch) {
+      const [, field, operator, value] = rangeMatch
+      return this.createRangeValidation(field, operator, Number(value))
+    }
+
+    const enumMatch = checkConstraint.match(/(\w+)\s+IN\s+\((.*?)\)/)
+    if (enumMatch) {
+      const [, field, values] = enumMatch
+      return {
+        decorator: 'IsIn',
+        params: [values.split(',').map((v) => v.trim().replace(/'/g, ''))],
+        message: `${field} must be one of: ${values}`,
+      }
+    }
+
+    const regexMatch = checkConstraint.match(/(\w+)\s+~\s+'(.*?)'/)
+    if (regexMatch) {
+      const [, field, pattern] = regexMatch
+      return {
+        decorator: 'Matches',
+        params: [new RegExp(pattern)],
+        message: `${field} must match pattern: ${pattern}`,
+      }
+    }
+
+    return null
+  }
+
+  /**
+   * Creates range validation rules based on operators found in CHECK constraints.
+   */
+  private createRangeValidation(field: string, operator: string, value: number): ValidationRule {
+    const decoratorMap: Record<string, string> = {
+      '>=': 'Min',
+      '<=': 'Max',
+      '>': 'Min',
+      '<': 'Max',
+    }
+
+    return {
+      decorator: decoratorMap[operator],
+      params: [operator.includes('>') ? value : value],
+      message: `${field} must be ${operator} ${value}`,
+    }
+  }
+
+  /**
+   * Generates validation rules for composite unique constraints.
+   * Creates custom validators that check uniqueness across multiple fields.
+   */
+  private async generateUniqueConstraints(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+    const uniqueConstraints = this.extractUniqueConstraints(model)
+
+    for (const constraint of uniqueConstraints) {
+      if (constraint.fields.length > 1) {
+        // Generate composite unique validator
+        rules.push({
+          decorator: 'ValidateCompositeUnique',
+          params: [constraint.fields],
+          message: `The combination of (${constraint.fields.join(', ')}) must be unique`,
+        })
+      }
+    }
+
+    return rules
+  }
+
+  /**
+   * Generates validation rules for foreign key relationships.
+   * Ensures referenced entities exist in the database.
+   */
+  private async generateForeignKeyValidation(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+
+    for (const relationship of model.relationships) {
+      rules.push({
+        decorator: 'ValidateExists',
+        params: [relationship.foreign.model, relationship.foreign.field],
+        message: `Referenced ${relationship.foreign.model} must exist`,
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Generates sophisticated cross-field validation rules based on
+   * business logic and field relationships.
+   */
+  private async generateCrossFieldValidation(model: ModelMetadata): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+
+    // Example: Date range validation
+    const dateFields = model.fields.filter((field) => field.type === 'Date')
+    if (dateFields.length >= 2) {
+      rules.push({
+        decorator: 'ValidateDateRange',
+        params: [dateFields.map((f) => f.name)],
+        message: 'End date must be after start date',
+      })
+    }
+
+    // Example: Dependent field validation
+    const dependentFields = this.findDependentFields(model)
+    for (const { main, dependent } of dependentFields) {
+      rules.push({
+        decorator: 'ValidateDependent',
+        params: [main, dependent],
+        message: `${dependent} is required when ${main} is provided`,
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Helper method to find fields that have dependencies on other fields
+   * based on database constraints or documentation.
+   */
+  private findDependentFields(model: ModelMetadata): Array<{ main: string; dependent: string }> {
+    const dependencies: Array<{ main: string; dependent: string }> = []
+
+    for (const field of model.fields) {
+      const dependencyMatch = field.documentation.description.match(/@depends-on\s+(\w+)/)
+      if (dependencyMatch) {
+        dependencies.push({
+          main: dependencyMatch[1],
+          dependent: field.name,
+        })
+      }
+    }
+
+    return dependencies
+  }
+
+  /**
+   * Extracts column metadata from field documentation and database schema.
+   */
+  private extractColumnMetadata(field: FieldMetadata) {
+    const metadata = {
+      notNull: false,
+      maxLength: null,
+      numericPrecision: null,
+      numericScale: null,
+    }
+
+    // Parse field documentation for database constraints
+    const lengthMatch = field.documentation.description.match(/@length\((\d+)\)/)
+    if (lengthMatch) {
+      metadata.maxLength = parseInt(lengthMatch[1])
+    }
+
+    const precisionMatch = field.documentation.description.match(/@precision\((\d+),(\d+)\)/)
+    if (precisionMatch) {
+      metadata.numericPrecision = parseInt(precisionMatch[1])
+      metadata.numericScale = parseInt(precisionMatch[2])
+    }
+
+    return metadata
+  }
+
+  /**
+   * Extracts CHECK constraints from model documentation.
+   */
+  private extractCheckConstraints(model: ModelMetadata): string[] {
+    const checkMatch = model.documentation.description.match(/@check\s+{([^}]+)}/)
+    if (!checkMatch) return []
+
+    return checkMatch[1]
+      .split(';')
+      .map((constraint) => constraint.trim())
+      .filter(Boolean)
+  }
+
+  /**
+   * Extracts unique constraints from model documentation.
+   */
+  private extractUniqueConstraints(model: ModelMetadata): Array<{ fields: string[] }> {
+    const uniqueMatch = model.documentation.description.match(/@unique\s+{([^}]+)}/)
+    if (!uniqueMatch) return []
+
+    return uniqueMatch[1].split('),').map((constraint) => ({
+      fields: constraint
+        .replace(/[()]/g, '')
+        .split(',')
+        .map((field) => field.trim()),
+    }))
+  }
+}
+
+================
+File: dto/types/config.types.ts
+================
+// tools/generators/dto/core/config.types.ts
+
+/**
+ * The enhanced configuration system allows fine-grained control over
+ * code generation while supporting extensibility through plugins
+ * and custom rules.
+ */
+export interface GeneratorConfig {
+  // Base configuration
+  outputPath: string
+  prettierConfig?: string
+
+  // Type system configuration
+  types: TypeMappingConfig
+
+  // Validation configuration
+  validation: ValidationConfig
+
+  // Template configuration
+  templates: TemplateConfig
+
+  // Plugin configuration
+  plugins: PluginConfig[]
+
+  // Output format configuration
+  output: OutputConfig
+
+  // Customization hooks
+  hooks: HooksConfig
+}
+
+/**
+ * Controls how database types are mapped to TypeScript types.
+ * Allows customization of type mappings and addition of new types.
+ */
+export interface TypeMappingConfig {
+  // Default type mappings
+  defaultMappings: Record<string, string>
+
+  // Custom type mappings that override defaults
+  customMappings: Record<string, string>
+
+  // Type conversion functions for complex types
+  typeConverters: Record<string, TypeConverter>
+
+  // Generic type handlers
+  genericTypes: GenericTypeConfig[]
+}
+
+/**
+ * Defines how a complex type should be converted between
+ * database and TypeScript representations.
+ */
+export interface TypeConverter {
+  // Converts from database type to TypeScript type
+  toTypeScript: (value: any) => string
+
+  // Converts from TypeScript type to database type
+  toDatabase: (value: any) => string
+
+  // Validates the type conversion
+  validate: (value: any) => boolean
+}
+
+/**
+ * Configuration for handling generic types like arrays
+ * and custom collection types.
+ */
+export interface GenericTypeConfig {
+  name: string
+  typeParameters: number
+  template: string
+}
+
+/**
+ * Controls validation rule generation and customization.
+ */
+export interface ValidationConfig {
+  // Built-in validation rules
+  enabledRules: string[]
+
+  // Custom validation rule definitions
+  customRules: ValidationRuleDefinition[]
+
+  // Validation message templates
+  messageTemplates: Record<string, string>
+
+  // Custom validator functions
+  validators: Record<string, ValidatorFunction>
+}
+
+/**
+ * Defines a custom validation rule that can be used
+ * throughout the generated code.
+ */
+export interface ValidationRuleDefinition {
+  name: string
+  decorator: string
+  parameters?: string[]
+  message: string
+  validate: ValidatorFunction
+}
+
+/**
+ * Configuration for template customization and override.
+ */
+export interface TemplateConfig {
+  // Custom template paths
+  templatePaths?: string[]
+
+  // Template overrides
+  overrides?: Record<string, string>
+
+  // Template variables
+  variables?: Record<string, any>
+
+  // Template functions
+  functions?: Record<string, TemplateFunction>
+}
+
+/**
+ * Configuration for plugin system that allows extending
+ * generator functionality.
+ */
+export interface PluginConfig {
+  name: string
+  enabled: boolean
+  options?: Record<string, any>
+
+  // Plugin lifecycle hooks
+  beforeGenerate?: () => Promise<void>
+  afterGenerate?: () => Promise<void>
+
+  // Custom generators
+  generators?: CustomGenerator[]
+}
+
+/**
+ * Controls output format and organization of generated code.
+ */
+export interface OutputConfig {
+  // Output format (TypeScript, JavaScript, etc.)
+  format: 'typescript' | 'javascript'
+
+  // Module system (ESM, CommonJS)
+  moduleSystem: 'esm' | 'commonjs'
+
+  // File organization
+  fileNaming: FileNamingConfig
+
+  // Output structure
+  structure: OutputStructureConfig
+}
+
+/**
+ * Configuration for file naming conventions.
+ */
+export interface FileNamingConfig {
+  // Case style for filenames
+  case: 'kebab' | 'camel' | 'pascal'
+
+  // Prefix and suffix for generated files
+  prefix?: string
+  suffix?: string
+}
+
+/**
+ * Configuration for output file organization.
+ */
+export interface OutputStructureConfig {
+  // Directory structure
+  baseDir: string
+
+  // Subdirectory organization
+  separateDirectories: boolean
+
+  // Index file generation
+  generateIndex: boolean
+}
+
+/**
+ * Configuration for lifecycle hooks that allow customization
+ * of the generation process.
+ */
+export interface HooksConfig {
+  // Before generation starts
+  beforeGeneration?: () => Promise<void>
+
+  // After all generation is complete
+  afterGeneration?: () => Promise<void>
+
+  // Before each model is processed
+  beforeModelGeneration?: (model: ModelMetadata) => Promise<void>
+
+  // After each model is processed
+  afterModelGeneration?: (model: ModelMetadata) => Promise<void>
+}
+
+================
+File: dto/types/postgresql.types.ts
+================
+// tools/generators/dto/types/postgresql.types.ts
+
+/**
+ * Type definitions for PostgreSQL-specific types.
+ * These interfaces match the structure of PostgreSQL's native types.
+ */
+
+// Geometric Types
+export interface Point {
+  x: number
+  y: number
+}
+
+export interface Line {
+  a: number // Line equation: ax + by + c = 0
+  b: number
+  c: number
+}
+
+export interface LineSegment {
+  start: Point
+  end: Point
+}
+
+export interface Box {
+  high: Point // Upper right corner
+  low: Point // Lower left corner
+}
+
+export interface Path {
+  points: Point[]
+  closed: boolean
+}
+
+export interface Polygon {
+  points: Point[]
+}
+
+export interface Circle {
+  center: Point
+  radius: number
+}
+
+// Network Types
+export type InetAddress = string // With runtime validation
+export type CidrAddress = string // With runtime validation
+export type MacAddress = string // With runtime validation
+export type MacAddress8 = string // With runtime validation
+
+// Range Types
+export interface Range<T> {
+  lower: T | null // null means unbounded
+  upper: T | null // null means unbounded
+  lowerInclusive: boolean
+  upperInclusive: boolean
+}
+
+// JSON Types with validation
+export interface JsonField<T = unknown> {
+  value: T
+  isValid(): boolean
+  toString(): string
+}
+
+================
+File: dto/utils/documentation-parser.ts
+================
+// tools/generators/dto/utils/documentation-parser.ts
+import { DMMF } from '@prisma/client/extension'
+
+/**
+ * DocumentationParser extracts and processes documentation from Prisma schema
+ * comments and converts them into structured metadata that can be used
+ * throughout the generator.
+ */
+export class DocumentationParser {
+  /**
+   * Parses model-level documentation, extracting metadata and special
+   * directives that affect code generation.
+   */
+  parseModelDocumentation(model: DMMF.Model): DocumentationMetadata {
+    const docs = model.documentation || ''
+
+    return {
+      description: this.extractDescription(docs),
+      example: this.extractExample(docs),
+      deprecated: this.isDeprecated(docs),
+      version: this.extractVersion(docs),
+      since: this.extractSince(docs),
+    }
+  }
+
+  /**
+   * Parses field-level documentation, extracting validation rules,
+   * examples, and other metadata.
+   */
+  parseFieldDocumentation(field: DMMF.Field): DocumentationMetadata {
+    const docs = field.documentation || ''
+
+    return {
+      description: this.extractDescription(docs),
+      example: this.extractExample(docs),
+      deprecated: this.isDeprecated(docs),
+      version: this.extractVersion(docs),
+      validationRules: this.extractValidationRules(docs, field),
+      transformationRules: this.extractTransformationRules(docs),
+    }
+  }
+
+  /**
+   * Extracts the main description from a documentation string,
+   * removing special directives and annotations.
+   */
+  private extractDescription(docs: string): string {
+    // Remove all special annotations
+    return docs
+      .replace(/@\w+\([^)]*\)/g, '') // Remove @decorator(...) style annotations
+      .replace(/@\w+/g, '') // Remove @tag style annotations
+      .trim()
+  }
+
+  /**
+   * Extracts example values from documentation.
+   * Examples can be specified using @example annotation.
+   */
+  private extractExample(docs: string): any {
+    const exampleMatch = docs.match(/@example\s+([^@]+)/)
+    if (!exampleMatch) return undefined
+
+    try {
+      // Try to parse as JSON first
+      return JSON.parse(exampleMatch[1].trim())
+    } catch {
+      // If not valid JSON, return as string
+      return exampleMatch[1].trim()
+    }
+  }
+
+  /**
+   * Checks if an entity is marked as deprecated.
+   */
+  private isDeprecated(docs: string): boolean {
+    return docs.includes('@deprecated')
+  }
+
+  /**
+   * Extracts version information from documentation.
+   */
+  private extractVersion(docs: string): string | undefined {
+    const versionMatch = docs.match(/@version\s+([^\s@]+)/)
+    return versionMatch ? versionMatch[1] : undefined
+  }
+
+  /**
+   * Extracts the version when a feature was introduced.
+   */
+  private extractSince(docs: string): string | undefined {
+    const sinceMatch = docs.match(/@since\s+([^\s@]+)/)
+    return sinceMatch ? sinceMatch[1] : undefined
+  }
+
+  /**
+   * Extracts validation rules from documentation comments.
+   * These can be specified using @validate annotation.
+   */
+  private extractValidationRules(docs: string, field: DMMF.Field): ValidationRule[] {
+    const rules: ValidationRule[] = []
+    const validationMatches = docs.matchAll(/@validate\s*\(([^)]+)\)/g)
+
+    for (const match of validationMatches) {
+      const [decorator, ...params] = match[1].split(',').map((param) => param.trim())
+
+      rules.push({
+        decorator,
+        params: params.length ? params : undefined,
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Extracts transformation rules from documentation comments.
+   * These can be specified using @transform annotation.
+   */
+  private extractTransformationRules(docs: string): TransformationRule[] {
+    const rules: TransformationRule[] = []
+    const transformMatches = docs.matchAll(/@transform\s*\(([^)]+)\)/g)
+
+    for (const match of transformMatches) {
+      const [type, ...params] = match[1].split(',').map((param) => param.trim())
+
+      rules.push({
+        type: type as any,
+        params: params.length ? params : undefined,
+      })
+    }
+
+    return rules
+  }
+}
+
+================
+File: dto/utils/field-parser.ts
+================
+// tools/generators/dto/utils/field-parser.ts
+
+import { DMMF } from '@prisma/client/extension'
+import { FieldMetadata, ValidationRule, PostgresMetadata, ComputedFieldInfo } from '../core/types'
+
+interface ConstraintInfo {
+  type: string
+  definition: string
+  table: string
+  columns: string[]
+}
+
+/**
+ * Enhanced FieldParser that handles detailed PostgreSQL metadata,
+ * infers validation rules from database constraints, and manages
+ * computed fields.
+ */
+export class FieldParser {
+  constructor(
+    private readonly dbConnection: any, // Your database connection
+    private readonly validationGenerator: ValidationGenerator,
+  ) {}
+
+  /**
+   * Parses a field and enhances it with PostgreSQL-specific metadata,
+   * inferred validation rules, and computed field information.
+   */
+  async parseField(field: DMMF.Field): Promise<FieldMetadata> {
+    // First, create basic field metadata
+    const baseMetadata = await this.createBaseMetadata(field)
+
+    // Then enhance it with PostgreSQL-specific information
+    return this.enhanceFieldMetadata(baseMetadata)
+  }
+
+  /**
+   * Creates the base metadata for a field before enhancement.
+   * This handles the fundamental field properties.
+   */
+  private async createBaseMetadata(field: DMMF.Field): Promise<FieldMetadata> {
+    return {
+      name: field.name,
+      type: this.mapPrismaType(field.type),
+      isRequired: field.isRequired,
+      isArray: field.isList,
+      documentation: this.parseDocumentation(field),
+      validationRules: [],
+      transformationRules: [],
+    }
+  }
+
+  /**
+   * Enhances field metadata with PostgreSQL-specific information,
+   * validation rules, and computed field details.
+   */
+  private async enhanceFieldMetadata(field: FieldMetadata): Promise<FieldMetadata> {
+    // Extract PostgreSQL metadata first as other enhancements may depend on it
+    const pgMetadata = await this.extractPostgresMetadata(field)
+
+    // Infer validation rules from database constraints
+    const enhancedValidation = await this.inferValidationRules(field, pgMetadata)
+
+    // Handle computed fields if present
+    const computedFieldInfo = await this.handleComputedFields(field)
+
+    return {
+      ...field,
+      pgMetadata,
+      validationRules: [...field.validationRules, ...enhancedValidation],
+      computedField: computedFieldInfo,
+      // Add any PostgreSQL-specific transformations
+      transformationRules: [
+        ...field.transformationRules,
+        ...this.inferTransformationRules(field, pgMetadata),
+      ],
+    }
+  }
+
+  /**
+   * Extracts PostgreSQL-specific metadata for a field by querying
+   * the database information schema and pg_catalog views.
+   */
+  private async extractPostgresMetadata(field: FieldMetadata): Promise<PostgresMetadata> {
+    const query = `
+      SELECT
+        col.column_name,
+        col.udt_name,
+        col.character_maximum_length,
+        col.numeric_precision,
+        col.numeric_scale,
+        col.column_default,
+        col.is_nullable,
+        des.description
+      FROM information_schema.columns col
+      LEFT JOIN pg_description des ON 
+        des.objoid = (SELECT oid FROM pg_class WHERE relname = $1)
+        AND des.objsubid = col.ordinal_position
+      WHERE col.table_name = $1 AND col.column_name = $2;
+    `
+
+    const result = await this.dbConnection.query(query, [field.tableName, field.name])
+    const columnInfo = result.rows[0]
+
+    return {
+      dataType: columnInfo.udt_name,
+      maxLength: columnInfo.character_maximum_length,
+      precision: columnInfo.numeric_precision,
+      scale: columnInfo.numeric_scale,
+      defaultValue: columnInfo.column_default,
+      isNullable: columnInfo.is_nullable === 'YES',
+      description: columnInfo.description,
+      constraints: await this.getColumnConstraints(field),
+    }
+  }
+
+  /**
+   * Retrieves all constraints that apply to this column from PostgreSQL.
+   * This includes CHECK constraints, foreign keys, and unique constraints.
+   */
+  private async getColumnConstraints(field: FieldMetadata): Promise<ConstraintInfo[]> {
+    const query = `
+      SELECT
+        con.conname as constraint_name,
+        con.contype as constraint_type,
+        pg_get_constraintdef(con.oid) as definition,
+        rel.relname as table_name,
+        array_agg(att.attname) as column_names
+      FROM pg_constraint con
+      JOIN pg_class rel ON rel.oid = con.conrelid
+      JOIN pg_attribute att ON att.attrelid = con.conrelid
+      WHERE att.attnum = ANY(con.conkey)
+        AND rel.relname = $1
+        AND att.attname = $2
+      GROUP BY con.conname, con.contype, con.oid, rel.relname;
+    `
+
+    const result = await this.dbConnection.query(query, [field.tableName, field.name])
+    return result.rows.map((row) => ({
+      type: this.mapConstraintType(row.constraint_type),
+      definition: row.definition,
+      table: row.table_name,
+      columns: row.column_names,
+    }))
+  }
+
+  /**
+   * Infers validation rules from database constraints and column metadata.
+   * This creates class-validator decorators based on PostgreSQL constraints.
+   */
+  private async inferValidationRules(
+    field: FieldMetadata,
+    pgMetadata: PostgresMetadata,
+  ): Promise<ValidationRule[]> {
+    const rules: ValidationRule[] = []
+
+    // Add basic type validation
+    rules.push(this.getTypeValidationRule(field, pgMetadata))
+
+    // Handle nullable/required validation
+    if (!pgMetadata.isNullable) {
+      rules.push({
+        decorator: 'IsNotEmpty',
+        message: `${field.name} is required`,
+      })
+    }
+
+    // Add length/precision validation for string/numeric types
+    if (pgMetadata.maxLength) {
+      rules.push({
+        decorator: 'MaxLength',
+        params: [pgMetadata.maxLength],
+        message: `${field.name} cannot be longer than ${pgMetadata.maxLength} characters`,
+      })
+    }
+
+    // Handle CHECK constraints
+    const checkConstraints = pgMetadata.constraints.filter((c) => c.type === 'CHECK')
+    checkConstraints.forEach((constraint) => {
+      const validationRule = this.parseCheckConstraint(constraint, field)
+      if (validationRule) {
+        rules.push(validationRule)
+      }
+    })
+
+    return rules
+  }
+
+  /**
+   * Handles computed fields by analyzing their definition and dependencies.
+   * This helps generate appropriate TypeScript getters and documentation.
+   */
+  private async handleComputedFields(field: FieldMetadata): Promise<ComputedFieldInfo | undefined> {
+    // Check if this is a computed field
+    if (!field.documentation.description.includes('@computed')) {
+      return undefined
+    }
+
+    // Extract computation expression
+    const expressionMatch = field.documentation.description.match(
+      /@computed-expression\s+{([^}]+)}/,
+    )
+    if (!expressionMatch) {
+      return undefined
+    }
+
+    // Find dependencies by analyzing the expression
+    const dependencies = await this.analyzeDependencies(expressionMatch[1], field)
+
+    return {
+      expression: expressionMatch[1],
+      dependencies,
+      resultType: field.type,
+      isStored: field.documentation.description.includes('@stored'),
+      updateTrigger: this.extractUpdateTrigger(field),
+    }
+  }
+
+  /**
+   * Analyzes a computed field expression to find its dependencies.
+   * This helps track which fields affect the computed value.
+   */
+  private async analyzeDependencies(expression: string, field: FieldMetadata): Promise<string[]> {
+    // Query PostgreSQL to get the actual dependencies
+    const query = `
+      SELECT DISTINCT a.attname as column_name
+      FROM pg_depend d
+      JOIN pg_attribute a ON a.attrelid = d.refobjid AND a.attnum = d.refobjsubid
+      WHERE d.objid = (SELECT oid FROM pg_class WHERE relname = $1)
+        AND d.objsubid = (
+          SELECT attnum 
+          FROM pg_attribute 
+          WHERE attrelid = (SELECT oid FROM pg_class WHERE relname = $1)
+            AND attname = $2
+        );
+    `
+
+    const result = await this.dbConnection.query(query, [field.tableName, field.name])
+    return result.rows.map((row) => row.column_name)
+  }
+
+  /**
+   * Maps PostgreSQL constraint types to our internal representation.
+   */
+  private mapConstraintType(pgType: string): string {
+    const typeMap = {
+      c: 'CHECK',
+      f: 'FOREIGN KEY',
+      p: 'PRIMARY KEY',
+      u: 'UNIQUE',
+    }
+    return typeMap[pgType] || 'UNKNOWN'
+  }
+
+  /**
+   * Parses a CHECK constraint into a validation rule.
+   */
+  private parseCheckConstraint(
+    constraint: ConstraintInfo,
+    field: FieldMetadata,
+  ): ValidationRule | null {
+    // Common CHECK constraint patterns
+    const patterns = [
+      {
+        regex: /^\(\((.*)\)\s*>=\s*(.*)\)$/,
+        decorator: 'Min',
+        paramIndex: 2,
+      },
+      {
+        regex: /^\(\((.*)\)\s*<=\s*(.*)\)$/,
+        decorator: 'Max',
+        paramIndex: 2,
+      },
+      {
+        regex: /^\(\((.*)\)\s*~\*?\s*'(.*)'\)$/,
+        decorator: 'Matches',
+        paramIndex: 2,
+      },
+    ]
+
+    for (const pattern of patterns) {
+      const match = constraint.definition.match(pattern.regex)
+      if (match) {
+        return {
+          decorator: pattern.decorator,
+          params: [match[pattern.paramIndex]],
+          message: `${field.name} must match constraint: ${constraint.definition}`,
+        }
+      }
+    }
+
+    return null
+  }
+
+  /**
+   * Extracts update trigger information for computed fields.
+   */
+  private extractUpdateTrigger(field: FieldMetadata): string | undefined {
+    const triggerMatch = field.documentation.description.match(/@update-trigger\s+{([^}]+)}/)
+    return triggerMatch ? triggerMatch[1] : undefined
+  }
+
+  /**
+   * Determines the appropriate validation rule based on the field's type
+   * and PostgreSQL metadata. This ensures we validate data according to
+   * both TypeScript types and database constraints.
+   */
+  private getTypeValidationRule(
+    field: FieldMetadata,
+    pgMetadata: PostgresMetadata,
+  ): ValidationRule {
+    // First check the base type of the field
+    const baseType = pgMetadata.dataType.toLowerCase()
+
+    // Handle different PostgreSQL types with appropriate validation rules
+    switch (baseType) {
+      case 'varchar':
+      case 'text':
+      case 'char':
+        return {
+          decorator: 'IsString',
+          message: `${field.name} must be a string`,
+        }
+
+      case 'int2':
+      case 'int4':
+      case 'int8':
+        return {
+          decorator: 'IsInt',
+          message: `${field.name} must be an integer`,
+        }
+
+      case 'float4':
+      case 'float8':
+      case 'decimal':
+      case 'numeric':
+        return {
+          decorator: 'IsNumber',
+          params: [
+            {
+              maxDecimalPlaces: pgMetadata.scale || undefined,
+            },
+          ],
+          message: `${field.name} must be a number`,
+        }
+
+      case 'bool':
+        return {
+          decorator: 'IsBoolean',
+          message: `${field.name} must be a boolean`,
+        }
+
+      case 'timestamp':
+      case 'timestamptz':
+      case 'date':
+        return {
+          decorator: 'IsDate',
+          message: `${field.name} must be a valid date`,
+        }
+
+      case 'uuid':
+        return {
+          decorator: 'IsUUID',
+          message: `${field.name} must be a valid UUID`,
+        }
+
+      case 'json':
+      case 'jsonb':
+        return {
+          decorator: 'IsObject',
+          message: `${field.name} must be a valid JSON object`,
+        }
+
+      default:
+        return {
+          decorator: 'IsNotEmpty',
+          message: `${field.name} is required`,
+        }
+    }
+  }
+
+  /**
+   * Infers transformation rules based on the field's PostgreSQL metadata.
+   * These rules help convert data between database and application formats.
+   */
+  private inferTransformationRules(
+    field: FieldMetadata,
+    pgMetadata: PostgresMetadata,
+  ): TransformationRule[] {
+    const rules: TransformationRule[] = []
+
+    // Handle timestamp/date transformations
+    if (['timestamp', 'timestamptz', 'date'].includes(pgMetadata.dataType.toLowerCase())) {
+      rules.push({
+        type: 'toDate',
+        params: ['ISO'],
+      })
+    }
+
+    // Handle numeric transformations
+    if (['int2', 'int4', 'int8'].includes(pgMetadata.dataType.toLowerCase())) {
+      rules.push({
+        type: 'toNumber',
+        params: ['integer'],
+      })
+    }
+
+    // Handle decimal/numeric transformations
+    if (['decimal', 'numeric'].includes(pgMetadata.dataType.toLowerCase())) {
+      rules.push({
+        type: 'toNumber',
+        params: ['float'],
+      })
+    }
+
+    // Handle JSON transformations
+    if (['json', 'jsonb'].includes(pgMetadata.dataType.toLowerCase())) {
+      rules.push({
+        type: 'custom',
+        params: ['value => typeof value === "string" ? JSON.parse(value) : value'],
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Parses field documentation to extract metadata, examples, and special directives.
+   * This helps generate more informative DTOs and API documentation.
+   */
+  private parseDocumentation(field: DMMF.Field): DocumentationMetadata {
+    const docs = field.documentation || ''
+
+    // Extract the main description
+    const description = this.extractDescription(docs)
+
+    // Look for example values
+    const example = this.extractExample(docs)
+
+    // Check for deprecation notices
+    const deprecated = docs.includes('@deprecated')
+
+    // Extract version information if present
+    const versionMatch = docs.match(/@version\s+([^\s]+)/)
+    const version = versionMatch ? versionMatch[1] : undefined
+
+    // Extract any special directives
+    const directives = this.extractDirectives(docs)
+
+    return {
+      description,
+      example,
+      deprecated,
+      version,
+      directives,
+    }
+  }
+
+  /**
+   * Maps Prisma types to appropriate TypeScript types, handling both
+   * simple and complex type mappings.
+   */
+  private mapPrismaType(type: string): string {
+    // Define our type mapping dictionary
+    const typeMap: Record<string, string> = {
+      String: 'string',
+      Boolean: 'boolean',
+      Int: 'number',
+      BigInt: 'bigint',
+      Float: 'number',
+      Decimal: 'number',
+      DateTime: 'Date',
+      Json: 'Record<string, any>',
+      Bytes: 'Buffer',
+      // Add more type mappings as needed
+    }
+
+    // Check for exact match first
+    if (type in typeMap) {
+      return typeMap[type]
+    }
+
+    // Handle special cases
+    if (type.startsWith('Array<')) {
+      const innerType = type.replace('Array<', '').replace('>', '')
+      return `${this.mapPrismaType(innerType)}[]`
+    }
+
+    // Handle enum types
+    if (type.startsWith('Enum')) {
+      return type
+    }
+
+    // Default to any for unknown types
+    console.warn(`Unknown Prisma type: ${type}, defaulting to 'any'`)
+    return 'any'
+  }
+
+  /**
+   * Helper method to extract the main description from documentation.
+   */
+  private extractDescription(docs: string): string {
+    return docs
+      .replace(/@\w+(\([^)]*\))?/g, '') // Remove all @directives
+      .trim()
+  }
+
+  /**
+   * Helper method to extract example values from documentation.
+   */
+  private extractExample(docs: string): any {
+    const exampleMatch = docs.match(/@example\s+({[\s\S]+?})/)
+    if (!exampleMatch) return undefined
+
+    try {
+      return JSON.parse(exampleMatch[1])
+    } catch {
+      return exampleMatch[1].trim()
+    }
+  }
+
+  /**
+   * Helper method to extract special directives from documentation.
+   */
+  private extractDirectives(docs: string): Record<string, string> {
+    const directives: Record<string, string> = {}
+    const directivePattern = /@(\w+)(?:\s+([^\n@]+))?/g
+    let match
+
+    while ((match = directivePattern.exec(docs)) !== null) {
+      directives[match[1]] = match[2]?.trim() || 'true'
+    }
+
+    return directives
+  }
+}
+
+================
+File: dto/utils/file-manager.ts
+================
+// tools/generators/dto/utils/file-manager.ts
+import { mkdir, writeFile, readFile } from 'fs/promises'
+import { join, dirname } from 'path'
+import * as prettier from 'prettier'
+
+/**
+ * FileManager handles all file system operations for the generator.
+ * It provides a consistent interface for file operations and ensures
+ * proper formatting of generated code.
+ */
+export class FileManager {
+  constructor(
+    private readonly basePath: string,
+    private readonly prettierConfig?: prettier.Options,
+  ) {}
+
+  /**
+   * Initializes the directory structure needed for generation.
+   * Creates directories for different types of generated files.
+   */
+  async initializeDirectory(): Promise<void> {
+    const directories = ['dto', 'interfaces', 'schemas', 'documentation', 'examples', 'guards']
+
+    await Promise.all(
+      directories.map((dir) => mkdir(join(this.basePath, dir), { recursive: true })),
+    )
+  }
+
+  /**
+   * Writes a file with proper formatting applied.
+   * Handles different file types (TypeScript, Markdown, etc.) appropriately.
+   */
+  async writeFile(relativePath: string, content: string): Promise<void> {
+    const fullPath = join(this.basePath, relativePath)
+    await mkdir(dirname(fullPath), { recursive: true })
+
+    // Format the content based on file type
+    const formattedContent = await this.formatContent(relativePath, content)
+
+    await writeFile(fullPath, formattedContent, 'utf8')
+  }
+
+  /**
+   * Reads a template file from the templates directory.
+   */
+  async readTemplate(templateName: string): Promise<string> {
+    const templatePath = join(__dirname, '../templates', templateName)
+    return readFile(templatePath, 'utf8')
+  }
+
+  /**
+   * Formats content using Prettier with appropriate config.
+   */
+  private async formatContent(filepath: string, content: string): Promise<string> {
+    // Determine parser based on file extension
+    const parser = this.getParserForFile(filepath)
+
+    try {
+      return prettier.format(content, {
+        ...this.prettierConfig,
+        parser,
+      })
+    } catch (error) {
+      console.warn(`Warning: Could not format ${filepath}`, error)
+      return content
+    }
+  }
+
+  /**
+   * Determines the appropriate Prettier parser for a given file.
+   */
+  private getParserForFile(filepath: string): string {
+    if (filepath.endsWith('.ts')) return 'typescript'
+    if (filepath.endsWith('.md')) return 'markdown'
+    if (filepath.endsWith('.json')) return 'json'
+    return 'typescript'
+  }
+
+  /**
+   * Writes a template-based file with proper formatting and organization
+   */
+  async writeTemplateFile(
+    relativePath: string,
+    template: string,
+    context: Record<string, any>,
+  ): Promise<void> {
+    const content = TemplateEngine.process(template, context)
+    await this.writeFile(relativePath, content)
+  }
+
+  /**
+   * Creates a complete set of related files for a model
+   */
+  async writeModelFiles(model: ModelMetadata): Promise<void> {
+    const generators = {
+      interface: new InterfaceGenerator(this.typeMapper, this.docParser),
+      schema: new SchemaGenerator(this.typeMapper, this.docParser),
+    }
+
+    await Promise.all([
+      this.writeTemplateFile(
+        `interfaces/${model.name.toLowerCase()}.interface.ts`,
+        generators.interface.generateInterface(model),
+        { model },
+      ),
+      this.writeTemplateFile(
+        `schemas/${model.name.toLowerCase()}.schema.ts`,
+        generators.schema.generateSchema(model),
+        { model },
+      ),
+    ])
+  }
+}
+
+================
+File: dto/utils/template-engine.ts
+================
+// tools/generators/dto/utils/template-engine.ts
+export class TemplateEngine {
+  /**
+   * Processes a template with given context, handling nested replacements
+   * and conditional logic.
+   */
+  static process(template: string, context: Record<string, any>): string {
+    // Handle conditionals first
+    template = this.processConditionals(template, context)
+    // Handle loops
+    template = this.processLoops(template, context)
+    // Handle simple replacements
+    return this.processReplacements(template, context)
+  }
+
+  private static processConditionals(template: string, context: Record<string, any>): string {
+    const conditionalRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g
+    return template.replace(conditionalRegex, (_, key, content) => {
+      return context[key] ? content : ''
+    })
+  }
+
+  private static processLoops(template: string, context: Record<string, any>): string {
+    const loopRegex = /\{\{#each\s+(\w+)\}\}([\s\S]*?)\{\{\/each\}\}/g
+    return template.replace(loopRegex, (_, key, content) => {
+      const items = context[key]
+      if (!Array.isArray(items)) return ''
+      return items.map((item) => this.processReplacements(content, item)).join('\n')
+    })
+  }
+
+  private static processReplacements(template: string, context: Record<string, any>): string {
+    return template.replace(/\{\{(\w+)\}\}/g, (_, key) => context[key] || '')
+  }
+}
+
+================
+File: dto/utils/type-mapper.ts
+================
+// tools/generators/dto/utils/type-mapper.ts
+
+import { DMMF } from '@prisma/client/extension'
+
+/**
+ * Enhanced TypeMapper that handles PostgreSQL-specific types along with standard Prisma types.
+ * This class provides comprehensive type mapping between PostgreSQL, TypeScript, Zod, and JSON Schema.
+ */
+export class TypeMapper {
+  /**
+   * Maps PostgreSQL/Prisma types to TypeScript types, handling complex cases
+   * like arrays, geometric types, and network addresses.
+   */
+  mapPrismaToTypeScript(field: DMMF.Field): string {
+    // Handle array types first - PostgreSQL arrays can be multi-dimensional
+    if (field.isList) {
+      const baseType = this.getBaseTypeScript(field.type)
+      const dimensions = this.getArrayDimensions(field)
+      return this.generateArrayType(baseType, dimensions)
+    }
+
+    // Handle special PostgreSQL types
+    const pgType = field.native || field.type
+    return this.mapPostgresType(pgType, field)
+  }
+
+  /**
+   * Maps PostgreSQL-specific types to their TypeScript equivalents.
+   * Handles the full range of PostgreSQL data types with proper typing.
+   */
+  private mapPostgresType(pgType: string, field: DMMF.Field): string {
+    // Geometric types
+    const geometricTypes: Record<string, string> = {
+      point: 'Point',
+      line: 'Line',
+      lseg: 'LineSegment',
+      box: 'Box',
+      path: 'Path',
+      polygon: 'Polygon',
+      circle: 'Circle',
+    }
+
+    // Network address types
+    const networkTypes: Record<string, string> = {
+      inet: 'InetAddress',
+      cidr: 'CidrAddress',
+      macaddr: 'MacAddress',
+      macaddr8: 'MacAddress8',
+    }
+
+    // Range types
+    const rangeTypes: Record<string, string> = {
+      int4range: 'NumberRange',
+      int8range: 'BigIntRange',
+      numrange: 'NumberRange',
+      tsrange: 'DateRange',
+      tstzrange: 'DateRange',
+      daterange: 'DateRange',
+    }
+
+    // Check for JSON types first as they might need special handling
+    if (pgType === 'json' || pgType === 'jsonb') {
+      return this.handleJsonType(field)
+    }
+
+    // Check for geometric types
+    if (pgType in geometricTypes) {
+      return this.generateGeometricInterface(geometricTypes[pgType])
+    }
+
+    // Check for network types
+    if (pgType in networkTypes) {
+      return networkTypes[pgType]
+    }
+
+    // Check for range types
+    if (pgType in rangeTypes) {
+      return this.generateRangeType(rangeTypes[pgType])
+    }
+
+    // Handle enum types
+    if (field.kind === 'enum') {
+      return this.generateEnumType(field)
+    }
+
+    // Handle domain types
+    if (field.kind === 'domain') {
+      return this.handleDomainType(field)
+    }
+
+    // Fall back to base type mapping
+    return this.getBaseTypeScript(pgType)
+  }
+
+  /**
+   * Handles JSON and JSONB types with proper type inference when possible.
+   * Uses type information from database comments or schema definitions.
+   */
+  private handleJsonType(field: DMMF.Field): string {
+    // Check for type hints in field documentation
+    const typeHint = this.extractJsonTypeHint(field)
+    if (typeHint) {
+      return typeHint
+    }
+
+    // If no specific type hint is found, generate a type based on field usage
+    if (field.documentation?.includes('@json-schema')) {
+      return this.generateJsonSchemaType(field)
+    }
+
+    // Default to a generic type if no specific typing information is available
+    return 'Record<string, unknown>'
+  }
+
+  /**
+   * Maps basic database types to their TypeScript equivalents.
+   * This function serves as the foundation for all other type mappings,
+   * handling the most common database types with appropriate TypeScript types.
+   */
+  private getBaseTypeScript(type: string): string {
+    // Define our basic type mapping dictionary
+    const typeMap: Record<string, string> = {
+      // Numeric types
+      'smallint': 'number',
+      'integer': 'number',
+      'bigint': 'bigint',
+      'decimal': 'number',
+      'numeric': 'number',
+      'real': 'number',
+      'double precision': 'number',
+      'serial': 'number',
+      'bigserial': 'number',
+
+      // Character types
+      'character': 'string',
+      'character varying': 'string',
+      'varchar': 'string',
+      'text': 'string',
+
+      // Boolean type
+      'boolean': 'boolean',
+
+      // Temporal types
+      'date': 'Date',
+      'time': 'Date',
+      'timestamp': 'Date',
+      'timestamptz': 'Date',
+      'interval': 'string', // Could be mapped to a custom Interval type if needed
+
+      // Binary data
+      'bytea': 'Buffer',
+
+      // UUID
+      'uuid': 'string',
+
+      // Money
+      'money': 'number',
+
+      // XML
+      'xml': 'string',
+
+      // Bit strings
+      'bit': 'string',
+      'bit varying': 'string',
+    }
+
+    // First try to get the exact match
+    if (type in typeMap) {
+      return typeMap[type]
+    }
+
+    // Handle case where type might include precision/scale
+    const baseType = type.split('(')[0].toLowerCase()
+    if (baseType in typeMap) {
+      return typeMap[baseType]
+    }
+
+    // If we don't have a mapping, log a warning and return a safe default
+    console.warn(`No explicit mapping found for type: ${type}. Defaulting to 'unknown'`)
+    return 'unknown'
+  }
+
+  /**
+   * Generates TypeScript types for JSON fields based on JSON Schema definitions.
+   * This function converts JSON Schema specifications into corresponding TypeScript types,
+   * allowing for strongly-typed JSON data when schema information is available.
+   */
+  private generateJsonSchemaType(field: DMMF.Field): string {
+    // Try to parse JSON schema from field documentation
+    try {
+      const schemaMatch = field.documentation?.match(/@json-schema\s+({[\s\S]+})/)
+      if (!schemaMatch) {
+        return 'Record<string, unknown>'
+      }
+
+      const schema = JSON.parse(schemaMatch[1])
+      return this.convertJsonSchemaToTypeScript(schema)
+    } catch (error) {
+      console.warn(`Error parsing JSON schema for field ${field.name}:`, error)
+      return 'Record<string, unknown>'
+    }
+  }
+
+  /**
+   * Converts a JSON Schema definition into a TypeScript type string.
+   * This is a helper function for generateJsonSchemaType that handles
+   * the actual conversion of JSON Schema constructs to TypeScript syntax.
+   */
+  private convertJsonSchemaToTypeScript(schema: any): string {
+    // Handle different JSON Schema types
+    switch (schema.type) {
+      case 'object':
+        if (schema.properties) {
+          const properties = Object.entries(schema.properties)
+            .map(([key, prop]: [string, any]) => {
+              const isRequired = schema.required?.includes(key)
+              return `${key}${isRequired ? '' : '?'}: ${this.convertJsonSchemaToTypeScript(prop)}`
+            })
+            .join('; ')
+          return `{ ${properties} }`
+        }
+        return 'Record<string, unknown>'
+
+      case 'array':
+        if (schema.items) {
+          const itemType = this.convertJsonSchemaToTypeScript(schema.items)
+          return `${itemType}[]`
+        }
+        return 'unknown[]'
+
+      case 'string':
+        if (schema.enum) {
+          return schema.enum.map((v: string) => `'${v}'`).join(' | ')
+        }
+        return 'string'
+
+      case 'number':
+      case 'integer':
+        return 'number'
+
+      case 'boolean':
+        return 'boolean'
+
+      case 'null':
+        return 'null'
+
+      default:
+        if (schema.oneOf) {
+          return schema.oneOf.map((s: any) => this.convertJsonSchemaToTypeScript(s)).join(' | ')
+        }
+        if (schema.allOf) {
+          return schema.allOf.map((s: any) => this.convertJsonSchemaToTypeScript(s)).join(' & ')
+        }
+        return 'unknown'
+    }
+  }
+
+  /**
+   * Generates proper TypeScript types for PostgreSQL geometric types.
+   * Creates interfaces that match PostgreSQL's geometric type structure.
+   */
+  private generateGeometricInterface(type: string): string {
+    const geometricInterfaces: Record<string, string> = {
+      Point: 'interface Point { x: number; y: number }',
+      Line: 'interface Line { a: number; b: number; c: number }',
+      LineSegment: 'interface LineSegment { start: Point; end: Point }',
+      Box: 'interface Box { high: Point; low: Point }',
+      Path: 'interface Path { points: Point[]; closed: boolean }',
+      Polygon: 'interface Polygon { points: Point[] }',
+      Circle: 'interface Circle { center: Point; radius: number }',
+    }
+
+    return type
+  }
+
+  /**
+   * Generates TypeScript types for PostgreSQL range types.
+   * Handles both bounded and unbounded ranges.
+   */
+  private generateRangeType(baseType: string): string {
+    return `Range<${baseType}>`
+  }
+
+  /**
+   * Handles PostgreSQL enum types with proper TypeScript union types.
+   * Preserves the enum values and documentation.
+   */
+  private generateEnumType(field: DMMF.Field): string {
+    const enumValues = field.enumValues || []
+    return enumValues.map((v) => `'${v}'`).join(' | ')
+  }
+
+  /**
+   * Processes PostgreSQL domain types, maintaining any constraints
+   * from the domain definition.
+   */
+  private handleDomainType(field: DMMF.Field): string {
+    // Get the base type of the domain
+    const baseType = this.getBaseTypeScript(field.type)
+
+    // Add any domain constraints as type refinements
+    const constraints = this.getDomainConstraints(field)
+    if (constraints) {
+      return `${baseType} & ${constraints}`
+    }
+
+    return baseType
+  }
+
+  /**
+   * Determines the dimensions of a PostgreSQL array type.
+   * Handles multi-dimensional arrays correctly.
+   */
+  private getArrayDimensions(field: DMMF.Field): number {
+    const typeString = field.type
+    return (typeString.match(/\[\]/g) || []).length
+  }
+
+  /**
+   * Generates a properly nested array type based on the number
+   * of dimensions and base type.
+   */
+  private generateArrayType(baseType: string, dimensions: number): string {
+    return baseType + '[]'.repeat(dimensions)
+  }
+
+  /**
+   * Extracts type hints for JSON fields from documentation or schema.
+   * Allows for strongly-typed JSON fields when type information is available.
+   */
+  private extractJsonTypeHint(field: DMMF.Field): string | null {
+    const typeMatch = field.documentation?.match(/@type\s+{([^}]+)}/)
+    return typeMatch ? typeMatch[1].trim() : null
+  }
+
+  /**
+   * Extracts constraints from domain type definitions to
+   * create more precise TypeScript types.
+   */
+  private getDomainConstraints(field: DMMF.Field): string | null {
+    // Extract constraint information from field metadata
+    const constraints = field.documentation?.match(/@constraint\s+{([^}]+)}/)
+    return constraints ? constraints[1].trim() : null
+  }
+}
+
+================
+File: dto/config.ts
+================
+// tools/generators/dto/config.ts
+import { cosmiconfig } from 'cosmiconfig'
+import { GeneratorOptions } from './core/types'
+
+/**
+ * Configuration management for the DTO generator.
+ * Handles loading and merging of configuration from multiple sources:
+ * - Default configuration
+ * - Configuration file (.dtogenrc, package.json, etc.)
+ * - Command line arguments
+ */
+export class ConfigurationManager {
+  private static readonly DEFAULT_CONFIG: GeneratorOptions = {
+    outputPath: 'src/generated',
+    documentation: {
+      enabled: true,
+      outputFormat: 'markdown',
+      includeExamples: true,
+    },
+    validation: {
+      enabled: true,
+      useClassValidator: true,
+      useZod: false,
+    },
+    transformation: {
+      enabled: true,
+      useCamelCase: true,
+      dateTransformation: true,
+    },
+    typescript: {
+      strict: true,
+      generateInterfaces: true,
+      generateTypeGuards: true,
+    },
+  }
+
+  /**
+   * Loads and merges configuration from all sources.
+   */
+  static async loadConfiguration(
+    cliOptions: Partial<GeneratorOptions> = {},
+  ): Promise<GeneratorOptions> {
+    // Load configuration file using cosmiconfig
+    const explorer = cosmiconfig('dtogen')
+    const result = await explorer.search()
+
+    // Merge configurations with priority: CLI > File > Default
+    return {
+      ...this.DEFAULT_CONFIG,
+      ...(result?.config || {}),
+      ...cliOptions,
+    }
+  }
+
+  /**
+   * Validates the configuration to ensure all required options are present
+   * and have valid values.
+   */
+  static validateConfiguration(config: GeneratorOptions): void {
+    // Validate output path
+    if (!config.outputPath) {
+      throw new Error('Output path is required')
+    }
+
+    // Validate documentation configuration
+    if (config.documentation.enabled) {
+      if (!['markdown', 'html'].includes(config.documentation.outputFormat)) {
+        throw new Error('Invalid documentation format')
+      }
+    }
+
+    // Add additional validation as needed
+  }
+}
+
+================
+File: dto/index.ts
+================
+// tools/generators/dto/index.ts
+import { Command } from 'commander'
+import { PrismaClient } from '@prisma/client'
+import { Chalk } from 'chalk'
+import { ConfigurationManager } from './config'
+import { BaseGenerator } from './core/base.generator'
+import { FileManager } from './utils/file-manager'
+import { DocumentationGenerator } from './modules/documentation'
+import { ValidationGenerator } from './modules/validators'
+import { TransformationGenerator } from './modules/transformers'
+import { InterfaceGenerator } from './modules/interfaces'
+import { SchemaGenerator } from './modules/schemas'
+import { TypeGuardGenerator } from './modules/type-guard'
+import { generateIndex } from './utils/index-generator'
+import { TypeMapper } from './utils/type-mapper'
+
+const chalk = new Chalk()
+
+/**
+ * Main entry point for the DTO generator.
+ * Handles CLI interface, configuration loading, and orchestrates
+ * the generation process.
+ */
+export async function main() {
+  const program = new Command()
+
+  program
+    .name('dtogen')
+    .description('Generate DTOs from Prisma schema')
+    .version('1.0.0')
+    .option('-o, --output <path>', 'Output directory for generated files')
+    .option('--no-validation', 'Disable validation decorators')
+    .option('--no-documentation', 'Disable documentation generation')
+    .parse(process.argv)
+
+  try {
+    // Load and validate configuration
+    const config = await ConfigurationManager.loadConfiguration(program.opts())
+    ConfigurationManager.validateConfiguration(config)
+
+    // Initialize Prisma client and get DMMF
+    const prisma = new PrismaClient()
+    const dmmf = await prisma._getDmmf()
+
+    // Initialize file manager
+    const fileManager = new FileManager(config.outputPath)
+
+    // Initialize generators
+    const generator = new DTOGenerator(dmmf, config, fileManager)
+
+    // Generate all artifacts
+    console.log(chalk.blue('Starting DTO generation...'))
+    await generator.generate()
+    console.log(chalk.green('DTO generation completed successfully!'))
+  } catch (error) {
+    console.error(chalk.red('Error during generation:'), error)
+    process.exit(1)
+  }
+}
+
+// tools/generators/dto/index.ts
+
+class DTOGenerator extends BaseGenerator {
+  private interfaceGenerator: InterfaceGenerator
+  private schemaGenerator: SchemaGenerator
+  private typeGuardGenerator: TypeGuardGenerator
+  private typeMapper: TypeMapper
+  private documentationGenerator: DocumentationGenerator
+  private validationGenerator: ValidationGenerator
+  private transformationGenerator: TransformationGenerator
+
+  constructor(dmmf: DMMF.Document, options: GeneratorOptions, fileManager: FileManager) {
+    super(dmmf, options)
+
+    // Initialize type mapper first as other generators depend on it
+    this.typeMapper = new TypeMapper()
+
+    // Initialize generators that don't require processed models
+    this.validationGenerator = new ValidationGenerator()
+    this.transformationGenerator = new TransformationGenerator()
+
+    // Initialize generators that work with types and documentation
+    this.interfaceGenerator = new InterfaceGenerator(this.typeMapper, this.documentationParser)
+    this.schemaGenerator = new SchemaGenerator(this.typeMapper, this.documentationParser)
+    this.typeGuardGenerator = new TypeGuardGenerator()
+
+    this.documentationGenerator = new DocumentationGenerator([], options, fileManager)
+
+    this.initializeDocumentationGenerator()
+  }
+
+  /**
+   * Initializes the documentation generator with processed models
+   * This needs to be async because processModel is async
+   */
+  private async initializeDocumentationGenerator(): Promise<void> {
+    const processedModels = await Promise.all(
+      this.dmmf.datamodel.models.map((model) => this.processModel(model)),
+    )
+
+    // Create a new instance with the processed models
+    this.documentationGenerator = new DocumentationGenerator(
+      processedModels,
+      this.options,
+      this.fileManager,
+    )
+  }
+
+  /**
+   * Generates TypeScript interfaces for a model
+   * These interfaces represent the shape of our data without runtime checks
+   */
+  protected async generateInterface(metadata: ModelMetadata): Promise<GeneratedFile> {
+    const content = this.interfaceGenerator.generateInterface(metadata)
+    const path = `interfaces/${metadata.name.toLowerCase()}.interface.ts`
+
+    return {
+      path,
+      content,
+    }
+  }
+
+  /**
+   * Generates a validated DTO class with decorators for class-validator
+   * and Swagger/OpenAPI documentation
+   */
+  protected async generateValidatedDTO(metadata: ModelMetadata): Promise<GeneratedFile> {
+    // First, generate validation rules for each field
+    const fieldsWithValidation = await Promise.all(
+      metadata.fields.map(async (field) => ({
+        ...field,
+        validationRules: [
+          ...field.validationRules,
+          ...this.validationGenerator.generateValidationDecorators(field),
+        ],
+      })),
+    )
+
+    // Generate transformation decorators if enabled
+    let fieldsWithTransforms = fieldsWithValidation
+    if (this.options.transformation.enabled) {
+      fieldsWithTransforms = await Promise.all(
+        fieldsWithValidation.map(async (field) => ({
+          ...field,
+          transformationRules: [
+            ...field.transformationRules,
+            ...this.transformationGenerator.generateTransformationDecorators(field),
+          ],
+        })),
+      )
+    }
+
+    // Update metadata with enhanced fields
+    const enhancedMetadata = {
+      ...metadata,
+      fields: fieldsWithTransforms,
+    }
+
+    // Generate OpenAPI metadata
+    const openApiMetadata = this.openApiGenerator.generateOpenAPIMetadata(enhancedMetadata)
+
+    // Generate the base DTO class using our template
+    const baseContent = DTOTemplate.generate(enhancedMetadata)
+
+    // Merge the OpenAPI metadata with the base DTO content
+    const content = this.mergeOpenApiMetadata(baseContent, openApiMetadata)
+
+    const path = `dto/${metadata.name.toLowerCase()}.dto.ts`
+
+    return {
+      path,
+      content,
+    }
+  }
+
+  /**
+   * Merges OpenAPI metadata with the base DTO content.
+   * This ensures decorators are properly placed and imports are combined.
+   */
+  private mergeOpenApiMetadata(baseContent: string, openApiMetadata: string): string {
+    // Extract imports from both contents
+    const baseImports = this.extractImports(baseContent)
+    const openApiImports = this.extractImports(openApiMetadata)
+
+    // Combine imports without duplicates
+    const combinedImports = this.combineImports(baseImports, openApiImports)
+
+    // Extract class content without imports
+    const baseClass = this.extractClassContent(baseContent)
+    const openApiDecorators = this.extractClassDecorators(openApiMetadata)
+
+    // Combine everything
+    return `
+      ${combinedImports}
+      ${openApiDecorators}
+      ${baseClass}
+    `
+  }
+
+  /**
+   * Extracts import statements from content
+   */
+  private extractImports(content: string): string[] {
+    const importRegex = /import.*?;/g
+    return content.match(importRegex) || []
+  }
+
+  /**
+   * Combines import statements removing duplicates
+   */
+  private combineImports(imports1: string[], imports2: string[]): string {
+    return [...new Set([...imports1, ...imports2])].join('\n')
+  }
+
+  /**
+   * Extracts class content without imports
+   */
+  private extractClassContent(content: string): string {
+    const classStart = content.indexOf('export class')
+    return content.slice(classStart)
+  }
+
+  /**
+   * Extracts class decorators from OpenAPI metadata
+   */
+  private extractClassDecorators(content: string): string {
+    const classStart = content.indexOf('export class')
+    const decoratorEnd = classStart
+    return content.slice(0, decoratorEnd).trim()
+  }
+
+  /**
+   * Generates TypeScript type guards for runtime type checking
+   * These provide type safety when working with unknown data
+   */
+  protected async generateTypeGuard(metadata: ModelMetadata): Promise<GeneratedFile> {
+    const content = this.typeGuardGenerator.generateTypeGuards(metadata)
+    const path = `guards/${metadata.name.toLowerCase()}.guard.ts`
+
+    return {
+      path,
+      content,
+    }
+  }
+
+  /**
+   * Generates Zod schemas for runtime validation
+   * These provide both type information and runtime validation
+   */
+  protected async generateZodSchema(metadata: ModelMetadata): Promise<GeneratedFile> {
+    const content = this.schemaGenerator.generateSchema(metadata)
+    const path = `schemas/${metadata.name.toLowerCase()}.schema.ts`
+
+    return {
+      path,
+      content,
+    }
+  }
+
+  /**
+   * Generates comprehensive documentation including:
+   * - API documentation
+   * - Type information
+   * - Validation rules
+   * - Examples
+   */
+  protected async generateDocumentation(): Promise<void> {
+    if (!this.documentationGenerator) {
+      await this.initializeDocumentationGenerator()
+    }
+
+    // Generate documentation using all processed models
+    await this.documentationGenerator.generate()
+  }
+
+  /**
+   * Generates an index file that exports all generated artifacts
+   * This provides a clean public API for consuming code
+   */
+  protected async generateIndexFile(): Promise<void> {
+    const models = this.dmmf.datamodel.models
+    const indexContent = models
+      .map((model) => {
+        const baseName = model.name.toLowerCase()
+        return [
+          `export * from './interfaces/${baseName}.interface'`,
+          `export * from './dto/${baseName}.dto'`,
+          `export * from './schemas/${baseName}.schema'`,
+          `export * from './guards/${baseName}.guard'`,
+        ].join('\n')
+      })
+      .join('\n\n')
+
+    await this.fileManager.writeFile('index.ts', indexContent)
+  }
+
+  /**
+   * Generates utility files that are shared across generated code
+   * This includes common types, helpers, and shared functionality
+   */
+  protected async generateUtilityFiles(): Promise<void> {
+    // Generate base types
+    const baseTypesContent = `
+      export interface BaseDTO {
+        toEntity(): Record<string, any>
+      }
+
+      export interface ValidationError {
+        property: string
+        constraints: Record<string, string>
+      }
+
+      export type ValidationResult<T> = {
+        isValid: boolean
+        data?: T
+        errors?: ValidationError[]
+      }
+    `
+    await this.fileManager.writeFile('utils/base-types.ts', baseTypesContent)
+
+    // Generate helper functions
+    const helpersContent = `
+      export function createValidationError(
+        property: string,
+        constraint: string,
+        message: string
+      ): ValidationError {
+        return {
+          property,
+          constraints: { [constraint]: message }
+        }
+      }
+
+      export function isValidationError(error: unknown): error is ValidationError {
+        return (
+          typeof error === 'object' &&
+          error !== null &&
+          'property' in error &&
+          'constraints' in error &&
+          typeof (error as any).property === 'string' &&
+          typeof (error as any).constraints === 'object'
+        )
+      }
+    `
+    await this.fileManager.writeFile('utils/helpers.ts', helpersContent)
+  }
+}
+
+// Run the generator if called directly
+if (require.main === module) {
+  main()
+}
+
+================
+File: template/dto.template.ts
+================
+// tools/generators/dto/templates/dto.template.ts
+import { ModelMetadata, FieldMetadata, ValidationRule } from '../core/types'
+
+/**
+ * DTO Template Generator
+ * Responsible for generating the actual DTO class code using a template-based approach.
+ * This makes it easier to maintain consistent code generation and modify the output format.
+ */
+export class DTOTemplate {
+  /**
+   * Generates a complete DTO class with validation and transformation decorators
+   */
+  static generate(model: ModelMetadata): string {
+    const imports = this.generateImports(model)
+    const classDeclaration = this.generateClassDeclaration(model)
+    const properties = this.generateProperties(model)
+    const methods = this.generateMethods(model)
+
+    return `${imports}
+
+${classDeclaration} {
+${properties}
+
+${methods}
+}
+`
+  }
+
+  /**
+   * Generates necessary imports based on used features
+   */
+  private static generateImports(model: ModelMetadata): string {
+    const imports = new Set<string>(['import { ApiProperty } from "@nestjs/swagger"'])
+
+    // Add validation imports if needed
+    if (model.fields.some((f) => f.validationRules.length > 0)) {
+      imports.add('import { IsNotEmpty, IsOptional } from "class-validator"')
+    }
+
+    // Add transformation imports if needed
+    if (model.fields.some((f) => f.transformationRules.length > 0)) {
+      imports.add('import { Transform } from "class-transformer"')
+    }
+
+    return Array.from(imports).join('\n')
+  }
+
+  /**
+   * Generates the class declaration with inheritance if needed
+   */
+  private static generateClassDeclaration(model: ModelMetadata): string {
+    const docs = this.generateClassDocumentation(model.documentation)
+    return `${docs}
+export class ${model.name}DTO extends BaseDTO`
+  }
+
+  /**
+   * Generates properties with decorators for validation and documentation
+   */
+  private static generateProperties(model: ModelMetadata): string {
+    return model.fields.map((field) => this.generateField(field)).join('\n\n')
+  }
+
+  /**
+   * Generates a single field with all necessary decorators
+   */
+  private static generateField(field: FieldMetadata): string {
+    const decorators = [
+      this.generateApiPropertyDecorator(field),
+      ...this.generateValidationDecorators(field.validationRules),
+      ...this.generateTransformationDecorators(field.transformationRules),
+    ]
+
+    return `  ${decorators.join('\n  ')}
+  ${field.name}${field.isRequired ? '' : '?'}: ${field.type};`
+  }
+
+  // ... Additional helper methods for specific template components
+}
+
+================
+File: template/interface.template.ts
+================
+// tools/generators/dto/templates/interface.template.ts
+/**
+ * Template system for generating TypeScript interfaces.
+ * Uses a flexible template structure that can be customized through
+ * configuration while maintaining consistent formatting and documentation.
+ */
+export class InterfaceTemplate {
+  /**
+   * Main template for generating an interface file.
+   * Supports imports, documentation, and multiple interface definitions.
+   */
+  static readonly MAIN_TEMPLATE = `
+  // This file is auto-generated. Do not modify manually.
+  {{imports}}
+  
+  {{documentation}}
+  export interface {{interfaceName}} {
+  {{properties}}
+  }
+  
+  {{relationInterfaces}}
+  
+  {{typeHelpers}}
+  `.trim()
+
+  /**
+   * Template for generating import statements.
+   * Handles both internal and external imports with proper grouping.
+   */
+  static readonly IMPORTS_TEMPLATE = `
+  {{#each imports}}
+  import { {{what}} } from '{{from}}'
+  {{/each}}
+  `.trim()
+
+  /**
+   * Template for generating JSDoc documentation blocks.
+   * Supports multiple documentation features like examples and deprecation notices.
+   */
+  static readonly DOCUMENTATION_TEMPLATE = `
+  /**
+   * {{description}}
+   *{{#if deprecated}}
+   * @deprecated {{deprecated}}{{/if}}
+   *{{#if example}}
+   * @example
+   * {{example}}{{/if}}
+   *{{#if version}}
+   * @version {{version}}{{/if}}
+   */
+  `.trim()
+
+  /**
+   * Template for generating interface properties.
+   * Supports different types, optional flags, and property documentation.
+   */
+  static readonly PROPERTY_TEMPLATE = `
+    /**
+     * {{description}}
+     *{{#if example}}
+     * @example {{example}}{{/if}}
+     *{{#if validation}}
+     * @validation {{validation}}{{/if}}
+     */
+    {{name}}{{#unless required}}?{{/unless}}: {{type}};
+  `.trim()
+
+  /**
+   * Template for generating relation interfaces.
+   * Creates extended interfaces for handling related entities.
+   */
+  static readonly RELATION_INTERFACE_TEMPLATE = `
+  export interface {{interfaceName}}With{{relationName}} extends {{interfaceName}} {
+    {{relationProperty}}: {{relationType}};
+  }
+  `.trim()
+
+  /**
+   * Template for generating type helpers.
+   * Creates utility types for working with the interface.
+   */
+  static readonly TYPE_HELPERS_TEMPLATE = `
+  /**
+   * Helper types for working with {{interfaceName}}
+   */
+  export type Partial{{interfaceName}} = Partial<{{interfaceName}}>
+  export type Required{{interfaceName}} = Required<{{interfaceName}}>
+  export type Pick{{interfaceName}}<K extends keyof {{interfaceName}}> = Pick<{{interfaceName}}, K>
+  `.trim()
+
+  /**
+   * Template for generating validation metadata.
+   * Describes validation rules that should be applied to properties.
+   */
+  static readonly VALIDATION_METADATA_TEMPLATE = `
+  /**
+   * Validation metadata for {{interfaceName}}
+   */
+  export const {{interfaceName}}ValidationRules = {
+  {{#each validationRules}}
+    {{name}}: {
+      {{#each rules}}
+      {{name}}: {{value}},
+      {{/each}}
+    },
+  {{/each}}
+  } as const;
+  `.trim()
+}
+
+================
+File: template/request.dto.template.ts
+================
+/**
+ * Template for generating request DTOs with appropriate validation
+ * and transformation rules for incoming data.
+ */
+export class RequestDTOTemplate {
+    static generate(model: ModelMetadata): string {
+      return TemplateSystem.generateDTO(model, {
+        useValidation: true,
+        useTransformation: true,
+        usePipes: true,
+        isRequest: true,
+        isResponse: false,
+        extends: 'BaseRequestDTO'
+      })
+    }
+  }
+
+================
+File: template/response.dto.template.ts
+================
+/**
+ * Template for generating response DTOs that handle outgoing data
+ * with proper serialization and documentation.
+ */
+export class ResponseDTOTemplate {
+  static generate(model: ModelMetadata): string {
+    return TemplateSystem.generateDTO(model, {
+      useValidation: false,
+      useTransformation: true,
+      usePipes: false,
+      isRequest: false,
+      isResponse: true,
+      extends: 'BaseResponseDTO',
+    })
+  }
+}
+
+================
+File: template/schema.template.ts
+================
+// tools/generators/dto/templates/schema.template.ts
+/**
+ * Template system for generating Zod schemas.
+ * Provides a structured way to create validation schemas with
+ * proper typing and documentation.
+ */
+export class SchemaTemplate {
+  /**
+   * Main template for generating a schema file.
+   * Includes imports, schema definition, and utility functions.
+   */
+  static readonly MAIN_TEMPLATE = `
+  // This file is auto-generated. Do not modify manually.
+  {{imports}}
+  
+  {{documentation}}
+  export const {{schemaName}} = z.object({
+  {{properties}}
+  })
+  
+  /**
+   * Type inference from schema
+   */
+  export type {{typeName}} = z.infer<typeof {{schemaName}}>
+  
+  {{validators}}
+  
+  {{utilities}}
+  `.trim()
+
+  /**
+   * Template for generating schema imports.
+   * Handles Zod and related type imports.
+   */
+  static readonly IMPORTS_TEMPLATE = `
+  import { z } from 'zod'
+  {{#each customImports}}
+  import { {{what}} } from '{{from}}'
+  {{/each}}
+  `.trim()
+
+  /**
+   * Template for generating schema properties.
+   * Supports all Zod validators and transformations.
+   */
+  static readonly PROPERTY_TEMPLATE = `
+    /**
+     * {{description}}
+     */
+    {{name}}: {{zodType}}{{#if transforms}}
+      {{#each transforms}}
+      .transform({{transform}})
+      {{/each}}
+    {{/if}}{{#if validations}}
+      {{#each validations}}
+      .{{validation}}
+      {{/each}}
+    {{/if}},
+  `.trim()
+
+  /**
+   * Template for generating schema validation functions.
+   * Creates utility functions for validating data against the schema.
+   */
+  static readonly VALIDATORS_TEMPLATE = `
+  /**
+   * Validates data against the {{schemaName}}
+   * @throws {ZodError} if validation fails
+   */
+  export function validate{{typeName}}(data: unknown): {{typeName}} {
+    return {{schemaName}}.parse(data)
+  }
+  
+  /**
+   * Safely validates data against the {{schemaName}}
+   * @returns Result object indicating success or failure
+   */
+  export function safeValidate{{typeName}}(data: unknown): Result<{{typeName}}, z.ZodError> {
+    const result = {{schemaName}}.safeParse(data)
+    return result.success
+      ? { ok: true, value: result.data }
+      : { ok: false, error: result.error }
+  }
+  `.trim()
+
+  /**
+   * Template for generating schema utilities.
+   * Creates helper functions for common schema operations.
+   */
+  static readonly UTILITIES_TEMPLATE = `
+  /**
+   * Utility functions for {{schemaName}}
+   */
+  export const {{schemaName}}Utils = {
+    /**
+     * Creates a partial schema that makes all properties optional
+     */
+    partial: () => {{schemaName}}.partial(),
+  
+    /**
+     * Creates a strict schema that doesn't allow additional properties
+     */
+    strict: () => {{schemaName}}.strict(),
+  
+    /**
+     * Creates a schema for arrays of {{typeName}}
+     */
+    array: () => z.array({{schemaName}}),
+  
+    /**
+     * Creates a schema with only the specified keys
+     */
+    pick: <K extends keyof {{typeName}}>(keys: K[]) => {{schemaName}}.pick(keys),
+  } as const;
+  `.trim()
+
+  /**
+   * Template for generating custom refinement rules.
+   * Allows adding complex validation logic to schemas.
+   */
+  static readonly REFINEMENT_TEMPLATE = `
+      .refine(
+        (data) => {{refinementLogic}},
+        { message: '{{message}}' }
+      )
+  `.trim()
+
+  /**
+   * Template for generating preprocess transformations.
+   * Allows data transformation before validation.
+   */
+  static readonly PREPROCESS_TEMPLATE = `
+      .preprocess((val) => {{preprocessLogic}})
+  `.trim()
+}
