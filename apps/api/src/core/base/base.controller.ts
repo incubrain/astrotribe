@@ -9,8 +9,9 @@ import {
   BadRequestException,
   ConflictException,
   Inject,
+  Scope,
 } from '@nestjs/common'
-import { Reflector } from '@nestjs/core'
+import { REQUEST } from '@nestjs/core'
 import { Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { ConfigService } from '@nestjs/config'
@@ -18,13 +19,12 @@ import { Prisma } from '@prisma/client'
 import { PrismaService } from '../services/prisma.service'
 import { PaginationService } from '../services/pagination.service'
 import { CustomLogger } from '../logger/custom.logger'
-import { DebugService } from '../services/debug.service'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export abstract class BaseController {
-  @Inject()
-  private readonly debugService: DebugService
+  @Inject(REQUEST)
+  private readonly request: any
 
   constructor(protected readonly modelName: keyof Prisma.TypeMap['model']) {}
 
@@ -112,14 +112,12 @@ export abstract class BaseController {
   }
 
   protected handleSuccess<T>(data: T): Partial<Response<T>> {
-    const req = this.getRequest()
     const debug = this.config.get('app.debug')
-
     const response: any = { data }
 
-    if (debug && req?.permissions) {
+    if (debug && this.request?.permissions) {
       response.debug = {
-        permissions: req.permissions,
+        permissions: this.request.permissions,
         timestamp: new Date().toISOString(),
       }
     }
@@ -128,7 +126,6 @@ export abstract class BaseController {
   }
 
   protected handlePaginatedSuccess<T>(data: T[], meta: any): PaginatedResponse<T> {
-    const req = this.getRequest()
     const debug = this.config.get('app.debug')
 
     const response: PaginatedResponse<T> = {
@@ -138,21 +135,14 @@ export abstract class BaseController {
       success: true,
     }
 
-    if (debug && req.permissions) {
+    if (debug && this.request?.permissions) {
       response.debug = {
-        permissions: req.permissions,
+        permissions: this.request.permissions,
         timestamp: new Date().toISOString(),
       }
     }
 
     return response
-  }
-
-  private getRequest() {
-    // get httpContext from the current request scope
-    const httpContext = require('@nestjs/core').HttpAdapterHost
-    const req = httpContext.HttpAdapterHost.getRequestScope()
-    return req
   }
 
   protected handleError(error: any): never {
