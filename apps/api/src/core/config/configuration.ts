@@ -25,6 +25,10 @@ export default registerAs('app', () => ({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
   },
+  razorpay: {
+    key_id: process.env.RAZORPAY_TEST_KEY,
+    key_secret: process.env.RAZORPAY_TEST_SECRET,
+  },
   jwt: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN || '1d',
