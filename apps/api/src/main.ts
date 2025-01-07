@@ -26,8 +26,33 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger,
   })
-
+  
   // Debug middleware
+  // CORS Configuration - Let's use enableCors() instead of manual middleware
+  app.enableCors({
+    origin: [
+      'https://admin.astronera.org',
+      'https://app.astronera.org',
+      'http://localhost:3000',
+      'http://localhost:4200',
+    ],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    // allowedHeaders: [
+    //   'Content-Type',
+    //   'Accept',
+    //   'Authorization',
+    //   'x-api-key',
+    //   'Origin',
+    //   'X-Requested-With',
+    //   'Access-Control-Request-Method',
+    //   'Access-Control-Request-Headers',
+    // ],
+    // exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+  
   app.use((req, res, next) => {
     const logger = new CustomLogger('HTTP')
     logger.debug(`${req.method} ${req.path}`, {

@@ -44,6 +44,14 @@ const endpoints = ref<Endpoint[]>([
   },
   {
     method: 'GET',
+    path: '/api/v1/payments/plans',
+    description: 'Get all plans',
+    isLoading: false,
+    responseStr: '',
+    response: null,
+  },
+  {
+    method: 'GET',
     path: '/api/v1/health',
     description: 'Check API health status',
     isLoading: false,
