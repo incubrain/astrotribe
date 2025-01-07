@@ -2,9 +2,7 @@ import chalk from 'chalk'
 import type { Pool } from 'pg'
 
 import pool from '../client'
-import { enableRLSOnAllTables } from '../init/enable-rls'
 import { updateDatabasePermissions } from '../init/upsert-permissions'
-import { updateRLSPolicies } from '../init/create-rls-policies'
 import { generatePermissions } from '../update/generate-permissions'
 import permissionsConfig from '../generated/role-permissions.json'
 
@@ -48,20 +46,4 @@ export async function preMigrationChecks(): Promise<void> {
     throw new Error('Failed to update permissions')
   }
   console.log(chalk.green('✓ Database permissions updated'))
-
-  console.log(chalk.blue('\n🔒 Enabling Row Level Security...'))
-  const rlsEnabled = await enableRLSOnAllTables(pool)
-
-  if (!rlsEnabled) {
-    throw new Error('Failed to enable RLS')
-  }
-  console.log(chalk.green('✓ RLS enabled'))
-
-  console.log(chalk.blue('\n🔒 Updating RLS policies...'))
-  const policiesUpdated = await updateRLSPolicies(pool)
-
-  if (!policiesUpdated) {
-    throw new Error('Failed to update RLS policies')
-  }
-  console.log(chalk.green('✓ RLS policies updated'))
 }

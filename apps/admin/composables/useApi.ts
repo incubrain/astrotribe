@@ -69,25 +69,26 @@ export function useApi() {
   }
 
   const testEndpoint = async (
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     path: string,
-    body?: any,
+    options: {
+      method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+      body?: any
+    },
   ) => {
     if (!(await checkSession())) return
 
     try {
       const api = createApi()
-      addLog(`Testing ${method} ${path}`)
+      addLog(`Testing ${options.method} ${path}`)
       const response = await api(path, {
-        method,
-        body,
+        ...options,
         credentials: 'include',
       })
 
-      addLog(`${method} ${path}: 200 OK`)
+      addLog(`${options.method} ${path}: 200 OK`)
       return response
     } catch (error: any) {
-      addLog(`${method} ${path}: ${error.status || 500} Error - ${error.message}`)
+      addLog(`${options.method} ${path}: ${error.status || 500} Error - ${error.message}`)
       throw error
     }
   }

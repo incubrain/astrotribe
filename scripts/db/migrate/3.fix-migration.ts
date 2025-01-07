@@ -14,6 +14,16 @@ const patterns: Pattern[] = [
     replace: '(public.authorize(',
     description: 'Add public schema to authorize function calls',
   },
+  {
+    find: /CREATE FUNCTION ([^\s(]+)\(/g,
+    replace: 'CREATE OR REPLACE FUNCTION $1(',
+    description: 'Add OR REPLACE to function definitions',
+  },
+  {
+    find: /DROP FUNCTION ([^;]+);/g,
+    replace: 'DROP FUNCTION IF EXISTS $1;',
+    description: 'Add IF EXISTS to function drops',
+  },
 ]
 
 function fixMigrationSQL(sql: string): string {
@@ -69,7 +79,7 @@ async function main() {
   const migrationFilePath = process.argv[2]
 
   if (!migrationFilePath) {
-    console.error('Usage: npx ts-node fix-migration.ts <migration_file.sql>')
+    console.error('Usage: pnpx ts-node fix-migration.ts <migration_file.sql>')
     process.exit(1)
   }
 
