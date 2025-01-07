@@ -2,6 +2,7 @@
 <script setup lang="ts">
 interface PlanDetails {
   id: string
+  external_plan_id: string
   name: string
   description: string
   amount: number
@@ -103,8 +104,7 @@ useHead({
 })
 
 const createSubscription = async () => {
-  console.log(props.plan.id, 'PLAN ID')
-  const subscription = await razorpay.createOrder(props.plan.id)
+  const subscription = await razorpay.createOrder(props.plan.id, props.plan.external_plan_id)
 
   console.log(subscription, 'SUBSCRIPTION')
   razorpayOptions.value.subscription_id = subscription.id

@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useRuntimeConfig } from '#app'
 
 export const usePayments = (provider: 'razorpay' | 'stripe') => {
-  const config = useRuntimeConfig()
+  const supabase = useSupabaseClient()
   const isLoading = ref(false)
   const error = ref(null)
   const currentUser = useCurrentUser()
@@ -30,14 +30,14 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     }
   }
 
-  const createOrder = async (planId: string) => {
+  const createOrder = async (plan_id: string, external_plan_id: string) => {
     isLoading.value = true
     error.value = null
 
     try {
       const response = await $fetch(`/api/payment/${provider}/subscriptions/create`, {
         method: 'POST',
-        body: { plan_id: planId, user_id: profile.value.id, total_count: 1 },
+        body: { plan_id, external_plan_id, user_id: profile.value.id, total_count: 1 },
       })
 
       return response
@@ -65,12 +65,28 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     }
   }
 
-  const fetchSubscription = async () => {
+  const fetchPlans = async () => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await $fetch(`/api/payment/${provider}/plans`)
+
+      return response
+    } catch (error: any) {
+      console.error(`Error verifying payment with ${provider}:`, error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const fetchSubscriptions = async () => {
     isLoading.value = true
     error.value = null
 
     try {
       const response = await $fetch(`/api/payment/${provider}/subscriptions`)
+
       return response
     } catch (error: any) {
       console.error(`Error verifying payment with ${provider}:`, error)
@@ -85,6 +101,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     initializePayment,
     createOrder,
     verifyPayment,
-    fetchSubscription,
+    fetchPlans,
+    fetchSubscriptions,
   }
 }
