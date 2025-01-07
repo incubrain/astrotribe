@@ -888,10 +888,10 @@ model customer_subscription_plans {
   monthly_amount         Decimal                  @db.Decimal(10, 2)
   annual_amount          Decimal                  @db.Decimal(10, 2)
   currency               String                   @db.VarChar(3)
-  features               Json?
   is_active              Boolean?                 @default(true)
   created_at             DateTime?                @db.Timestamptz(6)
   updated_at             DateTime?                @db.Timestamptz(6)
+  features               String[]
   customer_subscriptions customer_subscriptions[]
 
   @@schema("public")
@@ -906,15 +906,14 @@ model customer_subscriptions {
   external_subscription_id    String                      @db.VarChar(255)
   status                      String                      @db.VarChar(50)
   quantity                    Int?                        @default(1)
-  current_start               DateTime                    @db.Timestamptz(6)
-  current_end                 DateTime                    @db.Timestamptz(6)
+  current_start               DateTime?                   @db.Timestamptz(6)
+  current_end                 DateTime?                   @db.Timestamptz(6)
   ended_at                    DateTime?                   @db.Timestamptz(6)
   cancel_at_period_end        Boolean?                    @default(false)
   total_count                 Int?
   paid_count                  Int?
   remaining_count             Int?
   auth_attempts               Int?                        @default(0)
-  notes                       Json?
   created_at                  DateTime?                   @default(now()) @db.Timestamptz(6)
   updated_at                  DateTime?                   @default(now()) @db.Timestamptz(6)
   type                        Int?
@@ -930,6 +929,7 @@ model customer_subscriptions {
   offer_id                    String?
   pause_initiated_by          String?
   cancel_initiated_by         String?
+  notes                       String[]
   customer_payments           customer_payments[]
   payment_providers           payment_providers           @relation(fields: [payment_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   customer_subscription_plans customer_subscription_plans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -1377,7 +1377,6 @@ model table_query_performance {
   avg_duration    Unsupported("interval")?
   execution_count BigInt?
   capture_time    DateTime?                @db.Timestamptz(6)
-  id              Int                      @id @default(autoincrement())
 
   @@ignore
   @@schema("public")
@@ -1390,7 +1389,6 @@ model table_sequence_usage {
   current_value BigInt?
   max_value     BigInt?
   capture_time  DateTime? @default(now()) @db.Timestamptz(6)
-  id            Int       @id @default(autoincrement())
 
   @@ignore
   @@schema("public")
@@ -1541,7 +1539,7 @@ model referrals {
   visitor_id          String           @db.Uuid
   created_at          DateTime?        @default(now()) @db.Timestamptz(6)
   converted_at        DateTime?        @db.Timestamptz(6)
-  status              referral_status? @default(pending)
+  referral_status     referral_status? @default(pending)
   conversion_value    Decimal?         @db.Decimal(10, 2)
   user_agent          String?
   ip_address          String?          @db.Inet
@@ -1561,7 +1559,7 @@ model referrals {
 
   @@index([created_at], map: "idx_created_at")
   @@index([referrer_code], map: "idx_referrer_code")
-  @@index([status], map: "idx_status")
+  @@index([referral_status], map: "idx_status")
   @@schema("public")
 }
 
@@ -1797,30 +1795,6 @@ view error_metrics {
   error_type   error_type?
   severity     error_severity?
   error_count  BigInt?
-
-  @@ignore
-  @@schema("public")
-}
-
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-view v_query_performance {
-  query           String?
-  avg_duration    Unsupported("interval")?
-  execution_count BigInt?
-  capture_time    DateTime?                @db.Timestamptz(6)
-  id              Int?
-
-  @@ignore
-  @@schema("public")
-}
-
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-view v_sequence_usage {
-  sequence_name String?
-  current_value BigInt?
-  max_value     BigInt?
-  capture_time  DateTime? @db.Timestamptz(6)
-  id            Int?
 
   @@ignore
   @@schema("public")

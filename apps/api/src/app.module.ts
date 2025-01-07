@@ -18,6 +18,7 @@ import { ContentModule } from '@content/content.module'
 import { MonitoringModule } from '@monitoring/monitoring.module'
 // New modules (for caching & jobs)
 import { RedisModule } from '@core/cache/cache.module'
+import { PaymentsModule } from '@payments/payment.module'
 
 @Module({
   imports: [
@@ -37,6 +38,9 @@ import { RedisModule } from '@core/cache/cache.module'
     // 3) Feature modules
     ContentModule,
     MonitoringModule,
+
+    // 4) Payment modules
+    PaymentsModule,
 
     // 4) Rate limiting
     ThrottlerModule.forRoot([
