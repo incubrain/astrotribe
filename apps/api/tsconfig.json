@@ -7,6 +7,8 @@
       "@ib/logger": ["../../libs/logger/dist/index.cjs.js"],
       "@types": ["src/types/index.ts"],
       "@core": ["src/core/index.ts"],
+      "@jobs": ["src/jobs/index.ts"],
+      "@jobs/*": ["src/jobs/*"],
       "@content": ["src/content/index.ts"],
       "@monitoring": ["src/monitoring/index.ts"],
       "@auth/*": ["src/auth/*"],

@@ -27,6 +27,8 @@ import { ApiPaginatedResponse, ApiGetByIdResponse } from '@core/decorators/api.d
 import type { Prisma } from '@prisma/client'
 import type { PaginatedQuery, PaginatedResponse } from '@types'
 
+const ContentDto = {}
+
 @ApiBaseController('contents')
 @UseGuards(PermissionGuard)
 export class ContentController extends BaseController {
