@@ -25,10 +25,11 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
-    "strapi-provider-upload-supabase": "file:dist/src/providers/supabase",
+    "strapi-provider-upload-supabase": "^1.0.0",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
+    "@strapi/typescript-utils": "^5.6.0",
     "@types/aws-sdk": "^0.0.42",
     "@types/node": "^20",
     "@types/react": "^18",
