@@ -15,10 +15,11 @@
 // const isLoading = computed(() => loading.isLoading(domainKey))
 
 definePageMeta({ name: 'Companies' })
+
 </script>
 
 <template>
-  <div class="flex justify-center items-center min-h-screen">Coming Soon</div>
+  <CompaniesComingSoon />
   <!-- <div>
     <IBInfiniteScroll @update:scroll-end="loadMore">
       <div class="grid grid-cols-1 md:grid-cols-[1fr_minmax(200px,480px)_1fr]">
