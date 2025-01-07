@@ -19,6 +19,7 @@ import { MonitoringModule } from '@monitoring/monitoring.module'
 // New modules (for caching & jobs)
 import { RedisModule } from '@core/cache/cache.module'
 import { PaymentsModule } from '@payments/payment.module'
+import { JobModule } from '@jobs/job.module'
 
 @Module({
   imports: [
@@ -38,8 +39,7 @@ import { PaymentsModule } from '@payments/payment.module'
     // 3) Feature modules
     ContentModule,
     MonitoringModule,
-
-    // 4) Payment modules
+    JobModule,
     PaymentsModule,
 
     // 4) Rate limiting

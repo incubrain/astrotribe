@@ -1,4 +1,3 @@
-// stores/jobMetrics.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { JobMetrics, QueueStats, CircuitBreakerMetrics } from '@/types'
@@ -21,6 +20,7 @@ interface JobStats {
 }
 
 export const useCronMetricsStore = defineStore('cronMetrics', () => {
+  const { testEndpoint, addLog } = useApi()
   const pgBossJobs = ref<any[]>([])
   const pgBossSchedules = ref<any[]>([])
   const pgBossQueues = ref<any[]>([])
@@ -29,10 +29,8 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
   const loading = ref(false)
 
   const jobStats = computed<JobStats[]>(() => {
-    // Combine pg_boss and custom metrics
     const stats: Record<string, JobStats> = {}
 
-    // Process pg_boss jobs
     pgBossJobs.value.forEach((job) => {
       const name = job.name
       if (!stats[name]) {
@@ -51,7 +49,6 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
       if (job.state === 'failed') stats[name].failureCount++
     })
 
-    // Merge custom metrics
     customJobMetrics.value.forEach((metric) => {
       const name = metric.job_name
       if (!stats[name]) {
@@ -74,14 +71,12 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
       }
     })
 
-    // Add circuit breaker info
     circuitBreakerStates.value.forEach((cb) => {
       if (stats[cb.jobName]) {
         stats[cb.jobName].circuitBreaker = cb
       }
     })
 
-    // Calculate success rates
     Object.values(stats).forEach((stat) => {
       stat.successRate = stat.totalRuns > 0 ? (stat.successCount / stat.totalRuns) * 100 : 0
     })
@@ -104,48 +99,40 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
   }
 
   async function fetchMetrics() {
-    const client = useSupabaseClient()
     loading.value = true
 
     try {
-      const [pgBossResult, metricsResult, circuitBreakerResult, scheduleResult, queueResult] =
-        await Promise.all([
-          // Fetch pg_boss data
-          client
-            .schema('pgboss')
-            .from('job')
-            .select('*')
-            .order('createdon', { ascending: false })
-            .limit(100),
-          // Fetch custom metrics
-          client.from('job_metrics').select('*').order('created_at', { ascending: false }),
-          // Fetch circuit breaker states
-          client.from('circuit_breaker_states').select('*'),
-          // Fetch schedules
-          client.schema('pgboss').from('schedule').select('*'),
-          // Fetch queue configs
-          client.schema('pgboss').from('queue').select('*'),
-        ])
+      addLog('Fetching metrics from /api/v1/job-metrics')
 
-      pgBossJobs.value = pgBossResult.data || []
-      customJobMetrics.value = metricsResult.data || []
-      circuitBreakerStates.value = circuitBreakerResult.data || []
-      pgBossSchedules.value = scheduleResult.data || []
-      pgBossQueues.value = queueResult.data || []
+      const metricsResult = await testEndpoint('GET', '/api/v1/job-metrics')
+
+      customJobMetrics.value = Array.isArray(metricsResult?.data) ? metricsResult.data : []
     } catch (error) {
       console.error('Error fetching metrics:', error)
-      throw error
     } finally {
       loading.value = false
     }
   }
 
   async function triggerSchedule(name: string, data?: any) {
-    const client = useSupabaseClient()
     try {
-      // Implementation remains the same
-    } finally {
-      loading.value = false
+      const response = await testEndpoint('POST', '/jobs/trigger', {
+        name,
+        priority: 5,
+        data,
+        state: 'created',
+        retry_limit: 3,
+        retry_delay: 1000,
+        retry_backoff: true,
+        start_after: new Date(),
+        expire_in: '00:30:00',
+      })
+
+      addLog(`Job ${name} triggered successfully.`)
+      return response
+    } catch (error) {
+      console.error(`Error triggering job ${name}:`, error)
+      throw error
     }
   }
 

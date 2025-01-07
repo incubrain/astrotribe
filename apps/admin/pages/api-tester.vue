@@ -20,6 +20,7 @@ interface ApiResponse {
 const env = useRuntimeConfig().public
 const notification = useNotification()
 const supabase = useSupabaseClient()
+const { createApi } = useApi()
 
 const customEndpoint = ref<Endpoint>({
   method: 'GET',
@@ -40,12 +41,12 @@ const testCustomEndpoint = async () => {
   }
 
   if (!(await checkSession())) return
+  const api = createApi(url)
 
   try {
     customEndpoint.value.isLoading = true
     addLog(`Testing custom ${customEndpoint.value.method} ${customEndpoint.value.path}`)
 
-    const api = createApi()
     const data = await api(customEndpoint.value.path, {
       method: customEndpoint.value.method,
       credentials: 'include',
@@ -116,47 +117,6 @@ const endpoints = ref<Endpoint[]>([
   },
 ])
 
-const createApi = () => {
-  return $fetch.create({
-    baseURL: url.value,
-    credentials: 'include',
-    async onRequest({ options }) {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-
-      if (!session?.access_token) {
-        throw new Error('No authentication session found')
-      }
-
-      options.headers = {
-        'Authorization': `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Origin': window.location.origin,
-      }
-    },
-    async onResponse({ response }) {
-      // Log Railway request ID for debugging
-      const requestId = response.headers.get('X-Railway-Request-Id')
-      if (requestId) {
-        addLog(`Railway Request ID: ${requestId}`)
-      }
-
-      // Check protocol
-      const protocol = response.headers.get('X-Forwarded-Proto')
-      if (protocol !== 'https') {
-        addLog('Warning: Connection not using HTTPS')
-      }
-    },
-    onResponseError({ response }) {
-      const message = `Request failed: ${response.status} - ${response.statusText}`
-      addLog(message)
-      notification.error({ summary: 'API Error', message })
-    },
-  })
-}
-
 const checkSession = async (): Promise<boolean> => {
   const {
     data: { session },
@@ -198,9 +158,10 @@ const addLog = (message: string) => {
 const testConnection = async () => {
   if (!(await checkSession())) return
 
+  const api = createApi(url)
+
   try {
     isLoading.value = true
-    const api = createApi()
     await api('/api/v1/health', { method: 'GET', credentials: 'include' })
 
     addLog('Connection test successful')
@@ -219,6 +180,8 @@ const testConnection = async () => {
 const testEndpoint = async (endpoint: Endpoint) => {
   if (!(await checkSession())) return
 
+  const api = createApi(url)
+
   try {
     endpoint.isLoading = true
     addLog(`Testing ${endpoint.method} ${endpoint.path}`)
@@ -235,7 +198,6 @@ const testEndpoint = async (endpoint: Endpoint) => {
     // Log the token info (safely)
     addLog(`Using token: ${session.access_token.substring(0, 10)}...`)
 
-    const api = createApi()
     const data = await api(endpoint.path, {
       method: endpoint.method,
       credentials: 'include',
