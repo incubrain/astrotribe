@@ -1,0 +1,37 @@
+// templates/entity/model.ejs
+import { BaseModel } from '@core'
+
+// Model interface
+export interface PaymentModel extends BaseModel {
+  id: number,
+  user_id: string,
+  subscription_id: number,
+  payment_provider_id: number,
+  external_payment_id: string,
+  external_order_id: string,
+  amount: number,
+  currency: string,
+  status: string,
+  method: string,
+  description: string,
+  fee: number,
+  tax: number,
+  error_code: string,
+  error_description: string,
+  acquirer_data: Record<string, any>,
+  notes: Record<string, any>,
+  created_at: Date,
+  order_id: string,
+  invoice_id: string,
+  international: boolean,
+  amount_refunded: number,
+  amount_transferred: number,
+  refund_status: string,
+  captured: boolean,
+  bank: string,
+  wallet: string,
+  vpa: string,
+  error_source: string,
+  error_step: string,
+  error_reason: string,
+}
