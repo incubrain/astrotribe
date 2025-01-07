@@ -12,7 +12,7 @@ export interface PlanModel extends BaseModel {
   monthly_amount: number
   annual_amount: number
   current: string
-  features: Array<string>
+  features: string[]
   is_active: boolean
   created_at: Date
   updated_at?: Date
