@@ -21,7 +21,7 @@
     "dev:api": "nx serve @astronera/api",
     "dev:website": "nx serve @astronera/website --inspect",
     "dev:auth": "nx serve @astronera/auth --verbose",
-    "dev:app": "pnpm nx run-many -t serve -p @astronera/auth,@astronera/app,@astronera/api --parallel --verbose",
+    "dev:app": "pnpm nx run-many -t serve -p @astronera/auth,@astronera/app --parallel --verbose",
     "dev:monitoring": "nx serve monitoring",
     "dev:backend": "pnpm nx run-many -t serve -p @astronera/api,@astronera/cron-jobs --parallel --verbose",
     "dev:admin": "pnpm nx run-many -t serve -p @astronera/admin,@astronera/auth --parallel --verbose",

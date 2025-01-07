@@ -20,7 +20,7 @@ interface ApiResponse {
 const env = useRuntimeConfig().public
 const notification = useNotification()
 const supabase = useSupabaseClient()
-const { createApi } = useApi()
+const { testEndpoint: api } = useApi()
 
 const customEndpoint = ref<Endpoint>({
   method: 'GET',
@@ -41,7 +41,6 @@ const testCustomEndpoint = async () => {
   }
 
   if (!(await checkSession())) return
-  const api = createApi(url)
 
   try {
     customEndpoint.value.isLoading = true
@@ -49,7 +48,6 @@ const testCustomEndpoint = async () => {
 
     const data = await api(customEndpoint.value.path, {
       method: customEndpoint.value.method,
-      credentials: 'include',
     })
 
     customEndpoint.value.response = { status: 200, data }
@@ -158,11 +156,9 @@ const addLog = (message: string) => {
 const testConnection = async () => {
   if (!(await checkSession())) return
 
-  const api = createApi(url)
-
   try {
     isLoading.value = true
-    await api('/api/v1/health', { method: 'GET', credentials: 'include' })
+    await api('/api/v1/health', { method: 'GET' })
 
     addLog('Connection test successful')
     notification.success({
@@ -179,8 +175,6 @@ const testConnection = async () => {
 // ApiTester.vue
 const testEndpoint = async (endpoint: Endpoint) => {
   if (!(await checkSession())) return
-
-  const api = createApi(url)
 
   try {
     endpoint.isLoading = true
@@ -200,7 +194,6 @@ const testEndpoint = async (endpoint: Endpoint) => {
 
     const data = await api(endpoint.path, {
       method: endpoint.method,
-      credentials: 'include',
     })
 
     endpoint.response = { status: 200, data }
