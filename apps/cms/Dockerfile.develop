@@ -1,4 +1,10 @@
 FROM node:18-slim
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+
+RUN npm install -g pnpm
 
 WORKDIR /app
 
@@ -12,7 +18,6 @@ RUN pnpm install
 
 # Install nodemon and tsx for development and seeding
 RUN pnpm install -g nodemon tsx
-
 # Create necessary directories
 RUN mkdir -p data/uploads
 
