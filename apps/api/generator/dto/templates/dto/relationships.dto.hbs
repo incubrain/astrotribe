@@ -1,0 +1,13 @@
+{{#if documentation}}
+  /** *
+  {{{documentation.description}}}
+  */
+{{/if}}
+export interface
+{{name}}Relation {
+{{#each relations}}
+  {{name}}: { type: '{{type}}', model: '{{model}}', field: '{{field}}', isRequired:
+  {{isRequired}}, isArray:
+  {{isArray}}, foreignKey: '{{foreignKey}}', };
+{{/each}}
+}

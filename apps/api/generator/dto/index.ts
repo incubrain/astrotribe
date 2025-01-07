@@ -1,5 +1,5 @@
 // tools/generators/dto/index.ts
-import path from 'path'
+import { join } from 'path'
 import { Command } from 'commander'
 import { PrismaClient, Prisma } from '@prisma/client'
 import { getDMMF } from '@prisma/internals'
@@ -17,6 +17,8 @@ import { TypeGuardGenerator } from './modules/type-guard'
 import { TypeMapper } from './utils/type-mapper'
 import { OpenAPIMetadataGenerator } from './modules/openapi-metadata'
 import type { GeneratorOptions, ModelMetadata, GeneratedFile, FieldMetadata } from './types'
+import { readFile } from 'fs/promises'
+import { TemplateEngine } from './templates/template.engine'
 
 const chalk = new Chalk()
 
@@ -25,6 +27,22 @@ const chalk = new Chalk()
  * Handles CLI interface, configuration loading, and orchestrates
  * the generation process.
  */
+
+function withInitialization<T extends (...args: any[]) => any>(
+  method: T,
+): (...args: Parameters<T>) => Promise<ReturnType<T>> {
+  return async function (
+    this: { isReady: boolean; initialize: () => Promise<void> },
+    ...args: any[]
+  ) {
+    if (!this.isReady) {
+      console.log('Initialization required. Running initialize()...')
+      await this.initialize()
+    }
+    return method.apply(this, args)
+  }
+}
+
 export async function main() {
   const program = new Command()
 
@@ -42,14 +60,31 @@ export async function main() {
 
   try {
     // Load and validate configuration
-    const config = await ConfigurationManager.loadConfiguration(options)
+    const config: GeneratorOptions = {
+      outputPath: join(__dirname, 'src', 'generated'),
+      typescript: {
+        strict: true,
+        generateInterfaces: true,
+        generateTypeGuards: true,
+      },
+      validation: {
+        enabled: true,
+        useClassValidator: true,
+        useZod: true,
+      },
+      documentation: {
+        enabled: true,
+        outputFormat: 'markdown' as const,
+        includeExamples: true,
+      },
+    }
     ConfigurationManager.validateConfiguration(config)
 
     // Get DMMF directly from schema file
     const prisma = new PrismaClient()
 
     // Initialize generators
-    const schemaPath = '/Users/mac/Development/astronera/astrotribe/prisma/schema.prisma'
+    const schemaPath = join(__dirname, '..', '..', '..', '..', 'prisma', 'schema.prisma')
     const fileManager = new FileManager(config.outputPath)
     const dmmf: DMMF.Document = await getDMMF({
       datamodelPath: schemaPath,
@@ -68,9 +103,6 @@ export async function main() {
 }
 
 class DTOGenerator extends BaseGenerator {
-  private interfaceGenerator: InterfaceGenerator
-  private schemaGenerator: SchemaGenerator
-  private typeGuardGenerator: TypeGuardGenerator
   private documentationGenerator: DocumentationGenerator
   private validationGenerator: ValidationGenerator
   private transformationGenerator: TransformationGenerator
@@ -83,33 +115,25 @@ class DTOGenerator extends BaseGenerator {
   ) {
     super(dmmf, options)
 
-    // Initialize type mapper first as other generators depend on it
+    // Initialize type mapper as other generators depend on it
     this.typeMapper = new TypeMapper()
 
-    // Initialize generators that don't require processed models
+    // Initialize generators with template manager
     this.validationGenerator = new ValidationGenerator()
     this.transformationGenerator = new TransformationGenerator()
-
-    // Initialize generators that work with types and documentation
-    this.interfaceGenerator = new InterfaceGenerator(this.typeMapper, this.documentationParser)
-    this.schemaGenerator = new SchemaGenerator(this.typeMapper, this.documentationParser)
-    this.typeGuardGenerator = new TypeGuardGenerator()
-
     this.documentationGenerator = new DocumentationGenerator([], options, this.fileManager)
-
-    this.initializeDocumentationGenerator()
   }
 
-  /**
-   * Initializes the documentation generator with processed models
-   * This needs to be async because processModel is async
-   */
+  override async initialize(): Promise<void> {
+    await super.initialize() // Initialize the template engine
+    await this.initializeDocumentationGenerator() // Any subclass-specific initialization
+  }
+
   private async initializeDocumentationGenerator(): Promise<void> {
     const processedModels = await Promise.all(
       this.dmmf.datamodel.models.map((model) => this.processModel(model)),
     )
 
-    // Create a new instance with the processed models
     this.documentationGenerator = new DocumentationGenerator(
       processedModels,
       this.options,
@@ -117,105 +141,224 @@ class DTOGenerator extends BaseGenerator {
     )
   }
 
-  /**
-   * Generates TypeScript interfaces for a model
-   * These interfaces represent the shape of our data without runtime checks
-   */
   protected async generateInterface(metadata: ModelMetadata): Promise<GeneratedFile> {
-    const content = this.interfaceGenerator.generateInterface(metadata)
-    const path = `interfaces/${metadata.name.toLowerCase()}.interface.ts`
+    await this.ensureInitialized()
+
+    const templateName = metadata.isView ? 'interface/view.interface' : 'interface/model.interface'
+    const templatePath = join(__dirname, 'templates', `${templateName}.hbs`)
+    console.log(`${templatePath} with dirname ${__dirname}`)
+
+    const content = TemplateEngine.process(templatePath, {
+      model: metadata,
+      imports: this.getInterfaceImports(metadata),
+      typeMapper: this.typeMapper,
+    })
 
     return {
-      path,
+      path: `interfaces/${metadata.name.toLowerCase()}.interface.ts`,
       content,
     }
   }
 
   protected async generateValidatedDTO(metadata: ModelMetadata): Promise<GeneratedFile> {
-    // Generate imports with all potentially needed validators
-    const imports = [
-      'import { ApiProperty } from "@nestjs/swagger"',
-      'import { Transform } from "class-transformer"',
-      'import { IsString, IsNumber, IsBoolean, IsDate, IsOptional, IsNotEmpty, IsUUID, IsInt, IsEnum, IsJSON } from "class-validator"',
-    ].join('\n')
+    await this.ensureInitialized()
 
-    let content = `${imports}\n\n`
+    const hasValidation = metadata.fields.some((f) => f.validationRules?.length)
+    const hasTransform = metadata.fields.some((f) => f.transformationRules?.length)
 
-    // Add class documentation if available
-    if (metadata.documentation?.description) {
-      content += `/**\n * ${metadata.documentation.description}\n */\n`
+    // Process fields
+    const fields = metadata.fields.map((field) => ({
+      ...field,
+      type: this.typeMapper.mapFieldType(field),
+      documentation: {
+        description: field.documentation?.description || `The ${field.name} field`,
+      },
+      validationRules: this.processValidationRules(field),
+      example: this.generateExample(field),
+      default: this.getDefaultValue(field),
+    }))
+
+    const templateContext = {
+      name: metadata.name,
+      documentation: metadata.documentation,
+      fields,
+      hasValidation,
+      hasTransform,
     }
 
-    // Add class definition
-    content += `export class ${metadata.name}DTO {\n`
-
-    // Generate properties with decorators
-    for (const field of metadata.fields) {
-      // Skip generated fields unless specifically configured
-      if (field.isGenerated && !this.options.includeGeneratedFields) {
-        continue
-      }
-
-      // Add property documentation
-      if (field.documentation) {
-        content += `  /**\n   * ${field.documentation}\n   */\n`
-      }
-
-      // Add validation decorators
-      if (field.isRequired) {
-        content += `  @IsNotEmpty()\n`
-      } else {
-        content += `  @IsOptional()\n`
-      }
-
-      // Add type-specific validation
-      switch (field.type) {
-        case 'String':
-          content += `  @IsString()\n`
-          if (field.nativeType === 'Uuid') {
-            content += `  @IsUUID()\n`
-          }
-          break
-        case 'Int':
-          content += `  @IsInt()\n`
-          break
-        case 'Float':
-        case 'Decimal':
-          content += `  @IsNumber()\n`
-          break
-        case 'Boolean':
-          content += `  @IsBoolean()\n`
-          break
-        case 'DateTime':
-          content += `  @IsDate()\n`
-          content += `  @Transform(({ value }) => value ? new Date(value) : null)\n`
-          break
-        case 'Json':
-          content += `  @IsJSON()\n`
-          break
-      }
-
-      // Add Swagger documentation
-      content += `  @ApiProperty({\n`
-      content += `    description: ${JSON.stringify(field.documentation || '')},\n`
-      content += `    type: ${this.getSwaggerType(field)},\n`
-      content += `    required: ${field.isRequired},\n`
-      if (field.kind === 'enum') {
-        content += `    enum: ${field.type},\n`
-      }
-      content += `  })\n`
-
-      // Add property definition
-      content += `  ${field.name}${field.isRequired ? '' : '?'}: ${this.typeMapper.mapPrismaToTypeScript(field)};\n\n`
-    }
-
-    // Close the class
-    content += `}\n`
+    const content = TemplateEngine.process('dto/model.dto', templateContext)
 
     return {
       path: `dto/${metadata.name.toLowerCase()}.dto.ts`,
       content,
     }
+  }
+
+  private processValidationRules(field: FieldMetadata): string[] {
+    const rules: string[] = []
+
+    // Add type validation
+    switch (field.type.toLowerCase()) {
+      case 'string':
+        rules.push('IsString')
+        break
+      case 'number':
+        rules.push('IsNumber')
+        break
+      case 'boolean':
+        rules.push('IsBoolean')
+        break
+      case 'date':
+        rules.push('IsDate')
+        break
+      case 'uuid':
+        rules.push('IsUUID')
+        break
+    }
+
+    // Add additional validations from metadata
+    field.validationRules?.forEach((rule) => {
+      if (!rules.includes(rule.decorator)) {
+        rules.push(rule.decorator)
+      }
+    })
+
+    return rules
+  }
+
+  private generateExample(field: FieldMetadata): any {
+    if (field.documentation?.example !== undefined) {
+      return field.documentation.example
+    }
+
+    // Generate sensible examples based on type
+    switch (field.type.toLowerCase()) {
+      case 'string':
+        return 'example'
+      case 'number':
+        return 1
+      case 'boolean':
+        return true
+      case 'date':
+        return new Date().toISOString()
+      case 'uuid':
+        return '00000000-0000-0000-0000-000000000000'
+      default:
+        return undefined
+    }
+  }
+
+  private getDefaultValue(field: FieldMetadata): any {
+    if (field.hasDefaultValue) {
+      return field.default
+    }
+    return undefined
+  }
+
+  protected async generateTypeGuard(metadata: ModelMetadata): Promise<GeneratedFile> {
+    await this.ensureInitialized()
+
+    const content = TemplateEngine.process('guard/type.guard.hbs', {
+      ...metadata,
+      imports: this.getTypeGuardImports(metadata),
+    })
+
+    return {
+      path: `guards/${metadata.name.toLowerCase()}.guard.ts`,
+      content,
+    }
+  }
+
+  protected async generateZodSchema(metadata: ModelMetadata): Promise<GeneratedFile> {
+    await this.ensureInitialized()
+
+    const content = TemplateEngine.process('schema/model.schema.hbs', {
+      ...metadata,
+      imports: this.getSchemaImports(metadata),
+      zodTypes: this.getZodTypes(metadata),
+    })
+
+    return {
+      path: `schemas/${metadata.name.toLowerCase()}.schema.ts`,
+      content,
+    }
+  }
+
+  protected async generateDocumentation(): Promise<void> {
+    if (!this.documentationGenerator) {
+      await this.initializeDocumentationGenerator()
+    }
+    await this.documentationGenerator.generate()
+  }
+
+  protected async generateIndexFile(): Promise<void> {
+    await this.ensureInitialized()
+
+    const content = TemplateEngine.process('index.hbs', {
+      models: this.dmmf.datamodel.models.map((model) => ({
+        name: model.name.toLowerCase(),
+        hasInterface: this.options.typescript?.generateInterfaces,
+        hasTypeGuard: this.options.typescript?.generateTypeGuards,
+        hasSchema: this.options.validation?.useZod,
+      })),
+    })
+
+    await this.fileManager.writeFile('index.ts', content)
+  }
+
+  protected async generateUtilityFiles(): Promise<void> {
+    await this.ensureInitialized()
+    // Generate base types
+    const baseTypesTemplate = TemplateEngine.process('base/type-helpers.hbs', {})
+    await this.fileManager.writeFile('base/base-types.ts', baseTypesTemplate)
+
+    // Generate helpers
+    const helpersTemplate = TemplateEngine.process('base/helpers.hbs', {})
+    await this.fileManager.writeFile('base/helpers.ts', helpersTemplate)
+  }
+
+  // Helper methods for template context
+  private getInterfaceImports(metadata: ModelMetadata): string[] {
+    const imports = ['BaseEntity']
+    if (metadata.relations?.length) {
+      imports.push(...metadata.relations.map((rel) => `I${rel.type}`))
+    }
+    return imports
+  }
+
+  private getDTOImports(metadata: ModelMetadata): string[] {
+    const imports = ['ApiProperty']
+    if (metadata.fields.some((f) => f.validationRules?.length)) {
+      imports.push('IsNotEmpty', 'IsOptional')
+    }
+    if (metadata.fields.some((f) => f.transformationRules?.length)) {
+      imports.push('Transform')
+    }
+    return imports
+  }
+
+  private getTypeGuardImports(metadata: ModelMetadata): string[] {
+    return [`I${metadata.name}`, `${metadata.name}Schema`]
+  }
+
+  private getSchemaImports(metadata: ModelMetadata): string[] {
+    const imports = ['z']
+    if (metadata.relations?.length) {
+      imports.push(...metadata.relations.map((rel) => `${rel.type}Schema`))
+    }
+    return imports
+  }
+
+  private getSwaggerTypes(metadata: ModelMetadata): Record<string, string> {
+    return Object.fromEntries(
+      metadata.fields.map((field) => [field.name, this.getSwaggerType(field)]),
+    )
+  }
+
+  private getZodTypes(metadata: ModelMetadata): Record<string, string> {
+    return Object.fromEntries(
+      metadata.fields.map((field) => [field.name, this.typeMapper.mapToZodType(field)]),
+    )
   }
 
   private getSwaggerType(field: FieldMetadata): string {
@@ -238,132 +381,6 @@ class DTOGenerator extends BaseGenerator {
         }
         return 'String'
     }
-  }
-
-  /**
-   * Generates TypeScript type guards for runtime type checking
-   * These provide type safety when working with unknown data
-   */
-  protected async generateTypeGuard(metadata: ModelMetadata): Promise<GeneratedFile> {
-    const content = this.typeGuardGenerator.generateTypeGuards(metadata)
-    const path = `guards/${metadata.name.toLowerCase()}.guard.ts`
-
-    return {
-      path,
-      content,
-    }
-  }
-
-  /**
-   * Generates Zod schemas for runtime validation
-   * These provide both type information and runtime validation
-   */
-  protected async generateZodSchema(metadata: ModelMetadata): Promise<GeneratedFile> {
-    const content = this.schemaGenerator.generateSchema(metadata)
-    const path = `schemas/${metadata.name.toLowerCase()}.schema.ts`
-
-    return {
-      path,
-      content,
-    }
-  }
-
-  /**
-   * Generates comprehensive documentation including:
-   * - API documentation
-   * - Type information
-   * - Validation rules
-   * - Examples
-   */
-  protected async generateDocumentation(): Promise<void> {
-    if (!this.documentationGenerator) {
-      await this.initializeDocumentationGenerator()
-    }
-
-    // Generate documentation using all processed models
-    await this.documentationGenerator.generate()
-  }
-
-  /**
-   * Generates an index file that exports all generated artifacts
-   * This provides a clean public API for consuming code
-   */
-  protected async generateIndexFile(): Promise<void> {
-    const models = this.dmmf.datamodel.models
-    const indexContent = models
-      .map((model) => {
-        const baseName = model.name.toLowerCase()
-        return [
-          `export * from './interfaces/${baseName}.interface'`,
-          `export * from './dto/${baseName}.dto'`,
-          `export * from './schemas/${baseName}.schema'`,
-          `export * from './guards/${baseName}.guard'`,
-        ].join('\n')
-      })
-      .join('\n\n')
-
-    await this.fileManager.writeFile('index.ts', indexContent)
-  }
-
-  /**
-   * Generates utility files that are shared across generated code
-   * This includes common types, helpers, and shared functionality
-   */
-  protected async generateUtilityFiles(): Promise<void> {
-    // Generate base types
-    const baseTypesContent = `
-      export interface BaseDTO {
-        toEntity(): Record<string, any>
-      }
-
-      export interface ValidationError {
-        property: string
-        constraints: Record<string, string>
-      }
-
-      export type ValidationResult<T> = {
-        isValid: boolean
-        data?: T
-        errors?: ValidationError[]
-      }
-    `
-    await this.fileManager.writeFile('utils/base-types.ts', baseTypesContent)
-
-    // Generate helper functions
-    const helpersContent = `
-      export function createValidationError(
-        property: string,
-        constraint: string,
-        message: string
-      ): ValidationError {
-        return {
-          property,
-          constraints: { [constraint]: message }
-        }
-      }
-
-      export function isValidationError(error: unknown): error is ValidationError {
-        return (
-          typeof error === 'object' &&
-          error !== null &&
-          'property' in error &&
-          'constraints' in error &&
-          typeof (error as any).property === 'string' &&
-          typeof (error as any).constraints === 'object'
-        )
-      }
-    `
-    await this.fileManager.writeFile('utils/helpers.ts', helpersContent)
-  }
-
-  /**
-   * Main generation process that coordinates all generator modules.
-   * Each step is isolated and can be enabled/disabled via options.
-   */
-  private extractExample(documentation: string): string | undefined {
-    const exampleRegex = /@example (.*)/
-    const match = documentation.match(exampleRegex)
-    return match?.[1]
   }
 }
 

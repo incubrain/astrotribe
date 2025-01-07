@@ -8,6 +8,7 @@ import type {
   ValidationRuleDefinition,
   TypeConverter,
   PluginConfig,
+  GeneratorOptions,
 } from '../types'
 
 /**
@@ -29,7 +30,7 @@ export class ConfigurationManager {
    * 3. Environment variables
    * 4. Command line arguments
    */
-  async loadConfiguration(options: Partial<GeneratorConfig> = {}): Promise<GeneratorConfig> {
+  async loadConfiguration(options: Partial<GeneratorOptions> = {}): Promise<GeneratorConfig> {
     // Load configuration file using cosmiconfig
     const explorer = cosmiconfig('dtogen')
     const result = await explorer.search()
@@ -38,8 +39,48 @@ export class ConfigurationManager {
     // Load environment variables
     const envConfig = this.loadEnvironmentConfig()
 
+    // Convert GeneratorOptions to GeneratorConfig
+    const configFromOptions: Partial<GeneratorConfig> = {
+      outputPath: options.outputPath,
+      prettierConfig: options.prettierConfig,
+      validation: {
+        enabledRules: options.validation?.enabled
+          ? [
+              'IsNotEmpty',
+              'IsOptional',
+              'IsString',
+              'IsNumber',
+              'IsBoolean',
+              'IsDate',
+              'IsEmail',
+              'MinLength',
+              'MaxLength',
+              'Min',
+              'Max',
+            ]
+          : [],
+        customRules: [],
+        messageTemplates: {
+          required: '${field} is required',
+          string: '${field} must be a string',
+          number: '${field} must be a number',
+          boolean: '${field} must be a boolean',
+          date: '${field} must be a valid date',
+          email: '${field} must be a valid email address',
+          minLength: '${field} must be at least ${min} characters',
+          maxLength: '${field} must be at most ${max} characters',
+        },
+        validators: {},
+      },
+    }
+
     // Merge configurations with priority
-    this.config = this.mergeConfigurations([defaultConfig, fileConfig, envConfig, options])
+    this.config = this.mergeConfigurations([
+      defaultConfig,
+      fileConfig,
+      envConfig,
+      configFromOptions,
+    ])
 
     // Validate final configuration
     await ConfigValidator.validateConfig(this.config)

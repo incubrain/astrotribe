@@ -9,6 +9,7 @@ import type { GeneratorConfig } from '../types'
  */
 export const defaultConfig: GeneratorConfig = {
   // Base configuration with essential paths
+  templatesPath: './templates',
   outputPath: 'src/generated',
   prettierConfig: undefined,
 
@@ -54,7 +55,7 @@ export const defaultConfig: GeneratorConfig = {
     ],
   },
 
-  // Validation configuration with common rules enabled
+  // Validation configuration
   validation: {
     enabledRules: [
       'IsNotEmpty',
@@ -83,7 +84,7 @@ export const defaultConfig: GeneratorConfig = {
     validators: {},
   },
 
-  // Template configuration for code generation
+  // Template configuration
   templates: {
     templatePaths: [],
     overrides: {},
@@ -95,10 +96,10 @@ export const defaultConfig: GeneratorConfig = {
     functions: {},
   },
 
-  // Plugin system configuration
+  // Plugin configuration
   plugins: [],
 
-  // Output configuration for generated code
+  // Output configuration
   output: {
     format: 'typescript',
     moduleSystem: 'esm',
@@ -114,6 +115,6 @@ export const defaultConfig: GeneratorConfig = {
     },
   },
 
-  // Lifecycle hooks configuration
+  // Hooks configuration
   hooks: {},
 }

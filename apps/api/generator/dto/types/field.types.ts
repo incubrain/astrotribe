@@ -1,41 +1,20 @@
-import type { ViewMetadata } from './view.types'
-
-export interface DocumentationMetadata {
-  description: string
-  example: any
-  deprecated?: boolean
-  version?: string
-  since?: string
-}
+import type { ValidationRule, TransformationRule } from './rules.types'
 
 export interface FieldMetadata {
   name: string
   type: string
   isRequired: boolean
-  isArray: boolean
-  documentation: DocumentationMetadata
-  validationRules: ValidationRule[]
-  transformationRules: TransformationRule[]
-  isComputed: boolean
-  computedMetadata?: ComputedColumnMetadata
-}
-
-export interface ValidationRule {
-  decorator: string
-  params?: any[]
-  message?: string
-}
-
-export interface TransformationRule {
-  type: 'toDate' | 'toString' | 'toNumber' | 'toBoolean' | 'custom'
-  params?: any[]
-}
-
-export interface ComputedColumnMetadata {
-  name: string
-  expression: string
-  dependsOn: string[]
-  returnType: string
+  isList: boolean
+  isUnique: boolean
+  isId: boolean
+  isReadOnly: boolean
+  hasDefaultValue: boolean
+  documentation?: string
+  isGenerated?: boolean
+  kind: 'scalar' | 'enum' | 'object'
+  nativeType?: string | null
+  validationRules?: ValidationRule[]
+  transformationRules?: TransformationRule[]
 }
 
 export interface RelationshipMetadata {
@@ -50,19 +29,9 @@ export interface RelationshipMetadata {
   }
 }
 
-export interface NestedTypeMetadata {
-  type: 'object' | 'enum' | 'array'
-  properties?: FieldMetadata[]
-  values?: string[]
-  itemType?: FieldMetadata
-}
-
-export interface ModelMetadata {
+export interface ComputedColumnMetadata {
   name: string
-  documentation: DocumentationMetadata
-  fields: FieldMetadata[]
-  relationships: RelationshipMetadata[]
-  // Add view-specific metadata
-  isView: boolean
-  viewMetadata?: ViewMetadata
+  expression: string
+  dependsOn: string[]
+  returnType: string
 }
