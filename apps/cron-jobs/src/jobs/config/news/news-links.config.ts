@@ -36,7 +36,7 @@ export const createNewsLinksJob = (services: JobServices) => {
     version: '1.2.0',
     changes: ['Added support for new sources'],
     schedule: {
-      customCron: '*/20 * * * *', // Every 20 minutes
+      customCron: '*/15 * * * *', // Every 15 minutes
       type: 'cron',
       enabled: true,
     },
@@ -62,6 +62,7 @@ export const createNewsLinksJob = (services: JobServices) => {
             },
             take: 50,
           })
+          logger.info(`Fetched ${sources.length} sources`)
           return DatabaseUtils.convertBigIntToNumber(sources)
         } catch (error: any) {
           logger.error('Failed to fetch sources', { error })
@@ -71,6 +72,8 @@ export const createNewsLinksJob = (services: JobServices) => {
       processFunction: async (sources: ContentSource[], job): Promise<ProcessedContent[]> => {
         const { scraper, logger, prisma, metrics } = services
         const results: ProcessedContent[] = []
+
+        logger.info(`Processing ${sources.length} sources`)
 
         // Use batch processing
         await DatabaseUtils.batchProcess({
@@ -121,6 +124,7 @@ export const createNewsLinksJob = (services: JobServices) => {
       afterProcess: async (results: ProcessedContent[]): Promise<OutputContent[]> => {
         const { prisma, logger } = services
 
+        console.log(`Processed ${results.length} results`)
         if (!results.length) return []
 
         try {

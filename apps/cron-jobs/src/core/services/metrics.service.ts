@@ -55,6 +55,50 @@ export class MetricsService {
     )
   }
 
+  async trackQueueStats(queueName: string, stats: QueueStats) {
+    try {
+      const data = {
+        created_count: Math.max(0, Math.floor(Number(stats.created))),
+        retry_count: Math.max(0, Math.floor(Number(stats.retry))),
+        active_count: Math.max(0, Math.floor(Number(stats.active))),
+        completed_count: Math.max(0, Math.floor(Number(stats.completed))),
+        cancelled_count: Math.max(0, Math.floor(Number(stats.cancelled))),
+        failed_count: Math.max(0, Math.floor(Number(stats.failed))),
+        total_count: Math.max(0, Math.floor(Number(stats.all))),
+        updated_at: new Date(),
+      }
+
+      await this.prisma.job_queue_stats.upsert({
+        where: { queue_name: queueName },
+        create: {
+          queue_name: queueName,
+          ...data,
+        },
+        update: data,
+      })
+    } catch (error: any) {
+      this.logger.error('Failed to track queue stats', {
+        error,
+        context: { queueName, stats },
+      })
+    }
+  }
+
+  // Add method to get historical stats
+  async getQueueStatsHistory(queueName: string, hours: number = 24): Promise<any[]> {
+    return this.prisma.job_queue_stats.findMany({
+      where: {
+        queue_name: queueName,
+        updated_at: {
+          gte: new Date(Date.now() - hours * 60 * 60 * 1000),
+        },
+      },
+      orderBy: {
+        updated_at: 'desc',
+      },
+    })
+  }
+
   async trackJobExecutionMetrics(metrics: JobExecutionMetrics) {
     try {
       const performanceData = metrics.performance
@@ -366,36 +410,6 @@ export class MetricsService {
       })
     } else {
       await this.trackJobFailure(jobName, jobId, metrics.duration, metrics.error!, metrics.metadata)
-    }
-  }
-
-  async trackQueueStats(queueName: string, stats: QueueStats) {
-    this.logger.debug(`Tracking queue stats: ${queueName}`, stats)
-    try {
-      const data = {
-        created_count: Math.max(0, Math.floor(Number(stats.created))),
-        retry_count: Math.max(0, Math.floor(Number(stats.retry))),
-        active_count: Math.max(0, Math.floor(Number(stats.active))),
-        completed_count: Math.max(0, Math.floor(Number(stats.completed))),
-        cancelled_count: Math.max(0, Math.floor(Number(stats.cancelled))),
-        failed_count: Math.max(0, Math.floor(Number(stats.failed))),
-        total_count: Math.max(0, Math.floor(Number(stats.all))),
-        updated_at: new Date(),
-      }
-
-      await this.prisma.job_queue_stats.upsert({
-        where: { queue_name: queueName },
-        create: {
-          queue_name: queueName,
-          ...data,
-        },
-        update: data,
-      })
-    } catch (error: any) {
-      await this.logError('Failed to track queue stats', error, {
-        queueName,
-        stats,
-      })
     }
   }
 

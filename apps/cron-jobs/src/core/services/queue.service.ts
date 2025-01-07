@@ -5,6 +5,7 @@ import type { Pool } from 'pg'
 
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
+import { PrismaService } from './prisma.service'
 import type { WorkflowJob, WorkflowJobData } from '@types'
 
 export interface QueueOptions {
@@ -43,6 +44,7 @@ export class QueueService {
   private boss: PgBoss | null = null
   private pgPool: Pool | null = null
   private isStarted = false
+  private prisma: PrismaService
 
   constructor(
     private readonly connectionString: string,
@@ -50,8 +52,27 @@ export class QueueService {
     private readonly metrics: MetricsService,
   ) {
     this.logger.setDomain('jobs')
+    this.prisma = new PrismaService(logger)
   }
 
+  async start(): Promise<void> {
+    if (!this.boss) {
+      throw new Error('Queue service not initialized. Call init() first')
+    }
+
+    try {
+      await this.boss?.start()
+      this.isStarted = true
+      this.logger.info('Queue service started successfully')
+    } catch (error: any) {
+      this.logger.error('Failed to start queue service', {
+        error,
+      })
+      throw error
+    }
+  }
+
+  // Modify your init() method to include monitoring
   async init(): Promise<void> {
     try {
       const isSupabase = this.connectionString.includes('supabase')
@@ -76,7 +97,6 @@ export class QueueService {
       await this.pgPool.query('DROP SCHEMA IF EXISTS pgboss CASCADE')
       this.logger.info('Cleaned up existing pgboss schema')
 
-      // Initialize pg-boss
       this.boss = new PgBoss({
         db: {
           executeSql: async (text: string, values?: any[]) => {
@@ -86,14 +106,58 @@ export class QueueService {
         },
         schema: 'pgboss',
         application_name: 'jobs_service',
-        monitorStateIntervalMinutes: 1,
+        monitorStateIntervalMinutes: 1, // Check every minute
         archiveCompletedAfterSeconds: 43200,
         deleteAfterDays: 7,
         maintenanceIntervalMinutes: 5,
       })
 
-      this.setupEventHandlers()
-      this.logger.info('Queue service initialized')
+      // Set up event handlers for monitoring
+      this.boss.on('monitor-states', async (states) => {
+        this.logger.info('Queue health check', {
+          states,
+          timestamp: new Date().toISOString(),
+        })
+
+        try {
+          const stats = {
+            created: Number(states.created) || 0,
+            retry: Number(states.retry) || 0,
+            active: Number(states.active) || 0,
+            completed: Number(states.completed) || 0,
+            cancelled: Number(states.cancelled) || 0,
+            failed: Number(states.failed) || 0,
+            all: Object.values(states).reduce(
+              (sum: number, val: any) => sum + (Number(val) || 0),
+              0,
+            ),
+          }
+
+          await this.metrics.trackQueueStats('overall', stats)
+        } catch (error: any) {
+          this.logger.error('Failed to track queue stats', {
+            error,
+          })
+        }
+      })
+
+      // Monitor active workers
+      this.boss.on('wip', (workers) => {
+        this.logger.debug('Active workers', {
+          count: workers.length,
+          workers: workers.map((w) => ({
+            id: w.id,
+            name: w.name,
+            state: w.state,
+            count: w.count,
+            lastError: w.lastError,
+          })),
+          timestamp: new Date().toISOString(),
+        })
+      })
+
+      await this.boss.start()
+      this.logger.info('Queue service started successfully')
     } catch (error: any) {
       this.logger.error('Failed to initialize queue service', {
         error,
@@ -102,82 +166,223 @@ export class QueueService {
     }
   }
 
-  async start(): Promise<void> {
+  // Add a method to get queue statistics on demand
+  async getQueueStats(): Promise<Record<string, number>> {
     if (!this.boss) {
-      throw new Error('Queue service not initialized. Call init() first')
+      throw new Error('Queue service not initialized')
     }
 
+    // Use raw query to get stats since pg-boss doesn't expose direct API
+    const query = `
+      SELECT 
+        count(*) FILTER (WHERE state = 'created') as created,
+        count(*) FILTER (WHERE state = 'retry') as retry,
+        count(*) FILTER (WHERE state = 'active') as active,
+        count(*) FILTER (WHERE state = 'completed') as completed,
+        count(*) FILTER (WHERE state = 'failed') as failed,
+        count(*) FILTER (WHERE state = 'cancelled') as cancelled,
+        count(*) as total
+      FROM ${this.boss.constructor.name}.job
+    `
+
     try {
-      await this.boss?.start()
-      this.isStarted = true
-      this.logger.info('Queue service started successfully')
+      const result = await this.pgPool?.query(query)
+      return (
+        result?.rows[0] || {
+          created: 0,
+          retry: 0,
+          active: 0,
+          completed: 0,
+          failed: 0,
+          cancelled: 0,
+          total: 0,
+        }
+      )
     } catch (error: any) {
-      this.logger.error('Failed to start queue service', {
-        error,
-      })
+      this.logger.error('Failed to get queue stats', { error })
       throw error
     }
   }
 
-  private setupEventHandlers() {
-    // Error handling
-    this.boss?.on('error', (error: any) => {
-      this.logger.error('Queue error', {
-        ...error,
+  private async trackJobMetrics(jobName: string, jobId: string, data: JobMetricsData) {
+    try {
+      await this.prisma.job_metrics.upsert({
+        where: {
+          job_id: jobId,
+        },
+        create: {
+          job_id: jobId,
+          job_name: jobName,
+          started_at: new Date(),
+          status: data.status,
+          metadata: data.metadata || {},
+          error_message: data.error_message,
+          error_stack: data.error_stack,
+          duration_ms: data.duration_ms,
+          items_processed: data.items_processed,
+        },
+        update: {
+          status: data.status,
+          metadata: data.metadata,
+          error_message: data.error_message,
+          error_stack: data.error_stack,
+          duration_ms: data.duration_ms,
+          items_processed: data.items_processed,
+          updated_at: new Date(),
+          ...(data.status === 'completed' ? { completed_at: new Date() } : {}),
+          ...(data.status === 'failed' ? { failed_at: new Date() } : {}),
+        },
       })
-    })
+    } catch (error) {
+      this.logger.error('Failed to track job metrics', { error, jobName, jobId })
+    }
+  }
 
-    // State monitoring
-    this.boss?.on('monitor-states', async (states: any) => {
-      this.logger.debug('Queue states', {
-        states,
-        timestamp: new Date().toISOString(),
-      })
-      try {
-        const stats = {
-          created: Number(states.created) || 0,
-          retry: Number(states.retry) || 0,
-          active: Number(states.active) || 0,
-          completed: Number(states.completed) || 0,
-          cancelled: Number(states.cancelled) || 0,
-          failed: Number(states.failed) || 0,
-          all: Object.values(states).reduce((sum: number, val: any) => sum + (Number(val) || 0), 0),
+  async processJob(name: string, handler: (job: PgBoss.Job) => Promise<any>): Promise<void> {
+    if (!this.boss) throw new Error('Queue service not started')
+
+    try {
+      await this.boss.work(name, async (job) => {
+        const startTime = Date.now()
+
+        try {
+          // Track job start
+          await this.trackJobMetrics(name, job.id, {
+            status: 'active',
+            started_at: new Date(),
+          })
+
+          // Process the job
+          const result = await handler(job)
+
+          // Track successful completion
+          await this.trackJobMetrics(name, job.id, {
+            status: 'completed',
+            duration_ms: Date.now() - startTime,
+            items_processed: Array.isArray(result) ? result.length : undefined,
+            metadata: { result },
+          })
+
+          return { state: 'completed', result }
+        } catch (error: any) {
+          // Track failure
+          await this.trackJobMetrics(name, job.id, {
+            status: 'failed',
+            duration_ms: Date.now() - startTime,
+            error_message: error.message,
+            error_stack: error.stack,
+            metadata: { error: { message: error.message, stack: error.stack } },
+          })
+
+          throw error
         }
-        this.logger.debug('Tracking queue stats: overall')
-        await this.metrics.trackQueueStats('overall', stats)
-      } catch (error: any) {
-        this.logger.error('Failed to track queue stats', {
-          states,
-          error_message: error.message,
-          error_stack: error.stack,
-          timestamp: new Date().toISOString(),
-          ...error,
-        })
-      }
-    })
-
-    // Worker monitoring
-    this.boss?.on('wip', (workers) => {
-      this.logger.debug('Active workers', {
-        count: workers.length,
-        workers: workers.map((w) => ({
-          id: w.id,
-          name: w.name,
-          state: w.state,
-          count: w.count,
-          lastError: w.lastError,
-        })),
-        timestamp: new Date().toISOString(),
       })
-    })
+    } catch (error: any) {
+      this.logger.error(`Failed to register worker: ${name}`, { error })
+      throw error
+    }
+  }
 
-    // Lifecycle events
-    this.boss?.on('stopped', () => {
-      this.isStarted = false
-      this.logger.info('Queue service stopped', {
-        timestamp: new Date().toISOString(),
-      })
+  async getJobStats(
+    options: {
+      jobName?: string
+      status?: string
+      startDate?: Date
+      endDate?: Date
+    } = {},
+  ) {
+    const { jobName, status, startDate, endDate } = options
+
+    return this.prisma.job_metrics.groupBy({
+      by: ['job_name', 'status'],
+      where: {
+        ...(jobName && { job_name: jobName }),
+        ...(status && { status }),
+        ...(startDate && { created_at: { gte: startDate } }),
+        ...(endDate && { created_at: { lte: endDate } }),
+      },
+      _count: {
+        _all: true,
+      },
+      _avg: {
+        duration_ms: true,
+        items_processed: true,
+      },
     })
+  }
+
+  async getJobConfigs() {
+    return this.prisma.job_configs.findMany({
+      where: {
+        enabled: true,
+      },
+    })
+  }
+
+  async updateQueueStats(queueName: string, stats: Record<string, number>) {
+    await this.prisma.job_queue_stats.upsert({
+      where: { queue_name: queueName },
+      create: {
+        queue_name: queueName,
+        active_count: stats.active || 0,
+        created_count: stats.created || 0,
+        completed_count: stats.completed || 0,
+        failed_count: stats.failed || 0,
+        cancelled_count: stats.cancelled || 0,
+        retry_count: stats.retry || 0,
+        total_count: stats.total || 0,
+      },
+      update: {
+        active_count: stats.active || 0,
+        created_count: stats.created || 0,
+        completed_count: stats.completed || 0,
+        failed_count: stats.failed || 0,
+        cancelled_count: stats.cancelled || 0,
+        retry_count: stats.retry || 0,
+        total_count: stats.total || 0,
+        updated_at: new Date(),
+      },
+    })
+  }
+
+  // Add method to get job performance metrics
+  async getJobPerformanceMetrics(jobName: string, period: 'hour' | 'day' | 'week' = 'day') {
+    const startDate = new Date()
+    switch (period) {
+      case 'hour':
+        startDate.setHours(startDate.getHours() - 1)
+        break
+      case 'week':
+        startDate.setDate(startDate.getDate() - 7)
+        break
+      default:
+        startDate.setDate(startDate.getDate() - 1)
+    }
+
+    return this.prisma.job_metrics.findMany({
+      where: {
+        job_name: jobName,
+        created_at: { gte: startDate },
+      },
+      orderBy: { created_at: 'desc' },
+      select: {
+        status: true,
+        duration_ms: true,
+        items_processed: true,
+        created_at: true,
+        error_message: true,
+      },
+    })
+  }
+
+  // Add method to get stats for a specific queue
+  async getQueueSize(name: string): Promise<number | null> {
+    try {
+      return (await this.boss?.getQueueSize(name)) || 0
+    } catch (error: any) {
+      this.logger.error(`Failed to get queue size for ${name}`, { error })
+      return null
+    }
   }
 
   async stop(options: StopOptions = {}): Promise<void> {
@@ -272,23 +477,6 @@ export class QueueService {
       throw error
     }
   }
-
-  // need to fetch with raw SQL
-  // async getActiveJobs(name?: string): Promise<PgBoss.Job[]> {
-  //   if (!this.isStarted) {
-  //     throw new Error('Queue service not started')
-  //   }
-
-  //   try {
-  //     return await this.boss?.(name)
-  //   } catch (error: any) {
-  //     this.logger.error('Failed to get active jobs', {
-  //       ...error,
-  //       name,
-  //     })
-  //     throw error
-  //   }
-  // }
 
   async getSchedules() {
     if (!this.isStarted) {
@@ -457,77 +645,6 @@ export class QueueService {
       })
       throw error
     }
-  }
-
-  async processJob(name: string, handler: (job: PgBoss.Job<unknown>[]) => Promise<any>) {
-    if (!this.isStarted) throw new Error('Queue service not started')
-
-    try {
-      await this.boss?.work(name, async (job) => {
-        const startTime = Date.now()
-
-        try {
-          await this.createQueueIfNotExists(name)
-
-          this.logger.info(`Processing job: ${name}`, {
-            job: job,
-            startTime: new Date().toISOString(),
-          })
-
-          const result = await handler(job)
-
-          const duration = Date.now() - startTime
-          this.logger.info(`Job completed: ${name}`, {
-            duration,
-            result: JSON.stringify(result).slice(0, 1000), // Log first 1000 chars of result
-            endTime: new Date().toISOString(),
-          })
-
-          await this.metrics.trackJobCompletion(name, {
-            duration,
-            success: true,
-          })
-
-          return { state: 'completed', result }
-        } catch (error: any) {
-          const duration = Date.now() - startTime
-
-          this.logger.error(`Job failed: ${name}`, {
-            ...error,
-            job: JSON.stringify(job),
-            duration,
-            error_message: error.message,
-            error_stack: error.stack,
-            failTime: new Date().toISOString(),
-          })
-
-          await this.metrics.trackJobCompletion(name, {
-            duration,
-            success: false,
-            error,
-          })
-
-          throw error
-        }
-      })
-
-      this.logger.info(`Worker registered for: ${name}`, {
-        timestamp: new Date().toISOString(),
-      })
-    } catch (error: any) {
-      this.logger.error(`Failed to register worker: ${name}`, {
-        ...error,
-        error_message: error.message,
-        error_stack: error.stack,
-        timestamp: new Date().toISOString(),
-      })
-      throw error
-    }
-  }
-
-  // Queue management
-  async getQueueSize(name: string) {
-    return this.boss?.getQueueSize(name)
   }
 
   async purgeQueue(name: string) {

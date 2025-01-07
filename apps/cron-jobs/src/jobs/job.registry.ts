@@ -65,6 +65,7 @@ export class JobRegistry {
   async registerJob<TInput, TProcessed, TOutput>(config: JobConfig<TInput, TProcessed, TOutput>) {
     try {
       // Store job config
+      const { logger } = this.services
       this.jobs.set(config.name, config)
 
       // Create version record
@@ -74,9 +75,13 @@ export class JobRegistry {
       await this.services.queue.processJob(config.name, async (job) => {
         try {
           // Execute job handlers in sequence
+          logger.info(`Starting job: ${job.name}:${config.name}`)
           const input = (await config.handlers.beforeProcess?.()) || []
+          logger.info(`Processing job: ${job.name}:${config.name}`)
           const processed = await config.handlers.processFunction(input, job)
+          logger.info(`Storing job data: ${job.name}:${config.name}`)
           const output = (await config.handlers.afterProcess?.(processed)) || processed
+          logger.info(`Job completed: ${job.name}:${config.name}`)
 
           return output
         } catch (error: any) {
