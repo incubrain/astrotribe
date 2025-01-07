@@ -58,12 +58,17 @@ export class Application {
       // Initialize and start queue service
       this.services.logger.info('Initializing queue service')
       await this.services.queue.init()
+
+      // Get current stats
+      const stats = await this.services.queue.getQueueStats()
+      this.services.logger.info('Current queue stats', { stats })
       await this.services.queue.start()
 
       await this.jobRegistry.initialize()
 
-      this.services.logger.info('Application started successfully')
-
+      const history = await this.services.metrics.getQueueStatsHistory('news_links', 24)
+      this.services.logger.info('Queue stats history', { history })
+      
       if (jobName) {
         await this.jobRegistry.testJob(jobName)
       }

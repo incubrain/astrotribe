@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "pnpm nx lint",
     "test": "pnpm pnpm nx test",
-    "dev": "pnpm nx serve",
+    "dev": "NODE_OPTIONS='--experimental-loader=ts-node/esm' pnpm nx serve",
     "build": "pnpm nx build",
     "start": "node dist/src/index.js"
   },
@@ -21,7 +21,6 @@
     "@prisma/client": "^6.0.1",
     "@supabase/supabase-js": "^2.47.8",
     "@tensorflow/tfjs": "^4.22.0",
-    "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "axios": "^1.7.7",
     "cheerio": "^1.0.0",
     "chrono-node": "^2.7.7",
@@ -40,7 +39,24 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
+    "@supabase/auth-js": "^2.67.3",
+    "@supabase/functions-js": "^2.4.4",
+    "@supabase/node-fetch": "^2.6.13",
+    "@supabase/postgrest-js": "^1.17.9",
+    "@supabase/realtime-js": "^2.11.3",
+    "@supabase/storage-js": "^2.7.1",
+    "@tensorflow/tfjs-backend-cpu": "^4.22.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.22.0",
+    "@tensorflow/tfjs-converter": "^4.22.0",
+    "@tensorflow/tfjs-core": "^4.22.0",
+    "@tensorflow/tfjs-data": "^4.22.0",
+    "@tensorflow/tfjs-layers": "^4.22.0",
+    "@types/node": "^22.10.5",
     "@types/turndown": "^5.0.5",
+    "long": "^5.2.3",
+    "seedrandom": "^3.0.5",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
     "vite": "^6.0.6",
     "vite-node": "^2.1.8"
   }
