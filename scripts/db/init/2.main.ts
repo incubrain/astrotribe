@@ -6,10 +6,8 @@ import client from '../client'
 import { generatePermissions } from '../update/generate-permissions'
 import { databaseConfig } from './1.config'
 import { setAdminUser } from './create-admin'
-import { enableRLSOnAllTables } from './enable-rls'
 import { updateDatabasePermissions } from './upsert-permissions'
 import { runSeeders } from './seeders/run-seeders'
-import { updateRLSPolicies } from './create-rls-policies'
 import { refreshDatabaseViews } from './refresh-views'
 
 async function main() {
@@ -46,26 +44,6 @@ async function main() {
         throw new Error('Failed to update permissions')
       }
       console.log(chalk.green('✓ Database permissions updated'))
-    }
-
-    // 5. Enable RLS
-    if (databaseConfig.steps.enableRLS) {
-      console.log(chalk.blue('\n🔒 Enabling Row Level Security...'))
-      const rlsEnabled = await enableRLSOnAllTables(client)
-      if (!rlsEnabled) {
-        throw new Error('Failed to enable RLS')
-      }
-      console.log(chalk.green('✓ RLS enabled'))
-    }
-
-    // 6. Update RLS Policies
-    if (databaseConfig.steps.updateRLSPolicies) {
-      console.log(chalk.blue('\n🔒 Updating RLS policies...'))
-      const policiesUpdated = await updateRLSPolicies(client)
-      if (!policiesUpdated) {
-        throw new Error('Failed to update RLS policies')
-      }
-      console.log(chalk.green('✓ RLS policies updated'))
     }
 
     // Refresh database views
