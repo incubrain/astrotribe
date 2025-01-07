@@ -1,46 +1,34 @@
-// import { DB } from '@gen'
-import { Router } from 'express'
-import razorpay from '../payment-providers/razorpay'
-
-const router = Router()
+import { serverSupabaseClient } from '#supabase/server'
 
 // Fetch all plans
 export default defineEventHandler(async (event) => {
+  const { apiURL } = useRuntimeConfig().public
+  const supabase = await serverSupabaseClient(event)
   const log = useServerLogger()
+
   try {
-    const plans = await razorpay.plans.all()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
 
-    const response = await Promise.all(
-      plans.items.map((plan) =>
-        DB.CustomerSubscriptionPlans.query()
-          .insert({
-            external_plan_id: plan.id,
-            name: plan.item.name,
-            description: plan.item.description,
-            interval: plan.interval,
-            interval_type: plan.period,
-            monthly_amount: plan.item.amount,
-            annual_amount: plan.item.amount,
-            currency: plan.item.currency,
-            features: DB.CustomerSubscriptionPlans.knex().raw('ARRAY[?]::text[]', [plan.notes]),
-            is_active: plan.item.active,
-            created_at: new Date(plan.item.created_at * 1000).toISOString(),
-            updated_at: new Date(plan.item.updated_at * 1000).toISOString(),
-          })
-          .onConflict('external_plan_id')
-          .merge('*'),
-      ),
-    )
-
-    return response
-  } catch (error) {
-    log.error('Failed to fetch plans', {
-      error,
-      domain: 'customers',
-      action: 'fetching',
-      status: 'error',
-      severity: 'medium',
+    if (!session?.access_token) {
+      throw new Error('No authentication session found')
+    }
+    
+    const { data, meta, success } = await $fetch(`${apiURL}/api/v1/payments/plans`, {
+      headers: {
+        'Authorization': `Bearer ${session.access_token}`,
+      }
     })
+
+    if (!success) {
+      log.error('Get Plans', meta)
+      throw new Error('Could not get plans')
+    }
+
+    return data
+  } catch (error) {
+    log.error('Get Plans', error)
     return error
   }
 })
