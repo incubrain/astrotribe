@@ -21,6 +21,54 @@ const env = useRuntimeConfig().public
 const notification = useNotification()
 const supabase = useSupabaseClient()
 
+const customEndpoint = ref<Endpoint>({
+  method: 'GET',
+  path: '',
+  description: 'Custom Endpoint',
+  isLoading: false,
+  responseStr: '',
+  response: null,
+})
+
+const testCustomEndpoint = async () => {
+  if (!customEndpoint.value.path.trim()) {
+    notification.error({
+      summary: 'Validation Error',
+      message: 'Endpoint path cannot be empty.',
+    })
+    return
+  }
+
+  if (!(await checkSession())) return
+
+  try {
+    customEndpoint.value.isLoading = true
+    addLog(`Testing custom ${customEndpoint.value.method} ${customEndpoint.value.path}`)
+
+    const api = createApi()
+    const data = await api(customEndpoint.value.path, {
+      method: customEndpoint.value.method,
+      credentials: 'include',
+    })
+
+    customEndpoint.value.response = { status: 200, data }
+    customEndpoint.value.responseStr = JSON.stringify(data, null, 2)
+
+    addLog(`Custom ${customEndpoint.value.method} ${customEndpoint.value.path}: 200 OK`)
+  } catch (error: any) {
+    customEndpoint.value.response = {
+      status: error.status || 500,
+      data: { error: error.message },
+    }
+    customEndpoint.value.responseStr = JSON.stringify({ error: error.message }, null, 2)
+    addLog(
+      `Custom ${customEndpoint.value.method} ${customEndpoint.value.path}: ${error.status || 500} Error`,
+    )
+  } finally {
+    customEndpoint.value.isLoading = false
+  }
+}
+
 const url = ref<string>(String(env.apiURL ?? 'http://localhost:8080'))
 const isLoading = ref<boolean>(false)
 const logs = ref<string[]>([])
@@ -54,6 +102,14 @@ const endpoints = ref<Endpoint[]>([
     method: 'GET',
     path: '/api/v1/health',
     description: 'Check API health status',
+    isLoading: false,
+    responseStr: '',
+    response: null,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/job-metrics',
+    description: 'Check Cron Job Metrics',
     isLoading: false,
     responseStr: '',
     response: null,
@@ -228,17 +284,17 @@ const formatResponse = (response: string): string => {
             >API URL</label
           >
           <input
-            v-model="url"
             id="apiURL"
+            v-model="url"
             type="text"
             class="w-full rounded-lg border border-gray-800 bg-gray-900 px-4 py-2.5 text-white placeholder-gray-500 focus:border-primary focus:outline-none"
             placeholder="Enter API URL"
           />
         </div>
         <button
-          @click="testConnection"
-          :disabled="isLoading"
           class="mt-6 flex h-10 items-center gap-2 rounded-lg bg-primary px-4 font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50"
+          :disabled="isLoading"
+          @click="testConnection"
         >
           <div
             v-if="isLoading"
@@ -246,6 +302,60 @@ const formatResponse = (response: string): string => {
           />
           <span>Test Connection</span>
         </button>
+      </div>
+
+      <div class="mb-8 rounded-lg bg-gray-900 p-4">
+        <h3 class="mb-2 text-lg font-medium text-white">Test Custom Endpoint</h3>
+        <div class="flex items-center gap-4">
+          <!-- Method Dropdown -->
+          <select
+            v-model="customEndpoint.method"
+            class="rounded-lg border border-gray-800 bg-gray-900 px-4 py-2 text-white"
+          >
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+
+          <!-- Path Input -->
+          <input
+            v-model="customEndpoint.path"
+            type="text"
+            class="flex-1 rounded-lg border border-gray-800 bg-gray-900 px-4 py-2 text-white placeholder-gray-500"
+            placeholder="Enter endpoint path (e.g., /api/v1/custom)"
+          />
+
+          <!-- Test Button -->
+          <button
+            class="flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-white hover:bg-primary-dark disabled:opacity-50"
+            :disabled="customEndpoint.isLoading"
+            @click="testCustomEndpoint"
+          >
+            <div
+              v-if="customEndpoint.isLoading"
+              class="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"
+            ></div>
+            <span>Test</span>
+          </button>
+        </div>
+
+        <!-- Response Display -->
+        <div
+          v-if="customEndpoint.response"
+          class="mt-4"
+        >
+          <div class="mb-2 flex items-center gap-2">
+            <span class="text-sm font-medium text-gray-400">Response</span>
+            <span :class="[getStatusColor(customEndpoint.response.status), 'text-sm font-medium']">
+              Status: {{ customEndpoint.response.status }}
+            </span>
+          </div>
+          <pre
+            class="max-h-96 overflow-auto rounded-lg bg-gray-950 p-4 font-mono text-sm text-gray-300"
+            >{{ formatResponse(customEndpoint.responseStr) }}</pre
+          >
+        </div>
       </div>
 
       <!-- Endpoints -->
