@@ -20,13 +20,12 @@ console.log('Article:', p.article)
         :category="article.category"
         class="p-4"
       />
-      <NuxtImg
+      <BlogMedia
         v-if="article.cover?.url"
-        provider="strapi"
-        :src="article.cover.url.replace('/uploads/', '')"
-        width="400"
-        height="300"
-        quality="80"
+        :url="article.cover.url"
+        :alt="article.cover.alternativeText || article.title"
+        :width="400"
+        :height="300"
         class="aspect-video w-full object-cover"
       />
       <div

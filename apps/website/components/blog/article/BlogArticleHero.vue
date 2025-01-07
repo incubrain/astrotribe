@@ -2,13 +2,12 @@
   <div class="foreground relative flex w-full items-center justify-center pb-12 pt-16">
     <div class="flex w-full max-w-[1140px] flex-col">
       <IBBreadcrumbs class="px-4 py-10" />
-      <NuxtImg
-        v-if="article.cover"
-        provider="strapi"
-        :src="article.cover.url.replace('/uploads/', '')"
+      <BlogMedia
+        v-if="article.cover?.url"
+        :url="article.cover.url"
+        :alt="article.cover.alternativeText || article.title"
         :width="article.cover.width"
         :height="article.cover.height"
-        :alt="article.cover.alternativeText || article.title"
         class="relative md:rounded-md"
       />
       <div
