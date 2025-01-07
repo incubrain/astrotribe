@@ -13,8 +13,12 @@ import type {
   ViewMetadata,
   ComputedColumnMetadata,
   ValidationRule,
+  DocumentationMetadata,
+  FieldMetadata,
 } from '../types'
 import type { DMMF } from '@prisma/generator-helper'
+import { join } from 'path'
+import { TemplateEngine } from '../templates/template.engine'
 
 /**
  * Base generator class that orchestrates the DTO generation process.
@@ -27,6 +31,7 @@ export abstract class BaseGenerator {
   protected documentationParser: DocumentationParser
   protected typeMapper: TypeMapper
   protected openApiGenerator: OpenAPIMetadataGenerator
+  protected isReady = false
 
   constructor(
     protected readonly dmmf: DMMF.Document,
@@ -41,8 +46,35 @@ export abstract class BaseGenerator {
       outputPath: this.options.outputPath,
       typescript: this.options.typescript,
       validation: this.options.validation,
-      documentation: this.options.documentation
+      documentation: this.options.documentation,
     })
+  }
+
+  async ensureInitialized(): Promise<void> {
+    if (!this.isReady) {
+      console.log('Initialization required. Running initialize()...')
+      await this.initialize()
+      this.isReady = true
+    }
+  }
+
+  async initialize(): Promise<void> {
+    if (this.isReady) {
+      return
+    }
+
+    const __dirname = new URL('.', import.meta.url).pathname
+    const templatesPath = join(__dirname, '..', 'templates')
+    console.log('Initializing template engine with templates path:', templatesPath)
+
+    try {
+      await TemplateEngine.initialize(templatesPath)
+      this.isReady = true
+      console.log('Template engine initialized successfully')
+    } catch (error) {
+      console.error('Error initializing template engine:', error)
+      throw error
+    }
   }
 
   /**
@@ -50,14 +82,14 @@ export abstract class BaseGenerator {
    * Each step is isolated and can be enabled/disabled via options.
    */
   async generate(): Promise<void> {
-    console.log('Starting DTO generation...')
-
     // Create necessary directories
+    console.log('Creating directories...')
     await this.fileManager.initializeDirectory()
-    console.log('Directory initialized')
 
     // Process each model
-    console.log(`Processing ${this.dmmf.datamodel.models.length} models`)
+    console.log('Processing models from DMMF...')
+    console.log('Number of models:', this.dmmf.datamodel.models.length)
+
     for (const model of this.dmmf.datamodel.models) {
       console.log(`Processing model: ${model.name}`)
       const metadata = await this.processModel(model)
@@ -65,37 +97,45 @@ export abstract class BaseGenerator {
       // Generate different artifacts based on options
       const files: GeneratedFile[] = []
 
-      if (this.options.typescript.generateInterfaces) {
+      if (this.options.typescript?.generateInterfaces) {
         console.log(`Generating interface for ${model.name}`)
         files.push(await this.generateInterface(metadata))
       }
 
-      if (this.options.validation.enabled) {
-        files.push(await this.generateValidatedDTO(metadata))
-      }
+      // Always generate DTOs
+      console.log(`Generating DTO for ${model.name}`)
+      files.push(await this.generateValidatedDTO(metadata))
 
-      if (this.options.typescript.generateTypeGuards) {
+      if (this.options.typescript?.generateTypeGuards) {
+        console.log(`Generating type guard for ${model.name}`)
         files.push(await this.generateTypeGuard(metadata))
       }
 
-      if (this.options.validation.useZod) {
+      if (this.options.validation?.useZod) {
+        console.log(`Generating Zod schema for ${model.name}`)
         files.push(await this.generateZodSchema(metadata))
       }
 
       // Write all generated files
       console.log(`Writing ${files.length} files for ${model.name}`)
-      await Promise.all(files.map((file) => this.fileManager.writeFile(file.path, file.content)))
+      await Promise.all(
+        files.map((file) => {
+          console.log(`Writing file: ${file.path}`)
+          return this.fileManager.writeFile(file.path, file.content)
+        }),
+      )
     }
 
     // Generate auxiliary files
-    if (this.options.documentation.enabled) {
+    if (this.options.documentation?.enabled) {
+      console.log('Generating documentation...')
       await this.generateDocumentation()
     }
 
+    console.log('Generating index file...')
     await this.generateIndexFile()
+    console.log('Generating utility files...')
     await this.generateUtilityFiles()
-
-    console.log('DTO generation completed')
   }
 
   /**
@@ -121,7 +161,7 @@ export abstract class BaseGenerator {
       name: model.name,
       documentation,
       fields,
-      relationships: this.processRelationships(model),
+      relations: this.processRelationships(model),
       isView,
       viewMetadata,
     }
@@ -296,6 +336,7 @@ export abstract class BaseGenerator {
         type: field.type,
         relationType: this.determineRelationType(field),
         isRequired: field.isRequired,
+        isArray: field.isList,
         foreign: {
           model: field.type,
           field: field.relationFromFields?.[0] || '',

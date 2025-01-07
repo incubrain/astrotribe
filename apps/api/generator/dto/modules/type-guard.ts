@@ -1,5 +1,5 @@
 // tools/generators/dto/modules/type-guards.ts
-import { ModelMetadata, FieldMetadata } from '../core/types'
+import { ModelMetadata, FieldMetadata } from '../types'
 import { TypeMapper } from '../utils/type-mapper'
 
 /**

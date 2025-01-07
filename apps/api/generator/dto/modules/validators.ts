@@ -1,5 +1,11 @@
 // tools/generators/dto/modules/validators.ts
-import type { ValidationRule, FieldMetadata, ModelMetadata } from '../core/types'
+import { TemplateEngine } from '../templates/template.engine'
+import type {
+  ValidationRule,
+  ModelMetadata,
+  FieldMetadata,
+  ValidationRuleDefinition,
+} from '../types'
 
 /**
  * Enhanced ValidationGenerator that infers validation rules from database constraints
@@ -8,169 +14,259 @@ import type { ValidationRule, FieldMetadata, ModelMetadata } from '../core/types
 export class ValidationGenerator {
   /**
    * Generates comprehensive validation rules by combining explicit decorators
-   * with inferred rules from database constraints.
+   * with inferred rules from database constraints
    */
   async generateValidationRules(model: ModelMetadata): Promise<ValidationRule[]> {
-    // Start with basic validation rules
-    let rules = await this.getBasicValidationRules(model)
+    const context = {
+      model,
+      fields: await this.processFields(model.fields),
+      customRules: await this.generateCustomRules(model),
+      crossFieldRules: await this.generateCrossFieldRules(model),
+      isView: model.isView,
+    }
 
-    // Add database constraint validations
-    rules = [
+    const content = TemplateEngine.process('schema/validation', context)
+    const rules = await this.parseValidationContent(content)
+
+    return [
       ...rules,
       ...(await this.inferDatabaseConstraints(model)),
       ...(await this.generateCheckConstraints(model)),
       ...(await this.generateUniqueConstraints(model)),
       ...(await this.generateForeignKeyValidation(model)),
-      ...(await this.generateCrossFieldValidation(model)),
     ]
-
-    return rules
   }
 
   /**
-   * Generates basic validation rules that apply to all models, independent
-   * of database constraints. These rules form the foundation of our validation
-   * strategy and are complemented by more specific rules from other sources.
+   * Parse validation content into validation rules
    */
-  private async getBasicValidationRules(model: ModelMetadata): Promise<ValidationRule[]> {
+  private async parseValidationContent(content: string): Promise<ValidationRule[]> {
     const rules: ValidationRule[] = []
+    const lines = content.split('\n')
 
-    // Add type-specific validation for each field
-    for (const field of model.fields) {
-      // Add basic presence validation
-      if (field.isRequired) {
+    for (const line of lines) {
+      const match = line.match(/@Validate\((.*?)\)/)
+      if (match) {
+        const [decorator, ...params] = match[1].split(',').map((p) => p.trim())
         rules.push({
-          decorator: 'IsNotEmpty',
-          message: `${field.name} is required`,
-        })
-      } else {
-        rules.push({
-          decorator: 'IsOptional',
+          decorator,
+          params,
+          message: `${decorator} validation failed`,
         })
       }
-
-      // Add type-specific validation
-      const typeRules = this.getTypeSpecificValidation(field)
-      rules.push(...typeRules)
-
-      // Add any explicitly defined validation from documentation
-      const docRules = this.parseValidationFromDocumentation(field)
-      rules.push(...docRules)
     }
 
     return rules
   }
 
   /**
-   * Determines specific validation rules based on the field's type.
-   * Each type has its own set of appropriate validators to ensure
-   * data integrity and type safety.
+   * Process fields to determine their validation requirements
    */
-  private getTypeSpecificValidation(field: FieldMetadata): ValidationRule[] {
-    const rules: ValidationRule[] = []
+  private async processFields(fields: FieldMetadata[]): Promise<any[]> {
+    return fields.map((field) => ({
+      ...field,
+      validations: this.getFieldValidations(field),
+      constraints: this.extractConstraints(field),
+      documentation: field.documentation,
+    }))
+  }
 
-    switch (field.type) {
+  /**
+   * Get validation rules for a field based on its type and metadata
+   */
+  private getFieldValidations(field: FieldMetadata): ValidationRuleDefinition[] {
+    const rules: ValidationRuleDefinition[] = []
+
+    // Required validation
+    if (field.isRequired) {
+      rules.push({
+        name: 'required',
+        decorator: 'IsNotEmpty',
+        message: `${field.name} is required`,
+      })
+    }
+
+    // Type-specific validation
+    switch (field.type.toLowerCase()) {
       case 'string':
         rules.push({
+          name: 'string',
           decorator: 'IsString',
           message: `${field.name} must be a string`,
         })
         break
-
       case 'number':
+      case 'int':
+      case 'float':
         rules.push({
+          name: 'number',
           decorator: 'IsNumber',
-          params: [{ allowNaN: false, allowInfinity: false }],
-          message: `${field.name} must be a valid number`,
+          message: `${field.name} must be a number`,
         })
         break
-
       case 'boolean':
         rules.push({
+          name: 'boolean',
           decorator: 'IsBoolean',
           message: `${field.name} must be a boolean`,
         })
         break
-
-      case 'Date':
+      case 'date':
+      case 'datetime':
         rules.push({
+          name: 'date',
           decorator: 'IsDate',
           message: `${field.name} must be a valid date`,
         })
         break
-
-      case 'array':
-        if (field.isArray) {
-          rules.push({
-            decorator: 'IsArray',
-            message: `${field.name} must be an array`,
-          })
-          // Add item type validation if specified
-          const itemType = field.arrayItemType
-          if (itemType) {
-            rules.push({
-              decorator: 'ArrayItems',
-              params: [itemType],
-              message: `Each item in ${field.name} must be of type ${itemType}`,
-            })
-          }
-        }
-        break
     }
+
+    // Add additional validations from documentation
+    this.addValidationsFromDocs(field, rules)
 
     return rules
   }
 
   /**
-   * Extracts validation rules from field documentation comments.
-   * This allows developers to specify additional validation requirements
-   * through documentation annotations.
+   * Extract validations from field documentation
    */
-  private parseValidationFromDocumentation(field: FieldMetadata): ValidationRule[] {
-    const rules: ValidationRule[] = []
-    const docs = field.documentation.description
+  private addValidationsFromDocs(field: FieldMetadata, rules: ValidationRuleDefinition[]): void {
+    const docs = field.documentation?.description || ''
 
-    // Parse @validate annotations
-    const validateMatches = docs.match(/@validate\((.*?)\)/g) || []
-    for (const match of validateMatches) {
-      const [decorator, ...params] = match
-        .replace('@validate(', '')
-        .replace(')', '')
-        .split(',')
-        .map((param) => param.trim())
-
-      rules.push({
-        decorator,
-        params: params.length ? params : undefined,
-      })
-    }
-
-    // Parse common validation patterns
+    // Email validation
     if (docs.includes('@email')) {
       rules.push({
+        name: 'email',
         decorator: 'IsEmail',
         message: `${field.name} must be a valid email address`,
       })
     }
 
-    if (docs.includes('@url')) {
-      rules.push({
-        decorator: 'IsUrl',
-        message: `${field.name} must be a valid URL`,
-      })
-    }
-
-    // Parse length requirements
+    // Length validation
     const lengthMatch = docs.match(/@length\((\d+),(\d+)\)/)
     if (lengthMatch) {
       rules.push({
+        name: 'length',
         decorator: 'Length',
-        params: [parseInt(lengthMatch[1]), parseInt(lengthMatch[2])],
+        parameters: [lengthMatch[1], lengthMatch[2]],
         message: `${field.name} must be between ${lengthMatch[1]} and ${lengthMatch[2]} characters`,
       })
     }
 
+    // Custom validations
+    const validateMatches = docs.matchAll(/@validate\((.*?)\)/g)
+    for (const match of validateMatches) {
+      const [decorator, ...params] = match[1].split(',').map((p) => p.trim())
+      rules.push({
+        name: decorator.toLowerCase(),
+        decorator,
+        parameters: params.length ? params : undefined,
+        message: `${field.name} failed ${decorator} validation`,
+      })
+    }
+  }
+
+  /**
+   * Extract database constraints from field metadata
+   */
+  private extractConstraints(field: FieldMetadata): any {
+    const constraints: any = {}
+    const docs = field.documentation?.description || ''
+
+    // Extract length constraints
+    const lengthMatch = docs.match(/@length\((\d+)\)/)
+    if (lengthMatch) {
+      constraints.maxLength = parseInt(lengthMatch[1])
+    }
+
+    // Extract numeric precision
+    const precisionMatch = docs.match(/@precision\((\d+),(\d+)\)/)
+    if (precisionMatch) {
+      constraints.numericPrecision = parseInt(precisionMatch[1])
+      constraints.numericScale = parseInt(precisionMatch[2])
+    }
+
+    return constraints
+  }
+
+  /**
+   * Generate custom validation rules for the model
+   */
+  private async generateCustomRules(model: ModelMetadata): Promise<ValidationRuleDefinition[]> {
+    const rules: ValidationRuleDefinition[] = []
+
+    if (model.isView) {
+      rules.push({
+        name: 'view',
+        decorator: 'IsViewDTO',
+        message: `This DTO represents a view: ${model.name}`,
+      })
+
+      // Add computed column validations
+      model.viewMetadata?.computedColumns.forEach((column) => {
+        rules.push({
+          name: 'computed',
+          decorator: 'IsComputed',
+          parameters: [column.name],
+          message: `${column.name} is a computed field`,
+        })
+      })
+    }
+
     return rules
+  }
+
+  /**
+   * Generate validation rules for relationships between fields
+   */
+  private async generateCrossFieldRules(model: ModelMetadata): Promise<ValidationRuleDefinition[]> {
+    const rules: ValidationRuleDefinition[] = []
+
+    // Date range validation
+    const dateFields = model.fields.filter(
+      (field) => field.type.toLowerCase() === 'date' || field.type.toLowerCase() === 'datetime',
+    )
+
+    if (dateFields.length >= 2) {
+      rules.push({
+        name: 'dateRange',
+        decorator: 'ValidateDateRange',
+        parameters: [dateFields.map((f) => f.name)],
+        message: 'End date must be after start date',
+      })
+    }
+
+    // Dependent field validation
+    const dependentFields = this.findDependentFields(model)
+    for (const { main, dependent } of dependentFields) {
+      rules.push({
+        name: 'dependent',
+        decorator: 'ValidateDependent',
+        parameters: [main, dependent],
+        message: `${dependent} is required when ${main} is provided`,
+      })
+    }
+
+    return rules
+  }
+
+  /**
+   * Find fields that have dependencies on other fields
+   */
+  private findDependentFields(model: ModelMetadata): Array<{ main: string; dependent: string }> {
+    const dependencies: Array<{ main: string; dependent: string }> = []
+
+    model.fields.forEach((field) => {
+      const dependencyMatch = field.documentation?.description.match(/@depends-on\s+(\w+)/)
+      if (dependencyMatch) {
+        dependencies.push({
+          main: dependencyMatch[1],
+          dependent: field.name,
+        })
+      }
+    })
+
+    return dependencies
   }
 
   /**
@@ -318,7 +414,7 @@ export class ValidationGenerator {
   private async generateForeignKeyValidation(model: ModelMetadata): Promise<ValidationRule[]> {
     const rules: ValidationRule[] = []
 
-    for (const relationship of model.relationships) {
+    for (const relationship of model.relations) {
       rules.push({
         decorator: 'ValidateExists',
         params: [relationship.foreign.model, relationship.foreign.field],
@@ -327,56 +423,6 @@ export class ValidationGenerator {
     }
 
     return rules
-  }
-
-  /**
-   * Generates sophisticated cross-field validation rules based on
-   * business logic and field relationships.
-   */
-  private async generateCrossFieldValidation(model: ModelMetadata): Promise<ValidationRule[]> {
-    const rules: ValidationRule[] = []
-
-    // Example: Date range validation
-    const dateFields = model.fields.filter((field) => field.type === 'Date')
-    if (dateFields.length >= 2) {
-      rules.push({
-        decorator: 'ValidateDateRange',
-        params: [dateFields.map((f) => f.name)],
-        message: 'End date must be after start date',
-      })
-    }
-
-    // Example: Dependent field validation
-    const dependentFields = this.findDependentFields(model)
-    for (const { main, dependent } of dependentFields) {
-      rules.push({
-        decorator: 'ValidateDependent',
-        params: [main, dependent],
-        message: `${dependent} is required when ${main} is provided`,
-      })
-    }
-
-    return rules
-  }
-
-  /**
-   * Helper method to find fields that have dependencies on other fields
-   * based on database constraints or documentation.
-   */
-  private findDependentFields(model: ModelMetadata): Array<{ main: string; dependent: string }> {
-    const dependencies: Array<{ main: string; dependent: string }> = []
-
-    for (const field of model.fields) {
-      const dependencyMatch = field.documentation.description.match(/@depends-on\s+(\w+)/)
-      if (dependencyMatch) {
-        dependencies.push({
-          main: dependencyMatch[1],
-          dependent: field.name,
-        })
-      }
-    }
-
-    return dependencies
   }
 
   /**

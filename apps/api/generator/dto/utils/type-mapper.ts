@@ -1,4 +1,5 @@
 // tools/generators/dto/utils/type-mapper.ts
+import type { FieldMetadata } from '../types'
 
 /**
  * Maps Prisma types to TypeScript types
@@ -32,6 +33,23 @@ export class TypeMapper {
   }
 
   /**
+   * Maps a field to its TypeScript type, handling arrays and optional types
+   */
+  mapFieldType(field: FieldMetadata): string {
+    let baseType = this.mapType(field.type)
+
+    if (field.enum?.length) {
+      baseType = field.enum.map((v) => `'${v}'`).join(' | ')
+    }
+
+    if (field.isArray) {
+      baseType = `${baseType}[]`
+    }
+
+    return baseType
+  }
+
+  /**
    * Maps a Prisma type to a TypeScript type
    */
   mapType(type: string): string {
@@ -49,24 +67,53 @@ export class TypeMapper {
       }
     }
 
-    console.warn(`No explicit mapping found for type: ${type}. Defaulting to 'unknown'`)
+    // Handle unknown types
+    console.warn(`Unknown type: ${type}, defaulting to 'unknown'`)
     return 'unknown'
   }
 
+  // ZOD TYPES
+
+  private readonly zodTypeMap: Record<string, string> = {
+    String: 'string',
+    string: 'string',
+    Boolean: 'boolean',
+    boolean: 'boolean',
+    Int: 'number',
+    Float: 'number',
+    number: 'number',
+    BigInt: 'bigint',
+    bigint: 'bigint',
+    Decimal: 'number',
+    decimal: 'number',
+    DateTime: 'date',
+    Date: 'date',
+    date: 'date',
+    Json: 'record(z.unknown())',
+    json: 'record(z.unknown())',
+    Bytes: 'instanceof(Buffer)',
+    bytes: 'instanceof(Buffer)',
+  }
+
   /**
-   * Maps a Prisma field to a TypeScript type
+   * Maps a field to its Zod type, handling arrays and optional types
    */
-  mapPrismaToTypeScript(field: { type: string; isList: boolean; kind?: string }): string {
-    let baseType = this.mapType(field.type)
+  mapToZodType(field: FieldMetadata): string {
+    let baseType = this.getZodType(field.type)
 
     // Handle enums
-    if (field.kind === 'enum') {
-      baseType = field.type
+    if (field.enum?.length) {
+      baseType = `enum([${field.enum.map((v) => `'${v}'`).join(', ')}])`
     }
 
     // Handle arrays
-    if (field.isList) {
-      baseType = `${baseType}[]`
+    if (field.isArray) {
+      baseType = `array(z.${baseType}())`
+    }
+
+    // Handle nullable/optional
+    if (!field.isRequired) {
+      baseType = `${baseType}.nullable()`
     }
 
     return baseType
@@ -75,7 +122,27 @@ export class TypeMapper {
   /**
    * Maps a Prisma type to a Zod type
    */
-  mapToZodType(type: string): string {
+  private getZodType(type: string): string {
+    // Try exact match first
+    const zodType = this.zodTypeMap[type]
+    if (zodType) {
+      return zodType
+    }
+
+    // Try case-insensitive match
+    const lowerType = type.toLowerCase()
+    for (const [key, value] of Object.entries(this.zodTypeMap)) {
+      if (key.toLowerCase() === lowerType) {
+        return value
+      }
+    }
+
+    // Handle unknown types
+    console.warn(`Unknown type for Zod mapping: ${type}, defaulting to 'any'`)
+    return 'any()'
+  }
+
+  mapPrismaToZod(type: string): string {
     switch (type.toLowerCase()) {
       case 'string':
         return 'string'
@@ -84,27 +151,42 @@ export class TypeMapper {
       case 'int':
       case 'float':
       case 'decimal':
-      case 'number':
         return 'number'
-      case 'bigint':
-        return 'bigint'
       case 'datetime':
       case 'date':
         return 'date'
       case 'json':
-        return 'record'
+        return 'record(z.unknown())'
       case 'bytes':
         return 'instanceof(Buffer)'
+      case 'bigint':
+        return 'bigint'
       default:
-        console.warn(`No explicit Zod mapping found for type: ${type}. Defaulting to 'any'`)
-        return 'any'
+        console.warn(`Unknown type for Zod mapping: ${type}, defaulting to 'any'`)
+        return 'any()'
     }
   }
 
   /**
-   * Registers a custom type mapping
+   * Gets the Swagger type for a field
    */
-  registerType(prismaType: string, tsType: string): void {
-    this.typeMap[prismaType] = tsType
+  getSwaggerType(field: FieldMetadata): string {
+    const type = this.mapType(field.type)
+    switch (type) {
+      case 'string':
+        return 'String'
+      case 'number':
+        return 'Number'
+      case 'boolean':
+        return 'Boolean'
+      case 'Date':
+        return 'Date'
+      case 'Record<string, any>':
+        return 'Object'
+      case 'Buffer':
+        return 'String'
+      default:
+        return 'String'
+    }
   }
 }

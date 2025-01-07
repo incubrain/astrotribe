@@ -1,5 +1,5 @@
 // tools/generators/dto/decorators/custom.decorators.ts
-import { TemplateSystem } from '../core/template-system'
+import { TemplateSystem } from '../templates/template.system'
 
 /**
  * Registry of custom decorators that can be used in DTO generation.

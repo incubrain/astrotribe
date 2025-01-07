@@ -61,3 +61,10 @@ export interface JsonField<T = unknown> {
   isValid(): boolean
   toString(): string
 }
+
+export interface RelationMetadata {
+    name: string
+    type: string
+    isRequired: boolean
+    isList: boolean
+  }

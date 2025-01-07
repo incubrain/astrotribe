@@ -1,29 +1,37 @@
 // tools/generators/dto/core/config.types.ts
-import type { ModelMetadata } from './field.types'
+import type { ModelMetadata } from './model.types'
+import type { TemplateConfig } from './template.types'
+import type { ValidationConfig } from './validation.types'
+
+export interface CustomGenerator {
+  name: string
+  generate: (model: ModelMetadata) => Promise<void>
+}
 
 export interface GeneratorOptions {
   outputPath: string
   prettierConfig?: string
-  documentation: {
+  documentation?: {
     enabled: boolean
     outputFormat: 'markdown' | 'html'
     includeExamples: boolean
   }
-  validation: {
+  validation?: {
     enabled: boolean
     useClassValidator: boolean
     useZod: boolean
   }
-  transformation: {
+  transformation?: {
     enabled: boolean
     useCamelCase: boolean
     dateTransformation: boolean
   }
-  typescript: {
+  typescript?: {
     strict: boolean
     generateInterfaces: boolean
     generateTypeGuards: boolean
   }
+  includeGeneratedFields?: boolean
 }
 
 export interface GeneratedFile {
@@ -32,6 +40,7 @@ export interface GeneratedFile {
 }
 
 export interface GeneratorConfig {
+  templatesPath: string
   outputPath: string
   prettierConfig?: string
   types: TypeMappingConfig
@@ -58,28 +67,6 @@ export interface GenericTypeConfig {
   name: string
   typeParameters: number
   template: string
-}
-
-export interface ValidationConfig {
-  enabledRules: string[]
-  customRules: ValidationRuleDefinition[]
-  messageTemplates: Record<string, string>
-  validators: Record<string, ValidatorFunction>
-}
-
-export interface ValidationRuleDefinition {
-  name: string
-  decorator: string
-  parameters?: string[]
-  message: string
-  validate: ValidatorFunction
-}
-
-export interface TemplateConfig {
-  templatePaths?: string[]
-  overrides?: Record<string, string>
-  variables?: Record<string, any>
-  functions?: Record<string, TemplateFunction>
 }
 
 export interface PluginConfig {

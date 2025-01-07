@@ -1,5 +1,6 @@
 // tools/generators/dto/utils/documentation-parser.ts
-import { DMMF } from '@prisma/client/extension'
+import { DMMF } from '@prisma/generator-helper'
+import type { ValidationRule, TransformationRule, DocumentationMetadata } from '../types'
 
 /**
  * DocumentationParser extracts and processes documentation from Prisma schema
