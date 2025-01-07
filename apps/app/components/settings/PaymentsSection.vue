@@ -3,24 +3,12 @@
 
 const { profile } = useCurrentUser()
 
-const { store: subscriptionStore } = await useSelectData('customer_subscriptions', {
-  filters: {
-    user_id: { eq: profile.id },
-  },
-  initialFetch: true,
-  storeKey: 'subscriptions',
-})
+const razorpay = usePayments('razorpay')
 
-const { store, loadMore } = await useSelectData('customer_subscription_plans', {
-  initialFetch: true,
-  storeKey: 'subscription_plans',
-})
+const subscriptions = await razorpay.fetchSubscriptions()
+const subscription = subscriptions?.[0]
 
-const { items } = storeToRefs(store)
-
-const { items: subscriptionItems } = storeToRefs(subscriptionStore)
-
-const subscription = computed(() => subscriptionItems.value?.[0])
+const plansData = await razorpay.fetchPlans() || []
 
 interface PlanConfig {
   id: string
@@ -56,7 +44,7 @@ const plans = computed<PlanConfig>(() =>
       availableFrom: null,
     },
   ].concat(
-    items.value.map((item: any) => {
+    plansData.map((item: any) => {
       const isActive = profile.user_plan === item.name.toLowerCase()
 
       const razorPayConfig = isActive &&
@@ -70,8 +58,7 @@ const plans = computed<PlanConfig>(() =>
         availableFrom: item.created_at,
         isActive: true,
         period: `/${item.interval_type}`,
-        price: item.monthly_amount / 100,
-        id: item.external_plan_id,
+        price: item.monthly_amount.d / 100,
         razorPayConfig,
       }
     }),
@@ -160,6 +147,7 @@ const customerInfo = computed(() => ({
                   "
                   :plan="{
                     id: plan.id,
+                    external_plan_id: plan.external_plan_id,
                     name: plan.name,
                     description: `Monthly ${plan.name} Plan`,
                     amount: plan.price,
