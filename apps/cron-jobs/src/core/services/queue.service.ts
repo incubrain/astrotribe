@@ -1,5 +1,5 @@
 // src/core/services/queue.service.ts
-import PgBoss from 'pg-boss'
+import * as PgBoss from 'pg-boss'
 import pool from 'pg-pool'
 import type { Pool } from 'pg'
 
@@ -247,10 +247,12 @@ export class QueueService {
     try {
       await this.boss.work(name, async (job) => {
         const startTime = Date.now()
+        const jobId = job.id || crypto.randomUUID()
 
         try {
           // Track job start
-          await this.trackJobMetrics(name, job.id, {
+          console.log('Tracking job metrics', { name, job: job })
+          await this.trackJobMetrics(name, jobId, {
             status: 'active',
             started_at: new Date(),
           })
@@ -259,7 +261,7 @@ export class QueueService {
           const result = await handler(job)
 
           // Track successful completion
-          await this.trackJobMetrics(name, job.id, {
+          await this.trackJobMetrics(name, jobId, {
             status: 'completed',
             duration_ms: Date.now() - startTime,
             items_processed: Array.isArray(result) ? result.length : undefined,
@@ -269,7 +271,7 @@ export class QueueService {
           return { state: 'completed', result }
         } catch (error: any) {
           // Track failure
-          await this.trackJobMetrics(name, job.id, {
+          await this.trackJobMetrics(name, jobId, {
             status: 'failed',
             duration_ms: Date.now() - startTime,
             error_message: error.message,

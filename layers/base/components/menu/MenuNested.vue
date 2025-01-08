@@ -7,19 +7,17 @@ const props = defineProps<{
     icon: string
   }>
   label: string
-  isMobile?: boolean
-  isSidebarOpen?: boolean
 }>()
 
-const emit = defineEmits(['expand-sidebar'])
 const isExpanded = ref(false)
 const route = useRoute()
+const { isMobile, isSidebarOpen, toggleSidebar } = useNavigation()
 
 // Watch for sidebar collapse to close the nested menu
 watch(
-  () => props.isSidebarOpen,
+  () => isSidebarOpen.value,
   (newValue) => {
-    if (!newValue && !props.isMobile) {
+    if (!newValue && !isMobile.value) {
       isExpanded.value = false
     }
   },
@@ -27,8 +25,8 @@ watch(
 
 const handleClick = (e: Event) => {
   e.preventDefault() // Prevent default only for the menu toggle
-  if (!props.isMobile && !props.isSidebarOpen) {
-    emit('expand-sidebar')
+  if (!isMobile.value && !isSidebarOpen.value) {
+    toggleSidebar(true)
     // Wait for sidebar expansion animation to complete before expanding nested menu
     setTimeout(() => {
       isExpanded.value = true
@@ -38,8 +36,9 @@ const handleClick = (e: Event) => {
   }
 }
 
-const handleItemClick = async (slug: string) => {
-  if (props.isMobile) {
+// Simplified click handler - just handle the mobile menu state
+const handleItemClick = () => {
+  if (isMobile.value) {
     isExpanded.value = false
   }
 }
@@ -47,7 +46,6 @@ const handleItemClick = async (slug: string) => {
 
 <template>
   <div class="space-y-1">
-    <!-- Submenu trigger -->
     <button
       class="flex w-full items-center rounded-lg px-2 py-2 text-sm font-medium hover:bg-primary-700"
       @click="handleClick"
@@ -71,7 +69,6 @@ const handleItemClick = async (slug: string) => {
       />
     </button>
 
-    <!-- Submenu items -->
     <Transition
       enter-active-class="transition-all duration-200 ease-in-out"
       leave-active-class="transition-all duration-200 ease-in-out"
@@ -93,9 +90,7 @@ const handleItemClick = async (slug: string) => {
             :label="item.label"
             :to="item.slug"
             :is-active="route.path === item.slug"
-            :is-mobile="isMobile"
-            :is-sidebar-open="isSidebarOpen"
-            @click="handleItemClick(item.slug)"
+            @click="handleItemClick"
           />
         </li>
       </ul>

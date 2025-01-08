@@ -5,14 +5,16 @@ interface Tab {
   value: string
 }
 
-defineProps<{
+const props = defineProps<{
   tabs: Tab[]
 }>()
+
+const activeTab = ref(props.tabs[0]?.value || '0')
 </script>
 
 <template>
   <PrimeTabs
-    value="0"
+    :value="activeTab"
     class="h-full"
     scrollable
     :pt="{

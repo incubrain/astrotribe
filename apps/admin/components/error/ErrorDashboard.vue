@@ -157,6 +157,7 @@ async function fetchMetrics() {
 
     if (response?.data) {
       metrics.value = response.data
+      console.log('Fetched metrics:', metrics.value)
     } else {
       console.warn('No data in response:', response)
     }
