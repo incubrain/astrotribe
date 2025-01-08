@@ -812,7 +812,7 @@ model customer_payments {
   user_id                String                  @db.Uuid
   subscription_id        Int?
   payment_provider_id    Int
-  external_payment_id    String                  @db.VarChar(255)
+  external_payment_id    String                  @unique @db.VarChar(255)
   external_order_id      String?                 @db.VarChar(255)
   amount                 Decimal                 @db.Decimal(10, 2)
   currency               String                  @db.VarChar(3)
@@ -900,10 +900,10 @@ model customer_subscription_plans {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model customer_subscriptions {
   id                          Int                         @id @default(autoincrement())
-  user_id                     String                      @db.Uuid
+  user_id                     String                      @unique(map: "uq_user_id") @db.Uuid
   plan_id                     Int
   payment_provider_id         Int
-  external_subscription_id    String                      @db.VarChar(255)
+  external_subscription_id    String                      @unique @db.VarChar(255)
   status                      String                      @db.VarChar(50)
   quantity                    Int?                        @default(1)
   current_start               DateTime?                   @db.Timestamptz(6)
@@ -1466,35 +1466,35 @@ model user_metrics {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user_profiles {
-  id                     String                   @id @unique(map: "users_auth_id_key") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email                  String                   @unique(map: "users_email_key")
+  id                     String                  @id @unique(map: "users_auth_id_key") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email                  String                  @unique(map: "users_email_key")
   given_name             String?
   surname                String?
-  username               String?                  @db.VarChar
-  dob                    DateTime?                @db.Date
-  gender_id              Int?                     @db.SmallInt
-  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  last_seen              DateTime?                @default(now()) @db.Timestamptz(6)
+  username               String?                 @db.VarChar
+  dob                    DateTime?               @db.Date
+  gender_id              Int?                    @db.SmallInt
+  created_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  last_seen              DateTime?               @default(now()) @db.Timestamptz(6)
   avatar                 String?
   introduction           String?
-  followed_count         Int?                     @default(0)
-  followers_count        Int?                     @default(0)
-  plan                   app_plan_enum?           @default(free)
-  role                   app_role_enum            @default(user)
-  is_active              Boolean?                 @default(false)
+  followed_count         Int?                    @default(0)
+  followers_count        Int?                    @default(0)
+  plan                   app_plan_enum?          @default(free)
+  role                   app_role_enum           @default(user)
+  is_active              Boolean?                @default(false)
   addresses              addresses[]
   comments               comments[]
   company_employees      company_employees[]
   contacts               contacts[]
   content_source_visits  content_source_visits[]
   customer_payments      customer_payments[]
-  customer_subscriptions customer_subscriptions[]
+  customer_subscriptions customer_subscriptions?
   feedbacks              feedbacks[]
   feeds                  feeds[]
   follows                follows[]
   user_metrics           user_metrics?
-  users                  users                    @relation(fields: [id], references: [id], onDelete: Cascade, map: "public_user_profiles_id_fkey")
+  users                  users                   @relation(fields: [id], references: [id], onDelete: Cascade, map: "public_user_profiles_id_fkey")
 
   @@schema("public")
 }

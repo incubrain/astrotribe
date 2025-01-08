@@ -17,12 +17,15 @@ import { PlanService } from '@payments/services/plan.service'
 import { ProviderService } from '@payments/services/provider.service'
 import { RefundService } from '@payments/services/refund.service'
 import { SubscriptionService } from '@payments/services/subscription.service'
+import { WebhookModule } from '@core/webhook/webhook.module'
+import { WebhookController } from './controllers/webhook.controller'
 
 @Module({
   imports: [
     PrismaModule,
     PermissionModule,
     CoreModule,
+    WebhookModule,
     createDomainModule('content', {
       requiresAuth: true,
       requiresCompany: false,
@@ -33,14 +36,15 @@ import { SubscriptionService } from '@payments/services/subscription.service'
     PlanController,
     ProviderController,
     RefundController,
-    SubscriptionController
+    SubscriptionController,
+    WebhookController
   ],
   providers: [
     PaymentService,
     PlanService,
     ProviderService,
     RefundService,
-    SubscriptionService
+    SubscriptionService,
   ],
   exports: [
     PaymentService,
