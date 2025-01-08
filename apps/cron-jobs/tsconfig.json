@@ -15,7 +15,7 @@
 
     // Path aliases
     "paths": {
-      "@ib/logger": ["../../libs/logger/dist/index.esm.js"],
+      "@ib/logger": ["../../libs/logger/src/index.ts"],
       "@/*": ["./src/*"],
       "@types": ["./src/types"],
       "@helpers": ["./src/helpers"],
