@@ -19,7 +19,6 @@ RUN npm install -g pnpm
 # Copy necessary files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/auth ./apps/auth
-COPY libs/logger ./libs/logger
 COPY layers ./layers
 COPY prisma ./prisma
 COPY theme ./theme
@@ -30,7 +29,6 @@ COPY tailwind.config.base.ts ./
 
 # Install dependencies for required workspaces
 RUN pnpm install --filter @astronera/auth... \
-    --filter @ib/logger \
     --filter @astronera/base \
     --filter @astronera/supabase \
     --filter @astronera/crud \

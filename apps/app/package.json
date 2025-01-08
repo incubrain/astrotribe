@@ -10,7 +10,6 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
-    "@ib/logger": "workspace:*",
     "@formbricks/js": "^3.0.1",
     "@nuxt/image": "^1.8.0",
     "@primevue/core": "^4.2.5",

@@ -21,7 +21,14 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy all files
-COPY . .
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/website ./apps/website
+COPY layers ./layers
+COPY theme ./theme
+COPY tsconfig.* ./
+COPY nx.json ./
+COPY shared-runtime.config.ts ./
+COPY tailwind.config.base.ts ./
 
 # Install only website dependencies and build
 RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \

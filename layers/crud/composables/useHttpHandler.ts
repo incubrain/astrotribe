@@ -1,12 +1,5 @@
 import type { PostgrestResponse, PostgrestError } from '@supabase/supabase-js'
-import {
-  ErrorType,
-  ErrorSeverity,
-  AppError,
-  mapErrorSeverity,
-  mapErrorType,
-  retryableStatusCodes,
-} from '@ib/logger'
+
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 
@@ -118,7 +111,7 @@ function applyFilter(query: any, column: string, filter: FilterOption): any {
 
 export function useHttpHandler() {
   const supabase = useSupabaseClient()
-  const logger = useLogger('HttpHandler')
+  const logger = console
 
   async function handleDatabaseOperation<T>(
     operation: () => Promise<PostgrestResponse<T>>,
@@ -140,27 +133,25 @@ export function useHttpHandler() {
         logger.warn(`${context} failed. Attempt ${retries} of ${maxRetries}`)
 
         const pgError = error as PostgrestError
-        const errorType = mapErrorType(pgError)
-        const errorSeverity = mapErrorSeverity(pgError)
 
-        if (
-          retries >= maxRetries ||
-          !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
-        ) {
-          const appError = new AppError({
-            type: errorType,
-            message:
-              pgError.message ||
-              retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
-              'Database operation failed',
-            severity: errorSeverity,
-            code: pgError.code,
-            context: context,
-            pgError: pgError.details || pgError.hint || pgError.message,
-            operation: context,
-          })
-          throw logger.error(appError)
-        }
+        // if (
+        //   retries >= maxRetries ||
+        //   !Object.keys(retryableStatusCodes).includes(pgError.code?.toString() || '')
+        // ) {
+        //   const appError = new AppError({
+        //     type: errorType,
+        //     message:
+        //       pgError.message ||
+        //       retryableStatusCodes[pgError.code as keyof typeof retryableStatusCodes] ||
+        //       'Database operation failed',
+        //     severity: errorSeverity,
+        //     code: pgError.code,
+        //     context: context,
+        //     pgError: pgError.details || pgError.hint || pgError.message,
+        //     operation: context,
+        //   })
+        //   throw logger.error(appError)
+        // }
 
         // Exponential backoff with jitter
         const backoffTime = Math.min(1000 * 2 ** retries + Math.random() * 1000, 10000)

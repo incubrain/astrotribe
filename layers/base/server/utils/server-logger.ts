@@ -1,15 +1,7 @@
 // utils/server-logger.ts
-import type { Service, CentralizedLogger, ServiceToDomain } from '@ib/logger'
 import { H3Event, createError, getRequestHeaders, getQuery } from 'h3'
 
-// First, augment H3Event context to include our logger
-declare module 'h3' {
-  interface H3EventContext {
-    logger: CentralizedLogger<Service>
-  }
-}
-
-export function useServerLogger(domain: ServiceToDomain[Service]) {
+export function useServerLogger(domain: string) {
   const event = useEvent()
   const logger = event.context.logger
 
@@ -45,7 +37,7 @@ export function useServerLogger(domain: ServiceToDomain[Service]) {
       logger.info(msg, { ...meta, event: getEventMeta() })
     },
 
-    setDomain(newDomain: ServiceToDomain[Service]) {
+    setDomain(newDomain: string) {
       logger.setDomain(newDomain)
     },
 
