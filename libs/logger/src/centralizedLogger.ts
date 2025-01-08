@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { PrismaClient, error_severity, error_type } from '@prisma/client'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
@@ -20,10 +20,6 @@ const ANSI = {
   bgBlack: '\x1b[40m',
   bright: '\x1b[1m',
   dim: '\x1b[2m',
-} as const
-
-const error_type = {
-  UNKNOWN_ERROR: 'unknown_error',
 } as const
 
 // Icons for levels
@@ -49,7 +45,7 @@ interface ConsoleData {
 
 export class CentralizedLogger<S extends Service = Service> {
   private static instance: CentralizedLogger | null = null
-  private supabase: SupabaseClient | null = null
+  private prisma: PrismaClient | null = null
   protected env: ReturnType<typeof getEnvironment>
   private currentService?: S
 
@@ -60,7 +56,7 @@ export class CentralizedLogger<S extends Service = Service> {
 
   private constructor() {
     this.env = getEnvironment()
-    this.initSupabase()
+    this.initPrisma()
 
     if (this.env.isBrowser || !this.env.isNode) {
       this.transport = new BrowserConsoleTransport()
@@ -87,19 +83,6 @@ export class CentralizedLogger<S extends Service = Service> {
       throw new Error('Service must be set before setting domain')
     }
     this.domain = domain
-  }
-
-  private initSupabase() {
-    if (this.env.supabase?.url && this.env.supabase?.serviceKey) {
-      try {
-        this.supabase = createClient(this.env.supabase.url, this.env.supabase.serviceKey)
-      } catch (err) {
-        console.error('Failed to initialize Supabase client:', err)
-        throw err
-      }
-    } else {
-      throw new Error('Supabase URL and service key are required')
-    }
   }
 
   private sanitize(data: any) {
@@ -201,7 +184,6 @@ export class CentralizedLogger<S extends Service = Service> {
     const dbMetadata = {
       service_name: this.service,
       domain: this.domain,
-      error_type: error_type.UNKNOWN_ERROR,
       severity: this.getSeverity(level),
       message,
       stack_trace: stack,
@@ -234,13 +216,57 @@ export class CentralizedLogger<S extends Service = Service> {
     return `${timestampStr} ${levelBadge} [${service}|${domain}] ${finalMessage}`
   }
 
-  private async logToDatabase(dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'>) {
-    if (!this.supabase) return
+  private initPrisma() {
     try {
-      const { error: dbError } = await this.supabase.from('error_logs').insert(dbMetadata)
-      if (dbError) console.error('Failed to log to database:', dbError)
-    } catch (err) {
-      console.error('Error logging to database:', err)
+      this.prisma = new PrismaClient({
+        log: this.env.isDev ? ['error', 'warn'] : ['error'],
+      })
+    } catch (err: any) {
+      console.error('Failed to initialize Prisma client:', err)
+      throw err
+    }
+  }
+
+  private mapErrorType(errorMessage: string): error_type {
+    if (errorMessage.includes('timeout')) {
+      return 'CONNECTION_ERROR'
+    }
+    if (
+      errorMessage.includes('unique constraint') ||
+      errorMessage.includes('duplicate key') ||
+      errorMessage.includes('already exists')
+    ) {
+      return 'VALIDATION_ERROR'
+    }
+    // Default to a valid enum value
+    return 'UNKNOWN_ERROR'
+  }
+
+  private async logToDatabase(dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'>) {
+    if (!this.prisma) return
+
+    try {
+      await this.prisma.error_logs.create({
+        data: {
+          service_name: dbMetadata.service_name,
+          domain: dbMetadata.domain,
+          error_type: dbMetadata.error_type ?? this.mapErrorType(dbMetadata.message),
+          severity: dbMetadata.severity,
+          message: dbMetadata.message,
+          stack_trace: dbMetadata.stack_trace,
+          metadata: dbMetadata.metadata,
+          context: dbMetadata.context,
+          environment: dbMetadata.environment,
+          request_id: dbMetadata.request_id,
+          correlation_id: dbMetadata.correlation_id,
+          created_at: new Date(),
+        },
+      })
+    } catch (error: any) {
+      console.error('Failed to log to database:', {
+        error,
+        metadata: dbMetadata,
+      })
     }
   }
 
@@ -271,6 +297,12 @@ export class CentralizedLogger<S extends Service = Service> {
     return level === Level.Error || level === Level.Warn
   }
 
+  async disconnect() {
+    if (this.prisma) {
+      await this.prisma.$disconnect()
+    }
+  }
+
   private async log(level: Level, message: string, metadata?: any) {
     try {
       // 1. Validate the level
@@ -294,17 +326,24 @@ export class CentralizedLogger<S extends Service = Service> {
 
       // 5. If it’s an error or warning, store to DB
       if (this.shouldStoreLog(level)) {
-        void this.logToDatabase(dbMetadata)
+        await this.logToDatabase(dbMetadata)
       }
     } catch (error: any) {
-      // Fallback in case something in prepareMetadata(), formatLog(), or transport fails
-      console.error('Logger encountered an internal error while logging:', {
-        originalLevel: level,
-        originalMessage: message,
-        originalMetadata: metadata,
-        loggerError: error?.message,
-        stack: error?.stack,
+      console.error('Logger encountered an internal error:', {
+        error,
+        level,
+        message,
+        metadata,
       })
+
+      // Attempt to log the logger error itself
+      if (level !== Level.Error) {
+        await this.error('Logger internal error', {
+          error,
+          originalLevel: level,
+          originalMessage: message,
+        })
+      }
     }
   }
 

@@ -104,7 +104,7 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
     try {
       addLog('Fetching metrics from /api/v1/job-metrics')
 
-      const metricsResult = await testEndpoint('GET', '/api/v1/job-metrics')
+      const metricsResult = await testEndpoint('/api/v1/job-metrics', { method: 'GET' })
 
       customJobMetrics.value = Array.isArray(metricsResult?.data) ? metricsResult.data : []
     } catch (error) {

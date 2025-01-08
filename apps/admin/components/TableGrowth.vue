@@ -3,7 +3,7 @@ import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 const supabase = useSupabaseClient()
 const toast = useNotification()
-const logger = useLogger('table-growth-dashboard')
+const logger = useLogger('growth')
 
 const tables = [
   'news',
@@ -191,7 +191,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-950 p-6">
+  <div class="min-h-screen p-6">
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-2xl font-bold text-white">Database Growth Analytics</h1>

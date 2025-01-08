@@ -28,15 +28,33 @@ export class JobRunner {
   ) {
     return async (job: QueueJob) => {
       const startTime = Date.now()
+      const jobId = job.id || crypto.randomUUID()
+
+      await this.services.queue.trackJobMetrics(config.name, jobId, {
+        status: 'active',
+        started_at: new Date(),
+      })
 
       try {
         const input = (await config.handlers.beforeProcess?.()) || []
         const processed = await config.handlers.processFunction(input, job)
         const output = (await config.handlers.afterProcess?.(processed)) || processed
 
+        await this.services.queue.trackJobMetrics(config.name, jobId, {
+          status: 'completed',
+          duration_ms: Date.now() - startTime,
+          items_processed: Array.isArray(processed) ? processed.length : undefined,
+        })
         await config.handlers.onSuccess?.(output as TOutput)
         return output
-      } catch (error) {
+      } catch (error: any) {
+        await this.services.queue.trackJobMetrics(config.name, jobId, {
+          status: 'failed',
+          duration_ms: Date.now() - startTime,
+          error_message: error.message,
+          error_stack: error.stack,
+        })
+
         await config.handlers.onError?.(error as Error)
         throw error
       }

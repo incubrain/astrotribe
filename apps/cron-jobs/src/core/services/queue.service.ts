@@ -204,13 +204,16 @@ export class QueueService {
     }
   }
 
-  private async trackJobMetrics(jobName: string, jobId: string, data: JobMetricsData) {
+  public async trackJobMetrics(jobName: string, jobId: string, data: JobMetricsData) {
     try {
+      const metricId = jobId || crypto.randomUUID()
+
       await this.prisma.job_metrics.upsert({
         where: {
-          job_id: jobId,
+          id: jobId,
         },
         create: {
+          id: metricId,
           job_id: jobId,
           job_name: jobName,
           started_at: new Date(),

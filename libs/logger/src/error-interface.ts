@@ -1,3 +1,6 @@
+import { error_severity, error_type } from '@prisma/client'
+
+
 export interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
   devMessage: string // Make bugfixing easy!
@@ -219,8 +222,9 @@ export interface LogContext {
 export interface ErrorLogEntry {
   id: string
   service_name: string
-  error_type: string
-  severity: 'low' | 'medium' | 'high' | 'critical'
+  domain?: string
+  error_type?: error_type
+  severity: error_severity
   message: string
   stack_trace?: string
   metadata?: Partial<LogMetadata> // Make it optional and partial
