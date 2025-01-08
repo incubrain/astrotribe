@@ -29,11 +29,7 @@ export interface Environment {
   isNode: boolean
   isBrowser: boolean
   isDev: boolean
-  supabase: {
-    url: string | null
-    key: string | null
-    serviceKey: string | null
-  }
+  databaseUrl: string
   serviceName: string
 }
 

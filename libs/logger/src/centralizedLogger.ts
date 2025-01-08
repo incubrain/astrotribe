@@ -219,6 +219,7 @@ export class CentralizedLogger<S extends Service = Service> {
   private initPrisma() {
     try {
       this.prisma = new PrismaClient({
+        datasourceUrl: this.env.databaseUrl,
         log: this.env.isDev ? ['error', 'warn'] : ['error'],
       })
     } catch (err: any) {
