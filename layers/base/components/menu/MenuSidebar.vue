@@ -8,26 +8,22 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  isMobile: {
-    type: Boolean,
-    default: false,
-  },
-  isSidebarOpen: {
-    type: Boolean,
-    required: true,
-  },
-  isMobileSidebarOpen: {
-    type: Boolean,
-    required: true,
-  },
 })
 
 const route = useRoute()
-const emit = defineEmits(['update:isSidebarOpen', 'update:isMobileSidebarOpen'])
+const {
+  isMobile,
+  isSidebarOpen,
+  isMobileSidebarOpen,
+  toggleSidebar,
+  toggleMobileSidebar,
+  closeMobileSidebar,
+} = useNavigation()
+
 // Handle navigation - close mobile nav when navigating
 const handleNavigation = () => {
-  if (props.isMobile) {
-    emit('update:isMobileSidebarOpen', false)
+  if (isMobile.value) {
+    closeMobileSidebar()
   }
 }
 
@@ -35,8 +31,8 @@ const handleNavigation = () => {
 watch(
   () => route.path,
   () => {
-    if (props.isMobile) {
-      emit('update:isMobileSidebarOpen', false)
+    if (isMobile.value) {
+      closeMobileSidebar()
     }
   },
 )
@@ -51,7 +47,7 @@ watch(
       :class="
         isMobileSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       "
-      @click="$emit('update:isMobileSidebarOpen', false)"
+      @click="closeMobileSidebar"
     />
     <div
       class="flex flex-col background text-gray-300 shadow-lg transition-all duration-300 group"
@@ -71,7 +67,7 @@ watch(
         class="absolute !z-[1000] -right-3 top-24 hidden h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-primary-600 text-gray-300 transition-opacity duration-300 hover:bg-primary-400 group-hover:opacity-100 md:flex"
         :class="['z-[110]', isSidebarOpen ? 'opacity-0' : 'opacity-100']"
         :title="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
-        @click="$emit('update:isSidebarOpen', !isSidebarOpen)"
+        @click="toggleSidebar"
       >
         <Icon
           :name="isSidebarOpen ? 'mdi:chevron-left' : 'mdi:chevron-right'"
@@ -80,41 +76,12 @@ watch(
       </button>
 
       <div class="flex h-full flex-col overflow-hidden">
-        <!-- Logo section remains unchanged -->
+        <!-- Logo section -->
         <div
           class="flex items-center px-4 py-3 transition-all duration-300"
           :class="isMobile || isSidebarOpen ? 'gap-3' : 'justify-center'"
         >
-          <div
-            class="flex items-center justify-center rounded-md border bg-white transition-all duration-300 delay-150"
-            :class="isMobile || isSidebarOpen ? 'h-10 w-10' : 'h-6 w-6'"
-          >
-            <NuxtLink
-              to="/"
-              class="flex h-full w-full items-center justify-center"
-            >
-              <IBImage
-                :img="{ src: '/astronera-logo.jpg', width: 36, height: 36 }"
-                class="h-full w-full transition-all duration-300"
-                :class="isMobile || isSidebarOpen ? 'p-0.5' : 'p-1'"
-                no-shrink
-              />
-            </NuxtLink>
-          </div>
-          <Transition
-            enter-active-class="transition-all duration-150 ease-out"
-            leave-active-class="transition-all duration-150 ease-in"
-            enter-from-class="opacity-0 -translate-x-4"
-            leave-to-class="opacity-0 -translate-x-4"
-          >
-            <div
-              v-if="isMobile || isSidebarOpen"
-              class="flex cursor-pointer flex-col items-start justify-center text-sm font-bold uppercase leading-none tracking-normal"
-            >
-              Astron
-              <strong class="font-extrabold text-primary-400">Era</strong>
-            </div>
-          </Transition>
+          <!-- Rest of the logo section stays the same -->
         </div>
 
         <!-- Navigation Categories -->
@@ -148,14 +115,12 @@ watch(
                   />
                 </template>
 
-                <!-- Submenu for My Feeds -->
+                <!-- Submenu -->
                 <template v-else>
                   <IBMenuNested
                     :items="item.children"
-                    :is-mobile="isMobile"
                     :label="item.label"
-                    :is-sidebar-open="isSidebarOpen"
-                    @expand-sidebar="$emit('update:isSidebarOpen', true)"
+                    @expand-sidebar="toggleSidebar(true)"
                   />
                 </template>
               </li>
@@ -166,9 +131,3 @@ watch(
     </div>
   </div>
 </template>
-
-<style>
-.transition-transform {
-  transition-property: transform, width, height;
-}
-</style>

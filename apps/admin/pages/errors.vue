@@ -24,7 +24,10 @@ const tabs = [
     <!-- Tabs Container -->
     <div class="h-[calc(100vh-73px)]">
       <!-- 73px accounts for header height -->
-      <IBTabView :tabs="tabs">
+      <IBTabView
+        v-model:active-tab="activeTab"
+        :tabs="tabs"
+      >
         <template #start>
           <h1 class="text-xl font-semibold text-white">Error Monitoring</h1>
         </template>

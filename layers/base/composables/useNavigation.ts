@@ -2,17 +2,28 @@
 export const useNavigation = () => {
   const isSidebarOpen = useState('nav-sidebar-open', () => true)
   const isMobileSidebarOpen = useState('nav-mobile-sidebar-open', () => false)
-
-  // Create our own media query composable
   const isMobile = useMediaQuery('(max-width: 768px)')
 
-  // Close mobile nav on route changes
-  const route = useRoute()
+  const toggleSidebar = (value?: boolean) => {
+    isSidebarOpen.value = value ?? !isSidebarOpen.value
+  }
 
+  const toggleMobileSidebar = (value?: boolean) => {
+    isMobileSidebarOpen.value = value ?? !isMobileSidebarOpen.value
+  }
+
+  const closeMobileSidebar = () => {
+    isMobileSidebarOpen.value = false
+  }
+
+  // Watch route changes
+  const route = useRoute()
   watch(
     () => route.path,
     () => {
-      isMobileSidebarOpen.value = false
+      if (isMobile.value) {
+        closeMobileSidebar()
+      }
     },
   )
 
@@ -20,5 +31,8 @@ export const useNavigation = () => {
     isSidebarOpen,
     isMobileSidebarOpen,
     isMobile,
+    toggleSidebar,
+    toggleMobileSidebar,
+    closeMobileSidebar,
   }
 }

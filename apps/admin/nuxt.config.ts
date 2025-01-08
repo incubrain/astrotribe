@@ -8,13 +8,6 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 export default defineNuxtConfig({
   workspaceDir: '../../',
   srcDir: '.',
-  extends: [
-    '../../layers/base',
-    '../../layers/supabase',
-    '../../layers/crud',
-    '../../layers/advert',
-    '../../layers/referral',
-  ],
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -26,7 +19,14 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
   ],
-
+  
+  extends: [
+    '../../layers/base',
+    '../../layers/supabase',
+    '../../layers/crud',
+    '../../layers/advert',
+    '../../layers/referral',
+  ],
   ssr: false,
 
   nitro: {
