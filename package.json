@@ -127,6 +127,7 @@
     "colors": "^1.4.0",
     "commander": "^12.1.0",
     "compression": "^1.7.5",
+    "consola": "^3.3.3",
     "cosmiconfig": "^9.0.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",

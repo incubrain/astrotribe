@@ -10,9 +10,9 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
+    "@ib/logger": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
-    "@ib/logger": "workspace:*",
     "@influxdata/influxdb-client": "^1.35.0",
     "@jscpd/core": "^4.0.1",
     "@nuxtjs/mdc": "^0.9.0",

@@ -1,5 +1,5 @@
-import { AppError, ErrorSeverity, ErrorType } from '@ib/logger'
 import { useRateLimit } from './useRateLimit'
+import consola from 'consola'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 
@@ -13,7 +13,7 @@ export function useDeleteData<T extends { id: string | number }>(
   } = {},
 ) {
   const { remove } = useHttpHandler()
-  const logger = useLogger('useDeleteData')
+  const logger = consola
   const store = getOrCreateStore<T>(tableName)()
   const { checkRateLimit } = useRateLimit()
   const isDeleting: Ref<boolean> = ref(false)
@@ -32,12 +32,7 @@ export function useDeleteData<T extends { id: string | number }>(
 
         // Validation
         if (options.validateDelete && !(await options.validateDelete(itemId))) {
-          throw new AppError({
-            type: ErrorType.VALIDATION_ERROR,
-            message: 'Delete validation failed',
-            severity: ErrorSeverity.MEDIUM,
-            context: 'Data Validation',
-          })
+          throw new Error('Delete not allowed')
         }
 
         // Optimistic delete

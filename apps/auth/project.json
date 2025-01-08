@@ -34,7 +34,6 @@
         {
           "target": "build",
           "projects": [
-            "@ib/logger",
             "@astronera/base",
             "@astronera/supabase",
             "@astronera/crud",
