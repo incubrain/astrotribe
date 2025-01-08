@@ -4,15 +4,7 @@
   "root": "libs/logger",
   "sourceRoot": "libs/logger/src",
   "projectType": "library",
-  "tags": [],
-  "release": {
-    "version": {
-      "generatorOptions": {
-        "packageRoot": "libs/logger/dist",
-        "currentVersionResolver": "git-tag"
-      }
-    }
-  },
+  "implicitDependencies": ["@ib/cache"],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -21,10 +13,25 @@
         "main": "libs/logger/src/index.ts",
         "outputPath": "libs/logger/dist",
         "tsConfig": "libs/logger/tsconfig.json",
+        "project": "libs/logger/package.json",
         "format": ["esm", "cjs"],
         "generateExportsField": true,
-        "rollupConfig": "libs/logger/rollup.config.ts"
-      }
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "assets": [
+          {
+            "glob": "*.md",
+            "input": "libs/logger",
+            "output": "."
+          }
+        ],
+        "external": ["@ib/cache", "ioredis", "winston", "h3"]
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": ["@ib/cache"]
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "name": "@astronera/logging",
+  "version": "0.0.3",
+  "private": true,
+  "scripts": {
+    "lint": "pnpm nx lint @astronera/logging",
+    "test": "pnpm nx test @astronera/logging",
+    "dev": "pnpx nuxi dev",
+    "build": "pnpx nuxi build",
+    "prepare": "pnpx nuxi prepare"
+  },
+  "dependencies": {
+    "@ib/logger": "workspace:*",
+    "@nuxt/image": "^1.8.1",
+    "@nuxtjs/supabase": "^1.4.0",
+    "@sentry/vue": "^8.31.0",
+    "posthog-js": "^1.164.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "h3": "^1.8.2",
+    "nuxt": "^3.13.2",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
+  }
+}

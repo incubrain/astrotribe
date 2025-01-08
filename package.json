@@ -28,7 +28,7 @@
     "dev:test": "nx serve build-works --verbose",
     "dev:all": "scripts/run-all.sh",
     "docker:all": "pnpx tsx ./ci/2.build-docker-containers.ts",
-    "build:libs": "pnpm nx run-many -t build -p @ib/db-testing,@ib/logger --verbose",
+    "build:libs": "pnpm nx run-many -t build -p @ib/db-testing,@ib/logger,@ib/cache --verbose",
     "build:layers": "scripts/build-layers.sh",
     "build:auth": "nx build @astroneraauth",
     "build:admin": "nx build @astronera/admin",
@@ -57,6 +57,8 @@
     "ib": "pnpx tsx cli/index.ts"
   },
   "dependencies": {
+    "@ib/cache": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",

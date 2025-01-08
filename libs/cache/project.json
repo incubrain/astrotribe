@@ -1,0 +1,46 @@
+{
+  "name": "@ib/cache",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/cache",
+  "sourceRoot": "libs/cache/src",
+  "projectType": "library",
+  "tags": [],
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "libs/cache/dist",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{workspaceRoot}/libs/cache/dist"],
+      "options": {
+        "main": "libs/cache/src/index.ts",
+        "outputPath": "libs/cache/dist",
+        "tsConfig": "libs/cache/tsconfig.json",
+        "project": "libs/cache/package.json",
+        "format": ["esm", "cjs"],
+        "generateExportsField": true,
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "assets": [
+          {
+            "glob": "*.md",
+            "input": "libs/cache",
+            "output": "."
+          }
+        ],
+        "external": ["ioredis", "ms"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/cache/**/*.ts"]
+      }
+    }
+  }
+}

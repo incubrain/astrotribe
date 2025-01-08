@@ -1,22 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
     "module": "ESNext",
     "target": "ES2022",
+    "lib": ["ES2022"],
+    "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "baseUrl": ".",
-    "types": ["node"],
+    "strict": true,
     "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "@ib/cache": ["../cache/src"]
-    }
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true
   },
-  "references": [{ "path": "../cache" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

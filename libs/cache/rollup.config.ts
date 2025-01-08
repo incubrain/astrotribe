@@ -1,6 +1,6 @@
-import type { RollupOptions } from 'rollup'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import type { RollupOptions } from 'rollup'
 
 export default async (config: RollupOptions): Promise<RollupOptions> => {
   return {
@@ -12,28 +12,25 @@ export default async (config: RollupOptions): Promise<RollupOptions> => {
         async writeBundle(options) {
           try {
             const outputDir = (options.dir as string) || 'dist'
-
-            const packageJson = JSON.parse(await readFile('libs/logger/package.json', 'utf8'))
+            const packageJson = JSON.parse(await readFile('libs/cache/package.json', 'utf8'))
 
             const transformedPackageJson = {
               ...packageJson,
-              types: './index.esm.d.ts',
+
+              types: './index.d.ts',
               main: './index.cjs.js',
               module: './index.esm.js',
               exports: {
                 '.': {
                   import: './index.esm.js',
                   require: './index.cjs.js',
-                  types: './index.esm.d.ts',
+                  types: './index.d.ts',
                 },
               },
             }
 
             const outputPath = join(outputDir, 'package.json')
             await writeFile(outputPath, JSON.stringify(transformedPackageJson, null, 2))
-
-            console.log('Final package.json written to:', outputPath)
-            console.log('Content:', JSON.stringify(transformedPackageJson, null, 2))
           } catch (error) {
             console.error('Failed to process package.json:', error)
             throw error

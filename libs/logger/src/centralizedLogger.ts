@@ -1,14 +1,10 @@
 import type { H3Event } from 'h3'
 import { PrismaClient, error_severity, error_type } from '@prisma/client'
+import { createLogQueue, LogQueue } from '@ib/cache'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
-import {
-  NodeWinstonTransport,
-  BrowserConsoleTransport,
-  Level,
-  type LogTransport,
-} from './logger.js'
+import { NodeWinstonTransport, Level } from './logger.js'
 
 // ANSI constants
 const ANSI = {
@@ -48,21 +44,24 @@ export class CentralizedLogger<S extends Service = Service> {
   private prisma: PrismaClient | null = null
   protected env: ReturnType<typeof getEnvironment>
   private currentService?: S
-
-  // Defaults
   private service: string = 'initializing'
   private domain: string = 'none'
-  private transport: LogTransport
+  private transport: NodeWinstonTransport
+  private logQueue: LogQueue
 
   private constructor() {
-    this.env = getEnvironment()
-    this.initPrisma()
-
-    if (this.env.isBrowser || !this.env.isNode) {
-      this.transport = new BrowserConsoleTransport()
-    } else {
-      this.transport = new NodeWinstonTransport(this.env.isDev)
+    // Check for Node.js environment
+    if (typeof process === 'undefined' || !process.versions?.node) {
+      throw new Error('This logger can only be used in Node.js environments')
     }
+
+    this.env = getEnvironment()
+    this.transport = new NodeWinstonTransport(this.env.isDev)
+    this.logQueue = createLogQueue({
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT || '6379'),
+      password: process.env.REDIS_PASSWORD,
+    })
   }
 
   public static create<S extends Service>(): CentralizedLogger<S> {
@@ -139,7 +138,7 @@ export class CentralizedLogger<S extends Service = Service> {
   }
 
   private async extractEventData(event?: H3Event) {
-    if (!this.env.isNode || !event) return null
+    if (!event) return null
 
     try {
       const { getRequestURL, getRequestHeaders, getQuery } = await import('h3')
@@ -153,6 +152,32 @@ export class CentralizedLogger<S extends Service = Service> {
       }
     } catch (error: any) {
       return null
+    }
+  }
+
+  private async logToCache(dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'>) {
+    if (!this.logQueue) return
+
+    try {
+      await this.logQueue.pushLog({
+        service: dbMetadata.service_name,
+        level: dbMetadata.severity as error_severity,
+        message: dbMetadata.message,
+        metadata: {
+          domain: dbMetadata.domain,
+          stack_trace: dbMetadata.stack_trace,
+          context: dbMetadata.context,
+          environment: dbMetadata.environment,
+          request_id: dbMetadata.request_id,
+          correlation_id: dbMetadata.correlation_id,
+          ...dbMetadata.metadata,
+        },
+      })
+    } catch (error: any) {
+      console.error('Failed to log to cache:', {
+        error,
+        metadata: dbMetadata,
+      })
     }
   }
 
@@ -216,18 +241,6 @@ export class CentralizedLogger<S extends Service = Service> {
     return `${timestampStr} ${levelBadge} [${service}|${domain}] ${finalMessage}`
   }
 
-  private initPrisma() {
-    try {
-      this.prisma = new PrismaClient({
-        datasourceUrl: this.env.databaseUrl,
-        log: this.env.isDev ? ['error', 'warn'] : ['error'],
-      })
-    } catch (err: any) {
-      console.error('Failed to initialize Prisma client:', err)
-      throw err
-    }
-  }
-
   private mapErrorType(errorMessage: string): error_type {
     if (errorMessage.includes('timeout')) {
       return 'CONNECTION_ERROR'
@@ -243,55 +256,14 @@ export class CentralizedLogger<S extends Service = Service> {
     return 'UNKNOWN_ERROR'
   }
 
-  private async logToDatabase(dbMetadata: Omit<ErrorLogEntry, 'id' | 'created_at'>) {
-    if (!this.prisma) return
-
-    try {
-      await this.prisma.error_logs.create({
-        data: {
-          service_name: dbMetadata.service_name,
-          domain: dbMetadata.domain,
-          error_type: dbMetadata.error_type ?? this.mapErrorType(dbMetadata.message),
-          severity: dbMetadata.severity,
-          message: dbMetadata.message,
-          stack_trace: dbMetadata.stack_trace,
-          metadata: dbMetadata.metadata,
-          context: dbMetadata.context,
-          environment: dbMetadata.environment,
-          request_id: dbMetadata.request_id,
-          correlation_id: dbMetadata.correlation_id,
-          created_at: new Date(),
-        },
-      })
-    } catch (error: any) {
-      console.error('Failed to log to database:', {
-        error,
-        metadata: dbMetadata,
-      })
-    }
-  }
-
   private shouldLogLevel(level: Level): boolean {
-    if (this.env.isNode) {
-      // Node environment: Winston handles level filtering
-      // but we can still manually prevent silly/debug in prod if needed
-      if (
-        !this.env.isDev &&
-        (level === Level.Debug || level === Level.Silly || level === Level.Verbose)
-      ) {
-        return false
-      }
-      return true
-    } else {
-      // Browser: no Winston, just apply dev filters
-      if (
-        !this.env.isDev &&
-        (level === Level.Debug || level === Level.Silly || level === Level.Verbose)
-      ) {
-        return false
-      }
-      return true
+    if (
+      !this.env.isDev &&
+      (level === Level.Debug || level === Level.Silly || level === Level.Verbose)
+    ) {
+      return false
     }
+    return true
   }
 
   private shouldStoreLog(level: Level): boolean {
@@ -325,9 +297,9 @@ export class CentralizedLogger<S extends Service = Service> {
 
       await (this.transport as NodeWinstonTransport).log(level, finalMessage)
 
-      // 5. If it’s an error or warning, store to DB
+      // 5. If it’s an error or warning, store in cache
       if (this.shouldStoreLog(level)) {
-        await this.logToDatabase(dbMetadata)
+        await this.logToCache(dbMetadata)
       }
     } catch (error: any) {
       console.error('Logger encountered an internal error:', {
