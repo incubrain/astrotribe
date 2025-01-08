@@ -15,6 +15,18 @@ export class PaymentService extends BaseService<'customer_payments'> {
     super('customer_payments')
   }
 
+  async updatePayment(data) {
+    const result = await this.prisma.customer_payments.upsert({
+      where: {
+        external_payment_id: data.external_payment_id
+      },
+      update: data,
+      create: data
+    })
+
+    return result
+  }
+
   async findWithRelations(id: number): Promise<PaymentModel | null> {
     const result = await this.prisma.customer_payments.findUnique({
       where: { id }

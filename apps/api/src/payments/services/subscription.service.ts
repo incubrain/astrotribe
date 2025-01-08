@@ -15,6 +15,15 @@ export class SubscriptionService extends BaseService<'customer_subscriptions'> {
     super('customer_subscriptions')
   }
 
+  async updateSubscription(data) {
+    const result = await this.prisma.customer_subscriptions.upsert({
+      where: { external_subscription_id: data.external_subscription_id },
+      update: data,
+      create: data
+    })
+
+    return result
+  }
 
   async findWithRelations(id: number): Promise<SubscriptionModel | null> {
     const result = await this.prisma.customer_subscriptions.findUnique({

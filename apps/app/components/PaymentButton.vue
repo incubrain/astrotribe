@@ -106,7 +106,6 @@ useHead({
 const createSubscription = async () => {
   const subscription = await razorpay.createOrder(props.plan.id, props.plan.external_plan_id)
 
-  console.log(subscription, 'SUBSCRIPTION')
   razorpayOptions.value.subscription_id = subscription.id
 }
 
