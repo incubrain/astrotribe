@@ -10,7 +10,6 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@ib/logger": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@influxdata/influxdb-client": "^1.35.0",

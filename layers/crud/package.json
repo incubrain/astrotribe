@@ -9,7 +9,6 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@ib/logger": "workspace:*",
     "@nuxtjs/supabase": "^1.4.0",
     "@supabase/supabase-js": "^2.47.8",
     "pinia": "^2.2.2",
