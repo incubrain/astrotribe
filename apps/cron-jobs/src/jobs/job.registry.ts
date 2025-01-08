@@ -3,9 +3,9 @@ import PgBoss from 'pg-boss'
 import { JobServices, QueueJob, JobClass, JobConfig, JobModule } from '@types'
 import { CustomLogger } from '../core/services/logger.service'
 import { QueueService } from '../core/services/queue.service'
-import { createNewsLinksJob } from './config/news/news-links.config'
 import { JobRunner } from './job.runner'
 import { JobVersionService } from './job.versioning'
+import { newsJobModules } from './config/news/news.module'
 
 export class JobRegistry {
   private jobs = new Map<string, JobConfig<any, any, any>>()
@@ -16,17 +16,40 @@ export class JobRegistry {
     this.versionService = new JobVersionService(services.logger, services.prisma)
   }
 
-  registerJobModule(jobModule: JobModule) {
+  private registerJobModule(jobModule: JobModule) {
     if (this.jobModules.find((m) => m.name === jobModule.name)) {
       throw new Error(`Job module ${jobModule.name} already registered`)
     }
     this.jobModules.push(jobModule)
   }
 
+  private registerModules(modules: JobModule[]) {
+    for (const module of modules) {
+      this.registerJobModule(module)
+      this.services.logger.info(`Registered job module: ${module.name}`)
+    }
+  }
+
+  private loadJobModules() {
+    // Register core job modules
+    this.registerModules(newsJobModules)
+
+    // In the future, add other module groups here like:
+    // this.registerModules(analyticsJobModules)
+    // this.registerModules(maintenanceJobModules)
+    // etc.
+  }
+
   async initialize(
     options: { environment: 'development' | 'production' } = { environment: 'production' },
   ) {
     try {
+      this.loadJobModules()
+
+      this.services.logger.info('Loaded job modules', {
+        modules: this.jobModules.map((m) => m.name),
+      })
+
       if (!(await this.services.queue.isInstalled())) {
         this.services.logger.info('Installing queue schema...')
         await this.services.queue.start()
@@ -36,28 +59,25 @@ export class JobRegistry {
       for (const module of this.jobModules) {
         const jobConfig = module.createJob(this.services)
         await this.registerJob(jobConfig)
+        this.services.logger.info(`Initialized job from module: ${module.name}`, {
+          name: jobConfig.name,
+          version: jobConfig.version,
+          schedule: jobConfig.schedule,
+        })
       }
 
-      this.services.logger.info('Job registry initialized successfully')
+      // Log the final state
+      const registeredJobs = this.getJobs()
+      this.services.logger.info('Job registry initialized successfully', {
+        totalJobs: registeredJobs.length,
+        jobs: registeredJobs.map((job) => ({
+          name: job.name,
+          version: job.version,
+          schedule: job.schedule?.enabled ? job.schedule.customCron : 'disabled',
+        })),
+      })
     } catch (error: any) {
       this.services.logger.error('Failed to initialize job registry', { error })
-      throw error
-    }
-  }
-
-  private async registerCoreJobs() {
-    const { logger } = this.services
-
-    try {
-      // Register news links job
-      const newsLinksJob = createNewsLinksJob(this.services)
-      await this.registerJob(newsLinksJob)
-
-      // Register other core jobs here...
-
-      logger.info('Core jobs registered successfully')
-    } catch (error: any) {
-      logger.error('Failed to register core jobs', { error })
       throw error
     }
   }
