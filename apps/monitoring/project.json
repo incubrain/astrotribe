@@ -14,7 +14,7 @@
       "dependsOn": [
         {
           "target": "build",
-          "projects": ["@ib/logger", "@astronera/base", "@astronera/supabase", "@astronera/crud"]
+          "projects": ["@astronera/base", "@astronera/supabase", "@astronera/crud"]
         }
       ]
     },

@@ -1,11 +1,11 @@
 import { useConfirm } from 'primevue/useconfirm'
-import { handleResponse } from '@ib/logger'
+import consola from 'consola'
 import type { Folder } from '~/types/folder'
 
 export const useFolderStore = defineStore('folders', () => {
   const error = ref<string | null>(null)
   const confirm = useConfirm()
-  const logger = useLogger()
+  const logger = consola
   const loading = ref(false)
 
   const folders = ref<Folder[]>([])
@@ -67,15 +67,10 @@ export const useFolderStore = defineStore('folders', () => {
   const createFolder = async (folder: Partial<Folder>) => {
     loading.value = true
     try {
-      const data = await handleResponse(
-        logger,
-        () =>
-          $fetch('/api/folders', {
-            method: 'POST',
-            body: folder,
-          }),
-        'Fetching Folders',
-      )
+      const data = await $fetch('/api/folders', {
+        method: 'POST',
+        body: folder,
+      })
 
       if (data) {
         await fetchFolders()
@@ -95,15 +90,10 @@ export const useFolderStore = defineStore('folders', () => {
   const updateFolder = async (folderId: string, updates: Partial<Folder>) => {
     loading.value = true
     try {
-      const data = await handleResponse(
-        logger,
-        () =>
-          $fetch(`/api/folders/${folderId}`, {
-            method: 'PATCH',
-            body: updates,
-          }),
-        'Failed to update folder',
-      )
+      const data = await $fetch(`/api/folders/${folderId}`, {
+        method: 'PATCH',
+        body: updates,
+      })
 
       if (data) {
         await fetchFolders()
@@ -140,17 +130,12 @@ export const useFolderStore = defineStore('folders', () => {
           rejectLabel: 'Move to default folder',
           accept: async () => {
             try {
-              const data = await handleResponse(
-                logger,
-                () =>
-                  $fetch(`/api/folders/${folderId}`, {
-                    method: 'DELETE',
-                    body: {
-                      strategy: 'delete_all',
-                    },
-                  }),
-                'Deleting Folder',
-              )
+              const data = await $fetch(`/api/folders/${folderId}`, {
+                method: 'DELETE',
+                body: {
+                  strategy: 'delete_all',
+                },
+              })
 
               if (data !== null) {
                 await fetchFolders()
@@ -185,18 +170,13 @@ export const useFolderStore = defineStore('folders', () => {
 
   const handleMoveAndDelete = async (folderId: string, defaultFolderId: string) => {
     try {
-      const data = await handleResponse(
-        logger,
-        () =>
-          $fetch(`/api/folders/${folderId}`, {
-            method: 'DELETE',
-            body: {
-              strategy: 'move_to_default',
-              defaultFolderId,
-            },
-          }),
-        'Moving and Deleting Folder',
-      )
+      const data = await $fetch(`/api/folders/${folderId}`, {
+        method: 'DELETE',
+        body: {
+          strategy: 'move_to_default',
+          defaultFolderId,
+        },
+      })
 
       if (data !== null) {
         await fetchFolders()

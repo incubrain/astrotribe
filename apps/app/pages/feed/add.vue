@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { handleResponse } from '@ib/logger'
-
-const logger = useLogger()
-// Fetch categories
 const { store: categoriesStore } = useSelectData('categories', {
   columns: 'id, name',
   orderBy: { column: 'name', ascending: true },
@@ -67,15 +63,10 @@ const save = async () => {
   }
 
   try {
-    const data = await handleResponse(
-      logger,
-      () =>
-        $fetch('/api/feeds', {
-          method: 'POST',
-          body: feed,
-        }),
-      'Failed to create feed',
-    )
+    const data = await $fetch('/api/feeds', {
+      method: 'POST',
+      body: feed,
+    })
 
     toast.success({ summary: 'Feed added', message: `${feed.name} was created successfully` })
     navigateTo('/')

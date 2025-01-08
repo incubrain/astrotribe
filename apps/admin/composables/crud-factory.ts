@@ -1,4 +1,4 @@
-import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
+import consola from 'consola'
 import { useUpdateData, useSelectData, useDeleteData, useInsertData } from '#imports'
 
 export interface CRUDOptions<T> {
@@ -18,7 +18,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
   entityName: string,
   options: CRUDOptions<T> = {},
 ) {
-  const logger = useLogger('crud-factory')
+  const logger = consola
   return function () {
     const { store, isSelecting, loadMore } = useSelectData<T>(entityName, {
       initialFetch: options.initialFetch ?? true,
@@ -48,13 +48,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const insertEntity = async (data: Omit<T, 'id'>) => {
       try {
         if (options.validateInsert && !(await options.validateInsert(data))) {
-          throw new AppError({
-            type: ErrorType.VALIDATION_ERROR,
-            message: 'Insert validation failed',
-            severity: ErrorSeverity.MEDIUM,
-            stack: 'no stack',
-            context: `${entityName} insert`,
-          })
+          // Validation failed
         }
         const insertedItem = (await insertData(data as T)) as T
         if (options.afterInsert) {
@@ -71,13 +65,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const updateEntity = async (id: string | number, data: Partial<T>) => {
       try {
         if (options.validateUpdate && !(await options.validateUpdate(data))) {
-          throw new AppError({
-            type: ErrorType.VALIDATION_ERROR,
-            message: 'Update validation failed',
-            severity: ErrorSeverity.MEDIUM,
-            context: `${entityName} update`,
-            stack: 'no stack',
-          })
+          // Validation failed
         }
         const updatedItem = await updateData(id, data)
         if (options.afterUpdate) {
@@ -93,13 +81,7 @@ export function createCRUDComposable<T extends { id: string | number }>(
     const deleteEntity = async (id: string | number) => {
       try {
         if (options.validateDelete && !(await options.validateDelete(id))) {
-          throw new AppError({
-            type: ErrorType.VALIDATION_ERROR,
-            message: 'Delete validation failed',
-            severity: ErrorSeverity.MEDIUM,
-            context: `${entityName} delete`,
-            stack: 'no stack',
-          })
+          // Validation failed
         }
         await deleteData(id)
         if (options.afterDelete) {
