@@ -95,7 +95,10 @@ export class CentralizedLogger<S extends Service = Service> {
         this.supabase = createClient(this.env.supabase.url, this.env.supabase.serviceKey)
       } catch (err) {
         console.error('Failed to initialize Supabase client:', err)
+        throw err
       }
+    } else {
+      throw new Error('Supabase URL and service key are required')
     }
   }
 
