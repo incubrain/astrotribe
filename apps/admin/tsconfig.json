@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@ib/logger": ["../../libs/logger"],
       "#layers/*": ["../../layers/*"],
       "@types/*": ["./types/*"],
       "#shared/*": ["./shared/*"]

@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useRateLimit } from './useRateLimit'
 
 type FileType = 'profile' | 'document' | 'image' | 'video' | 'audio' | 'other'
@@ -146,10 +145,10 @@ export function useFileUpload() {
         })
 
         if (error) {
-          throw new AppError({
-            type: ErrorType.UPLOAD_ERROR,
+          throw new Error({
+            type: 'UPLOAD_ERROR',
             message: `Error uploading file: ${error.message}`,
-            severity: ErrorSeverity.HIGH,
+            severity: 'HIGH',
             context: 'File Upload',
           })
         }

@@ -1,5 +1,4 @@
 import { unref, watch, type MaybeRef } from 'vue'
-import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
@@ -72,7 +71,7 @@ export function useSelectData<T extends { id: string | number }>(
           console.log('pagination', pagination)
           queryOptions.range = pagination
         } else {
-          throw new AppError({
+          throw new Error({
             type: ErrorType.VALIDATION_ERROR,
             message: `Pagination not initialized for ${storeKey}`,
             severity: ErrorSeverity.MEDIUM,
