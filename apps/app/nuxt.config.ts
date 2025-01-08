@@ -92,6 +92,7 @@ export default defineNuxtConfig({
     registerType: 'autoUpdate',
     manifest: false,
     workbox: {
+      maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       navigateFallback: '/offline',
       globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
       cleanupOutdatedCaches: true,
