@@ -47,10 +47,10 @@ const plans = computed<PlanConfig>(() =>
     plansData.map((item: any) => {
       const isActive = profile.user_plan === item.name.toLowerCase()
 
-      const razorPayConfig = isActive &&
-        subscription.value && {
-          subscription_id: subscription.value.external_subscription_id,
-          subscription_status: subscription.value.status,
+      const razorPayConfig = true &&
+        subscription && {
+          subscription_id: subscription.external_subscription_id,
+          subscription_status: subscription.status,
         }
 
       return {
