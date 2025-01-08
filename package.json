@@ -62,7 +62,6 @@
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
-    "@ib/logger": "workspace:*",
     "@iconify-json/game-icons": "^1.2.0",
     "@iconify-json/material-symbols": "^1.2.1",
     "@iconify-json/mdi": "^1.2.0",
