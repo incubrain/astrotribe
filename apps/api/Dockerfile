@@ -20,18 +20,16 @@ RUN npm install -g pnpm
 # Copy only the necessary files first
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/
-COPY libs/logger/package.json ./libs/logger/
 
 # Copy the source files for the required workspaces
 COPY apps/api ./apps/api
-COPY libs/logger ./libs/logger
 COPY prisma ./prisma
 COPY tsconfig.* ./
 COPY nx.json ./
 COPY pnpm-workspace.yaml ./
 
 # Install dependencies for specific workspaces
-RUN pnpm install --filter @astronera/api --filter @ib/logger
+RUN pnpm install --filter @astronera/api
 
 # Generate Prisma client for logger
 RUN pnpx prisma generate

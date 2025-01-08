@@ -1,4 +1,3 @@
-import { AppError, ErrorType, ErrorSeverity } from '@ib/logger'
 import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { useRateLimit } from './useRateLimit'
@@ -69,10 +68,10 @@ export function useInsertData<T extends { id?: string | number }>(
 
         // Validation
         if (options.validateData && !(await options.validateData(item))) {
-          throw new AppError({
-            type: ErrorType.VALIDATION_ERROR,
+          throw new Error({
+            type: 'VALIDATION_ERROR',
             message: 'Data validation failed',
-            severity: ErrorSeverity.MEDIUM,
+            severity: 'MEDIUM',
             context: 'Data Validation',
           })
         }

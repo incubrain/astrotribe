@@ -8,13 +8,7 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "cd apps/cms && pnpm run build"
-      },
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": ["@ib/logger"]
-        }
-      ]
+      }
     },
     "serve": {
       "executor": "nx:run-commands",
