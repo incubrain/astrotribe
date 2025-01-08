@@ -21,6 +21,7 @@ RUN npm install -g pnpm
 # Copy necessary files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/admin ./apps/admin
+COPY libs ./libs
 COPY layers ./layers
 COPY prisma ./prisma
 COPY theme ./theme
@@ -30,20 +31,7 @@ COPY shared-runtime.config.ts ./
 COPY tailwind.config.base.ts ./
 
 # Install dependencies for required workspaces
-RUN pnpm install --filter @astronera/admin... \
-    --filter @astronera/base \
-    --filter @astronera/supabase \
-    --filter @astronera/crud \
-    --filter @astronera/advert \
-    --filter @astronera/referral
-
-# Prepare all Nuxt layers
-RUN pnpx nuxi prepare -r layers/base
-RUN pnpx nuxi prepare -r layers/supabase
-RUN pnpx nuxi prepare -r layers/crud
-RUN pnpx nuxi prepare -r layers/advert
-RUN pnpx nuxi prepare -r layers/referral
-RUN pnpx nuxi prepare -r apps/admin
+RUN pnpm install --filter @astronera/admin...
 
 # Generate Prisma client
 RUN pnpx prisma generate

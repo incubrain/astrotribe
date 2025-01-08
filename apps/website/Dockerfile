@@ -24,6 +24,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/website ./apps/website
 COPY layers ./layers
+COPY libs ./libs
 COPY theme ./theme
 COPY tsconfig.* ./
 COPY nx.json ./
@@ -33,7 +34,6 @@ COPY tailwind.config.base.ts ./
 # Install only website dependencies and build
 RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
     pnpm install --filter @astronera/website... --frozen-lockfile && \
-    pnpm exec prisma generate && \
     rm -rf layers/*/dist && \
     NODE_ENV=production pnpm exec nx build @astronera/website --verbose --skip-nx-cache
 
