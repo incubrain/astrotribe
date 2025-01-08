@@ -23,6 +23,7 @@
     "build": "nx build @ib/logger"
   },
   "dependencies": {
+    "@ib/cache": "workspace:*",
     "@supabase/supabase-js": "^2.47.8",
     "winston": "^3.14.2",
     "@nx/rollup": "20.3.0",

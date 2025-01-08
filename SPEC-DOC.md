@@ -5,7 +5,14 @@ Rules:
 - Mac Pro M3 Nuxt 3.15 PNPM >=9.0.0 Node 22.12 Typescript ^5.6.3 Pinia for state, composition API
     syntax ALWAYS use Tailwind, Primevue with prefix of 'Prime' for components
 
+## GENERAL
+
+ESM unless we specify CJS
 Booleans - ALWAYS prefix with 'is'
+
+## NUXT RELATED
+
+Use import.meta not process.client etc...
 
 SFC order: <script setup lang="ts"> then <template> then <style scoped>
 

@@ -1,36 +1,34 @@
-// src/environment.d.ts
+// environment.d.ts
 declare global {
-  interface Window {
-    __NUXT__?: {
-      config?: {
-        SUPABASE_URL?: string
-        SUPABASE_KEY?: string
-        SUPABASE_SERVICE_KEY?: string
-        SERVICE_NAME?: string
-        [key: string]: any
-      }
-    }
-  }
-
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production' | 'test'
-      NUXT_APP?: string
-      __NUXT_PATHS__?: string
-      SUPABASE_URL?: string
-      SUPABASE_KEY?: string
-      SUPABASE_SERVICE_KEY?: string
+      DATABASE_URL?: string
       SERVICE_NAME?: string
     }
   }
 }
 
 export interface Environment {
-  isNode: boolean
-  isBrowser: boolean
   isDev: boolean
   databaseUrl: string
   serviceName: string
 }
 
 export {}
+
+// environment.ts
+import type { Environment } from './environment.d.js'
+
+export const getEnvironment = (): Environment => {
+  // Simplified environment detection - server-side only
+  if (typeof process === 'undefined' || !process.versions?.node) {
+    throw new Error('This logger can only be used in Node.js environments')
+  }
+
+  return {
+    isDev: process.env.NODE_ENV === 'development',
+    databaseUrl: process.env.DATABASE_URL ?? '',
+    serviceName: process.env.SERVICE_NAME ?? 'api-gateway',
+  }
+}

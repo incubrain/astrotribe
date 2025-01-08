@@ -1,3 +1,6 @@
+// logger.ts
+import type { Logger as WinstonLogger } from 'winston'
+
 // Logging levels
 export enum Level {
   Error = 'error',
@@ -13,27 +16,11 @@ export interface LogTransport {
   log(level: Level, message: string): void
 }
 
-// Browser console transport
-export class BrowserConsoleTransport implements LogTransport {
-  log(level: Level, message: string) {
-    if (level === Level.Error) {
-      console.error(message)
-    } else if (level === Level.Warn) {
-      console.warn(message)
-    } else if (level === Level.Info) {
-      console.info(message)
-    } else {
-      console.log(message)
-    }
-  }
-}
-
 // Node Winston transport
 export class NodeWinstonTransport implements LogTransport {
   public initialized = false
   private initPromise: Promise<void> | null = null
-
-  private logger: import('winston').Logger | undefined
+  private logger: WinstonLogger | undefined
   private messageQueue: Array<{ level: Level; message: string }> = []
 
   constructor(private isDev: boolean) {
@@ -93,9 +80,7 @@ export class NodeWinstonTransport implements LogTransport {
       }
     } catch (error) {
       console.error('Failed to initialize Winston logger:', error)
-      // Fall back to console
-      this.logger = console as any
-      this.initialized = true
+      throw error // Instead of falling back to console, fail explicitly
     }
   }
 
