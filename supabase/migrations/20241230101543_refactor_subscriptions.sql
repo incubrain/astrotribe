@@ -24,3 +24,6 @@ ALTER TABLE public.customer_subscription_plans RENAME COLUMN temp_column TO feat
 
 ALTER TABLE public.customer_subscription_plans
 ADD CONSTRAINT unique_plan_id UNIQUE (external_plan_id);
+
+ALTER TABLE customer_subscriptions
+ADD CONSTRAINT uq_user_id UNIQUE (user_id);
