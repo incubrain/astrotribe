@@ -21,6 +21,9 @@ export const getEnvironment = (): Environment => {
   if (isBrowser && window.__NUXT__?.config) {
     // Browser Nuxt context
     config = window.__NUXT__.config
+    throw new Error(
+      'This logger is not intended for use in the browser, pass client errors to the server then log them with this logger',
+    )
   } else if (isNode) {
     // Node/SSR context
     config = process.env
@@ -30,11 +33,7 @@ export const getEnvironment = (): Environment => {
     isNode: effectivelyNode,
     isBrowser,
     isDev: process.env.NODE_ENV === 'development',
-    supabase: {
-      url: config.SUPABASE_URL || null,
-      key: config.SUPABASE_KEY || null,
-      serviceKey: config.SUPABASE_SERVICE_KEY || null,
-    },
+    databaseUrl: config.DATABASE_URL,
     serviceName: config.SERVICE_NAME ?? 'api-gateway',
   }
 }
