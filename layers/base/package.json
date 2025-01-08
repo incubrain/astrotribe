@@ -10,7 +10,6 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@ib/logger": "workspace:*",
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/supabase": "^1.4.0",
     "@sentry/vue": "^8.31.0",
