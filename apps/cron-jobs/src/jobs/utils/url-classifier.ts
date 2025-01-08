@@ -17,6 +17,8 @@ interface TrainingSample {
   url: string
 }
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 export class UrlClassifier {
   private log = new CustomLogger()
   private model!: tf.LayersModel
