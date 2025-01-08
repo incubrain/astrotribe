@@ -30,7 +30,6 @@ COPY tailwind.config.base.ts ./
 
 # Install dependencies for required workspaces
 RUN pnpm install --filter @astronera/auth... \
-    --filter @ib/logger \
     --filter @astronera/base \
     --filter @astronera/supabase \
     --filter @astronera/crud \
