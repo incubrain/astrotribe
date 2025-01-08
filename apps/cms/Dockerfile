@@ -13,7 +13,6 @@ ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
 # Copy CMS app and its dependencies
 COPY apps/cms apps/cms
-COPY libs/logger libs/logger  
 
 # Set Nx environment variables
 ENV NX_SKIP_NX_CACHE=true

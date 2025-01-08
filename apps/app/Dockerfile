@@ -21,7 +21,6 @@ RUN npm install -g pnpm
 # Copy necessary files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/app ./apps/app
-COPY libs/logger ./libs/logger
 COPY layers ./layers
 COPY prisma ./prisma
 COPY theme ./theme
