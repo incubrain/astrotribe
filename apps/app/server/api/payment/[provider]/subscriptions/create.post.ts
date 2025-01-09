@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
 
   const { apiURL } = useRuntimeConfig().public
   const supabase = await serverSupabaseClient(event)
-  const log = useServerLogger()
 
   try {
     const {
@@ -68,11 +67,10 @@ export default defineEventHandler(async (event) => {
     }
   )
 
-    if (!success) log.error('Create Subscription', meta)
+    if (!success) console.error('Create Subscription', meta)
     return subscription
   } catch (error) {
-    console.log('ERORR', error)
-    log.error('Failed to create subscription', {
+    console.error('Failed to create subscription', {
       error,
       domain: 'customers',
       action: 'creating',

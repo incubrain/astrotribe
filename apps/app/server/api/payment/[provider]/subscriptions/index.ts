@@ -3,7 +3,6 @@ import { serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
   const { apiURL } = useRuntimeConfig().public
   const supabase = await serverSupabaseClient(event)
-  const log = useServerLogger()
 
   try {
     const {
@@ -21,13 +20,13 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!success) {
-      log.error('Get Subscriptions', meta)
+      console.error('Get Subscriptions', meta)
       throw new Error('Could not get subscriptions')
     }
 
     return data
   } catch (error) {
-    log.error('Get Subscriptions', error)
+    console.error('Get Subscriptions', error)
     return error
   }
 })
