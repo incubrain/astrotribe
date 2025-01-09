@@ -26,10 +26,13 @@ COPY apps/website ./apps/website
 COPY layers ./layers
 COPY libs ./libs
 COPY theme ./theme
+COPY prisma ./prisma
 COPY tsconfig.* ./
 COPY nx.json ./
 COPY shared-runtime.config.ts ./
 COPY tailwind.config.base.ts ./
+
+RUN pnpx prisma generate
 
 # Install only website dependencies and build
 RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
