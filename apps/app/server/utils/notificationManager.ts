@@ -20,7 +20,7 @@ class NotificationService {
 
   async sendNotification(options: NotificationOptions): Promise<void> {
     const { message, severity, context } = options
-    const log = useServerLogger()
+    const log = useLogger('app')
 
     try {
       const formattedMessage = this.formatMessage(message, severity, context)
