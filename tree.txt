@@ -681,7 +681,7 @@
 │   │   │   ├── jobs
 │   │   │   │   ├── config
 │   │   │   │   │   └── news
-│   │   │   │   │       └── news-links.config.ts
+│   │   │   │   │       └── news-links.task.ts
 │   │   │   │   ├── job.base.ts
 │   │   │   │   ├── job.config.ts
 │   │   │   │   ├── job.events.ts

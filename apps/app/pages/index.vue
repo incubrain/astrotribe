@@ -3,12 +3,6 @@ definePageMeta({
   name: 'AstroTribe',
 })
 
-const logger = useLogger('metrics')
-
-const testError = () => {
-  logger.error('This is a test error')
-}
-
 const userStore = useCurrentUser()
 const metricsStore = useUserMetricsStore()
 const { profile } = storeToRefs(userStore)
@@ -39,7 +33,6 @@ onMounted(() => {
     <!-- Welcome Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Welcome Card -->
-      <PrimeButton @click="testError">Test Error</PrimeButton>
       <div
         class="bg-gray-900/50 flex flex-col rounded-xl p-6 border border-gray-800 md:col-span-2 xl:col-span-1 xl:row-span-2"
       >

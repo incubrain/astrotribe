@@ -1,3 +1,5 @@
+import { AgentConfig } from '../types'
+
 export const summarizerConfig: AgentConfig = {
   name: 'astronomy-news-summarizer',
   taskDescription: 'Summarize astronomy and space science news articles',
@@ -14,4 +16,4 @@ export const summarizerConfig: AgentConfig = {
 
   openAIModel: 'gpt-4o-mini',
   maxRetries: 2,
-};
+}
