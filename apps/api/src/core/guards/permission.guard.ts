@@ -4,6 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { IS_PUBLIC_KEY } from '@core/decorators/public.decorator'
+import { IS_SERVICE_KEY } from '@core/decorators/service.decorator'
 import { PermissionService } from '../services/permission.service'
 import { DebugService } from '../services/debug.service'
 
@@ -26,9 +27,18 @@ export class PermissionGuard implements CanActivate {
       context.getClass(),
     ])
 
-    this.attachDebugInfo(request, context, isPublic)
+    const isService = this.reflector.getAllAndOverride<boolean>(IS_SERVICE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ])
+
+    this.attachDebugInfo(request, context, isPublic, isService)
 
     if (isPublic) {
+      return true
+    }
+
+    if (isService) {
       return true
     }
 
@@ -50,9 +60,15 @@ export class PermissionGuard implements CanActivate {
     }
   }
 
-  private attachDebugInfo(request: any, context: ExecutionContext, isPublic: boolean) {
+  private attachDebugInfo(
+    request: any,
+    context: ExecutionContext,
+    isPublic: boolean,
+    isService: boolean,
+  ) {
     this.debugService.attachPermissionDebugInfo(request, {
       isPublic,
+      isService,
       endpoint: `${request.method} ${request.path}`,
       handler: context.getHandler().name,
       controller: context.getClass().name,

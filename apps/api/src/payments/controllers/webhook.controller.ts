@@ -1,7 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { PaymentModel } from '@payments/models/payment.model';
-import { PaymentService } from '@payments/services/payment.service';
-import { SubscriptionService } from '@payments/services/subscription.service';
+import { Controller, Post, Body } from '@nestjs/common'
+import { PaymentModel } from '@payments/models/payment.model'
+import { PaymentService } from '@payments/services/payment.service'
+import { SubscriptionService } from '@payments/services/subscription.service'
 
 @Controller('webhook')
 export class WebhookController {
@@ -12,7 +12,7 @@ export class WebhookController {
 
   @Post('razorpay')
   handleWebhook(@Body() body: any): void {
-    const { payload, event } = body;
+    const { payload, event } = body
 
     switch (event) {
       case 'subscription.authenticated':
@@ -25,15 +25,15 @@ export class WebhookController {
       case 'subscription.cancelled':
       case 'subscription.completed':
       case 'subscription.updated':
-        this.handleSubscriptionUpdate(payload);
-        break;
+        this.handleSubscriptionUpdate(payload)
+        break
       case 'payment.authorized':
       case 'payment.failed':
       case 'payment.captured':
-        this.handlePaymentCaptured(payload);
-        break;
+        this.handlePaymentCaptured(payload)
+        break
       default:
-        console.warn(`Unhandled event type: ${event}`);
+        console.warn(`Unhandled event type: ${event}`)
     }
   }
 
@@ -42,7 +42,7 @@ export class WebhookController {
 
     const data: PaymentModel = {
       ...payment,
-      payment_providers: 1, 
+      payment_providers: 1,
       external_payment_id: payment.id,
     }
 
@@ -64,9 +64,7 @@ export class WebhookController {
       remaining_count: subscription.remaining_count,
       customer_notify: subscription.customer_notify,
       created_at: new Date(subscription.created_at * 1000),
-      expire_by: subscription.expire_by
-        ? new Date(subscription.expire_by * 1000)
-        : null,
+      expire_by: subscription.expire_by ? new Date(subscription.expire_by * 1000) : null,
       short_url: subscription.short_url,
       has_scheduled_changes: subscription.has_scheduled_changes,
       change_scheduled_at: subscription.change_scheduled_at

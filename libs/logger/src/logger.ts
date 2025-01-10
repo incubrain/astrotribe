@@ -29,6 +29,11 @@ export class NodeWinstonTransport implements LogTransport {
   }
 
   async init(): Promise<void> {
+    if (typeof process === 'undefined' || process.env.CLIENT_SIDE) {
+      this.initialized = true
+      return
+    }
+
     if (this.initialized) return
 
     try {
@@ -85,6 +90,12 @@ export class NodeWinstonTransport implements LogTransport {
   }
 
   async log(level: Level, message: string) {
+    if (typeof process === 'undefined' || process.env.CLIENT_SIDE) {
+      // In client-side context, just use console
+      console.error('Logger not initialized', message)
+      return
+    }
+
     if (this.initPromise) {
       await this.initPromise
     }

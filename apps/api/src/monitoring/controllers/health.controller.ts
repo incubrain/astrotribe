@@ -11,7 +11,7 @@ import {
 } from '@nestjs/terminus'
 import { HealthCheck } from '@nestjs/terminus'
 
-@Controller('health')
+@Controller('monitoring')
 export class HealthController implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new CustomLogger('Health')
   private healthCheckInterval: NodeJS.Timeout | null = null
@@ -46,7 +46,7 @@ export class HealthController implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  @Get()
+  @Get('health')
   @Public()
   @HealthCheck()
   async check(@Req() req: Request) {

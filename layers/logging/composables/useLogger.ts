@@ -1,98 +1,106 @@
 // composables/useLogger.ts
-import { consola } from 'consola'
+import consola from 'consola'
 
-export interface LogMetadata {
+export type LogLevel = 'error' | 'warn' | 'info' | 'debug'
+export type SeverityLevel = 'critical' | 'high' | 'medium' | 'low'
+
+interface LogMetadata {
   error?: Error
   context?: string
   component?: string
+  severity?: SeverityLevel
   [key: string]: any
 }
 
-export interface LogMessage {
-  level: 'error' | 'warn' | 'info' | 'debug'
+interface ClientErrorPayload {
+  level: LogLevel
   message: string
-  metadata?: LogMetadata
+  service: string
+  severity: SeverityLevel
+  metadata?: Record<string, any>
 }
 
-export function useLogger(tag?: string) {
+// Default severity mappings
+const DEFAULT_SEVERITY_MAP: Record<LogLevel, SeverityLevel> = {
+  error: 'critical',
+  warn: 'high',
+  info: 'medium',
+  debug: 'low',
+}
+
+export function useLogger(service: string = 'client') {
   const config = useRuntimeConfig()
-  const route = useRoute()
-  const prefix = tag ? `[${tag}]` : ''
 
-  const formatMessage = (message: string) => {
-    return tag ? `${prefix} ${message}` : message
-  }
-
-  const sendToServer = async (level: 'error' | 'warn', message: string, metadata?: LogMetadata) => {
+  const sendLogToServer = async (payload: ClientErrorPayload) => {
     try {
       await $fetch('/api/log-pipe', {
         method: 'POST',
-        body: {
-          level,
-          message: formatMessage(message),
-          metadata: {
-            ...metadata,
-            tag,
-            app: config.public.appName || 'unknown',
-            version: config.public.version || 'unknown',
-            route: route.path,
-            userAgent: window.navigator.userAgent,
-            timestamp: Date.now(),
-          },
-        },
+        body: payload,
       })
-    } catch (err) {
-      // If we can't send to server, at least log locally
-      consola.error('Failed to send log to server:', err)
+    } catch (error) {
+      consola.error('Failed to send log to server:', error)
     }
   }
 
-  const logger = {
-    error(message: string, metadata?: LogMetadata) {
-      consola.error(formatMessage(message), metadata)
-      if (import.meta.client) {
-        sendToServer('error', message, metadata)
-      }
-    },
+  const createLog = (level: LogLevel, message: string, metadata?: LogMetadata) => {
+    // Ensure we have a severity level
+    const severity = metadata?.severity || DEFAULT_SEVERITY_MAP[level]
 
-    warn(message: string, metadata?: LogMetadata) {
-      consola.warn(formatMessage(message), metadata)
-      if (import.meta.client) {
-        sendToServer('warn', message, metadata)
-      }
-    },
+    const enrichedMetadata = {
+      ...metadata,
+      environment: config.public.environment,
+    }
 
-    info(message: string, metadata?: LogMetadata) {
-      consola.info(formatMessage(message), metadata)
-    },
+    // Create the actual payload that matches the server's expectations
+    const payload = {
+      level,
+      message,
+      service,
+      severity,
+      metadata: enrichedMetadata,
+    }
 
-    debug(message: string, metadata?: LogMetadata) {
-      if (config.public.debug) {
-        consola.debug(formatMessage(message), metadata)
-      }
-    },
-
-    // Helper for handling errors in async operations
-    async handleAsyncError<T>(promise: Promise<T>, context: string): Promise<T | undefined> {
-      try {
-        return await promise
-      } catch (error) {
-        logger.error(`Error in ${context}`, { error })
-        return undefined
-      }
-    },
-
-    // Helper for error boundaries and component errors
-    handleComponentError(error: unknown, component?: string, info?: string) {
-      const errorObj = error instanceof Error ? error : new Error(String(error))
-      logger.error('Component error', {
-        error: errorObj,
-        component,
-        info,
-        stack: errorObj.stack,
-      })
-    },
+    return payload
   }
 
-  return logger
+  const error = (message: string, metadata?: LogMetadata) => {
+    const log = createLog('error', message, metadata)
+    consola.error(message, log.metadata)
+    sendLogToServer(log)
+    return log
+  }
+
+  const warn = (message: string, metadata?: LogMetadata) => {
+    const log = createLog('warn', message, metadata)
+    consola.warn(message, log.metadata)
+    sendLogToServer(log)
+    return log
+  }
+
+  const info = (message: string, metadata?: LogMetadata) => {
+    const log = createLog('info', message, metadata)
+    consola.info(message, log.metadata)
+    return log
+  }
+
+  const debug = (message: string, metadata?: LogMetadata) => {
+    const log = createLog('debug', message, metadata)
+    consola.debug(message, log.metadata)
+    return log
+  }
+
+  return {
+    error,
+    warn,
+    info,
+    debug,
+    createLog,
+  }
+}
+
+// Add type exports for global use
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $logger: ReturnType<typeof useLogger>
+  }
 }

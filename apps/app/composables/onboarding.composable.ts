@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue'
-import type { ZodSchema, z } from 'zod'
+import { type ZodSchema, z } from 'zod'
 
 const accountDetailsSchema = z.object({
   dateOfBirth: z.date().max(new Date(), 'Date of birth cannot be in the future'),
