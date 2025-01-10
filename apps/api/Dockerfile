@@ -23,6 +23,7 @@ COPY apps/api/package.json ./apps/api/
 
 # Copy the source files for the required workspaces
 COPY apps/api ./apps/api
+COPY libs ./libs
 COPY prisma ./prisma
 COPY tsconfig.* ./
 COPY nx.json ./
