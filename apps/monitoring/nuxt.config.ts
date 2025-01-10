@@ -1,25 +1,37 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedConfig from '../../shared-runtime.config'
+import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import { devPortMap } from '../../shared/paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
-  workspaceDir: '../../',
-  srcDir: '.',
   extends: ['../../layers/base', '../../layers/supabase'],
   modules: ['@primevue/nuxt-module'],
+
+  imports: {
+    autoImport: true,
+  },
+
+  runtimeConfig: {
+    ...sharedRuntimeConfig.runtimeConfig.private,
+    public: {
+      serviceName: 'auth',
+      ...sharedRuntimeConfig.runtimeConfig.public,
+    },
+  },
+  srcDir: '.',
+  workspaceDir: '../../',
 
   routeRules: {
     '/**': { appMiddleware: 'auth' },
   },
 
-  tailwindcss: {
-    configPath: `${currentDir}/tailwind.config.ts`,
-    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
-    exposeConfig: true,
-    viewer: true,
+  devServer: {
+    // Check if we're running in a multi-app dev environment
+    host: 'localhost',
+    port: process.env.NUXT_MULTI_APP ? new URL(devPortMap.monitoring).port : '3000',
   },
 
   primevue: {
@@ -49,15 +61,10 @@ export default defineNuxtConfig({
     },
   },
 
-  imports: {
-    autoImport: true,
-  },
-
-  runtimeConfig: {
-    ...sharedConfig.runtimeConfig.private,
-    public: {
-      serviceName: '@astronera/auth',
-      ...sharedConfig.runtimeConfig.public,
-    },
+  tailwindcss: {
+    configPath: `${currentDir}/tailwind.config.ts`,
+    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
+    exposeConfig: true,
+    viewer: true,
   },
 })

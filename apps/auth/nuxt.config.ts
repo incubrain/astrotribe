@@ -1,25 +1,20 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedConfig from '../../shared-runtime.config'
+import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import { devPortMap } from '../../shared/paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
-// REQUIRED FOR LOGGER
-process.env.SERVICE_NAME = '@astronera/auth'
-
 export default defineNuxtConfig({
-  workspaceDir: '../../',
-  srcDir: '.',
   extends: [
+    '../../layers/logging',
     '../../layers/base',
     '../../layers/supabase',
     '../../layers/crud',
     '../../layers/referral',
   ],
-  build: {
-    transpile: ['../../layers/base', '../../layers/supabase', '../../layers/crud'],
-  },
+
   modules: [
     '@nuxt/devtools',
     '@vueuse/nuxt',
@@ -31,12 +26,39 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
   ],
 
-  devServer: {
-    host: 'localhost',
-    port: 3009,
+  ssr: false,
+
+  runtimeConfig: {
+    serviceName: 'auth',
+    ...sharedRuntimeConfig.runtimeConfig.private,
+    public: {
+      serviceName: 'auth',
+      ...sharedRuntimeConfig.runtimeConfig.public,
+    },
+  },
+  srcDir: '.',
+  workspaceDir: '../../',
+
+  build: {
+    transpile: [
+      '../../layers/base',
+      '../../layers/supabase',
+      '../../layers/crud',
+      '../../layers/logging',
+      '../../layers/referral',
+    ],
   },
 
-  ssr: false,
+  routeRules: {
+    '/': { redirect: '/login' },
+  },
+
+  devServer: {
+    host: 'localhost',
+    port: process.env.NUXT_MULTI_APP ? devPortMap.auth : 3009,
+  },
+
+  compatibilityDate: '2024-10-03',
 
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
@@ -62,21 +84,6 @@ export default defineNuxtConfig({
           },
         },
       },
-    },
-  },
-
-  routeRules: {
-    '/': { redirect: '/login' },
-  },
-
-  compatibilityDate: '2024-10-03',
-
-  runtimeConfig: {
-    serviceName: '@astronera/auth',
-    ...sharedConfig.runtimeConfig.private,
-    public: {
-      serviceName: '@astronera/auth',
-      ...sharedConfig.runtimeConfig.public,
     },
   },
 })

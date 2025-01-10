@@ -1,14 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-  workspaceDir: '../../',
-  srcDir: '.',
-
-  // remove after debuggin
-  sourcemap: true,
-
   modules: ['@nuxt/image'],
-
   components: [
     {
       path: './components',
@@ -17,6 +10,12 @@ export default defineNuxtConfig({
       global: true,
     },
   ],
+  srcDir: '.',
+
+  workspaceDir: '../../',
+
+  // remove after debuggin
+  sourcemap: true,
 
   experimental: {
     defaults: {
@@ -32,6 +31,10 @@ export default defineNuxtConfig({
     },
   },
 
+  eslint: {
+    checker: true,
+  },
+
   icon: {
     preload: true,
     provider: 'server',
@@ -41,10 +44,6 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-  },
-
-  eslint: {
-    checker: true,
   },
 
   image: {

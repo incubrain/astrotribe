@@ -1,34 +1,20 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import sharedConfig from '../../shared-runtime.config'
+import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import { devPortMap } from '../../shared/paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineNuxtConfig({
-  debug: true,
-  sourcemap: true,
-  workspaceDir: '../../',
-  srcDir: '.',
   extends: [
+    '../../layers/logging',
     '../../layers/base',
     '../../layers/supabase',
     '../../layers/crud',
     '../../layers/advert',
     '../../layers/referral',
   ],
-
-  vite: {
-    optimizeDeps: {
-      exclude: ['fsevents'],
-    },
-  },
-
-  // build: {
-  //   transpile: ['@formbricks/js'],
-  // },
-
-  debug: true,
 
   modules: [
     'nuxt-tiptap-editor',
@@ -45,72 +31,31 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module',
   ],
 
-  experimental: {
-    asyncContext: true,
-  },
-
-  tailwindcss: {
-    configPath: `${currentDir}/tailwind.config.ts`,
-    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
-    exposeConfig: true,
-    viewer: true,
-  },
-
-  primevue: {
-    importPT: { from: resolve(currentDir, '../../theme/index.js') },
-    autoImport: true,
-    components: {
-      prefix: 'Prime',
-      include: '*',
-      exclude: ['Editor'],
-    },
-
-    composables: {
-      include: '*',
-    },
-
-    options: {
-      ripple: true,
-      unstyled: true,
-      theme: {
-        options: {
-          cssLayer: true,
-        },
-      },
+  runtimeConfig: {
+    ...sharedRuntimeConfig.runtimeConfig.private,
+    serviceName: 'app',
+    public: {
+      ...sharedRuntimeConfig.runtimeConfig.public,
+      serviceName: 'app',
     },
   },
-
-  image: {
-    format: ['webp', 'jpg'],
-  },
-
-  tiptap: {
-    prefix: 'Tiptap',
-  },
-
-  pwa: {
-    registerType: 'autoUpdate',
-    manifest: false,
-    workbox: {
-      maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-      navigateFallback: '/offline',
-      globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-      cleanupOutdatedCaches: true,
-      runtimeCaching: [
-        {
-          urlPattern: /^\/api\//,
-          handler: 'NetworkFirst',
-        },
-      ],
-    },
-    client: {
-      installPrompt: true,
-    },
-  },
+  srcDir: '.',
+  workspaceDir: '../../',
 
   alias: {
     '#shared': fileURLToPath(new URL('./shared', import.meta.url)),
   },
+
+  devServer: {
+    host: 'localhost',
+    port: process.env.NUXT_MULTI_APP ? devPortMap.app : 3000,
+  },
+
+  experimental: {
+    asyncContext: true,
+  },
+
+  compatibilityDate: '2025-01-09',
 
   // Add proper MIME type handling
   nitro: {
@@ -139,12 +84,68 @@ export default defineNuxtConfig({
     },
   },
 
-  runtimeConfig: {
-    ...sharedConfig.runtimeConfig.private,
-    serviceName: '@astronera/app',
-    public: {
-      ...sharedConfig.runtimeConfig.public,
-      serviceName: '@astronera/app',
+  vite: {
+    optimizeDeps: {
+      exclude: ['fsevents'],
     },
+  },
+
+  image: {
+    format: ['webp', 'jpg'],
+  },
+
+  primevue: {
+    importPT: { from: resolve(currentDir, '../../theme/index.js') },
+    autoImport: true,
+    components: {
+      prefix: 'Prime',
+      include: '*',
+      exclude: ['Editor'],
+    },
+
+    composables: {
+      include: '*',
+    },
+
+    options: {
+      ripple: true,
+      unstyled: true,
+      theme: {
+        options: {
+          cssLayer: true,
+        },
+      },
+    },
+  },
+
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: false,
+    workbox: {
+      maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+      navigateFallback: '/offline',
+      globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      cleanupOutdatedCaches: true,
+      runtimeCaching: [
+        {
+          urlPattern: /^\/api\//,
+          handler: 'NetworkFirst',
+        },
+      ],
+    },
+    client: {
+      installPrompt: true,
+    },
+  },
+
+  tailwindcss: {
+    configPath: `${currentDir}/tailwind.config.ts`,
+    cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
+    exposeConfig: true,
+    viewer: true,
+  },
+
+  tiptap: {
+    prefix: 'Tiptap',
   },
 })
