@@ -3,9 +3,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "../../",
+    "outDir": "./dist",
+
     "paths": {
       "#layers/*": ["../../layers/*"],
-      "@types/*": ["./types/*"]
+      "@types/*": ["./types/*"],
+      "#imports": ["./.nuxt/types/imports.d.ts"],
+      "#app": ["./.nuxt/types/app.d.ts"]
     }
-  }
+  },
+  "include": [
+    "./composables/**/*",
+    "./plugins/**/*",
+    "./server/**/*",
+    "./types/**/*",
+    "./*.ts",
+    "./app.vue"
+  ],
+  "exclude": ["node_modules", ".nuxt", "dist", "**/*.spec.ts", "**/*.test.ts", "**/__tests__"]
 }

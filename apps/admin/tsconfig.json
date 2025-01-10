@@ -8,5 +8,6 @@
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts"]
+  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "components/error/ErrorFilter.vue", "../../layers/supabase/middleware/4.protected.global.ts"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -26,6 +26,7 @@ tmp
 .eslintcache
 **.temp
 **.data
+**.build
 **.branches
 **/components.d.ts
 **/migration_backups
@@ -66,8 +67,11 @@ testem.log
 /typings
 **/data/logs
 docs/**
-debug/**
 
+# Debugging
+debug/**
+trace
+ts-diagnostic-results
 
 # System Files
 .

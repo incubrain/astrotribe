@@ -28,7 +28,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpx nuxi dev",
+        "command": "pnpx nuxi dev --no-port-scanning",
         "cwd": "apps/admin"
       }
     },

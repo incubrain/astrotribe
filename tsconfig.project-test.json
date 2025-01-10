@@ -1,0 +1,7 @@
+// tsconfig.project-test.json
+{
+    "files": [],
+    "references": [
+      { "path": "./apps/website" }
+    ]
+  }

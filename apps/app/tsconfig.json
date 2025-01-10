@@ -9,5 +9,6 @@
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts"]
+  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "nuxt.config.ts"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -27,7 +27,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/app && pnpx nuxi dev"
+        "command": "cd apps/app && pnpx nuxi dev --no-port-scanning"
       }
     },
 

@@ -7,5 +7,6 @@
       "#shared/*": ["./shared/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"]
+  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue"],
+  "exclude": ["node_modules", "dist"]
 }

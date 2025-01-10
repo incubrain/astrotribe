@@ -9,13 +9,13 @@
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
     "types": [
-      "node",
+      "@types/node",
       "vue",
       "@nuxt/types",
       "@nuxt/content",
       "@nuxtjs/i18n",
       "@pinia/nuxt",
-      "@types/node"
     ]
-  }
+  },
+  "exclude": ["node_modules", "dist", ".nuxt", "out"]
 }

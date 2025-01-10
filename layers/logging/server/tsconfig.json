@@ -1,7 +1,10 @@
 {
-  "extends": ["../../tsconfig.web.json", "./.nuxt/tsconfig.json"],
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@ib/logger": ["../../../libs/logger/dist/index.esm.js"]
+    },
     "types": ["node"]
   },
   "include": ["./**/*"],
