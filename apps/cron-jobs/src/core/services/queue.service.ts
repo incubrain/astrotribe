@@ -1,11 +1,12 @@
 // src/core/services/queue.service.ts
-import * as PgBoss from 'pg-boss'
+import PgBoss from 'pg-boss'
 import pool from 'pg-pool'
 import type { Pool } from 'pg'
 
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
 import { PrismaService } from './prisma.service'
+import { job_status } from '@prisma/client'
 import type { WorkflowJob, WorkflowJobData } from '@types'
 
 export interface QueueOptions {
@@ -236,8 +237,8 @@ export class QueueService {
           ...(data.status === 'failed' ? { failed_at: new Date() } : {}),
         },
       })
-    } catch (error) {
-      this.logger.error('Failed to track job metrics', { error, jobName, jobId })
+    } catch (error: any) {
+      this.logger.error('Failed to track job metrics', { error, context: { jobName, jobId } })
     }
   }
 
@@ -302,7 +303,7 @@ export class QueueService {
       by: ['job_name', 'status'],
       where: {
         ...(jobName && { job_name: jobName }),
-        ...(status && { status }),
+        ...(status && { status: status as job_status }),
         ...(startDate && { created_at: { gte: startDate } }),
         ...(endDate && { created_at: { lte: endDate } }),
       },

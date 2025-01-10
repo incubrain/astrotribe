@@ -46,7 +46,7 @@ onUnmounted(() => {
         class="embla__slide mx-2"
       >
         <div
-          class="bg-primary-900/50 w-24 max-w-24 rounded-xl p-3 flex flex-col items-center justify-center group hover:bg-primary-800/50 transition-colors"
+          class="bg-primary-900/50 w-20 max-w-20 rounded-xl p-2 flex flex-col items-center justify-center group hover:bg-primary-800/50 transition-colors"
         >
           <NuxtImg
             :src="`/images/logos/${partner.name.toLowerCase().replace(' ', '-')}-logo.jpg`"

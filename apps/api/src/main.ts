@@ -12,6 +12,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { PaginationInterceptor } from '@core/interceptors/pagination.interceptor'
 import { TrimPipe } from '@core/pipes/trim.pipe'
 import helmet from 'helmet'
+import { IoAdapter } from '@nestjs/platform-socket.io'
 
 // INTERCEPTORS
 import { BigIntSerializationInterceptor } from '@core/interceptors/bigint.interceptor'
@@ -26,7 +27,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger,
   })
-  
+
+  app.useWebSocketAdapter(new IoAdapter(app))
+
   // Debug middleware
   // CORS Configuration - Let's use enableCors() instead of manual middleware
   app.enableCors({
@@ -34,25 +37,33 @@ async function bootstrap() {
       'https://admin.astronera.org',
       'https://app.astronera.org',
       'http://localhost:3000',
+      'http://localhost:3009',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://localhost:3003',
       'http://localhost:4200',
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    // allowedHeaders: [
-    //   'Content-Type',
-    //   'Accept',
-    //   'Authorization',
-    //   'x-api-key',
-    //   'Origin',
-    //   'X-Requested-With',
-    //   'Access-Control-Request-Method',
-    //   'Access-Control-Request-Headers',
-    // ],
-    // exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    allowedHeaders: [
+      'Content-Type',
+      'Accept',
+      'Authorization',
+      'x-api-key',
+      'Origin',
+      'baggage',
+      'sentry-trace',
+      'X-Requested-With',
+      'Access-Control-Request-Method',
+      'Access-Control-Request-Headers',
+      'Upgrade',
+      'Connection',
+    ],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
     preflightContinue: false,
     optionsSuccessStatus: 204,
   })
-  
+
   app.use((req, res, next) => {
     const logger = new CustomLogger('HTTP')
     logger.debug(`${req.method} ${req.path}`, {
@@ -71,46 +82,18 @@ async function bootstrap() {
       crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: false,
       crossOriginResourcePolicy: false,
-      contentSecurityPolicy: false,
-      // contentSecurityPolicy: {
-      //   directives: {
-      //     defaultSrc: ["'self'"],
-      //     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      //     styleSrc: ["'self'", "'unsafe-inline'"],
-      //     imgSrc: ["'self'", 'data:', 'https:'],
-      //     connectSrc: ["'self'", 'https:', 'wss:', '*.astronera.org'], // Add explicit domain
-      //   },
-      // },
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
+          connectSrc: ["'self'", 'wss:', 'ws:', '*.astronera.org'],
+        },
+      },
     }),
   )
   app.use(compression())
-
-  // CORS Configuration - Let's use enableCors() instead of manual middleware
-  app.enableCors({
-    origin: [
-      'https://admin.astronera.org',
-      'https://app.astronera.org',
-      'http://localhost:3000',
-      'http://localhost:4200',
-    ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'x-api-key',
-      'Origin',
-      'baggage',
-      'sentry-trace',
-      'X-Requested-With',
-      'Access-Control-Request-Method',
-      'Access-Control-Request-Headers',
-    ],
-    exposedHeaders: ['Content-Range', 'X-Content-Range'],
-    credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  })
 
   // Global filters
   app.useGlobalFilters(new HttpExceptionFilter(new CustomLogger()))

@@ -13,9 +13,9 @@ import { MockCacheService } from './cache.mock'
     {
       provide: 'REDIS_CACHE',
       useFactory: (config: ConfigService) => {
-        if (process.env.NODE_ENV === 'development') {
-          return new MockCacheService()
-        }
+        // if (process.env.NODE_ENV === 'development') {
+        //   return new MockCacheService()
+        // }
 
         return new IORedis({
           host: config.get<string>('app.redis.host') || 'redis.railway.internal',

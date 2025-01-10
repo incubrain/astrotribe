@@ -35,6 +35,6 @@ export const getEnvironment = (): Environment => {
       key: config.SUPABASE_KEY || null,
       serviceKey: config.SUPABASE_SERVICE_KEY || null,
     },
-    serviceName: config.SERVICE_NAME ?? 'api-gateway',
+    serviceName: config.SERVICE_NAME ?? 'api',
   }
 }

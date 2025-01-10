@@ -204,7 +204,6 @@
 │   │   │   └── default.vue
 │   │   ├── middleware
 │   │   │   ├── auth.global.ts
-│   │   │   └── is-admin.ts
 │   │   ├── nuxt.config.ts
 │   │   ├── pages
 │   │   │   ├── add-content-source.vue

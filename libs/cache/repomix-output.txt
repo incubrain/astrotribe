@@ -1,0 +1,1088 @@
+src/
+  clients/
+    index.ts
+    redis.client.ts
+  managers/
+    base.manager.ts
+    index.ts
+    key.manager.ts
+    queue.manager.ts
+  queues/
+    index.ts
+    log.queue.ts
+  types/
+    client.types.ts
+    index.ts
+    manager.types.ts
+    queue.types.ts
+    util.types.ts
+  utils/
+    error.util.ts
+    index.ts
+    retry.util.ts
+  index.ts
+package.json
+project.json
+rollup.config.ts
+tsconfig.json
+
+================================================================
+Repository Files
+================================================================
+
+================
+File: src/clients/index.ts
+================
+export * from './redis.client'
+
+================
+File: src/clients/redis.client.ts
+================
+// src/clients/redis.client.ts
+import Redis from 'ioredis'
+import type { RedisConfig, RedisClientEvents } from '../types'
+
+export class RedisClient {
+  private static instance: RedisClient | null = null
+  private client: Redis | null = null
+  private isConnected: boolean = false
+  private events: Partial<RedisClientEvents> = {}
+
+  private constructor(private config: RedisConfig = {}) {
+    this.initializeClient()
+  }
+
+  public static getInstance(config?: RedisConfig): RedisClient {
+    if (!RedisClient.instance) {
+      RedisClient.instance = new RedisClient(config)
+    }
+    return RedisClient.instance
+  }
+
+  private initializeClient(): void {
+    const defaultConfig: RedisConfig = {
+      host: process.env.REDIS_HOST || 'localhost',
+      port: parseInt(process.env.REDIS_PORT || '6379'),
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD,
+      db: parseInt(process.env.REDIS_DB || '0'),
+      maxRetriesPerRequest: 3,
+      enableReadyCheck: true,
+      autoResubscribe: true,
+      autoResendUnfulfilledCommands: true,
+      retryStrategy: (times) => {
+        const delay = Math.min(times * 50, 2000)
+        return delay
+      },
+    }
+
+    const finalConfig = { ...defaultConfig, ...this.config }
+
+    try {
+      this.client = new Redis(finalConfig)
+      this.setupEventListeners()
+    } catch (error) {
+      console.error('Failed to initialize Redis client:', error)
+      throw error
+    }
+  }
+
+  private setupEventListeners(): void {
+    if (!this.client) return
+
+    this.client.on('connect', () => {
+      this.isConnected = true
+      this.events.connect?.()
+    })
+
+    this.client.on('ready', () => {
+      this.events.ready?.()
+    })
+
+    this.client.on('error', (error) => {
+      console.error('Redis client error:', error)
+      this.events.error?.(error)
+    })
+
+    this.client.on('close', () => {
+      this.isConnected = false
+      this.events.close?.()
+    })
+
+    this.client.on('reconnecting', (params: { delay: number; attempt: number }) => {
+      this.events.reconnecting?.(params)
+    })
+  }
+
+  public on<T extends keyof RedisClientEvents>(event: T, listener: RedisClientEvents[T]): void {
+    this.events[event] = listener
+  }
+
+  public getClient(): Redis {
+    if (!this.client) {
+      throw new Error('Redis client not initialized')
+    }
+    return this.client
+  }
+
+  public async disconnect(): Promise<void> {
+    if (this.client) {
+      await this.client.quit()
+      this.client = null
+      this.isConnected = false
+    }
+  }
+
+  public isClientConnected(): boolean {
+    return this.isConnected
+  }
+}
+
+================
+File: src/managers/base.manager.ts
+================
+// src/managers/base.manager.ts
+import ms from 'ms'
+import type Redis from 'ioredis'
+import type { CacheOptions } from '../types'
+import type { RedisClient } from '../clients/redis.client'
+
+export abstract class BaseCacheManager {
+  protected redis: Redis
+  protected prefix: string
+  protected defaultTTL: number
+
+  constructor(
+    protected client: RedisClient,
+    protected options: CacheOptions = {},
+  ) {
+    this.redis = client.getClient()
+    this.prefix = options.prefix || ''
+    this.defaultTTL = this.parseTTL(options.ttl || '1h')
+  }
+
+  protected parseTTL(ttl: number | string): number {
+    if (typeof ttl === 'number') {
+      return ttl
+    }
+    return Math.floor(ms(ttl) / 1000) // Convert ms to seconds
+  }
+
+  protected buildKey(key: string): string {
+    return this.prefix ? `${this.prefix}:${key}` : key
+  }
+
+  protected async lock(key: string, ttl: number = 30): Promise<string | null> {
+    const lockKey = `lock:${key}`
+    const token = Math.random().toString(36).slice(2)
+
+    const acquired = await this.redis
+      .multi()
+      .set(lockKey, token)
+      .expire(lockKey, ttl)
+      .exec()
+
+    return acquired ? token : null
+  }
+
+  protected async unlock(key: string, token: string): Promise<boolean> {
+    const lockKey = `lock:${key}`
+    const script = `
+      if redis.call("get", KEYS[1]) == ARGV[1] then
+        return redis.call("del", KEYS[1])
+      else
+        return 0
+      end
+    `
+
+    const result = await this.redis.eval(script, 1, lockKey, token)
+
+    return result === 1
+  }
+
+  public async clearPrefix(prefix: string): Promise<void> {
+    const pattern = `${prefix}:*`
+    const keys = await this.redis.keys(pattern)
+
+    if (keys.length > 0) {
+      await this.redis.del(...keys)
+    }
+  }
+
+  public async healthCheck(): Promise<boolean> {
+    try {
+      await this.redis.ping()
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  public abstract get(key: string): Promise<any>
+  public abstract set(key: string, value: any, options?: CacheOptions): Promise<void>
+  public abstract delete(key: string): Promise<void>
+}
+
+================
+File: src/managers/index.ts
+================
+export * from './base.manager'
+export * from './key.manager'
+export * from './queue.manager'
+
+================
+File: src/managers/key.manager.ts
+================
+// src/managers/key.manager.ts
+import type { CacheOptions } from '../types'
+import { BaseCacheManager } from './base.manager'
+
+export interface KeyManagerOptions extends CacheOptions {
+  compression?: boolean
+}
+
+export class KeyManager extends BaseCacheManager {
+  constructor(client: any, options: KeyManagerOptions = {}) {
+    super(client, { prefix: 'cache', ...options })
+  }
+
+  public async get<T>(key: string): Promise<T | null> {
+    const fullKey = this.buildKey(key)
+    const value = await this.redis.get(fullKey)
+
+    if (!value) return null
+
+    try {
+      return JSON.parse(value) as T
+    } catch {
+      return value as T
+    }
+  }
+
+  public async set(key: string, value: any, options: CacheOptions = {}): Promise<void> {
+    const fullKey = this.buildKey(key)
+    const ttl = this.parseTTL(options.ttl || this.defaultTTL)
+    const serializedValue = typeof value === 'string' ? value : JSON.stringify(value)
+
+    if (ttl) {
+      await this.redis.setex(fullKey, ttl, serializedValue)
+    } else {
+      await this.redis.set(fullKey, serializedValue)
+    }
+  }
+
+  public async delete(key: string): Promise<void> {
+    const fullKey = this.buildKey(key)
+    await this.redis.del(fullKey)
+  }
+
+  public async increment(key: string, by: number = 1): Promise<number> {
+    const fullKey = this.buildKey(key)
+    return this.redis.incrby(fullKey, by)
+  }
+
+  public async decrement(key: string, by: number = 1): Promise<number> {
+    const fullKey = this.buildKey(key)
+    return this.redis.decrby(fullKey, by)
+  }
+
+  public async exists(key: string): Promise<boolean> {
+    const fullKey = this.buildKey(key)
+    const result = await this.redis.exists(fullKey)
+    return result === 1
+  }
+
+  public async setIfNotExists(
+    key: string,
+    value: any,
+    options: CacheOptions = {},
+  ): Promise<boolean> {
+    const fullKey = this.buildKey(key)
+    const ttl = this.parseTTL(options.ttl || this.defaultTTL)
+    const serializedValue = typeof value === 'string' ? value : JSON.stringify(value)
+
+    const execResult = await this.redis
+      .multi()
+      .set(fullKey, serializedValue)
+      .expire(fullKey, ttl)
+      .exec()
+
+    if (!execResult) {
+      throw new Error('Failed to execute Redis multi command')
+    }
+
+    const [error, result] = execResult
+
+    if (error) {
+      throw error
+    }
+
+    return String(result) === 'OK'
+  }
+
+  public async getMultiple<T>(keys: string[]): Promise<(T | null)[]> {
+    const fullKeys = keys.map((key) => this.buildKey(key))
+    const values = await this.redis.mget(fullKeys)
+
+    return values.map((value) => {
+      if (!value) return null
+      try {
+        return JSON.parse(value)
+      } catch {
+        return value as T
+      }
+    })
+  }
+
+  public async setMultiple(
+    entries: { key: string; value: any }[],
+    options: CacheOptions = {},
+  ): Promise<void> {
+    const ttl = this.parseTTL(options.ttl || this.defaultTTL)
+    const pipeline = this.redis.pipeline()
+
+    for (const { key, value } of entries) {
+      const fullKey = this.buildKey(key)
+      const serializedValue = typeof value === 'string' ? value : JSON.stringify(value)
+
+      if (ttl) {
+        pipeline.setex(fullKey, ttl, serializedValue)
+      } else {
+        pipeline.set(fullKey, serializedValue)
+      }
+    }
+
+    await pipeline.exec()
+  }
+
+  public async getTTL(key: string): Promise<number> {
+    const fullKey = this.buildKey(key)
+    return this.redis.ttl(fullKey)
+  }
+
+  public async setTTL(key: string, ttl: number | string): Promise<boolean> {
+    const fullKey = this.buildKey(key)
+    const seconds = this.parseTTL(ttl)
+    const result = await this.redis.expire(fullKey, seconds)
+    return result === 1
+  }
+}
+
+================
+File: src/managers/queue.manager.ts
+================
+// src/managers/queue-manager.ts
+import type { QueueItem, QueueOptions } from '../types'
+import { BaseCacheManager } from './base.manager'
+
+export class QueueManager extends BaseCacheManager {
+  private readonly processingTimeout: number
+  private readonly maxRetries: number
+  private readonly retryDelay: number
+
+  constructor(client: any, options: QueueOptions = {}) {
+    super(client, { prefix: 'queue', ...options })
+    this.processingTimeout = options.processingTimeout || 300 // 5 minutes
+    this.maxRetries = options.maxRetries || 3
+    this.retryDelay = options.retryDelay || 60 // 1 minute
+  }
+
+  public async enqueue<T>(data: T): Promise<string> {
+    const id = this.generateId()
+    const timestamp = Date.now()
+
+    const item: QueueItem<T> = {
+      id,
+      data,
+      timestamp,
+      retries: 0,
+      status: 'pending',
+    }
+
+    const pipeline = this.redis.pipeline()
+
+    // Add to the queue
+    pipeline.zadd(this.buildKey('pending'), timestamp, id)
+
+    // Store the item data
+    pipeline.hset(this.buildKey(`item:${id}`), 'data', JSON.stringify(item))
+
+    await pipeline.exec()
+    return id
+  }
+
+  public async dequeue<T>(batchSize: number = 10): Promise<QueueItem<T>[]> {
+    const now = Date.now()
+    const pipeline = this.redis.pipeline()
+
+    // Get items from pending queue
+    const pendingIds = await this.redis.zrange(this.buildKey('pending'), 0, batchSize - 1)
+
+    if (pendingIds.length === 0) {
+      // Check for retry-ready failed items
+      const retryIds = await this.redis.zrangebyscore(
+        this.buildKey('failed'),
+        0,
+        now - this.retryDelay * 1000,
+      )
+
+      if (retryIds.length > 0) {
+        for (const id of retryIds.slice(0, batchSize)) {
+          const item = await this.getItem<T>(id)
+          if (item && item.retries && item.retries < this.maxRetries) {
+            pendingIds.push(id)
+          }
+        }
+      }
+    }
+
+    if (pendingIds.length === 0) return []
+
+    // Move items to processing queue
+    for (const id of pendingIds) {
+      pipeline.zrem(this.buildKey('pending'), id)
+      pipeline.zrem(this.buildKey('failed'), id)
+      pipeline.zadd(this.buildKey('processing'), now, id)
+
+      // Update status
+      const item = await this.getItem<T>(id)
+      if (item) {
+        item.status = 'processing'
+        pipeline.hset(this.buildKey(`item:${id}`), 'data', JSON.stringify(item))
+      }
+    }
+
+    await pipeline.exec()
+
+    // Get all items
+    const items: QueueItem<T>[] = []
+    for (const id of pendingIds) {
+      const item = await this.getItem<T>(id)
+      if (item) items.push(item)
+    }
+
+    return items
+  }
+
+  public async complete(id: string): Promise<void> {
+    const pipeline = this.redis.pipeline()
+
+    // Remove from processing queue
+    pipeline.zrem(this.buildKey('processing'), id)
+
+    // Update status
+    const item = await this.getItem(id)
+    if (item) {
+      item.status = 'completed'
+      pipeline.hset(this.buildKey(`item:${id}`), 'data', JSON.stringify(item))
+    }
+
+    // Store in completed set with TTL
+    pipeline.zadd(this.buildKey('completed'), Date.now(), id)
+    pipeline.expire(this.buildKey(`item:${id}`), this.defaultTTL)
+
+    await pipeline.exec()
+  }
+
+  public async fail(id: string, error?: Error): Promise<void> {
+    const pipeline = this.redis.pipeline()
+    const item = await this.getItem(id)
+
+    if (item) {
+      item.status = 'failed'
+      item.retries = (item.retries || 0) + 1
+
+      // Remove from processing
+      pipeline.zrem(this.buildKey('processing'), id)
+
+      // Add to failed queue
+      pipeline.zadd(this.buildKey('failed'), Date.now(), id)
+
+      // Update item data
+      pipeline.hset(this.buildKey(`item:${id}`), 'data', JSON.stringify(item))
+
+      if (error) {
+        pipeline.hset(
+          this.buildKey(`item:${id}`),
+          'error',
+          JSON.stringify({
+            message: error.message,
+            stack: error.stack,
+          }),
+        )
+      }
+
+      await pipeline.exec()
+    }
+  }
+
+  protected async getItem<T>(id: string): Promise<QueueItem<T> | null> {
+    const data = await this.redis.hget(this.buildKey(`item:${id}`), 'data')
+    if (!data) return null
+
+    try {
+      return JSON.parse(data) as QueueItem<T>
+    } catch {
+      return null
+    }
+  }
+
+  public async getStatus(id: string): Promise<string | null> {
+    const item = await this.getItem(id)
+    return item?.status || null
+  }
+
+  public async cleanup(): Promise<void> {
+    const now = Date.now()
+
+    // Clean up stalled processing items
+    const stalledIds = await this.redis.zrangebyscore(
+      this.buildKey('processing'),
+      0,
+      now - this.processingTimeout * 1000,
+    )
+
+    for (const id of stalledIds) {
+      await this.fail(id, new Error('Processing timeout exceeded'))
+    }
+
+    // Remove old completed items
+    const completedIds = await this.redis.zrangebyscore(
+      this.buildKey('completed'),
+      0,
+      now - this.defaultTTL * 1000,
+    )
+
+    if (completedIds.length > 0) {
+      const pipeline = this.redis.pipeline()
+
+      pipeline.zrem(this.buildKey('completed'), ...completedIds)
+      for (const id of completedIds) {
+        pipeline.del(this.buildKey(`item:${id}`))
+      }
+
+      await pipeline.exec()
+    }
+  }
+
+  private generateId(): string {
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  }
+
+  // Implement required abstract methods
+  public async get(key: string): Promise<any> {
+    return this.getItem(key)
+  }
+
+  public async set(key: string, value: any): Promise<void> {
+    await this.enqueue(value)
+  }
+
+  public async delete(key: string): Promise<void> {
+    const pipeline = this.redis.pipeline()
+
+    pipeline.zrem(this.buildKey('pending'), key)
+    pipeline.zrem(this.buildKey('processing'), key)
+    pipeline.zrem(this.buildKey('failed'), key)
+    pipeline.zrem(this.buildKey('completed'), key)
+    pipeline.del(this.buildKey(`item:${key}`))
+
+    await pipeline.exec()
+  }
+}
+
+================
+File: src/queues/index.ts
+================
+export * from './log.queue'
+
+================
+File: src/queues/log.queue.ts
+================
+// src/queues/log.queue.ts
+import { QueueManager } from '../managers/queue.manager'
+import type { LogEntry, QueueOptions } from '../types'
+
+export class LogQueue extends QueueManager {
+  constructor(client: any, options: QueueOptions = {}) {
+    super(client, {
+      prefix: 'logs',
+      processingTimeout: 60, // 1 minute
+      maxRetries: 3,
+      retryDelay: 30,
+      ...options,
+    })
+  }
+
+  public async pushLog(log: Omit<LogEntry, 'timestamp'>): Promise<string> {
+    const logEntry: LogEntry = {
+      ...log,
+      timestamp: Date.now(),
+    }
+    return this.enqueue(logEntry)
+  }
+
+  public async processBatch(batchSize: number = 50): Promise<LogEntry[]> {
+    const items = await this.dequeue<LogEntry>(batchSize)
+    return items.map((item) => item.data)
+  }
+
+  public async getFailedLogs(): Promise<LogEntry[]> {
+    const failedItems = await this.redis.zrange(this.buildKey('failed'), 0, -1)
+
+    const logs: LogEntry[] = []
+    for (const id of failedItems) {
+      const item = await this.getItem<LogEntry>(id)
+      if (item?.data) {
+        logs.push(item.data)
+      }
+    }
+
+    return logs
+  }
+
+  public async getStats(): Promise<{
+    pending: number
+    processing: number
+    failed: number
+    completed: number
+  }> {
+    const [pending, processing, failed, completed] = await Promise.all([
+      this.redis.zcard(this.buildKey('pending')),
+      this.redis.zcard(this.buildKey('processing')),
+      this.redis.zcard(this.buildKey('failed')),
+      this.redis.zcard(this.buildKey('completed')),
+    ])
+
+    return {
+      pending,
+      processing,
+      failed,
+      completed,
+    }
+  }
+
+  public async getLogsByService(service: string): Promise<LogEntry[]> {
+    // Get all pending and processing logs
+    const allItems = await Promise.all([
+      this.redis.zrange(this.buildKey('pending'), 0, -1),
+      this.redis.zrange(this.buildKey('processing'), 0, -1),
+    ])
+
+    const logs: LogEntry[] = []
+    const ids = [...allItems[0], ...allItems[1]]
+
+    for (const id of ids) {
+      const item = await this.getItem<LogEntry>(id)
+      if (item?.data && item.data.service === service) {
+        logs.push(item.data)
+      }
+    }
+
+    return logs
+  }
+
+  public async clearFailedLogs(): Promise<number> {
+    const failedItems = await this.redis.zrange(this.buildKey('failed'), 0, -1)
+
+    if (failedItems.length === 0) return 0
+
+    const pipeline = this.redis.pipeline()
+
+    pipeline.zrem(this.buildKey('failed'), ...failedItems)
+    for (const id of failedItems) {
+      pipeline.del(this.buildKey(`item:${id}`))
+    }
+
+    await pipeline.exec()
+    return failedItems.length
+  }
+
+  public async retryAllFailed(): Promise<number> {
+    const failedItems = await this.redis.zrange(this.buildKey('failed'), 0, -1)
+
+    if (failedItems.length === 0) return 0
+
+    const pipeline = this.redis.pipeline()
+    const now = Date.now()
+
+    for (const id of failedItems) {
+      pipeline.zrem(this.buildKey('failed'), id)
+      pipeline.zadd(this.buildKey('pending'), now, id)
+    }
+
+    await pipeline.exec()
+    return failedItems.length
+  }
+}
+
+================
+File: src/types/client.types.ts
+================
+export interface RedisConfig {
+  host?: string
+  port?: number
+  username?: string
+  password?: string
+  db?: number
+  keyPrefix?: string
+  connectionName?: string
+  maxRetriesPerRequest?: number
+  enableReadyCheck?: boolean
+  autoResubscribe?: boolean
+  autoResendUnfulfilledCommands?: boolean
+  retryStrategy?(times: number): number | null
+}
+
+export interface RedisClientEvents {
+  connect: () => void
+  ready: () => void
+  error: (error: Error) => void
+  close: () => void
+  reconnecting: (params: { delay: number; attempt: number }) => void
+}
+
+================
+File: src/types/index.ts
+================
+// src/types/index.ts
+export * from './client.types'
+export * from './manager.types'
+export * from './queue.types'
+export * from './util.types'
+
+================
+File: src/types/manager.types.ts
+================
+export interface CacheOptions {
+  ttl?: number | string // number in seconds or string like '1h', '2d'
+  prefix?: string
+}
+
+================
+File: src/types/queue.types.ts
+================
+import type { error_severity } from '@prisma/client'
+import type { CacheOptions } from './manager.types'
+
+export interface LogEntry {
+  service: string
+  level: error_severity
+  message: string
+  metadata?: Record<string, any>
+  timestamp: number
+  context?: Record<string, any>
+}
+
+export interface QueueOptions extends CacheOptions {
+  processingTimeout?: number // seconds
+  maxRetries?: number
+  retryDelay?: number // seconds
+}
+
+export interface QueueItem<T = any> {
+  id: string
+  data: T
+  timestamp: number
+  retries?: number
+  status: 'pending' | 'processing' | 'failed' | 'completed'
+}
+
+================
+File: src/types/util.types.ts
+================
+export interface RetryOptions {
+  maxAttempts?: number
+  initialDelay?: number
+  maxDelay?: number
+  backoff?: 'linear' | 'exponential'
+  onRetry?: (attempt: number, error: Error) => void | Promise<void>
+}
+
+================
+File: src/utils/error.util.ts
+================
+// src/utils/error.util.ts
+export class CacheError extends Error {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public override readonly cause?: Error,
+  ) {
+    super(message)
+    this.name = 'CacheError'
+  }
+}
+
+export class ConnectionError extends CacheError {
+  constructor(message: string, cause?: Error) {
+    super(message, 'CACHE_CONNECTION_ERROR', cause)
+    this.name = 'ConnectionError'
+  }
+}
+
+export class OperationError extends CacheError {
+  constructor(message: string, cause?: Error) {
+    super(message, 'CACHE_OPERATION_ERROR', cause)
+    this.name = 'OperationError'
+  }
+}
+
+================
+File: src/utils/index.ts
+================
+export * from './retry.util'
+export * from './error.util'
+
+================
+File: src/utils/retry.util.ts
+================
+// src/utils/retry.ts
+import type { RetryOptions } from '../types'
+
+export async function retry<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
+  const {
+    maxAttempts = 3,
+    initialDelay = 100,
+    maxDelay = 5000,
+    backoff = 'exponential',
+    onRetry,
+  } = options
+
+  let attempt = 1
+  let delay = initialDelay
+
+  while (true) {
+    try {
+      return await fn()
+    } catch (error: any) {
+      if (attempt >= maxAttempts) {
+        throw error
+      }
+
+      if (onRetry) {
+        await onRetry(attempt, error)
+      }
+
+      // Calculate next delay
+      if (backoff === 'exponential') {
+        delay = Math.min(delay * 2, maxDelay)
+      } else {
+        delay = Math.min(delay + initialDelay, maxDelay)
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, delay))
+      attempt++
+    }
+  }
+}
+
+================
+File: src/index.ts
+================
+// src/index.ts
+import { RedisClient } from './clients'
+import { KeyManager } from './managers/key.manager'
+import { QueueManager } from './managers/queue.manager'
+import { LogQueue } from './queues/log.queue'
+import type { RedisConfig } from './types'
+
+export * from './clients'
+export * from './managers'
+export * from './queues'
+export * from './utils'
+
+export function createCache(config?: RedisConfig) {
+  const client = RedisClient.getInstance(config)
+
+  return {
+    client,
+    keyManager: new KeyManager(client),
+    queueManager: new QueueManager(client),
+    logQueue: new LogQueue(client),
+  }
+}
+
+// Add convenient factory functions
+export function createLogQueue(config?: RedisConfig) {
+  const client = RedisClient.getInstance(config)
+  return new LogQueue(client)
+}
+
+export function createKeyManager(config?: RedisConfig) {
+  const client = RedisClient.getInstance(config)
+  return new KeyManager(client)
+}
+
+export function createQueueManager(config?: RedisConfig) {
+  const client = RedisClient.getInstance(config)
+  return new QueueManager(client)
+}
+
+// Add type exports
+export type {
+  RedisConfig,
+  CacheOptions,
+  QueueOptions,
+  QueueItem,
+  LogEntry,
+  RetryOptions,
+} from './types'
+
+================
+File: package.json
+================
+{
+  "name": "@ib/cache",
+  "version": "0.0.1",
+  "private": true,
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "nx lint",
+    "test": "nx test",
+    "dev": "nx build --watch",
+    "clean": "rm -rf dist",
+    "build": "nx build"
+  },
+  "dependencies": {
+    "ioredis": "^5.3.2",
+    "ms": "^2.1.3",
+    "@nx/rollup": "^17.2.8"
+  },
+  "devDependencies": {
+    "@types/ms": "^0.7.34",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}
+
+================
+File: project.json
+================
+{
+  "name": "@ib/cache",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/cache",
+  "sourceRoot": "libs/cache/src",
+  "projectType": "library",
+  "tags": [],
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "libs/cache/dist",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{workspaceRoot}/libs/cache/dist"],
+      "options": {
+        "main": "libs/cache/src/index.ts",
+        "outputPath": "libs/cache/dist",
+        "tsConfig": "libs/cache/tsconfig.json",
+        "project": "libs/cache/package.json",
+        "format": ["esm", "cjs"],
+        "generateExportsField": true,
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "assets": [
+          {
+            "glob": "*.md",
+            "input": "libs/cache",
+            "output": "."
+          }
+        ],
+        "external": ["ioredis", "ms"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/cache/**/*.ts"]
+      }
+    }
+  }
+}
+
+================
+File: rollup.config.ts
+================
+import { readFile, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import type { RollupOptions } from 'rollup'
+
+export default async (config: RollupOptions): Promise<RollupOptions> => {
+  return {
+    ...config,
+    plugins: [
+      ...(Array.isArray(config.plugins) ? await Promise.resolve(config.plugins) : []),
+      {
+        name: 'transform-package-json',
+        async writeBundle(options) {
+          try {
+            const outputDir = (options.dir as string) || 'dist'
+            const packageJson = JSON.parse(await readFile('libs/cache/package.json', 'utf8'))
+
+            const transformedPackageJson = {
+              ...packageJson,
+
+              types: './index.d.ts',
+              main: './index.cjs.js',
+              module: './index.esm.js',
+              exports: {
+                '.': {
+                  import: './index.esm.js',
+                  require: './index.cjs.js',
+                  types: './index.d.ts',
+                },
+              },
+            }
+
+            const outputPath = join(outputDir, 'package.json')
+            await writeFile(outputPath, JSON.stringify(transformedPackageJson, null, 2))
+          } catch (error) {
+            console.error('Failed to process package.json:', error)
+            throw error
+          }
+        },
+      },
+    ],
+  }
+}
+
+================
+File: tsconfig.json
+================
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

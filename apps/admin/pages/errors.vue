@@ -6,14 +6,14 @@ definePageMeta({
 
 const tabs = [
   {
-    title: 'Dashboard',
-    slotName: 'dashboard',
-    value: 'dashboard',
-  },
-  {
     title: 'Logs',
     slotName: 'logs',
     value: 'logs',
+  },
+  {
+    title: 'Dashboard',
+    slotName: 'dashboard',
+    value: 'dashboard',
   },
 ]
 </script>

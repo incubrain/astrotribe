@@ -10,6 +10,6 @@ export const getEnvironment = (): Environment => {
   return {
     isDev: process.env.NODE_ENV === 'development',
     databaseUrl: process.env.DATABASE_URL ?? '',
-    serviceName: process.env.SERVICE_NAME ?? 'api-gateway',
+    serviceName: process.env.SERVICE_NAME ?? 'api',
   }
 }

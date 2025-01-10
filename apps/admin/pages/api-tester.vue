@@ -75,7 +75,7 @@ const logs = ref<string[]>([])
 const endpoints = ref<Endpoint[]>([
   {
     method: 'GET',
-    path: '/api/v1/feed-sources',
+    path: '/api/v1/content/feed-sources',
     description: 'Retrieve all feed sources',
     isLoading: false,
     responseStr: '',
@@ -83,7 +83,7 @@ const endpoints = ref<Endpoint[]>([
   },
   {
     method: 'GET',
-    path: '/api/v1/contents',
+    path: '/api/v1/content/contents',
     description: 'Get all content items',
     isLoading: false,
     responseStr: '',
@@ -99,7 +99,7 @@ const endpoints = ref<Endpoint[]>([
   },
   {
     method: 'GET',
-    path: '/api/v1/health',
+    path: '/api/v1/monitoring/health',
     description: 'Check API health status',
     isLoading: false,
     responseStr: '',
@@ -107,7 +107,7 @@ const endpoints = ref<Endpoint[]>([
   },
   {
     method: 'GET',
-    path: '/api/v1/job-metrics',
+    path: '/api/v1/jobs/job-metrics',
     description: 'Check Cron Job Metrics',
     isLoading: false,
     responseStr: '',
