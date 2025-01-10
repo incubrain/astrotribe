@@ -37,7 +37,7 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     try {
       const response = await $fetch(`/api/payment/${provider}/subscriptions/create`, {
         method: 'POST',
-        body: { plan_id, external_plan_id, user_id: profile.value.id, total_count: 1 },
+        body: { plan_id, external_plan_id, user_id: profile.value.id, total_count: 1, provider },
       })
 
       return response

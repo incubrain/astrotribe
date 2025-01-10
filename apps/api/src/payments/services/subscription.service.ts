@@ -16,10 +16,9 @@ export class SubscriptionService extends BaseService<'customer_subscriptions'> {
   }
 
   async updateSubscription(data) {
-    const result = await this.prisma.customer_subscriptions.upsert({
+    const result = await this.prisma.customer_subscriptions.update({
       where: { external_subscription_id: data.external_subscription_id },
-      update: data,
-      create: data
+      data,
     })
 
     return result
@@ -35,6 +34,17 @@ export class SubscriptionService extends BaseService<'customer_subscriptions'> {
     })
 
     if (result) result.notes = result.notes || []
+    return result ? this.mapToModel(result) : null
+  }
+
+  async findOne(params: Prisma.customer_subscriptionsFindUniqueArgs): Promise<SubscriptionModel> {
+    const result = await this.prisma.customer_subscriptions.findUnique({
+      ...params,
+      include: {
+        payment_providers: true
+      }
+    })
+
     return result ? this.mapToModel(result) : null
   }
 

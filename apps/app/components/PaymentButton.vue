@@ -71,6 +71,7 @@ const razorpayOptions = computed(() => ({
     email: props.customer.email,
     contact: props.customer.contact,
   },
+  capture: true,
   notes: props.notes,
   theme: {
     color: props.theme.color,
@@ -107,6 +108,7 @@ const createSubscription = async () => {
   const subscription = await razorpay.createOrder(props.plan.id, props.plan.external_plan_id)
 
   razorpayOptions.value.subscription_id = subscription.id
+  rzp = new (window as any).Razorpay(razorpayOptions.value)
 }
 
 const handlePayment = async () => {
