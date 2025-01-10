@@ -29,7 +29,7 @@ COPY theme ./theme
 COPY prisma ./prisma
 COPY tsconfig.* ./
 COPY nx.json ./
-COPY shared-runtime.config.ts ./
+COPY shared ./shared
 COPY tailwind.config.base.ts ./
 
 RUN pnpx prisma generate

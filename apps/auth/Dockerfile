@@ -25,7 +25,7 @@ COPY prisma ./prisma
 COPY theme ./theme
 COPY tsconfig.* ./
 COPY nx.json ./
-COPY shared-runtime.config.ts ./
+COPY shared ./shared
 COPY tailwind.config.base.ts ./
 
 # Install dependencies for required workspaces
