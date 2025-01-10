@@ -99,8 +99,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (!this.features.infiniteLoopDetector) return
       if (!import.meta.client) return
 
-      const MAX_ITERATIONS = 1000000
-      const TIME_THRESHOLD = 100 // ms
+      const MAX_ITERATIONS = 5000000
+      const TIME_THRESHOLD = 500
 
       const originalSetTimeout = window.setTimeout
       window.setTimeout = function (
