@@ -4,12 +4,6 @@
   "projectType": "application",
   "sourceRoot": "apps/chrome-extension",
   "targets": {
-    "build:clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "rm -rf apps/chrome-extension/dist/"
-      }
-    },
     "build:html": {
       "executor": "nx:run-commands",
       "options": {
@@ -39,7 +33,6 @@
         }
       },
       "dependsOn": [
-        "build:clean",
         "build:html",
         "build:assets",
         {
