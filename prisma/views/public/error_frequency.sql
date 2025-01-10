@@ -1,15 +1,8 @@
 SELECT
-  error_logs.service_name,
-  error_logs.error_type,
-  error_logs.severity,
-  date_trunc('hour' :: text, error_logs.created_at) AS time_bucket,
-  count(*) AS error_count
+  error_frequency.service_name,
+  error_frequency.error_type,
+  error_frequency.severity,
+  error_frequency.time_bucket,
+  error_frequency.error_count
 FROM
-  error_logs
-GROUP BY
-  error_logs.service_name,
-  error_logs.error_type,
-  error_logs.severity,
-  (date_trunc('hour' :: text, error_logs.created_at))
-ORDER BY
-  (date_trunc('hour' :: text, error_logs.created_at)) DESC;
+  error_frequency;
