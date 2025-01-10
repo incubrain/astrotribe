@@ -1,9 +1,6 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-  workspaceDir: '../../',
-  srcDir: '.',
-
   modules: ['@nuxtjs/supabase'],
 
   components: [
@@ -14,4 +11,6 @@ export default defineNuxtConfig({
       global: true,
     },
   ],
+  srcDir: '.',
+  workspaceDir: '../../',
 })

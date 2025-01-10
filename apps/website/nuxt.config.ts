@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
-import sharedConfig from '../../shared-runtime.config'
+import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import { devPortMap } from '../../shared/paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -19,10 +20,12 @@ const og = {
 }
 
 export default defineNuxtConfig({
-  workspaceDir: '../../',
-  srcDir: '.',
-
-  ssr: true,
+  extends: [
+    '../../layers/base',
+    '../../layers/crud',
+    '../../layers/advert',
+    '../../layers/referral',
+  ],
 
   modules: [
     '@nuxtjs/mdc',
@@ -40,12 +43,66 @@ export default defineNuxtConfig({
     '@nuxt/content',
   ],
 
-  extends: [
-    '../../layers/base',
-    '../../layers/crud',
-    '../../layers/advert',
-    '../../layers/referral',
-  ],
+  ssr: true,
+
+  app: {
+    layoutTransition: { name: 'layout', mode: 'out-in' },
+    head: {
+      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [
+        { property: 'title', content: og.description },
+        { property: 'description', content: og.description },
+        { property: 'og:title', content: og.title },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: og.image },
+        { property: 'og:description', content: og.description },
+        { property: 'og:url', content: og.url },
+        { name: 'twitter:card', content: 'Twitter Card' },
+        { name: 'twitter:title', content: og.title },
+        { name: 'twitter:description', content: og.description },
+        { name: 'twitter:image', content: og.image },
+      ],
+      script: [
+        // Insert your Google Tag Manager Script here
+        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
+        {
+          src: 'https://www.youtube.com/iframe_api',
+          async: true,
+        },
+      ],
+    },
+  },
+
+  site: {
+    url: og.url,
+    name: 'AstronEra',
+    description: 'Astronomy Hub',
+    defaultLocale: 'en',
+  },
+
+  content: {
+    highlight: {
+      theme: {
+        default: 'github-dark',
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+    },
+  },
+
+  runtimeConfig: {
+    serviceName: 'website',
+    ...sharedRuntimeConfig.runtimeConfig.private,
+    public: {
+      serviceName: 'website',
+      ...sharedRuntimeConfig.runtimeConfig.public,
+    },
+  },
+  srcDir: '.',
+  workspaceDir: '../../',
 
   build: {
     transpile: [
@@ -83,12 +140,74 @@ export default defineNuxtConfig({
     },
   },
 
-  content: {
-    highlight: {
+  devServer: {
+    host: 'localhost',
+    port: process.env.NUXT_MULTI_APP ? devPortMap.website : 3000,
+  },
+
+  experimental: {
+    inlineRouteRules: true,
+    asyncContext: true,
+  },
+
+  compatibilityDate: '2024-09-22',
+
+  nitro: {
+    prerender: {
+      routes: ['/sitemap.xml'],
+      crawlLinks: true,
+      failOnError: false,
+    },
+  },
+
+  fonts: {
+    families: [
+      { name: 'Orbitron', provider: 'google' },
+      { name: 'Source Code Pro', provider: 'google' },
+    ],
+  },
+
+  image: {
+    format: ['webp', 'jpg', 'png'],
+    quality: 80,
+    dir: 'public',
+    domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
+    fallback: '/defaults/fallback.jpg',
+
+    // Strapi provider configuration
+    strapi: {
+      baseURL: `${process.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
+    },
+
+    // You can keep the ipx provider as a fallback or for local development
+    ipx: {
+      maxAge: 60 * 60 * 24 * 365, // 1 year (in seconds)
+    },
+  },
+
+  primevue: {
+    importPT: { from: resolve(currentDir, '../../theme/index.js') },
+    autoImport: true,
+    components: {
+      prefix: 'Prime',
+      include: '*',
+      exclude: ['Editor'],
+    },
+
+    //   composables: {
+    //     include: '*',
+    //   },
+
+    options: {
+      ripple: true,
+      unstyled: true,
       theme: {
-        default: 'github-dark',
-        light: 'github-light',
-        dark: 'github-dark',
+        options: {
+          cssLayer: {
+            name: 'primevue',
+            order: 'tailwind-base, primevue, tailwind-utilities',
+          },
+        },
       },
     },
   },
@@ -265,127 +384,10 @@ export default defineNuxtConfig({
     experimentalWarmUp: true,
   },
 
-  nitro: {
-    debug: true,
-    logLevel: 'debug',
-
-    prerender: {
-      routes: ['/sitemap.xml'],
-      crawlLinks: true,
-      failOnError: false,
-    },
-  },
-
-  image: {
-    format: ['webp', 'jpg', 'png'],
-    quality: 80,
-    dir: 'public',
-    domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
-    fallback: '/defaults/fallback.jpg',
-
-    // Strapi provider configuration
-    strapi: {
-      baseURL: `${process.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
-    },
-
-    // You can keep the ipx provider as a fallback or for local development
-    ipx: {
-      maxAge: 60 * 60 * 24 * 365, // 1 year (in seconds)
-    },
-  },
-
-  experimental: {
-    inlineRouteRules: true,
-    asyncContext: true,
-  },
-
   tailwindcss: {
     configPath: `${currentDir}/tailwind.config.ts`,
     cssPath: [`${currentDir}/assets/css/tailwind.css`, { injectPosition: 0 }],
     exposeConfig: true,
     viewer: true,
-  },
-
-  primevue: {
-    importPT: { from: resolve(currentDir, '../../theme/index.js') },
-    autoImport: true,
-    components: {
-      prefix: 'Prime',
-      include: '*',
-      exclude: ['Editor'],
-    },
-
-    //   composables: {
-    //     include: '*',
-    //   },
-
-    options: {
-      ripple: true,
-      unstyled: true,
-      theme: {
-        options: {
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities',
-          },
-        },
-      },
-    },
-  },
-
-  site: {
-    url: og.url,
-    name: 'AstronEra',
-    description: 'Astronomy Hub',
-    defaultLocale: 'en',
-  },
-
-  fonts: {
-    families: [
-      { name: 'Orbitron', provider: 'google' },
-      { name: 'Source Code Pro', provider: 'google' },
-    ],
-  },
-
-  app: {
-    layoutTransition: { name: 'layout', mode: 'out-in' },
-    head: {
-      link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
-      htmlAttrs: {
-        lang: 'en',
-      },
-      meta: [
-        { property: 'title', content: og.description },
-        { property: 'description', content: og.description },
-        { property: 'og:title', content: og.title },
-        { property: 'og:type', content: 'website' },
-        { property: 'og:image', content: og.image },
-        { property: 'og:description', content: og.description },
-        { property: 'og:url', content: og.url },
-        { name: 'twitter:card', content: 'Twitter Card' },
-        { name: 'twitter:title', content: og.title },
-        { name: 'twitter:description', content: og.description },
-        { name: 'twitter:image', content: og.image },
-      ],
-      script: [
-        // Insert your Google Tag Manager Script here
-        // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-        {
-          src: 'https://www.youtube.com/iframe_api',
-          async: true,
-        },
-      ],
-    },
-  },
-
-  compatibilityDate: '2024-09-22',
-
-  runtimeConfig: {
-    serviceName: '@astronera/website',
-    ...sharedConfig.runtimeConfig.private,
-    public: {
-      serviceName: '@astronera/website',
-      ...sharedConfig.runtimeConfig.public,
-    },
   },
 })
