@@ -18,7 +18,6 @@ onMounted(async () => {
       return
     }
 
-    toast.success({ summary: 'Authenticated', message: 'Found user session' })
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 

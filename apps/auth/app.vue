@@ -5,6 +5,7 @@
       <NuxtPage />
     </NuxtLayout>
     <PrimeToast position="bottom-right" />
+    <RedirectDialog />
     <ReferralCapture />
   </div>
 </template>
