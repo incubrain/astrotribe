@@ -205,4 +205,13 @@ module.exports = {
       },
     }
   },
+  provider: 'strapi-supabase',
+  name: 'Supabase Storage Provider',
+  auth: {
+    endpoint: { label: 'Endpoint URL', type: 'text' },
+    accessKeyId: { label: 'Access Key ID', type: 'text' },
+    secretAccessKey: { label: 'Secret Access Key', type: 'text' },
+    bucket: { label: 'Bucket', type: 'text' },
+    region: { label: 'Region', type: 'text' },
+  },
 }

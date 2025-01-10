@@ -1,0 +1,26 @@
+{
+  "name": "strapi-supabase",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/strapi-supabase/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{workspaceRoot}/packages/strapi-supabase/dist"],
+      "options": {
+        "outputPath": "packages/strapi-supabase/dist",
+        "main": "packages/strapi-supabase/src/index.ts",
+        "tsConfig": "packages/strapi-supabase/tsconfig.json",
+        "assets": ["packages/strapi-supabase/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/strapi-supabase/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
