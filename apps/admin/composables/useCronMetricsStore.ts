@@ -26,9 +26,22 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
   const pgBossQueues = ref<any[]>([])
   const customJobMetrics = ref<JobMetrics[]>([])
   const circuitBreakerStates = ref<CircuitBreakerMetrics[]>([])
+  const statsCache = new Map<string, JobStats[]>()
   const loading = ref(false)
 
   const jobStats = computed<JobStats[]>(() => {
+    // Use a stable key for the cache
+    const cacheKey = JSON.stringify({
+      pgBossJobs: pgBossJobs.value.map((j) => j.id),
+      customMetrics: customJobMetrics.value.map((m) => m.job_name),
+      circuitBreakers: circuitBreakerStates.value.map((c) => c.jobName),
+    })
+
+    // Return cached value if available
+    if (statsCache.has(cacheKey)) {
+      return statsCache.get(cacheKey) || []
+    }
+
     const stats: Record<string, JobStats> = {}
 
     pgBossJobs.value.forEach((job) => {
@@ -81,7 +94,9 @@ export const useCronMetricsStore = defineStore('cronMetrics', () => {
       stat.successRate = stat.totalRuns > 0 ? (stat.successCount / stat.totalRuns) * 100 : 0
     })
 
-    return Object.values(stats)
+    const result = Object.values(stats)
+    statsCache.set(cacheKey, result)
+    return result
   })
 
   const overallStats = computed(() => ({

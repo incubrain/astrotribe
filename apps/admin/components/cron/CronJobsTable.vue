@@ -1,13 +1,13 @@
 <template>
   <PrimeDataTable
+    v-model:filters="filters"
     :value="jobs"
     :paginator="true"
     :rows="10"
     :loading="loading"
     stripedRows
     class="p-datatable-sm"
-    :filters="filters"
-    @filter="onFilter"
+
   >
     <template #header>
       <div class="flex justify-between">
@@ -158,10 +158,6 @@ const filters = ref({
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleString()
-}
-
-const onFilter = (e: any) => {
-  filters.value = e.filters
 }
 
 const getTimeAgo = (date: string) => {
