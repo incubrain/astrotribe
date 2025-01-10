@@ -15,11 +15,7 @@ export function createDomainModule(
   options: DomainModuleOptions,
 ): DynamicModule {
   @Module({})
-  class DomainModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-      consumer.apply().forRoutes(`/api/${domainName}/*`) // Add a prefix dynamically
-    }
-  }
+  class DomainModule {}
 
   return {
     module: DomainModule,
