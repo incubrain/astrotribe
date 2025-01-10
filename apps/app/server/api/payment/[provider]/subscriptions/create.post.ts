@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
     plan_id,
     external_plan_id,
     total_count,
+    provider,
     quantity,
     start_at,
     expire_by,
@@ -28,6 +29,8 @@ export default defineEventHandler(async (event) => {
       throw new Error('No authentication session found')
     }
 
+    const payment_provider_id = provider === 'razorpay' ? 1 : 2
+
     const subscription = await razorpay.subscriptions.create({
       plan_id: external_plan_id,
       total_count,
@@ -37,7 +40,7 @@ export default defineEventHandler(async (event) => {
       customer_notify,
       addons,
       offer_id,
-      notes: { user_id, notes },
+      notes: { user_id, ...notes },
     })
 
     const { meta, success } = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
@@ -48,7 +51,7 @@ export default defineEventHandler(async (event) => {
       body: {
         user_id,
         plan_id,
-        payment_provider_id: 1, // Assuming 1 is for Razorpay
+        payment_provider_id, // Assuming 1 is for Razorpay
         external_subscription_id: subscription.id,
         status: subscription.status,
         current_start:
