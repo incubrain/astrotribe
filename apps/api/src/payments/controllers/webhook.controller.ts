@@ -1,11 +1,12 @@
 import { Controller, Headers, Post, Body, UnauthorizedException } from '@nestjs/common';
-import { PaymentModel } from '@payments/models/payment.model';
 import { CustomLogger } from '@core/logger/custom.logger'
+import { Public } from '@core/decorators/public.decorator'
 import { PaymentService } from '@payments/services/payment.service';
 import { SubscriptionService } from '@payments/services/subscription.service';
 import crypto from 'crypto';
 
 @Controller('webhook')
+@Public()
 export class WebhookController {
   constructor(
     private readonly subscriptionService: SubscriptionService,
@@ -46,11 +47,6 @@ export class WebhookController {
         case 'subscription.updated':
           this.handleSubscriptionUpdate(payload);
           break;
-        case 'payment.authorized':
-        case 'payment.failed':
-        case 'payment.captured':
-          this.handlePaymentCaptured(payload);
-          break;
         default:
           console.warn(`Unhandled event type: ${event}`);
       }
@@ -60,16 +56,14 @@ export class WebhookController {
     }
   }
 
-  private handlePaymentCaptured(payload: any): void {
-    const { entity: payment } = payload.payment
-
+  private handlePaymentUpdate(payment: any): void {
     const data = {
       external_payment_id: payment.id,
-      user_id: "f712ebc0-46f0-493f-bc97-c8b8cc883bfe",
-      subscription_id: 33,
-      payment_provider_id: 1,
+      user_id: payment.user_id,
+      subscription_id: payment.subscription_id,
+      payment_provider_id: payment.payment_provider_id,
       external_order_id: payment.order_id,
-      amount: payment.amount,
+      amount: payment.amount / 100, // Razorpay gets the value in paise
       currency: payment.currency,
       status: payment.status,
       method: payment.method,
@@ -87,7 +81,7 @@ export class WebhookController {
       amount_refunded: payment.amount_refunded,
       amount_transferred: payment.amount_transferred,
       refund_status: payment.refund_status,
-      captured: payment.captured,
+      captured: !!payment.captured,
       bank: payment.bank,
       wallet: payment.wallet,
       vpa: payment.vpa,
@@ -99,33 +93,50 @@ export class WebhookController {
     this.paymentService.updatePayment(data)
   }
 
-  private handleSubscriptionUpdate(payload: any): void {
-    const { entity: subscription } = payload.subscription
-
+  private async handleSubscriptionUpdate(payload: any): Promise<void> {
+    const { entity: subscriptionPayload } = payload.subscription
+    console.log(payload, 'PAYLOAD')
+    console.log(subscriptionPayload, 'SUBSCRIPTION PAYLOAD')
+    
     const data = {
-      external_subscription_id: subscription.id,
-      status: subscription.status,
-      quantity: subscription.quantity,
-      charge_at: new Date(subscription.charge_at * 1000),
-      start_at: new Date(subscription.start_at * 1000),
-      end_at: new Date(subscription.end_at * 1000),
-      total_count: subscription.total_count,
-      paid_count: subscription.paid_count,
-      remaining_count: subscription.remaining_count,
-      customer_notify: subscription.customer_notify,
-      created_at: new Date(subscription.created_at * 1000),
-      expire_by: subscription.expire_by
-        ? new Date(subscription.expire_by * 1000)
+      external_subscription_id: subscriptionPayload.id,
+      status: subscriptionPayload.status,
+      quantity: subscriptionPayload.quantity,
+      charge_at: new Date(subscriptionPayload.charge_at * 1000),
+      start_at: new Date(subscriptionPayload.start_at * 1000),
+      end_at: new Date(subscriptionPayload.end_at * 1000),
+      total_count: subscriptionPayload.total_count,
+      paid_count: subscriptionPayload.paid_count,
+      remaining_count: subscriptionPayload.remaining_count,
+      customer_notify: subscriptionPayload.customer_notify,
+      created_at: new Date(subscriptionPayload.created_at * 1000),
+      expire_by: subscriptionPayload.expire_by
+        ? new Date(subscriptionPayload.expire_by * 1000)
         : null,
-      short_url: subscription.short_url,
-      has_scheduled_changes: subscription.has_scheduled_changes,
-      change_scheduled_at: subscription.change_scheduled_at
-        ? new Date(subscription.change_scheduled_at * 1000)
+      short_url: subscriptionPayload.short_url,
+      has_scheduled_changes: subscriptionPayload.has_scheduled_changes,
+      change_scheduled_at: subscriptionPayload.change_scheduled_at
+        ? new Date(subscriptionPayload.change_scheduled_at * 1000)
         : null,
-      source: subscription.source,
-      offer_id: subscription.offer_id,
+      source: subscriptionPayload.source,
+      offer_id: subscriptionPayload.offer_id,
     }
 
     this.subscriptionService.updateSubscription(data)
+
+    if(payload.payment) {
+      const { entity: payment } = payload.payment
+      
+      const subscription = await this.subscriptionService.findOne({
+        where: {
+          external_subscription_id: subscriptionPayload.id
+        }})
+      
+      payment.user_id = subscription.user_id
+      payment.payment_provider_id = subscription.payment_provider_id
+      payment.subscription_id = subscription.id
+        
+      this.handlePaymentUpdate(payment);
+    }
   }
 }
