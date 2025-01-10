@@ -1,0 +1,85 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Admin Frontend",
+      "type": "shell",
+      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/admin",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "App Frontend",
+      "type": "shell",
+      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/app",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Auth Frontend",
+      "type": "shell",
+      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/auth",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "API Backend",
+      "type": "shell",
+      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/api",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Cron Jobs",
+      "type": "shell",
+      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/cron-jobs",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Frontend",
+      "dependsOn": ["Admin Frontend", "App Frontend", "Auth Frontend"],
+      "group": {
+        "kind": "build"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Backend",
+      "dependsOn": ["API Backend", "Cron Jobs"],
+      "group": {
+        "kind": "build"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Start All",
+      "dependsOn": ["Admin Frontend", "App Frontend", "Auth Frontend", "API Backend", "Cron Jobs"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
