@@ -11,12 +11,8 @@
     "types": ["node"],
     "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "@ib/cache": ["../cache/src"]
-    }
+    "allowSyntheticDefaultImports": true
   },
-  "references": [{ "path": "../cache" }],
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

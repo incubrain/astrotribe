@@ -241,21 +241,6 @@ export class CentralizedLogger<S extends Service = Service> {
     return `${timestampStr} ${levelBadge} [${service}|${domain}] ${finalMessage}`
   }
 
-  private mapErrorType(errorMessage: string): error_type {
-    if (errorMessage.includes('timeout')) {
-      return 'CONNECTION_ERROR'
-    }
-    if (
-      errorMessage.includes('unique constraint') ||
-      errorMessage.includes('duplicate key') ||
-      errorMessage.includes('already exists')
-    ) {
-      return 'VALIDATION_ERROR'
-    }
-    // Default to a valid enum value
-    return 'UNKNOWN_ERROR'
-  }
-
   private shouldLogLevel(level: Level): boolean {
     if (
       !this.env.isDev &&
@@ -268,12 +253,6 @@ export class CentralizedLogger<S extends Service = Service> {
 
   private shouldStoreLog(level: Level): boolean {
     return level === Level.Error || level === Level.Warn
-  }
-
-  async disconnect() {
-    if (this.prisma) {
-      await this.prisma.$disconnect()
-    }
   }
 
   private async log(level: Level, message: string, metadata?: any) {
