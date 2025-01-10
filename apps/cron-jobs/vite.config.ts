@@ -77,6 +77,8 @@ export default defineConfig(({ command, mode }) => {
           'robots-parser',
           'rss-parser',
           'p-limit',
+          'ioredis',
+          'ms',
         ],
       },
     },
