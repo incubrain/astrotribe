@@ -1,45 +1,41 @@
 // agent.ts
-import { AgentContext } from './types';
-import { AgentConfig, FewShotExample } from './configs/config';
-import { z } from 'zod';
-import { AgentInput, AgentOutput } from './types';
-import { applyPlaceholders, parseToolInstruction } from './utils/templating';
-import { validateOutputWithRetry } from './utils/validation';
-import { logFile } from '@helpers';
+import { AgentContext, AgentConfig } from './types'
+import { AgentInput, AgentOutput } from './types'
+import { logFile } from '@helpers'
 
 type ContentItem = {
-  type: 'text';
-  text: string;
-};
+  type: 'text'
+  text: string
+}
 
-type ChatMessageContent = ContentItem[];
+type ChatMessageContent = ContentItem[]
 
 interface ChatCompletionMessageParam {
-  role: 'system' | 'user' | 'assistant';
-  content: ChatMessageContent;
+  role: 'system' | 'user' | 'assistant'
+  content: ChatMessageContent
 }
 
 export class Agent {
-  private context: AgentContext;
-  private config: AgentConfig;
+  private context: AgentContext
+  private config: AgentConfig
 
   constructor(context: AgentContext, config: AgentConfig) {
-    this.context = context;
-    this.config = config;
+    this.context = context
+    this.config = config
   }
 
   public async execute(input: AgentInput): Promise<AgentOutput> {
     try {
-      const messages = this.formatMessages(input.data);
+      const messages = this.formatMessages(input.data)
 
-      const completion = await this.context.openAI.completePrompt(messages);
+      const completion = await this.context.openAI.completePrompt(messages)
 
-      logFile('agent_completion:', completion);
+      logFile('agent_completion:', completion)
 
-      return { result: completion };
+      return { result: completion }
     } catch (error) {
-      console.error('Error in agent execution:', error);
-      throw error;
+      console.error('Error in agent execution:', error)
+      throw error
     }
   }
 
@@ -66,6 +62,6 @@ export class Agent {
           },
         ],
       },
-    ];
+    ]
   }
 }

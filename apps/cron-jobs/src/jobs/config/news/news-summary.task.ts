@@ -23,7 +23,7 @@ const summarizerAgent = new Agent(
   summarizerConfig,
 )
 
-export const createNewsSummarizerJob = (services: JobServices) => {
+export const createNewsSummarizerTask = (services: JobServices) => {
   return JobFactory.createJob<NewsArticle, ProcessedContent, OutputContent>({
     name: 'news_summary',
     domain: 'news',

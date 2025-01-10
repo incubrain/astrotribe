@@ -29,7 +29,7 @@ interface OutputContent {
   }
 }
 
-export const createNewsLinksJob = (services: JobServices) => {
+export const createNewsLinksTask = (services: JobServices) => {
   return JobFactory.createJob<ContentSource, ProcessedContent, OutputContent>({
     name: 'news_links',
     domain: 'news_links',

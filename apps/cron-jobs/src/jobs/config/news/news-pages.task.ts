@@ -23,7 +23,7 @@ interface NewsPageData {
   company_id?: string
 }
 
-export const createNewsPagesJob = (services: JobServices) => {
+export const createNewsPagesTask = (services: JobServices) => {
   const { logger, prisma } = services
   const newsScraper = new NewsContentScraper(logger)
 
