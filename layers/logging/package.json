@@ -2,6 +2,7 @@
   "name": "@astronera/logging",
   "version": "0.0.3",
   "private": true,
+  "type": "module",
   "scripts": {
     "lint": "pnpm nx lint @astronera/logging",
     "test": "pnpm nx test @astronera/logging",
@@ -11,11 +12,8 @@
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
-    "@nuxt/image": "^1.8.1",
-    "@nuxtjs/supabase": "^1.4.0",
-    "@sentry/vue": "^8.31.0",
-    "posthog-js": "^1.164.3",
-    "zod": "^3.23.8"
+    "@ib/cache": "workspace:*" ,
+    "consola": "^3.3.3"
   },
   "devDependencies": {
     "h3": "^1.8.2",

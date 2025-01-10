@@ -1,7 +1,115 @@
 {
+  "typescript.tsserver.log": "verbose",
+  "typescript.tsserver.enableTracing": true,
+  "typescript.tsserver.trace": "messages",
+  // Keep existing Prettier settings
   "prettier.requireConfig": true,
   "prettier.configPath": "./prettier.config.mjs",
   "prettier.resolveGlobalModules": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+
+  // TypeScript performance optimizations
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false, // Changed from true
+  "typescript.tsserver.maxTsServerMemory": 8192,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriorityPolling",
+    "synchronousWatchDirectory": true
+  },
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Keep existing editor settings
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Keep existing file associations
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "vue": "html"
+  },
+
+  // Keep existing formatter settings
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Keep existing terminal profiles
+  "terminal.integrated.profiles.linux": {
+    "Frontend": {
+      "path": "bash",
+      "icon": "browser",
+      "color": "terminal.ansiGreen"
+    },
+    "Backend": {
+      "path": "bash",
+      "icon": "server",
+      "color": "terminal.ansiBlue"
+    }
+  },
+
+  // Keep your existing excludes but add some performance-related ones
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/ai-context/**": true,
+    "**/ai-docs/**": true,
+    "**/backups/**": true,
+    "**/debug/**": true,
+    "**/logs/**": true,
+    "**/tmp/**": true,
+    "**/.cli-store/**": true,
+    "**/.output/**": true,
+    "**/.playground/**": true,
+    "**/.nuxt/**": true,
+    "**/coverage/**": true,
+    "**/.cache/**": true,
+    "**/build/**": true
+  },
+
+  // Keep existing search excludes
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/ai-context": true,
+    "**/ai-docs": true,
+    "**/backups": true,
+    "**/debug": true,
+    "**/logs": true,
+    "**/tmp": true,
+    "**/.output": true,
+    "**/.playground": true,
+    "**/.cli-store": true,
+    "**/.nuxt": true
+  },
+
+  // Modified files.exclude to help with performance
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": false,
+    "**/dist": true,
+    "**/.cache": true,
+    "**/coverage": true
+  },
+
+  // Add some workspace memory settings
+  "js/ts.implicitProjectConfig.checkJs": false,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "typescript.suggestionActions.enabled": false,
+  "typescript.validate.enable": true,
+  "typescript.tsserver.useSyntaxServer": "auto"
 }

@@ -15,5 +15,6 @@
     "noLib": false,
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": false
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }

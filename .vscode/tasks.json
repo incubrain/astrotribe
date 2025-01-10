@@ -2,6 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Kill Existing Ports",
+      "type": "shell",
+      "command": "lsof -ti:3000,3001,3002,3009 | xargs kill -9 || true",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Admin Frontend",
       "type": "shell",
       "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/admin",

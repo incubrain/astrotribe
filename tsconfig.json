@@ -1,6 +1,7 @@
 {
   "files": [],
   "compilerOptions": {
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "#layers/*": ["layers/*"],
@@ -14,8 +15,10 @@
     { "path": "apps/chrome-extension" },
 
     // Nuxt Applications
-    { "path": "apps/app" },
     { "path": "apps/website" },
+    { "path": "apps/app" },
+    { "path": "apps/admin" },
+    { "path": "apps/monitoring" },
     { "path": "apps/cms" },
     { "path": "apps/auth" },
 
@@ -24,10 +27,13 @@
     { "path": "layers/crud" },
     { "path": "layers/advert" },
     { "path": "layers/supabase" },
+    { "path": "layers/logging" },
 
     // Shared Libraries
-    { "path": "libs/logger" },
+  { "path": "libs/logger" },
+    { "path": "libs/cache" },
+    { "path": "libs/core" },
     { "path": "libs/db-testing" }
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
