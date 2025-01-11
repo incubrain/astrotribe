@@ -4,7 +4,6 @@
   "typescript.tsserver.trace": "messages",
   // Keep existing Prettier settings
   "prettier.requireConfig": true,
-  "prettier.configPath": "./prettier.config.mjs",
   "prettier.resolveGlobalModules": true,
   "editor.formatOnSave": true,
 
