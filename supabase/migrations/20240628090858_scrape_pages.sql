@@ -134,7 +134,6 @@ drop sequence if exists "public"."scraper_configs_id_seq";
 
 set check_function_bodies = off;
 
-drop trigger if exists "trg_update_is_outdated" on "public"."scrapers_links";
 drop function if exists "public"."update_is_outdated"();
 
 

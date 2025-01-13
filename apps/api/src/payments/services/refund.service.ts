@@ -24,7 +24,6 @@ export class RefundService extends BaseService<'customer_refunds'> {
       },
     })
 
-    if (result) result.notes = result.notes || []
     return result ? this.mapToModel(result) : null
   }
 

@@ -812,7 +812,7 @@ model customer_payments {
   user_id                String                  @db.Uuid
   subscription_id        Int?
   payment_provider_id    Int
-  external_payment_id    String                  @db.VarChar(255)
+  external_payment_id    String                  @unique(map: "uq_payment_id") @db.VarChar(255)
   external_order_id      String?                 @db.VarChar(255)
   amount                 Decimal                 @db.Decimal(10, 2)
   currency               String                  @db.VarChar(3)
@@ -903,11 +903,11 @@ model customer_subscriptions {
   user_id                     String                      @db.Uuid
   plan_id                     Int
   payment_provider_id         Int
-  external_subscription_id    String                      @db.VarChar(255)
+  external_subscription_id    String                      @unique(map: "uq_subscription_id") @db.VarChar(255)
   status                      String                      @db.VarChar(50)
   quantity                    Int?                        @default(1)
-  current_start               DateTime                    @db.Timestamptz(6)
-  current_end                 DateTime                    @db.Timestamptz(6)
+  current_start               DateTime?                   @db.Timestamptz(6)
+  current_end                 DateTime?                   @db.Timestamptz(6)
   ended_at                    DateTime?                   @db.Timestamptz(6)
   cancel_at_period_end        Boolean?                    @default(false)
   total_count                 Int?
