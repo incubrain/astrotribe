@@ -1,8 +1,8 @@
 import { vi } from 'vitest'
 import { mockDeep, mockReset } from 'vitest-mock-extended'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '@astronera/db'
 
-vi.mock('@prisma/client', () => ({
+vi.mock('@astronera/db', () => ({
   PrismaClient: vi.fn(() => mockDeep<PrismaClient>()),
 }))
 

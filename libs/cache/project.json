@@ -4,15 +4,6 @@
   "root": "libs/cache",
   "sourceRoot": "libs/cache/src",
   "projectType": "library",
-  "tags": [],
-  "release": {
-    "version": {
-      "generatorOptions": {
-        "packageRoot": "libs/cache/dist",
-        "currentVersionResolver": "git-tag"
-      }
-    }
-  },
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -22,9 +13,10 @@
         "outputPath": "libs/cache/dist",
         "tsConfig": "libs/cache/tsconfig.json",
         "project": "libs/cache/package.json",
-        "format": ["esm", "cjs"],
+        "format": ["esm"],
         "generateExportsField": true,
         "buildableProjectDepsInPackageJsonType": "dependencies",
+        "compiler": "tsc",
         "assets": [
           {
             "glob": "*.md",
@@ -32,15 +24,14 @@
             "output": "."
           }
         ],
-        "external": ["ioredis"]
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/cache/**/*.ts"]
-      }
+        "external": ["ioredis", "ms", "@astronera/db"]
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": ["@astronera/db"]
+        }
+      ]
     }
   }
 }
