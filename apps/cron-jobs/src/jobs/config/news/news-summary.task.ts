@@ -1,7 +1,7 @@
 import { JobServices, NewsArticle } from '@types'
+import { createClient, Agent, summarizerConfig } from '@agents'
 import { DatabaseUtils } from '../../utils/database.utils'
 import { JobFactory } from '../../job.factory'
-import { createClient, Agent, summarizerConfig } from '@agents'
 
 interface ProcessedContent {
   news_id: string
@@ -14,14 +14,6 @@ interface OutputContent {
   has_summary: boolean
 }
 
-const summarizerAgent = new Agent(
-  {
-    openAI: createClient.openAI(),
-    groq: createClient.groq(),
-    db: createClient.database(),
-  },
-  summarizerConfig,
-)
 
 export const createNewsSummarizerTask = (services: JobServices) => {
   return JobFactory.createJob<NewsArticle, ProcessedContent, OutputContent>({
@@ -40,7 +32,7 @@ export const createNewsSummarizerTask = (services: JobServices) => {
       beforeProcess: async () => {
         const { prisma, logger } = services
         try {
-          const articles = await prisma.news.findMany({
+          const articles = await prisma.News.findMany({
             where: {
               has_summary: false,
               body: { not: null },
@@ -68,6 +60,7 @@ export const createNewsSummarizerTask = (services: JobServices) => {
       },
       processFunction: async (articles: NewsArticle[], job): Promise<ProcessedContent[]> => {
         const { logger, metrics } = services
+        const agent = new Agent(services, summarizerConfig);
         const results: ProcessedContent[] = []
 
         await DatabaseUtils.batchProcess({
@@ -80,7 +73,7 @@ export const createNewsSummarizerTask = (services: JobServices) => {
               try {
                 logger.info(`Processing article: ${article.id}`)
 
-                const result = await summarizerAgent.execute({
+                const result = await agent.execute({
                   data: {
                     title: article.title || '',
                     author: article.author || 'Unknown',

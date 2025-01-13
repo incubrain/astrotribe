@@ -1,8 +1,9 @@
 // src/jobs/config/news/news-categorizer.config.ts
+import {   } from '@astronera/db'
 import { Agent, AgentConfig } from '@agents'
 import { JobFactory } from '../../job.factory'
 import { DatabaseUtils } from '../../utils/database.utils'
-import { JobServices, NewsArticle } from '@types'
+import { JobServices } from '@types'
 
 interface NewsCategorizerInput {
   id: string
@@ -95,7 +96,7 @@ export const createNewsCategorizerTask = (services: JobServices) => {
     handlers: {
       beforeProcess: async () => {
         try {
-          const articles = await prisma.news.findMany({
+          const articles = await prisma.News.findMany({
             where: {
               content_status: 'published',
               category_id: null,
