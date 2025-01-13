@@ -1,4 +1,9 @@
 Rules:
+## Design:
+
+- Minimal design, less clutter, fewer elements and working peices.
+- Modern look, dark colors, space themed, dark blues and purple, primary-600 for contrast
+
 
 ## Hardware
 - Always add try catch and logging around CRITICAL func, handle non-critical errors gracefully
@@ -14,12 +19,20 @@ Rules:
 
 ## GENERAL
 
-ESM unless we specify CJS
+ESM unless we specify CJS.
 Booleans - ALWAYS prefix with 'is'
 
+## Function Choice Heirarchy
+1. Use VueUse func if available
+2. Use @ib/core func next
+3. Create func ourselves
+  - if it will likely be reused put it in @ib/core
+  - project specific, in the project
+  
 ## NUXT RELATED
 
 Use import.meta not process.client etc...
+
 
 SFC order: <script setup lang="ts"> then <template> then <style scoped>
 
