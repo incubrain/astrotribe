@@ -33,7 +33,6 @@ export class SubscriptionService extends BaseService<'customer_subscriptions'> {
       },
     })
 
-    if (result) result.notes = result.notes || []
     return result ? this.mapToModel(result) : null
   }
 

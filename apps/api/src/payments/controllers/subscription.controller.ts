@@ -66,7 +66,7 @@ export class SubscriptionController extends BaseController {
   @Put(':id')
   @ApiOperation({ summary: 'Update Subscription' })
   async updateSubscription(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: string,
     @Body() data: Prisma.customer_subscriptionsUpdateInput,
   ) {
     try {

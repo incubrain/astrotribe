@@ -25,7 +25,7 @@ export interface SubscriptionModel extends BaseModel {
   offer_id: string
   pause_initiated_by: string
   cancel_initiated_by: string
-  notes?: string[]
+  notes?: Record<string, any>
   
   
   created_at: Date
@@ -35,8 +35,8 @@ export interface SubscriptionModel extends BaseModel {
   change_scheduled_at: Date
   charge_at: Date
   ended_at: Date
-  current_start: Date
-  current_end: Date
+  current_start?: Date
+  current_end?: Date
   expire_by: Date
 
   user_id: string
