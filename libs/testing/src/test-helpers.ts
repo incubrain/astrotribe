@@ -1,4 +1,4 @@
-// db-testing/src/test-helpers.ts
+// testing/src/test-helpers.ts
 import type { CrudOperations, RLSTestCase } from './types'
 
 export const executeTest = (crudOperations: CrudOperations) => {

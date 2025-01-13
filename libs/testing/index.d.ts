@@ -1,4 +1,4 @@
-// libs/db-testing/index.d.ts
+// libs/testing/index.d.ts
 export type * from './src/types'
 
 // Re-export function implementations
