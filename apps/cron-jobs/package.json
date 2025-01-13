@@ -17,8 +17,9 @@
     "start": "node dist/src/index.js"
   },
   "dependencies": {
+    "@astronera/db": "workspace:*",
     "@ib/logger": "workspace:*",
-    "@prisma/client": "^6.0.1",
+    "@ib/cache": "workspace:*",
     "@supabase/supabase-js": "^2.47.8",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.7.7",

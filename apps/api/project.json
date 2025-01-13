@@ -14,7 +14,7 @@
       "dependsOn": [
         {
           "target": "build",
-          "projects": ["@ib/logger", "@ib/cache"]
+          "projects": ["@ib/logger", "@astronera/db", "@ib/cache"]
         }
       ]
     },

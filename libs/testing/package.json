@@ -1,5 +1,5 @@
 {
-  "name": "@ib/db-testing",
+  "name": "@ib/testing",
   "version": "0.0.1",
   "main": "./index.ts",
   "module": "./index.ts",

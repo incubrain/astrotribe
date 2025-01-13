@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "#layers/*": ["layers/*"],
-      "@ib/*": ["libs/*/src"]
+      "@ib/*": ["libs/*/src"],
+      "@astronera/*": ["libs/*/src"]
     },
     "types": ["node"]
   },

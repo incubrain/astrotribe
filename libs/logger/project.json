@@ -16,15 +16,15 @@
         "project": "libs/logger/package.json",
         "format": ["esm", "cjs"],
         "generateExportsField": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "external": ["@ib/cache", "ioredis", "winston", "h3"],
+        "compiler": "tsc",
         "assets": [
           {
             "glob": "*.md",
             "input": "libs/logger",
             "output": "."
           }
-        ],
-        "external": ["@ib/cache", "ioredis", "winston", "h3"]
+        ]
       },
       "dependsOn": [
         {

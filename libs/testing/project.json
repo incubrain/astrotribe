@@ -1,14 +1,14 @@
 {
-  "name": "@ib/db-testing",
+  "name": "@ib/testing",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "root": "libs/db-testing",
-  "sourceRoot": "libs/db-testing/src",
+  "root": "libs/testing",
+  "sourceRoot": "libs/testing/src",
   "projectType": "library",
   "tags": [],
   "release": {
     "version": {
       "generatorOptions": {
-        "packageRoot": "libs/db-testing/dist",
+        "packageRoot": "libs/testing/dist",
         "currentVersionResolver": "git-tag"
       }
     }
@@ -18,25 +18,25 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/db-testing/dist",
-        "main": "libs/db-testing/src/index.ts",
-        "tsConfig": "libs/db-testing/tsconfig.lib.json",
-        "assets": ["libs/db-testing/*.md"]
+        "outputPath": "libs/testing/dist",
+        "main": "libs/testing/src/index.ts",
+        "tsConfig": "libs/testing/tsconfig.lib.json",
+        "assets": ["libs/testing/*.md"]
       }
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/libs/db-testing"],
+      "outputs": ["{workspaceRoot}/coverage/libs/testing"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/libs/db-testing"
+        "reportsDirectory": "../../coverage/libs/testing"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/db-testing/**/*.ts"]
+        "lintFilePatterns": ["libs/testing/**/*.ts"]
       }
     }
   }

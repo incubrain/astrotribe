@@ -67,7 +67,7 @@ export default defineConfig(({ command, mode }) => {
           /^playwright-.*/,
           /^@playwright\/.*/,
           'pg-boss',
-          '@prisma/client',
+          '@astronera/db',
           '@supabase/supabase-js',
           '@supabase/auth-js',
           '@supabase/functions-js',

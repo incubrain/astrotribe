@@ -99,7 +99,7 @@
     "**/.git": true,
     "**/.DS_Store": true,
     "**/node_modules": false,
-    "**/dist": true,
+    "**/dist": false,
     "**/.cache": true,
     "**/coverage": true
   },

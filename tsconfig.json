@@ -33,7 +33,8 @@
   { "path": "libs/logger" },
     { "path": "libs/cache" },
     { "path": "libs/core" },
-    { "path": "libs/db-testing" }
+    { "path": "libs/testing" }
   ],
+  "include": ["prettier.config.mjs"],
   "exclude": ["node_modules", "dist"]
 }
