@@ -49,9 +49,6 @@ export default defineEventHandler(async (event) => {
         'Authorization': `Bearer ${session.access_token}`,
       },
       body: {
-        user_id,
-        plan_id,
-        payment_provider_id, // Assuming 1 is for Razorpay
         external_subscription_id: subscription.id,
         status: subscription.status,
         current_start:
@@ -65,7 +62,16 @@ export default defineEventHandler(async (event) => {
         charge_at: subscription.charge_at && new Date(subscription.charge_at * 1000).toISOString(),
         start_at: subscription.start_at && new Date(subscription.start_at * 1000).toISOString(),
         end_at: subscription.end_at && new Date(subscription.end_at * 1000).toISOString(),
-        notes: Array.isArray(subscription.notes) ? subscription.notes : [],
+        notes: subscription.notes,
+        payment_providers: {
+          connect: { id: payment_provider_id }
+        },
+        customer_subscription_plans: {
+          connect: { id: plan_id }
+        },
+        user_profiles: {
+          connect: { id: user_id }
+        }
       }
     }
   )
