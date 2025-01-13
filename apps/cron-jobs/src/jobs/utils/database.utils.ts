@@ -1,5 +1,5 @@
 // src/utils/db-utils.ts
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@astronera/db'
 import type { CustomLogger } from '@core'
 
 const prismaTables = {

@@ -19,7 +19,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 
 @Controller('newsletters')
 @ApiTags('Newsletters')

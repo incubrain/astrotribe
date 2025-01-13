@@ -9,10 +9,16 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "types": ["node"],
-    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "bundler", // Changed to bundler for Vite
+    "resolveJsonModule": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "paths": {
+      "@ib/cache": ["../cache/src", "../db/src"] // More specific path mapping
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
+  "references": [{ "path": "../cache" }, { "path": "../db" }]
 }

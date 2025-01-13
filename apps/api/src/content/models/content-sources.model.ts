@@ -1,5 +1,5 @@
 // templates/entity/model.ejs
-import type { content_type, scrape_frequency, priority } from '@prisma/client'
+import type { ContentType, ScrapeFrequency, Priority } from '@astronera/db'
 import { BaseModel } from '@core'
 import type { CategoryModel } from '@content'
 
@@ -9,9 +9,9 @@ export interface ContentSourceModel extends BaseModel {
 
   url: string
 
-  content_type: content_type
+  content_type: ContentType
 
-  scrape_frequency: scrape_frequency
+  scrape_frequency: ScrapeFrequency
 
   created_at?: Date
 
@@ -23,7 +23,7 @@ export interface ContentSourceModel extends BaseModel {
 
   failed_count?: number
 
-  priority: priority
+  priority: Priority
 
   hash?: string
 

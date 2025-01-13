@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { Test } from '@nestjs/testing'
 import { ConfigService } from '@nestjs/config'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { faker } from '@faker-js/faker'
 import { ContentCategoryController } from '../controllers/content-categories.controller'
 import { ContentCategoriesService } from '../services/content-categories.service'

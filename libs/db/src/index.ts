@@ -4,8 +4,8 @@ import { PrismaClient, Prisma } from './generated/client'
 export * from '@prisma/client'
 export * from './generated/client'
 
-// Explicitly export ErrorSeverity
-export { ErrorSeverity } from './generated/client'
+// Explicitly export ErrorSeverity and ErrorType
+export { ErrorSeverity, ErrorType } from './generated/client'
 
 export type ModelNames = Prisma.ModelName // "User" | "Post"
 

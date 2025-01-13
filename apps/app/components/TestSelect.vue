@@ -21,25 +21,33 @@ const testConfig = ref({
 })
 
 // Computed configuration object for useSelectData
-const selectConfig = computed(() => ({
-  columns: testConfig.value.columns,
-  initialFetch: true,
-  pagination: testConfig.value.enablePagination
+const selectConfig = computed(() => {
+  const paginationConfig = testConfig.value.enablePagination
     ? { page: 1, limit: testConfig.value.pageSize }
-    : undefined,
-  orderBy: testConfig.value.enableOrdering
+    : undefined
+
+  const orderByConfig = testConfig.value.enableOrdering
     ? {
         column: testConfig.value.orderColumn,
         ascending: testConfig.value.orderAscending,
       }
-    : undefined,
-  filters:
+    : undefined
+
+  const filtersConfig =
     testConfig.value.enableFilters && testConfig.value.filterColumn
       ? {
           [testConfig.value.filterColumn]: { eq: testConfig.value.filterValue },
         }
-      : undefined,
-}))
+      : undefined
+
+  return {
+    columns: testConfig.value.columns,
+    initialFetch: true,
+    pagination: paginationConfig,
+    orderBy: orderByConfig,
+    filters: filtersConfig,
+  }
+})
 
 // Initialize useSelectData with the computed config
 const { store, loadMore, refresh, isSelecting } = useSelectData<TestData>(

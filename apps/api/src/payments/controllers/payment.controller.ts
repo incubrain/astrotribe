@@ -1,9 +1,5 @@
 // payments.ejs template
-import {
-  Controller,
-  Get,
-  Query,
-} from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
@@ -11,7 +7,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 import { PaymentService } from '../services/payment.service'
 

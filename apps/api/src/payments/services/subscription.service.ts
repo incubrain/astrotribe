@@ -1,6 +1,6 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
@@ -41,8 +41,8 @@ export class SubscriptionService extends BaseService<'customer_subscriptions'> {
     const result = await this.prisma.customer_subscriptions.findUnique({
       ...params,
       include: {
-        payment_providers: true
-      }
+        payment_providers: true,
+      },
     })
 
     return result ? this.mapToModel(result) : null

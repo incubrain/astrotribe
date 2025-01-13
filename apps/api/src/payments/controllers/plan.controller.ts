@@ -1,10 +1,5 @@
 // plan.ejs template
-import {
-  Controller,
-  Get,
-  Param,
-  Query,
-} from '@nestjs/common'
+import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { PlanService } from '../services/plan.service'
 import { ConfigService } from '@nestjs/config'
@@ -13,7 +8,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('payments/plans')
@@ -44,13 +39,10 @@ export class PlanController extends BaseController {
       throw error
     }
   }
-  
+
   @Get(':id')
   @ApiOperation({ summary: 'Get plan by id' })
-  async findOnePlan(
-    @Param('id') id: number,
-    @Query('include') include?: string[],
-  ) {
+  async findOnePlan(@Param('id') id: number, @Query('include') include?: string[]) {
     try {
       return await super.findOne(`${id}`, include)
     } catch (error: any) {

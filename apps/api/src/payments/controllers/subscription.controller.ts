@@ -1,14 +1,5 @@
 // provider.ejs template
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common'
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
@@ -16,7 +7,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 import { SubscriptionService } from '../services/subscription.service'
 
@@ -61,7 +52,7 @@ export class SubscriptionController extends BaseController {
       return this.handleError(error)
     }
   }
-  
+
   @Post()
   @ApiOperation({ summary: 'Create Subscription' })
   async createSubscription(@Body() data: Prisma.customer_subscriptionsCreateInput) {

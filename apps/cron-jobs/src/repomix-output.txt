@@ -1729,7 +1729,7 @@ export class CustomLogger {
 ================
 File: core/services/metrics.service.ts
 ================
-import { error_type, job_status } from '@prisma/client'
+import { error_type, job_status } from '@astronera/db'
 import { CustomLogger } from './logger.service'
 import { PrismaService } from './prisma.service'
 import { EventService } from './event.service'
@@ -2168,7 +2168,7 @@ export class MetricsService {
 File: core/services/prisma.service.ts
 ================
 // src/core/services/prisma.service.ts
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@astronera/db'
 import { config } from '../../config'
 import { CustomLogger } from './logger.service'
 
@@ -2315,7 +2315,7 @@ import type { Pool } from 'pg'
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
 import { PrismaService } from './prisma.service'
-import { job_status } from '@prisma/client'
+import { job_status } from '@astronera/db'
 import type { WorkflowJob, WorkflowJobData } from '@types'
 
 export interface QueueOptions {
@@ -5186,7 +5186,7 @@ export const globalContentStash = new ContentStash()
 File: jobs/utils/database.utils.ts
 ================
 // src/utils/db-utils.ts
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@astronera/db'
 import type { CustomLogger } from '@core'
 
 const prismaTables = {
@@ -9107,7 +9107,7 @@ export class JobRunner {
 File: jobs/job.versioning.ts
 ================
 // src/jobs/versioning/job-version.service.ts
-import { JsonValue } from '@prisma/client/runtime/library'
+import { JsonValue } from '@astronera/db/runtime/library'
 import { CustomLogger, PrismaService } from '@core'
 import { JobConfig } from '@types'
 
@@ -9474,7 +9474,7 @@ export interface LogContext {
 ================
 File: types/metric.types.ts
 ================
-import { error_type, job_status } from '@prisma/client'
+import { error_type, job_status } from '@astronera/db'
 
 // types/metrics.types.ts
 export interface JobMetrics {

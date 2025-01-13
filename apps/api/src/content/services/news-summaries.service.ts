@@ -1,7 +1,7 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import type { Prisma } from '@prisma/client'
-import { news_summaries } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
+import { news_summaries } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'

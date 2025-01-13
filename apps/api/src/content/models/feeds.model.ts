@@ -1,6 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@astronera/db'
 
 // import { UserProfilesModel } from '@auth/models/user-profiles.model';
 

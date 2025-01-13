@@ -53,7 +53,7 @@ async function runBuildWithLogs(projectPath: string): Promise<void> {
   fs.writeFileSync(errorLogFile, '')
   fs.writeFileSync(fullLogFile, '')
 
-  const libNames = ['db-testing', 'logger', 'cache', 'core', 'helpers']
+  const libNames = ['testing', 'logger', 'cache', 'core', 'helpers']
 
   let projectPrefix = '@astronera'
 

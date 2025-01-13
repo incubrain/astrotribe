@@ -1,11 +1,11 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { content_type } from '@prisma/client'
+import type { ContentType } from '@astronera/db'
 
 // Model interface
 export interface ContentModel extends BaseModel {
   id: string
-  content_type: content_type
+  content_type: ContentType
   title?: string
   created_at?: Date
   updated_at?: Date

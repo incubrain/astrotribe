@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'

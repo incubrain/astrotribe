@@ -2006,7 +2006,7 @@ export class CustomLogger {
 ================
 File: src/core/services/metrics.service.ts
 ================
-import { error_type, job_status } from '@prisma/client'
+import { error_type, job_status } from '@astronera/db'
 import { CustomLogger } from './logger.service'
 import { PrismaService } from './prisma.service'
 import { EventService } from './event.service'
@@ -2445,7 +2445,7 @@ export class MetricsService {
 File: src/core/services/prisma.service.ts
 ================
 // src/core/services/prisma.service.ts
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@astronera/db'
 import { config } from '../../config'
 import { CustomLogger } from './logger.service'
 
@@ -5457,7 +5457,7 @@ export const globalContentStash = new ContentStash()
 File: src/jobs/utils/database.utils.ts
 ================
 // src/utils/db-utils.ts
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@astronera/db'
 import type { CustomLogger } from '@core'
 
 const prismaTables = {
@@ -9358,7 +9358,7 @@ export class JobRunner {
 File: src/jobs/job.versioning.ts
 ================
 // src/jobs/versioning/job-version.service.ts
-import { JsonValue } from '@prisma/client/runtime/library'
+import { JsonValue } from '@astronera/db/runtime/library'
 import { CustomLogger, PrismaService } from '@core'
 import { JobConfig } from '@types'
 
@@ -9725,7 +9725,7 @@ export interface LogContext {
 ================
 File: src/types/metric.types.ts
 ================
-import { error_type, job_status } from '@prisma/client'
+import { error_type, job_status } from '@astronera/db'
 
 // types/metrics.types.ts
 export interface JobMetrics {
@@ -10267,7 +10267,7 @@ File: package.json
   },
   "dependencies": {
     "@ib/logger": "workspace:*",
-    "@prisma/client": "^6.0.1",
+    "@astronera/db": "^6.0.1",
     "@supabase/supabase-js": "^2.47.8",
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.7.7",
@@ -10520,7 +10520,7 @@ export default defineConfig({
         /^playwright-.*/,
         /^@playwright\/.*/,
         'pg-boss',
-        '@prisma/client',
+        '@astronera/db',
         '@supabase/supabase-js',
         '@supabase/auth-js',
         '@supabase/functions-js',

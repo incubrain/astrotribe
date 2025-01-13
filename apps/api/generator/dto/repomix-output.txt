@@ -67,6 +67,7 @@ utils/
   field-parser.ts
   file-manager.ts
   type-mapper.ts
+  validation.helpers.ts
 config.ts
 index.ts
 
@@ -980,6 +981,7 @@ export function registerCustomDecorators(): void {
 File: modules/documentation.ts
 ================
 // tools/generators/dto/modules/documentation.ts
+import fs from 'fs'
 
 import type {
   ModelMetadata,
@@ -1003,12 +1005,20 @@ export class DocumentationGenerator {
     private readonly fileManager: FileManager,
   ) {}
 
+  private writeModelStructureToFile(
+    models: ModelMetadata[],
+    filePath: string = 'models-metadata.json',
+  ): void {
+    fs.writeFileSync(filePath, JSON.stringify(models, null, 2), 'utf-8')
+  }
+
   /**
    * Main generation process that coordinates the creation of all
    * documentation artifacts. Each piece of documentation serves a
    * different purpose and audience.
    */
   async generate(): Promise<void> {
+    this.writeModelStructureToFile(this.models)
     // Create the main API documentation
     await this.generateAPIDocumentation()
 
@@ -1048,137 +1058,101 @@ export class DocumentationGenerator {
   }
 
   /**
-   * Generates controller-specific documentation including all endpoints,
-   * request/response formats, and validation rules.
-   */
-  private generateControllerDocs(model: ModelMetadata): string {
-    let doc = `## ${model.name} Controller\n\n`
-    doc += `${model.documentation.description}\n\n`
-
-    // Base path information
-    doc += `**Base Path:** \`/${model.name.toLowerCase()}\`\n\n`
-
-    // Document each endpoint
-    const endpoints = this.getControllerEndpoints(model)
-    endpoints.forEach((endpoint) => {
-      doc += this.generateEndpointDocs(endpoint, model)
-    })
-
-    return doc
-  }
-
-  /**
-   * Generates detailed endpoint documentation including request/response
-   * formats, validation rules, and example usage.
-   */
-  private generateEndpointDocs(endpoint: EndpointMetadata, model: ModelMetadata): string {
-    let doc = `### ${endpoint.description}\n\n`
-
-    // Method and path
-    doc += `\`${endpoint.method} ${endpoint.path}\`\n\n`
-
-    // Authentication requirements
-    if (endpoint.auth) {
-      doc += '**Authentication Required**\n\n'
-    }
-
-    // Request body documentation
-    if (endpoint.requestBody) {
-      doc += '#### Request Body\n\n'
-      doc += this.generateTypeTable(endpoint.requestBody)
-      doc += '\n\n#### Example Request\n\n'
-      doc += '```json\n' + JSON.stringify(endpoint.example.request, null, 2) + '\n```\n\n'
-    }
-
-    // Response documentation
-    doc += '#### Response\n\n'
-    doc += this.generateTypeTable(endpoint.response)
-    doc += '\n\n#### Example Response\n\n'
-    doc += '```json\n' + JSON.stringify(endpoint.example.response, null, 2) + '\n```\n\n'
-
-    // Validation rules
-    doc += '#### Validation Rules\n\n'
-    doc += this.generateValidationTable(model.fields)
-
-    return doc
-  }
-
-  /**
-   * Generates OpenAPI/Swagger specification file that can be used
-   * with Swagger UI or other API documentation tools.
-   */
-  private async generateOpenAPISpec(): Promise<void> {
-    const spec = {
-      openapi: '3.0.0',
-      info: {
-        title: this.options.documentation.title,
-        version: this.options.documentation.version,
-        description: this.options.documentation.description,
-      },
-      paths: {},
-      components: {
-        schemas: {},
-        securitySchemes: this.generateSecuritySchemes(),
-      },
-    }
-
-    // Generate paths and schemas for each model
-    for (const model of this.models) {
-      spec.paths = {
-        ...spec.paths,
-        ...this.generateOpenAPIPaths(model),
-      }
-      spec.components.schemas = {
-        ...spec.components.schemas,
-        ...this.generateOpenAPISchemas(model),
-      }
-    }
-
-    await this.fileManager.writeFile('docs/openapi.json', JSON.stringify(spec, null, 2))
-  }
-
-  /**
-   * Generates database documentation including table structures,
-   * relationships, and constraints.
-   */
-  private async generateDatabaseDocs(): Promise<void> {
-    let content = '# Database Documentation\n\n'
-
-    // Overview of database structure
-    content += this.generateDatabaseOverview()
-
-    // Document each table/view
-    for (const model of this.models) {
-      content += this.generateTableDocs(model)
-    }
-
-    // Add sections for indexes and constraints
-    content += this.generateIndexDocs()
-    content += this.generateConstraintDocs()
-
-    await this.fileManager.writeFile('docs/DATABASE.md', content)
-  }
-
-  /**
-   * Generates relationship diagrams using Mermaid syntax to visualize
-   * database structure and entity relationships.
+   * Generates relationship diagrams using Mermaid syntax
    */
   private async generateRelationshipDiagrams(): Promise<void> {
     let diagram = 'erDiagram\n'
 
-    // Add entities
-    this.models.forEach((model) => {
-      diagram += this.generateEntityBlock(model)
-    })
-
-    // Add relationships
-    this.models.forEach((model) => {
-      model.relationships.forEach((rel) => {
-        diagram += this.generateRelationshipLine(model, rel)
+    if (this.models && Array.isArray(this.models)) {
+      // Add entities
+      this.models.forEach((model) => {
+        try {
+          if (model?.name) {
+            diagram += this.generateEntityBlock(model)
+          }
+        } catch (error) {
+          console.error(`Error generating entity block for model ${model.name}:`, error)
+        }
       })
+
+      // Add relationships
+      this.models.forEach((model) => {
+        try {
+          if (model?.relations && Array.isArray(model.relations)) {
+            model.relations.forEach((rel) => {
+              if (rel && rel.foreign?.model) {
+                diagram += this.generateRelationshipLine(model, rel)
+              }
+            })
+          }
+        } catch (error) {
+          console.error(`Error generating relationships for model ${model.name}:`, error)
+        }
+      })
+    }
+
+    // Write diagram to file
+    try {
+      await this.fileManager.writeFile('docs/diagrams/relationships.mmd', diagram)
+    } catch (error) {
+      console.error('Error writing MermaidJS diagram to file:', error)
+    }
+  }
+
+  /**
+   * Generates an entity block in Mermaid syntax
+   */
+  private generateEntityBlock(model: ModelMetadata): string {
+    if (!model.fields || !Array.isArray(model.fields)) {
+      return `  ${model.name} {}\n`
+    }
+
+    let entityBlock = `  ${model.name} {\n`
+
+    // Add fields
+    model.fields.forEach((field) => {
+      let type = field.type || 'unknown'
+      const name = field.name || 'unnamed'
+
+      // Replace complex types with a placeholder
+      if (
+        !['string', 'number', 'boolean', 'Date', 'object', 'array'].includes(type.toLowerCase())
+      ) {
+        type = 'string' // Fallback for unsupported types
+      }
+
+      entityBlock += `    ${type} ${name}\n`
     })
 
-    await this.fileManager.writeFile('docs/diagrams/relationships.mmd', diagram)
+    entityBlock += '  }\n'
+    return entityBlock
+  }
+
+  /**
+   * Generates a relationship line in Mermaid syntax
+   */
+  private generateRelationshipLine(
+    model: ModelMetadata,
+    relationship: RelationshipMetadata,
+  ): string {
+    if (!model?.name || !relationship?.foreign?.model) {
+      return ''
+    }
+
+    const name = relationship.name.replace(/[^a-zA-Z0-9_]/g, '_') // Replace invalid characters
+    const cardinality = this.getRelationshipCardinality(relationship)
+    return `  ${model.name} ${cardinality} ${relationship.foreign.model} : "${name}"\n`
+  }
+
+  private getRelationshipCardinality(relationship: RelationshipMetadata): string {
+    const cardinalityMap: Record<string, string> = {
+      'one-to-one': '||--||',
+      'one-to-many': '||--|{',
+      'many-to-one': '}|--||',
+      'many-to-many': '}|--|{',
+    }
+
+    return cardinalityMap[relationship.relationType] || '||--||' // Default to one-to-one
   }
 
   /**
@@ -1193,75 +1167,119 @@ export class DocumentationGenerator {
   }
 
   /**
-   * Helper method to generate a table of type information for
-   * request/response documentation.
+   * Generates a type table for request/response documentation.
    */
-  private generateTypeTable(fields: FieldMetadata[]): string {
+  private generateTypeTable(fields: FieldMetadata[] | undefined): string {
+    if (!fields || !Array.isArray(fields) || fields.length === 0) {
+      return 'No fields defined'
+    }
+
     return `| Field | Type | Required | Description |
 |-------|------|----------|-------------|
 ${fields
-  .map(
-    (field) =>
-      `| ${field.name} | ${field.type} | ${field.isRequired ? 'Yes' : 'No'} | ${field.documentation.description} |`,
-  )
+  .map((field) => {
+    const description = field.documentation?.description || ''
+    const type = field.type || 'unknown'
+    const required = field.isRequired ? 'Yes' : 'No'
+    return `| ${field.name} | ${type} | ${required} | ${description} |`
+  })
   .join('\n')}`
   }
 
   /**
-   * Helper method to generate a table of validation rules for
-   * a set of fields.
+   * Generates detailed endpoint documentation.
+   */
+  private generateEndpointDocs(endpoint: EndpointMetadata, model: ModelMetadata): string {
+    if (!endpoint) {
+      return ''
+    }
+
+    let doc = `### ${endpoint.description || 'Unnamed Endpoint'}\n\n`
+
+    // Method and path
+    doc += `\`${endpoint.method || 'GET'} ${endpoint.path || '/'}\`\n\n`
+
+    // Authentication requirements
+    if (endpoint.auth) {
+      doc += '**Authentication Required**\n\n'
+    }
+
+    // Request body documentation
+    if (endpoint.requestBody) {
+      doc += '#### Request Body\n\n'
+      const requestFields = this.extractFieldsFromModel(endpoint.requestBody)
+      doc += this.generateTypeTable(requestFields)
+      doc += '\n\n#### Example Request\n\n'
+      doc += '```json\n' + JSON.stringify(endpoint.example?.request || {}, null, 2) + '\n```\n\n'
+    }
+
+    // Response documentation
+    doc += '#### Response\n\n'
+    const responseFields = this.extractFieldsFromModel(endpoint.response)
+    doc += this.generateTypeTable(responseFields)
+    doc += '\n\n#### Example Response\n\n'
+    doc += '```json\n' + JSON.stringify(endpoint.example?.response || {}, null, 2) + '\n```\n\n'
+
+    // Validation rules
+    doc += '#### Validation Rules\n\n'
+    doc += this.generateValidationTable(model.fields || [])
+
+    return doc
+  }
+
+  /**
+   * Extracts fields from a model for documentation.
+   */
+  private extractFieldsFromModel(model: any): FieldMetadata[] {
+    if (!model) return []
+
+    if (Array.isArray(model.fields)) {
+      return model.fields
+    }
+
+    if (typeof model === 'object' && model.type === 'array' && model.items) {
+      return this.extractFieldsFromModel(model.items)
+    }
+
+    if (model.properties) {
+      return Object.entries(model.properties).map(([name, prop]: [string, any]) => ({
+        name,
+        type: prop.type,
+        isRequired: prop.required || false,
+        documentation: {
+          description: prop.description || '',
+        },
+      }))
+    }
+
+    return []
+  }
+
+  /**
+   * Generates the validation table for fields.
    */
   private generateValidationTable(fields: FieldMetadata[]): string {
+    if (!fields || !Array.isArray(fields) || fields.length === 0) {
+      return 'No validation rules defined'
+    }
+
     return `| Field | Validation Rules |
 |-------|------------------|
 ${fields
-  .map((field) => `| ${field.name} | ${this.formatValidationRules(field.validationRules)} |`)
+  .map((field) => {
+    const rules = this.formatValidationRules(field.validationRules || [])
+    return `| ${field.name} | ${rules} |`
+  })
   .join('\n')}`
   }
 
   /**
-   * Helper method to generate an entity block in Mermaid syntax
-   * for the relationship diagram.
-   */
-  private generateEntityBlock(model: ModelMetadata): string {
-    return `  ${model.name} {
-${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
-  }\n`
-  }
-
-  /**
-   * Helper method to generate a relationship line in Mermaid syntax
-   * for the relationship diagram.
-   */
-  private generateRelationshipLine(
-    model: ModelMetadata,
-    relationship: RelationshipMetadata,
-  ): string {
-    const cardinality = this.getRelationshipCardinality(relationship)
-    return `  ${model.name} ${cardinality} ${relationship.foreign.model}\n`
-  }
-
-  /**
-   * Determines the cardinality symbol for relationship diagrams.
-   * This helps visualize how entities are related to each other.
-   */
-  private getRelationshipCardinality(relationship: RelationshipMetadata): string {
-    const cardinalityMap = {
-      'one-to-one': '||--||',
-      'one-to-many': '||--{',
-      'many-to-one': '}--||',
-      'many-to-many': '}--{',
-    }
-
-    return cardinalityMap[relationship.relationType] || '||--||'
-  }
-
-  /**
-   * Formats validation rules into a human-readable string.
-   * This makes validation requirements clear in the documentation.
+   * Formats validation rules into a readable string.
    */
   private formatValidationRules(rules: ValidationRule[]): string {
-    if (!rules.length) return 'No validation rules'
+    if (!Array.isArray(rules) || rules.length === 0) {
+      return 'None'
+    }
 
     return rules
       .map((rule) => {
@@ -1271,6 +1289,31 @@ ${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
         return rule.decorator
       })
       .join(', ')
+  }
+
+  /**
+   * Generates API documentation for a controller.
+   */
+  private generateControllerDocs(model: ModelMetadata): string {
+    if (!model) {
+      return ''
+    }
+
+    let doc = `## ${model.name} Controller\n\n`
+    doc += `${model.documentation?.description || ''}\n\n`
+
+    // Base path information
+    doc += `**Base Path:** \`/${model.name.toLowerCase()}\`\n\n`
+
+    // Document each endpoint
+    const endpoints = this.getControllerEndpoints(model)
+    if (Array.isArray(endpoints)) {
+      endpoints.forEach((endpoint) => {
+        doc += this.generateEndpointDocs(endpoint, model)
+      })
+    }
+
+    return doc
   }
 
   /**
@@ -1308,42 +1351,6 @@ ${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
   }
 
   /**
-   * Generates documentation for database constraints including foreign keys,
-   * unique constraints, and check constraints.
-   */
-  private generateConstraintDocs(): string {
-    let docs = '## Database Constraints\n\n'
-
-    // Foreign Key Constraints
-    docs += '### Foreign Key Constraints\n\n'
-    this.models.forEach((model) => {
-      model.relationships.forEach((rel) => {
-        docs += `- ${model.name}.${rel.name} → ${rel.foreign.model}.${rel.foreign.field}\n`
-      })
-    })
-
-    // Unique Constraints
-    docs += '\n### Unique Constraints\n\n'
-    this.models.forEach((model) => {
-      const uniqueConstraints = this.getUniqueConstraints(model)
-      uniqueConstraints.forEach((constraint) => {
-        docs += `- ${model.name}: (${constraint.fields.join(', ')})\n`
-      })
-    })
-
-    // Check Constraints
-    docs += '\n### Check Constraints\n\n'
-    this.models.forEach((model) => {
-      const checkConstraints = this.getCheckConstraints(model)
-      checkConstraints.forEach((constraint) => {
-        docs += `- ${model.name}.${constraint.field}: ${constraint.condition}\n`
-      })
-    })
-
-    return docs
-  }
-
-  /**
    * Generates documentation for database indexes including
    * their types, covered columns, and purposes.
    */
@@ -1367,64 +1374,178 @@ ${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
 
   /**
    * Generates detailed documentation for a database table/view
-   * including its structure, constraints, and usage.
    */
   private generateTableDocs(model: ModelMetadata): string {
+    if (!model || !model.name) {
+      return ''
+    }
+
     let docs = `## ${model.name}\n\n`
-    docs += `${model.documentation.description}\n\n`
+
+    // Add description if available
+    if (model.documentation?.description) {
+      docs += `${model.documentation.description}\n\n`
+    }
 
     // Table structure
     docs += '### Columns\n\n'
-    docs += this.generateColumnTable(model.fields)
+    if (model.fields && Array.isArray(model.fields)) {
+      docs += this.generateColumnTable(model.fields)
+    } else {
+      docs += 'No columns defined\n'
+    }
 
-    // Primary Key
-    docs += '\n### Primary Key\n\n'
-    docs += this.getPrimaryKeyInfo(model)
+    // Foreign Keys / Relations
+    docs += '\n### Relationships\n\n'
+    if (model.relations && Array.isArray(model.relations) && model.relations.length > 0) {
+      model.relations.forEach((rel) => {
+        const relationType = this.getRelationshipType(rel)
+        docs += `- ${rel.name}: ${relationType} relationship with ${rel.foreign.model}\n`
+      })
+    } else {
+      docs += 'No relationships defined\n'
+    }
 
-    // Foreign Keys
-    docs += '\n### Foreign Keys\n\n'
-    model.relationships.forEach((rel) => {
-      docs += `- ${rel.name} → ${rel.foreign.model} (${rel.relationType})\n`
-    })
-
-    // Indexes
-    docs += '\n### Indexes\n\n'
-    const indexes = this.getModelIndexes(model)
-    indexes.forEach((index) => {
-      docs += `- ${index.name} (${index.type}): ${index.columns.join(', ')}\n`
-    })
+    // Validation Rules
+    docs += '\n### Validation Rules\n\n'
+    if (model.fields && Array.isArray(model.fields)) {
+      model.fields.forEach((field) => {
+        if (field.validationRules && field.validationRules.length > 0) {
+          docs += `#### ${field.name}\n`
+          field.validationRules.forEach((rule) => {
+            docs += `- ${rule.decorator}${rule.message ? `: ${rule.message}` : ''}\n`
+          })
+        }
+      })
+    }
 
     return docs
   }
 
   /**
-   * Generates an overview of the database structure including
-   * its schema, major entities, and their relationships.
+   * Generates an overview of the database structure
    */
   private generateDatabaseOverview(): string {
     let overview = '## Database Overview\n\n'
 
     // List all entities
     overview += '### Entities\n\n'
-    this.models.forEach((model) => {
-      overview += `- **${model.name}**: ${model.documentation.description}\n`
-    })
+    if (this.models && Array.isArray(this.models)) {
+      this.models.forEach((model) => {
+        overview += `- **${model.name}**: ${model.documentation?.description || 'No description available'}\n`
+      })
+    }
 
     // Key relationships
     overview += '\n### Key Relationships\n\n'
-    this.models.forEach((model) => {
-      model.relationships.forEach((rel) => {
-        overview += `- ${model.name} ${this.getRelationshipCardinality(rel)} ${rel.foreign.model}\n`
+    if (this.models && Array.isArray(this.models)) {
+      this.models.forEach((model) => {
+        if (model.relations && Array.isArray(model.relations)) {
+          model.relations.forEach((rel) => {
+            if (rel && rel.foreign) {
+              overview += `- ${model.name} ${this.getRelationshipCardinality(rel)} ${rel.foreign.model}\n`
+            }
+          })
+        }
       })
-    })
+    }
 
     // Database notes
     overview += '\n### Important Notes\n\n'
     overview += '- All timestamps are stored in UTC\n'
-    overview += '- Soft deletes are implemented using `deleted_at` column\n'
+    overview += '- Soft deletes are implemented using `deleted_at` column where applicable\n'
     overview += '- Foreign keys are enforced at the database level\n'
 
     return overview
+  }
+
+  /**
+   * Generates database documentation
+   */
+  private async generateDatabaseDocs(): Promise<void> {
+    let content = '# Database Documentation\n\n'
+
+    // Overview of database structure
+    content += this.generateDatabaseOverview()
+
+    // Document each table/view
+    if (this.models && Array.isArray(this.models)) {
+      for (const model of this.models) {
+        content += this.generateTableDocs(model)
+      }
+    }
+
+    // Add sections for indexes and constraints
+    content += this.generateIndexDocs()
+    content += this.generateConstraintDocs()
+
+    await this.fileManager.writeFile('docs/DATABASE.md', content)
+  }
+
+  /**
+   * Generates documentation for database constraints
+   */
+  private generateConstraintDocs(): string {
+    let docs = '## Database Constraints\n\n'
+
+    // Foreign Key Constraints
+    docs += '### Foreign Key Constraints\n\n'
+    if (this.models && Array.isArray(this.models)) {
+      this.models.forEach((model) => {
+        if (model.relations && Array.isArray(model.relations)) {
+          model.relations.forEach((rel) => {
+            if (rel && rel.foreign) {
+              docs += `- ${model.name}.${rel.name} → ${rel.foreign.model}.${rel.foreign.field}\n`
+            }
+          })
+        }
+      })
+    }
+
+    // Unique Constraints
+    docs += '\n### Unique Constraints\n\n'
+    if (this.models && Array.isArray(this.models)) {
+      this.models.forEach((model) => {
+        const uniqueConstraints = this.getUniqueConstraints(model)
+        uniqueConstraints.forEach((constraint) => {
+          docs += `- ${model.name}: (${constraint.fields.join(', ')})\n`
+        })
+      })
+    }
+
+    return docs
+  }
+
+  /**
+   * Gets unique constraints for a model
+   */
+  private getUniqueConstraints(model: ModelMetadata): Array<{ fields: string[] }> {
+    const constraints: Array<{ fields: string[] }> = []
+
+    // Add single-field unique constraints
+    if (model.fields && Array.isArray(model.fields)) {
+      model.fields
+        .filter((field) => field.validationRules?.some((rule) => rule.decorator === 'IsUnique'))
+        .forEach((field) => {
+          constraints.push({ fields: [field.name] })
+        })
+    }
+
+    // Add composite unique constraints
+    const docs = model.documentation?.description || ''
+    const compositeUnique = docs.match(/@unique\s+\[(.*?)\]/g)
+    if (compositeUnique) {
+      compositeUnique.forEach((constraint) => {
+        const fields = constraint
+          .replace('@unique [', '')
+          .replace(']', '')
+          .split(',')
+          .map((field) => field.trim())
+        constraints.push({ fields })
+      })
+    }
+
+    return constraints
   }
 
   /**
@@ -1442,29 +1563,6 @@ ${model.fields.map((field) => `    ${field.type} ${field.name}`).join('\n')}
         format: 'uuid',
       },
     }
-  }
-
-  /**
-   * Creates a detailed example of creating a new entity.
-   * This shows developers what fields are required and how to structure
-   * their creation requests.
-   */
-  private generateCreateExample(model: ModelMetadata): string {
-    const example = model.fields
-      .filter((field) => !field.isComputed && field.name !== 'id')
-      .reduce(
-        (acc, field) => {
-          acc[field.name] = this.generateExampleValue(field)
-          return acc
-        },
-        {} as Record<string, any>,
-      )
-
-    return `// POST /${model.name.toLowerCase()}
-const createPayload = ${JSON.stringify(example, null, 2)};
-
-const response = await api.post('/${model.name.toLowerCase()}', createPayload);
-`
   }
 
   /**
@@ -1559,37 +1657,6 @@ if (error.response?.status === 401) {
   }
 
   /**
-   * Gets the unique constraints for a model.
-   * This extracts unique constraints from model metadata to document
-   * data integrity rules.
-   */
-  private getUniqueConstraints(model: ModelMetadata): Array<{ fields: string[] }> {
-    const constraints: Array<{ fields: string[] }> = []
-
-    // Single-field unique constraints
-    model.fields
-      .filter((field) => field.validationRules.some((rule) => rule.decorator === 'IsUnique'))
-      .forEach((field) => {
-        constraints.push({ fields: [field.name] })
-      })
-
-    // Composite unique constraints from model metadata
-    const compositeUnique = model.documentation.description.match(/@unique\s+\[(.*?)\]/g)
-    if (compositeUnique) {
-      compositeUnique.forEach((constraint) => {
-        const fields = constraint
-          .replace('@unique [', '')
-          .replace(']', '')
-          .split(',')
-          .map((field) => field.trim())
-        constraints.push({ fields })
-      })
-    }
-
-    return constraints
-  }
-
-  /**
    * Gets the check constraints for a model.
    * This extracts check constraints from model metadata to document
    * business rules enforced at the database level.
@@ -1651,42 +1718,44 @@ if (error.response?.status === 401) {
   }
 
   /**
-   * Generates a formatted table of column information.
-   * This creates a markdown table documenting all columns in a model.
+   * Generates a formatted table of column information
    */
   private generateColumnTable(fields: FieldMetadata[]): string {
-    let table = '| Column | Type | Nullable | Default | Description |\n'
+    let table = '| Column | Type | Required | Default | Description |\n'
     table += '|--------|------|----------|----------|-------------|\n'
 
     fields.forEach((field) => {
-      table += `| ${field.name} | ${field.type} | ${field.isRequired ? 'No' : 'Yes'} | ${
-        field.documentation.description.match(/@default\s+([^\s]+)/)?.[1] || 'NULL'
-      } | ${field.documentation.description.split('.')[0]} |\n`
+      const type = field.isArray ? `${field.type}[]` : field.type
+      const required = field.isRequired ? 'Yes' : 'No'
+      const description = field.documentation?.description || ''
+      const defaultValue = field.hasDefaultValue ? String(field.default) : '-'
+
+      table += `| ${field.name} | ${type} | ${required} | ${defaultValue} | ${description} |\n`
     })
 
     return table
   }
 
   /**
-   * Gets primary key information for a model.
-   * This documents the primary key structure and constraints.
+   * Gets a human-readable relationship type description
    */
-  private getPrimaryKeyInfo(model: ModelMetadata): string {
-    const pkFields = model.fields.filter((field) =>
-      field.validationRules.some((rule) => rule.decorator === 'IsPrimaryKey'),
-    )
-
-    if (pkFields.length === 0) {
-      return 'Primary Key: id (auto-generated UUID)'
+  private getRelationshipType(relationship: RelationshipMetadata): string {
+    switch (relationship.relationType) {
+      case 'one-to-one':
+        return 'One-to-One'
+      case 'one-to-many':
+        return 'One-to-Many'
+      case 'many-to-one':
+        return 'Many-to-One'
+      case 'many-to-many':
+        return 'Many-to-Many'
+      default:
+        return 'Unknown'
     }
-
-    return `Primary Key: ${pkFields.map((field) => field.name).join(', ')}`
   }
 
   /**
-   * Generates OpenAPI schema definitions for all our models.
-   * These schemas define the structure and validation rules for our API's
-   * data models in a format that OpenAPI tools can understand.
+   * Generates OpenAPI schema definitions for all models
    */
   private generateOpenAPISchemas(model: ModelMetadata): Record<string, any> {
     const schemas: Record<string, any> = {}
@@ -1694,27 +1763,153 @@ if (error.response?.status === 401) {
     // Generate the main model schema
     schemas[model.name] = {
       type: 'object',
-      description: model.documentation.description,
-      properties: this.generateSchemaProperties(model.fields),
-      required: this.getRequiredFields(model.fields),
+      description: model.documentation?.description || '',
+      properties: this.generateSchemaProperties(model.fields || []),
+      required: this.getRequiredFields(model.fields || []),
     }
 
     // Generate schemas for nested types and related models
-    model.relationships.forEach((relationship) => {
-      if (!schemas[relationship.foreign.model]) {
-        const relatedModel = this.findModelByName(relationship.foreign.model)
-        if (relatedModel) {
-          schemas[relationship.foreign.model] = {
-            type: 'object',
-            description: relatedModel.documentation.description,
-            properties: this.generateSchemaProperties(relatedModel.fields),
-            required: this.getRequiredFields(relatedModel.fields),
+    if (model.relations && Array.isArray(model.relations)) {
+      model.relations.forEach((relationship) => {
+        if (!schemas[relationship.foreign.model]) {
+          const relatedModel = this.findModelByName(relationship.foreign.model)
+          if (relatedModel) {
+            schemas[relationship.foreign.model] = {
+              type: 'object',
+              description: relatedModel.documentation?.description || '',
+              properties: this.generateSchemaProperties(relatedModel.fields || []),
+              required: this.getRequiredFields(relatedModel.fields || []),
+            }
           }
         }
+      })
+    }
+
+    return schemas
+  }
+
+  /**
+   * Generates OpenAPI/Swagger specification
+   */
+  private async generateOpenAPISpec(): Promise<void> {
+    const spec = {
+      openapi: '3.0.0',
+      info: {
+        title: this.options.documentation?.title || 'API Documentation',
+        version: this.options.documentation?.version || '1.0.0',
+        description: this.options.documentation?.description || '',
+      },
+      paths: {},
+      components: {
+        schemas: {},
+        securitySchemes: this.generateSecuritySchemes(),
+      },
+    }
+
+    // Generate paths and schemas for each model
+    for (const model of this.models) {
+      try {
+        spec.paths = {
+          ...spec.paths,
+          ...this.generateOpenAPIPaths(model),
+        }
+        spec.components.schemas = {
+          ...spec.components.schemas,
+          ...this.generateOpenAPISchemas(model),
+        }
+      } catch (error) {
+        console.warn(`Warning: Error generating OpenAPI spec for model ${model.name}:`, error)
+        // Continue with other models even if one fails
+      }
+    }
+
+    await this.fileManager.writeFile('docs/openapi.json', JSON.stringify(spec, null, 2))
+  }
+
+  /**
+   * Generates schema properties from field metadata
+   */
+  private generateSchemaProperties(fields: FieldMetadata[]): Record<string, any> {
+    const properties: Record<string, any> = {}
+
+    fields.forEach((field) => {
+      properties[field.name] = {
+        type: this.mapTypeToOpenAPI(field.type || 'string'),
+        description: field.documentation?.description || '',
+        example: field.documentation?.example,
+      }
+
+      // Add format for special types
+      if (field.type === 'Date') {
+        properties[field.name].format = 'date-time'
+      }
+
+      // Add validation constraints
+      if (field.validationRules && field.validationRules.length > 0) {
+        this.addValidationToSchema(properties[field.name], field.validationRules)
       }
     })
 
-    return schemas
+    return properties
+  }
+
+  /**
+   * Gets required fields from a model's fields
+   */
+  private getRequiredFields(fields: FieldMetadata[]): string[] {
+    return fields.filter((field) => field.isRequired).map((field) => field.name)
+  }
+
+  /**
+   * Maps internal types to OpenAPI types
+   */
+  private mapTypeToOpenAPI(type: string): string {
+    const typeMap: Record<string, string> = {
+      string: 'string',
+      number: 'number',
+      boolean: 'boolean',
+      Date: 'string',
+      Object: 'object',
+      Array: 'array',
+    }
+
+    const mappedType = typeMap[type] || typeMap[type.toLowerCase()]
+    return mappedType || 'string' // Default to string if type is unknown
+  }
+
+  /**
+   * Adds validation rules to OpenAPI schema
+   */
+  private addValidationToSchema(schema: any, rules: ValidationRule[]): void {
+    if (!Array.isArray(rules)) return
+
+    rules.forEach((rule) => {
+      switch (rule.decorator) {
+        case 'MinLength':
+          schema.minLength = rule.params?.[0]
+          break
+        case 'MaxLength':
+          schema.maxLength = rule.params?.[0]
+          break
+        case 'Min':
+          schema.minimum = rule.params?.[0]
+          break
+        case 'Max':
+          schema.maximum = rule.params?.[0]
+          break
+        case 'Pattern':
+          schema.pattern = rule.params?.[0]
+          break
+      }
+    })
+  }
+
+  /**
+   * Helper method to find a model by its name
+   */
+  private findModelByName(name: string): ModelMetadata | undefined {
+    if (!this.models || !Array.isArray(this.models)) return undefined
+    return this.models.find((model) => model.name === name)
   }
 
   /**
@@ -1858,95 +2053,6 @@ if (error.response?.status === 401) {
   }
 
   /**
-   * Helper method to generate schema properties from field metadata.
-   * This converts our internal field definitions into OpenAPI-compatible
-   * property definitions.
-   */
-  private generateSchemaProperties(fields: FieldMetadata[]): Record<string, any> {
-    const properties: Record<string, any> = {}
-
-    fields.forEach((field) => {
-      properties[field.name] = {
-        type: this.mapTypeToOpenAPI(field.type),
-        description: field.documentation.description,
-        example: field.documentation.example,
-      }
-
-      // Add format for special types
-      if (field.type === 'Date') {
-        properties[field.name].format = 'date-time'
-      }
-
-      // Add validation constraints
-      if (field.validationRules.length > 0) {
-        this.addValidationToSchema(properties[field.name], field.validationRules)
-      }
-    })
-
-    return properties
-  }
-
-  /**
-   * Helper method to find required fields in a model.
-   * This helps generate accurate OpenAPI schemas that reflect
-   * our data validation rules.
-   */
-  private getRequiredFields(fields: FieldMetadata[]): string[] {
-    return fields.filter((field) => field.isRequired).map((field) => field.name)
-  }
-
-  /**
-   * Helper method to map our internal types to OpenAPI types.
-   * This ensures our API documentation uses standard OpenAPI type definitions.
-   */
-  private mapTypeToOpenAPI(type: string): string {
-    const typeMap: Record<string, string> = {
-      string: 'string',
-      number: 'number',
-      boolean: 'boolean',
-      Date: 'string',
-      Object: 'object',
-      Array: 'array',
-    }
-
-    return typeMap[type] || 'string'
-  }
-
-  /**
-   * Helper method to add validation rules to OpenAPI schemas.
-   * This ensures our API documentation includes all validation constraints.
-   */
-  private addValidationToSchema(schema: any, rules: ValidationRule[]): void {
-    rules.forEach((rule) => {
-      switch (rule.decorator) {
-        case 'MinLength':
-          schema.minLength = rule.params?.[0]
-          break
-        case 'MaxLength':
-          schema.maxLength = rule.params?.[0]
-          break
-        case 'Min':
-          schema.minimum = rule.params?.[0]
-          break
-        case 'Max':
-          schema.maximum = rule.params?.[0]
-          break
-        case 'Pattern':
-          schema.pattern = rule.params?.[0]
-          break
-      }
-    })
-  }
-
-  /**
-   * Helper method to find a model by its name.
-   * Used when generating related model schemas.
-   */
-  private findModelByName(name: string): ModelMetadata | undefined {
-    return this.models.find((model) => model.name === name)
-  }
-
-  /**
    * Retrieves all available endpoints for a given controller.
    * This method analyzes the model metadata to determine what
    * endpoints should be available based on the model's properties
@@ -2023,11 +2129,122 @@ if (error.response?.status === 401) {
     ]
 
     // Add relationship endpoints if they exist
-    model.relationships.forEach((relationship) => {
-      endpoints.push(this.generateRelationshipEndpoint(model, relationship))
-    })
+    if (model.relations?.length > 0) {
+      model.relations.forEach((relationship) => {
+        endpoints.push(this.generateRelationshipEndpoint(model, relationship))
+      })
+    }
 
     return endpoints
+  }
+
+  private generateCreateExample(model: ModelMetadata): any {
+    if (!model?.fields) return {}
+
+    return model.fields
+      .filter((field) => !field.isComputed && field.name !== 'id')
+      .reduce(
+        (acc, field) => {
+          acc[field.name] = this.generateExampleValue(field)
+          return acc
+        },
+        {} as Record<string, any>,
+      )
+  }
+
+  private generateSingleExample(model: ModelMetadata | undefined): any {
+    if (!model?.fields) return {}
+
+    const example: Record<string, any> = {}
+
+    model.fields.forEach((field) => {
+      // Use explicit example if provided in documentation
+      if (field.documentation?.example !== undefined) {
+        example[field.name] = field.documentation.example
+        return
+      }
+
+      // Generate sensible defaults based on field type
+      example[field.name] = this.generateExampleValue(field)
+    })
+
+    return example
+  }
+
+  private generateRelationshipEndpoint(
+    model: ModelMetadata,
+    relationship: RelationshipMetadata,
+  ): EndpointMetadata {
+    const basePath = `/${model.name.toLowerCase()}`
+    const relationPath = relationship.name.toLowerCase()
+
+    // The structure changes based on the relationship type
+    if (
+      relationship.relationType === 'one-to-many' ||
+      relationship.relationType === 'many-to-many'
+    ) {
+      return {
+        method: 'GET',
+        path: `${basePath}/:id/${relationPath}`,
+        description: `Retrieve all ${relationship.name} for a ${model.name}`,
+        auth: true,
+        response: {
+          type: 'array',
+          items: {
+            type: relationship.foreign.model,
+          },
+        },
+        example: {
+          request: null,
+          response: this.generateRelationshipExample(relationship),
+        },
+      }
+    }
+
+    return {
+      method: 'GET',
+      path: `${basePath}/:id/${relationPath}`,
+      description: `Retrieve the ${relationship.name} for a ${model.name}`,
+      auth: true,
+      response: {
+        type: relationship.foreign.model,
+      },
+      example: {
+        request: null,
+        response: this.generateSingleExample(this.findModelByName(relationship.foreign.model)),
+      },
+    }
+  }
+
+  private generateExampleValue(field: FieldMetadata): any {
+    switch (field.type?.toLowerCase()) {
+      case 'string':
+        return this.generateStringExample(field)
+      case 'number':
+        return this.generateNumberExample(field)
+      case 'boolean':
+        return true
+      case 'date':
+        return new Date().toISOString()
+      case 'object':
+        return this.generateObjectExample(field)
+      default:
+        return null
+    }
+  }
+
+  private generateCollectionExample(model: ModelMetadata): any[] {
+    if (!model) return []
+
+    // Generate three example items to show variation
+    return [
+      this.generateSingleExample(model),
+      this.generateSingleExample(model),
+      this.generateSingleExample(model),
+    ].map((example, index) => ({
+      ...example,
+      id: `${index + 1}`, // Ensure unique IDs in collection
+    }))
   }
 
   /**
@@ -2162,97 +2379,6 @@ if (error.response?.status === 401) {
   }
 
   /**
-   * Generates documentation for endpoints that handle relationships between models.
-   * This creates documentation for nested resources and related entity endpoints,
-   * showing how to access and manipulate related data.
-   */
-  private generateRelationshipEndpoint(
-    model: ModelMetadata,
-    relationship: RelationshipMetadata,
-  ): EndpointMetadata {
-    const basePath = `/${model.name.toLowerCase()}`
-    const relationPath = relationship.name.toLowerCase()
-
-    // The structure changes based on the relationship type
-    if (
-      relationship.relationType === 'one-to-many' ||
-      relationship.relationType === 'many-to-many'
-    ) {
-      return {
-        method: 'GET',
-        path: `${basePath}/:id/${relationPath}`,
-        description: `Retrieve all ${relationship.name} for a ${model.name}`,
-        auth: true,
-        response: {
-          type: 'array',
-          items: {
-            type: relationship.foreign.model,
-          },
-        },
-        example: {
-          request: null,
-          response: this.generateRelationshipExample(relationship),
-        },
-      }
-    } else {
-      return {
-        method: 'GET',
-        path: `${basePath}/:id/${relationPath}`,
-        description: `Retrieve the ${relationship.name} for a ${model.name}`,
-        auth: true,
-        response: {
-          type: relationship.foreign.model,
-        },
-        example: {
-          request: null,
-          response: this.generateSingleExample(this.findModelByName(relationship.foreign.model)),
-        },
-      }
-    }
-  }
-
-  /**
-   * Generates an example of a single resource response.
-   * This creates realistic example data for each field in the model,
-   * helping developers understand what the API returns.
-   */
-  private generateSingleExample(model: ModelMetadata | undefined): any {
-    if (!model) return {}
-
-    const example: Record<string, any> = {}
-
-    model.fields.forEach((field) => {
-      // Use explicit example if provided in documentation
-      if (field.documentation.example !== undefined) {
-        example[field.name] = field.documentation.example
-        return
-      }
-
-      // Generate sensible defaults based on field type
-      example[field.name] = this.generateExampleValue(field)
-    })
-
-    return example
-  }
-
-  /**
-   * Generates an example of a collection response.
-   * This creates an array of example resources, showing how
-   * list endpoints return multiple items.
-   */
-  private generateCollectionExample(model: ModelMetadata): any[] {
-    // Generate three example items to show variation
-    return [
-      this.generateSingleExample(model),
-      this.generateSingleExample(model),
-      this.generateSingleExample(model),
-    ].map((example, index) => ({
-      ...example,
-      id: index + 1, // Ensure unique IDs in collection
-    }))
-  }
-
-  /**
    * Generates common response definitions used across multiple endpoints.
    * This includes standard error responses and validation failures that
    * might occur in any endpoint.
@@ -2353,27 +2479,6 @@ if (error.response?.status === 401) {
           },
         },
       },
-    }
-  }
-
-  /**
-   * Helper method to generate realistic example values for different field types.
-   * This creates appropriate sample data based on the field's type and validation rules.
-   */
-  private generateExampleValue(field: FieldMetadata): any {
-    switch (field.type) {
-      case 'string':
-        return this.generateStringExample(field)
-      case 'number':
-        return this.generateNumberExample(field)
-      case 'boolean':
-        return true
-      case 'Date':
-        return new Date().toISOString()
-      case 'object':
-        return this.generateObjectExample(field)
-      default:
-        return null
     }
   }
 
@@ -3408,7 +3513,7 @@ export class TransformationGenerator {
 File: modules/type-guard.ts
 ================
 // tools/generators/dto/modules/type-guards.ts
-import { ModelMetadata, FieldMetadata } from '../core/types'
+import { ModelMetadata, FieldMetadata } from '../types'
 import { TypeMapper } from '../utils/type-mapper'
 
 /**
@@ -4503,9 +4608,10 @@ any).constraints === 'object' ) }
 ================
 File: templates/base/imports.hbs
 ================
-import { ApiProperty } from '@nestjs/swagger';
+// templates/base/imports.hbs import { ApiProperty } from '@nestjs/swagger';
 {{#if hasValidation}}
-  import { IsNotEmpty, IsOptional } from 'class-validator';
+  import { IsString, IsNumber, IsBoolean, IsDate, IsOptional, IsNotEmpty, IsEmail, IsUUID, IsInt,
+  IsEnum, IsJSON } from 'class-validator';
 {{/if}}
 {{#if hasTransform}}
   import { Transform } from 'class-transformer';
@@ -4537,6 +4643,7 @@ export type Required{{interfaceName}} = Required<I{{interfaceName}}>;
 ================
 File: templates/dto/model.dto.hbs
 ================
+// templates/dto/model.dto.hbs
 {{> imports}}
 
 /**
@@ -4547,13 +4654,30 @@ export class {{name}}DTO {
   /**
    * {{#if documentation.description}}{{documentation.description}}{{/if}}
    */
-  @ApiProperty()
+  @ApiProperty({
+    description: '{{documentation.description}}',
+    type: () => {{type}},
+    required: {{isRequired}},
+    {{#if isArray}}isArray: true,{{/if}}
+    {{#if enum}}enum: [{{#each enum}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}],{{/if}}
+    {{#if example}}example: {{json example}},{{/if}}
+    {{#if default}}default: {{json default}},{{/if}}
+  })
+  {{#if isRequired}}
+  @IsNotEmpty()
+  {{else}}
+  @IsOptional()
+  {{/if}}
   {{#each validationRules}}
   @{{this}}()
   {{/each}}
-  {{name}}{{#unless isRequired}}?{{/unless}}: {{type}};
+  {{name}}{{#unless isRequired}}?{{/unless}}: {{type}}{{#if isArray}}[]{{/if}};
 
 {{/each}}
+
+  constructor(partial: Partial<{{name}}DTO>) {
+    Object.assign(this, partial);
+  }
 }
 
 ================
@@ -6096,9 +6220,9 @@ import type { ViewMetadata } from './view.types'
 
 export interface ModelMetadata {
   name: string
-  documentation: DocumentationMetadata
-  fields: FieldMetadata[]
-  relations: RelationshipMetadata[]
+  documentation?: DocumentationMetadata
+  fields?: FieldMetadata[]
+  relations?: RelationshipMetadata[]
   isView?: boolean
   viewMetadata?: ViewMetadata
 }
@@ -6819,6 +6943,78 @@ export class TypeMapper {
 }
 
 ================
+File: utils/validation.helpers.ts
+================
+// utils/validation.helpers.ts
+
+/**
+ * Type guard for checking if a value is a Date
+ */
+export function isDate(value: unknown): boolean {
+  if (value instanceof Date) return true
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value)
+    return !isNaN(date.getTime())
+  }
+  return false
+}
+
+/**
+ * Type guard for checking if a value is not empty
+ */
+export function isNotEmpty(value: unknown): boolean {
+  if (value === null || value === undefined) return false
+  if (typeof value === 'string') return value.trim().length > 0
+  if (Array.isArray(value)) return value.length > 0
+  if (typeof value === 'object') return Object.keys(value).length > 0
+  return true
+}
+
+/**
+ * Type guard for checking if a value is a number
+ */
+export function isNumber(value: unknown): boolean {
+  if (typeof value === 'number') return !isNaN(value)
+  if (typeof value === 'string') {
+    const num = parseFloat(value)
+    return !isNaN(num)
+  }
+  return false
+}
+
+/**
+ * Type guard for checking if a value is a string
+ */
+export function isString(value: unknown): boolean {
+  return typeof value === 'string'
+}
+
+/**
+ * Type guard for checking if a value is a boolean
+ */
+export function isBoolean(value: unknown): boolean {
+  return typeof value === 'boolean'
+}
+
+/**
+ * Validation function to check for UUID format
+ */
+export function isUUID(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  return uuidRegex.test(value)
+}
+
+/**
+ * Validation function to check for email format
+ */
+export function isEmail(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(value)
+}
+
+================
 File: config.ts
 ================
 // tools/generators/dto/config.ts
@@ -6902,7 +7098,7 @@ File: index.ts
 // tools/generators/dto/index.ts
 import { join } from 'path'
 import { Command } from 'commander'
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@astronera/db'
 import { getDMMF } from '@prisma/internals'
 import { DMMF } from '@prisma/generator-helper'
 import { Chalk } from 'chalk'
@@ -7064,18 +7260,19 @@ class DTOGenerator extends BaseGenerator {
   protected async generateValidatedDTO(metadata: ModelMetadata): Promise<GeneratedFile> {
     await this.ensureInitialized()
 
-    const templateName = metadata.isView ? 'dto/view.dto' : 'dto/model.dto'
-    const templatePath = join(__dirname, 'templates', `${templateName}.hbs`)
-    console.log(`${templatePath} with dirname ${__dirname}`)
-
     const hasValidation = metadata.fields.some((f) => f.validationRules?.length)
     const hasTransform = metadata.fields.some((f) => f.transformationRules?.length)
 
-    // Process validation and transformation rules
+    // Process fields
     const fields = metadata.fields.map((field) => ({
       ...field,
-      validationRules: field.validationRules?.map((rule) => rule.decorator),
-      transformationRules: field.transformationRules?.map((rule) => `Transform${rule.type}`),
+      type: this.typeMapper.mapFieldType(field),
+      documentation: {
+        description: field.documentation?.description || `The ${field.name} field`,
+      },
+      validationRules: this.processValidationRules(field),
+      example: this.generateExample(field),
+      default: this.getDefaultValue(field),
     }))
 
     const templateContext = {
@@ -7086,18 +7283,73 @@ class DTOGenerator extends BaseGenerator {
       hasTransform,
     }
 
-    // Debug logging
-    console.log('Template Context:', JSON.stringify(templateContext, null, 2))
-
-    const content = TemplateEngine.process(templatePath, templateContext)
-
-    console.log(`Generated DTO content length: ${content.length}`)
-    console.log('Generated DTO content:', content)
+    const content = TemplateEngine.process('dto/model.dto', templateContext)
 
     return {
       path: `dto/${metadata.name.toLowerCase()}.dto.ts`,
       content,
     }
+  }
+
+  private processValidationRules(field: FieldMetadata): string[] {
+    const rules: string[] = []
+
+    // Add type validation
+    switch (field.type.toLowerCase()) {
+      case 'string':
+        rules.push('IsString')
+        break
+      case 'number':
+        rules.push('IsNumber')
+        break
+      case 'boolean':
+        rules.push('IsBoolean')
+        break
+      case 'date':
+        rules.push('IsDate')
+        break
+      case 'uuid':
+        rules.push('IsUUID')
+        break
+    }
+
+    // Add additional validations from metadata
+    field.validationRules?.forEach((rule) => {
+      if (!rules.includes(rule.decorator)) {
+        rules.push(rule.decorator)
+      }
+    })
+
+    return rules
+  }
+
+  private generateExample(field: FieldMetadata): any {
+    if (field.documentation?.example !== undefined) {
+      return field.documentation.example
+    }
+
+    // Generate sensible examples based on type
+    switch (field.type.toLowerCase()) {
+      case 'string':
+        return 'example'
+      case 'number':
+        return 1
+      case 'boolean':
+        return true
+      case 'date':
+        return new Date().toISOString()
+      case 'uuid':
+        return '00000000-0000-0000-0000-000000000000'
+      default:
+        return undefined
+    }
+  }
+
+  private getDefaultValue(field: FieldMetadata): any {
+    if (field.hasDefaultValue) {
+      return field.default
+    }
+    return undefined
   }
 
   protected async generateTypeGuard(metadata: ModelMetadata): Promise<GeneratedFile> {

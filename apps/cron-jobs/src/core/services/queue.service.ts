@@ -6,7 +6,7 @@ import type { Pool } from 'pg'
 import { CustomLogger } from './logger.service'
 import { MetricsService } from './metrics.service'
 import { PrismaService } from './prisma.service'
-import { job_status } from '@prisma/client'
+import { job_status } from '@astronera/db'
 import type { WorkflowJob, WorkflowJobData } from '@types'
 
 export interface QueueOptions {

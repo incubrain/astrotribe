@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@core/services/prisma.service'
 import { CustomLogger } from '@core/logger/custom.logger'
-import type { error_severity, error_type } from '@prisma/client'
+import type { ErrorSeverity, ErrorType } from '@astronera/db'
 
 interface TimeRange {
   startDate?: string
@@ -11,8 +11,8 @@ interface TimeRange {
 
 interface ErrorQueryParams extends TimeRange {
   serviceName?: string
-  errorType?: error_type
-  severity?: error_severity
+  errorType?: ErrorType
+  severity?: ErrorSeverity
 }
 
 @Injectable()
@@ -41,7 +41,7 @@ export class ErrorMetricService {
           }),
       }
 
-      const frequency = await this.prisma.error_frequency.findMany({
+      const frequency = await this.prisma.ErrorFrequency.findMany({
         where,
         orderBy: { time_bucket: 'desc' },
       })
@@ -73,11 +73,11 @@ export class ErrorMetricService {
       }
 
       const [metrics, totalErrors] = await Promise.all([
-        this.prisma.error_metrics.findMany({
+        this.prisma.ErrorMetrics.findMany({
           where,
           orderBy: { time_bucket: 'desc' },
         }),
-        this.prisma.error_metrics.aggregate({
+        this.prisma.ErrorMetrics.aggregate({
           where,
           _sum: { error_count: true },
         }),
@@ -101,7 +101,7 @@ export class ErrorMetricService {
         ...(topLevel !== undefined && { toplevel: topLevel }),
       }
 
-      const stats = await this.prisma.error_stats.findMany({
+      const stats = await this.prisma.ErrorStats.findMany({
         where,
         orderBy: { mean_exec_time: 'desc' },
       })
@@ -130,7 +130,7 @@ export class ErrorMetricService {
       if (hours) startDate.setHours(startDate.getHours() - hours)
       if (days) startDate.setDate(startDate.getDate() - days)
 
-      const trends = await this.prisma.error_metrics.groupBy({
+      const trends = await this.prisma.ErrorMetrics.groupBy({
         by: ['severity', 'time_bucket'],
         where: {
           time_bucket: { gte: startDate },

@@ -1,5 +1,4 @@
-import { error_severity, error_type } from '@prisma/client'
-
+import type { ErrorSeverity, ErrorType } from '@astronera/db'
 
 export interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
@@ -23,39 +22,8 @@ export const retryableStatusCodes: { [key: number]: string } = {
   504: 'Gateway Timeout - The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server.',
 }
 
-export enum ErrorSeverity {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical',
-}
+export type error_type = ErrorType
 
-export enum ErrorType {
-  UPLOAD_ERROR = 'UPLOAD_ERROR',
-  CONNECTION_ERROR = 'CONNECTION_ERROR',
-  AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR',
-  UNIQUE_VIOLATION = 'UNIQUE_VIOLATION',
-  FOREIGN_KEY_VIOLATION = 'FOREIGN_KEY_VIOLATION',
-  NOT_NULL_VIOLATION = 'NOT_NULL_VIOLATION',
-  CONSTRAINT_ERROR = 'CONSTRAINT_ERROR',
-  UNDEFINED_TABLE = 'UNDEFINED_TABLE',
-  UNDEFINED_PARAMETER = 'UNDEFINED_PARAMETER',
-  SYNTAX_ERROR = 'SYNTAX_ERROR',
-  DUPLICATE_ALIAS = 'DUPLICATE_ALIAS',
-  UNDEFINED_COLUMN = 'UNDEFINED_COLUMN',
-  DATA_EXCEPTION = 'DATA_EXCEPTION',
-  SERIALIZATION_FAILURE = 'SERIALIZATION_FAILURE',
-  DEADLOCK_DETECTED = 'DEADLOCK_DETECTED',
-  INSUFFICIENT_RESOURCES = 'INSUFFICIENT_RESOURCES',
-  RATE_LIMIT_ERROR = 'RATE_LIMIT_ERROR',
-  SERVER_ERROR = 'SERVER_ERROR',
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-  NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
-  NETWORK_ERROR = 'NETWORK_ERROR',
-}
-
-// Types
 export interface ErrorDetails {
   type: ErrorType
   message: string
@@ -81,32 +49,32 @@ export interface FetchErrorResponse {
 }
 
 export function mapErrorSeverity(error: any): ErrorSeverity {
-  if (error.status >= 500) return ErrorSeverity.CRITICAL
-  if (error.status === 429) return ErrorSeverity.HIGH
+  if (error.status >= 500) return 'critical'
+  if (error.status === 429) return 'high'
 
   // Connection errors are critical
-  if (error.code?.startsWith('08')) return ErrorSeverity.CRITICAL
+  if (error.code?.startsWith('08')) return 'critical'
 
   // Authentication errors are high severity
-  if (error.code?.startsWith('28')) return ErrorSeverity.HIGH
+  if (error.code?.startsWith('28')) return 'high'
 
   // Constraint violations are high severity
-  if (error.code?.startsWith('23')) return ErrorSeverity.HIGH
+  if (error.code?.startsWith('23')) return 'high'
 
   // Query errors are medium severity
-  if (error.code?.startsWith('42')) return ErrorSeverity.MEDIUM
+  if (error.code?.startsWith('42')) return 'medium'
 
   // Data exceptions are medium severity
-  if (error.code?.startsWith('22')) return ErrorSeverity.MEDIUM
+  if (error.code?.startsWith('22')) return 'medium'
 
   // Transaction errors are high severity
-  if (error.code === '40001' || error.code === '40P01') return ErrorSeverity.HIGH
+  if (error.code === '40001' || error.code === '40P01') return 'high'
 
   // System errors are critical
-  if (error.code?.startsWith('53')) return ErrorSeverity.CRITICAL
+  if (error.code?.startsWith('53')) return 'critical'
 
   // Default to medium severity for unknown errors
-  return ErrorSeverity.MEDIUM
+  return 'medium'
 }
 
 export function mapErrorType(error: any): ErrorType {
@@ -118,34 +86,34 @@ export function mapErrorType(error: any): ErrorType {
     error.code === '08001' ||
     error.code === '08004'
   ) {
-    return ErrorType.CONNECTION_ERROR
+    return 'CONNECTION_ERROR'
   }
 
   // Authentication errors
   if (error.code === '28000' || error.code === '28P01') {
-    return ErrorType.AUTHENTICATION_ERROR
+    return 'AUTHENTICATION_ERROR'
   }
 
   // Constraint violations
-  if (error.code === '23505') return ErrorType.UNIQUE_VIOLATION
-  if (error.code === '23503') return ErrorType.FOREIGN_KEY_VIOLATION
-  if (error.code === '23502') return ErrorType.NOT_NULL_VIOLATION
+  if (error.code === '23505') return 'DATABASE_ERROR'
+  if (error.code === '23503') return 'DATABASE_ERROR'
+  if (error.code === '23502') return 'DATABASE_ERROR'
   if (error.code?.startsWith('23') && !['23505', '23503', '23502'].includes(error.code))
-    return ErrorType.CONSTRAINT_ERROR
+    return 'DATABASE_ERROR'
 
   // Query errors
-  if (error.code === '42P01') return ErrorType.UNDEFINED_TABLE
-  if (error.code === '42P02') return ErrorType.UNDEFINED_PARAMETER
-  if (error.code === '42601') return ErrorType.SYNTAX_ERROR
-  if (error.code === '42P07') return ErrorType.DUPLICATE_ALIAS
-  if (error.code === '42703') return ErrorType.UNDEFINED_COLUMN
+  if (error.code === '42P01') return 'TABLE_ERROR'
+  if (error.code === '42P02') return 'DATABASE_ERROR'
+  if (error.code === '42601') return 'DATABASE_ERROR'
+  if (error.code === '42P07') return 'DATABASE_ERROR'
+  if (error.code === '42703') return 'DATABASE_ERROR'
 
   // Data errors
-  if (error.code?.startsWith('22')) return ErrorType.DATA_EXCEPTION
+  if (error.code?.startsWith('22')) return 'DATABASE_ERROR'
 
   // Transaction errors
-  if (error.code === '40001') return ErrorType.SERIALIZATION_FAILURE
-  if (error.code === '40P01') return ErrorType.DEADLOCK_DETECTED
+  if (error.code === '40001') return 'DATABASE_ERROR'
+  if (error.code === '40P01') return 'DATABASE_ERROR'
 
   // System errors
   if (
@@ -154,15 +122,15 @@ export function mapErrorType(error: any): ErrorType {
     error.code === '53200' ||
     error.code === '53300'
   ) {
-    return ErrorType.INSUFFICIENT_RESOURCES
+    return 'SERVER_ERROR'
   }
 
   // HTTP-specific errors
-  if (error.status === 429) return ErrorType.RATE_LIMIT_ERROR
-  if (error.status >= 500) return ErrorType.SERVER_ERROR
+  if (error.status === 429) return 'NETWORK_ERROR'
+  if (error.status >= 500) return 'SERVER_ERROR'
 
   // Catch-all for unspecified errors
-  return ErrorType.UNKNOWN_ERROR
+  return 'UNKNOWN_ERROR'
 }
 
 export interface LogLevels {
@@ -224,7 +192,7 @@ export interface ErrorLogEntry {
   service_name: string
   domain?: string
   error_type?: error_type
-  severity: error_severity
+  severity: ErrorSeverity
   message: string
   stack_trace?: string
   metadata?: Partial<LogMetadata> // Make it optional and partial

@@ -4,7 +4,7 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { PermissionGuard } from '@core/guards/permission.guard'
 import { ErrorMetricService } from '../services/error-metrics.service'
 import { ApiBaseController } from '@core/base/base.controller'
-import type { error_severity, error_type } from '@prisma/client'
+import type { ErrorSeverity, ErrorType } from '@astronera/db'
 
 @ApiBaseController('error-metrics')
 @UseGuards(PermissionGuard)
@@ -17,8 +17,8 @@ export class ErrorMetricController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('service') serviceName?: string,
-    @Query('type') errorType?: error_type,
-    @Query('severity') severity?: error_severity,
+    @Query('type') errorType?: ErrorType,
+    @Query('severity') severity?: ErrorSeverity,
   ) {
     try {
       return await this.metricsService.getErrorFrequency({
@@ -42,7 +42,7 @@ export class ErrorMetricController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('service') serviceName?: string,
-    @Query('type') errorType?: error_type,
+    @Query('type') errorType?: ErrorType,
   ) {
     try {
       return await this.metricsService.getErrorMetrics({
