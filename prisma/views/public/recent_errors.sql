@@ -1,9 +1,0 @@
-SELECT
-  recent_errors.created_at,
-  recent_errors.service_name,
-  recent_errors.error_type,
-  recent_errors.severity,
-  recent_errors.message,
-  recent_errors.metadata
-FROM
-  recent_errors;
