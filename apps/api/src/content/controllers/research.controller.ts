@@ -19,7 +19,7 @@ import { BaseController } from '@core/base/base.controller'
 import { ResearchService } from '../services/research.service'
 
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 
 @Controller('research')
 @ApiTags('Research')

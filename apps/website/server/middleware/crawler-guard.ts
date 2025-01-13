@@ -120,10 +120,8 @@ export default defineEventHandler(async (event) => {
       const patterns = HOSTNAME_PATTERNS[crawlerName]
       const isValidHostname =
         hostnames.length === 0
-          ? // If reverse DNS fails, check IP directly against patterns
-            patterns.some((pattern) => pattern.test(clientIP))
-          : // Otherwise check hostnames as before
-            hostnames.some((hostname) => patterns.some((pattern) => pattern.test(hostname)))
+          ? patterns.some((pattern) => pattern.test(clientIP)) // If reverse DNS fails, check IP directly against patterns
+          : hostnames.some((hostname) => patterns.some((pattern) => pattern.test(hostname))) // Otherwise check hostnames as before
 
       if (!isValidHostname) {
         console.warn(`Hostname verification failed for crawler: ${userAgent} | IP: ${clientIP}`)

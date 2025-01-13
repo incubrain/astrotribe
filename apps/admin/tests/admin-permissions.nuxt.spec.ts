@@ -18,7 +18,7 @@ const crudOperations = {
   useDelete: useDeleteData,
 }
 
-// Generate tests using the test generator from db-testing
+// Generate tests using the test generator from testing
 const allTests = generateTestsFromPermissions(permissionsJson)
 
 // Filter tests for the 'admin' role

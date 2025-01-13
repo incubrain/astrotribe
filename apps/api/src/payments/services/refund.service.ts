@@ -1,6 +1,6 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
@@ -14,7 +14,6 @@ export class RefundService extends BaseService<'customer_refunds'> {
   ) {
     super('customer_refunds')
   }
-
 
   async findWithRelations(id: number): Promise<RefundModel | null> {
     const result = await this.prisma.customer_refunds.findUnique({

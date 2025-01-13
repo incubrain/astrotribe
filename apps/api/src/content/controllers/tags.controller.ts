@@ -18,7 +18,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('tags')
@@ -60,7 +60,7 @@ export class TagController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Tags' })
-  async createTags(@Body() data: Prisma.tagsCreateInput) {
+  async createTags(@Body() data: Prisma.TagsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -70,7 +70,7 @@ export class TagController extends BaseController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update Tags' })
-  async updateTags(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.tagsUpdateInput) {
+  async updateTags(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.TagsUpdateInput) {
     try {
       return await super.update(id, data)
     } catch (error: any) {

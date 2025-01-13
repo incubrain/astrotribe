@@ -229,11 +229,9 @@ export default function usePages() {
     )
 
     const usage = getFeatureUsage('CUSTOM_FEEDS', feeds.length)
+    const shouldShowUpgrade = !usage.isUnlimited && usage.used >= usage.limit
 
-    myFeeds.children =
-      !usage.isUnlimited && usage.used >= usage.limit
-        ? [upgradePlan, ...feeds]
-        : [createFeedItem, ...feeds]
+    myFeeds.children = shouldShowUpgrade ? [upgradePlan, ...feeds] : [createFeedItem, ...feeds]
   }
 
   onMounted(initializeFeeds)

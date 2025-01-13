@@ -1,6 +1,6 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
@@ -18,10 +18,10 @@ export class PaymentService extends BaseService<'customer_payments'> {
   async updatePayment(data) {
     const result = await this.prisma.customer_payments.upsert({
       where: {
-        external_payment_id: data.external_payment_id
+        external_payment_id: data.external_payment_id,
       },
       update: data,
-      create: data
+      create: data,
     })
 
     return result
@@ -29,7 +29,7 @@ export class PaymentService extends BaseService<'customer_payments'> {
 
   async findWithRelations(id: number): Promise<PaymentModel | null> {
     const result = await this.prisma.customer_payments.findUnique({
-      where: { id }
+      where: { id },
     })
     return result ? this.mapToModel(result) : null
   }

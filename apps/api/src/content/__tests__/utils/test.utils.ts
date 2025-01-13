@@ -17,7 +17,7 @@ export const content_type = {
 } as const
 
 // Mock Prisma client
-vi.mock('@prisma/client', () => {
+vi.mock('@astronera/db', () => {
   class PrismaClientKnownRequestError extends Error {
     code: string
     constructor(message: string, { code }: { code: string }) {

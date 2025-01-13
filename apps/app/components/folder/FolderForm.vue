@@ -79,28 +79,29 @@ const emit = defineEmits<{
   (e: 'cancel' | 'delete'): void
 }>()
 
-const formData = ref(
-  props.folder
-    ? {
-        ...props.folder,
-        color: props.folder.color.startsWith('#') ? props.folder.color : `#${props.folder.color}`,
-      }
-    : {
-        name: '',
-        color: '#94A3B8',
-        is_favorite: false,
-        is_default: false,
-      },
-)
+const normalizeColor = (color: string) => (color.startsWith('#') ? color : `#${color}`)
+
+const getInitialFormData = () => {
+  if (props.folder) {
+    return {
+      ...props.folder,
+      color: normalizeColor(props.folder.color),
+    }
+  }
+  return {
+    name: '',
+    color: '#94A3B8',
+    is_favorite: false,
+    is_default: false,
+  }
+}
+
+const formData = ref(getInitialFormData())
 
 const handleSubmit = () => {
-  const color = formData.value.color.startsWith('#')
-    ? formData.value.color
-    : `#${formData.value.color}`
-
   emit('submit', {
     name: formData.value.name,
-    color,
+    color: normalizeColor(formData.value.color),
     is_favorite: formData.value.is_favorite,
     is_default: formData.value.is_default,
   })

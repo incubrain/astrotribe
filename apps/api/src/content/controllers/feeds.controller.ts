@@ -18,7 +18,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 import { FeedsService } from '../services/feeds.service'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('feeds')

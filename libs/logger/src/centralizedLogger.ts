@@ -1,6 +1,7 @@
+import type { ErrorSeverity, ErrorType } from '@astronera/db'
 import type { H3Event } from 'h3'
-import { PrismaClient, error_severity, error_type } from '@prisma/client'
-import { createLogQueue, LogQueue } from '@ib/cache'
+import type { LogQueue } from '@ib/cache'
+import { createLogQueue } from '@ib/cache'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
@@ -161,7 +162,7 @@ export class CentralizedLogger<S extends Service = Service> {
     try {
       await this.logQueue.pushLog({
         service: dbMetadata.service_name,
-        level: dbMetadata.severity as error_severity,
+        level: dbMetadata.severity as ErrorSeverity,
         message: dbMetadata.message,
         metadata: {
           domain: dbMetadata.domain,

@@ -1,5 +1,5 @@
 // src/jobs/versioning/job-version.service.ts
-import { JsonValue } from '@prisma/client/runtime/library'
+import { JsonValue } from '@astronera/db/runtime/library'
 import { CustomLogger, PrismaService } from '@core'
 import { JobConfig } from '@types'
 

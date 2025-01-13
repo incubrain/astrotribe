@@ -4,7 +4,7 @@ import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
 import { ContentModel } from '../models/contents.model'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedQuery } from '@types'
 
 @Injectable()

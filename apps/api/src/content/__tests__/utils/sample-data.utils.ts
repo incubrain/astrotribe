@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
-import { content_type, content_status, priority } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
+import { ContentType, ContentStatus, Priority } from '@astronera/db'
 import { faker } from '@faker-js/faker'
 
 export const createSampleCategory = (): Prisma.categoriesCreateInput => ({
@@ -15,12 +15,12 @@ export const createSampleContentCategory = (): Prisma.content_categoriesCreateIn
 
 export const createSampleContentSource = (): Prisma.content_sourcesCreateInput => ({
   url: faker.internet.url(),
-  content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
+  content_type: faker.helpers.arrayElement([...Object.values(ContentType)]),
   scrape_frequency: faker.helpers.arrayElement(['daily', 'weekly', 'monthly']),
   refreshed_at: faker.date.recent(),
   has_failed: faker.datatype.boolean(),
   failed_count: faker.number.int({ min: 0, max: 10 }),
-  priority: faker.helpers.arrayElement([...Object.values(priority)]),
+  priority: faker.helpers.arrayElement([...Object.values(Priority)]),
   hash: faker.number.int(),
   scraped_at: faker.date.recent(),
   expected_count: faker.number.int({ min: 1, max: 100 }),
@@ -32,10 +32,10 @@ export const createSampleContentSourceVisit = (): Prisma.content_source_visitsCr
   user_profiles: { connect: { id: faker.string.uuid() } },
 })
 
-export const createSampleContentStatus = (): Prisma.content_statusesCreateInput => ({
+export const createSampleContentStatus = (): Prisma.ContentStatusesCreateInput => ({
   contents: { connect: { id: faker.string.uuid() } },
   notes: faker.helpers.arrayElement([faker.lorem.words(3), null]),
-  content_status: faker.helpers.arrayElement([...Object.values(content_status)]),
+  content_status: faker.helpers.arrayElement([...Object.values(ContentStatus)]),
 })
 
 export const createSampleContentTag = (): Prisma.content_tagsCreateInput => ({
@@ -44,7 +44,7 @@ export const createSampleContentTag = (): Prisma.content_tagsCreateInput => ({
 })
 
 export const createSampleContent = (): Prisma.contentsCreateInput => ({
-  content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
+  content_type: faker.helpers.arrayElement([...Object.values(ContentType)]),
   title: faker.helpers.arrayElement([faker.lorem.words(3), null]),
   url: faker.internet.url(),
   rss_url: faker.helpers.arrayElement([faker.internet.url(), null]),

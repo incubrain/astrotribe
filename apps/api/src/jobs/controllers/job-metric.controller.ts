@@ -20,7 +20,7 @@ import { CustomLogger } from '@core/logger/custom.logger'
 import { PermissionGuard } from '@core/guards/permission.guard'
 import { BaseController, ApiBaseController } from '@core/base/base.controller'
 import { JobMetricService } from '../services/job-metric.service'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@astronera/db'
 import { PaginatedQuery } from '@types'
 
 @ApiBaseController('job-metrics')

@@ -1,7 +1,7 @@
 // tools/generators/dto/index.ts
 import { join } from 'path'
 import { Command } from 'commander'
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@astronera/db'
 import { getDMMF } from '@prisma/internals'
 import { DMMF } from '@prisma/generator-helper'
 import { Chalk } from 'chalk'

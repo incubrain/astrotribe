@@ -24,7 +24,7 @@ import { ContentService } from '../services/content.service'
 import { ApiBaseController } from '@core/base/base.controller'
 import { ApiPaginatedResponse, ApiGetByIdResponse } from '@core/decorators/api.decorator'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedQuery, PaginatedResponse } from '@types'
 
 const ContentDto = {}

@@ -1,14 +1,5 @@
 // provider.ejs template
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common'
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
@@ -16,7 +7,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 import { RefundService } from '../services/refund.service'
 
@@ -51,17 +42,14 @@ export class RefundController extends BaseController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get Refunds by id' })
-  async findOneRefund(
-    @Param('id', ParseIntPipe) id: number,
-    @Query('include') include?: string[],
-  ) {
+  async findOneRefund(@Param('id', ParseIntPipe) id: number, @Query('include') include?: string[]) {
     try {
       return await super.findOne(id, include)
     } catch (error: any) {
       return this.handleError(error)
     }
   }
-  
+
   @Post()
   @ApiOperation({ summary: 'Create Refund' })
   async createRefund(@Body() data: Prisma.customer_refundsCreateInput) {
@@ -74,10 +62,7 @@ export class RefundController extends BaseController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update Refund' })
-  async updateRefund(
-    @Param('id') id: string,
-    @Body() data: Prisma.customer_refundsUpdateInput,
-  ) {
+  async updateRefund(@Param('id') id: string, @Body() data: Prisma.customer_refundsUpdateInput) {
     try {
       return await super.update(id, data)
     } catch (error: any) {

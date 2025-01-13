@@ -21,8 +21,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // Initialize once script loads
     script.onload = () => {
       window.formbricks?.init({
-        environmentId: for
-        mbricksEnvironment,
+        environmentId: formbricksEnvironment,
         apiHost: formbricksHost,
       })
       console.log('Formbricks initialized')

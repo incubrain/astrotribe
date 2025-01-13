@@ -1,4 +1,4 @@
-import { error_type, job_status } from '@prisma/client'
+import { ErrorType } from '@astronera/db'
 import { CustomLogger } from './logger.service'
 import { PrismaService } from './prisma.service'
 import { EventService } from './event.service'
@@ -68,7 +68,7 @@ export class MetricsService {
         updated_at: new Date(),
       }
 
-      await this.prisma.job_queue_stats.upsert({
+      await this.prisma.JobQueueStats.upsert({
         where: { queue_name: queueName },
         create: {
           queue_name: queueName,
@@ -86,7 +86,7 @@ export class MetricsService {
 
   // Add method to get historical stats
   async getQueueStatsHistory(queueName: string, hours: number = 24): Promise<any[]> {
-    return this.prisma.job_queue_stats.findMany({
+    return this.prisma.JobQueueStats.findMany({
       where: {
         queue_name: queueName,
         updated_at: {
@@ -109,7 +109,7 @@ export class MetricsService {
           }
         : undefined
 
-      await this.prisma.job_metrics.upsert({
+      await this.prisma.JobMetrics.upsert({
         where: {
           id: metrics.jobId,
           job_name: metrics.jobName,
@@ -149,7 +149,7 @@ export class MetricsService {
   async trackCircuitBreakerChange(jobName: string, metrics: CircuitBreakerMetrics) {
     this.logger.debug(`Tracking circuit breaker change: ${jobName}`, metrics)
     try {
-      await this.prisma.circuit_breaker_states.upsert({
+      await this.prisma.CircuitBreakerStates.upsert({
         where: { job_name: jobName },
         create: {
           job_name: jobName,
@@ -177,7 +177,7 @@ export class MetricsService {
 
   async trackPerformanceMetrics(jobName: string, jobId: string, metrics: any) {
     try {
-      await this.prisma.job_metrics.update({
+      await this.prisma.JobMetrics.update({
         where: {
           id: jobId,
         },
@@ -215,7 +215,7 @@ export class MetricsService {
     }
 
     try {
-      const metrics = await this.prisma.job_metrics.findMany({
+      const metrics = await this.prisma.JobMetrics.findMany({
         where: {
           job_name: jobName,
           started_at: { gte: startDate },
@@ -284,7 +284,7 @@ export class MetricsService {
   }
 
   private async calculateJobDuration(jobId: string): Promise<number> {
-    const metric = await this.prisma.job_metrics.findFirst({
+    const metric = await this.prisma.JobMetrics.findFirst({
       where: { job_id: jobId, status: 'active' },
     })
     return metric ? Date.now() - metric.started_at.getTime() : 0
@@ -293,7 +293,7 @@ export class MetricsService {
   async trackJobStart(jobName: string, jobId: string, metadata?: Record<string, any>) {
     this.logger.debug(`Tracking job start: ${jobName}`, { jobId, metadata })
     try {
-      await this.prisma.job_metrics.create({
+      await this.prisma.JobMetrics.create({
         data: {
           job_id: jobId,
           job_name: jobName,
@@ -327,7 +327,7 @@ export class MetricsService {
   ) {
     this.logger.debug(`Tracking job success: ${jobName}`, { jobId, duration, result })
     try {
-      await this.prisma.job_metrics.updateMany({
+      await this.prisma.JobMetrics.updateMany({
         where: {
           job_name: jobName,
           job_id: jobId,
@@ -363,7 +363,7 @@ export class MetricsService {
   ) {
     this.logger.debug(`Tracking job failure: ${jobName}`, { jobId, duration, error, metadata })
     try {
-      await this.prisma.job_metrics.updateMany({
+      await this.prisma.JobMetrics.updateMany({
         where: {
           job_name: jobName,
           job_id: jobId,
@@ -418,7 +418,7 @@ export class MetricsService {
       await this.prisma.error_logs.create({
         data: {
           service_name: 'jobs',
-          error_type: error_type.DATABASE_ERROR,
+          error_type: ErrorType.DATABASE_ERROR,
           severity: 'high',
           message: `${message}: ${error.message}`,
           stack_trace: error.stack,

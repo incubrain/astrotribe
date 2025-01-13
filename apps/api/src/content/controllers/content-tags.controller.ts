@@ -18,7 +18,7 @@ import { BaseController } from '@core/base/base.controller'
 import { ConfigService } from '@nestjs/config'
 import { ContentTagsService } from '../services/content-tags.service'
 
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('content-tags')

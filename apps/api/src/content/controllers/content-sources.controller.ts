@@ -18,7 +18,7 @@ import { BaseController } from '@core/base/base.controller'
 import { ConfigService } from '@nestjs/config'
 import { ContentSourcesService } from '../services/content-sources.service'
 
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('content-sources')

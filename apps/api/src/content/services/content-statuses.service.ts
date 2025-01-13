@@ -4,7 +4,7 @@ import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
 import { ContentStatusesModel } from '../models/content-statuses.model'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 
 @Injectable()
 export class ContentStatusesService extends BaseService<'content_statuses'> {

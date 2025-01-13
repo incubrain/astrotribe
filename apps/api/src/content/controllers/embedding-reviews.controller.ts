@@ -19,7 +19,7 @@ import { BaseController } from '@core/base/base.controller'
 import { EmbeddingReviewsService } from '../services/embedding-reviews.service'
 
 import type { PaginatedResponse, PaginatedQuery } from '@types'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 
 @Controller('embedding-reviews')
 @ApiTags('EmbeddingReviews')

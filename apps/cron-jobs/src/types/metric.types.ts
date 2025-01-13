@@ -1,4 +1,4 @@
-import { error_type, job_status } from '@prisma/client'
+import { error_type, job_status } from '@astronera/db'
 
 // types/metrics.types.ts
 export interface JobMetrics {

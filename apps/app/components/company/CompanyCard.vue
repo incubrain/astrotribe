@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps({
   company: {
-    type: Object as () => {},
+    type: Object as () => Record<string, any>,
     required: true,
   },
 })

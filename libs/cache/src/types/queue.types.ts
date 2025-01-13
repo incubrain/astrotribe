@@ -1,9 +1,9 @@
-import type { error_severity } from '@prisma/client'
+import type { ErrorSeverity } from '@astronera/db'
 import type { CacheOptions } from './manager.types'
 
 export interface LogEntry {
   service: string
-  level: error_severity
+  level: ErrorSeverity
   message: string
   metadata?: Record<string, any>
   timestamp: number

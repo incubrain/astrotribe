@@ -6,25 +6,19 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/rollup:rollup",
-      "outputs": ["{workspaceRoot}/libs/cache/dist"],
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "main": "libs/cache/src/index.ts",
         "outputPath": "libs/cache/dist",
+        "main": "libs/cache/src/index.ts",
         "tsConfig": "libs/cache/tsconfig.json",
-        "project": "libs/cache/package.json",
-        "format": ["esm"],
-        "generateExportsField": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "compiler": "tsc",
         "assets": [
           {
             "glob": "*.md",
             "input": "libs/cache",
             "output": "."
           }
-        ],
-        "external": ["ioredis", "ms", "@astronera/db"]
+        ]
       },
       "dependsOn": [
         {
@@ -32,6 +26,13 @@
           "projects": ["@astronera/db"]
         }
       ]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/cache/**/*.{ts,tsx,js,jsx}", "libs/cache/package.json"]
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { faker } from '@faker-js/faker'
-import type { Prisma } from '@prisma/client'
-import { content_type } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
+import { ContentType } from '@astronera/db'
 import { ContentController } from '../controllers/contents.controller'
 import { ContentService } from '../services/contents.service'
 import { PrismaService } from '../../core/services/prisma.service'
@@ -30,7 +30,7 @@ const mockPermissionGuard = {
 }
 
 const createSampleContent = (): Prisma.contentsCreateInput => ({
-  content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
+  content_type: faker.helpers.arrayElement([...Object.values(ContentType)]),
   title: faker.helpers.arrayElement([faker.lorem.words(3), null]),
   url: faker.internet.url(),
   rss_url: faker.helpers.arrayElement([faker.internet.url(), null]),
@@ -156,7 +156,7 @@ describe('ContentController', () => {
     it('should update a content', async () => {
       const id = faker.string.uuid()
       const updateData: Prisma.contentsUpdateInput = {
-        content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
+        content_type: faker.helpers.arrayElement([...Object.values(ContentType)]),
         title: faker.lorem.words(3),
         url: faker.internet.url(),
         rss_url: faker.internet.url(),
@@ -184,7 +184,7 @@ describe('ContentController', () => {
     it('should handle errors', async () => {
       const id = faker.string.uuid()
       const updateData: Prisma.contentsUpdateInput = {
-        content_type: faker.helpers.arrayElement([...Object.values(content_type)]),
+        content_type: faker.helpers.arrayElement([...Object.values(ContentType)]),
       }
       const error = new Error('Update failed')
       mockPrismaModel.update.mockRejectedValue(error)

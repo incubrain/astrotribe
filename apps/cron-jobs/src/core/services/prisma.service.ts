@@ -1,5 +1,5 @@
 // src/core/services/prisma.service.ts
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient } from '@astronera/db'
 import { config } from '../../config'
 import { CustomLogger } from './logger.service'
 

@@ -1,6 +1,6 @@
 // templates/service/service.ejs
 import { Injectable } from '@nestjs/common'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
@@ -17,7 +17,7 @@ export class ProviderService extends BaseService<'payment_providers'> {
 
   async findWithRelations(id: number): Promise<ProviderModel | null> {
     const result = await this.prisma.payment_providers.findUnique({
-      where: { id }
+      where: { id },
     })
     return result ? this.mapToModel(result) : null
   }

@@ -3,7 +3,7 @@ import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { faker } from '@faker-js/faker'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@astronera/db'
 import { FeedsService } from '../services/feeds.service'
 import { FeedController } from '../controllers/feeds.controller'
 import {

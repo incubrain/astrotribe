@@ -1,6 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { content_status } from '@prisma/client'
+import type { content_status } from '@astronera/db'
 import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
