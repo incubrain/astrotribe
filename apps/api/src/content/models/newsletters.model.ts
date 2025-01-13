@@ -1,6 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { content_status } from '@prisma/client'
+import type { ContentStatus } from '@astronera/db'
 import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
@@ -13,6 +13,6 @@ export interface NewsletterModel extends BaseModel {
   generated_content?: string
   created_at?: Date
   updated_at?: Date
-  content_status: content_status
+  content_status: ContentStatus
   contents: ContentModel
 }
