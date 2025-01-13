@@ -1,0 +1,41 @@
+{
+  "name": "@astronera/db",
+  "private": true,
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "update": "pnpx tsx ./src/prisma/update-prisma.ts",
+    "generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "build": "pnpm generate && tsc",
+    "clean": "rm -rf dist generated"
+  },
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./generated/client": {
+        "types": "./dist/generated/client/index.d.ts",
+        "import": "./dist/generated/client/index.js",
+        "require": "./dist/generated/client/index.js"
+      }
+    },
+  "dependencies": {
+    "@nestjs/swagger": "^8.1.1",
+    "@prisma/client": "^6.2.1"
+  },
+  "devDependencies": {
+    "decimal.js": "^10.4.3",
+    "prisma": "^6.2.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "zod-prisma-types": "^3.2.1",
+    "vite": "^6.0.7",
+    "vite-plugin-dts": "^3.7.0"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  }
+}

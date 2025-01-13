@@ -1,9 +1,0 @@
-SELECT
-  slow_query_patterns.query_id,
-  slow_query_patterns.occurrence_count,
-  slow_query_patterns.avg_exec_time,
-  slow_query_patterns.max_exec_time,
-  slow_query_patterns.first_seen,
-  slow_query_patterns.last_seen
-FROM
-  slow_query_patterns;

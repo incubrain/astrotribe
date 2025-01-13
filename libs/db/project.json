@@ -1,0 +1,44 @@
+{
+  "name": "@astronera/db",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/db",
+  "sourceRoot": "libs/db/src",
+  "projectType": "library",
+  "targets": {
+    "generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["prisma generate --schema=./src/prisma/schema.prisma"],
+        "cwd": "libs/db"
+      }
+    },
+    "targets": {
+      "build": {
+        "executor": "@nx/vite:build",
+        "outputs": ["{options.outputPath}"],
+        "options": {
+          "outputPath": "dist/libs/db",
+          "main": "libs/db/src/index.ts",
+          "tsConfig": "libs/db/tsconfig.json",
+          "generatePackageJson": true,
+          "includeDevDependenciesInPackageJson": false,
+          "assets": [
+            {
+              "glob": "**/*",
+              "input": "libs/db/src/generated",
+              "output": "generated"
+            }
+          ]
+        },
+        "dependsOn": ["generate"]
+      }
+    },
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "rm -rf dist generated",
+        "cwd": "libs/db"
+      }
+    }
+  }
+}
