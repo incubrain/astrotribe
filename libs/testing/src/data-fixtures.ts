@@ -1,4 +1,4 @@
-// db-testing/src/data-fixtures.ts
+// testing/src/data-fixtures.ts
 
 import type { InboundTableSchema, OutboundTableSchema } from './schemas'
 

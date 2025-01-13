@@ -1,4 +1,4 @@
-// libs/db-testing/src/types.ts
+// libs/testing/src/types.ts
 import type { Store } from 'pinia'
 import type { InboundTableSchema } from './schemas'
 

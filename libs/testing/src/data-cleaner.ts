@@ -1,4 +1,4 @@
-// src/db-testing/data-cleanup.ts
+// src/testing/data-cleanup.ts
 import type { Pool } from 'pg'
 
 export async function cleanUpTestData(pool: Pool) {

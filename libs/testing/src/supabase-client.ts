@@ -1,4 +1,4 @@
-// db-testing/src/supabaseClient.ts
+// testing/src/supabaseClient.ts
 import path from 'path'
 import { createClient } from '@supabase/supabase-js'
 import { config } from 'dotenv'
