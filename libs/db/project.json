@@ -17,12 +17,36 @@
       "options": {
         "command": "tsc --emitDeclarationOnly",
         "cwd": "libs/db"
-      }
+      },
+      "dependsOn": ["generate"]
     },
     "copy-prisma": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["mkdir -p dist/generated", "cp -r src/generated/client dist/generated/"],
+        "cwd": "libs/db"
+      },
+      "dependsOn": ["generate", "types"]
+    },
+
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "echo '🧹 Starting cleanup of generated files...'",
+          "mkdir -p .tmp_prisma",
+          "cp src/generated/client/index.d.ts .tmp_prisma/ 2>/dev/null || true",
+          "cp src/generated/client/schema.prisma .tmp_prisma/ 2>/dev/null || true",
+          "cp src/generated/client/package.json .tmp_prisma/ 2>/dev/null || true",
+          "rm -rf src/generated",
+          "mkdir -p src/generated/client",
+          "cp .tmp_prisma/* src/generated/client/ 2>/dev/null || true",
+          "rm -rf .tmp_prisma",
+          "echo '✨ Cleanup complete'"
+        ],
+        "dependsOn": ["generate", "types", "copy-prisma"],
+        "parallel": false,
+        "parallelism": false,
         "cwd": "libs/db"
       }
     },
@@ -32,7 +56,7 @@
       "options": {
         "outputPath": "libs/db/dist"
       },
-      "dependsOn": ["generate", "types", "copy-prisma"]
+      "dependsOn": ["clean"]
     }
   }
 }

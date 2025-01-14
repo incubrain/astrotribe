@@ -1,0 +1,7 @@
+# Ignore all generated files
+src/generated/client/*
+
+# But keep these files
+!src/generated/client/index.d.ts
+!src/generated/client/schema.prisma
+!src/generated/client/package.json
