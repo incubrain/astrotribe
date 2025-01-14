@@ -21,11 +21,13 @@
     "test": "vitest run",
     "dev": "tsc -w",
     "clean": "rm -rf dist",
-    "build": "tsc"
+    "build": "vite build"
   },
   "dependencies": {
     "@ib/cache": "workspace:*",
-    "winston": "^3.14.2",
+    "@astronera/db": "workspace:*",
+    "winston": "^3.17.0",
+    "winston-transport": "^4.9.0",
     "h3": "^1.8.2"
   },
   "devDependencies": {

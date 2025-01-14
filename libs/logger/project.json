@@ -1,6 +1,6 @@
 {
   "name": "@ib/logger",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "root": "libs/logger",
   "sourceRoot": "libs/logger/src",
   "projectType": "library",
@@ -9,30 +9,14 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/logger/dist",
-        "main": "libs/logger/src/index.ts",
-        "tsConfig": "libs/logger/tsconfig.json",
-        "assets": [
-          {
-            "glob": "*.md",
-            "input": "libs/logger",
-            "output": "."
-          }
-        ]
+        "outputPath": "libs/logger/dist"
       },
       "dependsOn": [
         {
           "target": "build",
-          "projects": ["@ib/cache"]
+          "projects": ["@astronera/db", "@ib/cache"]
         }
       ]
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/logger/**/*.{ts,tsx,js,jsx}", "libs/logger/package.json"]
-      }
     }
   }
 }

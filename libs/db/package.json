@@ -2,26 +2,29 @@
   "name": "@astronera/db",
   "private": true,
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./generated/client": {
+      "types": "./dist/generated/client/index.d.ts",
+      "import": "./dist/generated/client/index.js",
+      "require": "./dist/generated/client/index.js"
+    }
+  },
   "scripts": {
-    "update": "pnpx tsx ./src/prisma/update-prisma.ts",
     "generate": "prisma generate --schema=src/prisma/schema.prisma",
-    "build": "pnpm generate && tsc",
+    "update": "pnpx tsx ./src/prisma/update-prisma.ts",
+    "types": "tsc --emitDeclarationOnly",
+    "build": "pnpm generate && pnpm types && mkdir -p dist/generated && cp -r src/generated/client dist/generated/ && vite build",
     "clean": "rm -rf dist generated"
   },
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.js"
-      },
-      "./generated/client": {
-        "types": "./dist/generated/client/index.d.ts",
-        "import": "./dist/generated/client/index.js",
-        "require": "./dist/generated/client/index.js"
-      }
-    },
   "dependencies": {
     "@nestjs/swagger": "^8.1.1",
     "@prisma/client": "^6.2.1"

@@ -20,7 +20,7 @@
     "test": "vitest run",
     "dev": "tsc -w",
     "clean": "rm -rf dist",
-    "build": "tsc && node build.js"
+    "build": "vite build"
   },
   "dependencies": {
     "@astronera/db": "workspace:*",
@@ -31,6 +31,8 @@
     "@types/ms": "^0.7.34",
     "@types/node": "^20.10.5",
     "esbuild": "^0.20.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^6.0.7",
+    "vite-plugin-dts": "^3.7.0"
   }
 }

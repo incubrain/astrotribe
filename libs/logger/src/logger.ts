@@ -1,5 +1,23 @@
 // logger.ts
 import type { Logger as WinstonLogger } from 'winston'
+import type { TransportStreamOptions } from 'winston-transport'
+
+interface LogMessage {
+  message: string
+  [key: string]: any
+}
+
+// Extend TransportStreamOptions for FileTransportOptions
+interface FileTransportOptions extends TransportStreamOptions {
+  filename: string
+  maxsize?: number
+  maxFiles?: number
+  tailable?: boolean
+  maxRetries?: number
+  zippedArchive?: boolean
+  level?: string
+  format?: any // Winston format type is complex, using any for now
+}
 
 // Logging levels
 export enum Level {
@@ -38,10 +56,10 @@ export class NodeWinstonTransport implements LogTransport {
 
     try {
       const w = await import('winston')
-      const winston = w ?? w
+      const winston = w.default ?? w
 
       const format = winston.format.combine(
-        winston.format.printf(({ message }) => String(message ?? 'Message undefined')),
+        winston.format.printf((info: LogMessage) => String(info.message ?? 'Message undefined')),
       )
 
       this.logger = winston.createLogger({
@@ -52,28 +70,27 @@ export class NodeWinstonTransport implements LogTransport {
 
       if (!this.isDev) {
         // Add file transports in production
-        this.logger.add(
-          new winston.transports.File({
-            filename: './logs/error.log',
-            level: 'error',
-            format: winston.format.combine(
-              winston.format.timestamp(),
-              winston.format.uncolorize(),
-              winston.format.json(),
-            ),
-          }),
-        )
+        const errorTransport = new winston.transports.File({
+          filename: './logs/error.log',
+          level: 'error',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.uncolorize(),
+            winston.format.json(),
+          ),
+        } as FileTransportOptions)
 
-        this.logger.add(
-          new winston.transports.File({
-            filename: './logs/combined.log',
-            format: winston.format.combine(
-              winston.format.timestamp(),
-              winston.format.uncolorize(),
-              winston.format.json(),
-            ),
-          }),
-        )
+        const combinedTransport = new winston.transports.File({
+          filename: './logs/combined.log',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.uncolorize(),
+            winston.format.json(),
+          ),
+        } as FileTransportOptions)
+
+        this.logger.add(errorTransport)
+        this.logger.add(combinedTransport)
       }
 
       this.initialized = true
@@ -85,13 +102,12 @@ export class NodeWinstonTransport implements LogTransport {
       }
     } catch (error) {
       console.error('Failed to initialize Winston logger:', error)
-      throw error // Instead of falling back to console, fail explicitly
+      throw error
     }
   }
 
   async log(level: Level, message: string) {
     if (typeof process === 'undefined' || process.env.CLIENT_SIDE) {
-      // In client-side context, just use console
       console.error('Logger not initialized', message)
       return
     }
@@ -101,7 +117,6 @@ export class NodeWinstonTransport implements LogTransport {
     }
 
     if (!this.initialized || !this.logger) {
-      // Queue the message if not initialized
       this.messageQueue.push({ level, message })
       return
     }

@@ -12,36 +12,27 @@
         "cwd": "libs/db"
       }
     },
+    "types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --emitDeclarationOnly",
+        "cwd": "libs/db"
+      }
+    },
+    "copy-prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["mkdir -p dist/generated", "cp -r src/generated/client dist/generated/"],
+        "cwd": "libs/db"
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/db/dist",
-        "configFile": "libs/db/vite.config.ts",
-        "includeDevDependenciesInPackageJson": false,
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "libs/db/src/generated",
-            "output": "generated"
-          }
-        ]
+        "outputPath": "libs/db/dist"
       },
-      "dependsOn": ["generate"]
-    },
-    "clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "rm -rf dist generated",
-        "cwd": "libs/db"
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/db/**/*.{ts,tsx,js,jsx}", "libs/db/package.json"]
-      }
+      "dependsOn": ["generate", "types", "copy-prisma"]
     }
   }
 }
