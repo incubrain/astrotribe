@@ -30,8 +30,9 @@
     { "path": "layers/logging" },
 
     // Shared Libraries
-  { "path": "libs/logger" },
+    { "path": "libs/logger" },
     { "path": "libs/cache" },
+    { "path": "libs/db" },
     { "path": "libs/core" },
     { "path": "libs/testing" }
   ],

@@ -1,50 +1,32 @@
+// vite.config.ts for @astronera/db
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 
-const root = resolve(__dirname)
-const srcDir = resolve(root, 'src')
-const outDir = resolve(root, 'dist')
-
-console.log('root', root, 'srcDir', srcDir, 'outDir', outDir)
-
 export default defineConfig({
-  root: root, // Explicitly set root
-  base: '', // Empty base for library
   build: {
+    sourcemap: true,
     lib: {
-      entry: resolve(srcDir, 'index.ts'),
+      entry: resolve(__dirname, 'src/index.ts'),
       name: '@astronera/db',
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['@prisma/client'],
+      external: ['@prisma/client', './generated/client', './generated/client/index-browser'],
       output: {
-        dir: outDir,
-        sourcemap: true,
         preserveModules: true,
+        exports: 'named',
+        dir: 'dist',
       },
     },
-    outDir: outDir,
-    emptyOutDir: true,
+    outDir: 'dist',
+    emptyOutDir: false,
   },
-  plugins: [
-    dts({
-      rollupTypes: true,
-      tsconfigPath: resolve(root, 'tsconfig.json'),
-      compilerOptions: {
-        baseUrl: root,
-        outDir: outDir,
-        emitDeclarationOnly: true,
-        declaration: true,
-        declarationMap: true,
-      },
-    }),
-  ],
   resolve: {
     alias: {
-      '@': srcDir,
+      './generated/client': resolve(__dirname, 'src/generated/client'),
+      '@prisma/client': '@prisma/client',
     },
   },
 })

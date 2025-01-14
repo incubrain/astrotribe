@@ -6,19 +6,16 @@
     "module": "ESNext",
     "target": "ES2022",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
     "baseUrl": ".",
     "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "bundler", // Changed to bundler for Vite
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "paths": {
-      "@ib/cache": ["../cache/src", "../db/src"] // More specific path mapping
-    }
+    "preserveSymlinks": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
-  "references": [{ "path": "../cache" }, { "path": "../db" }]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }

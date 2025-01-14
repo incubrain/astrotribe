@@ -1,4 +1,4 @@
-import type { ErrorSeverity, ErrorType } from '@astronera/db'
+import type { ErrorSeverity, ErrorType, PrismaClient } from '@astronera/db'
 import type { H3Event } from 'h3'
 import type { LogQueue } from '@ib/cache'
 import { createLogQueue } from '@ib/cache'

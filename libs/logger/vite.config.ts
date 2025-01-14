@@ -1,33 +1,26 @@
-import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: '@ib/logger',
-      fileName: 'index',
+      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['@ib/cache', '@astronera/db', 'ioredis', 'winston', 'h3'],
+      external: ['@ib/cache', '@astronera/db', 'winston', 'h3', 'ioredis', /node_modules/],
       output: {
         preserveModules: true,
         exports: 'named',
-        // Ensure proper file extensions
-        entryFileNames: ({ format }) => `[name]${format === 'es' ? '.js' : '.cjs'}`,
+        dir: 'dist',
       },
     },
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: true,
   },
-  plugins: [
-    dts({
-      include: ['src/**/*.ts'],
-      exclude: ['**/*.test.ts', 'src/**/*.spec.ts'],
-      rollupTypes: true,
-    }),
-  ],
+  resolve: {
+    dedupe: ['@ib/cache', '@astronera/db'],
+  },
 })
