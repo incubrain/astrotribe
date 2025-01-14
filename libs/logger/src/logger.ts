@@ -2,11 +2,6 @@
 import type { Logger as WinstonLogger } from 'winston'
 import type { TransportStreamOptions } from 'winston-transport'
 
-interface LogMessage {
-  message: string
-  [key: string]: any
-}
-
 // Extend TransportStreamOptions for FileTransportOptions
 interface FileTransportOptions extends TransportStreamOptions {
   filename: string
@@ -59,7 +54,7 @@ export class NodeWinstonTransport implements LogTransport {
       const winston = w.default ?? w
 
       const format = winston.format.combine(
-        winston.format.printf((info: LogMessage) => String(info.message ?? 'Message undefined')),
+        winston.format.printf((info) => String(info.message ?? 'Message undefined')),
       )
 
       this.logger = winston.createLogger({

@@ -5,6 +5,13 @@
   "sourceRoot": "libs/logger/src",
   "projectType": "library",
   "targets": {
+    "types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --emitDeclarationOnly",
+        "cwd": "libs/logger"
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
@@ -12,6 +19,10 @@
         "outputPath": "libs/logger/dist"
       },
       "dependsOn": [
+        {
+          "target": "types",
+          "projects": "self"
+        },
         {
           "target": "build",
           "projects": ["@astronera/db", "@ib/cache"]
