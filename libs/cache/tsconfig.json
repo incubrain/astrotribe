@@ -16,6 +16,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
-  "references": [{ "path": "../db" }]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
