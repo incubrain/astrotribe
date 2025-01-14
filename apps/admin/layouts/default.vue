@@ -116,6 +116,12 @@ const adminLinks = ref([
         slug: '/add-content-source',
         icon: 'mdi:plus-thick',
       },
+      {
+        id: 82,
+        label: 'Plans',
+        slug: '/plans',
+        icon: 'mdi:subscriptions',
+      },
     ],
   },
 ])

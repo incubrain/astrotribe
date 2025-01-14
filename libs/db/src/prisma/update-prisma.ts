@@ -3,6 +3,12 @@ import fs from 'fs/promises'
 import path from 'path'
 import dotenv from 'dotenv'
 
+import { fileURLToPath } from 'url'
+
+// Get __dirname equivalent
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 const SCHEMA_PATH = path.join(__dirname, 'schema.prisma')
 dotenv.config({ path: path.join(__dirname, '../../../../../.env') })
 
