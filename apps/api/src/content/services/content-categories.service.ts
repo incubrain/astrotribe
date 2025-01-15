@@ -7,16 +7,16 @@ import { BaseService } from '@core/base/base.service'
 import type { ContentCategoryModel } from '../models/content-categories.model'
 
 @Injectable()
-export class ContentCategoriesService extends BaseService<'content_categories'> {
+export class ContentCategoriesService extends BaseService<'ContentCategories'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('content_categories')
+    super('ContentCategories')
   }
 
   async findWithRelations(id: string, categoryId: number): Promise<ContentCategoryModel | null> {
-    const result = await this.prisma.content_categories.findUnique({
+    const result = await this.prisma.contentCategories.findUnique({
       where: {
         content_id_category_id: {
           content_id: id,
@@ -31,16 +31,16 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.content_categoriesDefaultArgs): Promise<ContentCategoryModel[]> {
-    const items = await this.prisma.content_categories.findMany(params)
+  async findMany(params: Prisma.ContentCategoriesDefaultArgs): Promise<ContentCategoryModel[]> {
+    const items = await this.prisma.contentCategories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllContentCategories(
-    query: Prisma.content_categoriesFindManyArgs,
+    query: Prisma.ContentCategoriesFindManyArgs,
   ): Promise<{ items: ContentCategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.content_categories.findMany({
+      this.prisma.contentCategories.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
@@ -52,7 +52,7 @@ export class ContentCategoriesService extends BaseService<'content_categories'> 
           contents: true,
         },
       }),
-      this.prisma.content_categories.count({ where: query.where }),
+      this.prisma.contentCategories.count({ where: query.where }),
     ])
 
     return {

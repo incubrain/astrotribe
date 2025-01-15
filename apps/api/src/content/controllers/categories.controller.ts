@@ -32,7 +32,7 @@ export class CategoryController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('categories')
+    super('Categories')
   }
 
   @Get()
@@ -43,10 +43,10 @@ export class CategoryController extends BaseController {
     PaginatedResponse<unknown> | { success: boolean; error: any; timestamp: string; code: any }
   > {
     try {
-      this.logger.log('Fetching all categories')
+      this.logger.log('Fetching all Categories')
       return super.findAll(query)
     } catch (error: any) {
-      this.logger.error('Failed to fetch categories', error.stack)
+      this.logger.error('Failed to fetch Categories', error.stack)
       throw error
     }
   }
@@ -66,7 +66,7 @@ export class CategoryController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Categories' })
-  async createCategories(@Body() data: Prisma.categoriesCreateInput) {
+  async createCategories(@Body() data: Prisma.CategoriesCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -78,7 +78,7 @@ export class CategoryController extends BaseController {
   @ApiOperation({ summary: 'Update Categories' })
   async updateCategories(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.categoriesUpdateInput,
+    @Body() data: Prisma.CategoriesUpdateInput,
   ) {
     try {
       return await super.update(id, data)

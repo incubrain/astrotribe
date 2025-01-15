@@ -31,7 +31,7 @@ export class ContentTagController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('content_tags')
+    super('ContentTags')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class ContentTagController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create ContentTags' })
-  async createContentTags(@Body() data: Prisma.content_tagsCreateInput) {
+  async createContentTags(@Body() data: Prisma.ContentTagsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class ContentTagController extends BaseController {
   @ApiOperation({ summary: 'Update ContentTags' })
   async updateContentTags(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.content_tagsUpdateInput,
+    @Body() data: Prisma.ContentTagsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

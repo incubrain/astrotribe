@@ -6,16 +6,16 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { FeedCategoryModel } from '../models/feed-categories.model'
 
 @Injectable()
-export class FeedCategoriesService extends BaseService<'feed_categories'> {
+export class FeedCategoriesService extends BaseService<'FeedCategories'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('feed_categories')
+    super('FeedCategories')
   }
 
   async findWithRelations(id: number): Promise<FeedCategoryModel | null> {
-    const result = await this.prisma.feed_categories.findUnique({
+    const result = await this.prisma.feedCategories.findUnique({
       where: { id },
       include: {
         categories: true,
@@ -25,22 +25,22 @@ export class FeedCategoriesService extends BaseService<'feed_categories'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.feed_categoriesDefaultArgs): Promise<FeedCategoryModel[]> {
-    const items = await this.prisma.feed_categories.findMany(params)
+  async findMany(params: Prisma.FeedCategoriesDefaultArgs): Promise<FeedCategoryModel[]> {
+    const items = await this.prisma.feedCategories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllFeedCategories(
-    query: Prisma.feed_categoriesFindManyArgs,
+    query: Prisma.FeedCategoriesFindManyArgs,
   ): Promise<{ items: FeedCategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.feed_categories.findMany({
+      this.prisma.feedCategories.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.feed_categories.count({ where: query.where }),
+      this.prisma.feedCategories.count({ where: query.where }),
     ])
 
     return {

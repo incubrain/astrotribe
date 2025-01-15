@@ -21,7 +21,7 @@ export class PlanController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('customer_subscription_plans')
+    super('CustomerSubscriptionPlans')
   }
 
   @Get()

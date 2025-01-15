@@ -21,7 +21,7 @@ export class ProviderController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('payment_providers')
+    super('PaymentProviders')
   }
 
   @Get()

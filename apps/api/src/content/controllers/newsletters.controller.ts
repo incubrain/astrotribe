@@ -31,7 +31,7 @@ export class NewsletterController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('newsletters')
+    super('Newsletters')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class NewsletterController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Newsletters' })
-  async createNewsletters(@Body() data: Prisma.newslettersCreateInput) {
+  async createNewsletters(@Body() data: Prisma.NewslettersCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class NewsletterController extends BaseController {
   @ApiOperation({ summary: 'Update Newsletters' })
   async updateNewsletters(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.newslettersUpdateInput,
+    @Body() data: Prisma.NewslettersUpdateInput,
   ) {
     try {
       return await super.update(id, data)
