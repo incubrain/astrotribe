@@ -31,7 +31,7 @@ export class ResearchEmbeddingController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('research_embeddings')
+    super('ResearchEmbeddings')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class ResearchEmbeddingController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create ResearchEmbeddings' })
-  async createResearchEmbeddings(@Body() data: Prisma.research_embeddingsCreateInput) {
+  async createResearchEmbeddings(@Body() data: Prisma.ResearchEmbeddingsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class ResearchEmbeddingController extends BaseController {
   @ApiOperation({ summary: 'Update ResearchEmbeddings' })
   async updateResearchEmbeddings(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.research_embeddingsUpdateInput,
+    @Body() data: Prisma.ResearchEmbeddingsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

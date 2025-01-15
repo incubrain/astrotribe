@@ -7,12 +7,12 @@ import { PrismaService } from '@core/services/prisma.service'
 import { ResearchModel } from '../models/research.model'
 
 @Injectable()
-export class ResearchService extends BaseService<'research'> {
+export class ResearchService extends BaseService<'Research'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('research')
+    super('Research')
   }
 
   async findWithRelations(id: string): Promise<ResearchModel | null> {
@@ -26,13 +26,13 @@ export class ResearchService extends BaseService<'research'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.researchDefaultArgs): Promise<ResearchModel[]> {
+  async findMany(params: Prisma.ResearchDefaultArgs): Promise<ResearchModel[]> {
     const items = await this.prisma.research.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllResearch(
-    query: Prisma.researchFindManyArgs,
+    query: Prisma.ResearchFindManyArgs,
   ): Promise<{ items: ResearchModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.research.findMany({

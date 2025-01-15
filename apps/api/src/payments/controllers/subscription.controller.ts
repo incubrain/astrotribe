@@ -21,7 +21,7 @@ export class SubscriptionController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('customer_subscriptions')
+    super('CustomerSubscriptions')
   }
 
   @Get()
@@ -55,7 +55,7 @@ export class SubscriptionController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Subscription' })
-  async createSubscription(@Body() data: Prisma.customer_subscriptionsCreateInput) {
+  async createSubscription(@Body() data: Prisma.CustomerSubscriptionsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -67,7 +67,7 @@ export class SubscriptionController extends BaseController {
   @ApiOperation({ summary: 'Update Subscription' })
   async updateSubscription(
     @Param('id', ParseIntPipe) id: string,
-    @Body() data: Prisma.customer_subscriptionsUpdateInput,
+    @Body() data: Prisma.CustomerSubscriptionsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

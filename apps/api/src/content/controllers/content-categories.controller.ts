@@ -31,7 +31,7 @@ export class ContentCategoryController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('content_categories')
+    super('ContentCategories')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class ContentCategoryController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create ContentCategories' })
-  async createContentCategories(@Body() data: Prisma.content_categoriesCreateInput) {
+  async createContentCategories(@Body() data: Prisma.ContentCategoriesCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class ContentCategoryController extends BaseController {
   @ApiOperation({ summary: 'Update ContentCategories' })
   async updateContentCategories(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.content_categoriesUpdateInput,
+    @Body() data: Prisma.ContentCategoriesUpdateInput,
   ) {
     try {
       return await super.update(id, data)

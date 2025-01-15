@@ -21,7 +21,7 @@ export class RefundController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('customer_refunds')
+    super('CustomerRefunds')
   }
 
   @Get()
@@ -42,7 +42,7 @@ export class RefundController extends BaseController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Get Refunds by id' })
-  async findOneRefund(@Param('id', ParseIntPipe) id: number, @Query('include') include?: string[]) {
+  async findOneRefund(@Param('id', ParseIntPipe) id: string, @Query('include') include?: string[]) {
     try {
       return await super.findOne(id, include)
     } catch (error: any) {
@@ -52,7 +52,7 @@ export class RefundController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Refund' })
-  async createRefund(@Body() data: Prisma.customer_refundsCreateInput) {
+  async createRefund(@Body() data: Prisma.CustomerRefundsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -62,7 +62,7 @@ export class RefundController extends BaseController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update Refund' })
-  async updateRefund(@Param('id') id: string, @Body() data: Prisma.customer_refundsUpdateInput) {
+  async updateRefund(@Param('id') id: string, @Body() data: Prisma.CustomerRefundsUpdateInput) {
     try {
       return await super.update(id, data)
     } catch (error: any) {

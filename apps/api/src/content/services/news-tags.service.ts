@@ -7,16 +7,16 @@ import { PrismaService } from '@core/services/prisma.service'
 import { NewsTagModel } from '../models/news-tags.model'
 
 @Injectable()
-export class NewsTagsService extends BaseService<'news_tags'> {
+export class NewsTagsService extends BaseService<'NewsTags'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('news_tags')
+    super('NewsTags')
   }
 
   async findWithRelations(id: number): Promise<NewsTagModel | null> {
-    const result = await this.prisma.news_tags.findUnique({
+    const result = await this.prisma.newsTags.findUnique({
       where: { id },
       include: {
         tags: true,
@@ -25,22 +25,22 @@ export class NewsTagsService extends BaseService<'news_tags'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.news_tagsDefaultArgs): Promise<NewsTagModel[]> {
-    const items = await this.prisma.news_tags.findMany(params)
+  async findMany(params: Prisma.NewsTagsDefaultArgs): Promise<NewsTagModel[]> {
+    const items = await this.prisma.newsTags.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllNewsTags(
-    query: Prisma.news_tagsFindManyArgs,
+    query: Prisma.NewsTagsFindManyArgs,
   ): Promise<{ items: NewsTagModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.news_tags.findMany({
+      this.prisma.newsTags.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.news_tags.count({ where: query.where }),
+      this.prisma.newsTags.count({ where: query.where }),
     ])
 
     return {

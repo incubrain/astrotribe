@@ -7,12 +7,12 @@ import { PrismaService } from '@core/services/prisma.service'
 import { TagModel } from '../models/tags.model'
 
 @Injectable()
-export class TagsService extends BaseService<'tags'> {
+export class TagsService extends BaseService<'Tags'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('tags')
+    super('Tags')
   }
 
   async findWithRelations(id: number): Promise<TagModel | null> {
@@ -26,12 +26,12 @@ export class TagsService extends BaseService<'tags'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.tagsDefaultArgs): Promise<TagModel[]> {
+  async findMany(params: Prisma.TagsDefaultArgs): Promise<TagModel[]> {
     const items = await this.prisma.tags.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
-  async findAllTags(query: Prisma.tagsFindManyArgs): Promise<{ items: TagModel[]; total: number }> {
+  async findAllTags(query: Prisma.TagsFindManyArgs): Promise<{ items: TagModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.tags.findMany({
         skip: query.skip,

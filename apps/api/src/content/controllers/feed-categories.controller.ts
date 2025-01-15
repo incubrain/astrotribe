@@ -31,7 +31,7 @@ export class FeedCategoryController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('feed_categories')
+    super('FeedCategories')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class FeedCategoryController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create FeedCategories' })
-  async createFeedCategories(@Body() data: Prisma.feed_categoriesCreateInput) {
+  async createFeedCategories(@Body() data: Prisma.FeedCategoriesCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class FeedCategoryController extends BaseController {
   @ApiOperation({ summary: 'Update FeedCategories' })
   async updateFeedCategories(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.feed_categoriesUpdateInput,
+    @Body() data: Prisma.FeedCategoriesUpdateInput,
   ) {
     try {
       return await super.update(id, data)

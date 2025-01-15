@@ -31,7 +31,7 @@ export class EmbeddingReviewController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('embedding_reviews')
+    super('EmbeddingReviews')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class EmbeddingReviewController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create EmbeddingReviews' })
-  async createEmbeddingReviews(@Body() data: Prisma.embedding_reviewsCreateInput) {
+  async createEmbeddingReviews(@Body() data: Prisma.EmbeddingReviewsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class EmbeddingReviewController extends BaseController {
   @ApiOperation({ summary: 'Update EmbeddingReviews' })
   async updateEmbeddingReviews(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.embedding_reviewsUpdateInput,
+    @Body() data: Prisma.EmbeddingReviewsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

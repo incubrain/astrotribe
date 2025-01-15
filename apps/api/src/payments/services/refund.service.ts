@@ -7,16 +7,16 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { RefundModel } from '../models/refund.model'
 
 @Injectable()
-export class RefundService extends BaseService<'customer_refunds'> {
+export class RefundService extends BaseService<'CustomerRefunds'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('customer_refunds')
+    super('CustomerRefunds')
   }
 
   async findWithRelations(id: number): Promise<RefundModel | null> {
-    const result = await this.prisma.customer_refunds.findUnique({
+    const result = await this.prisma.customerRefunds.findUnique({
       where: { id },
       include: {
         customer_payments: true,
@@ -26,22 +26,22 @@ export class RefundService extends BaseService<'customer_refunds'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.customer_refundsFindManyArgs): Promise<RefundModel[]> {
-    const items = await this.prisma.customer_refunds.findMany(params)
+  async findMany(params: Prisma.CustomerRefundsFindManyArgs): Promise<RefundModel[]> {
+    const items = await this.prisma.customerRefunds.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllRefunds(
-    query: Prisma.customer_refundsFindManyArgs,
+    query: Prisma.CustomerRefundsFindManyArgs,
   ): Promise<{ items: RefundModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.customer_refunds.findMany({
+      this.prisma.customerRefunds.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.customer_refunds.count({ where: query.where }),
+      this.prisma.customerRefunds.count({ where: query.where }),
     ])
 
     return {

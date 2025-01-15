@@ -7,37 +7,37 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { PlanModel } from '../models/plan.model'
 
 @Injectable()
-export class PlanService extends BaseService<'customer_subscription_plans'> {
+export class PlanService extends BaseService<'CustomerSubscriptionPlans'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('customer_subscription_plans')
+    super('CustomerSubscriptionPlans')
   }
 
   async findWithRelations(id: number): Promise<PlanModel | null> {
-    const result = await this.prisma.customer_subscription_plans.findUnique({
+    const result = await this.prisma.customerSubscriptionPlans.findUnique({
       where: { id },
     })
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.customer_subscription_plansFindManyArgs): Promise<PlanModel[]> {
-    const items = await this.prisma.customer_subscription_plans.findMany(params)
+  async findMany(params: Prisma.CustomerSubscriptionPlansFindManyArgs): Promise<PlanModel[]> {
+    const items = await this.prisma.customerSubscriptionPlans.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllPlans(
-    query: Prisma.customer_subscription_plansFindManyArgs,
+    query: Prisma.CustomerSubscriptionPlansFindManyArgs,
   ): Promise<{ items: PlanModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.customer_subscription_plans.findMany({
+      this.prisma.customerSubscriptionPlans.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.customer_subscription_plans.count({ where: query.where }),
+      this.prisma.customerSubscriptionPlans.count({ where: query.where }),
     ])
 
     return {

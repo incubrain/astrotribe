@@ -31,7 +31,7 @@ export class ResearchController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('research')
+    super('Research')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class ResearchController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Research' })
-  async createResearch(@Body() data: Prisma.researchCreateInput) {
+  async createResearch(@Body() data: Prisma.ResearchCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class ResearchController extends BaseController {
   @ApiOperation({ summary: 'Update Research' })
   async updateResearch(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.researchUpdateInput,
+    @Body() data: Prisma.ResearchUpdateInput,
   ) {
     try {
       return await super.update(id, data)
