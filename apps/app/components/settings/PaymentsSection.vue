@@ -1,14 +1,20 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
-
 const { profile } = useCurrentUser()
 
 const razorpay = usePayments('razorpay')
-
+const { lastEvent, isConnected } = useEvents()
 const subscriptions = await razorpay.fetchSubscriptions()
-const subscription = subscriptions?.[0]
+const subscription = ref(subscriptions?.[0])
 
-const plansData = await razorpay.fetchPlans() || []
+watch(lastEvent, (event) => {
+  if (event?.type === 'updated') {
+    // Handle subscription update
+    subscription.value.status = event.data.status
+  }
+})
+
+const plansData = (await razorpay.fetchPlans()) || []
 
 interface PlanConfig {
   id: string
@@ -48,9 +54,9 @@ const plans = computed<PlanConfig>(() =>
       const isActive = profile.user_plan === item.name.toLowerCase()
 
       const razorPayConfig = true &&
-        subscription && {
-          subscription_id: subscription.external_subscription_id,
-          subscription_status: subscription.status,
+        subscription.value && {
+          subscription_id: subscription.value.external_subscription_id,
+          subscription_status: subscription.value.status,
         }
 
       return {

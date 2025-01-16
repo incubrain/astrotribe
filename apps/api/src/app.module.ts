@@ -20,6 +20,7 @@ import { MonitoringModule } from '@monitoring/monitoring.module'
 import { RedisModule } from '@core/cache/cache.module'
 import { PaymentsModule } from '@payments/payment.module'
 import { JobModule } from '@jobs/job.module'
+import { EventsModule } from './observables/events.module'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { JobModule } from '@jobs/job.module'
 
     // 2) Core modules & services
     PrismaModule,
+    EventsModule,
     CoreModule,
     LoggerModule,
 
