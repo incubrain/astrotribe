@@ -1,8 +1,10 @@
 import { createError, useRuntimeConfig } from 'nuxt/app'
+import { useSupabaseClient } from '#imports'
 
 export default function usePlans() {
   const plans = ref([])
   const { apiURL } = useRuntimeConfig().public
+  const supabase = useSupabaseClient()
 
   async function syncPlans() {
     try {
@@ -45,8 +47,20 @@ export default function usePlans() {
 
   async function fetchPlans() {
     try {
-      await syncPlans()
-      const { data, success } = await $fetch(`${apiURL}/api/v1/plans`)
+      // await syncPlans()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.access_token) {
+        throw new Error('No authentication session found')
+      }
+
+      const { data, meta, success } = await $fetch(`${apiURL}/api/v1/payments/plans`, {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      })
 
       if (success) {
         plans.value = data
@@ -61,14 +75,29 @@ export default function usePlans() {
 
   async function togglePlan(planId: string, isActive: boolean) {
     try {
-      return await $fetch(`${apiURL}/api/v1/plans/${planId}`, {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.access_token) {
+        throw new Error('No authentication session found')
+      }
+
+      const { success } = await $fetch(`${apiURL}/api/v1/payments/plans/${planId}`, {
         method: 'PUT',
         body: {
-          data: {
-            is_active: !isActive,
-          },
+          is_active: !isActive,
+        },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
         },
       })
+
+      if (success) {
+        const plan = plans.value.find((plan) => plan.id === planId)
+
+        plan.is_active = !isActive
+      }
     } catch (error: any) {
       console.error('Error fetching goals:', error)
       throw error
