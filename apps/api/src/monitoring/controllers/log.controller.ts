@@ -16,7 +16,6 @@ import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
-import { error_logs } from '@astronera/db'
 import { BaseController } from '@core/base/base.controller'
 import { PermissionGuard } from '@core/guards/permission.guard'
 import { ApiKeyGuard } from '@core/guards/api-key.guard'
@@ -24,6 +23,7 @@ import { LogService } from '../services/log.service'
 import { ApiBaseController } from '@core/base/base.controller'
 import { ApiPaginatedResponse } from '@core/decorators/api.decorator'
 import { Service } from '@core/decorators/service.decorator'
+import { LogEntry } from '@ib/cache'
 
 @ApiBaseController('logs')
 @UseGuards(PermissionGuard)
@@ -35,7 +35,7 @@ export class LogController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('error_logs')
+    super('ErrorLogs')
     this.logger.setDomain('monitoring')
   }
 
