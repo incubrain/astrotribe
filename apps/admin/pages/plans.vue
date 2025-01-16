@@ -7,16 +7,18 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
 </script>
 
 <template>
-  <div> Plans </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+  <div class="p-8">
+    <h1 class="text-3xl font-bold mb-6">Plans</h1>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
     <div
       v-for="plan in plans"
       :key="plan.name"
       class="relative rounded-xl overflow-hidden"
       :class="{
         'bg-gray-900 border-2 border-blue-500': profile?.user_plan === plan.name.toLowerCase(),
-        'bg-gray-900/80': !plan.isActive && profile?.user_plan !== plan.name.toLowerCase(),
-        'bg-gray-900': plan.isActive && profile?.user_plan !== plan.name.toLowerCase(),
+        'bg-gray-900/80': !plan.is_active && profile?.user_plan !== plan.name.toLowerCase(),
+        'bg-gray-900': plan.is_active && profile?.user_plan !== plan.name.toLowerCase(),
       }"
     >
       <div class="p-6 flex flex-col justify-between h-full">
@@ -24,7 +26,7 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
         <div>
           <h3 class="text-xl font-semibold text-white">{{ plan.name }}</h3>
           <div class="mt-2 flex items-baseline">
-            <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
+            <span class="text-3xl font-bold text-white">₹{{ plan.monthly_amount.d[0] / 100 }}</span>
             <span class="ml-1 text-sm text-gray-400">{{ plan.period }}</span>
           </div>
           <p class="mt-3 text-sm text-gray-400">{{ plan.description }}</p>
@@ -47,8 +49,8 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
 
         <!-- Action Button -->
         <div class="mt-8">
-          <button @click="handleTogglePlan(plan.id, plan.isActive)">{{
-            plan.isActive ? 'Deactivate' : 'Activate'
+          <button @click="handleTogglePlan(plan.id, plan.is_active)">{{
+            plan.is_active ? 'Deactivate' : 'Activate'
           }}</button>
         </div>
       </div>
