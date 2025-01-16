@@ -9,16 +9,16 @@ generator client {
 generator zod {
   provider                  = "pnpm exec zod-prisma-types"
   output                    = "../generated/zod"
-  useDecimalJs              = "false"
-  generateSelectHelpers     = "false"
+  validateWhereUniqueInput  = "false"
   addIncludeType            = "false"
-  createRelationValuesTypes = "false"
-  addInputTypeValidation    = "false"
+  createPartialTypes        = "false"
+  generateSelectHelpers     = "false"
+  createModelTypes          = "true"
   addSelectType             = "false"
-  validateWhereUniqueInput = "false"
-  createModelTypes         = "true"
-  createPartialTypes      = "false"
-  createInputTypes        = "false"
+  createInputTypes          = "false"
+  addInputTypeValidation    = "false"
+  createRelationValuesTypes = "false"
+  useDecimalJs              = "false"
 }
 
 datasource db {
@@ -28,59 +28,6 @@ datasource db {
   extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions")]
   schemas    = ["auth", "public"]
 }
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 
 /// @client.name="ad_daily_metrics"
 model AdDailyMetrics {
@@ -116,23 +63,6 @@ model AdPackages {
   ads            Ads[]
 
   @@map("ad_packages")
-  @@schema("public")
-}
-
-/// @client.name="ad_variants"
-model AdVariants {
-  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  ad_id               String           @db.Uuid
-  content             Json
-  is_control          Boolean?         @default(false)
-  active              Boolean?         @default(true)
-  created_at          DateTime?        @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime?        @default(now()) @db.Timestamptz(6)
-  performance_metrics Json?            @default("{\"ctr\": null, \"bounceRate\": null, \"avgEngagementTime\": null}")
-  ad_daily_metrics    AdDailyMetrics[]
-  ads                 Ads              @relation(fields: [ad_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("ad_variants")
   @@schema("public")
 }
 
@@ -178,23 +108,6 @@ model Ads {
 
   @@index([start_date, end_date], map: "idx_ads_dates")
   @@map("ads")
-  @@schema("public")
-}
-
-/// @client.name="agent_metrics"
-model AgentMetrics {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  agent_name      String    @db.VarChar
-  execution_date  DateTime  @db.Timestamptz(6)
-  status          String    @db.VarChar
-  duration_ms     Int?
-  items_processed Int?
-  error_type      String?   @db.VarChar
-  error_message   String?
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([agent_name, execution_date], map: "idx_agent_metrics_name_date")
-  @@map("agent_metrics")
   @@schema("public")
 }
 
@@ -256,7 +169,7 @@ model BookmarkFolders {
   updated_at             DateTime?             @default(now()) @db.Timestamptz(6)
   bookmark_folders       BookmarkFolders?      @relation("bookmark_foldersTobookmark_folders", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   other_bookmark_folders BookmarkFolders[]     @relation("bookmark_foldersTobookmark_folders")
-  user_profiles          UserProfiles          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_profiles          Users                 @relation(fields: [user_id], references: [id], onDelete: Cascade)
   bookmarks              Bookmarks[]
 
   @@index([path], type: Gist)
@@ -639,7 +552,7 @@ model CustomerPayments {
   user_id                String                 @db.Uuid
   subscription_id        Int?
   payment_provider_id    Int
-  external_payment_id    String                 @db.VarChar(255)
+  external_payment_id    String                 @unique(map: "uq_payment_id") @db.VarChar(255)
   external_order_id      String?                @db.VarChar(255)
   amount                 Decimal                @db.Decimal(10, 2)
   currency               String                 @db.VarChar(3)
@@ -718,10 +631,10 @@ model CustomerSubscriptionPlans {
   monthly_amount         Decimal                 @db.Decimal(10, 2)
   annual_amount          Decimal                 @db.Decimal(10, 2)
   currency               String                  @db.VarChar(3)
+  features               Json?
   is_active              Boolean?                @default(true)
   created_at             DateTime?               @db.Timestamptz(6)
   updated_at             DateTime?               @db.Timestamptz(6)
-  features               Json?
   customer_subscriptions CustomerSubscriptions[]
 
   @@map("customer_subscription_plans")
@@ -734,17 +647,18 @@ model CustomerSubscriptions {
   user_id                     String                    @unique(map: "uq_user_id") @db.Uuid
   plan_id                     Int
   payment_provider_id         Int
-  external_subscription_id    String                    @db.VarChar(255)
+  external_subscription_id    String                    @unique(map: "uq_subscription_id") @db.VarChar(255)
   status                      String                    @db.VarChar(50)
   quantity                    Int?                      @default(1)
-  current_start               DateTime                  @db.Timestamptz(6)
-  current_end                 DateTime                  @db.Timestamptz(6)
+  current_start               DateTime?                 @db.Timestamptz(6)
+  current_end                 DateTime?                 @db.Timestamptz(6)
   ended_at                    DateTime?                 @db.Timestamptz(6)
   cancel_at_period_end        Boolean?                  @default(false)
   total_count                 Int?
   paid_count                  Int?
   remaining_count             Int?
   auth_attempts               Int?                      @default(0)
+  notes                       Json?
   created_at                  DateTime?                 @default(now()) @db.Timestamptz(6)
   updated_at                  DateTime?                 @default(now()) @db.Timestamptz(6)
   type                        Int?
@@ -760,7 +674,6 @@ model CustomerSubscriptions {
   offer_id                    String?
   pause_initiated_by          String?
   cancel_initiated_by         String?
-  notes                       Json?
   customer_payments           CustomerPayments[]
   payment_providers           PaymentProviders          @relation(fields: [payment_provider_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -781,39 +694,6 @@ model EmbeddingReviews {
   research_embeddings ResearchEmbeddings[]
 
   @@map("embedding_reviews")
-  @@schema("public")
-}
-
-/// @client.name="error_logs"
-model ErrorLogs {
-  id             String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  service_name   String        @db.VarChar(100)
-  error_type     ErrorType
-  severity       ErrorSeverity
-  message        String
-  stack_trace    String?
-  metadata       Json?         @default("{}")
-  context        Json?         @default("{}")
-  user_id        String?       @db.Uuid
-  request_id     String?       @db.Uuid
-  correlation_id String?       @db.Uuid
-  environment    String        @db.VarChar(50)
-  created_at     DateTime?     @default(now()) @db.Timestamptz(6)
-  error_hash     String?
-  error_pattern  String?
-  is_new_pattern Boolean?      @default(true)
-  github_repo    String?
-  related_errors Json?
-  frequency_data Json?
-  domain         String?       @db.VarChar
-
-  @@index([created_at(sort: Desc)])
-  @@index([error_type])
-  @@index([service_name])
-  @@index([severity])
-  @@index([error_hash], map: "idx_error_hash")
-  @@index([error_pattern], map: "idx_error_pattern")
-  @@map("error_logs")
   @@schema("public")
 }
 
@@ -1272,21 +1152,6 @@ model RoleHierarchy {
   @@schema("public")
 }
 
-/// @client.name="role_permissions"
-model RolePermissions {
-  id                 Int           @id @default(autoincrement())
-  role               AppRoleEnum
-  table_name         String
-  conditions         Json?         @default("{}")
-  permissions        Json?
-  cached_permissions Json?
-  inherit_from       AppRoleEnum[]
-  last_updated       DateTime?     @default(now()) @db.Timestamptz(6)
-
-  @@map("role_permissions")
-  @@schema("public")
-}
-
 /// @client.name="role_permissions_materialized"
 model RolePermissionsMaterialized {
   role         AppRoleEnum @id
@@ -1451,39 +1316,9 @@ model Tags {
   @@schema("public")
 }
 
-/// @client.name="user_metrics"
-model UserMetrics {
-  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id            String       @unique @db.Uuid
-  total_votes        Int?         @default(0)
-  upvote_count       Int?         @default(0)
-  downvote_count     Int?         @default(0)
-  vote_accuracy      Decimal?     @default(0) @db.Decimal(5, 2)
-  current_streak     Int?         @default(0)
-  best_streak        Int?         @default(0)
-  today_vote_count   Int?         @default(0)
-  total_reading_time Int?         @default(0)
-  last_vote_date     DateTime?    @db.Timestamptz(6)
-  points             Int?         @default(0)
-  points_breakdown   Json?        @default("{\"votes\": 0, \"streaks\": 0, \"bookmarks\": 0, \"achievements\": 0, \"perfect_days\": 0, \"source_visits\": 0}")
-  interaction_stats  Json?        @default("{\"articles_read\": 0, \"source_visits\": 0, \"total_comments\": 0, \"articles_shared\": 0, \"comment_upvotes\": 0, \"total_bookmarks\": 0, \"favorite_sources\": [], \"categories_engaged\": [], \"peak_activity_hours\": []}")
-  achievements       Json?        @default("{\"time\": {\"night_owl\": false, \"full_cycle\": false, \"dawn_patrol\": false, \"lunch_break\": false, \"weekend_warrior\": false}, \"voting\": {\"vote_sage\": false, \"vote_expert\": false, \"vote_legend\": false, \"vote_master\": false, \"vote_initiate\": false, \"vote_enthusiast\": false}, \"sharing\": {\"sharer_i\": false, \"sharer_ii\": false, \"sharer_iii\": false, \"influence_i\": false, \"influence_ii\": false, \"viral_spreader\": false}, \"special\": {\"beta_tester\": false, \"trend_setter\": false, \"early_adopter\": false, \"daily_complete\": false, \"weekly_complete\": false, \"prediction_master\": false}, \"streaks\": {\"streak_legend\": false, \"streak_runner\": false, \"streak_starter\": false, \"streak_champion\": false, \"streak_sprinter\": false, \"streak_marathoner\": false}, \"accuracy\": {\"perfect_day\": false, \"perfect_week\": false, \"accurate_voter_i\": false, \"accurate_voter_ii\": false, \"accurate_voter_iii\": false}, \"beginner\": {\"first_vote\": false, \"first_share\": false, \"first_comment\": false, \"first_bookmark\": false, \"first_source_visit\": false}, \"explorer\": {\"global_viewer\": false, \"source_seeker_i\": false, \"source_seeker_ii\": false, \"source_seeker_iii\": false, \"category_explorer_i\": false, \"category_explorer_ii\": false}, \"bookmarks\": {\"curator\": false, \"collector_i\": false, \"organizer_i\": false, \"collector_ii\": false, \"organizer_ii\": false, \"collector_iii\": false}, \"engagement\": {\"viral_voice\": false, \"commentator_i\": false, \"commentator_ii\": false, \"commentator_iii\": false, \"discussion_starter\": false, \"conversation_master\": false}}")
-  titles             Json?        @default("{\"current_title\": \"Stargazer\", \"title_progress\": {}, \"unlocked_titles\": [\"Stargazer\"]}")
-  multipliers        Json?        @default("{\"streak_bonus\": 0, \"accuracy_bonus\": 0, \"time_of_day_bonus\": 0, \"current_multiplier\": 1}")
-  current_level      Int?         @default(1)
-  current_xp         Int?         @default(0)
-  xp_to_next_level   Int?         @default(100)
-  created_at         DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime?    @default(now()) @db.Timestamptz(6)
-  user_profiles      UserProfiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([current_streak], map: "idx_user_metrics_current_streak")
-  @@index([points], map: "idx_user_metrics_points")
-  @@index([total_votes], map: "idx_user_metrics_total_votes")
-  @@index([user_id], map: "idx_user_metrics_user_id")
-  @@map("user_metrics")
-  @@schema("public")
-}
+
+
 
 /// @client.name="user_profiles"
 model UserProfiles {
@@ -1505,7 +1340,6 @@ model UserProfiles {
   role                   AppRoleEnum            @default(user)
   is_active              Boolean?               @default(false)
   addresses              Addresses[]
-  bookmark_folders       BookmarkFolders[]
   comments               Comments[]
   company_employees      CompanyEmployees[]
   contacts               Contacts[]
@@ -1577,6 +1411,241 @@ model Workflows {
   @@map("workflows")
   @@schema("public")
 }
+
+/// @client.name="users"
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model Users {
+  instance_id                 String?           @db.Uuid
+  id                          String            @id @db.Uuid
+  aud                         String?           @db.VarChar(255)
+  role                        String?           @db.VarChar(255)
+  email                       String?           @db.VarChar(255)
+  encrypted_password          String?           @db.VarChar(255)
+  email_confirmed_at          DateTime?         @db.Timestamptz(6)
+  invited_at                  DateTime?         @db.Timestamptz(6)
+  confirmation_token          String?           @db.VarChar(255)
+  confirmation_sent_at        DateTime?         @db.Timestamptz(6)
+  recovery_token              String?           @db.VarChar(255)
+  recovery_sent_at            DateTime?         @db.Timestamptz(6)
+  email_change_token_new      String?           @db.VarChar(255)
+  email_change                String?           @db.VarChar(255)
+  email_change_sent_at        DateTime?         @db.Timestamptz(6)
+  last_sign_in_at             DateTime?         @db.Timestamptz(6)
+  raw_app_meta_data           Json?
+  raw_user_meta_data          Json?
+  is_super_admin              Boolean?
+  created_at                  DateTime?         @db.Timestamptz(6)
+  updated_at                  DateTime?         @db.Timestamptz(6)
+  phone                       String?           @unique
+  phone_confirmed_at          DateTime?         @db.Timestamptz(6)
+  phone_change                String?           @default("")
+  phone_change_token          String?           @default("") @db.VarChar(255)
+  phone_change_sent_at        DateTime?         @db.Timestamptz(6)
+  confirmed_at                DateTime?         @default(dbgenerated("LEAST(email_confirmed_at, phone_confirmed_at)")) @db.Timestamptz(6)
+  email_change_token_current  String?           @default("") @db.VarChar(255)
+  email_change_confirm_status Int?              @default(0) @db.SmallInt
+  banned_until                DateTime?         @db.Timestamptz(6)
+  reauthentication_token      String?           @default("") @db.VarChar(255)
+  reauthentication_sent_at    DateTime?         @db.Timestamptz(6)
+  is_sso_user                 Boolean           @default(false)
+  deleted_at                  DateTime?         @db.Timestamptz(6)
+  is_anonymous                Boolean           @default(false)
+  identities                  identities[]
+  mfa_factors                 mfa_factors[]
+  one_time_tokens             one_time_tokens[]
+  sessions                    sessions[]
+  bookmark_folders            BookmarkFolders[]
+  Bookmarks                   Bookmarks[]
+  UserProfiles                UserProfiles?
+  Votes                       Votes[]
+
+  @@index([instance_id])
+  @@index([is_anonymous])
+  @@map("users")
+  @@schema("auth")
+}
+
+/// @client.name="ad_variants"
+/// @client.name="AdVariants"
+    model AdVariants {
+      @@map("AdVariants")
+  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ad_id               String           @db.Uuid
+  content             Json
+  is_control          Boolean?         @default(false)
+  active              Boolean?         @default(true)
+  created_at          DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?        @default(now()) @db.Timestamptz(6)
+  performance_metrics Json?            @default("{\"ctr\": null, \"bounceRate\": null, \"avgEngagementTime\": null}")
+  ad_daily_metrics    AdDailyMetrics[]
+  ads                 Ads              @relation(fields: [ad_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+// First define all the related models
+
+model identities {
+  id         String   @id @default(uuid())
+  user_id    String
+  provider   String
+  user       Users    @relation(fields: [user_id], references: [id])
+  @@schema("auth")
+  // Add other relevant fields
+}
+
+model mfa_factors {
+  id         String   @id @default(uuid())
+  user_id    String
+  type       String
+  user       Users    @relation(fields: [user_id], references: [id])
+  @@schema("auth")
+  // Add other relevant fields
+}
+
+model one_time_tokens {
+  id         String   @id @default(uuid())
+  user_id    String
+  token      String   @unique
+  expires_at DateTime
+  user       Users    @relation(fields: [user_id], references: [id])
+  @@schema("auth")
+  // Add other relevant fields
+}
+
+model sessions {
+  id         String   @id @default(uuid())
+  user_id    String
+  expires_at DateTime
+  user       Users    @relation(fields: [user_id], references: [id])
+  @@schema("auth")
+  // Add other relevant fields
+}
+
+
+/// @client.name="error_logs"
+/// @client.name="ErrorLogs"
+    model ErrorLogs {
+      @@map("ErrorLogs")
+  id             String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  service_name   String        @db.VarChar(100)
+  error_type     ErrorType
+  severity       ErrorSeverity
+  message        String
+  stack_trace    String?
+  metadata       Json?         @default("{}")
+  context        Json?         @default("{}")
+  user_id        String?       @db.Uuid
+  request_id     String?       @db.Uuid
+  correlation_id String?       @db.Uuid
+  environment    String        @db.VarChar(50)
+  created_at     DateTime?     @default(now()) @db.Timestamptz(6)
+  error_hash     String?
+  error_pattern  String?
+  is_new_pattern Boolean?      @default(true)
+  github_repo    String?
+  related_errors Json?
+  frequency_data Json?
+  domain         String?       @db.VarChar
+
+  @@index([created_at(sort: Desc)])
+  @@index([error_type])
+  @@index([service_name])
+  @@index([severity])
+  @@index([error_hash], map: "idx_error_hash")
+  @@index([error_pattern], map: "idx_error_pattern")
+  @@schema("public")
+}
+
+/// @client.name="role_permissions"
+/// @client.name="RolePermissions"
+    model RolePermissions {
+      @@map("RolePermissions")
+  id                 Int           @id @default(autoincrement())
+  role               AppRoleEnum
+  table_name         String
+  conditions         Json?         @default("{}")
+  permissions        Json?
+  cached_permissions Json?
+  inherit_from       AppRoleEnum[]
+  last_updated       DateTime?     @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+/// @client.name="user_metrics"
+/// @client.name="UserMetrics"
+    model UserMetrics {
+      @@map("UserMetrics")
+  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id            String       @unique @db.Uuid
+  total_votes        Int?         @default(0)
+  upvote_count       Int?         @default(0)
+  downvote_count     Int?         @default(0)
+  vote_accuracy      Decimal?     @default(0) @db.Decimal(5, 2)
+  current_streak     Int?         @default(0)
+  best_streak        Int?         @default(0)
+  today_vote_count   Int?         @default(0)
+  total_reading_time Int?         @default(0)
+  last_vote_date     DateTime?    @db.Timestamptz(6)
+  points             Int?         @default(0)
+  points_breakdown   Json?        @default("{\"votes\": 0, \"streaks\": 0, \"bookmarks\": 0, \"achievements\": 0, \"perfect_days\": 0, \"source_visits\": 0}")
+  interaction_stats  Json?        @default("{\"articles_read\": 0, \"source_visits\": 0, \"total_comments\": 0, \"articles_shared\": 0, \"comment_upvotes\": 0, \"total_bookmarks\": 0, \"favorite_sources\": [], \"categories_engaged\": [], \"peak_activity_hours\": []}")
+  achievements       Json?        @default("{\"time\": {\"night_owl\": false, \"full_cycle\": false, \"dawn_patrol\": false, \"lunch_break\": false, \"weekend_warrior\": false}, \"voting\": {\"vote_sage\": false, \"vote_expert\": false, \"vote_legend\": false, \"vote_master\": false, \"vote_initiate\": false, \"vote_enthusiast\": false}, \"sharing\": {\"sharer_i\": false, \"sharer_ii\": false, \"sharer_iii\": false, \"influence_i\": false, \"influence_ii\": false, \"viral_spreader\": false}, \"special\": {\"beta_tester\": false, \"trend_setter\": false, \"early_adopter\": false, \"daily_complete\": false, \"weekly_complete\": false, \"prediction_master\": false}, \"streaks\": {\"streak_legend\": false, \"streak_runner\": false, \"streak_starter\": false, \"streak_champion\": false, \"streak_sprinter\": false, \"streak_marathoner\": false}, \"accuracy\": {\"perfect_day\": false, \"perfect_week\": false, \"accurate_voter_i\": false, \"accurate_voter_ii\": false, \"accurate_voter_iii\": false}, \"beginner\": {\"first_vote\": false, \"first_share\": false, \"first_comment\": false, \"first_bookmark\": false, \"first_source_visit\": false}, \"explorer\": {\"global_viewer\": false, \"source_seeker_i\": false, \"source_seeker_ii\": false, \"source_seeker_iii\": false, \"category_explorer_i\": false, \"category_explorer_ii\": false}, \"bookmarks\": {\"curator\": false, \"collector_i\": false, \"organizer_i\": false, \"collector_ii\": false, \"organizer_ii\": false, \"collector_iii\": false}, \"engagement\": {\"viral_voice\": false, \"commentator_i\": false, \"commentator_ii\": false, \"commentator_iii\": false, \"discussion_starter\": false, \"conversation_master\": false}}")
+  titles             Json?        @default("{\"current_title\": \"Stargazer\", \"title_progress\": {}, \"unlocked_titles\": [\"Stargazer\"]}")
+  multipliers        Json?        @default("{\"streak_bonus\": 0, \"accuracy_bonus\": 0, \"time_of_day_bonus\": 0, \"current_multiplier\": 1}")
+  current_level      Int?         @default(1)
+  current_xp         Int?         @default(0)
+  xp_to_next_level   Int?         @default(100)
+  created_at         DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?    @default(now()) @db.Timestamptz(6)
+  user_profiles      UserProfiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([current_streak], map: "idx_user_metrics_current_streak")
+  @@index([points], map: "idx_user_metrics_points")
+  @@index([total_votes], map: "idx_user_metrics_total_votes")
+  @@index([user_id], map: "idx_user_metrics_user_id")
+  @@schema("public")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 
 /// @client.name="access_level"
 enum AccessLevel {
@@ -1869,13 +1938,7 @@ enum UserStatus {
   @@schema("public")
 }
 
-/// @client.name="users"
-model Users {
-  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  Bookmarks    Bookmarks[]
-  UserProfiles UserProfiles?
-  Votes        Votes[]
 
-  @@map("users")
-  @@schema("auth")
-}
+
+
+

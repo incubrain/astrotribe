@@ -37,7 +37,7 @@ export class AgentController extends BaseController {
     protected readonly config: ConfigService,
     protected readonly logger: CustomLogger,
   ) {
-    super('AgentMetrics')
+    super('AdDailyMetrics')
     this.logger.setDomain('monitoring')
   }
 
