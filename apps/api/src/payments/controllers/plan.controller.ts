@@ -1,5 +1,5 @@
 // plan.ejs template
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Body, Controller, Get, Param, ParseIntPipe, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { PlanService } from '../services/plan.service'
 import { ConfigService } from '@nestjs/config'
@@ -45,6 +45,19 @@ export class PlanController extends BaseController {
   async findOnePlan(@Param('id') id: number, @Query('include') include?: string[]) {
     try {
       return await super.findOne(`${id}`, include)
+    } catch (error: any) {
+      return this.handleError(error)
+    }
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update Plan' })
+  async updatePlan(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() data: Prisma.customer_subscription_plansUpdateInput,
+  ) {
+    try {
+      return await super.update(id, data)
     } catch (error: any) {
       return this.handleError(error)
     }
