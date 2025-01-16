@@ -29,6 +29,7 @@ export class WebhookController {
       const digest = shasum.digest('hex')
 
       if (digest !== razorpaySignature) {
+        console.error('Invalid Razorpay Signature')
         return
       }
 
