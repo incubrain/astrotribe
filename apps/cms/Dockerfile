@@ -36,7 +36,7 @@ RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 COPY . .
 
 # Install dependencies for this workspace only
-RUN pnpm install nx@20.3.0 -g -w
+RUN pnpm install nx@20.3.0 -g
 RUN nx reset
 RUN nx build @astronera/cms --configuration=production --skip-nx-cache
 
