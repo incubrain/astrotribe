@@ -24,9 +24,7 @@ ENV NX_VERBOSE_LOGGING=true
 RUN npm install -g pnpm
 
 # Install dependencies for CMS workspace only
-RUN pnpm install
-RUN pnpm i @aws-sdk/client-s3 --workspace=@astronera/cms
-RUN pnpm i typescript @types/node -D --workspace=@astronera/cms
+RUN pnpm install --filter=@astronera/cms --frozen-lockfile
 
 # Create necessary directories and ensure proper file structure
 RUN mkdir -p apps/cms/dist/src/providers/supabase
@@ -36,7 +34,7 @@ RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
 COPY . .
 
 # Install dependencies for this workspace only
-RUN pnpm install nx@20.3.0 -g
+RUN pnpm install nx@20.3.0 -g -w
 RUN nx reset
 RUN nx build @astronera/cms --configuration=production --skip-nx-cache
 
