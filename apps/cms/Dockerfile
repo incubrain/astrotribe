@@ -18,6 +18,7 @@ ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
 # Copy CMS app and its dependencies
 COPY apps/cms apps/cms
+COPY libs/strapi-supabase libs/strapi-supabase
 
 # Set Nx environment variables
 ENV NX_SKIP_NX_CACHE=true
@@ -26,7 +27,7 @@ ENV NX_SKIP_LOG_GROUPING=true
 ENV NX_VERBOSE_LOGGING=true
 
 # Install dependencies for CMS workspace only
-RUN pnpm install --filter=@astronera/cms --frozen-lockfile
+RUN pnpm install --filter=@astronera/cms,strapi-supabase --frozen-lockfile
 
 # Create necessary directories and ensure proper file structure
 RUN mkdir -p apps/cms/dist/src/providers/supabase
