@@ -29,6 +29,8 @@ export default defineConfig(({ command, mode }) => {
           interop: 'auto',
         },
         external: [
+          '@ib/logger',
+          '@ib/cache',
           // Node.js built-in modules
           'fs',
           'fs/promises',
@@ -99,6 +101,7 @@ export default defineConfig(({ command, mode }) => {
         '@jobs': path.resolve(__dirname, './src/jobs/config'),
       },
       mainFields: ['module', 'jsnext:main', 'jsnext', 'main'],
+      conditions: ['import', 'module', 'node', 'default'],
       preserveSymlinks: true,
     },
     optimizeDeps: {
@@ -119,6 +122,11 @@ export default defineConfig(({ command, mode }) => {
         '@supabase/storage-js',
         '@supabase/postgrest-js',
       ],
+      include: [
+        '@ib/logger',
+        '@ib/cache'
+      ],
+      disabled: command === 'serve'
     },
   }
 

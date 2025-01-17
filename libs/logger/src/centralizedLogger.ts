@@ -1,4 +1,4 @@
-import type { ErrorSeverity, ErrorType, PrismaClient } from '@astronera/db'
+// Replacing db imports with any types
 import type { H3Event } from 'h3'
 import type { LogQueue } from '@ib/cache'
 import { createLogQueue } from '@ib/cache'
@@ -6,6 +6,10 @@ import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
 import { NodeWinstonTransport, Level } from './logger.js'
+
+type ErrorSeverity = any
+type ErrorType = any
+type PrismaClient = any
 
 // ANSI constants
 const ANSI = {

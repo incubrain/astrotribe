@@ -31,7 +31,7 @@ export class FeedSourceController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('feed_sources')
+    super('FeedSources')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class FeedSourceController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create FeedSources' })
-  async createFeedSources(@Body() data: Prisma.feed_sourcesCreateInput) {
+  async createFeedSources(@Body() data: Prisma.FeedSourcesCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class FeedSourceController extends BaseController {
   @ApiOperation({ summary: 'Update FeedSources' })
   async updateFeedSources(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.feed_sourcesUpdateInput,
+    @Body() data: Prisma.FeedSourcesUpdateInput,
   ) {
     try {
       return await super.update(id, data)

@@ -7,11 +7,12 @@
     "target": "ES2022",
     "outDir": "./dist",
     "rootDir": "./src",
+    "moduleResolution": "node",
     "baseUrl": ".",
     "types": ["node"],
     "esModuleInterop": true,
+    "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true
   },

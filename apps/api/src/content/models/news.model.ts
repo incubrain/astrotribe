@@ -1,6 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { scrape_frequency, content_status } from '@astronera/db'
+import type { ScrapeFrequency, ContentStatus } from '@astronera/db'
 import type { ContentSourceModel, ContentModel, CategoryModel } from '@content'
 
 // Model interface
@@ -21,9 +21,9 @@ export interface NewsModel extends BaseModel {
   id: string
   company_id?: string
   failed_count?: number
-  scrape_frequency: scrape_frequency
+  scrape_frequency: ScrapeFrequency
   scraped_at?: Date
-  content_status: content_status
+  content_status: ContentStatus
   keywords?: Record<string, any>
   score?: number
   content_source_id?: string

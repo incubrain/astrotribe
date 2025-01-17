@@ -8,12 +8,12 @@ import type { Prisma } from '@astronera/db'
 import type { PaginatedQuery } from '@types'
 
 @Injectable()
-export class ContentService extends BaseService<'contents'> {
+export class ContentService extends BaseService<'Contents'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('contents')
+    super('Contents')
   }
 
   async findWithRelations(id: string): Promise<ContentModel | null> {
@@ -33,7 +33,7 @@ export class ContentService extends BaseService<'contents'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.contentsDefaultArgs): Promise<ContentModel[]> {
+  async findMany(params: Prisma.ContentsDefaultArgs): Promise<ContentModel[]> {
     const items = await this.prisma.contents.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

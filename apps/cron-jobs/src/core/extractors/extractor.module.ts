@@ -47,12 +47,12 @@ export class ExtractorModule {
     }
   }
 
-  extractKeywords(html: string): string[] {
+  extractKeywords(html: string): { values: string[] } {
     try {
       return extractKeywords(html)
     } catch (error) {
       this.logger.warn('Failed to extract keywords', { error })
-      return []
+      return { values: [] }
     }
   }
 }

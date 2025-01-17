@@ -1,9 +1,9 @@
-import { Controller, Headers, Post, Body, UnauthorizedException } from '@nestjs/common';
+import { Controller, Headers, Post, Body, UnauthorizedException } from '@nestjs/common'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { Public } from '@core/decorators/public.decorator'
-import { PaymentService } from '@payments/services/payment.service';
-import { SubscriptionService } from '@payments/services/subscription.service';
-import crypto from 'crypto';
+import { PaymentService } from '@payments/services/payment.service'
+import { SubscriptionService } from '@payments/services/subscription.service'
+import crypto from 'crypto'
 
 @Controller('webhook')
 @Public()
@@ -22,17 +22,17 @@ export class WebhookController {
     @Headers('x-razorpay-signature') razorpaySignature: string,
   ): void {
     try {
-      const secret = process.env.RAZORPAY_WEBHOOK_SECRET!;
+      const secret = process.env.RAZORPAY_WEBHOOK_SECRET!
 
-      const shasum = crypto.createHmac('sha256', secret);
-      shasum.update(JSON.stringify(body));
-      const digest = shasum.digest('hex');
+      const shasum = crypto.createHmac('sha256', secret)
+      shasum.update(JSON.stringify(body))
+      const digest = shasum.digest('hex')
 
       if (digest !== razorpaySignature) {
         return
       }
 
-      const { payload, event } = body;
+      const { payload, event } = body
 
       switch (event) {
         case 'subscription.authenticated':
@@ -45,10 +45,10 @@ export class WebhookController {
         case 'subscription.cancelled':
         case 'subscription.completed':
         case 'subscription.updated':
-          this.handleSubscriptionUpdate(payload);
-          break;
+          this.handleSubscriptionUpdate(payload)
+          break
         default:
-          console.warn(`Unhandled event type: ${event}`);
+          console.warn(`Unhandled event type: ${event}`)
       }
     } catch (error: any) {
       this.logger.error('Unauthorized Webhook', error.stack)
@@ -97,7 +97,7 @@ export class WebhookController {
     const { entity: subscriptionPayload } = payload.subscription
     console.log(payload, 'PAYLOAD')
     console.log(subscriptionPayload, 'SUBSCRIPTION PAYLOAD')
-    
+
     const data = {
       external_subscription_id: subscriptionPayload.id,
       status: subscriptionPayload.status,
@@ -124,19 +124,21 @@ export class WebhookController {
 
     this.subscriptionService.updateSubscription(data)
 
-    if(payload.payment) {
+    if (payload.payment) {
       const { entity: payment } = payload.payment
-      
+
       const subscription = await this.subscriptionService.findOne({
         where: {
-          external_subscription_id: subscriptionPayload.id
-        }})
-      
+          id: subscriptionPayload.id,
+          user_id: subscriptionPayload.user_id,
+        },
+      })
+
       payment.user_id = subscription.user_id
       payment.payment_provider_id = subscription.payment_provider_id
       payment.subscription_id = subscription.id
-        
-      this.handlePaymentUpdate(payment);
+
+      this.handlePaymentUpdate(payment)
     }
   }
 }

@@ -5,56 +5,27 @@
   "sourceRoot": "libs/db/src",
   "projectType": "library",
   "targets": {
-    "generate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["prisma generate --schema=./src/prisma/schema.prisma"],
-        "cwd": "libs/db"
-      }
-    },
-    "types": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "tsc --emitDeclarationOnly",
-        "cwd": "libs/db"
-      },
-      "dependsOn": ["generate"]
-    },
-    "copy-prisma": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["mkdir -p dist/generated", "cp -r src/generated/client dist/generated/"],
-        "cwd": "libs/db"
-      },
-      "dependsOn": ["generate", "types"]
-    },
-
     "clean": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          "echo '🧹 Starting cleanup of generated files...'",
-          "mkdir -p .tmp_prisma",
-          "cp src/generated/client/index.d.ts .tmp_prisma/ 2>/dev/null || true",
-          "cp src/generated/client/schema.prisma .tmp_prisma/ 2>/dev/null || true",
-          "cp src/generated/client/package.json .tmp_prisma/ 2>/dev/null || true",
-          "rm -rf src/generated",
-          "mkdir -p src/generated/client",
-          "cp .tmp_prisma/* src/generated/client/ 2>/dev/null || true",
-          "rm -rf .tmp_prisma",
-          "echo '✨ Cleanup complete'"
-        ],
-        "dependsOn": ["generate", "types", "copy-prisma"],
+        "commands": ["rm -rf dist"],
         "parallel": false,
-        "parallelism": false,
         "cwd": "libs/db"
       }
     },
+
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "libs/db/dist"
+        "commands": [
+          "pnpm generate",
+          "rm -rf dist",
+          "mkdir -p dist/{esm,cjs,types,generated}",
+          "tsc --emitDeclarationOnly --outDir dist/types",
+          "vite build"
+        ],
+        "parallel": false,
+        "cwd": "libs/db"
       },
       "dependsOn": ["clean"]
     }

@@ -1,4 +1,4 @@
-import { error_type, job_status } from '@astronera/db'
+import { ErrorType, JobStatus } from '@astronera/db'
 
 // types/metrics.types.ts
 export interface JobMetrics {
@@ -21,7 +21,7 @@ export interface JobMetrics {
 export interface JobExecutionMetrics {
   jobName: string
   jobId: string
-  status: job_status
+  status: JobStatus
   startTime: Date
   duration?: number
   itemsProcessed?: number
@@ -34,19 +34,16 @@ export interface JobExecutionMetrics {
     message: string
     stack?: string
     code?: string
-    type: error_type
+    type: ErrorType
   }
   metadata?: Record<string, any>
 }
 
 export interface CircuitBreakerMetrics {
-  jobName: string
-  state: 'closed' | 'open' | 'half-open'
-  failures: number
+  status: 'open' | 'closed' | 'half-open'
+  failureCount: number
   lastFailure: Date
-  lastSuccess?: Date
-  recoveryAttempts: number
-  timeInCurrentState: number
+  resetTimeout: number
 }
 
 export interface QueueMetrics {
@@ -55,4 +52,41 @@ export interface QueueMetrics {
   completed: number
   failed: number
   delayed: number
+}
+
+export interface QueueStats {
+  created: number
+  completed: number
+  failed: number
+  retry: number
+  active: number
+}
+
+export interface JobMetricsData {
+  jobId: string
+  jobName: string
+  status: string
+  duration?: number
+  itemsProcessed: number
+  metadata?: Record<string, any>
+  performance?: {
+    itemsPerSecond: number
+    avgProcessingTime: number
+    peakMemoryUsage: number
+  }
+}
+
+export interface JobPerformanceMetrics {
+  itemsPerSecond: number
+  avgProcessingTime: number
+  peakMemoryUsage: number
+  batchSize?: number
+}
+
+export interface ErrorLogData {
+  service_name: string
+  error_type: string
+  message: string
+  stack?: string
+  metadata?: Record<string, any>
 }

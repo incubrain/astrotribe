@@ -34,7 +34,7 @@ export class JobMetricController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('job_metrics')
+    super('JobMetrics')
   }
 
   @Get()
@@ -68,7 +68,7 @@ export class JobMetricController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new job metric record' })
-  async createJobMetric(@Body() data: Prisma.job_metricsCreateInput) {
+  async createJobMetric(@Body() data: Prisma.JobMetricsCreateInput) {
     try {
       return await this.create(data)
     } catch (error: any) {
@@ -80,7 +80,7 @@ export class JobMetricController extends BaseController {
   @ApiOperation({ summary: 'Update a job metric record' })
   async updateJobMetric(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.job_metricsUpdateInput,
+    @Body() data: Prisma.JobMetricsUpdateInput,
   ) {
     try {
       return await this.update(id, data)

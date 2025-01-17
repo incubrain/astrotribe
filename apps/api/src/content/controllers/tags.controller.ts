@@ -31,7 +31,7 @@ export class TagController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('tags')
+    super('Tags')
   }
 
   @Get()

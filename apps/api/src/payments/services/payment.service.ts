@@ -7,17 +7,18 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { PaymentModel } from '../models/payment.model'
 
 @Injectable()
-export class PaymentService extends BaseService<'customer_payments'> {
+export class PaymentService extends BaseService<'CustomerPayments'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('customer_payments')
+    super('CustomerPayments')
   }
 
   async updatePayment(data) {
-    const result = await this.prisma.customer_payments.upsert({
+    const result = await this.prisma.customerPayments.upsert({
       where: {
+        id: data.id,
         external_payment_id: data.external_payment_id,
       },
       update: data,
@@ -28,28 +29,28 @@ export class PaymentService extends BaseService<'customer_payments'> {
   }
 
   async findWithRelations(id: number): Promise<PaymentModel | null> {
-    const result = await this.prisma.customer_payments.findUnique({
+    const result = await this.prisma.customerPayments.findUnique({
       where: { id },
     })
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.customer_paymentsFindManyArgs): Promise<PaymentModel[]> {
-    const items = await this.prisma.customer_payments.findMany(params)
+  async findMany(params: Prisma.CustomerPaymentsFindManyArgs): Promise<PaymentModel[]> {
+    const items = await this.prisma.customerPayments.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllPayments(
-    query: Prisma.customer_paymentsFindManyArgs,
+    query: Prisma.CustomerPaymentsFindManyArgs,
   ): Promise<{ items: PaymentModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.customer_payments.findMany({
+      this.prisma.customerPayments.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.customer_payments.count({ where: query.where }),
+      this.prisma.customerPayments.count({ where: query.where }),
     ])
 
     return {

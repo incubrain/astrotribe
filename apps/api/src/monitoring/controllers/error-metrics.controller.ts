@@ -28,7 +28,7 @@ export class ErrorMetricController {
         errorType,
         severity,
       })
-    } catch (error) {
+    } catch (error: any) {
       throw new HttpException(
         error.message || 'Failed to retrieve error frequency',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -51,7 +51,7 @@ export class ErrorMetricController {
         serviceName,
         errorType,
       })
-    } catch (error) {
+    } catch (error: any) {
       throw new HttpException(
         error.message || 'Failed to retrieve error metrics',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -70,7 +70,7 @@ export class ErrorMetricController {
         minExecTime,
         topLevel,
       })
-    } catch (error) {
+    } catch (error: any) {
       throw new HttpException(
         error.message || 'Failed to retrieve error stats',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -86,7 +86,7 @@ export class ErrorMetricController {
   ) {
     try {
       return await this.metricsService.getErrorTrends(timeframe, serviceName)
-    } catch (error) {
+    } catch (error: any) {
       throw new HttpException(
         error.message || 'Failed to retrieve error trends',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,

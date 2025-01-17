@@ -37,7 +37,7 @@ export class PlanGuard implements CanActivate {
       requiredPlans,
     })
 
-    const userSubscription = await this.prisma.customer_subscriptions.findFirst({
+    const userSubscription = await this.prisma.customerSubscriptions.findFirst({
       where: {
         user_id: user.id,
         status: 'ACTIVE',

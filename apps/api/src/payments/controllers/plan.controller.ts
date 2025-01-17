@@ -7,8 +7,6 @@ import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { BaseController } from '@core/base/base.controller'
-
-import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 
 @Controller('payments/plans')
@@ -21,7 +19,7 @@ export class PlanController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('customer_subscription_plans')
+    super('CustomerSubscriptionPlans')
   }
 
   @Get()

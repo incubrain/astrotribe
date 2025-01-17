@@ -7,16 +7,16 @@ import { ContentStatusesModel } from '../models/content-statuses.model'
 import type { Prisma } from '@astronera/db'
 
 @Injectable()
-export class ContentStatusesService extends BaseService<'content_statuses'> {
+export class ContentStatusesService extends BaseService<'ContentStatuses'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('content_statuses')
+    super('ContentStatuses')
   }
 
   async findWithRelations(id: string): Promise<ContentStatusesModel | null> {
-    const result = await this.prisma.content_statuses.findUnique({
+    const result = await this.prisma.contentStatuses.findUnique({
       where: { id },
       include: {
         contents: true,
@@ -25,22 +25,22 @@ export class ContentStatusesService extends BaseService<'content_statuses'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.content_statusesDefaultArgs): Promise<ContentStatusesModel[]> {
-    const items = await this.prisma.content_statuses.findMany(params)
+  async findMany(params: Prisma.ContentStatusesDefaultArgs): Promise<ContentStatusesModel[]> {
+    const items = await this.prisma.contentStatuses.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllContentStatuses(
-    query: Prisma.content_statusesFindManyArgs,
+    query: Prisma.ContentStatusesFindManyArgs,
   ): Promise<{ items: ContentStatusesModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.content_statuses.findMany({
+      this.prisma.contentStatuses.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.content_statuses.count({ where: query.where }),
+      this.prisma.contentStatuses.count({ where: query.where }),
     ])
 
     return {

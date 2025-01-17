@@ -2,10 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "declaration": true,
     "module": "ESNext",
     "target": "ES2022",
     "outDir": "./dist",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": true,
     "rootDir": "./src",
     "baseUrl": ".",
     "types": ["node"],

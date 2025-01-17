@@ -7,12 +7,12 @@ import { PrismaService } from '@core/services/prisma.service'
 import { NewsModel } from '../models/news.model'
 
 @Injectable()
-export class NewsService extends BaseService<'news'> {
+export class NewsService extends BaseService<'News'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('news')
+    super('News')
   }
 
   async findWithRelations(id: string): Promise<NewsModel | null> {
@@ -29,13 +29,13 @@ export class NewsService extends BaseService<'news'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.newsDefaultArgs): Promise<NewsModel[]> {
+  async findMany(params: Prisma.NewsDefaultArgs): Promise<NewsModel[]> {
     const items = await this.prisma.news.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllNews(
-    query: Prisma.newsFindManyArgs,
+    query: Prisma.NewsFindManyArgs,
   ): Promise<{ items: NewsModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.news.findMany({

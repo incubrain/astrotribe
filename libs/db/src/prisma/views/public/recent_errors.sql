@@ -1,4 +1,5 @@
 SELECT
+  error_logs.id,
   error_logs.created_at,
   error_logs.service_name,
   error_logs.error_type,

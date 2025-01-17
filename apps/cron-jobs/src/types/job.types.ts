@@ -71,7 +71,7 @@ export interface JobSchedule {
 
 export interface JobHandlers<TInput, TProcessed, TOutput> {
   beforeProcess?: () => Promise<TInput[]>
-  processFunction: (rows: TInput[], job: QueueJob) => Promise<TProcessed[]>
+  processFunction: (rows: TInput[], job: any) => Promise<TProcessed[]>
   afterProcess?: (processedData: TProcessed[]) => Promise<TOutput[]>
   onSuccess?: (result: TOutput) => Promise<void>
   onError?: (error: Error) => Promise<void>

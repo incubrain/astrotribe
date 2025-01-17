@@ -39,7 +39,7 @@ export class ContentController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('contents')
+    super('Contents')
   }
 
   @Get()
@@ -72,7 +72,7 @@ export class ContentController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Contents' })
-  async createContents(@Body() data: Prisma.contentsCreateInput) {
+  async createContents(@Body() data: Prisma.ContentsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -84,7 +84,7 @@ export class ContentController extends BaseController {
   @ApiOperation({ summary: 'Update Contents' })
   async updateContents(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.contentsUpdateInput,
+    @Body() data: Prisma.ContentsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

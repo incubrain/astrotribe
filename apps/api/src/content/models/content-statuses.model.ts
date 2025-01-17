@@ -1,6 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
-import type { content_status } from '@astronera/db'
+import type { ContentStatus } from '@astronera/db'
 import { ContentModel, CategoryModel } from '@content'
 
 // Model interface
@@ -9,6 +9,6 @@ export interface ContentStatusesModel extends BaseModel {
   content_id: string
   notes?: string
   created_at?: Date
-  content_status: content_status
+  content_status: ContentStatus
   contents: ContentModel
 }

@@ -59,16 +59,13 @@ export class MetricsService {
     try {
       const data = {
         created_count: Math.max(0, Math.floor(Number(stats.created))),
+        completed_count: Math.max(0, Math.floor(Number(stats.completed))),
+        failed_count: Math.max(0, Math.floor(Number(stats.failed))),
         retry_count: Math.max(0, Math.floor(Number(stats.retry))),
         active_count: Math.max(0, Math.floor(Number(stats.active))),
-        completed_count: Math.max(0, Math.floor(Number(stats.completed))),
-        cancelled_count: Math.max(0, Math.floor(Number(stats.cancelled))),
-        failed_count: Math.max(0, Math.floor(Number(stats.failed))),
-        total_count: Math.max(0, Math.floor(Number(stats.all))),
-        updated_at: new Date(),
       }
 
-      await this.prisma.JobQueueStats.upsert({
+      await this.prisma.jobQueueStats.upsert({
         where: { queue_name: queueName },
         create: {
           queue_name: queueName,
@@ -77,16 +74,13 @@ export class MetricsService {
         update: data,
       })
     } catch (error: any) {
-      this.logger.error('Failed to track queue stats', {
-        error,
-        context: { queueName, stats },
-      })
+      this.logger.error('Failed to track queue stats', { error })
     }
   }
 
   // Add method to get historical stats
   async getQueueStatsHistory(queueName: string, hours: number = 24): Promise<any[]> {
-    return this.prisma.JobQueueStats.findMany({
+    return this.prisma.jobQueueStats.findMany({
       where: {
         queue_name: queueName,
         updated_at: {
@@ -99,101 +93,73 @@ export class MetricsService {
     })
   }
 
-  async trackJobExecutionMetrics(metrics: JobExecutionMetrics) {
+  async trackJobMetrics(jobName: string, jobId: string, metrics: JobMetricsData) {
     try {
-      const performanceData = metrics.performance
-        ? {
-            items_per_second: metrics.performance.itemsPerSecond,
-            avg_processing_time: metrics.performance.avgProcessingTime,
-            peak_memory_usage: metrics.performance.peakMemoryUsage,
-          }
-        : undefined
+      const duration = metrics.duration ? Math.max(0, Math.floor(metrics.duration)) : undefined
 
-      await this.prisma.JobMetrics.upsert({
+      await this.prisma.jobMetrics.upsert({
         where: {
           id: metrics.jobId,
           job_name: metrics.jobName,
         },
         create: {
-          job_id: metrics.jobId,
-          job_name: metrics.jobName,
+          job_id: jobId,
+          job_name: jobName,
           status: metrics.status,
-          started_at: metrics.startTime,
-          duration_ms: metrics.duration,
+          duration,
           items_processed: metrics.itemsProcessed,
-          error_message: metrics.error?.message,
-          error_stack: metrics.error?.stack,
-          metadata: {
-            ...metrics.metadata,
-            performance: performanceData,
-          },
+          metadata: metrics.metadata,
+          performance: metrics.performance,
         },
         update: {
           status: metrics.status,
-          duration_ms: metrics.duration,
+          duration,
           items_processed: metrics.itemsProcessed,
-          error_message: metrics.error?.message,
-          error_stack: metrics.error?.stack,
-          metadata: {
-            ...metrics.metadata,
-            performance: performanceData,
-          },
-          updated_at: new Date(),
+          metadata: metrics.metadata,
+          performance: metrics.performance,
         },
       })
     } catch (error: any) {
-      await this.logError('Failed to track job execution metrics', error, metrics)
+      this.logger.error('Failed to track job metrics', { error })
     }
   }
 
   async trackCircuitBreakerChange(jobName: string, metrics: CircuitBreakerMetrics) {
     this.logger.debug(`Tracking circuit breaker change: ${jobName}`, metrics)
     try {
-      await this.prisma.CircuitBreakerStates.upsert({
+      await this.prisma.circuitBreakerStates.upsert({
         where: { job_name: jobName },
         create: {
           job_name: jobName,
-          state: metrics.state,
-          failure_count: metrics.failures,
+          status: metrics.status,
+          failure_count: metrics.failureCount,
           last_failure: metrics.lastFailure,
-          last_success: metrics.lastSuccess,
-          updated_at: new Date(),
+          reset_timeout: metrics.resetTimeout,
         },
         update: {
-          state: metrics.state,
-          failure_count: metrics.failures,
+          status: metrics.status,
+          failure_count: metrics.failureCount,
           last_failure: metrics.lastFailure,
-          last_success: metrics.lastSuccess,
-          updated_at: new Date(),
+          reset_timeout: metrics.resetTimeout,
         },
       })
     } catch (error: any) {
-      await this.logError('Failed to track circuit breaker metrics', error, {
-        jobName,
-        metrics,
-      })
+      this.logger.error('Failed to track circuit breaker change', { error })
     }
   }
 
   async trackPerformanceMetrics(jobName: string, jobId: string, metrics: any) {
     try {
-      await this.prisma.JobMetrics.update({
+      await this.prisma.jobMetrics.update({
         where: {
           id: jobId,
         },
         data: {
-          metadata: {
-            performance: {
-              itemsPerSecond: metrics.itemsPerSecond,
-              avgProcessingTime: metrics.avgProcessingTime,
-              peakMemoryUsage: metrics.peakMemoryUsage,
-              batchMetrics: metrics.batchMetrics,
-            },
-          },
+          performance: metrics,
         },
       })
     } catch (error: any) {
-      await this.logError('Failed to track performance metrics', error, { jobName, jobId, metrics })
+      this.logger.error('Failed to track performance metrics', { error })
     }
   }
 
@@ -215,7 +181,7 @@ export class MetricsService {
     }
 
     try {
-      const metrics = await this.prisma.JobMetrics.findMany({
+      const metrics = await this.prisma.jobMetrics.findMany({
         where: {
           job_name: jobName,
           started_at: { gte: startDate },
@@ -284,7 +250,7 @@ export class MetricsService {
   }
 
   private async calculateJobDuration(jobId: string): Promise<number> {
-    const metric = await this.prisma.JobMetrics.findFirst({
+    const metric = await this.prisma.jobMetrics.findFirst({
       where: { job_id: jobId, status: 'active' },
     })
     return metric ? Date.now() - metric.started_at.getTime() : 0
@@ -293,7 +259,7 @@ export class MetricsService {
   async trackJobStart(jobName: string, jobId: string, metadata?: Record<string, any>) {
     this.logger.debug(`Tracking job start: ${jobName}`, { jobId, metadata })
     try {
-      await this.prisma.JobMetrics.create({
+      await this.prisma.jobMetrics.create({
         data: {
           job_id: jobId,
           job_name: jobName,
@@ -327,7 +293,7 @@ export class MetricsService {
   ) {
     this.logger.debug(`Tracking job success: ${jobName}`, { jobId, duration, result })
     try {
-      await this.prisma.JobMetrics.updateMany({
+      await this.prisma.jobMetrics.updateMany({
         where: {
           job_name: jobName,
           job_id: jobId,
@@ -363,7 +329,7 @@ export class MetricsService {
   ) {
     this.logger.debug(`Tracking job failure: ${jobName}`, { jobId, duration, error, metadata })
     try {
-      await this.prisma.JobMetrics.updateMany({
+      await this.prisma.jobMetrics.updateMany({
         where: {
           job_name: jobName,
           job_id: jobId,

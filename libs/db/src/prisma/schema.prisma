@@ -1,24 +1,22 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../generated/client"
-  previewFeatures = ["multiSchema", "postgresqlExtensions"]
+  previewFeatures = ["multiSchema", "postgresqlExtensions", "views"]
   binaryTargets   = ["native"]
   engineType      = "binary"
 }
 
 generator zod {
   provider                  = "pnpm exec zod-prisma-types"
-  output                    = "../generated/zod"
-  useDecimalJs              = "false"
   generateSelectHelpers     = "false"
-  addIncludeType            = "false"
+  createPartialTypes        = "false"
   createRelationValuesTypes = "false"
-  addInputTypeValidation    = "false"
   addSelectType             = "false"
-  validateWhereUniqueInput = "false"
-  createModelTypes         = "true"
-  createPartialTypes      = "false"
-  createInputTypes        = "false"
+  addInputTypeValidation    = "false"
+  createInputTypes          = "false"
+  addIncludeType            = "false"
+  validateWhereUniqueInput  = "false"
+  useDecimalJs              = "false"
+  createModelTypes          = "true"
 }
 
 datasource db {
@@ -61,6 +59,9 @@ datasource db {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 
@@ -1575,6 +1576,74 @@ model Workflows {
   workflow_jobs WorkflowJobs[]
 
   @@map("workflows")
+  @@schema("public")
+}
+
+view recent_errors {
+  id           String         @id @db.Uuid
+  created_at   DateTime?      @db.Timestamptz(6)
+  service_name String?        @db.VarChar(100)
+  error_type   ErrorType?
+  severity     ErrorSeverity?
+  message      String?
+  metadata     Json?
+
+  @@schema("public")
+}
+
+view error_stats {
+  id             String   @id @db.Uuid
+  calls          BigInt?
+  mean_exec_time Float?
+  max_exec_time  Float?
+  rows           BigInt?
+  query          String?
+  queryid        BigInt?
+  toplevel       Boolean?
+
+  @@schema("public")
+}
+
+view security_metrics {
+  time_bucket         DateTime @id @db.Timestamptz(6)
+  total_attempts      BigInt?
+  suspicious_attempts BigInt?
+  unique_ips          BigInt?
+  unique_referrers    BigInt?
+  high_attempt_count  BigInt?
+  max_attempts        Int?
+
+  @@schema("public")
+}
+
+view error_frequency {
+  service_name String?        @db.VarChar(100)
+  error_type   ErrorType?
+  severity     ErrorSeverity?
+  time_bucket  DateTime       @id @db.Timestamptz(6)
+  error_count  BigInt?
+
+  @@schema("public")
+}
+
+view slow_query_patterns {
+  query_id         String    @id
+  occurrence_count BigInt?
+  avg_exec_time    Float?
+  max_exec_time    Float?
+  first_seen       DateTime? @db.Timestamptz(6)
+  last_seen        DateTime? @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+view error_metrics {
+  time_bucket  DateTime       @id @db.Timestamptz(6)
+  service_name String?        @db.VarChar(100)
+  error_type   ErrorType?
+  severity     ErrorSeverity?
+  error_count  BigInt?
+
   @@schema("public")
 }
 

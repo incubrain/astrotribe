@@ -1,4 +1,11 @@
 SELECT
+  (
+    md5(
+      (
+        (pg_stat_statements.queryid) :: text || (pg_stat_statements.rows) :: text
+      )
+    )
+  ) :: uuid AS id,
   pg_stat_statements.calls,
   pg_stat_statements.mean_exec_time,
   pg_stat_statements.max_exec_time,

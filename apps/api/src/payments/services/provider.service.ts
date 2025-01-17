@@ -7,37 +7,37 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { ProviderModel } from '../models/provider.model'
 
 @Injectable()
-export class ProviderService extends BaseService<'payment_providers'> {
+export class ProviderService extends BaseService<'PaymentProviders'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('payment_providers')
+    super('PaymentProviders')
   }
 
   async findWithRelations(id: number): Promise<ProviderModel | null> {
-    const result = await this.prisma.payment_providers.findUnique({
+    const result = await this.prisma.paymentProviders.findUnique({
       where: { id },
     })
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.payment_providersFindManyArgs): Promise<ProviderModel[]> {
-    const items = await this.prisma.payment_providers.findMany(params)
+  async findMany(params: Prisma.PaymentProvidersFindManyArgs): Promise<ProviderModel[]> {
+    const items = await this.prisma.paymentProviders.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllProviders(
-    query: Prisma.payment_providersFindManyArgs,
+    query: Prisma.PaymentProvidersFindManyArgs,
   ): Promise<{ items: ProviderModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.payment_providers.findMany({
+      this.prisma.paymentProviders.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.payment_providers.count({ where: query.where }),
+      this.prisma.paymentProviders.count({ where: query.where }),
     ])
 
     return {

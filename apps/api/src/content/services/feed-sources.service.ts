@@ -7,16 +7,16 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { FeedSourceModel } from '../models/feed-sources.model'
 
 @Injectable()
-export class FeedSourceService extends BaseService<'feed_sources'> {
+export class FeedSourceService extends BaseService<'FeedSources'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('feed_sources')
+    super('FeedSources')
   }
 
   async findWithRelations(id: number): Promise<FeedSourceModel | null> {
-    const result = await this.prisma.feed_sources.findUnique({
+    const result = await this.prisma.feedSources.findUnique({
       where: { id },
       include: {
         content_sources: true,
@@ -26,22 +26,22 @@ export class FeedSourceService extends BaseService<'feed_sources'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.feed_sourcesDefaultArgs): Promise<FeedSourceModel[]> {
-    const items = await this.prisma.feed_sources.findMany(params)
+  async findMany(params: Prisma.FeedSourcesDefaultArgs): Promise<FeedSourceModel[]> {
+    const items = await this.prisma.feedSources.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllFeedSources(
-    query: Prisma.feed_sourcesFindManyArgs,
+    query: Prisma.FeedSourcesFindManyArgs,
   ): Promise<{ items: FeedSourceModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.feed_sources.findMany({
+      this.prisma.feedSources.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.feed_sources.count({ where: query.where }),
+      this.prisma.feedSources.count({ where: query.where }),
     ])
 
     return {

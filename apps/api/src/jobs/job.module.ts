@@ -3,12 +3,10 @@ import { JobConfigController } from './controllers/job-config.controller'
 import { JobConfigService } from './services/job-config.service'
 import { JobMetricController } from './controllers/job-metric.controller'
 import { JobMetricService } from './services/job-metric.service'
-import { AgentMonitoringController } from './controllers/agent.controller'
-import { AgentService } from './services/agent.service'
 
 @Module({
-  controllers: [JobConfigController, JobMetricController, AgentMonitoringController],
-  providers: [JobConfigService, JobMetricService, AgentService],
-  exports: [JobConfigService, JobMetricService, AgentService],
+  controllers: [JobConfigController, JobMetricController],
+  providers: [JobConfigService, JobMetricService],
+  exports: [JobConfigService, JobMetricService],
 })
 export class JobModule {}

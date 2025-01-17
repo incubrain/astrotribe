@@ -1,4 +1,6 @@
-import type { ErrorSeverity, ErrorType } from '@astronera/db'
+// Replacing db imports with any types
+type ErrorSeverity = any
+type ErrorType = any
 
 export interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
