@@ -43,6 +43,17 @@ RUN nx build @astronera/cms --configuration=production --skip-nx-cache
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
 
+# Create a startup script to handle migrations
+RUN echo '#!/bin/bash\n\
+echo "Forcing database migrations..."\n\
+NODE_ENV=production ./node_modules/.bin/strapi database:delete-soft-migrations || true\n\
+NODE_ENV=production ./node_modules/.bin/strapi database:migrate-force || true\n\
+NODE_ENV=production ./node_modules/.bin/strapi start\n\
+' > ./start.sh
+
+RUN chmod +x ./start.sh
+
 EXPOSE 1337
 
-CMD ["pnpm", "run", "start"]
+# Use the startup script instead of direct start
+CMD ["./start.sh"]
