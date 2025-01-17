@@ -23,7 +23,6 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
-COPY prisma ./prisma
 COPY theme ./theme
 COPY tsconfig.* ./
 COPY nx.json ./
