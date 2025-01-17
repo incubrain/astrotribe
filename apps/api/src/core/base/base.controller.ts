@@ -106,6 +106,24 @@ export abstract class BaseController {
     }
   }
 
+  async upsert(query: PaginatedQuery, data: unknown) {
+    const { ...filters } = query
+
+    try {
+      const result = await this.model.upsert({
+        where: {
+          ...filters,
+        },
+        update: data,
+        create: data,
+      })
+
+      return this.handleSuccess(result)
+    } catch (error: any) {
+      throw this.handleError(error)
+    }
+  }
+
   async remove(id: string) {
     try {
       const existing = await this.model.findUnique({ where: { id } })

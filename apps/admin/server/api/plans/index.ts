@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import * as Razorpay from 'razorpay'
+import Razorpay from 'razorpay'
 
 export default defineEventHandler(async (event) => {
   const { razorpayTestKey, razorpayTestSecret } = useRuntimeConfig()
@@ -8,7 +8,11 @@ export default defineEventHandler(async (event) => {
     key_id: razorpayTestKey!,
     key_secret: razorpayTestSecret,
   })
-  const plans = await razorpay.plans.all()
 
-  return { plans: plans.items, count: plans.count }
+  try {
+    const plans = await razorpay.plans.all()
+    return { plans: plans.items, count: plans.count }
+  } catch (error) {
+    console.error('Error Getting Plans From Razorpay', error)
+  }
 })
