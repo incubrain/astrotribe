@@ -1,10 +1,10 @@
+// composables/useApi.ts
 import { ref } from 'vue'
 import { useRuntimeConfig } from '#app'
 
 export function useApi() {
   const env = useRuntimeConfig().public
   const notification = useNotification()
-  const supabase = useSupabaseClient()
 
   const url = ref<string>(String(env.apiURL ?? 'http://localhost:8080'))
   const logs = ref<string[]>([])
@@ -14,39 +14,16 @@ export function useApi() {
     logs.value.unshift(`[${timestamp}] ${message}`)
   }
 
-  const checkSession = async (): Promise<boolean> => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    if (!session) {
-      notification.error({
-        summary: 'Authentication Error',
-        message: 'Please sign in to use the API.',
-      })
-      return false
-    }
-    return true
-  }
-
   const createApi = () => {
     return $fetch.create({
-      baseURL: url.value,
+      baseURL: '/api/proxy',
       credentials: 'include',
       async onRequest({ options }) {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession()
-
-        if (!session?.access_token) {
-          throw new Error('No authentication session found')
-        }
-
         options.headers = {
-          'Authorization': `Bearer ${session.access_token}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Origin': window.location.origin,
+          'X-Target-URL': url.value,
         }
       },
       async onResponse({ response }) {
@@ -75,8 +52,6 @@ export function useApi() {
       body?: any
     },
   ) => {
-    if (!(await checkSession())) return
-
     try {
       const api = createApi()
       addLog(`Testing ${options.method} ${path}`)
@@ -98,7 +73,6 @@ export function useApi() {
     logs,
     addLog,
     createApi,
-    checkSession,
     testEndpoint,
   }
 }
