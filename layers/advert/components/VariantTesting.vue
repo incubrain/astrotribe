@@ -1,6 +1,5 @@
 <!-- components/AdsVariantTesting.vue -->
 <script setup lang="ts">
-import type { Ad } from '~/types/ads'
 
 interface Props {
   adId: string // Changed from sponsorId to adId to match our schema
