@@ -6,7 +6,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { Cron } from '@nestjs/schedule'
 import { LogGateway } from '../gateways/log.gateway'
-import type { LogEntry } from '@ib/cache'
+import type { ErrorLogEntry } from '@ib/logger'
 import type { PaginatedQuery } from '@types'
 
 @Injectable()
@@ -52,7 +52,7 @@ export class LogService implements OnModuleInit {
       // Get all logs
       const pipeline = this.redis.pipeline()
       keys.forEach((key) => pipeline.hgetall(key))
-      const results = await pipeline.exec()
+      const results: any = await pipeline.exec()
       if (!results) return []
 
       // Filter and transform logs
@@ -90,7 +90,7 @@ export class LogService implements OnModuleInit {
     }
   }
 
-  async processLog(log: LogEntry): Promise<void> {
+  async processLog(log: ErrorLogEntry): Promise<void> {
     try {
       const logKey = `${this.LOG_KEY_PREFIX}${log.created_at}`
 
@@ -130,7 +130,7 @@ export class LogService implements OnModuleInit {
         },
       }
 
-      results?.forEach(([err, data]) => {
+      results?.forEach(([err, data]: [err: any, data: any]) => {
         if (err || !data) return
         const created_at = parseInt(data.created_at)
         if (created_at < cutoff) return
@@ -153,7 +153,7 @@ export class LogService implements OnModuleInit {
       const hourAgo = Date.now() - 3600000
       const keys = await this.redis.keys(`${this.LOG_KEY_PREFIX}*`)
 
-      const logsToProcess = await Promise.all(
+      const logsToProcess: any = await Promise.all(
         keys.map(async (key) => {
           const log = await this.redis.hgetall(key)
           return { key, ...log }
@@ -170,8 +170,8 @@ export class LogService implements OnModuleInit {
 
       // Store in PostgreSQL
       await Promise.all(
-        Object.values(groupedLogs).map(async (logs: any[]) => {
-          await this.prisma.error_logs.createMany({
+        (Object.values(groupedLogs) as any[][]).map(async (logs: any[]) => {
+          await this.prisma.errorLogs.createMany({
             data: logs.map((log) => ({
               service_name: log.service,
               severity: this.mapLogLevelToSeverity(log.level),
@@ -179,6 +179,7 @@ export class LogService implements OnModuleInit {
               metadata: log.metadata ? JSON.parse(log.metadata) : {},
               created_at: new Date(parseInt(log.created_at)),
               environment: process.env.NODE_ENV || 'development',
+              error_type: log.error_type || 'unknown', // Add this line
             })),
           })
         }),
@@ -245,7 +246,7 @@ export class LogService implements OnModuleInit {
     const { skip, take } = this.paginationService.getSkipTake({ page, pageSize })
 
     const [logs, total] = await Promise.all([
-      this.prisma.error_logs.findMany({
+      this.prisma.errorLogs.findMany({
         where: {
           created_at: {
             gte: from,
@@ -258,7 +259,7 @@ export class LogService implements OnModuleInit {
         skip,
         take,
       }),
-      this.prisma.error_logs.count({
+      this.prisma.errorLogs.count({
         where: {
           created_at: {
             gte: from,
@@ -279,7 +280,7 @@ export class LogService implements OnModuleInit {
 
   async getErrorPatterns() {
     try {
-      const patterns = await this.prisma.error_logs.groupBy({
+      const patterns = await this.prisma.errorLogs.groupBy({
         by: ['error_hash', 'error_pattern'],
         where: {
           is_new_pattern: true,
@@ -300,7 +301,7 @@ export class LogService implements OnModuleInit {
       return {
         patterns: await Promise.all(
           patterns.map(async (pattern) => {
-            const example = await this.prisma.error_logs.findFirst({
+            const example = await this.prisma.errorLogs.findFirst({
               where: { error_hash: pattern.error_hash },
               select: {
                 message: true,

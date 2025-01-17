@@ -4,7 +4,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@supabase/supabase-js'
-import { app_role_enum } from '@astronera/db'
 import { CustomLogger } from '@core/logger/custom.logger'
 import * as jwt from 'jsonwebtoken'
 import { PrismaService } from './prisma.service'
@@ -48,7 +47,7 @@ export class PermissionService implements OnModuleInit {
 
   private async loadRoleHierarchy() {
     try {
-      const hierarchyData = await this.prisma.role_hierarchy.findMany()
+      const hierarchyData = await this.prisma.roleHierarchy.findMany()
 
       this.logger.log(`fetching role hierarchy for ${this.roleHierarchyCache.size} roles`)
       hierarchyData.forEach(({ parent_role, child_role }) => {

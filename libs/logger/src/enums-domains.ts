@@ -6,7 +6,15 @@ const CONTENT_DOMAINS = ['content', 'blog', 'news', 'feeds'] as const
 const SOCIAL_DOMAINS = ['social', 'notifications'] as const
 const MONITORING_DOMAINS = ['monitoring', 'error-logs', 'metrics'] as const
 const SYSTEM_DOMAINS = ['database', 'redis', 'server-jobs', 'websocket'] as const
-const API_DOMAINS = ['monitoring', 'cron', 'agents', 'validation', 'filter', 'logging'] as const
+const API_DOMAINS = [
+  'monitoring',
+  'cron',
+  'agents',
+  'validation',
+  'filter',
+  'logging',
+  'webhook',
+] as const
 const JOBS_DOMAINS = ['news_links', 'job_events', 'job_versions', 'job_shutdown'] as const
 const URLS = ['url_classifier', 'url_spider'] as const
 const SCRAPERS = ['scraper', 'crawler', 'spider'] as const

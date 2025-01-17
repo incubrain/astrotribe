@@ -7,16 +7,16 @@ import { PrismaService } from '@core/services/prisma.service'
 import { ResearchEmbeddingModel } from '../models/research-embeddings.model'
 
 @Injectable()
-export class ResearchEmbeddingsService extends BaseService<'research_embeddings'> {
+export class ResearchEmbeddingsService extends BaseService<'ResearchEmbeddings'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('research_embeddings')
+    super('ResearchEmbeddings')
   }
 
   async findWithRelations(id: number): Promise<ResearchEmbeddingModel | null> {
-    const result = await this.prisma.research_embeddings.findUnique({
+    const result = await this.prisma.researchEmbeddings.findUnique({
       where: { id },
       include: {
         embedding_reviews: true,
@@ -26,22 +26,22 @@ export class ResearchEmbeddingsService extends BaseService<'research_embeddings'
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.research_embeddingsDefaultArgs): Promise<ResearchEmbeddingModel[]> {
-    const items = await this.prisma.research_embeddings.findMany(params)
+  async findMany(params: Prisma.ResearchEmbeddingsFindManyArgs): Promise<ResearchEmbeddingModel[]> {
+    const items = await this.prisma.researchEmbeddings.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllResearchEmbeddings(
-    query: Prisma.research_embeddingsFindManyArgs,
+    query: Prisma.ResearchEmbeddingsFindManyArgs,
   ): Promise<{ items: ResearchEmbeddingModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.research_embeddings.findMany({
+      this.prisma.researchEmbeddings.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.research_embeddings.count({ where: query.where }),
+      this.prisma.researchEmbeddings.count({ where: query.where }),
     ])
 
     return {

@@ -35,7 +35,7 @@ export class JobConfigController extends BaseController {
     protected readonly logger: CustomLogger,
   ) {
     // Match the Prisma model name you intend to use
-    super('job_configs')
+    super('JobConfigs')
   }
 
   @Get()
@@ -69,7 +69,7 @@ export class JobConfigController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new job config (cron-job)' })
-  async createJobConfig(@Body() data: Prisma.job_configsCreateInput) {
+  async createJobConfig(@Body() data: Prisma.JobConfigsCreateInput) {
     try {
       return await this.create(data)
     } catch (error: any) {
@@ -81,7 +81,7 @@ export class JobConfigController extends BaseController {
   @ApiOperation({ summary: 'Update an existing job config' })
   async updateJobConfig(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.job_configsUpdateInput,
+    @Body() data: Prisma.JobConfigsUpdateInput,
   ) {
     try {
       return await this.update(id, data)

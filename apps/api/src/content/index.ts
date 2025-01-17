@@ -1,4 +1,8 @@
-// Auto-generated barrel file
+/**
+ * @file Auto-generated barrel file
+ * @generated
+ */
+
 export * from './models/categories.model'
 export * from './models/content-categories.model'
 export * from './models/content-source-visits.model'

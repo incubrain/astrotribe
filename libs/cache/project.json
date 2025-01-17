@@ -1,34 +1,18 @@
 {
   "name": "@ib/cache",
-  "version": "0.0.1",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/cache",
+  "implicitDependencies": ["@astronera/db"],
+  "sourceRoot": "libs/cache/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite build",
+        "cwd": "libs/cache"
+      },
+      "dependsOn": [{ "projects": ["@astronera/db"], "target": "build" }]
     }
-  },
-  "files": ["dist"],
-  "scripts": {
-    "lint": "eslint 'src/**/*.{js,ts}'",
-    "test": "vitest run",
-    "dev": "tsc -w",
-    "clean": "rm -rf dist",
-    "build": "tsc && node build.js"
-  },
-  "dependencies": {
-    "@astronera/db": "workspace:*",
-    "ioredis": "^5.3.2",
-    "ms": "^2.1.3"
-  },
-  "devDependencies": {
-    "@types/ms": "^0.7.34",
-    "@types/node": "^20.10.5",
-    "esbuild": "^0.20.0",
-    "typescript": "^5.3.3"
   }
 }

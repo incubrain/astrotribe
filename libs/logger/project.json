@@ -8,26 +8,17 @@
     "types": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc --emitDeclarationOnly",
+        "command": "tsc --emitDeclarationOnly --traceResolution",
         "cwd": "libs/logger"
       }
     },
     "build": {
       "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "output": "libs/logger/dist",
       "options": {
         "outputPath": "libs/logger/dist"
       },
-      "dependsOn": [
-        {
-          "target": "types",
-          "projects": "self"
-        },
-        {
-          "target": "build",
-          "projects": ["@astronera/db", "@ib/cache"]
-        }
-      ]
+      "dependsOn": [{ "target": "build", "projects": ["@ib/cache"] }]
     }
   }
 }

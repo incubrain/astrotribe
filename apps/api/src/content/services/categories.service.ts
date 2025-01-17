@@ -7,12 +7,12 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { CategoryModel } from '../models/categories.model'
 
 @Injectable()
-export class CategoriesService extends BaseService<'categories'> {
+export class CategoriesService extends BaseService<'Categories'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('categories')
+    super('Categories')
   }
 
   async findWithRelations(id: number): Promise<CategoryModel | null> {
@@ -28,13 +28,13 @@ export class CategoriesService extends BaseService<'categories'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.categoriesDefaultArgs): Promise<CategoryModel[]> {
+  async findMany(params: Prisma.CategoriesDefaultArgs): Promise<CategoryModel[]> {
     const items = await this.prisma.categories.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllCategories(
-    query: Prisma.categoriesFindManyArgs,
+    query: Prisma.CategoriesFindManyArgs,
   ): Promise<{ items: CategoryModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.categories.findMany({

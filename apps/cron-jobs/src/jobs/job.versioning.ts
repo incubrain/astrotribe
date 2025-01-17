@@ -1,12 +1,11 @@
 // src/jobs/versioning/job-version.service.ts
-import { JsonValue } from '@astronera/db/runtime/library'
 import { CustomLogger, PrismaService } from '@core'
 import { JobConfig } from '@types'
 
 export interface JobVersion {
   version: string
   changes: string[]
-  config: JsonValue
+  config: any
   created_at: Date
 }
 
@@ -64,7 +63,7 @@ export class JobVersionService {
       const serializableConfig = this.createSerializableConfig(config)
 
       // Use upsert to handle both creation and updates
-      await this.prisma.job_versions.upsert({
+      await this.prisma.jobVersions.upsert({
         where: {
           job_name_version: {
             job_name: jobName,
@@ -90,7 +89,7 @@ export class JobVersionService {
       // Check if it's a schema issue
       if (error.code === 'P2009') {
         this.logger.error(
-          'Schema validation error - check if job_versions table has correct structure',
+          'Schema validation error - check if jobVersions table has correct structure',
           error,
         )
       }
@@ -99,9 +98,9 @@ export class JobVersionService {
     }
   }
 
-  async getJobVersions(jobName: string): Promise<JobVersion[]> {
+  async getjobVersions(jobName: string): Promise<JobVersion[]> {
     try {
-      return await this.prisma.job_versions.findMany({
+      return await this.prisma.jobVersions.findMany({
         where: { job_name: jobName },
         orderBy: { created_at: 'desc' },
       })
@@ -113,7 +112,7 @@ export class JobVersionService {
 
   async getLatestVersion(jobName: string): Promise<JobVersion | null> {
     try {
-      return await this.prisma.job_versions.findFirst({
+      return await this.prisma.jobVersions.findFirst({
         where: { job_name: jobName },
         orderBy: { created_at: 'desc' },
       })
@@ -125,7 +124,7 @@ export class JobVersionService {
 
   async rollbackVersion(jobName: string, targetVersion: string) {
     try {
-      const version = await this.prisma.job_versions.findFirst({
+      const version = await this.prisma.jobVersions.findFirst({
         where: { job_name: jobName, version: targetVersion },
       })
 
@@ -134,7 +133,7 @@ export class JobVersionService {
       }
 
       const config = version.config as any
-      await this.prisma.job_configs.update({
+      await this.prisma.jobConfigs.update({
         where: { name: jobName },
         data: {
           priority: config.priority,

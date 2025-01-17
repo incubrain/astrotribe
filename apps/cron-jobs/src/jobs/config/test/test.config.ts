@@ -1,161 +1,127 @@
-import { JobConfig, JobServices } from '@types'
-import { faker } from '@faker-js/faker'
-// src/jobs/modules/test/types.ts
-export interface TestJobInput {
-  batchId: string
-  items: number[]
+import { JobServices } from '@types'
+import { JobFactory } from '../../job.factory'
+
+interface TestJobInput {
+  id: number
+  value: string
 }
 
-export interface TestJobProcessed {
-  processedItems: number[]
+interface TestJobProcessed {
+  id: number
+  processedValue: string
+  status: string
   processingTime: number
-  status: 'success' | 'partial' | 'failed'
 }
 
-export interface TestJobOutput {
+interface TestJobOutput {
   totalProcessed: number
   averageProcessingTime: number
   successRate: number
 }
 
-export interface TestJobOptions {
+interface TestJobOptions {
   name: string
   scheduleEnabled?: boolean
-  scheduleType?: 'interval' | 'daily' | 'weekly' | 'monthly' | 'custom'
+  scheduleType?: 'cron' | 'interval'
   customCron?: string
-  simulateErrors?: boolean
 }
 
-export const createTestJob = (
-  services: JobServices,
-  options: TestJobOptions,
-): JobConfig<TestJobInput, TestJobProcessed, TestJobOutput> => {
+export function createTestJob(services: JobServices, options: TestJobOptions) {
   const { logger } = services
 
-  return {
+  return JobFactory.createJob<TestJobInput, TestJobProcessed, TestJobOutput>({
     name: options.name,
     domain: 'test',
     version: '1.0.0',
-    changes: ['Initial test job implementation'],
-    priority: 'normal',
-    batchSize: 10,
-    processSize: 2,
-    timeout: 5000,
-    retryLimit: 2,
+    changes: ['Initial version'],
     schedule: {
       type: options.scheduleType || 'interval',
       customCron: options.customCron || '*/15 * * * *',
       enabled: options.scheduleEnabled ?? false,
     },
-    circuitBreaker: {
-      enabled: true,
-      failureThreshold: 5,
-      resetTimeout: 60000,
-    },
     handlers: {
-      beforeProcess: async (): Promise<TestJobInput[]> => {
+      beforeProcess: async () => {
         logger.info(`[${options.name}] Preparing test data`)
         return [
-          {
-            batchId: faker.string.uuid(),
-            items: Array.from({ length: 5 }, () => faker.number.int({ min: 1, max: 100 })),
-          },
+          { id: 1, value: 'test1' },
+          { id: 2, value: 'test2' },
+          { id: 3, value: 'test3' },
         ]
       },
-      processFunction: async (input: any[], job: any) => {
+      processFunction: async (input: TestJobInput[], job: any) => {
         logger.info(`[${options.name}] Processing items`, { jobId: job.id })
 
         const startTime = Date.now()
-        await new Promise((resolve) =>
-          setTimeout(resolve, faker.number.int({ min: 100, max: 1000 })),
-        )
-
-        if (options.simulateErrors && faker.number.int({ min: 1, max: 10 }) === 1) {
-          throw new Error('Simulated random processing error')
-        }
-
-        const processedItems = input.map((item) => {
-          if (faker.number.int({ min: 1, max: 10 }) > 8) {
-            return 0 // Simulate failed item
-          }
-          return item * 2
-        })
-
-        const status = processedItems.every((item) => item > 0)
-          ? 'success'
-          : processedItems.some((item) => item > 0)
-            ? 'partial'
-            : 'failed'
-
-        return {
-          processedItems,
+        const processedItems = input.map((item) => ({
+          id: item.id,
+          processedValue: `processed_${item.value}`,
+          status: 'success',
           processingTime: Date.now() - startTime,
-          status,
-        }
+        }))
+
+        return processedItems
       },
-      afterProcess: async (processed) => {
+      afterProcess: async (processed: TestJobProcessed[]) => {
         logger.info(`[${options.name}] Finalizing processing`, {
-          status: processed.status,
-          processingTime: processed.processingTime,
+          count: processed.length,
         })
 
-        const successfulItems = processed.processedItems.filter((item) => item > 0)
+        const successfulItems = processed.filter((item) => item.status === 'success')
+        const totalTime = processed.reduce((sum, item) => sum + item.processingTime, 0)
 
-        return {
-          totalProcessed: processed.processedItems.length,
-          averageProcessingTime: processed.processingTime / processed.processedItems.length,
-          successRate: (successfulItems.length / processed.processedItems.length) * 100,
-        }
+        return [
+          {
+            totalProcessed: processed.length,
+            averageProcessingTime: totalTime / processed.length,
+            successRate: (successfulItems.length / processed.length) * 100,
+          },
+        ]
       },
       onError: async (error) => {
-        logger.error(`[${options.name}] Error during execution`, { error })
+        logger.error(`[${options.name}] Job failed`, { error })
       },
     },
-  }
+  })
 }
 
-export const testModules: JobModule[] = [
+export const testModules = [
   {
     name: 'test_frequent',
-    createJob: (services) =>
+    createJob: (services: JobServices) =>
       createTestJob(services, {
         name: 'test_frequent_job',
         scheduleEnabled: true,
         scheduleType: 'interval',
-        customCron: '*/5 * * * *',
-        simulateErrors: true,
       }),
   },
   {
     name: 'test_daily',
-    createJob: (services) =>
+    createJob: (services: JobServices) =>
       createTestJob(services, {
         name: 'test_daily_job',
         scheduleEnabled: true,
-        scheduleType: 'daily',
-        customCron: '0 9 * * *',
+        scheduleType: 'cron',
+        customCron: '0 0 * * *',
       }),
   },
   {
     name: 'test_weekly',
-    createJob: (services) =>
+    createJob: (services: JobServices) =>
       createTestJob(services, {
         name: 'test_weekly_job',
         scheduleEnabled: true,
-        scheduleType: 'weekly',
-        customCron: '0 12 * * MON',
+        scheduleType: 'cron',
+        customCron: '0 0 * * 0',
       }),
   },
 ]
 
-export const monitoringTestModule: JobModule = {
+export const monitoringTestModule = {
   name: 'monitoring_test',
-  createJob: (services) =>
+  createJob: (services: JobServices) =>
     createTestJob(services, {
       name: 'monitoring_test_job',
       scheduleEnabled: true,
       scheduleType: 'interval',
-      customCron: '*/30 * * * *',
-      simulateErrors: false,
     }),
 }

@@ -41,7 +41,7 @@ export class ErrorMetricService {
           }),
       }
 
-      const frequency = await this.prisma.ErrorFrequency.findMany({
+      const frequency = await this.prisma.error_frequency.findMany({
         where,
         orderBy: { time_bucket: 'desc' },
       })
@@ -73,11 +73,11 @@ export class ErrorMetricService {
       }
 
       const [metrics, totalErrors] = await Promise.all([
-        this.prisma.ErrorMetrics.findMany({
+        this.prisma.error_metrics.findMany({
           where,
           orderBy: { time_bucket: 'desc' },
         }),
-        this.prisma.ErrorMetrics.aggregate({
+        this.prisma.error_metrics.aggregate({
           where,
           _sum: { error_count: true },
         }),
@@ -101,7 +101,7 @@ export class ErrorMetricService {
         ...(topLevel !== undefined && { toplevel: topLevel }),
       }
 
-      const stats = await this.prisma.ErrorStats.findMany({
+      const stats = await this.prisma.error_stats.findMany({
         where,
         orderBy: { mean_exec_time: 'desc' },
       })
@@ -125,12 +125,12 @@ export class ErrorMetricService {
         '30d': { days: 30, interval: 'day' },
       }
 
-      const { hours, days } = intervals[timeframe]
+      const { hours, days } = intervals[timeframe] as { hours?: number; days?: number; interval: string }
       const startDate = new Date()
       if (hours) startDate.setHours(startDate.getHours() - hours)
       if (days) startDate.setDate(startDate.getDate() - days)
 
-      const trends = await this.prisma.ErrorMetrics.groupBy({
+      const trends = await this.prisma.error_metrics.groupBy({
         by: ['severity', 'time_bucket'],
         where: {
           time_bucket: { gte: startDate },

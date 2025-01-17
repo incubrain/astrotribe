@@ -1,3 +1,26 @@
+import { Service } from '@ib/logger'
+
+export type DomainsForService<T extends Service> = T extends Service.JOBS
+  ?
+      | 'test'
+      | 'circuit_breaker'
+      | 'api'
+      | 'errors'
+      | 'metrics'
+      | 'analytics'
+      | 'jobs'
+      | 'news_links'
+      | 'job_events'
+      | 'job_versions'
+      | 'job_shutdown'
+      | 'url_classifier'
+      | 'url_spider'
+      | 'scraper'
+      | 'crawler'
+      | 'spider'
+      | 'news'
+  : never
+
 // Original interfaces remain the same
 export enum Priority {
   Critical = 100,

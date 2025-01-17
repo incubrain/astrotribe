@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "#layers/*": ["layers/*"],
-      "@ib/*": ["libs/*/src"]
+      "@ib/*": ["libs/*/src"],
+      "@astronera/*": ["libs/*/src/index.ts"],
     }
   },
   "references": [
@@ -34,7 +35,8 @@
     { "path": "libs/cache" },
     { "path": "libs/db" },
     { "path": "libs/core" },
-    { "path": "libs/testing" }
+    { "path": "libs/testing" },
+    { "path": "apps/api" }
   ],
   "include": ["prettier.config.mjs"],
   "exclude": ["node_modules", "dist"]

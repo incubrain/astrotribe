@@ -33,7 +33,7 @@
     "dev:back": "NUXT_MULTI_APP=true pnpm nx run-many -t serve -p @astronera/api,@astronera/cron-jobs --parallel",
     "dev:all": "NUXT_MULTI_APP=true pnpm nx run-many -t serve -p @astronera/auth,@astronera/app,@astronera/admin,@astronera/api --parallel --verbose",
     "docker:all": "pnpx tsx ./ci/2.build-docker-containers.ts",
-    "build:libs": "pnpm nx run-many -t build -p @ib/testing,@ib/logger,@ib/cache --verbose",
+    "build:libs": "pnpm nx run-many -t build -p @astronera/db,@ib/logger,@ib/cache --verbose",
     "build:layers": "scripts/build-layers.sh",
     "build:auth": "nx build @astroneraauth",
     "build:admin": "nx build @astronera/admin",
@@ -62,13 +62,14 @@
     "ib": "pnpx tsx cli/index.ts"
   },
   "dependencies": {
+    "@astronera/db": "workspace:*",
+    "@ib/cache": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@formbricks/js": "^3.0.1",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
-    "@ib/cache": "workspace:*",
-    "@ib/logger": "workspace:*",
     "@iconify-json/game-icons": "^1.2.0",
     "@iconify-json/material-symbols": "^1.2.1",
     "@iconify-json/mdi": "^1.2.0",
@@ -112,7 +113,6 @@
     "@swc/helpers": "~0.5.11",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "22.10.3",
-    "@vitejs/plugin-vue": "^5.2.1",
     "@vueuse/core": "^12.3.0",
     "@vueuse/integrations": "^12.3.0",
     "@vueuse/nuxt": "^12.3.0",
@@ -122,7 +122,6 @@
     "chalk": "^5.3.0",
     "change-case": "^5.4.4",
     "chart.js": "^4.4.4",
-    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "colors": "^1.4.0",
     "commander": "^12.1.0",
@@ -146,6 +145,7 @@
     "ioredis": "^5.4.2",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "murmurhash": "^2.0.1",
     "node-lame": "^1.3.2",
     "nuxt": "^3.15.0",
@@ -182,9 +182,6 @@
     "ts-morph": "^25.0.0",
     "typescript": "^5.6.3",
     "uuid": "^10.0.0",
-    "vite": "^6.0.7",
-    "vite-plugin-dts": "~4.4.0",
-    "vite-tsconfig-paths": "^5.0.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
     "vue-tsc": "~2.2.0",
@@ -194,6 +191,9 @@
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@faker-js/faker": "^9.3.0",
+    "@grpc/proto-loader": "^0.7.13",
+    "@nestjs/cli": "^10.0.0",
+    "@nestjs/schematics": "^10.0.1",
     "@nuxt/devtools": "^1.0.0",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/test-utils": "^3.14.4",
@@ -202,6 +202,8 @@
     "@nx/eslint": "20.3.0",
     "@nx/eslint-plugin": "20.3.0",
     "@nx/js": "20.3.0",
+    "@nx/nest": "20.3.0",
+    "@nx/node": "^20.3.0",
     "@nx/rollup": "20.3.0",
     "@nx/vite": "20.3.0",
     "@swc-node/register": "~1.10.9",
@@ -222,12 +224,14 @@
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
     "@vite-pwa/nuxt": "^0.10.5",
+    "@vitejs/plugin-vue": "^5.2.1",
     "@vitest/coverage-v8": "^2.1.5",
     "@vitest/ui": "^2.1.5",
     "@vue/eslint-config-prettier": "10.1.0",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.20",
     "changelogen": "^0.5.7",
+    "class-transformer": "^0.5.1",
     "cypress": "^13.13.0",
     "depcheck": "^1.4.7",
     "ejs": "^3.1.10",
@@ -241,6 +245,7 @@
     "inquirer": "^12.1.0",
     "jscpd": "^4.0.5",
     "jsdom": "~22.1.0",
+    "jsonc-parser": "^3.3.1",
     "msw": "^2.6.5",
     "nuxi": "^3.17.2",
     "nx": "20.3.0",
@@ -248,20 +253,36 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "repomix": "^0.2.2",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "ts-loader": "^9.5.2",
     "tsx": "^4.7.0",
     "typescript-eslint": "^8.0.0",
+    "vite": "^5.4.11",
+    "vite-plugin-dts": "~4.4.0",
     "vite-plugin-eslint2": "^5.0.3",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.5",
     "vitest-mock-extended": "^2.0.2",
     "vue-advanced-cropper": "^2.8.9",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1"
   },
   "resolutions": {
     "cookie": "0.7.2"
   },
   "pnpm": {
     "overrides": {
-      "vue-tsc": "~2.1.6"
+      "vue-tsc": "~2.1.6",
+      "@astronera/db": "workspace:*",
+      "@ib/logger": "workspace:*",
+      "@ib/cache": "workspace:*"
+    },
+    "peerDependencyRules": {
+      "allowAny": [
+        "@astronera/*",
+        "@ib/*"
+      ]
     }
   }
 }

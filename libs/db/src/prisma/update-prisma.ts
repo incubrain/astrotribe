@@ -3,6 +3,8 @@ import fs from 'fs/promises'
 import path from 'path'
 import dotenv from 'dotenv'
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
+
 const SCHEMA_PATH = path.join(__dirname, 'schema.prisma')
 dotenv.config({ path: path.join(__dirname, '../../../../../.env') })
 
@@ -12,6 +14,87 @@ const TYPE_MAPPINGS = {
   'research_embeddings.embedding': 'Unsupported("vector")',
   'searches.embedding': 'Unsupported("vector")',
   'table_query_performance.avg_duration': 'Unsupported("interval")',
+}
+
+async function updateViews(schemaContent: string): Promise<string> {
+  console.log('\nUpdating views...')
+  const lines = schemaContent.split('\n')
+  const updatedLines: string[] = []
+  let insideView = false
+  let viewBuffer: string[] = []
+  let hasValidIdColumn = false
+  let currentViewName = ''
+
+  for (const line of lines) {
+    const trimmedLine = line.trim()
+
+    // Skip the invalid unique identifier comment for views
+    if (
+      trimmedLine.startsWith('/// The underlying view does not contain a valid unique identifier')
+    ) {
+      continue
+    }
+
+    // Start of a view block
+    if (trimmedLine.startsWith('view ')) {
+      insideView = true
+      viewBuffer = [line]
+      hasValidIdColumn = false
+      currentViewName = trimmedLine.split(' ')[1]
+      console.log(`\nProcessing view: ${currentViewName}`)
+      continue
+    }
+
+    // Inside a view block
+    if (insideView) {
+      // Skip @@ignore directive
+      if (trimmedLine === '@@ignore') {
+        continue
+      }
+
+      // Check for any column with @id
+      if (trimmedLine.includes(' @id')) {
+        console.log(`Found ID column in ${currentViewName} with @id:`, trimmedLine)
+        hasValidIdColumn = true
+        viewBuffer.push(line)
+        continue
+      }
+
+      // Check for potential ID columns that need @id added
+      if (
+        (trimmedLine.startsWith('id ') && trimmedLine.includes('@db.Uuid')) ||
+        trimmedLine.startsWith('time_bucket ') ||
+        trimmedLine.startsWith('query_id ')
+      ) {
+        console.log(`Found potential ID column in ${currentViewName}:`, trimmedLine)
+        hasValidIdColumn = true
+
+        // Make column non-optional and add @id if missing
+        const updatedLine = line.replace(/(\w+\s+[^?@\s]+)\??(\s+@[^@]*)?(\s*)$/, '$1 @id$2$3')
+        console.log(`- Updated to:`, updatedLine.trim())
+        viewBuffer.push(updatedLine)
+        continue
+      }
+
+      // End of a view block
+      if (trimmedLine === '}') {
+        insideView = false
+        console.log(`End of view ${currentViewName}:`)
+        console.log(`- Has valid ID column: ${hasValidIdColumn}`)
+
+        updatedLines.push(...viewBuffer)
+        updatedLines.push(line)
+        continue
+      }
+
+      viewBuffer.push(line)
+    } else {
+      // Add non-view lines directly
+      updatedLines.push(line)
+    }
+  }
+
+  return updatedLines.join('\n')
 }
 
 function snakeToPascalCase(str: string): string {
@@ -225,6 +308,10 @@ async function updateSchema(): Promise<void> {
             enum ${pascalName} {\n  @@map("${name}")`
       },
     )
+
+    // 5. Update views before writing the file
+    console.log('Updating views...')
+    schemaContent = await updateViews(schemaContent)
 
     console.log('Writing updated schema...')
     await fs.writeFile(SCHEMA_PATH, schemaContent, 'utf8')

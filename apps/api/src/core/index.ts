@@ -1,4 +1,10 @@
-// Auto-generated barrel file
+/**
+ * @file Auto-generated barrel file
+ * @generated
+ */
+
+export * from './base/base.dto'
+export * from './base/base.gateway'
 export * from './base/base.model'
 export * from './config/configuration'
 export * from './config/domain-config'

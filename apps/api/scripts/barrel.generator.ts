@@ -1,27 +1,20 @@
-// scripts/barrel.generator.ts
+import { fileURLToPath } from 'url'
 import * as fs from 'fs'
 import * as path from 'path'
-import { fileURLToPath } from 'url'
 import { CustomLogger } from '../src/core/logger/custom.logger'
 
 interface BarrelConfig {
-  // Root directory to start scanning from
   rootDir: string
-  // Array of directory names to generate barrels for
   directories: string[]
-  // Optional: File extensions to include (defaults to .ts and .tsx)
   extensions?: string[]
-  // Optional: Files to ignore (defaults to .spec.ts, .test.ts, etc)
   ignorePatterns?: string[]
-  // Optional: Whether to generate nested barrel files (defaults to true)
   generateNestedBarrels?: boolean
-
   excludeDirs?: string[]
 }
 
 export class BarrelGenerator {
   private readonly logger: CustomLogger
-  private readonly defaultExtensions = ['.ts', '.tsx']
+  private readonly defaultExtensions = ['.ts', '.tsx'] as const
   private readonly defaultIgnorePatterns = [
     '.module',
     '.module.ts',
@@ -30,68 +23,75 @@ export class BarrelGenerator {
     '.e2e-spec.ts',
     '.d.ts',
     'index.ts',
-  ]
-
-  private readonly defaultExcludeDirs = ['__tests__']
+  ] as const
+  private readonly defaultExcludeDirs = ['__tests__', 'dist', 'node_modules'] as const
 
   constructor(logger: CustomLogger) {
     this.logger = logger
     this.logger.setContext('BarrelGenerator')
   }
 
-  private shouldExcludeDir(dirPath: string, excludeDirs: string[]): boolean {
+  private isDirectoryExcluded(dirPath: string, excludeDirs: string[]): boolean {
     return excludeDirs.some(
       (excludeDir) => dirPath.includes(`/${excludeDir}/`) || dirPath.endsWith(`/${excludeDir}`),
     )
   }
 
   async generateBarrels(config: BarrelConfig): Promise<void> {
-    const {
-      rootDir,
-      directories,
-      extensions = this.defaultExtensions,
-      ignorePatterns = this.defaultIgnorePatterns,
-      generateNestedBarrels = true,
-    } = config
+    try {
+      const {
+        rootDir,
+        directories,
+        extensions = [...this.defaultExtensions],
+        ignorePatterns = [...this.defaultIgnorePatterns],
+        generateNestedBarrels = true,
+        excludeDirs = [...this.defaultExcludeDirs],
+      } = config
 
-    this.logger.log(`Starting barrel file generation for directories: ${directories.join(', ')}`)
+      this.logger.log(`Starting barrel file generation for directories: ${directories.join(', ')}`)
 
-    for (const dir of directories) {
-      const fullPath = path.join(rootDir, dir)
+      for (const dir of directories) {
+        const fullPath = path.join(rootDir, dir)
 
-      if (!fs.existsSync(fullPath)) {
-        this.logger.warn(`Directory not found: ${fullPath}`)
-        continue
+        if (!fs.existsSync(fullPath)) {
+          this.logger.warn(`Directory not found: ${fullPath}`)
+          continue
+        }
+
+        await this.processDirectory(fullPath, {
+          extensions,
+          ignorePatterns,
+          generateNestedBarrels,
+          excludeDirs,
+        })
       }
 
-      await this.processDirectory(fullPath, {
-        extensions,
-        ignorePatterns,
-        generateNestedBarrels,
-      })
+      this.logger.log('Barrel file generation completed successfully')
+    } catch (error) {
+      this.logger.error(
+        'Failed to generate barrel files',
+        error instanceof Error ? error.stack : String(error),
+      )
+      throw error
     }
-
-    this.logger.log('Barrel file generation completed')
   }
 
   private async processDirectory(
     dirPath: string,
-    options: Pick<BarrelConfig, 'extensions' | 'ignorePatterns' | 'generateNestedBarrels'>,
-    isRootDir = true, // Add flag to identify root level directories
+    options: Required<
+      Pick<BarrelConfig, 'extensions' | 'ignorePatterns' | 'generateNestedBarrels' | 'excludeDirs'>
+    >,
+    isRootDir = true,
   ): Promise<string[]> {
-    // Return exports to collect from nested dirs
     try {
       const files = await fs.promises.readdir(dirPath, { withFileTypes: true })
       const exports: string[] = []
       const rootDir = isRootDir ? dirPath : path.dirname(dirPath)
-      const excludeDirs = options.excludeDirs || this.defaultExcludeDirs
 
-      // Skip this directory if it's in the exclude list
-      if (!isRootDir && this.shouldExcludeDir(dirPath, excludeDirs)) {
+      if (!isRootDir && this.isDirectoryExcluded(dirPath, options.excludeDirs)) {
         return exports
       }
 
-      // Process all files in current directory
       const validFiles = files
         .filter((file) => file.isFile())
         .map((file) => file.name)
@@ -103,48 +103,50 @@ export class BarrelGenerator {
           return isValidExtension && shouldInclude
         })
 
-      // Generate exports for valid files
       validFiles.forEach((filename) => {
         const relativePath = path.relative(rootDir, path.join(dirPath, filename))
-        exports.push(this.generateExportForFile(relativePath))
+        exports.push(this.generateExportStatement(relativePath))
       })
 
-      // Process subdirectories
       const subdirs = files.filter((file) => file.isDirectory())
       for (const subdir of subdirs) {
         const subdirPath = path.join(dirPath, subdir.name)
-        // Skip excluded directories
-        if (!this.shouldExcludeDir(subdirPath, excludeDirs)) {
+        if (!this.isDirectoryExcluded(subdirPath, options.excludeDirs)) {
           const nestedExports = await this.processDirectory(subdirPath, options, false)
           exports.push(...nestedExports)
         }
       }
 
-      // Only write barrel file if this is a root directory
-      if (isRootDir && exports.length > 0) {
+      if (isRootDir) {
         await this.writeBarrelFile(dirPath, exports)
       }
 
       return exports
-    } catch (error: any) {
-      this.logger.error(`Error processing directory ${dirPath}:`, error.stack)
+    } catch (error) {
+      this.logger.error(
+        `Error processing directory ${dirPath}:`,
+        error instanceof Error ? error.stack : String(error),
+      )
       throw error
     }
   }
 
-  private generateExportForFile(filename: string): string {
-    // Remove .ts extension if it exists
-    const withoutExt = filename.replace(/\.ts$/, '')
-    return `export * from './${withoutExt}';`
+  private generateExportStatement(filename: string): string {
+    const withoutExt = filename.replace(/\.tsx?$/, '')
+    return `export * from './${withoutExt}'`
   }
 
   private generateBarrelContent(exports: string[]): string {
-    // Remove any duplicate exports
     const uniqueExports = [...new Set(exports)]
-
-    return `// Auto-generated barrel file
-  ${uniqueExports.join('\n')}
-  `
+    return [
+      '/**',
+      ' * @file Auto-generated barrel file',
+      ' * @generated',
+      ' */',
+      '',
+      uniqueExports.join('\n'),
+      '', // Trailing newline
+    ].join('\n')
   }
 
   private async writeBarrelFile(dirPath: string, exports: string[]): Promise<void> {
@@ -154,8 +156,11 @@ export class BarrelGenerator {
     try {
       await fs.promises.writeFile(barrelPath, content)
       this.logger.debug(`Generated barrel file: ${barrelPath}`)
-    } catch (error: any) {
-      this.logger.error(`Error writing barrel file ${barrelPath}:`, error.stack)
+    } catch (error) {
+      this.logger.error(
+        `Error writing barrel file ${barrelPath}:`,
+        error instanceof Error ? error.stack : String(error),
+      )
       throw error
     }
   }
@@ -163,28 +168,25 @@ export class BarrelGenerator {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// Example usage script
-// scripts/barrel.generator.ts
-export async function generateProjectBarrels() {
+export async function generateProjectBarrels(): Promise<void> {
   const logger = new CustomLogger('BarrelGenerator')
   const generator = new BarrelGenerator(logger)
 
   await generator.generateBarrels({
     rootDir: path.resolve(__dirname, '../src'),
-    directories: ['core', 'content', 'types', 'monitoring'],
-    extensions: ['.ts', '.tsx'],
+    directories: ['core', 'content', 'types', 'monitoring', 'jobs'],
     ignorePatterns: [
       // NestJS Critical Files
-      '.controller.ts', // Controllers
-      '.service.ts', // Services
-      '.module.ts', // Modules
-      '.guard.ts', // Guards
-      '.middleware.ts', // Middleware
-      '.filter.ts', // Filters
-      '.interceptor.ts', // Interceptors
-      '.decorator.ts', // Custom decorators
-      '.provider.ts', // Custom providers
-      '.resolver.ts', // GraphQL resolvers
+      '.controller.ts',
+      '.service.ts',
+      '.module.ts',
+      '.guard.ts',
+      '.middleware.ts',
+      '.filter.ts',
+      '.interceptor.ts',
+      '.decorator.ts',
+      '.provider.ts',
+      '.resolver.ts',
 
       // Test Files
       '.spec.ts',
@@ -195,17 +197,18 @@ export async function generateProjectBarrels() {
       '.d.ts',
       'index.ts',
       '.mock.ts',
-      '__tests__',
     ],
     generateNestedBarrels: false,
-    excludeDirs: ['__tests__', 'dist', 'node_modules'],
   })
 }
 
-// If running directly
+// Execute if running directly
 if (import.meta.url.endsWith(process.argv[1])) {
-  generateProjectBarrels().catch((error: any) => {
-    console.error('Error generating barrel files:', error)
+  generateProjectBarrels().catch((error: unknown) => {
+    console.error(
+      'Error generating barrel files:',
+      error instanceof Error ? error.stack : String(error),
+    )
     process.exit(1)
   })
 }

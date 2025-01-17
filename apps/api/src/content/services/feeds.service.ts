@@ -7,12 +7,12 @@ import { PrismaService } from '@core/services/prisma.service'
 import type { FeedModel } from '../models/feeds.model'
 
 @Injectable()
-export class FeedsService extends BaseService<'feeds'> {
+export class FeedsService extends BaseService<'Feeds'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
   ) {
-    super('feeds')
+    super('Feeds')
   }
 
   async findWithRelations(id: string): Promise<FeedModel | null> {
@@ -27,13 +27,13 @@ export class FeedsService extends BaseService<'feeds'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.feedsDefaultArgs): Promise<FeedModel[]> {
+  async findMany(params: Prisma.FeedsDefaultArgs): Promise<FeedModel[]> {
     const items = await this.prisma.feeds.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllFeeds(
-    query: Prisma.feedsFindManyArgs,
+    query: Prisma.FeedsFindManyArgs,
   ): Promise<{ items: FeedModel[]; total: number }> {
     const [items, total] = await Promise.all([
       this.prisma.feeds.findMany({

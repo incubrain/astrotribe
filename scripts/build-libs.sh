@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Change to the root directory where the libs folder is located
-cd "$("../" "$0")"
+cd "$(dirname "$(realpath "$0")")/.." || { echo "Failed to navigate to the root directory"; exit 1; }
 
 # Check if libs directory exists
 if [ ! -d "libs" ]; then

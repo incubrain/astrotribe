@@ -31,7 +31,7 @@ export class NewsTagController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('news_tags')
+    super('NewsTags')
   }
 
   @Get()
@@ -63,7 +63,7 @@ export class NewsTagController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create NewsTags' })
-  async createNewsTags(@Body() data: Prisma.news_tagsCreateInput) {
+  async createNewsTags(@Body() data: Prisma.NewsTagsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -75,7 +75,7 @@ export class NewsTagController extends BaseController {
   @ApiOperation({ summary: 'Update NewsTags' })
   async updateNewsTags(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: Prisma.news_tagsUpdateInput,
+    @Body() data: Prisma.NewsTagsUpdateInput,
   ) {
     try {
       return await super.update(id, data)

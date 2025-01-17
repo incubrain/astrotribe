@@ -9,7 +9,7 @@ import { PrismaService } from '../../core/services/prisma.service'
 import { PaginationService } from '../../core/services/pagination.service'
 import { CustomLogger } from '../../core/logger/custom.logger'
 
-const createSampleContentCategory = (): Prisma.content_categoriesCreateInput => ({
+const createSampleContentCategory = (): Prisma.ContentCategoriesCreateInput => ({
   is_primary: faker.datatype.boolean(),
   contents: { connect: { id: faker.string.uuid() } },
   categories: { connect: { id: faker.number.int() } },

@@ -1,17 +1,17 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
     "declaration": true,
-    "module": "ESNext",
-    "target": "ES2022",
-    "outDir": "../dist",
+    "composite": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
+    "module": "ESNext",
+    "target": "ES2022",
     "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true
   },

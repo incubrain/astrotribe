@@ -31,7 +31,7 @@ export class NewsController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('news')
+    super('News')
   }
 
   @Get()
@@ -60,7 +60,7 @@ export class NewsController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create News' })
-  async createNews(@Body() data: Prisma.newsCreateInput) {
+  async createNews(@Body() data: Prisma.NewsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -70,7 +70,7 @@ export class NewsController extends BaseController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update News' })
-  async updateNews(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.newsUpdateInput) {
+  async updateNews(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.NewsUpdateInput) {
     try {
       return await super.update(id, data)
     } catch (error: any) {

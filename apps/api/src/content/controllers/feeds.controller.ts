@@ -31,7 +31,7 @@ export class FeedController extends BaseController {
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
   ) {
-    super('feeds')
+    super('Feeds')
   }
 
   @Get()
@@ -60,7 +60,7 @@ export class FeedController extends BaseController {
 
   @Post()
   @ApiOperation({ summary: 'Create Feeds' })
-  async createFeeds(@Body() data: Prisma.feedsCreateInput) {
+  async createFeeds(@Body() data: Prisma.FeedsCreateInput) {
     try {
       return await super.create(data)
     } catch (error: any) {
@@ -70,7 +70,7 @@ export class FeedController extends BaseController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Update Feeds' })
-  async updateFeeds(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.feedsUpdateInput) {
+  async updateFeeds(@Param('id', ParseUUIDPipe) id: string, @Body() data: Prisma.FeedsUpdateInput) {
     try {
       return await super.update(id, data)
     } catch (error: any) {

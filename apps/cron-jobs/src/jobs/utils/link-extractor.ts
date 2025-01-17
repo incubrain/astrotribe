@@ -181,7 +181,7 @@ export class NewsLinkExtractor {
         for (let i = 0; i < this.classifiedUrls.length; i += chunkSize) {
           const chunk = this.classifiedUrls.slice(i, i + chunkSize)
 
-          await tx.classified_urls.createMany({
+          await tx.classifiedUrls.createMany({
             data: chunk.map((url) => ({
               url: url.url,
               predicted_category: url.predicted_category as any,
@@ -193,7 +193,7 @@ export class NewsLinkExtractor {
           // Update existing records that might have been skipped
           await Promise.all(
             chunk.map((url) =>
-              tx.classified_urls
+              tx.classifiedUrls
                 .update({
                   where: { url: url.url },
                   data: {
