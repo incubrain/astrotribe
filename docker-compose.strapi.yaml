@@ -5,8 +5,10 @@ services:
       dockerfile: apps/cms/Dockerfile.develop
     container_name: astrotribe-strapi
     volumes:
-      - ./apps/cms:/app
-      - /app/node_modules
+      - ./apps/cms:/app/apps/cms
+      - /app/apps/cms/node_modules
+      - /app/apps/cms/.cache
+      - /app/apps/cms/build
     ports:
       - '1337:1337'
     depends_on:
