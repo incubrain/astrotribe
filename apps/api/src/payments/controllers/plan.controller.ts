@@ -2,6 +2,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { PlanService } from '../services/plan.service'
+import { Prisma } from '@astronera/db'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
 import { PaginationService } from '@core/services/pagination.service'
