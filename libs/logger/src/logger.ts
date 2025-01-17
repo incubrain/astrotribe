@@ -63,8 +63,8 @@ export class NodeWinstonTransport implements LogTransport {
         transports: [new winston.transports.Console()],
       })
 
+      // Production file transports
       if (!this.isDev) {
-        // Add file transports in production
         const errorTransport = new winston.transports.File({
           filename: './logs/error.log',
           level: 'error',
@@ -84,13 +84,13 @@ export class NodeWinstonTransport implements LogTransport {
           ),
         } as FileTransportOptions)
 
-        this.logger.add(errorTransport)
-        this.logger.add(combinedTransport)
+        await this.addTransport(errorTransport)
+        await this.addTransport(combinedTransport)
       }
 
       this.initialized = true
 
-      // Process any queued messages
+      // Process queued messages
       while (this.messageQueue.length > 0) {
         const msg = this.messageQueue.shift()
         if (msg) this.logger.log(msg.level, msg.message)
@@ -98,6 +98,16 @@ export class NodeWinstonTransport implements LogTransport {
     } catch (error) {
       console.error('Failed to initialize Winston logger:', error)
       throw error
+    }
+  }
+
+  public async addTransport(transport: any) {
+    if (!this.initialized) {
+      await this.initPromise
+    }
+
+    if (this.logger) {
+      this.logger.add(transport)
     }
   }
 
