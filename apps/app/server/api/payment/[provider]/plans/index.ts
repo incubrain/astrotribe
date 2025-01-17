@@ -13,11 +13,14 @@ export default defineEventHandler(async (event) => {
     if (!session?.access_token) {
       throw new Error('No authentication session found')
     }
-    
-    const { data, meta, success } = await $fetch(`${apiURL}/api/v1/payments/plans`, {
+
+    const { data, meta, success } = await $fetch(`${apiURL}/api/v1/payments/plans/`, {
       headers: {
-        'Authorization': `Bearer ${session.access_token}`,
-      }
+        Authorization: `Bearer ${session.access_token}`,
+      },
+      query: {
+        is_active: true,
+      },
     })
 
     if (!success) {
