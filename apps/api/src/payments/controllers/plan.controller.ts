@@ -1,5 +1,5 @@
 // plan.ejs template
-import { Body, Controller, Get, Param, ParseIntPipe, Put, Query } from '@nestjs/common'
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { PlanService } from '../services/plan.service'
 import { ConfigService } from '@nestjs/config'
@@ -54,10 +54,23 @@ export class PlanController extends BaseController {
   @ApiOperation({ summary: 'Update Plan' })
   async updatePlan(
     @Param('id', ParseIntPipe) id: string,
-    @Body() data: Prisma.customer_subscription_plansUpdateInput,
+    @Body() data: Prisma.CustomerSubscriptionPlansUpdateInput,
   ) {
     try {
       return await super.update(id, data)
+    } catch (error: any) {
+      return this.handleError(error)
+    }
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Upsert Plan' })
+  async upsertPlan(
+    @Query() query: PaginatedQuery,
+    @Body() data: Prisma.CustomerSubscriptionPlansUpdateInput,
+  ) {
+    try {
+      return await super.upsert(query, data)
     } catch (error: any) {
       return this.handleError(error)
     }
