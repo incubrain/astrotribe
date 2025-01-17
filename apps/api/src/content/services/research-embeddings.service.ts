@@ -26,7 +26,7 @@ export class ResearchEmbeddingsService extends BaseService<'ResearchEmbeddings'>
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.ResearchEmbeddingsFindManyArgs): Promise<ResearchEmbeddingModel[]> {
+  async findMany(params: Prisma.ResearchEmbeddingsDefaultArgs): Promise<ResearchEmbeddingModel[]> {
     const items = await this.prisma.researchEmbeddings.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

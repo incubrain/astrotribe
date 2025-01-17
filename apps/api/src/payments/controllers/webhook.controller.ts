@@ -29,6 +29,7 @@ export class WebhookController {
       const digest = shasum.digest('hex')
 
       if (digest !== razorpaySignature) {
+        console.error('Invalid Razorpay Signature')
         return
       }
 
@@ -95,8 +96,6 @@ export class WebhookController {
 
   private async handleSubscriptionUpdate(payload: any): Promise<void> {
     const { entity: subscriptionPayload } = payload.subscription
-    console.log(payload, 'PAYLOAD')
-    console.log(subscriptionPayload, 'SUBSCRIPTION PAYLOAD')
 
     const data = {
       external_subscription_id: subscriptionPayload.id,
@@ -129,8 +128,7 @@ export class WebhookController {
 
       const subscription = await this.subscriptionService.findOne({
         where: {
-          id: subscriptionPayload.id,
-          user_id: subscriptionPayload.user_id,
+          external_subscription_id: subscriptionPayload.id,
         },
       })
 
