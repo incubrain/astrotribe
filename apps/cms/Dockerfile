@@ -25,9 +25,6 @@ ENV NX_BATCH_MODE=true
 ENV NX_SKIP_LOG_GROUPING=true
 ENV NX_VERBOSE_LOGGING=true
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Install dependencies for CMS workspace only
 RUN pnpm install --filter=@astronera/cms --frozen-lockfile
 
