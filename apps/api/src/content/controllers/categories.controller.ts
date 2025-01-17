@@ -43,10 +43,10 @@ export class CategoryController extends BaseController {
     PaginatedResponse<unknown> | { success: boolean; error: any; timestamp: string; code: any }
   > {
     try {
-      this.logger.log('Fetching all categories')
+      this.logger.log('Fetching all Categories')
       return super.findAll(query)
     } catch (error: any) {
-      this.logger.error('Failed to fetch categories', error.stack)
+      this.logger.error('Failed to fetch Categories', error.stack)
       throw error
     }
   }

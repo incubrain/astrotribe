@@ -5,20 +5,27 @@ import { BaseService } from '@core/base/base.service'
 import { PaginationService } from '@core/services/pagination.service'
 import { PrismaService } from '@core/services/prisma.service'
 import type { SubscriptionModel } from '../models/subscription.model'
+import { PaymentEventsService } from '../../observables/payments.observable'
 
 @Injectable()
 export class SubscriptionService extends BaseService<'CustomerSubscriptions'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
+    protected readonly paymentEvents: PaymentEventsService,
   ) {
     super('CustomerSubscriptions')
   }
 
   async updateSubscription(data) {
     const result = await this.prisma.customerSubscriptions.update({
-      where: { id: data.id, user_id: data.user_id, external_subscription_id: data.external_subscription_id },
+      where: { external_subscription_id: data.external_subscription_id },
       data,
+    })
+
+    this.paymentEvents.emit({
+      type: 'updated',
+      data: result,
     })
 
     return result

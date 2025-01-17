@@ -1,14 +1,20 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
-
 const { profile } = useCurrentUser()
 
 const razorpay = usePayments('razorpay')
-
+const { lastEvent, isConnected } = useEvents()
 const subscriptions = await razorpay.fetchSubscriptions()
-const subscription = subscriptions?.[0]
+const subscription = ref(subscriptions?.[0])
 
-const plansData = await razorpay.fetchPlans() || []
+watch(lastEvent, (event) => {
+  if (event?.type === 'updated') {
+    // Handle subscription update
+    subscription.value = event.data
+  }
+})
+
+const plansData = (await razorpay.fetchPlans()) || []
 
 interface PlanConfig {
   id: string
@@ -40,23 +46,28 @@ const plans = computed<PlanConfig>(() =>
         '1GB storage',
         'Basic analytics',
       ],
-      isActive: profile.user_plan === 'free',
+      razorpayConfig: {
+        isActive: !subscription.value,
+      },
+      isActive: true,
       availableFrom: null,
     },
   ].concat(
     plansData.map((item: any) => {
-      const isActive = profile.user_plan === item.name.toLowerCase()
-
-      const razorPayConfig = true &&
-        subscription && {
-          subscription_id: subscription.external_subscription_id,
-          subscription_status: subscription.status,
+      let razorPayConfig
+      if (subscription.value && subscription.value.plan_id === item.id) {
+        const isActive = ['active', 'completed'].includes(subscription.value.status)
+        razorPayConfig = {
+          subscription_id: subscription.value.external_subscription_id,
+          subscription_status: subscription.value.status,
+          isActive,
         }
+      }
 
       return {
         ...item,
         availableFrom: item.created_at,
-        isActive: true,
+        isActive: item.is_active,
         period: `/${item.interval_type}`,
         price: item.monthly_amount.d / 100,
         razorPayConfig,
@@ -141,10 +152,7 @@ const customerInfo = computed(() => ({
             <div class="mt-8">
               <div v-if="plan.isActive">
                 <PaymentButton
-                  v-if="
-                    profile?.user_plan !== plan.name.toLowerCase() ||
-                    plan.razorPayConfig?.subscription_status === 'charged'
-                  "
+                  v-if="!plan.razorPayConfig?.isActive"
                   :plan="{
                     id: plan.id,
                     external_plan_id: plan.external_plan_id,
@@ -154,7 +162,7 @@ const customerInfo = computed(() => ({
                     subscription_id: plan.razorPayConfig?.subscription_id,
                   }"
                   :customer="customerInfo"
-                  button-label="Upgrade Plan"
+                  :button-label="`Change Plan to ${plan.name}`"
                   :theme="{ color: '#3B82F6' }"
                   class="w-full"
                   @payment-success="handlePaymentSuccess"
@@ -171,7 +179,7 @@ const customerInfo = computed(() => ({
                 v-else
                 class="w-full py-2 px-4 bg-gray-800 text-sm text-gray-400 rounded-md text-center"
               >
-                {{ plan.availableFrom }}
+                {{ plan.availableFrom ?? 'Currently unavailable' }}
               </div>
             </div>
           </div>
