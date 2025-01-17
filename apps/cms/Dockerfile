@@ -33,9 +33,9 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Install dependencies for this workspace only
-RUN nx reset
-RUN nx build strapi-supabase --skip-nx-cache
-RUN nx build @astronera/cms --configuration=production --skip-nx-cache
+RUN pnpx nx reset
+RUN pnpx nx build strapi-supabase --skip-nx-cache
+RUN pnpx nx build @astronera/cms --configuration=production --skip-nx-cache
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
