@@ -1,39 +1,36 @@
 FROM node:18-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-ENV NX_DAEMON=false
-ENV NX_SKIP_NX_CACHE=true
-ENV NX_BATCH_MODE=true
-ENV NX_SKIP_LOG_GROUPING=true
-ENV NX_VERBOSE_LOGGING=true
 
 RUN npm install -g pnpm
 
+# Set working directory
 WORKDIR /app
 
-# Copy root workspace files
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml nx.json tsconfig*.json ./
+# Copy only the necessary files for package resolution
+COPY pnpm-workspace.yaml ./
+COPY package.json ./
+COPY pnpm-lock.yaml ./
 
-# Copy packages
-COPY libs libs/
-COPY apps/cms apps/cms
+# Copy only the CMS app
+COPY apps/cms apps/cms/
 
-# Install dependencies at workspace root
-RUN pnpm install
+# Set workdir to cms directory before install
+WORKDIR /app/apps/cms
 
-# Create necessary directories
+# Install only the CMS dependencies
+RUN pnpm install --frozen-lockfile
+
+# Create uploads directory
 RUN mkdir -p data/uploads
 
-RUN pnpx nx reset
-RUN pnpx nx build @astronera/cms --configuration=production --skip-nx-cache
+# Build Strapi
+RUN pnpm run build
 
 EXPOSE 1337
 
 # Copy env file if it exists
-COPY .env* ./
+COPY apps/cms/.env* ./
 
-WORKDIR /app/apps/cms
-# Make the seed script executable (just in case)
-RUN chmod +x ./scripts/seed.ts
-
-CMD ["pnpm", "start"]
+# Start command needs to run from the Strapi project directory
+CMD ["pnpm", "run", "start"]
