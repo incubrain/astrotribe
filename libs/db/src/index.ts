@@ -9,9 +9,7 @@ export type PrismaModels = {
   [M in ModelNames]: Exclude<Awaited<ReturnType<PrismaClient[Uncapitalize<M>]['findUnique']>>, null>
 }
 
-export function createPrismaClient(options?: {
-  log?: boolean
-}) {
+export function createPrismaClient(options?: { log?: boolean }) {
   return new PrismaClient({
     log: options?.log ? ['query', 'error', 'warn'] : undefined,
   })

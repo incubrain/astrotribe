@@ -88,8 +88,6 @@ export const AddressesScalarFieldEnumSchema = z.enum(['id','street1','street2','
 
 export const AdsScalarFieldEnumSchema = z.enum(['id','company_id','package_id','start_date','end_date','active','created_at','updated_at']);
 
-export const AgentMetricsScalarFieldEnumSchema = z.enum(['id','agent_name','execution_date','status','duration_ms','items_processed','error_type','error_message','created_at']);
-
 export const BlacklistedDomainsScalarFieldEnumSchema = z.enum(['id','created_at','url','reason']);
 
 export const BlacklistedUrlsScalarFieldEnumSchema = z.enum(['id','url','reason','created_at','company_id']);
@@ -144,9 +142,9 @@ export const CustomerProcessedWebhooksScalarFieldEnumSchema = z.enum(['id','even
 
 export const CustomerRefundsScalarFieldEnumSchema = z.enum(['id','payment_id','external_refund_id','amount','status','speed_processed','speed_requested','notes','created_at','currency','receipt','acquirer_data','batch_id']);
 
-export const CustomerSubscriptionPlansScalarFieldEnumSchema = z.enum(['id','external_plan_id','name','description','interval','interval_type','monthly_amount','annual_amount','currency','is_active','created_at','updated_at','features']);
+export const CustomerSubscriptionPlansScalarFieldEnumSchema = z.enum(['id','external_plan_id','name','description','interval','interval_type','monthly_amount','annual_amount','currency','features','is_active','created_at','updated_at']);
 
-export const CustomerSubscriptionsScalarFieldEnumSchema = z.enum(['id','user_id','plan_id','payment_provider_id','external_subscription_id','status','quantity','current_start','current_end','ended_at','cancel_at_period_end','total_count','paid_count','remaining_count','auth_attempts','created_at','updated_at','type','charge_at','start_at','end_at','customer_notify','expire_by','short_url','has_scheduled_changes','change_scheduled_at','source','offer_id','pause_initiated_by','cancel_initiated_by','notes']);
+export const CustomerSubscriptionsScalarFieldEnumSchema = z.enum(['id','user_id','plan_id','payment_provider_id','external_subscription_id','status','quantity','current_start','current_end','ended_at','cancel_at_period_end','total_count','paid_count','remaining_count','auth_attempts','notes','created_at','updated_at','type','charge_at','start_at','end_at','customer_notify','expire_by','short_url','has_scheduled_changes','change_scheduled_at','source','offer_id','pause_initiated_by','cancel_initiated_by']);
 
 export const EmbeddingReviewsScalarFieldEnumSchema = z.enum(['id','created_at','updated_at','agent_review','human_review','notes']);
 
@@ -236,13 +234,13 @@ export const WorkflowsScalarFieldEnumSchema = z.enum(['id','name','status','meta
 
 export const UsersScalarFieldEnumSchema = z.enum(['id']);
 
-export const Recent_errorsScalarFieldEnumSchema = z.enum(['id','created_at','service_name','error_type','severity','message','metadata']);
-
-export const Error_statsScalarFieldEnumSchema = z.enum(['id','calls','mean_exec_time','max_exec_time','rows','query','queryid','toplevel']);
-
 export const Security_metricsScalarFieldEnumSchema = z.enum(['time_bucket','total_attempts','suspicious_attempts','unique_ips','unique_referrers','high_attempt_count','max_attempts']);
 
 export const Error_frequencyScalarFieldEnumSchema = z.enum(['service_name','error_type','severity','time_bucket','error_count']);
+
+export const Error_statsScalarFieldEnumSchema = z.enum(['calls','mean_exec_time','max_exec_time','rows','query','queryid','toplevel']);
+
+export const Recent_errorsScalarFieldEnumSchema = z.enum(['id','created_at','service_name','error_type','severity','message','metadata']);
 
 export const Slow_query_patternsScalarFieldEnumSchema = z.enum(['query_id','occurrence_count','avg_exec_time','max_exec_time','first_seen','last_seen']);
 
@@ -459,27 +457,6 @@ export const AdsSchema = z.object({
 })
 
 export type Ads = z.infer<typeof AdsSchema>
-
-/////////////////////////////////////////
-// AGENT METRICS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="agent_metrics"
- */
-export const AgentMetricsSchema = z.object({
-  id: z.string(),
-  agent_name: z.string(),
-  execution_date: z.coerce.date(),
-  status: z.string(),
-  duration_ms: z.number().int().nullable(),
-  items_processed: z.number().int().nullable(),
-  error_type: z.string().nullable(),
-  error_message: z.string().nullable(),
-  created_at: z.coerce.date().nullable(),
-})
-
-export type AgentMetrics = z.infer<typeof AgentMetricsSchema>
 
 /////////////////////////////////////////
 // BLACKLISTED DOMAINS SCHEMA
@@ -1055,10 +1032,10 @@ export const CustomerSubscriptionPlansSchema = z.object({
   monthly_amount: z.instanceof(Prisma.Decimal, { message: "Field 'monthly_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']"}),
   annual_amount: z.instanceof(Prisma.Decimal, { message: "Field 'annual_amount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionPlans']"}),
   currency: z.string(),
+  features: JsonValueSchema.nullable(),
   is_active: z.boolean().nullable(),
   created_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
-  features: JsonValueSchema.nullable(),
 })
 
 export type CustomerSubscriptionPlans = z.infer<typeof CustomerSubscriptionPlansSchema>
@@ -1086,6 +1063,7 @@ export const CustomerSubscriptionsSchema = z.object({
   paid_count: z.number().int().nullable(),
   remaining_count: z.number().int().nullable(),
   auth_attempts: z.number().int().nullable(),
+  notes: JsonValueSchema.nullable(),
   created_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
   type: z.number().int().nullable(),
@@ -1101,7 +1079,6 @@ export const CustomerSubscriptionsSchema = z.object({
   offer_id: z.string().nullable(),
   pause_initiated_by: z.string().nullable(),
   cancel_initiated_by: z.string().nullable(),
-  notes: JsonValueSchema.nullable(),
 })
 
 export type CustomerSubscriptions = z.infer<typeof CustomerSubscriptionsSchema>
@@ -2020,39 +1997,6 @@ export const UsersSchema = z.object({
 export type Users = z.infer<typeof UsersSchema>
 
 /////////////////////////////////////////
-// RECENT ERRORS SCHEMA
-/////////////////////////////////////////
-
-export const recent_errorsSchema = z.object({
-  error_type: ErrorTypeSchema.nullable(),
-  severity: ErrorSeveritySchema.nullable(),
-  id: z.string(),
-  created_at: z.coerce.date().nullable(),
-  service_name: z.string().nullable(),
-  message: z.string().nullable(),
-  metadata: JsonValueSchema.nullable(),
-})
-
-export type recent_errors = z.infer<typeof recent_errorsSchema>
-
-/////////////////////////////////////////
-// ERROR STATS SCHEMA
-/////////////////////////////////////////
-
-export const error_statsSchema = z.object({
-  id: z.string(),
-  calls: z.bigint().nullable(),
-  mean_exec_time: z.number().nullable(),
-  max_exec_time: z.number().nullable(),
-  rows: z.bigint().nullable(),
-  query: z.string().nullable(),
-  queryid: z.bigint().nullable(),
-  toplevel: z.boolean().nullable(),
-})
-
-export type error_stats = z.infer<typeof error_statsSchema>
-
-/////////////////////////////////////////
 // SECURITY METRICS SCHEMA
 /////////////////////////////////////////
 
@@ -2073,14 +2017,46 @@ export type security_metrics = z.infer<typeof security_metricsSchema>
 /////////////////////////////////////////
 
 export const error_frequencySchema = z.object({
-  error_type: ErrorTypeSchema.nullable(),
-  severity: ErrorSeveritySchema.nullable(),
-  service_name: z.string().nullable(),
+  error_type: ErrorTypeSchema,
+  severity: ErrorSeveritySchema,
+  service_name: z.string(),
   time_bucket: z.coerce.date(),
   error_count: z.bigint().nullable(),
 })
 
 export type error_frequency = z.infer<typeof error_frequencySchema>
+
+/////////////////////////////////////////
+// ERROR STATS SCHEMA
+/////////////////////////////////////////
+
+export const error_statsSchema = z.object({
+  calls: z.bigint().nullable(),
+  mean_exec_time: z.number().nullable(),
+  max_exec_time: z.number().nullable(),
+  rows: z.bigint().nullable(),
+  query: z.string(),
+  queryid: z.bigint(),
+  toplevel: z.boolean().nullable(),
+})
+
+export type error_stats = z.infer<typeof error_statsSchema>
+
+/////////////////////////////////////////
+// RECENT ERRORS SCHEMA
+/////////////////////////////////////////
+
+export const recent_errorsSchema = z.object({
+  error_type: ErrorTypeSchema,
+  severity: ErrorSeveritySchema,
+  id: z.string(),
+  created_at: z.coerce.date(),
+  service_name: z.string(),
+  message: z.string(),
+  metadata: JsonValueSchema.nullable(),
+})
+
+export type recent_errors = z.infer<typeof recent_errorsSchema>
 
 /////////////////////////////////////////
 // SLOW QUERY PATTERNS SCHEMA
@@ -2091,8 +2067,8 @@ export const slow_query_patternsSchema = z.object({
   occurrence_count: z.bigint().nullable(),
   avg_exec_time: z.number().nullable(),
   max_exec_time: z.number().nullable(),
-  first_seen: z.coerce.date().nullable(),
-  last_seen: z.coerce.date().nullable(),
+  first_seen: z.coerce.date(),
+  last_seen: z.coerce.date(),
 })
 
 export type slow_query_patterns = z.infer<typeof slow_query_patternsSchema>
@@ -2102,10 +2078,10 @@ export type slow_query_patterns = z.infer<typeof slow_query_patternsSchema>
 /////////////////////////////////////////
 
 export const error_metricsSchema = z.object({
-  error_type: ErrorTypeSchema.nullable(),
-  severity: ErrorSeveritySchema.nullable(),
+  error_type: ErrorTypeSchema,
+  severity: ErrorSeveritySchema,
   time_bucket: z.coerce.date(),
-  service_name: z.string().nullable(),
+  service_name: z.string(),
   error_count: z.bigint().nullable(),
 })
 

@@ -4,7 +4,6 @@ import path from 'path'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -45,6 +44,11 @@ async function updateViews(schemaContent: string): Promise<string> {
       hasValidIdColumn = false
       currentViewName = trimmedLine.split(' ')[1]
       console.log(`\nProcessing view: ${currentViewName}`)
+
+      // Add the opening brace
+      if (!line.includes('{')) {
+        viewBuffer.push(' {')
+      }
       continue
     }
 
@@ -67,7 +71,8 @@ async function updateViews(schemaContent: string): Promise<string> {
       if (
         (trimmedLine.startsWith('id ') && trimmedLine.includes('@db.Uuid')) ||
         trimmedLine.startsWith('time_bucket ') ||
-        trimmedLine.startsWith('query_id ')
+        trimmedLine.startsWith('query_id ') ||
+        trimmedLine.startsWith('queryid ')
       ) {
         console.log(`Found potential ID column in ${currentViewName}:`, trimmedLine)
         hasValidIdColumn = true
@@ -84,6 +89,34 @@ async function updateViews(schemaContent: string): Promise<string> {
         insideView = false
         console.log(`End of view ${currentViewName}:`)
         console.log(`- Has valid ID column: ${hasValidIdColumn}`)
+
+        // If no valid ID column found, add one after the opening brace
+        if (!hasValidIdColumn) {
+          console.log(`- Adding generated ID column to ${currentViewName}`)
+          const idLine = '  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid'
+
+          // Find the position after the opening brace
+          const openBraceIndex = viewBuffer.findIndex((l) => l.trim() === '{')
+          if (openBraceIndex !== -1) {
+            viewBuffer.splice(openBraceIndex + 1, 0, idLine)
+          } else {
+            // If no opening brace found (shouldn't happen), add it after view declaration
+            viewBuffer.splice(1, 0, idLine)
+          }
+        }
+
+        // Make required fields non-optional for views
+        viewBuffer = viewBuffer.map((line) => {
+          if (
+            line.includes(' DateTime?') ||
+            line.includes(' String?') ||
+            line.includes(' ErrorType?') ||
+            line.includes(' ErrorSeverity?')
+          ) {
+            return line.replace('?', '')
+          }
+          return line
+        })
 
         updatedLines.push(...viewBuffer)
         updatedLines.push(line)
@@ -102,6 +135,110 @@ async function updateViews(schemaContent: string): Promise<string> {
 
 function snakeToPascalCase(str: string): string {
   return str.replace(/(^|_)(\w)/g, (_match, _p1, p2) => p2.toUpperCase())
+}
+
+function addOppositeRelations(schemaContent: string): string {
+  let modelBlocks = schemaContent.match(/model\s+\w+\s*{[^}]+}/g) || []
+  const models: Record<string, { fields: string[]; relations: any[] }> = {}
+
+  // First pass: collect all models and their fields
+  modelBlocks.forEach((block) => {
+    const modelName = block.match(/model\s+(\w+)/)?.[1]
+    if (!modelName) return
+
+    const fields = block.match(/^\s+\w+.*$/gm) || []
+    models[modelName] = {
+      fields: fields.map((f) => f.trim()),
+      relations: [],
+    }
+  })
+
+  // Second pass: analyze relations
+  Object.entries(models).forEach(([modelName, model]) => {
+    model.fields.forEach((field) => {
+      const relationMatch = field.match(/@relation\(fields:\s*\[(\w+)\],\s*references:\s*\[(\w+)\]/)
+      if (relationMatch) {
+        const [, fieldName, referencedField] = relationMatch
+        const targetModelMatch = field.match(/(\w+)\s+@relation/)
+        if (targetModelMatch) {
+          const [, targetModel] = targetModelMatch
+          models[targetModel]?.relations.push({
+            sourceModel: modelName,
+            fieldName,
+            referencedField,
+          })
+        }
+      }
+    })
+  })
+
+  // Third pass: add missing opposite relations
+  let updatedContent = schemaContent
+  Object.entries(models).forEach(([modelName, model]) => {
+    model.relations.forEach((relation) => {
+      // Generate the base field name by converting to snake_case and removing trailing 's' if present
+      const baseFieldName = relation.sourceModel.toLowerCase().replace(/s$/, '')
+      const oppositeFieldName = `${baseFieldName}s` // Always use singular + 's' for consistency
+      const modelPattern = new RegExp(`model\\s+${modelName}\\s*{[^}]+}`)
+
+      // Check for existing relation with any variation of pluralization
+      const hasExistingRelation = models[modelName]?.fields.some((field) => {
+        const fieldNameMatch = field.match(/^\s*(\w+)\s+/)
+        if (!fieldNameMatch) return false
+        const existingFieldName = fieldNameMatch[1].toLowerCase()
+        return (
+          existingFieldName === oppositeFieldName ||
+          existingFieldName === `${oppositeFieldName}s` ||
+          existingFieldName === baseFieldName
+        )
+      })
+
+      if (!hasExistingRelation) {
+        // Add the new relation field with consistent pluralization
+        updatedContent = updatedContent.replace(modelPattern, (match) =>
+          match.replace('}', `  ${oppositeFieldName} ${relation.sourceModel}[]\n}`),
+        )
+      }
+    })
+  })
+
+  // Final pass: clean up any duplicate or incorrectly pluralized relations
+  modelBlocks = updatedContent.match(/model\s+\w+\s*{[^}]+}/g) || []
+  modelBlocks.forEach((block) => {
+    const modelName = block.match(/model\s+(\w+)/)?.[1]
+    if (!modelName) return
+
+    // Find all relation fields
+    const relationFields = new Set()
+    const relationDuplicates = new Set()
+    const lines = block.split('\n')
+
+    lines.forEach((line) => {
+      const fieldMatch = line.match(/^\s*(\w+)\s+\w+\[\]/)
+      if (fieldMatch) {
+        const fieldName = fieldMatch[1].toLowerCase()
+        if (relationFields.has(fieldName)) {
+          relationDuplicates.add(fieldName)
+        }
+        relationFields.add(fieldName)
+      }
+    })
+
+    // Remove duplicate relations
+    relationDuplicates.forEach((dupField) => {
+      const pattern = new RegExp(`\\s+${dupField}s?\\s+\\w+\\[\\]\\n`, 'gi')
+      let found = false
+      updatedContent = updatedContent.replace(pattern, (match) => {
+        if (!found) {
+          found = true
+          return match
+        }
+        return ''
+      })
+    })
+  })
+
+  return updatedContent
 }
 
 function filterSchemaContent(schemaContent: string): string {
@@ -266,6 +403,10 @@ async function updateSchema(): Promise<void> {
     let schemaContent = await fs.readFile(SCHEMA_PATH, 'utf8')
 
     schemaContent = filterSchemaContent(schemaContent)
+
+    // Add relations handling
+    console.log('Updating relations...')
+    schemaContent = addOppositeRelations(schemaContent)
 
     // Add auth.users model if it doesn't exist
     if (!schemaContent.includes('@@schema("auth")')) {
