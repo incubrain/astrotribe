@@ -1,5 +1,5 @@
 <script setup="ts">
-const { fetchPlans, togglePlan, plans } = usePlans()
+const { fetchPlans, syncPlans, togglePlan, plans } = usePlans()
 
 fetchPlans()
 
@@ -9,17 +9,22 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
 <template>
   <div class="p-8">
     <h1 class="text-3xl font-bold mb-6">Plans</h1>
+    <PrimeButton
+      @click="syncPlans"
+      class="flex items-center justify-between gap-2"
+    >
+      <span>Sync with Razorpay</span>
+      <Icon
+        name="mdi:sync"
+        size="24px"
+      />
+    </PrimeButton>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
     <div
       v-for="plan in plans"
       :key="plan.name"
       class="relative rounded-xl overflow-hidden"
-      :class="{
-        'bg-gray-900 border-2 border-blue-500': profile?.user_plan === plan.name.toLowerCase(),
-        'bg-gray-900/80': !plan.is_active && profile?.user_plan !== plan.name.toLowerCase(),
-        'bg-gray-900': plan.is_active && profile?.user_plan !== plan.name.toLowerCase(),
-      }"
     >
       <div class="p-6 flex flex-col justify-between h-full">
         <!-- Plan Header -->
@@ -49,9 +54,11 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
 
         <!-- Action Button -->
         <div class="mt-8">
-          <button @click="handleTogglePlan(plan.id, plan.is_active)">{{
-            plan.is_active ? 'Deactivate' : 'Activate'
-          }}</button>
+          <button
+            :class="`rounded bg-${plan.is_active ? 'red' : 'green'}-500 p-2`"
+            @click="handleTogglePlan(plan.id, plan.is_active)"
+            >{{ plan.is_active ? 'Deactivate' : 'Activate' }}</button
+          >
         </div>
       </div>
     </div>

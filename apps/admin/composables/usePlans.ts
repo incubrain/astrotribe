@@ -8,34 +8,44 @@ export default function usePlans() {
 
   async function syncPlans() {
     try {
-      const plans = await $fetch('/api/plans')
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
 
-      console.log('Plans response', plans)
-      if (plans.count) {
-        await Promise.all(
-          plans.map((plan) =>
-            $fetch(`${apiURL}/api/v1/payments/plans`, {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${session.access_token}`,
+      if (!session?.access_token) {
+        throw new Error('No authentication session found')
+      }
+
+      const { plans: razorpayPlans, count } = await $fetch('/api/plans')
+
+      if (count) {
+        const updatedValues = await Promise.all(
+          razorpayPlans.map((plan) =>
+            $fetch(
+              `${apiURL}/api/v1/payments/plans/?${new URLSearchParams({ external_plan_id: plan.id }).toString()}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${session.access_token}`,
+                },
+                body: {
+                  external_plan_id: plan.id,
+                  name: plan.item.name,
+                  description: plan.item.description,
+                  interval: plan.interval,
+                  interval_type: plan.period,
+                  monthly_amount: plan.item.amount / (plan.period === 'monthly' ? 1 : 12),
+                  annual_amount: plan.item.amount * (plan.period == 'monthly' ? 12 : 1),
+                  currency: plan.item.currency,
+                  features: plan.notes,
+                  created_at: new Date(plan.created_at * 1000),
+                  updated_at: plan.updated_at && new Date(plan.updated_at * 1000),
+                },
               },
-              body: {
-                external_plan_id: plan.id,
-                name: plan.name,
-                description: plan.description,
-                interval: plan.interval,
-                interval_type: plan.interval_type,
-                monthly_amount: plan.monthly_amount,
-                annual_amount: plan.annual_amount,
-                currency: plan.currency,
-                features: plan.features,
-                is_active: plan.is_active,
-                created_at: plan.created_at,
-                updated_at: plan.updated_at,
-              },
-            }),
+            ),
           ),
         )
+        plans.value = updatedValues.map(({ data }) => data?.[0]?.data)
       } else {
         throw new Error(data.message)
       }
@@ -47,7 +57,6 @@ export default function usePlans() {
 
   async function fetchPlans() {
     try {
-      // await syncPlans()
       const {
         data: { session },
       } = await supabase.auth.getSession()
@@ -107,6 +116,7 @@ export default function usePlans() {
   return {
     plans,
     fetchPlans,
+    syncPlans,
     togglePlan,
   }
 }
