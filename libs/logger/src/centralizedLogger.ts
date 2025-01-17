@@ -2,6 +2,8 @@
 import type { H3Event } from 'h3'
 import type { LogQueue } from '@ib/cache'
 import { createLogQueue } from '@ib/cache'
+import LokiTransport from 'winston-loki'
+import winston from 'winston'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
@@ -46,7 +48,6 @@ interface ConsoleData {
 
 export class CentralizedLogger<S extends Service = Service> {
   private static instance: CentralizedLogger | null = null
-  private prisma: PrismaClient | null = null
   protected env: ReturnType<typeof getEnvironment>
   private currentService?: S
   private service: string = 'initializing'
@@ -62,6 +63,13 @@ export class CentralizedLogger<S extends Service = Service> {
 
     this.env = getEnvironment()
     this.transport = new NodeWinstonTransport(this.env.isDev)
+
+    if (!this.env.isDev || process.env.ENABLE_LOKI === 'true') {
+      this.setupLokiTransport().catch((err) =>
+        console.error('Failed to setup Loki transport:', err),
+      )
+    }
+
     this.logQueue = createLogQueue({
       host: process.env.REDIS_HOST,
       port: parseInt(process.env.REDIS_PORT || '6379'),
@@ -140,6 +148,23 @@ export class CentralizedLogger<S extends Service = Service> {
       default:
         return 'low'
     }
+  }
+
+  private async setupLokiTransport() {
+    const lokiTransport = new LokiTransport({
+      host: process.env.LOKI_URL || 'http://loki:3100',
+      json: true,
+      labels: {
+        service: this.service,
+        domain: this.domain,
+        environment: this.env.isDev ? 'development' : 'production',
+      },
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+      replaceTimestamp: true,
+      onConnectionError: (err) => this.error('Loki connection error', { error: err }),
+    })
+
+    await this.transport.addTransport(lokiTransport)
   }
 
   private async extractEventData(event?: H3Event) {
