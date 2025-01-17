@@ -1,9 +1,14 @@
 FROM node:18-slim
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+RUN corepack enable
 
 WORKDIR /app
 
 # Copy workspace configuration files
-COPY package*.json ./
+COPY pnpm-*.yaml package.json ./
 COPY nx.json ./
 COPY tsconfig*.json ./
 
