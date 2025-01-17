@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:20-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
@@ -27,18 +27,14 @@ ENV NX_SKIP_LOG_GROUPING=true
 ENV NX_VERBOSE_LOGGING=true
 
 # Install dependencies for CMS workspace only
-RUN pnpm install --filter=@astronera/cms,strapi-supabase --frozen-lockfile
-
-# Create necessary directories and ensure proper file structure
-RUN mkdir -p apps/cms/dist/src/providers/supabase
-RUN cp -r apps/cms/src/providers apps/cms/dist/src/ || true
+RUN pnpm install --frozen-lockfile
 
 # THEN - copy source files
 COPY . .
 
 # Install dependencies for this workspace only
-RUN pnpm install nx@20.3.0 -g
 RUN nx reset
+RUN nx build strapi-supabase --skip-nx-cache
 RUN nx build @astronera/cms --configuration=production --skip-nx-cache
 
 # Update working directory to the CMS app

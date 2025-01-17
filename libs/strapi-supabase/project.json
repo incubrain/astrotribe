@@ -6,21 +6,13 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{workspaceRoot}/libs/strapi-supabase/dist"],
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "libs/strapi-supabase/dist",
+        "outputPath": "dist/libs/strapi-supabase",
         "main": "libs/strapi-supabase/src/index.ts",
         "tsConfig": "libs/strapi-supabase/tsconfig.json",
         "assets": ["libs/strapi-supabase/*.md"]
       }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/strapi-supabase/**/*.ts"]
-      }
     }
   },
   "tags": []
-}
