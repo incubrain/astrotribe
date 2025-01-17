@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION update_user_plan()
+CREATE OR REPLACE FUNCTION public.update_user_plan()
 RETURNS TRIGGER
 SECURITY DEFINER
 AS $$
@@ -6,8 +6,8 @@ BEGIN
   -- Check if the 'status' field was updated and is either 'active' or 'completed'
   IF NEW.status <> OLD.status AND (NEW.status = 'active' OR NEW.status = 'completed') THEN
     -- Update the 'plan' field in the 'user_profiles' table based on the 'plan_id' from 'customer_subscriptions'
-    UPDATE user_profiles
-    SET plan = LOWER((SELECT name FROM customer_subscription_plans WHERE id = NEW.plan_id))::app_plan_enum
+    UPDATE public.user_profiles
+    SET plan = LOWER((SELECT name FROM customer_subscription_plans WHERE id = NEW.plan_id))::public.app_plan_enum
     WHERE id = NEW.user_id;
   END IF;
 
@@ -18,13 +18,13 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE TRIGGER customer_subscription_status_update
-AFTER UPDATE ON customer_subscriptions
+AFTER UPDATE ON public.customer_subscriptions
 FOR EACH ROW
 WHEN (NEW.status IS DISTINCT FROM OLD.status)  -- Only trigger when 'status' changes
-EXECUTE FUNCTION update_user_plan();
+EXECUTE FUNCTION public.update_user_plan();
 
 -- Create function to check if we're running in the trigger context
-CREATE OR REPLACE FUNCTION is_subscription_trigger()
+CREATE OR REPLACE FUNCTION public.is_subscription_trigger()
 RETURNS boolean AS $$
 BEGIN
     RETURN EXISTS (
@@ -37,7 +37,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION users_columns_updateable()
+CREATE OR REPLACE FUNCTION public.users_columns_updateable()
 RETURNS TRIGGER AS $$
 DECLARE
     current_user_role public.app_role_enum;
@@ -48,7 +48,7 @@ BEGIN
     RAISE LOG 'users_columns_updateable: user with role % attempted to change role or plan', current_user_role;
 
     -- Allow updates if they're coming from our subscription trigger
-    IF TG_OP = 'UPDATE' AND is_subscription_trigger() THEN
+    IF TG_OP = 'UPDATE' AND public.is_subscription_trigger() THEN
         RETURN NEW;
     END IF;
 
