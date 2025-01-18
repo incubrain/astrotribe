@@ -47,7 +47,7 @@ RUN --mount=type=cache,id=s/3c9904ae-05e1-4a46-a525-fca654d7d374-/pnpm/store,tar
 
 # Copy source files and build
 COPY . .
-RUN pnpx prisma generate && \
+RUN pnpm prisma:gen && \
     rm -rf layers/*/dist && \
     pnpm exec nx reset && \
     pnpm exec nx build @astronera/cron-jobs --configuration=production --skip-nx-cache --verbose

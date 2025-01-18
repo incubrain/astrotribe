@@ -31,7 +31,7 @@ COPY tailwind.config.base.ts ./
 RUN pnpm install --filter @astronera/auth...
 
 # Generate Prisma client
-RUN pnpx prisma generate
+RUN pnpm prisma:gen
 
 # Build with nx
 RUN pnpx nx reset
