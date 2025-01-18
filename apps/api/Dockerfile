@@ -32,7 +32,7 @@ COPY pnpm-workspace.yaml ./
 RUN pnpm install --filter @astronera/api
 
 # Generate Prisma client for logger
-RUN pnpx prisma generate
+RUN pnpm prisma:gen
 
 # Install nx and build
 RUN pnpx nx reset
