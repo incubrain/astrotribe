@@ -17,7 +17,7 @@
         "prepare",
         {
           "target": "build",
-          "projects": ["@ib/logger", "@ib/cache"]
+          "projects": ["@ib/cache"]
         }
       ],
       "options": {
