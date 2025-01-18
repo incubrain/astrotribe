@@ -35,7 +35,7 @@ COPY tailwind.config.base.ts ./
 RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
     pnpm install --filter @astronera/website... --frozen-lockfile && \
     rm -rf layers/*/dist && \
-    NODE_ENV=production pnpm exec nx build @astronera/website --verbose --skip-nx-cache
+    NODE_ENV=production pnpx nx build @astronera/website --verbose --skip-nx-cache
 
 EXPOSE $PORT
 

@@ -32,9 +32,6 @@ COPY tailwind.config.base.ts ./
 # Install dependencies for all required workspaces
 RUN pnpm install --filter @astronera/app...
 
-# Generate Prisma client
-RUN pnpm prisma:gen
-
 # Build with nx
 RUN pnpx nx reset
 RUN pnpx nx build @astronera/app --skip-nx-cache
