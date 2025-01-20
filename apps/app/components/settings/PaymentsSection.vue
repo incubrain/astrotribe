@@ -52,28 +52,41 @@ const plans = computed<PlanConfig>(() =>
       isActive: true,
       availableFrom: null,
     },
-  ].concat(
-    plansData.map((item: any) => {
-      let razorPayConfig
-      if (subscription.value && subscription.value.plan_id === item.id) {
-        const isActive = ['active', 'completed'].includes(subscription.value.status)
-        razorPayConfig = {
-          subscription_id: subscription.value.external_subscription_id,
-          subscription_status: subscription.value.status,
-          isActive,
+  ]
+    .concat(
+      plansData.map((item: any) => {
+        let razorPayConfig
+        if (subscription.value && subscription.value.plan_id === item.id) {
+          const isActive = ['active', 'completed'].includes(subscription.value.status)
+          razorPayConfig = {
+            subscription_id: subscription.value.external_subscription_id,
+            subscription_status: subscription.value.status,
+            isActive,
+          }
         }
-      }
 
-      return {
-        ...item,
-        availableFrom: item.created_at,
-        isActive: item.is_active,
-        period: `/${item.interval_type}`,
-        price: item.monthly_amount.d / 100,
-        razorPayConfig,
+        return {
+          ...item,
+          availableFrom: item.created_at,
+          isActive: item.is_active,
+          period: item.interval_type,
+          price:
+            item.interval_type === 'monthly'
+              ? item.monthly_amount.d / 100
+              : item.annual_amount.d / 100,
+          razorPayConfig,
+        }
+      }),
+    )
+    .reduce((acc, plan) => {
+      if (!acc[plan.name]) {
+        // Initialize the group if not already present
+        acc[plan.name] = []
       }
-    }),
-  ),
+      // Add the current plan to the appropriate group
+      acc[plan.name].push(plan)
+      return acc
+    }, {}),
 )
 
 const handlePaymentSuccess = (response: any) => {
@@ -105,18 +118,18 @@ const customerInfo = computed(() => ({
       <!-- Pricing Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
         <div
-          v-for="plan in plans"
-          :key="plan.name"
+          v-for="[name, allPlans] in Object.entries(plans)"
+          :key="name"
           class="relative rounded-xl overflow-hidden"
           :class="{
-            'bg-gray-900 border-2 border-blue-500': profile?.user_plan === plan.name.toLowerCase(),
-            'bg-gray-900/80': !plan.isActive && profile?.user_plan !== plan.name.toLowerCase(),
-            'bg-gray-900': plan.isActive && profile?.user_plan !== plan.name.toLowerCase(),
+            'bg-gray-900 border-2 border-blue-500': profile?.user_plan === name.toLowerCase(),
+            'bg-gray-900/80': !allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
+            'bg-gray-900': allPlans[0].isActive && profile?.user_plan !== name.toLowerCase(),
           }"
         >
           <!-- Current Plan Badge -->
           <div
-            v-if="profile?.user_plan === plan.name.toLowerCase()"
+            v-if="profile?.user_plan === name.toLowerCase()"
             class="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 text-sm font-medium rounded-full"
           >
             Current Plan
@@ -125,18 +138,21 @@ const customerInfo = computed(() => ({
           <div class="p-6 flex flex-col justify-between h-full">
             <!-- Plan Header -->
             <div>
-              <h3 class="text-xl font-semibold text-white">{{ plan.name }}</h3>
-              <div class="mt-2 flex items-baseline">
+              <h3 class="text-xl font-semibold text-white">{{ name }}</h3>
+              <div
+                v-for="plan in allPlans"
+                class="mt-2 flex items-baseline"
+              >
                 <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
-                <span class="ml-1 text-sm text-gray-400">{{ plan.period }}</span>
+                <span class="ml-1 text-sm text-gray-400">/{{ plan.period }}</span>
               </div>
-              <p class="mt-3 text-sm text-gray-400">{{ plan.description }}</p>
+              <p class="mt-3 text-sm text-gray-400">{{ allPlans[0].description }}</p>
             </div>
 
             <!-- Features List -->
             <ul class="mt-6 space-y-4 flex-grow flex flex-col h-full">
               <li
-                v-for="feature in plan.features"
+                v-for="feature in allPlans[0].features"
                 :key="feature"
                 class="flex items-start"
               >
@@ -149,7 +165,10 @@ const customerInfo = computed(() => ({
             </ul>
 
             <!-- Action Button -->
-            <div class="mt-8">
+            <div
+              v-for="plan in allPlans"
+              class="mt-8"
+            >
               <div v-if="plan.isActive">
                 <PaymentButton
                   v-if="!plan.razorPayConfig?.isActive"
@@ -162,7 +181,12 @@ const customerInfo = computed(() => ({
                     subscription_id: plan.razorPayConfig?.subscription_id,
                   }"
                   :customer="customerInfo"
-                  :button-label="`Change Plan to ${plan.name}`"
+                  :button-label="`Change Plan to ${plan.name}
+                    ${
+                      allPlans.length > 1
+                        ? `(${plan.period.charAt(0).toUpperCase() + plan.period.slice(1).toLowerCase()})`
+                        : ''
+                    }`"
                   :theme="{ color: '#3B82F6' }"
                   class="w-full"
                   @payment-success="handlePaymentSuccess"
