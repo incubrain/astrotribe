@@ -1,4 +1,5 @@
 import { FEATURES } from '#shared/constants'
+import { storeToRefs } from 'pinia'
 
 // composables/usePlan.ts
 export enum PlanType {
@@ -19,7 +20,10 @@ export interface PlanFeature {
 export const usePlan = () => {
   // For now, we'll assume everyone is on free plan
   // Later this can be updated based on your auth/subscription system
-  const userPlan = ref<PlanType>(PlanType.FREE)
+  const currentUser = useCurrentUser()
+  const { profile } = storeToRefs(currentUser)
+
+  const userPlan = ref<PlanType>(profile.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
 
   // Utility functions
   const getFeatureLimit = (featureKey: keyof typeof FEATURES) => {

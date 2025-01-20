@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
 export interface PageType {
@@ -92,9 +93,11 @@ const navigationCategories = ref([
 
 export default function usePages() {
   const client = useSupabaseClient()
-  const { profile } = useCurrentUser()
+  const currentUser = useCurrentUser()
   const route = useRoute()
   const { getFeatureUsage } = usePlan()
+
+  const { profile } = storeToRefs(currentUser)
 
   const getFeedName = (feedId: string): string => {
     // Return empty string if it's a UUID
