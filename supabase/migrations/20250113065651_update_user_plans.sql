@@ -4,10 +4,18 @@ SECURITY DEFINER
 AS $$
 BEGIN
   -- Check if the 'status' field was updated and is either 'active' or 'completed'
-  IF NEW.status <> OLD.status AND (NEW.status = 'active' OR NEW.status = 'completed') THEN
+  IF NEW.status <> OLD.status AND (NEW.status = 'active' OR New.status = 'resumed' OR NEW.status = 'completed') THEN
     -- Update the 'plan' field in the 'user_profiles' table based on the 'plan_id' from 'customer_subscriptions'
     UPDATE public.user_profiles
     SET plan = LOWER((SELECT name FROM customer_subscription_plans WHERE id = NEW.plan_id))::public.app_plan_enum
+    WHERE id = NEW.user_id;
+  END IF;
+
+  -- Check if the 'status' field was updated and is either 'active' or 'completed'
+  IF NEW.status <> OLD.status AND (NEW.status = 'paused' OR New.status = 'cancelled' OR NEW.status = 'expired') THEN
+    -- Update the 'plan' field in the 'user_profiles' table based on the 'plan_id' from 'customer_subscriptions'
+    UPDATE public.user_profiles
+    SET plan = 'free'::public.app_plan_enum
     WHERE id = NEW.user_id;
   END IF;
 
