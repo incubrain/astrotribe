@@ -28,7 +28,7 @@ COPY libs/*/package.json ./libs/
 COPY shared/*/package.json ./shared/
 
 # Install dependencies with pruning
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+RUN --mount=type=cache,id=9baea51d-1b5c-467f-973c-df117b403a84-pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile --filter @astronera/website... --ignore-scripts
 
 # Now copy the rest of the source code
