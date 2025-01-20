@@ -22,6 +22,7 @@ WORKDIR /app
 # Copy only the files needed for dependency installation
 COPY pnpm-*.yaml ./
 COPY package.json ./
+COPY nx.json ./
 COPY apps/website/package.json ./apps/website/
 COPY layers/*/package.json ./layers/
 COPY libs/*/package.json ./libs/
