@@ -35,7 +35,7 @@ RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,tar
 COPY . .
 
 # Build the application
-RUN pnpm --filter @astronera/website build
+RUN pnpx nx build @astronera/website --configuration=production --skip-nx-cache
 
 WORKDIR /app/apps/website
 
