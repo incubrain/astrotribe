@@ -7,7 +7,6 @@ ENV PORT=8080
 ENV NODE_ENV=production
 ENV NX_DAEMON=false
 ENV NX_SKIP_NX_CLOUD=true
-ENV NODE_PATH=/app/node_modules
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -20,22 +19,23 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy all files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/website ./apps/website
-COPY layers ./layers
-COPY libs ./libs
-COPY theme ./theme
-COPY tsconfig.* ./
-COPY nx.json ./
-COPY shared ./shared
-COPY tailwind.config.base.ts ./
+# Copy only the files needed for dependency installation
+COPY pnpm-*.yaml ./
+COPY package.json ./
+COPY apps/website/package.json ./apps/website/
+COPY layers/*/package.json ./layers/
+COPY libs/*/package.json ./libs/
+COPY shared/*/package.json ./shared/
 
-# Install only website dependencies and build
-RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
-    pnpm install --filter @astronera/website... --frozen-lockfile && \
-    rm -rf layers/*/dist && \
-    NODE_ENV=production pnpx nx build @astronera/website --verbose --skip-nx-cache
+# Install dependencies with pruning
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --filter @astronera/website... --ignore-scripts
+
+# Now copy the rest of the source code
+COPY . .
+
+# Build the application
+RUN pnpm --filter @astronera/website build
 
 EXPOSE $PORT
 
