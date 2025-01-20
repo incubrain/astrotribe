@@ -52,6 +52,38 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     }
   }
 
+  async function refreshUserStore() {
+    logger.info('Starting user store refresh')
+    const client = useSupabaseClient()
+
+    try {
+      // Get fresh user data from Supabase
+      const {
+        data: { user: freshUser },
+        error,
+      } = await client.auth.getUser()
+
+      if (error) {
+        logger.error('Error refreshing user data', { error })
+        throw error
+      }
+
+      if (freshUser) {
+        user.value = freshUser
+
+        return profile.value
+      }
+    } catch (error) {
+      logger.error('Failed to refresh user store', { error })
+      const toast = useNotification()
+      toast.error({
+        summary: 'Refresh Failed',
+        message: 'Unable to refresh user data. Please try again.',
+      })
+      throw error
+    }
+  }
+
   function cleanDataForUpdate(newData: any, previousData: any) {
     const updatedData: any = {}
     for (const key in newData) {
@@ -188,6 +220,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     ),
     registeredWithProvider: computed(() => profile.value?.provider),
     profile,
+    refreshUserStore,
     uploadImage,
     updateProfile,
     testUpdateProfile,

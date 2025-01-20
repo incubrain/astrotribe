@@ -1,16 +1,19 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
-const { profile } = useCurrentUser()
+const currentUser = useCurrentUser()
+
+const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
 const subscriptions = await razorpay.fetchSubscriptions()
 const subscription = ref(subscriptions?.[0])
 
-watch(lastEvent, (event) => {
+watch(lastEvent, async (event) => {
   if (event?.type === 'updated') {
     // Handle subscription update
     subscription.value = event.data
+    await currentUser.refreshUserStore()
   }
 })
 
