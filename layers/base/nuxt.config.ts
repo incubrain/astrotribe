@@ -14,9 +14,6 @@ export default defineNuxtConfig({
 
   workspaceDir: '../../',
 
-  // remove after debuggin
-  sourcemap: true,
-
   experimental: {
     defaults: {
       nuxtLink: {

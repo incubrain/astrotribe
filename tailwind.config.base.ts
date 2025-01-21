@@ -30,6 +30,9 @@ export default {
       screens: {
         '2xl': '1536px',
       },
+      aspectRatio: {
+        mobile: '9 / 16',
+      },
       gridTemplateColumns: {
         nav: 'minmax(240px, 1fr) minmax(420px, 2fr) minmax(300px,1fr)',
       },
