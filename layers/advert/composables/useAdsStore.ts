@@ -36,6 +36,14 @@ export const useAdsStore = defineStore('ads', () => {
     return currentAdQueue.value.shift()!
   }
 
+  const popupAds = computed(() =>
+    activeAds.value.filter((ad) => {
+      const pkg = adPackages.value.find((p) => p.id === ad.package_id)
+      console.log('popupAds:', ad)
+      return pkg?.position === 'popup'
+    }),
+  )
+
   // Getters
   const feedAds = computed(() => {
     return activeAds.value.filter((ad) => {
@@ -191,6 +199,7 @@ export const useAdsStore = defineStore('ads', () => {
     // Getters
     topBannerAd,
     feedAds,
+    popupAds,
     currentAdQueue,
 
     // Actions

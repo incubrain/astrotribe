@@ -23,6 +23,9 @@ onMounted(() => {
   scaleIn('.social-button')
 })
 
+const firstLetterUpperCase = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 </script>
 
 <template>
@@ -66,7 +69,7 @@ onMounted(() => {
                       size="24"
                     />
                   </template>
-                  {{ platform.name }}
+                  {{ firstLetterUpperCase(platform.name) }}
                 </PrimeButton>
 
                 <!-- Glow Effect -->

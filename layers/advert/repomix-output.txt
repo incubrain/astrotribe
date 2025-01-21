@@ -1,3 +1,8 @@
+================================================================
+Repository Structure
+================================================================
+assets/
+  advertisements.json
 components/
   AdminDashboard.vue
   AdminPreview.vue
@@ -36,10 +41,34 @@ types/
 .nuxtrc
 nuxt.config.ts
 package.json
+project.json
+tsconfig.json
 
 ================================================================
 Repository Files
 ================================================================
+
+================
+File: assets/advertisements.json
+================
+[
+  {
+    "id": 1,
+    "title": "Amazing Product",
+    "description": "You won't believe how great this is!",
+    "imageUrl": "/astronera-logo.jpg",
+    "link": "https://example.com/product1",
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "Amazing Product",
+    "description": "You won't believe how great this is!",
+    "imageUrl": "/astronera-logo.jpg",
+    "link": "https://example.com/product1",
+    "active": true
+  }
+]
 
 ================
 File: components/AdminDashboard.vue
@@ -1972,7 +2001,6 @@ File: components/VariantTesting.vue
 ================
 <!-- components/AdsVariantTesting.vue -->
 <script setup lang="ts">
-import type { Ad } from '~/types/ads'
 
 interface Props {
   adId: string // Changed from sponsorId to adId to match our schema
@@ -2950,4 +2978,98 @@ File: package.json
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   }
+}
+
+================
+File: project.json
+================
+{
+  "name": "@astronera/advert",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "layers/advert",
+  "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd layers/advert && pnpx nuxi prepare"
+      }
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["prepare"],
+      "options": {
+        "outputPath": "layers/advert/dist",
+        "tsConfig": "layers/advert/tsconfig.json",
+        "main": "layers/advert/index.ts",
+        "assets": [
+          {
+            "glob": "**/*.{css,scss,html,json,vue}",
+            "input": "layers/advert",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["layers/advert/**/*.{ts,tsx,vue}"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/layers/{projectRoot}"
+      }
+    }
+  },
+  "tags": ["type:layer", "scope:shared"]
+}
+
+================
+File: tsconfig.json
+================
+{
+  "extends": ["../../tsconfig.web.json", "./.nuxt/tsconfig.json"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "incremental": true,
+    "tsBuildInfoFile": "./.nuxt/.tsbuildinfo",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "paths": {
+      "#layers/*": ["../../layers/*"]
+    },
+    // Add module resolution optimization
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    // Add import optimization
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": false
+  },
+  // Be explicit about what to include
+  "include": [
+    "./composables/**/*.ts",
+    "./components/**/*.{ts,vue}",
+    "./plugins/**/*.ts",
+    "./server/**/*.ts",
+    "./utils/**/*.ts",
+    "./*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".nuxt",
+    ".output",
+    ".playground",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__",
+    "**/*.d.ts"
+  ]
 }
