@@ -50,7 +50,12 @@ const plans = computed<PlanConfig>(() =>
         'Basic analytics',
       ],
       razorpayConfig: {
-        isActive: !subscription.value,
+        isActive:
+          !subscription.value ||
+          !['active', 'resumed', 'pending', 'completed', 'halted', 'charged'].includes(
+            subscription.value.status,
+          ),
+        buttonLabel: `Subscribe to Free Plan`,
       },
       isActive: true,
       availableFrom: null,
@@ -58,13 +63,40 @@ const plans = computed<PlanConfig>(() =>
   ]
     .concat(
       plansData.map((item: any) => {
-        let razorPayConfig
+        let isActive = false,
+          buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
+        let razorPayConfig = {
+          isActive,
+          buttonLabel,
+          subscription_id: null,
+          subscription_status: null,
+        }
+
         if (subscription.value && subscription.value.plan_id === item.id) {
-          const isActive = ['active', 'completed'].includes(subscription.value.status)
+          switch (subscription.value.status) {
+            case 'active':
+            case 'resumed':
+            case 'completed':
+              isActive = true
+              buttonLabel = 'Current Plan'
+              break
+            case 'charged':
+            case 'expired':
+              buttonLabel = `Renew Plan ${item.name} (${item.interval_type})`
+              break
+            case 'pending':
+              isActive = true
+              buttonLabel = `Please Update Payment Method`
+              break
+            default:
+              buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
+          }
+
           razorPayConfig = {
             subscription_id: subscription.value.external_subscription_id,
             subscription_status: subscription.value.status,
             isActive,
+            buttonLabel,
           }
         }
 
@@ -170,11 +202,16 @@ const customerInfo = computed(() => ({
             <!-- Action Button -->
             <div
               v-for="plan in allPlans"
-              class="mt-8"
+              class="mt-4"
             >
               <div v-if="plan.isActive">
                 <PaymentButton
-                  v-if="!plan.razorPayConfig?.isActive"
+                  v-if="
+                    !plan.razorPayConfig?.isActive &&
+                    !['charged', 'expired', 'halted', 'pending'].includes(
+                      plan.razorPayConfig?.subscription_status,
+                    )
+                  "
                   :plan="{
                     id: plan.id,
                     external_plan_id: plan.external_plan_id,
@@ -184,12 +221,7 @@ const customerInfo = computed(() => ({
                     subscription_id: plan.razorPayConfig?.subscription_id,
                   }"
                   :customer="customerInfo"
-                  :button-label="`Change Plan to ${plan.name}
-                    ${
-                      allPlans.length > 1
-                        ? `(${plan.period.charAt(0).toUpperCase() + plan.period.slice(1).toLowerCase()})`
-                        : ''
-                    }`"
+                  :button-label="plan.razorPayConfig?.buttonLabel"
                   :theme="{ color: '#3B82F6' }"
                   class="w-full"
                   @payment-success="handlePaymentSuccess"
