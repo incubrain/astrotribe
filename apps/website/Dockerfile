@@ -19,23 +19,19 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy only the files needed for dependency installation
-COPY pnpm-*.yaml ./
-COPY package.json ./
-COPY nx.json ./
-COPY apps/website/package.json ./apps/website/
-COPY layers/*/package.json ./layers/
-COPY libs/*/package.json ./libs/
-COPY shared/*/package.json ./shared/
+# Copy only what we need
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.json tailwind.config.base.ts .npmrc .nxignore tsconfig.*.json ./
+COPY apps/website ./apps/website
+COPY layers ./layers
+COPY libs ./libs
+COPY shared ./shared
 
-# Install dependencies with pruning
-RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile --filter @astronera/website... --ignore-scripts
-
-# Now copy the rest of the source code
-COPY . .
+# Install dependencies
+RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
 # Build the application
+RUN pnpx nx reset
 RUN pnpx nx build @astronera/website --configuration=production --skip-nx-cache
 
 WORKDIR /app/apps/website
