@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
 export interface PageType {
@@ -92,9 +93,11 @@ const navigationCategories = ref([
 
 export default function usePages() {
   const client = useSupabaseClient()
-  const { profile } = useCurrentUser()
+  const currentUser = useCurrentUser()
   const route = useRoute()
   const { getFeatureUsage } = usePlan()
+
+  const { profile } = storeToRefs(currentUser)
 
   const getFeedName = (feedId: string): string => {
     // Return empty string if it's a UUID
@@ -174,12 +177,12 @@ export default function usePages() {
   }
 
   const initializeFeeds = () => {
-    if (profile.id) {
+    if (profile.value.id) {
       const toast = useNotification()
       client
         .from('feeds')
         .select('id, name')
-        .eq('user_id', profile.id)
+        .eq('user_id', profile.value.id)
         .then(({ data, error }) => {
           if (error) {
             toast.error({

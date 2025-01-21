@@ -31,8 +31,14 @@ const handleTogglePlan = (planId, isActive) => togglePlan(planId, isActive)
         <div>
           <h3 class="text-xl font-semibold text-white">{{ plan.name }}</h3>
           <div class="mt-2 flex items-baseline">
-            <span class="text-3xl font-bold text-white">₹{{ plan.monthly_amount.d[0] / 100 }}</span>
-            <span class="ml-1 text-sm text-gray-400">{{ plan.period }}</span>
+            <span class="text-3xl font-bold text-white"
+              >₹{{
+                plan.interval_type == 'monthly'
+                  ? plan.monthly_amount.d[0] / 100
+                  : plan.annual_amount.d[0] / 100
+              }}</span
+            >
+            <span class="ml-1 text-sm text-gray-400">/{{ plan.interval_type }}</span>
           </div>
           <p class="mt-3 text-sm text-gray-400">{{ plan.description }}</p>
         </div>
