@@ -35,10 +35,13 @@ export class PlanController extends BaseController {
 
       const filterQuery = {
         ...query,
-        is_active: query.is_active && query.is_active === 'true' ? true : false,
+        is_active:
+          query.is_active && (query.is_active === 'TRUE' || query.is_active === 'true')
+            ? true
+            : false,
       }
 
-      return super.findAll(filterQuery)
+      return super.findAll(query.is_active ? filterQuery : query)
     } catch (error: any) {
       this.logger.error('Failed to fetch plans', error.stack)
       throw error
