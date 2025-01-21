@@ -32,7 +32,7 @@ RUN --mount=type=cache,id=s/9baea51d-1b5c-467f-973c-df117b403a84-/pnpm,target=/p
 
 # Build the application
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/website --configuration=production --skip-nx-cache
+RUN pnpx nx build @astronera/website --skip-nx-cache
 
 WORKDIR /app/apps/website
 
