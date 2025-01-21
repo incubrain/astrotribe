@@ -19,7 +19,8 @@
             "@astronera/supabase",
             "@astronera/crud",
             "@astronera/advert",
-            "@astronera/referral"
+            "@astronera/referral",
+            "@astronera/db"
           ]
         }
       ]
