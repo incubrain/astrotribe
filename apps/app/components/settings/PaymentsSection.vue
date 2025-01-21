@@ -1,5 +1,7 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
+import confetti from 'canvas-confetti'
+
 const currentUser = useCurrentUser()
 
 const { profile } = storeToRefs(currentUser)
@@ -9,11 +11,23 @@ const { lastEvent, isConnected } = useEvents()
 const subscriptions = await razorpay.fetchSubscriptions()
 const subscription = ref(subscriptions?.[0])
 
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x: 0.5, y: 0.5 },
+  })
+}
+
 watch(lastEvent, async (event) => {
   if (event?.type === 'updated') {
     // Handle subscription update
     subscription.value = event.data
     await currentUser.refreshUserStore()
+
+    if (['active', 'resumed', 'completed'].includes(event.data.status)) {
+      triggerConfetti()
+    }
   }
 })
 
