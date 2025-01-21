@@ -177,12 +177,12 @@ export default function usePages() {
   }
 
   const initializeFeeds = () => {
-    if (profile.id) {
+    if (profile.value.id) {
       const toast = useNotification()
       client
         .from('feeds')
         .select('id, name')
-        .eq('user_id', profile.id)
+        .eq('user_id', profile.value.id)
         .then(({ data, error }) => {
           if (error) {
             toast.error({
