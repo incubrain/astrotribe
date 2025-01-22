@@ -91,18 +91,19 @@ watch(
   { deep: true },
 )
 
-useHead({
-  script: [
-    {
-      src: 'https://checkout.razorpay.com/v1/checkout.js',
-      async: true,
-      onload: () => {
-        isRazorpayLoaded.value = true
-        rzp = new (window as any).Razorpay(razorpayOptions.value)
-      },
-    },
-  ],
-})
+const loadRazorpay = async () => {
+  if (isRazorpayLoaded.value) return
+
+  // Load Razorpay script dynamically when the user clicks the button
+  const script = document.createElement('script')
+  script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+  script.async = true
+  script.onload = () => {
+    isRazorpayLoaded.value = true
+    rzp = new (window as any).Razorpay(razorpayOptions.value)
+  }
+  document.head.appendChild(script)
+}
 
 const createSubscription = async () => {
   const subscription = await razorpay.createOrder(props.plan.id, props.plan.external_plan_id)
@@ -115,8 +116,7 @@ const handlePayment = async () => {
   if (!razorpayOptions.value.subscription_id) await createSubscription()
 
   if (!isRazorpayLoaded.value) {
-    emit('payment-error', new Error('Razorpay is not loaded yet'))
-    return
+    await loadRazorpay()
   }
 
   try {
@@ -134,7 +134,6 @@ const handlePayment = async () => {
     :label="buttonLabel"
     :icon="buttonIcon"
     :loading="loading"
-    :disabled="!isRazorpayLoaded"
     @click="handlePayment"
   />
 </template>
