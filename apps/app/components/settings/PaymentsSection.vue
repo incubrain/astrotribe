@@ -21,6 +21,17 @@ const triggerConfetti = () => {
 }
 
 watch(lastEvent, async (event) => {
+  if (event.data.entity !== 'subscription') return
+
+  if (event?.type === 'created') {
+    if (!subscriptions.value.some((item) => item.external_subscription_id === event.data.id)) {
+      subscriptions.value.push(event.data)
+    }
+
+    // Handle subscription creation
+    await currentUser.refreshUserStore()
+  }
+
   if (event?.type === 'updated') {
     subscriptions.value = subscriptions.value.map((sub) => {
       if (sub.id === event.data.id) {
