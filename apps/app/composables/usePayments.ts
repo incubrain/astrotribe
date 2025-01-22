@@ -85,7 +85,9 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     error.value = null
 
     try {
-      const response = await $fetch(`/api/payment/${provider}/subscriptions`)
+      const response = await $fetch(`/api/payment/${provider}/subscriptions`, {
+        query: { user_id: profile.value.id },
+      })
 
       return response
     } catch (error: any) {

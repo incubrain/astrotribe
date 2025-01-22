@@ -11,6 +11,8 @@ const { lastEvent, isConnected } = useEvents()
 const subscriptions = await razorpay.fetchSubscriptions()
 const subscription = ref(subscriptions?.[0])
 
+const activeStates = ['active', 'completed', 'pending', 'charged']
+
 const triggerConfetti = () => {
   confetti({
     particleCount: 100,
@@ -50,7 +52,7 @@ interface PlanConfig {
 
 const plans = computed<PlanConfig>(() =>
   [
-    {
+    (!subscription.value || activeStates.includes(subscription.value.status)) && {
       id: 1,
       name: 'Free',
       price: '0',
@@ -63,13 +65,8 @@ const plans = computed<PlanConfig>(() =>
         '1GB storage',
         'Basic analytics',
       ],
-      razorpayConfig: {
-        isActive:
-          !subscription.value ||
-          !['active', 'resumed', 'pending', 'completed', 'halted', 'charged'].includes(
-            subscription.value.status,
-          ),
-        buttonLabel: `Subscribe to Free Plan`,
+      razorPayConfig: {
+        isActive: true,
       },
       isActive: true,
       availableFrom: null,
