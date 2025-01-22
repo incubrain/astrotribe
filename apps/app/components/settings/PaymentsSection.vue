@@ -8,8 +8,7 @@ const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = await razorpay.fetchSubscriptions()
-const subscription = ref(subscriptions?.[0])
+const subscriptions = ref(await razorpay.fetchSubscriptions())
 
 const activeStates = ['active', 'completed', 'pending', 'charged']
 
@@ -23,8 +22,14 @@ const triggerConfetti = () => {
 
 watch(lastEvent, async (event) => {
   if (event?.type === 'updated') {
+    subscriptions.value = subscriptions.value.map((sub) => {
+      if (sub.id === event.data.id) {
+        return event.data
+      }
+      return sub
+    })
+
     // Handle subscription update
-    subscription.value = event.data
     await currentUser.refreshUserStore()
 
     if (['active', 'resumed', 'completed'].includes(event.data.status)) {
@@ -52,7 +57,8 @@ interface PlanConfig {
 
 const plans = computed<PlanConfig>(() =>
   [
-    (!subscription.value || activeStates.includes(subscription.value.status)) && {
+    (!subscriptions.value?.length ||
+      !subscriptions.value.some((subscription) => activeStates.includes(subscription.status))) && {
       id: 1,
       name: 'Free',
       price: '0',
@@ -83,8 +89,10 @@ const plans = computed<PlanConfig>(() =>
           subscription_status: null,
         }
 
-        if (subscription.value && subscription.value.plan_id === item.id) {
-          switch (subscription.value.status) {
+        const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
+
+        if (subscription && subscription.plan_id === item.id) {
+          switch (subscription.status) {
             case 'active':
             case 'resumed':
             case 'completed':
@@ -104,8 +112,8 @@ const plans = computed<PlanConfig>(() =>
           }
 
           razorPayConfig = {
-            subscription_id: subscription.value.external_subscription_id,
-            subscription_status: subscription.value.status,
+            subscription_id: subscription.external_subscription_id,
+            subscription_status: subscription.status,
             isActive,
             buttonLabel,
           }
