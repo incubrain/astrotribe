@@ -1,4 +1,10 @@
 FROM node:22.12.0-bookworm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+ENV NX_SKIP_NX_CLOUD=true
+RUN corepack enable
 
 WORKDIR /app
 
@@ -6,34 +12,29 @@ ARG NX_CLOUD_ACCESS_TOKEN
 ARG NUXT_PUBLIC_SUPABASE_URL
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL} \
-    NX_DAEMON=false \
-    NX_SKIP_NX_CLOUD=true
+    NUXT_PUBLIC_SUPABASE_URL=${NUXT_PUBLIC_SUPABASE_URL}
 
 # Install required build dependencies
 RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
     rm -rf /var/lib/apt/lists/*
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json nx.json ./
 COPY apps/admin ./apps/admin
 COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
-COPY tsconfig.json ./
-COPY nx.json ./
 COPY shared ./shared
 
+
 # Install dependencies for required workspaces
+
 RUN pnpm install --filter @astronera/admin...
 
 # Build with nx
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/admin --skip-nx-cache
+RUN pnpx nx build @astronera/admin --skip-nx-cache --verbose
 
 RUN pnpm prune --production
 
