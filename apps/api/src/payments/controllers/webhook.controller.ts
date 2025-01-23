@@ -1,9 +1,11 @@
 import { Controller, Headers, Post, Body, UnauthorizedException } from '@nestjs/common'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { Public } from '@core/decorators/public.decorator'
+import { ConfigService } from '@nestjs/config'
 import { PaymentService } from '@payments/services/payment.service'
 import { SubscriptionService } from '@payments/services/subscription.service'
 import crypto from 'crypto'
+import Razorpay from 'razorpay'
 
 @Controller('webhook')
 @Public()
@@ -12,6 +14,7 @@ export class WebhookController {
     private readonly subscriptionService: SubscriptionService,
     private readonly paymentService: PaymentService,
     private readonly logger: CustomLogger,
+    private readonly config: ConfigService,
   ) {
     this.logger.setDomain('webhook')
   }
@@ -30,23 +33,38 @@ export class WebhookController {
 
       if (digest !== razorpaySignature) {
         console.error('Invalid Razorpay Signature')
+        this.logger.error('Invalid Razorpay Signature', { body, razorpaySignature })
         return
       }
 
       const { payload, event } = body
 
       switch (event) {
+        case 'subscription.activated':
+        case 'subscription.completed':
+        case 'subscription.resumed':
+          this.checkOldSubscription(payload)
+          break
         case 'subscription.authenticated':
         case 'subscription.paused':
-        case 'subscription.resumed':
-        case 'subscription.activated':
         case 'subscription.pending':
         case 'subscription.halted':
         case 'subscription.charged':
         case 'subscription.cancelled':
-        case 'subscription.completed':
         case 'subscription.updated':
           this.handleSubscriptionUpdate(payload)
+          break
+        case 'payment.captured':
+          this.logger.log('Payment Captured', payload)
+          this.handlePaymentUpdate(payload)
+          break
+        case 'payment.failed':
+          this.logger.error('Payment Failed', payload)
+          this.handlePaymentUpdate(payload)
+          break
+        case 'payment.refunded':
+          this.logger.warn('Payment Refunded', payload)
+          this.handlePaymentUpdate(payload)
           break
         default:
           console.warn(`Unhandled event type: ${event}`)
@@ -137,6 +155,39 @@ export class WebhookController {
       payment.subscription_id = subscription.id
 
       this.handlePaymentUpdate(payment)
+    }
+  }
+
+  private async checkOldSubscription(payload: any): Promise<void> {
+    const { entity: subscriptionPayload } = payload.subscription
+
+    try {
+      const subscriptions = await this.subscriptionService.findMany({
+        where: {
+          user_id: subscriptionPayload.notes.user_id,
+          plan_id: {
+            not: subscriptionPayload.plan_id,
+          },
+        },
+      })
+
+      if (subscriptions.length) {
+        this.logger.log('Found older subscriptions')
+        const razorpay = await new Razorpay({
+          key_id: this.config.get<string>('app.razorpay.key_id'),
+          key_secret: this.config.get<string>('app.razorpay.key_secret'),
+        })
+
+        await Promise.all(
+          subscriptions.map(async (subscription) =>
+            razorpay.subscriptions.cancel(subscription.external_subscription_id),
+          ),
+        )
+      }
+
+      this.handleSubscriptionUpdate(payload)
+    } catch (error) {
+      this.logger.error('Error while checking old subscription', error.stack)
     }
   }
 }

@@ -32,10 +32,10 @@ export class SubscriptionController extends BaseController {
     PaginatedResponse<unknown> | { success: boolean; error: any; timestamp: string; code: any }
   > {
     try {
-      this.logger.log('Fetching all plans')
+      this.logger.log('Fetching all subscriptions')
       return super.findAll(query)
     } catch (error: any) {
-      this.logger.error('Failed to fetch plans', error.stack)
+      this.logger.error('Failed to fetch subscriptions', error.stack)
       throw error
     }
   }
