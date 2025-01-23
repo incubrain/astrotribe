@@ -115,28 +115,30 @@ const plans = computed<PlanConfig>(() =>
         const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
 
         if (subscription && subscription.plan_id === item.id) {
+          const period = item.interval_type.charAt(0).toUpperCase() + item.interval_type.slice(1)
           switch (subscription.status) {
             case 'created':
               const start_at = new Date(subscription.start_at).getTime()
               if (start_at > Date.now()) {
-                buttonLabel = `Starts on ${new Date(start_at).toDateString()}`
+                isActive = true
+                buttonLabel = `(${period}) Plan starts on ${new Date(start_at).toDateString()}`
               }
               break
             case 'active':
             case 'resumed':
             case 'completed':
               isActive = true
-              buttonLabel = 'Current Plan'
+              buttonLabel = `Current Plan (${period})`
               break
             case 'charged':
-              buttonLabel = `Renew Plan ${item.name} (${item.interval_type})`
+              buttonLabel = `Renew Plan (${period})`
               break
             case 'pending':
               isActive = true
               buttonLabel = `Please Update Payment Method`
               break
             default:
-              buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
+              buttonLabel = `Subscribe to ${item.name} (${period})`
           }
 
           razorPayConfig = {
@@ -278,7 +280,7 @@ const customerInfo = computed(() => ({
                   v-else
                   class="w-full py-2 text-sm font-medium rounded-md bg-gray-800 text-gray-400 cursor-not-allowed"
                 >
-                  Current Plan
+                  {{ plan.razorPayConfig?.buttonLabel }}
                 </button>
               </div>
               <div
