@@ -2,8 +2,6 @@ FROM node:18-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-RUN npm install -g pnpm
-
 # Set working directory
 WORKDIR /app
 
