@@ -8,7 +8,11 @@ const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = ref(await razorpay.fetchSubscriptions())
+const subscriptions = ref(
+  await razorpay.fetchSubscriptions({
+    status: { notIn: ['cancelled', 'expired'] },
+  }),
+)
 
 const activeStates = ['active', 'completed', 'pending', 'charged']
 
@@ -21,11 +25,18 @@ const triggerConfetti = () => {
 }
 
 watch(lastEvent, async (event) => {
-  if (event.data.entity !== 'subscription') return
+  if (event?.module !== 'subscription') return
 
   if (event?.type === 'created') {
-    if (!subscriptions.value.some((item) => item.external_subscription_id === event.data.id)) {
+    if (!subscriptions.value.some((item) => item.id === event.data.id)) {
       subscriptions.value.push(event.data)
+    } else {
+      subscriptions.value = subscriptions.value.map((sub) => {
+        if (sub.id === event.data.id) {
+          return event.data
+        }
+        return sub
+      })
     }
 
     // Handle subscription creation
@@ -104,6 +115,11 @@ const plans = computed<PlanConfig>(() =>
 
         if (subscription && subscription.plan_id === item.id) {
           switch (subscription.status) {
+            case 'created':
+              const start_at = new Date(subscription.start_at).getTime()
+              if (start_at > Date.now()) {
+                buttonLabel = `Starts on ${new Date(start_at).toDateString()}`
+              }
             case 'active':
             case 'resumed':
             case 'completed':
@@ -111,7 +127,6 @@ const plans = computed<PlanConfig>(() =>
               buttonLabel = 'Current Plan'
               break
             case 'charged':
-            case 'expired':
               buttonLabel = `Renew Plan ${item.name} (${item.interval_type})`
               break
             case 'pending':
