@@ -19,7 +19,6 @@
     { "path": "apps/website" },
     { "path": "apps/app" },
     { "path": "apps/admin" },
-    { "path": "apps/monitoring" },
     { "path": "apps/cms" },
     { "path": "apps/auth" },
 
