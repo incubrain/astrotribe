@@ -61,11 +61,13 @@ const razorpayOptions = computed(() => ({
   image: props.theme.logo,
   handler: function (response: any) {
     emit('payment-success', response)
+    unloadRazorpay()
   },
   modal: {
     ondismiss: function () {
       emit('payment-closed')
       loading.value = false
+      unloadRazorpay()
     },
   },
   prefill: {
@@ -94,8 +96,6 @@ watch(
 )
 
 const loadRazorpay = async () => {
-  if (isRazorpayLoaded.value) return
-
   // Create a Promise to ensure the script is fully loaded before proceeding
   await new Promise((resolve, reject) => {
     const script = document.createElement('script')
@@ -114,6 +114,19 @@ const loadRazorpay = async () => {
 
   // Initialize Razorpay after script is loaded
   rzp = new (window as any).Razorpay(razorpayOptions.value)
+}
+
+const unloadRazorpay = () => {
+  // Locate the Razorpay script by its src
+  const script = document.querySelector(
+    'script[src="https://checkout.razorpay.com/v1/checkout.js"]',
+  )
+  if (script) {
+    // Remove the script from the DOM
+    script.remove()
+    isRazorpayLoaded.value = false
+    console.log('Razorpay script removed from DOM')
+  }
 }
 
 const createSubscription = async () => {
@@ -141,7 +154,7 @@ const handlePayment = async () => {
     return
   }
 
-  if (!isRazorpayLoaded.value) await loadRazorpay()
+  await loadRazorpay()
 
   try {
     loading.value = true
@@ -151,6 +164,10 @@ const handlePayment = async () => {
     loading.value = false
   }
 }
+
+onUnmounted(() => {
+  unloadRazorpay()
+})
 </script>
 
 <template>

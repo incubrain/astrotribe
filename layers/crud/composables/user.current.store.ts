@@ -57,7 +57,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
     const client = useSupabaseClient()
 
     try {
-      await client.auth.getSession()
+      await client.auth.refreshSession()
 
       // Get fresh user data from Supabase
       const {
