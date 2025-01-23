@@ -30,14 +30,33 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     }
   }
 
-  const createOrder = async (plan_id: string, external_plan_id: string) => {
+  const createOrder = async (plan: Record<string, any>) => {
     isLoading.value = true
     error.value = null
+
+    const { plan_id, external_plan_id, total_count } = plan
+
+    const oldSubscription = await fetchSubscriptions({
+      where: {
+        plan_id: { not: plan_id },
+        name: plan.name,
+        status: { In: ['cancelled', 'completed', 'expired'] },
+      },
+    })
+
+    const start_at = oldSubscription?.[0]?.current_end
 
     try {
       const response = await $fetch(`/api/payment/${provider}/subscriptions/create`, {
         method: 'POST',
-        body: { plan_id, external_plan_id, user_id: profile.value.id, total_count: 1, provider },
+        body: {
+          plan_id,
+          external_plan_id,
+          start_at: start_at && new Date(start_at).getTime() / 1000,
+          user_id: profile.value.id,
+          total_count,
+          provider,
+        },
       })
 
       return response
@@ -80,14 +99,16 @@ export const usePayments = (provider: 'razorpay' | 'stripe') => {
     }
   }
 
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = async (query?: Record<string, any>) => {
     isLoading.value = true
     error.value = null
 
     try {
       const response = await $fetch(`/api/payment/${provider}/subscriptions`, {
-        query: { user_id: profile.value.id },
+        query: { ...(query ? query : {}), user_id: profile.value.id },
       })
+
+      console.log('Subscriptions RESPONSE', response)
 
       return response
     } catch (error: any) {

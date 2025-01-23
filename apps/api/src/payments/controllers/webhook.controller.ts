@@ -39,6 +39,7 @@ export class WebhookController {
 
       const { payload, event } = body
 
+      this.logger.log(`Received event: ${event}`)
       switch (event) {
         case 'subscription.activated':
         case 'subscription.completed':
@@ -53,18 +54,6 @@ export class WebhookController {
         case 'subscription.cancelled':
         case 'subscription.updated':
           this.handleSubscriptionUpdate(payload)
-          break
-        case 'payment.captured':
-          this.logger.log('Payment Captured', payload)
-          this.handlePaymentUpdate(payload)
-          break
-        case 'payment.failed':
-          this.logger.error('Payment Failed', payload)
-          this.handlePaymentUpdate(payload)
-          break
-        case 'payment.refunded':
-          this.logger.warn('Payment Refunded', payload)
-          this.handlePaymentUpdate(payload)
           break
         default:
           console.warn(`Unhandled event type: ${event}`)
@@ -118,6 +107,9 @@ export class WebhookController {
     const data = {
       external_subscription_id: subscriptionPayload.id,
       status: subscriptionPayload.status,
+      current_end: new Date(subscriptionPayload.current_end * 1000),
+      current_start: new Date(subscriptionPayload.current_start * 1000),
+      ended_at: new Date(subscriptionPayload.ended_at * 1000),
       quantity: subscriptionPayload.quantity,
       charge_at: new Date(subscriptionPayload.charge_at * 1000),
       start_at: new Date(subscriptionPayload.start_at * 1000),
@@ -137,6 +129,7 @@ export class WebhookController {
         : null,
       source: subscriptionPayload.source,
       offer_id: subscriptionPayload.offer_id,
+      notes: subscriptionPayload.notes,
     }
 
     this.subscriptionService.updateSubscription(data)
@@ -165,8 +158,13 @@ export class WebhookController {
       const subscriptions = await this.subscriptionService.findMany({
         where: {
           user_id: subscriptionPayload.notes.user_id,
-          plan_id: {
-            not: subscriptionPayload.plan_id,
+          status: {
+            notIn: ['cancelled', 'completed', 'expired'],
+          },
+          customer_subscription_plans: {
+            isNot: {
+              external_plan_id: subscriptionPayload.plan_id,
+            },
           },
         },
       })
@@ -179,8 +177,15 @@ export class WebhookController {
         })
 
         await Promise.all(
-          subscriptions.map(async (subscription) =>
-            razorpay.subscriptions.cancel(subscription.external_subscription_id),
+          subscriptions.map((subscription) =>
+            razorpay.subscriptions.cancel(
+              subscription.external_subscription_id,
+              subscription.name === payload.subscription.name, // Start subscription immediately if it's not the same plan
+              (err, data) =>
+                err
+                  ? this.logger.error('Could not cancel old subscription', err)
+                  : this.logger.error('Subscription cancelled', data),
+            ),
           ),
         )
       }

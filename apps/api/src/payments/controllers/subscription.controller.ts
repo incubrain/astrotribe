@@ -1,5 +1,16 @@
 // provider.ejs template
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common'
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '@core/services/prisma.service'
@@ -10,7 +21,9 @@ import { BaseController } from '@core/base/base.controller'
 import type { Prisma } from '@astronera/db'
 import type { PaginatedResponse, PaginatedQuery } from '@types'
 import { SubscriptionService } from '../services/subscription.service'
+import { PaymentEventsService } from '../../observables/payments.observable'
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('payments/subscriptions')
 @ApiTags('Subscription')
 export class SubscriptionController extends BaseController {
@@ -20,6 +33,7 @@ export class SubscriptionController extends BaseController {
     protected readonly config: ConfigService,
     protected readonly paginationService: PaginationService,
     protected readonly logger: CustomLogger,
+    protected readonly paymentEventsService: PaymentEventsService,
   ) {
     super('CustomerSubscriptions')
   }
@@ -57,7 +71,13 @@ export class SubscriptionController extends BaseController {
   @ApiOperation({ summary: 'Create Subscription' })
   async createSubscription(@Body() data: Prisma.CustomerSubscriptionsCreateInput) {
     try {
-      return await super.create(data)
+      const result = await super.create(data)
+
+      this.paymentEventsService.emit({
+        type: 'created',
+        module: 'subscription',
+        data: result,
+      })
     } catch (error: any) {
       return this.handleError(error)
     }

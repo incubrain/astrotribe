@@ -76,3 +76,6 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+ALTER TABLE customer_subscriptions
+ADD CONSTRAINT unique_user_plan UNIQUE (user_id, plan_id);

@@ -15,6 +15,10 @@ export class BigIntSerializationInterceptor implements NestInterceptor {
       return value.map((item) => this.transformValue(item))
     }
 
+    if (value instanceof Date) {
+      return value.toISOString()
+    }
+
     if (typeof value === 'object' && value !== null) {
       return Object.fromEntries(
         Object.entries(value).map(([key, val]) => [key, this.transformValue(val)]),
