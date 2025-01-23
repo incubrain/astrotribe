@@ -21,9 +21,6 @@ RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
     rm -rf /var/lib/apt/lists/*
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Copy necessary files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore ./
 COPY apps/app ./apps/app

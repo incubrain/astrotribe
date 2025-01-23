@@ -3,6 +3,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
 ENV NX_VERBOSE_LOGGING=true
+ENV NX_SKIP_NX_CLOUD=true
 RUN corepack enable
 
 WORKDIR /app
@@ -10,32 +11,22 @@ WORKDIR /app
 ARG NX_CLOUD_ACCESS_TOKEN
 
 ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    NX_DAEMON=false \
-    NX_SKIP_NX_CLOUD=true
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+    
 
 # Install required build dependencies
 RUN apt-get update && \
     apt-get install -y python3 make g++ git && \
     rm -rf /var/lib/apt/lists/*
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Copy only the necessary files first
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/api/package.json ./apps/api/
-
-# Copy the source files for the required workspaces
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json nx.json ./
 COPY apps/api ./apps/api
 COPY libs ./libs
-COPY tsconfig.json ./
 COPY shared ./shared
-COPY nx.json ./
-COPY pnpm-workspace.yaml ./
 
 # Install dependencies for specific workspaces
-RUN pnpm install --filter @astronera/api
+RUN pnpm install --filter @astronera/api...
 
 # Generate Prisma client for logger
 RUN pnpm prisma:gen
