@@ -100,6 +100,7 @@ const plans = computed<PlanConfig>(() =>
       availableFrom: null,
     },
   ]
+    .filter((plan) => plan)
     .concat(
       plansData.map((item: any) => {
         let isActive = false,
@@ -120,6 +121,7 @@ const plans = computed<PlanConfig>(() =>
               if (start_at > Date.now()) {
                 buttonLabel = `Starts on ${new Date(start_at).toDateString()}`
               }
+              break
             case 'active':
             case 'resumed':
             case 'completed':
