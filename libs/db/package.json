@@ -23,14 +23,15 @@
   },
   "dependencies": {
     "@nestjs/swagger": "^8.1.1",
-    "@prisma/client": "^6.2.1"
+    "@prisma/client": "^6.2.1",
+    "zod-prisma-types": "^3.2.1",
+    "vite-plugin-dts": "~4.4.0"
   },
   "devDependencies": {
     "decimal.js": "^10.4.3",
     "prisma": "^6.2.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "zod-prisma-types": "^3.2.1",
     "vite": "^5.4.11"
   },
   "prisma": {

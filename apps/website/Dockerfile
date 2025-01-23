@@ -1,4 +1,4 @@
-FROM node:22-slim
+FROM node:22.12.0-bookworm
 
 # Set environment variables
 ENV PNPM_HOME="/pnpm"
@@ -29,11 +29,13 @@ COPY libs ./libs
 COPY shared ./shared
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --filter @astronera/website... --frozen-lockfile
 
 # Build the application
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/website --skip-nx-cache
+RUN pnpx nx build @astronera/website --skip-nx-cache --verbose
+
+RUN pnpm prune --production
 
 WORKDIR /app/apps/website
 
