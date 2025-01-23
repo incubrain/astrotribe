@@ -38,7 +38,7 @@ RUN pnpx nx build @astronera/api --skip-nx-cache
 RUN pnpm prune --production
 
 # Set the working directory to the output
-WORKDIR /app/apps/api/dist
+WORKDIR /app/dist/apps/api
 
 # Expose port and start command
 EXPOSE 8080
