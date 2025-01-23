@@ -10,7 +10,8 @@ WORKDIR /app
 # Copy workspace configuration files
 COPY pnpm-*.yaml package.json ./
 COPY nx.json ./
-COPY tsconfig*.json ./
+COPY shared ./shared
+COPY tsconfig.json ./
 
 # Declare build-time args
 ARG SUPABASE_STORAGE_URL
