@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
 import type { Config } from 'tailwindcss'
-import baseConfig from '../../tailwind.config.base'
+import baseConfig from '../../shared/tailwind.config.base'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 

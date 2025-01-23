@@ -7,16 +7,16 @@ generator client {
 
 generator zod {
   provider                  = "pnpm exec zod-prisma-types"
-  useDecimalJs              = "false"
+  generateSelectHelpers     = "false"
   validateWhereUniqueInput  = "false"
   createModelTypes          = "true"
+  createRelationValuesTypes = "false"
   addIncludeType            = "false"
   addSelectType             = "false"
-  addInputTypeValidation    = "false"
+  useDecimalJs              = "false"
   createPartialTypes        = "false"
-  generateSelectHelpers     = "false"
+  addInputTypeValidation    = "false"
   createInputTypes          = "false"
-  createRelationValuesTypes = "false"
 }
 
 datasource db {
@@ -269,6 +269,24 @@ model Bookmarks {
   @@schema("public")
 }
 
+/// @client.name="business_domains"
+model BusinessDomains {
+  id                     String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                   String            @unique(map: "unique_domain_name") @db.VarChar(100)
+  slug                   String            @unique(map: "unique_domain_slug") @db.VarChar(100)
+  description            String?
+  parent_id              String?           @db.Uuid
+  created_at             DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?         @default(now()) @db.Timestamptz(6)
+  business_domains       BusinessDomains?  @relation("business_domainsTobusiness_domains", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_business_domains BusinessDomains[] @relation("business_domainsTobusiness_domains")
+  categorized_urls       CategorizedUrls[]
+
+  @@index([parent_id], map: "idx_business_domains_parent_id")
+  @@map("business_domains")
+  @@schema("public")
+}
+
 /// @client.name="categories"
 model Categories {
   id                 BigInt              @id @default(autoincrement())
@@ -285,6 +303,26 @@ model Categories {
   news               News[]
 
   @@map("categories")
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// @client.name="categorized_urls"
+model CategorizedUrls {
+  id                  String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  original_url        String
+  normalized_url      String          @unique(map: "unique_normalized_url")
+  domain_id           String          @db.Uuid
+  priority            String          @db.VarChar(20)
+  confidence          Decimal         @db.Decimal(5, 4)
+  categorizer_version String          @db.VarChar(20)
+  created_at          DateTime?       @default(now()) @db.Timestamptz(6)
+  business_domains    BusinessDomains @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([domain_id], map: "idx_categorized_urls_domain_id")
+  @@index([normalized_url], map: "idx_categorized_urls_normalized_url")
+  @@index([priority], map: "idx_categorized_urls_priority")
+  @@map("categorized_urls")
   @@schema("public")
 }
 

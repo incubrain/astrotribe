@@ -3035,7 +3035,7 @@ File: project.json
 File: tsconfig.json
 ================
 {
-  "extends": ["../../tsconfig.web.json", "./.nuxt/tsconfig.json"],
+  "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"],
   "compilerOptions": {
     "baseUrl": ".",
     "incremental": true,

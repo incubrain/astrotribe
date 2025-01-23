@@ -2551,7 +2551,7 @@ core readme...
 File: tsconfig.json
 ================
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../shared/tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
