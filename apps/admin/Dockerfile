@@ -24,10 +24,9 @@ COPY apps/admin ./apps/admin
 COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
-COPY tsconfig.* ./
+COPY tsconfig.json ./
 COPY nx.json ./
 COPY shared ./shared
-COPY tailwind.config.base.ts ./
 
 # Install dependencies for required workspaces
 RUN pnpm install --filter @astronera/admin...

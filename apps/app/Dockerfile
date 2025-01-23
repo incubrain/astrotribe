@@ -19,15 +19,14 @@ RUN apt-get update && \
 RUN npm install -g pnpm
 
 # Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json tsconfig.*.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore ./
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
-COPY tsconfig.* ./
+COPY tsconfig.json ./
 COPY nx.json ./
 COPY shared ./shared
-COPY tailwind.config.base.ts ./
 
 # Install dependencies for all required workspaces
 RUN pnpm install --filter @astronera/app...
