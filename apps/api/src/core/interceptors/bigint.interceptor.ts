@@ -1,4 +1,4 @@
-// interceptors/bigint-serialization.interceptor.ts
+// interceptors/bigint.interceptor.ts
 import { NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common'
 import { Injectable } from '@nestjs/common'
 import { Observable } from 'rxjs'
