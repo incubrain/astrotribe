@@ -10,6 +10,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@astronera/db": "workspace:*",
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/mdc": "^0.9.0",
     "@nuxtjs/seo": "^2.0.2",

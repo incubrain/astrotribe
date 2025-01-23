@@ -22,13 +22,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore nx.json tsconfig.json ./
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
-COPY tsconfig.json ./
-COPY nx.json ./
 COPY shared ./shared
 
 # Install dependencies for all required workspaces
