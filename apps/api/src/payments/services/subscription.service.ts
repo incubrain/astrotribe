@@ -54,9 +54,7 @@ export class SubscriptionService extends BaseService<'CustomerSubscriptions'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(
-    params: Prisma.CustomerSubscriptionsFindManyArgs,
-  ): Promise<SubscriptionModel[]> {
+  async findMany(params: Prisma.CustomerSubscriptionsFindManyArgs): Promise<SubscriptionModel[]> {
     const items = await this.prisma.customerSubscriptions.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }

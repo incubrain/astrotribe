@@ -8,8 +8,9 @@ const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = await razorpay.fetchSubscriptions()
-const subscription = ref(subscriptions?.[0])
+const subscriptions = ref(await razorpay.fetchSubscriptions())
+
+const activeStates = ['active', 'completed', 'pending', 'charged']
 
 const triggerConfetti = () => {
   confetti({
@@ -20,9 +21,26 @@ const triggerConfetti = () => {
 }
 
 watch(lastEvent, async (event) => {
+  if (event.data.entity !== 'subscription') return
+
+  if (event?.type === 'created') {
+    if (!subscriptions.value.some((item) => item.external_subscription_id === event.data.id)) {
+      subscriptions.value.push(event.data)
+    }
+
+    // Handle subscription creation
+    await currentUser.refreshUserStore()
+  }
+
   if (event?.type === 'updated') {
+    subscriptions.value = subscriptions.value.map((sub) => {
+      if (sub.id === event.data.id) {
+        return event.data
+      }
+      return sub
+    })
+
     // Handle subscription update
-    subscription.value = event.data
     await currentUser.refreshUserStore()
 
     if (['active', 'resumed', 'completed'].includes(event.data.status)) {
@@ -50,7 +68,8 @@ interface PlanConfig {
 
 const plans = computed<PlanConfig>(() =>
   [
-    {
+    (!subscriptions.value?.length ||
+      !subscriptions.value.some((subscription) => activeStates.includes(subscription.status))) && {
       id: 1,
       name: 'Free',
       price: '0',
@@ -63,13 +82,8 @@ const plans = computed<PlanConfig>(() =>
         '1GB storage',
         'Basic analytics',
       ],
-      razorpayConfig: {
-        isActive:
-          !subscription.value ||
-          !['active', 'resumed', 'pending', 'completed', 'halted', 'charged'].includes(
-            subscription.value.status,
-          ),
-        buttonLabel: `Subscribe to Free Plan`,
+      razorPayConfig: {
+        isActive: true,
       },
       isActive: true,
       availableFrom: null,
@@ -86,8 +100,10 @@ const plans = computed<PlanConfig>(() =>
           subscription_status: null,
         }
 
-        if (subscription.value && subscription.value.plan_id === item.id) {
-          switch (subscription.value.status) {
+        const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
+
+        if (subscription && subscription.plan_id === item.id) {
+          switch (subscription.status) {
             case 'active':
             case 'resumed':
             case 'completed':
@@ -107,8 +123,8 @@ const plans = computed<PlanConfig>(() =>
           }
 
           razorPayConfig = {
-            subscription_id: subscription.value.external_subscription_id,
-            subscription_status: subscription.value.status,
+            subscription_id: subscription.external_subscription_id,
+            subscription_status: subscription.status,
             isActive,
             buttonLabel,
           }
