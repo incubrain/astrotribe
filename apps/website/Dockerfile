@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy only what we need
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json .npmrc .nxignore ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json nx.json ./
 COPY apps/website ./apps/website
 COPY layers ./layers
 COPY libs ./libs

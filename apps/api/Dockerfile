@@ -1,4 +1,9 @@
 FROM node:22.12.0-bookworm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+RUN corepack enable
 
 WORKDIR /app
 

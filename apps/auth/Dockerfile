@@ -1,5 +1,11 @@
 FROM node:22.12.0-bookworm
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+RUN corepack enable
+
 WORKDIR /app
 
 ARG NX_CLOUD_ACCESS_TOKEN
@@ -17,13 +23,11 @@ RUN apt-get update && \
 RUN npm install -g pnpm
 
 # Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json nx.json ./
 COPY apps/auth ./apps/auth
 COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
-COPY tsconfig.json ./
-COPY nx.json ./
 COPY shared ./shared
 
 # Install dependencies for required workspaces
