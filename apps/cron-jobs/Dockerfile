@@ -40,7 +40,7 @@ COPY libs/logger/package.json ./libs/logger/
 
 # Install dependencies and Playwright
 RUN --mount=type=cache,id=s/3c9904ae-05e1-4a46-a525-fca654d7d374-/pnpm/store,target=/pnpm/store \
-    pnpm install --frozen-lockfile && \
+    pnpm install && \
     pnpm install -g playwright && \
     pnpm exec playwright install chromium && \
     pnpm exec playwright install-deps
