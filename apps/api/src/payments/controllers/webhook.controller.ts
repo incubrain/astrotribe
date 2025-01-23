@@ -70,7 +70,7 @@ export class WebhookController {
           console.warn(`Unhandled event type: ${event}`)
       }
     } catch (error: any) {
-      this.logger.error('Unauthorized Webhook', error.stack)
+      this.logger.error('Unauthorized Webhook', { error })
       throw new UnauthorizedException('Invalid token')
     }
   }
@@ -186,8 +186,8 @@ export class WebhookController {
       }
 
       this.handleSubscriptionUpdate(payload)
-    } catch (error) {
-      this.logger.error('Error while checking old subscription', error.stack)
+    } catch (error: any) {
+      this.logger.error('Error while checking old subscription', { error })
     }
   }
 }
