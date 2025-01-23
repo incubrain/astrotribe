@@ -19,7 +19,7 @@ RUN apt-get update && \
 RUN npm install -g pnpm
 
 # Copy necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json tsconfig.*.json ./
 COPY apps/app ./apps/app
 COPY libs ./libs
 COPY layers ./layers
