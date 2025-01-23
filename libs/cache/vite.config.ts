@@ -14,7 +14,20 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['ioredis', 'ms', '@astronera/db'],
+      external: [
+        'ioredis',
+        'ms',
+        '@astronera/db',
+        '@napi-rs/snappy-linux-x64-gnu',
+        '@napi-rs/snappy-linux-x64-musl',
+        'winston-loki',
+        'winston',
+        'http',
+        'https',
+        'url',
+        'fs',
+        'path',
+      ],
       output: {
         exports: 'named',
       },
