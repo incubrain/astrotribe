@@ -29,7 +29,7 @@ COPY libs ./libs
 COPY shared ./shared
 
 # Install dependencies
-RUN pnpm install --filter @astronera/website... --frozen-lockfile
+RUN pnpm install --filter @astronera/website...
 
 # Build the application
 RUN pnpx nx reset

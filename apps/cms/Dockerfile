@@ -3,32 +3,26 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
 ENV NX_VERBOSE_LOGGING=true
+ENV NX_SKIP_NX_CACHE=true
+ENV NX_BATCH_MODE=true
+ENV NX_SKIP_LOG_GROUPING=true
+
 RUN corepack enable
 
 WORKDIR /app
 
 # Copy workspace configuration files
-COPY pnpm-*.yaml package.json ./
-COPY nx.json ./
+COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
 COPY shared ./shared
-COPY tsconfig.json ./
+COPY libs ./libs/
+COPY apps/cms ./apps/cms
 
 # Declare build-time args
 ARG SUPABASE_STORAGE_URL
 ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
-# Copy CMS app and its dependencies
-COPY apps/cms apps/cms
-COPY libs/strapi-supabase libs/strapi-supabase
-
-# Set Nx environment variables
-ENV NX_SKIP_NX_CACHE=true
-ENV NX_BATCH_MODE=true
-ENV NX_SKIP_LOG_GROUPING=true
-ENV NX_VERBOSE_LOGGING=true
-
 # Install dependencies for CMS workspace only
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --filter @astronera/cms...
 
 # THEN - copy source files
 COPY . .
@@ -36,7 +30,7 @@ COPY . .
 # Install dependencies for this workspace only
 RUN pnpx nx reset
 RUN pnpx nx build strapi-supabase --skip-nx-cache
-RUN pnpx nx build @astronera/cms --configuration=production --skip-nx-cache
+RUN pnpx nx build @astronera/cms --skip-nx-cache
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
