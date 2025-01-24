@@ -209,7 +209,6 @@ const customerInfo = computed(() => ({
         subtitle: 'Manage your subscription and payment methods',
       }"
     >
-      {{ profile?.user_plan }}
       <!-- Pricing Cards Grid -->
       <div
         v-if="plans"
