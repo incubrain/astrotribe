@@ -56,6 +56,9 @@ export const usePlan = () => {
   // This can be used to show remaining quota
   const getFeatureUsage = (featureKey: keyof typeof FEATURES, currentCount: number) => {
     const limit = getFeatureLimit(featureKey)
+
+    console.log('getFeatureUsage', featureKey, currentCount, limit)
+    console.log('profile user plan', userPlan.value)
     return {
       used: currentCount,
       limit,
