@@ -193,5 +193,3 @@ export function useAnalytics() {
 // // Track page load time
 // trackTechnicalPerformance(TechnicalPerformanceMetric.PageLoadTime, performance.now())
 
-// // Track an error
-// trackError(ErrorType.APIError, 'Failed to fetch job listings', 'JobSearchComponent')

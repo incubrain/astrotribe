@@ -56,17 +56,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Cron Jobs",
-      "type": "shell",
-      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/cron-jobs",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "group": "backend"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Start Frontend",
       "dependsOn": ["Admin Frontend", "App Frontend", "Auth Frontend"],
       "group": {
@@ -76,7 +65,7 @@
     },
     {
       "label": "Start Backend",
-      "dependsOn": ["API Backend", "Cron Jobs"],
+      "dependsOn": ["API Backend"],
       "group": {
         "kind": "build"
       },
@@ -84,7 +73,7 @@
     },
     {
       "label": "Dev: Start All",
-      "dependsOn": ["Admin Frontend", "App Frontend", "Auth Frontend", "API Backend", "Cron Jobs"],
+      "dependsOn": ["Admin Frontend", "App Frontend", "Auth Frontend", "API Backend"],
       "group": {
         "kind": "build",
         "isDefault": true

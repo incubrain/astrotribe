@@ -12,7 +12,6 @@
   "references": [
     // Applications
     { "path": "apps/api" },
-    { "path": "apps/cron-jobs" },
     { "path": "apps/chrome-extension" },
 
     // Nuxt Applications

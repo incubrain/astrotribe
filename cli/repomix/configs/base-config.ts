@@ -81,7 +81,6 @@ type CommonConfigKey =
   | 'monitoring'
   | 'feeds'
   | 'advertising'
-  | 'jobs'
   | 'social'
   | 'payments'
   | 'search'
@@ -167,12 +166,6 @@ export const COMMON_CONFIGS: Record<CommonConfigKey, CommonConfig> = {
   advertising: {
     description: 'Advertising and promotion features',
     include: ['**/advert*/**', '**/promotion*/**', '**/sponsor*/**', 'layers/advert/**'],
-  },
-
-  // Jobs & Tasks
-  jobs: {
-    description: 'Background jobs and task management',
-    include: ['**/cron-jobs/**', '**/jobs/**', '**/tasks/**', '**/worker*/**', '**/queue*/**'],
   },
 
   // Social Features

@@ -1744,9 +1744,6 @@ model WorkflowJobs {
   workflows       Workflows @relation(fields: [workflow_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([workflow_id, job_name])
-  @@index([status], map: "idx_workflow_jobs_status")
-  @@index([workflow_id], map: "idx_workflow_jobs_workflow_id")
-  @@map("workflow_jobs")
   @@schema("public")
 }
 

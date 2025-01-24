@@ -115,7 +115,6 @@ type ContentStatus =
 type ContentType =
   | 'news'
   | 'events'
-  | 'jobs'
   | 'research'
   | 'companies'
   | 'contact'
@@ -371,7 +370,6 @@ export async function seedContentSources(pool: Pool, companyIds: string[]) {
   const contentTypes: ContentType[] = [
     'news',
     'events',
-    'jobs',
     'research',
     'contact',
     'people',

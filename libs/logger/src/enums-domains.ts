@@ -5,7 +5,7 @@ const STORAGE_DOMAINS = ['storage', 'upload'] as const
 const CONTENT_DOMAINS = ['content', 'blog', 'news', 'feeds'] as const
 const SOCIAL_DOMAINS = ['social', 'notifications'] as const
 const MONITORING_DOMAINS = ['monitoring', 'error-logs', 'metrics'] as const
-const SYSTEM_DOMAINS = ['database', 'redis', 'server-jobs', 'websocket'] as const
+const SYSTEM_DOMAINS = ['database', 'redis', 'websocket'] as const
 const API_DOMAINS = [
   'monitoring',
   'cron',
@@ -15,7 +15,6 @@ const API_DOMAINS = [
   'logging',
   'webhook',
 ] as const
-const JOBS_DOMAINS = ['news_links', 'job_events', 'job_versions', 'job_shutdown'] as const
 const URLS = ['url_classifier', 'url_spider'] as const
 const SCRAPERS = ['scraper', 'crawler', 'spider'] as const
 
@@ -27,7 +26,6 @@ const ADMIN_SPECIFIC = [
   'tasks',
   'spider',
   'classifier',
-  'jobs',
   'users',
   'referrals',
   'billing',
@@ -46,7 +44,6 @@ export enum Service {
   WEBSITE = 'website',
   CMS = 'cms',
   API = 'api',
-  JOBS = 'jobs',
 
   // Extensions
   CHROME_EXTENSION = 'chrome-extension',
@@ -76,18 +73,6 @@ export const ServiceDomains = {
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
   'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
-  'jobs': [
-    'test',
-    'circuit_breaker',
-    'api',
-    'errors',
-    'metrics',
-    'analytics',
-    'jobs',
-    ...JOBS_DOMAINS,
-    ...URLS,
-    ...SCRAPERS,
-  ],
 } as const
 
 export type ServiceToDomain = {
