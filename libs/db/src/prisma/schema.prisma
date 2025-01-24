@@ -7,16 +7,16 @@ generator client {
 
 generator zod {
   provider                  = "pnpm exec zod-prisma-types"
-  generateSelectHelpers     = "false"
-  validateWhereUniqueInput  = "false"
-  createModelTypes          = "true"
-  createRelationValuesTypes = "false"
-  addIncludeType            = "false"
-  addSelectType             = "false"
   useDecimalJs              = "false"
-  createPartialTypes        = "false"
-  addInputTypeValidation    = "false"
   createInputTypes          = "false"
+  createPartialTypes        = "false"
+  addIncludeType            = "false"
+  createModelTypes          = "true"
+  validateWhereUniqueInput  = "false"
+  addSelectType             = "false"
+  addInputTypeValidation    = "false"
+  generateSelectHelpers     = "false"
+  createRelationValuesTypes = "false"
 }
 
 datasource db {
@@ -269,24 +269,6 @@ model Bookmarks {
   @@schema("public")
 }
 
-/// @client.name="business_domains"
-model BusinessDomains {
-  id                     String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name                   String            @unique(map: "unique_domain_name") @db.VarChar(100)
-  slug                   String            @unique(map: "unique_domain_slug") @db.VarChar(100)
-  description            String?
-  parent_id              String?           @db.Uuid
-  created_at             DateTime?         @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?         @default(now()) @db.Timestamptz(6)
-  business_domains       BusinessDomains?  @relation("business_domainsTobusiness_domains", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_business_domains BusinessDomains[] @relation("business_domainsTobusiness_domains")
-  categorized_urls       CategorizedUrls[]
-
-  @@index([parent_id], map: "idx_business_domains_parent_id")
-  @@map("business_domains")
-  @@schema("public")
-}
-
 /// @client.name="categories"
 model Categories {
   id                 BigInt              @id @default(autoincrement())
@@ -303,26 +285,6 @@ model Categories {
   news               News[]
 
   @@map("categories")
-  @@schema("public")
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// @client.name="categorized_urls"
-model CategorizedUrls {
-  id                  String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  original_url        String
-  normalized_url      String          @unique(map: "unique_normalized_url")
-  domain_id           String          @db.Uuid
-  priority            String          @db.VarChar(20)
-  confidence          Decimal         @db.Decimal(5, 4)
-  categorizer_version String          @db.VarChar(20)
-  created_at          DateTime?       @default(now()) @db.Timestamptz(6)
-  business_domains    BusinessDomains @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([domain_id], map: "idx_categorized_urls_domain_id")
-  @@index([normalized_url], map: "idx_categorized_urls_normalized_url")
-  @@index([priority], map: "idx_categorized_urls_priority")
-  @@map("categorized_urls")
   @@schema("public")
 }
 
@@ -753,14 +715,14 @@ model CustomerSubscriptionPlans {
 /// @client.name="customer_subscriptions"
 model CustomerSubscriptions {
   id                          Int                       @id @default(autoincrement())
-  user_id                     String                    @unique(map: "uq_user_id") @db.Uuid
+  user_id                     String                    @db.Uuid
   plan_id                     Int
   payment_provider_id         Int
   external_subscription_id    String                    @unique(map: "uq_subscription_id") @db.VarChar(255)
   status                      String                    @db.VarChar(50)
   quantity                    Int?                      @default(1)
-  current_start               DateTime                  @db.Timestamptz(6)
-  current_end                 DateTime                  @db.Timestamptz(6)
+  current_start               DateTime?                 @db.Timestamptz(6)
+  current_end                 DateTime?                 @db.Timestamptz(6)
   ended_at                    DateTime?                 @db.Timestamptz(6)
   cancel_at_period_end        Boolean?                  @default(false)
   total_count                 Int?
@@ -788,6 +750,7 @@ model CustomerSubscriptions {
   customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_profiles               UserProfiles              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
+  @@unique([user_id, plan_id], map: "unique_user_plan")
   @@map("customer_subscriptions")
   @@schema("public")
 }
@@ -1509,35 +1472,35 @@ model UserMetrics {
 
 /// @client.name="user_profiles"
 model UserProfiles {
-  id                     String                 @id @unique(map: "users_auth_id_key") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email                  String                 @unique(map: "users_email_key")
+  id                     String                  @id @unique(map: "users_auth_id_key") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email                  String                  @unique(map: "users_email_key")
   given_name             String?
   surname                String?
-  username               String?                @db.VarChar
-  dob                    DateTime?              @db.Date
-  gender_id              Int?                   @db.SmallInt
-  created_at             DateTime?              @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?              @default(now()) @db.Timestamptz(6)
-  last_seen              DateTime?              @default(now()) @db.Timestamptz(6)
+  username               String?                 @db.VarChar
+  dob                    DateTime?               @db.Date
+  gender_id              Int?                    @db.SmallInt
+  created_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  last_seen              DateTime?               @default(now()) @db.Timestamptz(6)
   avatar                 String?
   introduction           String?
-  followed_count         Int?                   @default(0)
-  followers_count        Int?                   @default(0)
-  plan                   AppPlanEnum?           @default(free)
-  role                   AppRoleEnum            @default(user)
-  is_active              Boolean?               @default(false)
+  followed_count         Int?                    @default(0)
+  followers_count        Int?                    @default(0)
+  plan                   AppPlanEnum?            @default(free)
+  role                   AppRoleEnum             @default(user)
+  is_active              Boolean?                @default(false)
   addresses              Addresses[]
   comments               Comments[]
   company_employees      CompanyEmployees[]
   contacts               Contacts[]
   content_source_visits  ContentSourceVisits[]
   customer_payments      CustomerPayments[]
-  customer_subscriptions CustomerSubscriptions?
+  customer_subscriptions CustomerSubscriptions[]
   feedbacks              Feedbacks[]
   feeds                  Feeds[]
   follows                Follows[]
   user_metrics           UserMetrics?
-  users                  Users                  @relation(fields: [id], references: [id], onDelete: Cascade, map: "public_user_profiles_id_fkey")
+  users                  Users                   @relation(fields: [id], references: [id], onDelete: Cascade, map: "public_user_profiles_id_fkey")
 
   @@map("user_profiles")
   @@schema("public")
