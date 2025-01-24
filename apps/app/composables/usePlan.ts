@@ -22,7 +22,7 @@ export const usePlan = () => {
   // Later this can be updated based on your auth/subscription system
   const currentUser = useCurrentUser()
   const { profile } = storeToRefs(currentUser)
-  console.log(profile, 'HERE IS THINE PROFILE')
+
   const userPlan = ref<PlanType>(profile.value.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
 
   // Utility functions
