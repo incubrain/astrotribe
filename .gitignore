@@ -96,3 +96,4 @@ supabase/functions/.env
 # TEMP
 ai-docs
 
+**/openapi/
