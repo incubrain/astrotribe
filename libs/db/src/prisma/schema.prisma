@@ -8,15 +8,15 @@ generator client {
 generator zod {
   provider                  = "pnpm exec zod-prisma-types"
   useDecimalJs              = "false"
-  createInputTypes          = "false"
+  addSelectType             = "false"
+  validateWhereUniqueInput  = "false"
+  createRelationValuesTypes = "false"
+  generateSelectHelpers     = "false"
+  createModelTypes          = "true"
+  addInputTypeValidation    = "false"
   createPartialTypes        = "false"
   addIncludeType            = "false"
-  createModelTypes          = "true"
-  validateWhereUniqueInput  = "false"
-  addSelectType             = "false"
-  addInputTypeValidation    = "false"
-  generateSelectHelpers     = "false"
-  createRelationValuesTypes = "false"
+  createInputTypes          = "false"
 }
 
 datasource db {
@@ -750,7 +750,6 @@ model CustomerSubscriptions {
   customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_profiles               UserProfiles              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([user_id, plan_id], map: "unique_user_plan")
   @@map("customer_subscriptions")
   @@schema("public")
 }
