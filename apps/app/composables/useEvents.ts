@@ -11,7 +11,7 @@ export interface Event {
 }
 
 export const useEvents = () => {
-  const socket = io(`${useRuntimeConfig().public.apiURL}/event`)
+  const socket = io(`${useRuntimeConfig().public.apiURL}/event`, { transports: ['websocket'] })
   const lastEvent = ref<Event | null>(null)
   const isConnected = ref(false)
 

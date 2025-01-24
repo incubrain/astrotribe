@@ -143,6 +143,7 @@ const createSubscription = async () => {
 }
 
 const handlePayment = async () => {
+  loading.value = true
   if (!razorpayOptions.value.subscription_id) await createSubscription()
 
   if (razorpayOptions.value.subscriptionStartsLater) {
@@ -157,7 +158,6 @@ const handlePayment = async () => {
   await loadRazorpay()
 
   try {
-    loading.value = true
     rzp.open()
   } catch (error: any) {
     emit('payment-error', error)
@@ -166,6 +166,7 @@ const handlePayment = async () => {
 }
 
 onUnmounted(() => {
+  loading.value = false
   unloadRazorpay()
 })
 </script>
