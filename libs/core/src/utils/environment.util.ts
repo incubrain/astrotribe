@@ -19,16 +19,6 @@ const configSchema = z.object({
     maxConnections: z.number().default(20),
     idleTimeout: z.number().default(60000),
   }),
-  queue: z.object({
-    retryLimit: z.number().default(3),
-    retryDelay: z.number().default(60000),
-    monitorInterval: z.number().default(30000),
-  }),
-  jobs: z.object({
-    maxConcurrent: z.number().default(5),
-    defaultTimeout: z.number().default(300000),
-    healthCheckInterval: z.number().default(60000),
-  }),
   metrics: z.object({
     enabled: z.boolean().default(true),
     interval: z.number().default(60000),
@@ -57,16 +47,6 @@ function loadConfig(): ApplicationConfig {
       directUrl: process.env.DATABASE_DIRECT_URL,
       maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS || '20', 10),
       idleTimeout: parseInt(process.env.DB_IDLE_TIMEOUT || '60000', 10),
-    },
-    queue: {
-      retryLimit: parseInt(process.env.QUEUE_RETRY_LIMIT || '3', 10),
-      retryDelay: parseInt(process.env.QUEUE_RETRY_DELAY || '60000', 10),
-      monitorInterval: parseInt(process.env.QUEUE_MONITOR_INTERVAL || '30000', 10),
-    },
-    jobs: {
-      maxConcurrent: parseInt(process.env.JOBS_MAX_CONCURRENT || '5', 10),
-      defaultTimeout: parseInt(process.env.JOBS_DEFAULT_TIMEOUT || '300000', 10),
-      healthCheckInterval: parseInt(process.env.JOBS_HEALTH_CHECK_INTERVAL || '60000', 10),
     },
     metrics: {
       enabled: process.env.METRICS_ENABLED !== 'false',

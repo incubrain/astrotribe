@@ -174,7 +174,7 @@ export async function generateProjectBarrels(): Promise<void> {
 
   await generator.generateBarrels({
     rootDir: path.resolve(__dirname, '../src'),
-    directories: ['core', 'content', 'types', 'monitoring', 'jobs'],
+    directories: ['core', 'content', 'types', 'monitoring'],
     ignorePatterns: [
       // NestJS Critical Files
       '.controller.ts',

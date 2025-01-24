@@ -62,7 +62,6 @@ export const enums = {
   content_type: z.enum([
     'news',
     'events',
-    'jobs',
     'research',
     'companies',
     'contact',
