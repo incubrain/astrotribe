@@ -22,8 +22,8 @@ export const usePlan = () => {
   // Later this can be updated based on your auth/subscription system
   const currentUser = useCurrentUser()
   const { profile } = storeToRefs(currentUser)
-
-  const userPlan = ref<PlanType>(profile.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
+  console.log(profile, 'HERE IS THINE PROFILE')
+  const userPlan = ref<PlanType>(profile.value.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
 
   // Utility functions
   const getFeatureLimit = (featureKey: keyof typeof FEATURES) => {
@@ -57,8 +57,6 @@ export const usePlan = () => {
   const getFeatureUsage = (featureKey: keyof typeof FEATURES, currentCount: number) => {
     const limit = getFeatureLimit(featureKey)
 
-    console.log('getFeatureUsage', featureKey, currentCount, limit)
-    console.log('profile user plan', userPlan.value)
     return {
       used: currentCount,
       limit,

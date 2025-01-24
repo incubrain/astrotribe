@@ -16,7 +16,7 @@ import { MockCacheService } from './cache.mock'
         // if (process.env.NODE_ENV === 'development') {
         //   return new MockCacheService()
         // }
-        console.log('Connecting to Redis cache', config.get<string>('app.redis.host'))
+
         return new IORedis({
           host: config.get<string>('app.redis.host') || 'redis.railway.internal',
           port: config.get<number>('app.redis.port') || 6379,
