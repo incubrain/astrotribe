@@ -20,7 +20,7 @@ const activeStates = ['active', 'completed', 'pending', 'charged']
 const triggerConfetti = () => {
   confetti({
     particleCount: 100,
-    spread: 70,
+    spread: 150,
     origin: { x: 0.5, y: 0.5 },
   })
 }
