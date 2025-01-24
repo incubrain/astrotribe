@@ -98,11 +98,7 @@ export const BookmarkFoldersScalarFieldEnumSchema = z.enum(['id','user_id','name
 
 export const BookmarksScalarFieldEnumSchema = z.enum(['id','user_id','content_id','content_type','created_at','folder_id','metadata','updated_at']);
 
-export const BusinessDomainsScalarFieldEnumSchema = z.enum(['id','name','slug','description','parent_id','created_at','updated_at']);
-
 export const CategoriesScalarFieldEnumSchema = z.enum(['id','created_at','updated_at','body','name','document_id','locale','published_at']);
-
-export const CategorizedUrlsScalarFieldEnumSchema = z.enum(['id','original_url','normalized_url','domain_id','priority','confidence','categorizer_version','created_at']);
 
 export const CircuitBreakerStatesScalarFieldEnumSchema = z.enum(['id','job_name','state','failure_count','last_failure','last_success','created_at','updated_at']);
 
@@ -559,25 +555,6 @@ export const BookmarksSchema = z.object({
 export type Bookmarks = z.infer<typeof BookmarksSchema>
 
 /////////////////////////////////////////
-// BUSINESS DOMAINS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="business_domains"
- */
-export const BusinessDomainsSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  slug: z.string(),
-  description: z.string().nullable(),
-  parent_id: z.string().nullable(),
-  created_at: z.coerce.date().nullable(),
-  updated_at: z.coerce.date().nullable(),
-})
-
-export type BusinessDomains = z.infer<typeof BusinessDomainsSchema>
-
-/////////////////////////////////////////
 // CATEGORIES SCHEMA
 /////////////////////////////////////////
 
@@ -596,27 +573,6 @@ export const CategoriesSchema = z.object({
 })
 
 export type Categories = z.infer<typeof CategoriesSchema>
-
-/////////////////////////////////////////
-// CATEGORIZED URLS SCHEMA
-/////////////////////////////////////////
-
-/**
- * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
- * @client.name="categorized_urls"
- */
-export const CategorizedUrlsSchema = z.object({
-  id: z.string(),
-  original_url: z.string(),
-  normalized_url: z.string(),
-  domain_id: z.string(),
-  priority: z.string(),
-  confidence: z.instanceof(Prisma.Decimal, { message: "Field 'confidence' must be a Decimal. Location: ['Models', 'CategorizedUrls']"}),
-  categorizer_version: z.string(),
-  created_at: z.coerce.date().nullable(),
-})
-
-export type CategorizedUrls = z.infer<typeof CategorizedUrlsSchema>
 
 /////////////////////////////////////////
 // CIRCUIT BREAKER STATES SCHEMA
@@ -1099,8 +1055,8 @@ export const CustomerSubscriptionsSchema = z.object({
   external_subscription_id: z.string(),
   status: z.string(),
   quantity: z.number().int().nullable(),
-  current_start: z.coerce.date(),
-  current_end: z.coerce.date(),
+  current_start: z.coerce.date().nullable(),
+  current_end: z.coerce.date().nullable(),
   ended_at: z.coerce.date().nullable(),
   cancel_at_period_end: z.boolean().nullable(),
   total_count: z.number().int().nullable(),
