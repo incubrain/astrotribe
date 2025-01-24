@@ -9,7 +9,7 @@ export default registerAs('app', () => ({
     jwt_secret: process.env.SUPABASE_JWT_SECRET,
   },
   redis: {
-    host: process.env.REDIS_URL || 'localhost',
+    host: process.env.REDIS_HOST || 'localhost',
     port: parseInt(process.env.REDIS_PORT, 10) || 6379,
     password: process.env.REDIS_PASSWORD,
     username: process.env.REDIS_USER,
