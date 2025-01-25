@@ -23,6 +23,10 @@ ESM unless we specify CJS.
 Booleans - ALWAYS prefix with 'is'
 dist dir will ALWAYS be inside of the project root NOT repo root
 
+## SPEED
+- When creating files always use terminal cmds
+- When writing files allways use terminal cmds to insert the data, write many files together for speed.
+
 ## Function Choice Heirarchy
 1. Use VueUse func if available
 2. Use @ib/core func next
