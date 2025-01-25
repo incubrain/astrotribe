@@ -23,7 +23,7 @@ export const usePlan = () => {
   const currentUser = useCurrentUser()
   const { profile } = storeToRefs(currentUser)
 
-  const userPlan = ref<PlanType>(profile.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
+  const userPlan = ref<PlanType>(profile.value.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
 
   // Utility functions
   const getFeatureLimit = (featureKey: keyof typeof FEATURES) => {
@@ -56,6 +56,7 @@ export const usePlan = () => {
   // This can be used to show remaining quota
   const getFeatureUsage = (featureKey: keyof typeof FEATURES, currentCount: number) => {
     const limit = getFeatureLimit(featureKey)
+
     return {
       used: currentCount,
       limit,

@@ -25,6 +25,7 @@ export class SubscriptionService extends BaseService<'CustomerSubscriptions'> {
 
     this.paymentEvents.emit({
       type: 'updated',
+      module: 'subscription',
       data: result,
     })
 

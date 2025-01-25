@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
     const { meta, success } = await $fetch(`${apiURL}/api/v1/payments/subscriptions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${session.access_token}`,
+        Authorization: `Bearer ${session.access_token}`,
       },
       body: {
         external_subscription_id: subscription.id,
@@ -64,17 +64,16 @@ export default defineEventHandler(async (event) => {
         end_at: subscription.end_at && new Date(subscription.end_at * 1000).toISOString(),
         notes: subscription.notes,
         payment_providers: {
-          connect: { id: payment_provider_id }
+          connect: { id: payment_provider_id },
         },
         customer_subscription_plans: {
-          connect: { id: plan_id }
+          connect: { id: plan_id },
         },
         user_profiles: {
-          connect: { id: user_id }
-        }
-      }
-    }
-  )
+          connect: { id: user_id },
+        },
+      },
+    })
 
     if (!success) console.error('Create Subscription', meta)
     return subscription
