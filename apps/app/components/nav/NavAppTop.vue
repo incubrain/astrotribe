@@ -113,7 +113,14 @@ const handleImageError = () => {
       <div
         v-else-if="profile?.user_role"
         class="flex items-center justify-center gap-4"
-      >
+        ><NuxtLink
+          v-if="profile.user_plan"
+          to="/settings/payments"
+        >
+          <PrimeTag class="bg-transparent rounded border border-white"
+            >Using {{ profile.user_plan }} plan
+          </PrimeTag>
+        </NuxtLink>
         <PrimeTag v-if="profile.user_role">
           {{ profile.user_role }}
         </PrimeTag>

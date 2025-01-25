@@ -30,6 +30,7 @@ interface Props {
 }
 
 const razorpay = usePayments('razorpay')
+const toast = useNotification()
 
 const props = withDefaults(defineProps<Props>(), {
   buttonLabel: 'Pay Now',
@@ -52,6 +53,7 @@ const isRazorpayLoaded = ref(false)
 const razorpayOptions = computed(() => ({
   key: config.public.razorpayKey || 'rzp_test_lV0OE0NDIg6Hr6',
   subscription_id: props.plan.subscription_id,
+  subscriptionStartsLater: false,
   amount: props.plan.amount * 100, // Razorpay expects amount in paise
   currency: props.plan.currency || 'INR',
   name: props.plan.name,
@@ -59,11 +61,13 @@ const razorpayOptions = computed(() => ({
   image: props.theme.logo,
   handler: function (response: any) {
     emit('payment-success', response)
+    unloadRazorpay()
   },
   modal: {
     ondismiss: function () {
       emit('payment-closed')
       loading.value = false
+      unloadRazorpay()
     },
   },
   prefill: {
@@ -92,41 +96,79 @@ watch(
 )
 
 const loadRazorpay = async () => {
-  if (isRazorpayLoaded.value) return
+  // Create a Promise to ensure the script is fully loaded before proceeding
+  await new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    script.onload = () => {
+      isRazorpayLoaded.value = true
+      resolve(true)
+    }
+    script.onerror = () => {
+      console.error('Failed to load Razorpay script')
+      reject(new Error('Razorpay script failed to load'))
+    }
+    document.head.appendChild(script)
+  })
 
-  // Load Razorpay script dynamically when the user clicks the button
-  const script = document.createElement('script')
-  script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-  script.async = true
-  script.onload = () => {
-    isRazorpayLoaded.value = true
-    rzp = new (window as any).Razorpay(razorpayOptions.value)
-  }
-  document.head.appendChild(script)
-}
-
-const createSubscription = async () => {
-  const subscription = await razorpay.createOrder(props.plan.id, props.plan.external_plan_id)
-
-  razorpayOptions.value.subscription_id = subscription.id
+  // Initialize Razorpay after script is loaded
   rzp = new (window as any).Razorpay(razorpayOptions.value)
 }
 
+const unloadRazorpay = () => {
+  // Locate the Razorpay script by its src
+  const script = document.querySelector(
+    'script[src="https://checkout.razorpay.com/v1/checkout.js"]',
+  )
+  if (script) {
+    // Remove the script from the DOM
+    script.remove()
+    isRazorpayLoaded.value = false
+    console.log('Razorpay script removed from DOM')
+  }
+}
+
+const createSubscription = async () => {
+  const subscription = await razorpay.createOrder({
+    plan_id: props.plan.id,
+    external_plan_id: props.plan.external_plan_id,
+    total_count: props.plan.interval === 'monthly' ? 1200 : 100,
+  })
+
+  if (subscription.start_at > Date.now() / 1000) {
+    razorpayOptions.value.subscriptionStartsLater = true
+  }
+  razorpayOptions.value.subscription_id = subscription.id
+}
+
 const handlePayment = async () => {
+  loading.value = true
   if (!razorpayOptions.value.subscription_id) await createSubscription()
 
-  if (!isRazorpayLoaded.value) {
-    await loadRazorpay()
+  if (razorpayOptions.value.subscriptionStartsLater) {
+    toast.success({
+      summary: 'Subscription Created',
+      message:
+        'Your new subscription will start and will be charged at the end of your current subscription',
+    })
+    return
   }
 
+  await loadRazorpay()
+
   try {
-    loading.value = true
     rzp.open()
   } catch (error: any) {
     emit('payment-error', error)
     loading.value = false
   }
 }
+
+onUnmounted(() => {
+  loading.value = false
+  unloadRazorpay()
+})
 </script>
 
 <template>

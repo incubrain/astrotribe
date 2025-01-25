@@ -3,29 +3,43 @@
 import confetti from 'canvas-confetti'
 
 const currentUser = useCurrentUser()
+await currentUser.refreshUserStore()
 
 const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = ref(await razorpay.fetchSubscriptions())
+const subscriptions = ref(
+  await razorpay.fetchSubscriptions({
+    status: { notIn: ['cancelled', 'expired'] },
+  }),
+)
 
 const activeStates = ['active', 'completed', 'pending', 'charged']
 
 const triggerConfetti = () => {
   confetti({
     particleCount: 100,
-    spread: 70,
+    spread: 150,
     origin: { x: 0.5, y: 0.5 },
   })
 }
 
 watch(lastEvent, async (event) => {
-  if (event.data.entity !== 'subscription') return
+  if (event?.module !== 'subscription') return
 
   if (event?.type === 'created') {
-    if (!subscriptions.value.some((item) => item.external_subscription_id === event.data.id)) {
-      subscriptions.value.push(event.data)
+    if (!subscriptions.value.some((item) => item.id === event.data.id)) {
+      subscriptions.value = subscriptions.value?.length
+        ? [event.data, ...subscriptions.value]
+        : [event.data]
+    } else {
+      subscriptions.value = subscriptions.value.map((sub) => {
+        if (sub.id === event.data.id) {
+          return event.data
+        }
+        return sub
+      })
     }
 
     // Handle subscription creation
@@ -66,92 +80,109 @@ interface PlanConfig {
   }
 }
 
+const freePlan = {
+  id: 1,
+  name: 'Free',
+  price: '0',
+  period: 'forever',
+  description: 'Get started with free features',
+  features: [
+    'Basic project access',
+    'Community support',
+    '2 team members',
+    '1GB storage',
+    'Basic analytics',
+  ],
+  razorPayConfig: {
+    isActive: true,
+    buttonLabel: `Current Plan`,
+  },
+  isActive: true,
+  availableFrom: null,
+}
+
 const plans = computed<PlanConfig>(() =>
-  [
-    (!subscriptions.value?.length ||
-      !subscriptions.value.some((subscription) => activeStates.includes(subscription.status))) && {
-      id: 1,
-      name: 'Free',
-      price: '0',
-      period: 'forever',
-      description: 'Get started with free features',
-      features: [
-        'Basic project access',
-        'Community support',
-        '2 team members',
-        '1GB storage',
-        'Basic analytics',
-      ],
-      razorPayConfig: {
-        isActive: true,
-      },
-      isActive: true,
-      availableFrom: null,
-    },
-  ]
-    .concat(
-      plansData.map((item: any) => {
-        let isActive = false,
-          buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
-        let razorPayConfig = {
-          isActive,
-          buttonLabel,
-          subscription_id: null,
-          subscription_status: null,
-        }
-
-        const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
-
-        if (subscription && subscription.plan_id === item.id) {
-          switch (subscription.status) {
-            case 'active':
-            case 'resumed':
-            case 'completed':
-              isActive = true
-              buttonLabel = 'Current Plan'
-              break
-            case 'charged':
-            case 'expired':
-              buttonLabel = `Renew Plan ${item.name} (${item.interval_type})`
-              break
-            case 'pending':
-              isActive = true
-              buttonLabel = `Please Update Payment Method`
-              break
-            default:
+  plansData.length
+    ? [
+        (!subscriptions.value?.length ||
+          !subscriptions.value.some((subscription) =>
+            activeStates.includes(subscription.status),
+          )) &&
+          freePlan,
+      ]
+        .filter((plan) => plan)
+        .concat(
+          plansData.map((item: any) => {
+            let isActive = false,
               buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
-          }
+            let razorPayConfig = {
+              isActive,
+              buttonLabel,
+              subscription_id: null,
+              subscription_status: null,
+            }
 
-          razorPayConfig = {
-            subscription_id: subscription.external_subscription_id,
-            subscription_status: subscription.status,
-            isActive,
-            buttonLabel,
-          }
-        }
+            const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
 
-        return {
-          ...item,
-          availableFrom: item.created_at,
-          isActive: item.is_active,
-          period: item.interval_type,
-          price:
-            item.interval_type === 'monthly'
-              ? item.monthly_amount.d / 100
-              : item.annual_amount.d / 100,
-          razorPayConfig,
-        }
-      }),
-    )
-    .reduce((acc, plan) => {
-      if (!acc[plan.name]) {
-        // Initialize the group if not already present
-        acc[plan.name] = []
-      }
-      // Add the current plan to the appropriate group
-      acc[plan.name].push(plan)
-      return acc
-    }, {}),
+            if (subscription && subscription.plan_id === item.id) {
+              const period =
+                item.interval_type.charAt(0).toUpperCase() + item.interval_type.slice(1)
+              switch (subscription.status) {
+                case 'created':
+                  const start_at = new Date(subscription.start_at).getTime()
+                  if (start_at > Date.now()) {
+                    isActive = true
+                    buttonLabel = `(${period}) Plan starts on ${new Date(start_at).toDateString()}`
+                  }
+                  break
+                case 'active':
+                case 'resumed':
+                case 'completed':
+                  isActive = true
+                  buttonLabel = `Current Plan (${period})`
+                  break
+                case 'charged':
+                  buttonLabel = `Renew Plan (${period})`
+                  break
+                case 'pending':
+                  isActive = true
+                  buttonLabel = `Please Update Payment Method`
+                  break
+                default:
+                  buttonLabel = `Subscribe to ${item.name} (${period})`
+              }
+
+              razorPayConfig = {
+                subscription_id: subscription.external_subscription_id,
+                subscription_status: subscription.status,
+                isActive,
+                buttonLabel,
+              }
+            }
+
+            return {
+              ...item,
+              availableFrom: item.created_at,
+              isActive: item.is_active,
+              period: item.interval_type,
+              price:
+                item.interval_type === 'monthly'
+                  ? item.monthly_amount.d / 100
+                  : item.annual_amount.d / 100,
+              razorPayConfig,
+            }
+          }),
+        )
+        .reduce((acc, plan) => {
+          if (!acc[plan.name]) {
+            // Initialize the group if not already present
+            acc[plan.name] = []
+          }
+          // Add the current plan to the appropriate group
+          acc[plan.name].push(plan)
+          return acc
+        }, {})
+    : [],
 )
 
 const handlePaymentSuccess = (response: any) => {
@@ -181,7 +212,10 @@ const customerInfo = computed(() => ({
       }"
     >
       <!-- Pricing Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+      <div
+        v-if="plans"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4"
+      >
         <div
           v-for="[name, allPlans] in Object.entries(plans)"
           :key="name"
@@ -261,7 +295,7 @@ const customerInfo = computed(() => ({
                   v-else
                   class="w-full py-2 text-sm font-medium rounded-md bg-gray-800 text-gray-400 cursor-not-allowed"
                 >
-                  Current Plan
+                  {{ plan.razorPayConfig?.buttonLabel }}
                 </button>
               </div>
               <div
@@ -274,6 +308,7 @@ const customerInfo = computed(() => ({
           </div>
         </div>
       </div>
+      <PrimeProgressSpinner v-else />
 
       <!-- Simplified Payment Methods Section -->
       <!-- <div class="mt-8 border-t border-gray-800 pt-6">

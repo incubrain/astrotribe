@@ -30,7 +30,6 @@ import { MockCacheService } from './cache.mock'
   ],
   exports: ['REDIS_CACHE'],
 })
-
 export class RedisModule implements OnApplicationShutdown {
   constructor(@Inject('REDIS_CACHE') private cacheClient: Redis) {}
 
