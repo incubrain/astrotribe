@@ -42,9 +42,6 @@ watch(lastEvent, async (event) => {
         return sub
       })
     }
-
-    // Handle subscription creation
-    await currentUser.refreshUserStore()
   }
 
   if (event?.type === 'updated') {
@@ -54,9 +51,6 @@ watch(lastEvent, async (event) => {
       }
       return sub
     })
-
-    // Handle subscription update
-    await currentUser.refreshUserStore()
 
     if (['active', 'resumed', 'completed'].includes(event.data.status)) {
       triggerConfetti()
