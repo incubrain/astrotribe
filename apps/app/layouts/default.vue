@@ -1,6 +1,13 @@
 <script setup lang="ts">
 const { appLinks } = usePages()
 const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
+const { lastEvent } = useEvents()
+const currentUser = useCurrentUser()
+
+watch(lastEvent, async (event) => {
+  // Refresh user from wherever they may be in the app
+  if (event?.module == 'subscription') await currentUser.refreshUserStore()
+})
 </script>
 
 <template>
