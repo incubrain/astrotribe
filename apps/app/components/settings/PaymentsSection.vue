@@ -30,9 +30,10 @@ watch(lastEvent, async (event) => {
 
   if (event?.type === 'created') {
     if (!subscriptions.value.some((item) => item.id === event.data.id)) {
+      const subscription = event.data
       subscriptions.value = subscriptions.value?.length
-        ? [event.data, ...subscriptions.value]
-        : [event.data]
+        ? [subscription.data, ...subscriptions.value]
+        : [subscription.data]
     } else {
       subscriptions.value = subscriptions.value.map((sub) => {
         if (sub.id === event.data.id) {
