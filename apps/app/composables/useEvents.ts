@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { io, Socket } from 'socket.io-client'
 
 export interface Event {
+  module: 'payment' | 'subscription'
   type: 'created' | 'updated' | 'deleted'
   data: {
     subscription: any
@@ -14,6 +15,7 @@ export interface Event {
 let socketInstance: Socket | null = null
 
 export const useEvents = () => {
+  const currentUser = useCurrentUser()
   const lastEvent = ref<Event | null>(null)
   const isConnected = ref(false)
 
@@ -39,7 +41,8 @@ export const useEvents = () => {
     isConnected.value = false
   })
 
-  socketInstance.on('paymentEvent', (event: Event) => {
+  socketInstance.on('paymentEvent', async (event: Event) => {
+    if (event.module == 'subscription') await currentUser.refreshUserStore()
     lastEvent.value = event
   })
 
