@@ -1,19 +1,17 @@
 <script setup lang="ts">
 const { appLinks } = usePages()
 const { isSidebarOpen, isMobileSidebarOpen, isMobile } = useNavigation()
-const { lastEvent } = useEvents()
-const currentUser = useCurrentUser()
+const showPrelaunchMessage = useCookie<boolean>('frontiers_message', { default: () => true })
 
-watch(lastEvent, async (event) => {
-  // Refresh user from wherever they may be in the app
-  if (event?.module == 'subscription') await currentUser.refreshUserStore()
-})
+const handleMessageClose = () => {
+  showPrelaunchMessage.value = false
+}
 </script>
 
 <template>
   <div class="h-screen flex flex-col relative background">
     <RoleOverride />
-    <div class="w-full flex background overflow-hidden lg:py-4 lg:pr-4 h-full">
+    <div class="w-full flex backgroun d overflow-hidden lg:py-4 lg:pr-4 h-full">
       <IBMenuSidebar
         v-model:is-sidebar-open="isSidebarOpen"
         v-model:is-mobile-sidebar-open="isMobileSidebarOpen"
@@ -32,5 +30,10 @@ watch(lastEvent, async (event) => {
       </div>
       <NavMobiBottom class="lg:hidden" />
     </div>
+    <FrontiersMessage
+      :isOpen="showPrelaunchMessage.value"
+      @update:isOpen="(value) => (showPrelaunchMessage.value = value)"
+      @close="handleMessageClose"
+    />
   </div>
 </template>
