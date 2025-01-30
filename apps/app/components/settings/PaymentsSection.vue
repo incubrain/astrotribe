@@ -1,19 +1,15 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
 import confetti from 'canvas-confetti'
+import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
-await currentUser.refreshUserStore()
 
 const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = ref(
-  await razorpay.fetchSubscriptions({
-    status: { notIn: ['cancelled', 'expired'] },
-  }),
-)
+const subscriptions = ref([])
 
 const activeStates = ['active', 'completed', 'pending', 'charged']
 
@@ -58,7 +54,7 @@ watch(lastEvent, async (event) => {
   }
 })
 
-const plansData = (await razorpay.fetchPlans()) || []
+const plansData = ref([])
 
 interface PlanConfig {
   id: string
@@ -97,7 +93,7 @@ const freePlan = {
 }
 
 const plans = computed<PlanConfig>(() =>
-  plansData.length
+  plansData.value.length
     ? [
         (!subscriptions.value?.length ||
           !subscriptions.value.some((subscription) =>
@@ -107,7 +103,7 @@ const plans = computed<PlanConfig>(() =>
       ]
         .filter((plan) => plan)
         .concat(
-          plansData.map((item: any) => {
+          plansData.value.map((item: any) => {
             let isActive = false,
               buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
             let razorPayConfig = {
@@ -177,7 +173,7 @@ const plans = computed<PlanConfig>(() =>
           acc[plan.name].push(plan)
           return acc
         }, {})
-    : [],
+    : null,
 )
 
 const handlePaymentSuccess = (response: any) => {
@@ -196,6 +192,18 @@ const customerInfo = computed(() => ({
   email: profile.value?.email,
   contact: '', // Add contact if available in profile
 }))
+
+onMounted(async () => {
+  await currentUser.refreshUserStore()
+  try {
+    subscriptions.value = await razorpay.fetchSubscriptions({
+      status: { notIn: ['cancelled', 'expired'] },
+    })
+    plansData.value = await razorpay.fetchPlans()
+  } catch (error) {
+    console.error('Error fetching subscriptions:', error)
+  }
+})
 </script>
 
 <template>
@@ -208,7 +216,7 @@ const customerInfo = computed(() => ({
     >
       <!-- Pricing Cards Grid -->
       <div
-        v-if="plans"
+        v-if="!!plans"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4"
       >
         <div
