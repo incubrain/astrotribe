@@ -10,9 +10,7 @@ onMounted(async () => {
   const toast = useNotification()
   const supabase = useSupabaseClient()
   const { data, error } = await supabase.auth.getSession()
-  if (!data.session || error) {
-    isAuthenticating.value = false
-  } else {
+  if (data.session && !error) {
     if (route.path === '/reset-password') {
       loading.setLoading('currentUser', false)
       return
@@ -20,7 +18,7 @@ onMounted(async () => {
 
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
-
+  isAuthenticating.value = false
   loading.setLoading('currentUser', false)
 })
 
