@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti'
 import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
+const loading = ref(true)
 
 const { profile } = storeToRefs(currentUser)
 
@@ -202,6 +203,8 @@ onMounted(async () => {
     plansData.value = await razorpay.fetchPlans()
   } catch (error) {
     console.error('Error fetching subscriptions:', error)
+  } finally {
+    loading.value = false
   }
 })
 </script>
@@ -209,6 +212,10 @@ onMounted(async () => {
 <template>
   <div>
     <SettingsCard
+      :class="{
+        'opacity-50': loading,
+        'pointer-events': loading ? 'none' : 'auto',
+      }"
       :title="{
         main: 'Payment Settings',
         subtitle: 'Manage your subscription and payment methods',
@@ -216,7 +223,7 @@ onMounted(async () => {
     >
       <!-- Pricing Cards Grid -->
       <div
-        v-if="!!plans"
+        v-if="plans"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4"
       >
         <div
@@ -311,7 +318,6 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <PrimeProgressSpinner v-else />
 
       <!-- Simplified Payment Methods Section -->
       <!-- <div class="mt-8 border-t border-gray-800 pt-6">
@@ -332,5 +338,11 @@ onMounted(async () => {
         </div>
       </div> -->
     </SettingsCard>
+    <div
+      class="flex items-center justify-center"
+      v-if="loading"
+    >
+      <PrimeProgressSpinner />
+    </div>
   </div>
 </template>
