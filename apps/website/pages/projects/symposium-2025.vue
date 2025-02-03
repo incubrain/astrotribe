@@ -87,56 +87,62 @@ const selectItem = (item: string) => {
             <CommonTitle
               class="row-start-1"
               :title="{ main: 'About the Symposium' }"
-            />
-            <p
-              >AstronEra proudly presents India's Dark Sky Preservation & Sustainability Symposium,
-              a platform dedicated to tackling the critical issue of light pollution. Excessive
-              artificial lighting disrupts ecosystems, harms human health, wastes energy, and
-              diminishes cultural and astronomical heritage. This event aims to bring together
-              policymakers, lighting companies, and global experts to inspire actionable solutions
-              for India, starting with Maharashtra.
-            </p>
+            >
+              <p
+                >AstronEra proudly presents India's Dark Sky Preservation & Sustainability
+                Symposium, a platform dedicated to tackling the critical issue of light pollution.
+                Excessive artificial lighting disrupts ecosystems, harms human health, wastes
+                energy, and diminishes cultural and astronomical heritage. This event aims to bring
+                together policymakers, lighting companies, and global experts to inspire actionable
+                solutions for India, starting with Maharashtra.
+              </p>
+            </CommonTitle>
             <CommonTitle
               class="row-start-1"
               :title="{ main: 'Why Attend?' }"
-            />
-            <ul>
-              <li>Understand the ecological, health, and cultural impacts of light pollution.</li>
-              <li>Learn from global experts on successful dark sky conservation initiatives.</li>
-              <li>Collaborate with policymakers and industries to create sustainable solutions.</li>
-              <li
-                >Be a part of drafting policies and frameworks for dark sky preservation in
-                India.</li
-              >
-            </ul>
+            >
+              <ul class="list-disc">
+                <li>Understand the ecological, health, and cultural impacts of light pollution.</li>
+                <li>Learn from global experts on successful dark sky conservation initiatives.</li>
+                <li
+                  >Collaborate with policymakers and industries to create sustainable solutions.</li
+                >
+                <li
+                  >Be a part of drafting policies and frameworks for dark sky preservation in
+                  India.</li
+                >
+              </ul>
+            </CommonTitle>
             <CommonTitle
               class="row-start-1"
               :title="{ main: 'Objectives' }"
-            />
-            <ul>
-              <li
-                >Raise awareness about light pollution and its impacts on nature, humans, and
-                astronomy.</li
-              >
-              <li
-                >Inspire pilot projects in rural areas to measure the impact of dark sky
-                conservation efforts.</li
-              >
-              <li
-                >Initiate conversations about drafting policies for sustainable urban planning,
-                light pollution mitigation, and creation of dark sky reserves.</li
-              >
-              <li>Highlight dark skies as a fundamental right for every global citizen.</li>
-            </ul>
+            >
+              <ul class="list-disc">
+                <li
+                  >Raise awareness about light pollution and its impacts on nature, humans, and
+                  astronomy.</li
+                >
+                <li
+                  >Inspire pilot projects in rural areas to measure the impact of dark sky
+                  conservation efforts.</li
+                >
+                <li
+                  >Initiate conversations about drafting policies for sustainable urban planning,
+                  light pollution mitigation, and creation of dark sky reserves.</li
+                >
+                <li>Highlight dark skies as a fundamental right for every global citizen.</li>
+              </ul>
+            </CommonTitle>
             <CommonTitle
               class="row-start-1"
               :title="{ main: 'Be the changemaker' }"
-            />
-            <p
-              >This symposium offers a unique opportunity for, policymakers, and lighting companies
-              to take a leadership role in combating light pollution. Together, let’s create a
-              sustainable future by preserving our nightscapes.</p
             >
+              <p
+                >This symposium offers a unique opportunity for, policymakers, and lighting
+                companies to take a leadership role in combating light pollution. Together, let’s
+                create a sustainable future by preserving our nightscapes.</p
+              >
+            </CommonTitle>
           </div>
         </template>
         <template v-else-if="tab == 'Venue'">
