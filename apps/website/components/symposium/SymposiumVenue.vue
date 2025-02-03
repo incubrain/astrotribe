@@ -45,5 +45,6 @@ const venues = [
         </PrimeButton>
       </div>
     </div>
+    <CommonTitle :title="{ main: 'For Invites Only' }" />
   </div>
 </template>
