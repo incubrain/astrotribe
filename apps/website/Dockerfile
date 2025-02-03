@@ -7,6 +7,7 @@ ENV PORT=8080
 ENV NODE_ENV=production
 ENV NX_DAEMON=false
 ENV NX_SKIP_NX_CLOUD=true
+RUN corepack enable
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
