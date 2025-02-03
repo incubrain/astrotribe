@@ -48,6 +48,14 @@ const websiteLinks = [
         visible: true,
         disabled: false,
       },
+      {
+        key: 'symposium',
+        label: 'Symposium',
+        icon: 'material-symbols:mic-rounded',
+        url: '/projects/symposium-2025',
+        visible: true,
+        disabled: false,
+      },
     ],
   },
   {
@@ -146,19 +154,23 @@ watch(
     class="flex min-w-full w-full fixed top-0 left-0 right-0 z-50"
     :class="navbarClasses"
   >
-    <!-- Glass Container -->
-    <LandingGlass
-      hover-effect="glow"
-      glow-color="purple"
-      gradient="mixed"
-      intensity="low"
-      interactive
-      isolate-content
-      class="!w-full"
-      :padded="false"
-      :rounded="false"
-      :overflow="true"
-    >
+    <!-- Modified container structure -->
+    <div class="w-full">
+      <!-- Glass Background -->
+      <LandingGlass
+        hover-effect="glow"
+        glow-color="purple"
+        gradient="mixed"
+        intensity="low"
+        interactive
+        isolate-content
+        class="!w-full absolute inset-0 pointer-events-none"
+        :padded="false"
+        :rounded="false"
+        :overflow="true"
+      />
+
+      <!-- Content Layer -->
       <PrimeMenubar
         :model="websiteLinks"
         class="w-full text-white rounded-none lg:rounded-b-xl bg-transparent border-none relative z-10"
@@ -192,7 +204,7 @@ watch(
                 class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
               >
                 Astron
-                <strong class="font-extrabold text-primary-400"> Era </strong>
+                <strong class="font-extrabold text-primary-400">Era</strong>
               </h4>
             </NuxtLink>
           </div>
@@ -244,14 +256,14 @@ watch(
                   v-ripple
                   :to="`${$config.public.authURL}/register`"
                 >
-                  <PrimeButton> Join AstronEra </PrimeButton>
+                  <PrimeButton>Join AstronEra</PrimeButton>
                 </NuxtLink>
               </div>
             </div>
           </div>
         </template>
       </PrimeMenubar>
-    </LandingGlass>
+    </div>
   </div>
 </template>
 
