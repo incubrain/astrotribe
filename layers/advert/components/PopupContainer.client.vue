@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
             <!-- Featured Image -->
             <div class="relative w-full aspect-mobile rounded-lg overflow-hidden bg-slate-800">
               <NuxtImg
-                src="images/ads/frontiers-ad.jpg"
+                src="images/ads/frontiers-ad-v2.jpg"
                 alt="Join the frontiers program"
                 class="w-full h-full object-cover"
               />

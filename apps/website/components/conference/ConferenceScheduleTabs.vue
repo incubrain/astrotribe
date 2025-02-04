@@ -445,7 +445,7 @@ const schedule = [
 </script>
 
 <template>
-  <div class="py-12">
+  <div>
     <CommonTitle
       :title="{
         main: 'Conference Schedule',
