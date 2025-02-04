@@ -1,8 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  name: 'Conference',
-})
-
 const tab = ref('About')
 
 const toc = [

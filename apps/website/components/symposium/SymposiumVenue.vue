@@ -18,6 +18,7 @@ const venues = [
 </script>
 
 <template>
+  <CommonTitle :title="{ main: 'Venue' }" />
   <div class="relative grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:gap-12">
     <div
       class="border-2 p-2 rounded"
@@ -30,7 +31,7 @@ const venues = [
       <p>{{ venue.about }}</p>
       <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
         <PrimeButton
-          class="p-button-text gap-2 border-white"
+          class="gap-2 border-white"
           as="a"
           :href="venue.website"
           target="_blank"
