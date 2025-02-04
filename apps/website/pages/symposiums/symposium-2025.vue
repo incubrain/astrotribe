@@ -46,7 +46,7 @@ const toc = [
     <div class="flex">
       <PrimeAccordion
         value="0"
-        class="z-10 py-6 px-6 xl:gap-12 xl:py-12"
+        class="z-10 py-6 px-6 hidden md:block xl:gap-12 xl:py-12"
       >
         <PrimeAccordionPanel value="0">
           <PrimeAccordionHeader class="flex gap-4 bg-primary-800 px-4 py-2 rounded-md items-center">
