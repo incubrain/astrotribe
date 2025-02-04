@@ -13,15 +13,17 @@ Rules:
 ## Business Minded
 
 - Fail fast, use white space programming
-- Use DTO's which are mapped to UI elements
-- DTO's should be mapped EARLY in the data pipelines both too and from the DB
+- Use DTO's which are postgresql views / materialized views mapped to UI elements
 
 
 ## GENERAL
 
 ESM unless we specify CJS.
+Act like a software architect that is designing a large scale modular system.
+Create small-medium sized test driven pluggable class functions.
+Always prefer to use Classes unless on client side.
 Booleans - ALWAYS prefix with 'is'
-dist dir will ALWAYS be inside of the project root NOT repo root
+dist dir will ALWAYS be inside of the repo root
 
 ## SPEED
 - When creating files always use terminal cmds
@@ -29,9 +31,9 @@ dist dir will ALWAYS be inside of the project root NOT repo root
 
 ## Function Choice Heirarchy
 1. Use VueUse func if available
-2. Use @ib/core func next
+2. Use @incubrain/core func next
 3. Create func ourselves
-  - if it will likely be reused put it in @ib/core
+  - if it will likely be reused put it in @incubrain/core
   - project specific, in the project
   
 ## NUXT RELATED

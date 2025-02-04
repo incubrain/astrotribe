@@ -1,43 +1,45 @@
-types/
-  nuxt.d.ts
-centralizedLogger.ts
-config.ts
-enums-domains.ts
-environment.d.ts
-environment.ts
-error-interface.ts
-index.d.ts
-index.ts
-logger.ts
-response-handler.ts
+================================================================
+Repository Structure
+================================================================
+src/
+  centralizedLogger.ts
+  config.ts
+  enums-domains.ts
+  environment.d.ts
+  environment.ts
+  error-interface.ts
+  index.d.ts
+  index.ts
+  logger.ts
+  response-handler.ts
+eslintrc.json
+package.json
+project.json
+README.md
+tsconfig.json
+vite.config.ts
 
 ================================================================
 Repository Files
 ================================================================
 
 ================
-File: types/nuxt.d.ts
+File: src/centralizedLogger.ts
 ================
-// libs/logger/types/nuxt.d.ts
-import type { CentralizedLogger } from '../centralizedLogger'
-import type { Service } from '../enums-domains'
-
-declare module '#app' {
-  interface NuxtApp {
-    $logger: CentralizedLogger<Service>
-  }
-}
-
-================
-File: centralizedLogger.ts
-================
+// Replacing db imports with any types
 import type { H3Event } from 'h3'
-import { PrismaClient, error_severity, error_type } from '@prisma/client'
-import { createLogQueue, LogQueue } from '@ib/cache'
+import type { LogQueue } from '@ib/cache'
+import { createLogQueue } from '@ib/cache'
+import LokiTransport from 'winston-loki'
+import winston from 'winston'
 import { getEnvironment } from './environment.js'
 import type { ErrorLogEntry } from './error-interface.js'
 import type { Service, ServiceToDomain } from './enums-domains.js'
 import { NodeWinstonTransport, Level } from './logger.js'
+
+type ErrorSeverity = any
+type ErrorType = any
+type PrismaClient = any
 
 // ANSI constants
 const ANSI = {
@@ -74,7 +76,6 @@ interface ConsoleData {
 
 export class CentralizedLogger<S extends Service = Service> {
   private static instance: CentralizedLogger | null = null
-  private prisma: PrismaClient | null = null
   protected env: ReturnType<typeof getEnvironment>
   private currentService?: S
   private service: string = 'initializing'
@@ -90,6 +91,13 @@ export class CentralizedLogger<S extends Service = Service> {
 
     this.env = getEnvironment()
     this.transport = new NodeWinstonTransport(this.env.isDev)
+
+    if (!this.env.isDev || process.env.ENABLE_LOKI === 'true') {
+      this.setupLokiTransport().catch((err) =>
+        console.error('Failed to setup Loki transport:', err),
+      )
+    }
+
     this.logQueue = createLogQueue({
       host: process.env.REDIS_HOST,
       port: parseInt(process.env.REDIS_PORT || '6379'),
@@ -170,6 +178,23 @@ export class CentralizedLogger<S extends Service = Service> {
     }
   }
 
+  private async setupLokiTransport() {
+    const lokiTransport = new LokiTransport({
+      host: process.env.LOKI_URL || 'http://loki:3100',
+      json: true,
+      labels: {
+        service: this.service,
+        domain: this.domain,
+        environment: this.env.isDev ? 'development' : 'production',
+      },
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+      replaceTimestamp: true,
+      onConnectionError: (err) => this.error('Loki connection error', { error: err }),
+    })
+
+    await this.transport.addTransport(lokiTransport)
+  }
+
   private async extractEventData(event?: H3Event) {
     if (!event) return null
 
@@ -194,7 +219,7 @@ export class CentralizedLogger<S extends Service = Service> {
     try {
       await this.logQueue.pushLog({
         service: dbMetadata.service_name,
-        level: dbMetadata.severity as error_severity,
+        level: dbMetadata.severity as ErrorSeverity,
         message: dbMetadata.message,
         metadata: {
           domain: dbMetadata.domain,
@@ -362,7 +387,7 @@ export class CentralizedLogger<S extends Service = Service> {
 export const createCentralizedLogger = <S extends Service>() => CentralizedLogger.create<S>()
 
 ================
-File: config.ts
+File: src/config.ts
 ================
 // config.ts
 export const SERVICE_NAMES = {
@@ -390,7 +415,7 @@ export function validateServiceName(name: string): ServiceName {
 }
 
 ================
-File: enums-domains.ts
+File: src/enums-domains.ts
 ================
 const CORE_DOMAINS = ['api', 'errors', 'metrics', 'analytics'] as const
 const AUTH_DOMAINS = ['auth', 'user-management', 'permissions'] as const
@@ -399,9 +424,16 @@ const STORAGE_DOMAINS = ['storage', 'upload'] as const
 const CONTENT_DOMAINS = ['content', 'blog', 'news', 'feeds'] as const
 const SOCIAL_DOMAINS = ['social', 'notifications'] as const
 const MONITORING_DOMAINS = ['monitoring', 'error-logs', 'metrics'] as const
-const SYSTEM_DOMAINS = ['database', 'redis', 'server-jobs', 'websocket'] as const
-const API_DOMAINS = ['monitoring', 'cron', 'agents', 'validation', 'filter', 'logging'] as const
-const JOBS_DOMAINS = ['news_links', 'job_events', 'job_versions', 'job_shutdown'] as const
+const SYSTEM_DOMAINS = ['database', 'redis', 'websocket'] as const
+const API_DOMAINS = [
+  'monitoring',
+  'cron',
+  'agents',
+  'validation',
+  'filter',
+  'logging',
+  'webhook',
+] as const
 const URLS = ['url_classifier', 'url_spider'] as const
 const SCRAPERS = ['scraper', 'crawler', 'spider'] as const
 
@@ -413,7 +445,6 @@ const ADMIN_SPECIFIC = [
   'tasks',
   'spider',
   'classifier',
-  'jobs',
   'users',
   'referrals',
   'billing',
@@ -432,7 +463,6 @@ export enum Service {
   WEBSITE = 'website',
   CMS = 'cms',
   API = 'api',
-  JOBS = 'jobs',
 
   // Extensions
   CHROME_EXTENSION = 'chrome-extension',
@@ -462,18 +492,6 @@ export const ServiceDomains = {
   'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
   'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
-  'jobs': [
-    'test',
-    'circuit_breaker',
-    'api',
-    'errors',
-    'metrics',
-    'analytics',
-    'jobs',
-    ...JOBS_DOMAINS,
-    ...URLS,
-    ...SCRAPERS,
-  ],
 } as const
 
 export type ServiceToDomain = {
@@ -484,7 +502,7 @@ export type ServiceToDomain = {
 export type DomainsForService<S extends Service> = ServiceToDomain[S]
 
 ================
-File: environment.d.ts
+File: src/environment.d.ts
 ================
 // environment.d.ts
 declare global {
@@ -506,7 +524,7 @@ export interface Environment {
 export {}
 
 ================
-File: environment.ts
+File: src/environment.ts
 ================
 // src/environment.ts
 import type { Environment } from './environment.d.js'
@@ -525,10 +543,11 @@ export const getEnvironment = (): Environment => {
 }
 
 ================
-File: error-interface.ts
+File: src/error-interface.ts
 ================
-import { error_severity, error_type } from '@prisma/client'
-
+// Replacing db imports with any types
+type ErrorSeverity = any
+type ErrorType = any
 
 export interface ErrorMessage {
   userMessage: string // User-friendly error message if needed
@@ -552,39 +571,8 @@ export const retryableStatusCodes: { [key: number]: string } = {
   504: 'Gateway Timeout - The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server.',
 }
 
-export enum ErrorSeverity {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical',
-}
+export type error_type = ErrorType
 
-export enum ErrorType {
-  UPLOAD_ERROR = 'UPLOAD_ERROR',
-  CONNECTION_ERROR = 'CONNECTION_ERROR',
-  AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR',
-  UNIQUE_VIOLATION = 'UNIQUE_VIOLATION',
-  FOREIGN_KEY_VIOLATION = 'FOREIGN_KEY_VIOLATION',
-  NOT_NULL_VIOLATION = 'NOT_NULL_VIOLATION',
-  CONSTRAINT_ERROR = 'CONSTRAINT_ERROR',
-  UNDEFINED_TABLE = 'UNDEFINED_TABLE',
-  UNDEFINED_PARAMETER = 'UNDEFINED_PARAMETER',
-  SYNTAX_ERROR = 'SYNTAX_ERROR',
-  DUPLICATE_ALIAS = 'DUPLICATE_ALIAS',
-  UNDEFINED_COLUMN = 'UNDEFINED_COLUMN',
-  DATA_EXCEPTION = 'DATA_EXCEPTION',
-  SERIALIZATION_FAILURE = 'SERIALIZATION_FAILURE',
-  DEADLOCK_DETECTED = 'DEADLOCK_DETECTED',
-  INSUFFICIENT_RESOURCES = 'INSUFFICIENT_RESOURCES',
-  RATE_LIMIT_ERROR = 'RATE_LIMIT_ERROR',
-  SERVER_ERROR = 'SERVER_ERROR',
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-  NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
-  NETWORK_ERROR = 'NETWORK_ERROR',
-}
-
-// Types
 export interface ErrorDetails {
   type: ErrorType
   message: string
@@ -610,32 +598,32 @@ export interface FetchErrorResponse {
 }
 
 export function mapErrorSeverity(error: any): ErrorSeverity {
-  if (error.status >= 500) return ErrorSeverity.CRITICAL
-  if (error.status === 429) return ErrorSeverity.HIGH
+  if (error.status >= 500) return 'critical'
+  if (error.status === 429) return 'high'
 
   // Connection errors are critical
-  if (error.code?.startsWith('08')) return ErrorSeverity.CRITICAL
+  if (error.code?.startsWith('08')) return 'critical'
 
   // Authentication errors are high severity
-  if (error.code?.startsWith('28')) return ErrorSeverity.HIGH
+  if (error.code?.startsWith('28')) return 'high'
 
   // Constraint violations are high severity
-  if (error.code?.startsWith('23')) return ErrorSeverity.HIGH
+  if (error.code?.startsWith('23')) return 'high'
 
   // Query errors are medium severity
-  if (error.code?.startsWith('42')) return ErrorSeverity.MEDIUM
+  if (error.code?.startsWith('42')) return 'medium'
 
   // Data exceptions are medium severity
-  if (error.code?.startsWith('22')) return ErrorSeverity.MEDIUM
+  if (error.code?.startsWith('22')) return 'medium'
 
   // Transaction errors are high severity
-  if (error.code === '40001' || error.code === '40P01') return ErrorSeverity.HIGH
+  if (error.code === '40001' || error.code === '40P01') return 'high'
 
   // System errors are critical
-  if (error.code?.startsWith('53')) return ErrorSeverity.CRITICAL
+  if (error.code?.startsWith('53')) return 'critical'
 
   // Default to medium severity for unknown errors
-  return ErrorSeverity.MEDIUM
+  return 'medium'
 }
 
 export function mapErrorType(error: any): ErrorType {
@@ -647,34 +635,34 @@ export function mapErrorType(error: any): ErrorType {
     error.code === '08001' ||
     error.code === '08004'
   ) {
-    return ErrorType.CONNECTION_ERROR
+    return 'CONNECTION_ERROR'
   }
 
   // Authentication errors
   if (error.code === '28000' || error.code === '28P01') {
-    return ErrorType.AUTHENTICATION_ERROR
+    return 'AUTHENTICATION_ERROR'
   }
 
   // Constraint violations
-  if (error.code === '23505') return ErrorType.UNIQUE_VIOLATION
-  if (error.code === '23503') return ErrorType.FOREIGN_KEY_VIOLATION
-  if (error.code === '23502') return ErrorType.NOT_NULL_VIOLATION
+  if (error.code === '23505') return 'DATABASE_ERROR'
+  if (error.code === '23503') return 'DATABASE_ERROR'
+  if (error.code === '23502') return 'DATABASE_ERROR'
   if (error.code?.startsWith('23') && !['23505', '23503', '23502'].includes(error.code))
-    return ErrorType.CONSTRAINT_ERROR
+    return 'DATABASE_ERROR'
 
   // Query errors
-  if (error.code === '42P01') return ErrorType.UNDEFINED_TABLE
-  if (error.code === '42P02') return ErrorType.UNDEFINED_PARAMETER
-  if (error.code === '42601') return ErrorType.SYNTAX_ERROR
-  if (error.code === '42P07') return ErrorType.DUPLICATE_ALIAS
-  if (error.code === '42703') return ErrorType.UNDEFINED_COLUMN
+  if (error.code === '42P01') return 'TABLE_ERROR'
+  if (error.code === '42P02') return 'DATABASE_ERROR'
+  if (error.code === '42601') return 'DATABASE_ERROR'
+  if (error.code === '42P07') return 'DATABASE_ERROR'
+  if (error.code === '42703') return 'DATABASE_ERROR'
 
   // Data errors
-  if (error.code?.startsWith('22')) return ErrorType.DATA_EXCEPTION
+  if (error.code?.startsWith('22')) return 'DATABASE_ERROR'
 
   // Transaction errors
-  if (error.code === '40001') return ErrorType.SERIALIZATION_FAILURE
-  if (error.code === '40P01') return ErrorType.DEADLOCK_DETECTED
+  if (error.code === '40001') return 'DATABASE_ERROR'
+  if (error.code === '40P01') return 'DATABASE_ERROR'
 
   // System errors
   if (
@@ -683,15 +671,15 @@ export function mapErrorType(error: any): ErrorType {
     error.code === '53200' ||
     error.code === '53300'
   ) {
-    return ErrorType.INSUFFICIENT_RESOURCES
+    return 'SERVER_ERROR'
   }
 
   // HTTP-specific errors
-  if (error.status === 429) return ErrorType.RATE_LIMIT_ERROR
-  if (error.status >= 500) return ErrorType.SERVER_ERROR
+  if (error.status === 429) return 'NETWORK_ERROR'
+  if (error.status >= 500) return 'SERVER_ERROR'
 
   // Catch-all for unspecified errors
-  return ErrorType.UNKNOWN_ERROR
+  return 'UNKNOWN_ERROR'
 }
 
 export interface LogLevels {
@@ -753,7 +741,7 @@ export interface ErrorLogEntry {
   service_name: string
   domain?: string
   error_type?: error_type
-  severity: error_severity
+  severity: ErrorSeverity
   message: string
   stack_trace?: string
   metadata?: Partial<LogMetadata> // Make it optional and partial
@@ -766,7 +754,7 @@ export interface ErrorLogEntry {
 }
 
 ================
-File: index.d.ts
+File: src/index.d.ts
 ================
 // First in the types file (index.d.ts)
 import type { LogMetadata } from './error-interface.js'
@@ -816,21 +804,34 @@ export function handleResponse<T, S extends Service>(
 ): Promise<T>
 
 ================
-File: index.ts
+File: src/index.ts
 ================
-export * from './logger.js'
-export * from './error-interface.js'
-export * from './centralizedLogger.js'
-export * from './environment.js'
-export * from './config.js'
-export * from './response-handler.js'
-export * from './enums-domains.js'
+export * from './logger'
+export * from './error-interface'
+export * from './centralizedLogger'
+export * from './environment'
+export * from './config'
+export * from './response-handler'
+export * from './enums-domains'
 
 ================
-File: logger.ts
+File: src/logger.ts
 ================
 // logger.ts
 import type { Logger as WinstonLogger } from 'winston'
+import type { TransportStreamOptions } from 'winston-transport'
+
+// Extend TransportStreamOptions for FileTransportOptions
+interface FileTransportOptions extends TransportStreamOptions {
+  filename: string
+  maxsize?: number
+  maxFiles?: number
+  tailable?: boolean
+  maxRetries?: number
+  zippedArchive?: boolean
+  level?: string
+  format?: any // Winston format type is complex, using any for now
+}
 
 // Logging levels
 export enum Level {
@@ -869,10 +870,10 @@ export class NodeWinstonTransport implements LogTransport {
 
     try {
       const w = await import('winston')
-      const winston = w ?? w
+      const winston = w.default ?? w
 
       const format = winston.format.combine(
-        winston.format.printf(({ message }) => String(message ?? 'Message undefined')),
+        winston.format.printf((info) => String(info.message ?? 'Message undefined')),
       )
 
       this.logger = winston.createLogger({
@@ -881,48 +882,56 @@ export class NodeWinstonTransport implements LogTransport {
         transports: [new winston.transports.Console()],
       })
 
+      // Production file transports
       if (!this.isDev) {
-        // Add file transports in production
-        this.logger.add(
-          new winston.transports.File({
-            filename: './logs/error.log',
-            level: 'error',
-            format: winston.format.combine(
-              winston.format.timestamp(),
-              winston.format.uncolorize(),
-              winston.format.json(),
-            ),
-          }),
-        )
+        const errorTransport = new winston.transports.File({
+          filename: './logs/error.log',
+          level: 'error',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.uncolorize(),
+            winston.format.json(),
+          ),
+        } as FileTransportOptions)
 
-        this.logger.add(
-          new winston.transports.File({
-            filename: './logs/combined.log',
-            format: winston.format.combine(
-              winston.format.timestamp(),
-              winston.format.uncolorize(),
-              winston.format.json(),
-            ),
-          }),
-        )
+        const combinedTransport = new winston.transports.File({
+          filename: './logs/combined.log',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.uncolorize(),
+            winston.format.json(),
+          ),
+        } as FileTransportOptions)
+
+        await this.addTransport(errorTransport)
+        await this.addTransport(combinedTransport)
       }
 
       this.initialized = true
 
-      // Process any queued messages
+      // Process queued messages
       while (this.messageQueue.length > 0) {
         const msg = this.messageQueue.shift()
         if (msg) this.logger.log(msg.level, msg.message)
       }
     } catch (error) {
       console.error('Failed to initialize Winston logger:', error)
-      throw error // Instead of falling back to console, fail explicitly
+      throw error
+    }
+  }
+
+  public async addTransport(transport: any) {
+    if (!this.initialized) {
+      await this.initPromise
+    }
+
+    if (this.logger) {
+      this.logger.add(transport)
     }
   }
 
   async log(level: Level, message: string) {
     if (typeof process === 'undefined' || process.env.CLIENT_SIDE) {
-      // In client-side context, just use console
       console.error('Logger not initialized', message)
       return
     }
@@ -932,7 +941,6 @@ export class NodeWinstonTransport implements LogTransport {
     }
 
     if (!this.initialized || !this.logger) {
-      // Queue the message if not initialized
       this.messageQueue.push({ level, message })
       return
     }
@@ -942,7 +950,7 @@ export class NodeWinstonTransport implements LogTransport {
 }
 
 ================
-File: response-handler.ts
+File: src/response-handler.ts
 ================
 // @ib/logger/src/response-handler.ts
 import { createError } from 'h3'
@@ -972,3 +980,229 @@ export const handleResponse = async <T>(
     })
   }
 }
+
+================
+File: eslintrc.json
+================
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+    {
+      "files": ["*.json"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "@nx/dependency-checks": [
+          "error",
+          {
+            "buildTargets": ["build"],
+            "ignoredDependencies": [],
+            "useLocalPathsForWorkspaceDependencies": true
+          }
+        ]
+      }
+    }
+  ]
+}
+
+================
+File: package.json
+================
+{
+  "name": "@ib/logger",
+  "version": "0.0.3",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "lint": "eslint 'src/**/*.{js,ts}'",
+    "test": "vitest run",
+    "dev": "tsc -w",
+    "clean": "rm -rf dist",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@ib/cache": "workspace:*",
+    "h3": "^1.8.2",
+    "winston": "^3.17.0",
+    "winston-loki": "^6.1.3",
+    "winston-transport": "^4.9.0",
+    "vite-plugin-dts": "~4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.4.11"
+  }
+}
+
+================
+File: project.json
+================
+{
+  "name": "@ib/logger",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "libs/logger",
+  "sourceRoot": "libs/logger/src",
+  "projectType": "library",
+  "targets": {
+    "types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --emitDeclarationOnly --traceResolution",
+        "cwd": "libs/logger"
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "output": "libs/logger/dist",
+      "options": {
+        "outputPath": "libs/logger/dist"
+      },
+      "dependsOn": [{ "target": "build", "projects": ["@ib/cache"] }]
+    }
+  }
+}
+
+================
+File: README.md
+================
+logger readme...
+
+================
+File: tsconfig.json
+================
+{
+  "extends": "../../shared/tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "composite": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "module": "ESNext",
+    "target": "ES2022",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}
+
+================
+File: vite.config.ts
+================
+import { fileURLToPath } from 'url'
+import path, { resolve } from 'path'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+function updatePackageJson() {
+  return {
+    name: 'update-package-json',
+    closeBundle: () => {
+      const pkgPath = path.resolve(__dirname, 'package.json')
+      const distDir = path.resolve(__dirname, 'dist')
+      const distPkgPath = path.resolve(distDir, 'package.json')
+
+      // Ensure the dist directory exists
+      if (!existsSync(distDir)) {
+        mkdirSync(distDir, { recursive: true })
+      }
+
+      // Update the package.json file
+      const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
+
+      pkg.main = './index.cjs'
+      pkg.module = './index.js'
+      pkg.types = './index.d.ts'
+      pkg.exports = {
+        '.': {
+          types: './index.d.ts',
+          import: './index.js',
+          require: './index.cjs',
+        },
+      }
+
+      writeFileSync(distPkgPath, JSON.stringify(pkg, null, 2))
+    },
+  }
+}
+
+export default defineConfig({
+  resolve: {
+    preserveSymlinks: true,
+    conditions: ['node'],
+    mainFields: ['module', 'main'],
+  },
+  build: {
+    lib: {
+      name: '@ib/logger',
+      entry: resolve(__dirname, 'src/index.ts'),
+      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
+      formats: ['es', 'cjs'],
+    },
+    outDir: resolve(__dirname, 'dist'),
+    sourcemap: true,
+    rollupOptions: {
+      external: [
+        'winston',
+        'winston-transport',
+        'winston-loki',
+        'h3',
+        '@ib/cache',
+        '@astronera/db',
+        'ioredis',
+        'ms',
+        '@astronera/db',
+        '@napi-rs/snappy-linux-x64-gnu',
+        '@napi-rs/snappy-linux-x64-musl',
+        'http',
+        'https',
+        'url',
+        'fs',
+        'path',
+      ],
+      output: {
+        exports: 'named',
+        preserveModules: false,
+        dir: resolve(__dirname, 'dist'),
+      },
+    },
+  },
+  plugins: [
+    dts({
+      include: ['src/**/*.ts'],
+      exclude: ['**/*.test.ts', 'src/**/*.spec.ts'],
+      rollupTypes: true,
+      compilerOptions: {
+        rootDir: resolve(__dirname, 'src'),
+        outDir: resolve(__dirname, 'dist'),
+        baseUrl: __dirname,
+      },
+    }),
+    updatePackageJson(),
+  ],
+  optimizeDeps: {
+    exclude: ['@astronera/db'],
+  },
+})
