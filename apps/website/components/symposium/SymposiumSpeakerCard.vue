@@ -30,7 +30,7 @@ defineProps({
         <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
         <IBImage
           :img="{
-            src: `symposium/speakers/${speaker.avatar}.jpg`,
+            src: `/symposium/speakers/${speaker.avatar}.jpeg`,
             alt: `${speaker.given_name} will be presenting at the Dark Sky Conservation India Conference`,
             width: '350',
             height: '350',

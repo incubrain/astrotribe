@@ -114,7 +114,7 @@ const selectItem = (item: string) => {
               </ul>
               <IBImage
                 :img="{
-                  src: 'symposium/light_pollution_map.jpg',
+                  src: 'symposium/light_pollution_map.jpeg',
                   alt: 'https://djlorenz.github.io/astronomy/lp2022/',
                 }"
               />
@@ -140,13 +140,13 @@ const selectItem = (item: string) => {
               </ul>
               <IBImage
                 :img="{
-                  src: 'symposium/before_and_after_germany.jpg',
+                  src: 'symposium/before_and_after_germany.jpeg',
                   alt: 'https://www.instagram.com/darksky_intl?igsh=MWJqOGV1dGNrbGZ1OQ==',
                 }"
               />
               <IBImage
                 :img="{
-                  src: 'symposium/before_and_after_wales.jpg',
+                  src: 'symposium/before_and_after_wales.jpeg',
                 }"
               />
             </CommonTitle>
@@ -156,12 +156,12 @@ const selectItem = (item: string) => {
             >
               <p
                 >This symposium offers a unique opportunity for, policymakers, and lighting
-                companies to take a leadership role in combating light pollution. Together, let�s
+                companies to take a leadership role in combating light pollution. Together, let's
                 create a sustainable future by preserving our nightscapes.</p
               >
               <IBImage
                 :img="{
-                  src: 'symposium/five_principals_for_lighting.jpg',
+                  src: 'symposium/five_principals_for_lighting.jpeg',
                 }"
               />
             </CommonTitle>
