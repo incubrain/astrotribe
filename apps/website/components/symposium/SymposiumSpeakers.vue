@@ -92,6 +92,7 @@ const filterSpeakers = (featured: boolean, toSort = false) => {
 <template>
   <div class="w-full">
     <CommonTitle
+      class="col-start-1 full-width"
       :title="{
         main: 'Meet The IDPS Symposium 2025 Speakers',
       }"
@@ -108,4 +109,8 @@ const filterSpeakers = (featured: boolean, toSort = false) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.full-width {
+  max-width: 100% !important; /* Forces full-width override */
+}
+</style>
