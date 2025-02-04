@@ -48,20 +48,20 @@
         >
         <li>Highlight dark skies as a fundamental right for every global citizen.</li>
       </ul>
-      <div class="flex gap-2">
+      <div class="flex gap-2 flex-col md:flex-row">
         <IBImage
           :img="{
             src: 'symposium/before_and_after_germany.jpeg',
             alt: 'https://www.instagram.com/darksky_intl?igsh=MWJqOGV1dGNrbGZ1OQ==',
-            width: '60',
-            height: '60',
+            width: '360',
+            height: '360',
           }"
         />
         <IBImage
           :img="{
             src: 'symposium/before_and_after_wales.jpeg',
-            width: '60',
-            height: '60',
+            width: '360',
+            height: '360',
           }"
         />
       </div>
