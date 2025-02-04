@@ -1,36 +1,56 @@
 import { ref } from 'vue'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
 export interface Event {
+  module: 'payment' | 'subscription'
   type: 'created' | 'updated' | 'deleted'
   data: {
-    subscription: any // Type this based on your SubscriptionModel
+    subscription: any
     changes?: any
     timestamp: string
   }
 }
 
+// Singleton instance
+let socketInstance: Socket | null = null
+
 export const useEvents = () => {
-  const socket = io(`${useRuntimeConfig().public.apiURL}/event`, { transports: ['websocket'] })
+  const currentUser = useCurrentUser()
   const lastEvent = ref<Event | null>(null)
   const isConnected = ref(false)
 
-  socket.on('connect', () => {
+  // Only create a new socket if one doesn't exist
+  if (!socketInstance) {
+    socketInstance = io(`${useRuntimeConfig().public.apiURL}/event`, {
+      transports: ['websocket'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+    })
+  }
+
+  // Set up event listeners
+  socketInstance.on('connect', () => {
     console.log('Socket connected')
     isConnected.value = true
   })
 
-  socket.on('disconnect', () => {
+  socketInstance.on('disconnect', () => {
     console.log('Socket disconnected')
     isConnected.value = false
   })
 
-  socket.on('paymentEvent', (event: Event) => {
+  socketInstance.on('paymentEvent', async (event: Event) => {
+    if (event.module == 'subscription') await currentUser.refreshUserStore()
     lastEvent.value = event
   })
 
+  // Clean up listeners on component unmount
   onUnmounted(() => {
-    socket.disconnect()
+    socketInstance?.off('connect')
+    socketInstance?.off('disconnect')
+    socketInstance?.off('paymentEvent')
   })
 
   return {

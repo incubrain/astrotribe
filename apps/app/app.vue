@@ -27,6 +27,7 @@ onMounted(async () => {
   document.documentElement.classList.add('dark')
   try {
     await Promise.all([
+      currentUser.refreshUserStore(),
       folderStore.fetchFolders(),
       bookmarkStore.fetchBookmarks(),
       bookmarkStore.fetchBookmarkCounts(),

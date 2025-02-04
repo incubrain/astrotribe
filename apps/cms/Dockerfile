@@ -35,12 +35,15 @@ RUN pnpx nx build @astronera/cms --skip-nx-cache
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
 
+# Install Strapi CLI globally to ensure it's available
+RUN pnpm install @strapi/strapi
+
 # Create a startup script to handle migrations
 RUN echo '#!/bin/bash\n\
 echo "Forcing database migrations..."\n\
-NODE_ENV=production ./node_modules/.bin/strapi database:delete-soft-migrations || true\n\
-NODE_ENV=production ./node_modules/.bin/strapi database:migrate-force || true\n\
-NODE_ENV=production ./node_modules/.bin/strapi start\n\
+NODE_ENV=production pnpm strapi database:delete-soft-migrations || true\n\
+NODE_ENV=production pnpm strapi database:migrate-force || true\n\
+NODE_ENV=production pnpm strapi start\n\
 ' > ./start.sh
 
 RUN chmod +x ./start.sh

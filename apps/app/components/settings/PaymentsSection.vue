@@ -1,19 +1,16 @@
 <!-- components/settings/PaymentSection.vue -->
 <script setup lang="ts">
 import confetti from 'canvas-confetti'
+import { onMounted } from 'vue'
 
 const currentUser = useCurrentUser()
-await currentUser.refreshUserStore()
+const loading = ref(true)
 
 const { profile } = storeToRefs(currentUser)
 
 const razorpay = usePayments('razorpay')
 const { lastEvent, isConnected } = useEvents()
-const subscriptions = ref(
-  await razorpay.fetchSubscriptions({
-    status: { notIn: ['cancelled', 'expired'] },
-  }),
-)
+const subscriptions = ref([])
 
 const activeStates = ['active', 'completed', 'pending', 'charged']
 
@@ -30,9 +27,10 @@ watch(lastEvent, async (event) => {
 
   if (event?.type === 'created') {
     if (!subscriptions.value.some((item) => item.id === event.data.id)) {
+      const subscription = event.data
       subscriptions.value = subscriptions.value?.length
-        ? [event.data, ...subscriptions.value]
-        : [event.data]
+        ? [subscription.data, ...subscriptions.value]
+        : [subscription.data]
     } else {
       subscriptions.value = subscriptions.value.map((sub) => {
         if (sub.id === event.data.id) {
@@ -41,9 +39,6 @@ watch(lastEvent, async (event) => {
         return sub
       })
     }
-
-    // Handle subscription creation
-    await currentUser.refreshUserStore()
   }
 
   if (event?.type === 'updated') {
@@ -54,16 +49,13 @@ watch(lastEvent, async (event) => {
       return sub
     })
 
-    // Handle subscription update
-    await currentUser.refreshUserStore()
-
     if (['active', 'resumed', 'completed'].includes(event.data.status)) {
       triggerConfetti()
     }
   }
 })
 
-const plansData = (await razorpay.fetchPlans()) || []
+const plansData = ref([])
 
 interface PlanConfig {
   id: string
@@ -102,7 +94,7 @@ const freePlan = {
 }
 
 const plans = computed<PlanConfig>(() =>
-  plansData.length
+  plansData.value.length
     ? [
         (!subscriptions.value?.length ||
           !subscriptions.value.some((subscription) =>
@@ -112,7 +104,7 @@ const plans = computed<PlanConfig>(() =>
       ]
         .filter((plan) => plan)
         .concat(
-          plansData.map((item: any) => {
+          plansData.value.map((item: any) => {
             let isActive = false,
               buttonLabel = `Subscribe to ${item.name} (${item.interval_type})`
             let razorPayConfig = {
@@ -182,7 +174,7 @@ const plans = computed<PlanConfig>(() =>
           acc[plan.name].push(plan)
           return acc
         }, {})
-    : [],
+    : null,
 )
 
 const handlePaymentSuccess = (response: any) => {
@@ -201,11 +193,29 @@ const customerInfo = computed(() => ({
   email: profile.value?.email,
   contact: '', // Add contact if available in profile
 }))
+
+onMounted(async () => {
+  await currentUser.refreshUserStore()
+  try {
+    subscriptions.value = await razorpay.fetchSubscriptions({
+      status: { notIn: ['cancelled', 'expired'] },
+    })
+    plansData.value = await razorpay.fetchPlans()
+  } catch (error) {
+    console.error('Error fetching subscriptions:', error)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <template>
   <div>
     <SettingsCard
+      :class="{
+        'opacity-50': loading,
+        'pointer-events': loading ? 'none' : 'auto',
+      }"
       :title="{
         main: 'Payment Settings',
         subtitle: 'Manage your subscription and payment methods',
@@ -308,7 +318,6 @@ const customerInfo = computed(() => ({
           </div>
         </div>
       </div>
-      <PrimeProgressSpinner v-else />
 
       <!-- Simplified Payment Methods Section -->
       <!-- <div class="mt-8 border-t border-gray-800 pt-6">
@@ -329,5 +338,11 @@ const customerInfo = computed(() => ({
         </div>
       </div> -->
     </SettingsCard>
+    <div
+      class="flex items-center justify-center"
+      v-if="loading"
+    >
+      <PrimeProgressSpinner />
+    </div>
   </div>
 </template>
