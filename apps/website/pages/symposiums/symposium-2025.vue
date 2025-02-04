@@ -1,8 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  name: 'Conference',
-})
-
 const tab = ref('About')
 
 const toc = [
@@ -17,11 +13,15 @@ const toc = [
     depth: 1,
     text: 'Venue',
   },
-
   {
     id: 5,
     depth: 1,
     text: 'Schedule',
+  },
+  {
+    id: 6,
+    depth: 1,
+    text: 'Speakers',
   },
 ]
 
@@ -43,7 +43,7 @@ const selectItem = (item: string) => {
       }"
       :title="{
         centered: false,
-        main: 'IDSPS Symposium: India’s Dark Sky Preservation & Sustainability',
+        main: `IDSPS Symposium: India's Dark Sky Preservation & Sustainability`,
         subtitle: '1st March 2025 | 11.00am -12.30 pm IST',
       }"
       position="object-top"
@@ -112,6 +112,12 @@ const selectItem = (item: string) => {
                   India.</li
                 >
               </ul>
+              <IBImage
+                :img="{
+                  src: 'symposium/light_pollution_map.jpg',
+                  alt: 'https://djlorenz.github.io/astronomy/lp2022/',
+                }"
+              />
             </CommonTitle>
             <CommonTitle
               class="row-start-1"
@@ -132,6 +138,17 @@ const selectItem = (item: string) => {
                 >
                 <li>Highlight dark skies as a fundamental right for every global citizen.</li>
               </ul>
+              <IBImage
+                :img="{
+                  src: 'symposium/before_and_after_germany.jpg',
+                  alt: 'https://www.instagram.com/darksky_intl?igsh=MWJqOGV1dGNrbGZ1OQ==',
+                }"
+              />
+              <IBImage
+                :img="{
+                  src: 'symposium/before_and_after_wales.jpg',
+                }"
+              />
             </CommonTitle>
             <CommonTitle
               class="row-start-1"
@@ -139,9 +156,14 @@ const selectItem = (item: string) => {
             >
               <p
                 >This symposium offers a unique opportunity for, policymakers, and lighting
-                companies to take a leadership role in combating light pollution. Together, let’s
+                companies to take a leadership role in combating light pollution. Together, let�s
                 create a sustainable future by preserving our nightscapes.</p
               >
+              <IBImage
+                :img="{
+                  src: 'symposium/five_principals_for_lighting.jpg',
+                }"
+              />
             </CommonTitle>
           </div>
         </template>
@@ -150,6 +172,9 @@ const selectItem = (item: string) => {
         </template>
         <template v-else-if="tab == 'Schedule'">
           <SymposiumSchedule />
+        </template>
+        <template v-else-if="tab == 'Speakers'">
+          <SymposiumSpeakers />
         </template>
       </div>
     </div>

@@ -1,19 +1,16 @@
 <script setup lang="ts">
 const projects = [
   {
-    title: 'Dark Sky Conservation India Conference',
-    description: `The conference effectively laid the groundwork for substantive discussions concerning
-              the preservation of dark skies and the promotion of astro-tourism in India,
-              successfully achieving its stated goals and objectives. In light of the insights
-              garnered from this conference, the subsequent steps entail the organization of an
-              in-person workshop spanning 2-3 days, aimed at convening stakeholders, government
-              officials, engineers, architects, and space policy representatives.`,
-    date: '24th-26th November 2023',
+    title: 'Astrotribe',
+    description: `We conducted the AstroTribe Guide Training Workshop to empower tribal students in India with astronomy knowledge and science communication skills, fostering both education and economic opportunities.
+    Through hands-on training, telescope sessions, and public stargazing events, we trained 16 AstroGuides, enabling them to earn by guiding astronomy experiences.
+    The project connected students with international mentors, onboarded resorts for astrotourism, and aimed to create a sustainable network for future opportunities. With continued support, we are expanding this initiative to Brazil and beyond, strengthening its global impact. 🚀✨`,
+    date: '2022',
     image: {
-      src: '/conference/photos/IDSPAC23-ruchira-huchgol.jpg',
-      description: 'Featured image for the Dark Sky Conservation India Conference',
+      src: '/images/astrotribe-guide-training-India.jpg',
+      description: 'Featured image for the Astrotribe Guide Training',
     },
-    slug: '/projects/dark-sky-conference-2023',
+    slug: '/projects/astrotribe',
   },
 ]
 </script>
