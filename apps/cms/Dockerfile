@@ -7,8 +7,9 @@ ENV NX_SKIP_NX_CACHE=true
 ENV NX_BATCH_MODE=true
 ENV NX_SKIP_LOG_GROUPING=true
 
-RUN corepack enable
+RUN corepack prepare pnpm@8.7.6 --activate
 
+RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy workspace configuration files
