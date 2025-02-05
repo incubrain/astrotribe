@@ -40,18 +40,8 @@ WORKDIR /app/apps/cms
 # Ensure necessary modules are installed
 RUN pnpm install --prod
 
-# Create a startup script to run database migrations before starting Strapi
-RUN echo '#!/bin/sh\n\
-echo "Running database migrations..."\n\
-NODE_ENV=production pnpx strapi migrations:run || true\n\
-echo "Starting Strapi..."\n\
-NODE_ENV=production pnpx strapi start\n\
-' > ./start.sh
-
-RUN chmod +x ./start.sh
-
 # Expose Strapi port
 EXPOSE 1337
 
-# Run startup script
-CMD
+# Run Strapi in production mode
+CMD ["pnpx", "strapi", "start"]
