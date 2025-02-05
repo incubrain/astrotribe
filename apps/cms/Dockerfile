@@ -13,25 +13,20 @@ WORKDIR /app
 
 # Copy workspace configuration files
 COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
-
-# Copy all workspace packages needed for strapi-supabase
 COPY shared ./shared
 COPY libs ./libs/
-COPY packages/strapi-supabase ./packages/strapi-supabase
 COPY apps/cms ./apps/cms
 
 # Declare build-time args
 ARG SUPABASE_STORAGE_URL
 ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
-# Install dependencies for CMS workspace only
-RUN pnpm install --filter @astronera/cms...
-
-# Build strapi-supabase package first
-RUN cd packages/strapi-supabase && pnpm build
+# Install dependencies and build strapi-supabase first
+RUN pnpm install
+RUN pnpx nx build strapi-supabase --skip-nx-cache
 
 # Build CMS
-RUN cd apps/cms && pnpm build
+RUN pnpx nx build @astronera/cms --skip-nx-cache
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
