@@ -13,8 +13,11 @@ WORKDIR /app
 
 # Copy workspace configuration files
 COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
+
+# Copy all workspace packages needed for strapi-supabase
 COPY shared ./shared
 COPY libs ./libs/
+COPY packages/strapi-supabase ./packages/strapi-supabase
 COPY apps/cms ./apps/cms
 
 # Declare build-time args
@@ -24,25 +27,19 @@ ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 # Install dependencies for CMS workspace only
 RUN pnpm install --filter @astronera/cms...
 
-# THEN - copy source files
-COPY . .
+# Build strapi-supabase package first
+RUN cd packages/strapi-supabase && pnpm build
 
-# Install dependencies for this workspace only
-RUN pnpx nx reset
-RUN pnpx nx build strapi-supabase --skip-nx-cache
-RUN pnpx nx build @astronera/cms --skip-nx-cache
+# Build CMS
+RUN cd apps/cms && pnpm build
 
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
 
-# Install Strapi CLI globally to ensure it's available
-RUN pnpm install @strapi/strapi
-
-# Create a startup script to handle migrations
+# Create a startup script that uses proper Strapi v5 migration commands
 RUN echo '#!/bin/bash\n\
-echo "Forcing database migrations..."\n\
-NODE_ENV=production pnpm strapi database:delete-soft-migrations || true\n\
-NODE_ENV=production pnpm strapi database:migrate-force || true\n\
+echo "Running database migrations..."\n\
+NODE_ENV=production pnpm strapi database:migrate || true\n\
 NODE_ENV=production pnpm strapi start\n\
 ' > ./start.sh
 
@@ -50,5 +47,4 @@ RUN chmod +x ./start.sh
 
 EXPOSE 1337
 
-# Use the startup script instead of direct start
 CMD ["./start.sh"]
