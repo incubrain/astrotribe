@@ -18,7 +18,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy workspace configuration files
-COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
+COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./ 
 COPY shared ./shared
 COPY libs ./libs/
 COPY apps/cms ./apps/cms
@@ -34,7 +34,7 @@ RUN pnpx nx build strapi-supabase --skip-nx-cache
 # Build CMS
 RUN pnpx nx build @astronera/cms --skip-nx-cache
 
-# Set working directory to the CMS app
+# Set working directory to the CMS app (Strapi project directory)
 WORKDIR /app/apps/cms
 
 # Ensure necessary modules are installed
@@ -43,5 +43,5 @@ RUN pnpm install --prod
 # Expose Strapi port
 EXPOSE 1337
 
-# Run Strapi in production mode
+# Start Strapi inside its project directory
 CMD ["pnpx", "strapi", "start"]
