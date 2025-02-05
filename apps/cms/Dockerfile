@@ -1,26 +1,52 @@
-# Use an official Node.js runtime as a parent image
 FROM node:20-slim
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NX_DAEMON=false
+ENV NX_VERBOSE_LOGGING=true
+ENV NX_SKIP_NX_CACHE=true
+ENV NX_BATCH_MODE=true
+ENV NX_SKIP_LOG_GROUPING=true
 
-# Set the working directory inside the container
-WORKDIR /apps/cms
+RUN corepack prepare pnpm@8.7.6 --activate
 
-# Install PNPM globally
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm
+WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml before running install (better caching)
-COPY cms/package.json cms/pnpm-lock.yaml ./
+# Copy workspace configuration files
+COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
+COPY shared ./shared
+COPY libs ./libs/
+COPY apps/cms ./apps/cms
 
-# Install dependencies using PNPM
-RUN pnpm install --frozen-lockfile
+# Declare build-time args
+ARG SUPABASE_STORAGE_URL
+ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
-# Copy the rest of the project files
-COPY cms ./
+# Install dependencies for CMS workspace only
+RUN pnpm install --filter @astronera/cms...
 
-# Build Strapi (if needed)
-RUN pnpm build
+# THEN - copy source files
+COPY . .
 
-# Expose the necessary port
+# Install dependencies for this workspace only
+RUN pnpx nx reset
+RUN pnpx nx build strapi-supabase --skip-nx-cache
+RUN pnpx nx build @astronera/cms --skip-nx-cache
+
+# Update working directory to the CMS app
+WORKDIR /app/apps/cms
+
+# Install Strapi CLI globally to ensure it's available
+RUN pnpm install @strapi/strapi
+
+# Create a startup script to handle migrations
+RUN echo '#!/bin/bash\n\
+NODE_ENV=production pnpm strapi start\n\
+' > ./start.sh
+
+RUN chmod +x ./start.sh
+
 EXPOSE 1337
 
-# Start the Strapi application
-CMD ["pnpm", "start"]
+# Use the startup script instead of direct start
+CMD ["./start.sh"]
