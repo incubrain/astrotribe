@@ -26,10 +26,10 @@ ARG SUPABASE_STORAGE_URL
 ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
 # Install dependencies for CMS workspace only
-RUN pnpm install --filter @astronera/cms...
+RUN pnpm install --filter @astronera/cms
 
 # Explicitly install `strapi-supabase`
-RUN pnpm install --filter strapi-supabase...
+RUN pnpm install --filter strapi-supabase
 
 # Copy source files
 COPY . .
