@@ -2,7 +2,7 @@
 FROM node:20-slim
 
 # Set the working directory inside the container
-WORKDIR /app/cms
+WORKDIR /apps/cms
 
 # Install PNPM globally
 RUN corepack enable && corepack prepare pnpm@latest --activate
