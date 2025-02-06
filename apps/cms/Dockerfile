@@ -29,7 +29,7 @@ ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 RUN pnpm install --filter @astronera/cms
 
 # Explicitly install `strapi-supabase`
-RUN pnpm install --filter strapi-supabase
+RUN pnpm install --filter @astronera/strapi-supabase
 
 # Copy source files
 COPY . .
