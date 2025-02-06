@@ -12,7 +12,7 @@
       "dependsOn": [
         {
           "target": "build",
-          "projects": ["@ib/logger", "strapi-supabase"]
+          "projects": ["@ib/logger", "@ib/strapi-supabase"]
         }
       ]
     },
