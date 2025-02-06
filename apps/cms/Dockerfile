@@ -36,7 +36,7 @@ COPY . .
 
 # Build the Strapi provider & CMS
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/strapi-supabase --skip-nx-cache
+RUN pnpx nx build strapi-supabase --skip-nx-cache
 RUN pnpx nx build @astronera/cms --skip-nx-cache
 
 # Update working directory to the CMS app
