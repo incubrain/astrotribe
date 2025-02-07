@@ -56,14 +56,14 @@ const websiteLinks = [
         visible: true,
         disabled: false,
       },
-      {
+      /*{
         key: 'projects',
         label: 'Projects',
         icon: 'material-symbols:mic-rounded',
         url: '/projects',
         visible: true,
         disabled: false,
-      },
+      },*/
     ],
   },
   {
