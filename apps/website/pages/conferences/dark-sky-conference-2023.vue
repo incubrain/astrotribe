@@ -31,6 +31,8 @@ const selectItem = (item: string) => {
   tab.value = item
 }
 
+const { isMobile } = useNavigation()
+
 // !todo: low priority - reduce the amount of text at the beginning of the page
 // !todo: low priority - fix the styling of the conference schedule
 // consider: creating a 20-30 second video of the conference to use as the Hero Section
@@ -69,6 +71,7 @@ const selectItem = (item: string) => {
     <div class="flex">
       <PrimeAccordion
         value="0"
+        v-show="!isMobile"
         class="z-10 wrapper padded-x py-6 xl:gap-12 xl:py-12"
       >
         <PrimeAccordionPanel value="0">
@@ -99,7 +102,7 @@ const selectItem = (item: string) => {
         </PrimeAccordionPanel>
       </PrimeAccordion>
       <div class="wrapper padded-x flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
-        <template v-if="tab == 'About'">
+        <template v-if="isMobile || tab == 'About'">
           <ConferenceAbout />
           <div class="flex flex-col gap-6 xl:gap-12">
             <div class="flex flex-col items-start gap-6 lg:flex-row xl:gap-12">
@@ -161,15 +164,9 @@ const selectItem = (item: string) => {
             </div>
           </div>
         </template>
-        <template v-else-if="tab == 'Venue'">
-          <ConferenceVenue />
-        </template>
-        <template v-else-if="tab == 'Schedule'">
-          <ConferenceScheduleTabs />
-        </template>
-        <template v-else-if="tab == 'Speakers'">
-          <ConferenceSpeakers />
-        </template>
+        <ConferenceVenue v-if="isMobile || tab == 'Venue'"/>
+        <ConferenceScheduleTabs v-if="isMobile || tab == 'Schedule'" />
+        <ConferenceSpeakers v-if="isMobile || tab == 'Speakers'" />
       </div>
     </div>
   </div>
