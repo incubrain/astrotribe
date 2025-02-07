@@ -2,7 +2,8 @@
 const venues = [
   {
     icon: 'mdi:video-box',
-    main: 'Zoom',
+    main: 'Zoom (For invites only)',
+    button: 'Zoom',
     website: 'https://www.zoom.com/',
     about: 'The meeting ID and password will be shared soon',
     color: 'blue',
@@ -11,6 +12,7 @@ const venues = [
     icon: 'mdi:youtube',
     about: 'The event will be broadcasted live on our YouTube channel',
     main: 'YouTube',
+    button: 'YouTube',
     website: 'https://www.youtube.com/',
     color: 'red',
   },
@@ -42,10 +44,9 @@ const venues = [
             :class="`text-${venue.color}-400 group-hover:text-sky-400 transition-colors duration-300`"
             size="36px"
           />
-          {{ venue.main }}
+          {{ venue.button }}
         </PrimeButton>
       </div>
     </div>
-    <CommonTitle :title="{ main: 'For Invites Only' }" />
   </div>
 </template>
