@@ -55,7 +55,18 @@ defineProps({
           />
           {{ speaker.professional_title }}
         </p>
-        <p class="h-auto text-sm"> {{ speaker.bio.slice(0, 240) }}... </p>
+        <p class="h-auto text-sm">
+          {{ isOpen ? speaker.bio : speaker.bio.slice(0, 240) }}...
+          <NuxtLink v-ripple
+            ><PrimeButton
+              outlined
+              as="a"
+              class="!p-0"
+              @click="isOpen = !isOpen"
+              >{{ isOpen ? 'Read Less' : 'Read More' }}</PrimeButton
+            ></NuxtLink
+          >
+        </p>
       </div>
     </div>
   </LandingGlass>
