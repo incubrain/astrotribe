@@ -61,9 +61,6 @@ const toc = [
               >
                 <NuxtLink
                   :to="`#${item.text}`"
-                  :class="{
-                    outline: item.text == tab,
-                  }"
                   class="text-lg font-[Oswald] p-button-text"
                 >
                   <h4>
