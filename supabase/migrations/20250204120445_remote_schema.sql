@@ -331,7 +331,7 @@ CREATE UNIQUE INDEX customer_subscriptions_external_subscription_id_key ON publi
 
 CREATE INDEX idx_categorized_urls_company_id ON public.categorized_urls USING btree (company_id);
 
-alter table "public"."categorized_urls" add constraint "categorized_urls_company_id_fkey" FOREIGN KEY (company_id) REFERENCES companies(id) not valid;
+alter table "public"."categorized_urls" add constraint "categorized_urls_company_id_fkey" FOREIGN KEY (company_id) REFERENCES public.companies(id) not valid;
 
 alter table "public"."categorized_urls" validate constraint "categorized_urls_company_id_fkey";
 
@@ -351,22 +351,22 @@ create materialized view "public"."content_scores" as  SELECT c.id,
     c.created_at,
     c.updated_at,
     ( SELECT jsonb_agg(jsonb_build_object('name', cat.name, 'isPrimary', cc.is_primary)) AS jsonb_agg
-           FROM (content_categories cc
-             JOIN categories cat ON ((cat.id = cc.category_id)))
+           FROM (public.content_categories cc
+             JOIN public.categories cat ON ((cat.id = cc.category_id)))
           WHERE (cc.content_id = c.id)) AS categories,
     ( SELECT jsonb_agg(t.name) AS jsonb_agg
-           FROM (content_tags ct
-             JOIN tags t ON ((t.id = ct.tag_id)))
+           FROM (public.content_tags ct
+             JOIN public.tags t ON ((t.id = ct.tag_id)))
           WHERE (ct.content_id = c.id)) AS tags,
     ( SELECT cs.content_status
-           FROM content_statuses cs
+           FROM public.content_statuses cs
           WHERE (cs.content_id = c.id)
           ORDER BY cs.created_at DESC
          LIMIT 1) AS status
-   FROM contents c
+   FROM public.contents c
   WHERE (EXISTS ( SELECT 1
-           FROM content_statuses cs
-          WHERE ((cs.content_id = c.id) AND (cs.content_status = 'published'::content_status))));
+           FROM public.content_statuses cs
+          WHERE ((cs.content_id = c.id) AND (cs.content_status = 'published'::public.content_status))));
 
 
 CREATE OR REPLACE FUNCTION public.is_subscription_trigger()
@@ -389,17 +389,17 @@ $function$
 create materialized view "public"."news_details" as  WITH vote_counts AS (
          SELECT votes.content_id,
             count(*) AS vote_count
-           FROM votes
+           FROM public.votes
           GROUP BY votes.content_id
         ), bookmark_counts AS (
          SELECT bookmarks.content_id,
             count(*) AS bookmark_count
-           FROM bookmarks
+           FROM public.bookmarks
           GROUP BY bookmarks.content_id
         ), summary_levels AS (
          SELECT news_summaries.news_id,
-            jsonb_build_object('beginner', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'beginner'::complexity_level)), 'intermediate', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'intermediate'::complexity_level)), 'expert', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'expert'::complexity_level)), 'undefined', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'undefined'::complexity_level))) AS summaries
-           FROM news_summaries
+            jsonb_build_object('beginner', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'beginner'::public.complexity_level)), 'intermediate', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'intermediate'::public.complexity_level)), 'expert', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'expert'::public.complexity_level)), 'undefined', jsonb_agg(json_build_object('id', news_summaries.id, 'summary', news_summaries.summary, 'version', news_summaries.version)) FILTER (WHERE (news_summaries.complexity_level = 'undefined'::public.complexity_level))) AS summaries
+           FROM public.news_summaries
           WHERE (news_summaries.is_current = true)
           GROUP BY news_summaries.news_id
         )
@@ -419,16 +419,16 @@ create materialized view "public"."news_details" as  WITH vote_counts AS (
     COALESCE(v.vote_count, (0)::bigint) AS vote_count,
     COALESCE(b.bookmark_count, (0)::bigint) AS bookmark_count,
     ( SELECT jsonb_agg(jsonb_build_object('name', cat.name, 'isPrimary', cc.is_primary)) AS jsonb_agg
-           FROM (content_categories cc
-             JOIN categories cat ON ((cat.id = cc.category_id)))
+           FROM (public.content_categories cc
+             JOIN public.categories cat ON ((cat.id = cc.category_id)))
           WHERE (cc.content_id = c.id)) AS categories,
     ( SELECT jsonb_agg(t.name) AS jsonb_agg
-           FROM (content_tags ct
-             JOIN tags t ON ((t.id = ct.tag_id)))
+           FROM (public.content_tags ct
+             JOIN public.tags t ON ((t.id = ct.tag_id)))
           WHERE (ct.content_id = c.id)) AS tags
-   FROM (((((contents c
-     JOIN news n ON ((n.id = c.id)))
-     LEFT JOIN companies comp ON ((comp.id = n.company_id)))
+   FROM (((((public.contents c
+     JOIN public.news n ON ((n.id = c.id)))
+     LEFT JOIN public.companies comp ON ((comp.id = n.company_id)))
      LEFT JOIN summary_levels s ON ((s.news_id = n.id)))
      LEFT JOIN vote_counts v ON ((v.content_id = c.id)))
      LEFT JOIN bookmark_counts b ON ((b.content_id = c.id)));

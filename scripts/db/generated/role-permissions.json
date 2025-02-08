@@ -5,11 +5,11 @@
       "tables": [
         "categories",
         "cities",
+        "countries",
+        "tags",
         "content_categories",
         "content_tags",
-        "countries",
-        "metric_definitions",
-        "tags"
+        "metric_definitions"
       ],
       "default_permissions": [
         "select"
@@ -20,16 +20,16 @@
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
         "companies",
-        "content_sources",
-        "content_statuses",
-        "contents",
-        "feed_sources",
-        "news",
-        "news_summaries",
         "news_tags",
-        "newsletters",
         "research",
-        "research_embeddings"
+        "news",
+        "research_embeddings",
+        "content_sources",
+        "contents",
+        "content_statuses",
+        "newsletters",
+        "feed_sources",
+        "news_summaries"
       ],
       "default_permissions": [
         "select"
@@ -39,16 +39,16 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
-        "bookmark_folders",
+        "feedbacks",
         "bookmarks",
         "comments",
-        "feature_requests",
-        "feature_votes",
-        "feed_categories",
-        "feedbacks",
-        "feeds",
         "follows",
-        "votes"
+        "feed_categories",
+        "feeds",
+        "votes",
+        "bookmark_folders",
+        "feature_requests",
+        "feature_votes"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -58,14 +58,14 @@
       "description": "Sensitive personal user information and account data. These tables contain private user information and require strict access controls.",
       "tables": [
         "addresses",
-        "company_contacts",
         "company_employees",
-        "company_extras",
-        "company_metrics",
         "contacts",
         "searches",
-        "user_metrics",
-        "user_profiles"
+        "user_profiles",
+        "company_contacts",
+        "company_extras",
+        "company_metrics",
+        "user_metrics"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -74,23 +74,23 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
-        "business_domains",
-        "categorized_urls",
+        "responses",
+        "social_media",
+        "embedding_reviews",
+        "spider_metrics",
+        "content_source_visits",
         "ad_daily_metrics",
         "ad_packages",
         "ad_variants",
         "ads",
         "blocked_ips",
-        "circuit_breaker_states",
-        "content_source_visits",
-        "embedding_reviews",
         "referrals",
         "referrer_blocks",
-        "responses",
         "scoring_weights",
-        "social_media",
-        "spider_metrics",
-        "workflows"
+        "circuit_breaker_states",
+        "workflows",
+        "business_domains",
+        "categorized_urls"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -98,19 +98,19 @@
     "security_tables": {
       "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
       "tables": [
-        "blacklisted_domains",
+        "plan_permissions",
+        "role_permissions",
         "blacklisted_urls",
+        "blacklisted_domains",
         "customer_payments",
         "customer_processed_webhooks",
         "customer_refunds",
         "customer_subscription_plans",
         "customer_subscriptions",
-        "error_logs",
         "payment_providers",
-        "plan_permissions",
         "role_hierarchy",
-        "role_permissions",
-        "role_permissions_materialized"
+        "role_permissions_materialized",
+        "error_logs"
       ],
       "default_permissions": [],
       "audit_level": "critical"
