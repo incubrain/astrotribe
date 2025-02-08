@@ -7,12 +7,16 @@ ENV NX_SKIP_NX_CACHE=true
 ENV NX_BATCH_MODE=true
 ENV NX_SKIP_LOG_GROUPING=true
 
-RUN corepack enable
+# Activate PNPM
+RUN corepack prepare pnpm@8.7.6 --activate
+RUN npm install -g pnpm
 
 WORKDIR /app
 
 # Copy workspace configuration files
 COPY pnpm-*.yaml package.json .npmrc nx.json .nxignore tsconfig.json ./
+
+# Copy shared libraries
 COPY shared ./shared
 COPY libs ./libs/
 COPY apps/cms ./apps/cms
@@ -22,12 +26,15 @@ ARG SUPABASE_STORAGE_URL
 ENV SUPABASE_STORAGE_URL=${SUPABASE_STORAGE_URL}
 
 # Install dependencies for CMS workspace only
-RUN pnpm install --filter @astronera/cms...
+RUN pnpm install --filter @astronera/cms
 
-# THEN - copy source files
+# Explicitly install `strapi-supabase`
+RUN pnpm install --filter @astronera/strapi-supabase
+
+# Copy source files
 COPY . .
 
-# Install dependencies for this workspace only
+# Build the Strapi provider & CMS
 RUN pnpx nx reset
 RUN pnpx nx build strapi-supabase --skip-nx-cache
 RUN pnpx nx build @astronera/cms --skip-nx-cache
@@ -35,14 +42,11 @@ RUN pnpx nx build @astronera/cms --skip-nx-cache
 # Update working directory to the CMS app
 WORKDIR /app/apps/cms
 
-# Install Strapi CLI globally to ensure it's available
+# Ensure Strapi CLI is installed
 RUN pnpm install @strapi/strapi
 
-# Create a startup script to handle migrations
+# Create a startup script
 RUN echo '#!/bin/bash\n\
-echo "Forcing database migrations..."\n\
-NODE_ENV=production pnpm strapi database:delete-soft-migrations || true\n\
-NODE_ENV=production pnpm strapi database:migrate-force || true\n\
 NODE_ENV=production pnpm strapi start\n\
 ' > ./start.sh
 
@@ -50,5 +54,5 @@ RUN chmod +x ./start.sh
 
 EXPOSE 1337
 
-# Use the startup script instead of direct start
+# Use the startup script
 CMD ["./start.sh"]
