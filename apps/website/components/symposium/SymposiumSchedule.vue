@@ -36,7 +36,7 @@ const schedule = [
         online: true,
         icon: 'mdi:microphone',
         topic: 'Welcome Address',
-        speaker: 'Shweta Kulkarni',
+        speaker: 'Ruchira Huchgol',
         time: { start: '11:00', end: '11:05' },
         class: 'bg-primary-950',
       },
@@ -53,7 +53,7 @@ const schedule = [
         icon: 'mdi:microphone',
         topic:
           'Impacts of light pollution and efforts towards Dark Sky Preservation (Your work across Europe, middle east and  beyond',
-        speaker: 'Dana Oakley',
+        speaker: 'Dan Oakley',
         time: { start: '11:10', end: '11:30' },
       },
       {

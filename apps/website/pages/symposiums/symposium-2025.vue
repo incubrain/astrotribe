@@ -59,30 +59,27 @@ const toc = [
                 :key="item.id"
                 class="py-1"
               >
-                <PrimeButton
-                  :class="{
-                    outline: item.text == tab,
-                  }"
+                <NuxtLink
+                  :to="`#${item.text}`"
                   class="text-lg font-[Oswald] p-button-text"
-                  @click="selectItem(item.text)"
                 >
                   <h4>
                     {{ item.text }}
                   </h4>
-                </PrimeButton>
+                </NuxtLink>
               </li>
             </ul>
           </PrimeAccordionContent>
         </PrimeAccordionPanel>
       </PrimeAccordion>
       <div class="wrapper flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
-        <SymposiumAbout />
+        <SymposiumAbout id="About" />
         <hr />
-        <SymposiumVenue />
+        <SymposiumVenue id="Venue" />
         <hr />
-        <SymposiumSchedule />
+        <SymposiumSchedule id="Schedule" />
         <hr />
-        <SymposiumSpeakers />
+        <SymposiumSpeakers id="Speakers" />
       </div>
     </div>
   </div>
