@@ -22,9 +22,10 @@ export async function runSeeders() {
   const config = {
     batchSize: 100,
     counts: {
-      contents: 1015,
+      contents: 1115,
       companies: 400,
       news: 400,
+      jobs: 100,
       research: 200,
       socialMedia: 100,
       categories: 20,
@@ -185,6 +186,10 @@ export async function runSeeders() {
 
     await checkAndSeed(client, 'feature_votes', () =>
       seed.seedFeatureVotes(client, userIds, features),
+    )
+
+    await checkAndSeed(client, 'jobs', () =>
+      seed.seedJobs(client, companyIds, contentSourceIds, config.counts.jobs),
     )
 
     // 8. Seed feedback and follows
