@@ -17,6 +17,8 @@ import {
   generateStackTrace,
 } from './errors'
 
+export { seedJobs } from './jobs.seed'
+
 // Add to your seed-helpers.ts or create a new helpers file
 const formatTimeWithZone = (date: Date) => {
   return (
@@ -115,6 +117,7 @@ type ContentStatus =
 type ContentType =
   | 'news'
   | 'events'
+  | 'jobs'
   | 'research'
   | 'companies'
   | 'contact'
@@ -216,7 +219,7 @@ export async function seedContents(pool: Pool, count: number) {
     contents.push({
       id: generateUUID(),
       url,
-      content_type: faker.helpers.arrayElement(['news', 'research', 'newsletters']),
+      content_type: faker.helpers.arrayElement(['news', 'research', 'newsletters', 'jobs']),
       title: faker.company.name(),
       rss_url: rssUrl,
       created_at: date,
@@ -308,7 +311,7 @@ export async function seedComments(
       content: faker.lorem.paragraph(),
       user_id: faker.helpers.arrayElement(userIds),
       content_id: contentId,
-      content_type: faker.helpers.arrayElement(['news', 'research']),
+      content_type: faker.helpers.arrayElement(['news', 'research', 'jobs']),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     })),
@@ -338,7 +341,7 @@ export async function seedVotes(pool: Pool, contentIds: string[], userIds: strin
     const shuffledUsers = faker.helpers.shuffle([...userIds]).slice(0, numberOfVoters)
 
     for (const userId of shuffledUsers) {
-      const contentType = faker.helpers.arrayElement(['news', 'research'])
+      const contentType = faker.helpers.arrayElement(['news', 'research', 'jobs'])
 
       // Create a unique key for this combination
       const combinationKey = `${contentType}-${contentId}-${userId}`
@@ -369,6 +372,7 @@ export async function seedVotes(pool: Pool, contentIds: string[], userIds: strin
 export async function seedContentSources(pool: Pool, companyIds: string[]) {
   const contentTypes: ContentType[] = [
     'news',
+    'jobs',
     'events',
     'research',
     'contact',
@@ -528,7 +532,13 @@ export async function seedFeedback(pool: Pool, userIds: string[]): Promise<any> 
     message: faker.lorem.paragraph(),
     feedback_type: randomEnum(feedbackTypes),
     feedback_status: randomEnum(feedbackStatuses),
-    page_identifier: faker.helpers.arrayElement(['/dashboard', '/companies', '/news', '/research']),
+    page_identifier: faker.helpers.arrayElement([
+      '/dashboard',
+      '/companies',
+      '/news',
+      '/research',
+      '/jobs',
+    ]),
     device_info: JSON.stringify({
       browser: faker.helpers.arrayElement(['Chrome', 'Firefox', 'Safari']),
       os: faker.helpers.arrayElement(['Windows', 'MacOS', 'Linux']),
