@@ -5,7 +5,7 @@ const venues = [
     main: 'Zoom (For invites only)',
     button: 'Zoom',
     website: 'https://www.zoom.com/',
-    about: 'The meeting ID and password will be shared soon',
+    about: 'The meeting ID and password will be shared <b>with the invitees</b>',
     color: 'blue',
   },
   {
@@ -13,7 +13,7 @@ const venues = [
     about: 'The event will be broadcasted live on our YouTube channel',
     main: 'YouTube',
     button: 'YouTube',
-    website: 'https://www.youtube.com/',
+    website: 'https://www.youtube.com/@AstronEra',
     color: 'red',
   },
 ]
@@ -31,7 +31,7 @@ const venues = [
           class="row-start-1"
           :title="venue"
         />
-        <p>{{ venue.about }}</p>
+        <p v-html="venue.about" />
         <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
           <PrimeButton
             class="gap-2 border-white"
