@@ -51,8 +51,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic:
-          'Impacts of light pollution and efforts towards Dark Sky Preservation (Your work across Europe, middle east and  beyond',
+        topic: 'Impacts of light pollution and efforts towards Dark Sky Policy',
         speaker: 'Dan Oakley',
         time: { start: '11:10', end: '11:30' },
       },

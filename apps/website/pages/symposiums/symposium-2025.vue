@@ -29,7 +29,7 @@ const toc = [
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <CommonHero
       :img="{
         src: 'images/milkyway-background.jpg',
@@ -37,7 +37,7 @@ const toc = [
       }"
       :title="{
         centered: false,
-        main: `IDSPS Symposium: India's Dark Sky Preservation & Sustainability`,
+        main: `IDSPS Symposium: India's Dark Sky Policy & Sustainability`,
         subtitle: '1st March 2025 | 11.00am -12.30 pm IST',
       }"
       position="object-top"
@@ -82,5 +82,6 @@ const toc = [
         <SymposiumSpeakers id="Speakers" />
       </div>
     </div>
+    <Mascot />
   </div>
 </template>
