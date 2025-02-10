@@ -56,7 +56,7 @@ defineProps({
           {{ speaker.professional_title }}
         </p>
         <p class="h-auto text-sm">
-          {{ isOpen ? speaker.bio : speaker.bio.slice(0, 240) }}...
+          {{ isOpen ? speaker.bio : speaker.bio.slice(0, 240) }}
           <NuxtLink v-ripple
             ><PrimeButton
               outlined
