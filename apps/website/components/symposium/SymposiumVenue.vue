@@ -2,15 +2,16 @@
 const venues = [
   {
     icon: 'mdi:video-box',
-    main: 'Zoom (For invites only)',
+    main: 'Zoom*',
     button: 'Zoom',
     website: 'https://www.zoom.com/',
-    about: 'The meeting ID and password will be shared <b>with the invitees</b>',
+    about:
+      '<b><u>*For Invitees Only</u></b><br/>The meeting ID and password will be shared <b>with the invitees</b>',
     color: 'blue',
   },
   {
     icon: 'mdi:youtube',
-    about: 'The event will be broadcasted live on our YouTube channel',
+    about: 'The event will be broadcasted live on our website as well as on our YouTube channel',
     main: 'YouTube',
     button: 'YouTube',
     website: 'https://www.youtube.com/@AstronEra',
@@ -32,7 +33,7 @@ const venues = [
           :title="venue"
         />
         <p v-html="venue.about" />
-        <div class="row-start-2 h-full w-full space-y-4 text-left leading-6">
+        <div class="mt-2 row-start-2 h-full w-full space-y-4 text-left leading-6">
           <PrimeButton
             class="gap-2 border-white"
             as="a"

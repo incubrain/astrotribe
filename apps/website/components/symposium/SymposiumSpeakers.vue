@@ -3,7 +3,7 @@ const speakers = [
   {
     given_name: 'Nalayini',
     surname: 'Bitro-Davis',
-    professional_title: 'DarkSky Advocate and astronomer',
+    professional_title: 'President, Dark Sky International',
     bio: `Nalayini was instrumental in successfully establishing Aotea / Great Barrier Island as a certified Dark Sky Sanctuary.
     She also co-leads the promotion of New Zealand’s journey to become a dark sky nation and has spoken at Dark Sky conferences and workshops around the world.
     She is currently the immediate past president and Fellow of the Royal Astronomical Society of New Zealand (RASNZ) and is a co-founder of the Aotearoa Astrotourism Academy, a non-profit that promotes dark skies and the education of astronomy (integrating indigenous astronomy) through the provision of nationwide immersion training courses for those seeking a solid foundation of knowledge and practical skills to pursue astronomy and astrotourism. `,
@@ -14,7 +14,7 @@ const speakers = [
   {
     given_name: 'Dan',
     surname: 'Oakley',
-    professional_title: 'Chair, Lead ranger, South Downs National Park',
+    professional_title: 'Director, Darkscape Consulting',
     bio: `Dan Oakley previously worked at BAE-Systems on a number of areas including Torpedo analysis, systems engineering, and radiation safety.
     After a rather liberating experience at the Glastonbury Festival, he changed careers and now works for the South Downs National Park Authority and has done for the last 15 years.
     Starting from a conservation volunteer, he is lead ranger for the Wealden Heaths and the dark skies officer for the park. At the Park, he was instrumental in developing and submitting Moore’s’ Reserve Dark Sky Places application in May 2016.`,
@@ -25,7 +25,7 @@ const speakers = [
   {
     given_name: 'Yana',
     surname: 'Yakushina',
-    professional_title: 'Dark Sky Protection Educator',
+    professional_title: 'Policy Analyst and Advocate',
     bio: `Yana is  an experienced legal researcher, policy analyst, and advocate for the protection of the nocturnal environment and the advancement of space law.
     My expertise lies in conducting comprehensive analyses of legal and policy instruments, interpreting obtained data, and delivering clear, valuable conclusions.
     Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project I am working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
@@ -37,7 +37,7 @@ const speakers = [
   {
     given_name: 'Shweta',
     surname: 'Kulkarni',
-    professional_title: 'Founder/Director of AstronEra',
+    professional_title: 'Dark Sky Defender Asia',
     bio: 'Astropreneur Shweta Kulkarni, listed among top 100 women entrepreneurs, spearheads Astronera, marrying business acumen with astronomy for innovative solutions. As a Fellow of the Royal Astronomical Society of England, her venture reflects a novel approach to integrating astronomy with enterprise.',
     abstract: {
       title: 'Skill Training in Astronomy for Income Generation',
