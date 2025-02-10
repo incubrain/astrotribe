@@ -1,6 +1,40 @@
 <script setup lang="ts">
 const speakers = [
   {
+    given_name: 'Nalayini',
+    surname: 'Bitro-Davis',
+    professional_title: 'DarkSky Advocate and astronomer',
+    bio: `Nalayini was instrumental in successfully establishing Aotea / Great Barrier Island as a certified Dark Sky Sanctuary.
+    She also co-leads the promotion of New Zealand’s journey to become a dark sky nation and has spoken at Dark Sky conferences and workshops around the world.
+    She is currently the immediate past president and Fellow of the Royal Astronomical Society of New Zealand (RASNZ) and is a co-founder of the Aotearoa Astrotourism Academy, a non-profit that promotes dark skies and the education of astronomy (integrating indigenous astronomy) through the provision of nationwide immersion training courses for those seeking a solid foundation of knowledge and practical skills to pursue astronomy and astrotourism. `,
+    avatar: 'nalayini_bitro_davis',
+    featured: true,
+    inPerson: true,
+  },
+  {
+    given_name: 'Dan',
+    surname: 'Oakley',
+    professional_title: 'Chair, Lead ranger, South Downs National Park',
+    bio: `Dan Oakley previously worked at BAE-Systems on a number of areas including Torpedo analysis, systems engineering, and radiation safety.
+    After a rather liberating experience at the Glastonbury Festival, he changed careers and now works for the South Downs National Park Authority and has done for the last 15 years.
+    Starting from a conservation volunteer, he is lead ranger for the Wealden Heaths and the dark skies officer for the park. At the Park, he was instrumental in developing and submitting Moore’s’ Reserve Dark Sky Places application in May 2016.`,
+    avatar: 'dan_oakley',
+    featured: true,
+    inPerson: true,
+  },
+  {
+    given_name: 'Yana',
+    surname: 'Yakushina',
+    professional_title: 'Dark Sky Protection Educator',
+    bio: `Yana is  an experienced legal researcher, policy analyst, and advocate for the protection of the nocturnal environment and the advancement of space law.
+    My expertise lies in conducting comprehensive analyses of legal and policy instruments, interpreting obtained data, and delivering clear, valuable conclusions.
+    Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project I am working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
+    As a scientific coordinator of the PLAN-B project, I lead the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
+    avatar: 'yana_yakushina',
+    featured: true,
+    inPerson: true,
+  },
+  {
     given_name: 'Shweta',
     surname: 'Kulkarni',
     professional_title: 'Founder/Director of AstronEra',
@@ -34,40 +68,6 @@ const speakers = [
         with astronomical knowledge and skills for economic sustainability in the region.`,
     },
     avatar: 'shweta-kulkarni',
-    featured: true,
-    inPerson: true,
-  },
-  {
-    given_name: 'Dan',
-    surname: 'Oakley',
-    professional_title: 'Chair, Lead ranger, South Downs National Park',
-    bio: `Dan Oakley previously worked at BAE-Systems on a number of areas including Torpedo analysis, systems engineering, and radiation safety.
-    After a rather liberating experience at the Glastonbury Festival, he changed careers and now works for the South Downs National Park Authority and has done for the last 15 years.
-    Starting from a conservation volunteer, he is lead ranger for the Wealden Heaths and the dark skies officer for the park. At the Park, he was instrumental in developing and submitting Moore’s’ Reserve Dark Sky Places application in May 2016.`,
-    avatar: 'dan_oakley',
-    featured: true,
-    inPerson: true,
-  },
-  {
-    given_name: 'Yana',
-    surname: 'Yakushina',
-    professional_title: 'Dark Sky Protection Educator',
-    bio: `Yana is  an experienced legal researcher, policy analyst, and advocate for the protection of the nocturnal environment and the advancement of space law.
-    My expertise lies in conducting comprehensive analyses of legal and policy instruments, interpreting obtained data, and delivering clear, valuable conclusions.
-    Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project I am working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
-    As a scientific coordinator of the PLAN-B project, I lead the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
-    avatar: 'yana_yakushina',
-    featured: true,
-    inPerson: true,
-  },
-  {
-    given_name: 'Nalayini',
-    surname: 'Bitro-Davis',
-    professional_title: 'DarkSky Advocate and astronomer',
-    bio: `Nalayini was instrumental in successfully establishing Aotea / Great Barrier Island as a certified Dark Sky Sanctuary.
-    She also co-leads the promotion of New Zealand’s journey to become a dark sky nation and has spoken at Dark Sky conferences and workshops around the world.
-    She is currently the immediate past president and Fellow of the Royal Astronomical Society of New Zealand (RASNZ) and is a co-founder of the Aotearoa Astrotourism Academy, a non-profit that promotes dark skies and the education of astronomy (integrating indigenous astronomy) through the provision of nationwide immersion training courses for those seeking a solid foundation of knowledge and practical skills to pursue astronomy and astrotourism. `,
-    avatar: 'nalayini_bitro_davis',
     featured: true,
     inPerson: true,
   },

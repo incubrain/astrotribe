@@ -43,7 +43,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic: 'Introduction - Dark Sky Defender 2024',
+        topic: 'Introduction',
         speaker: 'Shweta Kulkarni',
         time: { start: '11:05', end: '11:10' },
         class: 'bg-primary-950',
