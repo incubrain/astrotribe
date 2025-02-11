@@ -74,6 +74,7 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
+        "jobs",
         "responses",
         "social_media",
         "embedding_reviews",
