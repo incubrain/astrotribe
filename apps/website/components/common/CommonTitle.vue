@@ -19,7 +19,10 @@
     >
       {{ title.subtitle }}
     </h5>
-    <div class="space-y-6">
+    <div
+      v-if="slots.default"
+      class="space-y-6"
+    >
       <slot />
     </div>
   </div>
@@ -46,6 +49,8 @@ defineProps({
     default: false,
   },
 })
+
+const slots = useSlots()
 </script>
 
 <style scoped></style>

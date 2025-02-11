@@ -1,4 +1,4 @@
-<template v-if="tab == 'About'">
+<template>
   <div class="flex flex-col items-start gap-6 xl:gap-12">
     <CommonTitle
       class="col-start-1 full-width"
