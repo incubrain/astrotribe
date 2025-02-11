@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const symposiums = [
   {
-    title: 'IDSPS Symposium: India’s Dark Sky Preservation & Sustainability',
-    description: `AstronEra proudly presents India's Dark Sky Preservation & Sustainability
+    title: 'IDSPS Symposium: India’s Dark Sky Policy & Sustainability',
+    description: `AstronEra proudly presents India's Dark Sky Policy & Sustainability
                 Symposium, a platform dedicated to tackling the critical issue of light pollution.
                 Excessive artificial lighting disrupts ecosystems, harms human health, wastes
                 energy, and diminishes cultural and astronomical heritage. This event aims to bring

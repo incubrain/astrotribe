@@ -1,13 +1,13 @@
-<template v-if="tab == 'About'">
+<template>
   <div class="flex flex-col items-start gap-6 xl:gap-12">
     <CommonTitle
       class="col-start-1 full-width"
       :title="{ main: 'About the Symposium' }"
     >
       <p
-        >AstronEra proudly presents India's Dark Sky Preservation & Sustainability Symposium, a
-        platform dedicated to tackling the critical issue of light pollution. Excessive artificial
-        lighting disrupts ecosystems, harms human health, wastes energy, and diminishes cultural and
+        >AstronEra proudly presents India's Dark Sky Policy & Sustainability Symposium, a platform
+        dedicated to tackling the critical issue of light pollution. Excessive artificial lighting
+        disrupts ecosystems, harms human health, wastes energy, and diminishes cultural and
         astronomical heritage. This event aims to bring together policymakers, lighting companies,
         and global experts to inspire actionable solutions for India, starting with Maharashtra.
       </p>
@@ -20,7 +20,7 @@
         <li>Understand the ecological, health, and cultural impacts of light pollution.</li>
         <li>Learn from global experts on successful dark sky conservation initiatives.</li>
         <li>Collaborate with policymakers and industries to create sustainable solutions.</li>
-        <li>Be a part of drafting policies and frameworks for dark sky preservation in India.</li>
+        <li>Be a part of drafting policies and frameworks for dark sky policy in India.</li>
       </ul>
       <IBImage
         :img="{

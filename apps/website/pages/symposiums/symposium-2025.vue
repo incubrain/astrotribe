@@ -29,7 +29,7 @@ const toc = [
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <CommonHero
       :img="{
         src: 'images/milkyway-background.jpg',
@@ -37,42 +37,57 @@ const toc = [
       }"
       :title="{
         centered: false,
-        main: `IDSPS Symposium: India's Dark Sky Preservation & Sustainability`,
+        main: `IDSPS Symposium: India's Dark Sky Policy & Sustainability`,
         subtitle: '1st March 2025 | 11.00am -12.30 pm IST',
       }"
       position="object-top"
     >
     </CommonHero>
-    <div class="flex">
-      <PrimeAccordion
-        value="0"
-        class="z-10 py-6 px-6 hidden md:block xl:gap-12 xl:py-12"
-      >
-        <PrimeAccordionPanel value="0">
-          <PrimeAccordionHeader class="flex gap-4 bg-primary-800 px-4 py-2 rounded-md items-center">
-            <h3 class="text-lg font-semibold"> Table of Contents </h3>
-          </PrimeAccordionHeader>
-          <PrimeAccordionContent>
-            <ul>
-              <li
-                v-for="item in toc"
-                :key="item.id"
-                class="py-1"
-              >
-                <NuxtLink
-                  :to="`#${item.text}`"
-                  class="text-lg font-[Oswald] p-button-text"
+    <div class="flex min-h-screen">
+      <div class="hidden md:block w-1/4 h-full sticky top-0">
+        <PrimeAccordion
+          value="0"
+          class="z-10 py-6 px-6 xl:gap-12 xl:py-12"
+        >
+          <PrimeAccordionPanel value="0">
+            <PrimeAccordionHeader
+              class="flex gap-4 bg-primary-800 px-4 py-2 rounded-md items-center"
+            >
+              <h3 class="text-lg font-semibold"> Table of Contents </h3>
+            </PrimeAccordionHeader>
+            <PrimeAccordionContent>
+              <ul>
+                <li
+                  v-for="item in toc"
+                  :key="item.id"
+                  class="py-1"
                 >
-                  <h4>
-                    {{ item.text }}
-                  </h4>
-                </NuxtLink>
-              </li>
-            </ul>
-          </PrimeAccordionContent>
-        </PrimeAccordionPanel>
-      </PrimeAccordion>
+                  <NuxtLink
+                    :to="`#${item.text}`"
+                    class="text-lg font-[Oswald] p-button-text"
+                  >
+                    <h4>
+                      {{ item.text }}
+                    </h4>
+                  </NuxtLink>
+                </li>
+              </ul>
+            </PrimeAccordionContent>
+          </PrimeAccordionPanel>
+        </PrimeAccordion>
+      </div>
       <div class="wrapper flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
+        <div class="w-full aspect-video">
+          <iframe
+            class="w-full h-full"
+            src="https://www.youtube.com/embed/1ycX0A1jE7Q"
+            title="IDSPS Symposium: India's Dark Sky Policy & Sustainability"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        </div>
+        <hr />
         <SymposiumAbout id="About" />
         <hr />
         <SymposiumVenue id="Venue" />
@@ -82,5 +97,6 @@ const toc = [
         <SymposiumSpeakers id="Speakers" />
       </div>
     </div>
+    <Mascot />
   </div>
 </template>
