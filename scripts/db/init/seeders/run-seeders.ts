@@ -189,7 +189,7 @@ export async function runSeeders() {
     )
 
     await checkAndSeed(client, 'jobs', () =>
-      seed.seedJobs(client, companyIds, contentSourceIds, config.counts.jobs),
+      seed.seedJobs(client, contents, companyIds, contentSourceIds, config.counts.jobs),
     )
 
     // 8. Seed feedback and follows
