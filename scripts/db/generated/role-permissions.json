@@ -19,6 +19,7 @@
     "public_content_tables": {
       "description": "Publicly available content that forms the core of the platform's knowledge base. Readable by all, but creation and modification restricted to authorized users.",
       "tables": [
+        "feed_sources",
         "companies",
         "news_tags",
         "research",
@@ -28,7 +29,6 @@
         "contents",
         "content_statuses",
         "newsletters",
-        "feed_sources",
         "news_summaries"
       ],
       "default_permissions": [
@@ -39,16 +39,16 @@
     "user_content_tables": {
       "description": "User-generated content and personalization features. These tables contain data created by users and require user-specific access controls.",
       "tables": [
+        "feed_categories",
+        "votes",
+        "feature_votes",
         "feedbacks",
         "bookmarks",
         "comments",
         "follows",
-        "feed_categories",
         "feeds",
-        "votes",
         "bookmark_folders",
-        "feature_requests",
-        "feature_votes"
+        "feature_requests"
       ],
       "default_permissions": [],
       "requires_user_check": true,
@@ -74,24 +74,24 @@
     "operational_tables": {
       "description": "Tables used for platform operations, monitoring, and content management. Contains data for running and maintaining the platform.",
       "tables": [
-        "jobs",
+        "ads",
         "responses",
         "social_media",
         "embedding_reviews",
         "spider_metrics",
         "content_source_visits",
         "ad_daily_metrics",
-        "ad_packages",
         "ad_variants",
-        "ads",
-        "blocked_ips",
+        "ad_packages",
         "referrals",
         "referrer_blocks",
+        "blocked_ips",
         "scoring_weights",
         "circuit_breaker_states",
         "workflows",
         "business_domains",
-        "categorized_urls"
+        "categorized_urls",
+        "jobs"
       ],
       "default_permissions": [],
       "audit_level": "high"
@@ -99,6 +99,7 @@
     "security_tables": {
       "description": "Critical system tables handling permissions, payments, and security. These tables contain highly sensitive data and require maximum security.",
       "tables": [
+        "error_logs",
         "plan_permissions",
         "role_permissions",
         "blacklisted_urls",
@@ -110,8 +111,7 @@
         "customer_subscriptions",
         "payment_providers",
         "role_hierarchy",
-        "role_permissions_materialized",
-        "error_logs"
+        "role_permissions_materialized"
       ],
       "default_permissions": [],
       "audit_level": "critical"

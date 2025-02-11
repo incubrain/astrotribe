@@ -76,13 +76,21 @@ function generateSkills(jobTitle: string) {
 
 export async function seedJobs(
   pool: Pool,
+  contents: { id: string }[],
   companyIds: string[],
   contentSourceIds: number[],
   count = 50,
 ) {
   const usedUrls = new Set<string>()
 
-  const jobs = Array.from({ length: count }, () => {
+  if (contents.length < count) {
+    throw new Error(`Not enough contents to create ${count} jobs. Found: ${contents.length}`)
+  }
+
+  // Ensure we pick unique contents_id values
+  const jobContents = faker.helpers.shuffle(contents).slice(0, count)
+
+  const jobs = jobContents.map((content) => {
     const title = faker.person.jobTitle()
     const url = generateUniqueUrl(usedUrls, 'https://careers.', '.com/jobs/')
     const publishedAt = faker.date.past()
@@ -90,7 +98,7 @@ export async function seedJobs(
 
     return {
       id: crypto.randomUUID(),
-      contents_id: crypto.randomUUID(),
+      contents_id: content.id, // ✅ Ensures each job has a unique contents_id
       title,
       company_id: faker.helpers.arrayElement(companyIds),
       location: faker.location.city() + ', ' + faker.location.country(),
@@ -122,9 +130,9 @@ export async function seedJobs(
   // Create corresponding content statuses
   const contentStatuses = jobs.map((job) => ({
     content_id: job.contents_id,
-    status: 'published',
+    content_status: 'published',
     created_at: new Date(),
-    updated_at: new Date(),
+    notes: 'Job was published',
   }))
 
   await bulkInsert(pool, 'content_statuses', contentStatuses)
