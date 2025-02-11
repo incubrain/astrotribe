@@ -43,7 +43,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic: 'Introduction - Dark Sky Defender 2024',
+        topic: 'Introduction',
         speaker: 'Shweta Kulkarni',
         time: { start: '11:05', end: '11:10' },
         class: 'bg-primary-950',
@@ -51,8 +51,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic:
-          'Impacts of light pollution and efforts towards Dark Sky Preservation (Your work across Europe, middle east and  beyond',
+        topic: 'Impacts of light pollution and efforts towards Dark Sky Policy',
         speaker: 'Dan Oakley',
         time: { start: '11:10', end: '11:30' },
       },
