@@ -4,27 +4,38 @@ const toc = [
     id: 1,
     depth: 1,
     text: 'About',
+    link: 'about',
   },
 
   {
     id: 3,
     depth: 1,
     text: 'Venue',
+    link: 'venue',
   },
   {
     id: 5,
     depth: 1,
     text: 'Schedule',
+    link: 'schedule',
   },
   {
     id: 6,
     depth: 1,
     text: 'Speakers',
+    link: 'speakers',
   },
   {
     id: 7,
     depth: 1,
     text: 'Brochure',
+    link: 'brochure',
+  },
+  {
+    id: 8,
+    depth: 1,
+    text: 'Watch Live',
+    link: 'watchLive',
   },
 ]
 
@@ -68,7 +79,7 @@ const toc = [
                   class="py-1"
                 >
                   <NuxtLink
-                    :to="`#${item.text}`"
+                    :to="`#${item.link}`"
                     class="text-lg font-[Oswald] p-button-text"
                   >
                     <h4>
@@ -82,7 +93,20 @@ const toc = [
         </PrimeAccordion>
       </div>
       <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
-        <div class="w-full aspect-video">
+        <SymposiumAbout id="about" />
+        <hr />
+        <SymposiumVenue id="venue" />
+        <hr />
+        <SymposiumSchedule id="schedule" />
+        <hr />
+        <SymposiumSpeakers id="speakers" />
+        <hr />
+        <SymposiumBrochure id="brochure" />
+        <hr />
+        <div
+          id="watchLive"
+          class="w-full aspect-video"
+        >
           <iframe
             class="w-full h-full"
             src="https://www.youtube.com/embed/1ycX0A1jE7Q"
@@ -92,16 +116,6 @@ const toc = [
             allowfullscreen
           />
         </div>
-        <hr />
-        <SymposiumAbout id="About" />
-        <hr />
-        <SymposiumVenue id="Venue" />
-        <hr />
-        <SymposiumSchedule id="Schedule" />
-        <hr />
-        <SymposiumSpeakers id="Speakers" />
-        <hr />
-        <SymposiumBrochure id="Brochure" />
       </div>
     </div>
     <Mascot />
