@@ -311,7 +311,7 @@ export default defineNuxtConfig({
         ],
         'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com'],
       },
-      xFrameOptions: 'DENY', // Prevents clickjacking
+      xFrameOptions: 'SAMEORIGIN', // Prevents clickjacking
       crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
       crossOriginOpenerPolicy: 'same-origin',
       crossOriginEmbedderPolicy: 'unsafe-none',
