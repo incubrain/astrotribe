@@ -26,10 +26,10 @@ const speakers = [
     given_name: 'Yana',
     surname: 'Yakushina',
     professional_title: 'Policy Analyst and Advocate',
-    bio: `Yana is  an experienced legal researcher, policy analyst, and advocate for the protection of the nocturnal environment and the advancement of space law.
-    My expertise lies in conducting comprehensive analyses of legal and policy instruments, interpreting obtained data, and delivering clear, valuable conclusions.
-    Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project I am working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
-    As a scientific coordinator of the PLAN-B project, I lead the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
+    bio: `Yana is an experienced legal researcher, policy analyst, and advocate for the protection of the nocturnal environment and the advancement of space law.
+    Her expertise lies in conducting comprehensive analyses of legal and policy instruments, interpreting obtained data, and delivering clear, valuable conclusions.
+    Currently pursuing a Ph.D. at the University of Ghent (Belgium) as part of the Horizon EU PLAN-B project she is  working on the development of the legal and policy framework for recognising light pollution as an environmental concern.
+    As a scientific coordinator of the PLAN-B project, she leads the project's efforts towards a better understanding of light and noise pollution impacts and the development of the most effective solutions for their mitigation.`,
     avatar: 'yana_yakushina',
     featured: true,
     inPerson: true,

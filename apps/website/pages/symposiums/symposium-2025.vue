@@ -21,6 +21,11 @@ const toc = [
     depth: 1,
     text: 'Speakers',
   },
+  {
+    id: 7,
+    depth: 1,
+    text: 'Brochure',
+  },
 ]
 
 // !todo: low priority - reduce the amount of text at the beginning of the page
@@ -76,7 +81,7 @@ const toc = [
           </PrimeAccordionPanel>
         </PrimeAccordion>
       </div>
-      <div class="wrapper flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
+      <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
         <div class="w-full aspect-video">
           <iframe
             class="w-full h-full"
@@ -95,6 +100,8 @@ const toc = [
         <SymposiumSchedule id="Schedule" />
         <hr />
         <SymposiumSpeakers id="Speakers" />
+        <hr />
+        <SymposiumBrochure id="Brochure" />
       </div>
     </div>
     <Mascot />
