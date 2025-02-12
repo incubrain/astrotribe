@@ -216,6 +216,7 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: {
         'worker-src': ["'self'", 'blob:'],
+        'frame-ancestors': "'self' https://astronera.org", // Allow embedding only from your domain
         'default-src': [
           "'self'",
           ...localUrls,
