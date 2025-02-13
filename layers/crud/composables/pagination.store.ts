@@ -1,3 +1,5 @@
+import { useLogger } from '../../logging/composables/useLogger'
+
 export type DomainKey =
   | 'users'
   | 'news'

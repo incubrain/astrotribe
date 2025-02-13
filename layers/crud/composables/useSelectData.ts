@@ -3,6 +3,7 @@ import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 import { useRateLimit } from './useRateLimit'
+import { useLogger } from '../../logging/composables/useLogger'
 
 export function useSelectData<T extends { id: string | number }>(
   tableName: string,
