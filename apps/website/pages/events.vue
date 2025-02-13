@@ -199,8 +199,9 @@ const calendarOptions = computed(() => {
 
 /* Ensure all day cells have the same fixed height */
 :deep(.fc-daygrid-day-frame) {
-  min-height: 80px; /* Adjust as needed */
   display: flex;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -233,7 +234,6 @@ const calendarOptions = computed(() => {
   padding: 8px;
   position: absolute;
   top: 0;
-  left: 0;
 }
 
 :deep(.fc-col-header) {
@@ -263,8 +263,11 @@ const calendarOptions = computed(() => {
 
 /* Events styling */
 :deep(.fc-daygrid-event) {
-  margin: 1px 4px;
   border-radius: 4px;
+}
+
+:deep(.fc-daygrid-event) {
+  margin-top: 10%;
 }
 
 :deep(.fc-daygrid-dot-event) {
@@ -277,6 +280,23 @@ const calendarOptions = computed(() => {
   background-color: white;
 }
 
-.Moon {
+:deep(.fc-daygrid-day-bottom) {
+  display: none;
+}
+
+:deep(.fc-daygrid-event-harness::before) {
+  display: none;
+}
+
+:deep(.fc-daygrid-event-harness::after) {
+  display: none;
+}
+
+:deep(.fc-daygrid-day-events::before) {
+  display: none;
+}
+
+:deep(.fc-daygrid-day-events::after) {
+  display: none;
 }
 </style>
