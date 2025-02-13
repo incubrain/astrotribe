@@ -115,6 +115,14 @@ const websiteLinks = [
       },
     ],
   },
+  {
+    key: 'astronomy_events',
+    label: 'Events',
+    icon: 'material-symbols:info',
+    visible: true,
+    disabled: false,
+    url: '/events',
+  },
 ]
 
 defineProps({
