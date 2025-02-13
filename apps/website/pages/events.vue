@@ -6,10 +6,6 @@ import { createApp, defineComponent } from 'vue'
 
 const { store, loadMore } = useSelectData('astronomy_events', {
   orderBy: { column: 'id', ascending: true },
-  pagination: {
-    page: 1,
-    limit: 21,
-  },
   initialFetch: true,
 })
 
