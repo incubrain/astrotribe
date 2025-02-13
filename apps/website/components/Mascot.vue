@@ -20,7 +20,7 @@ const message = `Hi, I’m Tara the Firefly—your quirky little mascot for savi
       }"
     />
     <div
-      class="relative max-w-xs p-4 bg-black bg-opacity-40 border-2 border-black rounded-lg shadow-[0_0_15px_4px_rgba(255,215,0,0.4)]"
+      class="relative max-w-xs p-4 bg-black bg-opacity-70 border-2 border-black rounded-lg shadow-[0_0_15px_4px_rgba(255,215,0,0.4)]"
     >
       <p>
         {{ isOpen ? message : `${message.slice(0, 240)}...` }}
