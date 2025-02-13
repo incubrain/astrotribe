@@ -13,11 +13,10 @@ defineProps<{
     v-tooltip="{
       value: description,
       pt: {
-        text: '!bg-black !text-white !font-medium',
+        text: '!bg-black !w-fit !rounded !p-2 !text-white !font-medium',
       },
     }"
     :class="`p-2 text-white text-wrap rounded ${categoryClass}`"
-    @click="toggle"
   >
     <Icon
       v-if="icon"
