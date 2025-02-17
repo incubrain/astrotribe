@@ -12,7 +12,7 @@ defineProps({
     <h2 class="text-xl">Monthly Calendar Astronomical Events</h2>
     <div>
       <h3 class="text-xl">Event Categories</h3>
-      <ul>
+      <ul class="flex justify-between flex-wrap md:block">
         <li
           class="flex gap-1 items-center"
           v-for="category in categories"
