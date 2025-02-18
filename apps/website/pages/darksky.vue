@@ -210,7 +210,7 @@ awareness about light pollution`,
                   </p>
                 </LandingGlass>
               </div>
-              <div class="flex gap-2">
+              <div class="flex flex-col md:flex-row gap-2">
                 <LandingGlass class="flex flex-1">
                   <h3 class="pb-4 text-2xl font-bold leading-7"> The Bortle Scale </h3>
                   <p
