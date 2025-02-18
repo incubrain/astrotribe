@@ -249,7 +249,7 @@ awareness about light pollution`,
           >
             <IBImage
               :img="{
-                src: 'conferences/photos/IDSPAC23-ruchira-huchgol.jpg',
+                src: 'conference/photos/IDSPAC23-ruchira-huchgol.jpg',
                 alt: 'Conferences',
               }"
             />
