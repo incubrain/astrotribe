@@ -39,32 +39,6 @@ const websiteLinks = [
     icon: 'material-symbols:work',
     visible: true,
     disabled: false,
-    items: [
-      {
-        key: 'conferences',
-        label: 'Conferences',
-        icon: 'material-symbols:mic-rounded',
-        url: '/conferences',
-        visible: true,
-        disabled: false,
-      },
-      {
-        key: 'symposiums',
-        label: 'Symposiums',
-        icon: 'material-symbols:mic-rounded',
-        url: '/symposiums',
-        visible: true,
-        disabled: false,
-      },
-      /*{
-        key: 'projects',
-        label: 'Projects',
-        icon: 'material-symbols:mic-rounded',
-        url: '/projects',
-        visible: true,
-        disabled: false,
-      },*/
-    ],
   },
   {
     key: 'blog',
