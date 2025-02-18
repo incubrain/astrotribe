@@ -148,7 +148,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
           </p>
 
           <!-- CTA section -->
-          <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
+          <div class="flex flex sm:flex-row justify-center gap-4 pt-8">
             <NuxtLink
               :to="String(`${authURL}${loginURL}`)"
               external
@@ -158,6 +158,14 @@ const { loginURL, authURL } = useRuntimeConfig().public
                 class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"
               >
                 🚀 Start Reading
+              </PrimeButton>
+            </NuxtLink>
+            <NuxtLink to="/darksky">
+              <PrimeButton
+                size="large"
+                class="font-inter bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300 text-lg px-8"
+              >
+                🌃 Dark Sky
               </PrimeButton>
             </NuxtLink>
           </div>
