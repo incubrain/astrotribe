@@ -4,6 +4,8 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { createApp, computed } from 'vue'
 
+const selectedEvent = ref(null)
+
 const { store, loadMore } = useSelectData('astronomy_events', {
   orderBy: { column: 'id', ascending: true },
   initialFetch: true,
