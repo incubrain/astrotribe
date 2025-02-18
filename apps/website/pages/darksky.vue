@@ -166,10 +166,12 @@ awareness about light pollution`,
                   Together, we can turn down the glare and bring back the beauty of the night for
                   everyone!
                 </p>
-                <PrimeButton class="w-min flex flex-col">
-                  <h3>KNOW MY STORY</h3>
-                  <p>DOWNLOAD</p>
-                </PrimeButton>
+                <div class="flex w-full justify-center">
+                  <PrimeButton class="w-min flex flex-col">
+                    <h3>KNOW MY STORY</h3>
+                    <p>DOWNLOAD</p>
+                  </PrimeButton>
+                </div>
               </LandingGlass>
             </div>
           </PrimeAccordionContent>
@@ -193,6 +195,7 @@ awareness about light pollution`,
                   class="flex flex-1"
                   :img="{
                     src: 'images/five-lighting-principles-08-2023.webp',
+                    height: 'auto',
                   }"
                 />
                 <LandingGlass class="flex flex-1">
