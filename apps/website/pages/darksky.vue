@@ -92,7 +92,7 @@ awareness about light pollution`,
             />
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <div class="flex">
+            <div class="flex flex-col md:flex-row">
               <LandingGlass>
                 <h3 class="pb-4 text-2xl font-bold leading-7"> Astronomy Education For All </h3>
                 <p class="pb-3 text-base font-normal">
@@ -144,7 +144,7 @@ awareness about light pollution`,
             />
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <div class="flex gap-2 space-between">
+            <div class="flex flex-col gap-2 md:flex-row space-between">
               <IBImage
                 class="flex-1 h-auto flex-shrink-0"
                 :img="{
@@ -237,7 +237,7 @@ awareness about light pollution`,
           </PrimeAccordionContent>
         </PrimeAccordionPanel>
       </PrimeAccordion>
-      <div class="flex">
+      <div class="flex flex-col md:flex-row">
         <div class="lg:sticky top-24">
           <LandingGlass
             hover-effect="glow"
