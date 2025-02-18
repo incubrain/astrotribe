@@ -144,7 +144,7 @@ awareness about light pollution`,
             />
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <div class="flex flex-col gap-2 md:flex-row space-between">
+            <div class="flex flex-col gap-2 md:flex-row">
               <IBImage
                 class="flex-1 h-auto flex-shrink-0"
                 :img="{
@@ -254,7 +254,7 @@ awareness about light pollution`,
                 width: '350',
                 height: '350',
                 loading: 'lazy',
-                quality: '80',
+                quality: '90',
                 format: 'webp',
               }"
             />
@@ -296,7 +296,7 @@ awareness about light pollution`,
                 width: '350',
                 height: '350',
                 loading: 'lazy',
-                quality: '80',
+                quality: '90',
                 format: 'webp',
               }"
             />
