@@ -38,9 +38,15 @@ defineProps({
     <div class="absolute z-10 flex flex-col gap-8 px-4 text-white lg:flex-row lg:gap-16 xl:px-8">
       <div class="flex flex-col gap-4">
         <h2
-          :class="`rounded-md bg-black/30 px-4 py-1 text-xl font-bold shadow-xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
+          :class="`rounded-md bg-black/30 px-4 py-1 text-2xl font-bold shadow-xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
         >
           {{ title.main }}
+        </h2>
+        <h2
+          v-if="title.subtitle"
+          :class="`inline-block w-auto rounded-sm px-4 pb-4 font-semibold xl:px-8`"
+        >
+          {{ title.subtitle }}
         </h2>
       </div>
     </div>
