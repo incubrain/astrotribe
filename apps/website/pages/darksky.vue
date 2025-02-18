@@ -250,12 +250,12 @@ awareness about light pollution`,
               :img="{
                 src: '/conference/photos/IDSPAC23-ruchira-huchgol.jpg',
                 alt: 'Conferences',
-                width: '350',
-                height: '350',
+                width: '500',
+                height: 'auto',
                 loading: 'lazy',
-                quality: '90',
                 format: 'webp',
               }"
+              class="object-cover"
             />
             <div class="flex flex-shrink-0 items-center justify-start gap-2 p-2 pb-0">
               <h3 class="text-2xl font-semibold"> Conferences </h3>
@@ -292,12 +292,12 @@ awareness about light pollution`,
               :img="{
                 src: 'darksky/symposium_card.jpeg',
                 alt: 'Symposiums',
-                width: 'auto',
-                height: '350',
+                width: '500',
+                height: 'auto',
                 loading: 'lazy',
-                quality: '90',
                 format: 'webp',
               }"
+              class="object-cover"
             />
             <div class="flex flex-shrink-0 items-center justify-start gap-2 p-2 pb-0">
               <h3 class="text-2xl font-semibold"> Symposiums </h3>
