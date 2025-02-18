@@ -16,14 +16,16 @@ const bortleScale = `The <i>Bortle Scale</i> is a tool used to gauge sky brightn
 
 const carousel: ReadonlyArray<Carousel> = [
   {
-    title: `Artificial light at night disrupts the natural behaviors of many wildlife species, including foraging, mating, and migration
+    title: 'Effects On Different Species',
+    subtitle: `Artificial light at night disrupts the natural behaviors of many wildlife species, including foraging, mating, and migration
 patterns. For example, nocturnal animals may experience altered predator-prey dynamics due to increased illumination,
 leading to population declines. Dark sky preservation helps maintain ecological balance by reducing these disruptions,
 supporting biodiversity and healthier ecosystems`,
     image: 'darksky/carousel_(1).jpeg',
   },
   {
-    title: `Exposure to artificial light during nighttime hours can interfere with human circadian rhythms, leading to sleep disorders and
+    title: 'Circadian Rhythm',
+    subtitle: `Exposure to artificial light during nighttime hours can interfere with human circadian rhythms, leading to sleep disorders and
 other health issues. By implementing dark sky practices, such as using appropriate lighting and minimizing unnecessary
 illumination, communities can improve residents' sleep quality and overall well-being. Additionally, preserving dark skies
 enhances opportunities for stargazing and reconnecting with the natural world, enriching cultural and recreational
@@ -31,21 +33,24 @@ experiences`,
     image: 'darksky/carousel_(2).jpeg',
   },
   {
-    title: `Excessive artificial lighting contributes to energy waste, which in turn leads to higher greenhouse gas emissions from power
+    title: 'Energy Waste',
+    subtitle: `Excessive artificial lighting contributes to energy waste, which in turn leads to higher greenhouse gas emissions from power
 plants. By reducing unnecessary lighting through dark sky initiatives, communities can decrease their carbon footprint,
 thereby mitigating climate change. Furthermore, light pollution has been shown to disrupt natural processes, exacerbating
 environmental degradation`,
     image: 'darksky/carousel_(3).jpeg',
   },
   {
-    title: `Many tribal communities value natural darkness for cultural, spiritual, and practical reasons. Preserving dark skies in these
+    title: 'Tribal Community Preservation',
+    subtitle: `Many tribal communities value natural darkness for cultural, spiritual, and practical reasons. Preserving dark skies in these
 areas supports traditional practices such as storytelling, navigation, and ceremonies that rely on the visibility of the night
 sky. Additionally, maintaining natural darkness aids in conserving local wildlife, which many tribes depend upon for
 sustenance and cultural practices`,
     image: 'darksky/carousel_(4).jpeg',
   },
   {
-    title: `Optimizing public lighting by reducing unnecessary illumination not only conserves energy but also decreases municipal
+    title: 'Sustainable Development',
+    subtitle: `Optimizing public lighting by reducing unnecessary illumination not only conserves energy but also decreases municipal
 expenses associated with electricity consumption. These savings can be redirected to other community needs, demonstrating
 the economic benefits of dark sky policies.In Nagpur, Maharashtra, DarkSky Advocate Abhishek Pawse successfully persuaded
 city authorities to dim street lights to 60% after 11:30 PM. This action not only promoted dark sky conservation but also raised
@@ -67,7 +72,7 @@ awareness about light pollution`,
               width: 1080,
               height: 720,
             }"
-            :title="{ main: item.title }"
+            :title="{ main: item.title, subtitle: item.subtitle }"
             :object-position="`object-centered`"
             fit="cover"
           />
@@ -140,21 +145,15 @@ awareness about light pollution`,
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
             <div class="flex gap-2 space-between">
-              <div class="flex flex-1 flex-col items-center justify-center gap-2">
-                <IBImage
-                  class="h-auto flex-shrink-0"
-                  :img="{
-                    src: '/images/mascot_tara.png',
-                    alt: 'Tara the Firefly',
-                    height: auto,
-                  }"
-                />
-                <PrimeButton class="w-min flex flex-col">
-                  <h3>KNOW MY STORY</h3>
-                  <p>DOWNLOAD</p>
-                </PrimeButton>
-              </div>
-              <LandingGlass class="flex-1">
+              <IBImage
+                class="flex-1 h-auto flex-shrink-0"
+                :img="{
+                  src: '/images/mascot_tara.png',
+                  alt: 'Tara the Firefly',
+                  height: auto,
+                }"
+              />
+              <LandingGlass class="flex flex-1">
                 <p class="pb-3 text-base font-normal">
                   Hi, I’m Tara the Firefly—your quirky little mascot for saving the dark skies! Why
                   me? Well, as a firefly, I know the magic of natural light—I shine brightest when
@@ -167,6 +166,10 @@ awareness about light pollution`,
                   Together, we can turn down the glare and bring back the beauty of the night for
                   everyone!
                 </p>
+                <PrimeButton class="w-min flex flex-col">
+                  <h3>KNOW MY STORY</h3>
+                  <p>DOWNLOAD</p>
+                </PrimeButton>
               </LandingGlass>
             </div>
           </PrimeAccordionContent>
@@ -241,6 +244,12 @@ awareness about light pollution`,
             interactive
             isolate-content
           >
+            <IBImage
+              :img="{
+                src: 'conferences/photos/IDSPAC23-ruchira-huchgol.jpg',
+                alt: 'Conferences',
+              }"
+            />
             <div class="flex flex-shrink-0 items-center justify-start gap-2 p-2 pb-0">
               <h3 class="text-2xl font-semibold"> Conferences </h3>
             </div>
@@ -272,6 +281,12 @@ awareness about light pollution`,
             interactive
             isolate-content
           >
+            <IBImage
+              :img="{
+                src: 'darksky/symposium_card.jpeg',
+                alt: 'Symposiums',
+              }"
+            />
             <div class="flex flex-shrink-0 items-center justify-start gap-2 p-2 pb-0">
               <h3 class="text-2xl font-semibold"> Symposiums </h3>
             </div>
