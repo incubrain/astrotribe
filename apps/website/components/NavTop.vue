@@ -39,6 +39,7 @@ const websiteLinks = [
     icon: 'material-symbols:work',
     visible: true,
     disabled: false,
+    url: '/darksky',
   },
   {
     key: 'blog',
