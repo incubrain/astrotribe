@@ -5,6 +5,7 @@ defineProps<{
   icon: string
   description: string
   time: string
+  openEvent: () => void
 }>()
 </script>
 
@@ -16,14 +17,23 @@ defineProps<{
         text: '!bg-black !w-fit !rounded !p-2 !text-white !font-medium',
       },
     }"
-    :class="`p-2 text-white text-wrap rounded ${categoryClass}`"
+    :class="`hidden md:flex md:p-2 text-white text-wrap rounded ${categoryClass}`"
   >
     <Icon
       v-if="icon"
       :name="icon"
     />
-    {{ title }}
+    <span>{{ title }}</span>
   </div>
+  <PrimeButton
+    class="flex md:hidden"
+    @click="openEvent"
+  >
+    <Icon
+      v-if="icon"
+      :name="icon"
+    />
+  </PrimeButton>
 </template>
 
 <style scoped />
