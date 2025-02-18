@@ -51,6 +51,10 @@ function parseMultipleDates(dateStr: string): Date[] {
   return parsedDates
 }
 
+const selectEvent = (event) => {
+  selectedEvent.value = event
+}
+
 const calendarOptions = computed(() => ({
   plugins: [dayGridPlugin, interactionPlugin],
   initialView: 'dayGridMonth',
@@ -72,6 +76,7 @@ const calendarOptions = computed(() => ({
         icon: category?.icon,
         description: event.description,
         time: event.time,
+        date: event.date,
       },
       category: event.category,
     }
@@ -80,12 +85,18 @@ const calendarOptions = computed(() => ({
     const EventContent = resolveComponent('EventContent')
     const container = document.createElement('div')
 
-    createApp(EventContent, {
+    const event = {
       title: arg.event.title,
       categoryClass: arg.event.classNames,
       icon: arg.event.extendedProps.icon,
       description: arg.event.extendedProps.description,
       time: arg.event.extendedProps.time,
+      date: arg.event.extendedProps.date,
+    }
+
+    createApp(EventContent, {
+      ...event,
+      openEvent: () => selectEvent(event),
     }).mount(container)
 
     return { domNodes: [container] }
@@ -111,6 +122,17 @@ const calendarOptions = computed(() => ({
         class="custom-calendar"
       />
     </div>
+    <PrimeDialog
+      v-if="selectedEvent"
+      @update:visible="selectEvent(null)"
+      v-model:visible="selectedEvent"
+      :header="selectedEvent.title"
+      :modal="true"
+    >
+      <p>{{ selectedEvent.date }}</p>
+      <p v-if="selectedEvent.time">{{ selectedEvent.time }}</p>
+      <p>{{ selectedEvent.description }}</p>
+    </PrimeDialog>
   </div>
 </template>
 
@@ -150,11 +172,6 @@ const calendarOptions = computed(() => ({
   justify-content: flex-start;
 }
 
-:deep(.fc-daygrid-day-events) {
-  position: relative;
-  overflow: hidden;
-}
-
 :deep(.fc-daygrid-event) {
   white-space: nowrap;
   overflow: hidden;
@@ -169,7 +186,6 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-daygrid-day-number) {
   color: black;
-  border: 1px solid white;
   font-weight: 500;
   padding: 8px;
   position: absolute;
@@ -188,6 +204,8 @@ const calendarOptions = computed(() => ({
   color: white;
   font-weight: 600;
   padding: 8px 4px;
+  display: flex;
+  justify-content: center;
 }
 
 :deep(.fc-scrollgrid) {
@@ -199,8 +217,17 @@ const calendarOptions = computed(() => ({
   border-spacing: 8px;
 }
 
+:deep(.fc-daygrid-body) {
+  display: flex;
+  justify-content: center;
+}
+
 :deep(.fc-daygrid-event) {
   border-radius: 4px;
+}
+
+:deep(.fc-daygrid-day-events) {
+  position: relative;
   margin-top: 10%;
 }
 
@@ -245,9 +272,35 @@ const calendarOptions = computed(() => ({
     flex-direction: column;
   }
 
-  :deep(.fc-daygrid-event) {
-    font-size: 9px;
-    padding: 1px 3px;
+  :deep(.fc-daygrid-day-events) {
+    margin-top: 0px;
+    display: flex;
   }
+
+  :deep(.fc-daygrid-event) {
+    font-size: 10px;
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+}
+
+:deep(.fc-daygrid-day-bottom) {
+  display: none;
+}
+
+:deep(.fc-daygrid-event-harness::before) {
+  display: none !important;
+}
+
+:deep(.fc-daygrid-event-harness::after) {
+  display: none !important;
+}
+
+:deep(.fc-daygrid-day-events::before) {
+  display: none !important;
+}
+
+:deep(.fc-daygrid-day-events::after) {
+  display: none !important;
 }
 </style>
