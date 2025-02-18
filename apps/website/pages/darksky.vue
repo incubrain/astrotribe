@@ -146,14 +146,13 @@ awareness about light pollution`,
           <PrimeAccordionContent>
             <div class="flex flex-col gap-2 md:flex-row">
               <IBImage
-                class="flex-1 h-auto flex-shrink-0"
+                class="flex-1 flex-shrink-0"
                 :img="{
                   src: '/images/mascot_tara.png',
                   alt: 'Tara the Firefly',
-                  height: auto,
                 }"
               />
-              <LandingGlass class="flex flex-1">
+              <LandingGlass class="flex-1">
                 <p class="pb-3 text-base font-normal">
                   Hi, I’m Tara the Firefly—your quirky little mascot for saving the dark skies! Why
                   me? Well, as a firefly, I know the magic of natural light—I shine brightest when
@@ -249,7 +248,7 @@ awareness about light pollution`,
           >
             <IBImage
               :img="{
-                src: 'conference/photos/IDSPAC23-ruchira-huchgol.jpg',
+                src: '/conference/photos/IDSPAC23-ruchira-huchgol.jpg',
                 alt: 'Conferences',
                 width: '350',
                 height: '350',
@@ -293,7 +292,7 @@ awareness about light pollution`,
               :img="{
                 src: 'darksky/symposium_card.jpeg',
                 alt: 'Symposiums',
-                width: '350',
+                width: 'auto',
                 height: '350',
                 loading: 'lazy',
                 quality: '90',
