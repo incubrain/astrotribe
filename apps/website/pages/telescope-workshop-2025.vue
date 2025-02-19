@@ -276,8 +276,8 @@ const provided = [
         <ul v-for="item in provided">
           <li>{{ item }}</li>
         </ul>
+        <NuxtLink :to="registrationLink"> <PrimeButton>Register Now</PrimeButton></NuxtLink>
       </div>
-      <NuxtLink :to="registrationLink"> <PrimeButton>Register Now</PrimeButton></NuxtLink>
     </div>
   </div>
 </template>
