@@ -258,10 +258,22 @@ const provided = [
           >Beginner Level Session I</h3
         >
         <p><b>Objective:</b> Introduction to telescope types, basic handling, and sky navigation</p>
-        <p
-          ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
-          Maharashtra 411016</p
-        >
+        <p class="flex"
+          ><b>Venue:</b>
+          <Icon
+            name="mdi:location"
+            size="24px"
+            class="text-red-600"
+          />
+          Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune, Maharashtra 411016
+        </p>
+        <iframe
+          id="iframe"
+          class="px-2"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+          style="border: 0"
+          referrerpolicy="no-referrer-when-downgrade"
+        />
         <p><b>Fee:</b> ₹2000 Per Person</p>
         <EventSchedule :schedule="beginnerSchedule" />
         <hr />
@@ -274,10 +286,22 @@ const provided = [
           ><b>Objective:</b> Learn how to fine-tune your telescope, track celestial objects, and
           spot constellations.</p
         >
-        <p
-          ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
-          Maharashtra 411016</p
-        >
+        <p class="flex"
+          ><b>Venue:</b>
+          <Icon
+            name="mdi:location"
+            size="24px"
+            class="text-red-600"
+          />
+          Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune, Maharashtra 411016
+        </p>
+        <iframe
+          id="iframe"
+          class="px-2"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+          style="border: 0"
+          referrerpolicy="no-referrer-when-downgrade"
+        />
         <p><b>Fee:</b> ₹2500 Per Person</p>
         <EventSchedule :schedule="intermediateSchedule" />
         <hr />
