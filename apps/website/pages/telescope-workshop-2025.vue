@@ -50,51 +50,61 @@ const beginnerSchedule = [
       {
         activity: 'Welcome & Introduction',
         time: { start: '07:00', end: '07:10' },
-        description: `- Greet participants, quick introduction to the workshop.
-          - Ask participants about their experience with telescopes.
-          - Brief on what they will learn today.`,
+        description: [
+          '- Introduction to the workshop',
+          '- Discussion on experience with telescopes',
+          '- Recap',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Understanding Telescopes',
         time: { start: '07:10', end: '07:30' },
-        description: `- Explain different types: Refractors, Reflectors, Catadioptrics.
-          - Discuss parts of a telescope: eyepieces, finderscope, mounts.
-          - How to choose the right telescope based on budget & interest.`,
+        description: [
+          '- Different types of telescopes',
+          '- Discuss parts of a telescope',
+          '- How to choose the right telescope based on budget & interest',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Telescope Assembly & Balancing',
         time: { start: '07:30', end: '07:50' },
-        description: `- Hands-on: Unbox and assemble a simple telescope.
-          - Explain Alt-Azimuth vs Equatorial mounts.
-          - Teach how to balance the telescope for stable viewing.`,
+        description: [
+          '- Hands-on: Unbox and assemble a simple telescope',
+          '- Explain Alt-Azimuth vs Equatorial mounts',
+          '- Balance the telescope for stable viewing',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Break & Q&A',
         time: { start: '07:50', end: '08:00' },
-        description: `- Short break for networking & questions.`,
+        description: ['- Short break for networking & questions'],
         class: 'bg-primary-950',
       },
       {
         activity: 'Basic Sky Navigation',
         time: { start: '08:00', end: '08:10' },
-        description: `- How to use Sky Maps & Stellarium to find celestial objects.
-          - Locating the Moon, planets & bright stars.`,
+        description: [
+          '- How to use Sky Maps & Stellarium to find celestial objects',
+          '- Locating the Moon, planets & bright stars',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Hands-On Observation Session',
         time: { start: '08:10', end: '08:50' },
-        description: `- Participants take turns using the telescope to view the Moon (or bright objects).
-          - Adjusting focus, understanding eyepieces.`,
+        description: [
+          '- Participants take turns using the telescope to view the Moon (or bright objects)',
+          '- Adjusting focus, understanding eyepieces',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Wrap-Up',
         time: { start: '08:50', end: '09:00' },
-        description: `- Quick recap & feedback session.`,
+        description: ['- Quick recap & feedback session.'],
         class: 'bg-primary-950',
       },
     ],
@@ -111,48 +121,58 @@ const intermediateSchedule = [
       {
         activity: 'Welcome & Overview',
         time: { start: '07:00', end: '07:10' },
-        description: `- Introduction to the session.
-          - Discuss participant experience with telescopes.`,
+        description: [
+          '- Introduction to the session',
+          '- Discuss participant experience with telescopes',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Advanced Alignment Techniques',
         time: { start: '07:10', end: '07:20' },
-        description: `- Learn Polar Alignment for Equatorial mounts.
-          - Recap and Introduction to Automatic Tracking.`,
+        description: [
+          '- Learn Polar Alignment for Equatorial mounts',
+          '- Recap and Introduction to Automatic Tracking',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Deep Sky Object Tracking',
         time: { start: '07:20', end: '07:50' },
-        description: `- How to locate and track Nebulae, Star Clusters, and Galaxies.
-          - Practice pointing telescopes manually & with slow-motion controls.`,
+        description: [
+          '- How to locate and track Nebulae, Star Clusters, and Galaxies',
+          '- Practice pointing telescopes manually & with slow-motion controls',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Break & Q&A',
         time: { start: '07:50', end: '08:00' },
-        description: `- Open discussion for doubts.`,
+        description: ['- Open discussion for doubts'],
         class: 'bg-primary-950',
       },
       {
         activity: 'Filters & Accessories',
         time: { start: '08:00', end: '08:10' },
-        description: `- Introduction to Barlow lenses, Moon & Nebula filters.
-          - How different filters enhance observation.`,
+        description: [
+          '- Introduction to Barlow lenses, Moon & Nebula filters',
+          '- How different filters enhance observation',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Hands-On Tracking Activity',
         time: { start: '08:10', end: '08:50' },
-        description: `- Practice tracking Orion Nebula, or Andromeda Galaxy.
-          - Use laser pointers to learn constellation mapping.`,
+        description: [
+          '- Practice tracking Orion Nebula, or Andromeda Galaxy',
+          '- Use laser pointers to learn constellation mapping',
+        ],
         class: 'bg-primary-950',
       },
       {
         activity: 'Wrap-Up',
         time: { start: '08:50', end: '09:00' },
-        description: `- Recap of learning.`,
+        description: ['- Recap of learning.'],
         class: 'bg-primary-950',
       },
     ],

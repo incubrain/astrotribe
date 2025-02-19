@@ -106,9 +106,13 @@ const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone
                 header="Description"
               >
                 <template #body="slotProps">
-                  <div class="text-sm">
-                    {{ slotProps.data.description }}
-                  </div>
+                  <ul
+                    v-for="description in slotProps.data.description"
+                    class="text-sm"
+                  >
+                    <li>{{ description }}</li
+                    ><li> </li
+                  ></ul>
                 </template>
               </PrimeColumn>
             </PrimeDataTable>
