@@ -72,7 +72,6 @@ const beginnerSchedule = [
         time: { start: '07:30', end: '07:50' },
         description: [
           '- Hands-on: Unbox and assemble a simple telescope',
-          '- Explain Alt-Azimuth vs Equatorial mounts',
           '- Balance the telescope for stable viewing',
         ],
         class: 'bg-primary-950',
@@ -89,6 +88,7 @@ const beginnerSchedule = [
         description: [
           '- How to use Sky Maps & Stellarium to find celestial objects',
           '- Locating the Moon, planets & bright stars',
+          '- Constellation Mapping',
         ],
         class: 'bg-primary-950',
       },
@@ -128,12 +128,9 @@ const intermediateSchedule = [
         class: 'bg-primary-950',
       },
       {
-        activity: 'Advanced Alignment Techniques',
+        activity: 'Sky Navigation',
         time: { start: '07:10', end: '07:20' },
-        description: [
-          '- Learn Polar Alignment for Equatorial mounts',
-          '- Recap and Introduction to Automatic Tracking',
-        ],
+        description: ['- Constellation Mapping'],
         class: 'bg-primary-950',
       },
       {
@@ -214,7 +211,7 @@ const provided = [
     >
     </CommonHero>
     <div class="flex min-h-screen">
-      <div class="hidden md:block w-1/4 h-full sticky top-0">
+      <div class="hidden md:block w-1/4 h-full sticky top-6">
         <PrimeAccordion
           value="0"
           class="z-10 py-6 px-6 xl:gap-12 xl:py-12"
@@ -265,7 +262,7 @@ const provided = [
           ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
           Maharashtra 411016</p
         >
-        <p><b>Fee:</b> ₹2000</p>
+        <p><b>Fee:</b> ₹2000 Per Person</p>
         <EventSchedule :schedule="beginnerSchedule" />
         <hr />
         <h3
@@ -281,7 +278,7 @@ const provided = [
           ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
           Maharashtra 411016</p
         >
-        <p><b>Fee:</b> ₹2500</p>
+        <p><b>Fee:</b> ₹2500 Per Person</p>
         <EventSchedule :schedule="intermediateSchedule" />
         <hr />
         <h3
