@@ -34,14 +34,6 @@ const websiteLinks = [
     ],
   },
   {
-    key: 'darksky',
-    label: 'Dark Sky',
-    icon: 'material-symbols:work',
-    visible: true,
-    disabled: false,
-    url: '/darksky',
-  },
-  {
     key: 'blog',
     label: 'Blog',
     icon: 'material-symbols:menu-book-outline',
@@ -93,10 +85,35 @@ const websiteLinks = [
   {
     key: 'astronomy_events',
     label: 'Events',
-    icon: 'material-symbols:info',
+    icon: 'material-symbols:calendar_month',
     visible: true,
     disabled: false,
-    url: '/events',
+    items: [
+      {
+        key: 'astronomy_events',
+        label: 'Astronomy Events',
+        icon: 'material-symbols:rocket_launch',
+        url: '/events',
+        visible: true,
+        disabled: false,
+      },
+      {
+        key: 'telescope_workshop_2025',
+        label: 'Telescope Workshop 2025',
+        icon: 'material-symbols:manufacturing',
+        url: '/telescope-workshop-2025',
+        visible: true,
+        disabled: false,
+      },
+    ],
+  },
+  {
+    key: 'darksky',
+    label: 'Dark Sky',
+    icon: 'material-symbols:work',
+    visible: true,
+    disabled: false,
+    url: '/darksky',
   },
 ]
 
