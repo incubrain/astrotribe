@@ -211,7 +211,6 @@ const provided = [
       }"
       :title="title"
       position="center"
-      invert
     >
     </CommonHero>
     <div class="flex min-h-screen">
@@ -248,13 +247,24 @@ const provided = [
         </PrimeAccordion>
       </div>
       <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
-        <NuxtLink :to="registrationLink"> <PrimeButton>Register Now</PrimeButton></NuxtLink>
+        <NuxtLink :to="registrationLink">
+          <PrimeButton
+            size="large"
+            severity="contrast"
+            outlined
+            >Register Now</PrimeButton
+          ></NuxtLink
+        >
         <h3
           id="beginnerLevel"
           class="text-2xl lg:text-4xl font-bold"
           >Beginner Level Session I</h3
         >
         <p><b>Objective:</b> Introduction to telescope types, basic handling, and sky navigation</p>
+        <p
+          ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
+          Maharashtra 411016</p
+        >
         <p><b>Fee:</b> ₹2000</p>
         <EventSchedule :schedule="beginnerSchedule" />
         <hr />
@@ -266,6 +276,10 @@ const provided = [
         <p
           ><b>Objective:</b> Learn how to fine-tune your telescope, track celestial objects, and
           spot constellations.</p
+        >
+        <p
+          ><b>Venue:</b> Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
+          Maharashtra 411016</p
         >
         <p><b>Fee:</b> ₹2500</p>
         <EventSchedule :schedule="intermediateSchedule" />
@@ -296,7 +310,14 @@ const provided = [
         <ul v-for="item in provided">
           <li>{{ item }}</li>
         </ul>
-        <NuxtLink :to="registrationLink"> <PrimeButton>Register Now</PrimeButton></NuxtLink>
+        <NuxtLink :to="registrationLink">
+          <PrimeButton
+            size="large"
+            severity="contrast"
+            outlined
+            >Register Now</PrimeButton
+          ></NuxtLink
+        >
       </div>
     </div>
   </div>

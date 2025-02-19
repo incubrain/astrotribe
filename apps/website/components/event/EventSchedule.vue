@@ -50,9 +50,7 @@ const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone
           :key="`tab-${i}`"
           :value="`${day.value}`"
         >
-          <span>
-            {{ `${day.label} ${day.day}th March 2025` }}
-          </span>
+          {{ `${day.label} ${day.day}th March 2025` }}
         </PrimeTab>
       </PrimeTabList>
       <PrimeTabPanels>
