@@ -11,7 +11,11 @@ export const validateFeatureLimit = async (
   currentCount: number,
 ) => {
   // For now, assume free plan
-  const userPlan = PlanType.FREE
+
+  const currentUser = useCurrentUser()
+  const { profile } = storeToRefs(currentUser)
+
+  const userPlan = ref<PlanType>(profile.value.user_plan == 'free' ? PlanType.FREE : PlanType.PRO)
 
   const limit = FEATURES[feature].limit[userPlan]
 
