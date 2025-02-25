@@ -26,16 +26,6 @@ interface Company {
 
 const currentlyOpen = ref(null)
 
-const getFallbackAvatarUrl = (name: string) => {
-  const initials =
-    name
-      ?.split(' ')
-      .map((word) => word[0])
-      .join('')
-      .toUpperCase() || 'U'
-  return `https://ui-avatars.com/api/?name=${initials}&background=random&size=128`
-}
-
 defineProps({
   companies: Array<Company>,
 })
@@ -72,7 +62,8 @@ const getIcon = (key: string) => {
         <td class="px-2 py-3 w-1/5">
           <div class="flex flex-col items-center">
             <IBImage
-              :img="{ src: company.logo_url, width: '200', height: '200' }"
+              :img="{ src: company.logo_url, width: '200', height: '200', placeholder: '/images/companies_fallback.png'}"
+
               class="rounded-xl bg-white p-2"
             />
             <p class="text-center w-full text-wrap">{{ company.name }}</p>
