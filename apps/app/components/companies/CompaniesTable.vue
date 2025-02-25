@@ -92,7 +92,7 @@ const getIcon = (key: string) => {
             >&nbsp;</p
           >
         </td>
-        <td class="flex w-1/5 flex-1 flex-col">
+        <td class="flex py-3 w-1/5 flex-1 flex-col">
           <p v-if="company.founding_year"><b>Founding Year:</b> {{ company.founding_year }}</p>
           <p v-if="company.city"><b>Location:</b> {{ company.city }}, {{ company.country }}</p>
           <p v-if="company.category"><b>Category:</b> {{ company.category }}</p>
