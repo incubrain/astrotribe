@@ -2,7 +2,7 @@
 const speakers = [
   {
     given_name: 'Nalayini',
-    surname: 'Bitro-Davis',
+    surname: 'Brito-Davies',
     professional_title: 'President, Dark Sky International',
     bio: `Nalayini was instrumental in successfully establishing Aotea / Great Barrier Island as a certified Dark Sky Sanctuary.
     She also co-leads the promotion of New Zealand’s journey to become a dark sky nation and has spoken at Dark Sky conferences and workshops around the world.

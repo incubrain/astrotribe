@@ -66,7 +66,7 @@ const schedule = [
         online: true,
         icon: 'mdi:microphone',
         topic: 'Dark Sky Policies and the learnings from the adaptation in New Zealand',
-        speaker: 'Nalayini  Bitro-Davis ',
+        speaker: 'Nalayini  Brito-Davies ',
         time: { start: '11:50', end: '12:10' },
       },
       {
