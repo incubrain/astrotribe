@@ -107,7 +107,7 @@ const getIcon = (key: string) => {
           <p v-if="company.category"><b>Category:</b> {{ company.category }}</p>
           <div
             v-if="company.social_media"
-            class="flex mt-auto items-center justify-between"
+            class="flex flex-col md:flex-row mt-auto items-center justify-between"
           >
           <div>
             <NuxtLink
@@ -134,7 +134,7 @@ const getIcon = (key: string) => {
         </td>
         <td 
           v-if="company.is_government"
-          class="absolute text-xs top-2 right-2 p-2 bg-gray-600 text-black rounded-xl"
+          class="absolute text-xs left-2 bottom-2 md:top-2 md:right-2 p-2 bg-gray-600 text-black rounded-xl"
           ><h3>Government</h3></td
         >
       </tr>
