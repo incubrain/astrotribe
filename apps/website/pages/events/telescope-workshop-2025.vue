@@ -46,6 +46,8 @@ const beginnerSchedule = [
     value: '0',
     label: 'Saturday',
     day: 8,
+    month: 'March',
+    year: 2025,
     items: [
       {
         activity: 'Welcome & Introduction',
@@ -117,6 +119,8 @@ const intermediateSchedule = [
     value: '1',
     label: 'Saturday',
     day: 15,
+    month: 'March',
+    year: 2025,
     items: [
       {
         activity: 'Welcome & Overview',

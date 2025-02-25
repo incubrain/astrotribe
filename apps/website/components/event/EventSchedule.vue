@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const prop = defineProps({
+defineProps({
   schedule: {
     type: Array,
     required: true,
@@ -30,6 +30,18 @@ function convertISTtoLocal(day: number, time: { start: string; end: string }) {
   return `${startLocal} - ${endLocal}`
 }
 
+function getOrdinalIndicator(day: number) {
+  if ([1, 21, 31].includes(day)) {
+    return 'st'
+  } else if ([2, 22].includes(day)) {
+    return 'nd'
+  } else if ([3, 23].includes(day)) {
+    return 'rd'
+  } else {
+    return 'th'
+  }
+}
+
 const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone)
 </script>
 
@@ -50,7 +62,7 @@ const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone
           :key="`tab-${i}`"
           :value="`${day.value}`"
         >
-          {{ `${day.label} ${day.day}th March 2025` }}
+          {{ `${day.label} ${day.day}${getOrdinalIndicator(day.day)} ${day.month} ${day.year}` }}
         </PrimeTab>
       </PrimeTabList>
       <PrimeTabPanels>
