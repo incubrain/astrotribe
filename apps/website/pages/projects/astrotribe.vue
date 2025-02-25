@@ -273,7 +273,7 @@ const selectItem = (item: string) => {
                 quality: '80',
                 format: 'webp',
               }"
-              class="w-full object-cover grayscale-[20%] rounded-t-xl overflow-hidden"
+              class="astroguide w-full object-cover grayscale-[20%] rounded-t-xl overflow-hidden"
             />
           </div>
         </template>
@@ -298,7 +298,7 @@ const selectItem = (item: string) => {
 </template>
 
 <style scoped>
-img {
-  image-orientation: from-image;
+.astroguide {
+  transform: rotate(-90deg);
 }
 </style>
