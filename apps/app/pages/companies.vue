@@ -1,26 +1,46 @@
 <script setup lang="ts">
 definePageMeta({ name: 'Companies' })
 
-const { profile } = useCurrentUser()
+const currentUser = useCurrentUser()
+const { profile } = storeToRefs(currentUser)
 
-const isUserBasic = profile.user_plan === 'free'
+const isUserBasic = profile.value.user_plan === 'free'
 const showDialog = ref(isUserBasic)
+const loading = useLoadingStore()
+
+// Ads integration
+const { isLoading: adsLoading } = useAdsStore()
 
 const { store, loadMore } = useSelectData('companies', {
-  orderBy: { column: 'name', ascending: true },
+  orderBy: { column: 'logo_url', ascending: true },
+  columns: `id, name, description, logo_url, founding_year, is_government, category, keywords, job_url,
+  categories(id, name),
+  social_media(id, facebook_url, linkedin_url, twitter_url, instagram_url, youtube_url),
+  addresses(id, countries(name), cities(name))`,
   pagination: {
     page: 1,
     limit: 20,
   },
   initialFetch: true,
-  storeKey: 'companies',
+  storeKey: 'companiesFeed',
 })
 
 const handleScroll = () => {
   if (!isUserBasic) loadMore()
 }
 
-const { items: companies } = storeToRefs(store)
+const { items } = storeToRefs(store)
+
+const companies = computed(() =>
+  items.value.map((company) => ({
+    ...company,
+    city: company.addresses?.[0]?.cities?.name,
+    country: company.addresses?.[0]?.countries?.name,
+    category: company.categories?.name,
+  })),
+)
+
+const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || adsLoading.value)
 </script>
 
 <template>
@@ -30,11 +50,13 @@ const { items: companies } = storeToRefs(store)
       mode="out-in"
     >
       <IBInfiniteScroll
+        v-if="!showSkeletonGrid"
         :threshold="1400"
         @update:scroll-end="handleScroll"
       >
         <CompaniesTable :companies="companies" />
       </IBInfiniteScroll>
+      <CompaniesSkeleton v-else />
     </Transition>
   </div>
   <PrimeDialog
@@ -72,12 +94,6 @@ const { items: companies } = storeToRefs(store)
             Upgrade Now
           </PrimeButton>
         </NuxtLink>
-        <PrimeButton
-          severity="danger"
-          class="px-6 py-2"
-        >
-          Cancel
-        </PrimeButton>
       </div>
     </div>
   </PrimeDialog>
