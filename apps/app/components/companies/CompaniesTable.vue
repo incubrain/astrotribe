@@ -1,16 +1,30 @@
 <script setup lang="ts">
-import { navigateTo } from 'nuxt/app'
+interface SocialMedia {
+  id: string
+  facebook_url: string
+  twitter_url: string
+  linkedin_url: string
+  instagram_url: string
+  youtube_url: string
+}
 
 interface Company {
   id: string
+  founding_year: number
   name: string
   description: string
   logo_url: string
-  category: string
   url: string
   is_government: boolean
   keywords: Array<string>
+  category?: string
+  city?: string
+  country?: string
+  social_media?: SocialMedia
+  job_url?: string
 }
+
+const currentlyOpen = ref(null)
 
 const getFallbackAvatarUrl = (name: string) => {
   const initials =
@@ -25,34 +39,100 @@ const getFallbackAvatarUrl = (name: string) => {
 defineProps({
   companies: Array<Company>,
 })
+
+const getIcon = (key: string) => {
+  if (key.includes('email')) {
+    return 'mdi:email'
+  } else if (key.includes('youtube')) {
+    return 'mdi:youtube'
+  } else if (key.includes('facebook')) {
+    return 'mdi:facebook'
+  } else if (key.includes('twitter')) {
+    return 'mdi:twitter'
+  } else if (key.includes('linkedin')) {
+    return 'mdi:linkedin'
+  } else if (key.includes('instagram')) {
+    return 'mdi:instagram'
+  } else {
+    return ''
+  }
+}
 </script>
 
 <template>
   <table
-    class="min-w-full select-none border-collapse text-primary-500 table-auto bg-transparent rounded-lg"
+    class="table-fixed min-w-full select-none border-collapse text-primary-500 table-auto bg-transparent rounded-lg"
   >
     <tbody>
       <tr
         v-for="company in companies"
         :key="company.id"
-        class="relative p-5 mt-1 mb-1 border border-primary-500 rounded-xl gap-2 hover:bg-primary-500 text-lg text-white cursor-pointer shadow-md"
-        @click="navigateTo(company.url, { external: true, open: { target: '_blank' } })"
+        class="relative flex p-5 mt-1 mb-1 border border-primary-500 rounded-xl gap-2 text-lg text-white shadow-md"
       >
-        <td class="px-4 py-3 text-center"
-          ><IBImage
-            :img="{ src: company.logo_url, width: '200', height: '200' }"
-            class="rounded-xl bg-white p-2"
-        /></td>
-        <td class="px-4 py-3"
-          ><h3>{{ company.name }}</h3></td
-        >
-        <td class="px-4 py-3 whitespace-wrap max-w-xs text-center"
-          ><p v-if="company.description"
+        <td class="px-2 py-3 w-1/5">
+          <div class="flex flex-col items-center">
+            <IBImage
+              :img="{ src: company.logo_url, width: '200', height: '200' }"
+              class="rounded-xl bg-white p-2"
+            />
+            <p class="text-center w-full text-wrap">{{ company.name }}</p>
+          </div>
+        </td>
+        <td class="px-4 w-3/5 flex-2 py-3 whitespace-wrap max-w-xs text-left"
+          ><p
+            v-if="company.description"
+            class="align-middle"
             >{{ company.description.slice(0, 1).toUpperCase()
-            }}{{ company.description.slice(1, 241) }}...</p
+            }}{{
+              company.description.length <= 240 || currentlyOpen == company.id
+                ? company.description.slice(1)
+                : `${company.description.slice(1, 241)}...`
+            }}
+            <p
+              v-if="company.description.length > 240"
+              class="text-primary-300 cursor-pointer"
+              @click="currentlyOpen = currentlyOpen ? null : company.id"
+              >{{ currentlyOpen == company.id ? 'Read Less' : 'Read More' }}</p
+            >
+          </p>
+          <p
+            v-else
+            class="w-full min-h-[1em]"
+            >&nbsp;</p
           >
         </td>
-        <td
+        <td class="flex w-1/5 flex-1 flex-col">
+          <p v-if="company.founding_year"><b>Founding Year:</b> {{ company.founding_year }}</p>
+          <p v-if="company.city"><b>Location:</b> {{ company.city }}, {{ company.country }}</p>
+          <p v-if="company.category"><b>Category:</b> {{ company.category }}</p>
+          <div
+            v-if="company.social_media"
+            class="flex mt-auto items-center justify-between"
+          >
+          <div>
+            <NuxtLink
+              v-for="(url, key) in company.social_media"
+              v-show="url && key !== 'id'"
+              :key="company.social_media.id"
+              :to="url"
+              target="_blank"
+              external
+            >
+            <PrimeButton
+              outlined
+            >
+              <Icon
+                :name="getIcon(key)"
+                size="36px"
+                class="text-white"
+              />
+            </PrimeButton>
+          </NuxtLInk>
+        </div>
+          <NuxtLink v-if="company.job_url" :to="company.job_url" target="_blank" external><PrimeButton outlined>Jobs</PrimeButton></NuxtLink>
+          </div>
+        </td>
+        <td 
           v-if="company.is_government"
           class="absolute text-xs top-2 right-2 p-2 bg-gray-600 text-black rounded-xl"
           ><h3>Government</h3></td
