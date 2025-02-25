@@ -63,7 +63,7 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
     v-model:visible="showDialog"
     :modal="true"
     header="🚀 Upgrade Your Plan"
-    :style="{ width: '30vw', borderRadius: '12px' }"
+    class="w-[80vw] md:w-[30vw] rounded-md"
   >
     <div class="flex flex-col items-center gap-4 p-6 text-center">
       <!-- Upgrade Icon -->
