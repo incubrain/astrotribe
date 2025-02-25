@@ -186,8 +186,8 @@ export const useAdsStore = defineStore('ads', () => {
 
   // Initialize
   async function initialize() {
-    // await loadAdPackages()
-    // await loadActiveAds()
+    await loadAdPackages()
+    await loadActiveAds()
   }
 
   return {
