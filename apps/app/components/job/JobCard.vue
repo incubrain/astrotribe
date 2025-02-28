@@ -5,7 +5,10 @@ interface Job {
   location: string
   tags: string[]
   company: string
-  path: string
+  employmentType?: string
+  url: string
+  publishedAt: string
+  expiresAt: string
   officeHours?: string
   verified?: boolean
   featured?: boolean
@@ -64,6 +67,11 @@ const emit = defineEmits<{
             {{ job.title }}
           </h2>
           <div class="flex items-center space-x-2">
+            <span
+              v-if="job.employmentType"
+              class="text-gray-600 font-medium"
+              >{{ job.employmentType }}</span
+            >
             <span class="text-gray-600 font-medium">{{ job.company }}</span>
             <!-- Added verified badge if needed -->
             <span
@@ -79,6 +87,7 @@ const emit = defineEmits<{
         </div>
 
         <span
+          v-if="job.salary"
           class="bg-jobs-primary/10 text-xs text-jobs-primary px-4 py-2 rounded-full font-semibold backdrop-blur-sm shadow-sm"
         >
           {{
@@ -98,20 +107,18 @@ const emit = defineEmits<{
           />
           <span class="text-sm font-medium">{{ job.location }}</span>
         </div>
-        <div
-          v-if="job.officeHours"
-          class="h-4 w-px bg-gray-200"
-        ></div>
-        <div
-          v-if="job.officeHours"
-          class="flex items-center space-x-2"
+      </div>
+      <div
+        v-if="job.publishedAt"
+        class="flex items-center space-x-2"
+      >
+        <Icon
+          name="uil:clock"
+          class="w-4 h-4 text-jobs-primary/70"
+        />
+        <span class="text-sm text-gray-500"
+          >{{ job.publishedAt }}{{ job.expiresAt ? ` - ${job.expiresAt}` : '' }}</span
         >
-          <Icon
-            name="uil:clock"
-            class="w-4 h-4 text-jobs-primary/70"
-          />
-          <span class="text-sm text-gray-500">{{ job.officeHours }}</span>
-        </div>
       </div>
 
       <div class="mt-6 flex flex-wrap gap-2">
@@ -126,8 +133,10 @@ const emit = defineEmits<{
       </div>
 
       <NuxtLink
-        :to="job.path"
-        class="mt-6 flex items-center justify-center w-full bg-white text-jobs-primary border border-jobs-primary/20 px-6 py-3 rounded-xl font-medium hover:bg-jobs-primary hover:text-white transition-all duration-300 group-hover:shadow-md space-x-2"
+        :to="job.url"
+        target="_blank"
+        class="mt-6 flex text-primary-500 items-center justify-center w-full bg-white text-jobs-primary border border-jobs-primary/20 px-6 py-3 rounded-xl font-medium hover:bg-jobs-primary hover:text-black transition-all duration-300 group-hover:shadow-md space-x-2"
+        external
       >
         <span>View Details</span>
         <Icon
