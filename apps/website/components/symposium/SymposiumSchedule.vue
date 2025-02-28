@@ -58,7 +58,7 @@ const schedule = [
       {
         online: true,
         icon: 'mdi:microphone',
-        topic: 'Dark Sky Policies Global Impact',
+        topic: 'Growing Trend on Regulating Light Pollution',
         speaker: 'Yana Yakushina',
         time: { start: '11:30', end: '11:50' },
       },
