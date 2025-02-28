@@ -55,6 +55,12 @@ const navigationCategories = ref([
         slug: '/companies',
         icon: 'material-symbols:domain',
       },
+      {
+        id: '3',
+        label: 'Opportunities',
+        slug: '/opportunities',
+        icon: 'material-symbols:work',
+      },
     ],
   },
   {
