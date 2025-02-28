@@ -122,6 +122,12 @@ const adminLinks = ref([
         slug: '/plans',
         icon: 'mdi:subscriptions',
       },
+      {
+        id: 83,
+        label: 'Jobs',
+        slug: '/jobs',
+        icon: 'mdi:worker',
+      },
     ],
   },
 ])

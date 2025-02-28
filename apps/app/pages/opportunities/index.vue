@@ -1,5 +1,37 @@
 <script setup lang="ts">
-const { data: jobs, status } = await useAsyncData('jobs-all', () => queryCollection('jobs').all())
+// const { data: jobs, status } = await useAsyncData('jobs-all', () => queryCollection('jobs').all())
+
+const { store, loadMore } = useSelectData('jobs', {
+  pagination: {
+    page: 1,
+    limit: 20,
+  },
+  initialFetch: true,
+  storeKey: 'jobsFeed',
+})
+
+const { items } = storeToRefs(store)
+
+const formatDate = (isoString) => {
+  console.log('ISOSTRING', isoString)
+  const date = new Date(isoString)
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(date)
+}
+
+const jobs = computed(() =>
+  items.value.map((item) => {
+    return {
+      ...item,
+      publishedAt: item.published_at && formatDate(item.published_at),
+      expiresAt: item.expires_at && formatDate(item.expires_at),
+      employmentType: item.employment_type,
+    }
+  }),
+)
 
 const filters = ref({
   location: '',
@@ -10,9 +42,11 @@ const filters = ref({
 const searchQuery = ref('')
 
 const filteredJobs = computed(() => {
+  console.log(jobs)
   if (!jobs.value) return []
 
   return jobs.value.filter((job) => {
+    return true
     const matchesSearch =
       !searchQuery.value ||
       job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -49,6 +83,13 @@ const removeTagFilter = (tag: string) => {
 
     <!-- Main content -->
     <div class="max-w-7xl mx-auto px-4 py-12">
+      <div class="flex items-center rounded bg-primary-600 text-white p-2 w-max">
+        <Icon
+          size="24px"
+          name="mdi:exclamation"
+        />
+        <h2>We are in the process of adding more companies. Thank you for your patience.</h2>
+      </div>
       <!-- Filters -->
       <div class="mb-8">
         <JobFilters
@@ -58,9 +99,9 @@ const removeTagFilter = (tag: string) => {
       </div>
 
       <!-- Job listings -->
-      <JobListings
+      <JobListing
         :jobs="filteredJobs"
-        :loading="status === 'pending'"
+        :loading="false"
         @filter-tag="addTagFilter"
       />
     </div>

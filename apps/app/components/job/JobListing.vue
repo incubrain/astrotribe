@@ -2,10 +2,13 @@
 interface Job {
   title: string
   company: string
+  employmentType?: string
   location: string
   salary: number
   tags: string[]
-  path: string
+  url: string
+  publishedAt: string
+  expiresAt: string
   officeHours?: string
   verified?: boolean
   featured?: boolean
