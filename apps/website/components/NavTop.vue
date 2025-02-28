@@ -113,7 +113,24 @@ const websiteLinks = [
     icon: 'material-symbols:work',
     visible: true,
     disabled: false,
-    url: '/darksky',
+    items: [
+      {
+        key: 'conferences',
+        label: 'Conferences',
+        icon: 'material-symbols:rocket_launch',
+        url: '/events/conferences',
+        visible: true,
+        disabled: false,
+      },
+      {
+        key: 'symposiums',
+        label: 'Symposiums',
+        icon: 'material-symbols:manufacturing',
+        url: '/symposiums',
+        visible: true,
+        disabled: false,
+      },
+    ],
   },
 ]
 
