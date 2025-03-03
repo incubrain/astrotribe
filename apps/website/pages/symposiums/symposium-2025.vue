@@ -109,7 +109,7 @@ const toc = [
         >
           <iframe
             class="w-full h-full"
-            src="https://www.youtube.com/embed/1ycX0A1jE7Q"
+            src="https://www.youtube.com/embed/_Du8pF2pru4?si=oAh8KtSqxrSJbGWg"
             title="IDSPS Symposium: India's Dark Sky Policy & Sustainability"
             frameborder="0"
             allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
