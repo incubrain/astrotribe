@@ -29,7 +29,7 @@ const handleClose = () => {
     @update:visible="handleClose"
     modal
     :header="message.header"
-    class="w-[50%]"
+    class="w-[75%] md:w-[50%]"
   >
     {{ message.body }}
   </PrimeDialog>
