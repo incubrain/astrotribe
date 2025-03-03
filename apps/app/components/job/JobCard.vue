@@ -48,7 +48,7 @@ const emit = defineEmits<{
     </div>
 
     <div
-      class="group bg-white hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-jobs-primary/20 relative overflow-hidden"
+      class="group bg-primary bg-opacity-20 hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-jobs-primary/20 relative overflow-hidden"
       :class="job.featured ? 'border-jobs-primary/30 rounded-tr-2xl rounded-bl-2xl' : 'rounded-2xl'"
     >
       <!-- Enhanced gradient background for featured jobs -->
@@ -62,17 +62,17 @@ const emit = defineEmits<{
       <div class="flex justify-between items-start relative gap-4">
         <div class="space-y-1">
           <h2
-            class="text-xl font-semibold text-gray-900 group-hover:text-jobs-primary transition-colors duration-300"
+            class="text-xl text-white font-semibold text-gray-900 group-hover:text-jobs-primary transition-colors duration-300"
           >
             {{ job.title }}
           </h2>
-          <div class="flex flex-col items-center space-x-2">
+          <div class="flex text-white flex-col space-x-2">
             <span
               v-if="job.employmentType"
-              class="text-gray-600 font-medium"
+              class="font-medium"
               >{{ job.employmentType }}</span
             >
-            <span class="text-gray-600 font-medium">{{ job.company }}</span>
+            <span class="font-medium">{{ job.company }}</span>
             <!-- Added verified badge if needed -->
             <span
               v-if="job.verified"
@@ -88,7 +88,7 @@ const emit = defineEmits<{
 
         <span
           v-if="job.salary"
-          class="bg-jobs-primary/10 text-xs text-jobs-primary px-4 py-2 rounded-full font-semibold backdrop-blur-sm shadow-sm"
+          class="bg-jobs-primary/10 text-white text-xs text-jobs-primary px-4 py-2 rounded-full font-semibold backdrop-blur-sm shadow-sm"
         >
           {{
             new Intl.NumberFormat('fr-FR', {
@@ -103,32 +103,34 @@ const emit = defineEmits<{
         <div class="flex items-center space-x-2">
           <Icon
             name="uil:location-point"
-            class="w-5 h-5 text-jobs-primary/70"
+            color="white"
+            class="w-5 h-5 text-white text-jobs-primary/70"
           />
-          <span class="text-sm font-medium">{{ job.location }}</span>
+          <span class="text-sm text-white font-medium">{{ job.location }}</span>
         </div>
       </div>
       <div
         v-if="job.publishedAt || job.expiresAt"
-        class="flex items-center space-x-2"
+        class="flex text-white items-center space-x-2"
       >
         <Icon
           name="uil:clock"
+          color="white"
           class="w-4 h-4 text-jobs-primary/70"
         />
         <span
           v-if="job.publishedAt && job.expiresAt"
-          class="text-sm text-gray-500"
+          class="text-sm"
           >{{ job.publishedAt }}{{ job.expiresAt ? ` - ${job.expiresAt}` : '' }}</span
         >
         <span
           v-else-if="job.publishedAt"
-          class="text-sm text-gray-500"
+          class="text-sm"
           >Posted On: {{ job.publishedAt }}</span
         >
         <span
           v-else-if="job.expiresAt"
-          class="text-sm text-gray-500"
+          class="text-sm"
           >Deadline: {{ job.expiresAt }}</span
         >
       </div>
