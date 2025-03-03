@@ -2,7 +2,7 @@
 // const { data: jobs, status } = await useAsyncData('jobs-all', () => queryCollection('jobs').all())
 
 const { store, loadMore } = useSelectData('jobs', {
-  orderBy: { column: 'published_at', asc: false },
+  orderBy: { column: 'published_at', ascending: false },
   pagination: {
     page: 1,
     limit: 20,
