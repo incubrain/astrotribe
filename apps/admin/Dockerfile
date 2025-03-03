@@ -4,8 +4,9 @@ ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
 ENV NX_VERBOSE_LOGGING=true
 ENV NX_SKIP_NX_CLOUD=true
-RUN corepack enable
+RUN corepack prepare pnpm@8.7.6 --activate
 
+RUN npm install -g pnpm
 WORKDIR /app
 
 ARG NX_CLOUD_ACCESS_TOKEN
