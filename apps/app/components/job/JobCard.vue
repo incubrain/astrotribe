@@ -66,7 +66,7 @@ const emit = defineEmits<{
           >
             {{ job.title }}
           </h2>
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-col items-center space-x-2">
             <span
               v-if="job.employmentType"
               class="text-gray-600 font-medium"
