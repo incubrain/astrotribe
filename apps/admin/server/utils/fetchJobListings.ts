@@ -160,9 +160,9 @@ async function fetchJobListings(site: JobSite): Promise<JobListing[]> {
       const relativeUrl = $(element).find(site.selectors.relativeUrl).attr('href')
       const url =
         relativeUrl && relativeUrl?.startsWith('http') ? relativeUrl : `${site.url}${relativeUrl}`
-      const department = cleanText($(site.selectors.department).text())
-      const description = cleanText($(site.selectors.description).text())
-      const salary = cleanText($(site.selectors.salary).text())
+      const department = cleanText($(element).find(site.selectors.department).text())
+      const description = cleanText($(element).find(site.selectors.description).text())
+      const salary = cleanText($(element).find(site.selectors.salary).text())
 
       jobs.push({
         title,
