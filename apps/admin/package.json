@@ -21,6 +21,7 @@
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "pinia": "^2.2.2",
+    "playwright": "^1.41.1",
     "primevue": "^4.2.5",
     "razorpay": "^2.9.5",
     "socket.io-client": "^4.8.1",
