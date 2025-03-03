@@ -4,7 +4,7 @@ interface Job {
   salary: number
   location: string
   tags: string[]
-  company: string
+  company?: string
   employmentType?: string
   url: string
   publishedAt: string
@@ -109,15 +109,27 @@ const emit = defineEmits<{
         </div>
       </div>
       <div
-        v-if="job.publishedAt"
+        v-if="job.publishedAt || job.expiresAt"
         class="flex items-center space-x-2"
       >
         <Icon
           name="uil:clock"
           class="w-4 h-4 text-jobs-primary/70"
         />
-        <span class="text-sm text-gray-500"
+        <span
+          v-if="job.publishedAt && job.expiresAt"
+          class="text-sm text-gray-500"
           >{{ job.publishedAt }}{{ job.expiresAt ? ` - ${job.expiresAt}` : '' }}</span
+        >
+        <span
+          v-else-if="job.publishedAt"
+          class="text-sm text-gray-500"
+          >Posted On: {{ job.publishedAt }}</span
+        >
+        <span
+          v-else-if="job.expiresAt"
+          class="text-sm text-gray-500"
+          >Deadline: {{ job.expiresAt }}</span
         >
       </div>
 
