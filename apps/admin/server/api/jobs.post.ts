@@ -1,6 +1,31 @@
 import { defineEventHandler } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import { scrapeJobs } from '../utils/fetchJobListings'
+import { parse } from 'date-fns'
+
+const parseDate = (dateStr: string): Date | null => {
+  const formats = [
+    'd MMMM yyyy', // 26 February 2025
+    'dd/MM/yyyy', // 20/02/2025 (European format)
+    'MM/dd/yyyy', // 02/20/2025 (US format)
+    'yyyy-MM-dd', // 2025-02-26 (ISO)
+    'MMMM d, yyyy', // February 26, 2025
+  ]
+
+  for (const formatStr of formats) {
+    try {
+      const parsedDate = parse(dateStr, formatStr, new Date())
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate
+      }
+    } catch (e) {
+      continue
+    }
+  }
+
+  console.warn(`❌ Unable to parse date: ${dateStr}`)
+  return null
+}
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,7 +48,7 @@ export default defineEventHandler(async (event) => {
             .select()
             .single()
 
-          console.error('Error inserting into contents', error)
+          if (error) console.error('Error inserting into contents', error)
 
           if (content) {
             const { data: jobData, error: jobError } = await supabase
@@ -34,14 +59,14 @@ export default defineEventHandler(async (event) => {
                 url: job.url,
                 location: job.location,
                 description: job.description,
-                published_at: job.publish_date && new Date(job.publish_date),
-                expires_at: job.deadline && new Date(job.deadline),
+                ...(job.publish_date ? { published_at: parseDate(job.publish_date) } : {}),
+                ...(job.deadline ? { expires_at: parseDate(job.deadline) } : {}),
                 employment_type: job.employment_type,
               })
               .select()
               .single()
 
-            console.error('Error inserting into jobs', jobData)
+            if (error) console.error('Error inserting into jobs', jobData)
           }
         }),
       ),
