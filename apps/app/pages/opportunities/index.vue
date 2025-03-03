@@ -44,7 +44,6 @@ const filters = ref({
 const searchQuery = ref('')
 
 const filteredJobs = computed(() => {
-  console.log(jobs)
   if (!jobs.value) return []
 
   return jobs.value.filter((job) => {
