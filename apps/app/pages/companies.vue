@@ -44,7 +44,11 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
 </script>
 
 <template>
-  <div :class="{ 'blur-sm pointer-events-none': isUserBasic }">
+  <div
+    @wheel.prevent
+    @touchmove.prevent
+    :class="{ 'h-full overflow-hidden blur-sm pointer-events-none': isUserBasic }"
+  >
     <Transition
       name="fade"
       mode="out-in"
@@ -52,6 +56,7 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
       <IBInfiniteScroll
         v-if="!showSkeletonGrid"
         :threshold="1400"
+        :disabled="isUserBasic"
         @update:scroll-end="handleScroll"
       >
         <CompaniesTable :companies="companies" />
