@@ -2,6 +2,7 @@
 // const { data: jobs, status } = await useAsyncData('jobs-all', () => queryCollection('jobs').all())
 
 const { store, loadMore } = useSelectData('jobs', {
+  orderBy: { column: 'published_at', asc: false },
   pagination: {
     page: 1,
     limit: 20,
@@ -13,7 +14,6 @@ const { store, loadMore } = useSelectData('jobs', {
 const { items } = storeToRefs(store)
 
 const formatDate = (isoString) => {
-  console.log('ISOSTRING', isoString)
   const date = new Date(isoString)
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
@@ -99,11 +99,21 @@ const removeTagFilter = (tag: string) => {
       </div>
 
       <!-- Job listings -->
-      <JobListing
-        :jobs="filteredJobs"
-        :loading="false"
-        @filter-tag="addTagFilter"
-      />
+      <Transition
+        name="fade"
+        mode="out-in"
+      >
+        <IBInfiniteScroll
+          :threshold="1400"
+          @update:scroll-end="loadMore"
+        >
+          <JobListing
+            :jobs="filteredJobs"
+            :loading="false"
+            @filter-tag="addTagFilter"
+          />
+        </IBInfiniteScroll>
+      </Transition>
     </div>
   </div>
 </template>
