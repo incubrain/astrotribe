@@ -1,5 +1,5 @@
-import axios from 'axios'
 import * as cheerio from 'cheerio'
+import { chromium } from 'playwright'
 
 interface JobListing {
   title: string
@@ -52,7 +52,8 @@ const jobSites: JobSite[] = [
   {
     name: 'SKAO',
     url: 'https://recruitment.skao.int',
-    listingUrl: 'https://recruitment.skao.int/vacancies.html',
+    listingUrl:
+      'https://recruitment.skao.int/vacancies.html#filter=p_web_site_id%3D6435%26p_published_to%3DWWW%26p_language%3DDEFAULT%26p_direct%3DY%26p_format%3DMOBILE%26p_include_exclude_from_list%3DN%26p_search%3D',
     selectors: {
       jobContainer: '#jobs_list .jobCard',
       title: '.card-title a',
@@ -111,10 +112,20 @@ function formatDate(dateString: string): string {
   return dateString
 }
 
+async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI> {
+  const browser = await chromium.launch()
+  const page = await browser.newPage()
+
+  await page.goto(url, { waitUntil: 'networkidle' }) // Wait for DOM
+  const content = await page.content() // Get the HTML after JS executes
+  await browser.close()
+
+  return cheerio.load(content)
+}
+
 async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListing> {
   try {
-    const { data } = await axios.get(job.url)
-    const $ = cheerio.load(data)
+    const $ = await fetchPageWithJS(job.url)
 
     job.title = job.title || cleanText($(site.selectors.title).text())
     job.publish_date =
@@ -131,8 +142,8 @@ async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListi
 
 async function fetchJobListings(site: JobSite): Promise<JobListing[]> {
   try {
-    const { data } = await axios.get(site.listingUrl)
-    const $ = cheerio.load(data)
+    const $ = await fetchPageWithJS(site.listingUrl)
+    console.log(`Scraping ${site.listingUrl}`)
 
     let jobs: JobListing[] = []
 
