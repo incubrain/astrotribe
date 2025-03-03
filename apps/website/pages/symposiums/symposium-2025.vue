@@ -34,7 +34,7 @@ const toc = [
   {
     id: 8,
     depth: 1,
-    text: 'Watch Live',
+    text: 'Watch Stream',
     link: 'watchLive',
   },
 ]
