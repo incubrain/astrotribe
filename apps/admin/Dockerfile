@@ -1,6 +1,3 @@
-# Use the official Playwright image (Recommended)
-FROM mcr.microsoft.com/playwright:v1.40.0  # Use the latest version available
-
 FROM node:22.12.0-bookworm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -31,6 +28,9 @@ COPY layers ./layers
 COPY theme ./theme
 COPY shared ./shared
 
+# Install Playwright dependencies and browsers
+RUN npx playwright install-deps && \
+    npx playwright install chromium
 
 # Install dependencies for required workspaces
 
