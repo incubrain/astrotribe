@@ -36,8 +36,8 @@ export default defineEventHandler(async (event) => {
     companies.forEach((jobs: any) => jobs.forEach((job: any) => console.log(job.title)))
 
     Promise.all(
-      companies.map((jobs) =>
-        jobs.map(async (job) => {
+      companies.map((company: any) =>
+        company.jobs.map(async (job) => {
           const { data: content, error } = await supabase
             .from('contents')
             .insert({
@@ -50,6 +50,17 @@ export default defineEventHandler(async (event) => {
 
           if (error) console.error('Error inserting into contents', error)
 
+          let company_id = null
+
+          if (company.name) {
+            const { data: companyData, error: companyError } = await supabase
+              .from('companies')
+              .select('id')
+              .eq('name', company.name)
+
+            company_id = companyData?.id
+          }
+
           if (content) {
             const { data: jobData, error: jobError } = await supabase
               .from('jobs')
@@ -57,6 +68,7 @@ export default defineEventHandler(async (event) => {
                 contents_id: content.id,
                 title: job.title,
                 url: job.url,
+                company_id,
                 location: job.location,
                 description: job.description,
                 ...(job.publish_date ? { published_at: parseDate(job.publish_date) } : {}),
