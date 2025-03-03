@@ -1,6 +1,11 @@
 import * as cheerio from 'cheerio'
 import { chromium } from 'playwright'
 
+interface Company {
+  name?: string
+  jobs: JobListing[]
+}
+
 interface JobListing {
   title: string
   location: string
@@ -112,20 +117,40 @@ function formatDate(dateString: string): string {
   return dateString
 }
 
-async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI> {
+async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> {
   const browser = await chromium.launch()
   const page = await browser.newPage()
 
-  await page.goto(url, { waitUntil: 'networkidle' }) // Wait for DOM
-  const content = await page.content() // Get the HTML after JS executes
+  let content: string | null = null
+
+  try {
+    // Try with "domcontentloaded" first
+    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    content = await page.content()
+  } catch (error) {
+    console.warn(`Failed with 'domcontentloaded', retrying with 'networkidle'...`)
+    try {
+      await page.goto(url, { waitUntil: 'networkidle' })
+      content = await page.content()
+    } catch (error) {
+      console.error(`Both 'domcontentloaded' and 'networkidle' failed for ${url}:`, error)
+    }
+  }
+
   await browser.close()
 
-  return cheerio.load(content)
+  if (content) {
+    return cheerio.load(content)
+  }
+
+  return null
 }
 
-async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListing> {
+async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListing | null> {
   try {
     const $ = await fetchPageWithJS(job.url)
+
+    if (!$) return null
 
     job.title = job.title || cleanText($(site.selectors.title).text())
     job.publish_date =
@@ -140,12 +165,14 @@ async function fetchJobDetails(job: JobListing, site: JobSite): Promise<JobListi
   return job
 }
 
-async function fetchJobListings(site: JobSite): Promise<JobListing[]> {
+async function fetchJobListings(site: JobSite): Promise<Company> {
   try {
     const $ = await fetchPageWithJS(site.listingUrl)
     console.log(`Scraping ${site.listingUrl}`)
 
     let jobs: JobListing[] = []
+
+    if (!$) return { name: site.name, jobs: [] }
 
     $(site.selectors.jobContainer).each((_, element) => {
       const title = cleanText($(element).find(site.selectors.title).first().text())
@@ -177,15 +204,17 @@ async function fetchJobListings(site: JobSite): Promise<JobListing[]> {
       })
     })
 
-    jobs = await Promise.all(jobs.map((job) => fetchJobDetails(job, site)))
+    jobs = (await Promise.all(jobs.map((job) => fetchJobDetails(job, site)))).filter(
+      (job): job is JobListing => !!job,
+    )
 
-    return jobs
+    return { name: site.name, jobs }
   } catch (error) {
     console.error(`Error fetching job listings from ${site.name}:`, error)
-    return []
+    return { name: site.name, jobs: [] }
   }
 }
 
-export async function scrapeJobs(): Promise<JobListing[][]> {
+export async function scrapeJobs(): Promise<Company[]> {
   return Promise.all(jobSites.map(fetchJobListings))
 }
