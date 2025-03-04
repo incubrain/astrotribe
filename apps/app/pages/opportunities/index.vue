@@ -12,6 +12,12 @@ const { store, loadMore } = useSelectData('jobs', {
   storeKey: 'jobsFeed',
 })
 
+const currentUser = useCurrentUser()
+const { profile } = storeToRefs(currentUser)
+
+const isUserBasic = profile.value.user_plan === 'free'
+const showDialog = ref(isUserBasic)
+
 const { items } = storeToRefs(store)
 
 const formatDate = (isoString) => {
@@ -25,12 +31,6 @@ const formatDate = (isoString) => {
 
 const jobs = computed(() =>
   items.value
-    .sort((a, b) => {
-      if (a.publish_date === null) return 1 // Move null to the bottom
-      if (b.publish_date === null) return -1 // Move null to the bottom
-
-      return new Date(b.published_at) - new Date(a.published_at) // Sort descending
-    })
     .map((item) => {
       return {
         ...item,
@@ -39,6 +39,12 @@ const jobs = computed(() =>
         employmentType: item.employment_type,
         company: item.companies?.name,
       }
+    })
+    .sort((a, b) => {
+      if (a.publish_date === null) return 1 // Move null to the bottom
+      if (b.publish_date === null) return -1 // Move null to the bottom
+
+      return new Date(b.published_at) - new Date(a.published_at) // Sort descending
     }),
 )
 
@@ -82,7 +88,11 @@ const removeTagFilter = (tag: string) => {
 </script>
 
 <template>
-  <div>
+  <div
+    @wheel.prevent
+    @touchmove.prevent
+    :class="{ 'h-full overflow-hidden blur-sm pointer-events-none': isUserBasic }"
+  >
     <!-- Hero Section -->
     <HomeHero
       v-model:search-query="searchQuery"
@@ -124,6 +134,44 @@ const removeTagFilter = (tag: string) => {
       </Transition>
     </div>
   </div>
+  <PrimeDialog
+    v-model:visible="showDialog"
+    :modal="true"
+    header="🚀 Upgrade Your Plan"
+    class="w-[80vw] md:w-[30vw] rounded-md"
+  >
+    <div class="flex flex-col items-center gap-4 p-6 text-center">
+      <!-- Upgrade Icon -->
+      <Icon
+        name="mdi:crown"
+        size="48px"
+        class="text-yellow-500"
+      />
+
+      <!-- Upgrade Message -->
+      <h3 class="text-lg font-semibold text-white"> Unlock Premium Features! </h3>
+      <p class="text-white text-sm">
+        Upgrade your plan to access all companies and premium insights.
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex gap-3 mt-4">
+        <NuxtLink to="/settings/payments">
+          <PrimeButton
+            severity="success"
+            class="px-6 py-2 flex items-center gap-2"
+          >
+            <Icon
+              name="mdi:star"
+              size="20px"
+              class="text-yellow-400"
+            />
+            Upgrade Now
+          </PrimeButton>
+        </NuxtLink>
+      </div>
+    </div>
+  </PrimeDialog>
 </template>
 
 <style>
