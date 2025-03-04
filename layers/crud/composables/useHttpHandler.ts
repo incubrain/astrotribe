@@ -202,7 +202,7 @@ export function useHttpHandler() {
 
   async function select<T>(tableName: string, options: SelectOptions<T> = {}): Promise<T[]> {
     let query = supabase.from(tableName).select(options.columns || '*')
-
+    console.log('OPTIONS FILTERS', options.filters)
     // Apply filters using direct query builder methods
     if (options.filters) {
       Object.entries(options.filters).forEach(([column, filter]) => {
@@ -231,6 +231,9 @@ export function useHttpHandler() {
               break
             case 'is':
               query = query.is(column, value)
+              break
+            case 'like':
+              query = query.like(column, value)
               break
             // Add other operators as needed
           }
