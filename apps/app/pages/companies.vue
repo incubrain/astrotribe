@@ -4,7 +4,7 @@ definePageMeta({ name: 'Companies' })
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
 
-const isUserBasic = profile.value.user_plan !== 'free'
+const isUserBasic = profile.value.user_plan === 'free'
 const showDialog = ref(isUserBasic)
 const loading = useLoadingStore()
 

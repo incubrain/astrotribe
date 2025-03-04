@@ -162,5 +162,5 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
 }
 
 export async function scrapeJobs(): Promise<Company[]> {
-  return Promise.all((jobSites as JobSite[]).map(fetchJobListings))
+  return Promise.all((jobSites as JobSite[]).slice(1, 2).map(fetchJobListings))
 }
