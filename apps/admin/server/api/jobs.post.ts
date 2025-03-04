@@ -33,11 +33,15 @@ export default defineEventHandler(async (event) => {
 
     const companies = await scrapeJobs()
 
-    companies.forEach((jobs: any) => jobs.forEach((job: any) => console.log(job.title)))
+    companies.forEach((company: any) =>
+      company.jobs.length
+        ? company.jobs.forEach((job: any) => console.log(job.title))
+        : console.log(`No jobs found for ${company.name}`),
+    )
 
     Promise.all(
       companies.map((company: any) =>
-        company.jobs.map(async (job) => {
+        company.jobs.map(async (job: any) => {
           const { data: content, error } = await supabase
             .from('contents')
             .insert({
