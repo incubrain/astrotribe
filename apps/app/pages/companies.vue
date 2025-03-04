@@ -21,7 +21,7 @@ const { store, loadMore } = useSelectData('companies', {
     page: 1,
     limit: 20,
   },
-  filters: { logo_url: { like: '%https%' } },
+  filters: { content_status: { eq: 'published' } },
   initialFetch: true,
   storeKey: 'companiesFeed',
 })
