@@ -118,7 +118,7 @@ const websiteLinks = [
         key: 'conferences',
         label: 'Conferences',
         icon: 'material-symbols:rocket_launch',
-        url: '/events/conferences',
+        url: '/conferences',
         visible: true,
         disabled: false,
       },
