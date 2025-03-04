@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
 import { chromium } from 'playwright'
+import jobSites from './jobsites.json'
 
 interface Company {
   name?: string
@@ -36,75 +37,6 @@ interface JobSite {
   }
 }
 
-const jobSites: JobSite[] = [
-  {
-    name: 'ESA',
-    url: 'https://jobs.esa.int',
-    listingUrl:
-      'https://jobs.esa.int/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_dept=&optionsFacetsDD_shifttype=&optionsFacetsDD_customfield4=&optionsFacetsDD_customfield3=',
-    selectors: {
-      jobContainer: '#job-tile-list li.job-tile',
-      title: '.tiletitle a',
-      location: '[id*="-section-multilocation-value"]',
-      employment_type: '[id*="-section-shifttype-value"]',
-      deadline: '[id*="-section-department-value"]',
-      relativeUrl: '.tiletitle a',
-      publish_date: 'span[data-careersite-propertyid="adcode"]',
-      department: 'span[data-careersite-propertyid="dept"]',
-      description: 'span[itemprop="description"]',
-    },
-  },
-  {
-    name: 'SKAO',
-    url: 'https://recruitment.skao.int',
-    listingUrl:
-      'https://recruitment.skao.int/vacancies.html#filter=p_web_site_id%3D6435%26p_published_to%3DWWW%26p_language%3DDEFAULT%26p_direct%3DY%26p_format%3DMOBILE%26p_include_exclude_from_list%3DN%26p_search%3D',
-    selectors: {
-      jobContainer: '#jobs_list .jobCard',
-      title: '.card-title a',
-      location: 'li:contains("Job Location") .jovalue',
-      employment_type: 'li:contains("Contract Type") .jovalue',
-      deadline: 'li:contains("Closing Date") .class_value',
-      relativeUrl: '.card-title a',
-      department: 'li:contains("Area / Department") .jovalue',
-      salary: 'li:contains("Salary") .jovalue',
-    },
-  },
-  {
-    name: 'Space Talent',
-    url: 'https://jobs.spacetalent.org',
-    listingUrl: 'https://jobs.spacetalent.org/',
-    selectors: {
-      jobContainer: '[data-testid="job-list-item"]',
-      title: '[data-testid="job-title-link"] div[itemprop="title"]',
-      location: '[itemprop="jobLocation"] meta[itemprop="address"]',
-      employment_type: '[data-testid="job-title-link"] div.sc-dmqHEX',
-      deadline: '',
-      relativeUrl: '[data-testid="job-title-link"]',
-      publish_date: '[itemprop="datePosted"]',
-      department: '[data-testid="tag"] div.sc-dmqHEX.dncTlc',
-      salary: '[data-testid="job-title-link"] ~ div p.sc-beqWaB.enQFes',
-    },
-  },
-  {
-    name: 'CERN',
-    url: 'https://careers.cern',
-    listingUrl: 'https://careers.cern/alljobs',
-    selectors: {
-      jobContainer: 'tr.srJobListJobOdd, tr.srJobListJobEven',
-      title: 'td.srJobListJobTitle',
-      location: 'td.srJobListLocation',
-      employment_type: '[itemprop="employmentType"]',
-      deadline: 'strong:contains("Job closing date")',
-      relativeUrl: 'tr[onclick]',
-      publish_date: 'meta[itemprop="datePosted"]',
-      department: 'meta[itemprop="industry"]',
-      description: '[itemprop="description"]',
-      salary: 'li:contains("A monthly stipend ranging between")',
-    },
-  },
-]
-
 function cleanText(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
 }
@@ -125,12 +57,12 @@ async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> 
 
   try {
     // Try with "domcontentloaded" first
-    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    await page.goto(url, { waitUntil: 'networkidle' })
     content = await page.content()
   } catch (error) {
-    console.warn(`Failed with 'domcontentloaded', retrying with 'networkidle'...`)
+    console.warn(`Failed with 'networkidle', retrying with 'domcontentloaded'...`)
     try {
-      await page.goto(url, { waitUntil: 'networkidle' })
+      await page.goto(url, { waitUntil: 'domcontentloaded' })
       content = await page.content()
     } catch (error) {
       console.error(`Both 'domcontentloaded' and 'networkidle' failed for ${url}:`, error)
@@ -169,7 +101,7 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
   try {
     const $ = await fetchPageWithJS(site.listingUrl)
     console.log(`Scraping ${site.listingUrl}`)
-
+    let hasAllProps = false
     let jobs: JobListing[] = []
 
     if (!$) return { name: site.name, jobs: [] }
@@ -191,6 +123,18 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
       const description = cleanText($(element).find(site.selectors.description).text())
       const salary = cleanText($(element).find(site.selectors.salary).text())
 
+      hasAllProps = [
+        title,
+        location,
+        department,
+        description,
+        salary,
+        publish_date,
+        employment_type,
+        deadline,
+        url,
+      ].every((value) => value)
+
       jobs.push({
         title,
         location,
@@ -204,9 +148,11 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
       })
     })
 
-    jobs = (await Promise.all(jobs.map((job) => fetchJobDetails(job, site)))).filter(
-      (job): job is JobListing => !!job,
-    )
+    if (!hasAllProps) {
+      jobs = (await Promise.all(jobs.map((job) => fetchJobDetails(job, site)))).filter(
+        (job): job is JobListing => !!job,
+      )
+    }
 
     return { name: site.name, jobs }
   } catch (error) {
@@ -216,5 +162,5 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
 }
 
 export async function scrapeJobs(): Promise<Company[]> {
-  return Promise.all(jobSites.map(fetchJobListings))
+  return Promise.all((jobSites as JobSite[]).map(fetchJobListings))
 }
