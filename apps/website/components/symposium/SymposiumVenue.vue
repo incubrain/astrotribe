@@ -14,7 +14,7 @@ const venues = [
     about: 'The event will be broadcasted live on our website as well as on our YouTube channel',
     main: 'YouTube',
     button: 'YouTube',
-    website: 'https://youtube.com/live/1ycX0A1jE7Q',
+    website: 'https://www.youtube.com/live/_Du8pF2pru4?si=f1dlgDd6imcA1Duq',
     color: 'red',
   },
 ]

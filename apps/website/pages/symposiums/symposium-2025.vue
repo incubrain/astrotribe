@@ -101,7 +101,18 @@ const toc = [
         <hr />
         <SymposiumSpeakers id="speakers" />
         <hr />
-        <SymposiumBrochure id="brochure" />
+        <div class="flex flex-col gap-2 md:flex-row">
+          <SymposiumPDFResource
+            pdf="/symposium/idsps_symposium_report.pdf"
+            label="Report"
+            id="brochure"
+          />
+          <SymposiumPDFResource
+            pdf="/symposium/brochure_symposium_2025.pdf"
+            label="Brochure"
+            id="brochure"
+          />
+        </div>
         <hr />
         <div
           id="watchLive"
