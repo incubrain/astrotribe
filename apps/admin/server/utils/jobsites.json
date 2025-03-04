@@ -13,6 +13,21 @@
     }
   },
   {
+    "name": "Pixxel",
+    "url": "https://pixxel.darwinbox.in",
+    "listingUrl": "https://pixxel.darwinbox.in/ms/candidate/careers",
+    "selectors": {
+      "jobContainer": "table.db-table-one tbody tr",
+      "title": "td[data-th='Job title'] a",
+      "location": "td[data-th='Location'] span",
+      "employment_type": "td[data-th='Employee Type'] span",
+      "department": "td[data-th='Department'] span",
+      "relativeUrl": "td[data-th='Job title'] a",
+      "publish_date": "td[data-th='Job posted on'] span",
+      "description": null
+    }
+  },
+  {
     "name": "AAS",
     "url": "https://aas.org/jobregister",
     "listingUrl": "https://aas.org/jobregister",
