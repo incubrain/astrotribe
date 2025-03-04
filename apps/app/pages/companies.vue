@@ -4,7 +4,7 @@ definePageMeta({ name: 'Companies' })
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
 
-const isUserBasic = profile.value.user_plan === 'free'
+const isUserBasic = profile.value.user_plan !== 'free'
 const showDialog = ref(isUserBasic)
 const loading = useLoadingStore()
 
@@ -46,9 +46,9 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
 
 <template>
   <div
-    @wheel.prevent
-    @touchmove.prevent
     :class="{ 'h-full overflow-hidden blur-sm pointer-events-none': isUserBasic }"
+    @wheel="(event) => isUserBasic && event.preventDefault()"
+    @touchmove="(event) => isUserBasic && event.preventDefault()"
   >
     <Transition
       name="fade"

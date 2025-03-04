@@ -124,6 +124,7 @@ const getIcon = (key: string) => {
         </PrimeButton>
       </NuxtLInk>
     </div>
+      <NuxtLink v-if="company.url" :to="company.url" target="_blank" external><PrimeButton outlined>Company Website</PrimeButton></NuxtLink>
       <NuxtLink v-if="company.job_url" :to="company.job_url" target="_blank" external><PrimeButton outlined>Jobs</PrimeButton></NuxtLink>
       </div>
     </td>
