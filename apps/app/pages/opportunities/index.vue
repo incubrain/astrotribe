@@ -49,7 +49,7 @@ const jobs = computed(() =>
 )
 
 const filters = ref({
-  location: '',
+  location: { value: '', options: [...new Set(jobs.value?.map((job) => job.location))] },
   minSalary: 0,
   tags: [] as string[],
 })
@@ -111,6 +111,7 @@ const removeTagFilter = (tag: string) => {
       <!-- Filters -->
       <div class="mb-8">
         <JobFilter
+          class="hidden"
           v-model="filters"
           @remove-tag="removeTagFilter"
         />
