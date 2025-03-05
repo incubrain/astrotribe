@@ -8,6 +8,19 @@ const isUserBasic = profile.value.user_plan === 'free'
 const showDialog = ref(isUserBasic)
 const loading = useLoadingStore()
 
+const searchQuery = ref('')
+const searchResults = ref<any[]>([])
+const searchFuseOptions = {
+  keys: ['name', 'description', 'categories.name', 'founding_year'],
+  threshold: 0.3,
+  shouldSort: true,
+}
+
+const handleSearchResults = (results: FuseResult<any>[]) => {
+  console.log('Search results:', results)
+  searchResults.value = results.map((result) => result.item)
+}
+
 // Ads integration
 const { isLoading: adsLoading } = useAdsStore()
 
@@ -42,6 +55,17 @@ const companies = computed(() =>
 )
 
 const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || adsLoading.value)
+
+const filteredCompanies = computed(() => {
+  let filtered = companies.value ?? []
+
+  // Filter by search
+  if (searchQuery.value && searchResults.value?.length) {
+    return searchResults.value
+  }
+
+  return filtered
+})
 </script>
 
 <template>
@@ -50,6 +74,16 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
     @wheel="(event) => isUserBasic && event.preventDefault()"
     @touchmove="(event) => isUserBasic && event.preventDefault()"
   >
+    <div class="w-full">
+      <FuzzySearch
+        v-model="searchQuery"
+        :data="companies"
+        :fuse-options="searchFuseOptions"
+        placeholder="Search companies..."
+        class="w-full"
+        @results="handleSearchResults"
+      />
+    </div>
     <Transition
       name="fade"
       mode="out-in"
@@ -60,7 +94,7 @@ const showSkeletonGrid = computed(() => loading.isLoading('companiesFeed') || ad
         :disabled="isUserBasic"
         @update:scroll-end="handleScroll"
       >
-        <CompaniesTable :companies="companies" />
+        <CompaniesTable :companies="filteredCompanies" />
       </IBInfiniteScroll>
       <CompaniesSkeleton v-else />
     </Transition>
