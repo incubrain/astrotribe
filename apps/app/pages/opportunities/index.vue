@@ -89,9 +89,9 @@ const removeTagFilter = (tag: string) => {
 
 <template>
   <div
-    @wheel.prevent
-    @touchmove.prevent
     :class="{ 'h-full overflow-hidden blur-sm pointer-events-none': isUserBasic }"
+    @wheel="(event) => isUserBasic && event.preventDefault()"
+    @touchmove="(event) => isUserBasic && event.preventDefault()"
   >
     <!-- Hero Section -->
     <HomeHero
