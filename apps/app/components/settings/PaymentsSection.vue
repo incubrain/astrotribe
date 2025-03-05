@@ -261,7 +261,7 @@ onMounted(async () => {
             <!-- Features List -->
             <ul class="mt-6 space-y-4 flex-grow flex flex-col h-full">
               <li
-                v-for="feature in allPlans[0].features"
+                v-for="feature in allPlans[0].features.values"
                 :key="feature"
                 class="flex items-start"
               >
