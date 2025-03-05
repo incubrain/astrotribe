@@ -78,13 +78,15 @@ const freePlan = {
   price: '0',
   period: 'forever',
   description: 'Get started with free features',
-  features: [
-    'Basic project access',
-    'Community support',
-    '2 team members',
-    '1GB storage',
-    'Basic analytics',
-  ],
+  features: {
+    values: [
+      'Basic project access',
+      'Community support',
+      '2 team members',
+      '1GB storage',
+      'Basic analytics',
+    ],
+  },
   razorPayConfig: {
     isActive: true,
     buttonLabel: `Current Plan`,
