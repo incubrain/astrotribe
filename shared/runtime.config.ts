@@ -50,10 +50,14 @@ export const sharedRuntimeConfig = defineNuxtConfig({
       openaiOrg: process.env.NUXT_OPENAI_ORG,
       redisFlushKey: process.env.NUXT_REDIS_FLUSH_KEY,
       scraperKey: process.env.NUXT_SCRAPER_KEY,
-      razorpayKey: process.env.NUXT_RAZORPAY_KEY,
-      razorpaySecret: process.env.NUXT_RAZORPAY_SECRET,
-      razorpayTestKey: process.env.NUXT_RAZORPAY_TEST_KEY,
-      razorpayTestSecret: process.env.NUXT_RAZORPAY_TEST_SECRET,
+      razorpayKey:
+        process.env.NODE_env === 'production'
+          ? process.env.NUXT_RAZORPAY_KEY
+          : process.env.NUXT_RAZORPAY_TEST_KEY,
+      razorpaySecret:
+        process.env.NODE_env === 'production'
+          ? process.env.NUXT_RAZORPAY_SECRET
+          : process.env.NUXT_RAZORPAY_TEST_SECRET,
       turnstileSecretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
     },
   },

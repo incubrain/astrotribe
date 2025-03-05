@@ -1,10 +1,10 @@
 import Razorpay from 'razorpay'
 
-const { razorpayTestKey, razorpayTestSecret } = useRuntimeConfig()
+const { razorpayKey, razorpaySecret } = useRuntimeConfig()
 
 const razorpay = new Razorpay({
-  key_id: razorpayTestKey!,
-  key_secret: razorpayTestSecret,
+  key_id: razorpayKey!,
+  key_secret: razorpaySecret,
 })
 
 export default razorpay
