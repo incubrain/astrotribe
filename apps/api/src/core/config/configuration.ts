@@ -26,8 +26,8 @@ export default registerAs('app', () => ({
     database: process.env.DATABASE_NAME,
   },
   razorpay: {
-    key_id: process.env.NUXT_RAZORPAY_TEST_KEY,
-    key_secret: process.env.NUXT_RAZORPAY_TEST_SECRET,
+    key_id: process.env.NUXT_RAZORPAY_KEY,
+    key_secret: process.env.NUXT_RAZORPAY_SECRET,
   },
   jwt: {
     secret: process.env.JWT_SECRET,
