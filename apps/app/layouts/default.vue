@@ -30,10 +30,5 @@ const handleMessageClose = () => {
       </div>
       <NavMobiBottom class="lg:hidden" />
     </div>
-    <FrontiersMessage
-      :isOpen="showPrelaunchMessage"
-      @update:isOpen="(value) => (showPrelaunchMessage = value)"
-      @close="handleMessageClose"
-    />
   </div>
 </template>
