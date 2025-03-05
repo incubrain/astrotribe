@@ -19,7 +19,7 @@ import { MonitoringModule } from '@monitoring/monitoring.module'
 // New modules (for caching & jobs)
 import { RedisModule } from '@core/cache/cache.module'
 import { PaymentsModule } from '@payments/payment.module'
-import { JobModule } from '@jobs/job.module'
+//import { JobModule } from '@jobs/job.module'
 import { EventsModule } from './observables/events.module'
 
 @Module({
@@ -41,7 +41,7 @@ import { EventsModule } from './observables/events.module'
     // 3) Feature modules
     ContentModule,
     MonitoringModule,
-    JobModule,
+    //JobModule,
     PaymentsModule,
 
     // 4) Rate limiting
