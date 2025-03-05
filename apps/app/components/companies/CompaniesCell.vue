@@ -73,7 +73,7 @@ const getIcon = (key: string) => {
         <p class="text-center w-full text-wrap">{{ company.name }}</p>
       </div>
     </td>
-    <td class="px-4 w-3/5 flex-2 py-3 whitespace-wrap max-w-xs text-left"
+    <td class="px-4 flex flex-col gap-2 justify-between w-3/5 flex-2 py-3 whitespace-wrap max-w-xs text-left"
       ><p
         v-if="company.description"
         class="align-middle"
@@ -95,6 +95,9 @@ const getIcon = (key: string) => {
         class="w-full min-h-[1em]"
         >&nbsp;</p
       >
+      <NuxtLink v-if="company.url" :to="company.url" target="_blank" external>
+        <PrimeButton outlined severity="contrast">Company Website</PrimeButton>
+      </NuxtLink>
     </td>
     <td class="flex py-3 w-1/5 flex-1 flex-col">
       <p v-if="company.founding_year"><b>Founding Year:</b> {{ company.founding_year }}</p>
@@ -124,8 +127,9 @@ const getIcon = (key: string) => {
         </PrimeButton>
       </NuxtLInk>
     </div>
-      <NuxtLink v-if="company.url" :to="company.url" target="_blank" external><PrimeButton outlined>Company Website</PrimeButton></NuxtLink>
-      <NuxtLink v-if="company.job_url" :to="company.job_url" target="_blank" external><PrimeButton outlined>Jobs</PrimeButton></NuxtLink>
+      <NuxtLink v-if="company.job_url" :to="company.job_url" target="_blank" external>
+        <PrimeButton outlined severity="contrast" class="shiny-button font-bold">Jobs</PrimeButton>
+      </NuxtLink>
       </div>
     </td>
     <td 
@@ -135,3 +139,38 @@ const getIcon = (key: string) => {
     >
   </tr>
 </template>
+
+<style scoped>
+  .shiny-button {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+  }
+
+  /* Shine Effect */
+  .shiny-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: skewX(-45deg);
+      animation: shine 10s infinite linear;
+  }
+
+  /* Shine Animation */
+  @keyframes shine {
+      0% { left: -100%; }
+      5% { left: 150%; }
+      100% { left: 150%; }
+  }
+
+  /* Hover Effect */
+  .shiny-button:hover {
+      transform: scale(1.05);
+  }
+</style>
