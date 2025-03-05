@@ -110,7 +110,7 @@ const removeTagFilter = (tag: string) => {
       </div>
       <!-- Filters -->
       <div class="mb-8">
-        <JobFilters
+        <JobFilter
           v-model="filters"
           @remove-tag="removeTagFilter"
         />
