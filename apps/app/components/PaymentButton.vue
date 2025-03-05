@@ -46,12 +46,12 @@ const emit = defineEmits<{
   'payment-closed': []
 }>()
 
-const config = useRuntimeConfig()
+const { razorpayKey } = useRuntimeConfig()
 const loading = ref(false)
 const isRazorpayLoaded = ref(false)
 
 const razorpayOptions = computed(() => ({
-  key: config.public.razorpayKey || 'rzp_test_lV0OE0NDIg6Hr6',
+  key: razorpayKey,
   subscription_id: props.plan.subscription_id,
   subscriptionStartsLater: false,
   amount: props.plan.amount * 100, // Razorpay expects amount in paise
