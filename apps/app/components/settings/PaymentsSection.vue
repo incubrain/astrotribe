@@ -94,7 +94,7 @@ const freePlan = {
 }
 
 const plans = computed<PlanConfig>(() =>
-  plansData.value.length
+  plansData.value?.length
     ? [
         (!subscriptions.value?.length ||
           !subscriptions.value.some((subscription) =>
@@ -114,7 +114,7 @@ const plans = computed<PlanConfig>(() =>
               subscription_status: null,
             }
 
-            const subscription = subscriptions.value.find((sub) => sub.plan_id === item.id)
+            const subscription = subscriptions.value?.find((sub) => sub.plan_id === item.id)
 
             if (subscription && subscription.plan_id === item.id) {
               const period =
