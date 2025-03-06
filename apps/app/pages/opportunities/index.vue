@@ -60,13 +60,19 @@ const jobs = computed(() =>
     }),
 )
 
-const filters = computed(() => ({
-  location: { value: '', options: [...new Set(jobs.value?.map((job) => job.location))] },
-  company: { value: '', options: [...new Set(jobs.value?.map((job) => job.companies?.name))] },
-  type: { value: '', options: [...new Set(jobs.value?.map((job) => job.employment_type))] },
+const filters = ref({
+  location: { value: '', options: [] },
+  company: { value: '', options: [] },
+  type: { value: '', options: [] },
   minSalary: 0,
   tags: [] as string[],
-}))
+})
+
+watch(jobs, (newJobs) => {
+  filters.value.location.options = [...new Set(newJobs?.map((job) => job.location))]
+  filters.value.company.options = [...new Set(newJobs?.map((job) => job.companies?.name))]
+  filters.value.type.options = [...new Set(newJobs?.map((job) => job.employment_type))]
+})
 
 const filteredJobs = computed(() => {
   if (!jobs.value) return []
