@@ -17,6 +17,18 @@ const { profile } = storeToRefs(currentUser)
 
 const isUserBasic = profile.value.user_plan === 'free'
 const showDialog = ref(isUserBasic)
+const searchQuery = ref('')
+const searchResults = ref<any[]>([])
+const searchFuseOptions = {
+  keys: ['title', 'description', 'companies.name', 'location', 'employment_type'],
+  threshold: 0.3,
+  shouldSort: true,
+}
+
+const handleSearchResults = (results: FuseResult<any>[]) => {
+  console.log('Search results:', results)
+  searchResults.value = results.map((result) => result.item)
+}
 
 const { items } = storeToRefs(store)
 
@@ -48,31 +60,27 @@ const jobs = computed(() =>
     }),
 )
 
-const filters = ref({
+const filters = computed(() => ({
   location: { value: '', options: [...new Set(jobs.value?.map((job) => job.location))] },
+  company: { value: '', options: [...new Set(jobs.value?.map((job) => job.companies?.name))] },
+  type: { value: '', options: [...new Set(jobs.value?.map((job) => job.employment_type))] },
   minSalary: 0,
   tags: [] as string[],
-})
-
-const searchQuery = ref('')
+}))
 
 const filteredJobs = computed(() => {
   if (!jobs.value) return []
 
   return jobs.value.filter((job) => {
-    return true
     const matchesSearch =
       !searchQuery.value ||
       job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchQuery.value.toLowerCase())
+      job.company.toLowerCase().includes(searchQuesry.value.toLowerCase())
     const matchesLocation =
-      !filters.value.location ||
-      job.location.toLowerCase().includes(filters.value.location.toLowerCase())
-    const matchesSalary = job.salary >= filters.value.minSalary
-    const matchesTags =
-      filters.value.tags.length === 0 || filters.value.tags.every((tag) => job.tags.includes(tag))
+      !filters.value.location.value ||
+      job.location.toLowerCase().includes(filters.value.location.value.toLowerCase())
 
-    return matchesSearch && matchesLocation && matchesSalary && matchesTags
+    return matchesSearch && matchesLocation
   })
 })
 
@@ -100,7 +108,7 @@ const removeTagFilter = (tag: string) => {
     />
 
     <!-- Main content -->
-    <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex flex-col gap-2 max-w-7xl mx-auto px-4 py-12">
       <div class="flex items-center rounded bg-primary-600 text-white p-2 w-max">
         <Icon
           size="24px"
@@ -109,9 +117,18 @@ const removeTagFilter = (tag: string) => {
         <h2>We are in the process of adding more companies. Thank you for your patience.</h2>
       </div>
       <!-- Filters -->
+      <div class="w-full">
+        <FuzzySearch
+          v-model="searchQuery"
+          :data="jobs"
+          :fuse-options="searchFuseOptions"
+          placeholder="Search jobs..."
+          class="w-full"
+          @results="handleSearchResults"
+        />
+      </div>
       <div class="mb-8">
         <JobFilter
-          class="hidden"
           v-model="filters"
           @remove-tag="removeTagFilter"
         />

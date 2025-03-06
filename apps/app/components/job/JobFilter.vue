@@ -6,8 +6,9 @@ interface Options {
 
 interface Filters {
   location: Options
+  company: Options
+  type: Options
   minSalary: number
-  tags: string[]
 }
 
 const props = defineProps<{
@@ -21,17 +22,31 @@ const emit = defineEmits<{
 
 const filters = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value) => {
+    console.log('EMITTING')
+    return emit('update:modelValue', value)
+  },
 })
 
-const removeTagFilter = (tag: string) => {
-  emit('removeTag', tag)
-}
-
-const tags = ['Frontend', 'Backend', 'DevOps', 'Design', 'Marketing']
-const handleTagSelect = (tag: string) => {
-  filters.value.tags.push(tag)
-}
+const dropDownInputs = ref(
+  [
+    { key: 'location', icon: 'uil:location-point' },
+    { key: 'company', icon: 'uil:building' },
+    { key: 'type', icon: 'uil:clock' },
+  ].reduce(
+    (acc, { key, icon }) => ({
+      ...acc,
+      [key]: {
+        showSuggestions: false,
+        input: null,
+        ref: null,
+        label: `${key[0].toUpperCase()}${key.slice(1)}`,
+        icon,
+      },
+    }),
+    {},
+  ),
+)
 
 // Add new refs for salary display
 const formattedSalary = computed(() => {
@@ -42,27 +57,23 @@ const formattedSalary = computed(() => {
   }).format(filters.value.minSalary || 0)
 })
 
-// Add popular locations for quick selection
-const popularLocations = ['Paris', 'Lyon', 'Remote', 'London', 'Berlin']
-
-const showLocationSuggestions = ref(false)
-
-const locationInput = ref<HTMLElement | null>(null)
-const suggestionsDropdown = ref<HTMLElement | null>(null)
-
-const selectLocation = (location: string) => {
-  filters.value.location = location
-  showLocationSuggestions.value = false
+const selectDropdown = (key: string, value: string) => {
+  filters.value.location.value = value
+  dropDownInputs.value[key].showSuggestions = false
 }
 
 // Add click outside handler
 const onClickOutside = (event: MouseEvent) => {
-  if (
-    !locationInput.value?.contains(event.target as Node) &&
-    !suggestionsDropdown.value?.contains(event.target as Node)
-  ) {
-    showLocationSuggestions.value = false
-  }
+  const fields = Object.keys(dropDownInputs.value)
+
+  fields.forEach((field) => {
+    if (
+      !dropDownInputs.value[field].input?.contains(event.target as Node) &&
+      !dropDownInputs.value[field].ref?.contains(event.target as Node)
+    ) {
+      dropDownInputs.value[field].showSuggestions = false
+    }
+  })
 }
 
 // Add and remove event listener
@@ -78,48 +89,49 @@ onUnmounted(() => {
 <template>
   <div class="bg-white rounded-xl shadow-sm p-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Location Input -->
-      <div class="relative">
-        <label class="block text-sm font-medium text-gray-700 mb-2"> Location </label>
+      <div
+        v-for="[field, value] in Object.entries(dropDownInputs)"
+        class="relative"
+      >
+        <label class="block text-sm font-medium text-gray-700 mb-2"> {{ value.label }} </label>
         <div
-          ref="locationInput"
-          class="relative"
+          :ref="(ref) => (value.input = ref)"
+          class="relative border border-gray-300 rounded-md"
         >
           <Icon
-            name="uil:location-point"
+            :name="value.icon"
             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
           />
           <input
-            v-model="filters.location.value"
+            v-model="filters[field].value"
             type="text"
             class="pl-10 w-full rounded-lg border-gray-300 focus:border-jobs-primary focus:ring-jobs-primary transition-all duration-200 hover:border-gray-400"
             placeholder="Search location..."
-            @focus="showLocationSuggestions = true"
+            @focus="value.showSuggestions = true"
           />
         </div>
         <!-- Popular Locations Dropdown -->
         <div
-          v-if="showLocationSuggestions"
-          ref="suggestionsDropdown"
+          v-if="value.showSuggestions"
+          :ref="(ref) => (value.ref = ref)"
           class="absolute z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
         >
           <button
-            v-for="location in modelValue.location.options"
-            :key="location"
+            v-for="option in modelValue[field].options"
+            :key="option"
             class="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700 text-sm transition-colors duration-150"
-            @click="selectLocation(location)"
+            @click="selectDropdown(field, option)"
           >
             <Icon
-              name="uil:location-point"
+              :name="value.icon"
               class="inline-block mr-2 w-4 h-4 text-gray-400"
             />
-            {{ location }}
+            {{ option }}
           </button>
         </div>
       </div>
-
       <!-- Salary Input -->
-      <div>
+      <!-- <div>
         <label class="block text-sm font-medium text-gray-700 mb-2"> Minimum salary </label>
         <div class="relative group">
           <div class="flex items-center gap-2 mt-3">
@@ -150,16 +162,15 @@ onUnmounted(() => {
           <span>€20,000</span>
           <span>€200,000</span>
         </div>
-      </div>
+      </div> -->
     </div>
 
-    <JobTags
+    <!-- <JobTags
       :tags="tags"
       @select="handleTagSelect"
-    />
+    /> -->
 
-    <!-- Active tags -->
-    <div
+    <!-- <div
       v-if="filters.tags.length"
       class="mt-6 flex flex-wrap gap-2"
     >
@@ -179,7 +190,7 @@ onUnmounted(() => {
           />
         </button>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
