@@ -58,7 +58,7 @@ const formattedSalary = computed(() => {
 })
 
 const selectDropdown = (key: string, value: string) => {
-  filters.value.location.value = value
+  filters.value[key].value = value
   dropDownInputs.value[key].showSuggestions = false
 }
 
@@ -116,6 +116,17 @@ onUnmounted(() => {
           :ref="(ref) => (value.ref = ref)"
           class="absolute z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
         >
+          <button
+            :key="`${field}_all`"
+            class="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700 text-sm transition-colors duration-150"
+            @click="selectDropdown(field, '')"
+          >
+            <Icon
+              :name="value.icon"
+              class="inline-block mr-2 w-4 h-4 text-gray-400"
+            />
+            All
+          </button>
           <button
             v-for="option in modelValue[field].options"
             :key="option"
