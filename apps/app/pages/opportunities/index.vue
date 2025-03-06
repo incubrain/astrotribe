@@ -82,11 +82,20 @@ const filteredJobs = computed(() => {
       !searchQuery.value ||
       job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuesry.value.toLowerCase())
+
+    const matchesType =
+      !filters.value.type.value ||
+      job.employment_type.toLowerCase().includes(filters.value.type.value.toLowerCase())
+
+    const matchesCompany =
+      !filters.value.company.value ||
+      job.companies?.name.toLowerCase().includes(filters.value.company.value.toLowerCase())
+
     const matchesLocation =
       !filters.value.location.value ||
       job.location.toLowerCase().includes(filters.value.location.value.toLowerCase())
 
-    return matchesSearch && matchesLocation
+    return matchesSearch && matchesLocation && matchesType && matchesCompany
   })
 })
 
