@@ -35,7 +35,7 @@ export class PlanController extends BaseController {
 
       const filterQuery = {
         ...query,
-        include: { offers: true },
+        include: ['offers'],
         is_active:
           query.is_active && (query.is_active === 'TRUE' || query.is_active === 'true')
             ? true
