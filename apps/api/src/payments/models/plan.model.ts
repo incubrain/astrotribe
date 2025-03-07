@@ -1,5 +1,6 @@
 // templates/entity/model.ejs
 import { BaseModel } from '@core'
+import { OfferModel } from './offer.model'
 
 // Model interface
 export interface PlanModel extends BaseModel {
@@ -16,4 +17,5 @@ export interface PlanModel extends BaseModel {
   is_active: boolean
   created_at: Date
   updated_at?: Date
+  offers: OfferModel[]
 }

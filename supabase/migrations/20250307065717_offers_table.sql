@@ -16,8 +16,7 @@ CREATE TABLE customer_subscription_offers (
     discount_period discount_period,
     already_discounted BOOLEAN,
     expiry_date TIMESTAMPTZ,
-    CONSTRAINT "fk_offers_plan_id" FOREIGN KEY ("plan_id") REFERENCES "public"."customer_subscription_plans" ("id"),
-
+    CONSTRAINT "fk_offers_plan_id" FOREIGN KEY ("plan_id") REFERENCES "public"."customer_subscription_plans" ("id")
 );
 
 -- Create an index on plan_id for better performance on joins
