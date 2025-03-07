@@ -19,7 +19,7 @@ export class PlanService extends BaseService<'CustomerSubscriptionPlans'> {
     const result = await this.prisma.customerSubscriptionPlans.findUnique({
       where: { id },
       include: {
-        offer: true,
+        offers: true,
       },
     })
     return result ? this.mapToModel(result) : null
