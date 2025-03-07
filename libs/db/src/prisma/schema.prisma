@@ -182,6 +182,20 @@ model Ads {
   @@schema("public")
 }
 
+/// @client.name="astronomy_events"
+model AstronomyEvents {
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  title       String
+  category    String?
+  date        String?
+  time        String?
+  description String?
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  @@map("astronomy_events")
+  @@schema("public")
+}
+
 /// @client.name="blacklisted_domains"
 model BlacklistedDomains {
   id         String   @id @default(dbgenerated("extensions.gen_random_uuid()")) @db.Uuid
@@ -269,6 +283,24 @@ model Bookmarks {
   @@schema("public")
 }
 
+/// @client.name="business_domains"
+model BusinessDomains {
+  id                     String            @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name                   String            @unique(map: "unique_domain_name") @db.VarChar(100)
+  slug                   String            @unique(map: "unique_domain_slug") @db.VarChar(100)
+  description            String?
+  parent_id              String?           @db.Uuid
+  created_at             DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?         @default(now()) @db.Timestamptz(6)
+  business_domains       BusinessDomains?  @relation("business_domainsTobusiness_domains", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_business_domains BusinessDomains[] @relation("business_domainsTobusiness_domains")
+  categorized_urls       CategorizedUrls[]
+
+  @@index([parent_id], map: "idx_business_domains_parent_id")
+  @@map("business_domains")
+  @@schema("public")
+}
+
 /// @client.name="categories"
 model Categories {
   id                 BigInt              @id @default(autoincrement())
@@ -285,6 +317,26 @@ model Categories {
   news               News[]
 
   @@map("categories")
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// @client.name="categorized_urls"
+model CategorizedUrls {
+  id                  String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  domain_id           String          @db.Uuid
+  confidence          Decimal         @db.Decimal(5, 4)
+  categorizer_version String          @db.VarChar(20)
+  created_at          DateTime?       @default(now()) @db.Timestamptz(6)
+  found_on            String          @unique(map: "unique_normalized_url")
+  url                 String
+  priority            Int             @db.SmallInt
+  business_domains    BusinessDomains @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([domain_id], map: "idx_categorized_urls_domain_id")
+  @@index([found_on], map: "idx_categorized_urls_normalized_url")
+  @@index([priority], map: "idx_categorized_urls_priority")
+  @@map("categorized_urls")
   @@schema("public")
 }
 
@@ -318,21 +370,6 @@ model Cities {
   @@schema("public")
 }
 
-/// @client.name="classified_urls"
-model ClassifiedUrls {
-  id                 Int          @id @default(autoincrement())
-  url                String       @unique
-  predicted_category ContentType?
-  actual_category    ContentType?
-  is_reviewed        Boolean?     @default(false)
-  added_to_training  Boolean?     @default(false)
-  created_at         DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime?    @default(now()) @db.Timestamptz(6)
-
-  @@map("classified_urls")
-  @@schema("public")
-}
-
 /// @client.name="comments"
 model Comments {
   id                String       @id @default(dbgenerated("extensions.gen_random_uuid()")) @db.Uuid
@@ -352,6 +389,7 @@ model Comments {
   @@schema("public")
 }
 
+/// This model contains an index with non-default null sort order and requires additional setup for migrations. Visit https://pris.ly/d/default-index-null-ordering for more info.
 /// @client.name="companies"
 model Companies {
   name             String?           @db.VarChar(255)
@@ -373,6 +411,7 @@ model Companies {
   scraped_at       DateTime?         @db.Timestamptz(6)
   content_status   ContentStatus     @default(draft)
   keywords         Json?
+  job_url          String?
   addresses        Addresses[]
   ads              Ads[]
   blacklisted_urls BlacklistedUrls[]
@@ -380,13 +419,16 @@ model Companies {
   categories       Categories?       @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_companies_category_id_fkey")
   company_contacts CompanyContacts[]
   company_extras   CompanyExtras[]
-  company_urls     CompanyUrls[]
   contacts         Contacts[]
   content_sources  ContentSources[]
+  jobs             Jobs[]
   news             News[]
 
   @@index([category_id], map: "idx_companies_category")
+  @@index([content_status], map: "idx_companies_content_status")
+  @@index([failed_count], map: "idx_companies_failed_count")
   @@index([name], map: "idx_companies_name")
+  @@index([scraped_at], map: "idx_companies_scraped_at")
   @@map("companies")
   @@schema("public")
 }
@@ -456,23 +498,6 @@ model CompanyMetrics {
 
   @@index([company_id, crawl_id, metric_id, timestamp], map: "idx_company_metrics_company")
   @@map("company_metrics")
-  @@schema("public")
-}
-
-/// @client.name="company_urls"
-model CompanyUrls {
-  id         Int        @id @default(autoincrement())
-  updated_at DateTime   @default(now()) @db.Timestamptz(6)
-  created_at DateTime   @default(now()) @db.Timestamptz(6)
-  url        String     @unique
-  success    Boolean?
-  category   String
-  company_id String?    @db.Uuid
-  content    String?
-  distance   Int?       @db.SmallInt
-  companies  Companies? @relation(fields: [company_id], references: [id], onDelete: Cascade, map: "public_company_urls_company_id_fkey")
-
-  @@map("company_urls")
   @@schema("public")
 }
 
@@ -546,6 +571,7 @@ model ContentSources {
   rss_urls         String[]
   companies        Companies?      @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   feed_sources     FeedSources[]
+  jobs             Jobs[]
   news             News[]
 
   @@index([url], map: "idx_content_sources_url")
@@ -588,13 +614,14 @@ model Contents {
   created_at            DateTime?             @default(now()) @db.Timestamptz(6)
   updated_at            DateTime?             @default(now()) @db.Timestamptz(6)
   url                   String                @unique
-  rss_url               String?
   hot_score             Float?                @default(0)
+  rss_url               String?
   bookmarks             Bookmarks[]
   content_categories    ContentCategories[]
   content_source_visits ContentSourceVisits[]
   content_statuses      ContentStatuses[]
   content_tags          ContentTags[]
+  jobs                  Jobs?
   news                  News?
   newsletters           Newsletters?
   research              Research?
@@ -688,6 +715,25 @@ model CustomerRefunds {
   customer_payments  CustomerPayments @relation(fields: [payment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("customer_refunds")
+  @@schema("public")
+}
+
+/// @client.name="customer_subscription_offers"
+model CustomerSubscriptionOffers {
+  id                          String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  plan_id                     Int
+  is_active                   Boolean
+  created_at                  DateTime?                 @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime?                 @default(now()) @db.Timestamptz(6)
+  discount                    Decimal?                  @db.Decimal
+  discount_type               DiscountType?
+  discount_period             DiscountPeriod?
+  already_discounted          Boolean?
+  expiry_date                 DateTime?                 @db.Timestamptz(6)
+  customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_offers_plan_id")
+
+  @@index([plan_id], map: "idx_customer_subscription_offers_plan_id")
+  @@map("customer_subscription_offers")
   @@schema("public")
 }
 
@@ -914,99 +960,34 @@ model Follows {
   @@schema("public")
 }
 
-/// @client.name="job_configs"
-model JobConfigs {
-  id                         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                       String       @unique
-  schedule                   String?
-  priority                   JobPriority? @default(normal)
-  timeout_ms                 Int?         @default(30000)
-  retry_limit                Int?         @default(3)
-  circuit_breaker_enabled    Boolean?     @default(true)
-  circuit_breaker_threshold  Int?         @default(5)
-  circuit_breaker_timeout_ms Int?         @default(300000)
-  enabled                    Boolean?     @default(true)
-  metadata                   Json?
-  created_at                 DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at                 DateTime?    @default(now()) @db.Timestamptz(6)
+/// @client.name="jobs"
+model Jobs {
+  id                String          @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  contents_id       String          @id @db.Uuid
+  title             String
+  company_id        String?         @db.Uuid
+  location          String?
+  description       String?
+  published_at      DateTime?       @db.Timestamptz(6)
+  expires_at        DateTime?       @db.Timestamptz(6)
+  scraped_at        DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?       @default(now()) @db.Timestamptz(6)
+  created_at        DateTime?       @default(now()) @db.Timestamptz(6)
+  content_status    ContentStatus   @default(draft)
+  content_source_id BigInt?
+  url               String
+  hash              BigInt?
+  employment_type   Json?
+  metadata          Json?
+  companies         Companies?      @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  content_sources   ContentSources? @relation(fields: [content_source_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contents          Contents        @relation(fields: [contents_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@map("job_configs")
-  @@schema("public")
-}
-
-/// @client.name="job_locks"
-model JobLocks {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  job_name    String
-  lock_key    String
-  lock_value  String
-  acquired_at DateTime  @default(now()) @db.Timestamptz(6)
-  expires_at  DateTime  @db.Timestamptz(6)
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@unique([job_name, lock_key])
-  @@index([expires_at], map: "idx_job_locks_expires_at")
-  @@map("job_locks")
-  @@schema("public")
-}
-
-/// @client.name="job_metrics"
-model JobMetrics {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  job_name        String
-  job_id          String    @db.Uuid
-  status          JobStatus
-  started_at      DateTime  @db.Timestamptz(6)
-  completed_at    DateTime? @db.Timestamptz(6)
-  failed_at       DateTime? @db.Timestamptz(6)
-  duration_ms     Int?
-  items_processed Int?
-  error_message   String?
-  error_stack     String?
-  metadata        Json?
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([created_at], map: "idx_job_metrics_created_at")
-  @@index([job_name], map: "idx_job_metrics_job_name")
-  @@index([status], map: "idx_job_metrics_status")
-  @@map("job_metrics")
-  @@schema("public")
-}
-
-/// @client.name="job_queue_stats"
-model JobQueueStats {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  queue_name      String    @unique
-  created_count   Int?      @default(0)
-  retry_count     Int?      @default(0)
-  active_count    Int?      @default(0)
-  completed_count Int?      @default(0)
-  cancelled_count Int?      @default(0)
-  failed_count    Int?      @default(0)
-  total_count     Int?      @default(0)
-  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([queue_name], map: "idx_job_queue_stats_queue_name")
-  @@map("job_queue_stats")
-  @@schema("public")
-}
-
-/// @client.name="job_versions"
-model JobVersions {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  job_name   String
-  version    String
-  changes    String[]
-  config     Json
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([job_name, version])
-  @@index([created_at], map: "idx_job_versions_created_at")
-  @@index([job_name], map: "idx_job_versions_job_name")
-  @@map("job_versions")
+  @@unique([url, hash])
+  @@index([company_id])
+  @@index([content_status])
+  @@index([published_at])
+  @@map("jobs")
   @@schema("public")
 }
 
@@ -1523,39 +1504,16 @@ model Votes {
   @@schema("public")
 }
 
-/// @client.name="workflow_jobs"
-model WorkflowJobs {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workflow_id     String    @db.Uuid
-  job_id          String    @db.Uuid
-  job_name        String
-  status          JobStatus @default(created)
-  sequence_number Int
-  depends_on      String[]  @default([]) @db.Uuid
-  started_at      DateTime? @db.Timestamptz(6)
-  completed_at    DateTime? @db.Timestamptz(6)
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
-  workflows       Workflows @relation(fields: [workflow_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@unique([workflow_id, job_name])
-  @@index([status], map: "idx_workflow_jobs_status")
-  @@index([workflow_id], map: "idx_workflow_jobs_workflow_id")
-  @@map("workflow_jobs")
-  @@schema("public")
-}
-
 /// @client.name="workflows"
 model Workflows {
-  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String
-  status        JobStatus      @default(created)
-  metadata      Json?
-  started_at    DateTime?      @db.Timestamptz(6)
-  completed_at  DateTime?      @db.Timestamptz(6)
-  created_at    DateTime?      @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime?      @default(now()) @db.Timestamptz(6)
-  workflow_jobs WorkflowJobs[]
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  status       JobStatus @default(created)
+  metadata     Json?
+  started_at   DateTime? @db.Timestamptz(6)
+  completed_at DateTime? @db.Timestamptz(6)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
 
   @@map("workflows")
   @@schema("public")
@@ -1746,6 +1704,25 @@ enum ContentType {
   unknown
 
   @@map("content_type")
+  @@schema("public")
+}
+
+/// @client.name="discount_period"
+enum DiscountPeriod {
+  yearly
+  monthly
+  once
+
+  @@map("discount_period")
+  @@schema("public")
+}
+
+/// @client.name="discount_type"
+enum DiscountType {
+  percentage
+  flat
+
+  @@map("discount_type")
   @@schema("public")
 }
 
