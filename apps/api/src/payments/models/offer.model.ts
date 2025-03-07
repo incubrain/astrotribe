@@ -15,6 +15,6 @@ export interface OfferModel extends BaseModel {
   already_discounted: boolean
   expiry_date: Date
 
-  plan_id: number
+  plan_id: string
   plan: PlanModel
 }
