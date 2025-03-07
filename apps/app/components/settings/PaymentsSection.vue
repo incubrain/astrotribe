@@ -189,6 +189,20 @@ const handlePaymentError = (error: any) => {
   console.error('Payment failed:', error)
 }
 
+const getDiscountedPrice = (plan) => {
+  const offer = plan.offers[0]
+
+  if (offer.already_discounted) {
+    let oldPrice
+    if (offer.discount_type == 'percentage') {
+      oldPrice = plan.price * (1 + plan.discount / 100)
+    } else {
+      oldPrice = plan.price + plan.discount
+    }
+    return { oldPrice, newPrice: plan.price }
+  }
+}
+
 // Get customer info from profile
 const customerInfo = computed(() => ({
   name: `${profile.value?.given_name} ${profile.value?.surname}`.trim(),
@@ -226,7 +240,7 @@ onMounted(async () => {
       <!-- Pricing Cards Grid -->
       <div
         v-if="plans"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4"
       >
         <div
           v-for="[name, allPlans] in Object.entries(plans)"
