@@ -753,7 +753,7 @@ model CustomerSubscriptionPlans {
   created_at                   DateTime?                    @db.Timestamptz(6)
   updated_at                   DateTime?                    @db.Timestamptz(6)
   customer_subscriptions       CustomerSubscriptions[]
-  customer_subscription_offers CustomerSubscriptionOffers[] // One Plan has many Offers
+  offers CustomerSubscriptionOffers[] // One Plan has many Offers
 
   @@map("customer_subscription_plans")
   @@schema("public")
