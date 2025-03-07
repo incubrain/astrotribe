@@ -18,6 +18,9 @@ export class PlanService extends BaseService<'CustomerSubscriptionPlans'> {
   async findWithRelations(id: number): Promise<PlanModel | null> {
     const result = await this.prisma.customerSubscriptionPlans.findUnique({
       where: { id },
+      include: {
+        customer_subscription_offers: true,
+      },
     })
     return result ? this.mapToModel(result) : null
   }
