@@ -730,7 +730,7 @@ model CustomerSubscriptionOffers {
   discount_period             DiscountPeriod?
   already_discounted          Boolean?
   expiry_date                 DateTime?                 @db.Timestamptz(6)
-  customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_offers_plan_id")
+  customer_subscription_plans CustomerSubscriptionPlans @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([plan_id], map: "idx_customer_subscription_offers_plan_id")
   @@map("customer_subscription_offers")
