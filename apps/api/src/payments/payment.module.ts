@@ -6,6 +6,7 @@ import { PermissionModule } from '@core/modules/permission.module'
 import { createDomainModule } from '@core/config/domain-config'
 // Controllers
 import { PaymentController } from '@payments/controllers/payment.controller'
+import { OfferController } from './controllers/offer.controller'
 import { PlanController } from '@payments/controllers/plan.controller'
 import { ProviderController } from '@payments/controllers/provider.controller'
 import { RefundController } from '@payments/controllers/refund.controller'
@@ -13,6 +14,7 @@ import { SubscriptionController } from '@payments/controllers/subscription.contr
 
 // Services
 import { PaymentService } from '@payments/services/payment.service'
+import { OfferService } from './services/offer.service'
 import { PlanService } from '@payments/services/plan.service'
 import { ProviderService } from '@payments/services/provider.service'
 import { RefundService } from '@payments/services/refund.service'
@@ -34,14 +36,16 @@ import { EventsModule } from '../observables/events.module'
     }),
   ],
   controllers: [
+    OfferController,
     PaymentController,
     PlanController,
     ProviderController,
     RefundController,
     SubscriptionController,
-    WebhookController
+    WebhookController,
   ],
   providers: [
+    OfferService,
     PaymentService,
     PlanService,
     ProviderService,
@@ -49,11 +53,12 @@ import { EventsModule } from '../observables/events.module'
     SubscriptionService,
   ],
   exports: [
+    OfferService,
     PaymentService,
     PlanService,
     ProviderService,
     RefundService,
-    SubscriptionService
+    SubscriptionService,
   ],
 })
 export class PaymentsModule {}

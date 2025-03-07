@@ -88,6 +88,8 @@ export const AddressesScalarFieldEnumSchema = z.enum(['id','street1','street2','
 
 export const AdsScalarFieldEnumSchema = z.enum(['id','company_id','package_id','start_date','end_date','active','created_at','updated_at']);
 
+export const AstronomyEventsScalarFieldEnumSchema = z.enum(['created_at','title','category','date','time','description','id']);
+
 export const BlacklistedDomainsScalarFieldEnumSchema = z.enum(['id','created_at','url','reason']);
 
 export const BlacklistedUrlsScalarFieldEnumSchema = z.enum(['id','url','reason','created_at','company_id']);
@@ -98,17 +100,19 @@ export const BookmarkFoldersScalarFieldEnumSchema = z.enum(['id','user_id','name
 
 export const BookmarksScalarFieldEnumSchema = z.enum(['id','user_id','content_id','content_type','created_at','folder_id','metadata','updated_at']);
 
+export const BusinessDomainsScalarFieldEnumSchema = z.enum(['id','name','slug','description','parent_id','created_at','updated_at']);
+
 export const CategoriesScalarFieldEnumSchema = z.enum(['id','created_at','updated_at','body','name','document_id','locale','published_at']);
+
+export const CategorizedUrlsScalarFieldEnumSchema = z.enum(['id','domain_id','confidence','categorizer_version','created_at','found_on','url','priority']);
 
 export const CircuitBreakerStatesScalarFieldEnumSchema = z.enum(['id','job_name','state','failure_count','last_failure','last_success','created_at','updated_at']);
 
 export const CitiesScalarFieldEnumSchema = z.enum(['id','name','country_id','state']);
 
-export const ClassifiedUrlsScalarFieldEnumSchema = z.enum(['id','url','predicted_category','actual_category','is_reviewed','added_to_training','created_at','updated_at']);
-
 export const CommentsScalarFieldEnumSchema = z.enum(['id','content','user_id','content_id','content_type','parent_comment_id','created_at','updated_at']);
 
-export const CompaniesScalarFieldEnumSchema = z.enum(['name','description','logo_url','url','social_media_id','scrape_frequency','category_id','created_at','updated_at','founding_year','is_government','category','failed_count','is_english','scrape_rating','id','scraped_at','content_status','keywords']);
+export const CompaniesScalarFieldEnumSchema = z.enum(['name','description','logo_url','url','social_media_id','scrape_frequency','category_id','created_at','updated_at','founding_year','is_government','category','failed_count','is_english','scrape_rating','id','scraped_at','content_status','keywords','job_url']);
 
 export const CompanyContactsScalarFieldEnumSchema = z.enum(['id','contact_id','created_at','updated_at','company_id']);
 
@@ -117,8 +121,6 @@ export const CompanyEmployeesScalarFieldEnumSchema = z.enum(['role','job_descrip
 export const CompanyExtrasScalarFieldEnumSchema = z.enum(['id','updated_at','created_at','url','success','category','level','company_id','body','found_count','review']);
 
 export const CompanyMetricsScalarFieldEnumSchema = z.enum(['id','crawl_id','company_id','metric_id','timestamp','value']);
-
-export const CompanyUrlsScalarFieldEnumSchema = z.enum(['id','updated_at','created_at','url','success','category','company_id','content','distance']);
 
 export const ContactsScalarFieldEnumSchema = z.enum(['id','title','is_primary','email','contact_type','privacy_level','user_id','created_at','updated_at','phone','company_id']);
 
@@ -132,7 +134,7 @@ export const ContentStatusesScalarFieldEnumSchema = z.enum(['id','content_id','n
 
 export const ContentTagsScalarFieldEnumSchema = z.enum(['content_id','tag_id']);
 
-export const ContentsScalarFieldEnumSchema = z.enum(['id','content_type','title','created_at','updated_at','url','rss_url','hot_score']);
+export const ContentsScalarFieldEnumSchema = z.enum(['id','content_type','title','created_at','updated_at','url','hot_score','rss_url']);
 
 export const CountriesScalarFieldEnumSchema = z.enum(['id','name','code','code_3']);
 
@@ -141,6 +143,8 @@ export const CustomerPaymentsScalarFieldEnumSchema = z.enum(['id','user_id','sub
 export const CustomerProcessedWebhooksScalarFieldEnumSchema = z.enum(['id','event_id','event_type','processed_at']);
 
 export const CustomerRefundsScalarFieldEnumSchema = z.enum(['id','payment_id','external_refund_id','amount','status','speed_processed','speed_requested','notes','created_at','currency','receipt','acquirer_data','batch_id']);
+
+export const CustomerSubscriptionOffersScalarFieldEnumSchema = z.enum(['id','plan_id','is_active','created_at','updated_at','discount','discount_type','discount_period','already_discounted','expiry_date']);
 
 export const CustomerSubscriptionPlansScalarFieldEnumSchema = z.enum(['id','external_plan_id','name','description','interval','interval_type','monthly_amount','annual_amount','currency','features','is_active','created_at','updated_at']);
 
@@ -164,15 +168,7 @@ export const FeedsScalarFieldEnumSchema = z.enum(['id','created_at','name','user
 
 export const FollowsScalarFieldEnumSchema = z.enum(['id','followed_id','followed_entity','created_at','user_id']);
 
-export const JobConfigsScalarFieldEnumSchema = z.enum(['id','name','schedule','priority','timeout_ms','retry_limit','circuit_breaker_enabled','circuit_breaker_threshold','circuit_breaker_timeout_ms','enabled','metadata','created_at','updated_at']);
-
-export const JobLocksScalarFieldEnumSchema = z.enum(['id','job_name','lock_key','lock_value','acquired_at','expires_at','created_at']);
-
-export const JobMetricsScalarFieldEnumSchema = z.enum(['id','job_name','job_id','status','started_at','completed_at','failed_at','duration_ms','items_processed','error_message','error_stack','metadata','created_at','updated_at']);
-
-export const JobQueueStatsScalarFieldEnumSchema = z.enum(['id','queue_name','created_count','retry_count','active_count','completed_count','cancelled_count','failed_count','total_count','updated_at','created_at']);
-
-export const JobVersionsScalarFieldEnumSchema = z.enum(['id','job_name','version','changes','config','created_at','updated_at']);
+export const JobsScalarFieldEnumSchema = z.enum(['id','contents_id','title','company_id','location','description','published_at','expires_at','scraped_at','updated_at','created_at','content_status','content_source_id','url','hash','employment_type','metadata']);
 
 export const MetricDefinitionsScalarFieldEnumSchema = z.enum(['id','name','description','category','type','unit','is_dimensional']);
 
@@ -227,8 +223,6 @@ export const UserMetricsScalarFieldEnumSchema = z.enum(['id','user_id','total_vo
 export const UserProfilesScalarFieldEnumSchema = z.enum(['id','email','given_name','surname','username','dob','gender_id','created_at','updated_at','last_seen','avatar','introduction','followed_count','followers_count','plan','role','is_active']);
 
 export const VotesScalarFieldEnumSchema = z.enum(['id','content_type','content_id','user_id','vote_type','created_at']);
-
-export const WorkflowJobsScalarFieldEnumSchema = z.enum(['id','workflow_id','job_id','job_name','status','sequence_number','depends_on','started_at','completed_at','created_at','updated_at']);
 
 export const WorkflowsScalarFieldEnumSchema = z.enum(['id','name','status','metadata','started_at','completed_at','created_at','updated_at']);
 
@@ -289,6 +283,14 @@ export type ContentStatusType = `${z.infer<typeof ContentStatusSchema>}`
 export const ContentTypeSchema = z.enum(['news','events','jobs','research','companies','contact','people','newsletters','unknown']);
 
 export type ContentTypeType = `${z.infer<typeof ContentTypeSchema>}`
+
+export const DiscountPeriodSchema = z.enum(['yearly','monthly','once']);
+
+export type DiscountPeriodType = `${z.infer<typeof DiscountPeriodSchema>}`
+
+export const DiscountTypeSchema = z.enum(['percentage','flat']);
+
+export type DiscountTypeType = `${z.infer<typeof DiscountTypeSchema>}`
 
 export const ErrorSeveritySchema = z.enum(['low','medium','high','critical']);
 
@@ -459,6 +461,25 @@ export const AdsSchema = z.object({
 export type Ads = z.infer<typeof AdsSchema>
 
 /////////////////////////////////////////
+// ASTRONOMY EVENTS SCHEMA
+/////////////////////////////////////////
+
+/**
+ * @client.name="astronomy_events"
+ */
+export const AstronomyEventsSchema = z.object({
+  created_at: z.coerce.date(),
+  title: z.string(),
+  category: z.string().nullable(),
+  date: z.string().nullable(),
+  time: z.string().nullable(),
+  description: z.string().nullable(),
+  id: z.string(),
+})
+
+export type AstronomyEvents = z.infer<typeof AstronomyEventsSchema>
+
+/////////////////////////////////////////
 // BLACKLISTED DOMAINS SCHEMA
 /////////////////////////////////////////
 
@@ -555,6 +576,25 @@ export const BookmarksSchema = z.object({
 export type Bookmarks = z.infer<typeof BookmarksSchema>
 
 /////////////////////////////////////////
+// BUSINESS DOMAINS SCHEMA
+/////////////////////////////////////////
+
+/**
+ * @client.name="business_domains"
+ */
+export const BusinessDomainsSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  description: z.string().nullable(),
+  parent_id: z.string().nullable(),
+  created_at: z.coerce.date().nullable(),
+  updated_at: z.coerce.date().nullable(),
+})
+
+export type BusinessDomains = z.infer<typeof BusinessDomainsSchema>
+
+/////////////////////////////////////////
 // CATEGORIES SCHEMA
 /////////////////////////////////////////
 
@@ -573,6 +613,27 @@ export const CategoriesSchema = z.object({
 })
 
 export type Categories = z.infer<typeof CategoriesSchema>
+
+/////////////////////////////////////////
+// CATEGORIZED URLS SCHEMA
+/////////////////////////////////////////
+
+/**
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * @client.name="categorized_urls"
+ */
+export const CategorizedUrlsSchema = z.object({
+  id: z.string(),
+  domain_id: z.string(),
+  confidence: z.instanceof(Prisma.Decimal, { message: "Field 'confidence' must be a Decimal. Location: ['Models', 'CategorizedUrls']"}),
+  categorizer_version: z.string(),
+  created_at: z.coerce.date().nullable(),
+  found_on: z.string(),
+  url: z.string(),
+  priority: z.number().int(),
+})
+
+export type CategorizedUrls = z.infer<typeof CategorizedUrlsSchema>
 
 /////////////////////////////////////////
 // CIRCUIT BREAKER STATES SCHEMA
@@ -611,26 +672,6 @@ export const CitiesSchema = z.object({
 export type Cities = z.infer<typeof CitiesSchema>
 
 /////////////////////////////////////////
-// CLASSIFIED URLS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="classified_urls"
- */
-export const ClassifiedUrlsSchema = z.object({
-  predicted_category: ContentTypeSchema.nullable(),
-  actual_category: ContentTypeSchema.nullable(),
-  id: z.number().int(),
-  url: z.string(),
-  is_reviewed: z.boolean().nullable(),
-  added_to_training: z.boolean().nullable(),
-  created_at: z.coerce.date().nullable(),
-  updated_at: z.coerce.date().nullable(),
-})
-
-export type ClassifiedUrls = z.infer<typeof ClassifiedUrlsSchema>
-
-/////////////////////////////////////////
 // COMMENTS SCHEMA
 /////////////////////////////////////////
 
@@ -655,6 +696,7 @@ export type Comments = z.infer<typeof CommentsSchema>
 /////////////////////////////////////////
 
 /**
+ * This model contains an index with non-default null sort order and requires additional setup for migrations. Visit https://pris.ly/d/default-index-null-ordering for more info.
  * @client.name="companies"
  */
 export const CompaniesSchema = z.object({
@@ -677,6 +719,7 @@ export const CompaniesSchema = z.object({
   id: z.string(),
   scraped_at: z.coerce.date().nullable(),
   keywords: JsonValueSchema.nullable(),
+  job_url: z.string().nullable(),
 })
 
 export type Companies = z.infer<typeof CompaniesSchema>
@@ -761,27 +804,6 @@ export const CompanyMetricsSchema = z.object({
 })
 
 export type CompanyMetrics = z.infer<typeof CompanyMetricsSchema>
-
-/////////////////////////////////////////
-// COMPANY URLS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="company_urls"
- */
-export const CompanyUrlsSchema = z.object({
-  id: z.number().int(),
-  updated_at: z.coerce.date(),
-  created_at: z.coerce.date(),
-  url: z.string(),
-  success: z.boolean().nullable(),
-  category: z.string(),
-  company_id: z.string().nullable(),
-  content: z.string().nullable(),
-  distance: z.number().int().nullable(),
-})
-
-export type CompanyUrls = z.infer<typeof CompanyUrlsSchema>
 
 /////////////////////////////////////////
 // CONTACTS SCHEMA
@@ -909,8 +931,8 @@ export const ContentsSchema = z.object({
   created_at: z.coerce.date().nullable(),
   updated_at: z.coerce.date().nullable(),
   url: z.string(),
-  rss_url: z.string().nullable(),
   hot_score: z.number().nullable(),
+  rss_url: z.string().nullable(),
 })
 
 export type Contents = z.infer<typeof ContentsSchema>
@@ -1016,6 +1038,28 @@ export const CustomerRefundsSchema = z.object({
 export type CustomerRefunds = z.infer<typeof CustomerRefundsSchema>
 
 /////////////////////////////////////////
+// CUSTOMER SUBSCRIPTION OFFERS SCHEMA
+/////////////////////////////////////////
+
+/**
+ * @client.name="customer_subscription_offers"
+ */
+export const CustomerSubscriptionOffersSchema = z.object({
+  discount_type: DiscountTypeSchema.nullable(),
+  discount_period: DiscountPeriodSchema.nullable(),
+  id: z.string(),
+  plan_id: z.number().int(),
+  is_active: z.boolean(),
+  created_at: z.coerce.date().nullable(),
+  updated_at: z.coerce.date().nullable(),
+  discount: z.instanceof(Prisma.Decimal, { message: "Field 'discount' must be a Decimal. Location: ['Models', 'CustomerSubscriptionOffers']"}).nullable(),
+  already_discounted: z.boolean().nullable(),
+  expiry_date: z.coerce.date().nullable(),
+})
+
+export type CustomerSubscriptionOffers = z.infer<typeof CustomerSubscriptionOffersSchema>
+
+/////////////////////////////////////////
 // CUSTOMER SUBSCRIPTION PLANS SCHEMA
 /////////////////////////////////////////
 
@@ -1055,8 +1099,8 @@ export const CustomerSubscriptionsSchema = z.object({
   external_subscription_id: z.string(),
   status: z.string(),
   quantity: z.number().int().nullable(),
-  current_start: z.coerce.date().nullable(),
-  current_end: z.coerce.date().nullable(),
+  current_start: z.coerce.date(),
+  current_end: z.coerce.date(),
   ended_at: z.coerce.date().nullable(),
   cancel_at_period_end: z.boolean().nullable(),
   total_count: z.number().int().nullable(),
@@ -1265,116 +1309,33 @@ export const FollowsSchema = z.object({
 export type Follows = z.infer<typeof FollowsSchema>
 
 /////////////////////////////////////////
-// JOB CONFIGS SCHEMA
+// JOBS SCHEMA
 /////////////////////////////////////////
 
 /**
- * @client.name="job_configs"
+ * @client.name="jobs"
  */
-export const JobConfigsSchema = z.object({
-  priority: JobPrioritySchema.nullable(),
+export const JobsSchema = z.object({
+  content_status: ContentStatusSchema,
   id: z.string(),
-  name: z.string(),
-  schedule: z.string().nullable(),
-  timeout_ms: z.number().int().nullable(),
-  retry_limit: z.number().int().nullable(),
-  circuit_breaker_enabled: z.boolean().nullable(),
-  circuit_breaker_threshold: z.number().int().nullable(),
-  circuit_breaker_timeout_ms: z.number().int().nullable(),
-  enabled: z.boolean().nullable(),
+  contents_id: z.string(),
+  title: z.string(),
+  company_id: z.string().nullable(),
+  location: z.string().nullable(),
+  description: z.string().nullable(),
+  published_at: z.coerce.date().nullable(),
+  expires_at: z.coerce.date().nullable(),
+  scraped_at: z.coerce.date().nullable(),
+  updated_at: z.coerce.date().nullable(),
+  created_at: z.coerce.date().nullable(),
+  content_source_id: z.bigint().nullable(),
+  url: z.string(),
+  hash: z.bigint().nullable(),
+  employment_type: JsonValueSchema.nullable(),
   metadata: JsonValueSchema.nullable(),
-  created_at: z.coerce.date().nullable(),
-  updated_at: z.coerce.date().nullable(),
 })
 
-export type JobConfigs = z.infer<typeof JobConfigsSchema>
-
-/////////////////////////////////////////
-// JOB LOCKS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="job_locks"
- */
-export const JobLocksSchema = z.object({
-  id: z.string(),
-  job_name: z.string(),
-  lock_key: z.string(),
-  lock_value: z.string(),
-  acquired_at: z.coerce.date(),
-  expires_at: z.coerce.date(),
-  created_at: z.coerce.date().nullable(),
-})
-
-export type JobLocks = z.infer<typeof JobLocksSchema>
-
-/////////////////////////////////////////
-// JOB METRICS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="job_metrics"
- */
-export const JobMetricsSchema = z.object({
-  status: JobStatusSchema,
-  id: z.string(),
-  job_name: z.string(),
-  job_id: z.string(),
-  started_at: z.coerce.date(),
-  completed_at: z.coerce.date().nullable(),
-  failed_at: z.coerce.date().nullable(),
-  duration_ms: z.number().int().nullable(),
-  items_processed: z.number().int().nullable(),
-  error_message: z.string().nullable(),
-  error_stack: z.string().nullable(),
-  metadata: JsonValueSchema.nullable(),
-  created_at: z.coerce.date().nullable(),
-  updated_at: z.coerce.date().nullable(),
-})
-
-export type JobMetrics = z.infer<typeof JobMetricsSchema>
-
-/////////////////////////////////////////
-// JOB QUEUE STATS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="job_queue_stats"
- */
-export const JobQueueStatsSchema = z.object({
-  id: z.string(),
-  queue_name: z.string(),
-  created_count: z.number().int().nullable(),
-  retry_count: z.number().int().nullable(),
-  active_count: z.number().int().nullable(),
-  completed_count: z.number().int().nullable(),
-  cancelled_count: z.number().int().nullable(),
-  failed_count: z.number().int().nullable(),
-  total_count: z.number().int().nullable(),
-  updated_at: z.coerce.date().nullable(),
-  created_at: z.coerce.date().nullable(),
-})
-
-export type JobQueueStats = z.infer<typeof JobQueueStatsSchema>
-
-/////////////////////////////////////////
-// JOB VERSIONS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="job_versions"
- */
-export const JobVersionsSchema = z.object({
-  id: z.string(),
-  job_name: z.string(),
-  version: z.string(),
-  changes: z.string().array(),
-  config: JsonValueSchema,
-  created_at: z.coerce.date(),
-  updated_at: z.coerce.date(),
-})
-
-export type JobVersions = z.infer<typeof JobVersionsSchema>
+export type Jobs = z.infer<typeof JobsSchema>
 
 /////////////////////////////////////////
 // METRIC DEFINITIONS SCHEMA
@@ -1939,29 +1900,6 @@ export const VotesSchema = z.object({
 })
 
 export type Votes = z.infer<typeof VotesSchema>
-
-/////////////////////////////////////////
-// WORKFLOW JOBS SCHEMA
-/////////////////////////////////////////
-
-/**
- * @client.name="workflow_jobs"
- */
-export const WorkflowJobsSchema = z.object({
-  status: JobStatusSchema,
-  id: z.string(),
-  workflow_id: z.string(),
-  job_id: z.string(),
-  job_name: z.string(),
-  sequence_number: z.number().int(),
-  depends_on: z.string().array(),
-  started_at: z.coerce.date().nullable(),
-  completed_at: z.coerce.date().nullable(),
-  created_at: z.coerce.date().nullable(),
-  updated_at: z.coerce.date().nullable(),
-})
-
-export type WorkflowJobs = z.infer<typeof WorkflowJobsSchema>
 
 /////////////////////////////////////////
 // WORKFLOWS SCHEMA

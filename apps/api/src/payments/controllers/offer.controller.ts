@@ -35,7 +35,7 @@ export class OfferController extends BaseController {
     protected readonly logger: CustomLogger,
     protected readonly paymentEventsService: PaymentEventsService,
   ) {
-    super('CustomerOffers')
+    super('CustomerSubscriptionOffers')
   }
 
   @Get()

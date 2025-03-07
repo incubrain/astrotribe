@@ -8,25 +8,25 @@ import type { OfferModel } from '../models/offer.model'
 import { PaymentEventsService } from '../../observables/payments.observable'
 
 @Injectable()
-export class OfferService extends BaseService<'CustomerOffers'> {
+export class OfferService extends BaseService<'CustomerSubscriptionOffers'> {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly paginationService: PaginationService,
     protected readonly paymentEvents: PaymentEventsService,
   ) {
-    super('CustomerOffers')
+    super('CustomerSubscriptionOffers')
   }
 
   async findWithRelations(id: number): Promise<OfferModel | null> {
-    const result = await this.prisma.customerOffers.findUnique({
+    const result = await this.prisma.customerSubscriptionOffers.findUnique({
       where: { id },
     })
 
     return result ? this.mapToModel(result) : null
   }
 
-  async findOne(params: Prisma.CustomerOffersFindUniqueArgs): Promise<OfferModel> {
-    const result = await this.prisma.customerOffers.findUnique({
+  async findOne(params: Prisma.CustomerSubscriptionOffersFindUniqueArgs): Promise<OfferModel> {
+    const result = await this.prisma.customerSubscriptionOffers.findUnique({
       ...params,
       include: {
         plan: true,
@@ -36,22 +36,22 @@ export class OfferService extends BaseService<'CustomerOffers'> {
     return result ? this.mapToModel(result) : null
   }
 
-  async findMany(params: Prisma.CustomerOffersFindManyArgs): Promise<OfferModel[]> {
-    const items = await this.prisma.customerOffers.findMany(params)
+  async findMany(params: Prisma.CustomerSubscriptionOffersFindManyArgs): Promise<OfferModel[]> {
+    const items = await this.prisma.customerSubscriptionOffers.findMany(params)
     return items.map((item) => this.mapToModel(item))
   }
 
   async findAllOffers(
-    query: Prisma.CustomerOffersFindManyArgs,
+    query: Prisma.CustomerSubscriptionOffersFindManyArgs,
   ): Promise<{ items: OfferModel[]; total: number }> {
     const [items, total] = await Promise.all([
-      this.prisma.customerOffers.findMany({
+      this.prisma.customerSubscriptionOffers.findMany({
         skip: query.skip,
         take: query.take,
         where: query.where,
         orderBy: query.orderBy,
       }),
-      this.prisma.customerOffers.count({ where: query.where }),
+      this.prisma.customerSubscriptionOffers.count({ where: query.where }),
     ])
 
     return {
