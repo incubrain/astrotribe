@@ -195,9 +195,9 @@ const getDiscountedPrice = (plan) => {
   if (offer.already_discounted) {
     let oldPrice
     if (offer.discount_type == 'percentage') {
-      oldPrice = plan.price * (1 + plan.discount / 100)
+      oldPrice = plan.price / (1 - offer.discount.d[0] / 100)
     } else {
-      oldPrice = plan.price + plan.discount
+      oldPrice = plan.price + offer.discount.d[0]
     }
     return { oldPrice, newPrice: plan.price }
   }
@@ -266,10 +266,15 @@ onMounted(async () => {
               <h3 class="text-xl font-semibold text-white">{{ name }}</h3>
               <div
                 v-for="plan in allPlans"
-                class="mt-2 flex items-baseline"
+                class="mt-2 flex flex-col items-baseline"
               >
-                <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
-                <span class="ml-1 text-sm text-gray-400">/{{ plan.period }}</span>
+                <div>
+                  <span class="text-3xl font-bold text-white">₹{{ plan.price }}</span>
+                  <span class="ml-1 text-sm text-gray-400">/{{ plan.period }}</span>
+                </div>
+                <div v-if="!!plan?.offers?.length">
+                  <span class="line-through">₹{{ getDiscountedPrice(plan)?.oldPrice }}/yearly</span>
+                </div>
               </div>
               <p class="mt-3 text-sm text-gray-400">{{ allPlans[0].description }}</p>
             </div>
