@@ -13,6 +13,7 @@ interface Filters {
 
 const props = defineProps<{
   modelValue: Filters
+  changeFilters: () => void
 }>()
 
 const emit = defineEmits<{
@@ -60,6 +61,7 @@ const formattedSalary = computed(() => {
 const selectDropdown = (key: string, value: string) => {
   filters.value[key].value = value
   dropDownInputs.value[key].showSuggestions = false
+  props.changeFilters()
 }
 
 // Add click outside handler
@@ -114,7 +116,7 @@ onUnmounted(() => {
         <div
           v-if="value.showSuggestions"
           :ref="(ref) => (value.ref = ref)"
-          class="absolute z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
+          class="absolute h-full overflow-y-scroll z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
         >
           <button
             :key="`${field}_all`"
