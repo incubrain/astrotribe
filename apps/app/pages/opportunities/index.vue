@@ -1,16 +1,13 @@
 <script setup lang="ts">
 // const { data: jobs, status } = await useAsyncData('jobs-all', () => queryCollection('jobs').all())
 
-const { store, loadMore } = useSelectData('jobs', {
-  columns: '*, companies(name)',
-  orderBy: { column: 'published_at', ascending: false },
-  pagination: {
-    page: 1,
-    limit: 20,
-  },
+const { store: jobStore } = useSelectData('job_filters', {
+  columns: '*',
   initialFetch: true,
-  storeKey: 'jobsFeed',
+  storeKey: 'jobsFilters',
 })
+
+const { items: jobItems } = storeToRefs(jobStore)
 
 const currentUser = useCurrentUser()
 const { profile } = storeToRefs(currentUser)
@@ -30,7 +27,32 @@ const handleSearchResults = (results: FuseResult<any>[]) => {
   searchResults.value = results.map((result) => result.item)
 }
 
+const filters = ref({
+  location: { value: '', options: [] },
+  company: { value: '', options: [] },
+  type: { value: '', options: [] },
+})
+
+const { store, loadMore, changeFilters } = useSelectData('jobs', {
+  columns: '*, companies(name)',
+  orderBy: { column: 'published_at', ascending: false },
+  pagination: {
+    page: 1,
+    limit: 20,
+  },
+  initialFetch: true,
+  storeKey: 'jobsFeed',
+})
+
 const { items } = storeToRefs(store)
+
+const handleChangeFilters = () => {
+  changeFilters({
+    'location': filters.value.location.value ? { eq: filters.value.location.value } : null,
+    'companies.name': filters.value.company.value ? { eq: filters.value.company.value } : null,
+    'employment_type': filters.value.type.value ? { eq: filters.value.type.value } : null,
+  })
+}
 
 const formatDate = (isoString) => {
   const date = new Date(isoString)
@@ -60,43 +82,10 @@ const jobs = computed(() =>
     }),
 )
 
-const filters = ref({
-  location: { value: '', options: [] },
-  company: { value: '', options: [] },
-  type: { value: '', options: [] },
-  minSalary: 0,
-  tags: [] as string[],
-})
-
-watch(jobs, (newJobs) => {
+watch(jobItems, (newJobs) => {
   filters.value.location.options = [...new Set(newJobs?.map((job) => job.location))]
-  filters.value.company.options = [...new Set(newJobs?.map((job) => job.companies?.name))]
+  filters.value.company.options = [...new Set(newJobs?.map((job) => job.company_name))]
   filters.value.type.options = [...new Set(newJobs?.map((job) => job.employment_type))]
-})
-
-const filteredJobs = computed(() => {
-  if (!jobs.value) return []
-
-  return jobs.value.filter((job) => {
-    const matchesSearch =
-      !searchQuery.value ||
-      job.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchQuesry.value.toLowerCase())
-
-    const matchesType =
-      !filters.value.type.value ||
-      job.employment_type.toLowerCase().includes(filters.value.type.value.toLowerCase())
-
-    const matchesCompany =
-      !filters.value.company.value ||
-      job.companies?.name.toLowerCase().includes(filters.value.company.value.toLowerCase())
-
-    const matchesLocation =
-      !filters.value.location.value ||
-      job.location.toLowerCase().includes(filters.value.location.value.toLowerCase())
-
-    return matchesSearch && matchesLocation && matchesType && matchesCompany
-  })
 })
 
 const addTagFilter = (tag: string) => {
@@ -145,6 +134,7 @@ const removeTagFilter = (tag: string) => {
       <div class="mb-8">
         <JobFilter
           v-model="filters"
+          :changeFilters="handleChangeFilters"
           @remove-tag="removeTagFilter"
         />
       </div>
@@ -159,7 +149,7 @@ const removeTagFilter = (tag: string) => {
           @update:scroll-end="loadMore"
         >
           <JobListing
-            :jobs="filteredJobs"
+            :jobs="jobs"
             :loading="false"
             @filter-tag="addTagFilter"
           />

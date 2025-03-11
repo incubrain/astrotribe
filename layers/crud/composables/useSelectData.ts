@@ -101,6 +101,27 @@ export function useSelectData<T extends { id: string | number }>(
     }
   }
 
+  const changeFilters = async (filters: Record<string, any>) => {
+    options.value.filters = { ...options.value.filters, ...filters }
+    Object.keys(filters).forEach((filter) => {
+      const optionFilter =
+        options.value.filters && Object.keys(options.value.filters).find((key) => key === filter)
+
+      if (optionFilter && filters[filter] == null) delete options.value.filters[filter]
+    })
+
+    if (paginationStore) {
+      paginationStore.initPagination({
+        domainKey: storeKey,
+        pagination: options.value.pagination!,
+        force: true,
+      })
+    }
+    store.clearItems()
+    const data = await fetchData()
+    store.setItems(data)
+  }
+
   const loadMore = async (filters?: Record<string, any>) => {
     if (paginationStore) {
       console.log('loading more data')
@@ -147,6 +168,7 @@ export function useSelectData<T extends { id: string | number }>(
 
   return {
     store,
+    changeFilters,
     loadMore,
     refresh,
     isSelecting,
