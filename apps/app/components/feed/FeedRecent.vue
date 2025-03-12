@@ -1,4 +1,3 @@
-<!-- RecentFeed.vue -->
 <script setup lang="ts">
 interface SponsoredAd {
   id: string
@@ -8,9 +7,9 @@ interface SponsoredAd {
   adIndex: number
 }
 
-// Update to use the new contents table
+// Update to use the new contents table and include content_sources data
 const { store, loadMore } = useSelectData<any>('contents', {
-  // Updated query for the unified contents table
+  // Updated query for the unified contents table with joined content_sources
   orderBy: { column: 'published_at', ascending: false },
   filters: { content_type: { eq: 'news' }, is_active: { eq: true }, deleted_at: { is: null } },
   columns: `
@@ -26,7 +25,12 @@ const { store, loadMore } = useSelectData<any>('contents', {
     featured_image, 
     source_id,
     company_id,
-    details
+    details,
+    content_sources (
+      id,
+      name,
+      url
+    )
   `,
   pagination: { page: 1, limit: 21 },
   initialFetch: true,
@@ -40,13 +44,34 @@ const loading = useLoadingStore()
 // Ads integration
 const { integrateAdsIntoFeed, resetAdTracking, isLoading: adsLoading } = useAdsStore()
 
+// Process items to include source name from joined content_sources table
+const processNewsItems = (items: any[]) => {
+  return items.map((item) => {
+    if (!item.content_sources || item.type === 'sponsored') return item
+
+    // Add source name to the details object
+    const updatedItem = {
+      ...item,
+      details: {
+        ...item.details,
+        source_name: item.content_sources?.name,
+      },
+    }
+
+    return updatedItem
+  })
+}
+
 // Update feed with ads
 const updateDisplayedFeed = (items: any[], isFullRefresh = false) => {
+  // Process items to include source names
+  const processedItems = processNewsItems(items)
+
   if (isFullRefresh) {
     resetAdTracking()
-    displayedFeed.value = integrateAdsIntoFeed(items, true)
+    displayedFeed.value = integrateAdsIntoFeed(processedItems, true)
   } else {
-    const integratedChunk = integrateAdsIntoFeed(items, false)
+    const integratedChunk = integrateAdsIntoFeed(processedItems, false)
     displayedFeed.value = [...displayedFeed.value, ...integratedChunk]
   }
 }
