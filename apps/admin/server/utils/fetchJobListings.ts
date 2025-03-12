@@ -58,6 +58,25 @@ async function fetchPageWithJS(url: string): Promise<cheerio.CheerioAPI | null> 
   try {
     // Try with "domcontentloaded" first
     await page.goto(url, { waitUntil: 'networkidle' })
+
+    await page.waitForFunction(() => document.readyState === 'complete')
+    await page.evaluate(async () => {
+      await new Promise((resolve) => {
+        let totalHeight = 0
+        const distance = 100
+        const timer = setInterval(() => {
+          let scrollHeight = document.body.scrollHeight
+          window.scrollBy(0, distance)
+          totalHeight += distance
+
+          if (totalHeight >= scrollHeight) {
+            clearInterval(timer)
+            resolve(true)
+          }
+        }, 200)
+      })
+    })
+
     content = await page.content()
   } catch (error) {
     console.warn(`Failed with 'networkidle', retrying with 'domcontentloaded'...`)
@@ -162,5 +181,5 @@ async function fetchJobListings(site: JobSite): Promise<Company> {
 }
 
 export async function scrapeJobs(): Promise<Company[]> {
-  return Promise.all((jobSites as JobSite[]).slice(1, 2).map(fetchJobListings))
+  return Promise.all((jobSites as JobSite[]).map(fetchJobListings))
 }

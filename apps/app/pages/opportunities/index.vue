@@ -35,7 +35,7 @@ const filters = ref({
 
 const { store, loadMore, changeFilters } = useSelectData('jobs', {
   columns: '*, companies(name)',
-  orderBy: { column: 'published_at', ascending: false },
+  orderBy: { column: 'published_at', ascending: false, nullsFirst: false },
   pagination: {
     page: 1,
     limit: 20,
@@ -64,22 +64,15 @@ const formatDate = (isoString) => {
 }
 
 const jobs = computed(() =>
-  items.value
-    .map((item) => {
-      return {
-        ...item,
-        publishedAt: item.published_at && formatDate(item.published_at),
-        expiresAt: item.expires_at && formatDate(item.expires_at),
-        employmentType: item.employment_type,
-        company: item.companies?.name,
-      }
-    })
-    .sort((a, b) => {
-      if (a.publish_date === null) return 1 // Move null to the bottom
-      if (b.publish_date === null) return -1 // Move null to the bottom
-
-      return new Date(b.published_at) - new Date(a.published_at) // Sort descending
-    }),
+  items.value.map((item) => {
+    return {
+      ...item,
+      publishedAt: item.published_at && formatDate(item.published_at),
+      expiresAt: item.expires_at && formatDate(item.expires_at),
+      employmentType: item.employment_type,
+      company: item.companies?.name,
+    }
+  }),
 )
 
 watch(jobItems, (newJobs) => {
