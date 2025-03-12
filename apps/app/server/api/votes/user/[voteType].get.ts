@@ -5,49 +5,62 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
 
   if (!user) {
-    throw createError({
-      statusCode: 401,
-      message: 'Unauthorized',
-    })
+    throw createError({ statusCode: 401, message: 'Unauthorized' })
   }
 
   const voteType = parseInt(event.context.params.voteType) // 1 for upvotes, -1 for downvotes
 
   if (![1, -1].includes(voteType)) {
-    throw createError({
-      statusCode: 400,
-      message: 'Invalid vote type',
-    })
+    throw createError({ statusCode: 400, message: 'Invalid vote type' })
   }
 
   try {
-    const { data, error } = await client
-      .from('votes')
+    // Get content IDs from interactions with the specified vote type
+    const { data: interactionData, error: interactionError } = await client
+      .from('content_interactions')
       .select('content_id')
-      .eq('content_type', 'news')
+      .eq('interaction_type', 'vote')
       .eq('user_id', user.id)
-      .eq('vote_type', voteType)
+      .contains('details', { vote_type: voteType })
 
-    if (error) throw error
+    if (interactionError) throw interactionError
 
-    // Get the actual news items
-    const { data: news, error: newsError } = await client
-      .from('news')
-      .select('*')
-      .in(
-        'id',
-        data.map((v) => v.content_id),
+    const contentIds = interactionData.map((item) => item.content_id)
+
+    if (contentIds.length === 0) {
+      return []
+    }
+
+    // Query the contents table for items with the specified content IDs
+    // This assumes we're primarily interested in content with type 'news'
+    const { data: contentsData, error: contentsError } = await client
+      .from('contents')
+      .select(
+        `
+        id, 
+        content_type,
+        title, 
+        url, 
+        created_at, 
+        hot_score,
+        published_at, 
+        description, 
+        author, 
+        featured_image, 
+        source_id,
+        company_id,
+        details
+      `,
       )
-      .order('created_at', { ascending: false })
+      .in('id', contentIds)
+      .eq('content_type', 'news')
+      .order('published_at', { ascending: false })
 
-    if (newsError) throw newsError
+    if (contentsError) throw contentsError
 
-    return news
+    return contentsData || []
   } catch (error: any) {
     console.error('Get voted news error:', error)
-    throw createError({
-      statusCode: 500,
-      message: 'Failed to get voted news',
-    })
+    throw createError({ statusCode: 500, message: 'Failed to get voted news' })
   }
 })

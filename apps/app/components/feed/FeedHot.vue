@@ -1,24 +1,39 @@
 <!-- HotFeed.vue -->
 <script setup lang="ts">
-const { store, loadMore } = useSelectData<News>('news_details', {
+// Update to use the new contents table with content_type filter
+const { store, loadMore } = useSelectData<any>('contents', {
+  // Updated to query the contents table with news content_type
   orderBy: { column: 'hot_score', ascending: false },
-  pagination: {
-    page: 1,
-    limit: 21,
-  },
+  filters: { content_type: { eq: 'news' }, is_active: { eq: true }, deleted_at: { is: null } },
+  columns: `
+    id, 
+    content_type,
+    title, 
+    url, 
+    created_at, 
+    hot_score,
+    published_at, 
+    description, 
+    author, 
+    featured_image, 
+    source_id,
+    company_id,
+    details
+  `,
+  pagination: { page: 1, limit: 21 },
   initialFetch: true,
   storeKey: 'hotFeed',
 })
 
 const { items: newsItems } = storeToRefs(store)
-const displayedFeed = ref<Array<News | SponsoredAd>>([])
+const displayedFeed = ref<Array<any>>([])
 const loading = useLoadingStore()
 
 // Ads integration
 const { integrateAdsIntoFeed, resetAdTracking, isLoading: adsLoading } = useAdsStore()
 
 // Update feed with ads
-const updateDisplayedFeed = (items: News[], isFullRefresh = false) => {
+const updateDisplayedFeed = (items: any[], isFullRefresh = false) => {
   if (isFullRefresh) {
     resetAdTracking()
     displayedFeed.value = integrateAdsIntoFeed(items, true)

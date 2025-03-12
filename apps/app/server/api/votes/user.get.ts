@@ -5,38 +5,35 @@ export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
 
   if (!user) {
-    throw createError({
-      statusCode: 401,
-      message: 'Unauthorized',
-    })
+    throw createError({ statusCode: 401, message: 'Unauthorized' })
   }
 
   try {
+    // Updated to query content_interactions table for vote type interactions
     const { data, error } = await client
-      .from('votes')
-      .select('content_id, vote_type')
-      .eq('content_type', 'news')
+      .from('content_interactions')
+      .select('content_id, details')
+      .eq('interaction_type', 'vote')
       .eq('user_id', user.id)
 
     if (error) throw error
 
     // Transform into a more efficient lookup object
+    // Extract vote_type from details JSONB
     const voteLookup = data.reduce(
-      (acc, vote) => {
-        acc[vote.content_id] = vote.vote_type
+      (acc, interaction) => {
+        const voteType = interaction.details?.vote_type
+        if (voteType !== undefined) {
+          acc[interaction.content_id] = voteType
+        }
         return acc
       },
       {} as Record<string, number>,
     )
 
-    return {
-      votes: voteLookup,
-    }
+    return { votes: voteLookup }
   } catch (error: any) {
     console.error('Get votes error:', error)
-    throw createError({
-      statusCode: 500,
-      message: 'Failed to get votes',
-    })
+    throw createError({ statusCode: 500, message: 'Failed to get votes' })
   }
 })

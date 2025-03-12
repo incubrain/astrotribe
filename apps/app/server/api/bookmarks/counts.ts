@@ -11,7 +11,8 @@ export default defineEventHandler(async (event) => {
 
     const supabase = serverSupabaseServiceRole(event)
 
-    // Using a raw SQL query with Supabase
+    // The get_bookmark_counts_by_folder function should be updated if necessary
+    // to work with the new schema, but the interface remains the same
     const { data, error } = await supabase.rpc('get_bookmark_counts_by_folder', {
       user_id_param: user.id,
     })

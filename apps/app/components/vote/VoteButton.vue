@@ -10,10 +10,7 @@ interface Props {
   cardSide: 'front' | 'back'
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  contentType: 'news',
-  count: 0,
-})
+const props = withDefaults(defineProps<Props>(), { contentType: 'news', count: 0 })
 
 const voteStore = useVoteStore()
 const notification = useNotification()
@@ -35,16 +32,14 @@ onMounted(async () => {
 
 const handleVote = async () => {
   try {
+    // Pass the content type from the new unified structure
     await voteStore.submitVote(props.contentId, voteType.value, props.contentType)
     // Optionally trigger animation
     if (animationRef.value) {
       animationRef.value.triggerAnimation()
     }
   } catch (error) {
-    notification.error({
-      summary: 'Vote Error',
-      message: 'Failed to submit vote',
-    })
+    notification.error({ summary: 'Vote Error', message: 'Failed to submit vote' })
   }
 }
 </script>

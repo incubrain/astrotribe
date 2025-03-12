@@ -10,7 +10,6 @@ const props = defineProps<Props>()
 const ads = useAdsStore()
 const { currentAdQueue } = storeToRefs(ads)
 
-
 const isFlipped = ref(false)
 const startTime = ref(Date.now())
 const flipStartTime = ref(0)
@@ -97,7 +96,10 @@ onBeforeUnmount(() => {
         <div class="absolute w-full h-full backface-hidden">
           <div class="p-4 flex flex-col justify-between h-full">
             <div>
-              <div class="flex items-center gap-2 mb-2">
+              <div
+                v-if="ad.company"
+                class="flex items-center gap-2 mb-2"
+              >
                 <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
                   <img
                     :src="ad.company.logo_url"
@@ -162,7 +164,7 @@ onBeforeUnmount(() => {
               target="_blank"
               rel="noopener noreferrer sponsored"
               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full inline-block text-center"
-              @click="handleSourceVisit"
+              @click="(e) => handleSourceVisit(isVisible, startTime)"
             >
               {{ variant.content.cta_text || 'Learn More' }}
             </a>

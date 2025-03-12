@@ -117,8 +117,8 @@ const handleImageError = () => {
           v-if="profile.user_plan"
           to="/settings/payments"
         >
-          <PrimeTag class="bg-transparent rounded border border-white"
-            >Using {{ profile.user_plan }} plan
+          <PrimeTag class="bg-transparent text-nowrap rounded border border-white"
+            >{{ profile.user_plan }} plan active
           </PrimeTag>
         </NuxtLink>
         <PrimeTag v-if="profile.user_role">

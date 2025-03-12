@@ -5,7 +5,7 @@ interface Props {
   commentsCount?: number
   bookmarked: boolean
   url: string
-  content: any
+  content: any // Updated to accept any content from the unified content table
   onSourceVisit: () => Promise<void>
   cardSide: 'front' | 'back'
 }
@@ -27,12 +27,14 @@ defineProps<Props>()
       >
         <VoteButton
           :content-id="content.id"
+          :content-type="content.content_type || 'news'"
           direction="up"
           :card-side="cardSide"
         />
         <span class="text-sm font-medium pl-1 pr-2">{{ score }}</span>
         <VoteButton
           :content-id="content.id"
+          :content-type="content.content_type || 'news'"
           direction="down"
           :card-side="cardSide"
         />
@@ -50,7 +52,7 @@ defineProps<Props>()
       </button> -->
     </div>
     <div class="flex items-center gap-2 justify-center">
-      <BookmarkButton :content />
+      <BookmarkButton :content="content" />
       <NuxtLink
         :to="url"
         target="_blank"

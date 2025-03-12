@@ -7,11 +7,25 @@ interface Props {
 const props = defineProps<Props>()
 const bookmarkStore = useBookmarkStore()
 
-const bookmarked = computed(() => bookmarkStore.isBookmarked(props.content.id))
+// Add more defensive checks for content properties
+const contentId = computed(() => props.content?.id)
+const contentType = computed(() => props.content?.content_type || 'news')
+
+// Check if bookmarked, supporting the new content structure with extra error handling
+const bookmarked = computed(() => {
+  if (!contentId.value) return false
+  return bookmarkStore.isBookmarked(contentId.value, contentType.value)
+})
+
 const showFeedback = ref(false)
 const fadeOutComplete = ref(true)
 
 const handleClick = async () => {
+  if (!contentId.value) {
+    console.error('Cannot bookmark: content has no ID')
+    return
+  }
+
   try {
     await bookmarkStore.handleToggleBookmark(props.content)
     showFeedback.value = true

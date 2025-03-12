@@ -1,47 +1,63 @@
-<!-- components/AdVisibilityWrapper.vue -->
+<!-- components/AdsVisibilityWrapper.vue -->
+<template>
+  <div
+    ref="elementRef"
+    class="visibility-wrapper"
+  >
+    <slot
+      v-if="isEnabled"
+      :is-visible="isVisible"
+      :start-time="startTime"
+    ></slot>
+    <div
+      v-else
+      class="bg-slate-950 rounded-lg border border-yellow-800 p-4 text-center"
+    >
+      <p>Advertisement content unavailable</p>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-const props = defineProps<{
+import { useIntersectionObserver } from '@vueuse/core'
+
+interface Props {
   variantId: string
   threshold?: number
-}>()
+}
 
-const { isVisible, startTime, onVisibilityChange } = useAdsEvents()
-const elementRef = ref<HTMLElement | null>(null)
-const { trackInteraction } = useAdsStore()
+const props = defineProps<Props>()
 
-console.log('Observer', isVisible)
+// Add defensive coding to handle missing data
+const isEnabled = computed(() => {
+  return !!props.variantId
+})
 
-const slotProps = computed(() => ({
-  isVisible: isVisible.value,
-  startTime: startTime.value,
-}))
+const elementRef = ref(null)
+const isVisible = ref(false)
+const startTime = ref(Date.now())
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        onVisibilityChange(entry.isIntersecting, props.variantId, trackInteraction)
-      })
-    },
-    {
-      threshold: props.threshold ?? 0.5,
-    },
-  )
-
-  if (elementRef.value) {
-    observer.observe(elementRef.value)
-  }
-
-  onBeforeUnmount(() => {
-    if (elementRef.value) {
-      observer.unobserve(elementRef.value)
+const { stop } = useIntersectionObserver(
+  elementRef,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting && !isVisible.value) {
+      isVisible.value = true
+      startTime.value = Date.now()
+    } else if (!isIntersecting && isVisible.value) {
+      isVisible.value = false
     }
-  })
+  },
+  { threshold: props.threshold || 0.5 },
+)
+
+onUnmounted(() => {
+  stop()
 })
 </script>
 
-<template>
-  <div ref="elementRef">
-    <slot v-bind="slotProps" />
-  </div>
-</template>
+<style scoped>
+.visibility-wrapper {
+  width: 100%;
+  height: 100%;
+}
+</style>
