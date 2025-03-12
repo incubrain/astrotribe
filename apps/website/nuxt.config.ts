@@ -49,9 +49,7 @@ export default defineNuxtConfig({
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       link: [{ rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
-      htmlAttrs: {
-        lang: 'en',
-      },
+      htmlAttrs: { lang: 'en' },
       meta: [
         { property: 'title', content: og.description },
         { property: 'description', content: og.description },
@@ -68,38 +66,21 @@ export default defineNuxtConfig({
       script: [
         // Insert your Google Tag Manager Script here
         // { src: 'https://browser.sentry-cdn.com/7.28.1/bundle.min.js', async: true, type: 'text/partytown' },
-        {
-          src: 'https://www.youtube.com/iframe_api',
-          async: true,
-        },
+        { src: 'https://www.youtube.com/iframe_api', async: true },
       ],
     },
   },
 
-  site: {
-    url: og.url,
-    name: 'AstronEra',
-    description: 'Astronomy Hub',
-    defaultLocale: 'en',
-  },
+  site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
 
   content: {
-    highlight: {
-      theme: {
-        default: 'github-dark',
-        light: 'github-light',
-        dark: 'github-dark',
-      },
-    },
+    highlight: { theme: { default: 'github-dark', light: 'github-light', dark: 'github-dark' } },
   },
 
   runtimeConfig: {
     serviceName: 'website',
     ...sharedRuntimeConfig.runtimeConfig.private,
-    public: {
-      serviceName: 'website',
-      ...sharedRuntimeConfig.runtimeConfig.public,
-    },
+    public: { serviceName: 'website', ...sharedRuntimeConfig.runtimeConfig.public },
   },
   srcDir: '.',
   workspaceDir: '../../',
@@ -127,38 +108,18 @@ export default defineNuxtConfig({
     },
 
     '/sitemap.xml': {
-      headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'max-age=3600',
-      },
+      headers: { 'Content-Type': 'application/xml', 'Cache-Control': 'max-age=3600' },
     },
-    '/api/__sitemap__/**': {
-      cors: true,
-      headers: {
-        'Cache-Control': 'max-age=3600',
-      },
-    },
+    '/api/__sitemap__/**': { cors: true, headers: { 'Cache-Control': 'max-age=3600' } },
   },
 
-  devServer: {
-    host: 'localhost',
-    port: process.env.NUXT_MULTI_APP ? devPortMap.website : 3000,
-  },
+  devServer: { host: 'localhost', port: process.env.NUXT_MULTI_APP ? devPortMap.website : 3000 },
 
-  experimental: {
-    inlineRouteRules: true,
-    asyncContext: true,
-  },
+  experimental: { inlineRouteRules: true, asyncContext: true },
 
   compatibilityDate: '2024-09-22',
 
-  nitro: {
-    prerender: {
-      routes: ['/sitemap.xml'],
-      crawlLinks: true,
-      failOnError: false,
-    },
-  },
+  nitro: { prerender: { routes: ['/sitemap.xml'], crawlLinks: true, failOnError: false } },
 
   fonts: {
     families: [
@@ -174,10 +135,8 @@ export default defineNuxtConfig({
     domains: ['astronera.org', 'cms.astronera.org', 'staging.cms.astronera.org', 'localhost'],
     fallback: '/defaults/fallback.jpg',
 
-    // Strapi provider configuration
-    strapi: {
-      baseURL: `${process.env.NUXT_PUBLIC_STRAPI_URL}/uploads/`, // Adjust this URL to match your Strapi setup
-    },
+    // cms provider configuration
+    cms: { baseURL: `${process.env.NUXT_PUBLIC_CMS_URL}/uploads/` },
 
     // You can keep the ipx provider as a fallback or for local development
     ipx: {
@@ -188,11 +147,7 @@ export default defineNuxtConfig({
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
-    components: {
-      prefix: 'Prime',
-      include: '*',
-      exclude: ['Editor'],
-    },
+    components: { prefix: 'Prime', include: '*', exclude: ['Editor'] },
 
     //   composables: {
     //     include: '*',
@@ -203,10 +158,7 @@ export default defineNuxtConfig({
       unstyled: true,
       theme: {
         options: {
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities',
-          },
+          cssLayer: { name: 'primevue', order: 'tailwind-base, primevue, tailwind-utilities' },
         },
       },
     },
@@ -345,9 +297,7 @@ export default defineNuxtConfig({
       exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
       credentials: true,
       maxAge: '86400', // 24 hours in seconds
-      preflight: {
-        statusCode: 204,
-      },
+      preflight: { statusCode: 204 },
     },
     allowedMethodsRestricter: false,
     hidePoweredBy: false,
@@ -367,11 +317,7 @@ export default defineNuxtConfig({
     cacheMaxAgeSeconds: 3600, // 1 hour
 
     // Split into multiple sitemaps for better organization
-    sitemaps: {
-      blog: {
-        sources: ['/api/__sitemap__/blog'],
-      },
-    },
+    sitemaps: { blog: { sources: ['/api/__sitemap__/blog'] } },
 
     // Only prerender sitemap in production
     defaults: {

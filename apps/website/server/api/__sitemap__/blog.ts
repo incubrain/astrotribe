@@ -3,9 +3,8 @@ import { defineEventHandler } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const entries: any[] = []
-  const strapiURL = 'http://localhost:1337'
+  const cmsURL = 'http://localhost:1337'
 
-  // Always add static category pages regardless of Strapi status
   const categories = [
     'all',
     'people-of-space',
@@ -22,11 +21,8 @@ export default defineEventHandler(async (event) => {
   })
 
   try {
-    // Try to fetch articles from Strapi
-    const response = await fetch(`${strapiURL}/api/articles`, {
-      headers: {
-        Accept: 'application/json',
-      },
+    const response = await fetch(`${cmsURL}/api/articles`, {
+      headers: { Accept: 'application/json' },
       // Add timeout to prevent hanging
       signal: AbortSignal.timeout(5000),
     })

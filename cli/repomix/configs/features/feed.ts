@@ -11,7 +11,6 @@ const NEWSFEED_PATTERNS = [
   // Content management and API
   'apps/**/server/api/news/**',
   'apps/**/server/api/feed/**',
-  'apps/cms/src/api/article/**',
 
   // News stores and composables
   'apps/**/composables/news.store.ts',
@@ -46,9 +45,5 @@ export const contentFeedConfig = new FeatureConfigBuilder()
   .withCommonConfigs('api', 'types', 'stateManagement')
   .ignore(['**/news.test.*', '**/news.spec.*', '**/news.stories.*'])
   .relatedTo(['content-management', 'personalization', 'feed-sources'])
-  .setOutput({
-    directory: 'ai-context',
-    filename: 'newsfeed',
-    extension: 'txt',
-  })
+  .setOutput({ directory: 'ai-context', filename: 'newsfeed', extension: 'txt' })
   .build()

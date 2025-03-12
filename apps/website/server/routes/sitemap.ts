@@ -2,11 +2,11 @@
 export default defineEventHandler(async (event) => {
   // const config = useRuntimeConfig()
   const routes = new Set<string>()
-  const strapiURL = 'http://localhost:1337'
+  const cmsURL = 'http://localhost:1337'
   try {
     // 1. Fetch all articles
     const articlesResponse = await fetch(
-      `${strapiURL}/api/articles?pagination[pageSize]=100&fields[0]=slug&fields[1]=category`,
+      `${cmsURL}/api/articles?pagination[pageSize]=100&fields[0]=slug&fields[1]=category`,
     )
     const articlesData = await articlesResponse.json()
 

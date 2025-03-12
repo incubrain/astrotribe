@@ -42,7 +42,6 @@ export enum Service {
   APP = 'app',
   MONITORING = 'monitoring',
   WEBSITE = 'website',
-  CMS = 'cms',
   API = 'api',
 
   // Extensions
@@ -70,14 +69,11 @@ export const ServiceDomains = {
   ],
   'monitoring': [...CORE_DOMAINS, ...MONITORING_DOMAINS, ...SYSTEM_DOMAINS],
   'website': [...CORE_DOMAINS, ...UI_DOMAINS, ...CONTENT_DOMAINS, 'search'],
-  'cms': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS],
   'chrome-extension': ['api', 'errors', ...UI_DOMAINS, ...STORAGE_DOMAINS, 'bookmarks'],
   'api': [...CORE_DOMAINS, ...AUTH_DOMAINS, ...STORAGE_DOMAINS, ...CONTENT_DOMAINS, ...API_DOMAINS],
 } as const
 
-export type ServiceToDomain = {
-  [S in Service]: (typeof ServiceDomains)[S][number]
-}
+export type ServiceToDomain = { [S in Service]: (typeof ServiceDomains)[S][number] }
 
 // Type helper to get domains for a service
 export type DomainsForService<S extends Service> = ServiceToDomain[S]

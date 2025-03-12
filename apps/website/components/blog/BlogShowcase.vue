@@ -6,56 +6,43 @@ import type { ArticleCategoriesT, ArticleCardT } from '~/types/articles'
 const message = ref('')
 
 const props = defineProps({
-  articleCategory: {
-    type: String as PropType<ArticleCategoriesT>,
-    required: true,
-  },
+  articleCategory: { type: String as PropType<ArticleCategoriesT>, required: true },
 })
 
 const articlesShowcase = ref<ArticleCardT[]>([])
 const category = computed(() => props.articleCategory)
 const haveArticles = computed(() => articlesShowcase.value.length > 0)
-const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
-const strapi = useStrapi(strapiURL)
+const cmsURL = String(useRuntimeConfig().public.cmsURL ?? 'http://localhost:1337')
+
+// !todo: update with new blog system
+// const strapi = useStrapi(cmsURL)
 
 // Fetch articles on server and client
 const { data, error, status } = await useAsyncData(`blog-showcase-${category.value}`, async () => {
   const params: any = {
-    pagination: {
-      pageSize: 3,
-      page: 1,
-    },
+    pagination: { pageSize: 3, page: 1 },
     sort: ['publishedAt:desc'],
     filters: {},
     populate: {
-      cover: {
-        populate: '*',
-      },
-      category: {
-        fields: ['name', 'slug'],
-      },
-      author: {
-        fields: ['name', 'bio'],
-      },
+      cover: { populate: '*' },
+      category: { fields: ['name', 'slug'] },
+      author: { fields: ['name', 'bio'] },
     },
   }
 
   if (category.value !== 'all') {
-    params.filters['category'] = {
-      slug: {
-        $eq: category.value,
-      },
-    }
+    params.filters['category'] = { slug: { $eq: category.value } }
   }
 
-  const response = await strapi.find<any>('articles', params)
+  // !todo: update with new blog system
+  // const response = await strapi.find<any>('articles', params)
 
-  if (response && response.data && response.data.length > 0) {
-    return response.data
-  } else {
-    message.value = 'No articles loaded...'
-    return []
-  }
+  // if (response && response.data && response.data.length > 0) {
+  //   return response.data
+  // } else {
+  //   message.value = 'No articles loaded...'
+  //   return []
+  // }
 })
 
 if (error.value) {
