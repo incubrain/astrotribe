@@ -18,6 +18,11 @@ interface NewsCardT {
   description: string | null
   source_id: string | null
   company_id: string | null
+  content_sources?: {
+    id: string
+    name: string
+    url: string
+  }
   details: {
     // Type-specific details stored in JSONB
     categories?: Array<{ name: string; isPrimary: boolean }>
@@ -30,6 +35,7 @@ interface NewsCardT {
     }
     company_name?: string
     company_logo?: string
+    source_name?: string // Added source_name field
   }
 }
 
@@ -64,19 +70,25 @@ const getContentProperty = <T,>(
   return defaultValue
 }
 
-// Update computed properties
-const sourceDisplay = computed(() => {
-  const companyName = getContentProperty(null, 'company_name')
-  const author = props.news.author
-
-  if (companyName && author) {
-    return `${author} • ${companyName}`
-  } else if (companyName) {
-    return companyName
-  } else if (author) {
-    return author
+// Get source name from content_sources if available
+const sourceName = computed(() => {
+  // First priority: Check if content_sources data is directly available
+  if (props.news.content_sources?.name) {
+    return props.news.content_sources.name
   }
-  return 'Unknown source'
+
+  // Second priority: Try to get source_name from details
+  const sourceNameFromDetails = getContentProperty<string>(null, 'source_name')
+  if (sourceNameFromDetails) return sourceNameFromDetails
+
+  // Third priority: Try company_name as fallback
+  const companyName = getContentProperty<string>(null, 'company_name')
+  if (companyName) return companyName
+
+  // As a last resort, use author
+  if (props.news.author) return props.news.author
+
+  return 'Source Unknown'
 })
 
 const hasSummary = computed(() => {
@@ -107,12 +119,6 @@ const isBookmarked = computed(() =>
   bookmarkStore.isBookmarked(props.news.id, props.news.content_type),
 )
 
-const formatSourceName = (name: string) => {
-  // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
-  // .replace(/\.(com|org|net|io|ai)$/, '')
-  return name
-}
-
 const readTime = computed(() => {
   // Calculate read time based on content length
   // This is a placeholder, replace with actual logic
@@ -138,13 +144,7 @@ const openModal = (feature: string) => {
 }
 
 const imageSource = computed(() => {
-  // if (props.news.featured_image) {
-  //   return props.news.featured_image
-  // }
-  // You can choose either random or deterministic fallbacks
-  // return getRandomFallbackImage() // Random each time
   return 'fallback-news.jpg'
-  // return null
 })
 
 // Handle clicks for touch devices
@@ -201,35 +201,11 @@ onBeforeUnmount(async () => {
       <div class="absolute w-full h-full backface-hidden">
         <div class="p-4 flex flex-col justify-between h-full">
           <div>
-            <div class="flex items-center gap-2 mb-2">
-              <!-- Company logo or random image -->
-              <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
-                <NuxtImg
-                  :src="
-                    news.details?.company_logo ?? `https://picsum.photos/24/24?random=${news.id}`
-                  "
-                  alt="Source"
-                  class="w-full h-full object-cover"
-                  width="24"
-                  height="24"
-                />
-              </div>
-              <!-- Source and author info -->
-              <div class="flex flex-col min-w-0">
-                <span
-                  v-if="news.details?.company_name"
-                  class="font-medium text-sm truncate"
-                >
-                  {{ formatSourceName(news.details.company_name) }}
-                </span>
-                <span
-                  v-if="news.author"
-                  class="text-xs text-gray-400 truncate"
-                >
-                  {{ news.author }}
-                </span>
-              </div>
+            <!-- Simplified source display -->
+            <div class="flex items-center mb-3">
+              <span class="text-sm text-primary-500 font-bold">{{ sourceName }}</span>
             </div>
+
             <h3
               class="text-xl font-bold mb-2 line-clamp-3 min-h-[3.5rem]"
               :title="news.title"
@@ -251,9 +227,8 @@ onBeforeUnmount(async () => {
                 <div
                   class="absolute z-50 w-full h-full flex items-center justify-center text-white font-bold text-xl"
                 >
-                  <h5> IMAGES SOON </h5>
+                  <h5>IMAGES SOON</h5>
                 </div>
-                <!-- :provider="news.featured_image ? 'supabase' : undefined" -->
                 <NuxtImg
                   :src="imageSource"
                   :alt="news.title"

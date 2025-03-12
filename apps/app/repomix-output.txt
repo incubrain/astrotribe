@@ -6848,14 +6848,14 @@ const navigationCategories = ref([
         slug: '/news',
         icon: 'mdi:newspaper-variant-outline',
       },
-      {
-        id: 'my-feeds',
-        label: 'My Feeds',
-        slug: '#',
-        icon: 'mdi:rss',
-        isExpanded: false,
-        children: [],
-      },
+      // {
+      //   id: 'my-feeds',
+      //   label: 'My Feeds',
+      //   slug: '#',
+      //   icon: 'mdi:rss',
+      //   isExpanded: false,
+      //   children: [],
+      // },
     ],
   },
   {
