@@ -191,7 +191,7 @@ awareness about light pollution`,
             <div class="flex flex-col gap-2">
               <div class="flex flex-col md:flex-row gap-2">
                 <IBImage
-                  class="h-auto flex flex-1"
+                  class="object-fit h-auto flex flex-1"
                   :img="{
                     src: 'images/five-lighting-principles-08-2023.webp',
                     width: 400,
@@ -200,7 +200,7 @@ awareness about light pollution`,
                 />
                 <LandingGlass class="flex flex-1">
                   <h3 class="pb-4 text-2xl font-bold leading-7">
-                    5 principles of responsible lightining
+                    5 principles of responsible lighting
                   </h3>
                   <p class="pb-3 text-base font-normal">
                     Excessive and poorly managed outdoor lighting at night is a widespread issue,
@@ -225,7 +225,7 @@ awareness about light pollution`,
                   />
                 </LandingGlass>
                 <IBImage
-                  class="h-auto flex flex-1 flex-shrink-0"
+                  class="object-contain h-auto flex flex-1 flex-shrink-0"
                   :img="{
                     src: 'symposium/bortlescaleflowchart.jpg',
                     width: 400,
