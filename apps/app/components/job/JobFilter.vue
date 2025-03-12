@@ -1,7 +1,12 @@
 <script setup lang="ts">
+interface Option {
+  value: string
+  key: string
+}
+
 interface Options {
   value: string
-  options: string[]
+  options: Option[]
 }
 
 interface Filters {
@@ -105,7 +110,7 @@ onUnmounted(() => {
             class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"
           />
           <input
-            v-model="filters[field].value"
+            v-model="filters[field].value.value"
             type="text"
             class="pl-10 w-full rounded-lg border-gray-300 focus:border-jobs-primary focus:ring-jobs-primary transition-all duration-200 hover:border-gray-400"
             placeholder="Search location..."
@@ -131,7 +136,7 @@ onUnmounted(() => {
           </button>
           <button
             v-for="option in modelValue[field].options"
-            :key="option"
+            :key="option.key"
             class="w-full text-left px-4 py-2 hover:bg-gray-50 text-gray-700 text-sm transition-colors duration-150"
             @click="selectDropdown(field, option)"
           >
@@ -139,7 +144,7 @@ onUnmounted(() => {
               :name="value.icon"
               class="inline-block mr-2 w-4 h-4 text-gray-400"
             />
-            {{ option }}
+            {{ option.value }}
           </button>
         </div>
       </div>

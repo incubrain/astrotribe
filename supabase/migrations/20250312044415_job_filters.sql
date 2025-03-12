@@ -11,10 +11,11 @@ ALTER TABLE jobs RENAME COLUMN employment_type_text TO employment_type;
 CREATE VIEW job_filters AS
 SELECT DISTINCT j.location,
   c.name AS company_name,
+  j.company_id,
   j.employment_type
   FROM jobs j
-    JOIN companies c ON c.id = j.company_id
-ORDER BY c.name, j.location, j.employment_type;
+    INNER JOIN companies c ON c.id = j.company_id
+ORDER BY c.name, j.company_id, j.location, j.employment_type;
 
 -- Change the owner of the view to "postgres"
 ALTER VIEW public.job_filters OWNER TO postgres;
