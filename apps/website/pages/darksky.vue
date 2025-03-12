@@ -191,10 +191,11 @@ awareness about light pollution`,
             <div class="flex flex-col gap-2">
               <div class="flex flex-col md:flex-row gap-2">
                 <IBImage
-                  class="flex flex-1"
+                  class="h-auto flex flex-1"
                   :img="{
                     src: 'images/five-lighting-principles-08-2023.webp',
-                    height: 'auto',
+                    width: 400,
+                    quality: 90,
                   }"
                 />
                 <LandingGlass class="flex flex-1">
