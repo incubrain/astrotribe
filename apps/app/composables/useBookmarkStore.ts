@@ -33,24 +33,7 @@ interface Bookmark {
     url?: string
   }
   created_at: string
-  folder?: {
-    id: string
-    name: string
-    color: string
-    is_favorite: boolean
-  }
-}
-
-interface BookmarkableContent {
-  id: string
-  type: 'news' | 'research' | 'newsletters' // add other types as needed
-  title: string
-  url?: string
-  description?: string
-  featured_image?: string
-  author?: string
-  metadata?: Record<string, any>
-  folder_id?: string
+  folder?: { id: string; name: string; color: string; is_favorite: boolean }
 }
 
 // stores/useBookmarkStore.ts
@@ -115,19 +98,25 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
   const fetchBookmarks = async (params: BookmarkParams = {}) => {
     loading.value = true
     error.value = null
-
     try {
+      // Add error handling and diagnostics
       const response = await $fetch('/api/bookmarks', {
         params: {
           folder_id: params.folder_id || null,
           include_subfolders: params.include_subfolders ?? includeSubfolders.value,
+        },
+        // Add error handling
+        onResponseError(error) {
+          console.error('Bookmark API response error:', error.response?._data || error)
         },
       })
 
       bookmarks.value = response.data || []
       organizeBookmarksByFolder(bookmarks.value)
     } catch (e) {
-      error.value = 'Failed to fetch bookmarks'
+      // Improved error logging
+      console.error('Failed to fetch bookmarks:', e)
+      error.value = e.message || 'Failed to fetch bookmarks'
       bookmarks.value = []
       bookmarksByFolder.value = new Map()
     } finally {
@@ -141,6 +130,10 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
   }
 
   const toggleBookmark = async (content: BookmarkContent) => {
+    // For this function, we need to adapt to the new schema
+    // content.type is used in the original function, but the API endpoint
+    // now expects content_type based on the content_types table
+
     const existingBookmark = bookmarks.value.find(
       (b) => b.content_id === content.id && b.content_type === content.type,
     )
@@ -152,7 +145,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
           method: 'POST',
           body: {
             content_id: content.id,
-            content_type: content.type,
+            content_type: content.type, // Matches the content_type in content_types table
             folder_id: content.folder_id,
             metadata: {
               title: content.title,
@@ -202,13 +195,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     return executeOptimistic({
       key: `move-${bookmarkIds.join('-')}`,
       apiCall: () =>
-        $fetch('/api/bookmarks/move', {
-          method: 'PATCH',
-          body: {
-            bookmarkIds,
-            targetFolderId,
-          },
-        }),
+        $fetch('/api/bookmarks/move', { method: 'PATCH', body: { bookmarkIds, targetFolderId } }),
       optimisticUpdate: () => {
         const previousState = [...bookmarks.value]
         bookmarks.value = bookmarks.value.map((bookmark) =>
@@ -229,11 +216,7 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
   const removeBookmarks = async (bookmarkIds: string[]) => {
     return executeOptimistic({
       key: `remove-${bookmarkIds.join('-')}`,
-      apiCall: () =>
-        $fetch('/api/bookmarks/batch', {
-          method: 'DELETE',
-          body: { bookmarkIds },
-        }),
+      apiCall: () => $fetch('/api/bookmarks/batch', { method: 'DELETE', body: { bookmarkIds } }),
       optimisticUpdate: () => {
         const previousState = [...bookmarks.value]
         bookmarks.value = bookmarks.value.filter((b) => !bookmarkIds.includes(b.id))
@@ -290,19 +273,13 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
 
   const setCurrentFolder = async (folderId: string | null) => {
     currentFolderId.value = folderId
-    await fetchBookmarks({
-      folder_id: folderId,
-      include_subfolders: includeSubfolders.value,
-    })
+    await fetchBookmarks({ folder_id: folderId, include_subfolders: includeSubfolders.value })
   }
 
   const setIncludeSubfolders = async (include: boolean) => {
     includeSubfolders.value = include
     if (currentFolderId.value) {
-      await fetchBookmarks({
-        folder_id: currentFolderId.value,
-        include_subfolders: include,
-      })
+      await fetchBookmarks({ folder_id: currentFolderId.value, include_subfolders: include })
     }
   }
 
@@ -322,17 +299,25 @@ export const useBookmarkStore = defineStore('bookmarks', () => {
     const folderStore = useFolderStore()
     const defaultFolderId = folderStore.getDefaultFolder?.id
     try {
+      // More robust error handling and content validation
+      if (!content || !content.id) {
+        console.error('Cannot bookmark: Invalid content object', content)
+        return
+      }
+
+      // Need to handle the new content structure with safer property access
       const bookmarkData = {
         id: content.id,
         type: content.content_type || 'news',
-        title: content.title || content.metadata?.title,
-        thumbnail: content.featured_image || content.metadata?.featured_image,
-        url: content.url || content.metadata?.url,
-        author: content.author || content.metadata?.author,
-        description: content.description || content.metadata?.description,
+        title: content.title || content.metadata?.title || 'Untitled',
+        thumbnail: content.featured_image || content.metadata?.featured_image || null,
+        url: content.url || content.metadata?.url || null,
+        author: content.author || content.metadata?.author || null,
+        description: content.description || content.metadata?.description || null,
         folder_id: defaultFolderId,
       }
 
+      console.log('Bookmarking content:', bookmarkData)
       await toggleBookmark(bookmarkData)
       showBookmarkFeedback.value = true
       setTimeout(() => {

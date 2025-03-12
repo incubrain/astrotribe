@@ -18,23 +18,42 @@ export default defineEventHandler(async (event: H3Event) => {
       .eq('user_id', user.id)
 
     if (verifyError || !bookmarks?.length) {
-      throw createError({
-        statusCode: 400,
-        message: 'Invalid bookmark selection',
-      })
+      throw createError({ statusCode: 400, message: 'Invalid bookmark selection' })
     }
 
     // Move bookmarks to new folder
     const { error: updateError } = await supabase
       .from('bookmarks')
-      .update({
-        folder_id: targetFolderId,
-        updated_at: new Date().toISOString(),
-      })
+      .update({ folder_id: targetFolderId, updated_at: new Date().toISOString() })
       .in('id', bookmarkIds)
       .eq('user_id', user.id)
 
     if (updateError) throw updateError
+
+    // Also update the folder_id in content_interactions for analytics
+    const { data: interactions, error: fetchError } = await supabase
+      .from('bookmarks')
+      .select('content_id')
+      .in('id', bookmarkIds)
+      .eq('user_id', user.id)
+
+    if (!fetchError && interactions?.length) {
+      const contentIds = interactions.map((b) => b.content_id)
+
+      // Update interaction records with the new folder_id
+      await supabase
+        .from('content_interactions')
+        .update({
+          details: supabase.rpc('jsonb_set_field', {
+            current_data: supabase.raw('details'),
+            field_path: 'folder_id',
+            new_value: JSON.stringify(targetFolderId),
+          }),
+        })
+        .in('content_id', contentIds)
+        .eq('user_id', user.id)
+        .eq('interaction_type', 'bookmark')
+    }
 
     return { success: true }
   } catch (err) {

@@ -1,7 +1,8 @@
 <!-- NewsFeedGrid.vue -->
 <script setup lang="ts">
+// Updated to handle the new unified content structure
 defineProps<{
-  items: Array<News | SponsoredAd>
+  items: Array<any> // Can be News, SponsoredAd, or any content type from the unified table
 }>()
 </script>
 

@@ -1,5 +1,5 @@
-import { FEATURES } from '#shared/constants'
 import { storeToRefs } from 'pinia'
+import { FEATURES } from '#shared/constants'
 
 // composables/usePlan.ts
 export enum PlanType {
@@ -9,10 +9,7 @@ export enum PlanType {
 
 export interface PlanFeature {
   name: string
-  limit: {
-    [PlanType.FREE]: number
-    [PlanType.PRO]: number
-  }
+  limit: { [PlanType.FREE]: number; [PlanType.PRO]: number }
   description: string
   comingSoon?: boolean
 }

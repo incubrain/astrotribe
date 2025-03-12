@@ -18,7 +18,7 @@
     </div>
     <div class="p-4 flex justify-end items-center">
       <NuxtLink
-        :to="`${research.url}v${research.version}`"
+        :to="getResearchUrl()"
         target="_blank"
         rel="noopener"
       >
@@ -33,16 +33,26 @@
 </template>
 
 <script setup lang="ts">
-import type { NewsCardT } from '@/types/news'
+// Updated to use the new unified content structure
+defineProps({ research: { type: Object, required: true } })
 
-defineProps({
-  research: {
-    type: Object as () => NewsCardT,
-    required: true,
-  },
-  // summaryLevel: {
-  //   type: String,
-  //   required: true
-  // }
-})
+// Helper to get URL based on the new structure
+function getResearchUrl() {
+  const research = props.research
+
+  // Check if the URL is in the standard field or in details JSONB
+  let url = research.url
+
+  if (!url && research.details?.url) {
+    url = research.details.url
+  }
+
+  // Add version if available
+  const version = research.details?.version || research.version
+  if (url && version) {
+    return `${url}v${version}`
+  }
+
+  return url || '#'
+}
 </script>

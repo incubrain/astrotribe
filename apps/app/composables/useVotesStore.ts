@@ -126,10 +126,7 @@ export const useVoteStore = defineStore('votes', () => {
     }
     bestStreak = Math.max(bestStreak, tempStreak, currentStreak)
 
-    return {
-      current: currentStreak,
-      best: bestStreak,
-    }
+    return { current: currentStreak, best: bestStreak }
   })
 
   const todayVoteCount = computed(() => {
@@ -138,7 +135,7 @@ export const useVoteStore = defineStore('votes', () => {
     return metrics.value.votesByDate[today]?.length ?? 0
   })
 
-  // Original actions
+  // User votes tracking
   const fetchUserVotes = async () => {
     if (isLoading.value) return
 
@@ -146,6 +143,7 @@ export const useVoteStore = defineStore('votes', () => {
     error.value = null
 
     try {
+      // Updated to get votes for all content types from content_interactions
       const response = await $fetch('/api/votes/user')
       userVotes.value = response.votes
     } catch (err) {
@@ -159,6 +157,7 @@ export const useVoteStore = defineStore('votes', () => {
 
   const fetchVotedPosts = async (voteType: 1 | -1) => {
     try {
+      // Get voted posts for specific vote type
       const response = await $fetch(`/api/votes/user/${voteType}`)
       return response
     } catch (err) {
@@ -188,44 +187,29 @@ export const useVoteStore = defineStore('votes', () => {
 
       // Define API call
       apiCall: () =>
-        $fetch(`/api/votes/${contentType}/${contentId}`, {
-          method: 'POST',
-          body: { voteType },
-        }),
+        $fetch(`/api/votes/${contentType}/${contentId}`, { method: 'POST', body: { voteType } }),
 
       // Optimistic update function
       optimisticUpdate: () => {
         // Update user vote
-        userVotes.value = {
-          ...userVotes.value,
-          [contentId]: isRemoving ? null : voteType,
-        }
+        userVotes.value = { ...userVotes.value, [contentId]: isRemoving ? null : voteType }
 
         // Update score
         const change = isRemoving ? -voteType : oldVote ? voteType * 2 : voteType
-        votes.value = {
-          ...votes.value,
-          [contentId]: votes.value[contentId] + change,
-        }
+        votes.value = { ...votes.value, [contentId]: votes.value[contentId] + change }
 
         return { success: true, change }
       },
 
       // Rollback function
       rollback: () => {
-        userVotes.value = {
-          ...userVotes.value,
-          [contentId]: oldVote,
-        }
-        votes.value = {
-          ...votes.value,
-          [contentId]: oldScore,
-        }
+        userVotes.value = { ...userVotes.value, [contentId]: oldVote }
+        votes.value = { ...votes.value, [contentId]: oldScore }
       },
     })
   }
 
-  // New metrics action
+  // User metrics
   const fetchMetrics = async () => {
     if (isLoading.value) return
 
@@ -233,6 +217,7 @@ export const useVoteStore = defineStore('votes', () => {
     error.value = null
 
     try {
+      // Get metrics using the updated endpoint that works with content_interactions
       const response = await $fetch('/api/users/metrics')
       metrics.value = response as VoteMetrics
     } catch (err) {

@@ -19,41 +19,55 @@ export function useTodaysPosts(filters?: {
     const startISO = startOfDay.toISOString()
     const endISO = endOfDay.toISOString()
 
-    let query = supabase
-      .from('news')
-      .select('id', { count: 'exact', head: true })
-      .gte('published_at', startISO)
-      .lt('published_at', endISO)
-      .not('body', 'is', null)
+    try {
+      // Build query with the new unified content structure
+      let query = supabase
+        .from('contents')
+        .select('id', { count: 'exact', head: true })
+        .gte('published_at', startISO)
+        .lt('published_at', endISO)
+        .eq('is_active', true)
+        .is('deleted_at', null)
 
-    if (filters?.categories?.length || filters?.sources?.length) {
-      const orConditions: string[] = []
+      // Add filters for content sources and categories
+      if (filters?.sources?.length || filters?.categories?.length) {
+        const orConditions = []
 
-      if (filters.categories?.length) {
-        orConditions.push(`category_id.in.(${filters.categories.map((c) => c.id).join(',')})`)
+        // Filter by sources if provided
+        if (filters.sources?.length) {
+          orConditions.push(`source_id.in.(${filters.sources.map((s) => s.id).join(',')})`)
+        }
+
+        // Filter by categories - assuming categories are in the details JSONB
+        if (filters.categories?.length) {
+          // This approach depends on how categories are stored in your details JSONB
+          // If stored directly as category_id:
+          orConditions.push(
+            `details->>'category_id'.in.(${filters.categories.map((c) => c.id).join(',')})`,
+          )
+
+          // If you're using an array of categories in the details:
+          // You would need a different approach or a custom SQL function
+        }
+
+        if (orConditions.length > 0) {
+          query = query.or(orConditions.join(','))
+        }
       }
 
-      if (filters.sources?.length) {
-        orConditions.push(`content_source_id.in.(${filters.sources.map((s) => s.id).join(',')})`)
+      const { count, error } = await query
+
+      if (error) {
+        console.error("Error fetching today's posts:", error)
+        return
       }
 
-      query = query.or(orConditions.join(','))
+      todaysPosts.value = count || 0
+      hasInitialized.value = true
+    } catch (err) {
+      console.error('Error in fetchTodaysPosts:', err)
     }
-
-    const { count, error } = await query
-
-    if (error) {
-      console.error("Error fetching today's posts:", error)
-      return
-    }
-
-    todaysPosts.value = count || 0
-    hasInitialized.value = true
   }
 
-  return {
-    todaysPosts,
-    fetchTodaysPosts,
-    hasInitialized,
-  }
+  return { todaysPosts, fetchTodaysPosts, hasInitialized }
 }

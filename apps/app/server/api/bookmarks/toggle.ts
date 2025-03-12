@@ -14,67 +14,116 @@ export default defineEventHandler(async (event) => {
 
   const supabase = await serverSupabaseClient(event)
 
-  // Check if bookmark exists
-  const { data: existing } = await supabase
-    .from('bookmarks')
-    .select('id')
-    .eq('user_id', user.id)
-    .eq('content_id', content_id)
-    .eq('content_type', content_type)
-    .maybeSingle()
-
-  if (existing) {
-    // Remove bookmark
-    const { error: deleteError } = await supabase
+  try {
+    // Check if bookmark exists
+    const { data: existing } = await supabase
       .from('bookmarks')
-      .delete()
-      .match({ id: existing.id })
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('content_id', content_id)
+      .eq('content_type', content_type)
+      .maybeSingle()
 
-    if (deleteError) {
-      throw createError({
-        statusCode: 500,
-        message: 'Failed to remove bookmark',
-      })
+    if (existing) {
+      // Remove bookmark
+      const { error: deleteError } = await supabase
+        .from('bookmarks')
+        .delete()
+        .match({ id: existing.id })
+
+      if (deleteError) {
+        console.error('Failed to remove bookmark:', deleteError)
+        throw createError({
+          statusCode: 500,
+          message: 'Failed to remove bookmark',
+        })
+      }
+
+      // Also try to remove the bookmark interaction, but don't fail if it doesn't exist
+      try {
+        await supabase.from('content_interactions').delete().match({
+          content_id,
+          user_id: user.id,
+          interaction_type: 'bookmark',
+        })
+      } catch (interactionError) {
+        console.warn(
+          'Failed to remove bookmark interaction, but bookmark was removed:',
+          interactionError,
+        )
+      }
+
+      return {
+        bookmarked: false,
+      }
     }
 
-    return {
-      bookmarked: false,
+    // Get default folder if needed
+    let targetFolderId = folder_id
+    if (!targetFolderId) {
+      const { data: defaultFolder } = await supabase
+        .from('bookmark_folders')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('is_default', true)
+        .single()
+
+      targetFolderId = defaultFolder?.id
     }
-  }
 
-  // Get default folder if needed
-  const { data: defaultFolder } = await supabase
-    .from('bookmark_folders')
-    .select('id')
-    .eq('user_id', user.id)
-    .eq('is_default', true)
-    .single()
-
-  // Create new bookmark
-  const { data: newBookmark, error: bookError } = await supabase
-    .from('bookmarks')
-    .insert({
+    // Create new bookmark
+    const bookmarkData = {
       user_id: user.id,
       content_id,
       content_type,
-      folder_id: folder_id || defaultFolder?.id,
+      folder_id: targetFolderId,
       metadata: {
         ...metadata,
         bookmarked_at: new Date().toISOString(),
       },
-    })
-    .select()
-    .single()
+    }
 
-  if (bookError) {
+    const { data: newBookmark, error: bookError } = await supabase
+      .from('bookmarks')
+      .insert(bookmarkData)
+      .select()
+      .single()
+
+    if (bookError) {
+      console.error('Failed to create bookmark:', bookError)
+      throw createError({
+        statusCode: 500,
+        message: 'Failed to create bookmark: ' + bookError.message,
+      })
+    }
+
+    // Try to create a bookmark interaction for analytics
+    // But don't fail if this step fails
+    try {
+      await supabase.from('content_interactions').insert({
+        content_id,
+        user_id: user.id,
+        interaction_type: 'bookmark',
+        details: {
+          folder_id: targetFolderId,
+        },
+      })
+    } catch (interactionError) {
+      console.warn(
+        'Failed to create bookmark interaction, but bookmark was created:',
+        interactionError,
+      )
+    }
+
+    return {
+      bookmarked: true,
+      data: newBookmark,
+    }
+  } catch (error: any) {
+    console.error('Error in bookmark toggle:', error)
     throw createError({
-      statusCode: 500,
-      message: 'Failed to create bookmark',
+      statusCode: error.statusCode || 500,
+      message: error.message || 'Internal server error',
     })
-  }
-
-  return {
-    bookmarked: true,
-    data: newBookmark,
   }
 })

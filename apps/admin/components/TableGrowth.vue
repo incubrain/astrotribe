@@ -6,7 +6,6 @@ const toast = useNotification()
 const logger = useLogger('growth')
 
 const tables = [
-  'news',
   'companies',
   'company_urls',
   'user_profiles',

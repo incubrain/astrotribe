@@ -2,53 +2,34 @@
 import { useTimeAgo } from '@vueuse/core'
 import { ref, onMounted } from 'vue'
 
-// Update the interfaces to match our materialized view
-interface Company {
-  name: string
-  logo_url?: string
-}
-
+// Updated interface to match new content structure
 interface NewsCardT {
   id: string
+  content_type: string
   title: string
   url: string
   hot_score: number
-  vote_count: number
+  vote_count?: number
   created_at: string
   updated_at: string
-  categories: {
-    name: string
-    isPrimary: boolean
-  }[]
-  tags: string[]
-  status: string
   published_at: string | null
   featured_image: string | null
   author: string | null
   description: string | null
-  company_name: string | null
-  company_logo: string | null
-  summaries: {
-    undefined: Array<{
-      id: string
-      summary: string
-      version: number
-    }> | null
-    beginner: Array<{
-      id: string
-      summary: string
-      version: number
-    }> | null
-    intermediate: Array<{
-      id: string
-      summary: string
-      version: number
-    }> | null
-    expert: Array<{
-      id: string
-      summary: string
-      version: number
-    }> | null
+  source_id: string | null
+  company_id: string | null
+  details: {
+    // Type-specific details stored in JSONB
+    categories?: Array<{ name: string; isPrimary: boolean }>
+    tags?: string[]
+    summaries?: {
+      undefined?: Array<{ id: string; summary: string; version: number }> | null
+      beginner?: Array<{ id: string; summary: string; version: number }> | null
+      intermediate?: Array<{ id: string; summary: string; version: number }> | null
+      expert?: Array<{ id: string; summary: string; version: number }> | null
+    }
+    company_name?: string
+    company_logo?: string
   }
 }
 
@@ -56,9 +37,36 @@ interface Props {
   news: NewsCardT
 }
 
+const props = defineProps<Props>()
+
+// Helper to get data from either direct properties or details JSONB
+const getContentProperty = <T,>(
+  directValue: T | null | undefined,
+  detailsPath?: string,
+  defaultValue?: T,
+): T | undefined => {
+  if (directValue !== null && directValue !== undefined) {
+    return directValue
+  }
+
+  if (detailsPath && props.news.details) {
+    const pathParts = detailsPath.split('.')
+    let value: any = props.news.details
+
+    for (const part of pathParts) {
+      if (!value || typeof value !== 'object') return defaultValue
+      value = value[part]
+    }
+
+    return value !== null && value !== undefined ? value : defaultValue
+  }
+
+  return defaultValue
+}
+
 // Update computed properties
 const sourceDisplay = computed(() => {
-  const companyName = props.news.company_name
+  const companyName = getContentProperty(null, 'company_name')
   const author = props.news.author
 
   if (companyName && author) {
@@ -71,15 +79,15 @@ const sourceDisplay = computed(() => {
   return 'Unknown source'
 })
 
-const props = defineProps<Props>()
-
 const hasSummary = computed(() => {
-  return props.news.summaries?.undefined?.[0]?.summary !== undefined
+  const summaries = getContentProperty<any>(null, 'summaries.undefined')
+  return summaries?.[0]?.summary !== undefined
 })
 
 const summary = computed(() => {
   if (hasSummary.value) {
-    return props.news.summaries.undefined[0].summary
+    const summaries = getContentProperty<any>(null, 'summaries.undefined')
+    return summaries[0].summary
   }
   return props.news.description
 })
@@ -95,7 +103,9 @@ const currentVote = computed(() => voteStore.getVoteType(props.news.id))
 const displayScore = computed(() => voteStore.getScore(props.news.id) ?? props.news.vote_count ?? 0)
 
 const bookmarkStore = useBookmarkStore()
-const isBookmarked = computed(() => bookmarkStore.isBookmarked(props.news.id))
+const isBookmarked = computed(() =>
+  bookmarkStore.isBookmarked(props.news.id, props.news.content_type),
+)
 
 const formatSourceName = (name: string) => {
   // Remove common suffixes like .com, .org, etc. (we might need them for things like space.com, astronomy.com etc)
@@ -112,7 +122,7 @@ const readTime = computed(() => {
 onMounted(async () => {
   try {
     if (voteStore.getScore(props.news.id) == null)
-      voteStore.setVotes(props.news.id, props.news.vote_count || 0)
+      voteStore.setVotes(props.news.id, props.news.hot_score || 0)
   } catch (error: any) {
     console.error('Error fetching vote status:', error)
   }
@@ -128,12 +138,13 @@ const openModal = (feature: string) => {
 }
 
 const imageSource = computed(() => {
-  if (props.news.featured_image) {
-    return props.news.featured_image
-  }
+  // if (props.news.featured_image) {
+  //   return props.news.featured_image
+  // }
   // You can choose either random or deterministic fallbacks
   // return getRandomFallbackImage() // Random each time
-  return 'fallback.jpg'
+  return 'fallback-news.jpg'
+  // return null
 })
 
 // Handle clicks for touch devices
@@ -181,7 +192,10 @@ onBeforeUnmount(async () => {
   >
     <div
       class="relative w-full h-full transition-all duration-500 transform-style-preserve-3d border rounded-lg"
-      :class="[{ 'rotate-y-180': isFlipped }, isBookmarked ? 'border-amber-500/30 ' : 'border-color']"
+      :class="[
+        { 'rotate-y-180': isFlipped },
+        isBookmarked ? 'border-amber-500/30 ' : 'border-color',
+      ]"
     >
       <!-- Front of card -->
       <div class="absolute w-full h-full backface-hidden">
@@ -191,7 +205,9 @@ onBeforeUnmount(async () => {
               <!-- Company logo or random image -->
               <div class="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
                 <NuxtImg
-                  :src="news.company_logo ?? `https://picsum.photos/24/24?random=${news.id}`"
+                  :src="
+                    news.details?.company_logo ?? `https://picsum.photos/24/24?random=${news.id}`
+                  "
                   alt="Source"
                   class="w-full h-full object-cover"
                   width="24"
@@ -201,10 +217,10 @@ onBeforeUnmount(async () => {
               <!-- Source and author info -->
               <div class="flex flex-col min-w-0">
                 <span
-                  v-if="news.company_name"
+                  v-if="news.details?.company_name"
                   class="font-medium text-sm truncate"
                 >
-                  {{ formatSourceName(news.company_name) }}
+                  {{ formatSourceName(news.details.company_name) }}
                 </span>
                 <span
                   v-if="news.author"
@@ -227,10 +243,18 @@ onBeforeUnmount(async () => {
             </div>
           </div>
           <div>
-            <div class="mb-4">
+            <div
+              v-if="imageSource"
+              class="mb-4"
+            >
               <div class="relative w-full pb-[56.25%]">
+                <div
+                  class="absolute z-50 w-full h-full flex items-center justify-center text-white font-bold text-xl"
+                >
+                  <h5> IMAGES SOON </h5>
+                </div>
+                <!-- :provider="news.featured_image ? 'supabase' : undefined" -->
                 <NuxtImg
-                  :provider="news.featured_image ? 'supabase' : undefined"
                   :src="imageSource"
                   :alt="news.title"
                   class="absolute inset-0 w-full h-full object-cover rounded-lg"
@@ -300,47 +324,6 @@ onBeforeUnmount(async () => {
       </div>
     </div>
   </div>
-  <!-- <PrimeDialog
-    v-model:visible="showBookmarkFolders"
-    modal
-    header="Choose Folder"
-    :style="{ width: '50vw' }"
-  >
-    <PrimeSelect
-      v-model="bookmarkFolderSelected"
-      class="w-full"
-      :options="folderStore.folders"
-      option-label="name"
-      option-value="id"
-    />
-    <template #footer>
-      <PrimeButton
-        label="Cancel"
-        @click="showBookmarkFolders = false"
-      />
-      <PrimeButton
-        label="Submit"
-        @click="submitFolder"
-      />
-      async () => {
-              if (folderStore.folders.length > 1) {
-                await folderStore.fetchFolders()
-                bookmarkFolderSelected =
-                  folderStore.folders.find((folder) => folder.is_default)?.id || null
-                showBookmarkFolders = true
-                return
-              }
-          }
-    </template>
-  </PrimeDialog> -->
-  <!-- <PrimeDialog
-    v-model:visible="showModal"
-    modal
-    header="Coming Soon"
-    :style="{ width: '50vw' }"
-  >
-    <p>{{ modalContent }}</p>
-  </PrimeDialog> -->
 </template>
 
 <style scoped>

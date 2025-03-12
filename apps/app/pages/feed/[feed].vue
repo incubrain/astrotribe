@@ -38,37 +38,51 @@ watchEffect(() => {
 })
 
 // Initialize news only after dependencies are loaded
-// In your [feed].vue component
+// Updated to use new content table structure
 const newsQuery = computed(() => {
-  // Start with base filters
+  // Start with base filters for unified content table
   const queryFilters: Record<string, FilterOption> = {}
 
-  // Add all conditional filters
-  // if (categories.value?.length) {
-  //   queryFilters['news.category_id'] = {
-  //     in: categories.value.map((category) => category.id),
-  //   }
-  // }
+  // Add content_type filter for news type
+  queryFilters['content_type'] = { eq: 'news' }
 
-  // if (sources.value?.length) {
-  //   queryFilters['content_source_id'] = {
-  //     in: sources.value.map((source) => source.id),
-  //   }
-  // }
+  // Add source filtering if available
+  if (sources.value?.length && sources.value[0]) {
+    queryFilters['source_id'] = { in: sources.value.map((source) => source.id) }
+  }
 
-  // Body check is always included
-  queryFilters['news.body'] = { neq: null }
+  // Add category filtering if available - assumes categories are in details JSONB
+  if (categories.value?.length && categories.value[0]) {
+    const categoryIds = categories.value.map((category) => category.id)
+
+    // Create a condition for JSONB details field containing category_id
+    // Note: This implementation might need to be adjusted based on your exact JSONB structure
+    queryFilters['details->category_id'] = { in: categoryIds.join(',') }
+  }
+
+  // Content must be active and not deleted
+  queryFilters['is_active'] = { eq: true }
+  queryFilters['deleted_at'] = { is: null }
 
   return {
+    // Updated to query the contents table with needed fields
     columns: `
-      id, title, url, created_at, content_type, hot_score,
-      news!inner(published_at, description, category_id, author, keywords, featured_image, company_id, score,
-        companies(name, logo_url),
-        news_summaries!inner(id, summary, complexity_level, version)
-      )
+      id, 
+      content_type,
+      title, 
+      url, 
+      created_at, 
+      hot_score,
+      published_at, 
+      description, 
+      author, 
+      featured_image, 
+      source_id,
+      company_id,
+      details
     `,
     filters: queryFilters,
-    orderBy: { column: 'created_at', ascending: false },
+    orderBy: { column: 'published_at', ascending: false },
     pagination: { page: 1, limit: 20 },
     storeKey: `customFeed_${feedId.value}`,
     enabled: !isLoadingDependencies.value,
@@ -83,7 +97,7 @@ const {
   loadMore: loadMoreFunc,
   refresh: refreshNews,
   isSelecting: isLoadingNews,
-} = useSelectData<News>('contents', newsQuery)
+} = useSelectData<any>('contents', newsQuery)
 
 // Watch for query changes to refresh
 watch(
@@ -145,18 +159,15 @@ onUnmounted(() => {
   <div>
     <FeedTitle
       :title="currentFeedName"
-      :filters="{
-        categories,
-        sources,
-      }"
+      :filters="{ categories, sources }"
     />
 
     <BlackFridayBanner />
 
-    <AdsBanner
+    <!-- <AdsBanner
       v-if="topBannerAd"
       :ad="topBannerAd"
-    />
+    /> -->
 
     <IBInfiniteScroll
       :threshold="1400"
