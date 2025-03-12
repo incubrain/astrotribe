@@ -46,21 +46,21 @@ const navigationCategories = ref([
         slug: '/news',
         icon: 'mdi:newspaper-variant-outline',
       },
-      {
-        id: 'my-feeds',
-        label: 'My Feeds',
-        slug: '#',
-        icon: 'mdi:rss',
-        isExpanded: false,
-        children: [
-          {
-            id: '3',
-            label: '+ Create Feed',
-            slug: '/feed/add',
-            icon: 'mdi:plus',
-          },
-        ],
-      },
+      // {
+      //   id: 'my-feeds',
+      //   label: 'My Feeds',
+      //   slug: '#',
+      //   icon: 'mdi:rss',
+      //   isExpanded: false,
+      //   children: [
+      //     {
+      //       id: '3',
+      //       label: '+ Create Feed',
+      //       slug: '/feed/add',
+      //       icon: 'mdi:plus',
+      //     },
+      //   ],
+      // },
     ],
   },
   {
