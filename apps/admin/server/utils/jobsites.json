@@ -1,5 +1,19 @@
 [
   {
+    "name": "ISRO",
+    "url": "https://www.isro.gov.in",
+    "listingUrl": "https://www.isro.gov.in/ViewAllOpportunities.html",
+    "selectors": {
+      "jobContainer": "table.table-info tbody tr",
+      "title": "td.post",
+      "department": "tr:nth-child(3) td:nth-child(2)",
+      "location": "tr:nth-child(4) td[colspan='3']",
+      "publish_date": "td.openDate",
+      "deadline": "td.closeDate",
+      "relativeUrl": "td.moreDetails button"
+    }
+  },
+  {
     "name": "Rocket Lab USA",
     "url": "https://www.rocketlabusa.com",
     "listingUrl": "https://www.rocketlabusa.com/careers/positions",

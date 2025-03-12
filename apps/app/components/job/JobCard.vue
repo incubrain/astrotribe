@@ -99,7 +99,10 @@ const emit = defineEmits<{
         </span>
       </div>
 
-      <div class="mt-6 flex items-center text-gray-600 space-x-4">
+      <div
+        v-if="job.location"
+        class="mt-6 flex items-center text-gray-600 space-x-4"
+      >
         <div class="flex items-center space-x-2">
           <Icon
             name="uil:location-point"
