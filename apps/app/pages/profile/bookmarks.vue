@@ -129,7 +129,7 @@ const isEmpty = computed(() => {
 
 <template>
   <div class="min-h-screen p-4 gap-4 max-w-[940px] flex flex-col mx-auto lg:p-8 lg:gap-8">
-    <BookmarkViewFolder v-if="!searchQuery" />
+    <!-- <BookmarkViewFolder v-if="!searchQuery" /> -->
 
     <!-- Search Bar & Actions -->
     <div
@@ -169,17 +169,17 @@ const isEmpty = computed(() => {
             </span>
 
             <!-- Move to folder dropdown -->
-            <PrimeSelect
+            <!-- <PrimeSelect
               v-model="movingFolderId"
               :options="folders.filter((folder) => folder.id !== currentFolder?.id)"
               option-label="name"
               option-value="id"
               placeholder="Move to..."
               class="min-w-[120px] lg:min-w-[200px]"
-            />
+            /> -->
 
             <!-- Move button -->
-            <PrimeButton
+            <!-- <PrimeButton
               :disabled="!movingFolderId || !bookmarkManager.selectedIds.value.length || isMoving"
               :loading="isMoving"
               class="!p-2 lg:!p-3"
@@ -192,7 +192,7 @@ const isEmpty = computed(() => {
               <span class="hidden lg:inline">
                 {{ isMoving ? 'Moving...' : 'Move' }}
               </span>
-            </PrimeButton>
+            </PrimeButton> -->
 
             <!-- Delete button -->
             <PrimeButton
