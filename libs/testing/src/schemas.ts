@@ -59,15 +59,7 @@ export const enums = {
     'new',
   ]),
 
-  content_type: z.enum([
-    'news',
-    'events',
-    'research',
-    'companies',
-    'contact',
-    'people',
-    'unknown',
-  ]),
+  content_type: z.enum(['news', 'events', 'research', 'companies', 'contact', 'people', 'unknown']),
 
   feedback_status: z.enum([
     'new',
@@ -146,9 +138,7 @@ export const tables = {
         address_type: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -156,9 +146,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -193,9 +181,7 @@ export const tables = {
         id: z.string().uuid().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -224,9 +210,7 @@ export const tables = {
         reason: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -262,9 +246,7 @@ export const tables = {
         path: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -272,9 +254,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -310,9 +290,7 @@ export const tables = {
         content_type: z.string().max(50).optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -322,9 +300,7 @@ export const tables = {
         metadata: z.unknown().nullable().optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -354,18 +330,14 @@ export const tables = {
         id: z.unknown().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -426,9 +398,7 @@ export const tables = {
         added_to_training: z.boolean().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -436,9 +406,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -473,9 +441,7 @@ export const tables = {
         parent_comment_id: z.string().uuid().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -483,9 +449,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -521,9 +485,7 @@ export const tables = {
         category_id: z.number().int().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -531,9 +493,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -548,9 +508,7 @@ export const tables = {
         id: z.string().uuid().optional(),
         scraped_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -594,18 +552,14 @@ export const tables = {
         contact_id: z.number().int().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -634,9 +588,7 @@ export const tables = {
         job_description: z.string().nullable().optional(),
         start_date: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -644,9 +596,7 @@ export const tables = {
           .optional(),
         end_date: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -656,9 +606,7 @@ export const tables = {
         access_level: enums.access_level.optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -666,9 +614,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -701,18 +647,14 @@ export const tables = {
         id: z.number().int().optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -755,9 +697,7 @@ export const tables = {
         metric_id: z.number().int().nullable().optional(),
         timestamp: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -785,18 +725,14 @@ export const tables = {
         id: z.number().int().optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -838,9 +774,7 @@ export const tables = {
         user_id: z.string().uuid().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -848,9 +782,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -907,9 +839,7 @@ export const tables = {
         scrape_frequency: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -917,9 +847,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -927,9 +855,7 @@ export const tables = {
           .optional(),
         refreshed_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -941,9 +867,7 @@ export const tables = {
         hash: z.unknown().nullable().optional(),
         scraped_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -993,9 +917,7 @@ export const tables = {
         notes: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1019,17 +941,11 @@ export const tables = {
 
   content_tags: {
     inbound: z
-      .object({
-        content_id: z.string().uuid().optional(),
-        tag_id: z.number().int().optional(),
-      })
+      .object({ content_id: z.string().uuid().optional(), tag_id: z.number().int().optional() })
       .strict()
       .optional(),
     outbound: z
-      .object({
-        content_id: z.string().uuid().optional(),
-        tag_id: z.number().optional(),
-      })
+      .object({ content_id: z.string().uuid().optional(), tag_id: z.number().optional() })
       .strict()
       .optional(),
   },
@@ -1042,9 +958,7 @@ export const tables = {
         title: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1052,9 +966,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1122,9 +1034,7 @@ export const tables = {
         notes: z.unknown().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1192,9 +1102,7 @@ export const tables = {
         event_type: z.string().optional(),
         processed_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1226,9 +1134,7 @@ export const tables = {
         notes: z.unknown().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1277,9 +1183,7 @@ export const tables = {
         is_active: z.boolean().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1287,9 +1191,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1330,27 +1232,21 @@ export const tables = {
         quantity: z.number().int().nullable().optional(),
         current_start: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         current_end: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         ended_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1364,9 +1260,7 @@ export const tables = {
         notes: z.unknown().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1374,9 +1268,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1385,9 +1277,7 @@ export const tables = {
         type: z.number().int().nullable().optional(),
         charge_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1395,9 +1285,7 @@ export const tables = {
           .optional(),
         start_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1405,9 +1293,7 @@ export const tables = {
           .optional(),
         end_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1416,9 +1302,7 @@ export const tables = {
         customer_notify: z.boolean().nullable().optional(),
         expire_by: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1428,9 +1312,7 @@ export const tables = {
         has_scheduled_changes: z.boolean().nullable().optional(),
         change_scheduled_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1487,18 +1369,14 @@ export const tables = {
         id: z.unknown().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1529,9 +1407,7 @@ export const tables = {
         id: z.unknown().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1562,18 +1438,14 @@ export const tables = {
         message: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1607,9 +1479,7 @@ export const tables = {
         id: z.string().uuid().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1639,9 +1509,7 @@ export const tables = {
         followed_entity: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1694,18 +1562,14 @@ export const tables = {
       .object({
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1719,9 +1583,7 @@ export const tables = {
         has_summary: z.boolean().optional(),
         published_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1735,9 +1597,7 @@ export const tables = {
         scrape_frequency: enums.scrape_frequency.optional(),
         scraped_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1822,18 +1682,14 @@ export const tables = {
         frequency: z.string().max(50).optional(),
         start_date: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         end_date: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1841,9 +1697,7 @@ export const tables = {
         generated_content: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1851,9 +1705,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1887,9 +1739,7 @@ export const tables = {
         is_active: z.boolean().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1897,9 +1747,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1944,18 +1792,14 @@ export const tables = {
       .object({
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -1963,9 +1807,7 @@ export const tables = {
           .optional(),
         published_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2038,9 +1880,7 @@ export const tables = {
         embedding: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2049,9 +1889,7 @@ export const tables = {
         is_flagged: z.boolean().nullable().optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2086,9 +1924,7 @@ export const tables = {
         downvotes: z.number().int().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2112,17 +1948,11 @@ export const tables = {
 
   role_hierarchy: {
     inbound: z
-      .object({
-        parent_role: z.string().optional(),
-        child_role: z.string().optional(),
-      })
+      .object({ parent_role: z.string().optional(), child_role: z.string().optional() })
       .strict()
       .optional(),
     outbound: z
-      .object({
-        parent_role: z.string().optional(),
-        child_role: z.string().optional(),
-      })
+      .object({ parent_role: z.string().optional(), child_role: z.string().optional() })
       .strict()
       .optional(),
   },
@@ -2145,9 +1975,7 @@ export const tables = {
         cached_permissions: z.unknown().nullable().optional(),
         last_updated: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2184,9 +2012,7 @@ export const tables = {
         input: z.string().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2230,9 +2056,7 @@ export const tables = {
         youtube_url: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2240,9 +2064,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2274,9 +2096,7 @@ export const tables = {
         metric_id: z.number().int().nullable().optional(),
         timestamp: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2296,63 +2116,6 @@ export const tables = {
       .strict()
       .optional(),
   },
-
-  strapi_migrations: {
-    inbound: z
-      .object({
-        id: z.number().int().optional(),
-        name: z.string().max(255).nullable().optional(),
-        time: z
-          .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
-            z.date(),
-          ])
-          .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
-          .nullable()
-          .optional(),
-      })
-      .strict()
-      .optional(),
-    outbound: z
-      .object({
-        id: z.number().optional(),
-        name: z.string().nullable().optional(),
-        time: z.date().nullable().optional(),
-      })
-      .strict()
-      .optional(),
-  },
-
-  strapi_migrations_internal: {
-    inbound: z
-      .object({
-        id: z.number().int().optional(),
-        name: z.string().max(255).nullable().optional(),
-        time: z
-          .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
-            z.date(),
-          ])
-          .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
-          .nullable()
-          .optional(),
-      })
-      .strict()
-      .optional(),
-    outbound: z
-      .object({
-        id: z.number().optional(),
-        name: z.string().nullable().optional(),
-        time: z.date().nullable().optional(),
-      })
-      .strict()
-      .optional(),
-  },
-
   table_maintenance_log: {
     inbound: z
       .object({
@@ -2361,9 +2124,7 @@ export const tables = {
         detail: z.string().nullable().optional(),
         logged_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2391,9 +2152,7 @@ export const tables = {
         execution_count: z.unknown().nullable().optional(),
         capture_time: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2421,9 +2180,7 @@ export const tables = {
         max_value: z.unknown().nullable().optional(),
         capture_time: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2454,9 +2211,7 @@ export const tables = {
         dead_tuples: z.unknown().nullable().optional(),
         last_vacuum: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2464,9 +2219,7 @@ export const tables = {
           .optional(),
         last_analyze: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2479,9 +2232,7 @@ export const tables = {
         index_scan_count: z.unknown().nullable().optional(),
         capture_time: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2517,9 +2268,7 @@ export const tables = {
         body: z.string().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2527,9 +2276,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2562,9 +2309,7 @@ export const tables = {
       .object({
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2597,9 +2342,7 @@ export const tables = {
         username: z.string().nullable().optional(),
         dob: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2608,9 +2351,7 @@ export const tables = {
         gender_id: z.number().int().nullable().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2618,9 +2359,7 @@ export const tables = {
           .optional(),
         updated_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2628,9 +2367,7 @@ export const tables = {
           .optional(),
         last_seen: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))
@@ -2678,9 +2415,7 @@ export const tables = {
         vote_type: z.number().int().optional(),
         created_at: z
           .union([
-            z.string().refine((val) => !isNaN(Date.parse(val)), {
-              message: 'Invalid date string',
-            }),
+            z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date string' }),
             z.date(),
           ])
           .transform((val) => (val instanceof Date ? val.toISOString().split('T')[0] : val))

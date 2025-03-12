@@ -765,8 +765,6 @@ export class SchemaAnalyzer {
       FROM pg_tables 
       WHERE schemaname = 'public'
       AND tablename NOT IN (
-        'strapi_migrations',
-        'strapi_migrations_internal',
         'table_maintenance_log',
         'table_query_performance',
         'table_sequence_usage',

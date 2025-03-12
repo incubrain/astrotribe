@@ -16,7 +16,6 @@
 - Supabase
 - Redis
 - Typescript
-- Strapi
 - Pinia
 
 

@@ -84,8 +84,6 @@ export const domainMap: Record<string, string> = {
   cities: 'location',
 
   // System Tables (typically excluded from API generation)
-  strapi_migrations: 'system',
-  strapi_migrations_internal: 'system',
   table_maintenance_log: 'system',
   table_query_performance: 'system',
   table_sequence_usage: 'system',

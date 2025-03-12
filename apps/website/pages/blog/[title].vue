@@ -3,8 +3,8 @@ import { computed } from 'vue'
 
 const route = useRoute()
 
-const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
-const strapi = useStrapi(strapiURL)
+const cmsURL = String(useRuntimeConfig().public.cmsURL ?? 'http://localhost:1337')
+const strapi = useStrapi(cmsURL)
 
 const slug = computed(() => String(route.params.title))
 
@@ -13,27 +13,12 @@ const { data, status, error } = await useAsyncData(
   async () => {
     try {
       const params: any = {
-        filters: {
-          slug: {
-            $eq: slug.value,
-          },
-        },
+        filters: { slug: { $eq: slug.value } },
         populate: {
-          cover: {
-            populate: true,
-          },
-          category: {
-            populate: true,
-          },
+          cover: { populate: true },
+          category: { populate: true },
           blocks: true,
-          author: {
-            fields: ['name', 'bio'],
-            populate: {
-              avatar: {
-                populate: true,
-              },
-            },
-          },
+          author: { fields: ['name', 'bio'], populate: { avatar: { populate: true } } },
         },
       }
 
@@ -52,9 +37,7 @@ const { data, status, error } = await useAsyncData(
       throw e
     }
   },
-  {
-    server: false,
-  },
+  { server: false },
 )
 
 if (error.value) {

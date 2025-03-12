@@ -15,7 +15,7 @@ export const sharedRuntimeConfig = defineNuxtConfig({
       supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
       // App URLS
       loginURL: process.env.NUXT_PUBLIC_LOGIN_URL,
-      strapiURL: process.env.NUXT_PUBLIC_STRAPI_URL ?? localHost(devPortMap.cms),
+      cmsURL: process.env.NUXT_PUBLIC_CMS_URL ?? localHost(devPortMap.cms),
       authURL: process.env.NUXT_PUBLIC_AUTH_URL ?? localHost(devPortMap.auth),
       appURL: process.env.NUXT_PUBLIC_APP_URL ?? localHost(devPortMap.app),
       apiURL: process.env.NUXT_PUBLIC_API_URL ?? localHost(devPortMap.api),
@@ -40,7 +40,7 @@ export const sharedRuntimeConfig = defineNuxtConfig({
       },
     },
     private: {
-      strapiURL: process.env.NUXT_STRAPI_URL ?? localHost(devPortMap.cms),
+      cmsURL: process.env.NUXT_CMS_URL ?? localHost(devPortMap.cms),
       resendApiKey: process.env.NUXT_RESEND_API_KEY,
       supabaseServiceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
       googleApiKey: process.env.NUXT_GOOGLE_API_KEY,

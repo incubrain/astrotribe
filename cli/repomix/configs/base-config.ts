@@ -128,14 +128,7 @@ export const COMMON_CONFIGS: Record<CommonConfigKey, CommonConfig> = {
   // Content Management
   content: {
     description: 'Content management and CMS functionality',
-    include: [
-      '**/cms/**',
-      '**/content*/**',
-      '**/article*/**',
-      '**/news*/**',
-      '**/blog*/**',
-      '**/research*/**',
-    ],
+    include: ['**/content*/**', '**/article*/**', '**/news*/**', '**/blog*/**', '**/research*/**'],
   },
 
   // User Management

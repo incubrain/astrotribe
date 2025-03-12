@@ -4,8 +4,8 @@ import { useChangeCase } from '@vueuse/integrations/useChangeCase'
 
 const route = useRoute()
 
-const strapiURL = String(useRuntimeConfig().public.strapiURL ?? 'http://localhost:1337')
-const strapi = useStrapi(strapiURL)
+const cmsURL = String(useRuntimeConfig().public.cmsURL ?? 'http://localhost:1337')
+const strapi = useStrapi(cmsURL)
 
 const validCategories = [
   'all',
@@ -44,9 +44,7 @@ const { data: pageData, error } = await useAsyncData(
   `articles-${route.params.category}-page-${route.params.number}`,
   () =>
     fetchArticlesFromAPI(String(route.params.category).toLowerCase(), Number(route.params.number)),
-  {
-    server: false,
-  },
+  { server: false },
 )
 
 if (error) {
@@ -82,26 +80,14 @@ async function fetchArticlesFromAPI(category: ArticleCategoriesT, page: number) 
   const params: any = {
     sort: ['publishedAt:desc'],
     populate: {
-      author: {
-        populate: true,
-      },
-      cover: {
-        populate: true,
-      },
-      category: {
-        populate: true,
-      },
+      author: { populate: true },
+      cover: { populate: true },
+      category: { populate: true },
     },
   }
 
   if (category !== 'all') {
-    params.filters = {
-      category: {
-        slug: {
-          $eq: category,
-        },
-      },
-    }
+    params.filters = { category: { slug: { $eq: category } } }
   }
 
   const response = await strapi.find<any>('articles', params)
@@ -111,12 +97,7 @@ async function fetchArticlesFromAPI(category: ArticleCategoriesT, page: number) 
 
   console.log('Response:', response)
 
-  return {
-    articles: response.data,
-    totalPages: response.meta.pagination.pageCount,
-    category,
-    page,
-  }
+  return { articles: response.data, totalPages: response.meta.pagination.pageCount, category, page }
 }
 
 // old

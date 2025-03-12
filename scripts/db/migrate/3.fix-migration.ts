@@ -27,18 +27,10 @@ const patterns: Pattern[] = [
 ]
 
 function fixMigrationSQL(sql: string): string {
-  // Split into statements and filter out strapi-related ones
   const statements = sql
     .split(';')
     .map((stmt) => stmt.trim())
     .filter((stmt) => stmt)
-    .filter((stmt) => {
-      if (stmt.toLowerCase().includes('strapi')) {
-        console.log('Removing strapi-related statement')
-        return false
-      }
-      return true
-    })
 
   // Apply fix patterns to remaining statements
   const fixedStatements = statements.map((stmt) => {

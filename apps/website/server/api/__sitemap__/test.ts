@@ -6,11 +6,8 @@ export default defineEventHandler(async (event) => {
 
   return {
     status: 'ok',
-    config: {
-      strapiURL: config.public.strapiURL,
-      siteURL: config.public.siteRLL,
-    },
-    testURL: `${config.public.strapiURL}/api/articles`,
+    config: { cmsURL: config.public.cmsURL, siteURL: config.public.siteRLL },
+    testURL: `${config.public.cmsURL}/api/articles`,
     timestamp: new Date().toISOString(),
   }
 })
