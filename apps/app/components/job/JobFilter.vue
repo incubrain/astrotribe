@@ -116,7 +116,7 @@ onUnmounted(() => {
         <div
           v-if="value.showSuggestions"
           :ref="(ref) => (value.ref = ref)"
-          class="absolute h-full overflow-y-scroll z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
+          class="absolute max-h-[200px] overflow-y-auto z-10 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 py-1"
         >
           <button
             :key="`${field}_all`"
