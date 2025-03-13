@@ -1,5 +1,19 @@
 [
   {
+    "name": "ISRO",
+    "url": "https://www.isro.gov.in",
+    "listingUrl": "https://www.isro.gov.in/ViewAllOpportunities.html",
+    "selectors": {
+      "jobContainer": "table.table-info tbody tr",
+      "title": "td.post",
+      "department": "tr:nth-child(3) td:nth-child(2)",
+      "location": "tr:nth-child(4) td[colspan='3']",
+      "publish_date": "td.openDate",
+      "deadline": "td.closeDate",
+      "relativeUrl": "td.moreDetails button"
+    }
+  },
+  {
     "name": "Rocket Lab USA",
     "url": "https://www.rocketlabusa.com",
     "listingUrl": "https://www.rocketlabusa.com/careers/positions",
@@ -14,6 +28,7 @@
   },
   {
     "name": "Pixxel",
+    "api": "job",
     "url": "https://pixxel.darwinbox.in",
     "listingUrl": "https://pixxel.darwinbox.in/ms/candidate/careers",
     "selectors": {
@@ -106,20 +121,28 @@
     }
   },
   {
-    "name": "CERN",
-    "url": "https://careers.cern",
-    "listingUrl": "https://careers.cern/alljobs",
+    "name": "IUCAA",
+    "url": "http://web.iucaa.in",
+    "listingUrl": "http://web.iucaa.in/iucaa/opportunities",
     "selectors": {
-      "jobContainer": "tr.srJobListJobOdd, tr.srJobListJobEven",
-      "title": "td.srJobListJobTitle",
-      "location": "td.srJobListLocation",
-      "employment_type": "[itemprop=\"employmentType\"]",
-      "deadline": "strong:contains(\"Job closing date\")",
-      "relativeUrl": "tr[onclick]",
-      "publish_date": "meta[itemprop=\"datePosted\"]",
-      "department": "meta[itemprop=\"industry\"]",
-      "description": "[itemprop=\"description\"]",
-      "salary": "li:contains(\"A monthly stipend ranging between\")"
+      "jobContainer": "table tbody tr",
+      "title": "td:nth-child(1)",
+      "relativeUrl": "td:nth-child(2) a",
+      "deadline": "td:nth-child(3)",
+      "description": null
+    }
+  },
+  {
+    "name": "TIFR",
+    "url": "https://www.tifr.res.in",
+    "listingUrl": "https://www.tifr.res.in/jobs",
+    "selectors": {
+      "jobContainer": "table.table-bordered tbody tr",
+      "title": "td:nth-child(1)",
+      "description": "td:nth-child(2)",
+      "deadline": "td:nth-child(3)",
+      "relativeUrl": "td:nth-child(4) a",
+      "submitMethod": "td:nth-child(5)"
     }
   }
 ]

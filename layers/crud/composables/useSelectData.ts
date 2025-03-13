@@ -10,7 +10,7 @@ export function useSelectData<T extends { id: string | number }>(
   optionsRef: MaybeRef<{
     columns?: string
     filters?: Record<string, any>
-    orderBy?: { column: string; ascending?: boolean }
+    orderBy?: { column: string; ascending?: boolean; nullsFirst?: boolean }
     initialFetch?: boolean
     pagination?: PaginationType
     limit?: number
@@ -63,6 +63,7 @@ export function useSelectData<T extends { id: string | number }>(
         queryOptions.order = {
           column: options.value.orderBy.column,
           ascending: options.value.orderBy.ascending ?? true,
+          nullsFirst: options.value.orderBy.nullsFirst ?? true,
         }
       }
 

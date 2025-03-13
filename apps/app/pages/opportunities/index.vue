@@ -35,7 +35,7 @@ const filters = ref({
 
 const { store, loadMore, changeFilters } = useSelectData('jobs', {
   columns: '*, companies(name)',
-  orderBy: { column: 'published_at', ascending: false },
+  orderBy: { column: 'published_at', ascending: false, nullsFirst: false },
   pagination: {
     page: 1,
     limit: 20,
@@ -48,9 +48,9 @@ const { items } = storeToRefs(store)
 
 const handleChangeFilters = () => {
   changeFilters({
-    'location': filters.value.location.value ? { eq: filters.value.location.value } : null,
-    'companies.name': filters.value.company.value ? { eq: filters.value.company.value } : null,
-    'employment_type': filters.value.type.value ? { eq: filters.value.type.value } : null,
+    location: filters.value.location.value ? { eq: filters.value.location.value.key } : null,
+    company_id: filters.value.company.value ? { eq: filters.value.company.value.key } : null,
+    employment_type: filters.value.type.value ? { eq: filters.value.type.value.key } : null,
   })
 }
 
@@ -64,28 +64,30 @@ const formatDate = (isoString) => {
 }
 
 const jobs = computed(() =>
-  items.value
-    .map((item) => {
-      return {
-        ...item,
-        publishedAt: item.published_at && formatDate(item.published_at),
-        expiresAt: item.expires_at && formatDate(item.expires_at),
-        employmentType: item.employment_type,
-        company: item.companies?.name,
-      }
-    })
-    .sort((a, b) => {
-      if (a.publish_date === null) return 1 // Move null to the bottom
-      if (b.publish_date === null) return -1 // Move null to the bottom
-
-      return new Date(b.published_at) - new Date(a.published_at) // Sort descending
-    }),
+  items.value.map((item) => {
+    return {
+      ...item,
+      publishedAt: item.published_at && formatDate(item.published_at),
+      expiresAt: item.expires_at && formatDate(item.expires_at),
+      employmentType: item.employment_type,
+      company: item.companies?.name,
+    }
+  }),
 )
 
 watch(jobItems, (newJobs) => {
-  filters.value.location.options = [...new Set(newJobs?.map((job) => job.location))]
-  filters.value.company.options = [...new Set(newJobs?.map((job) => job.company_name))]
-  filters.value.type.options = [...new Set(newJobs?.map((job) => job.employment_type))]
+  const locations = [...new Set(newJobs?.map((job) => job.location))]
+
+  const companies = newJobs.reduce(
+    (acc, job) => ({ ...acc, [job.company_id]: job.company_name }),
+    {},
+  )
+
+  const types = [...new Set(newJobs?.map((job) => job.employment_type))]
+
+  filters.value.location.options = locations.map((location) => ({ key: location, value: location }))
+  filters.value.company.options = Object.entries(companies).map(([key, value]) => ({ key, value }))
+  filters.value.type.options = types.map((type) => ({ key: type, value: type }))
 })
 
 const addTagFilter = (tag: string) => {
