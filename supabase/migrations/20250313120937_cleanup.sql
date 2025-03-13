@@ -302,90 +302,6 @@ revoke truncate on table "public"."research_embeddings" from "service_role";
 
 revoke update on table "public"."research_embeddings" from "service_role";
 
-revoke delete on table "public"."strapi_migrations" from "anon";
-
-revoke insert on table "public"."strapi_migrations" from "anon";
-
-revoke references on table "public"."strapi_migrations" from "anon";
-
-revoke select on table "public"."strapi_migrations" from "anon";
-
-revoke trigger on table "public"."strapi_migrations" from "anon";
-
-revoke truncate on table "public"."strapi_migrations" from "anon";
-
-revoke update on table "public"."strapi_migrations" from "anon";
-
-revoke delete on table "public"."strapi_migrations" from "authenticated";
-
-revoke insert on table "public"."strapi_migrations" from "authenticated";
-
-revoke references on table "public"."strapi_migrations" from "authenticated";
-
-revoke select on table "public"."strapi_migrations" from "authenticated";
-
-revoke trigger on table "public"."strapi_migrations" from "authenticated";
-
-revoke truncate on table "public"."strapi_migrations" from "authenticated";
-
-revoke update on table "public"."strapi_migrations" from "authenticated";
-
-revoke delete on table "public"."strapi_migrations" from "service_role";
-
-revoke insert on table "public"."strapi_migrations" from "service_role";
-
-revoke references on table "public"."strapi_migrations" from "service_role";
-
-revoke select on table "public"."strapi_migrations" from "service_role";
-
-revoke trigger on table "public"."strapi_migrations" from "service_role";
-
-revoke truncate on table "public"."strapi_migrations" from "service_role";
-
-revoke update on table "public"."strapi_migrations" from "service_role";
-
-revoke delete on table "public"."strapi_migrations_internal" from "anon";
-
-revoke insert on table "public"."strapi_migrations_internal" from "anon";
-
-revoke references on table "public"."strapi_migrations_internal" from "anon";
-
-revoke select on table "public"."strapi_migrations_internal" from "anon";
-
-revoke trigger on table "public"."strapi_migrations_internal" from "anon";
-
-revoke truncate on table "public"."strapi_migrations_internal" from "anon";
-
-revoke update on table "public"."strapi_migrations_internal" from "anon";
-
-revoke delete on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke insert on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke references on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke select on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke trigger on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke truncate on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke update on table "public"."strapi_migrations_internal" from "authenticated";
-
-revoke delete on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke insert on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke references on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke select on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke trigger on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke truncate on table "public"."strapi_migrations_internal" from "service_role";
-
-revoke update on table "public"."strapi_migrations_internal" from "service_role";
-
 revoke delete on table "public"."tags_id_mapping" from "anon";
 
 revoke insert on table "public"."tags_id_mapping" from "anon";
@@ -450,10 +366,6 @@ alter table "public"."news_summaries" drop constraint "news_summaries_pkey";
 
 alter table "public"."research_embeddings" drop constraint "research_embeddings_pkey";
 
-alter table "public"."strapi_migrations" drop constraint "strapi_migrations_pkey";
-
-alter table "public"."strapi_migrations_internal" drop constraint "strapi_migrations_internal_pkey";
-
 drop index if exists "public"."circuit_breaker_states_job_name_key";
 
 drop index if exists "public"."circuit_breaker_states_pkey";
@@ -476,10 +388,6 @@ drop index if exists "public"."research_embeddings_pkey";
 
 drop index if exists "public"."research_embeddings_research_id_key";
 
-drop index if exists "public"."strapi_migrations_internal_pkey";
-
-drop index if exists "public"."strapi_migrations_pkey";
-
 drop table "public"."circuit_breaker_states";
 
 drop table "public"."embedding_reviews" cascade;
@@ -493,20 +401,12 @@ drop table "public"."feedbacks";
 drop table "public"."news_summaries";
 
 drop table "public"."research_embeddings" cascade;
-drop table "public"."strapi_migrations";
-
-
-drop table "public"."strapi_migrations_internal";
 
 drop table "public"."tags_id_mapping";
 
 drop sequence if exists "public"."feedback_id_seq";
 
 drop sequence if exists "public"."research_embeddings_id_seq";
-
-drop sequence if exists "public"."strapi_migrations_id_seq";
-
-drop sequence if exists "public"."strapi_migrations_internal_id_seq";
 
 CREATE TRIGGER update_astronomy_events_timestamp BEFORE UPDATE ON public.astronomy_events FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 

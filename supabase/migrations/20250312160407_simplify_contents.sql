@@ -224,8 +224,6 @@ alter table "public"."feeds" drop constraint "feeds_user_id_fkey";
 
 alter table "public"."news" drop constraint "news_content_source_id_fkey";
 
-alter table "public"."news" drop constraint "news_id_key";
-
 alter table "public"."news" drop constraint "news_url_key";
 
 alter table "public"."news" drop constraint "public_news_category_id_fkey";
@@ -370,6 +368,7 @@ drop index if exists "public"."idx_content_type";
 drop index if exists "public"."idx_feed_sources_source_id";
 
 drop index if exists "public"."idx_news_content_source_id";
+alter table "public"."news" drop constraint "news_id_key";
 
 drop index if exists "public"."news_id_key";
 
@@ -384,6 +383,7 @@ drop index if exists "public"."research_pdf_url_key";
 drop index if exists "public"."research_pkey";
 
 drop index if exists "public"."research_url_key";
+
 
 drop table "public"."content_categories";
 
@@ -436,10 +436,12 @@ alter table "public"."categories" alter column "document_id" set data type chara
 ALTER TABLE "public"."categories" ALTER COLUMN "id" DROP DEFAULT;
 
 -- Step 2: Convert column type from bigint to UUID
-ALTER TABLE "public"."categories" ALTER COLUMN "id" SET DATA TYPE uuid USING "id"::text::uuid;
-
--- Step 3: Set the new default to generate UUIDs automatically
-ALTER TABLE "public"."categories" ALTER COLUMN "id" SET DEFAULT gen_random_uuid();
+ALTER TABLE "public"."categories" ADD COLUMN "new_id" UUID DEFAULT gen_random_uuid();
+UPDATE "public"."categories" SET "new_id" = gen_random_uuid();
+ALTER TABLE "public"."categories" DROP CONSTRAINT "categories_pkey";
+ALTER TABLE "public"."categories" ADD PRIMARY KEY ("new_id");
+ALTER TABLE "public"."categories" DROP COLUMN "id";
+ALTER TABLE "public"."categories" RENAME COLUMN "new_id" TO "id";
 
 alter table "public"."categories" alter column "locale" set data type character varying using "locale"::character varying;
 
@@ -677,8 +679,6 @@ CREATE INDEX idx_errors_created_at ON public.errors USING btree (created_at);
 
 CREATE INDEX idx_errors_table_record ON public.errors USING btree (table_name, record_id);
 
-CREATE UNIQUE INDEX uq_user_id ON public.customer_subscriptions USING btree (user_id);
-
 alter table "public"."content_interactions" add constraint "content_interactions_pkey" PRIMARY KEY using index "content_interactions_pkey";
 
 alter table "public"."content_types" add constraint "content_types_pkey" PRIMARY KEY using index "content_types_pkey";
@@ -706,8 +706,6 @@ alter table "public"."contents" validate constraint "contents_company_id_fkey";
 alter table "public"."contents" add constraint "contents_source_id_fkey" FOREIGN KEY (source_id) REFERENCES public.content_sources(id) ON DELETE SET NULL not valid;
 
 alter table "public"."contents" validate constraint "contents_source_id_fkey";
-
-alter table "public"."customer_subscriptions" add constraint "uq_user_id" UNIQUE using index "uq_user_id";
 
 alter table "public"."feed_sources" add constraint "feed_sources_content_source_id_fkey" FOREIGN KEY (content_source_id) REFERENCES public.content_sources(id) ON DELETE CASCADE not valid;
 
