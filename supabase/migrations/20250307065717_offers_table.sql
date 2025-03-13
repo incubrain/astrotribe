@@ -1,26 +1,26 @@
 -- Create enum type for discount_type
-CREATE TYPE discount_type AS ENUM ('percentage', 'flat');
+CREATE TYPE public.discount_type AS ENUM ('percentage', 'flat');
 
 -- Create enum type for discount_type
-CREATE TYPE discount_period AS ENUM ('yearly', 'monthly', 'once');
+CREATE TYPE public.discount_period AS ENUM ('yearly', 'monthly', 'once');
 
 -- Create the customer_subscription_offers table
-CREATE TABLE customer_subscription_offers (
+CREATE TABLE public.customer_subscription_offers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
     plan_id INT NOT NULL,
     is_active BOOLEAN NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
     discount NUMERIC,
-    discount_type discount_type,
-    discount_period discount_period,
+    discount_type public.discount_type,
+    discount_period public.discount_period,
     already_discounted BOOLEAN,
     expiry_date TIMESTAMPTZ,
     CONSTRAINT "fk_offers_plan_id" FOREIGN KEY ("plan_id") REFERENCES "public"."customer_subscription_plans" ("id")
 );
 
 -- Create an index on plan_id for better performance on joins
-CREATE INDEX idx_customer_subscription_offers_plan_id ON customer_subscription_offers (plan_id);
+CREATE INDEX idx_customer_subscription_offers_plan_id ON public.customer_subscription_offers (plan_id);
 
 ALTER TABLE "public"."customer_subscription_offers" OWNER TO "postgres";
 
