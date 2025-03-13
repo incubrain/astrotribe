@@ -115,6 +115,14 @@ const websiteLinks = [
     disabled: false,
     items: [
       {
+        key: 'darkskyAbout',
+        label: 'About',
+        icon: 'material-symbols:weather-night',
+        url: '/darksky',
+        visible: true,
+        disabled: false,
+      },
+      {
         key: 'conferences',
         label: 'Conferences',
         icon: 'material-symbols:rocket_launch',

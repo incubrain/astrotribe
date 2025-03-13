@@ -44,7 +44,7 @@ interface SelectOptions<T> {
   columns?: keyof T | Array<keyof T> | string
   filters?: Filters
   range?: { from: number; to: number }
-  order?: { column: keyof T; ascending: boolean }
+  order?: { column: keyof T; ascending: boolean; nullsFirst?: boolean }
 }
 
 function applyFilter(query: any, column: string, filter: FilterOption): any {
@@ -246,7 +246,10 @@ export function useHttpHandler() {
     }
 
     if (options.order) {
-      query = query.order(options.order.column, { ascending: options.order.ascending })
+      query = query.order(options.order.column, {
+        ascending: options.order.ascending,
+        nullsFirst: options.order.nullsFirst,
+      })
     }
 
     console.log('Final query config:', query) // Debug log
