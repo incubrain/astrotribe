@@ -1,20 +1,20 @@
 
-ALTER TABLE jobs ADD COLUMN employment_type_text TEXT;
+ALTER TABLE public.jobs ADD COLUMN employment_type_text TEXT;
 
-UPDATE jobs 
+UPDATE public.jobs 
 SET employment_type_text = employment_type #>> '{}';
 
-ALTER TABLE jobs DROP COLUMN employment_type;
+ALTER TABLE public.jobs DROP COLUMN employment_type;
 
-ALTER TABLE jobs RENAME COLUMN employment_type_text TO employment_type;
+ALTER TABLE public.jobs RENAME COLUMN employment_type_text TO employment_type;
 
-CREATE VIEW job_filters AS
+CREATE VIEW public.job_filters AS
 SELECT DISTINCT j.location,
   c.name AS company_name,
   j.company_id,
   j.employment_type
-  FROM jobs j
-    INNER JOIN companies c ON c.id = j.company_id
+  FROM public.jobs j
+    INNER JOIN public.companies c ON c.id = j.company_id
 ORDER BY c.name, j.company_id, j.location, j.employment_type;
 
 -- Change the owner of the view to "postgres"
