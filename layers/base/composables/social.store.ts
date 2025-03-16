@@ -1,11 +1,10 @@
 export const useSocialStore = defineStore('settingsStore', () => {
   const errors = useBaseError()
-  const logger = useLogger('useSocialStore')
   const { fetch } = useBaseFetch()
 
   const youtube = ref({})
   async function getYoutubeAnalytics(channelName: string) {
-    logger.info(`getting youtube analytics for ${channelName}`)
+    console.info(`getting youtube analytics for ${channelName}`)
     const response = await fetch('/api/social/youtube/analytics', {
       method: 'GET',
       query: {
@@ -25,8 +24,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
 
   const instagram = ref<any>(null)
   async function getInstagramAnalytics(userId: string) {
-    const logger = useLogger('getInstagramAnalytics')
-    logger.info(`Fetching Instagram analytics for ${userId}`)
+    console.info(`Fetching Instagram analytics for ${userId}`)
     try {
       const response = await $fetch(`/api/social/instagram/analytics?userId=${userId}`, {
         method: 'GET',
@@ -52,8 +50,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
 
   const linkedin = ref<any>(null)
   async function getLinkedInAnalytics(postId: string) {
-    const logger = useLogger('getLinkedInAnalytics')
-    logger.info(`Fetching LinkedIn analytics for post ${postId}`)
+    console.info(`Fetching LinkedIn analytics for post ${postId}`)
     try {
       const response = await $fetch(`/api/social/linkedin/analytics?postId=${postId}`, {
         method: 'GET',
@@ -79,8 +76,7 @@ export const useSocialStore = defineStore('settingsStore', () => {
 
   const twitter = ref<any>(null)
   async function getTwitterAnalytics(postId: string) {
-    const logger = useLogger('getTwitterAnalytics')
-    logger.info(`Fetching Twitter analytics for post ${postId}`)
+    console.info(`Fetching Twitter analytics for post ${postId}`)
     try {
       const response = await fetch(`/api/social/twitter/analytics?postId=${postId}`, {
         method: 'GET',

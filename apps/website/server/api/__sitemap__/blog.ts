@@ -1,9 +1,7 @@
-// server/api/__sitemap__/blog.ts
 import { defineEventHandler } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const entries: any[] = []
-  const cmsURL = 'http://localhost:1337'
 
   const categories = [
     'all',
@@ -12,35 +10,27 @@ export default defineEventHandler(async (event) => {
     'dark-sky-conservation',
     'sustainable-development',
   ]
+
+  // Add category pages
   categories.forEach((category) => {
     entries.push({
-      loc: `/blog/category-${category}/page-1`,
+      loc: `/blog/category/${category}`,
       lastmod: new Date().toISOString(),
       _sitemap: 'blog-categories',
     })
   })
 
   try {
-    const response = await fetch(`${cmsURL}/api/articles`, {
-      headers: { Accept: 'application/json' },
-      // Add timeout to prevent hanging
-      signal: AbortSignal.timeout(5000),
-    })
+    // Query content directly with Nuxt Content
+    const articles = await queryCollection(event, 'blog').where('draft', '=', false).all()
 
-    if (!response.ok) {
-      console.warn(`[sitemap] Strapi returned ${response.status}: ${response.statusText}`)
-      return entries // Return just the category pages
-    }
-
-    const data = await response.json()
-
-    // Add articles if available
-    if (data?.data && Array.isArray(data.data)) {
-      data.data.forEach((article: any) => {
-        if (article?.attributes?.slug) {
+    // Add articles
+    if (articles && articles.length) {
+      articles.forEach((article: any) => {
+        if (article.path) {
           entries.push({
-            loc: `/blog/${article.attributes.slug}`,
-            lastmod: article.attributes.updatedAt || new Date().toISOString(),
+            loc: article.path,
+            lastmod: article.updatedAt || article.date || new Date().toISOString(),
             _sitemap: 'blog',
           })
         }
@@ -49,7 +39,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     // Log error but don't crash
     console.warn(
-      '[sitemap] Failed to fetch articles from Strapi:',
+      '[sitemap] Failed to fetch articles:',
       error instanceof Error ? error.message : 'Unknown error',
     )
     // Still return the category pages we created

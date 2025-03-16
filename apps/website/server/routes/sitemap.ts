@@ -1,33 +1,35 @@
-// server/routes/sitemap.ts
 export default defineEventHandler(async (event) => {
-  // const config = useRuntimeConfig()
   const routes = new Set<string>()
-  const cmsURL = 'http://localhost:1337'
+
   try {
-    // 1. Fetch all articles
-    const articlesResponse = await fetch(
-      `${cmsURL}/api/articles?pagination[pageSize]=100&fields[0]=slug&fields[1]=category`,
-    )
-    const articlesData = await articlesResponse.json()
+    // 1. Fetch all articles directly from Nuxt Content
+    const articles = await queryCollection(event, 'blog').where('draft', '=', false).all()
 
     // 2. Get categories and their article counts
     const categoryCount: Record<string, number> = {}
-    articlesData.data.forEach((article: any) => {
-      const category = article.attributes.category?.data?.attributes?.slug || 'all'
+    articles.forEach((article: any) => {
+      const category = article.category?.slug || 'all'
       categoryCount[category] = (categoryCount[category] || 0) + 1
     })
 
     // 3. Add category pagination routes
     Object.entries(categoryCount).forEach(([category, count]) => {
+      // Add main category page
+      routes.add(`/blog/category/${category}`)
+
+      // Add pagination pages (if needed)
       const pages = Math.ceil(count / 10) // Assuming 10 articles per page
-      for (let i = 1; i <= pages; i++) {
-        routes.add(`/blog/category-${category}/page-${i}`)
+      for (let i = 2; i <= pages; i++) {
+        // Start from page 2 as page 1 is the main category page
+        routes.add(`/blog/category/${category}/page/${i}`)
       }
     })
 
     // 4. Add individual article routes
-    articlesData.data.forEach((article: any) => {
-      routes.add(`/blog/${article.attributes.slug}`)
+    articles.forEach((article: any) => {
+      if (article.path) {
+        routes.add(article.path)
+      }
     })
 
     return Array.from(routes)

@@ -1,0 +1,128 @@
+<script setup lang="ts">
+const route = useRoute()
+const slug = route.params.slug as string
+const category = route.params.category as string
+
+const { width } = useWindowSize()
+
+console.log('Slug:', slug)
+// More robust query strategy
+// Simple query by stem since that's working
+const {
+  data: article,
+  status,
+  error,
+} = await useAsyncData(`article-${slug}`, async () => {
+  try {
+    // Query by stem is working based on your debug info
+    return await queryCollection('blog').where('stem', '=', `blog/${category}/${slug}`).first()
+  } catch (e) {
+    console.error('Error fetching article:', e)
+    throw e
+  }
+})
+
+console.log('Article:', article.value)
+
+// Wait until we have the article before setting SEO metadata
+watch(
+  () => article.value,
+  (newArticle) => {
+    if (newArticle) {
+      useSeoMeta({
+        title: newArticle.title,
+        description: newArticle.description,
+        ogTitle: newArticle.title,
+        ogDescription: newArticle.description,
+        ogImage: newArticle.cover?.url,
+      })
+    }
+  },
+  { immediate: true },
+)
+</script>
+
+<template>
+  <div>
+    <div
+      v-if="status === 'pending'"
+      class="flex justify-center items-center py-16"
+    >
+      <Icon
+        name="i-lucide-loader"
+        class="w-8 h-8 animate-spin text-primary-600"
+      />
+    </div>
+
+    <div
+      v-else-if="status === 'error' && error"
+      class="py-16 text-center"
+    >
+      <h1 class="text-3xl font-bold text-gray-700">Article Not Found</h1>
+      <p class="mt-4">{{ error.message }}</p>
+      <NuxtLink
+        to="/blog"
+        class="inline-block mt-8 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700"
+      >
+        Return to Blog
+      </NuxtLink>
+    </div>
+
+    <div
+      v-else-if="status === 'success' && article"
+      class="background"
+    >
+      <!-- Blog Header with Hero -->
+      <BlogArticleHero :article="article" />
+
+      <div
+        class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8"
+      >
+        <!-- Left Sidebar -->
+        <div class="w-full xl:col-start-1">
+          <BlogArticleToc
+            :article="article"
+            :expanded="width < 1280"
+          />
+        </div>
+
+        <!-- Main Content -->
+        <div class="xl:padded-x xl:col-start-2">
+          <div class="pb-12">
+            <!-- Article Metadata -->
+            <BlogArticleMeta
+              :article="article"
+              class="mb-6"
+            />
+
+            <!-- Article Content -->
+            <div class="mx-auto space-y-8">
+              <ContentRenderer
+                v-if="article"
+                :value="article"
+                class="nuxt-content"
+              />
+            </div>
+
+            <!-- Article Footer -->
+            <BlogArticleShare
+              :link="article.path"
+              :summary="article.description"
+            />
+
+            <!-- Author Card -->
+            <BlogArticleAuthorCard :authors="[article.author]" />
+
+            <!-- Previous/Next Navigation -->
+            <BlogArticleNavigation :article="article" />
+          </div>
+        </div>
+        <div class="padded-x">
+          <BlogRelatedPosts :article="article" />
+        </div>
+      </div>
+
+      <!-- Related Articles -->
+    </div>
+  </div>
+</template>

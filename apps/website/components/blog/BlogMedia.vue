@@ -50,7 +50,6 @@ const embedUrl = computed(() => {
     <!-- Image -->
     <NuxtImg
       v-else
-      provider="cms"
       :src="url.replace('/uploads/', '')"
       :alt="alt || 'Blog Media'"
       :width="width"
