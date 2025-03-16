@@ -74,7 +74,16 @@ export default defineNuxtConfig({
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
 
   content: {
+    // Enable Studio preview
+    preview: {
+      api: 'https://api.nuxt.studio',
+    },
     highlight: { theme: { default: 'github-dark', light: 'github-light', dark: 'github-dark' } },
+    // Database configuration if needed for serverless
+    database: {
+      type: 'sqlite', // Default, change if deploying to serverless
+      filename: '.data/content/contents.sqlite',
+    },
   },
 
   runtimeConfig: {
@@ -97,7 +106,11 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/blog': { prerender: true },
-    '/blog/category-*/page-*': {
+    '/blog/category/*': {
+      isr: 3600, // Cache for 1 hour
+      swr: true, // Stale-while-revalidate
+    },
+    '/blog/category/*/page/*': {
       isr: 3600, // Cache for 1 hour
       swr: true, // Stale-while-revalidate
     },

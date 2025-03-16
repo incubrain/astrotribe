@@ -16,9 +16,17 @@ defineProps<{
       :object-position="`object-${position}`"
       fit="cover"
     >
-      <div class="flex flex-col gap-4 bg-white rounded-md pb-6">
+      <div class="flex flex-col gap-4 pb-6">
         <slot />
+
+        <!-- Add the actions slot below the default slot -->
       </div>
     </IBImageHero>
+    <div
+      v-if="$slots.actions"
+      class="mt-4 flex justify-center"
+    >
+      <slot name="actions" />
+    </div>
   </div>
 </template>

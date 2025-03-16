@@ -1,6 +1,6 @@
 {
   "name": "@astronera/website",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "lint": "pnpm nx lint @astronera/website",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astronera/db": "workspace:*",
+    "@nuxt/content": "3.3.0",
     "@nuxt/image": "^1.8.0",
     "@nuxtjs/mdc": "^0.9.0",
     "@nuxtjs/seo": "^2.0.2",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@nuxt/test-utils": "^3.14.4",
     "h3": "^1.8.2",
+    "js-yaml": "^4.1.0",
     "msw": "^2.6.5",
     "nuxt": "^3.13.2",
     "tailwindcss": "^3.4.13",

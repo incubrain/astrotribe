@@ -3,7 +3,6 @@ import { useHttpHandler } from './useHttpHandler'
 import { getOrCreateStore } from './main.store'
 import { usePaginationStore, type PaginationType } from './pagination.store'
 import { useRateLimit } from './useRateLimit'
-import { useLogger } from '../../logging/composables/useLogger'
 
 export function useSelectData<T extends { id: string | number }>(
   tableName: string,
@@ -26,7 +25,6 @@ export function useSelectData<T extends { id: string | number }>(
   const storeKey = options.value.storeKey || tableName
 
   const { select } = useHttpHandler()
-  const logger = useLogger('useSelectData')
   const store = getOrCreateStore<T>(storeKey)()
   const { checkRateLimit } = useRateLimit()
 
@@ -73,12 +71,7 @@ export function useSelectData<T extends { id: string | number }>(
           console.log('pagination', pagination)
           queryOptions.range = pagination
         } else {
-          throw new Error({
-            type: ErrorType.VALIDATION_ERROR,
-            message: `Pagination not initialized for ${storeKey}`,
-            severity: ErrorSeverity.MEDIUM,
-            context: 'Data Fetching',
-          })
+          throw new Error('Pagination range is not defined')
         }
       } else if (options.value.limit) {
         queryOptions.range = { from: 0, to: options.value.limit - 1 }
@@ -95,7 +88,7 @@ export function useSelectData<T extends { id: string | number }>(
       lastSelectTime = Date.now()
       return result
     } catch (error: any) {
-      logger.error('Error selecting data', { error })
+      console.error('Error selecting data', { error })
       throw error
     } finally {
       isSelecting.value = false

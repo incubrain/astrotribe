@@ -1,18 +1,40 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useBlogHelpers } from '~/composables/useBlogHelpers'
 
-const p = defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
   },
 })
 
-console.log('Article:', p.article)
+const { getArticleUrl } = useBlogHelpers()
+
+// Get a formatted date from the article
+const formattedDate = computed(() => {
+  const dateStr = props.article.date || props.article.publishedAt
+  return dateStr ? useDateFormat(dateStr, 'DD MMM YYYY').value : ''
+})
+
+// Calculate reading time
+const readingTime = computed(() => {
+  if (!props.article.body?.children) return '1 min read'
+
+  // Extract text content from the article body
+  const text = JSON.stringify(props.article.body)
+
+  // Average reading speed: 200 words per minute
+  const words = text.trim().split(/\s+/).length
+  const minutes = Math.ceil(words / 200)
+
+  return `${minutes} min read`
+})
 </script>
 
 <template>
   <PrimeCard v-if="article">
+    <!-- Card header with image -->
     <template #header>
       <BlogCatTag
         v-if="article.tags"
@@ -33,32 +55,33 @@ console.log('Article:', p.article)
         class="aspect-video w-full bg-gray-200"
       />
     </template>
+
+    <!-- Card title with link -->
     <template #title>
-      <NuxtLink :to="`/blog/${article.slug}`">
+      <NuxtLink :to="getArticleUrl(article)">
         <h3 class="text-xl font-bold lg:text-xl">
           {{ article.title }}
         </h3>
       </NuxtLink>
     </template>
+
+    <!-- Card metadata -->
     <template #subtitle>
-      <div class="flex flex-row gap-2 text-sm">
+      <div class="flex flex-row gap-2 text-sm justify-between">
         <p class="text-primary">
-          {{ useDateFormat(article.publishedAt, 'DD MMM YYYY').value }}
+          {{ formattedDate }}
         </p>
-        <!-- <span
-          v-if="article.author"
-          class="flex gap-2"
-        >
-          by
-          <span
-            v-for="author in article.author"
-            :key="author.id"
-          >
-            {{ author.name }}
-          </span>
-        </span> -->
+        <div class="flex items-center gap-1">
+          <Icon
+            name="i-lucide-clock"
+            class="w-4 h-4"
+          />
+          <span>{{ readingTime }}</span>
+        </div>
       </div>
     </template>
+
+    <!-- Card content -->
     <template #content>
       <div class="flex w-full flex-col items-start justify-center gap-2">
         <p class="text-sm">
@@ -66,9 +89,11 @@ console.log('Article:', p.article)
         </p>
       </div>
     </template>
+
+    <!-- Card footer -->
     <template #footer>
       <div class="flex w-full justify-end">
-        <NuxtLink :to="`/blog/${article.slug}`">
+        <NuxtLink :to="getArticleUrl(article)">
           <PrimeButton outlined> Read More </PrimeButton>
         </NuxtLink>
       </div>

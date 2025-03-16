@@ -1,60 +1,80 @@
 <script setup lang="ts">
-const p = defineProps<{
-  currentPage: number
-  totalPages: number
-  baseUrl: string
-}>()
-
-const pages = computed(() => {
-  const pagesArray = []
-  for (let i = 1; i <= p.totalPages; i++) {
-    pagesArray.push(i)
-  }
-  return pagesArray
+defineProps({
+  currentPage: {
+    type: Number,
+    required: true,
+  },
+  totalPages: {
+    type: Number,
+    required: true,
+  },
+  baseUrl: {
+    type: String,
+    required: true,
+  },
 })
 </script>
 
 <template>
-  <nav class="pagination">
-    <ul class="pagination-list">
-      <li v-if="currentPage > 1">
-        <NuxtLink :to="`${baseUrl}/page-${currentPage - 1}`">Previous</NuxtLink>
-      </li>
-      <li
-        v-for="page in pages"
+  <div
+    v-if="totalPages > 1"
+    class="flex justify-center my-8"
+  >
+    <div class="flex gap-2">
+      <!-- Previous page -->
+      <NuxtLink
+        v-if="currentPage > 1"
+        :to="
+          currentPage === 2 && baseUrl.includes('/page')
+            ? baseUrl.replace('/page', '')
+            : `${baseUrl}/${currentPage - 1}`
+        "
+        class="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700"
+      >
+        <Icon
+          name="i-lucide-chevron-left"
+          class="w-5 h-5"
+        />
+      </NuxtLink>
+
+      <!-- Page numbers -->
+      <template
+        v-for="page in totalPages"
         :key="page"
       >
         <NuxtLink
-          :to="`${baseUrl}/page-${page}`"
-          :class="{ 'is-current': page === currentPage }"
+          v-if="page === 1 && baseUrl.includes('/page')"
+          :to="baseUrl.replace('/page', '')"
+          :class="[
+            'px-4 py-2 rounded',
+            currentPage === 1 ? 'bg-primary-600' : 'bg-primary-800 hover:bg-primary-700',
+          ]"
         >
           {{ page }}
         </NuxtLink>
-      </li>
-      <li v-if="currentPage < totalPages">
-        <NuxtLink :to="`${baseUrl}/page-${currentPage + 1}`">Next</NuxtLink>
-      </li>
-    </ul>
-  </nav>
+        <NuxtLink
+          v-else
+          :to="page === 1 ? baseUrl : `${baseUrl}/${page}`"
+          :class="[
+            'px-4 py-2 rounded',
+            currentPage === page ? 'bg-primary-600' : 'bg-primary-800 hover:bg-primary-700',
+          ]"
+        >
+          {{ page }}
+        </NuxtLink>
+      </template>
+
+      <!-- Next page -->
+      <NuxtLink
+        v-if="currentPage < totalPages"
+        :to="`${baseUrl}/${currentPage + 1}`"
+        class="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700"
+      >
+        <Icon
+          name="i-lucide-chevron-right"
+          class="w-5 h-5"
+        />
+      </NuxtLink>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination-list {
-  display: flex;
-  list-style: none;
-}
-
-.pagination-list li {
-  margin: 0 5px;
-}
-
-.pagination-list .is-current {
-  font-weight: bold;
-}
-</style>

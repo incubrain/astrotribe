@@ -1,4 +1,3 @@
-// error.vue
 <script setup lang="ts">
 const props = defineProps({
   error: Object,

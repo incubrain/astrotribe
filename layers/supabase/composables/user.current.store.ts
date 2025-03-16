@@ -2,7 +2,6 @@ const DOMAIN_KEY = 'currentUser'
 
 export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   const authURL = useRuntimeConfig().public.authURL
-  const logger = useLogger(DOMAIN_KEY)
   const errors = useBaseError()
   const loading = useLoadingStore()
   const { fetch } = useBaseFetch()
@@ -76,7 +75,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   }
 
   async function refreshUserStore() {
-    logger.info('Starting user store refresh')
+    console.info('Starting user store refresh')
     const client = useSupabaseClient()
 
     try {
@@ -85,7 +84,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       } = await client.auth.getSession()
 
       if (!session?.access_token) {
-        logger.info('No authentication session found')
+        console.info('No authentication session found')
         return
       }
 
@@ -98,7 +97,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
       } = await client.auth.getUser()
 
       if (error) {
-        logger.error('Error refreshing user data', { error })
+        console.error('Error refreshing user data', { error })
         throw error
       }
 
@@ -108,7 +107,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         return profile.value
       }
     } catch (error) {
-      logger.error('Failed to refresh user store', { error })
+      console.error('Failed to refresh user store', { error })
       const toast = useNotification()
       toast.error({
         summary: 'Refresh Failed',
@@ -119,26 +118,26 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
   }
 
   async function updateProfile(newData: any, isMock: boolean = false) {
-    logger.info('Starting updateProfile function', { newData, isMock })
+    console.info('Starting updateProfile function', { newData, isMock })
     const updatedData: any = {}
     const toast = useNotification()
 
-    logger.info('Cleaning data for update')
+    console.info('Cleaning data for update')
     // Compare newData with fullProfile and only include changed values
     const { noDataUpdated, data } = cleanDataForUpdate(newData, profile.value)
 
     if (noDataUpdated) {
-      logger.info('No changes detected, no update necessary')
+      console.info('No changes detected, no update necessary')
       return
     }
 
-    logger.info('Changes detected', { changedData: data })
+    console.info('Changes detected', { changedData: data })
 
     try {
-      logger.info('Sending update request to server')
+      console.info('Sending update request to server')
       let response
       if (isMock) {
-        logger.info('Using mock API call')
+        console.info('Using mock API call')
         // response = await mockApiCall(data)
       } else {
         response = await $fetch('/api/users/update', {
@@ -146,7 +145,7 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
           body: JSON.stringify(data),
         })
       }
-      logger.info('Received response from server', { response })
+      console.info('Received response from server', { response })
 
       const validData = errors.server({
         response,
@@ -165,21 +164,21 @@ export const useCurrentUser = defineStore(DOMAIN_KEY, () => {
         })
       }
 
-      logger.info('Successfully validated server response', { validData })
+      console.info('Successfully validated server response', { validData })
 
       // update state
-      logger.info('Updating user profile state')
+      console.info('Updating user profile state')
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           profile.value[key] = data[key]
-          logger.info(`Updating profile field: ${key}`, {
+          console.info(`Updating profile field: ${key}`, {
             newValue: data[key],
           })
         }
       }
-      logger.info('Profile update completed successfully')
+      console.info('Profile update completed successfully')
     } catch (error: any) {
-      logger.error('Error occurred during profile update', { error })
+      console.error('Error occurred during profile update', { error })
       throw error // Re-throw the error for the caller to handle
     }
   }

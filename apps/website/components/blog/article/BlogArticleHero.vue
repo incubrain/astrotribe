@@ -1,7 +1,17 @@
+<script setup lang="ts">
+defineProps({
+  article: {
+    type: Object,
+    required: true,
+  },
+})
+</script>
+
 <template>
   <div class="foreground relative flex w-full items-center justify-center pb-12 pt-16">
     <div class="flex w-full max-w-[1140px] flex-col">
-      <IBBreadcrumbs class="px-4 py-10" />
+      <!-- <IBBreadcrumbs class="px-4 py-10" /> -->
+      <!-- Update image handling for Nuxt Content -->
       <BlogMedia
         v-if="article.cover?.url"
         :url="article.cover.url"
@@ -25,11 +35,10 @@
             :value="tag.name"
             class="text-nowrap text-sm"
           />
-          <!-- Add tags here if you have them in your data structure -->
         </div>
         <BlogArticleAuthor
           :authors="[article.author]"
-          :published-at="article.publishedAt"
+          :published-at="article.date || article.publishedAt"
         />
       </div>
       <div
@@ -47,16 +56,5 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { ArticleFullT } from '~/types/articles'
-
-defineProps({
-  article: {
-    type: Object as PropType<ArticleFullT>,
-    required: true,
-  },
-})
-</script>
 
 <style scoped></style>

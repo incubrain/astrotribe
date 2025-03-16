@@ -1,0 +1,1242 @@
+{
+  "articles": {
+    "data": [
+      {
+        "id": 16,
+        "documentId": "kwn3y52a9o15rq5j3z1ds2a6",
+        "title": "Astronomy for Sustainable Development - Uniting Humanity for a Brighter Future",
+        "description": "Explore how the power of astronomy can drive sustainable development, connecting our understanding of the cosmos to the well-being of Earth and its inhabitants.",
+        "slug": "astronomy-for-sustainable-development-uniting-humanity-for-a-brighter-future",
+        "createdAt": "2024-10-14T04:25:49.229Z",
+        "updatedAt": "2024-10-28T22:58:18.650Z",
+        "publishedAt": "2024-10-28T22:58:18.715Z",
+        "cover": {
+          "id": 36,
+          "documentId": "bf46n5bgygwhcwpkxf8k82l4",
+          "name": "1.sustainable-global-space-development.webp",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1792,
+          "height": 1024,
+          "formats": {
+            "large": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_1_sustainable_global_space_development_97af989710.webp",
+              "hash": "large_1_sustainable_global_space_development_97af989710",
+              "mime": "image/webp",
+              "name": "large_1.sustainable-global-space-development.webp",
+              "path": null,
+              "size": 111.29,
+              "width": 1000,
+              "height": 571,
+              "sizeInBytes": 111290
+            },
+            "small": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_1_sustainable_global_space_development_97af989710.webp",
+              "hash": "small_1_sustainable_global_space_development_97af989710",
+              "mime": "image/webp",
+              "name": "small_1.sustainable-global-space-development.webp",
+              "path": null,
+              "size": 39.78,
+              "width": 500,
+              "height": 286,
+              "sizeInBytes": 39776
+            },
+            "medium": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_1_sustainable_global_space_development_97af989710.webp",
+              "hash": "medium_1_sustainable_global_space_development_97af989710",
+              "mime": "image/webp",
+              "name": "medium_1.sustainable-global-space-development.webp",
+              "path": null,
+              "size": 73.18,
+              "width": 750,
+              "height": 429,
+              "sizeInBytes": 73176
+            },
+            "thumbnail": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_1_sustainable_global_space_development_97af989710.webp",
+              "hash": "thumbnail_1_sustainable_global_space_development_97af989710",
+              "mime": "image/webp",
+              "name": "thumbnail_1.sustainable-global-space-development.webp",
+              "path": null,
+              "size": 13.38,
+              "width": 245,
+              "height": 140,
+              "sizeInBytes": 13378
+            }
+          },
+          "hash": "1_sustainable_global_space_development_97af989710",
+          "ext": ".webp",
+          "mime": "image/webp",
+          "size": 295.33,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_sustainable_global_space_development_97af989710.webp",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-10-28T22:53:36.875Z",
+          "updatedAt": "2024-10-28T22:53:36.875Z",
+          "publishedAt": "2024-10-28T22:53:36.876Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 4,
+          "documentId": "owonwxk2uyi8yxlact2t2ulg",
+          "name": "Sustainable Development",
+          "slug": "sustainable-development",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:48.446Z",
+          "updatedAt": "2024-10-10T12:44:48.446Z",
+          "publishedAt": "2024-10-10T12:44:48.438Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 16,
+            "body": "### Dear Reader\n\nImagine this: we're all on a little spaceship called Earth, floating through the vastness of space.\nIt's a delicate place, full of life, spinning amidst the stars. Now, think of us as crew members on\nthis ship, responsible for keeping it safe and thriving. That's what the Sustainable Development\nGoals (SDGs) are about—a plan to keep our ship afloat and ensure everyone on board is happy.\n\nThese goals, set by the United Nations in 2015, are like guiding stars, laying the groundwork for a\nbetter future. They're all about making sure people have what they need, taking care of our planet,\nensuring everyone has a chance to succeed, and working together peacefully.\n\n### Connecting Astronomy to Sustainable Development\n\nAt first glance, the notion of connecting astronomy to sustainable development may seem far-fetched.\nHowever, when we consider the myriad ways in which astronomy permeates our daily lives and drives\nadvancements in climate monitoring, disaster management, and resource exploration, the connection\nbecomes palpable.\n\nAstronomy reminds us of our place in the cosmos and our interconnectedness with all life on Earth.\nWhen we gaze at the stars and think about the vastness of the universe, we realize how small we are.\nEarth is just a tiny speck, a pale blue dot in the vast expanse of space.\n\nThis thought helps humble us and highlights the fragility of our existence. It shows us that we are\nall passengers on this small, delicate spaceship hurtling through the cosmos. Our fates are\nintertwined with every living being on Earth. There is no backup planet; this is our one and only\nhome.\n\nThis awareness fosters a sense of unity and responsibility, urging us to work together to protect\nour planet and ensure its sustainability. If we ignore this, we risk irreparable damage to ourselves\nand all life on this precious planet.\n\n### The Cost of Ignoring Our Planet\n\nConsider a dystopian scenario where the wealthy escape to safety on a spaceship, leaving the less\nfortunate behind to face a dire fate. This hypothetical underscores a harsh truth: that while some\nmay entertain the notion of fleeing to Mars or seeking refuge on a hypothetical \"Planet B,\" the vast\nmajority of humanity has no such means for luxury.\n\nIt prompts us to reflect on the resources and investments poured into space exploration and\ncolonization. Moreover, the resources utilized in military and war pursuits of the nations can be\nredirected.\n\nResearch shows that for FY 2023, NASA's budget was approximately $25.4 billion. SpaceX's Starship\ndevelopment, aimed at enabling Mars colonization, is estimated to cost $2-10 billion for the initial\ndevelopment phase. China, the second-largest military spender, allocated approximately $292 billion\nto its military in 2022, whereas India computes to about $76.6 billion.\n\nImagine if those resources were directed towards preserving and nurturing our own planet. By\nprioritizing the conservation and sustainable development of Earth, we can ensure a future where\nabandonment is never an option.\n\n### Everyday Lives and Astronomical Discoveries\n\nLet's think back and reflect on how our everyday lives intersect with astronomical discoveries. For\ninstance, the precise timing of our daily commute, facilitated by GPS satellites, relies on\ntechnologies developed through space exploration. Accurate weather forecasts, which guide our plans,\ndepend on data collected from meteorological satellites.\n\nBeyond Earth, advancements in climate monitoring, disaster management, and resource exploration are\ndeeply rooted in astronomical principles. Satellites orbiting our planet provide critical data for\npredicting hurricanes and other extreme weather events, enabling timely evacuations and disaster\npreparedness.\n\nSpace-based technologies also play a vital role in sustainable agriculture by monitoring crop health\nand water usage. This helps in optimizing resource management and reducing environmental impact.\nThis synergy between the cosmos and the sustainability of life on Earth underscores the need to\ninvest in our planet's well-being.\n\nOur celestial pursuits, such as observing solar activity to understand its effects on Earth's\nclimate, are intrinsically linked to the health of our home. By advancing our knowledge of\nastronomy, we not only explore the universe but also enhance our ability to protect and sustain our\nworld.\n\n### The Role of the Office of Astronomy for Development\n\nFrom the vast expanse of the cosmos to the intricate workings of our own planet, astronomy offers us\na unique perspective—one that reminds us of our place in the universe and our interconnectedness\nwith all life on Earth. It is from this cosmic vantage point that the Office of Astronomy for\nDevelopment (OAD) operates, harnessing the transformative potential of astronomy to address pressing\nglobal challenges.\n\nThrough projects spanning education, sustainable development, and social inclusion, the OAD empowers\nindividuals and communities to unlock new opportunities and envision a brighter future. Whether it's\nfostering scientific literacy among underserved populations or leveraging astrotourism for economic\ngrowth, the OAD shows how astronomy can catalyze positive change.\n\n### Join the Movement\n\nJoin us in harnessing the power of astronomy for sustainable development! Whether you're a student,\neducator, policymaker, or concerned citizen, there are countless ways to get involved and make a\ndifference.\n\nStart by educating yourself and others about the intersection of astronomy and\nsustainability—explore the wealth of resources available online and share your newfound knowledge\nwith your community. Let's engage in conversations about integrating astronomy into sustainable\ndevelopment efforts, both locally and globally.\n\nSupport organizations and initiatives like the OAD that leverage astronomical insights and\ntechnologies to address pressing challenges facing our planet. Together, let's work towards a future\nwhere the wonders of the cosmos inspire us to create a more sustainable and equitable world for\ngenerations to come.\n\n**Join the movement today and be part of the solution!**\n"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 19,
+        "documentId": "udh79ajdrpviethf80w8vfxr",
+        "title": "So, You Want to Be a Space Engineer? Josh Miller’s Journey Says, 'Just Start!’",
+        "description": "Meet Joshua Miller, senior mechanical design engineer at Airbus Defense and Space. Joshua shares what it takes to build satellites and connect humanity to the cosmos.",
+        "slug": "so-you-want-to-be-a-space-engineer-josh-miller-s-journey-says-just-start",
+        "createdAt": "2024-10-14T08:30:00.210Z",
+        "updatedAt": "2024-10-28T22:59:38.673Z",
+        "publishedAt": "2024-10-28T22:59:38.791Z",
+        "cover": {
+          "id": 34,
+          "documentId": "npdk2i9ghtfmfbd4wotcymav",
+          "name": "1.20-people-who-influenced-the-space-industry.webp",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1792,
+          "height": 1024,
+          "formats": {
+            "large": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_1_20_people_who_influenced_the_space_industry_02c4133806.webp",
+              "hash": "large_1_20_people_who_influenced_the_space_industry_02c4133806",
+              "mime": "image/webp",
+              "name": "large_1.20-people-who-influenced-the-space-industry.webp",
+              "path": null,
+              "size": 141.76,
+              "width": 1000,
+              "height": 571,
+              "sizeInBytes": 141760
+            },
+            "small": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_1_20_people_who_influenced_the_space_industry_02c4133806.webp",
+              "hash": "small_1_20_people_who_influenced_the_space_industry_02c4133806",
+              "mime": "image/webp",
+              "name": "small_1.20-people-who-influenced-the-space-industry.webp",
+              "path": null,
+              "size": 50.44,
+              "width": 500,
+              "height": 286,
+              "sizeInBytes": 50442
+            },
+            "medium": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_1_20_people_who_influenced_the_space_industry_02c4133806.webp",
+              "hash": "medium_1_20_people_who_influenced_the_space_industry_02c4133806",
+              "mime": "image/webp",
+              "name": "medium_1.20-people-who-influenced-the-space-industry.webp",
+              "path": null,
+              "size": 92.3,
+              "width": 750,
+              "height": 429,
+              "sizeInBytes": 92304
+            },
+            "thumbnail": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_1_20_people_who_influenced_the_space_industry_02c4133806.webp",
+              "hash": "thumbnail_1_20_people_who_influenced_the_space_industry_02c4133806",
+              "mime": "image/webp",
+              "name": "thumbnail_1.20-people-who-influenced-the-space-industry.webp",
+              "path": null,
+              "size": 16.3,
+              "width": 245,
+              "height": 140,
+              "sizeInBytes": 16304
+            }
+          },
+          "hash": "1_20_people_who_influenced_the_space_industry_02c4133806",
+          "ext": ".webp",
+          "mime": "image/webp",
+          "size": 370.37,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_20_people_who_influenced_the_space_industry_02c4133806.webp",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-10-28T22:53:00.256Z",
+          "updatedAt": "2024-10-28T22:59:16.569Z",
+          "publishedAt": "2024-10-28T22:53:00.256Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 2,
+          "documentId": "qpk2mip8dr9f332cn79patjj",
+          "name": "People of Space",
+          "slug": "people-of-space",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:16.602Z",
+          "updatedAt": "2024-10-10T12:44:16.602Z",
+          "publishedAt": "2024-10-10T12:44:16.597Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 19,
+            "body": "Ever wonder what it really takes to build satellites and shape the future of space? When we sat down with Joshua Miller, senior mechanical design engineer at Airbus Defense and Space, we couldn’t wait to hear his story of what goes on behind the scenes—and above our heads. Here’s a guy who turned a teenage apprenticeship into a role where he’s now leading projects, pushing boundaries, and helping build humanity’s connection to the cosmos.\n\n**From Apprentice to Engineer Extraordinaire: Josh’s Journey.**\n“So, Josh, tell us a little about your path. Was space always the goal?” we asked.\n*\"Funny enough, I didn’t start with a cosmic dream in mind,\"* he laughed. *\"I joined Airbus as an apprentice at 16, fresh out of school. It was a chance to learn. But soon, the work hooked me.\"* From completing his apprenticeship at 20 to earning a senior engineering role, Josh’s rapid growth came from a mix of determination, curiosity, and grit. \nToday, he oversees mechanical designs for satellite projects and manages a team—and he’s only just begun.\n*\"Space engineering isn’t about grand gestures but that daily grind, the push to innovate and refine,\"* Josh shared. *\"If I could name my mission, I'd call it **ENDEAVOR**. That’s what this career is, a constant endeavor.*\nFrom his work on Airbus’s Digital Management System (DMS), which ensures smooth data flow across every stage of satellite creation, to his upcoming role in Assembly, Integration, and Testing, Josh sees space as a constant journey of learning, one problem at a time.\n\n**Mission Passion: From Rock to Space Rock.**\nBeyond the hard work, Josh knows how to balance his life with hobbies that keep him grounded. He’s a guitarist with a taste for David Bowie’s Space Oddity, a weightlifter, and a cook—all things that help him recharge. He smiled as he shared, *“If I went to space for a year, I’d bring three things: a photo of my girlfriend, my guitar, and a suit. I love to feel like myself, even in orbit!”*\nHe’s as fascinated with the future of space as he is with the daily work of getting there. *“If I had to pick one industry rule to change,” *he said,* “it would be our tracking and handling of space debris. The amount of old satellites floating up there is staggering, and we need better management of that to protect our skies.”*\n\n**A Message to the Dreamers.**\n“What would you say to the next generation of space engineers?” we asked as we wrapped up.\n*“Keep that ambition alive. Dream big. Back in the ‘60s, no one knew if we’d put a man on the moon by decade’s end, but we did it. Aim for the moon, and if you miss, you just might land among the stars.”* Josh’s words are simple but powerful: space isn’t out of reach if you’re ready to reach for it.\nAs Josh reminded us, reaching for the stars doesn’t mean leaving who you are behind—it means taking your passions, quirks, and lessons learned right along with you. Josh’s journey is a powerful message to all of us that the universe is a little closer than we think. So, dream big, work hard, and who knows? You might just find yourself among the stars one day, too.\n\n**Real Talk: Learning from Mistakes .**\n“So, let’s be honest, what’s your biggest ‘oh-no’ moment?”\nJosh chuckled, then leaned in.* “Well, early on as an apprentice, I made a rookie mistake: I agreed to a change with a client but didn’t_ _ _ _ _ _ _ _ _ _ __ __ _ _ __ __ _  __ _ _ _ _ _ _ _  _ _ *\n\n**To know more about Josh’s ‘OH-NO‘ moment listen to the complete video on our Youtube channel.**\n"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 17,
+        "documentId": "pqdggtr1wi79ep3zqy1c19hu",
+        "title": "Dim the Lights, Ignite the Wonder - Why Dark Skies Matter",
+        "description": "Discover the importance of dark sky conservation and its impact on ecosystems, human health, and\n  our connection to the cosmos. Join the fight against light pollution and learn how you can help\n  preserve the magic of the night sky.",
+        "slug": "dim-the-lights-ignite-the-wonder-why-dark-skies-matter",
+        "createdAt": "2024-10-10T12:41:22.663Z",
+        "updatedAt": "2024-10-28T22:58:45.450Z",
+        "publishedAt": "2024-10-28T22:58:45.541Z",
+        "cover": {
+          "id": 33,
+          "documentId": "sz6432y0perre9i30t0l4qp2",
+          "name": "1.landscape-painting-of-dark-skies-and-mountains.webp",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1792,
+          "height": 1024,
+          "formats": {
+            "large": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp",
+              "hash": "large_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20",
+              "mime": "image/webp",
+              "name": "large_1.landscape-painting-of-dark-skies-and-mountains.webp",
+              "path": null,
+              "size": 40.61,
+              "width": 1000,
+              "height": 571,
+              "sizeInBytes": 40614
+            },
+            "small": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp",
+              "hash": "small_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20",
+              "mime": "image/webp",
+              "name": "small_1.landscape-painting-of-dark-skies-and-mountains.webp",
+              "path": null,
+              "size": 15.2,
+              "width": 500,
+              "height": 286,
+              "sizeInBytes": 15204
+            },
+            "medium": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp",
+              "hash": "medium_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20",
+              "mime": "image/webp",
+              "name": "medium_1.landscape-painting-of-dark-skies-and-mountains.webp",
+              "path": null,
+              "size": 26.8,
+              "width": 750,
+              "height": 429,
+              "sizeInBytes": 26798
+            },
+            "thumbnail": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp",
+              "hash": "thumbnail_1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20",
+              "mime": "image/webp",
+              "name": "thumbnail_1.landscape-painting-of-dark-skies-and-mountains.webp",
+              "path": null,
+              "size": 5.32,
+              "width": 245,
+              "height": 140,
+              "sizeInBytes": 5320
+            }
+          },
+          "hash": "1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20",
+          "ext": ".webp",
+          "mime": "image/webp",
+          "size": 107.28,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-10-28T22:52:24.247Z",
+          "updatedAt": "2024-10-28T22:52:24.247Z",
+          "publishedAt": "2024-10-28T22:52:24.248Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 1,
+          "documentId": "gvabmv9qc8jyw5r0c6soy05z",
+          "name": "Dark Sky Conservation",
+          "slug": "dark-sky-conservation",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:04.571Z",
+          "updatedAt": "2024-10-10T12:45:15.073Z",
+          "publishedAt": "2024-10-10T12:45:14.779Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 17,
+            "body": "### The Silent Threat of Light Pollution\n\nImagine a universe stuck on a low-budget dimmer switch, the faint whispers of distant galaxies\ndrowned out by the harsh glare of city lights. That's the reality for many of us – light pollution\nis a growing problem, and it's not just a buzzkill for stargazers. It's a silent threat to our\necosystems, our health, and our connection to the cosmos.\n\n### Ecological Impact of Light Pollution\n\nThink of it like an ecological light switch. Flip it the wrong way, and the whole system goes\nhaywire. Insects, crucial for healthy ecosystems, lose their celestial compass. Migrating birds,\nguided by the stars, become lost. Predators and prey, used to the natural rhythm of light and dark,\nfind their hunting confused. It's a domino effect playing out across the natural world.\n\n### Human Health and Light Pollution\n\nBut hey, humans aren't exactly immune to this light pollution mess. Our internal clocks, finely\ntuned to the day-night cycle, get messed up by the constant blue light bombardment. Sleep suffers,\nhormones get cranky, and our risk of certain health problems increases. Not exactly a recipe for a\nhappy and healthy life.\n\n### Astronomical Challenges\n\nFor astronomers, light pollution is like having a permanent case of cosmic cataracts. The faint\nlight of distant stars and galaxies, holding the secrets of our universe's origin, becomes lost in\nthe urban glow. It's like trying to read a mind-blowing book with a disco ball strobing overhead –\nnot exactly ideal for scientific discovery.\n\n### Fighting Back Against Light Pollution\n\nBut there's hope, fellow Earthlings! Organizations like the International Dark-Sky Association (IDA)\nare leading the charge against light pollution. Think of them as the galactic night watch, working\nwith communities and governments to develop lighting that's both functional and respectful of the\ncosmos. We're talking shielded lights, lower intensity, and warmer colors that don't disrupt the\nnatural world.\n\n### How You Can Help\n\nHere's where you, awesome citizen of Earth, come in. You can be a champion for the celestial cause!\nSpread the word about dark sky conservation. Talk to your neighbors, businesses, and local leaders.\nWhen replacing those tired outdoor lights, opt for shielded fixtures that cast a warm, downward\nglow. Every unnecessary watt saved is a tiny victory for the Milky Way.\n\n### Dark Sky Conservation in India\n\nIndia, the land of ancient wisdom and stargazing sages, is also joining the fight. From the inky\nblackness of the Nubra Valley to the star-dusted plateau of Djinkoni, efforts are underway to\npreserve these pockets of pristine darkness. In the Indian context, dark sky conservation is more\nthan just science – it's a bridge back to a rich cultural heritage, where the night sky held\nprofound meaning in mythology, astronomy, and spiritual practices.\n\n### Reclaiming the Magic of Darkness\n\nLet's reclaim the magic of darkness, the canvas upon which the universe paints its most breathtaking\nmasterpieces. Let's ensure that future generations can experience the awe-inspiring vastness of the\ncosmos, not a perpetual twilight show. Together, we can dim the city lights and ignite the wonder of\nthe night sky. The universe is waiting.\n\n### Future Topics on Dark Sky Conservation\n\nThis is just the beginning of our exploration into the fascinating world of dark sky conservation.\nIn upcoming posts, we'll delve deeper into the efforts already underway around the globe. We'll\nexplore the inspiring work of organizations like the IDA and local initiatives protecting precious\npockets of darkness. We'll share the latest research on light pollution's impact and unpack\npractical solutions you can implement in your own backyard.\n\nSo, stay tuned, space enthusiast! We're about to embark on a journey to illuminate the importance of\ndarkness and empower you to be a champion for the night sky.\n"
+          }
+        ],
+        "tags": [
+          {
+            "id": 1,
+            "documentId": "kuukzqw118jjrt0rdukuqjbf",
+            "name": "Stargazing",
+            "createdAt": "2024-10-10T12:45:05.848Z",
+            "updatedAt": "2024-10-10T12:45:05.848Z",
+            "publishedAt": "2024-10-10T12:45:05.834Z"
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "documentId": "vdmkmljc95c6v3avb9igdga1",
+        "title": "Unveiling the Mysteries of the Cosmos - A Journey Through Space Exploration",
+        "description": "Since the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a primal curiosity to explore the vast expanse of the cosmos.",
+        "slug": "unveiling-the-mysteries-of-the-cosmos-a-journey-through-space-exploration",
+        "createdAt": "2024-10-14T04:24:48.320Z",
+        "updatedAt": "2024-10-28T22:59:55.714Z",
+        "publishedAt": "2024-10-28T22:59:55.761Z",
+        "cover": {
+          "id": 35,
+          "documentId": "af3l1nlqqm5o9np0zw3xmakd",
+          "name": "1.starship-lands-on-mars.webp",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1792,
+          "height": 1024,
+          "formats": {
+            "large": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_1_starship_lands_on_mars_3ee52cd10d.webp",
+              "hash": "large_1_starship_lands_on_mars_3ee52cd10d",
+              "mime": "image/webp",
+              "name": "large_1.starship-lands-on-mars.webp",
+              "path": null,
+              "size": 45.85,
+              "width": 1000,
+              "height": 571,
+              "sizeInBytes": 45852
+            },
+            "small": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_1_starship_lands_on_mars_3ee52cd10d.webp",
+              "hash": "small_1_starship_lands_on_mars_3ee52cd10d",
+              "mime": "image/webp",
+              "name": "small_1.starship-lands-on-mars.webp",
+              "path": null,
+              "size": 14.94,
+              "width": 500,
+              "height": 286,
+              "sizeInBytes": 14942
+            },
+            "medium": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_1_starship_lands_on_mars_3ee52cd10d.webp",
+              "hash": "medium_1_starship_lands_on_mars_3ee52cd10d",
+              "mime": "image/webp",
+              "name": "medium_1.starship-lands-on-mars.webp",
+              "path": null,
+              "size": 29.22,
+              "width": 750,
+              "height": 429,
+              "sizeInBytes": 29222
+            },
+            "thumbnail": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_1_starship_lands_on_mars_3ee52cd10d.webp",
+              "hash": "thumbnail_1_starship_lands_on_mars_3ee52cd10d",
+              "mime": "image/webp",
+              "name": "thumbnail_1.starship-lands-on-mars.webp",
+              "path": null,
+              "size": 5.02,
+              "width": 245,
+              "height": 140,
+              "sizeInBytes": 5018
+            }
+          },
+          "hash": "1_starship_lands_on_mars_3ee52cd10d",
+          "ext": ".webp",
+          "mime": "image/webp",
+          "size": 152.47,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_starship_lands_on_mars_3ee52cd10d.webp",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-10-28T22:53:14.958Z",
+          "updatedAt": "2024-10-28T22:53:14.958Z",
+          "publishedAt": "2024-10-28T22:53:14.959Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 3,
+          "documentId": "mqg3qkgywbs36zdbjo3z7q9d",
+          "name": "Space Exploration",
+          "slug": "space-exploration",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:33.453Z",
+          "updatedAt": "2024-10-10T12:44:33.453Z",
+          "publishedAt": "2024-10-10T12:44:33.445Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 20,
+            "body": "### The Enigmatic Allure of the Stars\n\nSince the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a\nprimal curiosity to explore the vast expanse of the cosmos. Over the decades, our quest to unravel\nthe mysteries of space has evolved dramatically, propelled by advancements in technology, shifting\npriorities, and a relentless thirst for knowledge. In this blog, we embark on a journey through\ntime, tracing the trajectory of space exploration and uncovering its profound impact on both our\nunderstanding of the universe and life here on Earth.\n\n### Early Milestones in Space Exploration\n\nIn the early days of space exploration, the focus was primarily on achieving milestones such as\nreaching orbit, landing on the moon, and launching satellites into space. This era was characterized\nby the Space Race between the United States and the Soviet Union, fueled by geopolitical tensions\nand the desire for technological supremacy. Basic tools and technologies, such as rocket propulsion\nsystems and rudimentary spacecraft, laid the foundation for humanity's foray into the cosmos.\n\n### Advancements and New Frontiers\n\nAs the decades unfolded, so too did the focus and scope of space exploration. Advancements in\nrobotics, computer science, and materials science revolutionized the way we explore space, enabling\nus to venture deeper into the unknown. Robotic probes and rovers, such as Voyager, Curiosity, and\nPerseverance, have expanded our understanding of the solar system and beyond, uncovering new worlds,\nmoons, and phenomena along the way.\n\nMoreover, the International Space Station (ISS) stands as a testament to international collaboration\nand scientific cooperation, serving as a microgravity laboratory where researchers from around the\nworld conduct experiments in fields ranging from medicine to materials science. The ISS not only\nadvances our understanding of human physiology in space but also paves the way for future\nlong-duration space missions, such as crewed missions to Mars.\n\n### The Cis-Lunar Economy: A New Vision\n\nIn recent years, humanity's interest in space exploration has transcended the bounds of mere\ncuriosity, evolving into a pragmatic pursuit of establishing sustainable off-world economies.\nCentral to this vision is the concept of the cis-lunar economy, a bustling ecosystem of activities\ncentered around the region between Earth and the Moon. This includes endeavors like growing plants\nin space and mining resources from asteroids, both of which hold immense promise for the future of\nspace exploration and the betterment of life on Earth.\n\n#### Space Agriculture\n\nOne of the most intriguing aspects of the cis-lunar economy is the prospect of growing plants in\nspace. Companies like SpaceX, Blue Origin, and NASA have been actively involved in research and\nexperiments aimed at cultivating crops beyond Earth's atmosphere. The potential benefits of space\nagriculture are manifold. Not only does it provide a sustainable source of fresh food for astronauts\nduring long-duration missions, but it also offers insights into how plants respond to the unique\nconditions of microgravity and radiation in space. Such research is invaluable for developing\ntechnologies to support future human colonies on other celestial bodies, where traditional\nagriculture may not be feasible.\n\nMoreover, space farming holds promise for addressing food security issues on Earth. By leveraging\nthe lessons learned from space-based agriculture, we can enhance our understanding of plant biology\nand optimize crop production methods. This could lead to the development of more resilient and\nefficient agricultural practices, crucial for feeding a growing global population in the face of\nclimate change and diminishing arable land.\n\n#### Asteroid Mining\n\nIn parallel with space farming, the exploration and utilization of asteroid resources represent\nanother cornerstone of the cis-lunar economy. Companies like Planetary Resources (now Redwire\nSpace), Deep Space Industries, and Asteroid Mining Corporation are at the forefront of this nascent\nindustry, pioneering technologies to extract valuable minerals and metals from near-Earth asteroids.\nThese celestial bodies are rich in precious metals like platinum, rare earth elements, and water,\nwhich can be utilized to sustainably fuel space exploration and support industrial activities both\nin space and on Earth.\n\nThe potential benefits of asteroid mining are profound. By tapping into the vast resources of space,\nwe can alleviate the strain on terrestrial reserves and mitigate the environmental impacts\nassociated with traditional mining practices. Furthermore, the availability of space-derived\nmaterials could revolutionize manufacturing processes, enabling the production of advanced\ntechnologies and infrastructure in space, thereby reducing the cost and logistical challenges of\nspace missions.\n\n### Opportunities and Challenges\n\nThe convergence of space agriculture and asteroid mining within the cis-lunar economy presents a\nmyriad of opportunities for human advancement. Beyond the immediate benefits to space exploration\nand industry, these endeavors hold the potential to foster international collaboration and\ninnovation, driving economic growth and technological progress on a global scale. Moreover, the\ndevelopment of a sustainable off-world economy could serve as a catalyst for addressing pressing\nchallenges facing humanity, from climate change to resource scarcity.\n\nHowever, realizing the full potential of the cis-lunar economy requires concerted efforts from\ngovernments, private sector entities, and the international community. Regulatory frameworks need to\nbe established to govern space activities and ensure equitable access to space resources.\nInvestments in research and development are essential to advancing key technologies and overcoming\nthe technical challenges associated with space exploration and resource utilization. Additionally,\nfostering collaboration and knowledge-sharing among stakeholders is critical for maximizing the\nbenefits of space exploration for all of humanity.\n\n### Conclusion: A Pivotal Moment in Human History\n\nIn conclusion, the burgeoning interest in the cis-lunar economy, encompassing space agriculture and\nasteroid mining, represents a pivotal moment in human history. By harnessing the resources of space\nand leveraging technological innovation, we have the opportunity to build a sustainable and\nprosperous future for generations to come, both on Earth and beyond.\n\nLooking ahead, the future of space exploration is filled with promise and possibility. NASA's\nArtemis program aims to return humans to the moon by 2024, while India’s GAGANYAN mission will be\nthe first attempt by the nation to achieve orbital insertion of a manned craft. These missions pave\nthe way for sustainable lunar exploration and lay the groundwork for crewed missions to Mars.\n\nSpace exploration is a testament to the indomitable human spirit, driven by curiosity, innovation,\nand a shared desire to explore the unknown. From humble beginnings to bold visions of the future,\nour journey through space has been one of discovery, wonder, and awe. As we gaze up at the stars,\nlet us continue to push the boundaries of exploration, unlocking the secrets of the cosmos and\ncharting a course towards a brighter, more enlightened future for all of humanity.\n\n### Future Themes\n\nThe following blogs under this particular theme will share with you the recent visions, planned and\nfuture mission concepts as well as the advancements, goals, policy and law framework necessary to\nmake space exploration more convenient and affordable in coming years.\n"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 30,
+        "documentId": "maoimcr9sgms3hcaovzsq3wp",
+        "title": "From Saint Lucia to the Stars: A Conversation with Cheyenne Polius",
+        "description": "How does a curious island girl from Saint Lucia evolve into a multi-hyphenate powerhouse—astrophysicist, data analyst, educator, founder, and advocate for women in STEM? ",
+        "slug": "from-saint-lucia-to-the-stars-a-conversation-with-cheyenne-polius",
+        "createdAt": "2024-12-03T04:30:57.989Z",
+        "updatedAt": "2024-12-03T08:24:44.402Z",
+        "publishedAt": "2024-12-03T08:24:44.452Z",
+        "cover": {
+          "id": 42,
+          "documentId": "v2ec0dg0bcog821xa20yzhbb",
+          "name": "people of space CAROUSEL POSTS  (2).png",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1080,
+          "height": 1080,
+          "formats": {
+            "large": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png",
+              "hash": "large_people_of_space_CAROUSEL_POSTS_2_d65e1d1674",
+              "mime": "image/png",
+              "name": "large_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 1895.47,
+              "width": 1000,
+              "height": 1000,
+              "sizeInBytes": 1895472
+            },
+            "small": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png",
+              "hash": "small_people_of_space_CAROUSEL_POSTS_2_d65e1d1674",
+              "mime": "image/png",
+              "name": "small_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 511.74,
+              "width": 500,
+              "height": 500,
+              "sizeInBytes": 511740
+            },
+            "medium": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png",
+              "hash": "medium_people_of_space_CAROUSEL_POSTS_2_d65e1d1674",
+              "mime": "image/png",
+              "name": "medium_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 1105.6,
+              "width": 750,
+              "height": 750,
+              "sizeInBytes": 1105597
+            },
+            "thumbnail": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png",
+              "hash": "thumbnail_people_of_space_CAROUSEL_POSTS_2_d65e1d1674",
+              "mime": "image/png",
+              "name": "thumbnail_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 58.98,
+              "width": 156,
+              "height": 156,
+              "sizeInBytes": 58978
+            }
+          },
+          "hash": "people_of_space_CAROUSEL_POSTS_2_d65e1d1674",
+          "ext": ".png",
+          "mime": "image/png",
+          "size": 529.8,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/people_of_space_CAROUSEL_POSTS_2_d65e1d1674.png",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-12-03T04:19:32.631Z",
+          "updatedAt": "2024-12-03T04:19:32.631Z",
+          "publishedAt": "2024-12-03T04:19:32.666Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 2,
+          "documentId": "qpk2mip8dr9f332cn79patjj",
+          "name": "People of Space",
+          "slug": "people-of-space",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:16.602Z",
+          "updatedAt": "2024-10-10T12:44:16.602Z",
+          "publishedAt": "2024-10-10T12:44:16.597Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 30,
+            "body": "**From Saint Lucia to the Stars: A Conversation with Cheyenne Polius**\nHow does a curious island girl from Saint Lucia evolve into a multi-hyphenate powerhouse—astrophysicist, data analyst, educator, founder, and advocate for women in STEM? Cheyenne Polius’s journey is a shining testament to dreaming big, embracing creativity, and the power of community. Let’s unpack her inspirational story from a recent interview that captured the essence of her stargazing mission.\n\n**Curiosity Fueled by the Cosmos**\nCheyenne’s fascination with space sparked during childhood, fueled by an insatiable love for puzzles and documentaries. “_I remember watching space documentaries growing up_,” she says, recalling the awe that physics brought to her teenage years. By 15, her future was clear—she would unravel the mysteries of the universe as an astrophysicist.\n\nHer journey wasn’t without challenges. Growing up in a small Caribbean nation, exposure to formal astronomy was minimal. “_I owe so much to my upbringing_,” Cheyenne reflects. “_But my path could have been completely different had I not stumbled on astrophysics through a Google rabbit hole_.”\n\n**A Small Island Girl with Big Dreams**\nCheyenne’s roots in Saint Lucia taught her resilience and confidence. In an all-girls school environment, the narrative was empowering: girls excel academically and are future leaders. This culture fueled her confidence to pursue physics unapologetically. It’s no wonder her personal tagline is, “_A small island girl with big dreams._”\n\nDespite limited exposure to space science on the island, Cheyenne forged her path, eventually relocating to the UK. But her connection to Saint Lucia remains strong, inspiring her community through her work and advocacy.\n\n**Juggling Many Hats: How She Does It**\nHow does Cheyenne balance her roles as a data analyst, founder of the Saint Lucia National Astronomy Association (LUNA Journeys), and an advocate for women in STEM? “_One step at a time_,” she says. Her secret? A problem-solving mindset cultivated from physics and a deep passion for sharing science.\n\nCheyenne’s days are split between data-driven fintech projects and leading LUNA Journeys, her “_first child_.” LUNA aims to bring astronomy to Saint Lucia by hosting stargazing events and envisioning larger goals like a Caribbean space observatory and planetarium. “_I hope Luna outlives me_,” Cheyenne shares, emphasizing her commitment to creating a sustainable organization.\n\n**STEM Advocacy with a Side of Creative Flair**\nCheyenne’s creativity doesn’t stop at science. She dreams of creating a space-themed children’s coloring book to spark young imaginations. “_Every child likes to color_,” she says, blending art and science into an accessible tool for STEM education.\n\nThis dual passion for outreach and innovation earned Cheyenne the prestigious STEM Advocate Award in 2022, a recognition that came at a pivotal moment. “_It was a reaffirmation that I was on the right path_,” she says. The accolade inspired her to scale her efforts and refine her vision.\n\n**A Future as Bright as a Blue Star**\nCheyenne’s ambitions stretch far beyond her personal achievements. From dreaming of blue stars to envisioning a Caribbean empowered by space technology, her vision is expansive. “_I want the region to embrace how space research improves life on Earth—like climate action and sustainable development,_” she explains.\n\nHer advice for aspiring scientists? “_Keep going. It’s not easy, but the challenges don’t mean you’re not meant for it. Passion and persistence will get you there._”\n\n**Takeaway: Inspiration for the Next Generation**\nCheyenne’s story is a roadmap for any dreamer looking up at the stars. Her blend of intellect, creativity, and community spirit embodies the future of STEM—a field she continues to redefine.\n\nIf you’re inspired by her journey, follow Cheyenne's initiatives through LUNA Journeys or her vibrant social media presence. Whether it’s coloring books, stargazing sessions, or global collaborations, Cheyenne is proving that the universe is for everyone.\n\n**Engage With Us**\nWhat inspired you most about Cheyenne ’s story? Let us know in the comments! Also, stay tuned for updates as we collaborate with Sharon on her creative and outreach initiatives. Together, we’re building bridges to the stars"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 33,
+        "documentId": "w5dodfw8k3f6249x3bbhsx5g",
+        "title": "From Earth’s Fields to Mars’ Greenhouses: A Trailblazer’s Journey in Space Farming",
+        "description": "Imagine asking your mom as a kid if you could become an astronaut and hearing, “If you study hard, you can make it.” Fast forward a few decades, and not only are you reaching for the stars, but you’re also planting seeds there—literally",
+        "slug": "from-earth-s-fields-to-mars-greenhouses-a-trailblazer-s-journey-in-space-farming",
+        "createdAt": "2024-12-13T05:22:13.285Z",
+        "updatedAt": "2024-12-13T05:29:01.297Z",
+        "publishedAt": "2024-12-13T05:29:01.366Z",
+        "cover": {
+          "id": 43,
+          "documentId": "dxtdz2278vgae71xc16mszwl",
+          "name": "people of space CAROUSEL POSTS  (2).png",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1080,
+          "height": 1080,
+          "formats": {
+            "large": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_people_of_space_CAROUSEL_POSTS_2_3718b010da.png",
+              "hash": "large_people_of_space_CAROUSEL_POSTS_2_3718b010da",
+              "mime": "image/png",
+              "name": "large_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 1886.15,
+              "width": 1000,
+              "height": 1000,
+              "sizeInBytes": 1886149
+            },
+            "small": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_people_of_space_CAROUSEL_POSTS_2_3718b010da.png",
+              "hash": "small_people_of_space_CAROUSEL_POSTS_2_3718b010da",
+              "mime": "image/png",
+              "name": "small_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 511.78,
+              "width": 500,
+              "height": 500,
+              "sizeInBytes": 511778
+            },
+            "medium": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_people_of_space_CAROUSEL_POSTS_2_3718b010da.png",
+              "hash": "medium_people_of_space_CAROUSEL_POSTS_2_3718b010da",
+              "mime": "image/png",
+              "name": "medium_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 1102.95,
+              "width": 750,
+              "height": 750,
+              "sizeInBytes": 1102954
+            },
+            "thumbnail": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_people_of_space_CAROUSEL_POSTS_2_3718b010da.png",
+              "hash": "thumbnail_people_of_space_CAROUSEL_POSTS_2_3718b010da",
+              "mime": "image/png",
+              "name": "thumbnail_people of space CAROUSEL POSTS  (2).png",
+              "path": null,
+              "size": 58.61,
+              "width": 156,
+              "height": 156,
+              "sizeInBytes": 58605
+            }
+          },
+          "hash": "people_of_space_CAROUSEL_POSTS_2_3718b010da",
+          "ext": ".png",
+          "mime": "image/png",
+          "size": 542.84,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/people_of_space_CAROUSEL_POSTS_2_3718b010da.png",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-12-13T05:09:22.945Z",
+          "updatedAt": "2024-12-13T05:09:22.945Z",
+          "publishedAt": "2024-12-13T05:09:22.974Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 2,
+          "documentId": "qpk2mip8dr9f332cn79patjj",
+          "name": "People of Space",
+          "slug": "people-of-space",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:16.602Z",
+          "updatedAt": "2024-10-10T12:44:16.602Z",
+          "publishedAt": "2024-10-10T12:44:16.597Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 33,
+            "body": "Imagine asking your mom as a kid if you could become an astronaut and hearing, “_If you study hard, you can make it_.” Fast forward a few decades, and not only are you reaching for the stars, but you’re also planting seeds there—literally. Meet Mr. Davi Souza, a trailblazer in controlled environment agriculture and space farming, whose journey is rooted in humble beginnings on Earth but aimed squarely at the red planet.\n\n**The Earthly Roots of Space Farming**\nDavi’s path to space farming wasn’t planned—it sprouted organically. Growing up in Brazil’s countryside, farming was in his blood, but his childhood curiosity about space planted a seed of ambition. Encouraged by his mother, he pursued a technical course in electrical engineering and found his spark: a prototype for a smart greenhouse. This passion project became a stepping stone to his groundbreaking work in controlled environment agriculture (CEA).\n\nHis first big break came through Habitat Marte, South America’s first analog space station. Starting from scratch, Davi worked hands-on to turn an empty building into a thriving greenhouse. “_I learned how to cut pipes, connect systems, and create innovation from zero_,” he recalls. This practical experience laid the groundwork for his future ventures, both on Earth and in the cosmos.\n\n**Controlled Environment Agriculture: From Theory to Practice**\nCEA is more than just farming with a roof overhead. It’s a high-tech marvel where lighting, nutrients, and air are meticulously controlled to optimize plant growth. Davi explains that such systems are essential for farming in extreme environments—whether it’s the Brazilian semi-arid region, Saudi Arabian deserts, or the Martian surface.\n\nFor Mars, he envisions systems with artificial lighting, advanced nutrient delivery, and atmospheric management. The goal? To ensure that crops flourish even in the harshest conditions. “_Anything can become an innovation_,” Davi says, his excitement palpable.\n\n**From Basil to Beer: A Love for Experimentation**\nOf all the crops Davi has worked with, basil holds a special place in his heart. _“I grew basil, harvested it, and made pesto sauce—it was amazing to see a product through from seed to table_,” he shares. From leafy greens to hops for beer, his experiments highlight the versatility and potential of controlled farming systems. He dreams of growing coffee—because who wouldn’t want a fresh cup of Martian brew?\n\n**Bridging Space and Earth**\nDavi’s work isn’t just about growing plants in space—it’s about leveraging those innovations to solve Earthly challenges like food security and climate resilience. Extreme environments like deserts and urban centers provide valuable testbeds for technologies that could one day feed astronauts on Mars. As he points out, “_If we can grow food in space, we can grow it anywhere._”\n\nThis approach isn’t just theoretical. Davi has already introduced space farming concepts to Brazil’s first vertical and urban farm, demonstrating how these systems can thrive on Earth while paving the way for extraterrestrial agriculture.\n\n**A Mission Beyond Mars**\nLooking to the future, Davi dreams of managing a Martian greenhouse, but he’s just as committed to advancing terrestrial farming. His course, Space Farming 101, blends cutting-edge research with practical applications, making space farming accessible to professionals across industries.\n\nHis message to aspiring space farmers is clear: Start small, celebrate every win, and build a network. “_We aim for Mars, but we need to celebrate when we reach the Moon,_” he says, emphasizing the importance of acknowledging milestones on the journey to big goals.\n\n\nDavi ’s story reminds us that innovation often starts with a single question and the courage to explore the unknown. Whether transforming Earth’s arid landscapes into fertile grounds or dreaming of growing basil on Mars, the possibilities are as endless as the cosmos itself. \nReady to dive deeper? Check out Davi’s course, Space Farming 101, and be part of the conversation on how our future meals might just come with a “_Made in Space_” label. \n\nFind out more on LinkedIn  www.linkedin.com/in/daviafs/\nDavi's course: https://design.agritecture.com/premium-courses-public\n"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 40,
+        "documentId": "p1qejlkg5y1vd833pzdnechv",
+        "title": "Exploring the Cosmos - Evolving Realities for People of Space",
+        "description": "A journey through the extraordinary narratives of individuals involved in space exploration, highlighting the evolution, diversity, and inclusion in the field.",
+        "slug": "exploring-the-cosmos-evolving-realities-for-people-of-space",
+        "createdAt": "2024-10-14T04:22:50.361Z",
+        "updatedAt": "2024-12-19T10:12:20.208Z",
+        "publishedAt": "2024-12-19T10:12:20.251Z",
+        "cover": {
+          "id": 46,
+          "documentId": "qq5laawizkqe9o2ll9hnp2us",
+          "name": "People of Space (Desktop Wallpaper) (5).webp",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1920,
+          "height": 1080,
+          "formats": {
+            "large": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp",
+              "hash": "large_People_of_Space_Desktop_Wallpaper_5_5910c6011d",
+              "mime": "image/webp",
+              "name": "large_People of Space (Desktop Wallpaper) (5).webp",
+              "path": null,
+              "size": 58.69,
+              "width": 1000,
+              "height": 562,
+              "sizeInBytes": 58688
+            },
+            "small": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp",
+              "hash": "small_People_of_Space_Desktop_Wallpaper_5_5910c6011d",
+              "mime": "image/webp",
+              "name": "small_People of Space (Desktop Wallpaper) (5).webp",
+              "path": null,
+              "size": 26.72,
+              "width": 500,
+              "height": 281,
+              "sizeInBytes": 26718
+            },
+            "medium": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp",
+              "hash": "medium_People_of_Space_Desktop_Wallpaper_5_5910c6011d",
+              "mime": "image/webp",
+              "name": "medium_People of Space (Desktop Wallpaper) (5).webp",
+              "path": null,
+              "size": 42.66,
+              "width": 750,
+              "height": 422,
+              "sizeInBytes": 42658
+            },
+            "thumbnail": {
+              "ext": ".webp",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp",
+              "hash": "thumbnail_People_of_Space_Desktop_Wallpaper_5_5910c6011d",
+              "mime": "image/webp",
+              "name": "thumbnail_People of Space (Desktop Wallpaper) (5).webp",
+              "path": null,
+              "size": 10.74,
+              "width": 245,
+              "height": 138,
+              "sizeInBytes": 10742
+            }
+          },
+          "hash": "People_of_Space_Desktop_Wallpaper_5_5910c6011d",
+          "ext": ".webp",
+          "mime": "image/webp",
+          "size": 132.27,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-12-19T10:12:12.597Z",
+          "updatedAt": "2024-12-19T10:12:12.597Z",
+          "publishedAt": "2024-12-19T10:12:12.631Z"
+        },
+        "author": {
+          "id": 1,
+          "documentId": "rlucwmtk16ey5dvls56w7l7t",
+          "name": "Ruchira Huchgol",
+          "email": "ruchira@astronera.org",
+          "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+          "socials": [
+            {
+              "id": 2,
+              "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+              "platform": "linkedin",
+              "username": "uk"
+            }
+          ],
+          "createdAt": "2024-10-10T12:43:45.460Z",
+          "updatedAt": "2024-12-04T09:21:38.580Z",
+          "publishedAt": "2024-12-04T09:21:38.555Z"
+        },
+        "category": {
+          "id": 2,
+          "documentId": "qpk2mip8dr9f332cn79patjj",
+          "name": "People of Space",
+          "slug": "people-of-space",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:16.602Z",
+          "updatedAt": "2024-10-10T12:44:16.602Z",
+          "publishedAt": "2024-10-10T12:44:16.597Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 40,
+            "body": "### The Captivating Realm of Space\n\nIn the vast expanse of the universe, where stars twinkle and galaxies dance, there exists a realm\nthat has long captured the imagination of humanity: SPACE. From the early days of gazing at the\nstars to the modern era of space exploration, the journey of the people involved in this field has\nbeen nothing short of extraordinary. As we delve into the stories of those who traverse the cosmos,\nwe uncover a narrative of evolution, diversity, and inclusion.\n\n### Breaking Gender Barriers\n\nDecades ago, the landscape of space exploration was vastly different. Gender biases permeated the\nindustry, with women often sidelined or overlooked in favor of their male counterparts. However, the\ntides have shifted dramatically since then. Today, women are at the forefront of space exploration,\nbreaking barriers and shattering stereotypes.\n\nFrom Valentina Tereshkova, the first woman to journey into space, to Sally Ride, the first American\nwoman in space, to Christina Koch and Jessica Meir, who conducted the first all-female spacewalk,\nwomen have cemented their place in the annals of space history.\n\nIn our upcoming blogs, we'll explore the stories of pioneering female astronauts, engineers, and\nscientists who are inspiring future generations to reach for the stars.\n\n### Democratizing Space Exploration\n\nMoreover, the accessibility of space exploration was once limited primarily to a handful of affluent\nnations, leaving many countries with limited resources behind. However, the democratization of space\ntechnology has opened doors for a more inclusive approach.\n\nOrganizations like SpaceX, Blue Origin, Astroscale, and Pixxel are revolutionizing space travel,\nmaking it more affordable and accessible than ever before. As a result, countries from all corners\nof the globe, including those with limited resources, are now able to participate in space\nexploration initiatives.\n\nIn our upcoming series of blogs under this theme, we will examine how initiatives like international\npartnerships, satellite programs, and affordable launch options are democratizing access to space,\nenabling nations with limited resources to leverage space technology for socio-economic development.\n\n### Embracing Diverse Backgrounds\n\nOne of the most remarkable transformations in the field of space exploration is the inclusion of\nindividuals from diverse professional backgrounds. Gone are the days when only astronauts and\nengineers were associated with space missions. Today, artists, educators, journalists, and even\nprivate citizens are venturing into space, bringing their unique perspectives and expertise to the\ntable.\n\nFor instance, Yusaku Maezawa, a Japanese billionaire, plans to fly around the moon with a group of\nartists as part of SpaceX's Dear Moon project, highlighting the intersection of art and space\nexploration.\n\nFurthermore, the collaborative nature of modern space missions has fostered a spirit of inclusivity\nand cooperation among nations. International partnerships, such as the International Space Station\n(ISS) and Lunar Gateway, serve as symbols of unity and collaboration, transcending geopolitical\nboundaries for the greater good of humanity.\n\nAstronauts from different countries work hand in hand, conducting groundbreaking research and\nadvancing our understanding of the cosmos. In our coming series, we will discuss the implications of\nthis shift, including the commercialization of space, the rise of space tourism, and the potential\nfor new discoveries and collaborations.\n\n### The Evolution of Space Exploration\n\nThe journey of people in the field of space exploration has undergone a remarkable transformation\nover the decades. From overcoming gender biases to democratizing access and embracing diversity, the\nevolution of space exploration reflects the resilience and ingenuity of the human spirit.\n\nAs we look to the stars with renewed hope and curiosity, let us continue to strive for a future\nwhere the cosmos truly belongs to all.\n\n### Conclusion: Celebrating Diversity in Space\n\nAs we navigate through these topics, we'll highlight the voices and experiences of individuals from\ndiverse backgrounds, shedding light on the rich tapestry of talent and perspectives driving progress\nin the fields of aerospace and astronomy.\n\nJoin us on this exhilarating voyage as we explore the cosmos and celebrate the people who dare to\nreach beyond the stars.\n"
+          }
+        ],
+        "tags": []
+      },
+      {
+        "id": 42,
+        "documentId": "h2dsmrczgqfc7hgr7kehi6gx",
+        "title": "Stardust Dreams and Galactic Journeys: A Chat with the Cosmic Biologist",
+        "description": "Spoiler alert: his journey from a five-year-old dreamer of spaceships to a leading astrobiologist will leave you starry-eyed.",
+        "slug": "stardust-dreams-and-galactic-journeys-a-chat-with-the-cosmic-biologist",
+        "createdAt": "2024-12-20T04:14:36.454Z",
+        "updatedAt": "2024-12-20T06:01:16.187Z",
+        "publishedAt": "2024-12-20T06:01:16.296Z",
+        "cover": {
+          "id": 47,
+          "documentId": "erf1175jjeedt3p9677i39tw",
+          "name": "people of space CAROUSEL POSTS  (3).png",
+          "alternativeText": null,
+          "caption": null,
+          "width": 1080,
+          "height": 1080,
+          "formats": {
+            "large": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/large_people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png",
+              "hash": "large_people_of_space_CAROUSEL_POSTS_3_177afd8a0c",
+              "mime": "image/png",
+              "name": "large_people of space CAROUSEL POSTS  (3).png",
+              "path": null,
+              "size": 1892.01,
+              "width": 1000,
+              "height": 1000,
+              "sizeInBytes": 1892009
+            },
+            "small": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/small_people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png",
+              "hash": "small_people_of_space_CAROUSEL_POSTS_3_177afd8a0c",
+              "mime": "image/png",
+              "name": "small_people of space CAROUSEL POSTS  (3).png",
+              "path": null,
+              "size": 510.37,
+              "width": 500,
+              "height": 500,
+              "sizeInBytes": 510370
+            },
+            "medium": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/medium_people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png",
+              "hash": "medium_people_of_space_CAROUSEL_POSTS_3_177afd8a0c",
+              "mime": "image/png",
+              "name": "medium_people of space CAROUSEL POSTS  (3).png",
+              "path": null,
+              "size": 1102.51,
+              "width": 750,
+              "height": 750,
+              "sizeInBytes": 1102512
+            },
+            "thumbnail": {
+              "ext": ".png",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png",
+              "hash": "thumbnail_people_of_space_CAROUSEL_POSTS_3_177afd8a0c",
+              "mime": "image/png",
+              "name": "thumbnail_people of space CAROUSEL POSTS  (3).png",
+              "path": null,
+              "size": 58.57,
+              "width": 156,
+              "height": 156,
+              "sizeInBytes": 58571
+            }
+          },
+          "hash": "people_of_space_CAROUSEL_POSTS_3_177afd8a0c",
+          "ext": ".png",
+          "mime": "image/png",
+          "size": 543.37,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-12-20T04:07:52.897Z",
+          "updatedAt": "2024-12-20T04:07:52.897Z",
+          "publishedAt": "2024-12-20T04:07:52.898Z"
+        },
+        "author": null,
+        "category": {
+          "id": 2,
+          "documentId": "qpk2mip8dr9f332cn79patjj",
+          "name": "People of Space",
+          "slug": "people-of-space",
+          "description": null,
+          "createdAt": "2024-10-10T12:44:16.602Z",
+          "updatedAt": "2024-10-10T12:44:16.602Z",
+          "publishedAt": "2024-10-10T12:44:16.597Z"
+        },
+        "blocks": [
+          {
+            "__component": "shared.rich-text",
+            "id": 42,
+            "body": "Ever wondered what fuels the curiosity of someone who dedicates their life to uncovering mysteries of the cosmos?\nDr. Graham Lau, or as many fondly know him, \"_Astro B_\" or \"_Professor of Everything Groovy_,\" invites us into a universe where science fiction and the wonder of existence blur beautifully. Spoiler alert: his journey from a five-year-old dreamer of spaceships to a leading astrobiologist will leave you starry-eyed.\n\n**The Origin Story**:\nDr. Graham’s adventure began at the tender age of five. Torn between becoming a scientist and a musician, he found inspiration in sci-fi classics like Star Trek, Star Wars, and the literary wonders of Isaac Asimov and Arthur C. Clarke. Little did he know, this cocktail of space dreams and interstellar melodies would orbit his life, shaping a multi-faceted career.\n\nIt wasn’t a straight trajectory to astrobiology. Dr. Graham experimented with biology, chemistry, astrophysics, and even geology before homing in on life beyond Earth. And like any true explorer, he never stopped asking the big questions: What’s our place in the universe? Could we be alone?\n\n**Juggling Galaxies**:\nWearing multiple hats—Director of Communications at Blue Marble Space, NASA collaborator, and a host of the celebrated show Ask an Astrobiologist—is no easy feat. Yet, Dr. Graham credits discipline and meticulous time management for his ability to balance work with play.\n\nAs he shared, “_Discipline equals freedom_.” By mastering his schedule, he carves out time not only for groundbreaking research but also for hobbies like martial arts, meditation, and building blanket forts with his son.\n\n**A Cosmic Philosophy**:\nBeyond the scientific, Dr. Graham is profoundly philosophical. Drawing inspiration from figures like Carl Sagan and Martin Luther King Jr., he often reflects on humanity’s interconnectedness. “_We are guided missiles and misguided men,_” he quotes MLK, emphasizing that while technology advances at lightspeed, our emotional and moral growth lags behind. His advice? Embrace self-awareness, community, and the art of storytelling.\n\n**What’s Next?**\nDr. Graham’s latest passion project? Exploring the \"**Panzoic Effect**\"—_a psychological and spiritual dive into humanity's fascination with alien life_. Whether it’s imagining extraterrestrial civilizations or connecting dots between ancient philosophies and modern science, Dr. Graham believes these reflections enrich our understanding of ourselves and our place in the cosmos.\n\nAnd for aspiring space enthusiasts? “_There’s a place for you_,” he reassures. Whether you’re dreaming of climbing the scientific mountaintop or carving your unique niche, the journey is just as meaningful as the destination.\n\n**Rapid Fire** :\n1.Favorite space movie?\n_Alien—sci-fi horror at its best._\n\n2.Coffee or tea?\n _Coffee, hands down (a Martian farm better have coffee plants!)._\n \n3.Dream concert venue?\n _A Pink Floyd-inspired jam session on a terraformed Mars._\n \n4.Scientist dinner guest? \n_Hypatia of Alexandria—what stories her library must hold!_\n\nWhether he’s inspiring young minds or unraveling cosmic mysteries, Dr. Graham Lau reminds us that the pursuit of knowledge is a universal adventure. So, here’s to gazing at the stars and daring to imagine worlds—and lives—beyond our own.\n\nThe universe is vast, but with minds like his leading the way, it feels just a little closer.\nConnect with Dr. Graham Lau : [https://cosmobiota.com/](link)\n\n\n"
+          }
+        ],
+        "tags": []
+      }
+    ],
+    "meta": {
+      "pagination": {
+        "page": 1,
+        "pageSize": 25,
+        "pageCount": 1,
+        "total": 8
+      }
+    }
+  },
+  "categories": {
+    "data": [
+      {
+        "id": 2,
+        "documentId": "qpk2mip8dr9f332cn79patjj",
+        "name": "People of Space",
+        "slug": "people-of-space",
+        "description": null,
+        "createdAt": "2024-10-10T12:44:16.602Z",
+        "updatedAt": "2024-10-10T12:44:16.602Z",
+        "publishedAt": "2024-10-10T12:44:16.597Z",
+        "articles": [
+          {
+            "id": 19,
+            "documentId": "udh79ajdrpviethf80w8vfxr",
+            "title": "So, You Want to Be a Space Engineer? Josh Miller’s Journey Says, 'Just Start!’",
+            "description": "Meet Joshua Miller, senior mechanical design engineer at Airbus Defense and Space. Joshua shares what it takes to build satellites and connect humanity to the cosmos.",
+            "slug": "so-you-want-to-be-a-space-engineer-josh-miller-s-journey-says-just-start",
+            "createdAt": "2024-10-14T08:30:00.210Z",
+            "updatedAt": "2024-10-28T22:59:38.673Z",
+            "publishedAt": "2024-10-28T22:59:38.791Z"
+          },
+          {
+            "id": 30,
+            "documentId": "maoimcr9sgms3hcaovzsq3wp",
+            "title": "From Saint Lucia to the Stars: A Conversation with Cheyenne Polius",
+            "description": "How does a curious island girl from Saint Lucia evolve into a multi-hyphenate powerhouse—astrophysicist, data analyst, educator, founder, and advocate for women in STEM? ",
+            "slug": "from-saint-lucia-to-the-stars-a-conversation-with-cheyenne-polius",
+            "createdAt": "2024-12-03T04:30:57.989Z",
+            "updatedAt": "2024-12-03T08:24:44.402Z",
+            "publishedAt": "2024-12-03T08:24:44.452Z"
+          },
+          {
+            "id": 33,
+            "documentId": "w5dodfw8k3f6249x3bbhsx5g",
+            "title": "From Earth’s Fields to Mars’ Greenhouses: A Trailblazer’s Journey in Space Farming",
+            "description": "Imagine asking your mom as a kid if you could become an astronaut and hearing, “If you study hard, you can make it.” Fast forward a few decades, and not only are you reaching for the stars, but you’re also planting seeds there—literally",
+            "slug": "from-earth-s-fields-to-mars-greenhouses-a-trailblazer-s-journey-in-space-farming",
+            "createdAt": "2024-12-13T05:22:13.285Z",
+            "updatedAt": "2024-12-13T05:29:01.297Z",
+            "publishedAt": "2024-12-13T05:29:01.366Z"
+          },
+          {
+            "id": 40,
+            "documentId": "p1qejlkg5y1vd833pzdnechv",
+            "title": "Exploring the Cosmos - Evolving Realities for People of Space",
+            "description": "A journey through the extraordinary narratives of individuals involved in space exploration, highlighting the evolution, diversity, and inclusion in the field.",
+            "slug": "exploring-the-cosmos-evolving-realities-for-people-of-space",
+            "createdAt": "2024-10-14T04:22:50.361Z",
+            "updatedAt": "2024-12-19T10:12:20.208Z",
+            "publishedAt": "2024-12-19T10:12:20.251Z"
+          },
+          {
+            "id": 42,
+            "documentId": "h2dsmrczgqfc7hgr7kehi6gx",
+            "title": "Stardust Dreams and Galactic Journeys: A Chat with the Cosmic Biologist",
+            "description": "Spoiler alert: his journey from a five-year-old dreamer of spaceships to a leading astrobiologist will leave you starry-eyed.",
+            "slug": "stardust-dreams-and-galactic-journeys-a-chat-with-the-cosmic-biologist",
+            "createdAt": "2024-12-20T04:14:36.454Z",
+            "updatedAt": "2024-12-20T06:01:16.187Z",
+            "publishedAt": "2024-12-20T06:01:16.296Z"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "documentId": "mqg3qkgywbs36zdbjo3z7q9d",
+        "name": "Space Exploration",
+        "slug": "space-exploration",
+        "description": null,
+        "createdAt": "2024-10-10T12:44:33.453Z",
+        "updatedAt": "2024-10-10T12:44:33.453Z",
+        "publishedAt": "2024-10-10T12:44:33.445Z",
+        "articles": [
+          {
+            "id": 20,
+            "documentId": "vdmkmljc95c6v3avb9igdga1",
+            "title": "Unveiling the Mysteries of the Cosmos - A Journey Through Space Exploration",
+            "description": "Since the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a primal curiosity to explore the vast expanse of the cosmos.",
+            "slug": "unveiling-the-mysteries-of-the-cosmos-a-journey-through-space-exploration",
+            "createdAt": "2024-10-14T04:24:48.320Z",
+            "updatedAt": "2024-10-28T22:59:55.714Z",
+            "publishedAt": "2024-10-28T22:59:55.761Z"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "documentId": "owonwxk2uyi8yxlact2t2ulg",
+        "name": "Sustainable Development",
+        "slug": "sustainable-development",
+        "description": null,
+        "createdAt": "2024-10-10T12:44:48.446Z",
+        "updatedAt": "2024-10-10T12:44:48.446Z",
+        "publishedAt": "2024-10-10T12:44:48.438Z",
+        "articles": [
+          {
+            "id": 16,
+            "documentId": "kwn3y52a9o15rq5j3z1ds2a6",
+            "title": "Astronomy for Sustainable Development - Uniting Humanity for a Brighter Future",
+            "description": "Explore how the power of astronomy can drive sustainable development, connecting our understanding of the cosmos to the well-being of Earth and its inhabitants.",
+            "slug": "astronomy-for-sustainable-development-uniting-humanity-for-a-brighter-future",
+            "createdAt": "2024-10-14T04:25:49.229Z",
+            "updatedAt": "2024-10-28T22:58:18.650Z",
+            "publishedAt": "2024-10-28T22:58:18.715Z"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "documentId": "gvabmv9qc8jyw5r0c6soy05z",
+        "name": "Dark Sky Conservation",
+        "slug": "dark-sky-conservation",
+        "description": null,
+        "createdAt": "2024-10-10T12:44:04.571Z",
+        "updatedAt": "2024-10-10T12:45:15.073Z",
+        "publishedAt": "2024-10-10T12:45:14.779Z",
+        "articles": [
+          {
+            "id": 17,
+            "documentId": "pqdggtr1wi79ep3zqy1c19hu",
+            "title": "Dim the Lights, Ignite the Wonder - Why Dark Skies Matter",
+            "description": "Discover the importance of dark sky conservation and its impact on ecosystems, human health, and\n  our connection to the cosmos. Join the fight against light pollution and learn how you can help\n  preserve the magic of the night sky.",
+            "slug": "dim-the-lights-ignite-the-wonder-why-dark-skies-matter",
+            "createdAt": "2024-10-10T12:41:22.663Z",
+            "updatedAt": "2024-10-28T22:58:45.450Z",
+            "publishedAt": "2024-10-28T22:58:45.541Z"
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "pagination": {
+        "page": 1,
+        "pageSize": 25,
+        "pageCount": 1,
+        "total": 4
+      }
+    }
+  },
+  "authors": {
+    "data": [
+      {
+        "id": 1,
+        "documentId": "rlucwmtk16ey5dvls56w7l7t",
+        "name": "Ruchira Huchgol",
+        "email": "ruchira@astronera.org",
+        "bio": "Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an Analog Astronaut and has been involved in analog space missions.",
+        "socials": [
+          {
+            "id": 2,
+            "url": "https://www.linkedin.com/in/ruchira-huchgol-bb114621a/",
+            "platform": "linkedin",
+            "username": "uk"
+          }
+        ],
+        "createdAt": "2024-10-10T12:43:45.460Z",
+        "updatedAt": "2024-12-04T09:21:38.580Z",
+        "publishedAt": "2024-12-04T09:21:38.555Z",
+        "avatar": {
+          "id": 26,
+          "documentId": "ko1kcbblbgv0jwx977zoi322",
+          "name": "ruchira_huchgol.jpg",
+          "alternativeText": null,
+          "caption": null,
+          "width": 291,
+          "height": 291,
+          "formats": {
+            "thumbnail": {
+              "ext": ".jpg",
+              "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/thumbnail_ruchira_huchgol_e2f926c942.jpg",
+              "hash": "thumbnail_ruchira_huchgol_e2f926c942",
+              "mime": "image/jpeg",
+              "name": "thumbnail_ruchira_huchgol.jpg",
+              "path": null,
+              "size": 5.21,
+              "width": 156,
+              "height": 156,
+              "sizeInBytes": 5211
+            }
+          },
+          "hash": "ruchira_huchgol_e2f926c942",
+          "ext": ".jpg",
+          "mime": "image/jpeg",
+          "size": 13.45,
+          "url": "https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/ruchira_huchgol_e2f926c942.jpg",
+          "previewUrl": null,
+          "provider": "strapi-provider-upload-supabase",
+          "provider_metadata": null,
+          "createdAt": "2024-10-28T08:37:13.864Z",
+          "updatedAt": "2024-10-28T08:37:13.864Z",
+          "publishedAt": "2024-10-28T08:37:13.866Z"
+        },
+        "articles": [
+          {
+            "id": 16,
+            "documentId": "kwn3y52a9o15rq5j3z1ds2a6",
+            "title": "Astronomy for Sustainable Development - Uniting Humanity for a Brighter Future",
+            "description": "Explore how the power of astronomy can drive sustainable development, connecting our understanding of the cosmos to the well-being of Earth and its inhabitants.",
+            "slug": "astronomy-for-sustainable-development-uniting-humanity-for-a-brighter-future",
+            "createdAt": "2024-10-14T04:25:49.229Z",
+            "updatedAt": "2024-10-28T22:58:18.650Z",
+            "publishedAt": "2024-10-28T22:58:18.715Z"
+          },
+          {
+            "id": 17,
+            "documentId": "pqdggtr1wi79ep3zqy1c19hu",
+            "title": "Dim the Lights, Ignite the Wonder - Why Dark Skies Matter",
+            "description": "Discover the importance of dark sky conservation and its impact on ecosystems, human health, and\n  our connection to the cosmos. Join the fight against light pollution and learn how you can help\n  preserve the magic of the night sky.",
+            "slug": "dim-the-lights-ignite-the-wonder-why-dark-skies-matter",
+            "createdAt": "2024-10-10T12:41:22.663Z",
+            "updatedAt": "2024-10-28T22:58:45.450Z",
+            "publishedAt": "2024-10-28T22:58:45.541Z"
+          },
+          {
+            "id": 19,
+            "documentId": "udh79ajdrpviethf80w8vfxr",
+            "title": "So, You Want to Be a Space Engineer? Josh Miller’s Journey Says, 'Just Start!’",
+            "description": "Meet Joshua Miller, senior mechanical design engineer at Airbus Defense and Space. Joshua shares what it takes to build satellites and connect humanity to the cosmos.",
+            "slug": "so-you-want-to-be-a-space-engineer-josh-miller-s-journey-says-just-start",
+            "createdAt": "2024-10-14T08:30:00.210Z",
+            "updatedAt": "2024-10-28T22:59:38.673Z",
+            "publishedAt": "2024-10-28T22:59:38.791Z"
+          },
+          {
+            "id": 20,
+            "documentId": "vdmkmljc95c6v3avb9igdga1",
+            "title": "Unveiling the Mysteries of the Cosmos - A Journey Through Space Exploration",
+            "description": "Since the dawn of humanity, the stars have beckoned us with their enigmatic allure, igniting a primal curiosity to explore the vast expanse of the cosmos.",
+            "slug": "unveiling-the-mysteries-of-the-cosmos-a-journey-through-space-exploration",
+            "createdAt": "2024-10-14T04:24:48.320Z",
+            "updatedAt": "2024-10-28T22:59:55.714Z",
+            "publishedAt": "2024-10-28T22:59:55.761Z"
+          },
+          {
+            "id": 30,
+            "documentId": "maoimcr9sgms3hcaovzsq3wp",
+            "title": "From Saint Lucia to the Stars: A Conversation with Cheyenne Polius",
+            "description": "How does a curious island girl from Saint Lucia evolve into a multi-hyphenate powerhouse—astrophysicist, data analyst, educator, founder, and advocate for women in STEM? ",
+            "slug": "from-saint-lucia-to-the-stars-a-conversation-with-cheyenne-polius",
+            "createdAt": "2024-12-03T04:30:57.989Z",
+            "updatedAt": "2024-12-03T08:24:44.402Z",
+            "publishedAt": "2024-12-03T08:24:44.452Z"
+          },
+          {
+            "id": 33,
+            "documentId": "w5dodfw8k3f6249x3bbhsx5g",
+            "title": "From Earth’s Fields to Mars’ Greenhouses: A Trailblazer’s Journey in Space Farming",
+            "description": "Imagine asking your mom as a kid if you could become an astronaut and hearing, “If you study hard, you can make it.” Fast forward a few decades, and not only are you reaching for the stars, but you’re also planting seeds there—literally",
+            "slug": "from-earth-s-fields-to-mars-greenhouses-a-trailblazer-s-journey-in-space-farming",
+            "createdAt": "2024-12-13T05:22:13.285Z",
+            "updatedAt": "2024-12-13T05:29:01.297Z",
+            "publishedAt": "2024-12-13T05:29:01.366Z"
+          },
+          {
+            "id": 40,
+            "documentId": "p1qejlkg5y1vd833pzdnechv",
+            "title": "Exploring the Cosmos - Evolving Realities for People of Space",
+            "description": "A journey through the extraordinary narratives of individuals involved in space exploration, highlighting the evolution, diversity, and inclusion in the field.",
+            "slug": "exploring-the-cosmos-evolving-realities-for-people-of-space",
+            "createdAt": "2024-10-14T04:22:50.361Z",
+            "updatedAt": "2024-12-19T10:12:20.208Z",
+            "publishedAt": "2024-12-19T10:12:20.251Z"
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "pagination": {
+        "page": 1,
+        "pageSize": 25,
+        "pageCount": 1,
+        "total": 1
+      }
+    }
+  },
+  "tags": {
+    "data": [
+      {
+        "id": 1,
+        "documentId": "kuukzqw118jjrt0rdukuqjbf",
+        "name": "Stargazing",
+        "createdAt": "2024-10-10T12:45:05.848Z",
+        "updatedAt": "2024-10-10T12:45:05.848Z",
+        "publishedAt": "2024-10-10T12:45:05.834Z",
+        "article": [
+          {
+            "id": 17,
+            "documentId": "pqdggtr1wi79ep3zqy1c19hu",
+            "title": "Dim the Lights, Ignite the Wonder - Why Dark Skies Matter",
+            "description": "Discover the importance of dark sky conservation and its impact on ecosystems, human health, and\n  our connection to the cosmos. Join the fight against light pollution and learn how you can help\n  preserve the magic of the night sky.",
+            "slug": "dim-the-lights-ignite-the-wonder-why-dark-skies-matter",
+            "createdAt": "2024-10-10T12:41:22.663Z",
+            "updatedAt": "2024-10-28T22:58:45.450Z",
+            "publishedAt": "2024-10-28T22:58:45.541Z"
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "pagination": {
+        "page": 1,
+        "pageSize": 25,
+        "pageCount": 1,
+        "total": 1
+      }
+    }
+  }
+}
