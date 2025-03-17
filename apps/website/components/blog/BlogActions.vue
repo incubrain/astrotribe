@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="wrapper p-4 xl:p-8 flex gap-4">
+    <div class="wrapper py-4 xl:py-8 flex gap-4">
       <BlogFilter />
       <BlogSearch
         button-label="Search"

@@ -92,7 +92,7 @@ const toc = [
           </PrimeAccordionPanel>
         </PrimeAccordion>
       </div>
-      <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
+      <div class="wrapper w-screen flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
         <SymposiumAbout id="about" />
         <hr />
         <SymposiumVenue id="venue" />
@@ -103,14 +103,14 @@ const toc = [
         <hr />
         <div class="flex flex-col gap-2 md:flex-row">
           <SymposiumPDFResource
+            id="brochure"
             pdf="/symposium/idsps_symposium_report.pdf"
             label="Report"
-            id="brochure"
           />
           <SymposiumPDFResource
+            id="brochure"
             pdf="/symposium/brochure_symposium_2025.pdf"
             label="Brochure"
-            id="brochure"
           />
         </div>
         <hr />

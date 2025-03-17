@@ -45,7 +45,7 @@ useSeoMeta({
 
     <BlogActions />
 
-    <div class="space-y-10 wrapper py-16 padded-x">
+    <div class="space-y-10 wrapper py-16">
       <!-- Featured Posts Section (if any) -->
       <div
         v-if="featuredPosts?.length"

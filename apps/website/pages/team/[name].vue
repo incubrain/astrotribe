@@ -27,7 +27,7 @@ const user = computed(() =>
       }"
     />
 
-    <div class="wrapper padded-x flex flex-wrap items-start justify-center xl:pb-12">
+    <div class="wrapper flex flex-wrap items-start justify-center xl:pb-12">
       <div
         class="background border-color easy-in-out w-full transform rounded-b-md border backdrop-blur-lg backdrop-filter duration-200"
       >

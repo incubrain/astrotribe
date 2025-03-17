@@ -44,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="container">
+  <section class="wrapper">
     <LandingTitle
       class="mb-12"
       title="Not Just News"

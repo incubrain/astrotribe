@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
@@ -7,10 +6,10 @@
 
     <main class="space-y-36 py-24 overflow-hidden max-w-full">
       <LandingSidescroll />
-      <LazyLandingProductSteps class="container" />
-      <LazyLandingFeatures class="container" />
+      <LazyLandingProductSteps class="wrapper" />
+      <LazyLandingFeatures class="wrapper" />
       <LazyLandingTestimonials class="max-w-full w-full" />
-      <LazyLandingWebSeries class="container" />
+      <LazyLandingWebSeries class="wrapper" />
     </main>
   </div>
 </template>

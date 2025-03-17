@@ -255,7 +255,7 @@ const isSearchOpen = ref(false)
     :class="navbarClasses"
     :style="glassStyle"
   >
-    <div class="container mx-auto px-4">
+    <div class="wrapper mx-auto">
       <div
         class="flex items-center justify-between h-16"
         :class="{ 'h-14': props.compactOnScroll && isScrolled }"

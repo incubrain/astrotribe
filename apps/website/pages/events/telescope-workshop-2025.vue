@@ -28,7 +28,7 @@ const toc = [
   {
     id: 7,
     depth: 1,
-    text: `What's Provided in the Workshop?`,
+    text: "What's Provided in the Workshop?",
     link: 'provided',
   },
 ]
@@ -247,7 +247,7 @@ const provided = [
           </PrimeAccordionPanel>
         </PrimeAccordion>
       </div>
-      <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
+      <div class="wrapper w-screen flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
         <NuxtLink :to="registrationLink">
           <PrimeButton
             size="large"

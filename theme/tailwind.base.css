@@ -12,6 +12,10 @@
     --max-width-md: 1040px;
     --max-width-lg: 1140px;
 
+    --px-sm: 12px;
+    --px-md: 16px;
+    --px-lg: 24px;
+
     /* imported from old theme */
 
     /* added */
@@ -107,7 +111,7 @@
   }
 
   .wrapper {
-    @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)];
+    @apply mx-auto max-w-[var(--max-width-md)] lg:max-w-[var(--max-width-lg)] px-[var(--px-sm)] md:px-[var(--px-md)] lg:px-[var(--px-lg)];
   }
 
   .container {
