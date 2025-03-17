@@ -311,19 +311,30 @@ ALTER TABLE "public"."feed_sources" RENAME COLUMN "new_content_source_id" TO "co
 ALTER TABLE "public"."feed_sources" ALTER COLUMN "created_at" DROP NOT NULL;
 
 
--- Re-use the existing mapping table from the previous step
-UPDATE "public"."content_sources"
-SET "new_id" = (SELECT new_id FROM public.content_sources_id_mapping WHERE old_id = public.content_sources.id);
-
 -- Drop old primary key and convert content_sources.id to UUID
+-- First drop the foreign key constraint
+ALTER TABLE "public"."jobs" DROP CONSTRAINT IF EXISTS jobs_content_source_id_fkey;
+
+-- Drop the constraint first
 ALTER TABLE "public"."content_sources" DROP CONSTRAINT IF EXISTS content_sources_pkey1;
+
+-- Add the UUID column while keeping the old column
+ALTER TABLE "public"."content_sources" ADD COLUMN "new_id" UUID DEFAULT gen_random_uuid();
+
+-- If you need to copy data from a mapping table, do it here
+UPDATE "public"."content_sources"
+SET "new_id" = (
+  SELECT new_id 
+  FROM public.content_sources_id_mapping 
+  WHERE old_id::text = public.content_sources.id::text
+);
+
+-- Now drop the old column and rename the new one
 ALTER TABLE "public"."content_sources" DROP COLUMN "id";
 ALTER TABLE "public"."content_sources" RENAME COLUMN "new_id" TO "id";
 ALTER TABLE "public"."content_sources" ADD PRIMARY KEY ("id");
 
-ALTER TABLE "public"."content_sources" ADD COLUMN "new_id" UUID DEFAULT gen_random_uuid();
-
--- ✅ Cleanup: Remove mapping table after it's no longer needed
+-- Cleanup
 DROP TABLE IF EXISTS public.content_sources_id_mapping;
 
 drop index if exists "public"."content_sources_url_key1";
