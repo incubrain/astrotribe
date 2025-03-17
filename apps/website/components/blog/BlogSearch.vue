@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
-import { useDebounce, useRoute, watch, ref } from '#imports'
+import { useDebounceFn, useEventListener } from '@vueuse/core'
+import Fuse from 'fuse.js'
+import type { IFuseOptions } from 'fuse.js'
 
 interface Section {
   id: string
@@ -8,44 +9,69 @@ interface Section {
   content: string
 }
 
-const showOverlay = ref(false)
+const props = defineProps<{
+  placeholder?: string
+  resultLimit?: number
+  debounceMs?: number
+  fuseOptions?: IFuseOptions<Section>
+}>()
+
+const emit = defineEmits<{
+  search: [query: string]
+  select: [result: Section]
+}>()
+
+// Default prop values
+const placeholder = computed(() => props.placeholder || 'Search blog...')
+const resultLimit = computed(() => props.resultLimit || 5)
+const debounceMs = computed(() => props.debounceMs || 300)
+
+// States
+const isShowOverlay = ref(false)
 const searchQuery = ref('')
 const searchResults = ref<Section[]>([])
 const isLoading = ref(false)
 
-// Function to search blog sections
-const queryCollectionSearchSections = async (collection: string) => {
-  const sections = await queryContent(collection).find()
-  return sections || []
+// Fetch blog sections using queryCollectionSearchSections
+const fetchSections = async () => {
+  try {
+    return await queryCollectionSearchSections('blog')
+  } catch (error) {
+    console.error('Error fetching blog sections:', error)
+    return []
+  }
 }
 
-// Debounced search function
-const debouncedSearch = useDebounce(async () => {
+// Debounced search function using VueUse
+const debouncedSearch = useDebounceFn(async () => {
   if (!searchQuery.value || searchQuery.value.length < 2) {
     searchResults.value = []
     return
   }
 
   isLoading.value = true
+  emit('search', searchQuery.value)
+
   try {
-    const sections = await queryCollectionSearchSections('blog')
+    const sections = await fetchSections()
     const query = searchQuery.value.toLowerCase()
 
-    // Filter and limit results
-    searchResults.value = sections
-      .filter(
-        (section) =>
-          section.title.toLowerCase().includes(query) ||
-          section.content.toLowerCase().includes(query),
-      )
-      .slice(0, 5)
+    // Use Fuse.js for better search results
+    const fuse = new Fuse(sections, {
+      keys: ['title', 'content'],
+      threshold: 0.3,
+      ...props.fuseOptions,
+    })
+
+    const results = fuse.search(query)
+    searchResults.value = results.map((r) => r.item).slice(0, resultLimit.value)
   } catch (error) {
     console.error('Search error:', error)
     searchResults.value = []
   } finally {
     isLoading.value = false
   }
-}, 300)
+}, debounceMs)
 
 // Watch for changes to search query
 watch(searchQuery, () => {
@@ -55,7 +81,7 @@ watch(searchQuery, () => {
 // Close search on escape key
 useEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    showOverlay.value = false
+    isShowOverlay.value = false
   }
 })
 
@@ -63,9 +89,15 @@ useEventListener('keydown', (e) => {
 watch(
   () => useRoute().fullPath,
   () => {
-    showOverlay.value = false
+    isShowOverlay.value = false
   },
 )
+
+// Handle result selection
+const handleResultSelect = (result: Section) => {
+  emit('select', result)
+  isShowOverlay.value = false
+}
 </script>
 
 <template>
@@ -73,7 +105,7 @@ watch(
     <!-- Search Button -->
     <button
       class="flex items-center gap-2 text-sm bg-primary-900 hover:bg-primary-800 text-white px-4 py-2 rounded-full"
-      @click="showOverlay = true"
+      @click="isShowOverlay = true"
     >
       <Icon
         name="i-lucide-search"
@@ -85,9 +117,9 @@ watch(
     <!-- Search Overlay -->
     <Teleport to="body">
       <div
-        v-if="showOverlay"
+        v-if="isShowOverlay"
         class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-start justify-center pt-20"
-        @click.self="showOverlay = false"
+        @click.self="isShowOverlay = false"
       >
         <div class="bg-primary-950 rounded-lg w-full max-w-2xl shadow-lg overflow-hidden">
           <!-- Search Input -->
@@ -96,10 +128,10 @@ watch(
               <input
                 v-model="searchQuery"
                 type="text"
-                placeholder="Search blog..."
+                :placeholder="placeholder"
                 class="w-full bg-primary-900 text-white border-none rounded-md px-4 py-3 pl-10 focus:ring-2 focus:ring-primary-600 focus:outline-none"
                 autofocus
-                @keyup.escape="showOverlay = false"
+                @keyup.escape="isShowOverlay = false"
               />
               <Icon
                 name="i-lucide-search"
@@ -116,7 +148,7 @@ watch(
             >
               <Icon
                 name="i-lucide-loader"
-                class="w-6 h-6 animate-spin"
+                class="w-6 h-6 animate-spin mx-auto"
               />
               <p class="mt-2">Searching...</p>
             </div>
@@ -147,18 +179,17 @@ watch(
               v-else
               class="divide-y divide-primary-800"
             >
-              <NuxtLink
+              <button
                 v-for="result in searchResults"
                 :key="result.id"
-                :to="result.id"
-                class="block p-4 hover:bg-primary-900 transition"
-                @click="showOverlay = false"
+                class="block w-full text-left p-4 hover:bg-primary-900 transition"
+                @click="handleResultSelect(result)"
               >
                 <h3 class="font-medium text-white">{{ result.title }}</h3>
                 <p class="mt-1 text-sm text-gray-400 line-clamp-2">
-                  {{ result.content.substring(0, 150) }}...
+                  {{ result.content?.substring(0, 150) }}...
                 </p>
-              </NuxtLink>
+              </button>
             </div>
           </div>
 
