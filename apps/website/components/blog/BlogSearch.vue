@@ -7,37 +7,65 @@ interface Section {
   id: string
   title: string
   content: string
+  [key: string]: any // Allow additional properties for flexibility
 }
 
-const props = defineProps<{
-  placeholder?: string
-  resultLimit?: number
-  debounceMs?: number
-  fuseOptions?: IFuseOptions<Section>
-}>()
+// Define collection types to support blog and/or global search
+type CollectionName = string | string[]
+
+const props = withDefaults(
+  defineProps<{
+    placeholder?: string
+    resultLimit?: number
+    debounceMs?: number
+    fuseOptions?: IFuseOptions<Section>
+    collection?: CollectionName // Collection(s) to search in
+    buttonLabel?: string // Customizable button label
+    autoNavigate?: boolean // Whether to automatically navigate on result selection
+    buttonClass?: string // Custom button class
+  }>(),
+  {
+    placeholder: 'Search blog...',
+    resultLimit: 5,
+    debounceMs: 300,
+    collection: 'blog',
+    buttonLabel: 'Search Blog',
+    autoNavigate: true,
+    buttonClass:
+      'flex items-center gap-2 text-sm bg-primary-900 hover:bg-primary-800 text-white px-4 py-2 rounded-full',
+  },
+)
 
 const emit = defineEmits<{
   search: [query: string]
   select: [result: Section]
 }>()
 
-// Default prop values
-const placeholder = computed(() => props.placeholder || 'Search blog...')
-const resultLimit = computed(() => props.resultLimit || 5)
-const debounceMs = computed(() => props.debounceMs || 300)
+// No need for default computed values as we're using withDefaults now
 
 // States
 const isShowOverlay = ref(false)
+const resultLimit = ref(props.resultLimit)
 const searchQuery = ref('')
 const searchResults = ref<Section[]>([])
 const isLoading = ref(false)
 
-// Fetch blog sections using queryCollectionSearchSections
+// Fetch sections from one or multiple collections
 const fetchSections = async () => {
   try {
-    return await queryCollectionSearchSections('blog')
+    // Handle both single collection and multiple collections
+    if (Array.isArray(props.collection)) {
+      // Fetch from multiple collections
+      const results = await Promise.all(
+        props.collection.map((col) => queryCollectionSearchSections(col)),
+      )
+      return results.flat() // Combine all results
+    } else {
+      // Fetch from single collection
+      return await queryCollectionSearchSections(props.collection)
+    }
   } catch (error) {
-    console.error('Error fetching blog sections:', error)
+    console.error('Error fetching sections:', error)
     return []
   }
 }
@@ -71,7 +99,7 @@ const debouncedSearch = useDebounceFn(async () => {
   } finally {
     isLoading.value = false
   }
-}, debounceMs)
+}, props.debounceMs)
 
 // Watch for changes to search query
 watch(searchQuery, () => {
@@ -96,7 +124,20 @@ watch(
 // Handle result selection
 const handleResultSelect = (result: Section) => {
   emit('select', result)
+
+  // Auto-navigate if no listeners for select event and ID is valid
+  const hasSelectListeners = useEventListeners().select?.length > 0
+  if (!hasSelectListeners && result.id) {
+    navigateTo(result.id)
+  }
+
   isShowOverlay.value = false
+}
+
+// Simple utility to check if emit has listeners
+function useEventListeners() {
+  // @ts-ignore - Access internal _events property
+  return typeof emit === 'function' && emit.fns ? emit.fns : {}
 }
 </script>
 
@@ -104,14 +145,14 @@ const handleResultSelect = (result: Section) => {
   <div>
     <!-- Search Button -->
     <button
-      class="flex items-center gap-2 text-sm bg-primary-900 hover:bg-primary-800 text-white px-4 py-2 rounded-full"
+      :class="buttonClass"
       @click="isShowOverlay = true"
     >
       <Icon
         name="i-lucide-search"
         class="w-4 h-4"
       />
-      <span>Search Blog</span>
+      <span>{{ buttonLabel }}</span>
     </button>
 
     <!-- Search Overlay -->
@@ -128,7 +169,7 @@ const handleResultSelect = (result: Section) => {
               <input
                 v-model="searchQuery"
                 type="text"
-                :placeholder="placeholder"
+                :placeholder="props.placeholder"
                 class="w-full bg-primary-900 text-white border-none rounded-md px-4 py-3 pl-10 focus:ring-2 focus:ring-primary-600 focus:outline-none"
                 autofocus
                 @keyup.escape="isShowOverlay = false"
