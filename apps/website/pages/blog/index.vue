@@ -24,6 +24,14 @@ useSeoMeta({
   ogDescription:
     'Read the latest articles about space exploration, astronomy, and sustainable development.',
 })
+
+const onSearch = (query) => {
+  console.log('User searched for:', query)
+}
+
+const navigateToResult = (result) => {
+  navigateTo(result.id)
+}
 </script>
 
 <template>
@@ -41,43 +49,20 @@ useSeoMeta({
       }"
       position="center"
       invert
-    >
-      <template #actions>
-        <div class="flex items-center justify-center gap-4 mt-6">
-          <BlogSearch />
-          <NuxtLink to="/blog/category/all">
-            <PrimeButton outlined>
-              <Icon
-                name="i-lucide-book-open"
-                class="w-4 h-4 mr-2"
-              />
-              Browse All
-            </PrimeButton>
-          </NuxtLink>
-        </div>
-      </template>
-    </CommonHero>
+    />
+
+    <div class="wrapper p-4 xl:p-8 flex gap-4">
+      <BlogSearch
+        placeholder="Search articles..."
+        :result-limit="10"
+        :debounce-ms="400"
+        @search="onSearch"
+        @select="navigateToResult"
+      />
+      <BlogFilter />
+    </div>
 
     <div class="space-y-10 wrapper py-16 padded-x">
-      <!-- Category Filter -->
-      <div class="p-4 xl:p-8">
-        <h2 class="text-xl font-semibold mb-4">Explore Categories</h2>
-        <div class="flex flex-wrap gap-3">
-          <NuxtLink
-            v-for="categorySlug in validCategories"
-            :key="`category-${categorySlug}`"
-            :to="`/blog/category/${categorySlug}`"
-          >
-            <PrimeButton
-              outlined
-              :label="categories[categorySlug]?.title || categorySlug"
-              size="small"
-              class="cursor-pointer"
-            />
-          </NuxtLink>
-        </div>
-      </div>
-
       <!-- Featured Posts Section (if any) -->
       <div
         v-if="featuredPosts?.length"
@@ -116,6 +101,7 @@ useSeoMeta({
             :article="article"
           />
         </div>
+
         <div class="flex justify-end">
           <NuxtLink to="/blog/category/all">
             <PrimeButton>

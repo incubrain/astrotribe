@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BlogSearch from '../../../../components/blog/BlogSearch.vue'
 import { useBlogCategories } from '~/composables/useBlogCategories'
 
 const route = useRoute()
@@ -54,6 +55,14 @@ useSeoMeta({
   ogTitle: `${categoryInfo.title} - AstronEra Blog`,
   ogDescription: categoryInfo.description,
 })
+
+const onSearch = (query) => {
+  console.log('User searched for:', query)
+}
+
+const navigateToResult = (result) => {
+  navigateTo(result.id)
+}
 </script>
 
 <template>
@@ -73,7 +82,14 @@ useSeoMeta({
       invert
     />
 
-    <div class="wrapper p-4 xl:p-8">
+    <div class="wrapper p-4 xl:p-8 flex gap-4">
+      <BlogSearch
+        placeholder="Search articles..."
+        :result-limit="10"
+        :debounce-ms="400"
+        @search="onSearch"
+        @select="navigateToResult"
+      />
       <BlogFilter />
     </div>
 

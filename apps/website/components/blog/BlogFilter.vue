@@ -7,11 +7,10 @@ const selectedCategory = ref<ArticleCategoriesT>(
   String(useRoute().params.category) as ArticleCategoriesT,
 )
 const formatCategory = (cat: string) => useChangeCase(cat, 'capitalCase').value
-
 </script>
 
 <template>
-  <div>
+  <div class="flex gap-2">
     <NuxtLink
       v-for="cat in CATEGORIES"
       :key="`astronera-blog-${cat}`"
