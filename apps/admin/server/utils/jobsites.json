@@ -1,5 +1,18 @@
 [
   {
+    "name": "SpaceX",
+    "url": "https://www.spacex.com",
+    "listingUrl": "https://www.spacex.com/careers/jobs?",
+    "selectors": {
+      "jobContainer": "table#joblisttable tbody tr:not(#joblistheaderrow)",
+      "title": "td:nth-child(1) a",
+      "location": "td:nth-child(2)",
+      "department": "td:nth-child(3)",
+      "employment_type": "td:nth-child(4)",
+      "relativeUrl": "td:nth-child(1) a"
+    }
+  },
+  {
     "name": "ISRO",
     "url": "https://www.isro.gov.in",
     "listingUrl": "https://www.isro.gov.in/ViewAllOpportunities.html",
