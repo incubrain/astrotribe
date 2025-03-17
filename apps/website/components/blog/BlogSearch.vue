@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
+import { useDebounce, useRoute, watch, ref } from '#imports'
+
+interface Section {
+  id: string
+  title: string
+  content: string
+}
+
 const showOverlay = ref(false)
 const searchQuery = ref('')
-const searchResults = ref([])
+const searchResults = ref<Section[]>([])
 const isLoading = ref(false)
+
+// Function to search blog sections
+const queryCollectionSearchSections = async (collection: string) => {
+  const sections = await queryContent(collection).find()
+  return sections || []
+}
 
 // Debounced search function
 const debouncedSearch = useDebounce(async () => {
@@ -38,8 +53,10 @@ watch(searchQuery, () => {
 })
 
 // Close search on escape key
-onKeyDown('Escape', () => {
-  showOverlay.value = false
+useEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    showOverlay.value = false
+  }
 })
 
 // Close search on route change

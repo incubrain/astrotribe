@@ -12,8 +12,7 @@ export function useBlogHelpers() {
   const getArticleUrl = (article: any) => {
     if (!article?.path) return ''
 
-    // Just use the slug for a clean URL
-    const slug = getSlugFromPath(article.path)
+    // Return the full path for the article
     return article.path
   }
 
