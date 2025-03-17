@@ -55,7 +55,7 @@ const formattedPackages = computed(() => {
 </script>
 
 <template>
-  <section class="container mx-auto px-4 py-16">
+  <section class="wrapper mx-auto py-16">
     <h2 class="text-2xl md:text-3xl font-bold mb-4 text-center">Launch Packages</h2>
     <p class="text-gray-400 text-center mb-12">Choose your trajectory in the advertising cosmos</p>
 

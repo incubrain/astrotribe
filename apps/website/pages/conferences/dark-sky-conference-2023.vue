@@ -70,8 +70,8 @@ const { isMobile } = useNavigation()
     </CommonHero>
     <div class="flex">
       <PrimeAccordion
-        value="0"
         v-show="!isMobile"
+        value="0"
         class="z-10 wrapper padded-x py-6 xl:gap-12 xl:py-12"
       >
         <PrimeAccordionPanel value="0">
@@ -101,7 +101,7 @@ const { isMobile } = useNavigation()
           </PrimeAccordionContent>
         </PrimeAccordionPanel>
       </PrimeAccordion>
-      <div class="wrapper padded-x flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
+      <div class="wrapper flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
         <template v-if="isMobile || tab == 'About'">
           <ConferenceAbout />
           <div class="flex flex-col gap-6 xl:gap-12">
@@ -164,7 +164,7 @@ const { isMobile } = useNavigation()
             </div>
           </div>
         </template>
-        <ConferenceVenue v-if="isMobile || tab == 'Venue'"/>
+        <ConferenceVenue v-if="isMobile || tab == 'Venue'" />
         <ConferenceScheduleTabs v-if="isMobile || tab == 'Schedule'" />
         <ConferenceSpeakers v-if="isMobile || tab == 'Speakers'" />
       </div>

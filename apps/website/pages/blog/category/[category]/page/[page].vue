@@ -83,7 +83,7 @@ useSeoMeta({
       invert
     />
 
-    <div class="wrapper p-4 xl:p-8">
+    <div class="wrapper py-4 xl:py-8">
       <BlogFilter />
     </div>
 

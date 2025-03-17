@@ -51,7 +51,7 @@ onUnmounted(() => {
       title="Global Space News"
       subtitle="The only newsfeed you need to stay updated on the latest space news."
     />
-    <LandingStats class="container pb-10" />
+    <LandingStats class="wrapper pb-10" />
 
     <div class="relative border-x border-primary-900/30 rounded-lg py-8">
       <div
@@ -89,7 +89,7 @@ onUnmounted(() => {
         class="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-primary-950 to-transparent"
       ></div>
     </div>
-    <LandingTrusted class="container" />
+    <LandingTrusted class="wrapper" />
   </div>
 </template>
 

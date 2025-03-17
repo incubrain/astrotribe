@@ -263,7 +263,7 @@ const whatStudentsWillGain = [
           </PrimeAccordionPanel>
         </PrimeAccordion>
       </div>
-      <div class="wrapper w-screen flex flex-col gap-6 px-2 md:px-0 py-6 xl:gap-12 xl:py-12">
+      <div class="wrapper w-screen flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
         <NuxtLink :to="registrationLink">
           <PrimeButton
             size="large"

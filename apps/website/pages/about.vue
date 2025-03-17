@@ -8,7 +8,7 @@
       fit="cover"
       object-position="center"
     />
-    <div class="container mx-auto flex flex-col gap-12 xl:gap-24 xl:py-24">
+    <div class="wrapper mx-auto flex flex-col gap-12 xl:gap-24 xl:py-24">
       <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">
         <LandingGlass>
           <h3 class="pb-4 text-2xl font-bold leading-7"> The Mission </h3>

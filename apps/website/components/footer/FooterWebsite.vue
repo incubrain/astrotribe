@@ -105,7 +105,7 @@ const websiteLinks = [
 </script>
 
 <template>
-  <footer class="container py-8 gap-8 w-full relative flex flex-col">
+  <footer class="wrapper py-8 gap-8 w-full relative flex flex-col">
     <LandingGlass
       hover-effect="glow"
       glow-color="purple"

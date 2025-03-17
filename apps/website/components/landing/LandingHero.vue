@@ -121,7 +121,7 @@ const { loginURL, authURL } = useRuntimeConfig().public
 
     <!-- Hero Content -->
     <div
-      class="relative z-10 container mx-auto px-6 min-h-screen flex items-center justify-center text-center"
+      class="relative z-10 wrapper mx-auto min-h-screen flex items-center justify-center text-center"
     >
       <div class="hero-content max-w-4xl py-20">
         <div class="space-y-8">

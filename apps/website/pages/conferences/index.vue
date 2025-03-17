@@ -35,7 +35,7 @@ const conferences = [
       invert
     />
     <div
-      class="pt-20 wrapper relative grid w-full grid-cols-1 items-start md:gap-4 md:px-4 lg:grid-cols-[0.5fr_1fr] lg:gap-8 lg:px-8"
+      class="pt-20 wrapper relative grid w-full grid-cols-1 items-start md:gap-4 lg:grid-cols-[0.5fr_1fr] lg:gap-8"
     >
       <BlogAdFloat />
       <div
