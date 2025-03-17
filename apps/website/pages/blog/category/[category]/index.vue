@@ -82,16 +82,7 @@ const navigateToResult = (result) => {
       invert
     />
 
-    <div class="wrapper p-4 xl:p-8 flex gap-4">
-      <BlogSearch
-        placeholder="Search articles..."
-        :result-limit="10"
-        :debounce-ms="400"
-        @search="onSearch"
-        @select="navigateToResult"
-      />
-      <BlogFilter />
-    </div>
+    <BlogActions />
 
     <!-- Using our new component -->
     <BlogArticleList

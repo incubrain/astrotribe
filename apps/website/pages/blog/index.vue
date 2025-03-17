@@ -24,14 +24,6 @@ useSeoMeta({
   ogDescription:
     'Read the latest articles about space exploration, astronomy, and sustainable development.',
 })
-
-const onSearch = (query) => {
-  console.log('User searched for:', query)
-}
-
-const navigateToResult = (result) => {
-  navigateTo(result.id)
-}
 </script>
 
 <template>
@@ -51,16 +43,7 @@ const navigateToResult = (result) => {
       invert
     />
 
-    <div class="wrapper p-4 xl:p-8 flex gap-4">
-      <BlogSearch
-        placeholder="Search articles..."
-        :result-limit="10"
-        :debounce-ms="400"
-        @search="onSearch"
-        @select="navigateToResult"
-      />
-      <BlogFilter />
-    </div>
+    <BlogActions />
 
     <div class="space-y-10 wrapper py-16 padded-x">
       <!-- Featured Posts Section (if any) -->
