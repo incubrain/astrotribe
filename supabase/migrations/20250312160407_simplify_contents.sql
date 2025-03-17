@@ -310,9 +310,6 @@ ALTER TABLE "public"."feed_sources" RENAME COLUMN "new_content_source_id" TO "co
 
 ALTER TABLE "public"."feed_sources" ALTER COLUMN "created_at" DROP NOT NULL;
 
--- ✅ JOBS TABLE: Convert content_source_id from bigint → UUID
-ALTER TABLE "public"."jobs" DROP CONSTRAINT IF EXISTS jobs_content_source_id_fkey;
-ALTER TABLE "public"."content_sources" ADD COLUMN "new_id" UUID DEFAULT gen_random_uuid();
 
 -- Re-use the existing mapping table from the previous step
 UPDATE "public"."content_sources"
@@ -324,22 +321,10 @@ ALTER TABLE "public"."content_sources" DROP COLUMN "id";
 ALTER TABLE "public"."content_sources" RENAME COLUMN "new_id" TO "id";
 ALTER TABLE "public"."content_sources" ADD PRIMARY KEY ("id");
 
--- Convert jobs.content_source_id using the same mapping table
-ALTER TABLE "public"."jobs" ADD COLUMN "new_content_source_id" UUID;
-UPDATE "public"."jobs"
-SET "new_content_source_id" = (SELECT new_id FROM public.content_sources_id_mapping WHERE old_id = public.jobs.content_source_id);
-
-ALTER TABLE "public"."jobs" DROP COLUMN "content_source_id";
-ALTER TABLE "public"."jobs" RENAME COLUMN "new_content_source_id" TO "content_source_id";
-
--- Re-add foreign key
-ALTER TABLE "public"."jobs"
-ADD CONSTRAINT jobs_content_source_id_fkey
-FOREIGN KEY ("content_source_id") REFERENCES "public"."content_sources" ("id") ON DELETE CASCADE;
+ALTER TABLE "public"."content_sources" ADD COLUMN "new_id" UUID DEFAULT gen_random_uuid();
 
 -- ✅ Cleanup: Remove mapping table after it's no longer needed
 DROP TABLE IF EXISTS public.content_sources_id_mapping;
-
 
 drop index if exists "public"."content_sources_url_key1";
 
@@ -474,8 +459,6 @@ alter table "public"."comments" alter column "created_at" set default now();
 alter table "public"."comments" alter column "id" set default gen_random_uuid();
 
 alter table "public"."comments" alter column "updated_at" set default now();
-
-alter table "public"."companies" drop column "job_url";
 
 alter table "public"."content_sources" drop column "hash";
 
