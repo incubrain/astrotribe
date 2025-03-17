@@ -1,16 +1,26 @@
 <script setup lang="ts">
-const websiteLinks = [
+interface NavItem {
+  key: string
+  label: string
+  icon: string
+  visible: boolean
+  disabled: boolean
+  url?: string
+  items?: NavItem[]
+}
+
+const websiteLinks: NavItem[] = [
   {
     key: 'about-us',
     label: 'About Us',
-    icon: 'material-symbols:info',
+    icon: 'i-mdi-information-outline',
     visible: true,
     disabled: false,
     items: [
       {
         key: 'about',
         label: 'About',
-        icon: 'material-symbols:info',
+        icon: 'i-mdi-information-outline',
         url: '/about',
         visible: true,
         disabled: false,
@@ -18,7 +28,7 @@ const websiteLinks = [
       {
         key: 'team',
         label: 'Team',
-        icon: 'material-symbols:emoji-people',
+        icon: 'i-mdi-account-group-outline',
         url: '/team',
         visible: true,
         disabled: false,
@@ -26,7 +36,7 @@ const websiteLinks = [
       {
         key: 'contact',
         label: 'Contact',
-        icon: 'material-symbols:call',
+        icon: 'i-mdi-phone-outline',
         url: '/contact',
         visible: true,
         disabled: false,
@@ -36,14 +46,14 @@ const websiteLinks = [
   {
     key: 'blog',
     label: 'Blog',
-    icon: 'material-symbols:menu-book-outline',
+    icon: 'i-mdi-book-open-outline',
     visible: true,
     disabled: false,
     items: [
       {
         key: 'blog-home',
         label: 'All',
-        icon: 'material-symbols:menu-book-outline',
+        icon: 'i-mdi-book-open-outline',
         url: '/blog/category/all',
         visible: true,
         disabled: false,
@@ -51,7 +61,7 @@ const websiteLinks = [
       {
         key: 'blog-dark-sky-conservation',
         label: 'Conservation',
-        icon: 'material-symbols:menu-book-outline',
+        icon: 'i-mdi-nature-outline',
         url: '/blog/category/dark-sky-conservation',
         visible: true,
         disabled: false,
@@ -59,7 +69,7 @@ const websiteLinks = [
       {
         key: 'blog-people-of-space',
         label: 'People',
-        icon: 'material-symbols:menu-book-outline',
+        icon: 'i-mdi-account-group-outline',
         url: '/blog/category/people-of-space',
         visible: true,
         disabled: false,
@@ -67,7 +77,7 @@ const websiteLinks = [
       {
         key: 'blog-space-exploration',
         label: 'Exploration',
-        icon: 'material-symbols:menu-book-outline',
+        icon: 'i-mdi-rocket-launch-outline',
         url: '/blog/category/space-exploration',
         visible: true,
         disabled: false,
@@ -75,7 +85,7 @@ const websiteLinks = [
       {
         key: 'blog-sustainable-development',
         label: 'Sustainability',
-        icon: 'material-symbols:menu-book-outline',
+        icon: 'i-mdi-leaf-outline',
         url: '/blog/category/sustainable-development',
         visible: true,
         disabled: false,
@@ -85,14 +95,14 @@ const websiteLinks = [
   {
     key: 'astronomy_events',
     label: 'Events',
-    icon: 'material-symbols:calendar_month',
+    icon: 'i-mdi-calendar-month-outline',
     visible: true,
     disabled: false,
     items: [
       {
         key: 'astronomy_events',
         label: 'Astronomy Events',
-        icon: 'material-symbols:rocket_launch',
+        icon: 'i-mdi-rocket-launch-outline',
         url: '/events/astronomy-events',
         visible: true,
         disabled: false,
@@ -100,7 +110,7 @@ const websiteLinks = [
       {
         key: 'telescope_workshop_2025',
         label: 'Telescope Workshop 2025',
-        icon: 'material-symbols:manufacturing',
+        icon: 'i-mdi-telescope',
         url: '/events/telescope-workshop-2025',
         visible: true,
         disabled: false,
@@ -110,14 +120,14 @@ const websiteLinks = [
   {
     key: 'darksky',
     label: 'Dark Sky',
-    icon: 'material-symbols:work',
+    icon: 'i-mdi-weather-night',
     visible: true,
     disabled: false,
     items: [
       {
         key: 'darkskyAbout',
         label: 'About',
-        icon: 'material-symbols:weather-night',
+        icon: 'i-mdi-weather-night',
         url: '/darksky',
         visible: true,
         disabled: false,
@@ -125,7 +135,7 @@ const websiteLinks = [
       {
         key: 'conferences',
         label: 'Conferences',
-        icon: 'material-symbols:rocket_launch',
+        icon: 'i-mdi-presentation',
         url: '/conferences',
         visible: true,
         disabled: false,
@@ -133,7 +143,7 @@ const websiteLinks = [
       {
         key: 'symposiums',
         label: 'Symposiums',
-        icon: 'material-symbols:manufacturing',
+        icon: 'i-mdi-school-outline',
         url: '/symposiums',
         visible: true,
         disabled: false,
@@ -142,7 +152,8 @@ const websiteLinks = [
   },
 ]
 
-defineProps({
+// Props
+const props = defineProps({
   isCompact: {
     type: Boolean,
     default: false,
@@ -153,190 +164,357 @@ defineProps({
   },
 })
 
+// Window scroll handling
 const { y } = useWindowScroll()
 const lastScrollY = ref(y.value)
+const isScrollingDown = ref(false)
+const isNavbarVisible = ref(true)
+
+// Scroll threshold to trigger navbar changes
+const scrollThreshold = 50
+const isScrolled = computed(() => y.value > scrollThreshold)
+
+// Navbar classes based on scroll position
 const navbarClasses = computed(() => {
-  if (navPosition.value === 'fixed') {
-    return ''
-  } else {
-    return navPosition.value === 'hidden' ? 'animate-bounce-out' : 'animate-bounce-in'
+  const classes = []
+
+  // Hide navbar when scrolling down beyond threshold
+  if (!isNavbarVisible.value) {
+    classes.push('animate-slide-up')
+  } else if (isScrolled.value) {
+    classes.push('animate-slide-down')
+  }
+
+  // Apply compact style when scrolled
+  if (props.compactOnScroll && isScrolled.value) {
+    classes.push('navbar-compact')
+  }
+
+  return classes.join(' ')
+})
+
+// Navbar background opacity and blur based on scroll
+const glassStyle = computed(() => {
+  const opacity = 0.1
+  const blur = 16
+
+  return {
+    backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+    backdropFilter: `blur(${blur}px)`,
+    borderBottom: isScrolled.value ? '1px solid rgba(100, 100, 150, 0.1)' : 'none',
   }
 })
 
-const navPosition = ref('fixed')
+// Mobile menu handling
+const isMobileMenuOpen = ref(false)
+const isMobile = ref(false)
 
-watch(
-  y,
-  (newY) => {
-    if (window?.innerWidth < 1024) {
-      navPosition.value = 'fixed'
-    } else if (newY > lastScrollY.value) {
-      navPosition.value = 'hidden'
-    } else if (newY < lastScrollY.value) {
-      navPosition.value = 'visible'
-    }
-    lastScrollY.value = newY
-  },
-  { immediate: true },
-)
+// Detect mobile size on component mount and window resize
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkMobile)
+})
+
+function checkMobile() {
+  isMobile.value = window.innerWidth < 1024
+  if (isMobile.value) {
+    isNavbarVisible.value = true
+  }
+}
+
+// Watch scroll position to show/hide navbar
+watch(y, (newY) => {
+  if (isMobile.value) {
+    isNavbarVisible.value = true
+    return
+  }
+
+  isScrollingDown.value = newY > lastScrollY.value
+
+  // Only hide navbar when scrolling down and past the threshold
+  if (isScrollingDown.value && newY > scrollThreshold + 50) {
+    isNavbarVisible.value = false
+  } else if (!isScrollingDown.value) {
+    isNavbarVisible.value = true
+  }
+
+  lastScrollY.value = newY
+})
+
+// Search component integration
+const isSearchOpen = ref(false)
 </script>
 
 <template>
-  <div
-    ref="navbar"
-    class="flex min-w-full w-full fixed top-0 left-0 right-0 z-50"
+  <header
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
     :class="navbarClasses"
+    :style="glassStyle"
   >
-    <!-- Modified container structure -->
-    <div class="w-full">
-      <!-- Glass Background -->
-      <LandingGlass
-        hover-effect="glow"
-        glow-color="purple"
-        gradient="mixed"
-        intensity="low"
-        interactive
-        isolate-content
-        class="!w-full absolute inset-0 pointer-events-none"
-        :padded="false"
-        :rounded="false"
-        :overflow="true"
-      />
-
-      <!-- Content Layer -->
-      <PrimeMenubar
-        :model="websiteLinks"
-        class="w-full text-white rounded-none lg:rounded-b-xl bg-transparent border-none relative z-10"
-        :pt="{
-          root: {
-            class: 'flex items-center justify-between px-4 py-2',
-          },
-          submenu: {
-            class:
-              '!bg-primary-950/95 backdrop-blur-xl md:absolute md:flex-col flex !text-sm !font-bold !text-white border border-primary-500/50 rounded-md',
-          },
-        }"
+    <div class="container mx-auto px-4">
+      <div
+        class="flex items-center justify-between h-16"
+        :class="{ 'h-14': props.compactOnScroll && isScrolled }"
       >
-        <template #start>
-          <div class="hidden gap-4 rounded-md p-1 lg:flex">
+        <!-- Logo and Brand -->
+        <div class="flex-shrink-0 flex items-center gap-2">
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-2"
+          >
             <div
-              class="relative flex h-[36px] w-[36px] items-center justify-center rounded-md border bg-white p-1 md:h-[44px] md:w-[44px]"
+              class="h-9 w-9 bg-white rounded-md p-1 flex items-center justify-center border border-primary-100/20"
             >
               <IBImage
-                :img="{
-                  src: '/astronera-logo.jpg',
-                }"
-                class="h-full w-full opacity-90"
+                :img="{ src: '/astronera-logo.jpg' }"
+                class="h-full w-full"
               />
             </div>
-            <NuxtLink
-              to="/"
-              class="flex min-h-full items-center justify-center"
-            >
-              <h4
-                class="mt-[2px] flex cursor-pointer flex-col items-start justify-start pr-2 text-sm font-bold uppercase leading-none tracking-normal"
-              >
-                Astron
-                <strong class="font-extrabold text-primary-400">Era</strong>
-              </h4>
-            </NuxtLink>
-          </div>
-        </template>
-        <template #item="{ item, hasSubmenu, root }">
-          <div class="px-4 py-2">
-            <NuxtLink
-              :to="item.url"
-              class="cursor-pointer text-white text-nowrap"
-            >
-              <p class="flex items-center gap-1">
-                {{ item.label }}
-                <Icon
-                  v-if="hasSubmenu"
-                  :name="root ? 'mdi:chevron-down' : 'mdi:chevron-right'"
-                />
-              </p>
-            </NuxtLink>
-          </div>
-        </template>
-        <template #end>
-          <div class="flex flex-nowrap items-center justify-center gap-4 lg:pr-2">
-            <NuxtLink
-              to="https://github.com/incubrain/astrotribe"
-              target="_blank"
-              class="hidden items-center justify-center lg:flex"
-            >
-              <Icon
-                name="mdi:github"
-                class="flex cursor-pointer items-center justify-center"
-                size="24px"
-              />
-            </NuxtLink>
-            <div class="flex h-auto min-w-24 items-center justify-center gap-2 lg:gap-4">
-              <div class="space-x-2 lg:space-x-4">
-                <NuxtLink
-                  v-ripple
-                  :to="$config.public.authURL"
-                >
-                  <PrimeButton
-                    severity="contrast"
-                    outlined
-                  >
-                    login
-                  </PrimeButton>
-                </NuxtLink>
+            <div class="flex flex-col leading-none">
+              <span class="text-primary-400 font-bold text-sm">Astron</span>
+              <span class="text-white font-bold text-sm">Era</span>
+            </div>
+          </NuxtLink>
+        </div>
 
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center space-x-1">
+          <div
+            v-for="item in websiteLinks"
+            :key="item.key"
+            class="relative group"
+          >
+            <button
+              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors"
+              @click="item.items && item.items.length ? null : navigateTo(item.url || '/')"
+            >
+              <div class="flex items-center gap-1">
+                <Icon
+                  :name="item.icon"
+                  class="w-4 h-4"
+                />
+                <span>{{ item.label }}</span>
+                <Icon
+                  v-if="item.items && item.items.length"
+                  name="i-mdi-chevron-down"
+                  class="w-4 h-4"
+                />
+              </div>
+            </button>
+
+            <!-- Dropdown for desktop -->
+            <div
+              v-if="item.items && item.items.length"
+              class="absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg background backdrop-blur-md border border-color opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+            >
+              <div class="py-1">
                 <NuxtLink
-                  v-ripple
-                  :to="`${$config.public.authURL}/register`"
+                  v-for="subItem in item.items"
+                  :key="subItem.key"
+                  :to="subItem.url || '/'"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-primary-50/50 hover:text-primary-600"
                 >
-                  <PrimeButton>Join AstronEra</PrimeButton>
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      :name="subItem.icon"
+                      class="w-4 h-4"
+                    />
+                    <span>{{ subItem.label }}</span>
+                  </div>
                 </NuxtLink>
               </div>
             </div>
           </div>
-        </template>
-      </PrimeMenubar>
+        </nav>
+
+        <!-- Right side actions -->
+        <div class="flex items-center gap-2">
+          <!-- Search Button -->
+          <BlogSearch
+            :collection="['blog', 'docs']"
+            button-class="text-white"
+            button-label=""
+            auto-navigate
+          />
+
+          <!-- Authentication buttons -->
+          <div class="hidden lg:flex items-center gap-2">
+            <NuxtLink
+              to="https://github.com/incubrain/astrotribe"
+              target="_blank"
+              class="p-2 text-white"
+            >
+              <Icon
+                name="i-mdi-github"
+                size="20"
+              />
+            </NuxtLink>
+
+            <NuxtLink
+              v-ripple
+              :to="$config.public.authURL"
+            >
+              <PrimeButton
+                severity="secondary"
+                link
+                class="px-4 py-2"
+                label="Login"
+              />
+            </NuxtLink>
+
+            <NuxtLink
+              v-ripple
+              :to="`${$config.public.authURL}/register`"
+            >
+              <PrimeButton
+                severity="primary"
+                class="px-4 py-2 bg-primary-600 hover:bg-primary-700"
+                label="Join AstronEra"
+              />
+            </NuxtLink>
+          </div>
+
+          <!-- Mobile menu button -->
+          <button
+            class="lg:hidden p-2 rounded-md text-white focus:outline-none"
+            @click="isMobileMenuOpen = !isMobileMenuOpen"
+          >
+            <Icon
+              :name="isMobileMenuOpen ? 'i-mdi-close' : 'i-mdi-menu'"
+              size="20"
+            />
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+
+    <!-- Mobile Navigation -->
+    <div
+      v-if="isMobileMenuOpen"
+      class="lg:hidden bg-black/05 backdrop-blur-md border-t border-primary-100/30 shadow-lg"
+    >
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <div
+          v-for="item in websiteLinks"
+          :key="item.key"
+          class="mobile-nav-item"
+        >
+          <div
+            class="px-3 py-2 rounded-md text-white font-medium cursor-pointer"
+            @click="item.url ? navigateTo(item.url) : null"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <Icon
+                  :name="item.icon"
+                  size="20"
+                />
+                <span>{{ item.label }}</span>
+              </div>
+              <Icon
+                v-if="item.items && item.items.length"
+                name="i-mdi-chevron-down"
+                size="20"
+              />
+            </div>
+          </div>
+
+          <div
+            v-if="item.items && item.items.length"
+            class="pl-4 mt-1 space-y-1"
+          >
+            <NuxtLink
+              v-for="subItem in item.items"
+              :key="subItem.key"
+              :to="subItem.url || '/'"
+              class="block px-3 py-2 rounded-md text-white text-sm"
+            >
+              <div class="flex items-center gap-2">
+                <Icon
+                  :name="subItem.icon"
+                  size="20"
+                />
+                <span>{{ subItem.label }}</span>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Mobile auth buttons -->
+        <div class="pt-4 border-t border-primary-100 flex flex-col gap-2">
+          <NuxtLink
+            v-ripple
+            :to="$config.public.authURL"
+            class="w-full"
+          >
+            <PrimeButton
+              severity="secondary"
+              outlined
+              class="w-full"
+              label="Login"
+            />
+          </NuxtLink>
+
+          <NuxtLink
+            v-ripple
+            :to="`${$config.public.authURL}/register`"
+            class="w-full"
+          >
+            <PrimeButton
+              severity="primary"
+              class="w-full"
+              label="Join AstronEra"
+            />
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
+  </header>
 </template>
 
 <style scoped>
-canvas {
-  width: 100vw;
-  height: 100vh;
-  display: block;
-}
-
-.navbar {
-  display: flex !important;
-  position: static !important;
-  background-color: red !important; /* Just to make it obvious */
-  z-index: 9999 !important;
-}
-
-@keyframes bounce-in {
-  0% {
+/* Animations for navbar */
+@keyframes slide-down {
+  from {
     transform: translateY(-100%);
   }
-  100% {
+  to {
     transform: translateY(0);
   }
 }
 
-@keyframes bounce-out {
-  0% {
+@keyframes slide-up {
+  from {
     transform: translateY(0);
   }
-  100% {
+  to {
     transform: translateY(-100%);
   }
 }
 
-.animate-bounce-in {
-  animation: bounce-in 0.5s ease-out forwards;
+.animate-slide-down {
+  animation: slide-down 0.3s ease forwards;
 }
 
-.animate-bounce-out {
-  animation: bounce-out 1s ease-in forwards;
+.animate-slide-up {
+  animation: slide-up 0.3s ease forwards;
+}
+
+/* Transition for compact navbar */
+.navbar-compact {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Ensure smooth transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 </style>

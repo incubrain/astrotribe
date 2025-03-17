@@ -150,7 +150,7 @@ function useEventListeners() {
     >
       <Icon
         name="i-lucide-search"
-        class="w-4 h-4"
+        size="20"
       />
       <span>{{ buttonLabel }}</span>
     </button>
