@@ -71,10 +71,11 @@ const getIcon = (key: string) => {
       <!-- Logo column -->
       <td class="px-2 py-3 w-1/5">
         <div class="flex flex-col items-center">
-          <IBImage
-            :img="{ src: image, alt: company.name, width: '200', height: '200' }"
-            @error="onError"
-            class="rounded-xl bg-white p-2"
+          <NuxtImg
+            :provider="company.logo_url ? 'supabase' : undefined"
+            :src="company.logo_url"
+            :alt="company.name"
+            sizes="sm:100vw md:50vw lg:400px"
           />
         </div>
       </td>
