@@ -279,13 +279,14 @@ export default defineNuxtConfig({
           'https://us.i.posthog.com',
           'ws://localhost:4000',
           'wss://localhost:4000',
-          'ws://localhost:4001', // Add this line
+          'ws://localhost:4001',
           'wss://localhost:4001',
           'https://picsum.photos',
           'https://cms.astronera.org',
           'https://astronera.org',
           'https://*.astronera.org',
           'http://localhost:1337/',
+          'wss://api.nuxt.studio/socket.io',
         ],
         'img-src': [
           "'self'",
