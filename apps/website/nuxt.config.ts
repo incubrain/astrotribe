@@ -76,6 +76,7 @@ export default defineNuxtConfig({
   content: {
     // Enable Studio preview
     preview: {
+      dev: true,
       api: 'https://api.nuxt.studio',
     },
     highlight: { theme: { default: 'github-dark', light: 'github-light', dark: 'github-dark' } },
