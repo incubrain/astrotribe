@@ -10,7 +10,7 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
   // Try to find related posts by category
   if (props.article.category?.slug) {
     const byCategory = await queryCollection('blog')
-      .where('category.slug', '=', props.article.category.slug)
+      .where('category', 'LIKE', `%"slug":"${props.article.category.slug}"%`)
       .where('path', '<>', props.article.path)
       .limit(3)
       .all()
@@ -58,11 +58,8 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
 </script>
 
 <template>
-  <div
-    v-if="relatedPosts?.length"
-    class="mt-16"
-  >
-    <h2 class="text-2xl font-bold mb-6 text-center">You Might Also Like</h2>
+  <div v-if="relatedPosts?.length">
+    <h2 class="text-2xl font-bold py-6 text-center">You Might Also Like</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <BlogCard

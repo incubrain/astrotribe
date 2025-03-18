@@ -27,4 +27,6 @@ export default {
     resolve(currentDir, './composables/**/*.{vue,ts}'),
     '../../theme/**/*.{js,css}',
   ],
+
+  plugins: [require('@tailwindcss/typography')],
 } satisfies Config

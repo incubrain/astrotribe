@@ -103,12 +103,7 @@ export default defineNuxtConfig({
     database: {
       // Use SQLite for development and static builds
       type: 'sqlite',
-
-      // For SQLite (development and static)
       filename: '.data/content/contents.sqlite',
-
-      // For D1 (production serverless) - uncomment when using Cloudflare
-      // bindingName: 'CONTENT_DB',
     },
 
     // Build-time optimization
