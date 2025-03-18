@@ -1,19 +1,84 @@
 <script setup lang="ts">
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { createApp, computed } from 'vue'
+// Mock data for the calendar (would normally come from an API)
+const astronomyEvents = ref([
+  {
+    id: 1,
+    title: 'Lyrid Meteor Shower Peak',
+    date: new Date(2025, 3, 22), // April 22, 2025
+    category: 'Meteor Shower',
+    description:
+      'The Lyrids are one of the oldest known meteor showers, with records dating back 2,700 years.',
+    time: '22:00 - 04:00',
+    visibility: 'Good',
+    location: 'Northern Hemisphere',
+  },
+  {
+    id: 2,
+    title: 'Full Moon',
+    date: new Date(2025, 2, 18), // March 18, 2025
+    category: 'Lunar Event',
+    description:
+      'The Full Worm Moon, marking the time when earthworms begin to emerge from the thawing ground.',
+    time: 'All night',
+    visibility: 'Excellent',
+    location: 'Worldwide',
+  },
+  {
+    id: 3,
+    title: 'Spring Equinox',
+    date: new Date(2025, 2, 20), // March 20, 2025
+    category: 'Solar Event',
+    description:
+      'The March equinox occurs when the Sun crosses the celestial equator, marking the beginning of spring in the Northern Hemisphere.',
+    time: '21:33 UTC',
+    visibility: 'N/A',
+    location: 'Global',
+  },
+  {
+    id: 4,
+    title: 'Mercury at Greatest Eastern Elongation',
+    date: new Date(2025, 2, 24), // March 24, 2025
+    category: 'Planetary Event',
+    description:
+      'Mercury reaches its greatest eastern elongation, making it visible in the evening sky shortly after sunset.',
+    time: 'After sunset',
+    visibility: 'Moderate',
+    location: 'Look west after sunset',
+  },
+  {
+    id: 5,
+    title: 'Jupiter-Venus Conjunction',
+    date: new Date(2025, 2, 15), // March 15, 2025
+    category: 'Planetary Event',
+    description: 'Jupiter and Venus will appear extremely close together in the night sky.',
+    time: 'Evening',
+    visibility: 'Excellent',
+    location: 'Western sky after sunset',
+  },
+  {
+    id: 6,
+    title: 'Telescope Workshop',
+    date: new Date(2025, 2, 8), // March 8, 2025
+    category: 'Event by Astronera',
+    description: 'Learn how to set up and use a telescope properly with AstronEra experts.',
+    time: '19:00 - 21:00',
+    visibility: 'N/A',
+    location: 'AstronEra HQ, Pune',
+  },
+  {
+    id: 7,
+    title: 'Partial Solar Eclipse',
+    date: new Date(2025, 2, 29), // March 29, 2025
+    category: 'Eclipse',
+    description: 'A partial solar eclipse occurs when the Moon covers only a part of the Sun.',
+    time: '09:00 - 12:00',
+    visibility: 'Good (with proper equipment)',
+    location: 'Parts of North America',
+  },
+])
 
-const selectedEvent = ref(null)
-
-const { store, loadMore } = useSelectData('astronomy_events', {
-  orderBy: { column: 'id', ascending: true },
-  initialFetch: true,
-})
-
-const { items: events } = storeToRefs(store)
-
-const categories = [
+// Category definitions
+const eventCategories = [
   { name: 'Lunar Event', icon: 'mdi:moon-waning-crescent', color: 'gray', colorIntensity: '500' },
   { name: 'Meteor Shower', icon: 'mdi:meteor', color: 'red', colorIntensity: '400' },
   { name: 'Solar Event', icon: 'mdi:white-balance-sunny', color: 'yellow', colorIntensity: '500' },
@@ -21,288 +86,17 @@ const categories = [
   { name: 'Eclipse', icon: 'mdi:moon-new', color: 'indigo', colorIntensity: '500' },
   { name: 'Event by Astronera', icon: 'mdi:event-heart', color: 'blue', colorIntensity: '400' },
 ]
-
-function formatTime(minutes: number): string {
-  const hours = Math.floor(minutes / 60)
-  const mins = minutes % 60
-  return `${hours}h ${mins}m`
-}
-
-const today = new Date()
-
-function parseMultipleDates(dateStr: string): Date[] {
-  const datePattern = /([A-Za-z]+) ([\d,\- ]+) (\d{4})/
-  const match = dateStr.match(datePattern)
-  if (!match) return []
-
-  const [, month, days, year] = match
-  const parsedDates: Date[] = []
-
-  const dayRanges = days.replace(/\s+/g, '').split(',')
-  dayRanges.forEach((dayRange) => {
-    if (dayRange.includes('-')) {
-      const [start, end] = dayRange.split('-').map(Number)
-      for (let i = start; i <= end; i++) {
-        parsedDates.push(new Date(`${month} ${i}, ${year}`))
-      }
-    } else {
-      parsedDates.push(new Date(`${month} ${Number(dayRange)}, ${year}`))
-    }
-  })
-
-  return parsedDates
-}
-
-const selectEvent = (event) => {
-  selectedEvent.value = event
-}
-
-const calendarOptions = computed(() => ({
-  plugins: [dayGridPlugin, interactionPlugin],
-  initialView: 'dayGridMonth',
-  initialDate: today,
-  events: events.value.map((event) => {
-    const dates = parseMultipleDates(event.date)
-    const start = dates[0]
-    const end = dates.length > 1 && dates[dates.length - 1]
-    const category = categories.find((el) => el.name === event.category)
-    const classNames = category && `bg-${category.color}-${category.colorIntensity}`
-
-    return {
-      id: event.id.toString(),
-      title: event.title,
-      classNames,
-      start,
-      end,
-      extendedProps: {
-        icon: category?.icon,
-        description: event.description,
-        time: event.time,
-        date: event.date,
-      },
-      category: event.category,
-    }
-  }),
-  eventContent: (arg) => {
-    const EventContent = resolveComponent('EventContent')
-    const container = document.createElement('div')
-
-    const event = {
-      title: arg.event.title,
-      categoryClass: arg.event.classNames,
-      icon: arg.event.extendedProps.icon,
-      description: arg.event.extendedProps.description,
-      time: arg.event.extendedProps.time,
-      date: arg.event.extendedProps.date,
-    }
-
-    createApp(EventContent, {
-      ...event,
-      openEvent: () => selectEvent(event),
-    }).mount(container)
-
-    return { domNodes: [container] }
-  },
-  timeZone: 'local',
-  height: 'auto',
-  showNonCurrentDates: true,
-  fixedWeekCount: false,
-  dayMaxEvents: true,
-  firstDay: 1,
-}))
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row md:px-10 py-24">
-    <EventSidebar
-      :categories="categories"
-      class="w-full md:w-1/4 mb-6 md:mb-0"
-    />
-    <div class="w-full md:w-3/4 overflow-x-auto">
-      <FullCalendar
-        :options="calendarOptions"
-        class="custom-calendar"
+  <div class="min-h-screen  text-white py-8">
+    <!-- Main Content -->
+    <div class="wrapper mx-auto">
+      <!-- Calendar Component -->
+      <EventCalendar
+        :events="astronomyEvents"
+        :categories="eventCategories"
       />
     </div>
-    <PrimeDialog
-      v-if="selectedEvent"
-      @update:visible="selectEvent(null)"
-      v-model:visible="selectedEvent"
-      :header="selectedEvent.title"
-      :modal="true"
-    >
-      <p>{{ selectedEvent.date }}</p>
-      <p v-if="selectedEvent.time">{{ selectedEvent.time }}</p>
-      <p>{{ selectedEvent.description }}</p>
-    </PrimeDialog>
   </div>
 </template>
-
-<style scoped>
-:deep(.fc) {
-  background-color: #000000;
-  padding: 8px;
-}
-
-:deep(.fc-toolbar) {
-  flex-direction: column;
-}
-
-:deep(.fc-theme-standard td) {
-  border: none;
-}
-
-:deep(.fc-scrollgrid-section-sticky > *) {
-  background: transparent;
-}
-
-:deep(.fc-scrollgrid-sync-table) {
-  margin: 8px;
-}
-
-:deep(.fc-daygrid-day) {
-  position: relative;
-  background-color: white;
-  border-radius: 10px;
-}
-
-:deep(.fc-daygrid-day-frame) {
-  display: flex;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-:deep(.fc-daygrid-event) {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-:deep(.fc-daygrid-day.fc-day-today) {
-  border: 3px solid gold !important;
-  background-color: white;
-}
-
-:deep(.fc-daygrid-day-number) {
-  color: black;
-  font-weight: 500;
-  padding: 8px;
-  position: absolute;
-  top: 0;
-}
-
-:deep(.fc-col-header) {
-  background: transparent;
-}
-
-:deep(.fc-col-header-cell) {
-  background: black;
-}
-
-:deep(.fc-col-header-cell-cushion) {
-  color: white;
-  font-weight: 600;
-  padding: 8px 4px;
-  display: flex;
-  justify-content: center;
-}
-
-:deep(.fc-scrollgrid) {
-  border: none !important;
-}
-
-:deep(table) {
-  border-collapse: separate;
-  border-spacing: 8px;
-}
-
-:deep(.fc-daygrid-body) {
-  display: flex;
-  justify-content: center;
-}
-
-:deep(.fc-daygrid-event) {
-  border-radius: 4px;
-}
-
-:deep(.fc-daygrid-day-events) {
-  position: relative;
-  margin-top: 10%;
-}
-
-:deep(.fc-daygrid-dot-event) {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  :deep(.fc) {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  :deep(.fc-daygrid-day-frame) {
-    padding: 4px;
-  }
-
-  :deep(.fc-daygrid-day-number) {
-    font-size: 12px;
-    padding: 4px;
-  }
-
-  :deep(.fc-daygrid-event) {
-    font-size: 10px;
-    padding: 2px 4px;
-  }
-
-  :deep(.fc-toolbar) {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  :deep(.fc-daygrid-event) {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .custom-calendar {
-    flex-direction: column;
-  }
-
-  :deep(.fc-daygrid-day-events) {
-    margin-top: 0px;
-    display: flex;
-  }
-
-  :deep(.fc-daygrid-event) {
-    font-size: 10px;
-    margin: 0px !important;
-    padding: 0px !important;
-  }
-}
-
-:deep(.fc-daygrid-day-bottom) {
-  display: none;
-}
-
-:deep(.fc-daygrid-event-harness::before) {
-  display: none !important;
-}
-
-:deep(.fc-daygrid-event-harness::after) {
-  display: none !important;
-}
-
-:deep(.fc-daygrid-day-events::before) {
-  display: none !important;
-}
-
-:deep(.fc-daygrid-day-events::after) {
-  display: none !important;
-}
-</style>
