@@ -248,7 +248,7 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: {
         'worker-src': ["'self'", 'blob:'],
-        'frame-ancestors': "'self' https://astronera.org", // Allow embedding only from your domain
+        'frame-ancestors': "'self' https://astronera.org https://nuxt.studio", // Allow embedding only from your domain
         'default-src': [
           "'self'",
           ...localUrls,
@@ -258,6 +258,7 @@ export default defineNuxtConfig({
           'https://*.up.railway.app',
           'https://*.supabase.co',
           'https://*.posthog.com',
+          'https://nuxt.studio',
         ],
         'connect-src': [
           "'self'",
@@ -286,7 +287,10 @@ export default defineNuxtConfig({
           'https://astronera.org',
           'https://*.astronera.org',
           'http://localhost:1337/',
-          'wss://api.nuxt.studio/socket.io',
+          'wss://api.nuxt.studio',
+          'https://api.nuxt.studio',
+          'wss://*.nuxt.studio',
+          'https://*.nuxt.studio',
         ],
         'img-src': [
           "'self'",
@@ -310,6 +314,7 @@ export default defineNuxtConfig({
           'https://img.youtube.com',
           'https://cms.astronera.org',
           'https://*.astronera.org',
+          'https://*.nuxt.studio',
         ],
         'script-src': [
           "'self'",
@@ -324,6 +329,7 @@ export default defineNuxtConfig({
           'https://*.razorpay.com',
           'https://*.posthog.com',
           'https://us.i.posthog.com',
+          'https://*.nuxt.studio',
         ],
         'script-src-attr': ["'unsafe-inline'"],
         'style-src': [
@@ -331,6 +337,7 @@ export default defineNuxtConfig({
           "'unsafe-inline'",
           'https://fonts.googleapis.com',
           'https://*.posthog.com',
+          'https://*.nuxt.studio',
         ],
         'frame-src': [
           "'self'",
@@ -341,8 +348,15 @@ export default defineNuxtConfig({
           'https://*.astronera.org',
           'https://*.betterstack.com',
           'https://*.razorpay.com',
+          'https://nuxt.studio',
+          'https://*.nuxt.studio',
         ],
-        'child-src': ["'self'", 'https://us.i.posthog.com', 'https://*.posthog.com'],
+        'child-src': [
+          "'self'",
+          'https://us.i.posthog.com',
+          'https://*.posthog.com',
+          'https://*.nuxt.studio',
+        ],
       },
       xFrameOptions: 'SAMEORIGIN', // Prevents clickjacking
       crossOriginResourcePolicy: 'cross-origin', // Ensures resources are allowed
