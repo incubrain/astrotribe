@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.14.4",
+    "@nuxthq/studio": "2.2.1",
     "h3": "^1.8.2",
     "js-yaml": "^4.1.0",
     "msw": "^2.6.5",

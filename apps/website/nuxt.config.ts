@@ -41,6 +41,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
     '@nuxt/content',
+    '@nuxthq/studio',
   ],
 
   ssr: true,
