@@ -168,4 +168,18 @@ export default {
   progressspinner,
   tag,
   terminal,
+  tooltip: {
+    root: {
+      background: '#1F2A44', // Dark background to match your theme
+      color: '#FFFFFF', // White text for readability
+      borderRadius: '4px',
+      padding: '0.5rem 1rem',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+      fontSize: '0.875rem',
+      zIndex: 1000,
+    },
+    arrow: {
+      background: '#1F2A44',
+    },
+  },
 }
