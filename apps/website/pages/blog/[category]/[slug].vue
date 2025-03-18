@@ -117,12 +117,11 @@ watch(
             <BlogArticleNavigation :article="article" />
           </div>
         </div>
-        <div class="padded-x">
-          <BlogRelatedPosts :article="article" />
-        </div>
       </div>
-
-      <!-- Related Articles -->
+    </div>
+    <!-- Related Articles -->
+    <div class="wrapper mx-auto">
+      <BlogRelatedPosts :article="article" />
     </div>
   </div>
 </template>

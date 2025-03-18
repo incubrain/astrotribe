@@ -70,12 +70,11 @@ watch(
           <div class="pb-12">
             <div
               ref="articleContent"
-              class="mx-auto space-y-8"
+              class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg prose-h1:no-underline max-w-5xl mx-auto prose-zinc dark:prose-invert prose-img:rounded-lg"
             >
               <ContentRenderer
                 v-if="article"
                 :value="article"
-                class="nuxt-content"
               />
             </div>
             <BlogArticleShare

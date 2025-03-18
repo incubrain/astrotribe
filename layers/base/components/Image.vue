@@ -22,7 +22,7 @@ watch(
 
 const uuid = useId()
 function loadFallbackImage(error: Error) {
-  console.error('Image loading error:', error)
+  console.error(`Image loading error for: ${JSON.stringify(props.img)}`, error)
   imageUrl.value = `images/defaults/${props.img.type ?? 'fallback'}.jpg`
 }
 </script>
