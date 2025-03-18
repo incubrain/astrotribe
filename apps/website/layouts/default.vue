@@ -23,7 +23,9 @@ const showTopNav = computed(
       <div class="relative z-10">
         <slot />
       </div>
-      <IBBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
+      <ClientOnly>
+        <IBBackground class="left-0 top-0 z-0 hidden opacity-50 lg:fixed lg:block" />
+      </ClientOnly>
     </div>
 
     <div class="relative w-full">
