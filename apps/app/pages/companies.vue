@@ -27,6 +27,7 @@ const { isLoading: adsLoading } = useAdsStore()
 const { store, loadMore } = useSelectData('companies', {
   orderBy: { column: 'logo_url', ascending: true },
   columns: `id, name, description, logo_url, founding_year, url, is_government, category, keywords, job_url,
+    categories(id, name),
   social_media(id, facebook_url, linkedin_url, twitter_url, instagram_url, youtube_url),
   addresses(id, countries(name), cities(name))`,
   pagination: {

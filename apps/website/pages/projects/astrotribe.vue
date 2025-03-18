@@ -1,161 +1,45 @@
 <script setup lang="ts">
-const tab = ref('About')
+import astrotribe from './astrotribe.json'
+
+const tab = ref('Overview')
 
 const toc = [
   {
     id: 1,
     depth: 1,
-    text: 'About',
+    text: 'Overview',
   },
   {
     id: 2,
+    depth: 1,
+    text: 'About',
+  },
+  {
+    id: 3,
+    depth: 1,
+    text: 'Programs & Training',
+  },
+  {
+    id: 4,
+    depth: 1,
+    text: 'Locations',
+  },
+  {
+    id: 5,
+    depth: 1,
+    text: 'Stargazing Events',
+  },
+  {
+    id: 6,
     depth: 1,
     text: 'Astroguides',
   },
 ]
 
-const astroguides = [
-  {
-    given_name: 'Reshma',
-    surname: 'Chaure',
-    professional_title: 'Astroguide',
-    avatar: 'reshma_chaure',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Vaibhav',
-    surname: 'Chaure',
-    professional_title: 'Astroguide',
-    avatar: 'vaibhav_chaure',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Neha',
-    surname: 'Gavli',
-    professional_title: 'Astroguide',
-    avatar: 'neha_gavli',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Vijaya',
-    surname: 'Thakre',
-    professional_title: 'Astroguide',
-    avatar: 'vijaya_thakre',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Chhakuli',
-    surname: 'Choudhari',
-    professional_title: 'Astroguide',
-    avatar: 'chhakuli_choudhari',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Archana',
-    surname: 'Pawra',
-    professional_title: 'Astroguide',
-    avatar: 'archana_pawra',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Vipul',
-    surname: 'Khiradi',
-    professional_title: 'Astroguide',
-    avatar: 'vipul_khiradi',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Sharmila',
-    surname: 'Kuwar',
-    professional_title: 'Astroguide',
-    avatar: 'sharmila_kuwar',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Pratibha',
-    surname: 'Gaisamudre',
-    professional_title: 'Astroguide',
-    avatar: 'pratibha_gaisamudre',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Neel',
-    surname: 'Shewale',
-    professional_title: 'Astroguide',
-    avatar: 'neel_shewale',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Estar',
-    surname: 'Desai',
-    professional_title: 'Astroguide',
-    avatar: 'estar_desai',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Komal',
-    surname: 'Wagh',
-    professional_title: 'Astroguide',
-    avatar: 'komal_wagh',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Nama',
-    surname: 'Valvi',
-    professional_title: 'Astroguide',
-    avatar: 'nama_valvi',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Kavita',
-    surname: 'Chaure',
-    professional_title: 'Astroguide',
-    avatar: 'kavita_chaure',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Sakshi',
-    surname: 'Nirgude',
-    professional_title: 'Astroguide',
-    avatar: 'sakshi_nirgude',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Vinod',
-    surname: 'Jagtap',
-    professional_title: 'Astroguide',
-    avatar: 'vinod_jagtap',
-    featured: false,
-    inPerson: true,
-  },
-  {
-    given_name: 'Sagar',
-    surname: 'Bodhre',
-    professional_title: 'Astroguide',
-    avatar: 'sagar_bodhre',
-    featured: false,
-    inPerson: true,
-  },
-]
-
 const project = {
   title: 'Astrotribe',
-  description: 'Battling light pollution one lumen at a time',
+  description:
+    'A science communication and engagement initiative that imparts fundamental astronomy knowledge and skills to tribal students, empowering them for socio-economic development',
   images: [
     'astrotribe-news-isro-rocket-launch.png',
     'astrotribe-paid-events-shweta-hosting-event.png',
@@ -191,9 +75,8 @@ const selectItem = (item: string) => {
     }"
     :title="{
       main: project.title,
-      subtitle: 'Project Description',
+      subtitle: project.description,
     }"
-    position="center"
     invert
   />
 
@@ -230,75 +113,108 @@ const selectItem = (item: string) => {
       </PrimeAccordionPanel>
     </PrimeAccordion>
     <CommonTitle
+      v-if="tab == 'Overview'"
+      :title="{ main: 'Overview' }"
+      class="row-start-1"
+    >
+      Welcome to AstroTribe, a science communication and engagement initiative that brings the
+      wonders of astronomy to tribal students across India. Our mission is to empower these students
+      with fundamental astronomy knowledge and skills, fostering socio-economic development through
+      an innovative "Earn and Learn" model. By training tribal students as AstroGuides, we’re
+      creating opportunities for quality education, sustainable employment, and reduced
+      inequalities—aligned with the United Nations' Sustainable Development Goals (SDGs):<br />
+      <ul>
+        <li>SDG 4: Quality Education</li>
+        <li>SDG 8: Decent Work and Economic Growth</li>
+        <li>SDG 10: Reduced Inequalities</li> </ul
+      ><br />
+      AstroTribe is more than just astronomy—it’s about building a self-sustaining astro-tourism
+      network, raising awareness about light pollution, and preserving the pristine dark skies of
+      tribal regions. Join us in this cosmic journey!
+    </CommonTitle>
+    <CommonTitle
       v-if="tab == 'About'"
       :title="{ main: 'About' }"
       class="row-start-1"
     >
-      Through hands-on training, telescope sessions, and public stargazing events, we trained 16
-      AstroGuides, enabling them to earn by guiding astronomy experiences. The project connected
-      students with international mentors, onboarded resorts for astrotourism, and aimed to create a
-      sustainable network for future opportunities. With continued support, we are expanding this
-      initiative to Brazil and beyond, strengthening its global impact. 🚀✨
-      <IBImage
-        :img="{
-          src: `images/participant-viewing-through-shweta's-telescope.jpg`,
-        }"
-      />
+      AstroTribe is dedicated to empowering tribal students by imparting practical astronomy skills
+      and creating income opportunities as AstroGuides—all without disrupting their academic
+      schedules. Our core mission is to bridge the gap between tribal and non-tribal communities,
+      providing equal access to resources and opportunities through the transformative power of
+      astronomy.<br />
+
+      <h2>Our Vision</h2>
+      In the long term, AstroTribe aims to establish a self-sustaining astro-tourism network across
+      India’s tribal regions. We’ve alre ady reached western and northern India, with plans to
+      expand into the southern and eastern regions. Beyond education, AstroTribe serves as a
+      platform for light pollution awareness and dark sky conservation, promoting tribal landscapes
+      as premier astro-tourism destinations.
+
+      <h2>Going Global</h2>
+      To scale our impact worldwide, we’re developing an online networking platform to connect
+      AstroGuides, astronomy experts, astro-tourism resorts, amateur astronomers, and enthusiasts
+      passionate about joining the AstroTribe movement.
+
+      <h2>Proven Impact</h2>
+      Supported by the International Astronomical Union’s Office of Astronomy for Development with
+      funding in 2022 and 2023, AstroTribe measures its success through peer feedback from mentors,
+      tutors, and event participants. This initiative is a scalable model for sustainable
+      development through astronomy.
+    </CommonTitle>
+    <CommonTitle
+      v-if="tab == 'Programs & Training'"
+      :title="{ main: 'Programs & Training' }"
+      class="row-start-1"
+    >
+      AstroTribe’s multi-level training equips students to become skilled AstroGuides.<br />
+      <h1>Level 1:</h1>
+      Foundation Training Topics: Earth’s motion, astronomical terms, solar system, cosmic address.
+      Activities: Interactive models, simulations, public speaking practice. Example: 4th-6th July
+      2023, EMRS Ajmer Saundane (44 tribal, 3 non-tribal students).
+      <h1>Level 2: Advanced Training</h1>
+      Topics: Telescopes, stellar life cycles, exoplanets, mythology in constellations. Activities:
+      Stargazing, telescope handling, VR experiences, event planning. Example: 12th-14th October
+      2023, EMRS Ajmer Saundane (16 tribal, 3 non-tribal students).
+      <h1>Independent Events:</h1> Trained AstroGuides lead public stargazing sessions, applying
+      their skills practically.
+    </CommonTitle>
+    <CommonTitle
+      v-if="tab == 'Locations'"
+      :title="{ main: 'Locations' }"
+      class="row-start-1"
+    >
+      AstroTribe operates in diverse tribal regions, leveraging their unique strengths.<br />
+      <h1>EMRS Ajmer Saundane, Nashik, Maharashtra (2023)</h1> A hub for tribal education with
+      modern tech and CBSE curriculum. Event: 11th Jan 2023, 16 AstroGuides led stargazing for 600+
+      peers. <h1>SECMOL, Ladakh (2024)</h1> Eco-village focused on sustainability and cultural
+      preservation. Event: Spring camp stargazing, 50+ attendees, VR Moon landing experience.
+      <h1>DPS Manali, Himachal Pradesh (2024)</h1>
+      Resource-rich school with global exposure. Event: 24th Nov 2024, Dark Sky Conference opening,
+      75 attendees. AstroTourism Collaborations We partner with resorts to promote sustainable
+      astro-tourism. Hilton Shillim Estate Resort, Pune, Maharashtra Alive Beach Resort,
+      Harihareshwar, Raigadh, Maharashtra GlampEco Resort, Manali, Himachal Pradesh Manu Allaya,
+      Manali, Himachal Pradesh SECMOL Campus, Leh, Ladakh
+    </CommonTitle>
+    <CommonTitle
+      v-if="tab == 'Stargazing Events'"
+      :title="{ main: 'Stargazing Events' }"
+      class="row-start-1"
+    >
+      AstroGuides showcase their skills through public and community events.<br />
+      <h1>Nashik, Maharashtra (11th Jan 2023)</h1> Venue: EMRS Ajmer Saundane 16 AstroGuides engaged
+      600 peers and staff. <h1>Manali, Himachal Pradesh (May 2023)</h1> Vipul Khiradi collaborated
+      with resorts, inspiring his community. <h1>Manali, Himachal Pradesh (24th Nov 2024)</h1> DPS
+      AstroGuides led a 2-hour session for 75 conference attendees.
+      <h1>Phey, Ladakh (2024)</h1> SECMOL AstroGuides hosted 50+ students with telescopes and VR.
     </CommonTitle>
     <div
       v-if="tab == 'Astroguides'"
       class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8"
     >
-      <LandingGlass
-        v-for="astroguide in astroguides"
-        hover-effect="glow"
-        glow-color="purple"
-        gradient="mixed"
-        intensity="low"
-        interactive
-        isolate-content
-        :padded="false"
-        class="flex flex-col gap-2 relative h-full"
-      >
-        <template #header>
-          <div class="p-2">
-            <div class="absolute left-0 top-0 z-10 hidden h-full w-full bg-black/10 visible" />
-            <IBImage
-              :img="{
-                src: `/images/astroguides/${astroguide.avatar}.jpg`,
-                alt: `${astroguide.given_name} ${astroguide.surname}`,
-                width: '350',
-                height: '350',
-                loading: 'lazy',
-                quality: '80',
-                format: 'webp',
-              }"
-              class="astroguide w-full object-cover grayscale-[20%] rounded-t-xl overflow-hidden"
-            />
-          </div>
-        </template>
-        <div class="p-6 flex flex-col justify-between flex-grow min-h-full">
-          <div class="flex flex-col flex-grow gap-4 text-sm pb-4">
-            <h3 class="text-2xl font-semibold">
-              {{ astroguide.given_name }} {{ astroguide.surname }}
-            </h3>
-            <p class="flex items-center gap-2 font-semibold text-primary-600">
-              <Icon
-                name="mdi:account"
-                class="flex-shrink-0"
-                size="24px"
-              />
-              {{ astroguide.professional_title }}
-            </p>
-          </div>
-        </div>
-      </LandingGlass>
+      <ProjectAstroguideCard
+        v-for="astroguide in astrotribe.astroguides"
+        :astroguide="astroguide"
+      />
     </div>
   </div>
 </template>
-
-<style scoped>
-.astroguide {
-  transform: rotate(-90deg);
-}
-</style>
