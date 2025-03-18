@@ -1,0 +1,406 @@
+{
+  "project": "AstroTribe",
+  "description": "A science communication initiative that imparts fundamental astronomy knowledge to tribal students, empowering them for socio-economic development.",
+  "sdgs": {
+    "sdg_4": "Ensuring inclusive, equitable, and quality education while promoting lifelong learning opportunities for tribal students.",
+    "sdg_8": "Creating sustainable employment opportunities by training students as astronomy guides.",
+    "sdg_10": "Bridging the gap between tribal and non-tribal students by providing equal resources and opportunities."
+  },
+  "mission": "Establish an 'Earn and Learn' model for tribal students to gain practical astronomy skills and generate income as AstroGuides.",
+  "impact": {
+    "peer_feedback": "Measured through mentors, tutors, and event participants.",
+    "expansion": "Currently in three regions (Western & Northern India), with plans to expand into Southern & Eastern regions.",
+    "astro_tourism": "Promoting light pollution awareness and dark sky conservation."
+  },
+  "global_scaling": {
+    "online_platform": "Connecting AstroGuides, experts, astro-tourism resorts, and amateur astronomers.",
+    "support": "Funded by the International Astronomical Union (IAU) in 2022 and 2023."
+  },
+  "location": "Nashik",
+  "education_partners": [
+    {
+      "school": "Eklavya Model Residential School (EMRS), Ajmer Saundane",
+      "region": "Satana, Nashik, Maharashtra",
+      "features": [
+        "CBSE curriculum",
+        "Supported by the Tribal Development Department of Maharashtra",
+        "Strong academic excellence and science participation",
+        "Ideal partner for AstroTribe project"
+      ]
+    }
+  ],
+  "astroguides": [
+    {
+      "given_name": "Vipul",
+      "surname": "Khiradi",
+      "professional_title": "Astroguide",
+      "avatar": "vipul-khiradi",
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4
+    },
+    {
+      "given_name": "Reshma",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "reshma-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vaibhav",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "vaibhav-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Neha",
+      "surname": "Gavli",
+      "professional_title": "Astroguide",
+      "avatar": "neha-gavli",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vijaya",
+      "surname": "Thakre",
+      "professional_title": "Astroguide",
+      "avatar": "vijaya-thakre",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Chhakuli",
+      "surname": "Choudhari",
+      "professional_title": "Astroguide",
+      "avatar": "chhakuli-choudhari",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Archana",
+      "surname": "Pawra",
+      "professional_title": "Astroguide",
+      "avatar": "archana-pawra",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2.5,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vipul",
+      "surname": "Khiradi",
+      "professional_title": "Astroguide",
+      "avatar": "vipul-khiradi",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": null,
+      "telescope_handling": null,
+      "english_fluency": null,
+      "marathi_hindi_fluency": null,
+      "stargazing": null,
+      "communication_skills": null,
+      "events_done": null,
+      "overall_rating": null,
+      "locality": null
+    },
+    {
+      "given_name": "Sharmila",
+      "surname": "Kuwar",
+      "professional_title": "Astroguide",
+      "avatar": "sharmila-kuwar",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Pratibha",
+      "surname": "Gaisamudre",
+      "professional_title": "Astroguide",
+      "avatar": "pratibha-gaisamudre",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": null,
+      "telescope_handling": null,
+      "english_fluency": null,
+      "marathi_hindi_fluency": null,
+      "stargazing": null,
+      "communication_skills": null,
+      "events_done": null,
+      "overall_rating": null,
+      "locality": null
+    },
+    {
+      "given_name": "Neel",
+      "surname": "Shewale",
+      "professional_title": "Astroguide",
+      "avatar": "neel-shewale",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3.5,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Estar",
+      "surname": "Desai",
+      "professional_title": "Astroguide",
+      "avatar": "estar-desai",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Komal",
+      "surname": "Wagh",
+      "professional_title": "Astroguide",
+      "avatar": "komal-wagh",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Nama",
+      "surname": "Valvi",
+      "professional_title": "Astroguide",
+      "avatar": "nama-valvi",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 3,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Kavita",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "kavita-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Sakshi",
+      "surname": "Nirgude",
+      "professional_title": "Astroguide",
+      "avatar": "sakshi-nirgude",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 2,
+      "telescope_handling": null,
+      "english_fluency": null,
+      "marathi_hindi_fluency": null,
+      "stargazing": null,
+      "communication_skills": null,
+      "events_done": null,
+      "overall_rating": null,
+      "locality": null
+    },
+    {
+      "given_name": "Vinod",
+      "surname": "Jagtap",
+      "professional_title": "Astroguide",
+      "avatar": "vinod-jagtap",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 3,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Sagar",
+      "surname": "Bodhre",
+      "professional_title": "Astroguide",
+      "avatar": "sagar-bodhre",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3.5,
+      "locality": "Ajmer Daudane, Nashik"
+    }
+  ],
+  "events": [
+    {
+      "type": "Independent Stargazing",
+      "venue": "EMRS Ajmer Saundane, Satana, Nashik, Maharashtra",
+      "date": "11th January",
+      "participants": {
+        "astro_guides": 16,
+        "total_attendees": 600
+      },
+      "earnings": "₹17,000 distributed among AstroGuides"
+    },
+    {
+      "type": "AstroGuide Training & Outreach",
+      "venue": "Manali, Himachal Pradesh",
+      "date": "May",
+      "participants": ["Vipul Khiradi", "Shweta Kulkarni", "Drew MacGibbon"],
+      "activities": ["Stargazing events", "Computer programming", "Collaboration with resorts"]
+    }
+  ],
+  "astro_tourism_partners": [
+    "Hilton Shillim Estate Resort, Pune, Maharashtra",
+    "Alive Beach Resort, Harihareshwar, Raigadh, Maharashtra",
+    "GlampEco Resort, Manali, Himachal Pradesh"
+  ],
+  "astro_tribe_2024": {
+    "locations": ["Ladakh", "Himachal Pradesh"],
+    "comparative_study": {
+      "institutions": [
+        {
+          "name": "Students’ Educational and Cultural Movement of Ladakh (SECMOL)",
+          "features": [
+            "Eco-village model",
+            "Focus on sustainability and cultural preservation",
+            "Limited internet access"
+          ]
+        },
+        {
+          "name": "Delhi Public School (DPS), Manali",
+          "features": [
+            "CBSE curriculum",
+            "Modern facilities and internet connectivity",
+            "Global exposure"
+          ]
+        }
+      ]
+    }
+  },
+  "training_details": {
+    "applications": {
+      "total": 95,
+      "female": 42,
+      "male": 53
+    },
+    "level_1_training": {
+      "total": 95,
+      "secmol": { "male": 19, "female": 13 },
+      "dps_manali": { "male": 34, "female": 29 }
+    },
+    "level_2_training": {
+      "total": 17,
+      "secmol": { "male": 5, "female": 3 },
+      "dps_manali": { "male": 5, "female": 4 }
+    }
+  },
+  "social_links": {
+    "youtube": "https://youtu.be/x5ijmeCJ42s?si=DXXJ-HKBDPEJF-lG",
+    "article_1": "https://astro4dev.org/student-astroguides-earn-first-income-through-astronomy/",
+    "article_2": "https://astro4dev.org/guide-training-workshop-for-tribal-students/"
+  }
+}
