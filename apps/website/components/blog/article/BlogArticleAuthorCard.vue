@@ -18,7 +18,7 @@ defineProps<{
         <IBImage
           v-if="author"
           :img="{
-            src: `${author.avatar.url}`,
+            src: `images/team/${author.name.toLowerCase().replace(' ', '-')}.jpg`,
             alt: `${author.name} is an author on the AstronEra Blog`,
             width: 100,
             height: 100,
