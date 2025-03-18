@@ -150,7 +150,7 @@ const contentClasses = computed(() => ({
     <!-- Content -->
     <slot name="header" />
     <div
-      class="relative z-10"
+      class="relative z-10 min-h-full"
       :class="contentClasses"
     >
       <slot />
