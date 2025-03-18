@@ -1,3 +1,42 @@
+<template>
+  <div :class="`relative flex items-center ${objectPosition == 'center' ? 'justify-center' : ''}`">
+    <!-- Background Image -->
+    <IBImage
+      :img="{
+        src: img.src,
+        alt: img.alt,
+        width: img.width,
+        height: img.height,
+      }"
+      :class="`w-full object-${fit} ${objectPosition} h-screen`"
+    />
+
+    <!-- Dark Overlay with reduced opacity -->
+    <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
+
+    <!-- Content Container - Improved positioning and styling -->
+    <div class="absolute z-20 flex flex-col gap-4 max-w-4xl px-6 lg:px-12">
+      <!-- Main title with improved visibility -->
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
+        {{ title.main }}
+      </h2>
+
+      <!-- Subtitle with better styling -->
+      <div
+        v-if="title.subtitle"
+        class="text-lg md:text-xl font-medium text-white bg-black/50 backdrop-blur-sm p-4 rounded-lg border border-white/10 shadow-xl max-w-2xl"
+      >
+        {{ title.subtitle }}
+      </div>
+
+      <!-- Slot for additional content -->
+      <div class="mt-4">
+        <slot></slot>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import type { TitleType, ImageType } from '../../types/content'
 
@@ -24,34 +63,20 @@ defineProps({
 // consider using mix-blend-mode for cool text effect with video
 </script>
 
-<template>
-  <div :class="`relative flex items-center ${objectPosition == 'center' ? 'justify-center' : ''}`">
-    <IBImage
-      :img="{
-        src: img.src,
-        alt: img.alt,
-        width: img.width,
-        height: img.height,
-      }"
-      :class="`w-full object-${fit} ${objectPosition} h-screen`"
-    />
-    <div class="absolute z-10 flex flex-col gap-8 px-4 text-white lg:flex-row lg:gap-16 xl:px-8">
-      <div class="flex flex-col gap-4">
-        <h2
-          :class="`rounded-md bg-black/30 px-4 py-1 text-2xl font-bold shadow-xl xl:px-8 text-${title.centered ? 'center' : 'left'}`"
-        >
-          {{ title.main }}
-        </h2>
-        <h2
-          v-if="title.subtitle"
-          :class="`inline-block w-auto rounded-sm px-4 pb-4 font-semibold xl:px-8`"
-        >
-          {{ title.subtitle }}
-        </h2>
-      </div>
-    </div>
-    <div class="absolute left-0 top-0 h-full w-full bg-black/50" />
-  </div>
-</template>
+<style scoped>
+/* Subtle animation for text elements */
+h2 {
+  animation: fadeIn 1s ease-out;
+}
 
-<style scoped></style>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
