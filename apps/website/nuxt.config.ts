@@ -73,38 +73,83 @@ export default defineNuxtConfig({
 
   site: { url: og.url, name: 'AstronEra', description: 'Astronomy Hub', defaultLocale: 'en' },
 
+  // Enhanced Nuxt Content configuration section
   content: {
-    // Enable Studio preview
+    // Studio preview configuration - enhanced for better performance
     preview: {
-      dev: true, // Enable in development mode
       api: 'https://api.nuxt.studio',
-      // Optionally add git info if you have issues with repository detection
+      // dev: true, // Enable in development for testing
+      // Explicitly define git info to avoid repository detection issues
       gitInfo: {
-        name: 'astronera',
+        name: 'astrotribe',
         owner: 'incubrain',
-        url: 'https://github.com/incubrain/astronera',
+        url: 'https://github.com/incubrain/astrotribe',
+        dir: 'apps/website', // Directory within the monorepo where the app lives
       },
     },
-    highlight: { theme: { default: 'github-dark', light: 'github-light', dark: 'github-dark' } },
-    // Database configuration if needed for serverless
-    database: {
-      type: 'sqlite', // Default, change if deploying to serverless
-      filename: '.data/content/contents.sqlite',
+
+    // Syntax highlighting configuration
+    highlight: {
+      theme: {
+        default: 'github-dark',
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      // Limit languages to only those you need to reduce bundle size
+      langs: ['json', 'js', 'ts', 'html', 'css', 'vue', 'bash', 'markdown', 'yaml'],
     },
+
+    // Database configuration optimized for different environments
+    database: {
+      // Use SQLite for development and static builds
+      type: 'sqlite',
+
+      // For SQLite (development and static)
+      filename: '.data/content/contents.sqlite',
+
+      // For D1 (production serverless) - uncomment when using Cloudflare
+      // bindingName: 'CONTENT_DB',
+    },
+
+    // Build-time optimization
     build: {
-      // Disable features you don't need
+      // Optimize markdown processing
       markdown: {
-        // Reduce TOC depth
+        // Streamline TOC for better performance
         toc: {
           depth: 2,
           searchDepth: 2,
         },
-        // Disable unnecessary plugins
+        // Disable unnecessary remark plugins
         remarkPlugins: {
           'remark-emoji': false,
-          // Disable other plugins as needed
+          'remark-gfm': {
+            // Keep GFM but optimize its options
+            singleTilde: false,
+          },
+        },
+        // Optimize rehype plugins
+        rehypePlugins: {
+          // Disable or configure as needed
         },
       },
+      // Optimize path metadata handling for better performance
+      pathMeta: {
+        forceLeadingSlash: true,
+      },
+    },
+
+    // Rendering optimization
+    renderer: {
+      // Limit anchor links to essential headings only
+      anchorLinks: { h2: true, h3: true, h4: false, h5: false, h6: false },
+    },
+
+    // Content hot reload configuration - optimize for development experience
+    watch: {
+      enabled: true,
+      port: 4000, // Choose a consistent port
+      showURL: false, // Reduce console noise
     },
   },
 
