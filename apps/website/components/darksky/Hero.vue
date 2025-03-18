@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import type { TitleType, ImageType } from '../../types/content'
+
+defineProps({
+  fit: {
+    type: String,
+    default: 'cover',
+  },
+  objectPosition: {
+    type: String,
+    default: 'center',
+  },
+  title: {
+    type: Object as () => TitleType,
+    required: true,
+  },
+  img: {
+    type: Object as () => ImageType,
+    required: true,
+  },
+})
+
+// consider turning the images into short videos using AI
+// consider using mix-blend-mode for cool text effect with video
+</script>
+
 <template>
   <div :class="`relative flex items-center ${objectPosition == 'center' ? 'justify-center' : ''}`">
     <!-- Background Image -->
@@ -36,32 +62,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { TitleType, ImageType } from '../../types/content'
-
-defineProps({
-  fit: {
-    type: String,
-    default: 'cover',
-  },
-  objectPosition: {
-    type: String,
-    default: 'center',
-  },
-  title: {
-    type: Object as () => TitleType,
-    required: true,
-  },
-  img: {
-    type: Object as () => ImageType,
-    required: true,
-  },
-})
-
-// consider turning the images into short videos using AI
-// consider using mix-blend-mode for cool text effect with video
-</script>
 
 <style scoped>
 /* Subtle animation for text elements */

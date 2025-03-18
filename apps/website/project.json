@@ -29,7 +29,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/website && pnpx nuxi dev --no-port-scanning"
+        "command": "cd apps/website && pnpx nuxi dev"
       }
     },
     "lint": {
