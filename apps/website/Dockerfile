@@ -1,4 +1,4 @@
-FROM node:22.12.0-bookworm
+FROM node:22.14.0-bookworm
 
 # Set environment variables
 ENV PNPM_HOME="/pnpm"
