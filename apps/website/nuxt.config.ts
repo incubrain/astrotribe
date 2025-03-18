@@ -41,7 +41,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
     '@nuxt/content',
-    '@nuxthq/studio',
   ],
 
   ssr: true,
@@ -77,14 +76,35 @@ export default defineNuxtConfig({
   content: {
     // Enable Studio preview
     preview: {
-      dev: true,
+      dev: true, // Enable in development mode
       api: 'https://api.nuxt.studio',
+      // Optionally add git info if you have issues with repository detection
+      gitInfo: {
+        name: 'astronera',
+        owner: 'incubrain',
+        url: 'https://github.com/incubrain/astronera',
+      },
     },
     highlight: { theme: { default: 'github-dark', light: 'github-light', dark: 'github-dark' } },
     // Database configuration if needed for serverless
     database: {
       type: 'sqlite', // Default, change if deploying to serverless
       filename: '.data/content/contents.sqlite',
+    },
+    build: {
+      // Disable features you don't need
+      markdown: {
+        // Reduce TOC depth
+        toc: {
+          depth: 2,
+          searchDepth: 2,
+        },
+        // Disable unnecessary plugins
+        remarkPlugins: {
+          'remark-emoji': false,
+          // Disable other plugins as needed
+        },
+      },
     },
   },
 

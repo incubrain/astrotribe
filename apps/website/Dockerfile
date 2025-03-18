@@ -1,4 +1,4 @@
-FROM node:22.12.0-bookworm
+FROM node:20.19-bookworm
 
 # Set environment variables
 ENV PNPM_HOME="/pnpm"
@@ -7,8 +7,11 @@ ENV PORT=8080
 ENV NODE_ENV=production
 ENV NX_DAEMON=false
 ENV NX_SKIP_NX_CLOUD=true
+# Add Node memory limit - this is the key change to address your out of memory error
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 RUN corepack prepare pnpm@8.7.6 --activate
 
+# No need to install pnpm globally if you're using corepack
 RUN npm install -g pnpm
 
 # Install system dependencies
@@ -29,13 +32,14 @@ COPY theme ./theme
 COPY libs ./libs
 COPY shared ./shared
 
-# Install dependencies
+# Install dependencies with better caching
 RUN pnpm install --filter @astronera/website...
 
-# Build the application
+# Build the application with increased memory limit
 RUN pnpx nx reset
-RUN pnpx nx build @astronera/website --skip-nx-cache --verbose
+RUN NODE_OPTIONS="--max-old-space-size=8192" pnpx nx build @astronera/website --skip-nx-cache --verbose
 
+# Prune dependencies for production
 RUN pnpm prune --production
 
 WORKDIR /app/apps/website
