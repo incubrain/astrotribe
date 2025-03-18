@@ -67,6 +67,14 @@ const websiteLinks: NavItem[] = [
         disabled: false,
       },
       {
+        key: 'advertising',
+        label: 'Advertising',
+        icon: 'i-mdi-bullhorn-outline',
+        url: '/advertising',
+        visible: true,
+        disabled: false,
+      },
+      {
         key: 'contact',
         label: 'Contact',
         icon: 'i-mdi-phone-outline',
