@@ -1,4 +1,8 @@
 <script setup lang="ts">
+// 1. Imports
+import { useWindowScroll } from '@vueuse/core'
+
+// 2. Types
 interface NavItem {
   key: string
   label: string
@@ -9,6 +13,35 @@ interface NavItem {
   items?: NavItem[]
 }
 
+// 3. Component Options
+defineOptions({
+  name: 'SiteNavbar',
+})
+
+// 4. Props and Emits
+const props = defineProps({
+  isCompact: {
+    type: Boolean,
+    default: false,
+  },
+  compactOnScroll: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+// 5. Core Nuxt Composables
+const { $config } = useNuxtApp()
+
+// 6. Other Composables
+const { y } = useWindowScroll()
+
+// 7. Reactive Variables
+const isMobileMenuOpen = ref(false)
+const isMobile = ref(false)
+const isScrolled = ref(false)
+
+// Static data
 const websiteLinks: NavItem[] = [
   {
     key: 'about-us',
@@ -152,114 +185,74 @@ const websiteLinks: NavItem[] = [
   },
 ]
 
-// Props
-const props = defineProps({
-  isCompact: {
-    type: Boolean,
-    default: false,
-  },
-  compactOnScroll: {
-    type: Boolean,
-    default: false,
-  },
-})
+// 8. Computed Properties
+const navbarClass = computed(() => {
+  const baseClasses = ['fixed', 'top-0', 'left-0', 'right-0', 'z-50']
 
-// Window scroll handling
-const { y } = useWindowScroll()
-const lastScrollY = ref(y.value)
-const isScrollingDown = ref(false)
-const isNavbarVisible = ref(true)
-
-// Scroll threshold to trigger navbar changes
-const scrollThreshold = 50
-const isScrolled = computed(() => y.value > scrollThreshold)
-
-// Navbar classes based on scroll position
-const navbarClasses = computed(() => {
-  const classes = []
-
-  // Hide navbar when scrolling down beyond threshold
-  if (!isNavbarVisible.value) {
-    classes.push('animate-slide-up')
-  } else if (isScrolled.value) {
-    classes.push('animate-slide-down')
-  }
-
-  // Apply compact style when scrolled
   if (props.compactOnScroll && isScrolled.value) {
-    classes.push('navbar-compact')
+    baseClasses.push('is-compact')
   }
 
-  return classes.join(' ')
+  return baseClasses
 })
 
-// Navbar background opacity and blur based on scroll
-const glassStyle = computed(() => {
-  const opacity = 0.1
-  const blur = 16
-
+const navbarStyle = computed(() => {
+  // Using CSS variables for smoother transitions
   return {
-    backgroundColor: `rgba(0, 0, 0, ${opacity})`,
-    backdropFilter: `blur(${blur}px)`,
-    borderBottom: isScrolled.value ? '1px solid rgba(100, 100, 150, 0.1)' : 'none',
+    '--nav-opacity': isScrolled.value ? '0.8' : '0.1',
+    '--nav-blur': isScrolled.value ? '16px' : '8px',
+    '--nav-border-opacity': isScrolled.value ? '0.1' : '0',
+    '--nav-height': props.compactOnScroll && isScrolled.value ? '56px' : '64px',
+    'backgroundColor': 'rgba(0, 0, 0, var(--nav-opacity))',
+    'backdropFilter': 'blur(var(--nav-blur))',
+    'borderBottom': '1px solid rgba(100, 100, 150, var(--nav-border-opacity))',
+    'height': 'var(--nav-height)',
+    'transition': 'all 400ms cubic-bezier(0.215, 0.61, 0.355, 1)',
   }
 })
 
-// Mobile menu handling
-const isMobileMenuOpen = ref(false)
-const isMobile = ref(false)
+// 9. Watchers
+watch(
+  y,
+  (newY) => {
+    // Use a debounced check for scroll position to avoid flickering
+    if (newY > 80) {
+      if (!isScrolled.value) isScrolled.value = true
+    } else {
+      if (isScrolled.value) isScrolled.value = false
+    }
+  },
+  { throttle: 100 },
+)
 
-// Detect mobile size on component mount and window resize
+// 10. Lifecycle Hooks
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+
+  // Initial check for scroll position
+  if (y.value > 80) {
+    isScrolled.value = true
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', checkMobile)
 })
 
+// 11. Methods
 function checkMobile() {
   isMobile.value = window.innerWidth < 1024
-  if (isMobile.value) {
-    isNavbarVisible.value = true
-  }
 }
-
-// Watch scroll position to show/hide navbar
-watch(y, (newY) => {
-  if (isMobile.value) {
-    isNavbarVisible.value = true
-    return
-  }
-
-  isScrollingDown.value = newY > lastScrollY.value
-
-  // Only hide navbar when scrolling down and past the threshold
-  if (isScrollingDown.value && newY > scrollThreshold + 50) {
-    isNavbarVisible.value = false
-  } else if (!isScrollingDown.value) {
-    isNavbarVisible.value = true
-  }
-
-  lastScrollY.value = newY
-})
-
-// Search component integration
-const isSearchOpen = ref(false)
 </script>
 
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-    :class="navbarClasses"
-    :style="glassStyle"
+    :class="navbarClass"
+    :style="navbarStyle"
   >
-    <div class="wrapper mx-auto">
-      <div
-        class="flex items-center justify-between h-16"
-        :class="{ 'h-14': props.compactOnScroll && isScrolled }"
-      >
+    <div class="wrapper mx-auto h-full">
+      <div class="flex items-center justify-between h-full">
         <!-- Logo and Brand -->
         <div class="flex-shrink-0 flex items-center gap-2">
           <NuxtLink
@@ -289,7 +282,7 @@ const isSearchOpen = ref(false)
             class="relative group"
           >
             <button
-              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors"
+              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
               @click="item.items && item.items.length ? null : navigateTo(item.url || '/')"
             >
               <div class="flex items-center gap-1">
@@ -309,7 +302,7 @@ const isSearchOpen = ref(false)
             <!-- Dropdown for desktop -->
             <div
               v-if="item.items && item.items.length"
-              class="absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg background backdrop-blur-md border border-color opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+              class="dropdown-menu absolute top-full left-0 mt-1 w-48 rounded-md shadow-lg border border-primary-100/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
             >
               <div class="py-1">
                 <NuxtLink
@@ -395,7 +388,7 @@ const isSearchOpen = ref(false)
     <!-- Mobile Navigation -->
     <div
       v-if="isMobileMenuOpen"
-      class="lg:hidden bg-black/05 backdrop-blur-md border-t border-primary-100/30 shadow-lg"
+      class="lg:hidden bg-black/80 backdrop-blur-md border-t border-primary-100/30 shadow-lg"
     >
       <div class="px-2 pt-2 pb-3 space-y-1">
         <div
@@ -445,7 +438,7 @@ const isSearchOpen = ref(false)
         </div>
 
         <!-- Mobile auth buttons -->
-        <div class="pt-4 border-t border-primary-100 flex flex-col gap-2">
+        <div class="pt-4 border-t border-primary-100/20 flex flex-col gap-2">
           <NuxtLink
             v-ripple
             :to="$config.public.authURL"
@@ -477,44 +470,14 @@ const isSearchOpen = ref(false)
 </template>
 
 <style scoped>
-/* Animations for navbar */
-@keyframes slide-down {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+.dropdown-menu {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-@keyframes slide-up {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.3s ease forwards;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.3s ease forwards;
-}
-
-/* Transition for compact navbar */
-.navbar-compact {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-/* Ensure smooth transitions */
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+/* Remove animations that could cause flicker */
+.is-compact {
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.3);
 }
 </style>
