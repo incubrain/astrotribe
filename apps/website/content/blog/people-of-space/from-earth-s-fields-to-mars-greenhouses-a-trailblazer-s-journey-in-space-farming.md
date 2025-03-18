@@ -10,7 +10,6 @@ date: '2024-12-13T05:29:01.366Z'
 updatedAt: '2024-12-13T05:29:01.297Z'
 author:
   name: Ruchira Huchgol
-  avatar: {}
   bio: >-
     Ruchira Huchgol is space enthusiasts with a background in Aerospace
     Engineering. She is also an Analog Astronaut and has been involved in analog

@@ -17,9 +17,6 @@ export default defineContentConfig({
         date: z.date(),
         author: z.object({
           name: z.string(),
-          avatar: z.object({
-            url: z.string(),
-          }),
           bio: z.string().optional(),
         }),
         tags: z
