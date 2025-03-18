@@ -1034,6 +1034,9 @@ importers:
       '@nuxt/test-utils':
         specifier: ^3.14.4
         version: 3.17.0(@jest/globals@29.7.0)(@types/node@22.10.3)(@vitest/ui@2.1.9)(@vue/test-utils@2.4.6)(happy-dom@15.11.7)(jiti@2.4.2)(jsdom@22.1.0)(magicast@0.3.5)(playwright-core@1.50.1)(sass@1.85.1)(terser@5.39.0)(tsx@4.19.3)(typescript@5.7.3)(vitest@2.1.9)(yaml@2.7.0)
+      '@nuxthq/studio':
+        specifier: 2.2.1
+        version: 2.2.1(magicast@0.3.5)
       h3:
         specifier: ^1.8.2
         version: 1.15.1
@@ -4022,6 +4025,9 @@ packages:
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0.0}
     peerDependencies:
       vue: ^3.3.4
+
+  '@nuxthq/studio@2.2.1':
+    resolution: {integrity: sha512-FiKaC2NBnoKbV5opW8+bXt75R9b7XQ/xtr2bCSLRUca2H7lYypfUAdpYltJasKMgJsUWMNHME92iW5Fi9gb+IA==}
 
   '@nuxtjs/mdc@0.12.1':
     resolution: {integrity: sha512-FRF8thPlKKwNubKEnfkwfXD7W92+bWOlxp/M1ljDt4JsG9K/+kcTWHOfwLXii6yubnoPRUQlgXYv5TYWcIo/Ew==}
@@ -8958,8 +8964,14 @@ packages:
     resolution: {integrity: sha512-qc8h1KIQbJpp+241id3GuAtkdyJ+IK+LIVtkiFTRKRrmddDzs3SI9CvP1QYmWBFvm1I/PWRwj//of8bgAc0ltA==}
     engines: {node: '>=4'}
 
+  git-up@7.0.0:
+    resolution: {integrity: sha512-ONdIrbBCFusq1Oy0sC71F5azx8bVkvtZtMJAsv+a6lz5YAmbNnLD6HAB4gptHZVLPR8S2/kVN6Gab7lryq5+lQ==}
+
   git-up@8.0.1:
     resolution: {integrity: sha512-2XFu1uNZMSjkyetaF+8rqn6P0XqpMq/C+2ycjI6YwrIKcszZ5/WR4UubxjN0lILOKqLkLaHDaCr2B6fP1cke6g==}
+
+  git-url-parse@15.0.0:
+    resolution: {integrity: sha512-5reeBufLi+i4QD3ZFftcJs9jC26aULFLBU23FeKM/b1rI0K6ofIeAblmDVO7Ht22zTDE9+CkJ3ZVb0CgJmz3UQ==}
 
   git-url-parse@16.0.1:
     resolution: {integrity: sha512-mcD36GrhAzX5JVOsIO52qNpgRyFzYWRbU1VSRFCvJt1IJvqfvH427wWw/CFqkWvjVPtdG5VTx4MKUeC5GeFPDQ==}
@@ -10938,6 +10950,10 @@ packages:
     resolution: {integrity: sha512-iq7hbSnfp4Ff/PTMYBF8pYabTQuF3u7HVN66Kb3hOnrnaPEdXEn/q6HkAn5V8UjOVSgXYpvycM0wSnwyADYNVA==}
     hasBin: true
 
+  nuxt-component-meta@0.9.0:
+    resolution: {integrity: sha512-Zmuw/PxAeJkIu7EPZEFg0lIwnfpeiDsHog9i1g5d4Z3O5+00R1Vbuk+NC6K7kgpdLsdU2/XBvzc7oQ6BsXuQPg==}
+    hasBin: true
+
   nuxt-csurf@1.6.5:
     resolution: {integrity: sha512-/DMNTON8LIVhntamKbBmAuM879B0QnuSJa7ZAkmkZe+21m+1QGcjVUxtSkizaM48NUvkuAGYOG0ncn+kqEgrzw==}
 
@@ -11253,6 +11269,9 @@ packages:
 
   parse-path@7.0.1:
     resolution: {integrity: sha512-6ReLMptznuuOEzLoGEa+I1oWRSj2Zna5jLWC+l6zlfAI4dbbSaIES29ThzuPkbhNahT65dWzfoZEO6cfJw2Ksg==}
+
+  parse-url@8.1.0:
+    resolution: {integrity: sha512-xDvOoLU5XRrcOZvnI6b8zA6n9O9ejNk/GExuz1yBuWUGn9KA97GI6HTs6u02wKara1CeVmZhH+0TZFdWScR89w==}
 
   parse-url@9.2.0:
     resolution: {integrity: sha512-bCgsFI+GeGWPAvAiUv63ZorMeif3/U0zaXABGJbOWt5OH2KCaPHF6S+0ok4aqM9RuIPGyZdx9tR9l13PsW4AYQ==}
@@ -17621,6 +17640,23 @@ snapshots:
       - vti
       - vue-tsc
       - yaml
+
+  '@nuxthq/studio@2.2.1(magicast@0.3.5)':
+    dependencies:
+      '@nuxt/kit': 3.15.4(magicast@0.3.5)
+      defu: 6.1.4
+      git-url-parse: 15.0.0
+      nuxt-component-meta: 0.9.0(magicast@0.3.5)
+      parse-git-config: 3.0.0
+      pkg-types: 1.3.1
+      socket.io-client: 4.8.1
+      ufo: 1.5.4
+      untyped: 1.5.2
+    transitivePeerDependencies:
+      - bufferutil
+      - magicast
+      - supports-color
+      - utf-8-validate
 
   '@nuxtjs/mdc@0.12.1(magicast@0.3.5)':
     dependencies:
@@ -24206,10 +24242,19 @@ snapshots:
 
   git-config-path@2.0.0: {}
 
+  git-up@7.0.0:
+    dependencies:
+      is-ssh: 1.4.1
+      parse-url: 8.1.0
+
   git-up@8.0.1:
     dependencies:
       is-ssh: 1.4.1
       parse-url: 9.2.0
+
+  git-url-parse@15.0.0:
+    dependencies:
+      git-up: 7.0.0
 
   git-url-parse@16.0.1:
     dependencies:
@@ -26929,6 +26974,19 @@ snapshots:
       - magicast
       - supports-color
 
+  nuxt-component-meta@0.9.0(magicast@0.3.5):
+    dependencies:
+      '@nuxt/kit': 3.15.4(magicast@0.3.5)
+      citty: 0.1.6
+      mlly: 1.7.4
+      scule: 1.3.0
+      typescript: 5.7.3
+      ufo: 1.5.4
+      vue-component-meta: 2.2.8(typescript@5.7.3)
+    transitivePeerDependencies:
+      - magicast
+      - supports-color
+
   nuxt-csurf@1.6.5(magicast@0.3.5):
     dependencies:
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
@@ -27826,6 +27884,10 @@ snapshots:
   parse-path@7.0.1:
     dependencies:
       protocols: 2.0.2
+
+  parse-url@8.1.0:
+    dependencies:
+      parse-path: 7.0.1
 
   parse-url@9.2.0:
     dependencies:
