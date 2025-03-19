@@ -147,23 +147,7 @@ const toc = [
         </div>
       </div>
       <hr />
-      <CommonTitle
-        v-if="tab == 'Programs & Training'"
-        :title="{ main: 'Programs & Training' }"
-        class="row-start-1"
-      >
-        AstroTribe’s multi-level training equips students to become skilled AstroGuides.<br />
-        <h1>Level 1:</h1>
-        Foundation Training Topics: Earth’s motion, astronomical terms, solar system, cosmic
-        address. Activities: Interactive models, simulations, public speaking practice. Example:
-        4th-6th July 2023, EMRS Ajmer Saundane (44 tribal, 3 non-tribal students).
-        <h1>Level 2: Advanced Training</h1>
-        Topics: Telescopes, stellar life cycles, exoplanets, mythology in constellations.
-        Activities: Stargazing, telescope handling, VR experiences, event planning. Example:
-        12th-14th October 2023, EMRS Ajmer Saundane (16 tribal, 3 non-tribal students).
-        <h1>Independent Events:</h1> Trained AstroGuides lead public stargazing sessions, applying
-        their skills practically.
-      </CommonTitle>
+      <h2 class="text-2xl">Astroguides</h2>
       <div
         id="Astroguides"
         class="pt-4 lg:pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8"
