@@ -1,10 +1,101 @@
 {
-  "project": "AstroTribe",
-  "description": "A science communication initiative that imparts fundamental astronomy knowledge to tribal students, empowering them for socio-economic development.",
-  "sdgs": {
-    "sdg_4": "Ensuring inclusive, equitable, and quality education while promoting lifelong learning opportunities for tribal students.",
-    "sdg_8": "Creating sustainable employment opportunities by training students as astronomy guides.",
-    "sdg_10": "Bridging the gap between tribal and non-tribal students by providing equal resources and opportunities."
+  "title": "AstroTribe",
+  "overview": {
+    "description": "Welcome to AstroTribe, a science communication and engagement initiative that brings the wonders of astronomy to tribal students across India. Our mission is to empower these students with fundamental astronomy knowledge and skills, fostering socio-economic development through an innovative \"Earn and Learn\" model. By training tribal students as AstroGuides, we’re creating opportunities for quality education, sustainable employment, and reduced inequalities—aligned with the United Nations' Sustainable Development Goals (SDGs):",
+    "sdgs": [
+      {
+        "title": "SDG 4: Quality Education",
+        "image": "project/sdg_4.jpeg"
+      },
+      {
+        "title": "SDG 8: Decent Work and Economic Growth",
+        "image": "project/sdg_8.jpeg"
+      },
+      {
+        "title": "SDG 10: Reduced Inequalities",
+        "image": "project/sdg_10.jpeg"
+      }
+    ],
+    "logos": ["project/astrotribe_logo(2).jpeg", "project/astrotribe_logo.jpeg"],
+    "joinUs": "Astrotribe is more than just astronomy - it's about building a self-sustaining Astro-Tourism network, raising awareness about light pollution, and preserving the pristine dark skies of tribal regions. Join us in the Cosmic Journey!"
+  },
+  "about": {
+    "text": "AstroTribe is dedicated to empowering tribal students by imparting practical astronomy skills and creating income opportunities as AstroGuides—all without disrupting their academic schedules. Our core mission is to bridge the gap between tribal and non-tribal communities, providing equal access to resources and opportunities through the transformative power of astronomy.",
+    "sections": [
+      {
+        "name": "Our Vision",
+        "text": "In the long term, AstroTribe aims to establish a self-sustaining astro-tourism network across India’s tribal regions. We’ve alre ady reached western and northern India, with plans to expand into the southern and eastern regions. Beyond education, AstroTribe serves as a platform for light pollution awareness and dark sky conservation, promoting tribal landscapes as premier astro-tourism destinations."
+      },
+      {
+        "name": "Going Global",
+        "text": "To scale our impact worldwide, we’re developing an online networking platform to connect AstroGuides, astronomy experts, astro-tourism resorts, amateur astronomers, and enthusiasts passionate about joining the AstroTribe movement."
+      },
+      {
+        "name": "Proven Impact",
+        "text": "Supported by the International Astronomical Union’s Office of Astronomy for Development with funding in 2022 and 2023, AstroTribe measures its success through peer feedback from mentors, tutors, and event participants. This initiative is a scalable model for sustainable development through astronomy."
+      }
+    ],
+    "projects": [
+      {
+        "title": "Astrotribe 2023",
+        "subtitle": "Location: Nashik",
+        "link": "astrotribe/astrotribe-2023-nashik"
+      },
+      { "title": "Astrotribe 2024", "subtitle": "Location: Ladakh and Himachal Pradesh" }
+    ],
+    "socials": [
+      {
+        "type": "YouTube",
+        "text": "Astroguide: Guide Training for Tribal Students India",
+        "link": "https://youtu.be/x5ijmeCJ42s?si=DXXJ-HKBDPEJF-lG",
+        "icon": "mdi:youtube"
+      },
+      {
+        "type": "Article",
+        "text": "Student Astroguides Earn First Income through Astronomy",
+        "link": "https://astro4dev.org/student-astroguides-earn-first-income-through-astronomy/",
+        "icon": "mdi:note-text"
+      },
+      {
+        "type": "Article",
+        "text": "Guide training workshop for tribal students",
+        "link": "https://astro4dev.org/guide-training-workshop-for-tribal-students/",
+        "icon": "mdi:note-text"
+      }
+    ]
+  },
+  "projects": {
+    "astrotribe_2023": {
+      "title": "Astrotribe 2023",
+      "about": "Eklavya Model Residential School (EMRS) Ajmer Saundane is situated on the outskirts of Satana, Nashik district, Maharashtra—a region rich in cultural heritage and home to numerous indigenous tribal communities residing in its mountains and valleys. Located near the Maharashtra-Madhya Pradesh border, this area has significant potential for astro-tourism.EMRS Ajmer Saundane has proven to be an ideal partner for this initiative, demonstrating how astronomy education and astro-tourism can empower tribal students with knowledge, skills, and financial independence",
+      "evaluation": {
+        "title": "Evaluation",
+        "image": "project/astrotribe_ratings.jpeg",
+        "text": "I  am fascinated by astronomy and the vastness of the Universe. I love to watch through the telescope and would love to show others the wonders of the universe. I am very interested in rockets, and satellites. I am really curious about how space and space technologies work. I love computers and one day I hope I can learn to use my knowledge to work in the field of astronomy."
+      },
+      "achievements": {
+        "title": "Astroguides Achievements",
+        "text": [
+          "AstroGuide Vipul Khiradi embarked on a transformative journey alongside Shweta Kulkarni and Drew MacGibbon to Manali, Himachal Pradesh. This trip was an opportunity for Vipul to not only assist in organizing stargazing events but also to learn computer programming. Collaborating with various resorts in and around Manali, he gained valuable knowledge and hands-on experience.",
+          "Notably, Vipul became the first person from his community—spanning 30 villages—to travel such a long distance from home and experience flying on an airplane for the first time. He is now actively contributing to the execution of this year’s AstroTribe project in Manali. Meanwhile, AstroGuides Vijaya, Reshma, Estar, and Chhakuli took the telescope provided by AstronEra to their home villages, where they organized stargazing events for their local tribal communities—spreading their newfound knowledge and passion for astronomy"
+        ]
+      },
+      "stargazingEvents": {
+        "title": "Independent Stargazing Events",
+        "venue": "EMRS Ajmer Saundane, Satana, Nashik, Maharashtra, India",
+        "date": "11th January",
+        "text": "A total of 16 tribal students successfully completed the AstroTribe Training and were awarded certificates in recognition of their achievement. They, along with 600 of their peers and school staff, participated in the stargazing sessions. Through public stargazing events at Hilton Resort and Pune, these trained AstroGuides collectively earned a profit of ₹17,000, which was equally distributed among them—demonstrating the success of the \"Earn and Learn\" model."
+      },
+      "resortCollabs": {
+        "title": "AstroTourism Certified Resort Collaborations",
+        "resorts": [
+          "Hilton Shillim Estate Resort, Pune, Maharashtra, India",
+          "Alive Beach Resort, Harihareshwar, Raigadh, Maharashtra, India",
+          "GlampEco Resort, Manali, Himachal Pradesh, India"
+        ]
+      }
+    },
+    "astrotribe_2024": {}
   },
   "mission": "Establish an 'Earn and Learn' model for tribal students to gain practical astronomy skills and generate income as AstroGuides.",
   "impact": {
@@ -181,23 +272,6 @@
       "locality": "Ajmer Daudane, Nashik"
     },
     {
-      "given_name": "Pratibha",
-      "surname": "Gaisamudre",
-      "professional_title": "Astroguide",
-      "avatar": "pratibha-gaisamudre",
-      "featured": false,
-      "inPerson": true,
-      "astronomy_knowledge": null,
-      "telescope_handling": null,
-      "english_fluency": null,
-      "marathi_hindi_fluency": null,
-      "stargazing": null,
-      "communication_skills": null,
-      "events_done": null,
-      "overall_rating": null,
-      "locality": null
-    },
-    {
       "given_name": "Neel",
       "surname": "Shewale",
       "professional_title": "Astroguide",
@@ -281,23 +355,6 @@
       "events_done": 2,
       "overall_rating": 3,
       "locality": "Ajmer Daudane, Nashik"
-    },
-    {
-      "given_name": "Sakshi",
-      "surname": "Nirgude",
-      "professional_title": "Astroguide",
-      "avatar": "sakshi-nirgude",
-      "featured": false,
-      "inPerson": true,
-      "astronomy_knowledge": 2,
-      "telescope_handling": null,
-      "english_fluency": null,
-      "marathi_hindi_fluency": null,
-      "stargazing": null,
-      "communication_skills": null,
-      "events_done": null,
-      "overall_rating": null,
-      "locality": null
     },
     {
       "given_name": "Vinod",
