@@ -222,7 +222,7 @@ export default defineNuxtConfig({
   primevue: {
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
-    components: { prefix: 'Prime', include: '*', exclude: ['Editor'] },
+    components: { prefix: 'Prime', include: '*', exclude: ['Editor', 'Form', 'FormField'] },
 
     //   composables: {
     //     include: '*',
