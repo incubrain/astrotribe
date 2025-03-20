@@ -41,7 +41,11 @@
         "subtitle": "Location: Nashik",
         "link": "astrotribe/astrotribe-2023-nashik"
       },
-      { "title": "Astrotribe 2024", "subtitle": "Location: Ladakh and Himachal Pradesh" }
+      {
+        "title": "Astrotribe 2024",
+        "subtitle": "Location: Ladakh and Himachal Pradesh",
+        "link": "astrotribe/astrotribe-2024-ladakh"
+      }
     ],
     "socials": [
       {
