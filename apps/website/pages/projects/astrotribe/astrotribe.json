@@ -95,31 +95,119 @@
         ]
       }
     },
-    "astrotribe_2024": {}
-  },
-  "mission": "Establish an 'Earn and Learn' model for tribal students to gain practical astronomy skills and generate income as AstroGuides.",
-  "impact": {
-    "peer_feedback": "Measured through mentors, tutors, and event participants.",
-    "expansion": "Currently in three regions (Western & Northern India), with plans to expand into Southern & Eastern regions.",
-    "astro_tourism": "Promoting light pollution awareness and dark sky conservation."
-  },
-  "global_scaling": {
-    "online_platform": "Connecting AstroGuides, experts, astro-tourism resorts, and amateur astronomers.",
-    "support": "Funded by the International Astronomical Union (IAU) in 2022 and 2023."
-  },
-  "location": "Nashik",
-  "education_partners": [
-    {
-      "school": "Eklavya Model Residential School (EMRS), Ajmer Saundane",
-      "region": "Satana, Nashik, Maharashtra",
-      "features": [
-        "CBSE curriculum",
-        "Supported by the Tribal Development Department of Maharashtra",
-        "Strong academic excellence and science participation",
-        "Ideal partner for AstroTribe project"
-      ]
+    "astrotribe_2024": {
+      "title": "Astrotribe 2024",
+      "about": "Students' Educational and Cultural Movement of Ladakh (SECMOL) Established in 1988 by Ladakhi college students, SECMOL is dedicated to reforming the education system while fostering sustainability and cultural preservation. Unlike traditional schools, SECMOL operates as an eco-village, where students, staff, and volunteers live, work, and learn together.",
+      "dpsManali": {
+        "venue": "Manu Allya, Manali, Himachal Pradesh, India",
+        "date": "24th November 2024",
+        "conductedBy": "DPS (Non-Tribal) AstroGuides",
+        "highlights": [
+          "Organized as part of the opening night of the Dark Sky Preservation and Astro-Tourism Conference by AstronEra.",
+          "AstroGuides managed the telescope setup, showcased the Moon, planets, and constellations, and answered audience questions.",
+          "Audience: ~75 attendees, including 60 conference delegates and 15 hotel staff.",
+          "Duration: 2-hour interactive stargazing session."
+        ],
+        "image": "images/manali-astroguides.jpg"
+      },
+      "secmol": {
+        "venue": "SECMOL Campus, Phey, Ladakh, India",
+        "conductedBy": "SECMOL (Tribal) AstroGuides",
+        "highlights": [
+          "Attendees: ~100 students, including Spring Camp participants and other SECMOL students.",
+          "AstroGuides divided into two teams of four, handling:",
+          "Telescope setup & operations",
+          "Constellation identification & audience engagement",
+          "VR experience: 3-minute Moon landing simulation",
+          "Communication was in both Ladakhi and English to engage a diverse audience.",
+          "Total audience engaged: ~50 attendees.",
+          "Duration: 2-hour interactive stargazing session."
+        ],
+        "image": "images/secmol-astroguides.jpg"
+      },
+      "comparison": {
+        "secmol": {
+          "description": "Established in 1988 by Ladakhi college students, SECMOL is dedicated to reforming the education system while fostering sustainability and cultural preservation. Unlike traditional schools, SECMOL operates as an eco-village, where students, staff, and volunteers live, work, and learn together.",
+          "features": [
+            "Education Model: Practical, environmental, social, and traditional knowledge integrated with modern academics.",
+            "Sustainability: Powered and heated entirely by solar energy.",
+            "Cultural Preservation: Students learn ancient Ladakhi songs, dance, and history alongside academic subjects.",
+            "Self-Sufficiency: Students manage and maintain the campus themselves."
+          ]
+        },
+        "dps": {
+          "description": "Established in 2003, DPS Manali operates under the DPS Society, New Delhi, following the CBSE curriculum. It is a highly active institution that provides students with exposure to diverse fields and global learning opportunities.",
+          "features": [
+            "Education Model: National-level CBSE curriculum regulated by the Indian Union Government.",
+            "Resources & Accessibility: Well-equipped with internet connectivity and modern facilities.",
+            "Global Exposure: Students have access to international learning platforms and fluent English proficiency."
+          ]
+        },
+        "purpose": "The selection of SECMOL and DPS Manali aimed to compare tribal and non-tribal students across various parameters.",
+        "parameters": [
+          "Early exposure to astronomy & science",
+          "Understanding capacity & adaptability",
+          "Availability of resources & internet access",
+          "Public speaking & language proficiency",
+          "Personality development & confidence"
+        ],
+        "observations": [
+          "DPS Manali provided a convenient environment to conduct the project due to readily available resources, global exposure, and internet access.",
+          "SECMOL, with its lack of internet and limited global exposure, posed unique challenges that required patience, adaptability, and alternative teaching methods to engage students effectively.",
+          "This study provided valuable insights into how educational backgrounds, resources, and exposure impact learning in astronomy and science, helping shape future outreach strategies."
+        ]
+      },
+      "evaluation": {
+        "images": [
+          "project/astrotribe_questionnaire_1.jpeg",
+          "project/astrotribe_questionnaire_2.jpeg"
+        ],
+        "items": [
+          {
+            "title": "Overall Performance",
+            "points": [
+              "DPS Manali AstroGuides demonstrated higher overall scores, with most students scoring above 7/10.",
+              "SECMOL AstroGuides had more variation, with some students scoring as low as 2-3/10 while a few excelled."
+            ]
+          },
+          {
+            "title": "Objective Type (Blue Section - Marks out of 6)",
+            "points": [
+              "DPS students performed consistently well, with most scoring above 4.",
+              "SECMOL students showed a wider range of scores, with some excelling and others struggling."
+            ]
+          },
+          {
+            "title": "Constellation Identification (Red Section - Correct out of 3)",
+            "points": [
+              "DPS students had better accuracy in identifying constellations.",
+              "SECMOL students showed mixed performance, with some scoring low in this section."
+            ]
+          },
+          {
+            "title": "Definition of Astronomy (Yellow Section - Rated on a Scale of 0-5)",
+            "points": [
+              "DPS students generally provided clearer and more accurate definitions.",
+              "SECMOL students showed lower scores in this aspect, indicating less familiarity with formal astronomy definitions."
+            ]
+          }
+        ],
+        "takeaways": [
+          "DPS students had stronger prior knowledge and understanding of astronomy concepts.",
+          "SECMOL students showed more variability, indicating potential gaps in foundational knowledge but also room for significant growth.",
+          "The difference in exposure, resources, and prior education likely contributed to the gap in performance."
+        ]
+      },
+      "resortCollabs": {
+        "title": "AstroTourism Resort Collaborations",
+        "resorts": [
+          "Manu Allaya, Manali, Himachal Pradesh, India",
+          "SECMOL Campus, Leh, Ladakh, India"
+        ],
+        "note": "These collaborations aim to promote astronomy education, encourage STEM careers, and establish sustainable astro-tourism in tribal regions."
+      }
     }
-  ],
+  },
   "astroguides": [
     {
       "given_name": "Vipul",
@@ -390,74 +478,5 @@
       "overall_rating": 3.5,
       "locality": "Ajmer Daudane, Nashik"
     }
-  ],
-  "events": [
-    {
-      "type": "Independent Stargazing",
-      "venue": "EMRS Ajmer Saundane, Satana, Nashik, Maharashtra",
-      "date": "11th January",
-      "participants": {
-        "astro_guides": 16,
-        "total_attendees": 600
-      },
-      "earnings": "₹17,000 distributed among AstroGuides"
-    },
-    {
-      "type": "AstroGuide Training & Outreach",
-      "venue": "Manali, Himachal Pradesh",
-      "date": "May",
-      "participants": ["Vipul Khiradi", "Shweta Kulkarni", "Drew MacGibbon"],
-      "activities": ["Stargazing events", "Computer programming", "Collaboration with resorts"]
-    }
-  ],
-  "astro_tourism_partners": [
-    "Hilton Shillim Estate Resort, Pune, Maharashtra",
-    "Alive Beach Resort, Harihareshwar, Raigadh, Maharashtra",
-    "GlampEco Resort, Manali, Himachal Pradesh"
-  ],
-  "astro_tribe_2024": {
-    "locations": ["Ladakh", "Himachal Pradesh"],
-    "comparative_study": {
-      "institutions": [
-        {
-          "name": "Students’ Educational and Cultural Movement of Ladakh (SECMOL)",
-          "features": [
-            "Eco-village model",
-            "Focus on sustainability and cultural preservation",
-            "Limited internet access"
-          ]
-        },
-        {
-          "name": "Delhi Public School (DPS), Manali",
-          "features": [
-            "CBSE curriculum",
-            "Modern facilities and internet connectivity",
-            "Global exposure"
-          ]
-        }
-      ]
-    }
-  },
-  "training_details": {
-    "applications": {
-      "total": 95,
-      "female": 42,
-      "male": 53
-    },
-    "level_1_training": {
-      "total": 95,
-      "secmol": { "male": 19, "female": 13 },
-      "dps_manali": { "male": 34, "female": 29 }
-    },
-    "level_2_training": {
-      "total": 17,
-      "secmol": { "male": 5, "female": 3 },
-      "dps_manali": { "male": 5, "female": 4 }
-    }
-  },
-  "social_links": {
-    "youtube": "https://youtu.be/x5ijmeCJ42s?si=DXXJ-HKBDPEJF-lG",
-    "article_1": "https://astro4dev.org/student-astroguides-earn-first-income-through-astronomy/",
-    "article_2": "https://astro4dev.org/guide-training-workshop-for-tribal-students/"
-  }
+  ]
 }
