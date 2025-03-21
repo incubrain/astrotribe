@@ -32,7 +32,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.13.2",
+    "@nuxt/schema": "^3.15.2",
     "@nuxt/test-utils": "^3.14.4",
     "ejs": "^3.1.10",
     "eslint": "^9.16.0",
@@ -40,7 +40,7 @@
     "h3": "^1.8.2",
     "inquirer": "^12.1.0",
     "msw": "^2.6.5",
-    "nuxt": "^3.13.2",
+    "nuxt": "^3.16.1",
     "tailwindcss": "^3.4.13",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.0.1",
