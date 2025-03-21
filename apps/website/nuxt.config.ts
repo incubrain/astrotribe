@@ -41,6 +41,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@primevue/nuxt-module',
     '@nuxt/content',
+    '@vueuse/motion/nuxt',
   ],
 
   ssr: true,
@@ -78,13 +79,14 @@ export default defineNuxtConfig({
     // Studio preview configuration - enhanced for better performance
     preview: {
       api: 'https://api.nuxt.studio',
+      dev: true,
       // dev: true, // Enable in development for testing
       // Explicitly define git info to avoid repository detection issues
       gitInfo: {
         name: 'astrotribe',
         owner: 'incubrain',
         url: 'https://github.com/incubrain/astrotribe',
-        dir: 'apps/website', // Directory within the monorepo where the app lives
+        dir: 'apps/website',
       },
     },
 
@@ -151,7 +153,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     serviceName: 'website',
     ...sharedRuntimeConfig.runtimeConfig.private,
-    public: { serviceName: 'website', ...sharedRuntimeConfig.runtimeConfig.public },
+    public: {
+      serviceName: 'website',
+      ...sharedRuntimeConfig.runtimeConfig.public,
+    },
   },
   srcDir: '.',
   workspaceDir: '../../',
@@ -223,10 +228,6 @@ export default defineNuxtConfig({
     importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
     components: { prefix: 'Prime', include: '*', exclude: ['Editor'] },
-
-    //   composables: {
-    //     include: '*',
-    //   },
 
     options: {
       ripple: true,
