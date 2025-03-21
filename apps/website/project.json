@@ -26,6 +26,13 @@
       ]
     },
 
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/website && pnpx nuxi prepare"
+      }
+    },
+
     "serve": {
       "executor": "nx:run-commands",
       "options": {

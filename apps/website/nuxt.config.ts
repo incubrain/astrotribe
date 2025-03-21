@@ -102,19 +102,22 @@ export default defineNuxtConfig({
 
     // Database configuration optimized for different environments
     database: {
-      // Use SQLite for development and static builds
       type: 'sqlite',
-      filename: '.data/content/contents.db',
+      // Use a standard location that works across environments
+      filename: './data/content.db',
+      // Add these options for better compatibility
+      options: {
+        // Important: Force schema creation on startup
+        recreateDatabase: process.env.NODE_ENV === 'development',
+        // Cache database to memory for better performance
+        cacheToMemory: true,
+      },
     },
 
     sources: {
       content: {
         driver: 'fs',
-        prefix: '',
-      },
-      data: {
-        driver: 'fs',
-        prefix: '',
+        base: 'content', // Make sure this points to the right directory
       },
     },
 
