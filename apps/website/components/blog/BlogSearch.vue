@@ -41,8 +41,6 @@ const emit = defineEmits<{
   select: [result: Section]
 }>()
 
-// No need for default computed values as we're using withDefaults now
-
 // States
 const isShowOverlay = ref(false)
 const resultLimit = ref(props.resultLimit)
@@ -105,6 +103,7 @@ const debouncedSearch = useDebounceFn(async () => {
 watch(searchQuery, () => {
   debouncedSearch()
 })
+
 
 // Close search on escape key
 useEventListener('keydown', (e) => {

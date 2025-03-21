@@ -7,7 +7,7 @@ const pageNumber = parseInt(route.params.page as string) || 1
 const { getCategoryInfo, getCategoryImage, validCategories } = useBlogCategories()
 
 // Validate category
-if (!validCategories.includes(categorySlug)) {
+if (!validCategories.value.includes(categorySlug)) {
   navigateTo('/404')
 }
 
@@ -22,8 +22,8 @@ const { data: articlesData, pending } = await useAsyncData(
 
     // Filter by category
     if (categorySlug !== 'all') {
-      // Use the proper JSON field access syntax for SQLite
-      query = query.where('category', 'LIKE', `%"slug":"${categorySlug}"%`)
+      // Now we're matching on category ID/slug directly
+      query = query.where('category', '=', categorySlug)
     }
 
     // Pagination
@@ -38,7 +38,7 @@ const { data: articlesData, pending } = await useAsyncData(
     let countQuery = queryCollection('blog').where('draft', '=', false)
 
     if (categorySlug !== 'all') {
-      countQuery = countQuery.where('category', 'LIKE', `%"slug":"${categorySlug}"%`)
+      countQuery = countQuery.where('category', '=', categorySlug)
     }
 
     const totalArticles = await countQuery.count()

@@ -1,27 +1,18 @@
 ---
 title: Exploring the Cosmos - Evolving Realities for People of Space
 description: >-
-  A journey through the extraordinary narratives of individuals involved in
-  space exploration, highlighting the evolution, diversity, and inclusion in the
-  field.
+  A journey through the extraordinary narratives of individuals involved in space exploration,
+  highlighting the evolution, diversity, and inclusion in the field.
 date: '2024-12-19T10:12:20.251Z'
 updatedAt: '2024-12-19T10:12:20.208Z'
-author:
-  name: Ruchira Huchgol
-  bio: >-
-    Ruchira Huchgol is space enthusiasts with a background in Aerospace
-    Engineering. She is also an Analog Astronaut and has been involved in analog
-    space missions.
-category:
-  name: People of Space
-  slug: people-of-space
+author: ruchira-huchgol
+category: people-of-space
 cover:
   url: >-
     https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/People_of_Space_Desktop_Wallpaper_5_5910c6011d.webp
   alternativeText: null
   width: 1920
   height: 1080
-tags: []
 draft: false
 ---
 
@@ -101,5 +92,3 @@ in the fields of aerospace and astronomy.
 
 Join us on this exhilarating voyage as we explore the cosmos and celebrate the people who dare to
 reach beyond the stars.
-
-

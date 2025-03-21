@@ -5,24 +5,40 @@ const category = route.params.category as string
 
 const { width } = useWindowSize()
 
-console.log('Slug:', slug)
-// More robust query strategy
-// Simple query by stem since that's working
+// Query article
 const {
   data: article,
   status,
   error,
 } = await useAsyncData(`article-${slug}`, async () => {
   try {
-    // Query by stem is working based on your debug info
-    return await queryCollection('blog').where('stem', '=', `blog/${category}/${slug}`).first()
+    const post = await queryCollection('blog')
+      .where('stem', '=', `blog/${category}/${slug}`)
+      .first()
+
+    // If found, fetch the associated author and category data
+    if (post) {
+      // Get author data
+      if (post.author) {
+        const author = await queryCollection('authors').where('stem', '=', post.author).first()
+        post.authorData = author || null
+      }
+
+      // Get category data
+      if (post.category) {
+        const categoryData = await queryCollection('categories')
+          .where('stem', '=', post.category)
+          .first()
+        post.categoryData = categoryData || null
+      }
+    }
+
+    return post
   } catch (e) {
     console.error('Error fetching article:', e)
     throw e
   }
 })
-
-console.log('Article:', article.value)
 
 // Wait until we have the article before setting SEO metadata
 watch(
@@ -110,8 +126,8 @@ watch(
               :summary="article.description"
             />
 
-            <!-- Author Card -->
-            <BlogArticleAuthorCard :authors="[article.author]" />
+            <!-- Author Card - now passing authorData -->
+            <BlogArticleAuthorCard :authors="[article.authorData]" />
 
             <!-- Previous/Next Navigation -->
             <BlogArticleNavigation :article="article" />

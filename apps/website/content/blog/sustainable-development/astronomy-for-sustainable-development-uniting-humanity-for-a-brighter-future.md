@@ -6,22 +6,14 @@ description: >-
   inhabitants.
 date: '2024-10-28T22:58:18.715Z'
 updatedAt: '2024-10-28T22:58:18.650Z'
-author:
-  name: Ruchira Huchgol
-  bio: >-
-    Ruchira Huchgol is space enthusiasts with a background in Aerospace
-    Engineering. She is also an Analog Astronaut and has been involved in analog
-    space missions.
-category:
-  name: Sustainable Development
-  slug: sustainable-development
+author: ruchira-huchgol
+category: sustainable-development
 cover:
   url: >-
     https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_sustainable_global_space_development_97af989710.webp
   alternativeText: null
   width: 1792
   height: 1024
-tags: []
 draft: false
 ---
 

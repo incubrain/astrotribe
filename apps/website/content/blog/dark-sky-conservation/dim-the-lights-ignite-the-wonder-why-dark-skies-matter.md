@@ -6,14 +6,8 @@ description: >-
     preserve the magic of the night sky.
 date: '2024-10-28T22:58:45.541Z'
 updatedAt: '2024-10-28T22:58:45.450Z'
-author:
-  name: Ruchira Huchgol
-  bio: >-
-    Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an
-    Analog Astronaut and has been involved in analog space missions.
-category:
-  name: Dark Sky Conservation
-  slug: dark-sky-conservation
+author: ruchira-huchgol
+category: dark-sky-conservation
 cover:
   url: >-
     https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_landscape_painting_of_dark_skies_and_mountains_7d9707fd20.webp

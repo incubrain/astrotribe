@@ -13,9 +13,6 @@ const { data: latestPosts, pending: loadingLatest } = await useAsyncData('latest
   queryCollection('blog').where('draft', '=', false).order('date', 'DESC').limit(6).all(),
 )
 
-// Get categories for the filter
-const { categories, validCategories } = useBlogCategories()
-
 // SEO
 useSeoMeta({
   title: 'AstronEra Blog',

@@ -5,21 +5,14 @@ description: >-
   will leave you starry-eyed.
 date: '2024-12-20T06:01:16.296Z'
 updatedAt: '2024-12-20T06:01:16.187Z'
-category:
-  name: People of Space
-  slug: people-of-space
-author:
-  name: Ruchira Huchgol
-  bio: >-
-    Ruchira Huchgol is space enthusiasts with a background in Aerospace Engineering. She is also an
-    Analog Astronaut and has been involved in analog space missions.
+author: ruchira-huchgol
+category: people-of-space
 cover:
   url: >-
     https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/people_of_space_CAROUSEL_POSTS_3_177afd8a0c.png
   alternativeText: null
   width: 1080
   height: 1080
-tags: []
 draft: false
 ---
 

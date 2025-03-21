@@ -20,11 +20,120 @@ export default defineNuxtSchema({
           description: 'Number of posts to display per page',
           default: 9,
         }),
-        showAuthor: field({
+      },
+    }),
+  },
+  // Define schemas for content types
+  content: {
+    blog: group({
+      title: 'Blog Post',
+      description: 'Blog post configuration',
+      icon: 'i-lucide-file-text',
+      fields: {
+        title: field({
+          type: 'string',
+          title: 'Title',
+          description: 'Blog post title',
+          required: true,
+        }),
+        description: field({
+          type: 'string',
+          title: 'Description',
+          description: 'Short description of the blog post',
+        }),
+        date: field({
+          type: 'string',
+          title: 'Date',
+          description: 'Publication date (YYYY-MM-DD)',
+          required: true,
+        }),
+        author: field({
+          type: 'string',
+          title: 'Author',
+          description: 'Author ID',
+          required: true,
+        }),
+        category: field({
+          type: 'string',
+          title: 'Category',
+          description: 'Category slug',
+          required: true,
+        }),
+        tags: field({
+          type: 'array',
+          title: 'Tags',
+          description: 'Array of tag IDs',
+          default: [],
+        }),
+        draft: field({
           type: 'boolean',
-          title: 'Show Author',
-          description: 'Display author information on blog posts',
-          default: true,
+          title: 'Draft',
+          description: 'Is this post a draft?',
+          default: false,
+        }),
+      },
+    }),
+    authors: group({
+      title: 'Author',
+      description: 'Author information',
+      icon: 'i-lucide-user',
+      fields: {
+        name: field({
+          type: 'string',
+          title: 'Name',
+          description: 'Author name',
+          required: true,
+        }),
+        bio: field({
+          type: 'string',
+          title: 'Bio',
+          description: 'Author bio',
+        }),
+      },
+    }),
+    categories: group({
+      title: 'Category',
+      description: 'Category information',
+      icon: 'i-lucide-folder',
+      fields: {
+        name: field({
+          type: 'string',
+          title: 'Name',
+          description: 'Category name',
+          required: true,
+        }),
+        description: field({
+          type: 'string',
+          title: 'Description',
+          description: 'Category description',
+        }),
+        color: field({
+          type: 'string',
+          title: 'Color',
+          description: 'Tailwind color class (without bg- prefix)',
+        }),
+      },
+    }),
+    tags: group({
+      title: 'Tag',
+      description: 'Tag information',
+      icon: 'i-lucide-tag',
+      fields: {
+        name: field({
+          type: 'string',
+          title: 'Name',
+          description: 'Tag name',
+          required: true,
+        }),
+        description: field({
+          type: 'string',
+          title: 'Description',
+          description: 'Tag description',
+        }),
+        color: field({
+          type: 'string',
+          title: 'Color',
+          description: 'Tailwind color class (without bg- prefix)',
         }),
       },
     }),

@@ -8,9 +8,9 @@ const props = defineProps({
 
 const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`, async () => {
   // Try to find related posts by category
-  if (props.article.category?.slug) {
+  if (props.article.category) {
     const byCategory = await queryCollection('blog')
-      .where('category', 'LIKE', `%"slug":"${props.article.category.slug}"%`)
+      .where('category', '=', props.article.category) // Now simply match category string ID
       .where('path', '<>', props.article.path)
       .limit(3)
       .all()
@@ -22,12 +22,10 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
 
   // If no 3 posts with same category, try finding by tags
   if (props.article.tags?.length) {
-    // Extract tag names
-    const tagNames = props.article.tags.map((tag) => tag.name)
+    // Now tags are simple strings
+    const tagNames = props.article.tags
 
-    // This is a simplified approach - in a real SQL DB you'd use something
-    // like an IN operator, but for our simplified query we'll just get
-    // some recent posts
+    // Get recent posts
     const recentPosts = await queryCollection('blog')
       .where('path', '<>', props.article.path)
       .order('date', 'DESC')
@@ -38,8 +36,7 @@ const { data: relatedPosts } = await useAsyncData(`related-${props.article.id}`,
     const withMatchingTags = recentPosts
       .filter((post) => {
         if (!post.tags?.length) return false
-        const postTagNames = post.tags.map((tag) => tag.name)
-        return postTagNames.some((tag) => tagNames.includes(tag))
+        return post.tags.some((tag) => tagNames.includes(tag))
       })
       .slice(0, 3)
 

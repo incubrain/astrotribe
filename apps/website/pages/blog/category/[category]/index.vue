@@ -7,7 +7,7 @@ const categorySlug = route.params.category as string
 const { getCategoryInfo, getCategoryImage, validCategories } = useBlogCategories()
 
 // Validate category
-if (!validCategories.includes(categorySlug)) {
+if (!validCategories.value.includes(categorySlug)) {
   navigateTo('/404')
 }
 
