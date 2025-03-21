@@ -1,241 +1,344 @@
 // composables/useAnimation.ts
-import { onMounted, onUnmounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { onMounted, watch } from 'vue'
 
-gsap.registerPlugin(ScrollTrigger)
+export interface AnimationOptions {
+  duration?: number
+  delay?: number
+  ease?: string
+  stagger?: number
+  minValue?: number
+  [key: string]: any
+}
 
-export function useAnimation() {
-  const fadeInUp = (elements: string, options = {}) => {
-    gsap.from(elements, {
+// utils/motionConstants.ts
+
+/**
+ * Common animation variants that can be reused across components
+ * for consistent animations throughout the application.
+ *
+ * Usage in components:
+ *
+ * <div v-motion :initial="motionConstants.fadeUp.initial" :enter="motionConstants.fadeUp.enter">
+ *   Content
+ * </div>
+ *
+ * OR with delays:
+ *
+ * <div v-motion
+ *   :initial="motionConstants.fadeUp.initial"
+ *   :visibleOnce="{ ...motionConstants.fadeUp.enter, transition: { ...motionConstants.fadeUp.enter.transition, delay: 0.3 } }">
+ *   Content
+ * </div>
+ */
+
+export const MOTION_CONSTANTS = {
+  // Standard fade up animation
+  fadeUp: {
+    initial: {
       opacity: 0,
       y: 50,
-      duration: 0.8,
-      stagger: 0.2,
-      scrollTrigger: {
-        trigger: elements,
-        start: 'top bottom-=100px',
-        toggleActions: 'play none none reverse',
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
       },
-      ...options,
-    })
-  }
+    },
+  },
 
-  const scaleOnHover = (elements: string) => {
-    gsap.utils.toArray(elements).forEach((el: Element) => {
-      gsap
-        .to(el, {
-          scale: 1.1,
-          duration: 0.3,
-          paused: true,
-        })
-        .reverse()
-
-      el.addEventListener('mouseenter', () => gsap.to(el, { scale: 1.1, duration: 0.3 }))
-      el.addEventListener('mouseleave', () => gsap.to(el, { scale: 1, duration: 0.3 }))
-    })
-  }
-
-  const carouselFadeIn = (elements: string, options = {}) => {
-    gsap.from(elements, {
+  // Simple fade in
+  fadeIn: {
+    initial: {
       opacity: 0,
-      y: 20,
-      duration: 0.5,
-      stagger: 0.1,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: elements,
-        start: 'top bottom-=100px',
+    },
+    enter: {
+      opacity: 1,
+      transition: {
+        duration: 800,
       },
-      ...options,
-    })
-  }
+    },
+  },
 
-  const staggeredFadeIn = (elements: string, stagger = 0.1, options = {}) => {
-    gsap.from(elements, {
+  // Left to right slide
+  slideRight: {
+    initial: {
       opacity: 0,
-      duration: 0.5,
-      stagger: stagger,
-      ease: 'power2.out',
-      ...options,
-    })
-  }
-
-  const parallax = (element: string, options = {}) => {
-    gsap.to(element, {
-      y: '30%',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: element,
-        scrub: true,
+      x: -50,
+    },
+    enter: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
       },
-      ...options,
-    })
-  }
+    },
+  },
 
-  // New animations
-  const fadeInScale = (elements: string, options = {}) => {
-    gsap.from(elements, {
+  // Right to left slide
+  slideLeft: {
+    initial: {
+      opacity: 0,
+      x: 50,
+    },
+    enter: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
+      },
+    },
+  },
+
+  // Scale animation
+  scale: {
+    initial: {
       opacity: 0,
       scale: 0.8,
-      duration: 0.5,
-      ease: 'back.out(1.7)',
-      ...options,
-    })
-  }
+    },
+    enter: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 15,
+      },
+    },
+  },
 
-  const typewriterEffect = (element: string, text: string, options = {}) => {
-    gsap.to(element, {
-      duration: 2,
-      text: text,
-      ease: 'none',
-      ...options,
-    })
-  }
-
-  const flipCard = (frontElement: string, backElement: string, duration = 0.6) => {
-    const tl = gsap.timeline()
-    tl.to(frontElement, { duration: duration / 2, rotationY: 90 })
-      .set(frontElement, { visibility: 'hidden' })
-      .set(backElement, { rotationY: -90, visibility: 'visible' })
-      .to(backElement, { duration: duration / 2, rotationY: 0 })
-    return tl
-  }
-
-  const shakeAnimation = (element: string, options = {}) => {
-    gsap.to(element, {
-      x: 5,
-      duration: 0.1,
-      repeat: 5,
-      yoyo: true,
-      ease: 'power1.inOut',
-      ...options,
-    })
-  }
-
-  const bounceIn = (elements: string, options = {}) => {
-    gsap.from(elements, {
-      scale: 0,
-      duration: 0.8,
-      ease: 'elastic.out(1, 0.5)',
-      ...options,
-    })
-  }
-
-  const rotateIn = (elements: string, options = {}) => {
-    gsap.from(elements, {
-      rotation: 360,
+  // Bouncy animation
+  bounce: {
+    initial: {
       opacity: 0,
-      duration: 1,
-      ease: 'power2.out',
-      ...options,
-    })
-  }
+      y: 50,
+      scale: 0.9,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 8,
+      },
+    },
+  },
 
-  const slideInFromSide = (elements: string, fromRight = true, options = {}) => {
-    gsap.from(elements, {
-      x: fromRight ? '100%' : '-100%',
+  // Section title animation
+  sectionTitle: {
+    initial: {
       opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-      ...options,
-    })
-  }
+      y: 30,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+  },
 
-  const textReveal = (element: string, options = {}) => {
-    gsap.from(element, {
-      clipPath: 'inset(0 100% 0 0)',
-      duration: 1,
-      ease: 'power4.inOut',
-      ...options,
-    })
-  }
+  // Card animation
+  card: {
+    initial: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
+      },
+    },
+    // For hover effect
+    hovered: {
+      y: -5,
+      scale: 1.03,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 15,
+      },
+    },
+  },
 
-  const pulseAnimation = (element: string, options = {}) => {
-    gsap.to(element, {
+  // Button animation
+  button: {
+    initial: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 15,
+      },
+    },
+    // For hover effect
+    hovered: {
       scale: 1.05,
-      repeat: -1,
-      yoyo: true,
-      duration: 0.8,
-      ease: 'power1.inOut',
-      ...options,
-    })
-  }
-
-  const growWidth = (elements: string, options = {}) => {
-    return gsap.from(elements, {
-      width: 0,
-      duration: 0.5,
-      stagger: 0.2,
-      ...options,
-    })
-  }
-
-  const fadeInLeft = (elements: string, options = {}) => {
-    return gsap.from(elements, {
-      x: -50,
-      opacity: 0,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: elements,
-        start: 'top bottom-=100px',
-        toggleActions: 'play none none reverse',
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 10,
       },
-      ...options,
-    })
-  }
-
-  const fadeInRight = (elements: string, options = {}) => {
-    return gsap.from(elements, {
-      x: 50,
-      opacity: 0,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: elements,
-        start: 'top bottom-=100px',
-        toggleActions: 'play none none reverse',
+    },
+    // For tap effect
+    tapped: {
+      scale: 0.95,
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 10,
       },
-      ...options,
-    })
+    },
+  },
+}
+
+export function useAnimation() {
+  /**
+   * Animates number counters that have a data-value attribute
+   *
+   * @param selector CSS selector for counter elements
+   * @param options Animation options
+   */
+  const animateCounter = (selector: string, options: AnimationOptions = {}) => {
+    if (!import.meta.client) return
+
+    try {
+      const elements = document.querySelectorAll(selector)
+      if (!elements.length) return
+
+      elements.forEach((element, index) => {
+        const value = element.getAttribute('data-value')
+        if (!value) return
+
+        const numberValue = parseInt(value, 10)
+        if (isNaN(numberValue)) return
+
+        // Animation options
+        const duration = options.duration || 1500
+        const delay = options.delay || 0
+        const staggerDelay = options.stagger ? options.stagger * 1000 * index : 0
+        const totalDelay = delay + staggerDelay
+        const minValue = options.minValue || 0
+
+        // Start from min value
+        element.textContent = minValue.toString()
+
+        // Wait for any delay
+        setTimeout(() => {
+          // Calculate increment per frame for smooth animation
+          // Assuming 60fps, so each frame is about 16.67ms
+          const totalFrames = duration / 16.67
+          const valueRange = numberValue - minValue
+          const incrementPerFrame = valueRange / totalFrames
+
+          let currentValue = minValue
+
+          // Animation frame function
+          const updateCounter = () => {
+            currentValue += incrementPerFrame
+
+            // Don't exceed the target value
+            if (currentValue > numberValue) {
+              currentValue = numberValue
+            }
+
+            // Update the element with rounded value
+            element.textContent = Math.round(currentValue).toString()
+
+            // Continue animation until complete
+            if (currentValue < numberValue) {
+              requestAnimationFrame(updateCounter)
+            }
+          }
+
+          // Start the animation
+          updateCounter()
+        }, totalDelay)
+      })
+    } catch (err) {
+      console.error('Error animating counters:', err)
+    }
   }
 
-  const scaleIn = (elements: string, options = {}) => {
-    return gsap.from(elements, {
-      scale: 0.5,
-      opacity: 0,
-      duration: 0.5,
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: elements,
-        start: 'top bottom-=100px',
-        toggleActions: 'play none none reverse',
-      },
-      ...options,
-    })
-  }
+  /**
+   * Animates typing effect on text elements
+   *
+   * @param selector CSS selector for text elements
+   * @param options Animation options
+   */
+  const animateTyping = (selector: string, options: AnimationOptions = {}) => {
+    if (!import.meta.client) return
 
-  onUnmounted(() => {
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-  })
+    try {
+      const elements = document.querySelectorAll(selector)
+      if (!elements.length) return
+
+      elements.forEach((element, index) => {
+        // Get the final text
+        const finalText = element.textContent || ''
+        if (!finalText.length) return
+
+        // Animation options
+        const duration = options.duration || 1000
+        const delay = options.delay || 0
+        const staggerDelay = options.stagger ? options.stagger * 1000 * index : 0
+        const totalDelay = delay + staggerDelay
+
+        // Character typing speed
+        const charDuration = duration / finalText.length
+
+        // Start with empty text
+        element.textContent = ''
+
+        // Wait for any delay
+        setTimeout(() => {
+          let charIndex = 0
+
+          // Type each character with setTimeout
+          const typeNextChar = () => {
+            if (charIndex < finalText.length) {
+              element.textContent += finalText.charAt(charIndex)
+              charIndex++
+              setTimeout(typeNextChar, charDuration)
+            }
+          }
+
+          // Start typing
+          typeNextChar()
+        }, totalDelay)
+      })
+    } catch (err) {
+      console.error('Error animating typing:', err)
+    }
+  }
 
   return {
-    fadeInUp,
-    carouselFadeIn,
-    staggeredFadeIn,
-    parallax,
-    fadeInScale,
-    typewriterEffect,
-    flipCard,
-    shakeAnimation,
-    bounceIn,
-    rotateIn,
-    slideInFromSide,
-    textReveal,
-    pulseAnimation,
-    scaleOnHover,
-    growWidth,
-    fadeInLeft,
-    fadeInRight,
-    scaleIn,
+    animateCounter,
+    animateTyping,
+    conf: MOTION_CONSTANTS,
   }
 }
