@@ -3,32 +3,86 @@ const route = useRoute()
 const slug = route.params.slug as string
 const category = route.params.category as string
 
+console.log('Route params:', { category, slug })
+
 const { width } = useWindowSize()
 
-// Query article
+// First, check if the category exists
+const categoryExists = await useAsyncData(`check-category-${category}`, async () => {
+  console.log('Checking if category exists:', category)
+  try {
+    const result = await queryCollection('categories').where('stem', '=', category).first()
+    console.log('Category query result:', result)
+    return !!result
+  } catch (e) {
+    console.error('Error checking category:', e)
+    return false
+  }
+})
+
+console.log('Category exists?', categoryExists.value)
+
+// Query article with detailed logging
 const {
   data: article,
   status,
   error,
 } = await useAsyncData(`article-${slug}`, async () => {
+  console.log(`Fetching article with stem: blog/${category}/${slug}`)
+
   try {
+    // First, try to get all blog articles to see what exists
+    const allArticles = await queryCollection('blog').limit(10).all()
+    console.log(
+      'First 10 articles in collection:',
+      allArticles.map((a) => ({
+        stem: a.stem,
+        path: a.path,
+        title: a.title,
+      })),
+    )
+
+    // Now query for the specific article
     const post = await queryCollection('blog')
       .where('stem', '=', `blog/${category}/${slug}`)
       .first()
+
+    console.log(
+      'Article query result:',
+      post
+        ? {
+            found: true,
+            stem: post.stem,
+            path: post.path,
+            author: post.author,
+            category: post.category,
+          }
+        : 'Not found',
+    )
 
     // If found, fetch the associated author and category data
     if (post) {
       // Get author data
       if (post.author) {
+        console.log('Fetching author data for:', post.author)
         const author = await queryCollection('authors').where('stem', '=', post.author).first()
+        console.log(
+          'Author data result:',
+          author ? { found: true, name: author.name } : 'Not found',
+        )
         post.authorData = author || null
       }
 
       // Get category data
       if (post.category) {
+        console.log('Fetching category data for:', post.category)
         const categoryData = await queryCollection('categories')
           .where('stem', '=', post.category)
           .first()
+        console.log(
+          'Category data result:',
+          categoryData ? { found: true, name: categoryData.name } : 'Not found',
+        )
         post.categoryData = categoryData || null
       }
     }
@@ -40,10 +94,30 @@ const {
   }
 })
 
+// Check useBlogCategories to see what's available
+const { categories, validCategories, fetchCategories } = useBlogCategories()
+
+onMounted(async () => {
+  await fetchCategories()
+  console.log('Available categories:', categories.value)
+  console.log('Valid category slugs:', validCategories.value)
+})
+
 // Wait until we have the article before setting SEO metadata
 watch(
   () => article.value,
   (newArticle) => {
+    console.log(
+      'Article value changed:',
+      newArticle
+        ? {
+            title: newArticle.title,
+            hasAuthorData: !!newArticle.authorData,
+            hasCategoryData: !!newArticle.categoryData,
+          }
+        : 'No article',
+    )
+
     if (newArticle) {
       useSeoMeta({
         title: newArticle.title,

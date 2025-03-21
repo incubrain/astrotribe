@@ -1,27 +1,56 @@
 <script setup lang="ts">
-import BlogSearch from '../../../../components/blog/BlogSearch.vue'
 import { useBlogCategories } from '~/composables/useBlogCategories'
 
 const route = useRoute()
 const categorySlug = route.params.category as string
-const { getCategoryInfo, getCategoryImage, validCategories } = useBlogCategories()
 
-// Validate category
-if (!validCategories.value.includes(categorySlug)) {
+console.log('Category page - slug:', categorySlug)
+
+const { getCategoryInfo, getCategoryImage, validCategories, fetchCategories } = useBlogCategories()
+
+// Fetch categories first
+await fetchCategories()
+
+console.log('Valid categories:', validCategories.value)
+
+// Normalize the category slug from the database for comparison
+const normalizedValidCategories = computed(() => {
+  return [
+    'all',
+    ...validCategories.value
+      .filter((slug) => slug !== 'all')
+      .map((slug) => slug.replace('categories/', '')),
+  ]
+})
+
+console.log('Normalized valid categories:', normalizedValidCategories.value)
+
+// Validate category against normalized slugs
+if (!normalizedValidCategories.value.includes(categorySlug)) {
+  console.warn(
+    `Category not valid: "${categorySlug}". Valid categories are:`,
+    normalizedValidCategories.value,
+  )
   navigateTo('/404')
 }
 
-const categoryInfo = getCategoryInfo(categorySlug)
+// When getting the category info, we need to add the prefix back
+const dbCategorySlug = categorySlug === 'all' ? 'all' : `categories/${categorySlug}`
+const categoryInfo = getCategoryInfo(dbCategorySlug)
+console.log('Category info:', categoryInfo)
 
 // Get articles for this category, first page
 const { data: articlesData, pending } = await useAsyncData(`articles-${categorySlug}`, async () => {
+  console.log(`Fetching articles for category: ${categorySlug}`)
+
   // Base query
   let query = queryCollection('blog').where('draft', '=', false).order('date', 'DESC')
 
-  // Filter by category
+  // Filter by category - use the plain category slug (without prefix)
+  // This assumes your blog posts use the non-prefixed category slugs
   if (categorySlug !== 'all') {
-    // Use the proper JSON field access syntax for SQLite
-    query = query.where('category', 'LIKE', `%"slug":"${categorySlug}"%`)
+    console.log(`Adding category filter: category = ${categorySlug}`)
+    query = query.where('category', '=', categorySlug)
   }
 
   // Pagination (first page)
@@ -30,15 +59,31 @@ const { data: articlesData, pending } = await useAsyncData(`articles-${categoryS
 
   // Execute query
   const articles = await query.all()
+  console.log(`Found ${articles.length} articles for category ${categorySlug}`)
+
+  if (articles.length === 0) {
+    // Try to get any articles to see what's available
+    const sampleArticles = await queryCollection('blog').limit(5).all()
+    console.log(
+      'Sample articles:',
+      sampleArticles.map((a) => ({
+        title: a.title,
+        category: a.category,
+        stem: a.stem,
+      })),
+    )
+  }
 
   // Get total count for pagination
   let countQuery = queryCollection('blog').where('draft', '=', false)
 
   if (categorySlug !== 'all') {
-    countQuery = countQuery.where('category', 'LIKE', `%"slug":"${categorySlug}"%`)
+    countQuery = countQuery.where('category', '=', categorySlug)
   }
 
   const totalArticles = await countQuery.count()
+  console.log(`Total articles for category ${categorySlug}: ${totalArticles}`)
+
   const totalPages = Math.ceil(totalArticles / postsPerPage)
 
   return {
@@ -55,14 +100,6 @@ useSeoMeta({
   ogTitle: `${categoryInfo.title} - AstronEra Blog`,
   ogDescription: categoryInfo.description,
 })
-
-const onSearch = (query) => {
-  console.log('User searched for:', query)
-}
-
-const navigateToResult = (result) => {
-  navigateTo(result.id)
-}
 </script>
 
 <template>
