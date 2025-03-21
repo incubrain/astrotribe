@@ -54,9 +54,10 @@ export function useBlogCategories() {
         }
   }
   // Function to get category image
-  const getCategoryImage = (slug) => {
+  const getCategoryImage = (slug: string) => {
     // Add more defensive coding
-    return '/images/blog/category-default.jpg'
+    if (!slug) return '/images/blog/categories/fallback.webp'
+    return `/images/blog/categories/${slug}.webp`
   }
 
   // We'll use this to fetch from the categories collection
