@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const { fadeInUp } = useAnimation()
-
 const steps = [
   {
     icon: 'mdi:earth',
@@ -38,9 +36,6 @@ const steps = [
   },
 ]
 
-onMounted(() => {
-  fadeInUp('.step-item')
-})
 </script>
 
 <template>

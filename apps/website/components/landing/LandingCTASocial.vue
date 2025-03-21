@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useAnimation } from '~/composables/useAnimation'
-
-const { fadeInUp, scaleIn } = useAnimation()
 
 const { socials } = useSocialLinks()
 
@@ -16,11 +12,6 @@ const socialMedia = computed(() => {
       hoverGradient: `hover:from-${social.color.from}-400 hover:to-${social.color.to}-500`,
     }
   })
-})
-
-onMounted(() => {
-  fadeInUp('.social-media-cta')
-  scaleIn('.social-button')
 })
 
 const firstLetterUpperCase = (str: string) => {
@@ -81,28 +72,6 @@ const firstLetterUpperCase = (str: string) => {
             </NuxtLink>
           </div>
         </div>
-
-        <!-- Newsletter Section -->
-        <!-- <div class="max-w-2xl mx-auto w-full space-y-6">
-          <h3 class="text-xl text-center text-white">Subscribe to Our Newsletter</h3>
-
-          <div class="relative">
-            <div class="flex gap-4">
-              <PrimeInputText
-                class="flex-1 bg-primary-900/50 border-primary-800/50 focus:border-sky-500/50 rounded-lg"
-                placeholder="Enter your email"
-              />
-              <PrimeButton
-                label="Subscribe"
-                class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
-              />
-            </div>
-
-            <p class="text-xs text-gray-400 mt-2 text-center">
-              By subscribing, you agree to receive space-related updates. Unsubscribe at any time.
-            </p>
-          </div>
-        </div> -->
       </div>
     </LandingGlass>
   </section>

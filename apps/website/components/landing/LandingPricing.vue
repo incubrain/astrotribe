@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useAnimation } from '~/composables/useAnimation'
-
-const { fadeInUp } = useAnimation()
 
 const features = [
   {
@@ -44,10 +41,6 @@ const comingSoon = [
     icon: 'mdi:office-building-outline',
   },
 ]
-
-onMounted(() => {
-  fadeInUp('.pricing-content')
-})
 </script>
 
 <template>
@@ -138,7 +131,7 @@ onMounted(() => {
             size="large"
             class="min-w-[200px] bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 transition-all duration-300"
           />
-            <!-- <PrimeButton
+          <!-- <PrimeButton
               label="How It Works"
               size="large"
               outlined
