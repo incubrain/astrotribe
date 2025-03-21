@@ -34,7 +34,6 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Title',
           description: 'Blog post title',
-          required: true,
         }),
         description: field({
           type: 'string',
@@ -45,19 +44,16 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Date',
           description: 'Publication date (YYYY-MM-DD)',
-          required: true,
         }),
         author: field({
           type: 'string',
           title: 'Author',
           description: 'Author ID',
-          required: true,
         }),
         category: field({
           type: 'string',
           title: 'Category',
           description: 'Category slug',
-          required: true,
         }),
         tags: field({
           type: 'array',
@@ -82,7 +78,6 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Name',
           description: 'Author name',
-          required: true,
         }),
         bio: field({
           type: 'string',
@@ -100,7 +95,6 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Name',
           description: 'Category name',
-          required: true,
         }),
         description: field({
           type: 'string',
@@ -123,7 +117,6 @@ export default defineNuxtSchema({
           type: 'string',
           title: 'Name',
           description: 'Tag name',
-          required: true,
         }),
         description: field({
           type: 'string',

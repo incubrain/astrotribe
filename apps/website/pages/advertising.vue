@@ -62,36 +62,78 @@ const formData = ref({
   email: '',
   phone: '',
   website: '',
-  preferredDate: '',
+  preferredDate: null,
   message: '',
 })
 
 const isSubmitting = ref(false)
 const submitSuccess = ref(false)
 const submitError = ref(false)
+const errorMessage = ref('')
+
+// Initialize toast notification (if you want to use it)
+const toast = useToast()
 
 // Form submission
 const submitForm = async () => {
   isSubmitting.value = true
   submitSuccess.value = false
   submitError.value = false
+  errorMessage.value = ''
 
   try {
-    // This would be replaced with your actual form submission logic
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    submitSuccess.value = true
-    formData.value = {
-      name: '',
-      company: '',
-      email: '',
-      phone: '',
-      website: '',
-      preferredDate: '',
-      message: '',
+    // Send form data to the server API endpoint
+    const { data } = await useFetch('/api/contact', {
+      method: 'POST',
+      body: formData.value,
+    })
+
+    // Check the response
+    if (data.value?.success) {
+      submitSuccess.value = true
+
+      // Reset form
+      formData.value = {
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+        website: '',
+        preferredDate: '',
+        message: '',
+      }
+
+      // Optional: Show toast notification
+      toast.add({
+        severity: 'success',
+        summary: 'Request Submitted',
+        detail: "We'll be in touch within 24 hours!",
+        life: 5000,
+      })
+    } else {
+      submitError.value = true
+      errorMessage.value = data.value?.message || 'Something went wrong'
+
+      // Optional: Show toast notification
+      toast.add({
+        severity: 'error',
+        summary: 'Submission Failed',
+        detail: errorMessage.value,
+        life: 5000,
+      })
     }
   } catch (error) {
     console.error('Form submission error:', error)
     submitError.value = true
+    errorMessage.value = 'Network error. Please try again later.'
+
+    // Optional: Show toast notification
+    toast.add({
+      severity: 'error',
+      summary: 'Network Error',
+      detail: 'Please try again or contact us directly.',
+      life: 5000,
+    })
   } finally {
     isSubmitting.value = false
   }
@@ -136,9 +178,9 @@ const submitForm = async () => {
               class="bg-primary-600 hover:bg-primary-700 px-6 py-3 text-lg"
               @click="$scrollTo('#contact-form')"
             >
-              Schedule a Consultation
+              Write to Us
               <Icon
-                name="i-lucide-calendar"
+                name="i-lucide-mail"
                 class="ml-2"
               />
             </PrimeButton>
@@ -171,29 +213,8 @@ const submitForm = async () => {
         subtitle="Amplify your reach in the astronomy community"
       />
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
         <LandingGlass
-          v-for="(benefit, index) in [
-            {
-              icon: 'i-lucide-users',
-              title: 'Targeted Audience',
-              description:
-                'Connect with our community of 10,000+ astronomy enthusiasts actively searching for stargazing experiences.',
-            },
-            {
-              icon: 'i-lucide-star',
-              title: 'Premium Visibility',
-              description:
-                'Featured placement on our platform for maximum exposure to qualified leads interested in astronomy events.',
-            },
-            {
-              icon: 'i-lucide-megaphone',
-              title: 'Expert Promotion',
-              description:
-                'Professional presentation of your events tailored to attract the right customers who value quality experiences.',
-            },
-          ]"
-          :key="index"
           hover-effect="glow"
           glow-color="purple"
           gradient="mixed"
@@ -203,12 +224,37 @@ const submitForm = async () => {
         >
           <div class="flex flex-col items-center text-center gap-4">
             <Icon
-              :name="benefit.icon"
+              name="i-lucide-users"
               size="48"
               class="text-primary-400"
             />
-            <h3 class="text-xl font-bold">{{ benefit.title }}</h3>
-            <p>{{ benefit.description }}</p>
+            <h3 class="text-xl font-bold">Targeted Audience</h3>
+            <p
+              >Connect with our community of astronomy enthusiasts actively searching for stargazing
+              experiences, largely focused in and around Pune and Mumbai area.</p
+            >
+          </div>
+        </LandingGlass>
+
+        <LandingGlass
+          hover-effect="glow"
+          glow-color="purple"
+          gradient="mixed"
+          intensity="low"
+          interactive
+          isolate-content
+        >
+          <div class="flex flex-col items-center text-center gap-4">
+            <Icon
+              name="i-lucide-star"
+              size="48"
+              class="text-primary-400"
+            />
+            <h3 class="text-xl font-bold">Premium Visibility</h3>
+            <p
+              >Featured placement on our website as well as social media platforms for maximum
+              exposure to leads interested in astronomy events.</p
+            >
           </div>
         </LandingGlass>
       </div>
@@ -228,34 +274,33 @@ const submitForm = async () => {
             class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-primary-700 -z-10"
           ></div>
 
-          <div
-            v-for="(step, index) in [
-              {
-                number: '1',
-                title: 'Schedule a Consultation',
-                description: 'Brief call to understand your unique offerings and goals.',
-              },
-              {
-                number: '2',
-                title: 'We Create Your Profile',
-                description: 'Professional showcase of your stargazing experiences and events.',
-              },
-              {
-                number: '3',
-                title: 'Start Receiving Bookings',
-                description: 'Customers discover and book directly with you.',
-              },
-            ]"
-            :key="index"
-            class="flex flex-col items-center text-center gap-4"
-          >
+          <div class="flex flex-col items-center text-center gap-4">
             <div
               class="w-16 h-16 rounded-full bg-primary-700 flex items-center justify-center text-white text-2xl font-bold"
+              >1</div
             >
-              {{ step.number }}
-            </div>
-            <h3 class="text-xl font-bold">{{ step.title }}</h3>
-            <p>{{ step.description }}</p>
+            <h3 class="text-xl font-bold">Write to Us</h3>
+            <p
+              >Email us at connectus@astronera.org to understand your unique offerings and goals.</p
+            >
+          </div>
+
+          <div class="flex flex-col items-center text-center gap-4">
+            <div
+              class="w-16 h-16 rounded-full bg-primary-700 flex items-center justify-center text-white text-2xl font-bold"
+              >2</div
+            >
+            <h3 class="text-xl font-bold">We Create Your Profile</h3>
+            <p>Professional showcase of your stargazing experiences and events.</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center gap-4">
+            <div
+              class="w-16 h-16 rounded-full bg-primary-700 flex items-center justify-center text-white text-2xl font-bold"
+              >3</div
+            >
+            <h3 class="text-xl font-bold">Start Receiving Bookings</h3>
+            <p>Customers discover and book directly with you.</p>
           </div>
         </div>
       </div>
@@ -263,131 +308,228 @@ const submitForm = async () => {
 
     <!-- Package Details Section -->
     <div class="wrapper py-20">
-      <LandingGlass
-        hover-effect="glow"
-        glow-color="purple"
-        gradient="mixed"
-        intensity="medium"
-        interactive
-        isolate-content
-        class="max-w-4xl mx-auto"
-      >
-        <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold mb-2">Premium Promotion Package</h2>
-          <p class="text-xl font-bold text-primary-400">$1500 for 2 Weeks of Premium Exposure</p>
-        </div>
+      <LandingTitle
+        title="Boost Your Brand with AstronEra"
+        subtitle="Let's help each other grow!"
+      />
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div
-            v-for="(feature, index) in [
-              {
-                icon: 'i-lucide-layout-dashboard',
-                title: 'Featured Homepage Placement',
-                description:
-                  'Prime visibility on our main page where most users begin their journey.',
-              },
-              {
-                icon: 'i-lucide-file-text',
-                title: 'Dedicated Profile Page',
-                description:
-                  'Comprehensive showcase of your services with beautiful imagery and compelling descriptions.',
-              },
-              {
-                icon: 'i-lucide-mail',
-                title: 'Newsletter Inclusion',
-                description: 'Featured in our weekly newsletter sent to 8,000+ subscribers.',
-              },
-              {
-                icon: 'i-lucide-share-2',
-                title: 'Social Media Promotion',
-                description: 'Dedicated posts across our social channels with over 15K followers.',
-              },
-              {
-                icon: 'i-lucide-bar-chart-2',
-                title: 'Detailed Analytics Report',
-                description: 'Comprehensive metrics on views, engagement, and lead generation.',
-              },
-              {
-                icon: 'i-lucide-users',
-                title: 'Priority Customer Referrals',
-                description:
-                  'Direct recommendations to users searching for experiences in your area.',
-              },
-            ]"
-            :key="index"
-            class="flex items-start gap-3"
-          >
+      <div class="max-w-4xl mx-auto mt-8 mb-12 text-center">
+        <p class="text-lg"
+          >Collaborate with AstronEra to reach a highly engaged, space-loving community. Whether
+          you're hosting a science event, launching a product, or building a brand—our audience is
+          your audience.</p
+        >
+      </div>
+
+      <h3 class="text-2xl font-bold text-center mb-6 text-primary-400">Why AstronEra?</h3>
+      <div class="max-w-2xl mx-auto mb-12">
+        <ul class="space-y-2">
+          <li class="flex items-start gap-2">
             <Icon
-              :name="feature.icon"
-              size="24"
-              class="text-primary-400 flex-shrink-0"
+              name="i-lucide-check-circle"
+              class="text-primary-400 mt-1 flex-shrink-0"
             />
-            <div>
-              <h3 class="font-bold">{{ feature.title }}</h3>
-              <p class="text-sm">{{ feature.description }}</p>
+            <p
+              ><span class="font-bold">Wider Audience Reach</span> – We have a dedicated community
+              of astronomy lovers who are always on the lookout for exciting events.</p
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon
+              name="i-lucide-check-circle"
+              class="text-primary-400 mt-1 flex-shrink-0"
+            />
+            <p
+              ><span class="font-bold">More Sign-ups for Your Events</span> – Our promotions will
+              help attract the right audience to your stargazing experiences.</p
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon
+              name="i-lucide-check-circle"
+              class="text-primary-400 mt-1 flex-shrink-0"
+            />
+            <p
+              ><span class="font-bold">Cost-Effective Marketing</span> – You get exposure at an
+              affordable price while also benefiting from discounts through mutual support.</p
+            >
+          </li>
+        </ul>
+      </div>
+
+      <h3 class="text-2xl font-bold text-center mb-6">Choose Your Package</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <LandingGlass
+          hover-effect="glow"
+          glow-color="purple"
+          gradient="mixed"
+          intensity="medium"
+          interactive
+          isolate-content
+        >
+          <div class="text-center mb-4">
+            <h2 class="text-2xl font-bold mb-2">Standard Package</h2>
+            <p class="text-xl font-bold text-primary-400">₹1500 for 2 Weeks</p>
+          </div>
+
+          <p class="mb-4"
+            >Perfect for local events, workshops, or science-based brands looking for solid
+            visibility.</p
+          >
+
+          <div class="space-y-3 mb-6">
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-instagram"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>5 Instagram stories</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-share-2"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>2 dedicated posts across Instagram, LinkedIn, and Twitter (X)</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-message-circle"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>1 WhatsApp broadcast to our curated community</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-mail"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>1 email campaign to all our subscribers</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-video"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>1 reel (provided by client) promotion on YouTube/Instagram</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="text-center">
-          <PrimeButton
-            class="bg-primary-600 hover:bg-primary-700 px-6 py-3 text-lg"
-            @click="$scrollTo('#contact-form')"
+          <div class="text-center">
+            <PrimeButton
+              class="bg-primary-600 hover:bg-primary-700 px-6 py-3"
+              @click="$scrollTo('#contact-form')"
+            >
+              Get Started
+            </PrimeButton>
+          </div>
+        </LandingGlass>
+
+        <LandingGlass
+          hover-effect="glow"
+          glow-color="purple"
+          gradient="mixed"
+          intensity="medium"
+          interactive
+          isolate-content
+        >
+          <div class="text-center mb-4">
+            <h2 class="text-2xl font-bold mb-2">Premium Package</h2>
+            <p class="text-xl font-bold text-primary-400">₹3000 for 2 Weeks</p>
+            <p class="text-sm text-primary-300 mt-1">(Coming Soon)</p>
+          </div>
+
+          <p class="mb-4"
+            >Designed for serious visibility and growth. Ideal for long-term promotions, launches,
+            and brand partnerships.</p
           >
-            Get Started Today
-            <Icon
-              name="i-lucide-arrow-right"
-              class="ml-2"
-            />
-          </PrimeButton>
-        </div>
-      </LandingGlass>
-    </div>
 
-    <!-- Testimonials Section -->
-    <div class="bg-primary-950 py-20">
-      <div class="wrapper">
-        <LandingTitle
-          title="Success Stories"
-          subtitle="Hear from stargazing companies who partnered with us"
-        />
+          <p class="mb-4"><strong>Everything in Standard, plus:</strong></p>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <LandingGlass
-            v-for="(testimonial, index) in testimonials"
-            :key="index"
-            hover-effect="glow"
-            glow-color="purple"
-            gradient="mixed"
-            intensity="low"
-            interactive
-            isolate-content
-          >
-            <div class="flex flex-col gap-4">
-              <div class="flex items-start">
-                <Icon
-                  name="i-lucide-quote"
-                  size="24"
-                  class="text-primary-400 mr-2"
-                />
-                <p class="italic">{{ testimonial.quote }}</p>
-              </div>
-              <div class="flex items-center mt-4">
-                <div class="w-12 h-12 rounded-full bg-primary-800 mr-4 overflow-hidden">
-                  <img
-                    :src="testimonial.image"
-                    :alt="testimonial.name"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 class="font-bold">{{ testimonial.name }}</h4>
-                  <p class="text-sm text-gray-400">{{ testimonial.company }}</p>
-                </div>
+          <div class="space-y-3 mb-6">
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-newspaper"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>Inclusion in our newsletter</p>
               </div>
             </div>
-          </LandingGlass>
-        </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-bar-chart-2"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>Detailed analytics post-campaign</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-file-text"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>Dedicated profile page on our website</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <Icon
+                name="i-lucide-users"
+                size="24"
+                class="text-primary-400 flex-shrink-0"
+              />
+              <div>
+                <p>Priority customer referrals</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <p class="text-sm mb-2">Coming Soon</p>
+            <PrimeButton
+              class="bg-primary-700 hover:bg-primary-800 px-6 py-3"
+              disabled
+            >
+              Available Soon
+            </PrimeButton>
+          </div>
+        </LandingGlass>
+      </div>
+
+      <div class="text-center mt-8">
+        <p class="text-lg"
+          >Let's collaborate and make space for your brand in the minds of the right audience!</p
+        >
+        <p class="text-primary-400 mt-2"
+          >📩 Write to us at connectus@astronera.org to get started.</p
+        >
       </div>
     </div>
 
@@ -402,9 +544,7 @@ const submitForm = async () => {
         class="mt-12 justify-center items-center flex flex-col gap-4 max-w-2xl mx-auto"
       >
         <PrimeAccordionPanel
-          v-for="(faq, index) in faqs"
-          :key="index"
-          :value="index"
+          value="0"
           class="w-full"
         >
           <PrimeAccordionHeader
@@ -415,10 +555,110 @@ const submitForm = async () => {
               size="24"
               class="text-primary-400"
             />
-            <h3 class="text-lg font-semibold">{{ faq.question }}</h3>
+            <h3 class="text-lg font-semibold">How many leads can I expect from the promotion?</h3>
           </PrimeAccordionHeader>
           <PrimeAccordionContent>
-            <p class="p-2">{{ faq.answer }}</p>
+            <p class="p-2"
+              >While results vary based on your offering and seasonality, our partners typically see
+              15-25 leads during the two-week promotion period. Many report a 15-20% conversion rate
+              from these targeted prospects.</p
+            >
+          </PrimeAccordionContent>
+        </PrimeAccordionPanel>
+
+        <PrimeAccordionPanel
+          value="1"
+          class="w-full"
+        >
+          <PrimeAccordionHeader
+            class="flex flex-grow gap-4 bg-primary-800 py-2 rounded-md items-center justify-between min-w-full px-4 mx-auto"
+          >
+            <Icon
+              name="i-lucide-help-circle"
+              size="24"
+              class="text-primary-400"
+            />
+            <h3 class="text-lg font-semibold">Do you handle the bookings for my events?</h3>
+          </PrimeAccordionHeader>
+          <PrimeAccordionContent>
+            <p class="p-2"
+              >No, we connect interested customers directly with you. This allows you to maintain
+              full control over your booking process, pricing, and customer relationship. We simply
+              provide the high-quality leads.</p
+            >
+          </PrimeAccordionContent>
+        </PrimeAccordionPanel>
+
+        <PrimeAccordionPanel
+          value="2"
+          class="w-full"
+        >
+          <PrimeAccordionHeader
+            class="flex flex-grow gap-4 bg-primary-800 py-2 rounded-md items-center justify-between min-w-full px-4 mx-auto"
+          >
+            <Icon
+              name="i-lucide-help-circle"
+              size="24"
+              class="text-primary-400"
+            />
+            <h3 class="text-lg font-semibold"
+              >What information do you need from me to get started?</h3
+            >
+          </PrimeAccordionHeader>
+          <PrimeAccordionContent>
+            <p class="p-2"
+              >We'll need details about your stargazing experiences, high-quality images, location
+              information, pricing, and what makes your offering unique. When you write to us, we'll
+              guide you through exactly what will make your listing most effective.</p
+            >
+          </PrimeAccordionContent>
+        </PrimeAccordionPanel>
+
+        <PrimeAccordionPanel
+          value="3"
+          class="w-full"
+        >
+          <PrimeAccordionHeader
+            class="flex flex-grow gap-4 bg-primary-800 py-2 rounded-md items-center justify-between min-w-full px-4 mx-auto"
+          >
+            <Icon
+              name="i-lucide-help-circle"
+              size="24"
+              class="text-primary-400"
+            />
+            <h3 class="text-lg font-semibold"
+              >Can I extend my promotion beyond the initial 2 weeks?</h3
+            >
+          </PrimeAccordionHeader>
+          <PrimeAccordionContent>
+            <p class="p-2"
+              >Absolutely! Many partners choose to extend their promotion after seeing the results
+              from the initial period. We offer flexible extension options at preferential rates for
+              existing partners.</p
+            >
+          </PrimeAccordionContent>
+        </PrimeAccordionPanel>
+
+        <PrimeAccordionPanel
+          value="4"
+          class="w-full"
+        >
+          <PrimeAccordionHeader
+            class="flex flex-grow gap-4 bg-primary-800 py-2 rounded-md items-center justify-between min-w-full px-4 mx-auto"
+          >
+            <Icon
+              name="i-lucide-help-circle"
+              size="24"
+              class="text-primary-400"
+            />
+            <h3 class="text-lg font-semibold">How quickly can my promotion go live?</h3>
+          </PrimeAccordionHeader>
+          <PrimeAccordionContent>
+            <p class="p-2"
+              >After we receive all necessary materials, we typically launch promotions within 3-5
+              business days. We'll work with you to find the optimal timing based on astronomical
+              events and seasonal trends.</p
+            >
           </PrimeAccordionContent>
         </PrimeAccordionPanel>
       </PrimeAccordion>
@@ -432,7 +672,7 @@ const submitForm = async () => {
       <div class="wrapper">
         <LandingTitle
           title="Ready to Boost Your Bookings?"
-          subtitle="Schedule a consultation with our team"
+          subtitle="Get in touch with our team"
         />
 
         <LandingGlass
@@ -566,50 +806,24 @@ const submitForm = async () => {
               v-if="submitError"
               class="bg-red-900/30 text-red-300 p-4 rounded"
             >
-              There was an error submitting your request. Please try again or contact us directly.
+              There was an error submitting your request. Please try again or contact us directly at
+              connectus@astronera.org.
             </div>
 
             <!-- Submit Button -->
             <div class="text-center">
               <PrimeButton
                 type="submit"
+                label="Submit Your Information"
+                icon="i-lucide-send"
+                icon-pos="right"
                 class="bg-primary-600 hover:bg-primary-700 px-6 py-3 text-lg"
                 :loading="isSubmitting"
-              >
-                <template #loading>
-                  <Icon
-                    name="i-lucide-loader"
-                    class="animate-spin mr-2"
-                  />
-                  Submitting...
-                </template>
-                <template #default>
-                  Schedule Your Consultation
-                  <Icon
-                    name="i-lucide-calendar"
-                    class="ml-2"
-                  />
-                </template>
-              </PrimeButton>
+              />
             </div>
           </form>
         </LandingGlass>
       </div>
-    </div>
-
-    <!-- Final CTA Section -->
-    <div class="wrapper py-16 text-center">
-      <h2 class="text-3xl font-bold mb-4">Ready to share the wonder of the night sky?</h2>
-      <p class="text-xl mb-8 max-w-2xl mx-auto">
-        Join AstronEra's network of premium stargazing providers and connect with passionate
-        astronomy enthusiasts.
-      </p>
-      <PrimeButton
-        class="bg-primary-600 hover:bg-primary-700 px-8 py-3 text-lg"
-        @click="$scrollTo('#contact-form')"
-      >
-        Get Started Today
-      </PrimeButton>
     </div>
   </div>
 </template>
