@@ -8,11 +8,15 @@ export function useBlogCategories() {
 
   // Initialize with an empty array
   const validCategories = computed(() => {
-    return ['all', ...(categories.value?.map((cat) => cat?.stem || '') || [])]
+    const result = ['all', ...(categories.value?.map((cat) => cat?.stem || '') || [])]
+    console.log('Computed validCategories:', result)
+    return result
   })
 
   // Function to get category info by slug
   const getCategoryInfo = (slug) => {
+    console.log(`Getting info for category: ${slug}`)
+
     if (slug === 'all') {
       return {
         title: 'All Articles',
@@ -20,7 +24,25 @@ export function useBlogCategories() {
       }
     }
 
-    const category = categories.value?.find((cat) => cat?.stem === slug)
+    console.log('Current categories:', categories.value)
+
+    // Try to find the category with the full slug first
+    let category = categories.value?.find((cat) => cat?.stem === slug)
+
+    // If not found, try without the 'categories/' prefix
+    if (!category && slug.indexOf('categories/') !== 0) {
+      const fullSlug = `categories/${slug}`
+      category = categories.value?.find((cat) => cat?.stem === fullSlug)
+    }
+
+    // If still not found, try with the plain slug portion
+    if (!category && slug.indexOf('categories/') === 0) {
+      const plainSlug = slug.replace('categories/', '')
+      category = categories.value?.find((cat) => cat?.stem.endsWith(plainSlug))
+    }
+
+    console.log('Found category:', category)
+
     return category
       ? {
           title: category.name,
@@ -31,7 +53,6 @@ export function useBlogCategories() {
           description: 'Blog posts in this category',
         }
   }
-
   // Function to get category image
   const getCategoryImage = (slug) => {
     // Add more defensive coding
@@ -40,9 +61,13 @@ export function useBlogCategories() {
 
   // We'll use this to fetch from the categories collection
   const fetchCategories = async () => {
+    console.log('Fetching categories...')
+
     try {
       isLoading.value = true
       const data = await queryCollection('categories').all()
+      console.log('Categories fetched:', data)
+
       categories.value = data || []
       isLoading.value = false
     } catch (err) {
