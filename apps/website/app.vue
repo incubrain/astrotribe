@@ -4,7 +4,7 @@
 <template>
   <div class="h-full w-full">
     <NuxtLoadingIndicator />
-    <AdsPopupTrigger />
+    <!-- <AdsPopupTrigger /> -->
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
