@@ -1,0 +1,486 @@
+{
+  "title": "AstroTribe",
+  "overview": {
+    "description": "Welcome to AstroTribe, a science communication and engagement initiative that brings the wonders of astronomy to tribal students across India. Our mission is to empower these students with fundamental astronomy knowledge and skills, fostering socio-economic development through an innovative \"Earn and Learn\" model. By training tribal students as AstroGuides, we’re creating opportunities for quality education, sustainable employment, and reduced inequalities—aligned with the United Nations' Sustainable Development Goals (SDGs):",
+    "sdgs": [
+      {
+        "title": "SDG 4: Quality Education",
+        "image": "project/sdg_4.jpeg"
+      },
+      {
+        "title": "SDG 8: Decent Work and Economic Growth",
+        "image": "project/sdg_8.jpeg"
+      },
+      {
+        "title": "SDG 10: Reduced Inequalities",
+        "image": "project/sdg_10.jpeg"
+      }
+    ],
+    "logos": ["project/astrotribe_logo(2).jpeg", "project/astrotribe_logo.jpeg"],
+    "joinUs": "Astrotribe is more than just astronomy - it's about building a self-sustaining Astro-Tourism network, raising awareness about light pollution, and preserving the pristine dark skies of tribal regions. Join us in the Cosmic Journey!"
+  },
+  "about": {
+    "text": "AstroTribe is dedicated to empowering tribal students by imparting practical astronomy skills and creating income opportunities as AstroGuides—all without disrupting their academic schedules. Our core mission is to bridge the gap between tribal and non-tribal communities, providing equal access to resources and opportunities through the transformative power of astronomy.",
+    "sections": [
+      {
+        "name": "Our Vision",
+        "text": "In the long term, AstroTribe aims to establish a self-sustaining astro-tourism network across India’s tribal regions. We’ve alre ady reached western and northern India, with plans to expand into the southern and eastern regions. Beyond education, AstroTribe serves as a platform for light pollution awareness and dark sky conservation, promoting tribal landscapes as premier astro-tourism destinations."
+      },
+      {
+        "name": "Going Global",
+        "text": "To scale our impact worldwide, we’re developing an online networking platform to connect AstroGuides, astronomy experts, astro-tourism resorts, amateur astronomers, and enthusiasts passionate about joining the AstroTribe movement."
+      },
+      {
+        "name": "Proven Impact",
+        "text": "Supported by the International Astronomical Union’s Office of Astronomy for Development with funding in 2022 and 2023, AstroTribe measures its success through peer feedback from mentors, tutors, and event participants. This initiative is a scalable model for sustainable development through astronomy."
+      }
+    ],
+    "projects": [
+      {
+        "title": "Astrotribe 2023",
+        "subtitle": "Location: Nashik",
+        "link": "astrotribe/astrotribe-2023-nashik"
+      },
+      {
+        "title": "Astrotribe 2024",
+        "subtitle": "Location: Ladakh and Himachal Pradesh",
+        "link": "astrotribe/astrotribe-2024-ladakh"
+      }
+    ],
+    "socials": [
+      {
+        "type": "YouTube",
+        "text": "Astroguide: Guide Training for Tribal Students India",
+        "link": "https://youtu.be/x5ijmeCJ42s?si=DXXJ-HKBDPEJF-lG",
+        "icon": "mdi:youtube"
+      },
+      {
+        "type": "Article",
+        "text": "Student Astroguides Earn First Income through Astronomy",
+        "link": "https://astro4dev.org/student-astroguides-earn-first-income-through-astronomy/",
+        "icon": "mdi:note-text"
+      },
+      {
+        "type": "Article",
+        "text": "Guide training workshop for tribal students",
+        "link": "https://astro4dev.org/guide-training-workshop-for-tribal-students/",
+        "icon": "mdi:note-text"
+      }
+    ]
+  },
+  "projects": {
+    "astrotribe_2023": {
+      "title": "Astrotribe 2023",
+      "about": "Eklavya Model Residential School (EMRS) Ajmer Saundane is situated on the outskirts of Satana, Nashik district, Maharashtra—a region rich in cultural heritage and home to numerous indigenous tribal communities residing in its mountains and valleys. Located near the Maharashtra-Madhya Pradesh border, this area has significant potential for astro-tourism.EMRS Ajmer Saundane has proven to be an ideal partner for this initiative, demonstrating how astronomy education and astro-tourism can empower tribal students with knowledge, skills, and financial independence",
+      "evaluation": {
+        "title": "Evaluation",
+        "image": "project/astrotribe_ratings.jpeg",
+        "text": "I  am fascinated by astronomy and the vastness of the Universe. I love to watch through the telescope and would love to show others the wonders of the universe. I am very interested in rockets, and satellites. I am really curious about how space and space technologies work. I love computers and one day I hope I can learn to use my knowledge to work in the field of astronomy."
+      },
+      "achievements": {
+        "title": "Astroguides Achievements",
+        "text": [
+          "AstroGuide Vipul Khiradi embarked on a transformative journey alongside Shweta Kulkarni and Drew MacGibbon to Manali, Himachal Pradesh. This trip was an opportunity for Vipul to not only assist in organizing stargazing events but also to learn computer programming. Collaborating with various resorts in and around Manali, he gained valuable knowledge and hands-on experience.",
+          "Notably, Vipul became the first person from his community—spanning 30 villages—to travel such a long distance from home and experience flying on an airplane for the first time. He is now actively contributing to the execution of this year’s AstroTribe project in Manali. Meanwhile, AstroGuides Vijaya, Reshma, Estar, and Chhakuli took the telescope provided by AstronEra to their home villages, where they organized stargazing events for their local tribal communities—spreading their newfound knowledge and passion for astronomy"
+        ]
+      },
+      "stargazingEvents": {
+        "title": "Independent Stargazing Events",
+        "venue": "EMRS Ajmer Saundane, Satana, Nashik, Maharashtra, India",
+        "date": "11th January",
+        "text": "A total of 16 tribal students successfully completed the AstroTribe Training and were awarded certificates in recognition of their achievement. They, along with 600 of their peers and school staff, participated in the stargazing sessions. Through public stargazing events at Hilton Resort and Pune, these trained AstroGuides collectively earned a profit of ₹17,000, which was equally distributed among them—demonstrating the success of the \"Earn and Learn\" model."
+      },
+      "resortCollabs": {
+        "title": "AstroTourism Certified Resort Collaborations",
+        "resorts": [
+          "Hilton Shillim Estate Resort, Pune, Maharashtra, India",
+          "Alive Beach Resort, Harihareshwar, Raigadh, Maharashtra, India",
+          "GlampEco Resort, Manali, Himachal Pradesh, India"
+        ]
+      }
+    },
+    "astrotribe_2024": {
+      "title": "Astrotribe 2024",
+      "about": "Students' Educational and Cultural Movement of Ladakh (SECMOL) Established in 1988 by Ladakhi college students, SECMOL is dedicated to reforming the education system while fostering sustainability and cultural preservation. Unlike traditional schools, SECMOL operates as an eco-village, where students, staff, and volunteers live, work, and learn together.",
+      "dpsManali": {
+        "venue": "Manu Allya, Manali, Himachal Pradesh, India",
+        "date": "24th November 2024",
+        "conductedBy": "DPS (Non-Tribal) AstroGuides",
+        "highlights": [
+          "Organized as part of the opening night of the Dark Sky Preservation and Astro-Tourism Conference by AstronEra.",
+          "AstroGuides managed the telescope setup, showcased the Moon, planets, and constellations, and answered audience questions.",
+          "Audience: ~75 attendees, including 60 conference delegates and 15 hotel staff.",
+          "Duration: 2-hour interactive stargazing session."
+        ],
+        "image": "images/manali-astroguides.jpg"
+      },
+      "secmol": {
+        "venue": "SECMOL Campus, Phey, Ladakh, India",
+        "conductedBy": "SECMOL (Tribal) AstroGuides",
+        "highlights": [
+          "Attendees: ~100 students, including Spring Camp participants and other SECMOL students.",
+          "AstroGuides divided into two teams of four, handling:",
+          "Telescope setup & operations",
+          "Constellation identification & audience engagement",
+          "VR experience: 3-minute Moon landing simulation",
+          "Communication was in both Ladakhi and English to engage a diverse audience.",
+          "Total audience engaged: ~50 attendees.",
+          "Duration: 2-hour interactive stargazing session."
+        ],
+        "image": "images/secmol-astroguides.jpg"
+      },
+      "comparison": {
+        "secmol": {
+          "description": "Established in 1988 by Ladakhi college students, SECMOL is dedicated to reforming the education system while fostering sustainability and cultural preservation. Unlike traditional schools, SECMOL operates as an eco-village, where students, staff, and volunteers live, work, and learn together.",
+          "features": [
+            "Education Model: Practical, environmental, social, and traditional knowledge integrated with modern academics.",
+            "Sustainability: Powered and heated entirely by solar energy.",
+            "Cultural Preservation: Students learn ancient Ladakhi songs, dance, and history alongside academic subjects.",
+            "Self-Sufficiency: Students manage and maintain the campus themselves."
+          ]
+        },
+        "dps": {
+          "description": "Established in 2003, DPS Manali operates under the DPS Society, New Delhi, following the CBSE curriculum. It is a highly active institution that provides students with exposure to diverse fields and global learning opportunities.",
+          "features": [
+            "Education Model: National-level CBSE curriculum regulated by the Indian Union Government.",
+            "Resources & Accessibility: Well-equipped with internet connectivity and modern facilities.",
+            "Global Exposure: Students have access to international learning platforms and fluent English proficiency."
+          ]
+        },
+        "purpose": "The selection of SECMOL and DPS Manali aimed to compare tribal and non-tribal students across various parameters.",
+        "parameters": [
+          "Early exposure to astronomy & science",
+          "Understanding capacity & adaptability",
+          "Availability of resources & internet access",
+          "Public speaking & language proficiency",
+          "Personality development & confidence"
+        ],
+        "observations": [
+          "DPS Manali provided a convenient environment to conduct the project due to readily available resources, global exposure, and internet access.",
+          "SECMOL, with its lack of internet and limited global exposure, posed unique challenges that required patience, adaptability, and alternative teaching methods to engage students effectively.",
+          "This study provided valuable insights into how educational backgrounds, resources, and exposure impact learning in astronomy and science, helping shape future outreach strategies."
+        ]
+      },
+      "evaluation": {
+        "images": [
+          "project/astrotribe_questionnaire_1.jpeg",
+          "project/astrotribe_questionnaire_2.jpeg"
+        ],
+        "items": [
+          {
+            "title": "Overall Performance",
+            "points": [
+              "DPS Manali AstroGuides demonstrated higher overall scores, with most students scoring above 7/10.",
+              "SECMOL AstroGuides had more variation, with some students scoring as low as 2-3/10 while a few excelled."
+            ]
+          },
+          {
+            "title": "Objective Type (Blue Section - Marks out of 6)",
+            "points": [
+              "DPS students performed consistently well, with most scoring above 4.",
+              "SECMOL students showed a wider range of scores, with some excelling and others struggling."
+            ]
+          },
+          {
+            "title": "Constellation Identification (Red Section - Correct out of 3)",
+            "points": [
+              "DPS students had better accuracy in identifying constellations.",
+              "SECMOL students showed mixed performance, with some scoring low in this section."
+            ]
+          },
+          {
+            "title": "Definition of Astronomy (Yellow Section - Rated on a Scale of 0-5)",
+            "points": [
+              "DPS students generally provided clearer and more accurate definitions.",
+              "SECMOL students showed lower scores in this aspect, indicating less familiarity with formal astronomy definitions."
+            ]
+          }
+        ],
+        "takeaways": [
+          "DPS students had stronger prior knowledge and understanding of astronomy concepts.",
+          "SECMOL students showed more variability, indicating potential gaps in foundational knowledge but also room for significant growth.",
+          "The difference in exposure, resources, and prior education likely contributed to the gap in performance."
+        ]
+      },
+      "resortCollabs": {
+        "title": "AstroTourism Resort Collaborations",
+        "resorts": [
+          "Manu Allaya, Manali, Himachal Pradesh, India",
+          "SECMOL Campus, Leh, Ladakh, India"
+        ],
+        "note": "These collaborations aim to promote astronomy education, encourage STEM careers, and establish sustainable astro-tourism in tribal regions."
+      }
+    }
+  },
+  "astroguides": [
+    {
+      "given_name": "Vipul",
+      "surname": "Khiradi",
+      "professional_title": "Astroguide",
+      "avatar": "vipul-khiradi",
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4
+    },
+    {
+      "given_name": "Reshma",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "reshma-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vaibhav",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "vaibhav-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Neha",
+      "surname": "Gavli",
+      "professional_title": "Astroguide",
+      "avatar": "neha-gavli",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vijaya",
+      "surname": "Thakre",
+      "professional_title": "Astroguide",
+      "avatar": "vijaya-thakre",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Chhakuli",
+      "surname": "Choudhari",
+      "professional_title": "Astroguide",
+      "avatar": "chhakuli-choudhari",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 4,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Archana",
+      "surname": "Pawra",
+      "professional_title": "Astroguide",
+      "avatar": "archana-pawra",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 2,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2.5,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vipul",
+      "surname": "Khiradi",
+      "professional_title": "Astroguide",
+      "avatar": "vipul-khiradi",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": null,
+      "telescope_handling": null,
+      "english_fluency": null,
+      "marathi_hindi_fluency": null,
+      "stargazing": null,
+      "communication_skills": null,
+      "events_done": null,
+      "overall_rating": null,
+      "locality": null
+    },
+    {
+      "given_name": "Sharmila",
+      "surname": "Kuwar",
+      "professional_title": "Astroguide",
+      "avatar": "sharmila-kuwar",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Neel",
+      "surname": "Shewale",
+      "professional_title": "Astroguide",
+      "avatar": "neel-shewale",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3.5,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Estar",
+      "surname": "Desai",
+      "professional_title": "Astroguide",
+      "avatar": "estar-desai",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Komal",
+      "surname": "Wagh",
+      "professional_title": "Astroguide",
+      "avatar": "komal-wagh",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 3,
+      "english_fluency": 2,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 2,
+      "events_done": 2,
+      "overall_rating": 2,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Nama",
+      "surname": "Valvi",
+      "professional_title": "Astroguide",
+      "avatar": "nama-valvi",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 3,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Kavita",
+      "surname": "Chaure",
+      "professional_title": "Astroguide",
+      "avatar": "kavita-chaure",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 3,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 4,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Vinod",
+      "surname": "Jagtap",
+      "professional_title": "Astroguide",
+      "avatar": "vinod-jagtap",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 3,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3,
+      "locality": "Ajmer Daudane, Nashik"
+    },
+    {
+      "given_name": "Sagar",
+      "surname": "Bodhre",
+      "professional_title": "Astroguide",
+      "avatar": "sagar-bodhre",
+      "featured": false,
+      "inPerson": true,
+      "astronomy_knowledge": 4,
+      "telescope_handling": 4,
+      "english_fluency": 3,
+      "marathi_hindi_fluency": 4,
+      "stargazing": 3,
+      "communication_skills": 3,
+      "events_done": 2,
+      "overall_rating": 3.5,
+      "locality": "Ajmer Daudane, Nashik"
+    }
+  ]
+}
