@@ -49,10 +49,10 @@
     "nuxt": "^3.16.1",
     "pluralize": "^8.0.0",
     "tailwindcss": "^3.4.13",
-    "vite": "^5.4.11",
+    "vite": "^6.2.2",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.1.5",
-    "vitest-mock-extended": "^2.0.2",
+    "vitest": "^3.0.9",
+    "vitest-mock-extended": "^3.0.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   }
