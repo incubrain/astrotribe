@@ -11,6 +11,32 @@ const props = defineProps({
 
 const { getArticleUrl } = useBlogHelpers()
 
+// Fetch author data if needed
+const { data: authorData } = await useAsyncData(`author-${props.article.id}`, async () => {
+  if (!props.article.author) return null
+
+  // If author is already a full object, use it directly
+  if (typeof props.article.author === 'object' && props.article.author.name) {
+    return props.article.author
+  }
+
+  // Otherwise fetch the author by ID/slug
+  return queryCollection('authors').where('stem', '=', props.article.author).first()
+})
+
+// Fetch category data if needed
+const { data: categoryData } = await useAsyncData(`category-${props.article.id}`, async () => {
+  if (!props.article.category) return null
+
+  // If category is already a full object, use it directly
+  if (typeof props.article.category === 'object' && props.article.category.name) {
+    return props.article.category
+  }
+
+  // Otherwise fetch the category by ID/slug
+  return queryCollection('categories').where('stem', '=', props.article.category).first()
+})
+
 // Get a formatted date from the article
 const formattedDate = computed(() => {
   const dateStr = props.article.date || props.article.publishedAt
@@ -30,6 +56,24 @@ const readingTime = computed(() => {
 
   return `${minutes} min read`
 })
+
+// Helper to get tags in the correct format
+const displayTags = computed(() => {
+  const tags = props.article.tags
+  if (!tags) return []
+
+  // If tags are already strings in an array, use them directly
+  if (Array.isArray(tags) && typeof tags[0] === 'string') {
+    return tags
+  }
+
+  // If tags are objects with a name property, extract the names
+  if (Array.isArray(tags) && typeof tags[0] === 'object') {
+    return tags.map((tag) => tag.name)
+  }
+
+  return []
+})
 </script>
 
 <template>
@@ -37,9 +81,9 @@ const readingTime = computed(() => {
     <!-- Card header with image -->
     <template #header>
       <BlogCatTag
-        v-if="article.tags"
-        :tags="article.tags"
-        :category="article.category"
+        v-if="displayTags.length > 0 || categoryData"
+        :tags="displayTags"
+        :category="categoryData"
         class="p-4"
       />
       <BlogMedia
@@ -78,6 +122,12 @@ const readingTime = computed(() => {
           />
           <span>{{ readingTime }}</span>
         </div>
+      </div>
+      <div
+        v-if="authorData"
+        class="text-sm text-gray-500 mt-1"
+      >
+        By {{ authorData.name }}
       </div>
     </template>
 

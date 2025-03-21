@@ -2,36 +2,23 @@ import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
 export default defineContentConfig({
   collections: {
-    // For existing docs content
+    // Main content collection
     content: defineCollection({
       type: 'page',
       source: '**/*.md',
     }),
-    // New blog collection
+
+    // Blog posts collection
     blog: defineCollection({
       type: 'page',
       source: 'blog/**/*.md',
       schema: z.object({
         title: z.string(),
         description: z.string().optional(),
-        date: z.date(),
-        author: z.object({
-          name: z.string(),
-          bio: z.string().optional(),
-        }),
-        tags: z
-          .array(
-            z.object({
-              name: z.string(),
-            }),
-          )
-          .optional(),
-        category: z
-          .object({
-            name: z.string(),
-            slug: z.string(),
-          })
-          .optional(),
+        date: z.string(), // Use string instead of date for better compatibility
+        updatedAt: z.string().optional(),
+        author: z.string(), // Reference to author ID
+        category: z.string(), // Reference to category slug
         cover: z
           .object({
             url: z.string(),
@@ -40,10 +27,45 @@ export default defineContentConfig({
             height: z.number().optional(),
           })
           .optional(),
+        tags: z.array(z.string()).optional(), // Array of tag IDs
         draft: z.boolean().default(false),
-        featured: z.boolean().default(false), // New field for featured posts
-        metaImage: z.string().optional(), // For SEO
-        excerpt: z.string().optional(), // Short excerpt for listings
+        featured: z.boolean().default(false),
+      }),
+    }),
+
+    // Authors collection
+    authors: defineCollection({
+      type: 'data',
+      source: 'authors/**/*.{yml,json}',
+      schema: z.object({
+        name: z.string(),
+        bio: z.string().optional(),
+        avatar: z.string().optional(),
+        website: z.string().optional(),
+        twitter: z.string().optional(),
+        linkedin: z.string().optional(),
+      }),
+    }),
+
+    // Categories collection
+    categories: defineCollection({
+      type: 'data',
+      source: 'categories/**/*.{yml,json}',
+      schema: z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        color: z.string().optional(), // Tailwind color class (without bg- prefix)
+      }),
+    }),
+
+    // Tags collection
+    tags: defineCollection({
+      type: 'data',
+      source: 'tags/**/*.{yml,json}',
+      schema: z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        color: z.string().optional(), // Tailwind color class (without bg- prefix)
       }),
     }),
   },

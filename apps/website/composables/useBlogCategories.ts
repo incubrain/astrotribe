@@ -1,46 +1,66 @@
+// composables/useBlogCategories.ts
+import { ref, computed } from 'vue'
+
 export function useBlogCategories() {
-  const categories = {
-    'all': {
-      title: 'AstronEra Blog',
-      description: 'Discover all our articles spanning the wonders and advancements of space.',
-      image: 'images/blog/all/isro-rocket-launch.png',
-    },
-    'people-of-space': {
-      title: 'People of Space',
-      description: 'Meet the trailblazers and visionaries propelling humanity into the cosmos.',
-      image: 'images/blog/people-of-space/people-of-space.webp',
-    },
-    'space-exploration': {
-      title: 'Space Exploration',
-      description:
-        'Embark on thrilling journeys through our latest missions and cosmic discoveries.',
-      image: 'images/blog/space-exploration/1.starship-lands-on-mars.webp',
-    },
-    'dark-sky-conservation': {
-      title: 'Dark Sky Conservation',
-      description: 'Uncover efforts to preserve our celestial vistas and protect night skies.',
-      image:
-        'images/blog/dark-sky-conservation/1.landscape-painting-of-dark-skies-and-mountains.webp',
-    },
-    'sustainable-development': {
-      title: 'Sustainable Development',
-      description: 'Explore innovations for a sustainable future in space and on Earth.',
-      image: 'images/blog/sustainable-development/1.sustainable-global-space-development.webp',
-    },
+  const categories = ref([])
+  const isLoading = ref(true)
+  const error = ref(null)
+
+  // Initialize with an empty array
+  const validCategories = computed(() => {
+    return ['all', ...(categories.value?.map((cat) => cat?.stem || '') || [])]
+  })
+
+  // Function to get category info by slug
+  const getCategoryInfo = (slug) => {
+    if (slug === 'all') {
+      return {
+        title: 'All Articles',
+        description: 'Explore all our blog posts across various categories',
+      }
+    }
+
+    const category = categories.value?.find((cat) => cat?.stem === slug)
+    return category
+      ? {
+          title: category.name,
+          description: category.description || `Articles about ${category.name}`,
+        }
+      : {
+          title: 'Category',
+          description: 'Blog posts in this category',
+        }
   }
 
-  const getCategoryInfo = (slug: string) => categories[slug] || categories.all
-
-  const getCategoryImage = (slug: string) => {
-    return getCategoryInfo(slug).image
+  // Function to get category image
+  const getCategoryImage = (slug) => {
+    // Add more defensive coding
+    return '/images/blog/category-default.jpg'
   }
 
-  const validCategories = Object.keys(categories)
+  // We'll use this to fetch from the categories collection
+  const fetchCategories = async () => {
+    try {
+      isLoading.value = true
+      const data = await queryCollection('categories').all()
+      categories.value = data || []
+      isLoading.value = false
+    } catch (err) {
+      console.error('Error fetching categories:', err)
+      error.value = err
+      isLoading.value = false
+      categories.value = [] // Ensure categories is always an array
+    }
+  }
 
+  // Return fetch method so it can be called when needed
   return {
-    categories,
+    categories: computed(() => categories.value || []),
+    isLoading,
+    error,
+    validCategories,
     getCategoryInfo,
     getCategoryImage,
-    validCategories,
+    fetchCategories, // Return the function instead of calling it immediately
   }
 }

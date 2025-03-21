@@ -5,22 +5,14 @@ description: >-
   allure, igniting a primal curiosity to explore the vast expanse of the cosmos.
 date: '2024-10-28T22:59:55.761Z'
 updatedAt: '2024-10-28T22:59:55.714Z'
-author:
-  name: Ruchira Huchgol
-  bio: >-
-    Ruchira Huchgol is space enthusiasts with a background in Aerospace
-    Engineering. She is also an Analog Astronaut and has been involved in analog
-    space missions.
-category:
-  name: Space Exploration
-  slug: space-exploration
+author: ruchira-huchgol
+category: space-exploration
 cover:
   url: >-
     https://idsifamzvzlpgnmlnldw.supabase.co/storage/v1/object/public/cms/1_starship_lands_on_mars_3ee52cd10d.webp
   alternativeText: null
   width: 1792
   height: 1024
-tags: []
 draft: false
 ---
 
