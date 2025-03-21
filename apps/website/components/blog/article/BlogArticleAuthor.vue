@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 
-defineProps<{
+const p = defineProps<{
   authors: any[]
   publishedAt: string
 }>()
+
+console.log('Props:', p)
 </script>
 
 <template>

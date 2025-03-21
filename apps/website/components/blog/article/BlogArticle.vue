@@ -48,12 +48,24 @@ watch(
     }
   },
 )
+
+const authorData = ref(null)
+
+onMounted(async () => {
+  if (typeof p.article.author === 'string') {
+    // Fetch the author details from the 'authors' collection
+    const { data } = await queryContent('authors')
+      .where({ _id: p.article.author })
+      .findOne()
+    authorData.value = data
+  }
+})
 </script>
 
 <template>
   <div class="max-w-full pb-10">
     <main>
-      <BlogArticleHero :article="article" />
+      <BlogArticleHero :article="article" :authors="[authorData]" />
       <div
         class="padded-x grid grid-cols-[minmax(300px,700px)] justify-center pt-8 xl:grid-cols-[minmax(240px,1fr)_minmax(660px,740px)_minmax(240px,1fr)] xl:gap-8"
       >
@@ -81,7 +93,10 @@ watch(
               :link="article.path"
               :summary="article.description"
             />
-            <BlogArticleAuthorCard :authors="[article.author]" />
+            <BlogArticleAuthorCard
+              v-if="authorData"
+              :authors="[authorData]"
+            />
           </div>
         </div>
       </div>

@@ -4,6 +4,10 @@ defineProps({
     type: Object,
     required: true,
   },
+  authors: {
+    type: Array,
+    default: () => [],
+  },
 })
 </script>
 
@@ -37,7 +41,8 @@ defineProps({
           />
         </div>
         <BlogArticleAuthor
-          :authors="[article.author]"
+          v-if="authors.length > 0"
+          :authors="authors"
           :published-at="article.date || article.publishedAt"
         />
       </div>
