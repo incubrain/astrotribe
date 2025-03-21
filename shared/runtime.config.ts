@@ -42,6 +42,8 @@ export const sharedRuntimeConfig = defineNuxtConfig({
     private: {
       cmsURL: process.env.NUXT_CMS_URL ?? localHost(devPortMap.cms),
       resendApiKey: process.env.NUXT_RESEND_API_KEY,
+      resendFromEmail: process.env.NUXT_RESEND_FROM_EMAIL,
+      resendToEmail: process.env.NUXT_RESEND_TO_EMAIL,
       supabaseServiceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
       googleApiKey: process.env.NUXT_GOOGLE_API_KEY,
       nasaApiKey: process.env.NUXT_NASA_API_KEY,
