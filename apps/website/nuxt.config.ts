@@ -79,14 +79,13 @@ export default defineNuxtConfig({
     // Studio preview configuration - enhanced for better performance
     preview: {
       api: 'https://api.nuxt.studio',
-      dev: true,
+      // dev: true,
       // dev: true, // Enable in development for testing
       // Explicitly define git info to avoid repository detection issues
       gitInfo: {
         name: 'astrotribe',
         owner: 'incubrain',
         url: 'https://github.com/incubrain/astrotribe',
-        dir: 'apps/website',
       },
     },
 
@@ -105,7 +104,18 @@ export default defineNuxtConfig({
     database: {
       // Use SQLite for development and static builds
       type: 'sqlite',
-      filename: '.data/content/contents.sqlite',
+      filename: '.data/content/contents.db',
+    },
+
+    sources: {
+      content: {
+        driver: 'fs',
+        prefix: '',
+      },
+      data: {
+        driver: 'fs',
+        prefix: '',
+      },
     },
 
     // Build-time optimization
