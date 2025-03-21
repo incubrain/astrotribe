@@ -1,13 +1,10 @@
 ## STACK
 
 - pnpm workspaces
-- node 22
+- node 20
 - Docker
 - Nuxt / Vue
-- Vite
-- NestJS
-- NX
-- pg_boss
+- Vite 6
 - Postgressql
 - Prisma
 - winston
@@ -17,6 +14,9 @@
 - Redis
 - Typescript
 - Pinia
+- Tailwind
+- PrimeVue
+- VueUse
 
 
 ## Project Guidelines
