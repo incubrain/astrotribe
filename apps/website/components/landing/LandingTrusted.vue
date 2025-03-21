@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import LandingTitle from './LandingTitle.vue'
-import { useAnimation } from '~/composables/useAnimation'
-
-const { fadeInUp, scaleOnHover } = useAnimation()
 
 interface TrustedPartner {
   image: string
@@ -52,10 +49,6 @@ const categoryColors = {
   tech: 'from-indigo-500/10 to-purple-500/10',
 }
 
-onMounted(() => {
-  fadeInUp('.partner-logo')
-  scaleOnHover('.partner-logo')
-})
 </script>
 
 <template>

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useAnimation } from '~/composables/useAnimation'
 import testimonials from '@/data/home/testimonials.json'
-
-const { carouselFadeIn } = useAnimation()
 
 interface Testimonial {
   image: string
@@ -11,10 +7,6 @@ interface Testimonial {
   company: string
   quote: string
 }
-
-onMounted(() => {
-  carouselFadeIn('.testimonial-item')
-})
 </script>
 
 <template>

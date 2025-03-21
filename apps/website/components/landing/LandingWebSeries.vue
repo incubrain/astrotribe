@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useAnimation } from '~/composables/useAnimation'
 
-const { fadeInUp } = useAnimation()
 const loadVideo = ref(false)
 
 const patreonPerks = [
@@ -13,9 +12,6 @@ const patreonPerks = [
   'Development insights',
 ]
 
-onMounted(() => {
-  fadeInUp('.content-section')
-})
 </script>
 
 <template>
