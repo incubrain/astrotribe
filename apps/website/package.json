@@ -7,7 +7,8 @@
     "test": "pnpm nx test @astronera/website",
     "dev": "pnpm nx serve @astronera/website",
     "build": "pnpm nx build @astronera/website",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs",
+    "prepare": "pnpm nx prepare @astronera/website"
   },
   "dependencies": {
     "@astronera/db": "workspace:*",
