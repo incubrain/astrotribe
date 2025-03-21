@@ -208,6 +208,10 @@ export const SocialMediaScalarFieldEnumSchema = z.enum(['id','facebook_url','twi
 
 export const SpiderMetricsScalarFieldEnumSchema = z.enum(['id','crawl_id','metric_id','timestamp','value']);
 
+export const StrapiMigrationsScalarFieldEnumSchema = z.enum(['id','name','time']);
+
+export const StrapiMigrationsInternalScalarFieldEnumSchema = z.enum(['id','name','time']);
+
 export const TableMaintenanceLogScalarFieldEnumSchema = z.enum(['id','operation','detail','logged_at']);
 
 export const TableStatisticsScalarFieldEnumSchema = z.enum(['table_name','row_count','table_size','index_size','live_tuples','dead_tuples','last_vacuum','last_analyze','estimated_bloat_ratio','buffer_cache_hit_ratio','index_usage','seq_scan_count','index_scan_count','capture_time']);
