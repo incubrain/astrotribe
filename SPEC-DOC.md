@@ -7,7 +7,7 @@ Rules:
 
 ## Hardware
 - Always add try catch and logging around CRITICAL func, handle non-critical errors gracefully
-- Mac Pro M3 Nuxt 3.15 PNPM >=9.0.0 Node 22.12 Typescript ^5.6.3 Pinia for state, composition API
+- Mac Pro M3 Nuxt 3.16 PNPM >=9.0.0 Node 20.19.0 Typescript ^5.6.3 Pinia for state, composition API
     syntax ALWAYS use Tailwind, Primevue with prefix of 'Prime' for components
 
 ## Business Minded
