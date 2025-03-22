@@ -111,7 +111,7 @@
     "@supabase/supabase-js": "^2.47.8",
     "@swc/helpers": "~0.5.11",
     "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "22.10.3",
+    "@types/node": "20.14.8",
     "@vueuse/core": "^12.3.0",
     "@vueuse/integrations": "^12.3.0",
     "@vueuse/nuxt": "^12.3.0",

@@ -1,4 +1,4 @@
-FROM node:22.12.0-bookworm
+FROM node:20.19-bookworm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NX_DAEMON=false
