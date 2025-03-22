@@ -78,6 +78,11 @@ ts-diagnostic-results
 Thumbs.db
 **.DS_Store
 
+repomix-output.xml
+repomix-output.txt
+**/repomix-output.xml
+**/repomix-output.txt
+
 # Nuxt dev/build outputs
 .output
 .data
