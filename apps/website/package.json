@@ -1,16 +1,23 @@
 {
   "name": "@astronera/website",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
-    "lint": "pnpm nx lint @astronera/website",
-    "test": "pnpm nx test @astronera/website",
-    "dev": "pnpm nx serve @astronera/website",
-    "build": "pnpm nx build @astronera/website",
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run --coverage",
+    "dev": "pnpx nuxi dev",
+    "build": "pnpx nuxi build",
+    "prepare": "pnpx nuxi prepare",
     "start": "node .output/server/index.mjs",
-    "prepare": "pnpm nx prepare @astronera/website"
+    "sync-content": "tsx scripts/sync-content-to-postgres.ts"
   },
   "dependencies": {
+    "@astronera/logging": "workspace:*",
+    "@astronera/base": "workspace:*",
+    "@astronera/supabase": "workspace:*",
+    "@astronera/crud": "workspace:*",
+    "@astronera/advert": "workspace:*",
+    "@astronera/referral": "workspace:*",
     "@astronera/db": "workspace:*",
     "@faker-js/faker": "^9.2.0",
     "@iconify/vue": "^4.3.0",

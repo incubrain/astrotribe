@@ -78,10 +78,6 @@ ts-diagnostic-results
 Thumbs.db
 **.DS_Store
 
-.nx/cache
-.nx/workspace-data
-.nx/
-
 # Nuxt dev/build outputs
 .output
 .data

@@ -1,16 +1,22 @@
 {
   "name": "@astronera/auth",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "pnpm nx lint @astronera/auth",
-    "test": "pnpm nx test @astronera/auth",
-    "dev": "nx serve @astronera/auth",
-    "build": "nx build @astronera/auth",
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run",
+    "dev": "pnpx nuxi dev",
+    "build": "pnpx nuxi build",
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@astronera/logging": "workspace:*",
+    "@astronera/base": "workspace:*",
+    "@astronera/supabase": "workspace:*",
+    "@astronera/crud": "workspace:*",
+    "@astronera/advert": "workspace:*",
+    "@astronera/referral": "workspace:*",
     "@nuxt/image": "^1.8.1",
     "@primevue/core": "^4.2.5",
     "@primevue/nuxt-module": "^4.2.5",

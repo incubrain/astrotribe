@@ -1,11 +1,11 @@
 {
   "name": "@astronera/logging",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "pnpm nx lint @astronera/logging",
-    "test": "pnpm nx test @astronera/logging",
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run",
     "dev": "pnpx nuxi dev",
     "build": "pnpx nuxi build",
     "prepare": "pnpx nuxi prepare"

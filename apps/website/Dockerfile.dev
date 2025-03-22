@@ -4,20 +4,26 @@ FROM node:20.19-bookworm AS builder
 # Set environment variables for better performance and reproducibility
 ENV NODE_ENV=development
 
+# Enable corepack for PNPM
+RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+
 # Set the working directory
 WORKDIR /app
 
-# Copy only package.json and package-lock.json first for better caching
-COPY package.json package-lock.json ./
-
-# Copy the rest of the application code
-COPY . .
+# Copy package files for better caching
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc turbo.json ./
+COPY apps/website ./apps/website
+COPY libs ./libs
+COPY layers ./layers
+COPY theme ./theme
+COPY shared ./shared
+COPY content ./content
 
 # Install dependencies
-RUN pnpm install
+RUN pnpm install --filter @astronera/website...
 
-# Build the application using Nx
-RUN pnpx nx build @astronera/website
+# Build the application using Turborepo
+RUN pnpm turbo run build --filter=@astronera/website
 
 # Stage 2: Production Stage
 FROM node:20.19-bookworm
@@ -29,13 +35,16 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 # Copy the built application from the builder stage
-COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/apps/website/.output ./.output
 
-# Optionally, copy package.json and package-lock.json if runtime dependencies are needed
-COPY package.json package-lock.json ./
+# Copy package.json for potential runtime dependencies
+COPY --from=builder /app/apps/website/package.json ./package.json
 
-# Install only production dependencies
-RUN pnpm ci --only=production
+# Enable corepack for PNPM (for any runtime dependency installation)
+RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+
+# Install only production dependencies if needed
+RUN pnpm install --prod
 
 # Expose the port Nuxt uses
 EXPOSE 3000

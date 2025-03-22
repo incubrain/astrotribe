@@ -11,7 +11,7 @@ echo "Nuxt layers built successfully"
 # Function to build a project
 build_project() {
     echo "Building $1..."
-    nx build $1
+    pnpm turbo run build --filter=$1
     if [ $? -ne 0 ]; then
         echo "Error building $1"
         exit 1

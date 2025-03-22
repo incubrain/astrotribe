@@ -1,6 +1,5 @@
 import { ESLint } from 'eslint'
 import { IClone } from '@jscpd/core'
-import type { ProjectConfiguration } from '@nx/devkit'
 
 export interface ScannerPlugin {
   name: string
@@ -11,7 +10,6 @@ export interface ScannerPlugin {
 export interface ScanContext {
   projectPath: string
   projectType: 'nuxt' | 'node'
-  projectConfig: ProjectConfiguration
   globalConfig: CodeScannerConfig
 }
 

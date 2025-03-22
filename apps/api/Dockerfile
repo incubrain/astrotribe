@@ -1,19 +1,11 @@
 FROM node:20.19-bookworm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-ENV NX_DAEMON=false
-ENV NX_VERBOSE_LOGGING=true
-ENV NX_SKIP_NX_CLOUD=true
-RUN corepack prepare pnpm@8.7.6 --activate
 
-RUN npm install -g pnpm
+# Enable corepack for PNPM
+RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+
 WORKDIR /app
 
-ARG NX_CLOUD_ACCESS_TOKEN
-
-ENV NX_CLOUD_ACCESS_TOKEN=${NX_CLOUD_ACCESS_TOKEN} \
-    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-    
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 # Install required build dependencies
 RUN apt-get update && \
@@ -21,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy only the necessary files first
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc .nxignore tsconfig.json nx.json nest-cli.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc turbo.json tsconfig.json nest-cli.json ./
 COPY apps/api ./apps/api
 COPY libs ./libs
 COPY shared ./shared
@@ -29,12 +21,11 @@ COPY shared ./shared
 # Install dependencies for specific workspaces
 RUN pnpm install --filter @astronera/api...
 
-# Generate Prisma client for logger
+# Generate Prisma client
 RUN pnpm prisma:gen
 
-# Install nx and build
-RUN pnpx nx reset
-RUN pnpx nx build @astronera/api --skip-nx-cache
+# Build with turbo
+RUN pnpm turbo run build --filter=@astronera/api
 
 RUN pnpm prune --production
 

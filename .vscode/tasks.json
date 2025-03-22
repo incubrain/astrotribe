@@ -14,7 +14,7 @@
     {
       "label": "Admin Frontend",
       "type": "shell",
-      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/admin",
+      "command": "NUXT_MULTI_APP=true pnpm turbo run dev --filter=@astronera/admin",
       "presentation": {
         "reveal": "always",
         "panel": "new",
@@ -25,7 +25,7 @@
     {
       "label": "App Frontend",
       "type": "shell",
-      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/app",
+      "command": "NUXT_MULTI_APP=true pnpm turbo run dev --filter=@astronera/app",
       "presentation": {
         "reveal": "always",
         "panel": "new",
@@ -36,7 +36,7 @@
     {
       "label": "Auth Frontend",
       "type": "shell",
-      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/auth",
+      "command": "NUXT_MULTI_APP=true pnpm turbo run dev --filter=@astronera/auth",
       "presentation": {
         "reveal": "always",
         "panel": "new",
@@ -47,7 +47,7 @@
     {
       "label": "API Backend",
       "type": "shell",
-      "command": "NUXT_MULTI_APP=true pnpm nx serve @astronera/api",
+      "command": "NUXT_MULTI_APP=true pnpm turbo run dev --filter=@astronera/api",
       "presentation": {
         "reveal": "always",
         "panel": "new",

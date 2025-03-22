@@ -19,14 +19,21 @@ for lib in libs/*/; do
     
     echo "Building $lib_name..."
     
-    # Run nx build command for the current library
-    nx build "$lib_name"
+    # Check if it's an @ib library
+    if [[ "$lib_name" == "logger" || "$lib_name" == "cache" || "$lib_name" == "core" || "$lib_name" == "testing" ]]; then
+        project_name="@ib/$lib_name"
+    else
+        project_name="@astronera/$lib_name"
+    fi
+    
+    # Run turbo build command for the current library
+    pnpm turbo run build --filter=$project_name
     
     # Check if the build was successful
     if [ $? -eq 0 ]; then
-        echo "Successfully built $lib_name"
+        echo "Successfully built $project_name"
     else
-        echo "Failed to build $lib_name"
+        echo "Failed to build $project_name"
     fi
     
     echo "------------------------"

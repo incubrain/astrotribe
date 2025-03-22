@@ -1,18 +1,9 @@
-// cli/flows/scanner.flow.ts
+// cli/flows/scanner.flow.ts (Updated version)
 import path from 'path'
 import fs from 'fs'
 import chalk from 'chalk'
-import {
-  readProjectConfiguration,
-  workspaceRoot,
-  getProjects,
-  type Tree,
-  type ProjectConfiguration,
-} from '@nx/devkit'
 import type { CLIFlow } from '../types'
-import { createNxTree } from './utils/nx-tree'
 import { runScan } from './index'
-// import { names } from '@nx/devkit'
 
 export interface ScannerContext {
   scanType: 'all' | 'specific'
@@ -21,6 +12,42 @@ export interface ScannerContext {
   reportFormat: 'json' | 'html'
   reportPath?: string
   results?: any
+}
+
+// Helper function to get all projects by scanning directories
+function getProjectsList(): string[] {
+  const workspaceRoot = process.cwd()
+  const projects: string[] = []
+
+  // Function to scan dir and extract package names
+  const scanDir = (dir: string, prefix: string) => {
+    if (!fs.existsSync(dir)) return
+
+    fs.readdirSync(dir, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .forEach((dirent) => {
+        const packagePath = path.join(dir, dirent.name, 'package.json')
+        if (fs.existsSync(packagePath)) {
+          try {
+            const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf-8'))
+            if (pkg.name) {
+              projects.push(pkg.name)
+            } else {
+              projects.push(`${prefix}/${dirent.name}`)
+            }
+          } catch {
+            projects.push(`${prefix}/${dirent.name}`)
+          }
+        }
+      })
+  }
+
+  // Scan apps, libs, and layers
+  scanDir(path.join(workspaceRoot, 'apps'), '@astronera')
+  scanDir(path.join(workspaceRoot, 'libs'), '@ib')
+  scanDir(path.join(workspaceRoot, 'layers'), '@astronera')
+
+  return projects
 }
 
 export const scannerFlow: CLIFlow = {
@@ -46,10 +73,9 @@ export const scannerFlow: CLIFlow = {
           type: 'list',
           name: 'project',
           message: 'Select project to scan:',
-          choices: async () => {
-            const tree = createNxTree()
-            const projects = getProjects(tree)
-            return Array.from(projects.keys()).map((name) => ({
+          choices: () => {
+            const projects = getProjectsList()
+            return projects.map((name) => ({
               name,
               value: name,
             }))
@@ -88,6 +114,7 @@ export const scannerFlow: CLIFlow = {
       },
       next: () => 'results',
     },
+    // Rest of the flow remains the same
     {
       id: 'results',
       title: 'Scan Results',

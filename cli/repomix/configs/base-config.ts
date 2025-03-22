@@ -27,7 +27,6 @@ const IGNORE_CONFIG_FILES = [
 const IGNORE_NUXT_FILES = ['**/.output/**', '**/.nuxt/**', '**/temp/**', '**/.playground/**']
 
 const IGNORE_SUPABASE_FILES = ['**/seed.sql', '**/schema.gen.ts']
-const IGNORE_NX_FILES = ['.nx']
 const IGNORE_TYPES = ['**/*.d.ts', '**/types/**']
 
 // cli/configs/base-config.ts
@@ -66,7 +65,6 @@ export const BASE_CONFIG = {
       ...IGNORE_TESTING_FILES,
       ...IGNORE_NUXT_FILES,
       ...IGNORE_SUPABASE_FILES,
-      ...IGNORE_NX_FILES,
       ...IGNORE_TYPES,
     ] as const,
   },

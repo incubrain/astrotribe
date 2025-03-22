@@ -1,0 +1,52 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env", ".github/workflows/ci.yml"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".output/**", ".nuxt/**", "node_modules/.cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:ui": {
+      "cache": false,
+      "outputs": []
+    },
+    "test:coverage": {
+      "outputs": ["coverage/**"]
+    },
+    "prepare": {
+      "outputs": [".nuxt/**"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "types": {
+      "outputs": ["dist/types/**"]
+    },
+    "package": {
+      "dependsOn": ["build"],
+      "outputs": ["*.zip"]
+    },
+    "generate": {
+      "outputs": ["src/generated/**", "dist/generated/**"]
+    }
+  }
+}

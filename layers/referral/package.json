@@ -1,9 +1,9 @@
 {
   "name": "@astronera/referral",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
-    "lint": "pnpm nx lint @astronera/referral",
-    "test": "pnpm nx test @astronera/referral",
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run",
     "dev": "pnpx nuxi dev",
     "build": "pnpx nuxi build",
     "prepare": "pnpx nuxi prepare"
@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "nuxt": "^3.16.1",
-    "nx": "^20.3.0",
     "vue": "^3.3.4"
   }
 }
