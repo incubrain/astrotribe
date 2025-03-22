@@ -1,7 +1,6 @@
-// scanner.ts
+// scanner.ts (Updated version)
 import * as fs from 'fs'
 import * as path from 'path'
-import { getProjects, readProjectConfiguration, type Tree, workspaceRoot } from '@nx/devkit'
 import type { CodeScannerConfig, ScannerPlugin, ScanContext, ScanResult } from './types'
 import { ComplexityScanner, complexityConfig } from './plugins/complexity'
 import { DuplicationScanner, duplicationConfig } from './plugins/duplication'
@@ -9,7 +8,6 @@ import { DependencyScanner, dependenciesConfig } from './plugins/dependencies'
 import { TypeSafetyPlugin, typeSafetyConfig } from './plugins/type-safety'
 import { BundleAnalyzerPlugin, bundleAnalyzerConfig } from './plugins/bundle-analyzer'
 import { ReportGenerator } from './report-generator'
-import { createNxTree } from './utils/nx-tree'
 
 interface ProjectSummary {
   totalIssues: number
@@ -50,21 +48,61 @@ interface ScanSummary {
 export class CodeScanner {
   private plugins: Map<string, ScannerPlugin> = new Map()
   private config: CodeScannerConfig
-  private tree = createNxTree()
+  private workspaceRoot: string
 
   constructor(configPath?: string) {
+    this.workspaceRoot = process.cwd()
     this.config = this.loadConfig(configPath)
     this.registerDefaultPlugins()
   }
 
   private async getProjectPaths(): Promise<Map<string, 'nuxt' | 'node'>> {
     const projects = new Map<string, 'nuxt' | 'node'>()
-    const allProjects = getProjects(this.tree)
 
-    for (const [projectName, project] of allProjects) {
-      const config = readProjectConfiguration(this.tree, projectName)
-      const hasNuxtConfig = fs.existsSync(path.join(config.root, 'nuxt.config.ts'))
-      projects.set(projectName, hasNuxtConfig ? 'nuxt' : 'node')
+    // Scan apps directory
+    const appsDir = path.join(this.workspaceRoot, 'apps')
+    if (fs.existsSync(appsDir)) {
+      const appDirs = fs
+        .readdirSync(appsDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name)
+
+      for (const app of appDirs) {
+        const appPath = path.join(appsDir, app)
+        const hasNuxtConfig =
+          fs.existsSync(path.join(appPath, 'nuxt.config.ts')) ||
+          fs.existsSync(path.join(appPath, 'nuxt.config.js'))
+        projects.set(`@astronera/${app}`, hasNuxtConfig ? 'nuxt' : 'node')
+      }
+    }
+
+    // Scan libs directory
+    const libsDir = path.join(this.workspaceRoot, 'libs')
+    if (fs.existsSync(libsDir)) {
+      const libDirs = fs
+        .readdirSync(libsDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name)
+
+      for (const lib of libDirs) {
+        const libPath = path.join(libsDir, lib)
+        const isIbLib = ['logger', 'cache', 'core', 'testing'].includes(lib)
+        projects.set(isIbLib ? `@ib/${lib}` : `@astronera/${lib}`, 'node')
+      }
+    }
+
+    // Scan layers directory
+    const layersDir = path.join(this.workspaceRoot, 'layers')
+    if (fs.existsSync(layersDir)) {
+      const layerDirs = fs
+        .readdirSync(layersDir, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name)
+
+      for (const layer of layerDirs) {
+        const layerPath = path.join(layersDir, layer)
+        projects.set(`@astronera/${layer}`, 'nuxt')
+      }
     }
 
     return projects
@@ -74,9 +112,9 @@ export class CodeScanner {
     const projects = await this.getProjectPaths()
     const results: Record<string, ScanResult[]> = {}
 
-    for (const [projectName] of projects) {
+    for (const [projectName, projectType] of projects) {
       try {
-        results[projectName] = await this.scanProject(projectName)
+        results[projectName] = await this.scanProject(projectName, projectType)
       } catch (error: any) {
         console.error(`Error scanning project ${projectName}:`, error)
       }
@@ -122,17 +160,48 @@ export class CodeScanner {
     this.plugins.set(plugin.name, plugin)
   }
 
-  public async scanProject(projectName: string): Promise<ScanResult[]> {
-    const projects = await this.getProjectPaths()
-    const projectType = projects.get(projectName)
+  public async scanProject(
+    projectName: string,
+    projectType: 'nuxt' | 'node',
+  ): Promise<ScanResult[]> {
+    let projectPath: string | undefined
 
-    if (!projectType) {
-      throw new Error(`Project ${projectName} not found in workspace`)
+    if (projectName.startsWith('@astronera/')) {
+      const name = projectName.replace('@astronera/', '')
+      // Check in apps
+      let potentialPath = path.join(this.workspaceRoot, 'apps', name)
+      if (fs.existsSync(potentialPath)) {
+        projectPath = potentialPath
+      } else {
+        // Check in layers
+        potentialPath = path.join(this.workspaceRoot, 'layers', name)
+        if (fs.existsSync(potentialPath)) {
+          projectPath = potentialPath
+        }
+      }
+    } else if (projectName.startsWith('@ib/')) {
+      const name = projectName.replace('@ib/', '')
+      projectPath = path.join(this.workspaceRoot, 'libs', name)
     }
 
-    const projectConfig = readProjectConfiguration(this.tree, projectName)
+    if (!projectPath || !fs.existsSync(projectPath)) {
+      throw new Error(`Project path for ${projectName} not found`)
+    }
+
+    const packageJsonPath = path.join(projectPath, 'package.json')
+    const packageJson = fs.existsSync(packageJsonPath)
+      ? JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
+      : {}
+
+    const projectConfig = {
+      root: projectPath,
+      sourceRoot: projectPath,
+      projectType: projectType === 'nuxt' ? 'application' : 'library',
+      targets: packageJson.scripts || {},
+    }
+
     const context: ScanContext = {
-      projectPath: projectConfig.root,
+      projectPath,
       projectType,
       projectConfig,
       globalConfig: this.config,

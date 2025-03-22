@@ -1,14 +1,17 @@
 {
   "name": "@astronera/chrome-extension",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "pnpm nx lint chrome-extension",
-    "test": "pnpm nx test chrome-extension",
-    "dev": "nx serve chrome-extension",
-    "build": "nx build chrome-extension",
-    "start": "node dist/main.js"
+    "lint": "eslint . --ext .ts,.js",
+    "test": "vitest run",
+    "dev": "vite dev",
+    "build": "mkdir -p dist && cp newtab.html dist/ && cp manifest.json dist/ && vite build",
+    "start": "node dist/main.js",
+    "package": "cd dist && zip -r ../chrome-extension.zip ."
   },
-  "dependencies": {}
+  "dependencies": {
+    "@ib/logger": "workspace:*"
+  }
 }

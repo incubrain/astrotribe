@@ -1,6 +1,6 @@
 {
   "name": "@ib/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "types": "./dist/index.esm.d.ts",
   "main": "./dist/index.cjs.js",
@@ -16,16 +16,15 @@
     "dist"
   ],
   "scripts": {
-    "lint": "nx lint @ib/core",
-    "test": "nx test @ib/core",
-    "dev": "nx build @ib/core --watch",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run",
+    "dev": "rollup -c rollup.config.ts --watch",
     "clean": "rm -rf dist",
-    "build": "nx build @ib/core"
+    "build": "rollup -c rollup.config.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.8",
     "winston": "^3.14.2",
-    "@nx/rollup": "20.3.0",
     "@types/node": "^20.14.8"
   },
   "devDependencies": {

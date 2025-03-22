@@ -1,10 +1,10 @@
 {
   "name": "@astronera/supabase",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
-    "lint": "pnpm nx lint @astronera/supabase",
-    "test": "pnpm nx test @astronera/supabase",
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run",
     "dev": "pnpx nuxi dev",
     "build": "pnpx nuxi build",
     "prepare": "pnpx nuxi prepare"

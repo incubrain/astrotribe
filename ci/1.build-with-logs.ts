@@ -61,10 +61,10 @@ async function runBuildWithLogs(projectPath: string): Promise<void> {
     projectPrefix = '@ib'
   }
 
-  const nxProjectName = `${projectPrefix}/${projectName}`
+  const fullProjectName = `${projectPrefix}/${projectName}`
 
-  console.log(`Running build for ${nxProjectName}...`)
-  const buildProcess = spawn('nx', ['build', nxProjectName], {
+  console.log(`Running build for ${fullProjectName}...`)
+  const buildProcess = spawn('pnpm', ['turbo', 'run', 'build', `--filter=${fullProjectName}`], {
     cwd: path.join(__dirname, '..'),
     shell: true, // helpful on Windows
   })

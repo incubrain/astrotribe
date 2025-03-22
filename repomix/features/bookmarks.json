@@ -96,7 +96,6 @@
       "**/.playground/**",
       "**/seed.sql",
       "**/schema.gen.ts",
-      ".nx",
       "**/*.d.ts",
       "**/types/**",
       "**/bookmark.test.*",

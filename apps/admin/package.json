@@ -1,15 +1,21 @@
 {
   "name": "@astronera/admin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "pnpm nx lint @astronera/admin",
-    "test": "pnpm nx test @astronera/admin",
-    "dev": "nx serve @astronera/admin",
-    "build": "nx build @astronera/admin"
+    "lint": "eslint . --ext .ts,.vue",
+    "test": "vitest run",
+    "dev": "pnpx nuxi dev",
+    "build": "nuxi build"
   },
   "dependencies": {
+    "@astronera/logging": "workspace:*",
+    "@astronera/base": "workspace:*",
+    "@astronera/supabase": "workspace:*",
+    "@astronera/crud": "workspace:*",
+    "@astronera/advert": "workspace:*",
+    "@astronera/referral": "workspace:*",
     "@astronera/db": "workspace:*",
     "@nuxt/image": "^1.8.0",
     "@primevue/core": "^4.2.5",

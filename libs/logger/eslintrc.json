@@ -3,17 +3,7 @@
   "overrides": [
     {
       "files": ["*.json"],
-      "parser": "jsonc-eslint-parser",
-      "rules": {
-        "@nx/dependency-checks": [
-          "error",
-          {
-            "buildTargets": ["build"],
-            "ignoredDependencies": [],
-            "useLocalPathsForWorkspaceDependencies": true
-          }
-        ]
-      }
+      "parser": "jsonc-eslint-parser"
     }
   ]
 }
