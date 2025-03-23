@@ -1,0 +1,37 @@
+# docker-compose.website.yml
+name: astronera-website
+
+services:
+  website-postgres:
+    build:
+      context: .
+      dockerfile: apps/pg-service/Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: astronera
+    ports:
+      - '5433:5432' # Changed port to avoid conflict with Supabase
+    volumes:
+      - website_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # PgAdmin (Web-based PostgreSQL admin tool)
+  website-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@astronera.com
+      PGADMIN_DEFAULT_PASSWORD: admin_password
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '5050:80'
+    depends_on:
+      website-postgres:
+        condition: service_healthy
+
+volumes:
+  website_pg_data:
