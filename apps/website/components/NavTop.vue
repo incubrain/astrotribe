@@ -126,7 +126,7 @@ const websiteLinks: NavItem[] = [
       {
         key: 'blog-sustainable-development',
         label: 'Sustainability',
-        icon: 'i-mdi-leaf-outline',
+        icon: 'i-mdi-leaf',
         url: '/blog/category/sustainable-development',
         visible: true,
         disabled: false,

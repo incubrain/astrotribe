@@ -17,6 +17,7 @@
 - Tailwind
 - PrimeVue
 - VueUse
+- TurboRepo
 
 
 ## Project Guidelines
