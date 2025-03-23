@@ -28,5 +28,4 @@ export default {
     '../../theme/**/*.{js,css}',
   ],
 
-  plugins: [require('@tailwindcss/typography')],
 } satisfies Config

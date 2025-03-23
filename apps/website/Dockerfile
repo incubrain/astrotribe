@@ -6,7 +6,7 @@ ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=12288"
 
 # Enable corepack for PNPM
-RUN corepack enable && corepack prepare pnpm@8.7.6 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.2 --activate
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -35,8 +35,6 @@ RUN pnpm turbo run build --filter=@astronera/website
 
 # Prune dependencies for production
 WORKDIR /app
-RUN pnpm prune --production
 
 # Use the correct path to the entry point
-WORKDIR /app/apps/website
 CMD ["node", ".output/server/index.mjs"]
