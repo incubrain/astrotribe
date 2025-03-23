@@ -9,6 +9,11 @@ console.log('Node Env:', process.env.NODE_ENV)
 
 export default defineNuxtConfig({
   modules: ['@nuxtjs/supabase'],
+
+  $meta: {
+    name: 'supabase',
+  },
+
   srcDir: '.',
   workspaceDir: '../../',
 
