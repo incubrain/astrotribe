@@ -1,7 +1,10 @@
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/supabase'],
+  modules: ['@nuxtjs/supabase', '@nuxt/image'],
+  $meta: {
+    name: 'advert',
+  },
 
   components: [
     {

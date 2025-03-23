@@ -3,6 +3,10 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   modules: ['@nuxtjs/supabase'],
 
+  $meta: {
+    name: 'testing',
+  },
+
   components: [
     {
       path: './components',

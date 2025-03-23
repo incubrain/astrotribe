@@ -2,6 +2,9 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: ['@nuxt/image'],
+  $meta: {
+    name: 'base',
+  },
   components: [
     {
       path: './components',
