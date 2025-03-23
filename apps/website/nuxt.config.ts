@@ -4,6 +4,12 @@ import { sharedRuntimeConfig } from '../../shared/runtime.config'
 import { devPortMap } from '../../shared/paths.config'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
+const rootDir = join(currentDir, '../..')
+
+const baseLayerPath = resolve(rootDir, 'layers/base')
+const crudLayerPath = resolve(rootDir, 'layers/crud')
+const advertLayerPath = resolve(rootDir, 'layers/advert')
+const referralLayerPath = resolve(rootDir, 'layers/referral')
 
 function generateLocalUrls(start = 3000, end = 3009) {
   return Array.from({ length: end - start + 1 }, (_, i) => `http://localhost:${start + i}`)
@@ -20,12 +26,7 @@ const og = {
 }
 
 export default defineNuxtConfig({
-  extends: [
-    '../../layers/base',
-    '../../layers/crud',
-    '../../layers/advert',
-    '../../layers/referral',
-  ],
+  extends: [baseLayerPath, crudLayerPath, advertLayerPath, referralLayerPath],
 
   modules: [
     '@nuxtjs/mdc',
@@ -102,15 +103,17 @@ export default defineNuxtConfig({
 
     // Database configuration optimized for different environments
     database: {
-      type: 'sqlite',
-      // Use a standard location that works across environments
-      filename: './data/content.db',
-      // Add these options for better compatibility
-      options: {
-        // Important: Force schema creation on startup
-        recreateDatabase: process.env.NODE_ENV === 'development',
-        // Cache database to memory for better performance
-        cacheToMemory: true,
+      type: 'postgres',
+      url:
+        process.env.NUXT_CONTENT_DATABASE_URL ||
+        'postgres://nuxt_content_user:your_secure_password@localhost:5432/postgres',
+      // PostgreSQL-specific options
+      schema: 'nuxt_content',
+      ssl: process.env.NODE_ENV === 'production',
+      // Connection pool settings
+      pool: {
+        min: 2,
+        max: 10,
       },
     },
 
@@ -171,6 +174,7 @@ export default defineNuxtConfig({
       ...sharedRuntimeConfig.runtimeConfig.public,
     },
   },
+
   srcDir: '.',
   workspaceDir: '../../',
 
