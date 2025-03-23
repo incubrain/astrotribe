@@ -25,7 +25,6 @@ COPY libs ./libs
 COPY layers ./layers
 COPY theme ./theme
 COPY shared ./shared
-COPY content ./content
 
 # Install all dependencies
 RUN pnpm install --filter @astronera/website...
