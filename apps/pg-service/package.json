@@ -1,0 +1,14 @@
+{
+  "name": "@astronera/pg-service",
+  "version": "0.1.0",
+  "scripts": {
+    "migrate": "node-pg-migrate --migrations-dir ./migrations up",
+    "migrate:create": "node-pg-migrate --migrations-dir ./migrations create",
+    "backup": "node ./scripts/backup.js",
+    "restore": "node ./scripts/restore.js"
+  },
+  "dependencies": {
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.11.3"
+  }
+}
