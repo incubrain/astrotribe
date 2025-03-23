@@ -10,8 +10,8 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@nuxt/image": "^1.8.1",
-    "@nuxtjs/supabase": "^1.4.0",
+    "@nuxt/image": "^1.10.0",
+    "@nuxtjs/supabase": "^1.5.0",
     "@sentry/vue": "^8.31.0",
     "posthog-js": "^1.164.3",
     "three": "^0.174.0",
