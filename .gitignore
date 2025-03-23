@@ -99,3 +99,6 @@ supabase/functions/.env
 ai-docs
 
 **/openapi/
+
+.DS_Store
+**/.DS_Store
