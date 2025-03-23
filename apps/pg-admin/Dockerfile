@@ -11,29 +11,39 @@ USER root
 RUN mkdir -p /var/lib/pgadmin/storage
 RUN mkdir -p /pgadmin4/servers
 
-# Copy the server configuration
-COPY apps/pg-admin/config/servers.json /pgadmin4/servers/
+# Create a directory for scripts
+RUN mkdir -p /docker-entrypoint-initdb.d
 
-# Create startup script to set up password file and inject environment variables
-RUN echo '#!/bin/bash\n\
-# Create pgpass file with credentials from environment\n\
-echo "*:*:*:${PG_USER}:${PG_PASSWORD}" > /var/lib/pgadmin/pgpassfile\n\
-chmod 600 /var/lib/pgadmin/pgpassfile\n\
-chown pgadmin:root /var/lib/pgadmin/pgpassfile\n\
-\n\
-# Replace placeholders in servers.json\n\
-sed -i "s/\${PG_HOST}/$PG_HOST/g" /pgadmin4/servers/servers.json\n\
-sed -i "s/\${PG_USER}/$PG_USER/g" /pgadmin4/servers/servers.json\n\
-\n\
-# Start pgAdmin\n\
-exec python /pgadmin4/web/pgAdmin4.py\n\
-' > /entrypoint.sh
+# Create the entrypoint script in a separate file for better reliability
+RUN echo '#!/bin/bash' > /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo '# Create pgpass file with credentials from environment' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'echo "*:*:*:${PG_USER}:${PG_PASSWORD}" > /var/lib/pgadmin/pgpassfile' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'chmod 600 /var/lib/pgadmin/pgpassfile' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'chown pgadmin:root /var/lib/pgadmin/pgpassfile' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo '' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo '# Replace placeholders in servers.json' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'sed -i "s/\${PG_HOST}/$PG_HOST/g" /pgadmin4/servers/servers.json' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'sed -i "s/\${PG_USER}/$PG_USER/g" /pgadmin4/servers/servers.json' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo '' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo '# Start pgAdmin' >> /docker-entrypoint-initdb.d/entrypoint.sh && \
+    echo 'exec python /pgadmin4/web/pgAdmin4.py' >> /docker-entrypoint-initdb.d/entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+# Make sure the script is executable by all users
+RUN chmod +x /docker-entrypoint-initdb.d/entrypoint.sh
+
+# Create a wrapper script that will be called by the CMD
+RUN echo '#!/bin/bash' > /entrypoint-wrapper.sh && \
+    echo 'bash /docker-entrypoint-initdb.d/entrypoint.sh' >> /entrypoint-wrapper.sh && \
+    chmod +x /entrypoint-wrapper.sh
+
+# Create placeholder servers.json file that will be modified at runtime
+RUN echo '{"Servers": {"1": {"Name": "AstronEra Content DB", "Group": "Railway", "Host": "${PG_HOST}", "Port": 5432, "MaintenanceDB": "astronera", "Username": "${PG_USER}", "SSLMode": "prefer", "PassFile": "/var/lib/pgadmin/pgpassfile"}}}' > /pgadmin4/servers/servers.json
 
 # Configure permissions
 RUN chown -R pgadmin:root /var/lib/pgadmin
 RUN chown -R pgadmin:root /pgadmin4/servers
+RUN chown -R pgadmin:root /docker-entrypoint-initdb.d
+RUN chown pgadmin:root /entrypoint-wrapper.sh
 
 # Switch back to pgadmin user
 USER pgadmin
@@ -41,5 +51,5 @@ USER pgadmin
 # Expose the web interface port
 EXPOSE 80
 
-# Use the custom entrypoint script
-CMD ["/entrypoint.sh"]
+# Use the wrapper script
+CMD ["/entrypoint-wrapper.sh"]

@@ -5,7 +5,7 @@
     "dockerfilePath": "apps/pg-admin/Dockerfile"
   },
   "deploy": {
-    "startCommand": "/entrypoint.sh",
+    "startCommand": "/entrypoint-wrapper.sh",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE"
