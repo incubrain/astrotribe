@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "AstronEra Content DB",
+      "Group": "Railway",
+      "Host": "${PG_HOST}",
+      "Port": 5432,
+      "MaintenanceDB": "astronera",
+      "Username": "${PG_USER}",
+      "SSLMode": "prefer",
+      "PassFile": "/var/lib/pgadmin/pgpassfile"
+    }
+  }
+}
