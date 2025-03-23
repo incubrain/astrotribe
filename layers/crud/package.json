@@ -9,7 +9,7 @@
     "prepare": "pnpx nuxi prepare"
   },
   "dependencies": {
-    "@nuxtjs/supabase": "^1.4.0",
+    "@nuxtjs/supabase": "^1.5.0",
     "@supabase/supabase-js": "^2.47.8",
     "pinia": "^2.2.2",
     "uuid": "^10.0.0"

@@ -15,11 +15,11 @@
     }
   },
   "scripts": {
+    "clean": "rm -rf dist",
     "generate": "prisma generate --schema=src/prisma/schema.prisma",
-    "types": "tsc --emitDeclarationOnly",
-    "build": "pnpm generate && pnpm types && mkdir -p dist/generated && cp -r src/generated/client dist/generated/ && vite build",
-    "update": "pnpx tsx ./src/prisma/update-prisma.ts",
-    "clean": "rm -rf dist generated"
+    "types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "build": "pnpm clean && pnpm generate && mkdir -p dist/{esm,cjs,types,generated} && [ -d src/generated/client ] && cp -r src/generated/client dist/generated/ || echo 'Skipping client copy' && vite build",
+    "update": "pnpx tsx ./src/prisma/update-prisma.ts"
   },
   "dependencies": {
     "@nestjs/swagger": "^8.1.1",

@@ -20,7 +20,7 @@
     "@astronera/advert": "workspace:*",
     "@astronera/referral": "workspace:*",
     "@formbricks/js": "^3.0.1",
-    "@nuxt/image": "^1.8.0",
+    "@nuxt/image": "^1.10.0",
     "@primevue/core": "^4.2.5",
     "@primevue/nuxt-module": "^4.2.5",
     "@supabase/supabase-js": "^2.47.8",
