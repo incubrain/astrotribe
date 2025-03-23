@@ -19,12 +19,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy all files for better layer caching
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc turbo.json ./
-COPY apps/website ./apps/website
-COPY libs ./libs
-COPY layers ./layers
-COPY theme ./theme
-COPY shared ./shared
+COPY . .
 
 # Install all dependencies
 RUN pnpm install --filter @astronera/website...
@@ -33,7 +28,7 @@ RUN pnpm install --filter @astronera/website...
 RUN pnpm turbo run build --filter=@astronera/website
 
 # Prune dependencies for production
-WORKDIR /app
+WORKDIR /app/apps/website
 
 # Use the correct path to the entry point
 CMD ["node", ".output/server/index.mjs"]
