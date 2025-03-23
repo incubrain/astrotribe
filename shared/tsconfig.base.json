@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipDefaultLibCheck": true,
     "importsNotUsedAsValues": "remove",
