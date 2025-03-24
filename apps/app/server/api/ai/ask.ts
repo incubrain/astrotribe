@@ -41,8 +41,8 @@ export default defineEventHandler({
       const plan = user?.app_metadata?.plan
 
       if (plan === 'free') {
-        console.log('getGroqChatCompletion')
-        chatCompletion = await getGroqChatCompletion(messages)
+        // console.log('getGroqChatCompletion')
+        // chatCompletion = await getGroqChatCompletion(messages)
       } else if (plan === 'pro' || plan === 'expert') {
         console.log('openAI.createChatCompletion')
         chatCompletion = openAI.createChatCompletion(messages)

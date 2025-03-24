@@ -27,7 +27,6 @@ const og = {
 
 export default defineNuxtConfig({
   extends: [baseLayerPath, crudLayerPath, advertLayerPath, referralLayerPath],
-
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
@@ -106,15 +105,21 @@ export default defineNuxtConfig({
       type: 'postgres',
       url:
         process.env.NUXT_CONTENT_DATABASE_URL ||
-        'postgres://nuxt_content_user:your_secure_password@localhost:5432/postgres',
-      // PostgreSQL-specific options
-      schema: 'nuxt_content',
-      ssl: process.env.NODE_ENV === 'production',
-      // Connection pool settings
+        'postgres://postgres:password@localhost:5432/postgres',
+      // Ensure schema is properly defined
+      schema: 'content', // Using 'content' as schema instead of 'nuxt_content'
+      // Add migration options to ensure tables are created
+      migration: {
+        dir: './database/migrations',
+        disableForeignKeys: false,
+        autoMigrate: true, // Important: ensures tables are created
+      },
+      // Connection settings
       pool: {
         min: 2,
         max: 10,
       },
+      debug: process.env.NODE_ENV === 'development',
     },
 
     sources: {
@@ -175,7 +180,6 @@ export default defineNuxtConfig({
     },
   },
 
-  srcDir: '.',
   workspaceDir: '../../',
 
   build: {

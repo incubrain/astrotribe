@@ -117,7 +117,8 @@ const timezone = computed(() => Intl.DateTimeFormat().resolvedOptions().timeZone
               >
                 <template #body="slotProps">
                   <ul
-                    v-for="description in slotProps.data.description"
+                    v-for="(description, index) in slotProps.data.description"
+                    :key="index"
                     class="text-sm"
                   >
                     <li>{{ description }}</li

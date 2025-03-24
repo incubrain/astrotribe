@@ -15,9 +15,9 @@
     "start": "node dist/apps/api/main.js"
   },
   "dependencies": {
-    "@ib/logger": "workspace:*",
-    "@ib/cache": "workspace:*",
     "@astronera/db": "workspace:*",
+    "@ib/cache": "workspace:*",
+    "@ib/logger": "workspace:*",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",

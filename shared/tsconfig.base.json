@@ -17,11 +17,7 @@
     "moduleResolution": "bundler",
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "baseUrl": ".",
-    "paths": {
-      "#layers/*": ["layers/*"],
-      "@astronera/*": ["libs/*/src"],
-      "@ib/*": ["libs/*/src"]
-    },
+
     "types": ["node"]
   },
   "exclude": [

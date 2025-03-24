@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -8,14 +9,7 @@
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
-    "types": [
-      "@types/node",
-      "vue",
-      "@nuxt/types",
-      "@nuxt/content",
-      "@nuxtjs/i18n",
-      "@pinia/nuxt",
-    ]
+    "types": ["@types/node", "vue"]
   },
   "exclude": ["node_modules", "dist", ".nuxt", "out"]
 }

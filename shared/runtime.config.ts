@@ -6,6 +6,8 @@ config()
 const localHost = (port: string | number) => `http://localhost:${port}`
 
 export const sharedRuntimeConfig = defineNuxtConfig({
+  baseURL: '.',
+  workspaceDir: './',
   runtimeConfig: {
     public: {
       turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY,
@@ -48,7 +50,7 @@ export const sharedRuntimeConfig = defineNuxtConfig({
       googleApiKey: process.env.NUXT_GOOGLE_API_KEY,
       nasaApiKey: process.env.NUXT_NASA_API_KEY,
       apiSecretKey: process.env.API_SECRET_KEY ?? 12345,
-      openaiApiKey: process.env.NUXT_OPENAI_API_KEY,
+      openaiApiKey: process.env.OPENAI_API_KEY,
       openaiOrg: process.env.NUXT_OPENAI_ORG,
       redisFlushKey: process.env.NUXT_REDIS_FLUSH_KEY,
       scraperKey: process.env.NUXT_SCRAPER_KEY,
