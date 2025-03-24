@@ -1,3 +1,25 @@
+<script setup lang="ts">
+defineProps<{
+  title: string
+  categoryClass: string
+  icon: string
+  description: string
+  time: string
+  openEvent: () => void
+}>()
+
+// Map category classes to PrimeVue button severities
+const getSeverity = (categoryClass: string) => {
+  if (categoryClass.includes('bg-gray')) return 'secondary'
+  if (categoryClass.includes('bg-red')) return 'danger'
+  if (categoryClass.includes('bg-yellow')) return 'warning'
+  if (categoryClass.includes('bg-purple')) return 'help'
+  if (categoryClass.includes('bg-indigo')) return 'info'
+  if (categoryClass.includes('bg-blue')) return 'primary'
+  return 'secondary'
+}
+</script>
+
 <template>
   <div
     v-tooltip="{
@@ -29,28 +51,6 @@
     />
   </PrimeButton>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  title: string
-  categoryClass: string
-  icon: string
-  description: string
-  time: string
-  openEvent: () => void
-}>()
-
-// Map category classes to PrimeVue button severities
-const getSeverity = (categoryClass: string) => {
-  if (categoryClass.includes('bg-gray')) return 'secondary'
-  if (categoryClass.includes('bg-red')) return 'danger'
-  if (categoryClass.includes('bg-yellow')) return 'warning'
-  if (categoryClass.includes('bg-purple')) return 'help'
-  if (categoryClass.includes('bg-indigo')) return 'info'
-  if (categoryClass.includes('bg-blue')) return 'primary'
-  return 'secondary'
-}
-</script>
 
 <style scoped>
 /* Add subtle glow effect to events */

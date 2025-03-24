@@ -6,7 +6,7 @@
    - **Backend:** Nitro for Nuxt Server, Dockerized TypeScript Node server for scraping and AI
      agents
    - **Scraping:** Playwright, Cheerio, Node.js
-   - **AI:** ChatGPT, OpenAI embeddings, Llama 3 through GroqAPI, OpenAI small-text-embeddings model
+   - **AI:** ChatGPT, OpenAI embeddings, OpenAI small-text-embeddings model
    - **Database:** PostgreSQL hosted by Supabase, PG Vector for storing embeddings
    - **Authentication:** Supabase Auth
    - **Storage:** Supabase storage via S3

@@ -1,14 +1,3 @@
 {
-  "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@base": ["../../layers/base"],
-      "#layers/*": ["../../layers/*"],
-      "@types/*": ["./types/*"],
-      "#shared/*": ["./shared/*"]
-    }
-  },
-  "include": ["./types/**/*.d.ts", "./**/*.ts", "./**/*.d.ts", "nuxt.config.ts"],
-  "exclude": ["node_modules", "dist"]
+  "extends": ["../../shared/tsconfig.web.json", "./.nuxt/tsconfig.json"]
 }

@@ -1,4 +1,4 @@
-import openAiClient from './openaiClient'
+import { getOpenAIClient } from './openaiClient'
 
 type CallOpenAIConfig = {
   temperature?: number // Controls randomness: lower is more deterministic.
@@ -16,6 +16,12 @@ interface OpenAIInput {
 
 const createChatCompletion = async ({ prompt, systemMessage, config }: OpenAIInput) => {
   try {
+    const openAiClient = getOpenAIClient() // Get the OpenAI client instance.
+
+    if (!openAiClient) {
+      throw new Error('OpenAI client is not initialized.')
+    }
+
     // Make an API call to OpenAI's chat completion endpoint.
     const response = await openAiClient.chat.completions.create({
       model: 'gpt-3.5-turbo', // Specifies the model to use.

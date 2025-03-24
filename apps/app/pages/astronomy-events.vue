@@ -89,7 +89,7 @@ const eventCategories = [
 </script>
 
 <template>
-  <div class="min-h-screen  text-white py-8">
+  <div class="min-h-screen text-white py-8">
     <!-- Main Content -->
     <div class="wrapper mx-auto">
       <!-- Calendar Component -->

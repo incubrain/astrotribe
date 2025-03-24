@@ -1,8 +1,21 @@
-import OpenAI from 'openai/index.mjs'
+import OpenAI from 'openai'
 
-const openaiClient = new OpenAI({
-  organization: process.env.OPENAI_ORG_ID,
-  project: process.env.OPENAI_PROJECT_ID,
-})
+const env = useRuntimeConfig()
 
-export default openaiClient
+let openaiClient: OpenAI | null = null
+
+export function getOpenAIClient(): OpenAI {
+  if (openaiClient) return openaiClient
+
+  if (!env.openaiApiKey) {
+    console.warn('No OpenAI API key provided.')
+    throw new Error('No OpenAI API key provided.')
+  }
+
+  openaiClient = new OpenAI({
+    apiKey: env.openaiApiKey,
+    organization: env.openaiOrg,
+  })
+
+  return openaiClient
+}

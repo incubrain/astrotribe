@@ -25,9 +25,6 @@ const ChatCompletionSchema = z.object({
     completion_time: z.number(),
     total_time: z.number(),
   }),
-  x_groq: z.object({
-    id: z.string(),
-  }),
 })
 
 type Chat = z.infer<typeof ChatCompletionSchema>
