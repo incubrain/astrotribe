@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import Razorpay from 'razorpay'
+import * as Razorpay from 'razorpay'
 
 export default defineEventHandler(async (event) => {
   const { razorpayKey, razorpaySecret } = useRuntimeConfig()

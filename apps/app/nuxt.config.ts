@@ -1,8 +1,12 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
+import { config } from 'dotenv'
 import { devPortMap } from '../../shared/paths.config'
 import { sharedRuntimeConfig } from '../../shared/runtime.config'
+
+// Load environment variables from the root .env file
+config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') })
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -17,7 +21,6 @@ export default defineNuxtConfig({
   ],
 
   modules: [
-    'nuxt-tiptap-editor',
     '@nuxt/devtools',
     '@vueuse/nuxt',
     '@nuxt/image',
@@ -70,13 +73,13 @@ export default defineNuxtConfig({
         },
       },
       '/api/bookmarks/**': {
-        appMiddleware: ['feature-limit'],
+        appMiddleware: ['3-reset-password'],
       },
       '/api/folders/**': {
-        appMiddleware: ['feature-limit'],
+        appMiddleware: ['3-reset-password'],
       },
       '/api/feeds/**': {
-        appMiddleware: ['feature-limit'],
+        appMiddleware: ['3-reset-password'],
       },
     },
     alias: {
@@ -89,9 +92,27 @@ export default defineNuxtConfig({
       exclude: ['fsevents'],
     },
   },
+  debug: {
+    // Enable specific debugging features
+    templates: true,
+    modules: true,
+    watchers: true,
+    hooks: {
+      client: true,
+      server: true,
+    },
+    nitro: true,
+    router: true,
+    hydration: true,
+  },
 
   image: {
     format: ['webp', 'jpg'],
+    provider: 'ipx',
+    ipx: {
+      // Set a valid base URL to avoid initialization issues
+      baseURL: '/images',
+    },
   },
 
   primevue: {
@@ -145,7 +166,4 @@ export default defineNuxtConfig({
     viewer: true,
   },
 
-  tiptap: {
-    prefix: 'Tiptap',
-  },
 })

@@ -6,7 +6,7 @@ import { PaginationService } from '@core/services/pagination.service'
 import { CustomLogger } from '@core/logger/custom.logger'
 import { Cron } from '@nestjs/schedule'
 import { LogGateway } from '../gateways/log.gateway'
-import type { ErrorLogEntry } from '@ib/logger'
+import type { ErrorLogEntry } from '@incubrain/logger'
 import type { PaginatedQuery } from '@types'
 
 @Injectable()

@@ -1,11 +1,26 @@
 import { config } from 'dotenv'
 import { devPortMap } from './paths.config'
 
+console.log('Loading shared runtime config...', devPortMap)
+
 config()
 
 const localHost = (port: string | number) => `http://localhost:${port}`
 
 export const sharedRuntimeConfig = defineNuxtConfig({
+  debug: {
+    // Enable specific debugging features
+    templates: true,
+    modules: true,
+    watchers: true,
+    hooks: {
+      client: true,
+      server: true,
+    },
+    nitro: true,
+    router: true,
+    hydration: true,
+  },
   baseURL: '.',
   workspaceDir: './',
   runtimeConfig: {

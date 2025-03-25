@@ -25,8 +25,7 @@ import { ApiBaseController } from '@core/base/base.controller'
 import { ApiPaginatedResponse } from '@core/decorators/api.decorator'
 import { Service } from '@core/decorators/service.decorator'
 import type { LogEntry } from '@ib/cache'
-import type { ErrorLogEntry } from '@ib/logger'
-
+import type { ErrorLogEntry } from '@incubrain/logger'
 
 @ApiBaseController('logs')
 @UseGuards(PermissionGuard)
