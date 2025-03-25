@@ -1,4 +1,4 @@
-import razorpay from '../payment-providers/razorpay'
+import { getRazorpayClient } from '../payment-providers/razorpay'
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
@@ -30,6 +30,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const payment_provider_id = provider === 'razorpay' ? 1 : 2
+
+    const razorpay = getRazorpayClient()
 
     const subscription = await razorpay.subscriptions.create({
       plan_id: external_plan_id,

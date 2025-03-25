@@ -1,10 +1,22 @@
 import Razorpay from 'razorpay'
 
-const { razorpayKey, razorpaySecret } = useRuntimeConfig()
+let razorpay: Razorpay | null = null
 
-const razorpay = new Razorpay({
-  key_id: razorpayKey!,
-  key_secret: razorpaySecret,
-})
+export function getRazorpayClient() {
+  const { razorpayKey, razorpaySecret } = useRuntimeConfig()
 
-export default razorpay
+  if (!razorpayKey || !razorpaySecret) {
+    throw Error(
+      'razorpayKey or razorpaySecret missing: ' + JSON.stringify({ razorpayKey, razorpaySecret }),
+    )
+  }
+
+  if (!razorpay) {
+    razorpay = new Razorpay({
+      key_id: razorpayKey!,
+      key_secret: razorpaySecret,
+    })
+  }
+
+  return razorpay
+}

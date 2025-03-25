@@ -1,8 +1,0 @@
-// templates/base/imports.hbs import { ApiProperty } from '@nestjs/swagger';
-{{#if hasValidation}}
-  import { IsString, IsNumber, IsBoolean, IsDate, IsOptional, IsNotEmpty, IsEmail, IsUUID, IsInt,
-  IsEnum, IsJSON } from 'class-validator';
-{{/if}}
-{{#if hasTransform}}
-  import { Transform } from 'class-transformer';
-{{/if}}

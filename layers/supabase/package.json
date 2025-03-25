@@ -39,7 +39,6 @@
     "eslint-config-prettier": "^9.0.0",
     "h3": "^1.8.2",
     "inquirer": "^12.1.0",
-    "msw": "^2.6.5",
     "nuxt": "^3.16.1",
     "tailwindcss": "^3.4.13",
     "vite": "^6.2.2",

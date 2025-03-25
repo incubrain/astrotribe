@@ -22,7 +22,6 @@
     "update": "pnpx tsx ./src/prisma/update-prisma.ts"
   },
   "dependencies": {
-    "@nestjs/swagger": "^8.1.1",
     "@prisma/client": "^6.2.1",
     "vite-plugin-dts": "~4.5.0",
     "zod-prisma-types": "^3.2.1"

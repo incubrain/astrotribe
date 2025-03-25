@@ -12,6 +12,6 @@
     "package": "cd dist && zip -r ../chrome-extension.zip ."
   },
   "dependencies": {
-    "@ib/logger": "workspace:*"
+    "@incubrain/logger": "^0.1.5"
   }
 }

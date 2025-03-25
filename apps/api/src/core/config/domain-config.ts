@@ -1,5 +1,5 @@
 // core/config/domain-config.ts
-import { createCentralizedLogger, Service, DomainsForService } from '@ib/logger'
+import { createCentralizedLogger, Service, DomainsForService } from '@incubrain/logger'
 import { DynamicModule, MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { CustomLogger } from '@core/logger/custom.logger'
 

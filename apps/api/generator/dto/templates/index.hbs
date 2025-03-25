@@ -1,9 +1,0 @@
-{{#each models}}
-  export * from './dto/{{lowercase name}}.dto'; export * from './interfaces/{{lowercase
-    name
-  }}.interface'; export * from './schemas/{{lowercase name}}.schema'; export * from './guards/{{lowercase
-    name
-  }}.guard';
-{{/each}}
-
-export * from './utils/base-types'; export * from './utils/helpers';
