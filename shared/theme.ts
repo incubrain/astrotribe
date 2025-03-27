@@ -88,48 +88,6 @@ const AstroPreset = definePreset(Aura, {
 
   // Component specific tokens and styles
   components: {
-    // Button customization
-    button: {
-      colorScheme: {
-        dark: {
-          root: {
-            // Match the token structure from ButtonTokenSections.Root
-            borderRadius: '0.375rem',
-            transitionDuration: '0.2s',
-
-            // Root.primary
-            primary: {
-              background: '{primary.color}',
-              hoverBackground: '{primary.hoverColor}',
-              activeBackground: '{primary.activeColor}',
-              color: '{primary.inverseColor}',
-              focusRing: {
-                color: 'rgba(99, 102, 241, 0.4)',
-                shadow: '0 0 0 0.2rem rgba(99, 102, 241, 0.4)',
-              },
-            },
-          },
-        },
-      },
-    },
-
-    // Card component styling
-    card: {
-      colorScheme: {
-        dark: {
-          // Note: Card component doesn't have detailed TypeScript definitions in the provided files
-          // Using general structure based on other components
-          root: {
-            // General card properties that should be compatible
-            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-            background: '{surface.100}',
-            color: '{surface.900}',
-            borderRadius: '0.5rem',
-          },
-        },
-      },
-    },
-
     // Input field styling
     inputtext: {
       colorScheme: {
@@ -152,6 +110,170 @@ const AstroPreset = definePreset(Aura, {
               style: 'solid',
               offset: '0',
             },
+          },
+        },
+      },
+    },
+
+    tabview: {
+      colorScheme: {
+        dark: {
+          root: {
+            // Main tab container - only supported properties
+            transitionDuration: '0.2s',
+          },
+          // Use tabList instead of navContainer
+          tabList: {
+            // Nav container styling - only supported properties
+            background: 'transparent',
+            borderColor: '{surface.300}',
+          },
+          // Use tab instead of nav
+          tab: {
+            // Tab styling - only supported properties
+            borderColor: 'transparent',
+            activeBorderColor: '{primary.400}',
+            color: '{surface.500}',
+            hoverColor: '{primary.300}',
+            activeColor: '{primary.400}',
+          },
+          // Use tabPanel instead of content
+          tabPanel: {
+            // Content container - only supported properties
+            background: 'transparent',
+            color: '{surface.900}',
+          },
+          // NavButton for tab navigation controls
+          navButton: {
+            background: '{surface.200}',
+            color: '{surface.600}',
+            hoverColor: '{primary.400}',
+            shadow: 'none',
+          },
+        },
+      },
+    },
+
+    // Button styling improvements - matches ButtonTokenSections interface
+    button: {
+      colorScheme: {
+        dark: {
+          root: {
+            // Root button properties - only supported ones
+            borderRadius: '0.375rem',
+            transitionDuration: '0.2s',
+
+            // Primary button styling
+            primary: {
+              background: '{primary.600}',
+              hoverBackground: '{primary.500}',
+              activeBackground: '{primary.700}',
+              color: '#ffffff',
+              focusRing: {
+                color: 'rgba(99, 102, 241, 0.4)',
+                shadow: '0 0 0 0.2rem rgba(99, 102, 241, 0.4)',
+              },
+            },
+
+            // Secondary button styling
+            secondary: {
+              background: '{surface.200}',
+              hoverBackground: '{surface.300}',
+              activeBackground: '{surface.400}',
+              color: '{surface.900}',
+            },
+          },
+        },
+      },
+    },
+
+    // Card styling improvements - match CardTokenSections interface
+    card: {
+      colorScheme: {
+        dark: {
+          root: {
+            // Only properties defined in CardTokenSections.Root
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+            background: '{surface.100}',
+            color: '{surface.900}',
+            borderRadius: '0.5rem',
+          },
+          // Other correctly typed sections
+          body: {
+            padding: '1.25rem',
+            gap: '0.5rem',
+          },
+          title: {
+            fontSize: '1.25rem',
+            fontWeight: '600',
+          },
+          subtitle: {
+            color: '{surface.700}',
+          },
+        },
+      },
+    },
+
+    // Accordion styling improvements - matching AccordionTokenSections interface
+    accordion: {
+      colorScheme: {
+        dark: {
+          root: {
+            // Only properties defined in AccordionTokenSections.Root
+            transitionDuration: '0.2s',
+          },
+          panel: {
+            // Properties defined in AccordionTokenSections.Panel
+            borderWidth: '0',
+            borderColor: '{surface.300}',
+          },
+          header: {
+            // Properties defined in AccordionTokenSections.Header
+            background: '{surface.200}',
+            hoverBackground: '{surface.300}',
+            activeBackground: '{surface.400}',
+            activeHoverBackground: '{surface.500}',
+            color: '{surface.900}',
+            hoverColor: '{surface.1000}',
+            activeColor: '{primary.400}',
+            padding: '1rem',
+            fontWeight: '600',
+            borderRadius: '0.375rem',
+            borderWidth: '1px',
+            borderColor: '{surface.300}',
+            // Focus ring properties
+            focusRing: {
+              width: '2px',
+              style: 'solid',
+              color: '{primary.400}',
+              offset: '1px',
+              shadow: '0 0 0 2px rgba(99, 102, 241, 0.4)',
+            },
+            // Toggle icon styling
+            toggleIcon: {
+              color: '{surface.700}',
+              hoverColor: '{primary.400}',
+              activeColor: '{primary.400}',
+              activeHoverColor: '{primary.300}',
+            },
+            // First item styling
+            first: {
+              topBorderRadius: '0.375rem',
+              borderWidth: '1px',
+            },
+            // Last item styling
+            last: {
+              bottomBorderRadius: '0.375rem',
+              activeBottomBorderRadius: '0',
+            },
+          },
+          content: {
+            // Properties defined in AccordionTokenSections.Content
+            background: '{surface.100}',
+            color: '{surface.900}',
+            padding: '1rem',
+            borderWidth: '1px',
+            borderColor: '{surface.300}',
           },
         },
       },
