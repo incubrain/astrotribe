@@ -73,13 +73,17 @@ clean_lock_files() {
     print_success "Removed all lock files"
 }
 
+# List of build artifact directories to clean
+BUILD_ARTIFACTS=(dist .output .nuxt .turbo .data)
+
 # Function to clean build artifacts
 clean_build_artifacts() {
     print_section "Cleaning build artifacts"
-    # Remove common build directories
-    rm -rf dist .output .nuxt
-    find . -type d \( -name "dist" -o -name ".output" -o -name ".nuxt" \) -exec rm -rf {} +
-    print_success "Removed all build artifacts"
+
+    for dir in "${BUILD_ARTIFACTS[@]}"; do
+        find . -type d -name "$dir" -exec rm -rf {} + 2>/dev/null
+        print_success "Removed all '$dir' directories"
+    done
 }
 
 # Function to clean cache

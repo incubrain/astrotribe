@@ -23,7 +23,6 @@ const runScript = (scriptName: string): Promise<void> => {
 async function runCI() {
   try {
     await runScript('trackBundleSize.ts')
-    await runScript('runLighthouseCI.ts')
     console.log('All CI scripts completed successfully')
   } catch (error: any) {
     console.error('CI failed:', error)

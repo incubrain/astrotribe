@@ -32,7 +32,6 @@
     { "path": "libs/cache" },
     { "path": "libs/db" },
     { "path": "libs/core" },
-    { "path": "libs/testing" },
     { "path": "apps/api" }
   ],
   "include": ["prettier.config.mjs"],
