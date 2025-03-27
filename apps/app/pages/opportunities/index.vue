@@ -108,7 +108,7 @@ const removeTagFilter = (tag: string) => {
     @touchmove="(event) => isUserBasic && event.preventDefault()"
   >
     <!-- Hero Section -->
-    <HomeHero
+    <ImageHero
       v-model:search-query="searchQuery"
       @add-tag="addTagFilter"
     />

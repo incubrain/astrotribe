@@ -36,17 +36,17 @@ const websiteLinks = [
     ],
   },
   {
-    key: 'projects',
-    label: 'Projects',
-    icon: 'material-symbols:work',
+    key: 'dark-skies',
+    label: 'Dark Skies',
+    icon: 'material-symbols:nightlight',
     visible: true,
     disabled: false,
     items: [
       {
         key: 'dark-sky-conference-2023',
         label: 'Conference',
-        icon: 'material-symbols:mic-rounded',
-        url: '/projects/dark-sky-conference-2023',
+        icon: 'material-symbols:nightlight',
+        url: '/conferences/dark-sky-conference-2023',
         visible: true,
         disabled: false,
       },

@@ -66,6 +66,15 @@ onUnmounted(() => {
 })
 
 const { loginURL, authURL } = useRuntimeConfig().public
+
+const fullLoginURL = computed(() => {
+  if (!authURL || !loginURL) return null
+  try {
+    return new URL(loginURL, authURL).toString()
+  } catch {
+    return null
+  }
+})
 </script>
 
 <template>
@@ -150,7 +159,8 @@ const { loginURL, authURL } = useRuntimeConfig().public
           <!-- CTA section -->
           <div class="flex flex sm:flex-row justify-center gap-4 pt-8">
             <NuxtLink
-              :to="String(`${authURL}${loginURL}`)"
+              v-if="fullLoginURL"
+              :to="fullLoginURL"
               external
             >
               <PrimeButton
