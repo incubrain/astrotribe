@@ -1,11 +1,40 @@
 import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from './tailwind.config.base'
+
+// Fully resolve the Tailwind config
+const { theme } = resolveConfig(tailwindConfig)
 
 /**
  * Custom theme preset based on Aura with space-themed dark mode
  * Applied globally across all projects with consistent styling
  */
 const AstroPreset = definePreset(Aura, {
+  primitive: {
+    slate: theme.colors.slate,
+    gray: theme.colors.gray,
+    zinc: theme.colors.zinc,
+    neutral: theme.colors.neutral,
+    stone: theme.colors.stone,
+    red: theme.colors.red,
+    orange: theme.colors.orange,
+    amber: theme.colors.amber,
+    yellow: theme.colors.yellow,
+    lime: theme.colors.lime,
+    green: theme.colors.green,
+    emerald: theme.colors.emerald,
+    teal: theme.colors.teal,
+    cyan: theme.colors.cyan,
+    sky: theme.colors.sky,
+    blue: theme.colors.blue,
+    indigo: theme.colors.indigo,
+    violet: theme.colors.violet,
+    purple: theme.colors.purple,
+    fuchsia: theme.colors.fuchsia,
+    pink: theme.colors.pink,
+    rose: theme.colors.rose,
+  },
   // Primitive tokens don't need to be modified as we use the ones from Aura
 
   // Semantic tokens - define the main design elements

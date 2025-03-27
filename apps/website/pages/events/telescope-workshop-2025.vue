@@ -1,36 +1,22 @@
 <script setup lang="ts">
-const toc = [
-  {
-    id: 1,
-    depth: 1,
-    text: 'Beginner Level Session I',
-    link: 'beginnerLevel',
-  },
+// 1. Imports
+import { ref, watch } from 'vue'
 
-  {
-    id: 3,
-    depth: 1,
-    text: 'Intermediate Level Session II',
-    link: 'intermediateLevel',
-  },
-  {
-    id: 5,
-    depth: 1,
-    text: 'What to Bring?',
-    link: 'whatToBring',
-  },
-  {
-    id: 6,
-    depth: 1,
-    text: 'Pre-Workshop Preparation',
-    link: 'preWorkshop',
-  },
-  {
-    id: 7,
-    depth: 1,
-    text: "What's Provided in the Workshop?",
-    link: 'provided',
-  },
+// 2. Component Options
+defineOptions({
+  name: 'TelescopeWorkshopPage',
+})
+
+// 3. Reactive Variables
+const activeTab = ref('beginnerLevel')
+
+// 4. Component state
+const tabs = [
+  { id: 'beginnerLevel', label: 'Beginner Level Session I' },
+  { id: 'intermediateLevel', label: 'Intermediate Level Session II' },
+  { id: 'whatToBring', label: 'What to Bring?' },
+  { id: 'preWorkshop', label: 'Pre-Workshop Preparation' },
+  { id: 'provided', label: "What's Provided" },
 ]
 
 const title = {
@@ -191,7 +177,7 @@ const whatToBring = [
 const preWorkshop = [
   '🔹 Download a Sky Map App: Stellarium',
   '🔹 Charge Your Phone & Power Bank – You might need it for apps & taking pictures',
-  '🔹 Read Up on Basic Astronomy Terms – Understand terms like “focal length,” “magnification,” and “alt-azimuth”',
+  '🔹 Read Up on Basic Astronomy Terms – Understand terms like "focal length," "magnification," and "alt-azimuth"',
 ]
 
 const provided = [
@@ -199,10 +185,35 @@ const provided = [
   '✔ Sky Maps',
   '✔ Expert Guidance & Hands-on Experience',
 ]
+
+// 5. Methods
+const setActiveTab = (tabId) => {
+  activeTab.value = tabId
+  history.replaceState(null, '', `#${tabId}`)
+}
+
+const updateTabFromHash = () => {
+  const hash = window.location.hash.replace('#', '')
+  if (hash) {
+    const tab = tabs.find((t) => t.id === hash)
+    if (tab) activeTab.value = tab.id
+  }
+}
+
+// 6. Lifecycle Hooks
+onMounted(() => {
+  updateTabFromHash()
+  window.addEventListener('hashchange', updateTabFromHash)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', updateTabFromHash)
+})
 </script>
 
 <template>
-  <div>
+  <div class="telescope-workshop-page">
+    <!-- Hero Section -->
     <CommonHero
       :img="{
         src: title.img,
@@ -210,142 +221,332 @@ const provided = [
         width: 1080,
         height: 720,
       }"
-      :title="title"
+      :title="{
+        main: title.main,
+      }"
       position="center"
     >
-    </CommonHero>
-    <div class="flex min-h-screen">
-      <div class="hidden md:block w-1/4 h-full sticky top-6">
-        <PrimeAccordion
-          value="0"
-          class="z-10 py-6 px-6 xl:gap-12 xl:py-12"
+      <div class="flex justify-center mt-4">
+        <NuxtLink
+          :to="registrationLink"
+          target="_blank"
         >
-          <PrimeAccordionPanel value="0">
-            <PrimeAccordionHeader
-              class="flex gap-4 bg-primary-800 px-4 py-2 rounded-md items-center"
-            >
-              <h3 class="text-lg font-semibold"> Table of Contents </h3>
-            </PrimeAccordionHeader>
-            <PrimeAccordionContent>
-              <ul>
-                <li
-                  v-for="item in toc"
-                  :key="item.id"
-                  class="py-1"
-                >
-                  <NuxtLink
-                    :to="`#${item.link}`"
-                    class="text-lg font-[Oswald] p-button-text"
-                  >
-                    <h4>
-                      {{ item.text }}
-                    </h4>
-                  </NuxtLink>
-                </li>
-              </ul>
-            </PrimeAccordionContent>
-          </PrimeAccordionPanel>
-        </PrimeAccordion>
+          <PrimeButton
+            size="large"
+          >
+            Register Now
+            <Icon
+              name="mdi:arrow-right"
+              class="ml-2"
+            />
+          </PrimeButton>
+        </NuxtLink>
       </div>
-      <div class="wrapper w-screen flex flex-col gap-6 py-6 xl:gap-12 xl:py-12">
-        <NuxtLink :to="registrationLink">
-          <PrimeButton
-            size="large"
-            severity="contrast"
-            outlined
-            >Register Now</PrimeButton
-          ></NuxtLink
-        >
-        <h3
+    </CommonHero>
+
+    <!-- Main Content -->
+    <div class="wrapper pt-8">
+      <!-- Horizontal Tabs Navigation -->
+      <div class="mb-6 border-b border-primary-700/30">
+        <div class="flex overflow-x-auto no-scrollbar">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            class="tab-button px-6 py-3 font-medium text-sm sm:text-base transition-all duration-200"
+            :class="[
+              activeTab === tab.id
+                ? 'text-primary-400 border-b-2 border-primary-400'
+                : 'text-gray-400 hover:text-primary-300 hover:border-b-2 hover:border-primary-300/50',
+            ]"
+            @click="setActiveTab(tab.id)"
+          >
+            {{ tab.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content mb-12">
+        <!-- Beginner Level Tab -->
+        <div
+          v-show="activeTab === 'beginnerLevel'"
           id="beginnerLevel"
-          class="text-2xl lg:text-4xl font-bold"
-          >Beginner Level Session I</h3
+          class="animate-fadeIn"
         >
-        <p><b>Objective:</b> Introduction to telescope types, basic handling, and sky navigation</p>
-        <p class="flex"
-          ><b>Venue:</b>
-          <Icon
-            name="mdi:location"
-            size="24px"
-            class="text-red-600"
-          />
-          Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune, Maharashtra 411016
-        </p>
-        <iframe
-          id="iframe"
-          class="px-2"
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
-          style="border: 0"
-          referrerpolicy="no-referrer-when-downgrade"
-        />
-        <p><b>Fee:</b> ₹2000 Per Person</p>
-        <EventSchedule :schedule="beginnerSchedule" />
-        <hr />
-        <h3
+          <div
+            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
+          >
+            <h2 class="text-2xl font-bold text-primary-400 mb-4">Beginner Level Session I</h2>
+
+            <div class="space-y-4">
+              <div class="flex flex-col md:flex-row gap-4">
+                <div class="md:w-1/2 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      name="mdi:target"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                    <p class="font-medium">Objective:</p>
+                  </div>
+                  <p>Introduction to telescope types, basic handling, and sky navigation</p>
+                </div>
+
+                <div class="md:w-1/2 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      name="mdi:currency-inr"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                    <p class="font-medium">Fee:</p>
+                  </div>
+                  <p>₹2000 Per Person</p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <Icon
+                    name="mdi:map-marker"
+                    class="text-primary-400"
+                    size="24px"
+                  />
+                  <p class="font-medium">Venue:</p>
+                </div>
+                <p
+                  >Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
+                  Maharashtra 411016</p
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-hidden rounded-lg mb-8">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+              height="400"
+              style="border: 0; width: 100%"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+
+          <h3 class="text-xl font-bold text-primary-400 mb-4">Workshop Schedule</h3>
+          <WorkshopSchedule :schedule="beginnerSchedule" />
+        </div>
+
+        <!-- Intermediate Level Tab -->
+        <div
+          v-show="activeTab === 'intermediateLevel'"
           id="intermediateLevel"
-          class="text-2xl lg:text-4xl font-bold"
-          >Intermediate Level Session II</h3
+          class="animate-fadeIn"
         >
-        <p
-          ><b>Objective:</b> Learn how to fine-tune your telescope, track celestial objects, and
-          spot constellations.</p
-        >
-        <p class="flex"
-          ><b>Venue:</b>
-          <Icon
-            name="mdi:location"
-            size="24px"
-            class="text-red-600"
-          />
-          Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune, Maharashtra 411016
-        </p>
-        <iframe
-          id="iframe"
-          class="px-2"
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
-          style="border: 0"
-          referrerpolicy="no-referrer-when-downgrade"
-        />
-        <p><b>Fee:</b> ₹2500 Per Person</p>
-        <EventSchedule :schedule="intermediateSchedule" />
-        <hr />
-        <h3
+          <div
+            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
+          >
+            <h2 class="text-2xl font-bold text-primary-400 mb-4">Intermediate Level Session II</h2>
+
+            <div class="space-y-4">
+              <div class="flex flex-col md:flex-row gap-4">
+                <div class="md:w-1/2 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      name="mdi:target"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                    <p class="font-medium">Objective:</p>
+                  </div>
+                  <p
+                    >Learn how to fine-tune your telescope, track celestial objects, and spot
+                    constellations</p
+                  >
+                </div>
+
+                <div class="md:w-1/2 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <Icon
+                      name="mdi:currency-inr"
+                      class="text-primary-400"
+                      size="24px"
+                    />
+                    <p class="font-medium">Fee:</p>
+                  </div>
+                  <p>₹2500 Per Person</p>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <Icon
+                    name="mdi:map-marker"
+                    class="text-primary-400"
+                    size="24px"
+                  />
+                  <p class="font-medium">Venue:</p>
+                </div>
+                <p
+                  >Prachi, 392/6B, Atreya Society, Deep Bangla Chowk, Model Colony, Pune,
+                  Maharashtra 411016</p
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-hidden rounded-lg mb-8">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15132.046394090614!2d73.831345!3d18.528378!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf781273177b%3A0x748518923253f332!2sAstron%20Era!5e0!3m2!1sen!2sin!4v1687445031830!5m2!1sen!2sin"
+              height="400"
+              style="border: 0; width: 100%"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+
+          <h3 class="text-xl font-bold text-primary-400 mb-4">Workshop Schedule</h3>
+          <WorkshopSchedule :schedule="intermediateSchedule" />
+        </div>
+
+        <!-- What to Bring Tab -->
+        <div
+          v-show="activeTab === 'whatToBring'"
           id="whatToBring"
-          class="text-2xl lg:text-4xl font-bold"
-          >What to Bring?</h3
+          class="animate-fadeIn"
         >
-        <ul v-for="item in whatToBring">
-          <li>{{ item }}</li>
-        </ul>
-        <hr />
-        <h3
+          <div
+            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
+          >
+            <h2 class="text-2xl font-bold text-primary-400 mb-6">What to Bring?</h2>
+
+            <ul class="space-y-6">
+              <li
+                v-for="(item, index) in whatToBring"
+                :key="`bring-${index}`"
+                class="flex items-start gap-4"
+              >
+                <div class="bg-primary-900/50 p-2 rounded-lg">
+                  <Icon
+                    name="mdi:check-circle"
+                    class="text-primary-400"
+                    size="24px"
+                  />
+                </div>
+                <div class="flex-1 pt-1">{{ item }}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Pre-Workshop Preparation Tab -->
+        <div
+          v-show="activeTab === 'preWorkshop'"
           id="preWorkshop"
-          class="text-2xl lg:text-4xl font-bold"
-          >Pre-Workshop Preparation</h3
+          class="animate-fadeIn"
         >
-        <ul v-for="item in preWorkshop">
-          <li>{{ item }}</li>
-        </ul>
-        <hr />
-        <h3
+          <div
+            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
+          >
+            <h2 class="text-2xl font-bold text-primary-400 mb-6">Pre-Workshop Preparation</h2>
+
+            <ul class="space-y-6">
+              <li
+                v-for="(item, index) in preWorkshop"
+                :key="`prep-${index}`"
+                class="flex items-start gap-4"
+              >
+                <div class="bg-primary-900/50 p-2 rounded-lg">
+                  <Icon
+                    name="mdi:arrow-right-circle"
+                    class="text-primary-400"
+                    size="24px"
+                  />
+                </div>
+                <div class="flex-1 pt-1">{{ item }}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- What's Provided Tab -->
+        <div
+          v-show="activeTab === 'provided'"
           id="provided"
-          class="text-2xl lg:text-4xl font-bold"
-          >What's Provided in the Workshop</h3
+          class="animate-fadeIn"
         >
-        <ul v-for="item in provided">
-          <li>{{ item }}</li>
-        </ul>
-        <NuxtLink :to="registrationLink">
+          <div
+            class="bg-primary-800/30 rounded-lg p-6 mb-8 backdrop-blur-sm border border-primary-700/30"
+          >
+            <h2 class="text-2xl font-bold text-primary-400 mb-6"
+              >What's Provided in the Workshop</h2
+            >
+
+            <ul class="space-y-6">
+              <li
+                v-for="(item, index) in provided"
+                :key="`provided-${index}`"
+                class="flex items-start gap-4"
+              >
+                <div class="bg-primary-900/50 p-2 rounded-lg">
+                  <Icon
+                    name="mdi:check-circle"
+                    class="text-primary-400"
+                    size="24px"
+                  />
+                </div>
+                <div class="flex-1 pt-1">{{ item }}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Register CTA -->
+      <div class="flex justify-center my-12">
+        <NuxtLink
+          :to="registrationLink"
+          target="_blank"
+        >
           <PrimeButton
             size="large"
-            severity="contrast"
-            outlined
-            >Register Now</PrimeButton
-          ></NuxtLink
-        >
+            class="bg-primary-600 hover:bg-primary-500 font-semibold px-8 py-3"
+          >
+            Register Now
+            <Icon
+              name="mdi:arrow-right"
+              class="ml-2"
+            />
+          </PrimeButton>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

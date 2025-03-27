@@ -10,6 +10,7 @@
     }
   },
   "references": [
+    { "path": "shared" },
     // Applications
     { "path": "apps/api" },
     { "path": "apps/chrome-extension" },
@@ -34,6 +35,6 @@
     { "path": "libs/core" },
     { "path": "apps/api" }
   ],
-  "include": ["prettier.config.mjs"],
+  "include": ["prettier.config.mjs", "shared/**/*"],
   "exclude": ["node_modules", "dist"]
 }
