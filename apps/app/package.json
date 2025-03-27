@@ -27,7 +27,7 @@
     "@nuxt/image": "^1.10.0",
     "@primevue/core": "^4.3.2",
     "@primevue/nuxt-module": "^4.3.2",
-    "@supabase/supabase-js": "^2.47.8",
+    "@supabase/supabase-js": "^2.49.3",
     "canvas-confetti": "^1.9.3",
     "dotenv": "^16.4.5",
     "embla-carousel": "^8.5.1",

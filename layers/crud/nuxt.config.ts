@@ -1,3 +1,25 @@
+import { getSharedEnv, pick } from '../../shared/env'
+
+const env = getSharedEnv()
+
+const publicKeys = [
+  'supabaseURL',
+  'supabaseKey',
+  'appURL',
+  'apiURL',
+  'websiteURL',
+  'scraperURL',
+  'devHelper',
+] as const
+const privateKeys = [
+  'resendApiKey',
+  'supabaseServiceKey',
+  'googleApiKey',
+  'scraperKey',
+  'razorpayKey',
+  'razorpaySecret',
+] as const
+
 export default defineNuxtConfig({
   modules: ['@nuxtjs/supabase'],
 
@@ -5,16 +27,19 @@ export default defineNuxtConfig({
     name: 'crud',
   },
 
-  supabase: {
-    redirect: false,
-    clientOptions: {
-      auth: {
-        flowType: 'pkce',
-        detectSessionInUrl: true,
-        persistSession: true,
-        autoRefreshToken: true,
-      },
+  runtimeConfig: {
+    serviceName: 'crud',
+    ...pick(env.private, [...privateKeys]),
+    public: {
+      serviceName: 'crud',
+      ...pick(env.public, [...publicKeys]),
     },
-    cookieName: 'sb',
+  },
+
+  supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    serviceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
+    redirect: false,
   },
 })
