@@ -141,14 +141,6 @@ const websiteLinks: NavItem[] = [
     disabled: false,
     items: [
       {
-        key: 'astronomy_events',
-        label: 'Astronomy Events',
-        icon: 'i-mdi-rocket-launch-outline',
-        url: '/events/astronomy-events',
-        visible: true,
-        disabled: false,
-      },
-      {
         key: 'telescope_workshop_2025',
         label: 'Telescope Workshop 2025',
         icon: 'i-mdi-telescope',
@@ -289,9 +281,23 @@ function checkMobile() {
             :key="item.key"
             class="relative group"
           >
-            <button
+            <NuxtLink
+              v-if="!item.items || !item.items.length"
+              :to="item.url || '/'"
               class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
-              @click="item.items && item.items.length ? null : navigateTo(item.url || '/')"
+            >
+              <div class="flex items-center gap-1">
+                <Icon
+                  :name="item.icon"
+                  class="w-4 h-4"
+                />
+                <span>{{ item.label }}</span>
+              </div>
+            </NuxtLink>
+
+            <button
+              v-else
+              class="px-3 py-2 rounded-md text-white font-medium hover:bg-primary-50/50 hover:text-primary-600 transition-colors duration-300"
             >
               <div class="flex items-center gap-1">
                 <Icon
@@ -300,7 +306,6 @@ function checkMobile() {
                 />
                 <span>{{ item.label }}</span>
                 <Icon
-                  v-if="item.items && item.items.length"
                   name="i-mdi-chevron-down"
                   class="w-4 h-4"
                 />

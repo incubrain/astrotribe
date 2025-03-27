@@ -43,11 +43,11 @@ defineProps({
             :img="{
               src: 'astronera-logo.jpg',
               alt: 'AstronEra Logo',
-              width: '48',
-              height: '48',
+              width: '60',
+              height: '60',
             }"
           />
-          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex"> Go Home </p>
+          <p class="absolute mx-auto my-auto hidden text-black group-hover:flex font-semibold text-sm"> Go Home </p>
         </NuxtLink>
       </div>
       <div class="w-full">
