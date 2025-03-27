@@ -18,6 +18,7 @@
     "@astronera/referral": "workspace:*",
     "@astronera/supabase": "workspace:*",
     "@nuxt/image": "^1.10.0",
+    "@primeuix/themes": "^1.0.0",
     "@primevue/core": "^4.3.2",
     "@primevue/nuxt-module": "^4.3.2",
     "dotenv": "^16.4.5",

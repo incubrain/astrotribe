@@ -2,6 +2,29 @@ import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { getSharedEnv, pick } from '../../shared/env'
+
+console.log('NUXT_PUBLIC_SUPABASE_URL:', process.env.NUXT_PUBLIC_SUPABASE_URL)
+
+const env = getSharedEnv()
+
+const publicKeys = [
+  'supabaseURL',
+  'supabaseKey',
+  'appURL',
+  'apiURL',
+  'websiteURL',
+  'scraperURL',
+  'devHelper',
+] as const
+const privateKeys = [
+  'resendApiKey',
+  'supabaseServiceKey',
+  'googleApiKey',
+  'scraperKey',
+  'razorpayKey',
+  'razorpaySecret',
+] as const
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -14,10 +37,22 @@ export default defineNuxtConfig({
     name: 'supabase',
   },
 
+  runtimeConfig: {
+    serviceName: 'crud',
+    ...pick(env.private, [...privateKeys]),
+    public: {
+      serviceName: 'crud',
+      ...pick(env.public, [...publicKeys]),
+    },
+  },
+
   srcDir: '.',
   workspaceDir: '../../',
 
   supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    serviceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
     redirect: false,
     clientOptions: {
       auth: {
@@ -37,6 +72,6 @@ export default defineNuxtConfig({
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production' ? true : false,
     },
-    cookieName: 'sb',
+    cookiePrefix: 'sb', // Updated from cookieName which is deprecated
   },
 })

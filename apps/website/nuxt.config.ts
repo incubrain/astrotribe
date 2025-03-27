@@ -1,14 +1,44 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
-import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import AuraTheme from '../../shared/theme'
 import { devPortMap } from '../../shared/paths.config'
+import { getSharedEnv, pick } from '../../shared/env'
+
+// Place this at the top of your nuxt.config.ts after importing env
+const env = getSharedEnv()
+
+const publicKeys = [
+  'supabaseURL',
+  'supabaseKey',
+  'loginURL',
+  'cmsURL',
+  'authURL',
+  'appURL',
+  'apiURL',
+  'websiteURL',
+  'scraperURL',
+  'devHelper',
+  'posthogKey',
+  'posthogURL',
+] as const
+
+const privateKeys = [
+  'cmsURL',
+  'resendApiKey',
+  'resendFromEmail',
+  'resendToEmail',
+  'supabaseServiceKey',
+  'googleApiKey',
+  'scraperKey',
+  'razorpayKey',
+  'razorpaySecret',
+] as const
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = join(currentDir, '../..')
 
 const baseLayerPath = resolve(rootDir, 'layers/base')
 const crudLayerPath = resolve(rootDir, 'layers/crud')
-const advertLayerPath = resolve(rootDir, 'layers/advert')
 const referralLayerPath = resolve(rootDir, 'layers/referral')
 
 function generateLocalUrls(start = 3000, end = 3009) {
@@ -26,7 +56,7 @@ const og = {
 }
 
 export default defineNuxtConfig({
-  extends: [baseLayerPath, crudLayerPath, advertLayerPath, referralLayerPath],
+  extends: [baseLayerPath, crudLayerPath, referralLayerPath],
   modules: [
     '@nuxtjs/mdc',
     'nuxt-security',
@@ -173,10 +203,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     serviceName: 'website',
-    ...sharedRuntimeConfig.runtimeConfig.private,
+    ...pick(env.private, [...privateKeys]),
     public: {
       serviceName: 'website',
-      ...sharedRuntimeConfig.runtimeConfig.public,
+      ...pick(env.public, [...publicKeys]),
     },
   },
 
@@ -246,18 +276,16 @@ export default defineNuxtConfig({
   },
 
   primevue: {
-    importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
-    components: { prefix: 'Prime', include: '*', exclude: ['Editor', 'Form', 'FormField'] },
-
+    components: {
+      include: '*',
+      prefix: 'Prime',
+      exclude: ['Galleria', 'Carousel', 'Editor'],
+    },
     options: {
       ripple: true,
-      unstyled: true,
-      theme: {
-        options: {
-          cssLayer: { name: 'primevue', order: 'tailwind-base, primevue, tailwind-utilities' },
-        },
-      },
+      inputVariant: 'filled',
+      theme: AuraTheme,
     },
   },
 

@@ -1,8 +1,32 @@
 import { fileURLToPath } from 'url'
 import { dirname, join, resolve } from 'path'
 import { defineNuxtConfig } from 'nuxt/config'
-import { sharedRuntimeConfig } from '../../shared/runtime.config'
+import AuraTheme from '../../shared/theme'
 import { devPortMap } from '../../shared/paths.config'
+import { getSharedEnv, pick } from '../../shared/env'
+
+const env = getSharedEnv()
+
+const publicKeys = [
+  'supabaseURL',
+  'supabaseKey',
+  'appURL',
+  'apiURL',
+  'websiteURL',
+  'scraperURL',
+  'devHelper',
+  'posthogKey',
+  'posthogURL',
+] as const
+
+const privateKeys = [
+  'resendApiKey',
+  'supabaseServiceKey',
+  'googleApiKey',
+  'scraperKey',
+  'razorpayKey',
+  'razorpaySecret',
+] as const
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -31,13 +55,14 @@ export default defineNuxtConfig({
   ssr: false,
 
   runtimeConfig: {
-    ...sharedRuntimeConfig.runtimeConfig.private,
-    serviceName: 'admin',
+    serviceName: 'auth',
+    ...pick(env.private, [...privateKeys]),
     public: {
-      ...sharedRuntimeConfig.runtimeConfig.public,
-      serviceName: 'admin',
+      serviceName: 'auth',
+      ...pick(env.public, [...publicKeys]),
     },
   },
+
   srcDir: '.',
   workspaceDir: '../../',
 
@@ -69,30 +94,23 @@ export default defineNuxtConfig({
   },
 
   primevue: {
-    importPT: { from: resolve(currentDir, '../../theme/index.js') },
     autoImport: true,
     components: {
+      include: '*',
       prefix: 'Prime',
-      include: '*',
-      // exclude: ['Editor'],
+      exclude: ['Galleria', 'Carousel', 'Editor'],
     },
-
-    composables: {
-      include: '*',
-    },
-
     options: {
       ripple: true,
-      unstyled: true,
-      theme: {
-        options: {
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities',
-          },
-        },
-      },
+      inputVariant: 'filled',
+      theme: AuraTheme,
     },
+  },
+
+  supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    serviceKey: process.env.NUXT_SUPABASE_SERVICE_KEY,
   },
 
   tailwindcss: {

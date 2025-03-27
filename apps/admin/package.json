@@ -20,7 +20,7 @@
     "@nuxt/image": "^1.10.0",
     "@primevue/core": "^4.3.2",
     "@primevue/nuxt-module": "^4.3.2",
-    "@supabase/supabase-js": "^2.47.8",
+    "@supabase/supabase-js": "^2.49.3",
     "@vueuse/core": "^11.1.0",
     "cheerio": "^1.0.0",
     "cronstrue": "^2.52.0",

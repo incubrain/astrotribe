@@ -23,9 +23,9 @@
     "build": "rollup -c rollup.config.ts"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.47.8",
-    "winston": "^3.14.2",
-    "@types/node": "^20.14.8"
+    "@supabase/supabase-js": "^2.49.3",
+    "@types/node": "^20.14.8",
+    "winston": "^3.14.2"
   },
   "devDependencies": {
     "h3": "^1.8.2"

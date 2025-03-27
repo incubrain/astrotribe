@@ -1,4 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import { getSharedEnv, pick } from '../../shared/env'
+
+const env = getSharedEnv()
 
 export default defineNuxtConfig({
   modules: ['@nuxt/image'],
@@ -45,7 +48,6 @@ export default defineNuxtConfig({
       scan: true,
     },
   },
-
   image: {
     providers: {
       supabase: {

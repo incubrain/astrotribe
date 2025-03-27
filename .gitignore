@@ -1,13 +1,12 @@
+minimal_copy
 node_modules
 .env
 .npm_token
 .modules
 
 # CI
-.unlighthouse
 /test-results/
 /blob-report/
-.lighthouseci
 .clinic
 **coverage
 .cli-store
