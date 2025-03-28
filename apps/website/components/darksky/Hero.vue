@@ -38,12 +38,12 @@ defineProps({
     />
 
     <!-- Dark Overlay with reduced opacity -->
-    <div class="absolute left-0 top-0 h-full w-full bg-black/40" />
+    <div class="absolute left-0 top-0 h-full w-full" />
 
     <!-- Content Container - Improved positioning and styling -->
     <div class="absolute z-20 flex flex-col gap-4 max-w-4xl px-6 lg:px-12">
       <!-- Main title with improved visibility -->
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg text-wrap max-w-xl">
         {{ title.main }}
       </h2>
 

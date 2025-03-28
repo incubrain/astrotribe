@@ -24,6 +24,7 @@ const scrollToContent = () => {
   <section class="relative w-full">
     <AppCarousel
       :items="items"
+      type="darksky"
       :interval="interval || 8000"
     >
       <template #default="{ item }: { item: CarouselItem }">
@@ -32,8 +33,8 @@ const scrollToContent = () => {
             :img="{
               src: item.image,
               alt: item.title,
-              width: 1080,
-              height: 720,
+              width: 1920,
+              height: 1080,
             }"
             :title="{
               main: item.title,

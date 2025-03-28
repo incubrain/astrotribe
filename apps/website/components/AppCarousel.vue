@@ -3,12 +3,18 @@ import { ref, onMounted, watch, computed } from 'vue'
 import useEmblaCarousel from 'embla-carousel-vue'
 import AutoPlay from 'embla-carousel-autoplay'
 
+const props = defineProps<{
+  items: T[]
+  type: string
+  interval?: number
+}>()
+
 const [emblaRef] = useEmblaCarousel(
   {
     loop: true,
     align: 'start',
   },
-  [AutoPlay({ delay: 5000 })],
+  [AutoPlay({ delay: props.interval || 8000, stopOnInteraction: false })],
 )
 
 const carouselLoaded = ref(false)
@@ -16,11 +22,6 @@ onMounted(async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000))
   carouselLoaded.value = true
 })
-
-defineProps<{
-  items: T[]
-  type: string
-}>()
 </script>
 
 <template>
